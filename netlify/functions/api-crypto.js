@@ -2,7 +2,7 @@
  * AfroTools AfroCrypto — Unified API Endpoint
  *
  * GET /api/crypto/prices?currency=NGN         — proxies to crypto-prices
- * GET /api/crypto/p2p?asset=USDT&fiat=NGN     — proxies to crypto-p2p
+ * GET /api/crypto/p2p                         — retired with a stable 410
  * GET /api/crypto                              — API overview / docs
  *
  * Adds CORS headers, rate limit info, API key validation (optional).
@@ -70,32 +70,21 @@ function getSubRoute(event) {
  * Internal proxy to crypto-prices function
  */
 async function handlePrices(params) {
-  const currency = (params.currency || 'usd').toLowerCase();
-  const limit = params.limit || '50';
-  const page = params.page || '1';
-  const order = params.order || 'market_cap_desc';
-  const sparkline = params.sparkline || 'false';
-  const priceChange = params.price_change || '24h';
+  const currency = (params.currency || 'ngn').toLowerCase();
+  const limit = params.limit || '100';
 
   const baseUrl = process.env.URL || 'https://afrotools.org';
-  const url = `${baseUrl}/.netlify/functions/crypto-prices?currency=${currency}&limit=${limit}&page=${page}&order=${order}&sparkline=${sparkline}&price_change=${priceChange}`;
+  const url = `${baseUrl}/.netlify/functions/crypto-prices?currency=${encodeURIComponent(currency)}&limit=${encodeURIComponent(limit)}`;
 
   const res = await fetch(url);
   const data = await res.json();
   return { statusCode: res.status, data };
 }
 
-/**
- * Internal proxy to crypto-p2p function
- */
-async function handleP2P(params) {
-  const asset = (params.asset || 'USDT').toUpperCase();
-  const fiat = (params.fiat || 'NGN').toUpperCase();
-  const action = (params.action || 'buy').toUpperCase();
-
+async function handleStablecoins(params) {
+  const currency = (params.currency || 'ngn').toLowerCase();
   const baseUrl = process.env.URL || 'https://afrotools.org';
-  const url = `${baseUrl}/.netlify/functions/crypto-p2p?asset=${asset}&fiat=${fiat}&action=${action}`;
-
+  const url = `${baseUrl}/.netlify/functions/crypto-stablecoins?currency=${encodeURIComponent(currency)}`;
   const res = await fetch(url);
   const data = await res.json();
   return { statusCode: res.status, data };
@@ -148,12 +137,23 @@ exports.handler = async function (event) {
       }, rateLimitHeaders);
     }
 
+    // --- /api/crypto/stablecoins ---
+    if (subRoute === 'stablecoins') {
+      const result = await handleStablecoins(params);
+      return jsonResponse(result.statusCode, {
+        endpoint: 'crypto/stablecoins',
+        ...result.data,
+      }, rateLimitHeaders);
+    }
+
     // --- /api/crypto/p2p ---
     if (subRoute === 'p2p') {
-      const result = await handleP2P(params);
-      return jsonResponse(result.statusCode, {
+      return jsonResponse(410, {
         endpoint: 'crypto/p2p',
-        ...result.data,
+        error: 'p2p_rate_endpoint_retired',
+        status: 'retired',
+        message: 'AfroTools no longer publishes aggregated P2P rates. Compare executable quotes you obtain directly using the local worksheet.',
+        replacement: '/crypto/p2p-rates/',
       }, rateLimitHeaders);
     }
 
@@ -161,31 +161,33 @@ exports.handler = async function (event) {
     return jsonResponse(200, {
       name: 'AfroTools Crypto API',
       version: '1.0.0',
-      description: 'Real-time cryptocurrency prices and P2P rates for African markets.',
+      description: 'Fresh CoinGecko market snapshots in currently verified African quote currencies.',
       endpoints: {
         prices: {
           path: '/api/crypto/prices',
           method: 'GET',
-          description: 'Top cryptocurrencies by market cap with prices in African currencies.',
+          description: 'CoinGecko market rows updated within 30 minutes, quoted in NGN or ZAR. Unsupported currencies are not estimated.',
           params: {
-            currency: 'ISO currency code (default: usd). Supports: ngn, kes, zar, ghs, egp, etc.',
-            limit: 'Number of results, 1-250 (default: 50)',
-            page: 'Page number (default: 1)',
-            order: 'Sort order (default: market_cap_desc)',
-            sparkline: 'Include 7d sparkline data (default: false)',
+            currency: 'Quote currency (default: ngn). Supported: ngn, zar.',
+            limit: 'Number of requested rows, 1-100 (default: 100). The response count is the number of fresh rows that survived validation.',
           },
           example: '/api/crypto/prices?currency=ngn&limit=20',
+        },
+        stablecoins: {
+          path: '/api/crypto/stablecoins',
+          method: 'GET',
+          description: 'CoinGecko reference prices for USDT, USDC and DAI in USD plus NGN or ZAR. This is not an exchange or P2P quote.',
+          params: {
+            currency: 'Quote currency (default: ngn). Supported: ngn, zar.',
+          },
+          example: '/api/crypto/stablecoins?currency=ngn',
         },
         p2p: {
           path: '/api/crypto/p2p',
           method: 'GET',
-          description: 'P2P exchange rates from Binance, Bybit, and more.',
-          params: {
-            asset: 'Crypto asset (default: USDT). Supports: USDT, BTC, ETH, USDC, BNB',
-            fiat: 'Fiat currency (default: NGN). Any African currency code.',
-            action: 'Trade direction: buy or sell (default: buy)',
-          },
-          example: '/api/crypto/p2p?asset=USDT&fiat=NGN&action=buy',
+          status: 'retired',
+          response: '410 Gone',
+          description: 'Retired. Use the local user-entered quote worksheet at /crypto/p2p-rates/.',
         },
       },
       rate_limit: hasValidKey ? 'unlimited' : '100 requests/day (add x-api-key header for more)',

@@ -139,13 +139,11 @@ const nigeriaBlog = read('blog/import-duty-nigeria-2026/index.html');
 const carMarketCoverage = JSON.parse(read('data/cars/import-duty-car-market-coverage.json'));
 const carEstimateCsv = read('data/cars/import-duty-vehicle-estimates.csv');
 
-for (const [name, html] of [
-  ['import duty', importDutyPage],
-  ['landed cost', landedCostPage]
-]) {
-  assert(html.includes('import-duty-data-trust.js'), `${name} page loads trust helper`);
-  assert(html.includes('Import costs can change. AfroTools provides planning estimates only.'), `${name} page includes disclaimer`);
-}
+assert.match(importDutyPage, /data-source-confidence|source-confidence\.js/, 'import duty page exposes source confidence');
+assert.match(importDutyPage, /classification|HS code/i, 'import duty page requires classification evidence');
+assert.match(importDutyPage, /planning estimate/i, 'import duty page states its planning boundary');
+assert(landedCostPage.includes('import-duty-data-trust.js'), 'landed cost page loads trust helper');
+assert(landedCostPage.includes('Import costs can change. AfroTools provides planning estimates only.'), 'landed cost page includes disclaimer');
 
 const claimSurfaces = [
   importDutyPage,

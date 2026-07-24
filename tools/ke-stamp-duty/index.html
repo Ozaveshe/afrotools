@@ -1,353 +1,96 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en-KE">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Stamp Duty Calculator — KRA Property Transfer</title>
-<meta name="description" content="Estimate Kenya stamp duty on property transfers using the standard 2% and 4% rates, with a simplified lease estimate. Includes KRA payment context and extra transfer cost estimates.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kenya Stamp Duty Calculator | AfroTools">
-<meta property="og:description" content="Calculate stamp duty on property purchases in Kenya.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ke-stamp-duty/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#dc2626}
-.tool-hero{background:linear-gradient(135deg,#1a1a2e 0%,#dc2626 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#fecaca;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-red{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
-.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
-.btn-primary:hover{transform:translateY(-1px)}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.4rem;font-weight:800;color:#dc2626}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.cost-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.82rem}
-.cost-table th{text-align:left;padding:10px;background:#fef2f2;color:#b91c1c;font-weight:700;font-size:.7rem;text-transform:uppercase;border-bottom:2px solid #fecaca}
-.cost-table td{padding:10px;border-bottom:1px solid #f1f5f9;color:#475569}
-.cost-table td:last-child{text-align:right;font-weight:600}
-.cost-table tr:last-child td{font-weight:800;color:var(--afro-dark);border-top:2px solid #e2e8f0}
-.sidebar .info-card{background:#fef2f2;border:1px solid #fecaca;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#b91c1c;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#b91c1c;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kenya Stamp Duty Calculator: Transfer & Lease</title>
+<meta name="description" content="Estimate Kenya stamp duty from the current Cap. 480 transfer and lease schedules. Use market valuation, municipality status, rent, term and premium—locally.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Kenya Stamp Duty: Transfer & Lease"><meta property="og:description" content="A Cap. 480 schedule calculator for ordinary property transfers and leases."><meta property="og:url" content="https://afrotools.com/tools/ke-stamp-duty/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kenya Stamp Duty Calculator: Transfer &amp; Lease">
+<meta name="twitter:description" content="Estimate Kenya stamp duty from the current Cap. 480 transfer and lease schedules. Use market valuation, municipality status, rent, term and premium—locally.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp">
+<link rel="icon" href="/assets/img/logo-mark.svg"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/ke-stamp-duty-vip.css?v=62821838">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Kenya Stamp Duty Calculator",
-  "description": "Calculate stamp duty on property transfers in Kenya. 2% rural, 4% urban rates.",
-  "url": "https://afrotools.com/tools/ke-stamp-duty/",
-  "inLanguage": "en",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
+  "url": "https://afrotools.com/tools/ke-stamp-duty/",
+  "description": "Local planning calculator for ordinary Kenya immovable-property transfers and leases under the Stamp Duty Act schedule.",
+  "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "USD"
+    "priceCurrency": "KES"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "inLanguage": "en-KE",
+  "dateModified": "2026-07-23",
+  "featureList": [
+    "Municipality and outside-municipality transfer schedules",
+    "Sale and gift valuation basis",
+    "Lease rent term bands",
+    "Lease premium duty",
+    "Local CSV, JSON and PDF export"
+  ],
+  "citation": [
+    "https://new.kenyalaw.org/akn/ke/act/1958/31/eng@2025-07-01",
+    "https://www.kra.go.ke/component/kra_faq/faqcategory/11",
+    "https://new.kenyalaw.org/akn/ke/act/ln/2020/151/eng@2022-12-31",
+    "https://www.kra.go.ke/news-center/public-notices/800-payment-of-stamp-duty-capital-gains-tax"
+  ],
   "image": "https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"
 }
 </script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Kenya Stamp Duty Calculator",
-  "url": "https://afrotools.com/tools/ke-stamp-duty/",
-  "description": "Calculate stamp duty on property transfers in Kenya. 2% rural, 4% urban rates.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"
-}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the municipality choice not say simply “urban”?","acceptedAnswer":{"@type":"Answer","text":"The statute uses property situated in a municipality. Informal urban/rural labels may not prove the legal boundary. Use the title, valuation and KRA assessment."}},{"@type":"Question","name":"Why is a lease not 2% of property value?","acceptedAnswer":{"@type":"Answer","text":"The Lease heading charges rent using term bands. Premium or other non-rent consideration is then charged separately as a conveyance."}},{"@type":"Question","name":"Can this issue an iTax assessment or prove payment?","acceptedAnswer":{"@type":"Answer","text":"No. It is a local planning calculator. Complete assessment and payment through official KRA and land-registration channels."}}]}
 </script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kenya Stamp Duty Calculator 2025 | AfroTools">
-<meta name="twitter:description" content="Calculate stamp duty on property purchases in Kenya.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp">
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/engines/ke-stamp-duty-engine.js?v=8c7bb0fd" defer></script><script src="/assets/js/pages/ke-stamp-duty-vip.js?v=c0079525" defer></script>
+<!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Kenya Stamp Duty Calculator",
-      "item": "https://afrotools.com/tools/ke-stamp-duty/"
-    }
-  ]
-}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Kenya Stamp Duty Calculator: Transfer & Lease","item":"https://afrotools.com/tools/ke-stamp-duty/"}]}
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is stamp duty calculated in Kenya?","acceptedAnswer":{"@type":"Answer","text":"For ordinary transfers, the duty is usually estimated as the dutiable value multiplied by the applicable rate of 2% or 4%. This tool follows that standard approach for transfers and gifts, but treats long leases as a simplified estimate because exact lease duty depends on the rent and term in the instrument."}},{"@type":"Question","name":"When must stamp duty be paid?","acceptedAnswer":{"@type":"Answer","text":"Where the instrument is executed in Kenya, stamping is commonly expected within 30 days. Timing can differ when instruments are executed outside Kenya, so complex or cross-border transactions should be checked against KRA or legal advice."}},{"@type":"Question","name":"Can stamp duty be waived in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Stamp duty exemptions exist for government transfers, registered charities, and certain diplomatic properties. The Finance Act has proposed first-time homebuyer exemptions, but implementation details vary."}},{"@type":"Question","name":"How do I use the Kenya Stamp Tariff Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Kenya Stamp Tariff Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Kenya Stamp Tariff Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Kenya Stamp Tariff Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya."}}]}
-</script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/ke-stamp-duty/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ke-stamp-duty/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ke-droits-timbre/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ke-stamp-duty/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="ks-page">
 <afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Kenya Stamp Duty</span></div>
-<h1>Kenya <em>Stamp Duty</em> Calculator</h1>
-<p class="hero-sub">Estimate stamp duty payable on property purchases and transfers in Kenya. Applies the standard 2% or 4% transfer rates by location and uses a simplified estimate for long leases.</p>
-<div class="hero-badges"><span class="badge b-red">KRA Context</span><span class="badge b-red">2% / 4% Rates</span><span class="badge b-red">Lease Estimate</span></div>
+<main data-ke-stamp-duty data-locale="en" data-pdf-title="Kenya stamp duty planning calculation" data-mode-label="Instrument mode" data-basis-label="Dutiable value or premium" data-transfer-label="Transfer or gift duty" data-rent-label="Lease rent duty" data-premium-label="Lease premium duty" data-payable-label="Planning duty payable" data-band-label="Schedule band" data-breakdown-title="Statutory schedule breakdown" data-copy-prompt="Copy this local Kenya stamp duty calculation:" data-pdf-disclaimer="Planning calculation under the Kenya Stamp Duty Act (Cap. 480), reviewed 23 July 2026. It is not a KRA assessment, valuation, municipality determination, exemption decision, penalty calculation, payment confirmation, legal or tax advice.">
+<header class="ks-hero"><div class="ks-shell ks-hero-grid"><div><p class="ks-kicker">Kenya · instrument-level planning</p><h1>Read the instrument. Apply the schedule.</h1><p class="ks-lead">Calculate an ordinary property transfer from the higher relevant value, or calculate a lease from its rent, term and premium. No flat 2% lease proxy and no automatic exemption.</p></div><aside class="ks-docket"><strong>Cap. 480 checked 23 July 2026</strong><span>The latest consolidated Act is dated 1 July 2025. This planner follows its stepped transfer and lease schedule and fails closed outside the reviewed period.</span></aside></div></header>
+<div class="ks-band"><div class="ks-shell ks-band-inner"><span>Municipality status matters</span><span>KRA/open-market valuation matters</span><span>Lease rent and premium are separate</span></div></div>
+<section class="ks-main"><div class="ks-shell ks-layout">
+<article class="ks-card"><h2>Build an instrument-based estimate</h2><p class="ks-intro">Enter amounts only. Do not enter a title number, buyer or tenant name, KRA PIN, address, document or other identifier.</p>
+<form id="ks-form" novalidate>
+<div class="ks-mode" role="radiogroup" aria-label="Instrument type"><label><input type="radio" name="ks-mode" value="transfer" checked><span>Property transfer or gift</span></label><label><input type="radio" name="ks-mode" value="lease"><span>Lease or letting agreement</span></label></div>
+<div class="ks-grid"><div class="ks-field"><label for="ks-date">Instrument date</label><input id="ks-date" type="date" min="2025-07-01" max="2026-07-23" value="2026-07-23" required><small>Reviewed under the current consolidated Act through 23 July 2026.</small></div><div class="ks-field"><label for="ks-location">Property location under the schedule</label><select id="ks-location" required><option value="municipality">Situated in a municipality — item 12A</option><option value="other">Outside a municipality — item 11</option></select><small>Use the title, valuation or KRA assessment—not an informal “urban/rural” guess.</small></div></div>
+<div id="ks-transfer-fields" class="ks-fields"><div class="ks-grid"><div class="ks-field"><label for="ks-transaction">Transfer type</label><select id="ks-transaction"><option value="sale">Sale or purchase</option><option value="gift">Gift inter vivos</option></select><small>A gift uses open-market value under section 52.</small></div><div class="ks-field"><label for="ks-consideration">Sale consideration (KES)</label><input id="ks-consideration" type="number" min="0" step="0.01" value="15000000" inputmode="decimal"><small>Use 0 for a gift.</small></div></div><div class="ks-field"><label for="ks-market-value">Current open-market valuation (KES)</label><input id="ks-market-value" type="number" min="0.01" step="0.01" value="15000000" inputmode="decimal"><small>Section 10A allows government valuation and additional duty. The calculator uses the higher value for a sale.</small></div></div>
+<div id="ks-lease-fields" class="ks-fields" hidden><div class="ks-grid"><div class="ks-field"><label for="ks-term-type">Lease term type</label><select id="ks-term-type"><option value="definite">Definite term</option><option value="indefinite">Indefinite term</option></select></div><div id="ks-term-years-field" class="ks-field"><label for="ks-term-years">Definite term (years)</label><input id="ks-term-years" type="number" min="0.01" max="999" step="0.01" value="2" inputmode="decimal"><small>For example, 0.5 is six months.</small></div><div class="ks-field"><label for="ks-annual-rent">Average annual rent (KES)</label><input id="ks-annual-rent" type="number" min="0.01" step="0.01" value="1200000" inputmode="decimal"></div><div class="ks-field"><label for="ks-premium">Premium or other non-rent consideration (KES)</label><input id="ks-premium" type="number" min="0" step="0.01" value="0" inputmode="decimal"><small>Section 57 charges the premium as a conveyance on sale.</small></div></div></div>
+<p class="ks-evidence"><strong>Exemption evidence gate:</strong> this route calculates the ordinary schedule only. If KRA has confirmed an exemption for this instrument, use that assessment instead of subtracting an assumed relief here.</p>
+<div class="ks-actions"><button class="ks-button primary" type="submit">Calculate schedule duty</button><button id="ks-reset" class="ks-button" type="button">Reset</button></div><p id="ks-error" class="ks-error" role="alert"></p><p id="ks-status" class="ks-status" role="status" aria-live="polite"></p></form></article>
+<aside id="ks-results" class="ks-card ks-results" hidden aria-live="polite"><p class="ks-eyebrow">Planning duty payable</p><strong id="ks-payable" class="ks-total">—</strong><p id="ks-mode-note" class="ks-intro"></p><div class="ks-metrics"><div class="ks-metric"><span>Dutiable value or premium</span><strong id="ks-basis-result">—</strong></div><div class="ks-metric"><span>Transfer or gift duty</span><strong id="ks-transfer-result">—</strong></div><div class="ks-metric"><span>Lease rent duty</span><strong id="ks-rent-result">—</strong></div><div class="ks-metric"><span>Lease premium duty</span><strong id="ks-premium-result">—</strong></div></div><p id="ks-band-result" class="ks-formula"></p><p id="ks-boundary" class="ks-warning"></p><div class="ks-actions"><button id="ks-copy" class="ks-button" data-ks-action disabled>Copy</button><button id="ks-csv" class="ks-button" data-ks-action disabled>CSV</button><button id="ks-json" class="ks-button" data-ks-action disabled>JSON</button><button id="ks-pdf" class="ks-button" data-ks-action disabled>PDF</button></div></aside>
+</div>
+<section class="ks-shell ks-notes"><div class="ks-notes-grid">
+<article><h2>Transfer schedule</h2><p class="ks-formula">Municipality: item 12A, KSh 20 per KSh 500 through KSh 2,000, then KSh 40 per KSh 1,000 or part.<br>Outside municipality: item 11, half those amounts.</p><p>At ordinary property values these bands are commonly described as 4% and 2%, but the calculator preserves the schedule’s rounding.</p></article>
+<article><h2>Lease schedule</h2><p>A lease is charged from rent according to its term: not over one year; over one and not over three years; or another definite/indefinite term. A premium is separately charged as a conveyance under section 57. A perpetuity is outside this lease calculator because section 58 treats it as a conveyance on property value.</p></article>
+<article data-tool-verification-panel><h2>Primary sources reviewed</h2><ul class="ks-sources"><li><a href="https://new.kenyalaw.org/akn/ke/act/1958/31/eng@2025-07-01" target="_blank" rel="noopener">Kenya Law: Stamp Duty Act, Cap. 480</a></li><li><a href="https://www.kra.go.ke/component/kra_faq/faqcategory/11" target="_blank" rel="noopener">KRA stamp-duty instruments and exemptions FAQ</a></li><li><a href="https://new.kenyalaw.org/akn/ke/act/ln/2020/151/eng@2022-12-31" target="_blank" rel="noopener">Stamp Duty (Valuation of Immovable Property) Regulations</a></li><li><a href="https://www.kra.go.ke/news-center/public-notices/800-payment-of-stamp-duty-capital-gains-tax" target="_blank" rel="noopener">KRA payment public notice</a></li></ul><p>Checked 23 July 2026.</p></article>
+<article><h2>Evidence before relying</h2><p>Confirm the exact instrument, its execution date, municipality/Gazette status, KRA or appointed valuation, consideration, rent, term and premium. Section 6 generally gives 30 days after first execution or receipt in Kenya; a Collector’s assessment notice has its own 21-day rule. Do not use this page to calculate lateness or penalties.</p></article>
+<article><h2>Exemptions are not automatic</h2><p>KRA lists examples including certain spouse, charity, succession and qualifying associated-company transfers. The Act’s first-home wording is limited to a first-time homeowner under an affordable housing scheme—not every first purchase and not a blanket KES 4 million rule. Obtain instrument-specific KRA confirmation.</p></article>
+<article><h2>Privacy and exclusions</h2><p>No input is stored, put in the URL, sent to analytics, AI or an API. Copy, CSV, JSON and PDF are local. This route excludes mortgages, partitions, powers of attorney, deeds, penalties, legal fees, registration fees, CGT, valuation fees, payment proof and exemption eligibility.</p></article>
 </div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Property Details</span></div>
-<div class="card-body">
-<label>Property Value (KES)</label>
-<input aria-label="Value" type="number" id="value" value="15000000" min="0" step="500000">
-<div class="row" style="margin-top:14px">
-<div><label>Location</label>
-<select id="location" aria-label="Location">
-<option value="urban">Urban Municipality (Nairobi, Mombasa, Kisumu) — 4%</option>
-<option value="rural">Other Areas (Rural / County) — 2%</option>
-</select></div>
-<div><label>Transaction Type</label>
-<select id="transType" aria-label="Trans Type">
-<option value="sale">Sale / Purchase</option>
-<option value="transfer">Transfer / Gift</option>
-<option value="lease">Lease (over 25 years)</option>
-</select></div>
-</div>
-<div class="row" style="margin-top:14px">
-<div><label>Include Legal Fees Estimate?</label>
-<select id="includeLegal" aria-label="Include Legal">
-<option value="yes">Yes</option>
-<option value="no">No</option>
-</select></div>
-<div><label>Property Type</label>
-<select id="propType" aria-label="Prop Type">
-<option value="residential">Residential</option>
-<option value="commercial">Commercial</option>
-<option value="agricultural">Agricultural Land</option>
-</select></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Stamp Duty</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Stamp Duty Calculation</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<table class="cost-table" id="costTable"></table>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Kenya Stamp Duty Rates</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>4%</strong> — Urban municipality transfers</p>
-<p><strong>2%</strong> — Other property transfers</p>
-<p><strong>Lease estimate:</strong> This tool uses a simplified 2% proxy for long leases. Exact duty on leases depends on the rent and lease term stated in the instrument.</p>
-<p style="margin-top:10px;font-size:.72rem;color:#94a3b8">Property stamp duty is generally based on the higher of the declared consideration or government valuation.</p>
-</div></div>
-<div class="info-card">
-<h4>Payment Process</h4>
-<ul>
-<li>Pay via KRA iTax portal</li>
-<li>Transfers are commonly stamped within 30 days when the instrument is executed in Kenya</li>
-<li>Duty is assessed on the dutiable instrument and valuation outcome</li>
-<li>Land registrar will usually require stamp-duty compliance before registration</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Exemptions</h4>
-<ul>
-<li>Government transfers</li>
-<li>Transfers to registered charities</li>
-<li>First-time homebuyer exemptions (proposed)</li>
-<li>Diplomatic property</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Understanding Stamp Duty in Kenya</h2>
-<p>Stamp duty is a mandatory tax on property instruments in Kenya, governed by the <strong>Stamp Duty Act (Cap 480)</strong>. For standard property transfers, market practice commonly applies <strong>4%</strong> for urban municipality transfers and <strong>2%</strong> for other areas, with payment handled through the KRA iTax workflow and supporting valuation.</p>
-<p>Stamp duty is calculated on the property's market value as assessed by the government valuer, not necessarily the purchase price. If the government valuation is higher than the purchase price, the higher value applies.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>How is stamp duty calculated in Kenya?</summary><p>For ordinary transfers, the duty is usually estimated as the dutiable value multiplied by the applicable rate of 2% or 4%. This tool follows that standard approach for transfers and gifts, but treats long leases as a simplified estimate because exact lease duty depends on the rent and term in the instrument.</p></details>
-<details class="faq-item"><summary>When must stamp duty be paid?</summary><p>Where the instrument is executed in Kenya, stamping is commonly expected within 30 days. Timing can differ when instruments are executed outside Kenya, so complex or cross-border transactions should be checked against KRA or legal advice.</p></details>
-<details class="faq-item"><summary>Can stamp duty be waived in Kenya?</summary><p>Stamp duty exemptions exist for government transfers, registered charities, and certain diplomatic properties. The Finance Act has proposed first-time homebuyer exemptions, but implementation details vary.</p></details>
+<section class="ks-shell ks-card ks-faq"><h2>Kenya stamp duty questions</h2><details><summary>Why does the municipality choice not say simply “urban”?</summary><p>The statute uses property situated in a municipality. Informal urban/rural labels may not prove the legal boundary. Use the title, valuation and KRA assessment.</p></details><details><summary>Why is a lease not 2% of property value?</summary><p>The Lease heading charges rent using term bands. Premium or other non-rent consideration is then charged separately as a conveyance.</p></details><details><summary>Can this issue an iTax assessment or prove payment?</summary><p>No. It is a local planning calculator. Complete assessment and payment through official KRA and land-registration channels.</p></details></section>
 </section>
-
-<section class="df-upgrade" data-df-upgrade="ke-stamp-duty">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Kenya Stamp Tariff Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Kenya Stamp Tariff Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for Kenya.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Kenya Stamp Tariff Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="ke-stamp-duty">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="ke-stamp-duty" data-df-base="Kenya Stamp Tariff Calculator — enter your details above to see your result." aria-live="polite">Kenya Stamp Tariff Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="ke-stamp-duty">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="ke-stamp-duty-faq-title">
-  <h2 id="ke-stamp-duty-faq-title">Kenya Stamp Tariff Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Kenya Stamp Tariff Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Kenya Stamp Tariff Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Kenya Stamp Tariff Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Kenya Stamp Tariff Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Kenya.</p></details></div>
-</section>
-<afro-related-tools category="financial" current="ke-stamp-duty" data-ssr="1">
+</main>
+<afro-related-tools data-ssr="1" category="financial" current="ke-stamp-duty">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-function calculate() {
-  const value = +document.getElementById('value').value;
-  const location = document.getElementById('location').value;
-  const transType = document.getElementById('transType').value;
-  const includeLegal = document.getElementById('includeLegal').value === 'yes';
-
-  const transferRate = location === 'urban' ? 4 : 2;
-  const stampDutyRate = transType === 'lease' ? 2 : transferRate;
-  const stampDuty = value * (stampDutyRate / 100);
-
-  const legalFee = value <= 5000000 ? value * 0.02 :
-                   value <= 20000000 ? 100000 + (value - 5000000) * 0.01 :
-                   250000 + (value - 20000000) * 0.005;
-  const valuation = Math.max(10000, value * 0.001); // approx government valuation fee
-  const landSearch = 5000;
-
-  const fmt = n => 'KES ' + Math.round(n).toLocaleString('en-KE');
-  const rateLabel = transType === 'lease'
-    ? 'Simplified Lease Estimate'
-    : `${location === 'urban' ? 'Urban' : 'Other Area'} Rate`;
-  const dutyLabel = transType === 'lease'
-    ? 'Lease Duty (est.)'
-    : `Stamp Duty (${stampDutyRate}%)`;
-
-  let html = '';
-  html += `<div class="result-box"><div class="num">${fmt(stampDuty)}</div><div class="lbl">${dutyLabel}</div></div>`;
-  html += `<div class="result-box"><div class="num">${stampDutyRate}%</div><div class="lbl">${rateLabel}</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(value)}</div><div class="lbl">Property Value</div></div>`;
-  const totalCosts = stampDuty + (includeLegal ? legalFee + valuation + landSearch : 0);
-  html += `<div class="result-box"><div class="num">${fmt(totalCosts)}</div><div class="lbl">Total Transfer Costs</div></div>`;
-  document.getElementById('resultGrid').innerHTML = html;
-
-  let table = '<tr><th>Item</th><th style="text-align:right">Amount (KES)</th></tr>';
-  table += `<tr><td>${dutyLabel}</td><td style="text-align:right">${fmt(stampDuty)}</td></tr>`;
-  if (transType === 'lease') {
-    table += `<tr><td colspan="2">Lease duty here is a simplified estimate using 2% of the entered value. Exact lease duty depends on the rent and lease term in the stamped instrument.</td></tr>`;
-  }
-  if (includeLegal) {
-    table += `<tr><td>Legal / Conveyancing Fees (est.)</td><td style="text-align:right">${fmt(legalFee)}</td></tr>`;
-    table += `<tr><td>Government Valuation Fee</td><td style="text-align:right">${fmt(valuation)}</td></tr>`;
-    table += `<tr><td>Land Search Fee</td><td style="text-align:right">${fmt(landSearch)}</td></tr>`;
-  }
-  table += `<tr><td><strong>Total</strong></td><td style="text-align:right"><strong>${fmt(totalCosts)}</strong></td></tr>`;
-  document.getElementById('costTable').innerHTML = table;
-
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="ke-stamp-duty" tool-name="Kenya Stamp Duty"></save-result-button><share-result-button tool-name="Kenya Stamp Duty" tool-slug="ke-stamp-duty"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

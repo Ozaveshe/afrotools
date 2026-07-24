@@ -1,359 +1,89 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>South Africa Transfer Duty Calculator — SARS 2026/27</title>
-<meta name="description" content="Calculate transfer duty on property purchases in South Africa using SARS 2026/27 rates. Properties up to R1,210,000 are exempt, with the current sliding scale applied instantly.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="SA Transfer Duty Calculator 2026/27 | AfroTools">
-<meta property="og:description" content="Calculate SARS transfer duty on South African property purchases.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/za-transfer-duty.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/za-transfer-duty/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#1d4ed8}
-.tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#2563eb 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bfdbfe}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#bfdbfe;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-blue{background:rgba(191,219,254,.2);color:#bfdbfe;border:1px solid rgba(191,219,254,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;justify-content:space-between;align-items:center}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;transition:border .2s}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;transition:transform .1s}
-.btn-primary{background:linear-gradient(135deg,#1e40af,#2563eb);color:#fff}
-.btn-primary:hover{transform:translateY(-1px)}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.4rem;font-weight:800;color:#2563eb}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.duty-table{width:100%;border-collapse:collapse;margin-top:14px;font-size:.78rem}
-.duty-table th{text-align:left;padding:8px;background:#eff6ff;color:#1e40af;font-weight:700;font-size:.7rem;text-transform:uppercase;border-bottom:2px solid #bfdbfe}
-.duty-table td{padding:8px;border-bottom:1px solid #f1f5f9;color:#475569}
-.duty-table tr.active{background:#eff6ff;font-weight:700}
-.duty-table tr:last-child td{font-weight:800;border-top:2px solid #e2e8f0}
-.sidebar .info-card{background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#1e40af;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#1e40af;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "SA Transfer Duty Calculator",
-  "description": "Calculate SARS transfer duty on property purchases in South Africa using 2026/27 rates.",
-  "url": "https://afrotools.com/tools/za-transfer-duty/",
-  "inLanguage": "en",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/za-transfer-duty.webp"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "SA Transfer Duty Calculator",
-  "url": "https://afrotools.com/tools/za-transfer-duty/",
-  "description": "Calculate SARS transfer duty on property purchases in South Africa using 2026/27 rates.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/za-transfer-duty.webp"
-}
-</script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SA Transfer Duty Calculator 2026/27 | AfroTools">
-<meta name="twitter:description" content="Calculate SARS transfer duty on South African property purchases.">
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>South Africa Transfer Duty Calculator 2026/27 | SARS</title><meta name="description" content="Calculate South Africa transfer duty using the SARS 2027 rates effective 1 April 2026. Compare consideration and fair value, handle VAT status and export locally."><meta name="robots" content="index,follow">
+<meta property="og:title" content="South Africa Transfer Duty Calculator 2026/27"><meta property="og:description" content="Use the official SARS sliding scale and the greater of total consideration or fair market value."><meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/za-transfer-duty/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/za-transfer-duty.webp"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="South Africa Transfer Duty Calculator 2026/27 | SARS">
+<meta name="twitter:description" content="Calculate South Africa transfer duty using the SARS 2027 rates effective 1 April 2026. Compare consideration and fair value, handle VAT status and export locally.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/za-transfer-duty.webp">
+<link rel="icon" href="/assets/img/logo-mark.svg"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/za-transfer-duty-vip.css?v=2983144d">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
+      "@type": "WebApplication",
+      "name": "South Africa Transfer Duty Calculator 2026/27",
+      "url": "https://afrotools.com/tools/za-transfer-duty/",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "description": "Calculates South Africa transfer duty using SARS 2027 rates effective 1 April 2026.",
+      "image": "https://afrotools.com/assets/img/tools/za-transfer-duty.webp"
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "SA Transfer Duty Calculator 2026/27",
-      "item": "https://afrotools.com/tools/za-transfer-duty/"
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the transfer-duty threshold in South Africa for 2026/27?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "For acquisitions from 1 April 2026, SARS charges 0% up to R1,210,000. The next band charges 3% above R1,210,000."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Which property value is used for transfer duty?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "SARS eFiling guidance requires the relevant consideration and fair market value. This calculator uses the greater of total consideration, including other consideration, and declared fair value."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is transfer duty payable when VAT applies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Transfer duty applies to property transactions not subject to VAT. This calculator can show zero duty when the user confirms the acquisition is subject to VAT, but it does not decide VAT status or calculate VAT."
+          }
+        }
+      ]
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/engines/za-transfer-duty-engine.js?v=473c87d3" defer></script><script src="/assets/js/pages/za-transfer-duty-vip.js?v=051acb6c" defer></script><!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When is transfer duty not payable?","acceptedAnswer":{"@type":"Answer","text":"Transfer duty is not payable when the property costs R1,210,000 or less, when VAT is payable on the transaction instead, or where a statutory exemption applies."}},{"@type":"Question","name":"Who pays transfer duty in South Africa?","acceptedAnswer":{"@type":"Answer","text":"The buyer pays transfer duty. It's one of the largest upfront costs when purchasing property, along with attorney fees and bond registration costs."}},{"@type":"Question","name":"Is transfer duty different for companies?","acceptedAnswer":{"@type":"Answer","text":"Companies and trusts pay the same sliding scale rates as individuals. However, there may be additional tax implications like Securities Transfer Tax for share block schemes."}},{"@type":"Question","name":"How do I use the SA Transfer Tariff Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The SA Transfer Tariff Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the SA Transfer Tariff Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the SA Transfer Tariff Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for South Africa."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"South Africa Transfer Duty Calculator 2026/27 | SARS","item":"https://afrotools.com/tools/za-transfer-duty/"}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/za-transfer-duty/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/za-transfer-duty/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/za-droits-mutation/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/za-transfer-duty/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>SA Transfer Duty</span></div>
-<h1>South Africa <em>Transfer Duty</em> Calculator</h1>
-<p class="hero-sub">Calculate SARS transfer duty on property purchases in South Africa. Uses the 2026/27 sliding scale rates. Properties up to R1,210,000 are exempt.</p>
-<div class="hero-badges"><span class="badge b-blue">SARS 2026/27</span><span class="badge b-blue">Sliding Scale</span><span class="badge b-blue">Instant Calc</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Property Details</span></div>
-<div class="card-body">
-<label>Purchase Price (ZAR)</label>
-<input aria-label="Price" type="number" id="price" value="2500000" min="0" step="50000">
-<div class="row" style="margin-top:14px">
-<div><label>Buyer Type</label>
-<select id="buyerType" aria-label="Buyer Type">
-<option value="natural">Individual (Natural Person)</option>
-<option value="company">Company / Trust</option>
-</select></div>
-<div><label>Property Type</label>
-<select id="propType" aria-label="Prop Type">
-<option value="residential">Residential</option>
-<option value="commercial">Commercial</option>
-</select></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate Transfer Duty</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Transfer Duty Calculation</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<table class="duty-table" id="dutyTable"></table>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">2026/27 Transfer Duty Rates</span></div>
-<div class="card-body" style="font-size:.72rem;color:#475569">
-<table style="width:100%;border-collapse:collapse;font-size:.7rem">
-<tr style="border-bottom:1px solid #f1f5f9"><th style="text-align:left;padding:4px">Value (ZAR)</th><th style="text-align:right;padding:4px">Rate</th></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px">R0 - R1,210,000</td><td style="text-align:right">0%</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px">R1,210,001 - R1,663,800</td><td style="text-align:right">3%</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px">R1,663,801 - R2,329,300</td><td style="text-align:right">6%</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px">R2,329,301 - R2,994,800</td><td style="text-align:right">8%</td></tr>
-<tr style="border-bottom:1px solid #f1f5f9"><td style="padding:4px">R2,994,801 - R13,310,000</td><td style="text-align:right">11%</td></tr>
-<tr><td style="padding:4px">R13,310,001+</td><td style="text-align:right">13%</td></tr>
-</table>
-</div></div>
-<div class="info-card">
-<h4>Exemptions</h4>
-<ul>
-<li>Properties up to R1,210,000 are exempt</li>
-<li>VAT-registered sellers: no transfer duty (VAT applies instead)</li>
-<li>Deceased estates: special rules apply</li>
-<li>Government entities are exempt</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Other Costs to Budget</h4>
-<ul>
-<li>Bond registration: ~1% of bond</li>
-<li>Transfer attorney: R15,000 - R50,000</li>
-<li>Deeds office fee: R1,000 - R5,000</li>
-<li>Rates clearance: varies by municipality</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Understanding Transfer Duty in South Africa</h2>
-<p>Transfer duty is a tax levied by SARS on the acquisition of property in South Africa. It applies to property transactions where the seller is not charging VAT on the supply. The duty is calculated on a sliding scale based on the purchase price, with properties up to <strong>R1,210,000 exempt</strong> from transfer duty for the 2026/27 tax year.</p>
-<p>Transfer duty must be paid within 6 months of the transaction date or within 6 months of the date on which the condition was fulfilled in conditional agreements. The transferring attorney typically handles the payment.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>When is transfer duty not payable?</summary><p>Transfer duty is not payable when the property costs R1,210,000 or less, when VAT is payable on the transaction instead, or where a statutory exemption applies.</p></details>
-<details class="faq-item"><summary>Who pays transfer duty in South Africa?</summary><p>The buyer pays transfer duty. It's one of the largest upfront costs when purchasing property, along with attorney fees and bond registration costs.</p></details>
-<details class="faq-item"><summary>Is transfer duty different for companies?</summary><p>Companies and trusts pay the same sliding scale rates as individuals. However, there may be additional tax implications like Securities Transfer Tax for share block schemes.</p></details>
-</section>
-
-<section class="df-upgrade" data-df-upgrade="za-transfer-duty">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>SA Transfer Tariff Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the SA Transfer Tariff Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for South Africa.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the SA Transfer Tariff Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="za-transfer-duty">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="za-transfer-duty" data-df-base="SA Transfer Tariff Calculator — enter your details above to see your result." aria-live="polite">SA Transfer Tariff Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="za-transfer-duty">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="za-transfer-duty-faq-title">
-  <h2 id="za-transfer-duty-faq-title">SA Transfer Tariff Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the SA Transfer Tariff Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The SA Transfer Tariff Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the SA Transfer Tariff Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the SA Transfer Tariff Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for South Africa.</p></details></div>
-</section>
-<afro-related-tools category="financial" current="za-transfer-duty" data-ssr="1">
+<body><afro-navbar></afro-navbar><main class="td-page" data-za-transfer-duty data-locale="en" data-pdf-title="South Africa transfer-duty estimate" data-basis-label="Duty basis" data-duty-label="Transfer duty" data-rate-label="Effective rate" data-input-title="Acquisition values used" data-consideration-label="Purchase consideration" data-other-label="Other consideration" data-fair-label="Fair market value" data-vat-label="VAT status" data-copy-prompt="Copy this local transfer-duty estimate:" data-pdf-disclaimer="South Africa transfer-duty planning estimate using SARS 2027 rates reviewed 23 July 2026. Not a SARS assessment, VAT decision, legal opinion, conveyancing quote or tax advice. Confirm the acquisition date, value, exemptions and VAT treatment with SARS and the conveyancer.">
+<section class="td-hero"><div class="td-shell"><div class="td-kicker">South Africa · SARS 2027 rates</div><h1>Calculate transfer duty from the value SARS actually assesses.</h1><p class="td-lead">Enter the agreement consideration, any additional consideration and fair market value. The calculator applies the current sliding scale to the greater value and keeps VAT treatment explicit.</p><div class="td-badges"><span class="td-badge">Effective 1 April 2026</span><span class="td-badge">R1,210,000 zero-rate band</span><span class="td-badge">3%–13% progressive scale</span><span class="td-badge">Local calculation and export</span></div><p class="td-langs"><a href="/fr/tools/za-droits-mutation/" hreflang="fr">Français</a></p></div></section>
+<noscript><div class="td-shell td-noscript">JavaScript is required. No fallback duty amount is shown.</div></noscript>
+<section class="td-shell td-layout"><form id="td-form" class="td-card" novalidate><h2>Enter the acquisition values</h2><p class="td-help">Use the agreement date, not registration date. If fair value is blank, the purchase consideration is reused. Include any extra consideration paid to obtain registration.</p><div class="td-fields">
+<div class="td-field"><label for="td-date">Agreement date</label><input id="td-date" type="date" min="2026-04-01" max="2026-07-23" value="2026-07-23" required></div>
+<div class="td-field"><label for="td-consideration">Purchase consideration (ZAR)</label><input id="td-consideration" type="number" min="0.01" step="0.01" value="2500000" required></div>
+<div class="td-field"><label for="td-other">Other consideration payable (ZAR)</label><input id="td-other" type="number" min="0" step="0.01" value="0"></div>
+<div class="td-field"><label for="td-fair">Declared fair market value (ZAR, optional)</label><input id="td-fair" type="number" min="0.01" step="0.01"></div>
+<div class="td-field"><label for="td-vat">Transaction VAT status</label><select id="td-vat"><option value="not-vat">Not subject to VAT · transfer duty applies</option><option value="vat">Subject to VAT · no transfer duty shown</option></select></div></div>
+<p id="td-error" class="td-error" role="alert"></p><p id="td-status" class="td-status" role="status" aria-live="polite"></p><div class="td-actions"><button class="td-button td-primary" type="submit">Calculate transfer duty</button><button id="td-reset" class="td-button" type="button">Reset</button></div></form>
+<aside class="td-card"><h2>SARS 2027 scale</h2><ul><li>R0–R1,210,000: 0%.</li><li>R1,210,001–R1,663,800: 3% above R1,210,000.</li><li>R1,663,801–R2,329,300: R13,614 + 6% above R1,663,800.</li><li>R2,329,301–R2,994,800: R53,544 + 8% above R2,329,300.</li><li>R2,994,801–R13,310,000: R106,784 + 11% above R2,994,800.</li><li>Above R13,310,000: R1,241,456 + 13% above R13,310,000.</li></ul><p class="td-note">SARS says the 2027 table has no changes from the rates effective 1 April 2025.</p></aside></section>
+<section id="td-results" class="td-shell td-card td-results" hidden aria-live="polite"><h2>Your transfer-duty estimate</h2><div class="td-metrics"><div class="td-metric"><span>Transfer duty</span><strong id="td-duty">--</strong></div><div class="td-metric"><span>Duty basis</span><strong id="td-basis">--</strong></div><div class="td-metric"><span>Effective rate</span><strong id="td-rate">--</strong></div><div class="td-metric"><span>Purchase price plus duty</span><strong id="td-total">--</strong></div><div class="td-metric"><span>Total consideration</span><strong id="td-consideration-total">--</strong></div><div class="td-metric"><span>Fair market value</span><strong id="td-fair-result">--</strong></div><div class="td-metric"><span>Marginal bracket rate</span><strong id="td-bracket">--</strong></div><div class="td-metric"><span>Bracket threshold</span><strong id="td-offset">--</strong></div></div><p id="td-boundary" class="td-warning"></p><div class="td-actions"><button id="td-copy" class="td-button" data-td-action disabled>Copy</button><button id="td-csv" class="td-button" data-td-action disabled>CSV</button><button id="td-json" class="td-button" data-td-action disabled>JSON</button><button id="td-pdf" class="td-button" data-td-action disabled>PDF</button></div></section>
+<section class="td-shell td-method" data-tool-verification-panel><div class="td-method-grid"><article><h2>Calculation boundary</h2><p>This calculator covers transfer duty only. It excludes VAT, conveyancing fees, Deeds Office fees, bond costs, valuation fees, municipal clearance, penalties, interest and statutory exemptions. “Subject to VAT” is a user-supplied fact, not a decision by AfroTools.</p></article><article><h2>Official sources reviewed 23 July 2026</h2><ul class="td-sources"><li><a href="https://www.sars.gov.za/tax-rates/transfer-duty/" target="_blank" rel="noopener">SARS transfer-duty rates</a> provides the 2027 table effective 1 April 2026.</li><li><a href="https://www.sars.gov.za/guide-for-transfer-duty-via-efiling/" target="_blank" rel="noopener">SARS eFiling guide</a> explains consideration, fair value, other consideration and rate applicability.</li><li><a href="https://www.treasury.gov.za/documents/National%20Budget/2026/sars/Budget%202026%20Tax%20guide.pdf" target="_blank" rel="noopener">National Treasury Budget 2026 Tax Guide</a> confirms transfer duty applies to transactions not subject to VAT.</li></ul></article><article><h2>Value used</h2><p>The estimate uses the greater of declared fair market value and total consideration. Total consideration adds the purchase amount and any other amount entered. Ask the conveyancer which values belong in the SARS declaration.</p></article><article><h2>Privacy</h2><p>No input is stored, put in a URL or sent to analytics, AI or an API. Do not enter party names, tax numbers, property addresses or agreement documents. CSV, JSON and PDF are created locally.</p></article></div></section>
+</main>
+<afro-related-tools data-ssr="1" category="financial" current="za-transfer-duty">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-// SARS 2026/27 Transfer Duty brackets
-const BRACKETS = [
-  { min: 0,        max: 1210000,   rate: 0,    base: 0 },
-  { min: 1210001,  max: 1663800,   rate: 3,    base: 0 },
-  { min: 1663801,  max: 2329300,   rate: 6,    base: 13614 },
-  { min: 2329301,  max: 2994800,   rate: 8,    base: 53544 },
-  { min: 2994801,  max: 13310000,  rate: 11,   base: 106784 },
-  { min: 13310001, max: Infinity,  rate: 13,   base: 1241456 },
-];
-
-function calculate() {
-  const price = +document.getElementById('price').value;
-  if (price <= 0) return;
-
-  let duty = 0;
-  let activeBracket = 0;
-
-  for (let i = 0; i < BRACKETS.length; i++) {
-    const b = BRACKETS[i];
-    if (price >= b.min && price <= b.max) {
-      duty = b.base + (price - b.min) * (b.rate / 100);
-      activeBracket = i;
-      break;
-    }
-    if (price > b.max && i === BRACKETS.length - 1) {
-      duty = b.base + (price - b.min) * (b.rate / 100);
-      activeBracket = i;
-    }
-  }
-
-  // For first bracket
-  if (price <= 1210000) duty = 0;
-
-  const effectiveRate = price > 0 ? (duty / price * 100) : 0;
-  const fmt = n => 'R ' + Math.round(n).toLocaleString('en-ZA');
-
-  let html = '';
-  html += `<div class="result-box"><div class="num">${fmt(duty)}</div><div class="lbl">Transfer Duty</div></div>`;
-  html += `<div class="result-box"><div class="num">${effectiveRate.toFixed(2)}%</div><div class="lbl">Effective Rate</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(price)}</div><div class="lbl">Purchase Price</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(price + duty)}</div><div class="lbl">Total Cost (excl fees)</div></div>`;
-  document.getElementById('resultGrid').innerHTML = html;
-
-  // Breakdown table
-  let table = '<tr><th>Value Range</th><th style="text-align:right">Rate</th><th style="text-align:right">Duty</th></tr>';
-  let remaining = price;
-  let totalCalc = 0;
-
-  BRACKETS.forEach((b, i) => {
-    if (price < b.min) return;
-    const taxableInBracket = Math.max(0, Math.min(price, b.max) - b.min);
-    const bracketDuty = taxableInBracket * (b.rate / 100);
-    const active = i === activeBracket ? ' active' : '';
-
-    table += `<tr class="${active}"><td>R${b.min.toLocaleString('en-ZA')} - R${b.max === Infinity ? '...' : b.max.toLocaleString('en-ZA')}</td><td style="text-align:right">${b.rate}%</td><td style="text-align:right">${b.rate === 0 ? 'Exempt' : fmt(bracketDuty)}</td></tr>`;
-  });
-
-  table += `<tr><td><strong>Total Transfer Duty</strong></td><td></td><td style="text-align:right"><strong>${fmt(duty)}</strong></td></tr>`;
-  document.getElementById('dutyTable').innerHTML = table;
-
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth' });
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="za-transfer-duty" tool-name="South Africa Transfer Duty"></save-result-button><share-result-button tool-name="South Africa Transfer Duty" tool-slug="za-transfer-duty"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-</body>
-</html>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+</body></html>

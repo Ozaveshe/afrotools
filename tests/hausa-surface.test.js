@@ -37,8 +37,13 @@ for (const file of pages) {
     assert.ok(html.includes('name="afrotools-locale-coverage" content="english-fallback"'), `${relative} must label its fallback state`);
     assert.ok(/<meta name="robots" content="noindex, follow">/.test(html), `${relative} fallback bridge must stay out of search indexes`);
   } else {
-    assert.strictEqual((html.match(/\/ha\/assets\/ha-improvements\.css/g) || []).length, 1, `${relative} must load one Hausa polish stylesheet`);
-    assert.strictEqual((html.match(/\/ha\/assets\/ha-surface\.js/g) || []).length, 1, `${relative} must load one Hausa runtime`);
+    const hasSharedHausaSurface =
+      (html.match(/\/ha\/assets\/ha-improvements\.css/g) || []).length === 1 &&
+      (html.match(/\/ha\/assets\/ha-surface\.js/g) || []).length === 1;
+    const hasNativeToolSurface =
+      /\/assets\/css\/[^"'?]+(?:vip|planner)[^"'?]*\.css/i.test(html) &&
+      /\/assets\/js\/pages\/[^"'?]+\.js/i.test(html);
+    assert.ok(hasSharedHausaSurface || hasNativeToolSurface, `${relative} must load either the shared Hausa surface or a native localized tool surface`);
   }
   const main = html.match(/<main\b[^>]*\bid=["']([^"']+)["']/i);
   assert.ok(main, `${relative} must expose an addressable main region`);

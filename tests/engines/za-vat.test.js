@@ -1,0 +1,12 @@
+'use strict';
+const assert = require('assert');
+const engine = require('../../assets/js/engines/za-vat.js');
+assert.deepStrictEqual(engine.calculate({ amount: 1000 }), { mode:'add',rate:15,rateKind:'standard',net:1000,vat:150,gross:1150 });
+assert.deepStrictEqual(engine.calculate({ amount: 1150,mode:'extract' }), { mode:'extract',rate:15,rateKind:'standard',net:1000,vat:150,gross:1150 });
+assert.deepStrictEqual(engine.calculate({ amount: 1000,rate:0 }), { mode:'add',rate:0,rateKind:'zero',net:1000,vat:0,gross:1000 });
+assert.deepStrictEqual(engine.calculateInvoice([{description:'A',quantity:2,unitPrice:500}],15), { mode:'add',rate:15,rateKind:'standard',net:1000,vat:150,gross:1150,lines:[{description:'A',quantity:2,unitPrice:500,net:1000}] });
+assert.deepStrictEqual(engine.classify('confirmed-zero'), { treatment:'zero-rated',rate:0,source:'Confirmed under VAT Act section 11' });
+assert.deepStrictEqual(engine.classify('confirmed-exempt'), { treatment:'exempt',rate:null,source:'Confirmed under VAT Act section 12' });
+assert.strictEqual(engine.registrationBand(2300001),'compulsory-review'); assert.strictEqual(engine.registrationBand(2300000),'voluntary-range'); assert.strictEqual(engine.registrationBand(120000),'below-voluntary-threshold');
+assert.throws(()=>engine.calculate({amount:-1}),/non-negative/); assert.throws(()=>engine.calculate({amount:1,rate:101}),/between 0 and 100/);
+console.log('South Africa VAT 2026 pure-engine fixtures passed.');

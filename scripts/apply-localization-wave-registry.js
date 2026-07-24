@@ -75,11 +75,12 @@ function registryRow(entry, locale, tools) {
     `status: "live"`,
     `phase: "LIVE"`,
     `countries: ${js(source.countries || ["ALL"])}`,
-    `revenue: "Discovery"`,
+    `revenue: ${js(entry.revenue || "Discovery")}`,
+    ...(Number.isFinite(entry.estRevenue) ? [`estRevenue: ${Number(entry.estRevenue)}`] : []),
     `priority: ${Number(entry.priority || source.priority || 0)}`,
     `lang: ${js(locale)}`,
     `sourceId: ${js(source.id)}`,
-    `imageId: ${js(source.imageId || source.id)}`,
+    ...(entry.image === false ? ["image: false"] : [`imageId: ${js(source.imageId || source.id)}`]),
   ];
   return `  { ${fields.join(", ")} },`;
 }

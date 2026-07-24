@@ -1,0 +1,15 @@
+'use strict';
+const assert = require('assert');
+const engine = require('../assets/js/engines/property-transfer-quote.js');
+const result = engine.reconcile({purchasePrice:10000000,transferTax:400000,legalFees:250000,registrationFees:100000,valuationFees:80000,agentFees:0,lenderFees:0,otherCosts:50000});
+assert.strictEqual(result.totalTransferCosts,880000);
+assert.strictEqual(result.purchasePlusCosts,10880000);
+assert.strictEqual(result.transferCostShare,.088);
+assert.strictEqual(result.quotedLineCount,5);
+assert.strictEqual(result.unquotedLineCount,2);
+assert.strictEqual(result.lineItems.find(item=>item.field==='agentFees').quoted,false);
+assert.throws(()=>engine.reconcile({purchasePrice:0}),/purchasePrice/);
+assert.throws(()=>engine.reconcile({purchasePrice:1,transferTax:-1}),/transferTax/);
+assert.match(engine.formulaParameters.zeroBoundary,/does not prove/);
+assert.match(engine.formulaParameters.statutoryBoundary,/No rate/);
+console.log('property-transfer-quote.test.js passed');

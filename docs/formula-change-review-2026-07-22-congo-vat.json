@@ -1,0 +1,54 @@
+{
+  "reviewedBy": "AfroTools Day 3 VAT VIP review",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.sgg.cg/JO/2023/congo-jo-2023-06-sp.pdf",
+  "formulaIds": ["route-cg-vat"],
+  "fixtureDeltas": [],
+  "tool": "cg-vat",
+  "reviewedOn": "2026-07-22",
+  "reason": "Model Congo VAT as 18% VAT plus centimes equal to 5% of VAT, and gate every reduced or zero treatment by exact evidence.",
+  "scope": [
+    "/congo/cg-vat",
+    "/fr/congo/calculateur-tva",
+    "/sw/congo/kikokotoo-vat/",
+    "AfroVAT CG"
+  ],
+  "officialSources": [
+    {
+      "title": "Journal officiel - Finance Law 2024",
+      "url": "https://www.sgg.cg/JO/2023/congo-jo-2023-06-sp.pdf",
+      "articles": [21, 22, "38 A"]
+    },
+    {
+      "title": "Journal officiel - Finance Law 2026",
+      "url": "https://sgg.cg/JO/2026/congo-jo-2026-3-3.pdf",
+      "evidence": "Current Annex 3 and Annex 5 lists; invoice disclosure of 18% VAT and 5%-of-VAT centimes; below-XAF-100m forfait description."
+    }
+  ],
+  "rates": {
+    "standardVat": 18,
+    "additionalCentimesPercentOfVat": 5,
+    "standardEffectiveInvoiceBurden": 18.9,
+    "reducedVat": 5,
+    "reducedEffectiveInvoiceBurden": 5.25,
+    "article22Zero": 0
+  },
+  "threshold": {
+    "annualXaf": 100000000,
+    "boundary": "below threshold is described as forfait in the 2026 execution rules",
+    "determinesRegistration": false
+  },
+  "failClosedRules": [
+    "No broad food, medical, education, agriculture or export shortcut.",
+    "The 5.25% path requires rateEvidenceConfirmed=true and rateEvidenceType=annex-5-tariff-line.",
+    "The 0% path requires rateEvidenceConfirmed=true and rateEvidenceType=article-22-zero-case.",
+    "The page preserves entered precision and discloses Article 21 filing-base rounding.",
+    "No registration, exemption, deduction, withholding, filing, return or payment decision is automated."
+  ],
+  "privacy": "Calculation, evidence choices and PDF remain local; shared links contain no entered values.",
+  "tests": [
+    "tests/engines/cg-vat.test.js",
+    "tests/e2e/day3-vat-congo-vip.spec.js",
+    "Executable AfroVAT tests cover missing, mismatched and accepted evidence."
+  ]
+}

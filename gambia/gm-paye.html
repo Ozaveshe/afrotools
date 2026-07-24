@@ -1,498 +1,132 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gambia PAYE Calculator 2026 | AfroTools</title>
-<meta name="description" content="Gambia PAYE calculator 2025/26. Official GRA annual PAYE bands with SSHFC contributions at 5% employee and 10% employer on basic salary. Monthly take-home estimate with annualized PAYE. Free PDF download.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Gambia PAYE Calculator 2025/26 | AfroTools">
-<meta property="og:description" content="Gambia PAYE calculator 2025/26. GRA annual PAYE table with SSHFC contributions at 5% employee and 10% employer on basic salary. Free PDF.">
-<meta property="og:type"        content="website">
-<meta property="og:url" content="https://afrotools.com/gambia/gm-paye">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/gm-paye.webp">
-<meta property="og:locale"      content="en_GM">
-<meta property="og:site_name"   content="AfroTools">
-<meta name="twitter:card"       content="summary_large_image">
-<meta name="twitter:title" content="Gambia PAYE Calculator 2025/26 | AfroTools">
-<meta name="twitter:description" content="Gambia GRA progressive tax 0%–25%, SSHFC 5% employee + 10% employer. Annual bands. 2025/26 rates.">
-<meta name="robots"             content="index, follow">
-<meta name="author"             content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Gambia","item":"https://afrotools.com/gambia/"},{"@type":"ListItem","position":3,"name":"Gambia PAYE Calculator","item":"https://afrotools.com/gambia/gm-paye"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Gambia PAYE Calculator 2025/26","description":"Calculate Gambia take-home pay using 2025/26 GRA rates and social security contributions.","url":"https://afrotools.com/gambia/gm-paye","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/gm-paye.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Gambia PAYE Calculator 2025/26","url":"https://afrotools.com/gambia/gm-paye","description":"Calculate Gambia take-home pay using 2025/26 GRA rates and social security contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/gm-paye.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the Gambia GRA income tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"The GRA PAYE brochure sets annual bands at 0% on GMD 0-36,000, 5% on GMD 36,001-46,000, 10% on GMD 46,001-56,000, 15% on GMD 56,001-66,000, 20% on GMD 66,001-76,000, and 25% above GMD 76,000."}},{"@type":"Question","name":"What is SSHFC in Gambia?","acceptedAnswer":{"@type":"Answer","text":"The Social Security and Housing Finance Corporation (SSHFC) is the mandatory social security body. Its annual report states contributions are 5% employee and 10% employer on the employee's basic salary."}},{"@type":"Question","name":"How is PAYE calculated in Gambia?","acceptedAnswer":{"@type":"Answer","text":"Gambia PAYE is computed on annual employment income under the GRA table and then spread across the year through payroll withholding. The PAYE brochure says no deductions are allowed in computing employment income tax."}},{"@type":"Question","name":"What is the total employer cost in Gambia?","acceptedAnswer":{"@type":"Answer","text":"Employers pay gross salary plus the employer SSHFC contribution. This calculator uses the entered salary as a basic-salary proxy for SSHFC when estimating employer cost."}},{"@type":"Question","name":"Is the AfroTools Gambia PAYE calculator free?","acceptedAnswer":{"@type":"Answer","text":"Yes — the AfroTools Gambia PAYE calculator is completely free. It provides GRA income tax calculations, SSHFC deductions, employer cost breakdown, AI tax analysis, and downloadable PDF summaries."}}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  :root {
-    --calc-accent: #CE1126;
-    --calc-accent-rgb: 30,181,58;
-    --calc-accent-subtle: #CE112612;
-    --calc-gold: #f5d76e;
-    --calc-gold-rgb: 245,215,110;
-    --gm-red: #CE1126;
-    --gm-blue: #0C1C8C;
-    --gm-green: #1D4ED8;
-    --country-black:  #111827;
-    --country-dark:   #071a0d;
-  }
-  .tool-hero::after { content: '🇬🇲'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
-  .tool-hero { background: #071a0d; }
-
-  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
-  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
-  .tool-info-meta{flex:1;min-width:0}
-  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
-  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
-  .tool-info-body{padding:14px 18px}
-  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-  .tool-stat{text-align:center}
-  .tool-stat-val{font-size:1rem;font-weight:800;color:#0062CC;line-height:1}
-  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
-  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
-  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
-  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
-  .tool-info-actions{display:flex;gap:6px}
-  .tool-info-action{font-size:.62rem;font-weight:600;color:#0062CC;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
-  .tool-info-action:hover{background:#EFF6FF;border-color:#0062CC}
-  @media(max-width:900px){.tool-info-card{order:1}}
-  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
-
-  @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
-</style>
-<meta name="tool-id" content="gm-paye">
-<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
-<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
-<script>window.PAYE_SAVE_SLUG='gm-paye';</script>
-<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
-
-  <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gm-paye.webp">
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
-<style>
-.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
-.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
-@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
-</style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
-<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Gambia PAYE Calculator | GRA Tax and SSHFC</title>
+  <meta name="description" content="Estimate Gambia PAYE, NPF or FPS pension contributions, IICF and employer cost from the public GRA and SSHFC rules. Private PDF export.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Gambia PAYE Calculator | GRA Tax and SSHFC">
+  <meta property="og:description" content="Calculate GRA PAYE, SSHFC pension contributions and employer cost in GMD.">
+  <meta property="og:url" content="https://afrotools.com/gambia/gm-paye">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/gm-paye.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Gambia PAYE Calculator | GRA Tax and SSHFC">
+  <meta name="twitter:description" content="Private Gambia take-home and employer-cost estimate using public GRA and SSHFC rules.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/gm-paye.webp">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+  <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+  <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Gambia PAYE Calculator",
+  "url": "https://afrotools.com/gambia/gm-paye",
+  "description": "Estimate Gambia PAYE and SSHFC pension contributions from public GRA and SSHFC rules.",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "dateModified": "2026-07-21",
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/gm-paye.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Gambia","item":"https://afrotools.com/gambia/"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/gambia/gm-paye"}]}</script>
+  <style>
+    :root{--gm-accent:#0b6b3a;--gm-soft:#eaf7ef;--gm-border:#d8e5dc;--gm-ink:#13221a;--gm-muted:#5b6b61;--gm-card:#fff;--gm-bg:#f6faf7}
+    body{margin:0;background:var(--gm-bg);color:var(--gm-ink)}
+    .gm-hero{padding:56px 20px 34px;background:linear-gradient(145deg,#063d24,#0b6b3a);color:#fff}
+    .gm-wrap{width:min(1120px,100%);margin:0 auto}.gm-crumb{font-size:.86rem;color:#d5f5e1}.gm-crumb a{color:inherit}
+    .gm-hero h1{margin:14px 0 10px;font-size:clamp(2rem,5vw,3.4rem);line-height:1.05}.gm-hero p{max-width:760px;font-size:1.05rem;line-height:1.65;color:#e4f8eb}
+    .gm-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.gm-badge{padding:7px 11px;border:1px solid rgba(255,255,255,.28);border-radius:999px;background:rgba(255,255,255,.1);font-size:.82rem;font-weight:700;color:#fff}
+    .gm-main{display:grid;grid-template-columns:minmax(0,1.45fr) minmax(280px,.75fr);gap:24px;padding:30px 20px 64px}.gm-card{background:var(--gm-card);border:1px solid var(--gm-border);border-radius:16px;box-shadow:0 12px 32px rgba(18,50,31,.07)}
+    .gm-card-head{padding:20px 22px;border-bottom:1px solid var(--gm-border)}.gm-card-head h2,.gm-card-head h3{margin:0 0 5px}.gm-card-head p{margin:0;color:var(--gm-muted);font-size:.9rem}.gm-body{padding:22px}
+    .gm-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}.gm-field{display:grid;gap:7px}.gm-field label,.gm-field legend{font-size:.9rem;font-weight:750}.gm-field input,.gm-field select{width:100%;min-height:48px;box-sizing:border-box;border:1px solid #b8c9bd;border-radius:10px;background:var(--gm-card);color:var(--gm-ink);padding:10px 12px;font:inherit}.gm-field input:focus,.gm-field select:focus{outline:3px solid rgba(11,107,58,.2);border-color:var(--gm-accent)}
+    .gm-help{margin:0;color:var(--gm-muted);font-size:.8rem;line-height:1.45}.gm-check{display:flex;gap:10px;align-items:flex-start;padding:13px;border:1px solid var(--gm-border);border-radius:10px;background:var(--gm-soft)}.gm-check input{width:20px;height:20px;margin:1px 0 0}.gm-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.gm-btn{min-height:46px;border:0;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer}.gm-btn-primary{background:var(--gm-accent);color:#fff}.gm-btn-secondary{background:var(--gm-soft);color:#07562e;border:1px solid #acd3ba}.gm-btn:focus-visible{outline:3px solid rgba(11,107,58,.28);outline-offset:2px}
+    .gm-status{min-height:22px;margin:12px 0 0;color:var(--gm-muted);font-size:.88rem}.gm-status.error{color:#b42318}.gm-results{display:none;margin-top:22px}.gm-results.on{display:block}.gm-result-hero{padding:24px;text-align:center;background:linear-gradient(145deg,#0b6b3a,#11804a);color:#fff;border-radius:16px 16px 0 0}.gm-result-hero span{display:block;font-size:.82rem;text-transform:uppercase;letter-spacing:.08em}.gm-result-hero strong{display:block;margin:7px 0;font-size:clamp(2rem,7vw,3rem)}
+    .gm-result-body{padding:20px 22px}.gm-row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--gm-border)}.gm-row span{color:var(--gm-muted)}.gm-row strong{text-align:right}.gm-row.total{font-size:1.05rem;border-bottom:0}.gm-note{margin:16px 0 0;padding:13px;border-left:4px solid var(--gm-accent);background:var(--gm-soft);line-height:1.55;font-size:.88rem}
+    .gm-side{display:grid;gap:18px;align-content:start}.gm-side .gm-body{font-size:.9rem;line-height:1.6}.gm-bands{display:grid;gap:9px}.gm-band{display:flex;justify-content:space-between;gap:12px;padding-bottom:8px;border-bottom:1px solid var(--gm-border)}.gm-band strong{text-align:right}.gm-sources{padding-left:20px;margin:8px 0}.gm-sources li{margin:8px 0}.gm-sources a{color:#075f34;font-weight:700}.gm-limit{color:#7a3417;background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:12px}
+    .gm-content{padding:0 20px 64px}.gm-content .gm-card{padding:26px}.gm-content h2{margin-top:0}.gm-content p,.gm-content li{line-height:1.7;color:var(--gm-muted)}
+    [data-theme="dark"]{--gm-card:#111b16;--gm-bg:#09110d;--gm-ink:#eef8f1;--gm-muted:#b7c9bd;--gm-border:#2a3c31;--gm-soft:#142a1d}[data-theme="dark"] .gm-check{background:#142a1d}[data-theme="dark"] .gm-sources a{color:#77dda1}[data-theme="dark"] .gm-limit{background:#2a1c12;border-color:#6b3d1d;color:#fdc99d}
+    @media (prefers-color-scheme:dark){html:not([data-theme="light"]){--gm-card:#111b16;--gm-bg:#09110d;--gm-ink:#eef8f1;--gm-muted:#b7c9bd;--gm-border:#2a3c31;--gm-soft:#142a1d}}
+    @media(max-width:760px){.gm-main{grid-template-columns:1fr;padding-inline:14px}.gm-grid{grid-template-columns:1fr}.gm-hero{padding:38px 16px 28px}.gm-card-head,.gm-body,.gm-result-body{padding-inline:17px}.gm-row{align-items:flex-start}.gm-actions .gm-btn{flex:1 1 145px}.gm-content{padding-inline:14px}}
+    @media print{afro-navbar,afro-footer,.gm-hero,.gm-side,.gm-actions,.gm-content{display:none!important}.gm-main{display:block;padding:0}.gm-card{border:0;box-shadow:none}.gm-card:first-child{display:none}.gm-results{display:block!important}.gm-result-hero{background:#fff!important;color:#111!important;border-bottom:2px solid #111}}
+  </style>
 <link rel="canonical" href="https://afrotools.com/gambia/gm-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/gambia/gm-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/gambia/gm-paye">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/gambia/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/gambia/gm-paye">
 </head>
-<body class="tool-page country-tax-page-ui-refresh top-level-page-ui-refresh">
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<afro-navbar active="tools"></afro-navbar>
-
-<!-- HERO -->
-<section class="tool-hero">
-  <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a> / <a href="/gambia/">🇬🇲 Gambia</a> / <span>PAYE Calculator</span>
-    </nav>
-    <h1>Gambia PAYE<br><em>Calculator 2025/26</em></h1>
-    <p class="hero-sub">Official GRA annual PAYE bands with SSHFC contributions at 5.0% employee and 10.0% employer on basic salary. Monthly take-home is estimated from the published annual PAYE table.</p>
-    <div class="hero-badges">
-      <span class="badge b-gold">✦ Includes AI Advisor</span>
-      <a class="badge b-green" href="#sources-verification" aria-label="GRA (Gambia Revenue Authority) 2025/26 Verified evidence">GRA (Gambia Revenue Authority) 2025/26 evidence</a>
-      <span class="badge b-blue">SSHFC · Income Tax</span>
-      <span class="badge b-grey">GMD · Gambia</span>
+<body>
+  <afro-navbar></afro-navbar>
+  <header class="gm-hero">
+    <div class="gm-wrap">
+      <nav class="gm-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/gambia/">Gambia</a> / PAYE Calculator</nav>
+      <h1>Gambia PAYE Calculator</h1>
+      <p>Estimate take-home pay and employer cost using the public GRA annual PAYE schedule plus the SSHFC National Provident Fund or Federated Pension Scheme.</p>
+      <div class="gm-badges"><span class="gm-badge">Official sources checked 21 July 2026</span><span class="gm-badge">Private in your browser</span><span class="gm-badge">Free local PDF</span></div>
     </div>
-    <p class="hero-meta">Last verified: April 2026 · Source: GRA PAYE brochure · SSHFC annual report</p>
-    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/gambia/gm-vat" style="color:#0062CC;font-weight:600;">Gambia VAT Calculator</a></p>
-  </div>
-</section>
+  </header>
 
-<!-- UPDATE BAR -->
-<div class="amendment-bar">
-  <div class="amendment-bar-inner">
-    <p><strong>2025/26 Key Facts: GRA PAYE uses annual bands from 0% to 25%. The brochure states no deductions are allowed in computing PAYE. SSHFC contributions are 5% employee and 10% employer on basic salary.</strong></p>
-  </div>
-</div>
-
-<!-- MAIN -->
-<div class="tool-main" id="main-content">
-  <div class="tool-main-inner">
-
-    <!-- LEFT COLUMN -->
-    <div>
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Enter Your Details</span>
-          <span class="card-sub">Gambia Currency · GMD</span>
-        </div>
-        <div class="card-body">
-
-          <!-- SECTOR SELECTOR -->
-          <div class="field">
-            <div class="f-label"><span class="f-label-text">Sector</span><span class="f-hint">Determines social security fund</span></div>
-            <div class="sector-row">
-              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Private (SSHFC)</button>
-              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Public (SSHFC)</button>
-            </div>
+  <main id="main-content" class="gm-wrap gm-main">
+    <section>
+      <div class="gm-card">
+        <div class="gm-card-head"><h2>Enter the payroll amounts</h2><p>Use monthly GMD amounts. PAYE always uses gross employment income; pension treatment is shown separately.</p></div>
+        <div class="gm-body">
+          <div class="gm-grid">
+            <div class="gm-field"><label for="grossSalary">Monthly gross employment income</label><input id="grossSalary" type="number" min="0" step="0.01" inputmode="decimal" placeholder="For example, 50,000" aria-describedby="grossHelp status"><p class="gm-help" id="grossHelp">Include wages, salary, bonuses, allowances and other employment income covered by GRA.</p></div>
+            <div class="gm-field"><label for="scheme">SSHFC pension scheme</label><select id="scheme"><option value="NPF">National Provident Fund (NPF)</option><option value="FPS">Federated Pension Scheme (FPS)</option></select><p class="gm-help">NPF: employee 5% and employer 10% of basic salary. FPS: employer 15% of gross salary.</p></div>
+            <div class="gm-field" id="basicField"><label for="basicSalary">Monthly basic salary for NPF</label><input id="basicSalary" type="number" min="0" step="0.01" inputmode="decimal" placeholder="Defaults to gross salary" aria-describedby="basicHelp status"><p class="gm-help" id="basicHelp">If basic salary is not separated on your payslip, leave blank to use gross as a planning proxy.</p></div>
+            <div class="gm-field"><label class="gm-check" for="includeIicf"><input id="includeIicf" type="checkbox" checked><span><strong>Include employer IICF</strong><br><span class="gm-help">1% of total earnings, capped at GMD 15 per month, subject to SSHFC exemptions.</span></span></label></div>
           </div>
-
-          <!-- SALARY SLIDER -->
-          <div class="slider-wrap">
-            <div class="slider-row">
-              <span class="slider-label">Monthly Gross Salary</span>
-              <span class="slider-val" id="sliderVal">GMD 500,000</span>
-            </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
-            <div class="slider-limits"><span>GMD 50,000</span><span>GMD 5,000,000</span></div>
-          </div>
-
-          <!-- INPUT -->
-          <div class="field">
-            <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div>
-            <div class="f-wrap">
-              <span class="f-prefix">GMD</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
-            </div>
-          </div>
-          <!-- Quick Presets -->
-          <div class="presets">
-            <button type="button" class="preset-btn" onclick="setPreset(200000, this)">GMD 200k</button>
-            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">GMD 500k</button>
-            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">GMD 1M</button>
-            <button type="button" class="preset-btn" onclick="setPreset(2000000, this)">GMD 2M</button>
-            <button type="button" class="preset-btn" onclick="setPreset(4000000, this)">GMD 4M</button>
-          </div>
-
-          <!-- CONTRIBUTION TOGGLES -->
-          <div class="field">
-            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
-            <div class="toggles">
-              <div class="tog on" data-tog="nssf" onclick="togItem(this)">
-                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label" id="nssfLabel">SSHFC</div><div class="tog-rate">5% employee on basic salary</div></div>
-              </div>
-            </div>
-            <p class="f-note">The GRA PAYE brochure says no deductions are allowed when computing employment income tax. SSHFC is shown separately in take-home pay and employer cost. Because SSHFC is charged on basic salary, this calculator uses the entered salary as a basic-salary proxy unless your actual payroll split differs.</p>
-          </div>
-
-          <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
+          <div class="gm-actions"><button class="gm-btn gm-btn-primary" id="calculateBtn" type="button">Calculate take-home</button><button class="gm-btn gm-btn-secondary" id="clearBtn" type="button">Clear</button></div>
+          <p id="status" class="gm-status" role="status" aria-live="polite">Enter a salary to begin. Nothing is sent to a server.</p>
         </div>
       </div>
 
-      <!-- RESULTS -->
-      <div class="card results-card" id="resultsCard">
-        <div class="res-hero">
-          <div class="res-hero-label">Monthly Take-Home Pay</div>
-          <div class="res-hero-amount" id="resAmount">GMD 0</div>
-          <div class="res-hero-period">After PAYE, SSHFC &amp; all deductions</div>
-          <div class="res-hero-gross" id="resGross"></div>
+      <section class="gm-card gm-results" id="resultsCard" aria-live="polite" aria-atomic="false">
+        <div class="gm-result-hero"><span>Estimated monthly take-home</span><strong id="netMonthly">GMD 0</strong><small id="resultScope"></small></div>
+        <div class="gm-result-body">
+          <div class="gm-row"><span>Monthly gross income</span><strong id="grossResult">GMD 0</strong></div>
+          <div class="gm-row"><span>Monthly GRA PAYE</span><strong id="payeMonthly">GMD 0</strong></div>
+          <div class="gm-row"><span id="employeePensionLabel">Employee NPF</span><strong id="employeePension">GMD 0</strong></div>
+          <div class="gm-row"><span id="employerPensionLabel">Employer NPF</span><strong id="employerPension">GMD 0</strong></div>
+          <div class="gm-row"><span>Employer IICF</span><strong id="iicfResult">GMD 0</strong></div>
+          <div class="gm-row total"><span>Total monthly employer cost</span><strong id="employerCost">GMD 0</strong></div>
+          <p class="gm-note" id="annualSummary"></p>
+          <div class="gm-actions"><button class="gm-btn gm-btn-primary" id="pdfBtn" type="button">Download PDF</button><button class="gm-btn gm-btn-secondary" id="copyBtn" type="button">Copy summary</button><button class="gm-btn gm-btn-secondary" id="shareBtn" type="button">Share calculator</button></div>
         </div>
-        <div class="res-body">
-          <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
-          </div>
-          <div id="resContent"></div>
-          <div class="rate-bar-wrap">
-            <div class="rate-bar-hdr">
-              <span class="rate-bar-lbl">Effective Tax Rate</span>
-              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
-            </div>
-            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
-          </div>
-          <div class="employer-strip" id="employerStrip"></div>
-        </div>
+      </section>
+    </section>
 
-        <div class="chart-section">
-          <div class="chart-tabs">
-            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
-          </div>
-          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
-        </div>
+    <aside class="gm-side">
+      <span class="sr-only">Sources &amp; verification</span>
+      <div class="afro-source-meta" data-source-meta-id="paye-gm-source" data-source-meta-compact="true"></div>
+      <section class="gm-card"><div class="gm-card-head"><h3>GRA annual PAYE bands</h3><p>Public schedule checked 21 July 2026.</p></div><div class="gm-body gm-bands"><div class="gm-band"><span>GMD 0–36,000</span><strong>0%</strong></div><div class="gm-band"><span>36,001–46,000</span><strong>5%</strong></div><div class="gm-band"><span>46,001–56,000</span><strong>10%</strong></div><div class="gm-band"><span>56,001–66,000</span><strong>15%</strong></div><div class="gm-band"><span>66,001–76,000</span><strong>20%</strong></div><div class="gm-band"><span>Above 76,000</span><strong>25%</strong></div><p class="gm-help">GRA says no deductions are allowed when computing employment income tax.</p></div></section>
+      <section class="gm-card" id="sources-verification" data-tool-verification-panel><div class="gm-card-head"><h3>Official sources and limits</h3><p>Decision trail for this estimate.</p></div><div class="gm-body"><ul class="gm-sources"><li><a href="https://www.gra.gm/calculators/pay-as-you-earn-paye-" target="_blank" rel="noopener">GRA PAYE calculator</a></li><li><a href="https://www.gra.gm/download-file/8d0ccc58-d217-11ed-9b31-029254d29bb1" target="_blank" rel="noopener">GRA employment-income brochure</a></li><li><a href="https://www.sshfc.gm/overview" target="_blank" rel="noopener">SSHFC scheme overview</a></li><li><a href="https://www.sshfc.gm/industrial-injury-compensation-fund" target="_blank" rel="noopener">SSHFC IICF guidance</a></li></ul><p class="gm-limit">Planning estimate only. Confirm scheme membership, pensionable/basic salary, IICF exemptions and filing with GRA or SSHFC before acting.</p></div></section>
+      <a class="tool-verification-report" href="/contact/?topic=calculation-error&amp;tool=gm-paye">Report calculation error</a>
+    </aside>
+  </main>
 
-        <div class="action-row">
-          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Download PDF
-          </button>
-          <button type="button" class="act-btn act-share" id="gmShareBtn" onclick="shareResult()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share Result
-          </button>
-        </div>
-
-          <salary-benchmark country-code="GM" currency="GMD"></salary-benchmark>
-      </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-
-      <!-- AI ADVISOR -->
-      <div class="ai-card">
-        <div class="ai-head">
-          <div class="ai-dot"></div>
-          <span class="ai-head-title">AI Tax Advisor</span>
-          <span class="ai-head-by">Optional AI · provider required</span>
-        </div>
-        <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your GRA PAYE position, explain SSHFC deductibility, and give specific optimisation tips for Gambia.</p>
-          <div class="ai-response" id="aiResp"></div>
-          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
-          <div class="ai-chat" id="aiChat">
-            <div class="chat-msgs" id="chatMsgs"></div>
-            <div class="chat-row">
-              <input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button type="button" class="chat-send" onclick="sendChat()">→</button>
-            </div>
-          </div>
-
-              </div>
-      </div>
-
-<!-- GRA TAX BANDS -->
-      <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">GRA 2025/26 Monthly Bands</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
-          <div class="band-row"><span class="band-range">GMD 0 – 270,000</span><span class="band-zero">0% — exempt</span></div>
-          <div class="band-row"><span class="band-range">GMD 270,001 – 520,000</span><span class="band-rate">8% on excess above 270k</span></div>
-          <div class="band-row"><span class="band-range">GMD 520,001 – 760,000</span><span class="band-rate">GMD 20,000 + 20% on excess</span></div>
-          <div class="band-row"><span class="band-range">GMD 760,001 – 1,000,000</span><span class="band-rate">GMD 68,000 + 25% on excess</span></div>
-          <div class="band-row"><span class="band-range">GMD 0 – 36,000 / year</span><span class="band-zero">0% — exempt</span></div>
-          <div class="band-row"><span class="band-range">GMD 36,001 – 46,000 / year</span><span class="band-rate">5% on excess over 36,000</span></div>
-          <div class="band-row"><span class="band-range">GMD 46,001 – 56,000 / year</span><span class="band-rate">10% on excess over 46,000</span></div>
-          <div class="band-row"><span class="band-range">GMD 56,001 – 66,000 / year</span><span class="band-rate">15% on excess over 56,000</span></div>
-          <div class="band-row"><span class="band-range">GMD 66,001 – 76,000 / year</span><span class="band-rate">20% on excess over 66,000</span></div>
-          <div class="band-row"><span class="band-range">Above GMD 76,000 / year</span><span class="band-rate">GMD 5,000 + 25% on excess</span></div>
-          <p class="band-note">The GRA brochure applies PAYE on annual employment income and states that no deductions are allowed in computing the tax. This calculator annualizes salary and spreads the annual liability across 12 months.</p>
-        </div>
-      </div>
-
-      <!-- SSHFC RATES -->
-      <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">SSHFC Rates 2025</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
-          <div class="band-row"><span class="band-range">Employee SSHFC</span><span class="band-rate">5% of gross (no cap)</span></div>
-          <div class="band-row"><span class="band-range">Employer SSHFC</span><span class="band-rate">10% of gross (no cap)</span></div>
-          <p class="band-note">SSHFC contributions are separate from PAYE. SSHFC's annual report states the contribution is 5% employee and 10% employer on the employee's basic salary. This calculator uses entered salary as a basic-salary proxy.</p>
-        </div>
-      </div>
-
-      <div class="disclaimer">
-        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on Gambia Income Tax Act, Finance Act 2024/25. Verify with GRA (gra.gm) or a qualified Gambian tax advisor.
-      </div>
-
-      <div class="tool-info-card">
-        <div class="tool-info-header">
-          <img height="44" width="44" src="/assets/img/tools/gm-paye.webp" alt="Gambia PAYE Calculator" class="tool-info-img" loading="lazy">
-          <div class="tool-info-meta">
-            <div class="tool-info-name">Gambia PAYE Calculator</div>
-            <div class="tool-info-cat">Tax &amp; Finance</div>
-          </div>
-        </div>
-        <div class="tool-info-body">
-          <div class="tool-info-stats">
-            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Sources</div><div class="tool-stat-lbl">Linked</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
-          </div>
-          <div class="tool-info-features">
-            <span class="tool-feat">Net Pay Calc</span>
-            <span class="tool-feat">Tax Bands</span>
-            <span class="tool-feat">PDF Export</span>
-            <span class="tool-feat">AI Advisor</span>
-            <span class="tool-feat">Deductions</span>
-          </div>
-        </div>
-        <div class="tool-info-save">
-          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span id="sidebarSaveLabel">Save to My Tools</span>
-          </button>
-        </div>
-        <div class="tool-info-footer">
-          <span class="tool-info-updated">Updated: Mar 2026</span>
-          <div class="tool-info-actions">
-            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
-            <a class="tool-info-action" href="/salary-tax/">All Countries</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- FAQ -->
-
-<!-- PDF MODAL -->
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Download Your PAYE Summary</h3>
-      <p>Enter your email to get a detailed PDF — we'll notify you when Gambia tax rates change.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="Gambia">
-        <input type="hidden" name="country_code" value="GM">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="gm-paye">
-        <input type="hidden" name="currency"     value="GMD">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Your name (optional)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
-        <input aria-label="Your email address" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Get My PDF →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">No thanks</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
-      <div class="big-check">✅</div>
-      <h4>PDF opening now</h4>
-      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
-    </div>
-  </div>
-</div>
-
-<!-- SAVE TOOL CTA -->
-<section class="ng-save-sec">
-  <div class="container">
-    <div class="ng-save-card">
-      <div class="ng-save-left">
-        <div class="ng-save-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <div>
-          <h3 class="ng-save-title">Save this calculator</h3>
-          <p class="ng-save-desc">Bookmark Gambia PAYE to your personal dashboard for quick access anytime.</p>
-        </div>
-      </div>
-      <div class="ng-save-actions">
-        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          Save to My Tools
-        </button>
-        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Share
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TWO-COLUMN GUIDE -->
-<section class="ng-guide-sec">
-  <div class="container">
-    <div class="ng-guide-header">
-      <h2 class="ng-guide-title">How Gambia Income Tax Is Calculated 2025/26</h2>
-    </div>
-    <div class="ng-guide-grid">
-      <div class="ng-guide-col">
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">The Gambia's income tax is administered by the <strong>Gambia Revenue Authority (GRA)</strong> and calculated on an <strong>annual basis</strong>, with monthly employer withholding. The official PAYE brochure currently uses a six-step annual table from <strong>0%</strong> to <strong>25%</strong>. The same brochure states that <strong>no deductions are allowed</strong> when computing employment income tax.</p>
-        </div>
-        <div class="ng-guide-card">
-<p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Social security in Gambia is administered by the <strong>Social Security and Housing Finance Corporation (SSHFC)</strong>. Employees contribute <strong>5% of basic salary</strong> and employers contribute <strong>10% of basic salary</strong>. The GRA PAYE brochure says no deductions are allowed in computing employment income tax, so this calculator shows SSHFC separately in take-home pay and employer cost while using the entered salary as a basic-salary proxy.</p>
-        </div>
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">The Gambia is a small West African nation heavily dependent on tourism, remittances, and agriculture. The GRA has been strengthening its digital filing platform. Employers must file annual income tax returns in addition to monthly PAYE remittances. The Dalasi (GMD) has experienced fluctuations against major currencies.</p>
-        </div>
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">For employers, total monthly cost per employee is gross salary plus 10% SSHFC. On a GMD 20,000/month salary, the employer adds GMD 2,000 SSHFC = total GMD 22,000/month. Verify current GRA income tax bands and SSHFC rates at <a href="https://www.gra.gm">gra.gm</a>.</p>
-        </div>
-      </div>
-      <div class="ng-guide-col">
-        <div class="ng-guide-card ng-guide-card-table">
-          <h3>Gambia SSHFC Social Security Rates 2025/26</h3>
-          <div class="ng-bands-table-wrap"><div>
-    <table class="ng-bands-table">
-      <thead><tr>
-        <th>Contribution</th>
-        <th>Rate</th>
-        <th>Notes</th>
-      </tr></thead>
-      <tbody>
-<tr><td>Employee SSHFC</td><td>5%</td><td>Separate take-home deduction on basic salary</td></tr>
-        <tr><td>Employer SSHFC</td><td>10%</td><td>Additional employer cost</td></tr>
-        <tr><td>GRA income tax</td><td>0%–25%</td><td>Progressive annual bands</td></tr>
-      </tbody>
-    </table>
-  </div></div>
-        </div>
-      </div>
-    </div>
-    <div class="ng-guide-footer-note">
-      <p>Currency: GMD (Gambian Dalasi). Applied annually. Note: calculator may use simplified band assumptions — verify exact GRA bands at gra.gm.</p>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="ng-faq-sec">
-  <div class="container">
-    <div class="ng-faq-header">
-      <span class="eyebrow">Gambia Tax FAQ</span>
-      <h2 class="ng-faq-title">Common PAYE Questions</h2>
-    </div>
-    <div class="ng-faq-grid">
-      <div class="ng-faq-col">
-        <details class="ng-faq-item" open>
-          <summary>What are the Gambia GRA PAYE tax bands for 2025/26?</summary>
-          <p>The GRA PAYE brochure uses annual bands: 0% on GMD 0-36,000; 5% on GMD 36,001-46,000; 10% on GMD 46,001-56,000; 15% on GMD 56,001-66,000; 20% on GMD 66,001-76,000; and 25% above GMD 76,000. This calculator annualizes salary and divides the resulting annual tax by 12 for a monthly estimate.</p>
-        </details>
-        <details class="ng-faq-item">
-<summary>Is SSHFC contribution deductible from PAYE taxable income?</summary>
-<p>No. The GRA PAYE brochure says no deductions are allowed when computing employment income tax. This calculator therefore applies PAYE to annualized employment income and shows the employee's 5% SSHFC contribution separately in take-home pay.</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>What is the total employer cost in Gambia?</summary>
-<p>Employers in Gambia pay gross salary plus 10% SSHFC on basic salary. On a GMD 20,000/month basic-salary proxy, the employer adds GMD 2,000 SSHFC, making the total employer cost GMD 22,000/month. Employers must also remit the 5% employee SSHFC and monthly PAYE to the relevant authorities.</p>
-        </details>
-      </div>
-      <div class="ng-faq-col">
-        <details class="ng-faq-item">
-          <summary>What is SSHFC in Gambia?</summary>
-          <p>The Social Security and Housing Finance Corporation (SSHFC) is Gambia's mandatory social security body. Its annual report states contributions of 5% from the employee and 10% from the employer on the employee's basic salary. The calculator shows SSHFC separately from PAYE because the GRA brochure says no deductions are allowed in computing employment income tax.</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>When must employers remit PAYE to GRA?</summary>
-          <p>PAYE must be filed and paid to GRA monthly. SSHFC contributions are due by the end of the following month. Employers must file a monthly PAYE return even for nil-tax months. Late payment attracts penalties. Verify current filing deadlines at gra.gm.</p>
-        </details>
-      </div>
-    </div>
-  </div>
-</section>
-
+  <section class="gm-wrap gm-content"><article class="gm-card"><h2>How the Gambia payroll estimate works</h2><p>The calculator annualizes gross employment income and applies the GRA schedule without deducting pension contributions. It then shows the selected SSHFC pension scheme separately from PAYE.</p><ul><li><strong>NPF:</strong> 5% employee and 10% employer contributions use basic salary.</li><li><strong>FPS:</strong> the employer pays 15% of gross salary and the tool applies no employee pension deduction.</li><li><strong>IICF:</strong> the employer-only planning line uses 1% of total earnings capped at GMD 15 per month. Listed exemptions can change whether it applies.</li></ul><p>The public GRA brochure labels the bands as effective from January 2018. AfroTools describes them as the current public schedule checked on 21 July 2026, not as a newly enacted 2026 table.</p></article></section>
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="gm-paye">
-  <!-- AfroTools source confidence -->
-  <div class="container afro-source-meta" data-source-meta-id="paye-gm-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -502,24 +136,28 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-04-01</span>
-          <p class="tool-verification-note">Gambia - high risk - AfroTools source audit</p>
+          <span class="tool-verification-badge">Last verified 2026-07-21</span>
+          <p class="tool-verification-note">Gambia - high risk - Codex Day 3 release gate</p>
         </div>
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
-<li><a href="https://www.gra.gm" target="_blank" rel="noopener">gra.gm</a></li>
+<li><a href="https://www.gra.gm/calculators/pay-as-you-earn-paye-" target="_blank" rel="noopener">GRA PAYE calculator</a></li>
+<li><a href="https://www.gra.gm/download-file/8d0ccc58-d217-11ed-9b31-029254d29bb1" target="_blank" rel="noopener">GRA employment-income brochure</a></li>
+<li><a href="https://www.sshfc.gm/national-provident-fund" target="_blank" rel="noopener">SSHFC National Provident Fund</a></li>
+<li><a href="https://www.sshfc.gm/industrial-injury-compensation-fund" target="_blank" rel="noopener">SSHFC IICF guidance</a></li>
+<li><a href="https://www.sshfc.gm/overview" target="_blank" rel="noopener">SSHFC scheme overview</a></li>
           </ul>
         </div>
         <div class="tool-verification-block">
           <h3>Law, regulation, or version</h3>
-          <p class="tool-verification-meta">Last verified: April 2026 · Source: GRA PAYE brochure · SSHFC annual report Also see: Gambia VAT Calculator 2025/26 Key Facts: GRA PAYE uses annual bands from 0% to 25%</p>
+          <p class="tool-verification-meta">PAYE income-tax bands and statutory deductions shown on the calculator page.</p>
         </div>
         <div class="tool-verification-block">
           <h3>Calculation methodology</h3>
-          <p class="tool-verification-meta">The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.</p>
+          <p class="tool-verification-meta">The calculator annualizes gross employment income and applies GRA PAYE without deducting pension. It then applies the selected SSHFC scheme separately: NPF uses 5% employee and 10% employer contributions on basic salary; FPS uses a 15% employer contribution on gross salary and no employee pension deduction. Optional employer IICF is 1% of earnings capped at GMD 15 per month.</p>
         </div>
         <div class="tool-verification-block">
           <h3>Known limitations</h3>
@@ -532,11 +170,13 @@
         <div class="tool-verification-block">
           <h3>Test-case examples</h3>
 <div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary: 0.<br><strong>Expected:</strong> PAYE and statutory deductions should be 0 and net pay should not be negative.<br><strong>Why:</strong> Establishes the zero-income baseline and catches negative liability regressions.</p></div>
-<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary entered in the page currency.<br><strong>Expected:</strong> Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.<br><strong>Why:</strong> Confirms the calculator is using the documented methodology rather than an opaque flat estimate.</p></div>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary GMD 600,000 under NPF with basic salary equal to gross and IICF included.<br><strong>Expected:</strong> PAYE GMD 136,000; employee NPF GMD 30,000; annual net GMD 434,000; employer NPF GMD 60,000; IICF GMD 180; employer cost GMD 660,180.<br><strong>Why:</strong> Confirms the published 25% top band, PAYE-on-gross rule, NPF separation, and IICF cap.</p></div>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Monthly gross salary GMD 50,000 under FPS with IICF included.<br><strong>Expected:</strong> Monthly PAYE GMD 11,333.33; employee pension GMD 0; monthly net GMD 38,666.67; employer FPS GMD 7,500; IICF GMD 15; employer cost GMD 57,515.<br><strong>Why:</strong> Confirms FPS is employer-funded and does not reduce employee take-home.</p></div>
         </div>
         <div class="tool-verification-block">
           <h3>Change history</h3>
           <ul class="tool-verification-list">
+<li><strong>2026-07-21:</strong> Reconciled GRA bands, NPF/FPS treatment, IICF cap, all three locales, private exports, and widget parity against official public guidance.</li>
 <li><strong>2026-05-02:</strong> Trust and verification panel added with source links, methodology, limitations, and report-error CTA.</li>
           </ul>
         </div>
@@ -549,672 +189,63 @@
   </div>
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
-<afro-related-tools category="financial" current="gm-paye" data-ssr="1">
+<afro-related-tools data-ssr="1" category="financial" current="gm-paye">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script>
-// ══════════════════════════════════════════════════════════════════
-//  GRA PAYE ENGINE · SSHFC — GAMBIA 2025/26
-//  GRA Progressive Annual Tax · SSHFC (5% employee / 10% employer)
-//  Source: Income Tax Act · Finance Act 2024/25 · GRA (gra.gm)
-//          SSHFC Act · Social Security and Housing Finance Corporation
-// ══════════════════════════════════════════════════════════════════
-
-var RESULT=null;
-let PERIOD       = 'monthly';
-let CHART        = null;
-let CHART_TYPE   = 'donut';
-let CHAT_HISTORY = [];
-let SECTOR       = 'private'; // 'private' | 'public'
-
-const fmt = n => 'GMD\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-GM');
-const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
-
-// ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
-  SECTOR = s;
-  document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  const nssfTog = document.querySelector('[data-tog="nssf"]');
-  document.getElementById('nssfLabel').textContent = 'SSHFC';
-  nssfTog.querySelector('.tog-rate').textContent = '5% employee on basic salary';
-}
-
-// ── SLIDER ────────────────────────────────────────────────────
-function onSlider(el) {
-  const v = parseInt(el.value);
-  document.getElementById('grossSalary').value = v;
-  document.getElementById('sliderVal').textContent = fmt(v);
-  updateSliderFill(el);
-  clearTimeout(window._sliderDebounce);
-  window._sliderDebounce = setTimeout(calculate, 280);
-}
-function onInput(el) {
-  const v = Math.min(Math.max(parseInt(el.value) || 0, 100000), 20000000);
-  const s = document.getElementById('salarySlider');
-  s.value = v;
-  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
-  updateSliderFill(s);
-  clearTimeout(window._sliderDebounce);
-  window._sliderDebounce = setTimeout(calculate, 280);
-}
-function updateSliderFill(el) {
-  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
-  c = c ? c.trim() : 'var(--color-primary)';
-  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
-}
-updateSliderFill(document.getElementById('salarySlider'));
-
-// ── TOGGLES ───────────────────────────────────────────────────
-function togItem(el) { el.classList.toggle('on'); }
-function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
-
-// ══════════════════════════════════════════════════════════════
-//  GRA PAYE TAX ENGINE (MONTHLY)
-//  Bands on MONTHLY TAXABLE INCOME (gross minus SSHFC):
-//  0%    on first  GMD 270,000
-//  8%    on next   GMD 250,000  (270,001–520,000)
-//  20%   on next   GMD 240,000  (520,001–760,000) [base GMD 20,000]
-//  20%   on next   GMD 10,000  (66,001–76,000)
-//  25%   above     GMD 76,000
-// ══════════════════════════════════════════════════════════════
-
-function calcAnnualPAYE(annualTaxableIncome) {
-  const income = Math.max(0, annualTaxableIncome);
-  const bandBreakdown = [];
-
-  if (income <= 36000) {
-    bandBreakdown.push({ rate: 0, income, tax: 0 });
-    return { tax: 0, bandBreakdown };
-  }
-
-  let tax = 0;
-
-  bandBreakdown.push({ rate: 0, income: 36000, tax: 0 });
-
-  if (income > 36000) {
-    const chunk = Math.min(income - 36000, 10000);
-    const t = chunk * 0.05;
-    tax += t;
-    bandBreakdown.push({ rate: 0.05, income: chunk, tax: t });
-  }
-
-  if (income > 46000) {
-    const chunk = Math.min(income - 46000, 10000);
-    const t = chunk * 0.10;
-    tax += t;
-    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
-  }
-
-  if (income > 56000) {
-    const chunk = Math.min(income - 56000, 10000);
-    const t = chunk * 0.15;
-    tax += t;
-    bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
-  }
-
-  if (income > 66000) {
-    const chunk = Math.min(income - 66000, 10000);
-    const t = chunk * 0.20;
-    tax += t;
-    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
-  }
-
-  if (income > 76000) {
-    const chunk = income - 76000;
-    const t = chunk * 0.25;
-    tax += t;
-    bandBreakdown.push({ rate: 0.25, income: chunk, tax: t });
-  }
-
-  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
-}
-
-// ── MAIN CALCULATE ────────────────────────────────────────────
-  function setPreset(val, btn) {
-    document.getElementById('grossSalary').value = val;
-    document.getElementById('salarySlider').value = val;
-    onSlider(document.getElementById('salarySlider'));
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    calculate();
-  }
-
-  function calculate() {
-  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (!gross || gross <= 0) {
-    const el = document.getElementById('grossSalary');
-    el.focus(); el.style.borderColor = '#e53e3e';
-    el.setAttribute('placeholder', 'Enter a valid salary');
-    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
-    return;
-  }
-
-  const hasNSSF     = isOn('nssf');
-
-  // SSHFC calculation
-  const socialRate     = hasNSSF ? 0.05 : 0;
-  const empSocialRate  = 0.10;
-  const social         = gross * socialRate;
-  const empSocial      = gross * empSocialRate;
-
-  // PAYE
-  const annualGross = gross * 12;
-  const annualTaxableIncome = annualGross;
-  const annualResult = calcAnnualPAYE(annualTaxableIncome);
-  const annualPAYE = annualResult.tax;
-  const monthlyPAYE = annualPAYE / 12;
-  const bandBreakdown = annualResult.bandBreakdown;
-
-  // Employer levies (on gross emoluments, employer cost only)
-  const sdl = 0; // No SDL in Gambia
-  const wcf = 0; // No WCF in Gambia
-
-  // Net pay
-  const totalEmployeeDeductions = social + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDeductions;
-  const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
-
-  // Annual figures
-  const annual = v => v * 12;
-
-  RESULT = {
-    gross, monthly: gross, social, socialRate, empSocial,
-    monthlyPAYE, bandBreakdown, sector: SECTOR,
-    sdl, wcf, empSocial,
-    totalEmployeeDeductions, netMonthly, effectiveRate,
-    annualGross: annual(gross), annualNet: annual(netMonthly),
-    annualTax: annualPAYE, annualSocial: annual(social), annualTaxableIncome,
-    totalEmployerCostMonthly: gross + empSocial,
-  };
-
-  document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annual(gross))}/year`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
-  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
-  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
-
-  const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + SSHFC ${fmt(empSocial)}/mo (10% employer).`;
-  strip.classList.add('on');
-
-  document.getElementById('resultsCard').classList.add('on');
-  // Benchmark wiring
-  var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
-  renderChart(CHART_TYPE);
-  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
-  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · PAYE: ${fmt(monthlyPAYE)}/mo · Effective: ${pct(effectiveRate)}`;
-}
-
-// ── RENDER ROWS ───────────────────────────────────────────────
-function renderRows(R, period) {
-  const isAnnual = period === 'annual';
-  const d = isAnnual ? 1 : 1; // we always have monthly figures in RESULT
-  const gross  = isAnnual ? R.annualGross   : R.gross;
-  const social = isAnnual ? R.annualSocial  : R.social;
-  const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
-  const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDeductions = isAnnual ? R.annualTax + R.annualSocial : R.totalEmployeeDeductions;
-  const lbl = isAnnual ? '/year' : '/month';
-
-  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
-
-  return `
-    <div class="res-section">
-      <div class="res-section-title">Gross Income</div>
-      ${row(`Gross Salary${lbl}`, fmt(gross))}
-    </div>
-    <div class="res-section">
-      <div class="res-section-title">Deductions</div>
-      ${R.social > 0 ? row(`SSHFC (${pct(R.socialRate)}, basic-salary proxy)`, fmt(social), 'c-red') : ''}
-      ${row(isAnnual ? 'Annual taxable employment income' : 'Monthly gross income for PAYE', fmt(isAnnual ? R.annualTaxableIncome : R.gross), 'c-mut')}
-    </div>
-    <div class="res-section">
-      <div class="res-section-title">PAYE (GRA)</div>
-      ${row(`Income tax (PAYE)${lbl}`, fmt(paye), 'c-red')}
-    </div>
-    <div class="res-section">
-      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
-    </div>`;
-}
-
-// ── PERIOD ────────────────────────────────────────────────────
-function setPeriod(period, btn) {
-  PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
-  }
-}
-
-// ── BANDS TOGGLE ──────────────────────────────────────────────
-function toggleBands(header) {
-  const body = header.nextElementSibling;
-  const arr  = header.querySelector('.tog-arrow');
-  body.classList.toggle('open');
-  arr.classList.toggle('open');
-}
-
-// ── CHARTS ────────────────────────────────────────────────────
-function setChart(type, btn) {
-  CHART_TYPE = type;
-  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderChart(type);
-}
-
-function renderChart(type) {
-  if (!RESULT) return;
-  const R = RESULT;
-  const canvas = document.getElementById('mainChart');
-  if (CHART) { CHART.destroy(); CHART = null; }
-
-  if (type === 'donut') {
-    CHART = new Chart(canvas, {
-      type: 'doughnut',
-      data: {
-        labels: ['Take-Home', 'PAYE Tax', 'SSHFC'],
-        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
-    });
-  } else if (type === 'bar') {
-    const bands = R.bandBreakdown.filter(b => b.tax > 0);
-    if (!bands.length) return;
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (GMD)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'GMD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
-    });
-  } else if (type === 'employer') {
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: ['Take-Home', 'PAYE', 'SSHFC (employee)', 'SSHFC (employer)'],
-        datasets: [{ label:'GMD', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'GMD'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
-    });
-  }
-}
-
-// ── PDF MODAL ─────────────────────────────────────────────────
-async function downloadPdfSummary() {
-  if (!RESULT || !window.AfroTools?.pdf) return;
-  const R = RESULT;
-  const rows = [
-    ['Monthly gross salary', fmt(R.gross)],
-    ['SSHFC employee contribution', fmt(R.social)],
-    ['Monthly PAYE', fmt(R.monthlyPAYE)],
-    ['Monthly take-home pay', fmt(R.netMonthly)],
-    ['Annual take-home pay', fmt(R.annualNet)],
-    ['Annual taxable income', fmt(R.annualTaxableIncome)],
-    ['Effective tax rate', pct(R.effectiveRate)],
-    ['Employer SSHFC cost', fmt(R.empSocial)],
-    ['Total employer monthly cost', fmt(R.totalEmployerCostMonthly)]
-  ];
-  const bandRows = (R.bandBreakdown || []).map(b => [
-    `Band at ${pct(b.rate)}`,
-    `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
-  ]);
-  await window.AfroTools.pdf.generate({
-    filename: 'afrotools-gm-paye-gambia-2026-07-03.pdf',
-    title: 'Gambia PAYE Summary',
-    subtitle: 'GRA PAYE and SSHFC estimate',
-    country: 'Gambia',
-    currency: 'GMD',
-    summary: [
-      { label: 'Take-home', value: fmt(R.netMonthly) },
-      { label: 'Gross', value: fmt(R.gross) },
-      { label: 'PAYE', value: fmt(R.monthlyPAYE) },
-      { label: 'Effective rate', value: pct(R.effectiveRate) }
-    ],
-    sections: [
-      { heading: 'Result', rows },
-      { heading: 'Tax bands used', rows: bandRows.length ? bandRows : [['PAYE', 'Income remains in the zero-tax band']] },
-      { heading: 'Source note', rows: [['Basis', 'Gambia PAYE bands and SSHFC assumptions shown on this calculator.']] }
-    ],
-    skipGate: true
-  });
-}
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Gambia',country_code:'GM',tool:'paye',tool_id:'gm-paye',currency:'GMD',gross_salary:RESULT.gross}).toString() });
-  } catch(e){}
-  document.getElementById('modalForm').style.display  = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
-}
-
-function generatePdf() {
-  if (!RESULT) return;
-  const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-GM',{day:'numeric',month:'long',year:'numeric'});
-  const refNo  = 'AFT-GM-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
-
-  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">Annual band ${(b.rate*100)}% on GMD ${Math.round(b.income).toLocaleString()}</td><td class="num red">(GMD ${Math.round(b.tax).toLocaleString()})</td></tr>`
-  ).join('');
-
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>AfroTools Gambia PAYE — ${refNo}</title>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
-.cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
-.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#FCD116}
-.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
-.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
-.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
-.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
-.doc-title span{color:#FCD116}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(37,99,235,.22);color:#93C5FD;border:1px solid rgba(37,99,235,.4)}
-.body{padding:24px 36px 28px}
-.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
-.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#9a7a00}.sh-val.red{color:#c0392b}
-.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
-.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
-table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
-td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
-tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
-.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
-<meta property="article:modified_time" content="2026-03-28">
-</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-</head><body>
-<div class="cover">
-  <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
-    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
-  </div>
-  <div class="doc-title">Gambia PAYE<br><span>Summary 2025/26</span></div>
-  <div class="doc-meta">Generated ${dateStr} · afrotools.com/gambia/gm-paye</div>
-  <div class="badge">GRA 2025/26 · Finance Act 2024/25</div>
-</div>
-<div class="body">
-  <div class="sh">
-    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">GMD ${Math.round(R.netMonthly).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">GMD ${Math.round(R.gross).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly PAYE</div><div class="sh-val red">GMD ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
-  </div>
-
-  <div class="sec-head">Section 1 — Monthly Income &amp; Deductions</div>
-  <table>
-    <tr><td>Monthly Gross Salary</td><td class="num">GMD ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">SSHFC employee contribution (${pct(R.socialRate)}, basic-salary proxy)</td><td class="num red">(GMD ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    <tr><td style="font-weight:600">Annual taxable employment income</td><td class="num muted">GMD ${Math.round(R.annualTaxableIncome).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 2 — PAYE Computation (GRA 2025/26)</div>
-  <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no PAYE due</td></tr>'}
-    <tr class="total"><td>Monthly PAYE</td><td class="num red">GMD ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
-  <table>
-    ${R.social > 0 ? `<tr><td>SSHFC (employee)</td><td class="num red">(GMD ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
-    <tr><td>PAYE income tax</td><td class="num red">(GMD ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(GMD ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">GMD ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">GMD ${Math.round(R.annualNet).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
-  <table>
-    <tr><td>Employee gross salary</td><td class="num">GMD ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer SSHFC (10%)</td><td class="num red">GMD ${Math.round(R.empSocial).toLocaleString()}</td></tr>
-    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">GMD ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 5 — Legal Basis &amp; Sources</div>
-  <table>
-    <tr><td style="width:30%"><span class="src">GRA</span>PAYE brochure</td><td style="color:#6b7280;font-size:8pt">Employment income tax uses the published annual 0%-25% table and the brochure states that no deductions are allowed in computing PAYE.</td></tr>
-    <tr><td><span class="src">SSHFC</span>Annual report</td><td style="color:#6b7280;font-size:8pt">SSHFC contributions are 10% employer and 5% employee on the employee's basic salary.</td></tr>
-  </table>
-</div>
-<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start">
-    <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
-      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with GRA (gra.gm) or a qualified Gambian tax advisor.</div>
-    </div>
-    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
-    </div>
-  </div>
-</div>
-
-<script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-
-</body></html>`;
-
-  const blob = new Blob([html],{type:'text/html;charset=utf-8'});
-  const url  = URL.createObjectURL(blob);
-  const w    = window.open(url,'_blank');
-  if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
-  }
-}
-
-// ── SHARE ─────────────────────────────────────────────────────
-function shareResult() {
-  if (!RESULT) return;
-  const text = `My Gambia PAYE breakdown: Gross GMD ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home GMD ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/gambia/gm-paye`;
-  if (navigator.share) {
-    navigator.share({title:'My Gambia PAYE',text,url:'https://afrotools.com/gambia/gm-paye'});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('gmShareBtn');
-    btn.textContent = '✓ Copied!';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
-  }
-}
-
-// ── AI ADVISOR ────────────────────────────────────────────────
-async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
-  const btn = document.getElementById('aiBtn');
-  const respEl = document.getElementById('aiResp');
-
-  btn.disabled = true; btn.textContent = 'Analysing…';
-  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
-  document.getElementById('aiStatus').style.display = 'none';
-
-  const prompt = `Gambia PAYE analysis (2025/26, GRA):
-- Monthly gross: GMD ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private (SSHFC)' : 'Public (SSHFC)'}
-- SSHFC employee (${pct(R.socialRate)}): GMD ${Math.round(R.social).toLocaleString()}/mo
-- Annual taxable employment income: GMD ${Math.round(R.annualTaxableIncome).toLocaleString()}/yr
-- Monthly PAYE: GMD ${Math.round(R.monthlyPAYE).toLocaleString()}
-- Monthly take-home: GMD ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Total employer cost: GMD ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
-
-Give: 1) Plain English summary of PAYE position 2) Two practical payroll planning points 3) One GRA compliance point to know 4) One thing most Gambian employees get wrong about SSHFC or GRA PAYE. Under 200 words. No markdown, no asterisks, no bullet symbols.`;
-
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in Gambian PAYE — GRA progressive tax, SSHFC social security, Income Tax Act. Be concise, specific, practical. No markdown, no asterisks.',
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const text = data.text || 'Unable to generate analysis.';
-    respEl.className = 'ai-response'; respEl.textContent = '';
-    let i = 0;
-    const type = () => {
-      if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}
-      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
-    };
-    type();
-    btn.textContent = 'Ask a follow-up below ↓';
-  } catch(err) {
-    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
-    btn.disabled=false;btn.textContent='Try Again';
-  }
-}
-
-async function sendChat() {
-  const input = document.getElementById('chatIn');
-  const msg   = input.value.trim();
-  if(!msg||!RESULT) return;
-  input.value = '';
-  const R = RESULT;
-  const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
-  const aiEl = document.createElement('div');
-  aiEl.className = 'msg a'; aiEl.textContent = '…';
-  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
-  CHAT_HISTORY.push({role:'user',content:msg});
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, Gambia. User: ${R.sector} sector, gross GMD ${Math.round(R.gross).toLocaleString()}/mo, take-home GMD ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
-        messages:CHAT_HISTORY
-      })
-    });
-    const data = await res.json();
-    const text = data.text || 'Unable to respond.';
-    aiEl.textContent = text;
-    CHAT_HISTORY.push({role:'assistant',content:text});
-    msgs.scrollTop = msgs.scrollHeight;
-  } catch { aiEl.textContent='Network error. Please try again.'; }
-}
-
-document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
-
-// Net-to-Gross: register forward function
-window._grossToNet = function(g) {
-  var d=isOn('nssf')?g*0.05:0;
-  var annualTax = calcAnnualPAYE(g*12).tax;
-  return g-(d+(annualTax/12));
-};
-</script>
-<script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
-<script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
-<script>
-(function(){
-  var KEY='afro_favs_v2',TOOL_ID='gm-paye',LIMIT=10;
-  function isLoggedIn(){return typeof AfroAuth!=='undefined'&&AfroAuth.isLoggedIn();}
-  function isPro(){return typeof AfroAuth!=='undefined'&&AfroAuth.isPro();}
-  function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
-  function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
-
-  window.toggleSaveTool=function(){
-    if(!isLoggedIn()){
-      if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
-        AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/auth/?mode=login&next=/dashboard/';}
-      return;
-    }
-    var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
-    if(idx>-1){favs.splice(idx,1);}else{
-      if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Free accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
-        return;
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/engines/gm-paye.js?v=d5e27c2d"></script>
+  <script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+  <script>
+    (function () {
+      'use strict';
+      var lastResult = null;
+      var grossInput = document.getElementById('grossSalary');
+      var basicInput = document.getElementById('basicSalary');
+      var schemeInput = document.getElementById('scheme');
+      var status = document.getElementById('status');
+      var results = document.getElementById('resultsCard');
+      var format = function (value) { return 'GMD ' + Number(value).toLocaleString('en-GM', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); };
+      function clearResult(message, error) { lastResult = null; results.classList.remove('on'); status.textContent = message; status.classList.toggle('error', Boolean(error)); }
+      function syncScheme() { var npf = schemeInput.value === 'NPF'; document.getElementById('basicField').hidden = !npf; if (!npf) basicInput.value = ''; clearResult('Scheme changed. Calculate to refresh the estimate.', false); }
+      function calculate() {
+        var grossMonthly = Number(grossInput.value);
+        var basicMonthly = basicInput.value === '' ? grossMonthly : Number(basicInput.value);
+        if (!Number.isFinite(grossMonthly) || grossMonthly <= 0) return clearResult('Enter a monthly gross salary greater than zero.', true);
+        if (schemeInput.value === 'NPF' && (!Number.isFinite(basicMonthly) || basicMonthly < 0 || basicMonthly > grossMonthly)) return clearResult('Basic salary must be between zero and gross salary.', true);
+        lastResult = window.AfroTools.gambiaPaye.calculate({ grossAnnual: grossMonthly * 12, basicAnnual: basicMonthly * 12, scheme: schemeInput.value, includeIicf: document.getElementById('includeIicf').checked });
+        document.getElementById('netMonthly').textContent = format(lastResult.netMonthly);
+        document.getElementById('resultScope').textContent = lastResult.scheme === 'NPF' ? 'NPF estimate; basic salary shown separately' : 'FPS estimate; employer-funded pension';
+        document.getElementById('grossResult').textContent = format(lastResult.grossMonthly);
+        document.getElementById('payeMonthly').textContent = format(lastResult.payeMonthly);
+        document.getElementById('employeePensionLabel').textContent = lastResult.scheme === 'NPF' ? 'Employee NPF (5% of basic)' : 'Employee FPS contribution';
+        document.getElementById('employeePension').textContent = format(lastResult.employeePensionMonthly);
+        document.getElementById('employerPensionLabel').textContent = lastResult.scheme === 'NPF' ? 'Employer NPF (10% of basic)' : 'Employer FPS (15% of gross)';
+        document.getElementById('employerPension').textContent = format(lastResult.employerPensionMonthly);
+        document.getElementById('iicfResult').textContent = format(lastResult.iicfMonthly);
+        document.getElementById('employerCost').textContent = format(lastResult.employerCostMonthly);
+        document.getElementById('annualSummary').textContent = 'Annual reconciliation: gross ' + format(lastResult.grossAnnual) + ', PAYE ' + format(lastResult.payeAnnual) + ', employee pension ' + format(lastResult.employeePensionAnnual) + ', net ' + format(lastResult.netAnnual) + '.';
+        results.classList.add('on'); status.classList.remove('error'); status.textContent = 'Estimate ready. Your salary data stayed in this browser.'; results.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
       }
-      favs.push(TOOL_ID);
-    }
-    localStorage.setItem(KEY,JSON.stringify(favs));
-    updateSaveUI();
-  };
-
-  function showSaveToast(msg){
-    var t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 24px;border-radius:10px;font-size:.85rem;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:400px;text-align:center';
-    t.textContent=msg;document.body.appendChild(t);
-    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},4000);
-  }
-
-  function updateSaveUI(){
-    var loggedIn=isLoggedIn(),saved=loggedIn&&isSaved();
-    var svgSaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-    var svgUnsaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-
-    // Inline save button
-    var btn=document.getElementById('inlineSaveBtn');
-    if(btn){
-      if(!loggedIn){btn.innerHTML=svgUnsaved+' Sign in to Save';btn.classList.remove('saved');}
-      else if(saved){btn.innerHTML=svgSaved+' Saved';btn.classList.add('saved');}
-      else{btn.innerHTML=svgUnsaved+' Save to My Tools';btn.classList.remove('saved');}
-    }
-
-    // Sidebar save button
-    var sb=document.getElementById('sidebarSaveBtn');
-    if(sb){
-      var lbl=document.getElementById('sidebarSaveLabel');
-      if(!loggedIn){
-        if(lbl)lbl.textContent='Sign in to Save';
-        sb.classList.remove('saved');
-      }else if(saved){
-        if(lbl)lbl.textContent='Saved';
-        sb.classList.add('saved');
-      }else{
-        if(lbl)lbl.textContent='Save to My Tools';
-        sb.classList.remove('saved');
-      }
-    }
-
-    // Save CTA banner text
-    var title=document.querySelector('.ng-save-title');
-    var desc=document.querySelector('.ng-save-desc');
-    if(!loggedIn){
-      if(title)title.textContent='Sign in to save this calculator';
-      if(desc)desc.textContent='Create a free account to bookmark tools, track calculations, and access your dashboard.';
-    }
-  }
-  window.updateSaveUI=updateSaveUI;
-
-  // Run on load + auth changes
-  document.addEventListener('DOMContentLoaded',updateSaveUI);
-  window.addEventListener('afro-auth-change',updateSaveUI);
-})();
-</script>
+      function summaryText() { return 'Gambia payroll estimate\nGross: ' + format(lastResult.grossMonthly) + '/month\nPAYE: ' + format(lastResult.payeMonthly) + '/month\nEmployee pension: ' + format(lastResult.employeePensionMonthly) + '/month\nNet: ' + format(lastResult.netMonthly) + '/month\nEmployer cost: ' + format(lastResult.employerCostMonthly) + '/month\nSource check: 21 July 2026'; }
+      document.getElementById('calculateBtn').addEventListener('click', calculate);
+      document.getElementById('clearBtn').addEventListener('click', function () { grossInput.value = ''; basicInput.value = ''; schemeInput.value = 'NPF'; document.getElementById('includeIicf').checked = true; document.getElementById('basicField').hidden = false; clearResult('Cleared. Nothing was stored or sent.', false); grossInput.focus(); });
+      schemeInput.addEventListener('change', syncScheme);
+      [grossInput, basicInput].forEach(function (input) { input.addEventListener('input', function () { if (lastResult) clearResult('Inputs changed. Calculate again for a current result.', false); }); input.addEventListener('keydown', function (event) { if (event.key === 'Enter') calculate(); }); });
+      document.getElementById('includeIicf').addEventListener('change', function () { if (lastResult) clearResult('IICF selection changed. Calculate again for a current result.', false); });
+      document.getElementById('copyBtn').addEventListener('click', async function () { if (!lastResult) return; await navigator.clipboard.writeText(summaryText()); status.textContent = 'Summary copied locally.'; });
+      document.getElementById('shareBtn').addEventListener('click', async function () { var data = { title: 'Gambia PAYE Calculator', url: 'https://afrotools.com/gambia/gm-paye' }; if (navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(data.url); status.textContent = 'Calculator link copied. Salary data was not included.'; } });
+      document.getElementById('pdfBtn').addEventListener('click', async function () { if (!lastResult) return; if (!window.AfroTools || !window.AfroTools.pdf) { status.textContent = 'PDF support is still loading. Try again.'; return; } await window.AfroTools.pdf.generate({ filename: 'afrotools-gambia-paye-2026-07-21.pdf', title: 'Gambia PAYE Summary', subtitle: 'GRA PAYE and SSHFC planning estimate', country: 'Gambia', currency: 'GMD', summary: [{ label: 'Monthly net', value: format(lastResult.netMonthly) }, { label: 'Monthly gross', value: format(lastResult.grossMonthly) }, { label: 'Monthly PAYE', value: format(lastResult.payeMonthly) }, { label: 'Scheme', value: lastResult.scheme }], sections: [{ heading: 'Monthly reconciliation', rows: [['Employee pension', format(lastResult.employeePensionMonthly)], ['Employer pension', format(lastResult.employerPensionMonthly)], ['Employer IICF', format(lastResult.iicfMonthly)], ['Employer cost', format(lastResult.employerCostMonthly)]] }, { heading: 'Source and limitation', rows: [['Checked', 'GRA and SSHFC public guidance, 21 July 2026'], ['Use', 'Planning estimate; confirm scheme, salary base, exemptions and filing before acting']] }], skipGate: true }); status.textContent = 'Private PDF generated in your browser.'; });
+      window._grossToNet = function (grossMonthly) { var result = window.AfroTools.gambiaPaye.calculate({ grossAnnual: grossMonthly * 12, basicAnnual: grossMonthly * 12, scheme: schemeInput.value, includeIicf: false }); return result.ok ? result.netMonthly : 0; };
+    }());
+  </script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

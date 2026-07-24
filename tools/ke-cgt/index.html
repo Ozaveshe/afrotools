@@ -1,332 +1,561 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Capital Gains Tax Calculator | AfroTools</title>
-<meta name="description" content="Calculate Kenya Capital Gains Tax (CGT) at 15% on property and investment gains. Covers exemptions, allowable deductions, and KRA filing requirements.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kenya CGT Calculator | AfroTools">
-<meta property="og:description" content="Calculate your Kenya Capital Gains Tax on property and investment disposals.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-cgt.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ke-cgt/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#dc2626}
-.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#fecaca;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.3rem;font-weight:800;color:#dc2626}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.result-box.highlight{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5;grid-column:1/-1}
-.result-box.highlight .num{font-size:1.8rem}
-.sidebar .info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#7f1d1d;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kenya Capital Gains Tax Calculator","description":"Calculate Kenya CGT at 15% on property and investment gains.","url":"https://afrotools.com/tools/ke-cgt/","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ke-cgt.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Kenya Capital Gains Tax Calculator","url":"https://afrotools.com/tools/ke-cgt/","description":"Calculate Kenya CGT at 15% on property and investment gains.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ke-cgt.webp"}</script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kenya CGT Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate your Kenya Capital Gains Tax on property and investment disposals.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-cgt.webp">
-<script type="application/ld+json">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kenya Capital Gains Tax Calculator 2026 | AfroTools</title>
+    <meta
+      name="description"
+      content="Estimate Kenya CGT at 15% from net transfer value and adjusted cost. Review KRA exemptions, the current tax point, formula and official sources."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="AfroTools" />
+    <meta property="og:title" content="Kenya CGT Calculator 2026 | AfroTools" />
+    <meta
+      property="og:description"
+      content="A source-checked 15% Kenya capital gains tax planning estimate with explicit exemption confirmation."
+    />
+    <meta property="og:url" content="https://afrotools.com/tools/ke-cgt/" />
+    <meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-cgt.webp">
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta
+      name="twitter:title"
+      content="Kenya CGT Calculator 2026 | AfroTools"
+    />
+    <meta
+      name="twitter:description"
+      content="Estimate Kenya CGT using net transfer value, adjusted cost and a separately confirmed exemption."
+    />
+    <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-cgt.webp">
+    <meta property="article:modified_time" content="2026-07-22" />
+    <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preload"
+      as="style"
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+      onload="
+        this.onload = null;
+        this.rel = 'stylesheet';
+      "
+    />
+    <noscript
+      ><link
+        rel="stylesheet"
+        href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+    /></noscript>
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb" />
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b" />
+    <link
+      rel="stylesheet"
+      href="/assets/css/design-system.min.css?v=0d9e4d75"
+    />
+    <link
+      rel="stylesheet"
+      href="/assets/css/tool-verification.css?v=28d60957"
+    />
+    <link rel="stylesheet" href="/assets/css/ke-cgt-vip.css?v=03b22ac3" />
+    <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+    <script
+      src="/assets/js/components/related-tools.min.js?v=f3f910a8"
+      defer
+    ></script>
+    <script
+      src="/assets/js/components/business-cta.js?v=af66626f"
+      defer
+    ></script>
+    <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+    <script src="/assets/js/engines/ke-cgt.js?v=03f9a221" defer></script>
+    <script src="/assets/js/pages/ke-cgt-vip.js?v=1f126c1e" defer></script>
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
+  "@graph": [
     {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
+      "@type": "WebApplication",
+      "name": "Kenya Capital Gains Tax Calculator 2026",
+      "url": "https://afrotools.com/tools/ke-cgt/",
+      "description": "Estimate Kenya CGT at 15% from net transfer value and adjusted cost, with explicit exemption confirmation.",
+      "applicationCategory": "FinanceApplication",
+      "operatingSystem": "Web",
+      "browserRequirements": "Requires JavaScript",
+      "isAccessibleForFree": true,
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "USD"
+      },
+      "inLanguage": "en",
+      "citation": [
+        "https://www.kra.go.ke/helping-tax-payers/faqs/capital-gain-taxes",
+        "https://new.kenyalaw.org/akn/ke/act/1973/16/eng@2026-01-01"
+      ],
+      "image": "https://afrotools.com/assets/img/tools/ke-cgt.webp"
     },
     {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Kenya CGT Calculator",
-      "item": "https://afrotools.com/tools/ke-cgt/"
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "What is the Kenya capital gains tax rate in 2026?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The general capital gains tax rate is 15% of the net gain. The 15% rate has applied since 1 January 2023."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How is Kenya capital gain calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Start with transfer value, subtract incidental transfer costs to get net transfer value, then subtract adjusted cost. Adjusted cost can include acquisition, incidental acquisition, enhancement and preservation costs supported by records."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When is Kenya CGT due?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The current Income Tax Act states that the due date is the earlier of receipt of the full purchase price or registration of the transfer."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Does this calculator decide whether a CGT exemption applies?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "No. Exemptions have conditions and evidence requirements. The calculator applies zero tax only when the user separately confirms that an exemption has been established."
+          }
+        }
+      ]
     }
   ]
 }
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
+  <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Kenya's CGT rate?","acceptedAnswer":{"@type":"Answer","text":"Kenya's Capital Gains Tax rate is 15%, effective from 1 January 2023. Before that, the rate was 5% (from 2015-2022). CGT applies to gains from the transfer of property situated in Kenya."}},{"@type":"Question","name":"Are shares subject to CGT in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Listed shares traded on the Nairobi Securities Exchange (NSE) are exempt from CGT. However, unlisted shares and shares in private companies are subject to the 15% CGT rate on any gains realized."}},{"@type":"Question","name":"Can I claim deductions against the gain?","acceptedAnswer":{"@type":"Answer","text":"Yes. You can deduct the original acquisition cost, expenditure on improvements to the asset, and incidental costs of both acquisition and disposal (legal fees, agent commissions, valuation fees, etc.)."}},{"@type":"Question","name":"Is CGT payable on inherited property?","acceptedAnswer":{"@type":"Answer","text":"No. Transfers on death (inheritance) are exempt from CGT. However, when the beneficiary later sells the inherited property, CGT will apply based on the cost to the deceased person or the market value at the date of death."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Kenya Capital Gains Tax Calculator 2026","item":"https://afrotools.com/tools/ke-cgt/"}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/ke-cgt/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ke-cgt/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ke-plus-value/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ke-cgt/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Kenya CGT</span></div>
-<h1>Kenya <em>Capital Gains Tax</em> Calculator</h1>
-<p class="hero-sub">Calculate your Capital Gains Tax on the transfer of property, shares, and other assets in Kenya. The rate increased from 5% to 15% effective January 2023.</p>
-<div class="hero-badges"><span class="badge b-em">15% Rate (2023+)</span><span class="badge b-em">Kenya</span><span class="badge b-em">KRA Compliant</span></div>
-</div></section>
+  <body class="ke-cgt-page">
+    <a class="ke-skip" href="#calculator">Skip to calculator</a>
+    <afro-navbar></afro-navbar>
+    <header class="ke-hero">
+      <div class="ke-wrap">
+        <nav class="ke-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> / <a href="/tools/">Tools</a> / Kenya CGT
+        </nav>
+        <span class="ke-kicker">Kenya · KRA planning estimate</span>
+        <h1>Estimate Kenya CGT with the formula and evidence in view.</h1>
+        <p>
+          Calculate 15% capital gains tax from net transfer value and adjusted
+          cost. The tool does not guess whether a statutory exemption
+          applies—you must confirm that separately.
+        </p>
+        <div class="ke-badges">
+          <span class="ke-badge">15% since 1 Jan 2023</span
+          ><span class="ke-badge">Reviewed 22 Jul 2026</span
+          ><span class="ke-badge">Local calculation</span
+          ><span class="ke-badge">TXT summary</span>
+        </div>
+      </div>
+    </header>
 
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Asset Disposal Details</span></div>
-<div class="card-body">
-<div class="field"><label for="assetType">Asset Type</label>
-<select id="assetType">
-<option value="property">Property / Land</option>
-<option value="shares-listed">Listed Shares (NSE)</option>
-<option value="shares-unlisted">Unlisted Shares / Private Company</option>
-<option value="other">Other Chargeable Assets</option>
-</select></div>
-<div class="row field">
-<div><label>Transfer / Sale Value (KSh)</label><input aria-label="SalePrice" type="number" id="salePrice" value="15000000" min="0" step="100000"></div>
-<div><label>Acquisition Cost (KSh)</label><input aria-label="CostPrice" type="number" id="costPrice" value="8000000" min="0" step="100000"></div>
-</div>
-<div class="row field">
-<div><label>Improvement Costs (KSh)</label><input aria-label="Improvements" type="number" id="improvements" value="1000000" min="0" step="100000"></div>
-<div><label>Incidental Costs (KSh)</label><input aria-label="IncidentalCosts" type="number" id="incidentalCosts" value="200000" min="0" step="50000"></div>
-</div>
-<div class="row field">
-<div><label>Date of Acquisition</label>
-<select id="acqPeriod" aria-label="Acq Period">
-<option value="post2015">After 1 Jan 2015</option>
-<option value="pre2015">Before 1 Jan 2015</option>
-</select></div>
-<div><label>Holding Period (Years)</label><input aria-label="HoldingYears" type="number" id="holdingYears" value="5" min="0" max="50"></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate CGT</button>
-</div></div>
+    <main
+      id="calculator"
+      class="ke-wrap ke-main"
+      data-ke-cgt-app
+      data-locale="en-KE"
+      data-scope-error="Confirm the scope and evidence warning before calculating."
+      data-exemption-error="Confirm that the exemption has been established, or clear the exemption claim."
+      data-number-error="Enter zero or a positive number in every amount field."
+      data-summary-title="Kenya CGT planning estimate"
+      data-review-label="Source review"
+      data-gain-label="Net gain"
+      data-taxable-gain-label="Taxable gain"
+      data-tax-label="Estimated CGT"
+      data-treatment-label="Treatment"
+      data-exempt-label="Confirmed exemption applied"
+      data-taxable-label="15% general rate applied"
+      data-scope-note="Planning estimate only. Verify the property scope, exemption evidence, cost records and tax point with KRA or a qualified adviser."
+      data-copied="Summary copied."
+      data-copy-error="Copy failed. Select the result manually."
+      data-downloaded="TXT summary downloaded."
+    >
+      <div class="ke-stack">
+        <section class="ke-card">
+          <div class="ke-head">
+            <h2>Disposal and cost evidence</h2>
+            <p>
+              Use documented Kenyan shilling amounts. Do not deduct the same
+              expense twice.
+            </p>
+          </div>
+          <div class="ke-body">
+            <form class="ke-form" novalidate>
+              <div class="ke-field">
+                <label for="transferValue">Transfer value (KSh)</label
+                ><input
+                  id="transferValue"
+                  name="transferValue"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="15000000"
+                  inputmode="decimal"
+                /><small
+                  >Money or money's worth received for the transfer.</small
+                >
+              </div>
+              <div class="ke-field">
+                <label for="transferCosts"
+                  >Incidental transfer costs (KSh)</label
+                ><input
+                  id="transferCosts"
+                  name="transferCosts"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="200000"
+                  inputmode="decimal"
+                /><small
+                  >Documented costs directly connected with making the
+                  transfer.</small
+                >
+              </div>
+              <div class="ke-field">
+                <label for="acquisitionCost">Acquisition cost (KSh)</label
+                ><input
+                  id="acquisitionCost"
+                  name="acquisitionCost"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="8000000"
+                  inputmode="decimal"
+                />
+              </div>
+              <div class="ke-field">
+                <label for="acquisitionCosts"
+                  >Incidental acquisition costs (KSh)</label
+                ><input
+                  id="acquisitionCosts"
+                  name="acquisitionCosts"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="300000"
+                  inputmode="decimal"
+                />
+              </div>
+              <div class="ke-field">
+                <label for="enhancementCosts">Enhancement costs (KSh)</label
+                ><input
+                  id="enhancementCosts"
+                  name="enhancementCosts"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="1000000"
+                  inputmode="decimal"
+                /><small
+                  >Qualifying expenditure that enhanced or preserved the
+                  property.</small
+                >
+              </div>
+              <div class="ke-field">
+                <label for="preservationCosts"
+                  >Title preservation or defence costs (KSh)</label
+                ><input
+                  id="preservationCosts"
+                  name="preservationCosts"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  value="0"
+                  inputmode="decimal"
+                />
+              </div>
+              <label class="ke-check"
+                ><input name="exemptionClaimed" type="checkbox" /><span
+                  ><strong>I am claiming a statutory exemption</strong
+                  ><small
+                    >Examples can include qualifying licensed-exchange
+                    securities, a qualifying occupied private residence,
+                    qualifying low-value or agricultural land, and specified
+                    family or estate transfers. Conditions matter.</small
+                  ></span
+                ></label
+              >
+              <label class="ke-check" data-exemption-confirm hidden
+                ><input name="exemptionConfirmed" type="checkbox" /><span
+                  ><strong
+                    >I have confirmed the exemption and retained
+                    evidence</strong
+                  ><small
+                    >This calculator does not test the legal conditions. Clear
+                    this box if eligibility is uncertain.</small
+                  ></span
+                ></label
+              >
+              <label class="ke-check"
+                ><input name="scopeConfirmed" type="checkbox" /><span
+                  ><strong>I understand this is a planning estimate</strong
+                  ><small
+                    >The model covers the general 15% formula. It does not
+                    determine market value, related-party value, treaty
+                    position, business-income treatment, indirect transfers or
+                    exemption eligibility.</small
+                  ></span
+                ></label
+              >
+              <p class="ke-error" data-error role="alert"></p>
+              <div class="ke-actions">
+                <button class="ke-button" type="submit">
+                  Calculate CGT estimate
+                </button>
+              </div>
+            </form>
+          </div>
+        </section>
+        <section class="ke-card ke-result" data-result tabindex="-1" hidden>
+          <div class="ke-total">
+            <span>Estimated capital gains tax</span><strong data-tax></strong>
+          </div>
+          <div class="ke-grid">
+            <div class="ke-metric">
+              <span>Net transfer value</span><strong data-net-transfer></strong>
+            </div>
+            <div class="ke-metric">
+              <span>Adjusted cost</span><strong data-adjusted-cost></strong>
+            </div>
+            <div class="ke-metric">
+              <span>Net gain</span><strong data-gain></strong>
+            </div>
+            <div class="ke-metric">
+              <span>Taxable gain</span><strong data-taxable></strong>
+            </div>
+            <div class="ke-metric">
+              <span>Net proceeds after transfer costs and CGT</span
+              ><strong data-net-proceeds></strong>
+            </div>
+            <div class="ke-metric">
+              <span>Treatment</span><strong data-treatment></strong>
+            </div>
+          </div>
+          <p class="ke-formula">
+            <strong>Formula:</strong> transfer value − transfer costs − adjusted
+            cost = net gain<br /><span data-formula></span>
+          </p>
+          <p class="ke-alert">
+            CGT does not replace stamp duty. Under the current Act, the CGT tax
+            point is the earlier of full purchase-price receipt or transfer
+            registration. Confirm the live iTax workflow before acting.
+          </p>
+          <div class="ke-actions">
+            <button class="ke-button secondary" type="button" data-copy>
+              Copy summary</button
+            ><button class="ke-button secondary" type="button" data-download>
+              Download TXT
+            </button>
+          </div>
+          <p class="ke-status" data-status role="status" aria-live="polite"></p>
+        </section>
+      </div>
 
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Your CGT Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<p id="notes" style="font-size:.76rem;color:#64748b;margin-top:14px;line-height:1.6"></p>
-</div></div>
-</div>
+      <aside class="ke-side" aria-label="Kenya CGT guidance">
+        <section class="ke-card">
+          <h2>What the formula includes</h2>
+          <ul class="ke-list">
+            <li>
+              Net transfer value: transfer value less incidental transfer costs.
+            </li>
+            <li>
+              Adjusted cost: acquisition, incidental acquisition, enhancement
+              and preservation costs supported by evidence.
+            </li>
+            <li>
+              Tax: 15% of a positive taxable gain, unless a confirmed exemption
+              is applied.
+            </li>
+          </ul>
+        </section>
+        <section class="ke-card">
+          <h2>Exemptions need evidence</h2>
+          <p>
+            KRA lists multiple exemptions and exclusions. Their conditions
+            cannot be inferred from six amount fields. Check the law and KRA
+            guidance before selecting the exemption confirmation.
+          </p>
+        </section>
+        <section class="ke-card">
+          <h2>Private by default</h2>
+          <p>
+            Your amounts stay in this browser. The calculator makes no API
+            request and stores nothing. Copy or download only the summary you
+            choose.
+          </p>
+        </section>
+      </aside>
+    </main>
 
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Kenya CGT Rules</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p>Kenya's CGT rate is <strong>15%</strong> (effective 1 January 2023, increased from 5%).</p>
-<p style="margin-top:6px"><strong>Property:</strong> CGT applies to all property transfers. The gain is computed as the transfer value minus the adjusted cost (purchase price + improvements + incidental costs).</p>
-<p style="margin-top:6px"><strong>Shares:</strong> Gains from listed shares traded on the NSE are exempt. Unlisted/private company share transfers are subject to 15% CGT.</p>
-<p style="margin-top:6px"><strong>Pre-2015:</strong> For assets acquired before 1 Jan 2015 (when CGT was re-introduced), the cost base is the market value as at 1 Jan 2015.</p>
-</div></div>
-<div class="info-card">
-<h4>Exempt Transactions</h4>
-<ul>
-<li>Transfer between spouses</li>
-<li>Transfer on death (inheritance)</li>
-<li>Listed shares on NSE</li>
-<li>Transfer to family company (conditions apply)</li>
-<li>Government compulsory acquisition</li>
-<li>Gains reinvested in similar property within 1 year</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Filing with KRA</h4>
-<ul>
-<li>File CGT return via iTax</li>
-<li>Pay within 30 days of transfer</li>
-<li>Generate CGT e-slip before land transfer</li>
-<li>Stamp duty is separate from CGT</li>
-</ul>
-</div>
-</div>
-</div></section>
+    <section class="ke-wrap ke-content">
+      <article class="ke-card">
+        <h2>Kenya CGT method, tax point and scope</h2>
+        <p>
+          Kenya's general capital gains tax rate is 15% of the net gain,
+          effective from 1 January 2023. The transferor pays the tax. A gain can
+          arise on property situated in Kenya, including some direct and
+          indirect share disposals described in the Eighth Schedule.
+        </p>
+        <p>
+          The current statutory computation separates net transfer value from
+          adjusted cost. This calculator therefore shows incidental transfer
+          costs separately from acquisition, enhancement and preservation costs.
+          It does not substitute a 1 January 2015 market value automatically for
+          older property.
+        </p>
+        <p>
+          For property under Part I of the Eighth Schedule, the current Act
+          states the due date is the earlier of receipt of the full purchase
+          price or registration of the transfer. KRA's public FAQ describes the
+          tax point as registration. Because transaction facts and portal
+          instructions can differ, verify the live filing and payment step
+          before completion.
+        </p>
+        <h2>Official sources</h2>
+        <ul class="ke-list">
+          <li>
+            <a
+              href="https://www.kra.go.ke/helping-tax-payers/faqs/capital-gain-taxes"
+              rel="noopener"
+              >Kenya Revenue Authority: Capital Gains Tax FAQs</a
+            >
+            — rate, general method, payer, payment route and exemption overview.
+          </li>
+          <li>
+            <a
+              href="https://new.kenyalaw.org/akn/ke/act/1973/16/eng@2026-01-01"
+              rel="noopener"
+              >Kenya Law: Income Tax Act, version 1 January 2026</a
+            >
+            — current Eighth Schedule computation and due-date law.
+          </li>
+        </ul>
+        <div class="ke-faq">
+          <h2>Frequently asked questions</h2>
+          <details>
+            <summary>What is the Kenya CGT rate in 2026?</summary>
+            <p>
+              The general rate is 15% of the net gain. It has applied since 1
+              January 2023.
+            </p>
+          </details>
+          <details>
+            <summary>Are all listed shares automatically exempt?</summary>
+            <p>
+              No broad assumption should be made from the word “listed.” KRA
+              describes an exemption for securities traded on a securities
+              exchange licensed by the Capital Markets Authority. Confirm the
+              exchange, transaction and current conditions.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Can this calculator prove a private-residence exemption?
+            </summary>
+            <p>
+              No. Occupation periods, ownership, land size and other statutory
+              provisos require evidence. The tool only applies zero tax after
+              you explicitly confirm eligibility.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Does the calculator create a PDF or file a return?
+            </summary>
+            <p>
+              No. It provides a local TXT planning summary only. It does not
+              create a tax PDF, sign in to iTax, file, pay or produce a KRA
+              assessment.
+            </p>
+          </details>
+        </div>
+      </article>
+    </section>
 
-<section class="seo-section">
-<h2>Understanding Capital Gains Tax in Kenya</h2>
-<p>Capital Gains Tax in Kenya was reintroduced on 1 January 2015 after being suspended since 1985. Initially set at 5%, the rate was tripled to 15% effective 1 January 2023 through the Finance Act 2022. This significant increase has had a major impact on property and investment transactions across the country.</p>
-<p>CGT applies to the "net gain" realized from the transfer of property situated in Kenya, whether by residents or non-residents. The net gain is calculated as the transfer value (or market value if higher, in certain cases) minus the adjusted cost. The adjusted cost includes the original acquisition cost, expenditure on improvements, and incidental costs of both acquisition and disposal such as legal fees, valuation fees, and agent commissions.</p>
-<p>For assets acquired before 1 January 2015, when CGT was suspended, the cost base is deemed to be the market value of the asset as at that date. This prevents taxation of gains that accrued during the period CGT was not in effect. However, proving the 2015 market value can be challenging, so it's advisable to obtain and retain professional valuations.</p>
-<p>One of the most notable exemptions is for listed shares traded on the Nairobi Securities Exchange (NSE). Gains from disposing of listed securities remain exempt from CGT — a policy designed to encourage participation in the stock market. However, gains from unlisted or private company shares are fully subject to the 15% rate.</p>
-<p>Property transactions are where most Kenyans encounter CGT. Before a land transfer can be registered, the seller must obtain a CGT clearance certificate from KRA through the iTax system. The tax must be paid within 30 days of the transfer, and failure to comply can result in penalties of up to 20% of the tax due plus interest at 1% per month.</p>
+    <section
+      class="tool-verification-sec"
+      data-tool-verification-panel
+      data-tool-id="ke-cgt"
+    >
+      <div class="tool-verification-card">
+        <span class="tool-verification-kicker"
+          >Calculation and source verification</span
+        >
+        <h2>Sources and verification</h2>
+        <ul class="tool-verification-list">
+          <li>
+            <strong>Inputs:</strong> transfer value, transfer costs, acquisition
+            and related adjusted-cost evidence, plus explicit exemption
+            confirmation.
+          </li>
+          <li>
+            <strong>Method:</strong> net transfer value minus adjusted cost,
+            floored at zero, then 15% unless a user-confirmed exemption is
+            applied.
+          </li>
+          <li>
+            <strong>Limitations:</strong> no valuation, legal eligibility,
+            indirect-transfer, treaty, dealer-income, filing or payment
+            determination.
+          </li>
+          <li>
+            <strong>Test cases:</strong> standard gain, loss, confirmed and
+            unconfirmed exemptions, decimal inputs and invalid values.
+          </li>
+          <li>
+            <strong>History:</strong> rate effective 1 January 2023; formula and
+            source wording reviewed 22 July 2026.
+          </li>
+        </ul>
+        <p class="tool-verification-note">
+          Planning estimate only; not tax or legal advice and not an official
+          KRA assessment.
+        </p>
+        <a
+          class="tool-verification-report"
+          href="/contact/?subject=Kenya%20CGT%20calculation%20error"
+          >Report calculation error</a
+        >
+      </div>
+    </section>
 
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>What is Kenya's CGT rate?</summary><p>Kenya's Capital Gains Tax rate is 15%, effective from 1 January 2023. Before that, the rate was 5% (from 2015-2022). CGT applies to gains from the transfer of property situated in Kenya.</p></details>
-<details class="faq-item"><summary>Are shares subject to CGT in Kenya?</summary><p>Listed shares traded on the Nairobi Securities Exchange (NSE) are exempt from CGT. However, unlisted shares and shares in private companies are subject to the 15% CGT rate on any gains realized.</p></details>
-<details class="faq-item"><summary>Can I claim deductions against the gain?</summary><p>Yes. You can deduct the original acquisition cost, expenditure on improvements to the asset, and incidental costs of both acquisition and disposal (legal fees, agent commissions, valuation fees, etc.).</p></details>
-<details class="faq-item"><summary>Is CGT payable on inherited property?</summary><p>No. Transfers on death (inheritance) are exempt from CGT. However, when the beneficiary later sells the inherited property, CGT will apply based on the cost to the deceased person or the market value at the date of death.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ke-cgt">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">CGT source and document check</span>
-    <h2>Confirm KRA treatment before transfer or filing</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> asset type, transfer value, acquisition cost, improvement costs, incidental costs, acquisition period, and holding period.</li>
-      <li><strong>Method:</strong> applies the page's embedded Kenya CGT logic to estimate net gain, allowable cost, tax, effective rate, and net proceeds.</li>
-      <li><strong>Verify before acting:</strong> current KRA guidance, exemption status, iTax filing workflow, valuation evidence, transfer documents, stamp duty treatment, and adviser review for complex property or share transactions.</li>
-      <li><strong>Privacy:</strong> disposal figures run locally. Copy, download, save, or share only the summary you choose.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, legal advice, a filing instruction, or an official KRA assessment.</p>
-  </div>
-</section>
-<afro-business-cta tool-name="Kenya CGT Calculator" prospect-segment="tax-compliance" headline="Need a clean CGT review trail before transfer?" subhead="AfroTax Pro helps teams keep cost-base assumptions, exemption notes, and accountant handoff files together before filing."></afro-business-cta>
-<afro-related-tools category="financial" current="ke-cgt" data-ssr="1">
+    <afro-business-cta
+      tool-name="Kenya CGT Calculator"
+      prospect-segment="tax-compliance"
+      headline="Need a documented CGT review trail?"
+      subhead="Keep the source, cost-base evidence and adviser questions together before transfer or filing."
+    ></afro-business-cta>
+    <afro-related-tools
+      category="financial"
+      current="ke-cgt"
+     data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer>
-
-<script>
-function calculate(){
-  const salePrice=+document.getElementById('salePrice').value;
-  const costPrice=+document.getElementById('costPrice').value;
-  const improvements=+document.getElementById('improvements').value;
-  const incidentalCosts=+document.getElementById('incidentalCosts').value;
-  const assetType=document.getElementById('assetType').value;
-  const holdingYears=+document.getElementById('holdingYears').value;
-
-  const allowableCost=costPrice+improvements+incidentalCosts;
-  const gain=Math.max(0,salePrice-allowableCost);
-
-  // Check NSE exemption
-  let exempt=false;
-  if(assetType==='shares-listed') exempt=true;
-
-  const cgtRate=0.15;
-  const cgt=exempt?0:gain*cgtRate;
-  const netProceeds=salePrice-cgt;
-  const effectiveRate=salePrice>0?((cgt/salePrice)*100):0;
-  const fmt=n=>'KSh '+Math.round(n).toLocaleString('en');
-
-  let html='';
-  html+=`<div class="result-box highlight"><div class="num">${fmt(cgt)}</div><div class="lbl">Capital Gains Tax Payable</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(gain)}</div><div class="lbl">Net Gain</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(allowableCost)}</div><div class="lbl">Total Allowable Cost</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(netProceeds)}</div><div class="lbl">Net Proceeds After CGT</div></div>`;
-  html+=`<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Rate on Sale</div></div>`;
-  html+=`<div class="result-box"><div class="num">${holdingYears} yrs</div><div class="lbl">Holding Period</div></div>`;
-
-  document.getElementById('resultGrid').innerHTML=html;
-
-  let notes='';
-  if(exempt) notes='<strong>Note:</strong> Listed shares traded on the NSE are exempt from Capital Gains Tax in Kenya.';
-  else if(gain<=0) notes='<strong>Note:</strong> No gain on this disposal — no CGT is payable.';
-  else notes=`<strong>Note:</strong> Pay ${fmt(cgt)} via iTax within 30 days of transfer. Obtain CGT e-slip before land transfer registration.`;
-  document.getElementById('notes').innerHTML=notes;
-
-  document.getElementById('resultCard').style.display='block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ke-cgt" tool-name="Kenya CGT Calculator"></save-result-button><share-result-button tool-name="Kenya CGT Calculator" tool-slug="ke-cgt"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-  target.appendChild(div);
-  function valueLabel(el) {
-    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
-    return el.value;
-  }
-  function buildSummary() {
-    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
-      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
-      return label + ': ' + valueLabel(el);
-    });
-    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
-      return box.textContent.replace(/\s+/g, ' ').trim();
-    });
-    var notes = document.getElementById('notes') ? document.getElementById('notes').textContent.replace(/\s+/g, ' ').trim() : '';
-    return ['Kenya CGT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Notes: ' + notes, 'Planning estimate only. Verify current KRA guidance, exemption status, valuations, transfer documents, stamp duty treatment, and filing workflow before acting.']).join('\n');
-  }
-  function setStatus(message) {
-    var status = document.getElementById('tax-export-status');
-    if (status) status.textContent = message;
-  }
-  document.getElementById('tax-copy-summary').addEventListener('click', function () {
-    var text = buildSummary();
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
-    else setStatus(text);
-  });
-  document.getElementById('tax-download-summary').addEventListener('click', function () {
-    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'kenya-cgt-summary.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    setStatus('TXT summary downloaded.');
-  });
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-</body>
+    <afro-footer></afro-footer>
+    <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
+    <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+    <script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+  </body>
 </html>

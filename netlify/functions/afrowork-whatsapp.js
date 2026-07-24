@@ -399,6 +399,19 @@ function handleLeave(intent) {
 }
 
 // ── Pension / social security handler ─────────────────────────────────────────
+function calculateKenyaNssfYear4(monthlyPensionableEarnings) {
+  var earnings = Math.max(0, Number(monthlyPensionableEarnings) || 0);
+  var capped = Math.min(earnings, 108000);
+  var tier1 = Math.min(capped, 9000) * 0.06;
+  var tier2 = Math.max(0, capped - 9000) * 0.06;
+  return { employee: tier1 + tier2, employer: tier1 + tier2 };
+}
+
+function calculateSouthAfricaGepf(monthlyPensionableSalary, servicesMember) {
+  var salary = Math.max(0, Number(monthlyPensionableSalary) || 0);
+  return { employee: salary * 0.075, employer: salary * (servicesMember ? 0.16 : 0.13) };
+}
+
 function handlePension(intent) {
   var cc = intent.country;
   var gross = intent.salary;
@@ -418,8 +431,8 @@ function handlePension(intent) {
 
   var schemes = {
     NG: { name: 'CPS (Contributory Pension)', ee: 0.08, er: 0.10, body: 'PENCOM', law: 'Pension Reform Act 2014', link: '/tools/ng-pension/' },
-    KE: { name: 'NSSF (National Social Security Fund)', ee: 200, er: 200, flat: true, body: 'NSSF Kenya', law: 'NSSF Act 2013', link: '/tools/ke-nssf/' },
-    ZA: { name: 'GEPF / Provident Fund + UIF', ee: 0.01, er: 0.01, body: 'GEPF / FSCA', law: 'Pension Funds Act 1956 + BCEA', link: '/tools/za-gepf/' },
+    KE: { name: 'NSSF Year 4 (National Social Security Fund)', ee: 0.06, er: 0.06, tiered: true, body: 'NSSF Kenya', law: 'NSSF Act 2013 - Year 4 rates from February 2026', link: '/tools/ke-nssf/' },
+    ZA: { name: 'GEPF (Government Employees Pension Fund)', ee: 0.075, er: 0.13, gepf: true, body: 'GEPF', law: 'Government Employees Pension Law and Rules', link: '/tools/za-gepf/' },
     GH: { name: 'SSNIT (Social Security)', ee: 0.055, er: 0.13, body: 'SSNIT', law: 'National Pensions Act 766 (2008)', link: '/tools/gh-ssnit/' },
     TZ: { name: 'NSSF Tanzania', ee: 0.10, er: 0.10, body: 'NSSF Tanzania', law: 'Social Security Regulatory Authority Act 2008', link: '/tools/social-security/' },
     UG: { name: 'NSSF Uganda', ee: 0.05, er: 0.10, body: 'NSSF Uganda', law: 'NSSF Act Cap 222', link: '/tools/social-security/' }
@@ -435,7 +448,15 @@ function handlePension(intent) {
 
   var sym = (BotEngine.CURRENCIES[cc] || {}).symbol || cc + ' ';
   var eeContrib, erContrib;
-  if (s.flat) {
+  if (s.tiered && cc === 'KE') {
+    var kenyaNssf = calculateKenyaNssfYear4(gross);
+    eeContrib = kenyaNssf.employee;
+    erContrib = kenyaNssf.employer;
+  } else if (s.gepf && cc === 'ZA') {
+    var southAfricaGepf = calculateSouthAfricaGepf(gross, false);
+    eeContrib = southAfricaGepf.employee;
+    erContrib = southAfricaGepf.employer;
+  } else if (s.flat) {
     eeContrib = s.ee;
     erContrib = s.er;
   } else {
@@ -449,9 +470,11 @@ function handlePension(intent) {
     'Scheme: ' + s.name + '\n' +
     'Monthly salary: ' + sym + BotEngine.fmtNum(gross) + '\n\n' +
     '*Contributions:*\n' +
-    'Employee: ' + sym + BotEngine.fmtNum(eeContrib) + (s.flat ? ' (flat rate)' : ' (' + (s.ee * 100).toFixed(1) + '%)') + '\n' +
-    'Employer: ' + sym + BotEngine.fmtNum(erContrib) + (s.flat ? ' (flat rate)' : ' (' + (s.er * 100).toFixed(1) + '%)') + '\n' +
+    'Employee: ' + sym + BotEngine.fmtNum(eeContrib) + (s.tiered ? ' (Year 4 tiered rate)' : s.flat ? ' (flat rate)' : ' (' + (s.ee * 100).toFixed(1) + '%)') + '\n' +
+    'Employer: ' + sym + BotEngine.fmtNum(erContrib) + (s.tiered ? ' (Year 4 tiered rate)' : s.flat ? ' (flat rate)' : ' (' + (s.er * 100).toFixed(1) + '%)') + '\n' +
     'Total: *' + sym + BotEngine.fmtNum(total) + '*\n\n' +
+    (s.tiered ? '_Uses the entered salary as pensionable earnings; confirm the payroll basis._\n\n' : '') +
+    (s.gepf ? '_Uses pensionable salary and the 13% other-member employer rate. Services employers contribute 16%; use the full calculator to select that category._\n\n' : '') +
     '🏦 Regulator: ' + s.body + '\n' +
     '📋 Law: ' + s.law + '\n' +
     '🔗 Full calc: ' + SITE_URL + s.link + '\n\n' +
@@ -460,6 +483,8 @@ function handlePension(intent) {
 }
 
 // ── Compliance deadline handler ───────────────────────────────────────────────
+exports._test = Object.assign(exports._test || {}, { calculateKenyaNssfYear4: calculateKenyaNssfYear4, calculateSouthAfricaGepf: calculateSouthAfricaGepf });
+
 function handleDeadline(intent) {
   var cc = intent.country;
   if (!cc) {

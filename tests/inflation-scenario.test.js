@@ -1,0 +1,13 @@
+'use strict';
+const assert = require('assert');
+const engine = require('../assets/js/engines/inflation-scenario.js');
+const result = engine.calculate({ currency:'KES', amount:'1000', annualRate:'10', years:'2', sourceLabel:'Official CPI release', sourceDate:'2026-07-20' }, '2026-07-22');
+assert.equal(result.ok, true);
+assert.ok(Math.abs(result.priceEquivalent - 1210) < 1e-9);
+assert.ok(Math.abs(result.purchasingPower - 826.4462809917354) < 1e-9);
+assert.ok(Math.abs(result.requiredIncrease - 210) < 1e-9);
+assert.equal(result.timeline.length, 3);
+assert.equal(engine.calculate({ currency:'KES', amount:1000, annualRate:10, years:2, sourceLabel:'Source', sourceDate:'2025-01-01' }, '2026-07-22').error, 'invalid_evidence');
+assert.equal(engine.calculate({ currency:'KES', amount:1000, annualRate:-100, years:2, sourceLabel:'Source', sourceDate:'2026-07-20' }, '2026-07-22').error, 'invalid_rate');
+assert.equal(engine.calculate({ currency:'KES', amount:1000, annualRate:'', years:2, sourceLabel:'Source', sourceDate:'2026-07-20' }, '2026-07-22').error, 'invalid_rate');
+console.log('inflation-scenario: all checks passed');

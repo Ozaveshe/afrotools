@@ -320,25 +320,57 @@
   function estimateWithEngine(inputs) {
     var engine = importEngine;
     if (!engine || typeof engine.calculate !== "function") return null;
-    var category = inputs.mode === "car" ? "vehicle" : inputs.productCategory || "other";
+    var fob = inputs.purchasePrice || inputs.itemValue || 0;
+    var freight = inputs.shippingCost || 0;
+    var insurance = inputs.insuranceCost || 0;
+    if (!(fob > 0)) return null;
     try {
-      return engine.calculate({
-        countryName: inputs.destinationCountry || "Nigeria",
-        category: category,
-        itemValue: inputs.purchasePrice || inputs.itemValue || 0,
-        itemCurrency: inputs.currency || "USD",
-        freight: inputs.shippingCost || 0,
-        insurance: inputs.insuranceCost || 0,
-        originCountry: inputs.originCountry || "",
-        arrivalPort: inputs.port || "",
-        vehicleType: inputs.vehicleType || "",
-        vehicleMake: inputs.make || "",
-        vehicleModel: inputs.model || "",
-        vehicleYear: inputs.year || "",
-        engineSize: inputs.engineCc || "",
-        fxMode: inputs.fxRate ? "user" : "stored",
+      var result = engine.calculate({
+        itemType: inputs.mode === "car" ? "vehicle" : "goods",
+        itemName: [inputs.year, inputs.make, inputs.model].filter(Boolean).join(" ") || inputs.itemCategory || "",
+        fob: fob,
+        freight: freight,
+        insurance: insurance,
+        customsValue: 0,
+        dutyRate: 0,
+        otherImportCharges: 0,
+        vatRate: 0,
+        portCharges: 0,
+        clearingFee: 0,
         fxRate: inputs.fxRate || 0,
+        classificationConfirmed: false,
+        quoteConfirmed: false,
       });
+      if (!result || result.valid === false) return null;
+      return {
+        category: inputs.mode === "car" ? "vehicle" : inputs.productCategory || "other",
+        fob: result.fob,
+        freight: result.freight,
+        insurance: result.insurance,
+        cif: result.cif,
+        duty: 0,
+        totalLevies: 0,
+        vat: 0,
+        portHandling: 0,
+        clearingAgent: 0,
+        totalUSD: null,
+        totalLocal: null,
+        rate: inputs.fxRate || 0,
+        confidence: { status: "needs_classification", label: "Classification needed" },
+        whatThisMeans: {
+          biggestCostDriver: "CIF is the only calculated amount until you confirm the HS classification and official charge inputs.",
+          verify: [
+            "HS classification",
+            "customs value",
+            "duty rate",
+            "VAT treatment",
+            "levies or surcharges",
+            "customs FX rate",
+            "port or terminal charges",
+            "clearing-agent quote",
+          ].concat(inputs.mode === "car" ? ["vehicle age and valuation method"] : []),
+        },
+      };
     } catch (err) {
       return null;
     }
@@ -350,13 +382,6 @@
     var freight = inputs.shippingCost || 0;
     var insurance = inputs.insuranceCost || 0;
     var cif = round(fob + freight + insurance);
-    var rate = FALLBACK_RATES[category] === undefined ? FALLBACK_RATES.other : FALLBACK_RATES[category];
-    var duty = round(cif * rate);
-    var levies = round(cif * 0.015 + duty * 0.07);
-    var vat = round((cif + duty + levies) * 0.075);
-    var clearing = inputs.mode === "car" ? 0 : 0;
-    var total = round(cif + duty + levies + vat + clearing);
-    var fxRate = inputs.fxRate || 1600;
     return {
       category: category,
       categoryKey: category,
@@ -364,21 +389,20 @@
       freight: round(freight),
       insurance: round(insurance),
       cif: cif,
-      duty: duty,
-      totalLevies: levies,
-      vat: vat,
+      duty: 0,
+      totalLevies: 0,
+      vat: 0,
       portHandling: 0,
-      clearingAgent: clearing,
-      totalUSD: total,
-      totalLocal: round(total * fxRate),
-      rate: fxRate,
-      confidence: { status: "needs_review", label: "Planning estimate", needsReview: 1, estimates: 1, userInputs: 0 },
+      clearingAgent: 0,
+      totalUSD: null,
+      totalLocal: null,
+      rate: inputs.fxRate || 0,
+      confidence: { status: "needs_classification", label: "Classification needed" },
       whatThisMeans: {
-        biggestCostDriver: "CIF value is the biggest visible cost driver in this estimate.",
-        verify: ["HS classification", "customs value", "duty rate", "VAT treatment", "levies or surcharges", "customs FX rate", "port or terminal charges", "clearing-agent quote"],
-        clearingAgentAdvice: "Final payable costs may differ from this planning estimate.",
+        biggestCostDriver: "CIF is the only calculated amount until you confirm the HS classification and official charge inputs.",
+        verify: ["HS classification", "customs value", "duty rate", "VAT treatment", "levies or surcharges", "customs FX rate", "port or terminal charges", "clearing-agent quote"].concat(inputs.mode === "car" ? ["vehicle age and valuation method"] : []),
       },
-      disclaimer: "Import costs can change. AfroTools provides planning estimates only. Final customs duty, taxes, levies, port charges, exchange rates, and clearing costs are set by official authorities, service providers, or licensed professionals.",
+      disclaimer: "CIF planning only. No duty, tax, levy, port, clearing, or stored FX rate is guessed.",
     };
   }
 
@@ -401,8 +425,8 @@
     var estimate = estimateWithEngine(normalized) || estimateFallback(normalized);
     var missing = getMissingInputs(normalized);
     var hasEstimateInputs = hasValue(normalized.purchasePrice) || hasValue(normalized.shippingCost) || hasValue(normalized.fxRate);
-    var totalLabel = estimate.totalUSD ? formatMoney(estimate.totalUSD, "USD") : "Add price and freight";
-    var localLabel = estimate.totalLocal ? formatMoney(estimate.totalLocal, "NGN") : "Add FX rate";
+    var totalLabel = estimate.totalUSD ? formatMoney(estimate.totalUSD, "USD") : "Needs classification";
+    var localLabel = estimate.totalLocal ? formatMoney(estimate.totalLocal, "NGN") : "";
     var vehicleTitle = sentence([normalized.year, normalized.make, normalized.model], "");
     var itemTitle = vehicleTitle || normalized.itemCategory || normalized.productCategoryLabel || "Import item";
     return {
@@ -412,21 +436,21 @@
       missingInputs: missing,
       goalSummary: "Plan " + itemTitle + " into " + (normalized.destinationCountry || "your destination country") + ".",
       estimate: estimate,
-      estimateStatus: hasEstimateInputs ? "Planning estimate" : "Needs price inputs",
+      estimateStatus: hasEstimateInputs ? "CIF only · classification needed" : "Needs price inputs",
       metrics: [
         { label: "CIF", value: estimate.cif ? formatMoney(estimate.cif, "USD") : "Add price/freight", tone: "primary" },
-        { label: "Duty/tax estimate", value: estimate.duty || estimate.vat || estimate.totalLevies ? formatMoney((estimate.duty || 0) + (estimate.vat || 0) + (estimate.totalLevies || 0), "USD") : "Needs inputs", tone: "estimate" },
+        { label: "Duty/tax estimate", value: estimate.duty || estimate.vat || estimate.totalLevies ? formatMoney((estimate.duty || 0) + (estimate.vat || 0) + (estimate.totalLevies || 0), "USD") : "Needs HS/rate inputs", tone: "estimate" },
         { label: "Port/clearing estimate", value: estimate.portHandling || estimate.clearingAgent ? formatMoney((estimate.portHandling || 0) + (estimate.clearingAgent || 0), "USD") : "Quote needed", tone: "estimate" },
         { label: "Total landed cost", value: totalLabel + (estimate.totalLocal ? " / " + localLabel : ""), tone: "total" },
       ],
       assumptions: [
         "CIF is purchase price plus shipping/freight plus insurance.",
-        normalized.fxRate ? "Uses your FX rate for local-currency planning." : "Uses stored planning FX only where the existing import-duty engine has one.",
-        "Duty, VAT, levies, port, and clearing lines are planning estimates unless entered from a quote.",
+        normalized.fxRate ? "Keeps your FX rate ready for a later confirmed landed-cost calculation." : "No stored or inferred FX rate is used.",
+        "Duty, VAT, levies, port, and clearing lines stay blank until you enter confirmed classification or quote inputs.",
         normalized.mode === "car" ? "Vehicle age, customs valuation, model trim, and engine size can materially change the final assessment." : "HS classification can materially change the final assessment.",
       ],
       sourceConfidence: [
-        "Reviewed AfroTools import-duty planning assumptions.",
+        "Classification-first AfroTools import-duty formula.",
         "User-entered price, shipping, insurance, and FX are not independently verified.",
         "No final customs assessment is implied.",
       ],

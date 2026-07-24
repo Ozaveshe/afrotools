@@ -1,490 +1,116 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Forex Profit Calculator — Pip Value, P&L & African Pairs</title>
-<meta name="description" content="Calculate forex trading profit/loss, pip value, and position sizing. Supports major pairs and African currencies (NGN, KES, ZAR). Free forex calculator.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Forex Profit Calculator | AfroTools">
-<meta property="og:description" content="Calculate forex profit/loss, pip value, position size. African currency pairs.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/forex-profit/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
-.tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px;position:relative}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:var(--afro-blue)}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:var(--afro-blue);font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
-.b-green{background:rgba(16,185,129,.12);color:#10b981;border:1px solid rgba(16,185,129,.3)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-.field{margin-bottom:16px}
-.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif;box-sizing:border-box}
-.f-input:focus,.f-select:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'DM Sans',sans-serif}
-.calc-btn:hover{background:#0059B3;transform:translateY(-1px);box-shadow:0 6px 20px rgba(0,113,227,.3)}
-.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:16px;text-align:center}
-.result-box.wide{grid-column:1/-1}
-.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
-.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
-.r-value.blue{color:var(--afro-blue)}
-.r-value.green{color:#10b981}
-.r-value.red{color:#ef4444}
-#results{display:none}
-.direction-btns{display:flex;gap:0;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:16px}
-.dir-btn{flex:1;padding:10px;text-align:center;font-size:.82rem;font-weight:700;cursor:pointer;background:#f8fafc;color:#64748b;border:none;transition:all .15s;font-family:'DM Sans',sans-serif}
-.dir-btn.active.buy{background:#10b981;color:#fff}
-.dir-btn.active.sell{background:#ef4444;color:#fff}
-.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
-.pair-table{width:100%;border-collapse:collapse;margin:10px 0}
-.pair-table td{padding:6px 8px;border-bottom:1px solid #f1f5f9;font-size:.78rem}
-.pair-table td:first-child{font-weight:600;color:var(--afro-dark)}
-.pair-table td:last-child{text-align:right;font-weight:700;color:var(--afro-blue)}
-.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
-.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
-.seo-content ul{padding-left:20px}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
-.faq details[open] summary{border-bottom:1px solid #e2e8f0}
-.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}.result-grid{grid-template-columns:1fr 1fr}}
-</style>
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Forex Trade P&L Statement Calculator | AfroTools</title>
+<meta name="description" content="Reconcile a forex trade ticket with user-entered entry, exit, base units, pip size, conversion and transaction costs. Private P&L exports, no live rates.">
+<meta name="theme-color" content="#102f62">
+<meta property="og:type" content="website"><meta property="og:title" content="Forex Trade P&L Statement Calculator"><meta property="og:description" content="Reconcile user-entered ticket values without live rates, lot assumptions or broker recommendations."><meta property="og:url" content="https://afrotools.com/tools/forex-profit/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Forex Trade P&L Statement Calculator"><meta name="twitter:description" content="Private gross and net P&L reconciliation from your own ticket values."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
+<link rel="stylesheet" href="/assets/css/forex-profit-statement.css?v=5d472e51">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Forex Profit Calculator",
-  "description": "Calculate forex trading profit/loss, pip value, and position sizing for major and African currency pairs.",
-  "url": "https://afrotools.com/tools/forex-profit/",
-  "inLanguage": "en",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/forex-profit.webp"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Forex Profit Calculator",
-  "url": "https://afrotools.com/tools/forex-profit/",
-  "description": "Calculate forex trading profit/loss, pip value, and position sizing for major and African currency pairs.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/forex-profit.webp"
-}
-</script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Forex Profit Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate forex profit/loss, pip value, position size. African currency pairs.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/forex-profit.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Forex Trade P&L Statement Calculator",
+    "url": "https://afrotools.com/tools/forex-profit/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "inLanguage": "en",
+    "description": "A private worksheet for reconciling user-entered forex trade ticket values and transaction costs.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
     },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Forex Profit Calculator",
-      "item": "https://afrotools.com/tools/forex-profit/"
-    }
-  ]
-}
+    "featureList": [
+      "User-entered entry and exit prices",
+      "Base-unit exposure without lot assumptions",
+      "Explicit quote-to-reporting conversion",
+      "Local PDF, CSV and JSON exports"
+    ],
+    "image": "https://afrotools.com/assets/img/tools/forex-profit.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does this calculator load live forex prices?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Every price, pip size and conversion comes from the values you enter from a trade ticket or statement."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "How is forex profit or loss calculated?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "For a buy, gross P&L is exit minus entry multiplied by base units. For a sell, the price difference is reversed. Entered transaction costs are subtracted."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does this calculator recommend leverage, lot size or a broker?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It does not calculate margin, recommend position size, rank brokers or predict profitability."
+        }
+      }
+    ]
+  }
+]
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
+<!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Forex Profit Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Forex Profit Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Forex Profit Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Forex Profit Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}},{"@type":"Question","name":"What is a pip?","acceptedAnswer":{"@type":"Answer","text":"A pip is the smallest price increment in forex. For most pairs (EUR/USD, GBP/USD, USD/ZAR), it's 0.0001 (the 4th decimal place). For JPY pairs, it's 0.01 (2nd decimal). For some African pairs like USD/NGN, it's also 0.01. A \"pipette\" is 1/10th of a pip."}},{"@type":"Question","name":"How much can I make trading forex?","acceptedAnswer":{"@type":"Answer","text":"Returns vary enormously and depend on skill, strategy, risk management, and capital. Most retail traders lose money. Professional traders might target 5-15% monthly returns. Never trade with money you can't afford to lose, and be sceptical of anyone promising guaranteed returns."}},{"@type":"Question","name":"Is forex trading legal in Nigeria?","acceptedAnswer":{"@type":"Answer","text":"Yes, forex trading is legal in Nigeria. The CBN regulates the official forex market, and trading through licensed international brokers is permitted. However, be cautious of unregulated brokers and Ponzi schemes posing as forex investments."}},{"@type":"Question","name":"What's the best lot size for beginners?","acceptedAnswer":{"@type":"Answer","text":"Start with micro lots (1,000 units). This limits your risk to about $0.10 per pip, allowing you to learn without significant financial damage. Graduate to mini lots only after consistent profitability on a demo and then micro account."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Forex Trade P&L Statement Calculator","item":"https://afrotools.com/tools/forex-profit/"}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/forex-profit/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/forex-profit/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/profit-forex/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-faida-forex/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/forex-profit/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-
-<section class="tool-hero">
-<div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/salary-tax/">Financial</a> / <span>Forex Profit</span></div>
-<h1>Forex Profit <em>Calculator</em></h1>
-<p class="hero-sub">Calculate potential profit or loss on forex trades. Includes pip value calculation and position sizing for major and African currency pairs.</p>
-<div class="hero-badges">
-<span class="badge b-blue">Pip Value</span>
-<span class="badge b-green">Profit/Loss</span>
-<span class="badge b-blue">African Pairs</span>
+</head><body>
+<a class="fx-skip" href="#fx-form">Skip to calculator</a><afro-navbar></afro-navbar>
+<header class="fx-hero"><div class="fx-wrap"><nav class="fx-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/salary-tax/">Finance</a> / Forex statement</nav><h1>Reconcile a forex trade from the ticket values you hold.</h1><p>Enter the quoted prices, base-unit exposure, pip size, reporting conversion and costs yourself. The worksheet does not load rates, infer lots or recommend a trade.</p><div class="fx-badges"><span>Private in your browser</span><span>Buy or sell P&amp;L</span><span>Local PDF and data exports</span></div></div></header>
+<main class="fx-main" data-fx-statement data-locale="en"><div class="fx-wrap">
+<div class="fx-grid">
+<section class="fx-card" aria-labelledby="fx-form-title"><h2 id="fx-form-title">Values from one ticket or statement</h2><p class="fx-intro">Keep the price convention consistent: quote-currency units per one base-currency unit.</p>
+<form id="fx-form" novalidate><div class="fx-fields">
+<div class="fx-field"><label for="fx-base">Base currency label</label><input id="fx-base" maxlength="12" required autocomplete="off" placeholder="e.g. EUR"></div>
+<div class="fx-field"><label for="fx-quote">Quote currency label</label><input id="fx-quote" maxlength="12" required autocomplete="off" placeholder="e.g. USD"></div>
+<div class="fx-field"><label for="fx-reporting">Reporting currency or unit</label><input id="fx-reporting" maxlength="12" required autocomplete="off" placeholder="e.g. KES or units"></div>
+<div class="fx-field"><label for="fx-direction">Trade direction</label><select id="fx-direction" required><option value="buy">Buy / long</option><option value="sell">Sell / short</option></select></div>
+<div class="fx-field"><label for="fx-entry">Entry price</label><input id="fx-entry" type="number" min="0.000000000001" max="1000000000000" step="any" required inputmode="decimal" placeholder="quote per 1 base"><span class="fx-help">Quote units for one base unit.</span></div>
+<div class="fx-field"><label for="fx-exit">Exit or mark price</label><input id="fx-exit" type="number" min="0.000000000001" max="1000000000000" step="any" required inputmode="decimal" placeholder="quote per 1 base"></div>
+<div class="fx-field"><label for="fx-units">Exposure in base-currency units</label><input id="fx-units" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"><span class="fx-help">Copy actual units; do not convert from a “lot” unless your statement defines it.</span></div>
+<div class="fx-field"><label for="fx-pip">Pip size used by the ticket</label><input id="fx-pip" type="number" min="0.000000000001" max="1000000000" step="any" required inputmode="decimal"><span class="fx-help">Used only to display pip movement and pip value.</span></div>
+<div class="fx-field"><label for="fx-conversion">Reporting units per 1 quote unit</label><input id="fx-conversion" type="number" min="0.000000000001" max="1000000000000" step="any" required inputmode="decimal"><span class="fx-help">Enter 1 when the quote and reporting units are the same.</span></div>
+<div class="fx-field"><label for="fx-costs">Total separately entered costs in quote currency</label><input id="fx-costs" type="number" value="0" min="0" max="1000000000000000" step="any" required inputmode="decimal"><span class="fx-help">Commission, swap, spread or slippage only if not already embedded in entry/exit prices.</span></div>
+<div class="fx-field fx-wide"><label for="fx-note">Private statement note (optional)</label><input id="fx-note" maxlength="180" autocomplete="off" placeholder="Ticket date or reconciliation note"></div>
+</div><p id="fx-error" class="fx-error" role="alert"></p><div class="fx-actions"><button class="fx-btn" type="submit">Calculate statement P&amp;L</button><button class="fx-btn fx-btn-secondary" type="button" id="fx-copy">Copy</button><button class="fx-btn fx-btn-secondary" type="button" id="fx-csv">CSV</button><button class="fx-btn fx-btn-secondary" type="button" id="fx-json">JSON</button><button class="fx-btn fx-btn-secondary" type="button" id="fx-pdf">PDF</button></div><p id="fx-status" class="fx-status" role="status" aria-live="polite"></p></form></section>
+<section class="fx-card fx-results" id="fx-results" aria-labelledby="fx-results-title"><h2 id="fx-results-title">Statement reconciliation</h2><div class="fx-primary" id="fx-primary"><span>Net P&amp;L in reporting unit</span><strong id="fx-net-reporting">—</strong></div><div class="fx-metrics">
+<div class="fx-metric"><span>Net P&amp;L in quote currency</span><strong id="fx-net">—</strong></div><div class="fx-metric"><span>Gross P&amp;L in quote currency</span><strong id="fx-gross">—</strong></div><div class="fx-metric"><span>Entered costs in reporting unit</span><strong id="fx-cost-reporting">—</strong></div><div class="fx-metric"><span>Signed pip movement</span><strong id="fx-pips">—</strong></div><div class="fx-metric"><span>Pip value in quote currency</span><strong id="fx-pip-value">—</strong></div><div class="fx-metric"><span>Opening notional in quote currency</span><strong id="fx-notional">—</strong></div><div class="fx-metric fx-wide"><span>Conversion direction used</span><strong id="fx-conversion-result">—</strong></div></div><p class="fx-warning">Do not double-count spread or slippage already reflected in the entry or exit price. Compare this result with the broker statement; taxes, financing and platform adjustments not entered here are excluded.</p></section>
 </div>
+<section class="fx-content"><article><h2>Formula and units</h2><p>Buy gross P&amp;L = (exit − entry) × base units. Sell gross P&amp;L = (entry − exit) × base units. Net P&amp;L subtracts entered non-negative costs, then multiplies by your quote-to-reporting conversion.</p></article><article><h2>No pip or lot assumptions</h2><p>Pip size varies by instrument and venue, while “lot” and contract definitions can differ. Copy the pip size and actual base-unit exposure from the same ticket or specification.</p></article><article><h2>Privacy and evidence</h2><p>Calculations and exports run locally. Do not enter account numbers, names or login details. Retain the dated ticket, broker statement and fee breakdown as the evidence source.</p></article><article><h2>Decision boundary</h2><p>This is a reconciliation estimate, not trading or investment advice, a live quote, broker endorsement, leverage recommendation, margin calculation, tax result or profitability forecast.</p></article></section>
+<section class="fx-faq" aria-labelledby="fx-faq-title"><h2 id="fx-faq-title">Forex statement questions</h2><details><summary>Why must I enter the reporting conversion?</summary><p>The trade P&amp;L is naturally in the quote currency. An explicit “reporting units per one quote unit” rate prevents hidden conversion direction assumptions.</p></details><details><summary>Can costs turn a gross gain into a net loss?</summary><p>Yes. The worksheet subtracts every separately entered cost even when gross P&amp;L is positive.</p></details><details><summary>Does the pip result determine profit?</summary><p>No. Pip movement is a display derived from your entered pip size. Monetary P&amp;L comes directly from price movement and base units.</p></details></section>
 </div>
-</section>
-
-<section class="tool-main">
-<div class="tool-main-inner">
-<div class="calc-area">
-
-<div class="card">
-<div class="card-head"><span class="card-title">Trade Details</span></div>
-<div class="card-body">
-<div class="direction-btns">
-<button type="button" class="dir-btn buy active" onclick="setDir('buy')">Buy (Long)</button>
-<button type="button" class="dir-btn sell" onclick="setDir('sell')">Sell (Short)</button>
-</div>
-<div class="field">
-<label class="f-label" for="pair">Currency Pair</label>
-<select id="pair" class="f-select" onchange="updatePipSize()">
-<optgroup label="Major Pairs">
-<option value="EUR/USD" data-pip="0.0001">EUR/USD</option>
-<option value="GBP/USD" data-pip="0.0001">GBP/USD</option>
-<option value="USD/JPY" data-pip="0.01">USD/JPY</option>
-<option value="USD/CHF" data-pip="0.0001">USD/CHF</option>
-<option value="AUD/USD" data-pip="0.0001">AUD/USD</option>
-<option value="USD/CAD" data-pip="0.0001">USD/CAD</option>
-</optgroup>
-<optgroup label="African Pairs">
-<option value="USD/NGN" data-pip="0.01">USD/NGN</option>
-<option value="USD/KES" data-pip="0.01">USD/KES</option>
-<option value="USD/ZAR" data-pip="0.0001">USD/ZAR</option>
-<option value="USD/GHS" data-pip="0.01">USD/GHS</option>
-<option value="USD/EGP" data-pip="0.01">USD/EGP</option>
-<option value="EUR/ZAR" data-pip="0.0001">EUR/ZAR</option>
-<option value="GBP/ZAR" data-pip="0.0001">GBP/ZAR</option>
-</optgroup>
-</select>
-</div>
-<div class="field-row">
-<div class="field">
-<label class="f-label" for="entry">Entry Price</label>
-<input aria-label="E.g. 1.0850" type="number" id="entry" class="f-input" placeholder="e.g. 1.0850" step="any">
-</div>
-<div class="field">
-<label class="f-label" for="exit">Exit Price</label>
-<input aria-label="E.g. 1.0900" type="number" id="exit" class="f-input" placeholder="e.g. 1.0900" step="any">
-</div>
-</div>
-<div class="field-row">
-<div class="field">
-<label class="f-label" for="lotType">Lot Size</label>
-<select id="lotType" class="f-select" aria-label="Lot Type">
-<option value="100000">Standard (100,000)</option>
-<option value="10000" selected>Mini (10,000)</option>
-<option value="1000">Micro (1,000)</option>
-</select>
-</div>
-<div class="field">
-<label class="f-label" for="lots">Number of Lots</label>
-<input aria-label="Lots" type="number" id="lots" class="f-input" value="1" step="0.01" min="0.01">
-</div>
-</div>
-<div class="field">
-<label class="f-label" for="acctCur">Account Currency</label>
-<select id="acctCur" class="f-select" aria-label="Acct Cur">
-<option value="USD">USD</option>
-<option value="NGN">NGN</option>
-<option value="KES">KES</option>
-<option value="ZAR">ZAR</option>
-<option value="GHS">GHS</option>
-<option value="GBP">GBP</option>
-<option value="EUR">EUR</option>
-</select>
-</div>
-<button type="button" class="calc-btn" onclick="calculate()">Calculate Profit/Loss</button>
-<p id="fxDataStatus" role="status" aria-live="polite" style="margin:10px 0 0;font-size:.76rem;color:#64748b;line-height:1.45">Checking live exchange rates…</p>
-</div>
-</div>
-
-<div class="card" id="results">
-<div class="card-head"><span class="card-title">Trade Results</span></div>
-<div class="card-body">
-<div class="result-grid">
-<div class="result-box wide"><div class="r-label">Profit / Loss</div><div class="r-value" id="rPnl">--</div></div>
-<div class="result-box"><div class="r-label">Pips Gained/Lost</div><div class="r-value blue" id="rPips">--</div></div>
-<div class="result-box"><div class="r-label">Pip Value</div><div class="r-value" id="rPipVal">--</div></div>
-<div class="result-box"><div class="r-label">Position Size</div><div class="r-value" id="rPosSize">--</div></div>
-<div class="result-box"><div class="r-label">Return on Position</div><div class="r-value" id="rReturn">--</div></div>
-</div>
-<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-<save-result-button tool-slug="forex-profit" tool-name="Forex Profit"></save-result-button>
-<share-result-button tool-name="Forex Profit" tool-slug="forex-profit"></share-result-button>
-</div>
-<p style="margin:14px 0 0;font-size:.74rem;color:#64748b;line-height:1.55">This is an estimate, not financial advice. Forex trading is high-risk and most retail traders lose money — never trade funds you cannot afford to lose, and confirm live prices and spreads with your broker.</p>
-</div>
-</div>
-
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Popular African Pairs</span></div>
-<div class="card-body">
-<table class="pair-table">
-<tr><td>USD/NGN</td><td>High volatility</td></tr>
-<tr><td>USD/KES</td><td>Moderate</td></tr>
-<tr><td>USD/ZAR</td><td>Most liquid</td></tr>
-<tr><td>USD/GHS</td><td>Trending</td></tr>
-<tr><td>USD/EGP</td><td>Post-float</td></tr>
-<tr><td>EUR/ZAR</td><td>Popular cross</td></tr>
-</table>
-<p style="font-size:.75rem;color:#94a3b8;margin-top:8px">African currency pairs typically have wider spreads than major pairs. Factor spread costs into your calculations.</p>
-</div>
-</div>
-<div class="card">
-<div class="card-head"><span class="card-title">Lot Sizes Explained</span></div>
-<div class="card-body">
-<p><strong>Standard Lot:</strong> 100,000 units of the base currency. 1 pip = ~$10 for major pairs.</p>
-<p style="margin-top:8px"><strong>Mini Lot:</strong> 10,000 units. 1 pip = ~$1. Good for intermediate traders.</p>
-<p style="margin-top:8px"><strong>Micro Lot:</strong> 1,000 units. 1 pip = ~$0.10. Ideal for beginners and risk management.</p>
-<p style="margin-top:12px"><strong>Risk Management:</strong> Never risk more than 1-2% of your account on a single trade. Use stop-loss orders always.</p>
-</div>
-</div>
-</div>
-</div>
-</section>
-
-<section class="seo-content">
-<h2>How to Calculate Forex Profit and Loss</h2>
-<p>Forex profit and loss is determined by the price movement in pips multiplied by the pip value and position size. A pip (percentage in point) is the smallest standard price increment in forex, typically 0.0001 for most pairs or 0.01 for JPY pairs. Understanding pip values is fundamental to managing risk and sizing positions correctly.</p>
-<p>The basic formula is: Profit/Loss = (Exit Price - Entry Price) x Position Size. For a buy trade, profit occurs when the exit price is higher. For a sell trade, profit occurs when the exit price is lower.</p>
-
-<h2>Forex Trading in Africa</h2>
-<p>Forex trading has exploded across Africa, particularly in Nigeria, South Africa, and Kenya. In Nigeria, the CBN-regulated parallel market creates opportunities (and risks) around the USD/NGN pair. South Africa's well-regulated market and the ZAR's liquidity make it the continent's forex capital. Kenya's growing tech-savvy population has embraced mobile-based forex platforms.</p>
-<p>African traders face unique challenges: wider spreads on exotic pairs, limited broker regulation in some countries, currency controls, and high volatility during political events. Always trade with a regulated broker and understand the specific risks of African currency pairs.</p>
-
-<h2>Understanding Pip Value for African Pairs</h2>
-<p>For pairs like USD/ZAR, the pip value in USD depends on the exchange rate. As the ZAR weakens, each pip is worth less in USD terms. For USD/NGN with the naira at ~1,500, pip values are much smaller in dollar terms. This means you need larger position sizes to achieve the same dollar profit/loss, but it also means risk per pip is lower in USD terms.</p>
-
-<section class="df-upgrade" data-df-upgrade="forex-profit">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Forex Profit Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Forex Profit Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Forex Profit Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="forex-profit">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="forex-profit" data-df-base="Forex Profit Calculator — enter your details above to see your result." aria-live="polite">Forex Profit Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="forex-profit">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="forex-profit-faq-title">
-  <h2 id="forex-profit-faq-title">Forex Profit Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Forex Profit Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Forex Profit Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Forex Profit Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Forex Profit Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-<div class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>What is a pip?</summary><div>A pip is the smallest price increment in forex. For most pairs (EUR/USD, GBP/USD, USD/ZAR), it's 0.0001 (the 4th decimal place). For JPY pairs, it's 0.01 (2nd decimal). For some African pairs like USD/NGN, it's also 0.01. A "pipette" is 1/10th of a pip.</div></details>
-<details><summary>How much can I make trading forex?</summary><div>Returns vary enormously and depend on skill, strategy, risk management, and capital. Most retail traders lose money. Professional traders might target 5-15% monthly returns. Never trade with money you can't afford to lose, and be sceptical of anyone promising guaranteed returns.</div></details>
-<details><summary>Is forex trading legal in Nigeria?</summary><div>Yes, forex trading is legal in Nigeria. The CBN regulates the official forex market, and trading through licensed international brokers is permitted. However, be cautious of unregulated brokers and Ponzi schemes posing as forex investments.</div></details>
-<details><summary>What's the best lot size for beginners?</summary><div>Start with micro lots (1,000 units). This limits your risk to about $0.10 per pip, allowing you to learn without significant financial damage. Graduate to mini lots only after consistent profitability on a demo and then micro account.</div></details>
-</div>
-</section>
-
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="forex-third-party-snapshot" data-source-meta-compact="true"></div>
+</main>
+<button id="fx-theme" class="fx-theme" type="button" aria-label="Toggle light or dark preview" aria-pressed="false">◐ Theme</button>
 <afro-related-tools data-ssr="1" category="financial" current="forex-profit">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-let direction='buy';
-let liveForexRates = null;
-const FX_FALLBACK_AS_OF = '2026-03-28';
-const FX_FALLBACK_RATES = {USD:1,EUR:0.92,GBP:0.79,JPY:149.5,CHF:0.88,CAD:1.36,AUD:1.53,NGN:1535.5,KES:129.45,ZAR:16.32,GHS:14.89,EGP:50.73};
-
-function fetchForexRates() {
-  var usedFallback = false;
-  var status = document.getElementById('fxDataStatus');
-  function fetchRates(url) {
-    return fetch(url, { cache: 'no-cache' }).then(function(res) {
-      if (!res.ok) throw new Error('HTTP ' + res.status);
-      return res.json();
-    }).then(function(data) {
-      if (!data || !data.rates) throw new Error('Missing rates');
-      return data;
-    });
-  }
-  return fetchRates('/api/forex?base=USD')
-    .catch(function() {
-      usedFallback = true;
-      return fetchRates('/data/forex/latest.json');
-    })
-    .then(function(data) {
-      liveForexRates = data.rates;
-      var asOf = data.timestamp ? String(data.timestamp).slice(0, 10) : FX_FALLBACK_AS_OF;
-      if (status) status.textContent = usedFallback
-        ? 'Showing cached exchange rates from ' + asOf + ' — live rates unavailable.'
-        : 'Live exchange rates as of ' + asOf + '.';
-    })
-    .catch(function(err) {
-      if (status) status.textContent = 'Showing built-in exchange-rate estimates from ' + FX_FALLBACK_AS_OF + ' — live and cached rates unavailable.';
-      console.warn('Forex Profit: live and cached FX rates unavailable; using stamped built-in estimates.', err);
-    });
-}
-
-function getFxRate(code) {
-  if (code === 'USD') return 1;
-  if (liveForexRates && liveForexRates[code]) return liveForexRates[code];
-  return FX_FALLBACK_RATES[code] || null;
-}
-
-function setDir(d){
-  direction=d;
-  document.querySelectorAll('.dir-btn').forEach(b=>b.classList.remove('active'));
-  document.querySelector('.dir-btn.'+d).classList.add('active');
-}
-
-function updatePipSize(){
-  // Visual feedback only
-}
-
-function calculate(){
-  const pair=document.getElementById('pair');
-  const pipSize=parseFloat(pair.selectedOptions[0].dataset.pip);
-  const entry=parseFloat(document.getElementById('entry').value);
-  const exit=parseFloat(document.getElementById('exit').value);
-  const lotSize=parseInt(document.getElementById('lotType').value);
-  const lots=parseFloat(document.getElementById('lots').value)||1;
-  const acctCur=document.getElementById('acctCur').value;
-
-  if(!entry||!exit){alert('Please enter entry and exit prices.');return}
-
-  const positionSize=lotSize*lots;
-  const priceDiff=direction==='buy'?(exit-entry):(entry-exit);
-  const pips=priceDiff/pipSize;
-
-  // Pip value in quote currency
-  const pipValueQuote=pipSize*positionSize;
-
-  // For simplicity, profit in quote currency
-  const profitQuote=priceDiff*positionSize;
-
-  // Determine display
-  const pairParts=pair.value.split('/');
-  const quoteCur=pairParts[1];
-
-  const quoteRate = getFxRate(quoteCur);
-  const acctRate = getFxRate(acctCur);
-  const profitAcct = quoteRate && acctRate ? (profitQuote / quoteRate) * acctRate : profitQuote;
-  const pipValueAcct = quoteRate && acctRate ? (pipValueQuote / quoteRate) * acctRate : pipValueQuote;
-
-  const symbols={NGN:'\u20A6',KES:'KSh ',ZAR:'R',GHS:'GH\u20B5',USD:'$',GBP:'\u00A3',EUR:'\u20AC',JPY:'\u00A5',CHF:'CHF ',CAD:'C$',AUD:'A$'};
-  const sym=symbols[acctCur]||'';
-
-  const pnlEl=document.getElementById('rPnl');
-  pnlEl.textContent=(profitAcct>=0?'+':'')+sym+profitAcct.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
-  pnlEl.className='r-value '+(profitAcct>=0?'green':'red');
-
-  document.getElementById('rPips').textContent=(pips>=0?'+':'')+pips.toFixed(1)+' pips';
-  document.getElementById('rPipVal').textContent=sym+pipValueAcct.toFixed(2)+'/pip';
-  document.getElementById('rPosSize').textContent=positionSize.toLocaleString('en')+' units';
-
-  const returnPct=entry>0?((priceDiff/entry)*100):0;
-  document.getElementById('rReturn').textContent=(returnPct>=0?'+':'')+returnPct.toFixed(3)+'%';
-
-  document.getElementById('results').style.display='block';
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-
-  var pnlStr=(profitAcct>=0?'+':'')+sym+profitAcct.toLocaleString('en',{minimumFractionDigits:2,maximumFractionDigits:2});
-  var lotLabel=lotSize===100000?'Standard':lotSize===10000?'Mini':'Micro';
-  var saveBtn=document.querySelector('save-result-button[tool-slug="forex-profit"]');
-  if(saveBtn&&saveBtn.setData) saveBtn.setData({
-    inputs:{pair:pair.value,direction:direction,entry:entry,exit:exit,lotType:lotLabel,lots:lots,accountCurrency:acctCur},
-    outputs:{profitLoss:pnlStr,pips:pips.toFixed(1),pipValue:sym+pipValueAcct.toFixed(2),positionSize:positionSize,returnPct:returnPct.toFixed(3)+'%'}
-  });
-  var shareBtn=document.querySelector('share-result-button[tool-slug="forex-profit"]');
-  if(shareBtn&&shareBtn.setResult) shareBtn.setResult({
-    headline:pair.value+' '+direction.toUpperCase()+' Trade',
-    mainValue:pnlStr,
-    subValues:[
-      {label:'Pips',value:(pips>=0?'+':'')+pips.toFixed(1)},
-      {label:'Pip Value',value:sym+pipValueAcct.toFixed(2)},
-      {label:'Return',value:(returnPct>=0?'+':'')+returnPct.toFixed(3)+'%'}
-    ]
-  });
-}
-
-fetchForexRates();
-</script>
-
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-
-  <!-- AfroTools source confidence -->
-  <div class="container afro-source-meta" data-source-meta-id="forex-third-party-snapshot" data-source-meta-compact="true"></div>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-</body>
-</html>
+<script src="/assets/js/components/navbar.min.js?v=996960fa"></script><script src="/assets/js/components/footer.min.js?v=dfb30911"></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script><script src="/engines/forex-profit-statement-engine.js?v=a68a776c"></script><script src="/assets/js/pages/forex-profit-statement.js?v=9b612395"></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+</body></html>

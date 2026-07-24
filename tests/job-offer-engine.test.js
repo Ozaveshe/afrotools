@@ -1,0 +1,18 @@
+"use strict";
+const assert = require("assert");
+const engine = require("../engines/src/job-offer-engine.js");
+const base = { monthlyPay: 1000, monthlyCash: 100, monthlyBenefits: 50, monthlyCosts: 20, annualBonus: 500, oneOffCosts: 200, roleFit: 8, learning: 7, flexibility: 6, stability: 5, team: 9 };
+const weights = { financial: 40, roleFit: 20, learning: 15, flexibility: 10, stability: 10, team: 5 };
+assert.strictEqual(engine.annualValue(base), 13860, "annualization is explicit");
+const result = engine.compare([{ ...base, label: "A" }, { ...base, label: "B", monthlyPay: 1100 }], weights);
+assert.deepStrictEqual(result.offers.map(x => x.label), ["A", "B"], "offer order is preserved");
+assert.strictEqual(result.annualDelta, 1200);
+assert.strictEqual(Object.values(result.normalizedWeights).reduce((a, b) => a + b, 0), 1);
+assert.throws(() => engine.compare([base, base], { financial: 0 }), /ZERO_WEIGHT_TOTAL/);
+assert.throws(() => engine.annualValue({ monthlyPay: -1 }), /INVALID_NUMBER/);
+assert.throws(() => engine.annualValue({ monthlyPay: 1e308 }), /INVALID_NUMBER/);
+assert.throws(() => engine.compare([base, { ...base, roleFit: 11 }], weights), /INVALID_NUMBER/);
+assert.throws(() => engine.compare([base, base]), /WEIGHTS_REQUIRED/);
+assert.throws(() => engine.compare([base, base], { ...weights, financial: 1e308 }), /INVALID_NUMBER/);
+assert.strictEqual(engine.annualValue({}), 0, "blank optional values resolve to zero");
+console.log("job-offer-engine: ok");

@@ -1,363 +1,415 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nigeria CIT Calculator | Company Income Tax | AfroTools</title>
-<meta name="description" content="Calculate Nigeria Company Income Tax (CIT). 2026 regime: 0% for qualifying small companies up to ₦100M turnover, 30% standard CIT, plus development levy for non-small companies.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Nigeria CIT Calculator | AfroTools">
-<meta property="og:description" content="Calculate Nigeria Company Income Tax with Nigeria's 2026 rates.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-cit.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ng-cit/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#059669}
-.tool-hero{background:linear-gradient(135deg,#064e3b 0%,#059669 50%,#047857 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#a7f3d0}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#a7f3d0;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(167,243,208,.2);color:#a7f3d0;border:1px solid rgba(167,243,208,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(5,150,105,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#047857,#059669);color:#fff}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.3rem;font-weight:800;color:#059669}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.result-box.highlight{background:linear-gradient(135deg,#ecfdf5,#d1fae5);border-color:#a7f3d0;grid-column:1/-1}
-.result-box.highlight .num{font-size:1.8rem}
-.breakdown-row{display:flex;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f1f5f9;font-size:.82rem}
-.breakdown-row .item{color:#475569}.breakdown-row .cost{font-weight:700;color:#059669}
-.breakdown-row.total{border-top:2px solid #e2e8f0;border-bottom:none;font-weight:800}
-.sidebar .info-card{background:#ecfdf5;border:1px solid #a7f3d0;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#047857;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#047857;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Nigeria CIT Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate Nigeria Company Income Tax with FIRS 2025 rates.">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Nigeria CIT Calculator 2026 | NTA Company Tax</title>
+    <meta
+      name="description"
+      content="Estimate Nigeria CIT and development levy under the Nigeria Tax Act 2025 using separate total-profit and assessable-profit bases. Local, source-linked calculation."
+    />
+    <meta name="robots" content="index,follow" />
+    <meta name="tool-id" content="ng-cit" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Nigeria CIT Calculator 2026" />
+    <meta
+      property="og:description"
+      content="A scoped NTA 2025 company-tax estimate with distinct CIT and development-levy bases."
+    />
+    <meta property="og:url" content="https://afrotools.com/tools/ng-cit/" />
+    <meta property="og:image" content="https://afrotools.com/assets/img/tools/ng-cit.webp">
+    <meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="Nigeria CIT Calculator 2026 | NTA Company Tax">
+<meta name="twitter:description" content="Estimate Nigeria CIT and development levy under the Nigeria Tax Act 2025 using separate total-profit and assessable-profit bases. Local, source-linked calculation.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ng-cit.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Nigeria CIT Calculator",
-      "item": "https://afrotools.com/tools/ng-cit/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
+    <link rel="icon" href="/assets/img/logo-mark.svg" />
+    <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb" />
+    <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b" />
+    <link
+      rel="stylesheet"
+      href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3"
+    />
+    <link rel="stylesheet" href="/assets/css/ng-cit-vip.css?v=888b2bb7" />
+    <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957" />
+    <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+    <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Nigeria CIT Calculator | Company Income Tax",
-  "description": "Calculate Nigeria Company Income Tax (CIT). 2026 regime: 0% for qualifying small companies up to ₦100M turnover, 30% standard CIT, plus development levy for non-small companies.",
+  "name": "Nigeria CIT Calculator 2026",
   "url": "https://afrotools.com/tools/ng-cit/",
+  "description": "Local planning calculator for company income tax and development levy under the Nigeria Tax Act 2025.",
   "inLanguage": "en",
-  "applicationCategory": "UtilitiesApplication",
+  "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "dateModified": "2026-07-22",
   "image": "https://afrotools.com/assets/img/tools/ng-cit.webp"
 }
 </script>
+  <!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What qualifies as a small company?","acceptedAnswer":{"@type":"Answer","text":"The enacted definition uses all three tests: gross turnover no more than ₦50M, total fixed assets no more than ₦250M, and no professional-services business. Passing only the turnover test is not enough."}},{"@type":"Question","name":"Why are there two profit inputs?","acceptedAnswer":{"@type":"Answer","text":"Section 56 charges CIT on total profits. Section 59 charges development levy on assessable profits. A serious estimate must not silently use one number for both."}},{"@type":"Question","name":"Where are medium-company 20%, education tax and minimum tax?","acceptedAnswer":{"@type":"Answer","text":"Those belong to the repealed framework. This calculator is scoped to the Nigeria Tax Act 2025 from 1 January 2026 and does not blend the regimes."}}]}
+</script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is my small company really exempt from CIT?","acceptedAnswer":{"@type":"Answer","text":"Yes. Under Section 40(6) of the CIT Act (as amended), companies with gross turnover of ₦25 million or less are exempt from CIT. However, you must still file annual returns with FIRS and maintain proper books of accounts. You're also exempt from minimum tax. This exemption applies to all industries."}},{"@type":"Question","name":"What's the difference between turnover and profit?","acceptedAnswer":{"@type":"Answer","text":"Gross turnover is your total revenue/sales before any deductions. Assessable profit is your taxable profit after deducting allowable expenses, capital allowances, and other deductions from your turnover. CIT rate is determined by turnover, but the tax is calculated on assessable profit."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Nigeria CIT Calculator 2026 | NTA Company Tax","item":"https://afrotools.com/tools/ng-cit/"}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/ng-cit/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ng-cit/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ng-impot-societes/">
+<link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/awon-ise/cit-naijiria/">
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/cit-najeriya/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ng-cit/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Nigeria CIT</span></div>
-<h1>Nigeria <em>Company Income Tax Calculator</em></h1>
-<p class="hero-sub">Calculate your company's tax liability under Nigeria's current regime. Qualifying small companies are exempt up to ₦100 million turnover, while larger companies pay 30% CIT plus development levy.</p>
-<div class="hero-badges"><span class="badge b-em">Nigeria 2026</span><span class="badge b-em">CIT</span><span class="badge b-em">Development Levy</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Company Details</span></div>
-<div class="card-body">
-<div class="row" style="margin-bottom:14px">
-<div><label>Annual Gross Turnover (₦)</label><input aria-label="Turnover" type="number" id="turnover" value="50000000" min="0" step="1000000"></div>
-<div><label>Assessable Profit (₦)</label><input aria-label="Profit" type="number" id="profit" value="10000000" min="0" step="500000"></div>
-</div>
-<div class="row" style="margin-bottom:14px">
-<div><label>Company Size</label>
-<select id="size" aria-label="Size">
-<option value="auto">Auto-detect from turnover</option>
-<option value="small">Small (≤ ₦25M turnover)</option>
-<option value="medium">Medium (₦25M - ₦100M)</option>
-<option value="large">Large (&gt; ₦100M)</option>
-</select></div>
-<div><label>Year of Assessment</label>
-<select id="year" aria-label="Year">
-<option value="2025">2025</option>
-<option value="2024">2024</option>
-</select></div>
-</div>
-<div class="row">
-<div><label>Capital Allowances (₦)</label><input aria-label="CapAllow" type="number" id="capAllow" value="0" min="0" step="500000"></div>
-<div><label>Tax-Free Dividends Received (₦)</label><input aria-label="Dividends" type="number" id="dividends" value="0" min="0" step="100000"></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate CIT</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Tax Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<div id="breakdown" style="margin-top:14px"></div>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">CIT Rates 2025</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p><strong>Small Company</strong> (turnover ≤ ₦25M): <strong>0% CIT</strong></p>
-<p style="margin-top:6px"><strong>Medium Company</strong> (₦25M - ₦100M): <strong>20% CIT</strong></p>
-<p style="margin-top:6px"><strong>Large Company</strong> (&gt; ₦100M): <strong>30% CIT</strong></p>
-<p style="margin-top:10px"><strong>Tertiary Education Tax:</strong> 2.5% of assessable profit (medium/large)</p>
-<p style="margin-top:6px"><strong>Minimum Tax:</strong> 0.5% of gross turnover (if CIT < minimum tax)</p>
-</div></div>
-<div class="info-card">
-<h4>Filing Requirements</h4>
-<ul>
-<li>File within 6 months of year-end</li>
-<li>Self-assessment filing via FIRS TaxPro Max</li>
-<li>Audited financial statements required</li>
-<li>Tax Identification Number (TIN) mandatory</li>
-<li>Provisional tax: pay in instalments</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Deductible Expenses</h4>
-<ul>
-<li>Salaries and wages</li>
-<li>Rent and utilities</li>
-<li>Depreciation (capital allowances)</li>
-<li>Interest on business loans</li>
-<li>Bad debts (written off)</li>
-<li>Donations to approved bodies (max 10%)</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Nigeria Company Income Tax (CIT)</h2>
-<p>Company Income Tax (CIT) is the primary tax on corporate profits in Nigeria, administered by the Federal Inland Revenue Service (FIRS). The CIT Act was significantly amended by the Finance Acts of 2019-2023, introducing a three-tier rate structure based on company size that benefits small and medium enterprises.</p>
-<p>Small companies with gross turnover of ₦25 million or less are completely exempt from CIT — a major incentive for MSMEs in Nigeria. Medium companies (₦25M-₦100M turnover) pay a reduced rate of 20%, while large companies (above ₦100M) pay the standard 30% rate. This progressive structure was designed to encourage business formalisation and growth.</p>
-<p>In addition to CIT, companies must also pay the Tertiary Education Tax (TET) of 2.5% on assessable profit — this funds Nigeria's tertiary education system (formerly called Education Tax). There's also a minimum tax provision: if your calculated CIT is less than 0.5% of your gross turnover, you pay the minimum tax instead. Small companies are exempt from minimum tax.</p>
-<p>Filing is done through FIRS TaxPro Max portal within 6 months of your company's financial year-end. Companies must self-assess, file returns with audited financial statements, and pay any balance due. Late filing attracts penalties of ₦25,000 for the first month and ₦5,000 for each subsequent month, plus interest on unpaid tax.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>Is my small company really exempt from CIT?</summary><p>Yes. Under Section 40(6) of the CIT Act (as amended), companies with gross turnover of ₦25 million or less are exempt from CIT. However, you must still file annual returns with FIRS and maintain proper books of accounts. You're also exempt from minimum tax. This exemption applies to all industries.</p></details>
-<details class="faq-item"><summary>What's the difference between turnover and profit?</summary><p>Gross turnover is your total revenue/sales before any deductions. Assessable profit is your taxable profit after deducting allowable expenses, capital allowances, and other deductions from your turnover. CIT rate is determined by turnover, but the tax is calculated on assessable profit.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ng-cit">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">Company tax source check</span>
-    <h2>Reconcile the estimate with current FIRS rules and your accounts</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> turnover, assessable profit, company size, year, capital allowances, and tax-free dividends.</li>
-      <li><strong>Method:</strong> applies the page's embedded Nigeria company tax logic to estimate CIT, levy items, effective rate, and classification.</li>
-      <li><strong>Verify before acting:</strong> current FIRS guidance, Finance Act transition rules, audited accounts, allowable deductions, capital allowance schedules, loss position, and TaxPro Max filing requirements.</li>
-      <li><strong>Privacy:</strong> company figures run locally. Copy, download, save, or share only the summary you choose.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, a filing instruction, or an official FIRS assessment.</p>
-  </div>
-</section>
-<afro-business-cta tool-name="Nigeria CIT Calculator" prospect-segment="tax-compliance" headline="Need a review trail for company tax estimates?" subhead="AfroTax Pro helps teams keep turnover assumptions, tax breakdown notes, and accountant handoff files together before filing."></afro-business-cta>
-<afro-related-tools category="financial" current="ng-cit" data-ssr="1">
+  <body class="cit-page">
+    <a class="skip-link" href="#main-content">Skip to calculator</a
+    ><afro-navbar></afro-navbar>
+    <header class="cit-hero">
+      <div class="cit-wrap">
+        <nav class="cit-crumb" aria-label="Breadcrumb">
+          <a href="/">Home</a> / <a href="/salary-tax/">Salary and tax</a> /
+          Nigeria CIT
+        </nav>
+        <span class="cit-kicker"
+          >Nigeria Tax Act 2025 · effective 1 January 2026</span
+        >
+        <h1>Model company tax without mixing the old and new regimes.</h1>
+        <p>
+          This local planner applies the enacted 0% or 30% CIT rate to total
+          profits and the 4% development levy to assessable profits. It does not
+          file a return, calculate a section 57 top-up, or replace an
+          accountant’s tax computation.
+        </p>
+        <div class="cit-badges">
+          <span class="cit-badge">₦50M turnover test</span
+          ><span class="cit-badge">₦250M fixed-asset test</span
+          ><span class="cit-badge">Separate statutory profit bases</span>
+        </div>
+      </div>
+    </header>
+    <main id="main-content" class="cit-wrap cit-main">
+      <div class="cit-stack">
+        <section
+          class="cit-card"
+          data-ng-cit-app
+          data-locale="en-NG"
+          data-small-label="Qualifying small company"
+          data-other-label="Other company"
+          data-summary-title="AfroTools Nigeria CIT planning estimate"
+          data-regime-label="Regime"
+          data-classification-label="Classification"
+          data-turnover-label="Gross turnover"
+          data-assets-label="Total fixed assets"
+          data-cit-base-label="Total profits (CIT base)"
+          data-levy-base-label="Assessable profits (levy base)"
+          data-levy-label="Development levy"
+          data-total-label="Estimated combined tax"
+          data-formula-label="Formula"
+          data-scope-note="Planning estimate only. Confirm the enacted rules, transition period and company-specific adjustments with NRS or a qualified tax adviser."
+          data-copied-label="Summary copied."
+          data-copy-error="Copy was not available. Select the result text manually."
+          data-downloaded-label="TXT summary downloaded."
+        >
+          <div class="cit-head">
+            <h2>Company and profit bases</h2>
+            <p>
+              For accounting periods ending before 1 January 2026, use the
+              repealed-law computation—not this calculator.
+            </p>
+          </div>
+          <div class="cit-body">
+            <form class="cit-form" novalidate>
+              <div class="cit-field">
+                <label for="cit-turnover">Annual gross turnover (₦)</label
+                ><input
+                  id="cit-turnover"
+                  name="turnover"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="100000"
+                  value="80000000"
+                  required
+                /><small
+                  >Used only for the small-company and section 57 review
+                  tests.</small
+                >
+              </div>
+              <div class="cit-field">
+                <label for="cit-assets">Total fixed assets (₦)</label
+                ><input
+                  id="cit-assets"
+                  name="fixedAssets"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="100000"
+                  value="200000000"
+                  required
+                /><small>Small status requires no more than ₦250M.</small>
+              </div>
+              <div class="cit-field">
+                <label for="cit-total-profits">Total profits for CIT (₦)</label
+                ><input
+                  id="cit-total-profits"
+                  name="totalProfits"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="100000"
+                  value="7000000"
+                  required
+                /><small
+                  >Enter the tax computation’s total-profits figure after
+                  applicable deductions and capital allowances.</small
+                >
+              </div>
+              <div class="cit-field">
+                <label for="cit-assessable-profits"
+                  >Assessable profits for levy (₦)</label
+                ><input
+                  id="cit-assessable-profits"
+                  name="assessableProfits"
+                  type="number"
+                  inputmode="decimal"
+                  min="0"
+                  step="100000"
+                  value="10000000"
+                  required
+                /><small
+                  >Section 59 applies the levy to assessable profits, not the
+                  CIT total-profits base.</small
+                >
+              </div>
+              <label class="cit-check" for="cit-professional"
+                ><input
+                  id="cit-professional"
+                  name="professionalServices"
+                  type="checkbox"
+                /><span
+                  ><strong>The business provides professional services</strong
+                  ><small
+                    >The Act excludes professional-services businesses from the
+                    small-company definition.</small
+                  ></span
+                ></label
+              ><label class="cit-check" for="cit-mne"
+                ><input id="cit-mne" name="mneGroup" type="checkbox" /><span
+                  ><strong
+                    >The company is a constituent entity of an MNE group</strong
+                  ><small
+                    >This triggers a section 57 effective-tax-rate review that
+                    this simple calculator does not compute.</small
+                  ></span
+                ></label
+              ><label class="cit-check" for="cit-scope"
+                ><input
+                  id="cit-scope"
+                  name="scopeConfirmed"
+                  type="checkbox"
+                /><span
+                  ><strong
+                    >I confirm this is a resident ordinary company in the 2026
+                    regime</strong
+                  ><small
+                    >Not a non-resident, petroleum operation, free-zone case,
+                    insurer, priority-incentive computation or pre-2026
+                    period.</small
+                  ></span
+                ></label
+              >
+              <div class="cit-actions">
+                <button class="cit-button" type="submit">
+                  Calculate CIT estimate
+                </button>
+              </div>
+              <p
+                class="cit-error"
+                data-error
+                role="status"
+                aria-live="polite"
+              ></p>
+            </form>
+          </div>
+          <section
+            class="cit-result"
+            data-result
+            role="status"
+            aria-live="polite"
+            tabindex="-1"
+            hidden
+          >
+            <div class="cit-total">
+              <span>Estimated CIT + development levy</span
+              ><strong data-total></strong>
+            </div>
+            <div class="cit-grid">
+              <div class="cit-metric">
+                <span>Classification</span><strong data-classification></strong>
+              </div>
+              <div class="cit-metric">
+                <span>CIT</span><strong data-cit></strong>
+              </div>
+              <div class="cit-metric">
+                <span>Development levy</span><strong data-levy></strong>
+              </div>
+              <div class="cit-metric">
+                <span>CIT base</span><strong data-cit-base></strong>
+              </div>
+              <div class="cit-metric">
+                <span>Levy base</span><strong data-levy-base></strong>
+              </div>
+            </div>
+            <div class="cit-warning" data-etr-warning hidden>
+              <strong>Section 57 review required.</strong> This company meets a
+              top-up review trigger. The calculator intentionally does not
+              invent the covered-tax, accounting-profit or group adjustments
+              needed for a 15% effective-tax-rate computation.
+            </div>
+            <div class="cit-formula">
+              <strong>Calculation shown:</strong> <span data-formula></span>
+            </div>
+            <div class="cit-actions" style="margin-top: 14px">
+              <button class="cit-button secondary" type="button" data-copy>
+                Copy summary</button
+              ><button class="cit-button secondary" type="button" data-download>
+                Download TXT
+              </button>
+            </div>
+            <p
+              class="cit-export-status"
+              data-export-status
+              role="status"
+              aria-live="polite"
+            ></p>
+            <p>
+              No PDF is offered: this planning result is not an official tax
+              computation or filing document.
+            </p>
+          </section>
+        </section>
+        <section class="cit-card cit-faq">
+          <div class="cit-head">
+            <h2>What changed under the 2026 regime?</h2>
+          </div>
+          <details>
+            <summary>What qualifies as a small company?</summary>
+            <p>
+              The enacted definition uses all three tests: gross turnover no
+              more than ₦50M, total fixed assets no more than ₦250M, and no
+              professional-services business. Passing only the turnover test is
+              not enough.
+            </p>
+          </details>
+          <details>
+            <summary>Why are there two profit inputs?</summary>
+            <p>
+              Section 56 charges CIT on total profits. Section 59 charges
+              development levy on assessable profits. A serious estimate must
+              not silently use one number for both.
+            </p>
+          </details>
+          <details>
+            <summary>
+              Where are medium-company 20%, education tax and minimum tax?
+            </summary>
+            <p>
+              Those belong to the repealed framework. This calculator is scoped
+              to the Nigeria Tax Act 2025 from 1 January 2026 and does not blend
+              the regimes.
+            </p>
+          </details>
+        </section>
+      </div>
+      <aside class="cit-side">
+        <section
+          class="cit-card"
+          data-tool-verification-panel
+          data-tool-id="ng-cit"
+        >
+          <div class="cit-head"><h2>Sources &amp; verification</h2></div>
+          <div class="cit-body">
+            <ul class="cit-source">
+              <li>
+                <a
+                  href="https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Nigeria Tax Act 2025 Gazette</a
+                >: definition of small company; sections 56, 57 and 59.
+              </li>
+              <li>
+                <a
+                  href="https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >Federal Ministry of Finance transition notice</a
+                >: effective-date boundary.
+              </li>
+              <li>
+                <a
+                  href="https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  >State House commencement confirmation</a
+                >.
+              </li>
+            </ul>
+            <p>
+              <a href="/contact/?subject=ng-cit-calculation-error"
+                >Report calculation error</a
+              >
+            </p>
+            <p>Sources reviewed 22 July 2026.</p>
+          </div>
+        </section>
+        <section class="cit-card">
+          <div class="cit-head"><h2>Not calculated</h2></div>
+          <div class="cit-body">
+            <ul class="cit-list">
+              <li>Section 57 minimum effective-tax top-up.</li>
+              <li>Loss relief, incentives and transition adjustments.</li>
+              <li>Petroleum, insurance, free-zone or non-resident rules.</li>
+              <li>Interest, penalties, instalments or filing balances.</li>
+            </ul>
+          </div>
+        </section>
+        <section class="cit-card">
+          <div class="cit-head"><h2>Privacy and export</h2></div>
+          <div class="cit-body">
+            <p>
+              All figures stay in the browser. There is no API request, account,
+              autosave or analytics payload containing the values. TXT export is
+              generated locally from the displayed estimate.
+            </p>
+            <div class="cit-alert">
+              <strong>Before filing:</strong> reconcile total profits,
+              assessable profits, capital allowances, losses, incentives and
+              transition treatment with the company’s accounts and current NRS
+              guidance.
+            </div>
+          </div>
+        </section>
+      </aside>
+    </main>
+<afro-related-tools data-ssr="1" category="financial" current="ng-cit">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-function calculate() {
-  const turnover = +document.getElementById('turnover').value;
-  const profit = +document.getElementById('profit').value;
-  const capAllow = +document.getElementById('capAllow').value;
-  const dividends = +document.getElementById('dividends').value;
-  const sizeSelect = document.getElementById('size').value;
-
-  let size;
-  if (sizeSelect === 'auto') {
-    size = turnover <= 100000000 ? 'small' : 'large';
-  } else {
-    size = sizeSelect === 'medium' ? 'large' : sizeSelect;
-  }
-
-  const taxableProfit = Math.max(0, profit - capAllow - dividends);
-
-  const citRate = size === 'small' ? 0 : 0.30;
-  const cit = taxableProfit * citRate;
-  const developmentLevy = size === 'small' ? 0 : taxableProfit * 0.04;
-  const tet = 0;
-  const minTax = 0;
-  const isMinTax = false;
-  const totalTax = cit + developmentLevy;
-  const effectiveRate = turnover > 0 ? (totalTax / turnover * 100) : 0;
-  const fmt = n => '₦ ' + Math.round(n).toLocaleString('en');
-
-  let html = '';
-  html += `<div class="result-box highlight"><div class="num">${fmt(totalTax)}</div><div class="lbl">Total Tax Liability</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(cit)}</div><div class="lbl">CIT (${(citRate*100).toFixed(0)}%)</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(developmentLevy)}</div><div class="lbl">Development Levy (4%)</div></div>`;
-  html += `<div class="result-box"><div class="num">${effectiveRate.toFixed(1)}%</div><div class="lbl">Effective Rate (on Turnover)</div></div>`;
-  html += `<div class="result-box"><div class="num">${size.charAt(0).toUpperCase()+size.slice(1)}</div><div class="lbl">Company Classification</div></div>`;
-  document.getElementById('resultGrid').innerHTML = html;
-
-  let bd = '';
-  bd += `<div class="breakdown-row"><span class="item">Gross Turnover</span><span class="cost">${fmt(turnover)}</span></div>`;
-  bd += `<div class="breakdown-row"><span class="item">Assessable Profit</span><span class="cost">${fmt(profit)}</span></div>`;
-  if (capAllow > 0) bd += `<div class="breakdown-row"><span class="item">Less: Capital Allowances</span><span class="cost">- ${fmt(capAllow)}</span></div>`;
-  bd += `<div class="breakdown-row"><span class="item">Taxable Profit</span><span class="cost">${fmt(taxableProfit)}</span></div>`;
-  bd += `<div class="breakdown-row"><span class="item">CIT (${(citRate*100)}%)</span><span class="cost">${fmt(cit)}</span></div>`;
-  if (isMinTax) bd += `<div class="breakdown-row"><span class="item">Minimum Tax (0.5% of turnover) — applies</span><span class="cost">${fmt(minTax)}</span></div>`;
-  bd += `<div class="breakdown-row"><span class="item">Tertiary Education Tax (2.5%)</span><span class="cost">${fmt(tet)}</span></div>`;
-  bd += `<div class="breakdown-row total"><span class="item">Total Tax Payable</span><span class="cost">${fmt(totalTax)}</span></div>`;
-  document.getElementById('breakdown').innerHTML = bd;
-
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ng-cit" tool-name="Nigeria CIT Calculator"></save-result-button><share-result-button tool-name="Nigeria CIT Calculator" tool-slug="ng-cit"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-  target.appendChild(div);
-  function valueLabel(el) {
-    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
-    return el.value;
-  }
-  function buildSummary() {
-    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
-      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
-      return label + ': ' + valueLabel(el);
-    });
-    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
-      return box.textContent.replace(/\s+/g, ' ').trim();
-    });
-    var breakdown = document.getElementById('breakdown') ? document.getElementById('breakdown').textContent.replace(/\s+/g, ' ').trim() : '';
-    return ['Nigeria CIT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Breakdown: ' + breakdown, 'Planning estimate only. Verify current FIRS guidance, Finance Act transition rules, audited accounts, allowances, losses, and filing requirements before acting.']).join('\n');
-  }
-  function setStatus(message) {
-    var status = document.getElementById('tax-export-status');
-    if (status) status.textContent = message;
-  }
-  document.getElementById('tax-copy-summary').addEventListener('click', function () {
-    var text = buildSummary();
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
-    else setStatus(text);
-  });
-  document.getElementById('tax-download-summary').addEventListener('click', function () {
-    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'nigeria-cit-summary.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    setStatus('TXT summary downloaded.');
-  });
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+    <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+    <script src="/assets/js/engines/ng-cit.js?v=b7e17d55" defer></script>
+    <script src="/assets/js/pages/ng-cit-vip.js?v=547e6ee7" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

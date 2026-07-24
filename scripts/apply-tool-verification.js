@@ -11,6 +11,10 @@ const WRITE = process.argv.includes('--write');
 const LIST = process.argv.includes('--list');
 const LANG_FILTER_ARG = process.argv.find((arg) => arg.startsWith('--lang='));
 const LANG_FILTER = LANG_FILTER_ARG ? LANG_FILTER_ARG.slice('--lang='.length).trim().toLowerCase() : '';
+const PREVIOUS_FILE_ARG = process.argv.find((arg) => arg.startsWith('--previous-file='));
+const PREVIOUS_FILE = PREVIOUS_FILE_ARG
+  ? PREVIOUS_FILE_ARG.slice('--previous-file='.length).trim()
+  : 'data/tool-verification.json';
 
 const EXCLUDED_DIRS = new Set(['.git', '.netlify', '.cache', 'dist', 'node_modules']);
 const EXTERNAL_DENY = /afrotools\.|fonts\.|cdn\.|schema\.org|ogp\.me|w3\.org|googletagmanager|google-analytics|jsdelivr|cloudflare|instagram|facebook|twitter|linkedin/i;
@@ -49,8 +53,8 @@ function routeFromFile(file) {
 
 function stripScriptStyle(html) {
   return html
-    .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-    .replace(/<style[\s\S]*?<\/style>/gi, ' ');
+    .replace(/<script[\s\S]*?<\/script\s*>/gi, ' ')
+    .replace(/<style[\s\S]*?<\/style\s*>/gi, ' ');
 }
 
 function stripTags(value) {
@@ -101,7 +105,7 @@ function sourceRecordsFromHtml(html) {
   const clean = stripScriptStyle(html);
   const records = [];
 
-  for (const match of clean.matchAll(/<a\b([^>]*\bhref=["'](https?:\/\/[^"']+)["'][^>]*)>([\s\S]*?)<\/a>/gi)) {
+  for (const match of clean.matchAll(/<a\b([^>]*\bhref=["'](https?:\/\/[^"']+)["'][^>]*)>([\s\S]*?)<\/a\s*>/gi)) {
     const url = normalizeUrl(match[2]);
     if (!shouldKeepUrl(url)) continue;
     const label = stripTags(decodeEntities(match[3])) || hostnameTitle(url);
@@ -329,7 +333,9 @@ function buildManifest(files) {
     sourcesByCode.set(code, dedupeRecords(records).filter((item) => item.url));
   }
 
-  const tools = {};
+  // Preserve verification records owned by other workflows (for example
+  // worker-cost, CIT and CGT tools) while refreshing the PAYE/VAT family.
+  const tools = { ...previousTools };
   for (const page of pages) {
     const direct = page.sources.filter((item) => item.url);
     const countrySources = sourcesByCode.get(page.code) || [];
@@ -385,7 +391,7 @@ function buildManifest(files) {
 }
 
 function readPreviousTools() {
-  const dataPath = path.join(ROOT, 'data', 'tool-verification.json');
+  const dataPath = path.resolve(ROOT, PREVIOUS_FILE);
   if (!fs.existsSync(dataPath)) return {};
   try {
     const parsed = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
@@ -461,6 +467,11 @@ const FR_VERIFICATION_VALUES = new Map([
   ['Confirms reverse VAT handling for invoices that already include tax.', 'Confirme le calcul inverse de la TVA pour les factures qui incluent déjà la taxe.'],
   ['Trust and verification panel added with source links, methodology, limitations, and report-error CTA.', 'Ajout du panneau de confiance et de vérification avec sources, méthode, limites et lien de signalement.'],
   ['PAYE income-tax bands and statutory deductions shown on the calculator page.', 'Tranches d’impôt PAYE et retenues légales affichées sur la page du calculateur.'],
+  ['VAT rate, zero-rated, and exempt treatment shown on the calculator page.', 'Taux de TVA et traitements à taux zéro ou exonérés affichés sur la page du calculateur.'],
+  ['Rebuilt English and launched Swahili routes on one reviewed engine; corrected the obsolete 17% claim to 19%, evidence-gated 10% and 0%, and added local PDF, widget and API parity.', 'Réunion des routes anglaise et swahilie sur un moteur révisé ; correction de l’ancien taux de 17 % à 19 %, application des taux de 10 % et 0 % uniquement sur preuve, puis ajout du PDF local et de la parité widget/API.'],
+  ['Replaced the legacy 19% and generic zero-rate model with a pure evidence-gated 19%, 10%, 5% and Article 322 exemption engine shared by English, French and Swahili routes and protected in the API.', 'Remplacement de l’ancien modèle à 19 % et taux zéro générique par un moteur fondé sur preuve pour les taux de 19 %, 10 %, 5 % et l’exonération de l’article 322, partagé entre les routes anglaise, française et swahilie et protégé dans l’API.'],
+  ['Rebuilt English, French and Swahili routes on the 17.5% enacted rate, disclosed the stale EIS sample, blocked custom and special rates, and added a local PDF, shared engine, API guard and standard-only widget.', 'Reconstruction des routes anglaise, française et swahilie avec le taux légal de 17,5 % ; signalement de l’ancien exemple EIS, blocage des taux personnalisés et spéciaux, puis ajout du PDF local, du moteur partagé, de la protection API et du widget limité au taux standard.'],
+  ['Replaced the obsolete 17% and blanket-exemption model with current 16%, evidence-gated 5% and export treatments under Laws 22/2022 and 10/2025; added EN/FR/SW parity, local PDF and invoice checks.', 'Remplacement de l’ancien modèle à 17 % et d’exonération générale par le taux actuel de 16 %, le taux de 5 % sur preuve et les traitements à l’exportation prévus par les lois 22/2022 et 10/2025 ; ajout de la parité EN/FR/SW, du PDF local et des contrôles de facture.'],
   ['AfroTools source audit', 'Audit des sources AfroTools']
 ]);
 
@@ -471,6 +482,13 @@ function localizeVerificationValue(value, lang) {
 
 function buildPanel(entry, lang = 'en') {
   const copy = PANEL_COPY[lang] || PANEL_COPY.en;
+  const kind = kindFor(entry.tool_id);
+  // Bespoke verification records are authored in English. Until a record has
+  // an owned French translation, use the already translated, calculation-type
+  // contract rather than leaking a large English block onto a French route.
+  const methodology = lang === 'fr' ? methodologyFor(kind) : entry.methodology_markdown;
+  const knownLimitations = lang === 'fr' ? limitationsFor(kind) : entry.known_limitations;
+  const testCases = lang === 'fr' ? testCasesFor(kind) : entry.test_cases;
   const riskLabel = lang === 'fr'
     ? ({ critical: 'critique', high: 'élevé', medium: 'moyen', low: 'faible' }[entry.risk_level] || entry.risk_level)
     : entry.risk_level;
@@ -480,8 +498,8 @@ function buildPanel(entry, lang = 'en') {
     return `<li><a href="${escapeAttr(url)}" target="_blank" rel="noopener">${escapeHtml(label)}</a></li>`;
   }).join('\n');
 
-  const limitations = htmlList(entry.known_limitations.map((item) => escapeHtml(localizeVerificationValue(item, lang))));
-  const cases = entry.test_cases.map((testCase) => (
+  const limitations = htmlList(knownLimitations.map((item) => escapeHtml(localizeVerificationValue(item, lang))));
+  const cases = testCases.map((testCase) => (
     `<div class="tool-verification-case"><p class="tool-verification-meta"><strong>${copy.input}:</strong> ${escapeHtml(localizeVerificationValue(testCase.input, lang))}<br><strong>${copy.expected}:</strong> ${escapeHtml(localizeVerificationValue(testCase.expected_output, lang))}<br><strong>${copy.why}:</strong> ${escapeHtml(localizeVerificationValue(testCase.why, lang))}</p></div>`
   )).join('\n');
   const history = entry.change_history.map((item) => `<li><strong>${escapeHtml(item.date)}:</strong> ${escapeHtml(localizeVerificationValue(item.note, lang))}</li>`).join('\n');
@@ -514,7 +532,7 @@ ${sourceItems}
         </div>
         <div class="tool-verification-block">
           <h3>${copy.methodology}</h3>
-          <p class="tool-verification-meta">${escapeHtml(localizeVerificationValue(entry.methodology_markdown, lang))}</p>
+          <p class="tool-verification-meta">${escapeHtml(localizeVerificationValue(methodology, lang))}</p>
         </div>
         <div class="tool-verification-block">
           <h3>${copy.limitations}</h3>
@@ -583,6 +601,16 @@ function applyPanelToFile(file, entry) {
   html = replaceGenericBadges(html);
   html = replaceRatings(html);
   const lang = rel(file).startsWith('fr/') ? 'fr' : 'en';
+  // Some bespoke French calculators already own a complete localized source
+  // panel. Do not add a second generated panel or overwrite its richer copy.
+  if (
+    lang === 'fr'
+    && html.includes('data-tool-verification-panel')
+    && html.includes('tool-verification-report')
+  ) {
+    if (WRITE && html !== original) fs.writeFileSync(file, html, 'utf8');
+    return html !== original;
+  }
   html = insertPanel(html, buildPanel(entry, lang));
   if (process.env.AFROTOOLS_VERIFY_DEBUG === rel(file) && html !== original) {
     const before = original.split(/\r?\n/);

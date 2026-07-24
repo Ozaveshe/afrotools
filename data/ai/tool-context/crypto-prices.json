@@ -2,6 +2,13 @@
   "schemaVersion": 1,
   "toolKey": "crypto-prices",
   "legacyTextSha256": "sha256:e4404d2a6a57aee6ac53ed1c8ddc44a13a44ac23ced56a69908ea8994fa426ca",
-  "status": "unverified-static",
-  "staticText": "Live cryptocurrency price tracker expert. 50+ coins in 19 African currencies via CoinGecko. Market cap, volume, 24h change."
+  "status": "source-coupled",
+  "staticText": "Use only the verified crypto market function contract supplied by the source binding. Never invent a price, unsupported quote currency, asset count, refresh guarantee, trend, forecast, exchange quote or peer-to-peer quote. If the provider response is unavailable, invalid or outside the function freshness contract, explain that no price snapshot is available. Keep source and time receipts attached to any exported snapshot.",
+  "sourceBindings": [
+    {
+      "kind": "crypto-market-function",
+      "functionPath": "netlify/functions/crypto-prices.js",
+      "route": "/crypto/prices/"
+    }
+  ]
 }

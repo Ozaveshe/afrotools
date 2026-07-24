@@ -1,360 +1,141 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kenya Withholding Tax Calculator | AfroTools</title>
-<meta name="description" content="Calculate Kenya Withholding Tax (WHT) rates on dividends, interest, rent, royalties, management fees, and professional fees for residents and non-residents.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kenya WHT Calculator | AfroTools">
-<meta property="og:description" content="Calculate Kenya Withholding Tax on various payment types per KRA rules.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-wht.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/ke-wht/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#dc2626}
-.tool-hero{background:linear-gradient(135deg,#7f1d1d 0%,#dc2626 50%,#b91c1c 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#fecaca}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#fecaca;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(254,202,202,.2);color:#fecaca;border:1px solid rgba(254,202,202,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(220,38,38,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px}
-.btn-primary{background:linear-gradient(135deg,#b91c1c,#dc2626);color:#fff}
-.result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
-.result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.result-box .num{font-size:1.3rem;font-weight:800;color:#dc2626}
-.result-box .lbl{font-size:.68rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.result-box.highlight{background:linear-gradient(135deg,#fef2f2,#fee2e2);border-color:#fca5a5;grid-column:1/-1}
-.result-box.highlight .num{font-size:1.8rem}
-.rate-table{width:100%;border-collapse:collapse;font-size:.76rem;margin-top:12px}
-.rate-table th,.rate-table td{padding:8px 10px;border-bottom:1px solid #e2e8f0;text-align:left}
-.rate-table th{background:#f8fafc;font-weight:700;font-size:.68rem;text-transform:uppercase}
-.rate-table tr.active{background:#fef2f2;font-weight:700}
-.sidebar .info-card{background:#fef2f2;border:1px solid #fca5a5;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#7f1d1d;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#7f1d1d;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kenya WHT Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate Kenya Withholding Tax on various payment types per KRA rules.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Kenya Withholding Tax Calculator (KRA WHT) | AfroTools</title>
+  <meta name="description" content="Estimate Kenya KRA withholding tax on dividends, fees, royalties, rent and winnings. Compare resident and non-resident rates with evidence-gated relief.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Kenya Withholding Tax Calculator">
+  <meta property="og:description" content="A source-bounded KRA WHT estimate for resident and non-resident payments.">
+  <meta property="og:url" content="https://afrotools.com/tools/ke-wht/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-wht.webp">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Kenya Withholding Tax Calculator (KRA WHT) | AfroTools">
+<meta name="twitter:description" content="Estimate Kenya KRA withholding tax on dividends, fees, royalties, rent and winnings. Compare resident and non-resident rates with evidence-gated relief.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-wht.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Kenya WHT Calculator",
-      "item": "https://afrotools.com/tools/ke-wht/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/ke-wht-vip.css?v=46c7ca0f">
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/related-tools.js?v=b1c2dbd7" defer></script>
+  <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+  <script src="/assets/js/engines/ke-wht.js?v=5179eeab" defer></script>
+  <script src="/assets/js/pages/ke-wht-vip.js?v=e85268d1" defer></script>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Kenya Withholding Tax Calculator",
-  "description": "Calculate Kenya Withholding Tax (WHT) rates on dividends, interest, rent, royalties, management fees, and professional fees for residents and non-residents.",
   "url": "https://afrotools.com/tools/ke-wht/",
-  "inLanguage": "en",
   "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "inLanguage": "en",
+  "description": "Estimate Kenyan withholding tax using reviewed KRA and Kenya Law rate boundaries.",
+  "featureList": [
+    "Resident and non-resident rates",
+    "KSh 24,000 fee threshold check",
+    "Evidence-gated EAC, treaty and exemption treatment",
+    "Local TXT and print export"
+  ],
   "image": "https://afrotools.com/assets/img/tools/ke-wht.webp"
 }
 </script>
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"When must WHT be remitted to KRA?","acceptedAnswer":{"@type":"Answer","text":"KRA's current File and Pay page says WHT should be remitted within 5 working days after deduction. Because older KRA content still mentions the 20th of the following month, it is safest to follow the current filing page and confirm the timing shown in iTax for the exact obligation you are filing."}},{"@type":"Question","name":"Can I claim a WHT refund?","acceptedAnswer":{"@type":"Answer","text":"Yes, residents can claim WHT as a credit against their annual income tax. If the WHT exceeds your final tax liability, you can apply for a refund through iTax. However, KRA refund processing can take time, so adequate documentation is essential."}},{"@type":"Question","name":"Does WHT apply to rent in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Yes. WHT on rent for immovable property is 10% for resident landlords and 30% for non-resident landlords. This is separate from the Monthly Rental Income (MRI) tax of 7.5% that applies to residential rental income between KSh 288,000 and KSh 15 million per year."}},{"@type":"Question","name":"Who is required to deduct WHT in Kenya?","acceptedAnswer":{"@type":"Answer","text":"Any person or entity making a payment that is subject to WHT is required to deduct it at source. This includes employers, companies, government agencies, and individuals making qualifying payments. The deducting agent must remit the tax to KRA via iTax and issue a withholding tax certificate to the payee."}},{"@type":"Question","name":"Why are some payment categories missing from this tool?","acceptedAnswer":{"@type":"Answer","text":"Some Kenyan withholding items have special rules, qualifying/final-tax treatment, or category-specific rates that are not well represented by one simple resident/non-resident dropdown. This tool keeps to the common categories with clearer KRA-backed percentages."}},{"@type":"Question","name":"Can DTAs reduce Kenyan WHT rates?","acceptedAnswer":{"@type":"Answer","text":"Yes. Kenya has Double Taxation Agreements with over 15 countries including the UK, Germany, France, India, and South Africa. These treaties can reduce WHT rates on dividends, interest, and royalties. To claim treaty rates, the non-resident must apply to KRA with a valid tax residency certificate before the payment is made."}},{"@type":"Question","name":"What penalties apply for failing to deduct WHT?","acceptedAnswer":{"@type":"Answer","text":"If a payer fails to deduct WHT, they become personally liable for the amount that should have been deducted. KRA can assess the payer for the tax, plus a 20% penalty on the amount not deducted and 1% monthly interest. Persistent non-compliance can lead to prosecution under the Tax Procedures Act."}}]}
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Finance tools","item":"https://afrotools.com/finance/"},{"@type":"ListItem","position":3,"name":"Kenya WHT Calculator","item":"https://afrotools.com/tools/ke-wht/"}]}</script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why does the calculator require a scope confirmation?","acceptedAnswer":{"@type":"Answer","text":"WHT depends on the legal payment category and recipient status. Payroll, VAT, residential MRI, qualifying interest and some special-zone payments need different workflows."}},{"@type":"Question","name":"When should WHT be remitted?","acceptedAnswer":{"@type":"Answer","text":"KRA's current compliance explainer says within five working days. An older KRA FAQ still says the 20th of the following month, so confirm the due date shown for the exact obligation in iTax."}},{"@type":"Question","name":"Why does this tool use 20% for winnings?","acceptedAnswer":{"@type":"Answer","text":"The detailed KRA WHT table and current Income Tax Act show 20%. A newer simplified KRA explainer shows 5%, so the calculator follows the primary-law-aligned row and visibly records the conflict."}},{"@type":"Question","name":"Does a treaty automatically reduce the rate?","acceptedAnswer":{"@type":"Answer","text":"No. The calculator accepts a lower user-supplied rate only for a non-resident and only after evidence confirmation. It does not determine eligibility."}}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/ke-wht/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ke-wht/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ke-retenue-source/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ke-wht/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>Kenya WHT</span></div>
-<h1>Kenya <em>Withholding Tax</em> Calculator</h1>
-<p class="hero-sub">Calculate KRA Withholding Tax on payments including dividends, interest, rent, royalties, management and professional fees for residents and non-residents.</p>
-<div class="hero-badges"><span class="badge b-em">Current KRA Guidance</span><span class="badge b-em">Kenya</span><span class="badge b-em">Common Payment Types</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Payment Details</span></div>
-<div class="card-body">
-<div class="row field">
-<div><label for="paymentType">Payment Type</label>
-<select id="paymentType" onchange="updateRate()">
-<option value="dividends">Dividends</option>
-<option value="interest">Interest</option>
-<option value="royalties">Royalties</option>
-<option value="management">Management / Professional Fees</option>
-<option value="contractual">Contractual Fees</option>
-<option value="rent">Rent (Immovable Property)</option>
-</select></div>
-<div><label>Recipient Type</label>
-<select id="recipientType" onchange="updateRate()" aria-label="Recipient Type">
-<option value="resident">Kenyan Resident</option>
-<option value="non-resident">Non-Resident</option>
-</select></div>
-</div>
-<div class="row field">
-<div><label>Gross Payment Amount (KSh)</label><input aria-label="Amount" type="number" id="amount" value="1000000" min="0" step="50000"></div>
-<div><label>WHT Rate (%)</label><input aria-label="Rate" type="number" id="rate" value="5" min="0" max="100" step="0.5" readonly style="background:#e2e8f0;font-weight:700"></div>
-</div>
-<button type="button" class="btn btn-primary" onclick="calculate()">Calculate WHT</button>
-</div></div>
-
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">WHT Breakdown</span></div>
-<div class="card-body">
-<div class="result-grid" id="resultGrid"></div>
-<p id="notes" style="font-size:.76rem;color:#64748b;margin-top:14px;line-height:1.6"></p>
-</div></div>
-
-<div class="card">
-<div class="card-head"><span class="card-title">Kenya WHT Rate Table</span></div>
-<div class="card-body">
-<table class="rate-table" id="rateTable">
-<tr><th>Payment Type</th><th>Resident</th><th>Non-Resident</th></tr>
-<tr data-type="dividends"><td>Dividends</td><td>10%</td><td>15%</td></tr>
-<tr data-type="interest"><td>Interest</td><td>15%</td><td>15%</td></tr>
-<tr data-type="royalties"><td>Royalties</td><td>5%</td><td>20%</td></tr>
-<tr data-type="management"><td>Management / Professional Fees</td><td>5%</td><td>20%</td></tr>
-<tr data-type="contractual"><td>Contractual Fees</td><td>3%</td><td>20%</td></tr>
-<tr data-type="rent"><td>Rent (Immovable Property)</td><td>10%</td><td>30%</td></tr>
-</table>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Kenya WHT Overview</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p>Kenya's WHT system is administered by KRA under the Income Tax Act. For residents, WHT is an advance tax creditable against annual income tax. For non-residents, it's typically the final tax.</p>
-<p style="margin-top:6px"><strong>Filing:</strong> KRA's current File and Pay guidance says WHT should be remitted within 5 working days after deduction. Some older KRA pages still mention the 20th of the following month, so confirm the timing shown in iTax for unusual cases.</p>
-<p style="margin-top:6px"><strong>Scope:</strong> This calculator focuses on common KRA categories with reasonably stable resident/non-resident percentages. Special dividend, rental, qualifying-interest, and treaty cases are not fully modelled here.</p>
-</div></div>
-<div class="info-card">
-<h4>Key Points</h4>
-<ul>
-<li>Current KRA filing page says remit within 5 working days after deduction</li>
-<li>Issue WHT certificate to recipient</li>
-<li>DTA treaties may reduce non-resident rates</li>
-<li>Resident WHT is creditable against income tax</li>
-<li>Non-resident WHT is usually final tax</li>
-<li>Penalties: 20% + 1%/month interest</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Understanding Withholding Tax in Kenya</h2>
-<p>Withholding Tax in Kenya is a mechanism through which the Kenya Revenue Authority (KRA) collects tax at the point of payment. The payer deducts a specified percentage from the gross payment and remits it directly to KRA. This tool focuses on common categories where a quick estimate is useful, but some dividend, rent, treaty, and qualifying-interest cases still need a manual check against current KRA guidance.</p>
-<p>For Kenyan residents, WHT is an advance tax — it's credited against the recipient's annual income tax liability. If the WHT deducted exceeds the final tax computed, the excess is refundable. For non-residents, WHT is typically the final tax on that income, meaning no further filing is required in Kenya. In practice, non-resident rates are often higher than resident rates, which is why treaty relief and proper classification matter.</p>
-<p>Kenya has Double Taxation Agreements (DTAs) with over 15 countries, including the UK, Germany, France, India, and South Africa. These treaties may reduce the standard WHT rates for non-residents. To benefit from treaty rates, the non-resident must provide a tax residency certificate from their home country and apply to KRA for a treaty rate determination before the payment is made.</p>
-<p>Where a non-resident supplies management, professional, contractual, royalty, or similar services into Kenya, the standard non-resident rates can apply subject to treaty relief and the exact legal character of the payment. This is why the resident/non-resident split matters in practice.</p>
-<p>Compliance is critical because KRA treats withholding tax as a payer-side obligation. The current KRA filing page highlights late-payment penalties, and businesses should not assume older blog posts or internal memos still reflect the latest operational deadline language on iTax.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>When must WHT be remitted to KRA?</summary><p>KRA's current File and Pay page says WHT should be remitted within 5 working days after deduction. Because older KRA content still mentions the 20th of the following month, it is safest to follow the current filing page and confirm the timing shown in iTax for the exact obligation you are filing.</p></details>
-<details class="faq-item"><summary>Can I claim a WHT refund?</summary><p>Yes, residents can claim WHT as a credit against their annual income tax. If the WHT exceeds your final tax liability, you can apply for a refund through iTax. However, KRA refund processing can take time, so adequate documentation is essential.</p></details>
-<details class="faq-item"><summary>Does WHT apply to rent in Kenya?</summary><p>Yes. WHT on rent for immovable property is 10% for resident landlords and 30% for non-resident landlords. This is separate from the Monthly Rental Income (MRI) tax of 7.5% that applies to residential rental income between KSh 288,000 and KSh 15 million per year.</p></details>
-<details class="faq-item"><summary>Who is required to deduct WHT in Kenya?</summary><p>Any person or entity making a payment that is subject to WHT is required to deduct it at source. This includes employers, companies, government agencies, and individuals making qualifying payments. The deducting agent must remit the tax to KRA via iTax and issue a withholding tax certificate to the payee.</p></details>
-<details class="faq-item"><summary>Why are some payment categories missing from this tool?</summary><p>Some Kenyan withholding items have special rules, qualifying/final-tax treatment, or category-specific rates that are not well represented by one simple resident/non-resident dropdown. This tool keeps to the common categories with clearer KRA-backed percentages.</p></details>
-<details class="faq-item"><summary>Can DTAs reduce Kenyan WHT rates?</summary><p>Yes. Kenya has Double Taxation Agreements with over 15 countries including the UK, Germany, France, India, and South Africa. These treaties can reduce WHT rates on dividends, interest, and royalties. To claim treaty rates, the non-resident must apply to KRA with a valid tax residency certificate before the payment is made.</p></details>
-<details class="faq-item"><summary>What penalties apply for failing to deduct WHT?</summary><p>If a payer fails to deduct WHT, they become personally liable for the amount that should have been deducted. KRA can assess the payer for the tax, plus a 20% penalty on the amount not deducted and 1% monthly interest. Persistent non-compliance can lead to prosecution under the Tax Procedures Act.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="ke-wht">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">WHT source and filing check</span>
-    <h2>Confirm the KRA category before withholding or remitting</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> payment type, recipient residency, gross amount, and displayed WHT rate.</li>
-      <li><strong>Method:</strong> applies the embedded AfroTools Kenya WHT rate table to estimate deduction and net payment.</li>
-      <li><strong>Verify before acting:</strong> current KRA guidance, iTax obligation timing, treaty relief, special rent/dividend/interest rules, WHT certificate wording, and payer registration.</li>
-      <li><strong>Privacy:</strong> payment scenarios run locally. Copy, download, save, or share only the summary you choose.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not tax advice, a filing instruction, or an official KRA assessment.</p>
-  </div>
-</section>
-<afro-business-cta tool-name="Kenya WHT Calculator" prospect-segment="tax-compliance" headline="Need repeatable WHT review before supplier payment?" subhead="AfroTax Pro helps teams keep deduction assumptions, certificate notes, and accountant handoff files together before filing."></afro-business-cta>
-<afro-related-tools category="financial" current="ke-wht" data-ssr="1">
+<body class="ke-wht-page">
+  <afro-navbar active="tools"></afro-navbar>
+  <header class="ke-wht-hero">
+    <div class="ke-wht-wrap">
+      <p class="ke-wht-crumb"><a href="/">Home</a> / <a href="/salary-tax/">Finance tools</a> / Kenya WHT</p>
+      <span class="ke-wht-kicker">Kenya · KRA · source reviewed 22 July 2026</span>
+      <h1>Kenya withholding tax calculator</h1>
+      <p>Estimate the amount to deduct from a Kenyan payment using the reviewed resident or non-resident rate. The calculator handles common WHT categories and refuses unsupported relief without evidence.</p>
+      <div class="ke-wht-badges"><span>Runs locally</span><span>No account required</span><span>KES result</span><span>Evidence-gated relief</span></div>
+    </div>
+  </header>
+  <section class="ke-wht-answer">
+    <div class="ke-wht-wrap"><p><strong>Quick answer:</strong> Kenya WHT is normally gross payment × applicable rate. For example, a KSh 100,000 resident professional fee at or above the KSh 24,000 monthly aggregate threshold uses 5%, giving KSh 5,000 WHT and KSh 95,000 net. Classification, residency and documented relief can change that result.</p></div>
+  </section>
+  <main class="ke-wht-wrap ke-wht-main" data-ke-wht-app data-locale="en">
+    <div class="ke-wht-stack">
+      <section class="ke-wht-card" aria-labelledby="ke-wht-calc">
+        <div class="ke-wht-head"><h2 id="ke-wht-calc">Calculate the planning deduction</h2><p>Confirm the payment facts. This is not an iTax filing or treaty determination.</p></div>
+        <div class="ke-wht-body">
+          <form class="ke-wht-form" data-form>
+            <div class="ke-wht-field"><label for="kw-payment">Payment category</label><select id="kw-payment" name="paymentType">
+              <option value="professional">Professional fee</option><option value="management">Management fee</option><option value="training">Training fee</option><option value="consultancy">Consultancy fee</option><option value="contractual">Contractual fee</option><option value="dividend">Dividend</option><option value="interest">Interest (general reviewed row)</option><option value="royalty">Royalty / natural resource income</option><option value="immovableRent">Commercial / immovable-property rent</option><option value="residentialRent">Eligible residential MRI flow</option><option value="movableRent">Other-property rent</option><option value="winnings">Gaming or betting winnings</option><option value="sportsEntertainment">Sportsman or entertainer payment</option><option value="publicGoods">Goods supplied to a public entity</option>
+            </select></div>
+            <div class="ke-wht-field"><label for="kw-residency">Recipient residency</label><select id="kw-residency" name="residency"><option value="resident">Kenyan resident / Kenya PE</option><option value="nonresident">Non-resident without Kenya PE</option></select></div>
+            <div class="ke-wht-field"><label for="kw-amount">Gross payment (KSh)</label><input id="kw-amount" name="grossAmount" type="number" min="0.01" step="0.01" value="100000" inputmode="decimal"></div>
+            <div class="ke-wht-field"><label for="kw-treatment">Withholding treatment</label><select id="kw-treatment" name="treatment"><option value="standard">Standard reviewed rate</option><option value="eac">EAC dividend / consultancy reduction</option><option value="treaty">Documented treaty rate</option><option value="controllingDividend">Resident company &gt;12.5% voting-power dividend exemption</option></select></div>
+            <div class="ke-wht-field ke-wht-conditional" data-treaty-field hidden><label for="kw-treaty">Documented treaty rate (%)</label><input id="kw-treaty" name="treatyRatePercent" type="number" min="0" max="99.99" step="0.01" inputmode="decimal"><small>The tool does not decide treaty residence, beneficial ownership or eligibility.</small></div>
+            <label class="ke-wht-check" data-evidence hidden><input type="checkbox" name="evidenceConfirmed"><span><strong>I have evidence for this special treatment</strong><small>Keep the residency, citizenship, treaty, approval or exemption record used.</small></span></label>
+            <label class="ke-wht-check"><input type="checkbox" name="scopeConfirmed"><span><strong>This is a Kenyan WHT payment, not payroll or VAT</strong><small>I have checked the payment category, recipient residence and any permanent establishment question.</small></span></label>
+            <p class="ke-wht-error" data-error role="alert"></p>
+            <div class="ke-wht-actions"><button class="ke-wht-button" type="submit">Calculate Kenya WHT</button></div>
+          </form>
+        </div>
+        <section class="ke-wht-result" data-result hidden aria-live="polite" aria-labelledby="kw-result-title">
+          <div class="ke-wht-total"><span id="kw-result-title">Estimated WHT deduction</span><strong data-deduction></strong></div>
+          <div class="ke-wht-grid"><div><span>Gross payment</span><strong data-gross></strong></div><div><span>Net payment</span><strong data-net></strong></div><div><span>Applied rate</span><strong data-rate></strong></div><div><span>Treatment</span><strong data-treatment></strong></div></div>
+          <p class="ke-wht-alert">Planning estimate only. Confirm the exact iTax obligation, final-tax treatment, deadline and certificate workflow before remitting.</p>
+          <p data-notes></p>
+          <div class="ke-wht-actions"><button class="ke-wht-button secondary" type="button" data-copy>Copy result</button><button class="ke-wht-button secondary" type="button" data-download>Download TXT</button><button class="ke-wht-button secondary" type="button" data-print>Print / save PDF</button></div>
+          <p class="ke-wht-status" data-status role="status" aria-live="polite"></p>
+        </section>
+      </section>
+      <section class="ke-wht-card">
+        <div class="ke-wht-head"><h2>Reviewed common-rate matrix</h2><p>General KRA rows only. Scroll the table horizontally on a small screen.</p></div>
+        <div class="ke-wht-table-wrap" tabindex="0" aria-label="Scrollable Kenya withholding tax rate table"><table class="ke-wht-table"><thead><tr><th>Payment</th><th>Resident</th><th>Non-resident</th><th>Boundary</th></tr></thead><tbody>
+          <tr data-rate-row="dividend"><td>Dividend</td><td>10%</td><td>15%</td><td>Qualifying/EAC/exempt cases differ</td></tr>
+          <tr data-rate-row="interest"><td>General interest row</td><td>15%</td><td>15%</td><td>Instrument-specific rates differ</td></tr>
+          <tr data-rate-row="royalty"><td>Royalty</td><td>5%</td><td>20%</td><td>SEZ cases differ</td></tr>
+          <tr data-rate-row="professional"><td>Management/professional/training</td><td>5%</td><td>20%</td><td>Resident monthly aggregate ≥ KSh 24,000</td></tr>
+          <tr data-rate-row="contractual"><td>Contractual fee</td><td>3%</td><td>20%</td><td>Resident monthly aggregate ≥ KSh 24,000</td></tr>
+          <tr data-rate-row="immovableRent"><td>Immovable-property rent</td><td>10%</td><td>30%</td><td>MRI is a separate regime</td></tr>
+          <tr data-rate-row="residentialRent"><td>Eligible residential MRI flow</td><td>7.5%</td><td>30%</td><td>Eligibility confirmation required</td></tr>
+          <tr data-rate-row="movableRent"><td>Other-property rent</td><td>—</td><td>15%</td><td>No general resident row shown</td></tr>
+          <tr data-rate-row="winnings"><td>Gaming/betting winnings</td><td>20%</td><td>20%</td><td>Detailed KRA table / Act row</td></tr>
+          <tr data-rate-row="sportsEntertainment"><td>Sportsman/entertainer</td><td>5%</td><td>20%</td><td>Appearance support differs</td></tr>
+          <tr data-rate-row="publicGoods"><td>Goods supplied to public entity</td><td>0.5%</td><td>5%</td><td>Confirm payer is a public entity</td></tr>
+        </tbody></table></div>
+      </section>
+      <section class="ke-wht-card ke-wht-faq">
+        <div class="ke-wht-head"><h2>Kenya WHT questions</h2></div>
+        <details><summary>Why does the calculator require a scope confirmation?</summary><p>WHT depends on the legal payment category and recipient status. Payroll, VAT, residential MRI, qualifying interest and some special-zone payments need different workflows.</p></details>
+        <details><summary>When should WHT be remitted?</summary><p>KRA's current compliance explainer says within five working days. An older KRA FAQ still says the 20th of the following month, so confirm the due date shown for the exact obligation in iTax.</p></details>
+        <details><summary>Why does this tool use 20% for winnings?</summary><p>The detailed KRA WHT table and current Income Tax Act show 20%. A newer simplified KRA explainer shows 5%, so the calculator follows the primary-law-aligned row and visibly records the conflict.</p></details>
+        <details><summary>Does a treaty automatically reduce the rate?</summary><p>No. The calculator accepts a lower user-supplied rate only for a non-resident and only after evidence confirmation. It does not determine eligibility.</p></details>
+      </section>
+    </div>
+    <aside class="ke-wht-side">
+      <section class="ke-wht-card"><div class="ke-wht-head"><h3>Method</h3></div><div class="ke-wht-body ke-wht-content"><p><strong>WHT = gross payment × rate.</strong> Net payment is gross less WHT. Amounts round to cents.</p><p>For resident management, professional, training, consultancy and contractual fees, this engine checks the KSh 24,000 monthly aggregate threshold described in the Income Tax Act.</p></div></section>
+      <section class="ke-wht-card"><div class="ke-wht-head"><h3>Source boundary</h3></div><div class="ke-wht-body"><ul class="ke-wht-list"><li><a href="https://www.kra.go.ke/helping-tax-payers/faqs/withholding-income-tax" rel="noopener">KRA detailed WHT table</a></li><li><a href="https://new.kenyalaw.org/akn/ke/act/1973/16/eng@2026-01-01" rel="noopener">Income Tax Act, current Kenya Law version</a></li><li><a href="https://www.kra.go.ke/helping-tax-payers/faqs/everything-about-withholding-tax" rel="noopener">KRA current explainer</a></li></ul><p>Reviewed 22 July 2026. Conflicting KRA deadline and simplified-table wording is disclosed, not silently reconciled.</p></div></section>
+      <section class="ke-wht-card"><div class="ke-wht-head"><h3>Privacy and export</h3></div><div class="ke-wht-body ke-wht-content"><p>Calculation and TXT creation stay in this browser. No payment details are sent to AfroTools. Print can create a local PDF through your browser.</p></div></section>
+    </aside>
+  </main>
+  <afro-related-tools tool-id="ke-wht" data-ssr="1" category="financial" current="ke-wht">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-<afro-footer></afro-footer>
-
-<script>
-const RATES={
-  dividends:{resident:10,nonResident:15},
-  interest:{resident:15,nonResident:15},
-  royalties:{resident:5,nonResident:20},
-  management:{resident:5,nonResident:20},
-  contractual:{resident:3,nonResident:20},
-  rent:{resident:10,nonResident:30}
-};
-
-function updateRate(){
-  const type=document.getElementById('paymentType').value;
-  const recip=document.getElementById('recipientType').value;
-  const key=recip==='non-resident'?'nonResident':'resident';
-  document.getElementById('rate').value=RATES[type][key];
-  document.querySelectorAll('.rate-table tr').forEach(r=>r.classList.remove('active'));
-  const row=document.querySelector(`.rate-table tr[data-type="${type}"]`);
-  if(row)row.classList.add('active');
-}
-
-function calculate(){
-  const amount=+document.getElementById('amount').value;
-  const rate=(+document.getElementById('rate').value)/100;
-  const wht=amount*rate;
-  const net=amount-wht;
-  const fmt=n=>'KSh '+Math.round(n).toLocaleString('en');
-
-  let html='';
-  html+=`<div class="result-box highlight"><div class="num">${fmt(wht)}</div><div class="lbl">WHT to Deduct</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(amount)}</div><div class="lbl">Gross Payment</div></div>`;
-  html+=`<div class="result-box"><div class="num">${fmt(net)}</div><div class="lbl">Net Payment to Recipient</div></div>`;
-  html+=`<div class="result-box"><div class="num">${(rate*100).toFixed(0)}%</div><div class="lbl">WHT Rate</div></div>`;
-
-  document.getElementById('resultGrid').innerHTML=html;
-  document.getElementById('notes').innerHTML=`<strong>Action:</strong> Deduct ${fmt(wht)}, remit to KRA via iTax using the current filing deadline shown for your obligation, and issue a WHT certificate.`;
-  document.getElementById('resultCard').style.display='block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-
-updateRate();
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('resultCard');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<button type="button" class="btn" id="tax-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="btn" id="tax-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="ke-wht" tool-name="Kenya WHT Calculator"></save-result-button><share-result-button tool-name="Kenya WHT Calculator" tool-slug="ke-wht"></share-result-button><span id="tax-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-  target.appendChild(div);
-  function valueLabel(el) {
-    if (el.tagName === 'SELECT') return el.options[el.selectedIndex] ? el.options[el.selectedIndex].textContent.trim() : el.value;
-    return el.value;
-  }
-  function buildSummary() {
-    var inputs = Array.prototype.map.call(document.querySelectorAll('.calculator .card:first-of-type input,.calculator .card:first-of-type select'), function (el) {
-      var label = el.closest('div') && el.closest('div').querySelector('label') ? el.closest('div').querySelector('label').textContent.trim() : (el.getAttribute('aria-label') || el.id);
-      return label + ': ' + valueLabel(el);
-    });
-    var results = Array.prototype.map.call(document.querySelectorAll('#resultGrid .result-box'), function (box) {
-      return box.textContent.replace(/\s+/g, ' ').trim();
-    });
-    var notes = document.getElementById('notes') ? document.getElementById('notes').textContent.replace(/\s+/g, ' ').trim() : '';
-    return ['Kenya WHT estimate summary'].concat(inputs, ['Results: ' + (results.length ? results.join(' | ') : 'Run the calculator to generate results'), 'Notes: ' + notes, 'Planning estimate only. Verify current KRA guidance, iTax timing, treaty relief, certificate wording, and payer obligations before acting.']).join('\n');
-  }
-  function setStatus(message) {
-    var status = document.getElementById('tax-export-status');
-    if (status) status.textContent = message;
-  }
-  document.getElementById('tax-copy-summary').addEventListener('click', function () {
-    var text = buildSummary();
-    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(text).then(function () { setStatus('Tax summary copied.'); }).catch(function () { setStatus('Copy failed. Select and copy manually.'); });
-    else setStatus(text);
-  });
-  document.getElementById('tax-download-summary').addEventListener('click', function () {
-    var blob = new Blob([buildSummary()], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'kenya-wht-summary.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-    setStatus('TXT summary downloaded.');
-  });
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
+  <afro-business-cta></afro-business-cta>
+  <afro-footer></afro-footer>
 </body>
 </html>

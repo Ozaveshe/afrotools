@@ -1,0 +1,70 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
+  "reason": "Replace four contradictory Togo PAYE implementations with one reviewed annual employment-income engine. The engine now applies OTR CGI Articles 26 and 72-74: modeled 4% employee CNSS, the 28% professional deduction on the eligible first XOF 10 million, XOF 120,000 annual dependent relief up to six, the eight progressive bands, and statutory rounding. Official CNSS guidance supports 4% employee and 17.5% employer rates. English, French, Swahili, server and widget now share the same contract.",
+  "formulaIds": [
+    "paye-browser-tg",
+    "paye-server-tg",
+    "route-tg-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-tg-defaults",
+      "previousExpected": {
+        "deductions.totalDeductions": 44200,
+        "result.netAnnual": 955800,
+        "result.netMonthly": 79650,
+        "tax.netTax": 4200
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 40000,
+        "result.netAnnual": 960000,
+        "result.netMonthly": 80000,
+        "tax.netTax": 0
+      },
+      "reason": "At XOF 1,000,000 annual gross, the reviewed deductions and statutory rounding leave taxable income within the exempt band; only 4% employee CNSS is deducted.",
+      "sourceUrl": "https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-tg-large-decimal",
+      "previousExpected": {
+        "deductions.totalDeductions": 374305000,
+        "result.netAnnual": 625695001,
+        "result.netMonthly": 52141250,
+        "tax.netTax": 334305000
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 371683000,
+        "result.netAnnual": 628317001,
+        "result.netMonthly": 52359750,
+        "tax.netTax": 331683000
+      },
+      "reason": "The reviewed upper-band result uses the current eight-band OTR schedule, the capped professional deduction and the declared statutory rounding stages.",
+      "sourceUrl": "https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-tg-zero",
+      "previousExpected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "reason": "The zero-income baseline remains unchanged while moving to the reviewed shared engine and formula version.",
+      "sourceUrl": "https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

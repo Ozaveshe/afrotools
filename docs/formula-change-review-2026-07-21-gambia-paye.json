@@ -1,0 +1,50 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-21",
+  "sourceUrl": "https://www.gra.gm/calculators/pay-as-you-earn-paye-",
+  "reason": "Correct Gambia PAYE to the GRA public annual schedule: GMD 0 to 36,000 at 0%, the next four GMD 10,000 bands at 5%, 10%, 15%, and 20%, and income above GMD 76,000 at 25%. PAYE uses gross employment income without deducting pension. Model SSHFC NPF and FPS separately and cap employer IICF at GMD 15 per month.",
+  "formulaIds": [
+    "paye-server-gm",
+    "route-gm-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-gm-defaults",
+      "previousExpected": {
+        "deductions.totalDeductions": 233100,
+        "result.netAnnual": 766900,
+        "result.netMonthly": 63908,
+        "tax.netTax": 183100
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 286000,
+        "result.netAnnual": 714000,
+        "result.netMonthly": 59500,
+        "tax.netTax": 236000
+      },
+      "reason": "At GMD 1,000,000 annual gross, PAYE is calculated on gross through the published 25% top band and employee NPF is applied separately at 5%.",
+      "sourceUrl": "https://www.gra.gm/calculators/pay-as-you-earn-paye-",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-21"
+    },
+    {
+      "fixtureId": "paye-gm-large-decimal",
+      "previousExpected": {
+        "deductions.totalDeductions": 239993100,
+        "result.netAnnual": 760006901,
+        "result.netMonthly": 63333908,
+        "tax.netTax": 189993100
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 299986000,
+        "result.netAnnual": 700014000,
+        "result.netMonthly": 58334500,
+        "tax.netTax": 249986000
+      },
+      "reason": "The large-value fixture now keeps PAYE on gross income at the published 25% top rate while NPF remains a separate employee deduction.",
+      "sourceUrl": "https://www.gra.gm/calculators/pay-as-you-earn-paye-",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-21"
+    }
+  ]
+}

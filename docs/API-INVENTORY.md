@@ -15,7 +15,7 @@ Pricing changes often. Re-check each linked pricing page before buying, but this
 | 3 | Anthropic | Used by AI advisor, business-plan generation, creator text tools, and crypto advisor surfaces. | Paid pay-as-you-go API. There is no durable free production tier assumption. | Keep paid billing enabled and add usage monitoring per function. |
 | 4 | Resend | Digest, scholarship/JAMB reminders, change alerts, gazette alerts, and lead flows. | Free plan is useful for low-volume sending, Pro is needed as mail volume grows. | Upgrade when monthly email volume or domain reputation needs exceed free limits. |
 | 5 | Marketstack or Alpha Vantage | Stock index refreshes use Marketstack, Alpha Vantage, and Yahoo fallback. The schedule is hourly on weekdays. | Marketstack has a low-cost paid tier; Alpha Vantage free quota is very small for scheduled production. | Prefer Marketstack Basic for stock indices if this section matters. Keep Alpha Vantage as secondary unless paying for premium. |
-| 6 | CoinGecko | Crypto prices and P2P helpers depend on CoinGecko, plus Binance/Bybit public endpoints. | Demo/free API can work with caching, but 429s are likely if crypto traffic grows. Paid CoinGecko plans are materially more expensive than $10/month. | Stay free until rate-limit evidence appears, then upgrade only if crypto is a priority. |
+| 6 | CoinGecko | Crypto spot-price and market-data tools depend on CoinGecko. The retired P2P endpoint does not use CoinGecko or exchange ads. | Demo/free API can work with caching, but 429s are likely if crypto traffic grows. Paid CoinGecko plans are materially more expensive than $10/month. | Stay free until rate-limit evidence appears, then upgrade only if crypto is a priority. |
 | 7 | ElevenLabs | PDF-to-audio/TTS feature. | Free tier exists, but production TTS needs paid credits. | Buy a small paid plan if PDF TTS is intended for public use. |
 | 8 | WhatsApp Cloud API | Afrowork WhatsApp integration. | Meta charges per WhatsApp template/conversation category, not a simple quota subscription. | Ensure Meta billing is enabled before public WhatsApp flows. |
 
@@ -56,7 +56,7 @@ The forex quota complaint is plausible even though the latest stored FX row was 
 | Supabase | Auth, profiles, favorites, workspace, live data, AfroStream, history | `_shared/data-store.js`, auth/data functions, many frontend modules | `SUPABASE_URL`, `SUPABASE_ANON_KEY`, service-role variants | Free and Pro tiers. | Production should likely be on Pro once account-backed usage is real. |
 | Netlify Functions and Blobs | Serverless runtime, schedules, Blob cache | `netlify.toml`, `_shared/data-store.js` | `NETLIFY_SITE_ID`, `NETLIFY_TOKEN` where admin scripts need them | Free and Pro tiers. | Watch function minutes, bandwidth, and scheduled-function volume. |
 | Anthropic | AI advisor, business plans, creator copy, crypto portfolio advice | `ai-advisor.js`, `ai-business-plan.js`, `creator-*`, `crypto-portfolio-advisor.js` | `ANTHROPIC_API_KEY` | Paid token API. | Add budget alarms and per-function usage logs. |
-| CoinGecko | Crypto price refresh and market data | `crypto-prices.js`, `scheduled-fetch-crypto.js`, `crypto-p2p.js` | `COINGECKO_API_KEY` | Demo/free API exists; paid plans are higher-cost. | Upgrade only after crypto traffic or 429s prove the need. |
+| CoinGecko | Crypto price refresh and market data | `crypto-prices.js`, `scheduled-fetch-crypto.js` | `COINGECKO_API_KEY` | Demo/free API exists; paid plans are higher-cost. | Upgrade only after crypto traffic or 429s prove the need. |
 | Alpha Vantage | Stock/index fallback data | `scheduled-fetch-stocks.js` | `ALPHA_VANTAGE_KEY` | Free quota is small; premium starts much higher than $10/month. | Not first purchase unless stocks become important. |
 | Marketstack | Stock/index feed | `scheduled-fetch-stocks.js` | `MARKETSTACK_KEY` | Free quota is small; Basic is listed around $9.99/month. | Better low-cost stock-data purchase than Alpha Vantage for this repo. |
 | API Ninjas | Commodity oil fallback | `scheduled-fetch-commodity-prices.js` | `API_NINJAS_KEY` | Free and paid tiers. | Investigate because live commodities are currently on fallback. |
@@ -77,7 +77,7 @@ The forex quota complaint is plausible even though the latest stored FX row was 
 | Google Analytics | Site analytics | generated/static pages | measurement IDs, if configured | Free standard product, paid Analytics 360 for enterprise. | No action unless enterprise analytics is needed. |
 | Google Fonts/CDNs | Fonts and static libraries | static HTML/CSS | none | Free public CDN usage. | No paid action. |
 | MyMemory and LibreTranslate public instances | Translation fallback endpoint | `translate.js` | none | Free/public endpoints with rate and reliability limits. | Do not build paid workflow around these without replacing with a real translation API. |
-| Binance and Bybit public endpoints | P2P crypto reference | `crypto-p2p.js` | none | Public endpoints, rate-limited. | Monitor only. |
+| Retired P2P aggregation | `crypto-p2p.js` and `/api/crypto/p2p` return a stable `410` without upstream requests | none | Third-party ads could not be normalized into executable quotes safely. | Keep retired; the public worksheet compares user-entered quotes locally. |
 | Metals.live | Commodity fallback | `scheduled-fetch-commodity-prices.js` | none | Free/public endpoint. | Current commodities fallback suggests this lane needs attention before buying. |
 | GlobalPetrolPrices, Cable.co.uk, official utility pages | Fuel, electricity, telecom reference scraping | scheduled fetch scripts | none | Public pages/scraped sources. | Treat as fragile; no subscription action unless an official data vendor is chosen. |
 
@@ -90,7 +90,7 @@ These are APIs AfroTools exposes from Netlify Functions. They are not vendor sub
 | `/api/forex`, `/api/fx-rates`, `/api/scrape-fx` | `api-forex.js`, `scrape-fx-rates.js`, scheduled forex scripts | ExchangeRate-API, Frankfurter, Fawaz, Supabase/Blobs |
 | `/api/rates`, `/api/tax-rates`, `/api/vat-rates` | `api-rates.js`, central-bank/tax functions | Supabase/Blobs, World Bank, official pages |
 | `/api/commodity-prices`, `/api/fuel`, `/api/electricity`, `/api/telecom-plans` | scheduled data functions | API Ninjas, World Bank, Metals.live, public data pages |
-| `/api/crypto*` | crypto functions | CoinGecko, Binance, Bybit, Anthropic for advisor |
+| `/api/crypto*` | crypto spot-price functions and advisor; `/api/crypto/p2p` is a stable retired `410` | CoinGecko and Anthropic; the retired P2P route makes no upstream request |
 | `/api/ai-*`, creator text routes | AI and creator functions | Anthropic |
 | `/api/pdf-tts` | `pdf-tts.js` | ElevenLabs |
 | `/api/afrostream/*` and `/tools/afrostream/feed.xml` | AfroStream functions | Supabase, YouTube, Twitch, Kick |

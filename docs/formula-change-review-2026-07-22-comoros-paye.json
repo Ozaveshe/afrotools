@@ -1,0 +1,36 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+  "reason": "Replace the legacy Comoros PAYE shortcut with one reviewed CGI 2023 statutory-reference contract. The shared engine annualizes remuneration, permits only a user-supplied approved pension or social contribution capped at 6%, applies the standard 30% professional-expense deduction, and calculates IRPP through the Article 97 annual bands. No employer contribution or unsupported current-year rate claim is modeled.",
+  "formulaIds": ["paye-browser-km", "paye-server-km", "route-km-paye"],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-km-defaults",
+      "previousExpected": {"deductions.totalDeductions": 72500, "result.netAnnual": 927500, "result.netMonthly": 77292, "tax.netTax": 47500},
+      "nextExpected": {"deductions.totalDeductions": 37500, "result.netAnnual": 962500, "result.netMonthly": 80208, "tax.netTax": 37500},
+      "reason": "The baseline now applies the Article 97 annual bands after the 30% professional-expense deduction and assumes no optional approved employee contribution unless the user supplies one.",
+      "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-km-large-decimal",
+      "previousExpected": {"deductions.totalDeductions": 317150000, "result.netAnnual": 682850001, "result.netMonthly": 56904167, "tax.netTax": 292150000},
+      "nextExpected": {"deductions.totalDeductions": 209542500, "result.netAnnual": 790457500, "result.netMonthly": 65871458, "tax.netTax": 209542500},
+      "reason": "The high-income fixture now reaches the Article 97 top marginal band after the statutory 30% professional-expense deduction while preserving decimal input handling.",
+      "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-km-zero",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "reason": "The zero-income baseline remains zero under the reviewed CGI 2023 contract.",
+      "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

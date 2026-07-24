@@ -1,117 +1,47 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Shipping Cost Calculator | AfroTools</title>
-<meta name="description" content="Compare shipping costs from 20+ African countries. Estimate rates from DHL, FedEx, GIG Logistics, Aramex, and local carriers. Volumetric weight, customs duties, insurance included.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="African Shipping Cost Calculator | Compare Carrier Rates | AfroTools">
-<meta property="og:description" content="Compare shipping costs from 20+ African countries with DHL, FedEx, GIG Logistics, Aramex and local carriers.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/shipping-calc/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<style>
-:root{--afro-dark:#0f1419;--accent:#0ea5e9}
-.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#0ea5e9 50%,#0284c7 100%);padding:44px 0 36px}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#bae6fd}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#bae6fd;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:600px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-em{background:rgba(186,230,253,.2);color:#bae6fd;border:1px solid rgba(186,230,253,.4)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-input,select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:inherit;box-sizing:border-box}
-input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(14,165,233,.15)}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.row4{display:grid;grid-template-columns:1fr 1fr 1fr 1fr;gap:14px}
-.field{margin-bottom:14px}
-.btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.82rem;font-weight:700;cursor:pointer;margin-top:18px;font-family:inherit;transition:all .15s}
-.btn-primary{background:linear-gradient(135deg,#0284c7,#0ea5e9);color:#fff}
-.btn-primary:hover{transform:translateY(-1px);box-shadow:0 4px 12px rgba(14,165,233,.3)}
-.presets{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
-.preset{padding:6px 12px;border:1px solid #e2e8f0;border-radius:6px;font-size:.72rem;font-weight:600;cursor:pointer;background:#f8fafc;color:#475569;transition:all .15s}
-.preset:hover,.preset.active{border-color:#0ea5e9;background:#f0f9ff;color:#0ea5e9}
-.carrier-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:16px;margin-bottom:12px;display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;transition:all .15s}
-.carrier-card:hover{border-color:#bae6fd;background:#f0f9ff}
-.carrier-card .name{font-size:.88rem;font-weight:800;color:#1e293b;display:flex;align-items:center;gap:6px}
-.carrier-card .badge-tag{font-size:.6rem;font-weight:700;padding:2px 6px;border-radius:4px;text-transform:uppercase;letter-spacing:.04em}
-.carrier-card .details{font-size:.78rem;color:#64748b;line-height:1.5;margin-top:4px}
-.carrier-card .price{font-size:1.3rem;font-weight:800;color:#0ea5e9;text-align:right}
-.carrier-card .price-local{font-size:.78rem;color:#64748b;text-align:right;margin-top:2px}
-.carrier-card .time{font-size:.68rem;color:#64748b;text-align:right;margin-top:2px}
-.carrier-card.cheapest{border-color:#86efac;background:#f0fdf4}
-.carrier-card.cheapest .price{color:#059669}
-.carrier-card.fastest{border-color:#93c5fd;background:#eff6ff}
-.carrier-card.fastest .price{color:#2563eb}
-.summary-strip{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px;margin-bottom:16px}
-.summary-item{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:12px;text-align:center}
-.summary-item .label{font-size:.66rem;font-weight:700;color:#64748b;text-transform:uppercase;letter-spacing:.06em;margin-bottom:4px}
-.summary-item .value{font-size:1.1rem;font-weight:800;color:var(--accent)}
-.cost-breakdown{margin-top:12px;background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px}
-.cost-row{display:flex;justify-content:space-between;padding:6px 0;font-size:.8rem;color:#475569}
-.cost-row.total{border-top:2px solid #e2e8f0;margin-top:6px;padding-top:10px;font-weight:800;color:#1e293b}
-.toggle-group{display:flex;border:1px solid #e2e8f0;border-radius:8px;overflow:hidden;margin-bottom:14px}
-.toggle-btn{flex:1;padding:10px;font-size:.75rem;font-weight:700;border:none;background:#f8fafc;color:#64748b;cursor:pointer;text-align:center;transition:all .15s}
-.toggle-btn.active{background:#0ea5e9;color:#fff}
-.checkbox-row{display:flex;align-items:center;gap:8px;margin-top:8px}
-.checkbox-row input[type=checkbox]{width:auto;margin:0}
-.checkbox-row label{margin:0;font-size:.78rem;color:#475569}
-.sidebar .info-card{background:#f0f9ff;border:1px solid #bae6fd;border-radius:8px;padding:16px;margin-top:14px}
-.info-card h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#0c4a6e;margin-bottom:8px}
-.info-card p,.info-card li{font-size:.78rem;color:#0c4a6e;line-height:1.6}
-.info-card ul{padding-left:16px;margin:6px 0}
-.customs-alert{background:#fffbeb;border:1px solid #fde68a;border-radius:8px;padding:14px;margin-top:14px;font-size:.78rem;color:#92400e;line-height:1.6}
-.seo-section{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-section h2{font-size:1.3rem;font-weight:800;margin-bottom:12px;color:var(--afro-dark)}
-.seo-section p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:var(--afro-dark)}
-.faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.row3,.row4{grid-template-columns:1fr 1fr}.summary-strip{grid-template-columns:1fr}}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
-<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-
-<script type="application/ld+json">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Shipping Cost & Chargeable Weight Planner | AfroTools</title>
+  <meta name="description" content="Calculate chargeable weight and a transparent shipping cost scenario from your own confirmed divisor, rate and fee assumptions. Local, private and exportable.">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Shipping Cost & Chargeable Weight Planner">
+  <meta property="og:description" content="Use your own confirmed shipping assumptions to calculate chargeable weight and a transparent planning total.">
+  <meta property="og:url" content="https://afrotools.com/tools/shipping-calc/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Shipping Cost & Chargeable Weight Planner">
+  <meta name="twitter:description" content="A browser-local worksheet for your confirmed divisor, rate and fee assumptions.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
+  <meta property="article:modified_time" content="2026-07-23">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+  <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=c4853917">
+  <link rel="stylesheet" href="/assets/css/shipping-cost-planner.css?v=ecb5755c">
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "https://afrotools.com/",
-  "description": "https://afrotools.com/",
-  "url": "https://afrotools.com/",
-  "inLanguage": "en",
-  "applicationCategory": "WebApplication",
+  "name": "Shipping Cost & Chargeable Weight Planner",
+  "description": "Browser-local worksheet that calculates chargeable weight and a planning total using only user-confirmed shipping assumptions.",
+  "url": "https://afrotools.com/tools/shipping-calc/",
+  "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "browserRequirements": "Requires JavaScript",
+  "inLanguage": [
+    "en",
+    "fr",
+    "sw"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "author": {
+  "provider": {
     "@type": "Organization",
     "name": "AfroTools",
     "url": "https://afrotools.com/"
@@ -119,624 +49,41 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   "image": "https://afrotools.com/assets/img/tools/shipping-calc.webp"
 }
 </script>
+
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "https://afrotools.com/",
-  "url": "https://afrotools.com/",
-  "description": "https://afrotools.com/",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/shipping-calc.webp"
-}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Shipping Cost & Chargeable Weight Planner","item":"https://afrotools.com/tools/shipping-calc/"}]}
 </script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="African Shipping Cost Calculator | Compare Carrier Rates | AfroTools">
-<meta name="twitter:description" content="Compare shipping costs from 20+ African countries with DHL, FedEx, GIG Logistics, Aramex and local carriers.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/shipping-calc.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "African Shipping Cost Calculator",
-      "item": "https://afrotools.com/tools/shipping-calc/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How long does shipping within Africa take?","acceptedAnswer":{"@type":"Answer","text":"Domestic shipping typically takes 1-3 days for express and 3-7 days for standard within major cities. Intra-African shipping (e.g., Nigeria to Kenya) takes 5-14 days depending on the carrier. International shipping to Europe/US is 3-5 days express or 7-21 days standard."}},{"@type":"Question","name":"What is volumetric weight and why does it matter?","acceptedAnswer":{"@type":"Answer","text":"Volumetric weight is calculated as (Length x Width x Height) / 5000. Carriers charge by actual weight or volumetric weight, whichever is greater. A large but light box (e.g., pillows) may cost more than a small heavy box (e.g., books) because it takes up more space in the vehicle or aircraft."}},{"@type":"Question","name":"Do I need to pay customs duties for intra-African shipping?","acceptedAnswer":{"@type":"Answer","text":"Yes, most intra-African shipments still attract customs duties unless both countries have preferential tariff agreements under AfCFTA. Duty rates typically range from 5-25% depending on the product category and destination country. Documents and commercial samples are usually exempt."}},{"@type":"Question","name":"Which is the cheapest carrier for shipping from Nigeria?","acceptedAnswer":{"@type":"Answer","text":"For domestic Nigerian shipping, GIG Logistics and NIPOST are typically the cheapest options. For international shipments, economy services from Aramex or GIG offer lower rates than DHL/FedEx express, but with longer delivery times (7-14 days vs 3-5 days)."}},{"@type":"Question","name":"What items cannot be shipped from Africa?","acceptedAnswer":{"@type":"Answer","text":"Restricted items vary by carrier and destination, but generally you cannot ship: perishable food (without special packaging), hazardous materials, firearms, live animals, currency, and some agricultural products. Check destination country rules for electronics, medicines, and food items. Carriers like DHL and FedEx have detailed restricted items lists on their websites."}},{"@type":"Question","name":"How do I use the Shipping Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Shipping Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Shipping Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Shipping Cost Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/shipping-calc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/shipping-calc/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-expedition/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-usafirishaji/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/shipping-calc/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/vat-business-tax/">VAT & Business</a> / <span>Shipping Calculator</span></div>
-<h1>African <em>Shipping Cost Calculator</em></h1>
-<p class="hero-sub">Compare rates from 10+ carriers across 20 African countries. Includes volumetric weight, customs duty estimates, insurance, and delivery times.</p>
-<div class="hero-badges"><span class="badge b-em">10+ Carriers</span><span class="badge b-em">20 Countries</span><span class="badge b-em">Customs Estimates</span><span class="badge b-em">PDF Export</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calculator">
-<div class="card">
-<div class="card-head"><span class="card-title">Shipment Details</span></div>
-<div class="card-body">
-
-<div class="toggle-group" id="serviceToggle">
-<button type="button" class="toggle-btn active" data-val="parcel" onclick="setService(this)">Parcel / Box</button>
-<button type="button" class="toggle-btn" data-val="document" onclick="setService(this)">Document</button>
-<button type="button" class="toggle-btn" data-val="pallet" onclick="setService(this)">Pallet / Freight</button>
-</div>
-
-<div class="row field">
-<div><label for="from">From Country</label>
-<select id="from">
-<option value="NG">Nigeria</option>
-<option value="KE">Kenya</option>
-<option value="ZA">South Africa</option>
-<option value="GH">Ghana</option>
-<option value="EG">Egypt</option>
-<option value="TZ">Tanzania</option>
-<option value="ET">Ethiopia</option>
-<option value="UG">Uganda</option>
-<option value="RW">Rwanda</option>
-<option value="SN">Senegal</option>
-<option value="CI">Ivory Coast</option>
-<option value="CM">Cameroon</option>
-<option value="AO">Angola</option>
-<option value="MZ">Mozambique</option>
-<option value="MA">Morocco</option>
-<option value="TN">Tunisia</option>
-<option value="DZ">Algeria</option>
-<option value="BW">Botswana</option>
-<option value="NA">Namibia</option>
-<option value="MU">Mauritius</option>
-</select></div>
-<div><label>To Country</label>
-<select id="to" aria-label="To">
-<option value="NG">Nigeria</option>
-<option value="KE" selected>Kenya</option>
-<option value="ZA">South Africa</option>
-<option value="GH">Ghana</option>
-<option value="EG">Egypt</option>
-<option value="TZ">Tanzania</option>
-<option value="ET">Ethiopia</option>
-<option value="UG">Uganda</option>
-<option value="RW">Rwanda</option>
-<option value="SN">Senegal</option>
-<option value="CI">Ivory Coast</option>
-<option value="CM">Cameroon</option>
-<option value="AO">Angola</option>
-<option value="MZ">Mozambique</option>
-<option value="MA">Morocco</option>
-<option value="TN">Tunisia</option>
-<option value="DZ">Algeria</option>
-<option value="BW">Botswana</option>
-<option value="NA">Namibia</option>
-<option value="MU">Mauritius</option>
-<option value="UK">United Kingdom</option>
-<option value="US">United States</option>
-<option value="CN">China</option>
-<option value="AE">UAE (Dubai)</option>
-<option value="DE">Germany</option>
-<option value="FR">France</option>
-<option value="IN">India</option>
-<option value="CA">Canada</option>
-</select></div>
-</div>
-
-<div class="row field">
-<div><label>From City (optional)</label>
-<input aria-label="E.g. Lagos, Nairobi" type="text" id="fromCity" placeholder="e.g. Lagos, Nairobi"></div>
-<div><label>To City (optional)</label>
-<input aria-label="E.g. London, Accra" type="text" id="toCity" placeholder="e.g. London, Accra"></div>
-</div>
-
-<div class="row4 field" id="dimFields">
-<div><label>Weight (kg)</label><input aria-label="Weight" type="number" id="weight" value="2" min="0.1" max="1000" step="0.5"></div>
-<div><label>Length (cm)</label><input aria-label="Length" type="number" id="length" value="30" min="1" max="300"></div>
-<div><label>Width (cm)</label><input aria-label="Width" type="number" id="width" value="20" min="1" max="300"></div>
-<div><label>Height (cm)</label><input aria-label="Height" type="number" id="height" value="15" min="1" max="300"></div>
-</div>
-
-<div class="presets">
-<span style="font-size:.7rem;color:#64748b;font-weight:600;line-height:2">Quick:</span>
-<button type="button" class="preset" onclick="setPreset(0.5,25,17,2,'document')">Envelope</button>
-<button type="button" class="preset" onclick="setPreset(1,22,16,10,'parcel')">Shoe Box</button>
-<button type="button" class="preset" onclick="setPreset(5,40,30,25,'parcel')">Medium Box</button>
-<button type="button" class="preset" onclick="setPreset(15,60,40,40,'parcel')">Large Box</button>
-<button type="button" class="preset" onclick="setPreset(30,80,60,50,'parcel')">XL Cargo</button>
-</div>
-
-<div class="row field" style="margin-top:14px">
-<div><label>Declared Value (USD)</label>
-<input aria-label="For customs &amp; insurance" type="number" id="declaredValue" value="100" min="0" step="10" placeholder="For customs & insurance"></div>
-<div><label>Speed Preference</label>
-<select id="speed" aria-label="Speed">
-<option value="all">All Options</option>
-<option value="express">Express Only (1-5 days)</option>
-<option value="standard">Standard Only (5-14 days)</option>
-<option value="economy">Economy Only (14+ days)</option>
-</select></div>
-</div>
-
-<div class="checkbox-row">
-<input type="checkbox" id="addInsurance"><label for="addInsurance">Add shipping insurance (est. 2-3% of declared value)</label>
-</div>
-<div class="checkbox-row">
-<input type="checkbox" id="addCustoms" checked><label for="addCustoms">Include customs duty estimate</label>
-</div>
-
-<button type="button" class="btn btn-primary" onclick="calculate()">Compare Shipping Rates</button>
-</div></div>
-
-<!-- Results -->
-<div class="card" id="resultCard" style="display:none">
-<div class="card-head"><span class="card-title">Estimated Rates</span></div>
-<div class="card-body">
-<div class="summary-strip" id="summaryStrip"></div>
-<div id="results"></div>
-<div class="cost-breakdown" id="costBreakdown" style="display:none">
-<div style="font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#64748b;margin-bottom:8px">Cost Breakdown (Cheapest Option)</div>
-<div id="breakdownRows"></div>
-</div>
-<div class="customs-alert" id="customsAlert" style="display:none"></div>
-<div style="display:flex;gap:8px;margin-top:16px;flex-wrap:wrap">
-<button type="button" class="btn" id="copyShippingCalcBtn">Copy shipping brief</button>
-<button type="button" class="btn" id="shippingCalcCsvBtn">Download CSV</button>
-<save-result-button tool-slug="shipping-calc" tool-name="Shipping Calculator"></save-result-button>
-<share-result-button tool-name="Shipping Calculator" tool-slug="shipping-calc"></share-result-button>
-</div>
-<p id="shippingCalcStatus" role="status" aria-live="polite" style="min-height:22px;margin-top:8px;color:#475569;font-size:.82rem"></p>
-</div>
-</div>
-</div>
-
-<div class="sidebar">
-<div class="card">
-<div class="card-head"><span class="card-title">Volumetric Weight</span></div>
-<div class="card-body" style="font-size:.78rem;color:#475569;line-height:1.7">
-<p>Carriers charge by <strong>actual weight</strong> or <strong>volumetric weight</strong> — whichever is greater.</p>
-<p style="margin-top:6px"><strong>Formula:</strong> (L x W x H) / 5000</p>
-<p style="margin-top:6px">A large, light box may cost more than a small, heavy one due to volumetric pricing.</p>
-<div id="volWeightDisplay" style="margin-top:10px;padding:10px;background:#f0f9ff;border-radius:6px;display:none">
-<div style="font-size:.7rem;font-weight:700;color:#0c4a6e;text-transform:uppercase">Live Calculation</div>
-<div style="font-size:.82rem;margin-top:4px"><strong>Actual:</strong> <span id="dispActual">-</span> kg</div>
-<div style="font-size:.82rem;margin-top:2px"><strong>Volumetric:</strong> <span id="dispVol">-</span> kg</div>
-<div style="font-size:.82rem;margin-top:2px;font-weight:700;color:#0ea5e9"><strong>Charged:</strong> <span id="dispCharge">-</span> kg</div>
-</div>
-</div></div>
-<div class="info-card">
-<h4>African Carriers</h4>
-<ul>
-<li><strong>GIG Logistics</strong> — Nigeria, Ghana, US, UK</li>
-<li><strong>Sendy</strong> — Kenya, Uganda, Tanzania</li>
-<li><strong>Kwik / MAX</strong> — Nigeria last-mile</li>
-<li><strong>The Courier Guy</strong> — South Africa</li>
-<li><strong>DHL Africa</strong> — Pan-African express</li>
-<li><strong>FedEx</strong> — International express</li>
-<li><strong>Aramex</strong> — Middle East + Africa</li>
-<li><strong>Terminal Africa</strong> — Multi-carrier API</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Customs & Duties</h4>
-<ul>
-<li>Most African countries charge 5-25% import duty</li>
-<li>VAT applies on top of duty (typically 15-18%)</li>
-<li>AfCFTA may reduce intra-Africa tariffs</li>
-<li>Documents and samples are usually duty-free</li>
-<li>Always declare value accurately</li>
-</ul>
-</div>
-<div class="info-card" style="margin-top:10px">
-<h4>Shipping Tips</h4>
-<ul>
-<li>Package items securely — African routes can be rough</li>
-<li>Keep customs documents ready (invoice, packing list)</li>
-<li>Consider insurance for items over $100</li>
-<li>Track shipments via carrier app or website</li>
-<li>Book collection — don't wait in queues</li>
-<li>Avoid shipping restricted items (check destination rules)</li>
-</ul>
-</div>
-</div>
-</div></section>
-
-<section class="seo-section">
-<h2>Shipping in Africa: A Complete Guide</h2>
-<p>Shipping within and from Africa has improved dramatically with the growth of e-commerce and logistics startups. Companies like GIG Logistics (Nigeria/Ghana), Sendy (Kenya), and The Courier Guy (South Africa) have made domestic shipping more reliable and affordable. International carriers DHL, FedEx, UPS, and Aramex maintain strong African networks for cross-border shipments.</p>
-<p>The biggest challenges for African shipping remain customs clearance (especially for intra-African trade), infrastructure limitations in rural areas, and the high cost of international shipping compared to other regions. The African Continental Free Trade Area (AfCFTA) is gradually reducing trade barriers between African countries, which should lower shipping costs over time.</p>
-<p>When shipping from Africa, understanding volumetric weight pricing is essential. Carriers charge by either actual weight or volumetric weight (calculated from package dimensions), whichever is greater. This means a large, lightweight package can cost as much as a small, heavy one. Our calculator factors in both actual and volumetric weight to give you accurate estimates.</p>
-<p>For e-commerce businesses in Africa, choosing the right shipping partner can significantly impact customer satisfaction and profit margins. Domestic last-mile delivery is generally affordable, but international shipping from Africa remains expensive. Use this calculator to compare all options and find the best value for your specific route and package size.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="faq-item"><summary>How long does shipping within Africa take?</summary><p>Domestic shipping typically takes 1-3 days for express and 3-7 days for standard within major cities. Intra-African shipping (e.g., Nigeria to Kenya) takes 5-14 days depending on the carrier. International shipping to Europe/US is 3-5 days express or 7-21 days standard.</p></details>
-<details class="faq-item"><summary>What is volumetric weight and why does it matter?</summary><p>Volumetric weight is calculated as (Length x Width x Height) / 5000. Carriers charge by actual weight or volumetric weight, whichever is greater. A large but light box (e.g., pillows) may cost more than a small heavy box (e.g., books) because it takes up more space in the vehicle or aircraft.</p></details>
-<details class="faq-item"><summary>Do I need to pay customs duties for intra-African shipping?</summary><p>Yes, most intra-African shipments still attract customs duties unless both countries have preferential tariff agreements under AfCFTA. Duty rates typically range from 5-25% depending on the product category and destination country. Documents and commercial samples are usually exempt.</p></details>
-<details class="faq-item"><summary>Which is the cheapest carrier for shipping from Nigeria?</summary><p>For domestic Nigerian shipping, GIG Logistics and NIPOST are typically the cheapest options. For international shipments, economy services from Aramex or GIG offer lower rates than DHL/FedEx express, but with longer delivery times (7-14 days vs 3-5 days).</p></details>
-<details class="faq-item"><summary>What items cannot be shipped from Africa?</summary><p>Restricted items vary by carrier and destination, but generally you cannot ship: perishable food (without special packaging), hazardous materials, firearms, live animals, currency, and some agricultural products. Check destination country rules for electronics, medicines, and food items. Carriers like DHL and FedEx have detailed restricted items lists on their websites.</p></details>
-</section>
-
-<section class="df-upgrade" data-df-upgrade="shipping-calc">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Shipment booking brief</span>
-      <h2>Turn the rate comparison into a booking checklist</h2>
-      <p>Not sure how to get the most from the Shipping Cost Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Shipping Cost Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="shipping-calc">
-      <label>Destination market<select name="country" aria-label="Destination market"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Declared value USD<input name="declaredValue" type="number" value="100" min="0" step="any" aria-label="Declared value USD"></label>
-      <label>Shipping priority<select name="priority" aria-label="Shipping priority"><option value="cost">lowest cost</option><option value="speed">fastest delivery</option><option value="tracking">tracking quality</option><option value="risk">lower customs risk</option></select></label>
-      <label>Quote buffer percent<input name="buffer" type="number" value="15" min="0" step="any" aria-label="Quote buffer percent"></label>
-      <button type="submit">Create shipping brief</button>
-      <output class="df-result" data-df-result="shipping-calc" data-df-base="Shipping Cost Calculator — enter your details above to see your result." aria-live="polite">Shipping Cost Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="shipping-calc">Copy shipping brief</button><a class="df-action-link" href="#resultCard">View rates</a></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="shipping-calc-faq-title">
-  <h2 id="shipping-calc-faq-title">Shipping Cost Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Shipping Cost Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Shipping Cost Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Shipping Cost Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Shipping Cost Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-<afro-related-tools category="ecommerce" current="shipping-calc" data-ssr="1">
+<body class="scp-page">
+  <afro-navbar></afro-navbar>
+  <header class="scp-hero"><div class="scp-shell">
+    <div class="scp-kicker">Private shipping worksheet</div>
+    <h1>Shipping Cost &amp; Chargeable Weight Planner</h1>
+    <p>Turn a provider quote into transparent arithmetic. You confirm the divisor, rate and every fee; AfroTools supplies no carrier price, route promise, tax or availability claim.</p>
+    <p>Duty, import VAT, HS classification, brokerage and border charges are deliberately excluded unless you enter them as confirmed provider inputs.</p>
+    <div class="scp-badges"><span>Browser local</span><span>No carrier ranking</span><span>CSV · JSON · PDF · Print</span></div>
+  </div></header>
+  <main class="scp-main"><div class="scp-shell"><div id="shippingPlannerRoot" data-locale="en"></div></div></main>
+<afro-related-tools data-ssr="1" category="ecommerce" current="shipping-calc">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="Custom-rate-first VAT planning, invoices, withholding scenarios, and rate comparisons, with authority-bound presets only">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="Add or extract Nigeria VAT at 7.5%, compare zero-rated and exempt treatment, build invoice estimates, and export a priva">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="Add or extract VAT at the current 15% rate, keep confirmed zero-rated and exempt treatment distinct, screen 2026 registr">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="Add or extract Kenya VAT at 16%, keep confirmed zero-rated and exempt treatment distinct, build invoice estimates, and e">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="Add or extract Egypt&#39;s standard 14% VAT, screen the general registration threshold, and test clearly labelled non-statut">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="Plan Ghana invoices under the 2026 GRA structure: 15% VAT, 2.5% NHIL and 2.5% GETFund on the same base.">Ghana VAT Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-var COUNTRIES = {
-  NG:{name:'Nigeria',flag:'🇳🇬',currency:'NGN',rate:1580,vat:7.5,duty:15,zone:'west'},
-  KE:{name:'Kenya',flag:'🇰🇪',currency:'KES',rate:153,vat:16,duty:12,zone:'east'},
-  ZA:{name:'South Africa',flag:'🇿🇦',currency:'ZAR',rate:18.5,vat:15,duty:10,zone:'south'},
-  GH:{name:'Ghana',flag:'🇬🇭',currency:'GHS',rate:15.5,vat:15,duty:12.5,zone:'west'},
-  EG:{name:'Egypt',flag:'🇪🇬',currency:'EGP',rate:50,vat:14,duty:10,zone:'north'},
-  TZ:{name:'Tanzania',flag:'🇹🇿',currency:'TZS',rate:2650,vat:18,duty:12,zone:'east'},
-  ET:{name:'Ethiopia',flag:'🇪🇹',currency:'ETB',rate:125,vat:15,duty:20,zone:'east'},
-  UG:{name:'Uganda',flag:'🇺🇬',currency:'UGX',rate:3780,vat:18,duty:12,zone:'east'},
-  RW:{name:'Rwanda',flag:'🇷🇼',currency:'RWF',rate:1350,vat:18,duty:12,zone:'east'},
-  SN:{name:'Senegal',flag:'🇸🇳',currency:'XOF',rate:620,vat:18,duty:15,zone:'west'},
-  CI:{name:'Ivory Coast',flag:'🇨🇮',currency:'XOF',rate:620,vat:18,duty:15,zone:'west'},
-  CM:{name:'Cameroon',flag:'🇨🇲',currency:'XAF',rate:620,vat:19.25,duty:15,zone:'central'},
-  AO:{name:'Angola',flag:'🇦🇴',currency:'AOA',rate:850,vat:14,duty:10,zone:'central'},
-  MZ:{name:'Mozambique',flag:'🇲🇿',currency:'MZN',rate:64,vat:17,duty:12,zone:'south'},
-  MA:{name:'Morocco',flag:'🇲🇦',currency:'MAD',rate:10,vat:20,duty:10,zone:'north'},
-  TN:{name:'Tunisia',flag:'🇹🇳',currency:'TND',rate:3.15,vat:19,duty:10,zone:'north'},
-  DZ:{name:'Algeria',flag:'🇩🇿',currency:'DZD',rate:135,vat:19,duty:15,zone:'north'},
-  BW:{name:'Botswana',flag:'🇧🇼',currency:'BWP',rate:13.8,vat:14,duty:10,zone:'south'},
-  NA:{name:'Namibia',flag:'🇳🇦',currency:'NAD',rate:18.5,vat:15,duty:10,zone:'south'},
-  MU:{name:'Mauritius',flag:'🇲🇺',currency:'MUR',rate:46,vat:15,duty:8,zone:'east'},
-  UK:{name:'United Kingdom',flag:'🇬🇧',currency:'GBP',rate:0.79,vat:20,duty:5,zone:'intl'},
-  US:{name:'United States',flag:'🇺🇸',currency:'USD',rate:1,vat:0,duty:5,zone:'intl'},
-  CN:{name:'China',flag:'🇨🇳',currency:'CNY',rate:7.25,vat:13,duty:8,zone:'intl'},
-  AE:{name:'UAE',flag:'🇦🇪',currency:'AED',rate:3.67,vat:5,duty:5,zone:'intl'},
-  DE:{name:'Germany',flag:'🇩🇪',currency:'EUR',rate:0.92,vat:19,duty:5,zone:'intl'},
-  FR:{name:'France',flag:'🇫🇷',currency:'EUR',rate:0.92,vat:20,duty:5,zone:'intl'},
-  IN:{name:'India',flag:'🇮🇳',currency:'INR',rate:84,vat:18,duty:10,zone:'intl'},
-  CA:{name:'Canada',flag:'🇨🇦',currency:'CAD',rate:1.37,vat:5,duty:5,zone:'intl'}
-};
-
-var AFRICAN_CODES = ['NG','KE','ZA','GH','EG','TZ','ET','UG','RW','SN','CI','CM','AO','MZ','MA','TN','DZ','BW','NA','MU'];
-
-var CARRIERS = [
-  {name:'DHL Express',icon:'🟡',domestic:15,intra:45,intl:65,perKg:8,fuel:0.14,speed:'express',time:{domestic:'1-2 days',intra:'3-5 days',intl:'3-5 days'},coverage:'all',minWeight:0.5},
-  {name:'FedEx International',icon:'🟣',domestic:18,intra:50,intl:60,perKg:9,fuel:0.12,speed:'express',time:{domestic:'1-3 days',intra:'4-7 days',intl:'3-5 days'},coverage:'all',minWeight:0.5},
-  {name:'UPS',icon:'🟤',domestic:16,intra:48,intl:62,perKg:8.5,fuel:0.13,speed:'express',time:{domestic:'2-3 days',intra:'5-7 days',intl:'3-6 days'},coverage:'all',minWeight:0.5},
-  {name:'Aramex',icon:'🔴',domestic:10,intra:35,intl:50,perKg:6,fuel:0.10,speed:'standard',time:{domestic:'2-3 days',intra:'4-7 days',intl:'4-7 days'},coverage:'all',minWeight:0.3},
-  {name:'GIG Logistics',icon:'🟢',domestic:5,intra:30,intl:45,perKg:4,fuel:0.08,speed:'standard',time:{domestic:'1-3 days',intra:'5-10 days',intl:'7-14 days'},coverage:'NG,GH,US,UK',minWeight:0.1},
-  {name:'Sendy',icon:'🔵',domestic:3,intra:25,intl:0,perKg:2.5,fuel:0.05,speed:'standard',time:{domestic:'1-2 days',intra:'3-7 days',intl:'N/A'},coverage:'KE,UG,TZ',minWeight:0.1},
-  {name:'The Courier Guy',icon:'⚪',domestic:6,intra:28,intl:40,perKg:5,fuel:0.10,speed:'standard',time:{domestic:'1-3 days',intra:'5-10 days',intl:'7-14 days'},coverage:'ZA,BW,NA,MZ',minWeight:0.5},
-  {name:'NIPOST / PostNet',icon:'📮',domestic:2,intra:15,intl:25,perKg:2,fuel:0.03,speed:'economy',time:{domestic:'3-7 days',intra:'10-21 days',intl:'14-30 days'},coverage:'NG,ZA',minWeight:0.1},
-  {name:'EMS Africa',icon:'📬',domestic:4,intra:20,intl:30,perKg:3,fuel:0.05,speed:'economy',time:{domestic:'3-5 days',intra:'7-14 days',intl:'10-21 days'},coverage:'all',minWeight:0.1},
-  {name:'Kwik Delivery',icon:'⚡',domestic:3,intra:0,intl:0,perKg:2,fuel:0.05,speed:'express',time:{domestic:'Same day-1 day',intra:'N/A',intl:'N/A'},coverage:'NG',minWeight:0.1}
-];
-
-var currentService = 'parcel';
-var latestShippingCalc = null;
-
-function setService(btn) {
-  document.querySelectorAll('#serviceToggle .toggle-btn').forEach(function(b){b.classList.remove('active')});
-  btn.classList.add('active');
-  currentService = btn.dataset.val;
-}
-
-function setPreset(w,l,wi,h,type) {
-  document.getElementById('weight').value = w;
-  document.getElementById('length').value = l;
-  document.getElementById('width').value = wi;
-  document.getElementById('height').value = h;
-  document.querySelectorAll('#serviceToggle .toggle-btn').forEach(function(b) {
-    b.classList.toggle('active', b.dataset.val === type);
-  });
-  currentService = type;
-  updateVolDisplay();
-}
-
-function updateVolDisplay() {
-  var w = +document.getElementById('weight').value;
-  var l = +document.getElementById('length').value;
-  var wi = +document.getElementById('width').value;
-  var h = +document.getElementById('height').value;
-  var vol = (l * wi * h) / 5000;
-  var charge = Math.max(w, vol);
-  document.getElementById('dispActual').textContent = w.toFixed(1);
-  document.getElementById('dispVol').textContent = vol.toFixed(1);
-  document.getElementById('dispCharge').textContent = charge.toFixed(1);
-  document.getElementById('volWeightDisplay').style.display = 'block';
-}
-
-['weight','length','width','height'].forEach(function(id) {
-  document.getElementById(id).addEventListener('input', updateVolDisplay);
-});
-
-function calculate() {
-  var from = document.getElementById('from').value;
-  var to = document.getElementById('to').value;
-  var weight = +document.getElementById('weight').value;
-  var l = +document.getElementById('length').value;
-  var w = +document.getElementById('width').value;
-  var h = +document.getElementById('height').value;
-  var declaredVal = +document.getElementById('declaredValue').value || 0;
-  var speedPref = document.getElementById('speed').value;
-  var addIns = document.getElementById('addInsurance').checked;
-  var addCust = document.getElementById('addCustoms').checked;
-
-  var volWeight = (l * w * h) / 5000;
-  var chargeWeight = Math.max(weight, volWeight);
-  var isDomestic = from === to;
-  var isIntraAfrica = !isDomestic && AFRICAN_CODES.indexOf(from) >= 0 && AFRICAN_CODES.indexOf(to) >= 0;
-  var isIntl = !isDomestic && !isIntraAfrica;
-  var fromC = COUNTRIES[from] || {};
-  var toC = COUNTRIES[to] || {};
-
-  var routeType = isDomestic ? 'Domestic' : isIntraAfrica ? 'Intra-Africa' : 'International';
-
-  // Zone distance multiplier
-  var zoneMult = 1;
-  if (isIntraAfrica) {
-    if (fromC.zone !== toC.zone) zoneMult = 1.25;
-  }
-
-  var results = [];
-  CARRIERS.forEach(function(c) {
-    // Check coverage
-    if (c.coverage !== 'all') {
-      var covList = c.coverage.split(',');
-      if (covList.indexOf(from) < 0 && covList.indexOf(to) < 0) return;
-    }
-
-    // Check speed filter
-    if (speedPref !== 'all' && c.speed !== speedPref) return;
-
-    var base, time;
-    if (isDomestic) { base = c.domestic; time = c.time.domestic; }
-    else if (isIntraAfrica) { base = c.intra; time = c.time.intra; }
-    else { base = c.intl; time = c.time.intl; }
-
-    if (!base || base === 0) return;
-
-    var freight = (base + (chargeWeight * c.perKg)) * zoneMult;
-    var fuelSurcharge = freight * c.fuel;
-    var insurance = addIns ? declaredVal * 0.025 : 0;
-    var customsDuty = 0, customsVat = 0;
-    if (addCust && !isDomestic && declaredVal > 0 && currentService !== 'document') {
-      customsDuty = declaredVal * (toC.duty || 10) / 100;
-      customsVat = (declaredVal + customsDuty) * (toC.vat || 15) / 100;
-    }
-
-    if (currentService === 'document') { freight *= 0.55; fuelSurcharge *= 0.55; }
-    if (currentService === 'pallet') { freight *= 3.2; fuelSurcharge *= 2; }
-
-    var totalUSD = freight + fuelSurcharge + insurance + customsDuty + customsVat;
-    totalUSD = Math.round(totalUSD * 100) / 100;
-
-    results.push({
-      name: c.name, icon: c.icon, cost: totalUSD, time: time, speed: c.speed,
-      freight: freight, fuel: fuelSurcharge, insurance: insurance,
-      duty: customsDuty, vat: customsVat
-    });
-  });
-
-  results.sort(function(a,b) { return a.cost - b.cost; });
-
-  if (!results.length) {
-    document.getElementById('results').innerHTML = '<p style="color:#ef4444;font-weight:700;text-align:center;padding:20px">No carriers found for this route. Try adjusting speed preference or route.</p>';
-    document.getElementById('resultCard').style.display = 'block';
-    return;
-  }
-
-  // Find cheapest and fastest
-  var cheapestIdx = 0;
-  var fastestIdx = 0;
-  var fastestDays = 999;
-  results.forEach(function(r,i) {
-    var d = parseInt(r.time) || 99;
-    if (d < fastestDays) { fastestDays = d; fastestIdx = i; }
-  });
-
-  // Summary strip
-  document.getElementById('summaryStrip').innerHTML =
-    '<div class="summary-item"><div class="label">Route</div><div class="value" style="font-size:.85rem">' + (fromC.flag||'') + ' → ' + (toC.flag||'') + ' ' + routeType + '</div></div>' +
-    '<div class="summary-item"><div class="label">Charged Weight</div><div class="value">' + chargeWeight.toFixed(1) + ' kg</div></div>' +
-    '<div class="summary-item"><div class="label">Cheapest Rate</div><div class="value">$' + results[0].cost.toFixed(2) + '</div></div>';
-
-  // Carrier cards
-  var html = '';
-  results.forEach(function(r, i) {
-    var cls = '';
-    var badgeHtml = '';
-    if (i === cheapestIdx) { cls = ' cheapest'; badgeHtml = '<span class="badge-tag" style="background:#dcfce7;color:#059669">Cheapest</span>'; }
-    if (i === fastestIdx && i !== cheapestIdx) { cls = ' fastest'; badgeHtml = '<span class="badge-tag" style="background:#dbeafe;color:#2563eb">Fastest</span>'; }
-
-    var localPrice = '';
-    if (toC.rate && toC.rate !== 1) {
-      localPrice = '<div class="price-local">' + toC.currency + ' ' + Math.round(r.cost * toC.rate).toLocaleString() + '</div>';
-    }
-
-    html += '<div class="carrier-card' + cls + '">' +
-      '<div><div class="name">' + r.icon + ' ' + r.name + ' ' + badgeHtml + '</div>' +
-      '<div class="details">' + r.time + ' · ' + r.speed.charAt(0).toUpperCase() + r.speed.slice(1) + (r.duty > 0 ? ' · Incl. duties' : '') + '</div></div>' +
-      '<div><div class="price">$' + r.cost.toFixed(2) + '</div>' + localPrice +
-      '<div class="time">USD estimate</div></div></div>';
-  });
-  document.getElementById('results').innerHTML = html;
-
-  // Cost breakdown for cheapest
-  var ch = results[0];
-  latestShippingCalc = {
-    from: fromC.name || from,
-    to: toC.name || to,
-    routeType: routeType,
-    service: currentService,
-    weightKg: weight,
-    volumetricKg: volWeight,
-    chargedKg: chargeWeight,
-    declaredValue: declaredVal,
-    addInsurance: addIns,
-    addCustoms: addCust,
-    cheapest: ch,
-    results: results.slice(0,5)
-  };
-  var bdHtml = '<div class="cost-row"><span>Base freight</span><span>$' + ch.freight.toFixed(2) + '</span></div>' +
-    '<div class="cost-row"><span>Fuel surcharge</span><span>$' + ch.fuel.toFixed(2) + '</span></div>';
-  if (ch.insurance > 0) bdHtml += '<div class="cost-row"><span>Insurance (2.5%)</span><span>$' + ch.insurance.toFixed(2) + '</span></div>';
-  if (ch.duty > 0) bdHtml += '<div class="cost-row"><span>Import duty (~' + (toC.duty||10) + '%)</span><span>$' + ch.duty.toFixed(2) + '</span></div>';
-  if (ch.vat > 0) bdHtml += '<div class="cost-row"><span>Import VAT (~' + (toC.vat||15) + '%)</span><span>$' + ch.vat.toFixed(2) + '</span></div>';
-  bdHtml += '<div class="cost-row total"><span>Total estimate</span><span>$' + ch.cost.toFixed(2) + '</span></div>';
-  document.getElementById('breakdownRows').innerHTML = bdHtml;
-  document.getElementById('costBreakdown').style.display = 'block';
-
-  // Customs alert
-  if (!isDomestic && addCust && currentService !== 'document') {
-    document.getElementById('customsAlert').innerHTML = '⚠️ <strong>Customs note:</strong> Duty and VAT estimates are approximate. Actual rates depend on HS code classification, trade agreements, and destination customs authority. Broker fees ($20-50) may apply separately.';
-    document.getElementById('customsAlert').style.display = 'block';
-  } else {
-    document.getElementById('customsAlert').style.display = 'none';
-  }
-
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-
-  // Wire save/share
-  var _saveBtn = document.querySelector('save-result-button');
-  if (_saveBtn) _saveBtn.setData({
-    inputs: {from: from, to: to, weight: weight, dimensions: l+'x'+w+'x'+h},
-    outputs: {cheapest: results[0].name, cheapestPrice: '$'+results[0].cost.toFixed(2), chargeWeight: chargeWeight.toFixed(1)+'kg', route: routeType}
-  });
-  var _shareBtn = document.querySelector('share-result-button');
-  if (_shareBtn) _shareBtn.setResult({
-    headline: routeType + ' Shipping: ' + (fromC.flag||from) + ' → ' + (toC.flag||to),
-    mainValue: '$' + results[0].cost.toFixed(2),
-    subValues: [
-      {label: 'Carrier', value: results[0].name},
-      {label: 'Weight', value: chargeWeight.toFixed(1) + 'kg'},
-      {label: 'Delivery', value: results[0].time}
-    ]
-  });
-
-  // Analytics
-  if (window.gtag) gtag('event', 'shipping_calc', {from: from, to: to, route: routeType, weight: chargeWeight});
-}
-
-function shippingCalcSummary(){
-  if(!latestShippingCalc){calculate();}
-  var r = latestShippingCalc;
-  if(!r)return 'No shipping estimate is ready yet.';
-  return [
-    'AfroTools shipping brief',
-    'Route: ' + r.from + ' to ' + r.to + ' (' + r.routeType + ')',
-    'Service: ' + r.service,
-    'Weight: actual ' + r.weightKg.toFixed(1) + ' kg, volumetric ' + r.volumetricKg.toFixed(1) + ' kg, charged ' + r.chargedKg.toFixed(1) + ' kg',
-    'Declared value: $' + r.declaredValue.toFixed(2),
-    'Cheapest option: ' + r.cheapest.name + ' at $' + r.cheapest.cost.toFixed(2) + ' / ' + r.cheapest.time,
-    'Verify carrier coverage, pickup/dropoff terms, customs HS code, duty/VAT, restricted items, insurance exclusions, and delivery SLA before booking.'
-  ].join('\n');
-}
-
-function copyShippingCalcBrief(){
-  var text = shippingCalcSummary();
-  var status = document.getElementById('shippingCalcStatus');
-  if(navigator.clipboard && navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){status.textContent='Shipping brief copied. No parcel data was sent.';}).catch(function(){status.textContent=text;});
-  } else {
-    status.textContent=text;
-  }
-}
-
-function downloadShippingCalcCsv(){
-  if(!latestShippingCalc){calculate();}
-  var r = latestShippingCalc;
-  if(!r)return;
-  var rows = [['carrier','cost_usd','delivery_time','speed','freight_usd','fuel_usd','insurance_usd','duty_usd','vat_usd']];
-  r.results.forEach(function(item){
-    rows.push([item.name,item.cost.toFixed(2),item.time,item.speed,item.freight.toFixed(2),item.fuel.toFixed(2),item.insurance.toFixed(2),item.duty.toFixed(2),item.vat.toFixed(2)]);
-  });
-  rows.push([]);
-  rows.push(['field','value'],['from',r.from],['to',r.to],['route_type',r.routeType],['service',r.service],['actual_weight_kg',r.weightKg.toFixed(1)],['volumetric_weight_kg',r.volumetricKg.toFixed(1)],['charged_weight_kg',r.chargedKg.toFixed(1)],['assumption_note','Planning estimate only. Verify carrier coverage, customs, insurance, restricted items, and delivery terms before booking.']);
-  var csv=rows.map(function(row){return row.map(function(cell){return '"'+String(cell == null ? '' : cell).replace(/"/g,'""')+'"';}).join(',');}).join('\n');
-  var blob=new Blob([csv],{type:'text/csv'});
-  var a=document.createElement('a');
-  a.href=URL.createObjectURL(blob);
-  a.download='afrotools-shipping-rate-comparison.csv';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(a.href);
-  document.getElementById('shippingCalcStatus').textContent='CSV downloaded for carrier comparison.';
-}
-
-document.getElementById('copyShippingCalcBtn').addEventListener('click',copyShippingCalcBrief);
-document.getElementById('shippingCalcCsvBtn').addEventListener('click',downloadShippingCalcCsv);
-
-updateVolDisplay();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+  <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+  <script src="/assets/js/engines/shipping-cost-planner.js?v=7c8ef255"></script>
+  <script src="/assets/js/pages/shipping-cost-planner.js?v=fe98f6b7"></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

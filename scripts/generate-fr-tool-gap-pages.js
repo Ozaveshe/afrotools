@@ -7302,7 +7302,7 @@ const CURATED_PAGES = [
     related: "À utiliser avec la liste de cadeaux de dot et le budget mariage.",
     methodology: "La checklist organise rôles, questions et décisions en éléments confirmés, en attente ou reportés, puis produit une note de discussion copiable.",
     sourceNote: "Source principale : pratiques familiales et communautaires ; aucun barème officiel n'existe. Dernière vérification de la page : 2026.",
-    iframeEmbed: true,
+    lobolaNative: "checklist",
     faq: [
       { name: "La checklist fixe-t-elle un montant de dot ?", text: "Non. Elle structure la discussion ; les montants et cadeaux relèvent des familles et de la coutume locale." },
       { name: "Qui devrait remplir la checklist ?", text: "Un représentant de chaque famille peut la préparer avant la rencontre, puis la mettre à jour pendant la discussion." },
@@ -7329,7 +7329,7 @@ const CURATED_PAGES = [
     related: "À utiliser avec la checklist de négociation de la dot et le budget mariage.",
     methodology: "Chaque catégorie de cadeaux reçoit une estimation modifiable ; le total et le statut (confirmé, en attente) se mettent à jour pour le suivi familial.",
     sourceNote: "Source principale : pratiques familiales et communautaires ; les prix sont des estimations locales à vérifier. Dernière vérification de la page : 2026.",
-    iframeEmbed: true,
+    lobolaNative: "gift-list",
     faq: [
       { name: "La liste est-elle un barème officiel ?", text: "Non. C'est un support d'organisation : les cadeaux et montants dépendent de la coutume et de l'accord des familles." },
       { name: "Peut-on modifier les catégories ?", text: "Oui, chaque catégorie et chaque estimation se modifie pour refléter la liste réelle convenue entre les familles." },
@@ -7538,7 +7538,7 @@ const CURATED_PAGES = [
 ];
 
 const COVERAGE_WAVE = require("../data/localization/coverage-wave-2026-07.json");
-const WAVE_PAGES = COVERAGE_WAVE.french.map((page) => ({
+const WAVE_PAGES = COVERAGE_WAVE.french.filter((page) => page.native !== true).map((page) => ({
   enSlug: page.enSlug,
   frSlug: page.frSlug,
   title: `${page.name} | AfroTools`,
@@ -7604,7 +7604,60 @@ function escapeHtml(value) {
     .replace(/'/g, "&#39;");
 }
 
+function lobolaNativeMarkup(page) {
+  const countryOptions = ["Afrique du Sud", "Zimbabwe", "Botswana", "Zambie", "Eswatini", "Lesotho", "Namibie", "Autre / transfrontalier"]
+    .map((country) => `<option value="${country}">${country}</option>`)
+    .join("");
+  if (page.lobolaNative === "checklist") {
+    return `<section id="tool-mount" class="lobola-native" data-lobola-fr-checklist>
+      <div class="lobola-native-heading"><div><span>Rencontre familiale</span><h2>Préparer les personnes, les questions et les décisions</h2></div><button type="button" data-use-plan disabled>Utiliser le dernier plan sauvegardé</button></div>
+      <form class="lobola-native-form">
+        <div class="lobola-native-grid"><label for="fr-check-country">Pays ou contexte<select id="fr-check-country" name="country">${countryOptions}</select></label><label for="fr-check-range">Montant ou fourchette déjà discuté<input id="fr-check-range" name="range" placeholder="Ex. encore à confirmer"></label><label for="fr-check-family-a">Représentants d'une famille<input id="fr-check-family-a" name="familyA" placeholder="Parents, aînés, oncles, tantes"></label><label for="fr-check-family-b">Représentants de l'autre famille<input id="fr-check-family-b" name="familyB" placeholder="Parents, aînés, oncles, tantes"></label></div>
+        <label for="fr-check-confirmed">Éléments confirmés<textarea id="fr-check-confirmed" name="confirmed" placeholder="Personnes, date, cadeaux ou modalités déjà confirmés"></textarea></label><label for="fr-check-pending">Questions encore ouvertes<textarea id="fr-check-pending" name="pending" placeholder="Bétail, espèces, cadeaux, calendrier, témoins ou logistique"></textarea></label><label for="fr-check-next">Prochaine étape<textarea id="fr-check-next" name="next" placeholder="Qui appelle qui, quelle date et quel point doit être confirmé ?"></textarea></label>
+        <div class="lobola-native-checks"><label><input type="checkbox" name="roles" checked> Les deux familles savent qui peut parler en leur nom.</label><label><input type="checkbox" name="items"> Espèces, bétail, cadeaux et cérémonie restent séparés.</label><label><input type="checkbox" name="timing"> Le calendrier et l'affordabilité restent ouverts à la discussion.</label></div>
+        <div class="lobola-native-actions"><button type="submit">Mettre à jour le résumé</button><button type="button" class="secondary" data-copy-native>Copier le résumé</button><span data-native-status aria-live="polite"></span></div>
+      </form><output class="lobola-native-output" data-native-output aria-live="polite"></output>
+    </section>`;
+  }
+  if (page.lobolaNative === "gift-list") {
+    return `<section id="tool-mount" class="lobola-native" data-lobola-fr-gifts>
+      <div class="lobola-native-heading"><div><span>Budget cadeaux</span><h2>Séparer les cadeaux et la logistique</h2></div><button type="button" data-use-plan disabled>Utiliser le dernier plan sauvegardé</button></div>
+      <form class="lobola-native-form"><div class="lobola-native-grid"><label for="fr-gift-country">Pays ou contexte<select id="fr-gift-country" name="country">${countryOptions}</select></label><label for="fr-gift-currency">Devise<select id="fr-gift-currency" name="currency"><option>ZAR</option><option>USD</option><option>BWP</option><option>ZMW</option><option>SZL</option><option>LSL</option><option>NAD</option><option>XOF</option><option>EUR</option></select></label><label for="fr-gift-items">Cadeaux et articles pratiques<input id="fr-gift-items" name="gifts" type="number" min="0" step="1" inputmode="decimal" value="0"></label><label for="fr-gift-travel">Déplacement des représentants<input id="fr-gift-travel" name="travel" type="number" min="0" step="1" inputmode="decimal" value="0"></label><label for="fr-gift-ceremony">Nourriture, rencontre et cérémonie<input id="fr-gift-ceremony" name="ceremony" type="number" min="0" step="1" inputmode="decimal" value="0"></label><label for="fr-gift-other">Autres éléments confirmés<input id="fr-gift-other" name="other" type="number" min="0" step="1" inputmode="decimal" value="0"></label></div><label for="fr-gift-notes">Notes et statut<textarea id="fr-gift-notes" name="notes" placeholder="Notez ce qui est confirmé, en attente, facultatif ou non nécessaire."></textarea></label><div class="lobola-native-actions"><button type="submit">Mettre à jour le total</button><button type="button" class="secondary" data-copy-native>Copier le résumé</button><span data-native-status aria-live="polite"></span></div></form><output class="lobola-native-output" data-native-output aria-live="polite"></output>
+    </section>`;
+  }
+  return "";
+}
+
+function lobolaNativeScript() {
+  return `<script>
+(function () {
+  function value(form, name) { var field = form.elements[name]; return field && String(field.value || '').trim(); }
+  function amount(form, name) { var number = Number(value(form, name)); return Number.isFinite(number) && number > 0 ? number : 0; }
+  function copy(text, status) { if (navigator.clipboard && navigator.clipboard.writeText) { navigator.clipboard.writeText(text).then(function () { status.textContent = 'Résumé copié.'; }).catch(function () { status.textContent = 'Sélectionnez le résumé et copiez-le manuellement.'; }); } else { status.textContent = 'Sélectionnez le résumé et copiez-le manuellement.'; } }
+  function savedPlan() { try { return JSON.parse(localStorage.getItem('afrotools_lobola_plan_v1') || 'null'); } catch (error) { return null; } }
+  function localCountry(country) { return ({ 'South Africa':'Afrique du Sud', 'Zambia':'Zambie', 'Namibia':'Namibie' })[country] || country || ''; }
+  var checklist = document.querySelector('[data-lobola-fr-checklist]');
+  if (checklist) {
+    var checkForm = checklist.querySelector('form'); var checkOutput = checklist.querySelector('[data-native-output]'); var checkStatus = checklist.querySelector('[data-native-status]'); var checkUse = checklist.querySelector('[data-use-plan]'); var plan = savedPlan(); checkUse.disabled = !plan;
+    function checkSummary() { return ['Checklist de rencontre familiale', 'Contexte : ' + (value(checkForm, 'country') || 'à confirmer'), 'Montant ou fourchette : ' + (value(checkForm, 'range') || 'à confirmer'), 'Représentants : ' + (value(checkForm, 'familyA') || 'à confirmer') + ' / ' + (value(checkForm, 'familyB') || 'à confirmer'), 'Confirmé : ' + (value(checkForm, 'confirmed') || 'rien pour le moment'), 'Questions ouvertes : ' + (value(checkForm, 'pending') || 'à compléter'), 'Prochaine étape : ' + (value(checkForm, 'next') || 'à confirmer'), 'Rappel : document de préparation, pas accord juridique ni barème officiel.'].join('\\n'); }
+    function renderCheck() { checkOutput.textContent = checkSummary(); checkStatus.textContent = ''; }
+    checkForm.addEventListener('input', renderCheck); checkForm.addEventListener('change', renderCheck); checkForm.addEventListener('submit', function (event) { event.preventDefault(); renderCheck(); }); checklist.querySelector('[data-copy-native]').addEventListener('click', function () { copy(checkSummary(), checkStatus); }); checkUse.addEventListener('click', function () { if (!plan) return; checkForm.elements.country.value = localCountry(plan.country) || checkForm.elements.country.value; checkForm.elements.range.value = (plan.currency || '') + ' ' + Math.round(Number(plan.total) || 0).toLocaleString('fr-FR'); renderCheck(); checkStatus.textContent = 'Dernier plan importé depuis cet appareil.'; }); renderCheck();
+  }
+  var gifts = document.querySelector('[data-lobola-fr-gifts]');
+  if (gifts) {
+    var giftForm = gifts.querySelector('form'); var giftOutput = gifts.querySelector('[data-native-output]'); var giftStatus = gifts.querySelector('[data-native-status]'); var giftUse = gifts.querySelector('[data-use-plan]'); var giftPlan = savedPlan(); giftUse.disabled = !giftPlan;
+    function giftSummary() { var currency = value(giftForm, 'currency') || 'ZAR'; var giftValue = amount(giftForm, 'gifts'); var travel = amount(giftForm, 'travel'); var ceremony = amount(giftForm, 'ceremony'); var other = amount(giftForm, 'other'); var total = giftValue + travel + ceremony + other; function money(number) { return currency + ' ' + Math.round(number).toLocaleString('fr-FR'); } return ['Liste de cadeaux et logistique', 'Contexte : ' + (value(giftForm, 'country') || 'à confirmer'), 'Cadeaux et articles : ' + money(giftValue), 'Déplacement : ' + money(travel), 'Rencontre et cérémonie : ' + money(ceremony), 'Autres éléments : ' + money(other), 'Total modifiable : ' + money(total), 'Notes : ' + (value(giftForm, 'notes') || 'aucune'), 'Rappel : vérifiez chaque élément avec les familles avant tout achat ou engagement.'].join('\\n'); }
+    function renderGifts() { giftOutput.textContent = giftSummary(); giftStatus.textContent = ''; }
+    giftForm.addEventListener('input', renderGifts); giftForm.addEventListener('change', renderGifts); giftForm.addEventListener('submit', function (event) { event.preventDefault(); renderGifts(); }); gifts.querySelector('[data-copy-native]').addEventListener('click', function () { copy(giftSummary(), giftStatus); }); giftUse.addEventListener('click', function () { if (!giftPlan) return; giftForm.elements.country.value = localCountry(giftPlan.country) || giftForm.elements.country.value; giftForm.elements.currency.value = giftPlan.currency || giftForm.elements.currency.value; giftForm.elements.gifts.value = Number(giftPlan.giftValue) || 0; giftForm.elements.ceremony.value = Number(giftPlan.ceremonyCost) || 0; renderGifts(); giftStatus.textContent = 'Dernier plan importé depuis cet appareil.'; }); renderGifts();
+  }
+})();
+</script>`;
+}
+
 function htmlFor(page) {
+  if (page.enSlug === "route-fares") {
+    return require("./lib/route-fares-locale-page.js").render("fr");
+  }
   const enUrl = `${SITE}/tools/${page.enSlug}/`;
   const frUrl = `${SITE}/fr/tools/${page.frSlug}/`;
   const terms = JSON.stringify([...page.terms, ...COMMON_TERMS]);
@@ -7650,10 +7703,30 @@ function htmlFor(page) {
     null,
     2
   );
-  const toolEmbed = page.iframeEmbed
+  const nativeTool = lobolaNativeMarkup(page);
+  const prepPanel = nativeTool ? "" : `    <section class="prep-panel" aria-label="Preparation rapide">
+      <h2>Preparez votre saisie</h2>
+      <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoye: ce brouillon reste dans votre navigateur.</p>
+      <form class="prep-form" data-fr-prep>
+        <div class="prep-fields">
+          <label>Pays ou devise<input name="country" autocomplete="off" placeholder="Ex: Senegal, XOF"></label>
+          <label>Montant ou volume<input name="amount" autocomplete="off" placeholder="Ex: 250000"></label>
+          <label>Objectif<input name="goal" autocomplete="off" placeholder="Ex: comparer deux scenarios"></label>
+          <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
+        </div>
+        <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour preparer votre resume.</output>
+        <div class="prep-actions">
+          <button type="button" data-copy-prep>Copier le resume</button>
+          <button type="button" data-download-prep>Telecharger le brief</button>
+          <span class="prep-note" data-copy-status aria-live="polite"></span>
+        </div>
+        <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
+      </form>
+    </section>`;
+  const toolEmbed = nativeTool || (page.iframeEmbed
     ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
-    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`;
-  const sourceImportScript = "";
+    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`);
+  const sourceImportScript = nativeTool ? lobolaNativeScript() : "";
 
   return `<!DOCTYPE html>
 <!-- Generated by scripts/generate-fr-tool-gap-pages.js. Edit source data there. -->
@@ -7692,10 +7765,10 @@ function htmlFor(page) {
     .action-row{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 22px}.primary-action,.secondary-action{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:11px 16px;font-weight:800;text-decoration:none}.primary-action{background:#0f766e;color:#fff}.secondary-action{border:1px solid #cbd5e1;color:#0f172a;background:#fff}
     .prep-panel{border:1px solid #b6e4dd;background:linear-gradient(135deg,#ecfdf5 0%,#f8fafc 100%);border-radius:8px;padding:18px;margin:0 0 24px}.prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#064e3b}.prep-panel p{margin:0 0 14px;color:#334155;line-height:1.55}
     .prep-form{display:grid;gap:12px}.prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.prep-form label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.prep-form input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.prep-output{display:block;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:52px}.prep-actions{display:flex;flex-wrap:wrap;gap:8px}.prep-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer}.prep-note{font-size:.82rem;color:#64748b}.privacy-note{margin-top:10px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:8px;padding:10px 12px;color:#365346;font-size:.9rem;line-height:1.55}
-    #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}
+    #tool-mount{background:#fff;border:1px solid #dbe4ef;border-radius:8px;padding:18px;box-shadow:0 10px 28px rgba(15,23,42,.08);overflow:hidden}${nativeTool ? ".lobola-native{display:grid;gap:16px}.lobola-native-heading{display:flex;align-items:flex-start;justify-content:space-between;gap:16px}.lobola-native-heading span{display:block;color:#0f766e;font-size:.76rem;font-weight:850;letter-spacing:.08em;text-transform:uppercase}.lobola-native-heading h2{margin:4px 0 0;font-size:1.25rem;color:#0f172a}.lobola-native-heading button,.lobola-native-actions button{border:0;border-radius:999px;background:#0f766e;color:#fff;padding:10px 14px;font-weight:800;cursor:pointer}.lobola-native-heading button:disabled{opacity:.48;cursor:not-allowed}.lobola-native-form{display:grid;gap:13px}.lobola-native-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}.lobola-native-form label{display:grid;gap:6px;color:#0f172a;font-size:.86rem;font-weight:800}.lobola-native-form input,.lobola-native-form select,.lobola-native-form textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:8px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.lobola-native-form textarea{min-height:84px;resize:vertical}.lobola-native-checks{display:grid;gap:8px;border:1px solid #dbe4ef;border-radius:8px;background:#f8fafc;padding:12px}.lobola-native-checks label{display:flex;grid-template-columns:none;align-items:flex-start;gap:8px;font-weight:650}.lobola-native-checks input{width:auto;margin-top:3px}.lobola-native-actions{display:flex;flex-wrap:wrap;align-items:center;gap:9px}.lobola-native-actions button.secondary{background:#0f172a}.lobola-native-actions span{color:#64748b;font-size:.86rem}.lobola-native-output{display:block;white-space:pre-line;border:1px solid #b6e4dd;border-left:4px solid #0f766e;border-radius:0 8px 8px 0;background:#f0fdf4;padding:14px;color:#334155;line-height:1.62;min-height:110px}" : ""}
     .tool-status{color:#64748b}.tool-error{padding:18px;border:1px solid #fecaca;background:#fef2f2;border-radius:8px;color:#991b1b}.tool-error a{color:#1d4ed8}
     .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}.support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}.support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}.support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
-    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid{grid-template-columns:1fr}#tool-mount{padding:12px}}
+    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid${nativeTool ? ",.lobola-native-grid" : ""}{grid-template-columns:1fr}#tool-mount{padding:12px}${nativeTool ? ".lobola-native-heading{display:grid}.lobola-native-heading button,.lobola-native-actions button{width:100%}" : ""}}
   </style>
   <script type="application/ld+json">${schema.replace(/</g, "\\u003c")}</script>
 </head>
@@ -7715,25 +7788,7 @@ function htmlFor(page) {
       <a class="primary-action" href="#tool-mount">Utiliser l'outil ici</a>
       <a class="secondary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a>
     </div>
-    <section class="prep-panel" aria-label="Preparation rapide">
-      <h2>Preparez votre saisie</h2>
-      <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoye: ce brouillon reste dans votre navigateur.</p>
-      <form class="prep-form" data-fr-prep>
-        <div class="prep-fields">
-          <label>Pays ou devise<input name="country" autocomplete="off" placeholder="Ex: Senegal, XOF"></label>
-          <label>Montant ou volume<input name="amount" autocomplete="off" placeholder="Ex: 250000"></label>
-          <label>Objectif<input name="goal" autocomplete="off" placeholder="Ex: comparer deux scenarios"></label>
-          <label>Fichier de travail<input name="file" type="file" aria-label="Fichier de travail local"></label>
-        </div>
-        <output class="prep-output" data-prep-output>Ajoutez un pays, un montant ou un objectif pour preparer votre resume.</output>
-        <div class="prep-actions">
-          <button type="button" data-copy-prep>Copier le resume</button>
-          <button type="button" data-download-prep>Telecharger le brief</button>
-          <span class="prep-note" data-copy-status aria-live="polite"></span>
-        </div>
-        <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
-      </form>
-    </section>
+${prepPanel}
     ${toolEmbed}
     <div class="support-grid" data-tool-verification-panel>
       <section><h2>Usage recommande</h2><p>${escapeHtml(page.useCase)}</p></section>

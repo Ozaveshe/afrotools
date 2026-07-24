@@ -145,7 +145,11 @@ const report = registryApi.buildRegistryReport(canonical);
 ['rawToolRows', 'redirectAliases', 'canonicalPublishedTools', 'localizedTools', 'expandedLiveToolExperiences', 'indexableToolDestinations', 'widgetEnabledTools'].forEach((key) => {
   assert.ok(Number.isInteger(report.summary[key]), `report missing ${key}`);
 });
-assert.strictEqual(report.aliases.length, 4);
+assert.strictEqual(
+  report.aliases.map((alias) => alias.id).join(','),
+  'crypto-tax,generator-fuel-african,minimum-wage-legal,salary-tax-sw,vat-calculator',
+  'canonical redirect aliases must stay explicit and stable'
+);
 
 const browserCountries = fs.readFileSync(path.join(ROOT, 'assets/js/data/african-countries.js'), 'utf8');
 assert.ok(browserCountries.includes('root.AFRICAN_COUNTRIES='));

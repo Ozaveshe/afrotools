@@ -22,10 +22,10 @@ const CORS = {
 const VAT_DB = {
   NG: {
     name: 'Nigeria', currency: 'NGN', rate: 7.5, reducedRates: [],
-    authority: 'Federal Inland Revenue Service (FIRS)',
-    exemptions: ['Basic food items', 'Medical and pharmaceutical products', 'Educational materials', 'Baby products', 'Agricultural equipment'],
-    notes: 'VAT increased from 5% to 7.5% effective February 2020.',
-    lastUpdated: '2024-01-01', source: 'FIRS'
+    authority: 'Nigeria Revenue Service (NRS)',
+    exemptions: ['See Nigeria Tax Act 2025 section 186; do not treat the separate section 187 zero-rated list as exempt'],
+    notes: 'Standard rate 7.5% under Nigeria Tax Act 2025 section 148. Confirm zero-rated supplies under section 187 and exempt supplies under section 186 at invoice level.',
+    lastUpdated: '2026-07-22', source: 'Nigeria Tax Act 2025 and Nigeria Revenue Service'
   },
   KE: {
     name: 'Kenya', currency: 'KES', rate: 16, reducedRates: [{ rate: 8, label: 'Petroleum products' }],
@@ -71,10 +71,11 @@ const VAT_DB = {
   },
   ET: {
     name: 'Ethiopia', currency: 'ETB', rate: 15, reducedRates: [],
-    authority: 'Ministry of Revenue',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials', 'Financial services'],
-    notes: 'Standard rate of 15%. Turnover Tax (TOT) of 2% applies to businesses below VAT threshold.',
-    lastUpdated: '2024-01-01', source: 'Ministry of Revenue'
+    authority: 'Ministry of Finance',
+    exemptions: [],
+    notes: 'VAT Proclamation 1341/2024 Article 8 applies 15% to taxable supplies other than exact Schedule 1 zero-rated supplies. A 0% custom rate requires acceptable Article 9 documentary evidence; this API does not infer exemptions, registration, turnover tax, withholding or product classification.',
+    lastUpdated: '2026-07-22', source: 'Ethiopia Ministry of Finance VAT Proclamation 1341/2024',
+    sourceUrl: 'https://www.mofed.gov.et/media/filer_public/af/45/af45af2f-7959-4e8b-b736-9494dda9f017/vat_proclamation_no_1341-2016_with_annex.pdf'
   },
   EG: {
     name: 'Egypt', currency: 'EGP', rate: 14, reducedRates: [{ rate: 5, label: 'Machinery and equipment' }],
@@ -84,11 +85,11 @@ const VAT_DB = {
     lastUpdated: '2024-01-01', source: 'ETA'
   },
   MA: {
-    name: 'Morocco', currency: 'MAD', rate: 20, reducedRates: [{ rate: 14, label: 'Transport, electricity' }, { rate: 10, label: 'Hotels, restaurants' }, { rate: 7, label: 'Basic necessities' }],
+    name: 'Morocco', currency: 'MAD', rate: 20, reducedRates: [{ rate: 10, label: 'Exact CGI 2026 Article 99-B item with retained classification evidence' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Agricultural equipment', 'Medical services'],
-    notes: 'Multiple reduced rates. Standard rate of 20%. Progressive reform underway to simplify rate structure.',
-    lastUpdated: '2024-01-01', source: 'DGI'
+    exemptions: [],
+    notes: 'CGI 2026 has 20% and exact listed 10% treatments. Former 14% and 7% bands are retired. Article 92 qualifying exports are exempt with deduction, not generic zero-rated supplies.',
+    lastUpdated: '2026-07-22', source: 'https://www.finances.gov.ma/Publication/dgi/2025/CGI-2026-FR.pdf'
   },
   DZ: {
     name: 'Algeria', currency: 'DZD', rate: 19, reducedRates: [{ rate: 9, label: 'Basic goods and services' }],
@@ -98,32 +99,33 @@ const VAT_DB = {
     lastUpdated: '2024-01-01', source: 'DGI'
   },
   TN: {
-    name: 'Tunisia', currency: 'TND', rate: 19, reducedRates: [{ rate: 13, label: 'Certain services' }, { rate: 7, label: 'Basic necessities' }],
+    name: 'Tunisia', currency: 'TND', rate: 19, reducedRates: [],
     authority: 'Direction Generale des Impots',
-    exemptions: ['Basic foodstuffs', 'Medical services', 'Educational services'],
-    notes: 'Standard rate of 19%. Three-tier rate structure.',
-    lastUpdated: '2024-01-01', source: 'DGI Tunisia'
+    exemptions: [],
+    notes: 'The current Ministry of Finance tax overview states a 19% general VAT rate. This API calculates general-rate transactions only and does not infer reduced-rate eligibility, exemptions, exports, suspension regimes, withholding or other special treatments.',
+    lastUpdated: '2026-07-23', source: 'Tunisia Ministry of Finance current tax overview and Finance Law 2026',
+    sourceUrl: 'https://www.finances.gov.tn/ar/lmht-amwt'
   },
   CM: {
-    name: 'Cameroon', currency: 'XAF', rate: 19.25, reducedRates: [],
+    name: 'Cameroon', currency: 'XAF', rate: 19.25, reducedRates: [{ rate: 10, label: 'Qualifying social-housing operations; evidence required' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Agricultural inputs', 'Medical supplies', 'Educational materials'],
-    notes: 'Effective rate of 19.25% (17.5% VAT + 1.75% additional council tax surcharge).',
-    lastUpdated: '2024-01-01', source: 'DGI Cameroon'
+    exemptions: [],
+    notes: 'Effective rate 19.25% (17.5% base VAT plus communal additional tax equal to 10% of base VAT). The 10% social-housing rate, zero-rating, exemptions and VAT withholding require current evidence and are not inferred by this API.',
+    lastUpdated: '2026-07-22', source: 'DGI and MINFI Cameroon official 2026 material'
   },
   SN: {
-    name: 'Senegal', currency: 'XOF', rate: 18, reducedRates: [],
+    name: 'Senegal', currency: 'XOF', rate: 18, reducedRates: [10],
     authority: 'Direction Generale des Impots et des Domaines (DGID)',
-    exemptions: ['Basic foodstuffs', 'Agricultural inputs', 'Medical supplies', 'Educational materials'],
-    notes: 'Standard rate of 18%. Member of WAEMU.',
-    lastUpdated: '2024-01-01', source: 'DGID'
+    exemptions: [],
+    notes: 'CGI Article 369 standard rate 18%. The 10% rate is limited to accommodation and restaurant services supplied by an approved tourist accommodation establishment and requires exact retained evidence. Exemptions, exports, registration thresholds, filing and other special regimes are not inferred.',
+    lastUpdated: '2026-07-23', source: 'DGID laws hub and Ministry of Finance LFI 2026'
   },
   CI: {
-    name: "Cote d'Ivoire", currency: 'XOF', rate: 18, reducedRates: [{ rate: 9, label: 'Milk, pasta, solar equipment' }],
+    name: "Cote d'Ivoire", currency: 'XOF', rate: 18, reducedRates: [{ rate: 9, label: 'Exact current CGI Article 359 or Ordinance 2026-03 item; evidence required' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Agricultural inputs', 'Medical supplies'],
-    notes: 'Standard rate of 18%. Reduced rate of 9% for selected essentials. Member of WAEMU.',
-    lastUpdated: '2024-01-01', source: 'DGI Cote d\'Ivoire'
+    exemptions: [],
+    notes: 'Common rate 18%. The 9% and exempt paths require an exact current legal item; broad product categories are not inferred. Ordinance 2026-03 applies 9% to four named groups from 17 January 2026.',
+    lastUpdated: '2026-07-22', source: 'DGI Cote d\'Ivoire 2026 CGI resources and Ordinance 2026-03 communique'
   },
   AO: {
     name: 'Angola', currency: 'AOA', rate: 14, reducedRates: [{ rate: 5, label: 'Basic food basket items' }, { rate: 7, label: 'Hotels and tourism' }],
@@ -133,25 +135,28 @@ const VAT_DB = {
     lastUpdated: '2024-01-01', source: 'AGT'
   },
   CD: {
-    name: 'Democratic Republic of the Congo', currency: 'CDF', rate: 16, reducedRates: [],
+    name: 'Democratic Republic of the Congo', currency: 'CDF', rate: 16, reducedRates: [{ rate: 8, label: 'Exact current reduced-rate item; evidence required' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials', 'Agricultural inputs'],
-    notes: 'Standard rate of 16%. Limited VAT infrastructure outside major cities.',
-    lastUpdated: '2024-01-01', source: 'DGI DRC'
+    exemptions: [],
+    notes: 'DGI current general rate 16%. The 8% reduced lane and qualifying-export 0% require exact current evidence; broad categories are not inferred.',
+    lastUpdated: '2026-07-22', source: 'DGI RDC and Ministry of Budget 2026 material',
+    sourceUrl: 'https://dgi.gouv.cd/taxe-sur-la-valeur-ajoutee-tva/'
   },
   ZM: {
     name: 'Zambia', currency: 'ZMW', rate: 16, reducedRates: [],
     authority: 'Zambia Revenue Authority (ZRA)',
-    exemptions: ['Basic foodstuffs', 'Agricultural inputs', 'Medical supplies', 'Educational materials', 'Fuel'],
-    notes: 'Standard rate of 16%. Zero-rated exports and diplomatic supplies.',
-    lastUpdated: '2024-01-01', source: 'ZRA'
+    exemptions: [],
+    notes: 'ZRA current tax information sets the standard rate at 16%. ZRA invoice codes distinguish exports, LPO/project transactions, zero-rated-by-nature supplies and exempt supplies; this API calculates standard-rate transactions only and does not infer those treatments.',
+    lastUpdated: '2026-07-23', source: 'ZRA tax information and VSDC API specification',
+    sourceUrl: 'https://www.zra.org.zm/tax-information/'
   },
   ZW: {
-    name: 'Zimbabwe', currency: 'ZWL', rate: 15, reducedRates: [],
+    name: 'Zimbabwe', currency: 'ZWG', rate: 15.5, reducedRates: [],
     authority: 'Zimbabwe Revenue Authority (ZIMRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials', 'Agricultural inputs'],
-    notes: 'Standard rate of 15%. Also accepts USD and other currencies for tax purposes.',
-    lastUpdated: '2024-01-01', source: 'ZIMRA'
+    exemptions: [],
+    notes: 'Finance Act 7 of 2025 section 34 and ZIMRA Notice 07 of 2026 apply the 15.5% standard rate from 1 January 2026. This API preserves an explicit ZWG or USD input currency without FX conversion and does not infer zero-rated, exempt or other special treatment.',
+    lastUpdated: '2026-07-23', source: 'ZIMRA Notice 07 of 2026 and Finance Act 7 of 2025',
+    sourceUrl: 'https://www.zimra.co.zw/public-notices?download=4441%3Apublic-notice-07-of-2026-change-of-vat-rate-on-submission-of-return-category-a'
   },
   BW: {
     name: 'Botswana', currency: 'BWP', rate: 14, reducedRates: [],
@@ -163,100 +168,102 @@ const VAT_DB = {
   NA: {
     name: 'Namibia', currency: 'NAD', rate: 15, reducedRates: [],
     authority: 'Namibia Revenue Agency (NamRA)',
-    exemptions: ['Basic foodstuffs', 'Medical services', 'Educational services', 'Financial services'],
-    notes: 'Standard rate of 15%. Zero-rated exports.',
-    lastUpdated: '2024-01-01', source: 'NamRA'
+    exemptions: [],
+    notes: 'VAT Act section 6 standard 15%. Exact Schedule III zero-rating and Schedule IV exemption require retained evidence. Act 5 of 2024 raised compulsory registration above N$1 million over 12 months.',
+    lastUpdated: '2026-07-23', source: 'NamRA consolidated VAT Act and Act 5 of 2024'
   },
   MZ: {
     name: 'Mozambique', currency: 'MZN', rate: 16, reducedRates: [],
     authority: 'Autoridade Tributaria de Mocambique (AT)',
-    exemptions: ['Basic foodstuffs', 'Agricultural inputs', 'Medical supplies', 'Educational materials'],
-    notes: 'Standard rate of 16%.',
-    lastUpdated: '2024-01-01', source: 'AT Mozambique'
+    exemptions: [],
+    notes: 'Law 22/2022 standard rate 16%. Exact private health or education services at 5% and qualifying exports require retained evidence. Law 10/2025 removed former special exemption and simplified regimes from 1 January 2026.',
+    lastUpdated: '2026-07-23', source: 'Mozambique Law 22/2022 and Law 10/2025'
   },
   MW: {
-    name: 'Malawi', currency: 'MWK', rate: 16.5, reducedRates: [],
+    name: 'Malawi', currency: 'MWK', rate: 17.5, reducedRates: [],
     authority: 'Malawi Revenue Authority (MRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Standard rate of 16.5%.',
-    lastUpdated: '2024-01-01', source: 'MRA'
+    exemptions: [],
+    notes: 'Act 37 of 2025 replaces 16.5% with the current 17.5% standard rate. Older MRA EIS examples showing 16.5% are stale. Special treatments are not inferred.',
+    lastUpdated: '2026-07-22', source: 'https://www.mra.mw/admin/storage/download_files/1767960417_Value%20Adde%20Tax%20%28Amendment%29%20%28NO.%202%29%20ACT.pdf'
   },
   MU: {
     name: 'Mauritius', currency: 'MUR', rate: 15, reducedRates: [],
     authority: 'Mauritius Revenue Authority (MRA)',
-    exemptions: ['Basic foodstuffs', 'Medical services', 'Educational services', 'Financial services', 'Residential rent'],
-    notes: 'Standard rate of 15%. Well-developed VAT system with broad base.',
-    lastUpdated: '2024-01-01', source: 'MRA Mauritius'
+    exemptions: [],
+    notes: 'Standard rate 15%. Zero-rating and exemption require an exact Fifth or First Schedule item; tourist services are not inferred as zero-rated.',
+    lastUpdated: '2026-07-22', source: 'https://attorneygeneral.govmu.org/Documents/Laws%20of%20Mauritius/A-Z%20Acts/V/ValueAddedTaxActI9.pdf'
   },
   MG: {
-    name: 'Madagascar', currency: 'MGA', rate: 20, reducedRates: [],
+    name: 'Madagascar', currency: 'MGA', rate: 20, reducedRates: [{ rate: 10, label: 'Butane gas or containers under tariff lines 2711.13 00 or 7311.00 00 with exact evidence' }],
     authority: 'Direction Generale des Impots',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 20%. One of the higher rates in Africa.',
-    lastUpdated: '2024-01-01', source: 'DGI Madagascar'
+    exemptions: [],
+    notes: 'Article 06.01.12 sets 20% standard, 10% only for the stated butane tariff lines, and 0% for exports of goods or services. Special treatments require exact evidence; exemptions are not inferred.',
+    lastUpdated: '2026-07-22', source: 'https://www.impots.mg/explorer?path=/legislation/Codes%20et%20Manuels/CDI-LFI%202026.pdf'
   },
   DJ: {
     name: 'Djibouti', currency: 'DJF', rate: 10, reducedRates: [],
     authority: 'Direction des Impots',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 10%.',
-    lastUpdated: '2024-01-01', source: 'Direction des Impots'
+    exemptions: [],
+    notes: 'Current standard rate 10%. Article 19 zero-rating and Article 8 exemptions require exact statutory and transaction evidence; broad categories are not inferred.',
+    lastUpdated: '2026-07-22', source: 'Djibouti Official Journal VAT law and later finance laws'
   },
   SC: {
     name: 'Seychelles', currency: 'SCR', rate: 15, reducedRates: [],
     authority: 'Seychelles Revenue Commission (SRC)',
-    exemptions: ['Basic foodstuffs', 'Medical services', 'Educational services'],
-    notes: 'Standard rate of 15%.',
-    lastUpdated: '2024-01-01', source: 'SRC'
+    exemptions: [],
+    notes: 'Standard rate 15%. A 0% request requires an exact current Second Schedule zero-rated supply or exact current First Schedule exempt supply, with the treatments kept distinct. Compulsory and voluntary registration thresholds are SCR 2,000,000 and SCR 100,000 respectively; eligibility and approval are separate.',
+    lastUpdated: '2026-07-23', source: 'SRC VAT legislation, Act 16 of 2024 and S.I. 97 of 2024'
   },
   SZ: {
     name: 'Eswatini', currency: 'SZL', rate: 15, reducedRates: [],
-    authority: 'Eswatini Revenue Authority (ERA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Standard rate of 15%. Formerly known as Swaziland.',
-    lastUpdated: '2024-01-01', source: 'ERA'
+    authority: 'Eswatini Revenue Service (ERS)',
+    exemptions: [],
+    notes: 'ERS states that VAT applies to most goods and services at 15%. A 0% custom rate requires an exact current Second Schedule match and retained evidence; this API does not infer exemptions, registration, withholding, filing or product classification.',
+    lastUpdated: '2026-07-22', source: 'ERS VAT Act 2011 and current amendment schedule',
+    sourceUrl: 'https://www.ers.org.sz/LegalandPolicy/TaxLegislation'
   },
   LS: {
-    name: 'Lesotho', currency: 'LSL', rate: 15, reducedRates: [],
-    authority: 'Lesotho Revenue Authority (LRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 15%.',
-    lastUpdated: '2024-01-01', source: 'LRA'
+    name: 'Lesotho', currency: 'LSL', rate: 15, reducedRates: [{ rate: 10, label: 'Electricity only; current RSL evidence required' }],
+    authority: 'Revenue Services Lesotho (RSL)', exemptions: [],
+    notes: 'RSL publishes 15% for telecommunications and other goods and services, 10% for electricity, and 0% for exports and exact Fourth Schedule items. Special rates require evidence; exemptions stay separate.',
+    lastUpdated: '2026-07-22', source: 'RSL tax rates, VAT return guidance and current publications', sourceUrl: 'https://www.rsl.org.ls/tax-rates'
   },
   CV: {
-    name: 'Cape Verde', currency: 'CVE', rate: 15, reducedRates: [],
+    name: 'Cabo Verde', currency: 'CVE', rate: 15, reducedRates: [8],
     authority: 'Direccao Nacional de Receitas do Estado (DNRE)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials'],
-    notes: 'Standard rate of 15%.',
-    lastUpdated: '2024-01-01', source: 'DNRE'
+    exemptions: [],
+    notes: 'Standard IVA is 15%. The 8% rate is limited to electricity transmission and water supply to final consumers under Article 73 of the 2026 State Budget and requires explicit evidence. Tourism returned to 15% under the DNRE 2022 circular. Zero-rating, exemptions and withholding are not inferred by this API.',
+    lastUpdated: '2026-07-22', source: 'Cabo Verde 2026 State Budget Article 73; DNRE IVA guidance and Circular 01/2022'
   },
   LR: {
-    name: 'Liberia', currency: 'LRD', rate: 10, reducedRates: [],
+    name: 'Liberia', currency: 'LRD', rate: 13, reducedRates: [],
     authority: 'Liberia Revenue Authority (LRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Goods and Services Tax (GST) at 10%.',
-    lastUpdated: '2024-01-01', source: 'LRA Liberia'
+    exemptions: [],
+    notes: 'The December 2025 Tax Amendment Act sets 13% for taxable goods and services and 0% for exact exports of goods. Telecommunications is not modeled because the enacted 13% plus 5% surtax conflicts with the LRA notice stating 15%. No exemption, export, registration or filing treatment is inferred.',
+    lastUpdated: '2026-07-22', source: 'LRA December 2025 Tax Amendment Act and April 2026 implementation notice', sourceUrl: 'https://revenue.lra.gov.lr/wp-content/uploads/2026/04/LRC-Amendment-December-2025.pdf'
   },
   SL: {
     name: 'Sierra Leone', currency: 'SLE', rate: 15, reducedRates: [],
     authority: 'National Revenue Authority (NRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Goods and Services Tax (GST) at 15%.',
-    lastUpdated: '2024-01-01', source: 'NRA Sierra Leone'
+    exemptions: [],
+    notes: 'Goods and Services Tax at 15%. Zero-rated First Schedule and exempt Second Schedule treatments require exact current evidence; Finance Act 2026 changes are not inferred as generic categories.',
+    lastUpdated: '2026-07-23', source: 'NRA GST Act, Finance Act 2024 and Finance Act 2026', sourceUrl: 'https://nra.gov.sl/dtd/1'
   },
   GM: {
     name: 'Gambia', currency: 'GMD', rate: 15, reducedRates: [],
     authority: 'Gambia Revenue Authority (GRA)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 15%.',
-    lastUpdated: '2024-01-01', source: 'GRA Gambia'
+    exemptions: [],
+    notes: 'GRA standard rate 15%. A 0% custom rate is limited to a confirmed export of goods or services with exact evidence. Exemptions are not treated as zero-rated.',
+    lastUpdated: '2026-07-22', source: 'GRA Domestic Taxes FAQs and VAT guide',
+    sourceUrl: 'https://www.gra.gm/domestic-faqs'
   },
   MR: {
     name: 'Mauritania', currency: 'MRU', rate: 16, reducedRates: [],
-    authority: 'Direction Generale des Impots',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 16%.',
-    lastUpdated: '2024-01-01', source: 'DGI Mauritania'
+    authority: 'Direction Generale des Impots (DGI)',
+    exemptions: [],
+    notes: 'CGI Article 230: 16% normal; 18% telephony under enacted LFR 2023; 0% only for exports by a VAT-taxable person. Article 215 exemptions require exact item evidence.',
+    lastUpdated: '2026-07-22', source: 'Mauritania Ministry of Finance CGI 2023, LFR 2023 and LF 2026',
+    sourceUrl: 'https://finances.gov.mr/sites/default/files/2023-03/CGI-Fr-2023.pdf'
   },
   BJ: {
     name: 'Benin', currency: 'XOF', rate: 18, reducedRates: [],
@@ -273,81 +280,97 @@ const VAT_DB = {
     lastUpdated: '2024-01-01', source: 'DGI Burkina Faso'
   },
   ML: {
-    name: 'Mali', currency: 'XOF', rate: 18, reducedRates: [],
+    name: 'Mali', currency: 'XOF', rate: 18, reducedRates: [{ rate: 5, label: 'Only an exact CGI Point D tariff-table product with retained evidence' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Standard rate of 18%. Member of WAEMU.',
-    lastUpdated: '2024-01-01', source: 'DGI Mali'
+    exemptions: [],
+    notes: 'CGI Article 229 sets 18% standard and 5% only for exact Point D products. Article 195 direct-export exemption requires evidence and is not generic zero-rating. Other exemptions are not inferred.',
+    lastUpdated: '2026-07-23', source: 'https://www.dgi.gouv.ml/CGI/'
   },
-  NE: {
-    name: 'Niger', currency: 'XOF', rate: 19, reducedRates: [],
-    authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 19%. Member of WAEMU.',
-    lastUpdated: '2024-01-01', source: 'DGI Niger'
+    NE: {
+      name: 'Niger', currency: 'XOF', rate: 19, reducedRates: [10, 5],
+      authority: 'Direction Generale des Impots (DGI)',
+      exemptions: ['Only exact operations listed by Finance Law 2026 Article 322'],
+      notes: 'CGI Article 226: 19% standard, evidence-gated 10% land transport or hotel services, and evidence-gated 5% listed products. Article 322 exemptions are not a generic zero rate.',
+      lastUpdated: '2026-07-23', source: 'DGI Niger CGI 2025 and Ordinance 2025-44'
   },
   TG: {
     name: 'Togo', currency: 'XOF', rate: 18, reducedRates: [],
     authority: 'Office Togolais des Recettes (OTR)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Standard rate of 18%. Member of WAEMU.',
-    lastUpdated: '2024-01-01', source: 'OTR'
+    exemptions: [],
+    notes: 'OTR General Tax Code Article 195 sets a single 18% standard rate, subject to Article 180 exemptions. This API calculates standard-rated transactions only and does not infer exemptions, exports, prepayment, leasing or later 2026 special measures.',
+    lastUpdated: '2026-07-23', source: 'OTR General Tax Code updated 2025 and Fiscal Handbook 2026',
+    sourceUrl: 'https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/628-cahier-fiscal-2026.html'
   },
   GN: {
     name: 'Guinea', currency: 'GNF', rate: 18, reducedRates: [],
-    authority: 'Direction Nationale des Impots (DNI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 18%.',
-    lastUpdated: '2024-01-01', source: 'DNI Guinea'
+    authority: 'Direction Generale des Impots (DGI)',
+    exemptions: [],
+    notes: 'CGI Article 373 standard rate is 18%. A 0% custom rate requires exact Article 373 export or international-transport evidence. Exemptions are not zero-rated.',
+    lastUpdated: '2026-07-22', source: 'Guinea DGI Code general des impots and current Ministry of Budget finance-law index',
+    sourceUrl: 'https://dgi.gov.gn/code-general-des-impots/'
+  },
+  GW: {
+    name: 'Guinea-Bissau', currency: 'XOF', rate: 19,
+    reducedRates: [{ rate: 10, label: 'Exact CIVA Article 18 Annex I entry; evidence required' }],
+    authority: 'Direcao-Geral das Contribuicoes e Impostos (DGCI)',
+    exemptions: [],
+    notes: 'CIVA Article 18 applies 19% generally, 10% only to exact Annex I entries and 0% to exports. Special rates require retained evidence; exemptions are separate.',
+    lastUpdated: '2026-07-22', source: 'Guinea-Bissau DGCI Kontaktu and CIVA Law 4/2022',
+    sourceUrl: 'https://kontaktu.mef.gw/'
   },
   TD: {
-    name: 'Chad', currency: 'XAF', rate: 18, reducedRates: [],
+    name: 'Chad', currency: 'XAF', rate: 19.25, reducedRates: [{ rate: 9.9, label: 'Effective invoice rate for Article 238 listed supplies, including centimes additionnels' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs'],
-    notes: 'Standard rate of 18%. Member of CEMAC.',
-    lastUpdated: '2024-01-01', source: 'DGI Chad'
+    exemptions: [],
+    notes: 'Effective invoice rates include provincial and communal centimes additionnels equal to 10% of base VAT: 19.25% on the 17.5% base and 9.9% on the 9% Article 238 base. Exact evidence remains required for 9%, zero-rating and exemptions.',
+    lastUpdated: '2026-07-22', source: 'Chad Ministry of Finance 2024 application circular, CGI 2025 and 2026 application circular',
+    sourceUrl: 'https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0'
   },
   GA: {
-    name: 'Gabon', currency: 'XAF', rate: 18, reducedRates: [{ rate: 10, label: 'Tourism, cement' }],
+    name: 'Gabon', currency: 'XAF', rate: 18, reducedRates: [{ rate: 10, label: 'Exact Article 221 listed operation; evidence required' }, { rate: 5, label: 'Exact Article 221 listed operation; evidence required' }, { rate: 0, label: 'Exact Article 221 zero-rated operation; evidence required' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials'],
-    notes: 'Standard rate of 18% with reduced rate of 10%. Member of CEMAC.',
-    lastUpdated: '2024-01-01', source: 'DGI Gabon'
+    exemptions: [],
+    notes: '2026 standard rate 18%. Rates of 10%, 5% and 0% require an exact Article 221 match and retained evidence. Article 220 floors the taxable base to the nearest XAF 1,000.',
+    lastUpdated: '2026-07-22', source: 'Gabon Finance Law 2026 and DGI CGI 2025',
+    sourceUrl: 'https://journal-officiel.ga/22265-041-2025-/'
   },
   CG: {
-    name: 'Republic of the Congo', currency: 'XAF', rate: 18.9, reducedRates: [{ rate: 5, label: 'Basic necessities' }],
+    name: 'Republic of the Congo', currency: 'XAF', rate: 18.9, reducedRates: [{ rate: 5.25, label: 'Effective invoice burden for confirmed Annex 5 goods (5% VAT plus centimes)' }],
     authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials'],
-    notes: 'Effective rate of 18.9% (18% + 0.9% surcharge). Member of CEMAC.',
-    lastUpdated: '2024-01-01', source: 'DGI Congo'
+    exemptions: [],
+    notes: 'The standard invoice burden is 18.9%: 18% VAT plus centimes additionnels equal to 5% of VAT. The confirmed Annex 5 treatment has a 5.25% invoice burden. Exact evidence is required for Annex 5, zero-rated and exempt treatment.',
+    lastUpdated: '2026-07-22', source: 'Congo Journal officiel, Finance Laws 2024 and 2026',
+    sourceUrl: 'https://sgg.cg/JO/2026/congo-jo-2026-3-3.pdf'
   },
   GQ: {
-    name: 'Equatorial Guinea', currency: 'XAF', rate: 15, reducedRates: [],
-    authority: 'Ministerio de Hacienda y Presupuestos',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 15%. Member of CEMAC.',
-    lastUpdated: '2024-01-01', source: 'Ministry of Finance'
+    name: 'Equatorial Guinea', currency: 'XAF', rate: 15,
+    reducedRates: [{ rate: 5, label: 'Exact Article 13 imported-product line; evidence required' }],
+    authority: 'Dirección General de Impuestos y Contribuciones (DGIC)',
+    exemptions: [],
+    notes: 'General IVA rate 15%. The 2026 State Budget Article 13 import treatments at 5% and 0% require an exact listed-product match and evidence. No generic exemption, export, threshold, withholding or custom-rate treatment is inferred.',
+    lastUpdated: '2026-07-22', source: 'General Tax Law 1/2024 and 2026 State Budget Article 13'
   },
   CF: {
-    name: 'Central African Republic', currency: 'XAF', rate: 19, reducedRates: [],
-    authority: 'Direction Generale des Impots (DGI)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 19%. Member of CEMAC.',
-    lastUpdated: '2024-01-01', source: 'DGI CAR'
+    name: 'Central African Republic', currency: 'XAF', rate: 19, reducedRates: [5],
+    authority: 'Direction Generale des Impots et des Domaines (DGID)',
+    exemptions: [],
+    notes: 'General rate 19%. The 5% tariff-list rate and 0% qualifying export treatment require exact statutory evidence; no generic exemption or withholding treatment is inferred.',
+    lastUpdated: '2026-07-22', source: 'DGID CGI updated 2023, Articles 247, 257, 268 and 275'
   },
   ST: {
-    name: 'Sao Tome and Principe', currency: 'STN', rate: 15, reducedRates: [],
+    name: 'Sao Tome and Principe', currency: 'STN', rate: 15, reducedRates: [7.5],
     authority: 'Direccao dos Impostos',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 15%.',
-    lastUpdated: '2024-01-01', source: 'Direccao dos Impostos'
+    exemptions: [],
+    notes: 'CIVA standard rate 15%. The 7.5% rate requires an exact Annex I basic-basket line. Generic exemptions and the illustrative 16% manual example are not accepted.',
+    lastUpdated: '2026-07-23', source: 'National Assembly CIVA records'
   },
   SD: {
     name: 'Sudan', currency: 'SDG', rate: 17, reducedRates: [],
-    authority: 'Taxation Chamber',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Educational materials'],
-    notes: 'Standard rate of 17%.',
-    lastUpdated: '2024-01-01', source: 'Taxation Chamber'
+    authority: 'Sudan Tax Authority / Taxation Chamber',
+    exemptions: [],
+    notes: 'The Tax Authority confirmed on 28 March 2026 that Article 22 of the 2001 VAT Law applies a fixed 17% rate. This API models standard-rate arithmetic only and does not infer exemptions, zero-rating, registration, filing, invoice compliance or input-tax eligibility.',
+    lastUpdated: '2026-07-23', source: 'Sudan Tax Authority official clarification and VAT guidance',
+    sourceUrl: 'https://tax.gov.sd/en/newsen/'
   },
   SS: {
     name: 'South Sudan', currency: 'SSP', rate: 18, reducedRates: [],
@@ -357,32 +380,37 @@ const VAT_DB = {
     lastUpdated: '2024-01-01', source: 'NRA South Sudan'
   },
   BI: {
-    name: 'Burundi', currency: 'BIF', rate: 18, reducedRates: [],
+    name: 'Burundi', currency: 'BIF', rate: 18, reducedRates: [{ rate: 10, label: 'Exact VAT Law 2020 Article 15 intermediate-rate supply; evidence required' }],
     authority: 'Office Burundais des Recettes (OBR)',
-    exemptions: ['Basic foodstuffs', 'Medical supplies', 'Agricultural inputs', 'Educational materials'],
-    notes: 'Standard rate of 18%.',
-    lastUpdated: '2024-01-01', source: 'OBR'
+    exemptions: [],
+    notes: 'Standard rate 18%. The 10% intermediate rate and 0% treatment require an exact Article 15 classification and retained evidence. Compulsory registration is at taxable turnover of at least BIF 25,000,000 since FY2025; OBR requires VAT charging from 1 July 2026 and monthly declaration by the 15th. Exemptions and withholding are not inferred.',
+    lastUpdated: '2026-07-23', source: 'OBR current VAT law guide and 2026/27 registration communique',
+    sourceUrl: 'https://www.obr.bi/index.php/communiques/2528-communique-aux-contribuables-ayant-un-chiffre-d-affaires-de-25-millions-de-fbu'
   },
   KM: {
-    name: 'Comoros', currency: 'KMF', rate: 10, reducedRates: [],
+    name: 'Comoros', currency: 'KMF', rate: 10, reducedRates: [{ rate: 3, label: 'Confirmed Article 152 water, electricity or inter-island transport ticket' }, { rate: 5, label: 'Confirmed Article 152 restaurant, banking, fixed telephone or international transport ticket' }, { rate: 7.5, label: 'Confirmed Article 152 mobile voice/data recharge' }, { rate: 25, label: 'Confirmed Article 152 casino activity' }],
     authority: 'Direction Generale des Impots',
-    exemptions: ['Basic foodstuffs', 'Medical supplies'],
-    notes: 'Standard rate of 10%.',
-    lastUpdated: '2024-01-01', source: 'DGI Comoros'
+    exemptions: [],
+    notes: 'Officially Taxe sur la Consommation (TC), not VAT. Reference rate 10%. Article 152 special rates and the exact ministerial essential-product list require explicit evidence; broad exemptions are not inferred. The separate Article 152 additional tax of KMF 50 per minute on incoming-call termination is quantity-based and is not calculated by this amount API.',
+    knownExclusions: ['Article 152 incoming-call termination additional tax of KMF 50 per minute'],
+    lastUpdated: '2026-07-22', source: 'Comoros DGI CGI 2023 and Ministry fiscal-expenditure report for 2024',
+    sourceUrl: 'https://finances.gouv.km/wp-content/uploads/2026/02/Rapport-sur-les-Depenses-Fiscales-2024-1-1-5.pdf'
   },
   SO: {
-    name: 'Somalia', currency: 'SOS', rate: 0, reducedRates: [],
-    authority: 'Federal Government of Somalia',
+    name: 'Somalia', currency: null, rate: null, reducedRates: [],
+    authority: 'Federal Government of Somalia Ministry of Finance',
     exemptions: [],
-    notes: 'No formal VAT system currently in place. Sales tax applies to some goods.',
-    lastUpdated: '2024-01-01', source: 'Federal Government'
+    calculable: false,
+    statusCode: 'NO_VERIFIED_NATIONAL_VAT',
+    notes: 'No current nationwide VAT rate is verified from the federal primary sources reviewed. FY2026 evidence lists named sector sales taxes; the separate 2023 USD turnover-tax table is not treated as a current VAT or liability rule.',
+    lastUpdated: '2026-07-23', source: 'Federal MoF FY2026 Budget Policy Framework and 2023 Turnover Tax policy', sourceUrl: 'https://mof.gov.so/publications/fiscal-year-2026-budget-policy-framework-paper'
   },
   ER: {
-    name: 'Eritrea', currency: 'ERN', rate: 0, reducedRates: [],
-    authority: 'Inland Revenue Department',
+    name: 'Eritrea', currency: 'ERN', rate: null, reducedRates: [0, 5, 10, 12],
+    authority: 'Ministry of Finance / Inland Revenue administration',
     exemptions: [],
-    notes: 'No VAT system. Uses sales tax at varying rates.',
-    lastUpdated: '2024-01-01', source: 'Inland Revenue Department'
+    notes: 'No conventional VAT system is evidenced. The latest authoritative public summary located is historical (as of December 2002) and reports single-stage sales-tax bands. Calculation therefore requires an explicit 0%, 5%, 10% or 12% rate plus the exact schedule/service-list evidence type; no default current rate is inferred.',
+    lastUpdated: '2026-07-22', source: 'IMF summaries of Proclamation 64/1994, Legal Notice 22/1995 and the tax system as of December 2002'
   },
   LY: {
     name: 'Libya', currency: 'LYD', rate: 0, reducedRates: [],
@@ -403,6 +431,523 @@ function respond(status, body, extra = {}) {
 
 function round2(n) {
   return Math.round(n * 100) / 100;
+}
+
+function validateComorosRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.KM.rate };
+  const rate = Number(body.customRate);
+  const evidenceTypesByRate = {
+    0: 'article-152-essential-list',
+    3: 'article-152-utilities-interisland',
+    5: 'article-152-five-percent-supply',
+    7.5: 'article-152-mobile-recharge',
+    25: 'article-152-casino'
+  };
+  const expectedEvidenceType = evidenceTypesByRate[rate];
+  if (body.rateEvidenceConfirmed !== true || !expectedEvidenceType || body.rateEvidenceType !== expectedEvidenceType) {
+    return {
+      ok: false,
+      statusCode: 400,
+      error: 'Comoros customRate requires rateEvidenceConfirmed=true and the exact Article 152 evidence type for 3%, 5%, 7.5%, 25% or 0%.',
+      code: 'RATE_EVIDENCE_REQUIRED'
+    };
+  }
+  return { ok: true, rate, rateEvidenceType: expectedEvidenceType };
+}
+
+function validateCongoRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.CG.rate };
+  const rate = Number(body.customRate);
+  const evidenceTypesByRate = { 0: 'article-22-zero-case', 5.25: 'annex-5-tariff-line' };
+  const expectedEvidenceType = evidenceTypesByRate[rate];
+  if (body.rateEvidenceConfirmed !== true || !expectedEvidenceType || body.rateEvidenceType !== expectedEvidenceType) {
+    return { ok: false, statusCode: 400, error: 'Congo customRate requires exact evidence: 5.25% with rateEvidenceType=annex-5-tariff-line or 0% with rateEvidenceType=article-22-zero-case.', code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate, rateEvidenceType: expectedEvidenceType };
+}
+
+function validateCoteDIvoireRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.CI.rate };
+  const rate = Number(body.customRate);
+  const allowedEvidence = rate === 9 ? ['cgi-article-359-item', 'ordinance-2026-03-item'] : rate === 0 ? ['cgi-article-355-item'] : [];
+  if (body.rateEvidenceConfirmed !== true || !allowedEvidence.includes(body.rateEvidenceType)) {
+    return { ok: false, statusCode: 400, error: "Cote d'Ivoire customRate requires exact evidence: 9% with a current Article 359 or Ordinance 2026-03 item, or 0% with an exact Article 355 exemption.", code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateDjiboutiRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.DJ.rate };
+  const rate = Number(body.customRate);
+  const allowedEvidence = rate === 0 ? ['customs-export-declaration', 'article-19-international-trade-proof', 'article-8-exemption-item'] : [];
+  if (body.rateEvidenceConfirmed !== true || !allowedEvidence.includes(body.rateEvidenceType)) {
+    return { ok: false, statusCode: 400, error: 'Djibouti customRate is limited to 0% with an exact Article 8, 12 or 19 evidence type.', code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateDrCongoRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.CD.rate };
+  const rate = Number(body.customRate);
+  const expectedEvidenceType = rate === 8 ? 'current-dgi-eight-percent-item' : rate === 0 ? 'customs-export-declaration' : null;
+  if (body.rateEvidenceConfirmed !== true || !expectedEvidenceType || body.rateEvidenceType !== expectedEvidenceType) {
+    return { ok: false, statusCode: 400, error: 'DR Congo customRate requires exact evidence: 8% with rateEvidenceType=current-dgi-eight-percent-item or 0% with rateEvidenceType=customs-export-declaration.', code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate, rateEvidenceType: expectedEvidenceType };
+}
+
+function validateEquatorialGuineaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate) return { ok: true, rate: VAT_DB.GQ.rate };
+  const rate = Number(body.customRate);
+  const expectedEvidenceType = rate === 5
+    ? 'lpge-2026-article-13-five-import-line'
+    : rate === 0
+      ? 'lpge-2026-article-13-zero-import-line'
+      : null;
+  if (body.rateEvidenceConfirmed !== true || !expectedEvidenceType || body.rateEvidenceType !== expectedEvidenceType) {
+    return { ok: false, statusCode: 400, error: 'Equatorial Guinea customRate requires an exact 2026 State Budget Article 13 import match: 5% with rateEvidenceType=lpge-2026-article-13-five-import-line or 0% with rateEvidenceType=lpge-2026-article-13-zero-import-line.', code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate, rateEvidenceType: expectedEvidenceType };
+}
+
+function validateEritreaRateRequest(body) {
+  const rate = Number(body.customRate);
+  const expectedByRate = {
+    0: ['listed-zero-or-exempt-case'],
+    5: ['listed-goods-five-percent', 'listed-services-five-percent'],
+    10: ['listed-services-ten-percent'],
+    12: ['residual-goods-twelve-percent']
+  };
+  const allowed = expectedByRate[rate] || [];
+  if (body.customRate === undefined || body.customRate === null || body.rateEvidenceConfirmed !== true || !allowed.includes(body.rateEvidenceType)) {
+    return {
+      ok: false,
+      statusCode: 400,
+      error: 'Eritrea has no inferred default VAT rate. Supply an evidence-matched historical sales-tax rate: 0%, 5%, 10% or 12% with its exact schedule or service-list evidence type.',
+      code: 'RATE_EVIDENCE_REQUIRED'
+    };
+  }
+  return { ok: true, rate, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateEthiopiaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate || Number(body.customRate) === 15) return { ok: true, rate: VAT_DB.ET.rate };
+  const rate = Number(body.customRate);
+  const exactZeroEvidence = rate === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'proclamation-1341-schedule-1-zero-rated-supply';
+  if (!exactZeroEvidence) {
+    return {
+      ok: false,
+      statusCode: 400,
+      error: 'Ethiopia customRate is limited to 0% with an exact VAT Proclamation 1341/2024 Schedule 1 match and acceptable Article 9 documentary evidence.',
+      code: 'RATE_EVIDENCE_REQUIRED'
+    };
+  }
+  return { ok: true, rate: 0, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateEswatiniRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null;
+  if (!hasCustomRate || Number(body.customRate) === 15) return { ok: true, rate: VAT_DB.SZ.rate };
+  const exactZeroEvidence = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'vat-act-current-second-schedule-zero-rated-supply';
+  if (!exactZeroEvidence) {
+    return { ok: false, statusCode: 400, error: 'Eswatini customRate is limited to 0% with an exact current VAT Act Second Schedule match and retained transaction evidence.', code: 'RATE_EVIDENCE_REQUIRED' };
+  }
+  return { ok: true, rate: 0, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateBurundiRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 18) return { ok: true, rate: 18, treatment: 'taxable-standard' };
+  const rate = Number(body.customRate);
+  const intermediateEvidence = [
+    'obr-vat-2020-article-15-agricultural-input',
+    'obr-vat-2020-article-15-locally-transformed-agricultural-product',
+    'obr-vat-2020-article-15-minister-listed-foodstuff',
+    'obr-vat-2020-article-15-hotel-product-or-service'
+  ];
+  const zeroEvidence = [
+    'obr-vat-2020-article-15-export-or-assimilated-operation',
+    'obr-vat-2020-article-15-non-accessory-international-transport',
+    'obr-vat-2020-article-15-export-intermediary-transaction'
+  ];
+  const intermediate = rate === 10
+    && body.rateEvidenceConfirmed === true
+    && intermediateEvidence.includes(body.rateEvidenceType);
+  const zero = rate === 0
+    && body.rateEvidenceConfirmed === true
+    && zeroEvidence.includes(body.rateEvidenceType);
+  if (!intermediate && !zero) {
+    return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Burundi customRate requires an exact VAT Law 2020 Article 15 intermediate-rate supply for 10%, or an exact Article 15 zero-rated operation for 0%, with retained evidence.' };
+  }
+  return { ok: true, rate, treatment: zero ? 'zero-rated' : 'taxable-intermediate', rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateGabonRateRequest(body) {
+  if (body.customRate === undefined || body.customRate === null || Number(body.customRate) === 18) return { ok: true, rate: 18 };
+  const rate = Number(body.customRate);
+  const evidenceByRate = { 10: 'finance-law-2026-article-221-ten-percent-listed-supply', 5: 'finance-law-2026-article-221-five-percent-listed-supply', 0: 'finance-law-2026-article-221-zero-rated-operation' };
+  if (body.rateEvidenceConfirmed === true && evidenceByRate[rate] && body.rateEvidenceType === evidenceByRate[rate]) return { ok: true, rate, rateEvidenceType: evidenceByRate[rate] };
+  return { ok: false, statusCode: 400, error: 'Gabon customRate is limited to 10%, 5% or 0% with the exact 2026 Article 221 evidence type and rateEvidenceConfirmed=true', code: 'RATE_EVIDENCE_REQUIRED' };
+}
+
+function validateGambiaRateRequest(body) {
+  if (body.customRate === undefined || body.customRate === null || Number(body.customRate) === 15) return { ok: true, rate: 15 };
+  if (Number(body.customRate) === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'gra-current-export-of-goods-or-services') return { ok: true, rate: 0, rateEvidenceType: body.rateEvidenceType };
+  return { ok: false, statusCode: 400, error: 'Gambia customRate is limited to 0% for a confirmed export of goods or services with rateEvidenceType=gra-current-export-of-goods-or-services', code: 'RATE_EVIDENCE_REQUIRED' };
+}
+
+function validateGuineaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate) return { ok: true, rate: 18 };
+  const rate = Number(body.customRate);
+  const confirmedZero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'dgi-cgi-article-373-export-or-international-transport';
+  if (!confirmedZero) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Guinea customRate supports only 0% with exact CGI Article 373 evidence.' };
+  return { ok: true, rate: 0 };
+}
+
+function validateGuineaBissauRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate) return { ok: true, rate: 19 };
+  const rate = Number(body.customRate);
+  const confirmedReduced = rate === 10 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'civa-article-18-annex-1-exact-line';
+  const confirmedZero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'civa-article-18-export-evidence';
+  if (!confirmedReduced && !confirmedZero) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Guinea-Bissau customRate requires exact CIVA Article 18 evidence for 10% or 0%.' };
+  return { ok: true, rate };
+}
+
+function validateLesothoRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate) return { ok: true, rate: 15 };
+  const rate = Number(body.customRate);
+  const electricity = rate === 10 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'rsl-current-electricity-treatment';
+  const zero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'rsl-fourth-schedule-or-export-evidence';
+  if (!electricity && !zero) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Lesotho customRate requires exact RSL evidence for electricity 10% or a Fourth Schedule/export 0% treatment.' };
+  return { ok: true, rate };
+}
+
+function validateMadagascarRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 20) return { ok: true, rate: 20 };
+  const rate = Number(body.customRate);
+  const butane = rate === 10 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'dgi-article-06-01-12-butane-tariff-line';
+  const zero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'dgi-article-06-01-12-export-goods-or-services';
+  if (!butane && !zero) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Madagascar customRate requires exact DGI Article 06.01.12 evidence for a listed butane tariff line or an export of goods or services.' };
+  return { ok: true, rate };
+}
+
+function validateMalawiRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 17.5) return { ok: true, rate: 17.5 };
+  return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Malawi custom rates are blocked. Act 37 of 2025 sets 17.5%; special treatments require current exact statutory evidence.' };
+}
+
+function validateMaliRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 18) return { ok: true, rate: 18 };
+  const rate = Number(body.customRate);
+  const reduced = rate === 5 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'dgi-cgi-article-229-point-d-exact-tariff-line';
+  const exemptExport = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'dgi-cgi-article-195-i-1-direct-export-evidence';
+  if (!reduced && !exemptExport) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Mali customRate requires exact DGI CGI Point D evidence for 5%, or Article 195 I.1 direct-export exemption evidence for 0 VAT.' };
+  return { ok: true, rate, treatment: exemptExport ? 'exempt' : 'taxable' };
+}
+
+function validateMauritaniaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 16) return { ok: true, rate: 16, treatment: 'taxable' };
+  const rate = Number(body.customRate);
+  const telephony = rate === 18 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'lfr-2023-article-230-telephony-supply';
+  const exportZero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'cgi-article-230-export-by-vat-taxpayer';
+  const article215Exempt = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'cgi-article-215-exact-exemption-item';
+  if (!telephony && !exportZero && !article215Exempt) {
+    return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Mauritania customRate requires exact evidence: LFR 2023 Article 230 telephony for 18%, CGI Article 230 export by a VAT-taxable person for 0%, or an exact CGI Article 215 exemption item.' };
+  }
+  return { ok: true, rate, treatment: article215Exempt ? 'exempt' : exportZero ? 'zero-rated' : 'taxable' };
+}
+
+function validateMauritiusRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 15) return { ok: true, rate: 15, treatment: 'taxable' };
+  const rate = Number(body.customRate);
+  const zero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'vat-act-fifth-schedule-exact-zero-rated-supply';
+  const exempt = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'vat-act-first-schedule-exact-exempt-supply';
+  if (!zero && !exempt) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Mauritius customRate requires an exact VAT Act Fifth Schedule zero-rated supply or First Schedule exempt supply. Tourist services are not a generic zero-rated category.' };
+  return { ok: true, rate: 0, treatment: exempt ? 'exempt' : 'zero-rated' };
+}
+
+function validateMoroccoRateRequest(body) {
+  const hasCustomRate=body.customRate!==undefined&&body.customRate!==null&&body.customRate!=='';
+  if(!hasCustomRate||Number(body.customRate)===20)return {ok:true,rate:20,treatment:'taxable'};
+  const rate=Number(body.customRate);
+  const reduced=rate===10&&body.rateEvidenceConfirmed===true&&body.rateEvidenceType==='cgi-2026-article-99-b-exact-10-percent-item';
+  const exportExempt=rate===0&&body.rateEvidenceConfirmed===true&&body.rateEvidenceType==='cgi-2026-article-92-i-1-qualified-export-evidence';
+  if(!reduced&&!exportExempt)return {ok:false,statusCode:400,code:'RATE_EVIDENCE_REQUIRED',error:'Morocco customRate requires an exact CGI 2026 Article 99-B item for 10%, or Article 92 I.1 qualifying export evidence for exemption with deduction. Former 14% and 7% rates are retired.'};
+  return {ok:true,rate:rate,treatment:exportExempt?'exempt-with-deduction':'taxable'};
+}
+
+function validateMozambiqueRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 16) return { ok: true, rate: 16, treatment: 'taxable' };
+  const rate = Number(body.customRate);
+  const privateService = rate === 5 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'civa-private-health-or-education-exact-five-percent-service';
+  const exportTreatment = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'civa-qualified-export-with-retained-customs-evidence';
+  if (!privateService && !exportTreatment) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Mozambique customRate requires an exact private health or education service for 5%, or a qualifying CIVA export with retained transaction evidence for 0%. The old 17% rate and blanket exemptions are not accepted.' };
+  return { ok: true, rate, treatment: privateService ? 'taxable-no-input-deduction' : 'exempt-with-deduction' };
+}
+
+function validateNamibiaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 15) return { ok: true, rate: 15, treatment: 'taxable' };
+  const rate = Number(body.customRate);
+  const zero = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'vat-act-schedule-iii-exact-supply-documentary-proof';
+  const exempt = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'vat-act-schedule-iv-exact-exempt-supply';
+  if (!zero && !exempt) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Namibia customRate is limited to an exact Schedule III zero-rated supply with documentary proof or an exact Schedule IV exempt supply. Generic exports, diplomatic, medical, education, financial or accommodation labels are not accepted.' };
+  return { ok: true, rate: 0, treatment: zero ? 'zero-rated' : 'exempt' };
+}
+
+function validateNigerRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 19) return { ok: true, rate: 19, treatment: 'taxable-standard' };
+  const rate = Number(body.customRate);
+  const reducedTen = rate === 10 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'cgi-2025-art-226-exact-transport-or-hotel-service';
+  const reducedFive = rate === 5 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'cgi-2025-art-226-exact-listed-product';
+  const exempt = rate === 0 && body.rateEvidenceConfirmed === true && body.rateEvidenceType === 'lf-2026-art-322-exact-exempt-operation';
+  if (!reducedTen && !reducedFive && !exempt) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Niger customRate is limited to an exact CGI Article 226 10% service, exact Article 226 5% listed product, or exact Finance Law 2026 Article 322 exemption with retained transaction evidence. A generic zero rate is not accepted.' };
+  return { ok: true, rate, treatment: exempt ? 'exempt' : 'taxable-reduced' };
+}
+
+function validateLiberiaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 13) return { ok: true, rate: 13 };
+  const zero = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'lra-section-1000-export-of-goods';
+  if (!zero) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Liberia customRate is limited to 0% for an exact Section 1000 export of goods with retained transaction evidence. Telecommunications is not modeled because current LRA sources conflict.' };
+  return { ok: true, rate: 0, rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateSaoTomeRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 15) return { ok: true, rate: 15, treatment: 'taxable-standard' };
+  const reduced = Number(body.customRate) === 7.5
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'civa-2023-annex-1-exact-basic-basket-line';
+  if (!reduced) return { ok: false, statusCode: 400, code: 'RATE_EVIDENCE_REQUIRED', error: 'Sao Tome customRate is limited to 7.5% with an exact CIVA Annex I basic-basket line and retained invoice evidence. Generic exemptions, zero rates and the illustrative 16% manual example are not accepted.' };
+  return { ok: true, rate: 7.5, treatment: 'taxable-reduced' };
+}
+
+function validateSenegalRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 18) {
+    return { ok: true, rate: 18, treatment: 'taxable-standard' };
+  }
+  const reducedTouristService = Number(body.customRate) === 10
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'cgi-article-369-approved-tourist-establishment-service';
+  if (!reducedTouristService) {
+    return {
+      ok: false,
+      statusCode: 400,
+      code: 'RATE_EVIDENCE_REQUIRED',
+      error: 'Senegal customRate is limited to 10% for an accommodation or restaurant service supplied by an approved tourist accommodation establishment, with exact Article 369 evidence retained.'
+    };
+  }
+  return { ok: true, rate: 10, treatment: 'taxable-reduced', rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateSeychellesRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 15) {
+    return { ok: true, rate: 15, treatment: 'taxable-standard' };
+  }
+  const zeroRated = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'vat-act-current-second-schedule-zero-rated-supply';
+  const exempt = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'vat-act-current-first-schedule-exempt-supply';
+  if (!zeroRated && !exempt) {
+    return {
+      ok: false,
+      statusCode: 400,
+      code: 'RATE_EVIDENCE_REQUIRED',
+      error: 'Seychelles customRate is limited to 0% with an exact current Second Schedule zero-rated supply or First Schedule exempt supply and retained transaction evidence.'
+    };
+  }
+  return { ok: true, rate: 0, treatment: zeroRated ? 'zero-rated' : 'exempt', rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateSierraLeoneRateRequest(body) {
+  if (body.currency && String(body.currency).toUpperCase() !== 'SLE') {
+    return { ok: false, statusCode: 400, code: 'STALE_CURRENCY', error: 'Sierra Leone GST uses SLE (new leone / NLe); stale SLL values are not accepted.' };
+  }
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === 15) {
+    return { ok: true, rate: 15, treatment: 'taxable-standard' };
+  }
+  const zeroRated = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'gst-act-current-first-schedule-zero-rated-supply';
+  const exempt = Number(body.customRate) === 0
+    && body.rateEvidenceConfirmed === true
+    && body.rateEvidenceType === 'gst-act-current-second-schedule-exempt-supply';
+  if (!zeroRated && !exempt) {
+    return {
+      ok: false,
+      statusCode: 400,
+      code: 'RATE_EVIDENCE_REQUIRED',
+      error: 'Sierra Leone customRate is limited to 0% with exact current First Schedule zero-rated or Second Schedule exempt evidence.'
+    };
+  }
+  return { ok: true, rate: 0, treatment: zeroRated ? 'zero-rated' : 'exempt', rateEvidenceType: body.rateEvidenceType };
+}
+
+function validateSomaliaRateRequest() {
+  return {
+    ok: false,
+    statusCode: 422,
+    code: 'NO_VERIFIED_NATIONAL_VAT',
+    error: 'No current nationwide Somalia VAT rate is verified from federal primary sources; API calculation is disabled.'
+  };
+}
+
+function validateSudanRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === VAT_DB.SD.rate) {
+    return { ok: true, rate: VAT_DB.SD.rate, treatment: 'standard-rate-only' };
+  }
+  return {
+    ok: false,
+    statusCode: 400,
+    code: 'STANDARD_RATE_ONLY',
+    error: 'Sudan customRate must remain at the official fixed standard rate of 17%; special treatments are outside this API calculation contract.'
+  };
+}
+
+function validateTogoRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === VAT_DB.TG.rate) {
+    return { ok: true, rate: VAT_DB.TG.rate, treatment: 'standard-rate-only' };
+  }
+  return {
+    ok: false,
+    statusCode: 400,
+    code: 'STANDARD_RATE_ONLY',
+    error: 'Togo customRate must remain at the official fixed standard rate of 18%; Article 180 exemptions and other special treatments are outside this API calculation contract.'
+  };
+}
+
+function validateTunisiaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === VAT_DB.TN.rate) {
+    return { ok: true, rate: VAT_DB.TN.rate, treatment: 'general-rate-only' };
+  }
+  return {
+    ok: false,
+    statusCode: 400,
+    code: 'GENERAL_RATE_ONLY',
+    error: 'Tunisia customRate must remain at the official general rate of 19%; reduced rates and other special treatments require current transaction-specific Ministry or tax-administration verification.'
+  };
+}
+
+function validateZambiaRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (!hasCustomRate || Number(body.customRate) === VAT_DB.ZM.rate) {
+    return { ok: true, rate: VAT_DB.ZM.rate, treatment: 'standard-rate-only' };
+  }
+  return {
+    ok: false,
+    statusCode: 400,
+    code: 'STANDARD_RATE_ONLY',
+    error: 'Zambia customRate must remain at the official fixed standard rate of 16%; zero-rated, exempt and other special ZRA transaction codes require exact current statutory and invoice evidence outside this API calculation contract.'
+  };
+}
+
+function validateZimbabweRateRequest(body) {
+  const hasCustomRate = body.customRate !== undefined && body.customRate !== null && body.customRate !== '';
+  if (hasCustomRate && Number(body.customRate) !== VAT_DB.ZW.rate) {
+    return {
+      ok: false, statusCode: 400, code: 'STANDARD_RATE_ONLY',
+      error: 'Zimbabwe customRate must remain at the official 15.5% standard rate effective 1 January 2026; zero-rated, exempt and other special treatments require exact current statutory evidence outside this API contract.'
+    };
+  }
+  const currency = String(body.currency || VAT_DB.ZW.currency).toUpperCase();
+  if (currency !== 'ZWG' && currency !== 'USD') {
+    return {
+      ok: false, statusCode: 400, code: currency === 'ZWL' ? 'STALE_CURRENCY' : 'UNSUPPORTED_CURRENCY',
+      error: 'Zimbabwe currency must be explicitly ZWG (ZiG) or USD; legacy ZWL is not accepted and no FX conversion is performed.'
+    };
+  }
+  return { ok: true, rate: VAT_DB.ZW.rate, treatment: 'standard-rate-only', currency };
+}
+
+function calculateGabonVatResult(amount, rate, operation) {
+  const roundedBase = value => Math.floor((value + Number.EPSILON) / 1000) * 1000;
+  if (operation === 'add') {
+    const base = roundedBase(amount); const vatAmount = Math.round(base * rate / 100);
+    return { operation, amountExclusive: Math.round(amount), taxableBase: base, vatRate: rate, vatAmount, amountInclusive: Math.round(amount + vatAmount), currency: 'XAF', rounding: 'taxable-base-down-to-xaf-1000' };
+  }
+  if (operation !== 'extract') return null;
+  let resolved = null; const guess = Math.floor(amount / (1000 * (1 + rate / 100)));
+  for (let k = Math.max(0, guess - 2); k <= guess + 2; k += 1) { const net = amount - k * 1000 * rate / 100; if (net >= k * 1000 && net < (k + 1) * 1000) { resolved = { net, base: k * 1000 }; break; } }
+  if (!resolved) return null;
+  const vatAmount = Math.round(resolved.base * rate / 100);
+  return { operation, amountExclusive: Math.round(resolved.net), taxableBase: resolved.base, vatRate: rate, vatAmount, amountInclusive: Math.round(amount), currency: 'XAF', rounding: 'taxable-base-down-to-xaf-1000' };
+}
+
+function calculateBurundiVatResult(amount, rate, operation) {
+  const maxMoney = 1000000000000000;
+  if (!Number.isFinite(amount) || amount < 0 || amount > maxMoney || (operation !== 'add' && operation !== 'extract')) return null;
+  const amountExclusive = operation === 'extract' ? amount / (1 + rate / 100) : amount;
+  const vatAmount = operation === 'extract' ? amount - amountExclusive : amountExclusive * rate / 100;
+  const amountInclusive = operation === 'extract' ? amount : amountExclusive + vatAmount;
+  if (!Number.isFinite(amountInclusive) || amountInclusive > maxMoney) return null;
+  return {
+    operation, amountExclusive, taxableBase: amountExclusive, vatRate: rate, vatAmount, amountInclusive,
+    currency: 'BIF', rounding: 'full-precision; nearest-whole-BIF display is an AfroTools UI rule only',
+    displayed: {
+      amountExclusive: Math.round(amountExclusive),
+      vatAmount: Math.round(vatAmount),
+      amountInclusive: Math.round(amountInclusive)
+    }
+  };
+}
+
+function calculateVatResult(amount, rate, operation, currency) {
+  const op = (operation || 'add').toLowerCase();
+  if (op === 'add' || op === 'inclusive') {
+    const vatAmount = round2(amount * (rate / 100));
+    return {
+      operation: 'add',
+      amountExclusive: round2(amount),
+      vatRate: rate,
+      vatAmount,
+      amountInclusive: round2(amount + vatAmount),
+      currency
+    };
+  }
+  if (op === 'extract' || op === 'remove' || op === 'exclusive') {
+    const amountExclusive = round2(amount / (1 + rate / 100));
+    return {
+      operation: 'extract',
+      amountInclusive: round2(amount),
+      vatRate: rate,
+      vatAmount: round2(amount - amountExclusive),
+      amountExclusive,
+      currency
+    };
+  }
+  return null;
 }
 
 async function validateApiKey(apiKey) {
@@ -572,7 +1117,7 @@ exports.handler = async (event) => {
       return respond(400, { error: 'Invalid JSON body', code: 'INVALID_JSON' });
     }
 
-    const { country, amount, operation, customRate } = body;
+    const { country, amount, operation, customRate, rateEvidenceConfirmed, rateEvidenceType } = body;
 
     if (auth.sandbox) {
       const numAmount = Number(amount || 1000);
@@ -616,6 +1161,11 @@ exports.handler = async (event) => {
       });
     }
 
+    if (countryCode === 'SO') {
+      const validation = validateSomaliaRateRequest();
+      return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+
     if (amount === undefined || amount === null || isNaN(Number(amount))) {
       return respond(400, {
         error: 'Missing or invalid required field: amount (must be a number)',
@@ -631,44 +1181,200 @@ exports.handler = async (event) => {
       });
     }
 
+    if (countryCode === 'ER') {
+      const validation = validateEritreaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'ET') {
+      const validation = validateEthiopiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'SZ') {
+      const validation = validateEswatiniRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'BI') {
+      const validation = validateBurundiRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'GA') {
+      const validation = validateGabonRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'GM') {
+      const validation = validateGambiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'GN') {
+      const validation = validateGuineaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'GW') {
+      const validation = validateGuineaBissauRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'LS') {
+      const validation = validateLesothoRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'LR') {
+      const validation = validateLiberiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'MG') {
+      const validation = validateMadagascarRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'MW') {
+      const validation = validateMalawiRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'ML') {
+      const validation = validateMaliRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'MR') {
+      const validation = validateMauritaniaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'MU') {
+      const validation = validateMauritiusRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'MA') {
+      const validation=validateMoroccoRateRequest(body);
+      if(!validation.ok)return respond(validation.statusCode,{error:validation.error,code:validation.code});
+    }
+    if (countryCode === 'MZ') {
+      const validation = validateMozambiqueRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'NA') {
+      const validation = validateNamibiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'NE') {
+      const validation = validateNigerRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'ST') {
+      const validation = validateSaoTomeRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'SN') {
+      const validation = validateSenegalRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'SC') {
+      const validation = validateSeychellesRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'SL') {
+      const validation = validateSierraLeoneRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'SD') {
+      const validation = validateSudanRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'TG') {
+      const validation = validateTogoRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'TN') {
+      const validation = validateTunisiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'ZM') {
+      const validation = validateZambiaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'ZW') {
+      const validation = validateZimbabweRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+
     // Use custom rate if provided, otherwise country standard rate
-    const rate = (customRate !== undefined && customRate !== null) ? Number(customRate) : info.rate;
+    const hasCustomRate = customRate !== undefined && customRate !== null;
+    const rate = hasCustomRate ? Number(customRate) : info.rate;
     if (isNaN(rate) || rate < 0) {
       return respond(400, {
         error: 'customRate must be a non-negative number',
         code: 'INVALID_VALUE'
       });
     }
+    if (countryCode === 'CM' && hasCustomRate && !(rate === 10 && rateEvidenceConfirmed === true)) {
+      return respond(400, {
+        error: 'Cameroon customRate is limited to the qualifying 10% social-housing scenario and requires rateEvidenceConfirmed=true',
+        code: 'RATE_EVIDENCE_REQUIRED'
+      });
+    }
+    if (countryCode === 'CV' && hasCustomRate && !(rate === 8 && rateEvidenceConfirmed === true)) {
+      return respond(400, {
+        error: 'Cabo Verde customRate is limited to the qualifying 8% final-consumer water/electricity scenario and requires rateEvidenceConfirmed=true',
+        code: 'RATE_EVIDENCE_REQUIRED'
+      });
+    }
+    if (countryCode === 'CF' && hasCustomRate) {
+      const confirmedListedGoods = rate === 5 && rateEvidenceConfirmed === true && rateEvidenceType === 'tariff-listed-goods';
+      const confirmedExport = rate === 0 && rateEvidenceConfirmed === true && rateEvidenceType === 'qualifying-export-customs-proof';
+      if (!confirmedListedGoods && !confirmedExport) {
+        return respond(400, {
+          error: 'Central African Republic customRate requires exact evidence: 5% with rateEvidenceType=tariff-listed-goods or 0% with rateEvidenceType=qualifying-export-customs-proof',
+          code: 'RATE_EVIDENCE_REQUIRED'
+        });
+      }
+    }
+    if (countryCode === 'TD' && hasCustomRate) {
+      const confirmedReduced = rate === 9.9 && rateEvidenceConfirmed === true && rateEvidenceType === 'article-238-listed-supply';
+      const confirmedZero = rate === 0 && rateEvidenceConfirmed === true && rateEvidenceType === 'article-238-zero-case';
+      if (!confirmedReduced && !confirmedZero) {
+        return respond(400, {
+          error: 'Chad customRate requires exact Article 238 evidence: effective 9.9% with rateEvidenceType=article-238-listed-supply or 0% with rateEvidenceType=article-238-zero-case',
+          code: 'RATE_EVIDENCE_REQUIRED'
+        });
+      }
+    }
+    if (countryCode === 'KM' && hasCustomRate) {
+      const validation = validateComorosRateRequest(body);
+      if (!validation.ok) {
+        return respond(validation.statusCode, {
+          error: validation.error,
+          code: validation.code
+        });
+      }
+    }
+    if (countryCode === 'CG' && hasCustomRate) {
+      const validation = validateCongoRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'CI' && hasCustomRate) {
+      const validation = validateCoteDIvoireRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'DJ' && hasCustomRate) {
+      const validation = validateDjiboutiRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'CD' && hasCustomRate) {
+      const validation = validateDrCongoRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
+    if (countryCode === 'GQ' && hasCustomRate) {
+      const validation = validateEquatorialGuineaRateRequest(body);
+      if (!validation.ok) return respond(validation.statusCode, { error: validation.error, code: validation.code });
+    }
 
     const op = (operation || 'add').toLowerCase();
     const startTime = Date.now();
-    let result;
+    const resultCurrency = countryCode === 'ZW' ? String(body.currency || info.currency).toUpperCase() : info.currency;
+    const result = countryCode === 'GA'
+      ? calculateGabonVatResult(numAmount, rate, op)
+      : countryCode === 'BI'
+        ? calculateBurundiVatResult(numAmount, rate, op)
+        : calculateVatResult(numAmount, rate, op, resultCurrency);
 
-    if (op === 'add' || op === 'inclusive') {
-      // Add VAT to the amount (amount is exclusive / net)
-      const vatAmount = round2(numAmount * (rate / 100));
-      const totalInclusive = round2(numAmount + vatAmount);
-      result = {
-        operation: 'add',
-        amountExclusive: round2(numAmount),
-        vatRate: rate,
-        vatAmount,
-        amountInclusive: totalInclusive,
-        currency: info.currency
-      };
-    } else if (op === 'extract' || op === 'remove' || op === 'exclusive') {
-      // Extract VAT from the amount (amount is inclusive / gross)
-      const amountExclusive = round2(numAmount / (1 + rate / 100));
-      const vatAmount = round2(numAmount - amountExclusive);
-      result = {
-        operation: 'extract',
-        amountInclusive: round2(numAmount),
-        vatRate: rate,
-        vatAmount,
-        amountExclusive,
-        currency: info.currency
-      };
-    } else {
+    if (!result) {
       return respond(400, {
         error: "Invalid operation. Use 'add' (amount is net, add VAT) or 'extract' (amount is gross, extract VAT).",
         code: 'INVALID_OPERATION'
@@ -699,3 +1405,43 @@ exports.handler = async (event) => {
 };
 
 exports.handler = require('./_shared/with-api').withApi(exports.handler, { name: 'api-vat' });
+exports._test = Object.freeze({
+  calculateVatResult,
+  calculateBurundiVatResult,
+  validateComorosRateRequest,
+  validateCongoRateRequest,
+  validateCoteDIvoireRateRequest,
+  validateDjiboutiRateRequest,
+  validateDrCongoRateRequest,
+  validateEquatorialGuineaRateRequest,
+  validateEritreaRateRequest,
+  validateEthiopiaRateRequest,
+  validateEswatiniRateRequest
+  ,validateBurundiRateRequest
+  ,validateGabonRateRequest
+  ,calculateGabonVatResult
+  ,validateGambiaRateRequest
+  ,validateGuineaRateRequest
+  ,validateGuineaBissauRateRequest
+  ,validateLesothoRateRequest
+  ,validateLiberiaRateRequest
+  ,validateMadagascarRateRequest
+  ,validateMalawiRateRequest
+  ,validateMaliRateRequest
+  ,validateMauritaniaRateRequest
+  ,validateMauritiusRateRequest
+  ,validateMoroccoRateRequest
+  ,validateMozambiqueRateRequest
+  ,validateNamibiaRateRequest
+  ,validateNigerRateRequest
+  ,validateSaoTomeRateRequest
+  ,validateSenegalRateRequest
+  ,validateSeychellesRateRequest
+  ,validateSierraLeoneRateRequest
+  ,validateSomaliaRateRequest
+  ,validateSudanRateRequest
+  ,validateTogoRateRequest
+  ,validateTunisiaRateRequest
+  ,validateZambiaRateRequest
+  ,validateZimbabweRateRequest
+});

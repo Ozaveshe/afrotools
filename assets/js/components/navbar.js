@@ -817,12 +817,12 @@
         });
       }
       var nativeHref = alternates[targetLang];
-      var labels = { en: 'English', fr: 'Fran?ais', sw: 'Kiswahili', yo: 'Yor?b?', ha: 'Hausa' };
+      var labels = { en: 'English', fr: 'Français', sw: 'Kiswahili', yo: 'Yorùbá', ha: 'Hausa' };
       if (nativeHref) {
         return { requestedLocale: targetLang, route: nativeHref, relationship: 'equivalent', label: labels[targetLang] || targetLang, advertisedAsEquivalent: true };
       }
       var englishHref = alternates.en || alternates['x-default'] || canonicalRoute || '/';
-      return { requestedLocale: targetLang, route: englishHref, relationship: 'english-fallback', label: (labels[targetLang] || targetLang) + ' unavailable ? English fallback', advertisedAsEquivalent: false };
+      return { requestedLocale: targetLang, route: englishHref, relationship: 'english-fallback', label: (labels[targetLang] || targetLang) + ' unavailable — English fallback', advertisedAsEquivalent: false };
     }
 
     _languageHrefFor(targetLang, currentLang) {
@@ -842,10 +842,10 @@
         var fallbackLabel = fallback ? '<small class="lang-opt-fallback">' + this._escapeHtml(destination.label) + '</small>' : '';
         var partialLabel = l.launchStatus === 'partial' ? '<small class="lang-opt-partial">' + this._escapeHtml(this._translation('navigation.partialCoverage', 'Partial coverage')) + '</small>' : '';
         var ariaLabel = fallback ? ' aria-label="' + this._escapeHtml(l.label + ': ' + destination.label) + '"' : '';
-        return '<a href="' + this._escapeHtml(destination.route) + '" data-locale-target="' + this._escapeHtml(l.code) + '" data-locale-relationship="' + this._escapeHtml(destination.relationship) + '" class="lang-opt' + active + fallbackClass + '"' + ariaLabel + '><span class="lang-opt-check">' + check + '</span><span class="lang-opt-label">' + l.label + partialLabel + fallbackLabel + '</span></a>';
+        return '<a href="' + this._escapeHtml(destination.route) + '" role="menuitem" data-locale-target="' + this._escapeHtml(l.code) + '" data-locale-relationship="' + this._escapeHtml(destination.relationship) + '" class="lang-opt' + active + fallbackClass + '"' + ariaLabel + '><span class="lang-opt-check">' + check + '</span><span class="lang-opt-label">' + l.label + partialLabel + fallbackLabel + '</span></a>';
       }, this).join('');
       var switchLabel = this._translation('navigation.changeLanguage', 'Change language');
-      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="' + this._escapeHtml(switchLabel) + '"><span aria-hidden="true">🌐</span> <span class="lang-btn-label">' + curObj.label + '</span></button><div class="lang-drop" id="langDrop" role="menu" aria-label="' + this._escapeHtml(this._translation('accessibility.languageMenu', 'Language menu')) + '">' + opts + '</div></div>';
+      return '<div class="lang-switch"><button class="lang-btn" id="langBtn" type="button" aria-label="' + this._escapeHtml(switchLabel) + '" aria-haspopup="menu" aria-expanded="false" aria-controls="langDrop"><span aria-hidden="true">🌐</span> <span class="lang-btn-label">' + curObj.label + '</span></button><div class="lang-drop" id="langDrop" role="menu" aria-label="' + this._escapeHtml(this._translation('accessibility.languageMenu', 'Language menu')) + '">' + opts + '</div></div>';
     }
 
     _navItems() {
@@ -1335,8 +1335,11 @@
       };
       if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
+      this.removeAttribute('data-styles-ready');
       this.shadowRoot.innerHTML = `
+        <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
+        <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=1">
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
             <a href="${T.homeHref}" class="logo" aria-label="AfroTools home">
@@ -1499,6 +1502,27 @@
         </dialog>
 
 `;
+      const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
+      let pendingStyles = styleLinks.length;
+      let revealed = false;
+      const reveal = () => {
+        if (revealed) return;
+        revealed = true;
+        this.setAttribute('data-styles-ready', '');
+      };
+      const settled = () => {
+        pendingStyles -= 1;
+        if (pendingStyles <= 0) reveal();
+      };
+      styleLinks.forEach(link => {
+        if (link.sheet) settled();
+        else {
+          link.addEventListener('load', settled, { once: true });
+          link.addEventListener('error', settled, { once: true });
+        }
+      });
+      if (!styleLinks.length) reveal();
+      window.setTimeout(reveal, 1500);
     }
 
     _bind() {
@@ -1680,12 +1704,17 @@
       // Language switcher toggle
       const langBtn = sr.querySelector('#langBtn');
       const langDrop = sr.querySelector('#langDrop');
+      const closeLanguageMenu = () => {
+        langDrop?.classList.remove('open');
+        langBtn?.setAttribute('aria-expanded', 'false');
+      };
       langBtn?.addEventListener('click', e => {
         e.stopPropagation();
-        langDrop.classList.toggle('open');
+        const isOpen = langDrop.classList.toggle('open');
+        langBtn.setAttribute('aria-expanded', String(isOpen));
       });
       if (this._langCloseFn) document.removeEventListener('click', this._langCloseFn);
-      this._langCloseFn = () => langDrop?.classList.remove('open');
+      this._langCloseFn = closeLanguageMenu;
       document.addEventListener('click', this._langCloseFn);
 
       const fallbackDialog = sr.querySelector('#languageFallbackDialog');
@@ -1696,7 +1725,7 @@
         link.addEventListener('click', event => {
           event.preventDefault();
           fallbackHref = link.getAttribute('href') || '/';
-          langDrop?.classList.remove('open');
+          closeLanguageMenu();
           if (fallbackDialog && typeof fallbackDialog.showModal === 'function') fallbackDialog.showModal();
           else if (window.confirm(this._translation('navigation.fallbackWarningBody', 'The next page is in English. Your current work will not be translated.'))) window.location.assign(fallbackHref);
         });
@@ -1714,7 +1743,7 @@
       this._keydownFn = e => {
         if (e.key === 'Escape') {
           closeMenus();
-          langDrop?.classList.remove('open');
+          closeLanguageMenu();
           if (this._menuOpen) setMenuOpen(false);
         }
       };

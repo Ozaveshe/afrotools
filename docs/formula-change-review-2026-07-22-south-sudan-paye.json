@@ -1,0 +1,36 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://cms.nra.gov.ss/uploads/FINANCIAL_Act_FY_2023_2024_MAIL_97b32cab38.pdf",
+  "reason": "Replace contradictory South Sudan browser, server and widget formulas with one reviewed statutory-reference contract. The shared engine applies the five monthly PIT bands in the Financial Act FY 2023/24, deducts the 8% employee NSIF or approved funded-pension contribution before PIT, adds the 30% surtax on computed PIT from the Taxation Amendment Act 2012, and shows 17% employer NSIF separately. The UI does not label the last primary schedule located as newly enacted 2026 rates and removes the unsupported secondary-employment shortcut.",
+  "formulaIds": ["paye-browser-ss", "paye-server-ss", "route-ss-paye"],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-ss-defaults",
+      "previousExpected": {"deductions.totalDeductions": 181800, "result.netAnnual": 818200, "result.netMonthly": 68183, "tax.netTax": 101800},
+      "nextExpected": {"deductions.totalDeductions": 168140, "result.netAnnual": 831860, "result.netMonthly": 69322, "tax.netTax": 88140},
+      "reason": "The repeated monthly case now applies the complete five-band schedule and statutory 30% PIT surtax after the approved 8% employee contribution deduction.",
+      "sourceUrl": "https://cms.nra.gov.ss/uploads/FINANCIAL_Act_FY_2023_2024_MAIL_97b32cab38.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-ss-large-decimal",
+      "previousExpected": {"deductions.totalDeductions": 263917800, "result.netAnnual": 736082201, "result.netMonthly": 61340183, "tax.netTax": 183917800},
+      "nextExpected": {"deductions.totalDeductions": 319038540, "result.netAnnual": 680961460, "result.netMonthly": 56746788, "tax.netTax": 239038540},
+      "reason": "The high-income fixture preserves decimal input, reaches the statutory 20% top marginal band and includes the PIT surtax that the legacy server omitted.",
+      "sourceUrl": "https://docs.southsudanngoforum.org/sites/default/files/2016-06/01.A.1.3.%20Taxation%20Amendment%20Act%202012%20-%20South%20Sudan.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-ss-zero",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "reason": "The zero-income baseline remains zero under the reviewed PIT, surtax and NSIF contract.",
+      "sourceUrl": "https://cms.nra.gov.ss/uploads/South_Sudan_Taxation_Act_2009_fc9418fd5d.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

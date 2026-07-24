@@ -3,8 +3,8 @@
 Generated from the canonical route graph by `node scripts/report-hausa-coverage.js --write`.
 
 - Public Hausa routes: 105
-- Native: 12
-- Localized shells: 61
+- Native: 14
+- Localized shells: 59
 - Explicit English fallbacks: 32
 - Indexable: 73
 - Sitemap members: 73
@@ -44,8 +44,8 @@ Generated from the canonical route graph by `node scripts/report-hausa-coverage.
 | /ha/kayan-aiki/cajin-banki/ | english-fallback | no | no | /tools/bank-charges/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/canja-kudi/ | english-fallback | no | no | /tools/currency-converter/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
 | /ha/kayan-aiki/canza-pdf/ | english-fallback | no | no | /tools/pdf-convert/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |
-| /ha/kayan-aiki/cgt-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
-| /ha/kayan-aiki/cit-najeriya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
+| /ha/kayan-aiki/cgt-najeriya/ | native | yes | yes |  | ha/kayan-aiki/cgt-najeriya/index.html and assets/js/engines/ng-cgt.js |
+| /ha/kayan-aiki/cit-najeriya/ | native | yes | yes |  | ha/kayan-aiki/cit-najeriya/index.html and assets/js/engines/ng-cit.js |
 | /ha/kayan-aiki/darajar-katin-waya/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/dawo-da-jari/ | localized-shell | yes | yes |  | Hausa route-first localized shell |
 | /ha/kayan-aiki/duba-cac/ | english-fallback | no | no | /tools/cac-checker/ | docs/HAUSA-LOCALIZATION-STRATEGY.md |

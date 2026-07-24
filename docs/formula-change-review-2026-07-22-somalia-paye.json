@@ -1,0 +1,30 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.mof.gov.so/index.php/publications/income-tax-manual-english-version",
+  "reason": "Replace contradictory Somalia implementations (flat 5%, zero tax and invented SOS bands) with the current federal schedule under Income Tax Law No. 37 and Regulations 2025. The official manual establishes monthly USD marginal bands for resident adults, flat category rates for non-residents and residents under 18, no employment deductions, and employer withholding. English, French, Swahili, server and widget now share one federal-only contract.",
+  "formulaIds": ["paye-browser-so", "paye-server-so", "route-so-paye"],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-so-defaults",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 1000000, "result.netMonthly": 83333, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 178488, "result.netAnnual": 821512, "result.netMonthly": 68459.33, "tax.netTax": 178488},
+      "reason": "The previous server engine incorrectly modeled zero tax. The reviewed 2025 federal USD monthly schedule is applied to annual gross divided by twelve.",
+      "sourceUrl": "https://www.mof.gov.so/index.php/publications/income-tax-manual-english-version", "reviewedBy": "Codex Day 3 release gate", "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-so-large-decimal",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 1000000001, "result.netMonthly": 83333333, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 179998488.1, "result.netAnnual": 820001512.45, "result.netMonthly": 68333459.37, "tax.netTax": 179998488.1},
+      "reason": "The high-income fixture now uses the statutory 18% top marginal band with exact intermediate values and cent display rounding.",
+      "sourceUrl": "https://www.mof.gov.so/index.php/publications/income-tax-manual-english-version", "reviewedBy": "Codex Day 3 release gate", "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-so-zero",
+      "previousExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "nextExpected": {"deductions.totalDeductions": 0, "result.netAnnual": 0, "result.netMonthly": 0, "tax.netTax": 0},
+      "reason": "The zero-income baseline remains unchanged under the reviewed federal schedule.",
+      "sourceUrl": "https://www.mof.gov.so/index.php/publications/income-tax-manual-english-version", "reviewedBy": "Codex Day 3 release gate", "reviewedAt": "2026-07-22"
+    }
+  ]
+}

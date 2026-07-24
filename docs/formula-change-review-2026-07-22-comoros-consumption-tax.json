@@ -1,0 +1,64 @@
+{
+  "reviewedBy": "AfroTools Day 3 VAT VIP review",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+  "formulaIds": ["route-km-vat"],
+  "fixtureDeltas": [],
+  "tool": "km-vat",
+  "reviewedOn": "2026-07-22",
+  "reason": "Correct the public model from generic VAT claims to the official Comoros Taxe sur la Consommation contract and gate every special Article 152 rate by evidence.",
+  "scope": [
+    "/comoros/km-vat",
+    "/fr/comores/calculateur-tva",
+    "/sw/comoros/kikokotoo-vat/",
+    "AfroVAT KM"
+  ],
+  "officialSources": [
+    {
+      "title": "Ministry report on 2024 indirect-tax expenditures, published 2026",
+      "url": "https://finances.gouv.km/wp-content/uploads/2026/02/Rapport-sur-les-Depenses-Fiscales-2024-1-1-5.pdf",
+      "evidence": "Taxe sur la Consommation reference rate 10%; official warning that indirect-tax law requires updating."
+    },
+    {
+      "title": "Official DGI Code general des impots 2023",
+      "url": "https://www.dgi.gouv.km/file/actes_officiels/Comores-CGI-2023.pdf",
+      "articles": [139, 140, 141, 152]
+    },
+    {
+      "title": "Ministry 2026 Finance Law promulgation publication",
+      "url": "https://finances.gouv.km/post-et-donnee/la-loi-n25-020-au-portant-loi-de-finances/"
+    }
+  ],
+  "rates": {
+    "reference": 10,
+    "utilitiesAndInterIsland": 3,
+    "restaurantBankingFixedAndInternationalTransport": 5,
+    "mobileRecharge": 7.5,
+    "casino": 25,
+    "essentialMinisterialList": 0
+  },
+  "separateQuantityTax": {
+    "incomingCallTerminationKmfPerMinute": 50,
+    "modeled": false,
+    "reason": "Article 152 treats this as a separate additional quantity-based tax; the public calculator and AfroVAT KM endpoint accept amounts, not call minutes."
+  },
+  "threshold": {
+    "generalKmf": 20000000,
+    "importerExceptionStartsKmf": 15000000,
+    "importerExceptionEndsExclusiveKmf": 20000000
+  },
+  "failClosedRules": [
+    "No broad food, medical, education, export or agriculture shortcut.",
+    "Every non-10% treatment requires rateEvidenceConfirmed=true and the exact Article 152 evidence type in both the browser engine and AfroVAT KM request validator.",
+    "The 0% treatment requires the exact ministerial essential-product list.",
+    "The calculator estimates TC and does not claim a formal VAT system.",
+    "The separate KMF 50-per-minute incoming-call termination additional tax is expressly excluded and never folded into the ad valorem rate.",
+    "No filing, deduction, withholding, return or payment decision is automated."
+  ],
+  "privacy": "Calculation, invoice data and PDF remain local; shared links contain no entered values.",
+  "tests": [
+    "tests/engines/km-consumption-tax.test.js",
+    "tests/e2e/day3-comoros-consumption-tax-vip.spec.js",
+    "Executable AfroVAT fixtures cover missing, mismatched and accepted Article 152 evidence plus browser/API parity."
+  ]
+}

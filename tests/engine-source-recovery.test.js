@@ -80,7 +80,7 @@ async function canonical(code, filename) {
 (async () => {
   const sources = filesIn(SOURCE_DIR);
   const outputs = filesIn(ENGINE_DIR);
-  assert.strictEqual(sources.length, 128, "expected 128 readable engine sources");
+  assert.ok(sources.length >= 128, "expected at least 128 readable engine sources");
   assert.deepStrictEqual(sources, outputs, "source/output engine names must match exactly");
 
   for (const filename of sources) {

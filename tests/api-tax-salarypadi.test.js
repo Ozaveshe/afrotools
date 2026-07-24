@@ -46,6 +46,11 @@ const taxRates = require('../netlify/functions/api-tax-rates.js');
 for (const countryCode of engines.listCountryCodes()) {
   const engine = engines.get(countryCode);
   const raw = engine.calculate({ grossAnnual: 1200000 });
+  if (raw && raw.tax && raw.tax.status === 'CURRENT_SCHEDULE_UNCONFIRMED') {
+    assert.strictEqual(raw.tax.bands, undefined, `${countryCode} withholds unconfirmed tax bands`);
+    assert.strictEqual(raw.tax.netTax, null, `${countryCode} withholds an unconfirmed tax result`);
+    continue;
+  }
   const originalBands = JSON.parse(JSON.stringify(raw.tax.bands));
   const normalized = normalizeTaxResultForApi(raw, engine.currency);
   assert.ok(Array.isArray(normalized.tax.bands) && normalized.tax.bands.length > 0, `${countryCode} exposes tax bands`);

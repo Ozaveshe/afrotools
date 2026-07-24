@@ -1,360 +1,81 @@
-<!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur des droits de timbre au Kenya | AfroTools</title>
-<meta name="description" content="Estimez les droits de timbre immobiliers au Kenya selon la localisation du bien, le type de transaction et la valeur declaree. Calcul rapide au format FR avec contexte KRA.">
-<meta property="og:title" content="Calculateur des droits de timbre au Kenya | AfroTools">
-<meta property="og:description" content="Estimez les droits de timbre immobiliers au Kenya avec une interface française claire.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/fr/tools/ke-droits-timbre/">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur des droits de timbre au Kenya | AfroTools">
-<meta name="twitter:description" content="Simulez les droits de timbre immobiliers au Kenya en français.">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Droits de timbre Kenya : transfert et bail</title>
+<meta name="description" content="Estimez les droits de timbre au Kenya selon le barème actuel : valeur de marché, municipalité, loyer, durée et prime. Calcul local, sans taux de bail fictif.">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Droits de timbre Kenya : transfert et bail"><meta property="og:description" content="Calcul selon le barème Cap. 480 pour les transferts immobiliers et les baux ordinaires."><meta property="og:url" content="https://afrotools.com/fr/tools/ke-droits-timbre/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Droits de timbre Kenya : transfert et bail">
+<meta name="twitter:description" content="Estimez les droits de timbre au Kenya selon le barème actuel : valeur de marché, municipalité, loyer, durée et prime. Calcul local, sans taux de bail fictif.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ke-stamp-duty.webp">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
-<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<style>
-:root{--ink:#111827;--muted:#5b6472;--line:#e5e7eb;--panel:#fff;--wash:#fff7f5;--accent:#c2410c;--accent-2:#ea580c;--accent-soft:rgba(194,65,12,.12);--shadow:0 18px 40px rgba(15,23,42,.08)}
-body{background:linear-gradient(180deg,#fff 0%,#fff7f3 46%,#fff 100%);color:var(--ink)}
-.fr-shell{max-width:1180px;margin:0 auto;padding:24px}
-.hero{background:linear-gradient(135deg,#0f172a 0%,#7c2d12 56%,#ea580c 100%);color:#fff;border-radius:28px;padding:32px 28px;box-shadow:var(--shadow);position:relative;overflow:hidden}
-.hero::after{content:'';position:absolute;inset:auto -80px -120px auto;width:240px;height:240px;border-radius:50%;background:radial-gradient(circle,rgba(255,255,255,.18),transparent 68%)}
-.crumbs{font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:rgba(255,255,255,.6);margin-bottom:14px}
-.crumbs a{color:inherit;text-decoration:none}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.5fr) minmax(290px,.9fr);gap:20px;align-items:end}
-h1{font-size:clamp(2rem,5vw,3.5rem);line-height:1.02;letter-spacing:-.04em;margin:0 0 12px}
-.lead{font-size:1.03rem;line-height:1.7;max-width:66ch;color:rgba(255,255,255,.86);margin:0 0 18px}
-.badges{display:flex;flex-wrap:wrap;gap:10px}
-.badge{display:inline-flex;align-items:center;padding:8px 12px;border-radius:999px;background:rgba(255,255,255,.14);border:1px solid rgba(255,255,255,.18);font-size:.75rem;font-weight:700;letter-spacing:.04em}
-.hero-card{background:rgba(255,255,255,.1);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,.16);border-radius:20px;padding:18px}
-.hero-card h2{margin:0 0 10px;font-size:.9rem;text-transform:uppercase;letter-spacing:.12em}
-.hero-card p,.hero-card li{margin:0;color:rgba(255,255,255,.82);line-height:1.7;font-size:.92rem}
-.hero-card ul{margin:10px 0 0;padding-left:18px}
-.layout{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.9fr);gap:20px;margin-top:22px;align-items:start}
-.card{background:var(--panel);border:1px solid var(--line);border-radius:22px;box-shadow:var(--shadow);overflow:hidden}
-.card-head{padding:16px 20px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#fff,#fff7f4)}
-.card-title{display:flex;align-items:center;justify-content:space-between;gap:12px;font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em}
-.card-body{padding:20px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-label{display:block;font-size:.78rem;font-weight:700;color:#374151;margin-bottom:7px}
-input,select{width:100%;padding:12px 13px;border:1.5px solid #d1d5db;border-radius:12px;font:inherit;background:#fff;transition:border-color .2s,box-shadow .2s}
-input:focus,select:focus{outline:none;border-color:var(--accent-2);box-shadow:0 0 0 4px var(--accent-soft)}
-.full{grid-column:1 / -1}
-.btn{width:100%;margin-top:16px;border:0;border-radius:14px;padding:13px 18px;font:inherit;font-weight:800;cursor:pointer;background:linear-gradient(135deg,var(--accent),var(--accent-2));color:#fff;box-shadow:0 16px 28px rgba(194,65,12,.18);transition:transform .15s ease,box-shadow .15s ease}
-.btn:hover{transform:translateY(-1px);box-shadow:0 18px 34px rgba(194,65,12,.24)}
-.result-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
-.result-box{background:#fff7f3;border:1px solid #fed7aa;border-radius:18px;padding:16px;text-align:center}
-.result-box .num{font-size:1.5rem;font-weight:900;color:#9a3412;line-height:1.1}
-.result-box .lbl{margin-top:6px;font-size:.72rem;letter-spacing:.08em;text-transform:uppercase;color:#7c2d12;font-weight:800}
-.table{width:100%;border-collapse:collapse;margin-top:16px;font-size:.92rem}
-.table th,.table td{padding:11px 0;border-bottom:1px solid #f1f5f9;text-align:left;vertical-align:top}
-.table th:last-child,.table td:last-child{text-align:right}
-.table th{font-size:.74rem;letter-spacing:.08em;text-transform:uppercase;color:#7c2d12}
-.table tr:last-child td{border-bottom:0;font-weight:900}
-.note{font-size:.9rem;line-height:1.75;color:var(--muted)}
-.stack{display:grid;gap:14px}
-.info{background:#fff;border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:var(--shadow)}
-.info h3{margin:0 0 10px;font-size:.85rem;text-transform:uppercase;letter-spacing:.1em;color:#7c2d12}
-.info p,.info li{font-size:.92rem;line-height:1.75;color:#4b5563}
-.info ul{margin:0;padding-left:18px}
-.links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.links a{display:block;padding:12px 14px;border-radius:14px;background:#fff7f3;border:1px solid #fed7aa;color:#9a3412;text-decoration:none;font-weight:700;line-height:1.4}
-.section{max-width:860px;margin:56px auto 0;padding:0 4px}
-.section h2{font-size:1.5rem;line-height:1.2;margin:0 0 14px;letter-spacing:-.03em}
-.section p{font-size:.98rem;line-height:1.8;color:#4b5563}
-.faq details{background:#fff;border:1px solid var(--line);border-radius:16px;padding:14px 16px;margin-bottom:12px;box-shadow:var(--shadow)}
-.faq summary{cursor:pointer;font-weight:800;color:#111827}
-.faq p{margin:10px 0 0}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.actions save-result-button,.actions share-result-button{flex:0 0 auto}
-@media (max-width: 920px){
-  .hero-grid,.layout{grid-template-columns:1fr}
-  .form-grid,.links,.result-grid{grid-template-columns:1fr}
-}
-</style>
+<link rel="icon" href="/assets/img/logo-mark.svg"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/ke-stamp-duty-vip.css?v=62821838">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Calculateur des droits de timbre au Kenya",
-  "description": "Estimez les droits de timbre immobiliers au Kenya selon la localisation, le type de transaction et la valeur du bien.",
-  "url": "https://afrotools.com/fr/tools/ke-droits-timbre/",
-  "inLanguage": "https://afrotools.com/fr/",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
-  "browserRequirements": "JavaScript requis",
+  "url": "https://afrotools.com/fr/tools/ke-droits-timbre/",
+  "description": "Calcul local indicatif pour les transferts immobiliers et les baux ordinaires au Kenya selon le barème du Stamp Duty Act.",
+  "isAccessibleForFree": true,
   "offers": {
     "@type": "Offer",
     "price": "0",
-    "priceCurrency": "USD"
+    "priceCurrency": "KES"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "inLanguage": "fr",
+  "dateModified": "2026-07-23",
+  "featureList": [
+    "Barèmes municipalité et hors municipalité",
+    "Base d’une vente ou donation",
+    "Tranches de durée d’un bail",
+    "Droit sur la prime du bail",
+    "Exports locaux CSV, JSON et PDF"
+  ],
+  "citation": [
+    "https://new.kenyalaw.org/akn/ke/act/1958/31/eng@2025-07-01",
+    "https://www.kra.go.ke/component/kra_faq/faqcategory/11",
+    "https://new.kenyalaw.org/akn/ke/act/ln/2020/151/eng@2022-12-31",
+    "https://www.kra.go.ke/news-center/public-notices/800-payment-of-stamp-duty-capital-gains-tax"
+  ],
   "image": "https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Calculateur des droits de timbre au Kenya","description":"Simulez les droits de timbre immobiliers au Kenya avec un contexte KRA et une interface française.","url":"https://afrotools.com/fr/tools/ke-droits-timbre/","inLanguage":"https://afrotools.com/fr/","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ke-stamp-duty.webp"}</script>
-<script type="application/ld+json">
-{
-  "@context":"https://schema.org",
-  "@type":"BreadcrumbList",
-  "itemListElement":[
-    {"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},
-    {"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},
-    {"@type":"ListItem","position":3,"name":"Kenya - Droits de timbre","item":"https://afrotools.com/fr/tools/ke-droits-timbre/"}
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-04-15">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les droits immobiliers au Kenya sont-ils toujours exactement de 4 % ou 2 % ?","acceptedAnswer":{"@type":"Answer","text":"Le barème fixe des montants par tranche. Pour les valeurs immobilières ordinaires, l’article 12A équivaut généralement à 4 % dans une municipalité et l’article 11 à 2 % hors municipalité, avec l’arrondi légal par tranche."}},{"@type":"Question","name":"Comment calculer les droits sur un bail au Kenya ?","acceptedAnswer":{"@type":"Answer","text":"Le droit sur le bail dépend du loyer et de la tranche de durée, et non d’un pourcentage fixe de la valeur du bien. Une prime ou autre contrepartie hors loyer est imposée séparément comme une cession."}},{"@type":"Question","name":"Chaque primo-accédant bénéficie-t-il d’une exonération ?","acceptedAnswer":{"@type":"Answer","text":"Non. La loi vise l’achat par un primo-accédant dans le cadre d’un programme de logement abordable, tandis que la KRA recense d’autres exonérations propres à l’instrument. Il faut une preuve KRA pour la transaction réelle."}}]}</script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script><script src="/engines/ke-stamp-duty-engine.js?v=8c7bb0fd" defer></script><script src="/assets/js/pages/ke-stamp-duty-vip.js?v=c0079525" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/ke-droits-timbre/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ke-stamp-duty/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ke-droits-timbre/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ke-stamp-duty/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="ks-page">
 <afro-navbar></afro-navbar>
-<main class="fr-shell">
-  <section class="hero">
-    <div class="crumbs"><a href="/">Accueil</a> / <a href="/fr/">Français</a> / <a href="/fr/all-tools/">Tous les outils</a> / <span>Droits de timbre Kenya</span></div>
-    <div class="hero-grid">
-      <div>
-        <h1>Droits de timbre immobiliers au Kenya</h1>
-        <p class="lead">Estimez rapidement les droits de timbre, les frais d'enregistrement et les coûts associes a un transfert de propriété au Kenya. L'outil reprend la logique du calculateur anglais, avec un habillage français plus clair et un contexte KRA adapte aux usages immobiliers.</p>
-        <div class="badges">
-          <span class="badge">Contexte KRA</span>
-          <span class="badge">4 % / 2 %</span>
-          <span class="badge">Transferts et baux</span>
-          <span class="badge">Interface française</span>
-        </div>
-      </div>
-      <aside class="hero-card">
-        <h2>A retenir</h2>
-        <ul>
-          <li>Le taux est généralement de 4 % en zone urbaine et de 2 % ailleurs.</li>
-          <li>Les baux longs utilisent ici une estimation simplifiee a 2 %.</li>
-          <li>Les frais complémentaires peuvent inclure la valorisation et la recherche fonciere.</li>
-        </ul>
-      </aside>
-    </div>
-  </section>
-
-  <section class="layout">
-    <div class="card">
-      <div class="card-head">
-        <div class="card-title"><span>Simulation</span><span>Droits de timbre Kenya</span></div>
-      </div>
-      <div class="card-body">
-        <div class="form-grid">
-          <div class="full">
-            <label for="value">Valeur du bien (KES)</label>
-            <input type="number" id="value" value="15000000" min="0" step="500000">
-          </div>
-          <div>
-            <label for="location">Localisation</label>
-            <select id="location">
-              <option value="urban">Municipalite urbaine (Nairobi, Mombasa, Kisumu) - 4 %</option>
-              <option value="rural">Autres zones / comtes - 2 %</option>
-            </select>
-          </div>
-          <div>
-            <label for="transType">Type de transaction</label>
-            <select id="transType">
-              <option value="sale">Vente / achat</option>
-              <option value="transfer">Transfert / donation</option>
-              <option value="lease">Bail longue durée (plus de 25 ans)</option>
-            </select>
-          </div>
-          <div>
-            <label for="includeLegal">Inclure une estimation des frais juridiques ?</label>
-            <select id="includeLegal">
-              <option value="yes">Oui</option>
-              <option value="no">Non</option>
-            </select>
-          </div>
-          <div>
-            <label for="propType">Type de bien</label>
-            <select id="propType">
-              <option value="residential">Residentiel</option>
-              <option value="commercial">Commercial</option>
-              <option value="agricultural">Terrain agricole</option>
-            </select>
-          </div>
-        </div>
-        <button type="button" class="btn" onclick="calculate()">Calculer les droits de timbre</button>
-
-        <div class="card" id="resultCard" style="display:none;margin-top:18px;box-shadow:none;border:1px solid #f1f5f9">
-          <div class="card-head">
-            <div class="card-title"><span>Résultat</span><span>Simulation détaillée</span></div>
-          </div>
-          <div class="card-body">
-            <div class="result-grid" id="resultGrid"></div>
-            <table class="table" id="costTable"></table>
-            <div class="actions" id="resultActions"></div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <aside class="stack">
-      <div class="info">
-        <h3>Taux et règles</h3>
-        <p><strong>4 %</strong> pour les transferts en municipalite urbaine.</p>
-        <p><strong>2 %</strong> pour les autres transferts de propriété.</p>
-        <p><strong>Baux longs</strong> : estimation simplifiee a 2 % dans cette version.</p>
-        <p class="note">Les droits de timbre sont généralement calcules sur la valeur d'assiette d'enregistrement, qui peut être basée sur l'evaluation gouvernementale si elle est supérieure au prix declare.</p>
-      </div>
-
-      <div class="info">
-        <h3>Procédure KRA</h3>
-        <ul>
-          <li>Paiement via le portail iTax de la KRA.</li>
-          <li>Le dossier de transfert doit être conforme avant l'enregistrement.</li>
-          <li>La valorisation fonciere peut faire varier le montant final.</li>
-          <li>Le registraire foncier demande généralement la conformite au droit de timbre avant immatriculation.</li>
-        </ul>
-      </div>
-
-      <div class="info">
-        <h3>Exemptions</h3>
-        <ul>
-          <li>Transferts de l'État.</li>
-          <li>Transferts vers certaines organisations caritatives.</li>
-          <li>Certains cas diplomatiques.</li>
-          <li>Régimes speciaux eventuels à vérifier selon la loi en vigueur.</li>
-        </ul>
-      </div>
-
-      <div class="info">
-        <h3>Outils lies</h3>
-        <div class="links">
-          <a href="/fr/tools/louer-vs-acheter/">Louer vs acheter</a>
-          <a href="/fr/tools/calculateur-hypothecaire/">Calculateur hypothecaire</a>
-          <a href="/fr/tools/capacite-emprunt/">Capacité d'emprunt</a>
-          <a href="/fr/tools/frais-transfert-propriete/">Frais de transfert</a>
-          <a href="/fr/tools/cout-geometre/">Coût du geometre</a>
-          <a href="/fr/tools/droits-enregistrement/">Droits d'enregistrement</a>
-        </div>
-      </div>
-    </aside>
-  </section>
-
-  <section class="section">
-    <h2>Comprendre les droits de timbre au Kenya</h2>
-    <p>Les droits de timbre constituent une taxe de transaction appliquee aux instruments de transfert de propriété au Kenya. Pour les opérations immobilieres courantes, l'usage courant retient <strong>4 %</strong> en zone urbaine et <strong>2 %</strong> dans les autres zones. Cette page garde la même logique de calcul que la version anglaise, tout en offrant une interface française plus lisible et mieux maillee au reste du cluster immobilier.</p>
-    <p>Dans la pratique, le montant peut dépendre de la valeur retenue par l'administration, des frais de valorisation, des frais juridiques et de la nature du titre. Pour les baux de longue durée, l'outil applique une approximation simple afin de donner un ordre de grandeur utile sans pretendre remplacer un avis juridique.</p>
-  </section>
-
-  <section class="section faq">
-    <h2>Questions fréquentes</h2>
-    <details>
-      <summary>Comment sont calcules les droits de timbre au Kenya ?</summary>
-      <p>Pour un transfert standard, le calcul repose sur la valeur taxable multipliee par le taux applicable. L'outil applique 4 % en zone urbaine, 2 % ailleurs, et une estimation simplifiee a 2 % pour les baux de longue durée.</p>
-    </details>
-    <details>
-      <summary>Quand les droits de timbre doivent-ils être payes ?</summary>
-      <p>Le paiement intervient avant l'enregistrement final du transfert. En pratique, la conformite iTax et la validation du dossier de mutation sont les étapes clés à anticiper.</p>
-    </details>
-    <details>
-      <summary>Les droits de timbre peuvent-ils être exoneres ?</summary>
-      <p>Oui, certains transferts peuvent être exoneres ou bénéficier d'un régime particulier, notamment les transferts publics, certains transferts caritatifs ou diplomatiques. Pour les cas particuliers, il faut toujours vérifier la regle en vigueur.</p>
-    </details>
-  </section>
-</main>
-<!-- fr-score76-qa-panel:start -->
-<section class="fr-score76-qa" data-tool-verification-panel aria-label="Méthodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
-  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Méthodologie, sources et limites</h2>
-  <p style="margin:.35rem 0"><strong>Méthodologie:</strong> le résultat combine les champs de la page, les données AfroTools disponibles et les règles appliquees par l'outil. Gardez les hypothèses visibles avant de copier, télécharger ou utiliser le résultat.</p>
-  <p style="margin:.35rem 0"><strong>Sources:</strong> contrôle 2026 à confirmer avec la source officielle, l'autorite competente, le fournisseur ou votre document de référence lorsque le prix, la loi, la santé, la taxe ou la disponibilité peuvent changer.</p>
-  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, médical ou technique.</p>
+<main data-ke-stamp-duty data-locale="fr" data-pdf-title="Calcul indicatif des droits de timbre au Kenya" data-mode-label="Type d’instrument" data-basis-label="Valeur imposable ou prime" data-transfer-label="Droit sur transfert ou donation" data-rent-label="Droit sur le loyer du bail" data-premium-label="Droit sur la prime du bail" data-payable-label="Droit indicatif à payer" data-band-label="Tranche du barème" data-breakdown-title="Détail du barème légal" data-copy-prompt="Copiez ce calcul local des droits de timbre :" data-pdf-disclaimer="Calcul indicatif selon le Stamp Duty Act du Kenya (Cap. 480), vérifié le 23 juillet 2026. Ce document n’est ni une évaluation KRA, ni une expertise, ni une détermination de municipalité, d’exonération ou de pénalité, ni une preuve de paiement, ni un conseil juridique ou fiscal.">
+<header class="ks-hero"><div class="ks-shell ks-hero-grid"><div><p class="ks-kicker">Kenya · calcul par instrument</p><h1>Lisez l’instrument. Appliquez le barème.</h1><p class="ks-lead">Calculez un transfert immobilier ordinaire à partir de la valeur pertinente la plus élevée, ou un bail à partir du loyer, de la durée et de la prime. Aucun taux forfaitaire fictif de 2 % pour le bail.</p></div><aside class="ks-docket"><strong>Cap. 480 vérifié le 23 juillet 2026</strong><span>La version consolidée la plus récente date du 1er juillet 2025. Ce planificateur suit les tranches des transferts et des baux et refuse les dates hors période vérifiée.</span></aside></div></header>
+<div class="ks-band"><div class="ks-shell ks-band-inner"><span>Le statut de municipalité compte</span><span>La valeur de marché KRA compte</span><span>Loyer et prime du bail sont séparés</span></div></div>
+<section class="ks-main"><div class="ks-shell ks-layout">
+<article class="ks-card"><h2>Construire une estimation par instrument</h2><p class="ks-intro">Saisissez seulement des montants. N’indiquez ni numéro de titre, ni nom, ni PIN KRA, ni adresse, ni document, ni autre identifiant.</p>
+<form id="ks-form" novalidate>
+<div class="ks-mode" role="radiogroup" aria-label="Type d’instrument"><label><input type="radio" name="ks-mode" value="transfer" checked><span>Transfert immobilier ou donation</span></label><label><input type="radio" name="ks-mode" value="lease"><span>Bail ou convention de location</span></label></div>
+<div class="ks-grid"><div class="ks-field"><label for="ks-date">Date de l’instrument</label><input id="ks-date" type="date" min="2025-07-01" max="2026-07-23" value="2026-07-23" required><small>Période vérifiée jusqu’au 23 juillet 2026.</small></div><div class="ks-field"><label for="ks-location">Situation du bien selon le barème</label><select id="ks-location" required><option value="municipality">Dans une municipalité — article 12A</option><option value="other">Hors municipalité — article 11</option></select><small>Utilisez le titre, l’évaluation ou l’avis KRA, pas une supposition « urbaine/rurale ».</small></div></div>
+<div id="ks-transfer-fields" class="ks-fields"><div class="ks-grid"><div class="ks-field"><label for="ks-transaction">Type de transfert</label><select id="ks-transaction"><option value="sale">Vente ou achat</option><option value="gift">Donation entre vifs</option></select><small>Une donation utilise la valeur de marché selon l’article 52.</small></div><div class="ks-field"><label for="ks-consideration">Contrepartie de la vente (KES)</label><input id="ks-consideration" type="number" min="0" step="0.01" value="15000000" inputmode="decimal"><small>Saisissez 0 pour une donation.</small></div></div><div class="ks-field"><label for="ks-market-value">Valeur actuelle de marché (KES)</label><input id="ks-market-value" type="number" min="0.01" step="0.01" value="15000000" inputmode="decimal"><small>L’article 10A permet une expertise publique et un droit supplémentaire. Le calcul retient la valeur la plus élevée pour une vente.</small></div></div>
+<div id="ks-lease-fields" class="ks-fields" hidden><div class="ks-grid"><div class="ks-field"><label for="ks-term-type">Type de durée du bail</label><select id="ks-term-type"><option value="definite">Durée déterminée</option><option value="indefinite">Durée indéterminée</option></select></div><div id="ks-term-years-field" class="ks-field"><label for="ks-term-years">Durée déterminée (années)</label><input id="ks-term-years" type="number" min="0.01" max="999" step="0.01" value="2" inputmode="decimal"><small>Par exemple, 0,5 correspond à six mois.</small></div><div class="ks-field"><label for="ks-annual-rent">Loyer annuel moyen (KES)</label><input id="ks-annual-rent" type="number" min="0.01" step="0.01" value="1200000" inputmode="decimal"></div><div class="ks-field"><label for="ks-premium">Prime ou autre contrepartie hors loyer (KES)</label><input id="ks-premium" type="number" min="0" step="0.01" value="0" inputmode="decimal"><small>L’article 57 impose la prime comme une cession.</small></div></div></div>
+<p class="ks-evidence"><strong>Seuil de preuve pour une exonération :</strong> cette page calcule uniquement le barème ordinaire. Si la KRA a confirmé une exonération pour cet instrument, utilisez cette évaluation au lieu de soustraire ici un allègement supposé.</p>
+<div class="ks-actions"><button class="ks-button primary" type="submit">Calculer le droit du barème</button><button id="ks-reset" class="ks-button" type="button">Réinitialiser</button></div><p id="ks-error" class="ks-error" role="alert"></p><p id="ks-status" class="ks-status" role="status" aria-live="polite"></p></form></article>
+<aside id="ks-results" class="ks-card ks-results" hidden aria-live="polite"><p class="ks-eyebrow">Droit indicatif à payer</p><strong id="ks-payable" class="ks-total">—</strong><p id="ks-mode-note" class="ks-intro"></p><div class="ks-metrics"><div class="ks-metric"><span>Valeur imposable ou prime</span><strong id="ks-basis-result">—</strong></div><div class="ks-metric"><span>Droit sur transfert ou donation</span><strong id="ks-transfer-result">—</strong></div><div class="ks-metric"><span>Droit sur le loyer du bail</span><strong id="ks-rent-result">—</strong></div><div class="ks-metric"><span>Droit sur la prime du bail</span><strong id="ks-premium-result">—</strong></div></div><p id="ks-band-result" class="ks-formula"></p><p id="ks-boundary" class="ks-warning"></p><div class="ks-actions"><button id="ks-copy" class="ks-button" data-ks-action disabled>Copier</button><button id="ks-csv" class="ks-button" data-ks-action disabled>CSV</button><button id="ks-json" class="ks-button" data-ks-action disabled>JSON</button><button id="ks-pdf" class="ks-button" data-ks-action disabled>PDF</button></div></aside>
+</div>
+<section class="ks-shell ks-notes"><div class="ks-notes-grid">
+<article><h2>Barème du transfert</h2><p class="ks-formula">Municipalité : article 12A, 20 KSh par 500 KSh jusqu’à 2 000 KSh, puis 40 KSh par 1 000 KSh ou fraction.<br>Hors municipalité : article 11, la moitié de ces montants.</p><p>Pour les valeurs immobilières ordinaires, ces tranches sont souvent résumées à 4 % et 2 %, mais le calcul conserve l’arrondi du barème.</p></article>
+<article><h2>Barème du bail</h2><p>Le loyer est imposé selon la durée : au plus un an; plus d’un an et au plus trois ans; ou autre durée déterminée/indéterminée. Une prime est imposée séparément selon l’article 57. Un bail perpétuel est hors périmètre, car l’article 58 le traite comme une cession sur la valeur du bien.</p></article>
+<article data-tool-verification-panel><h2>Sources primaires vérifiées</h2><ul class="ks-sources"><li><a href="https://new.kenyalaw.org/akn/ke/act/1958/31/eng@2025-07-01" target="_blank" rel="noopener">Kenya Law : Stamp Duty Act, Cap. 480</a></li><li><a href="https://www.kra.go.ke/component/kra_faq/faqcategory/11" target="_blank" rel="noopener">FAQ KRA sur les instruments et exonérations</a></li><li><a href="https://new.kenyalaw.org/akn/ke/act/ln/2020/151/eng@2022-12-31" target="_blank" rel="noopener">Règlement sur l’évaluation des biens immobiliers</a></li><li><a href="https://www.kra.go.ke/news-center/public-notices/800-payment-of-stamp-duty-capital-gains-tax" target="_blank" rel="noopener">Avis KRA sur le paiement</a></li></ul><p>Vérifié le 23 juillet 2026.</p></article>
+<article><h2>Preuves à réunir</h2><p>Confirmez l’instrument exact, sa date, le statut municipal/Gazette, l’évaluation KRA ou agréée, la contrepartie, le loyer, la durée et la prime. L’article 6 prévoit généralement 30 jours après la première signature ou réception au Kenya; l’avis d’évaluation du Collector suit un délai distinct de 21 jours. Cette page ne calcule ni retard ni pénalité.</p></article>
+<article><h2>Les exonérations ne sont pas automatiques</h2><p>La KRA cite notamment certains transferts entre époux, à une œuvre caritative, successoraux ou entre sociétés admissibles. La règle du premier logement vise le primo-accédant dans un programme de logement abordable—pas chaque premier achat ni une règle générale de 4 millions KES. Obtenez une confirmation KRA propre à l’instrument.</p></article>
+<article><h2>Confidentialité et exclusions</h2><p>Aucune saisie n’est stockée, placée dans l’URL ou envoyée à l’analytique, à l’IA ou à une API. Copier, CSV, JSON et PDF restent locaux. Sont exclus : hypothèques, partages, procurations, actes, pénalités, honoraires juridiques, enregistrement, CGT, expertise, preuve de paiement et éligibilité à une exonération.</p></article>
+</div></section>
+<section class="ks-shell ks-card ks-faq"><h2>Questions sur les droits de timbre au Kenya</h2><details><summary>Pourquoi ne pas dire simplement « zone urbaine » ?</summary><p>La loi vise un bien situé dans une municipalité. Une étiquette informelle ne prouve pas la limite juridique. Utilisez le titre, l’évaluation et l’avis KRA.</p></details><details><summary>Pourquoi un bail n’est-il pas calculé à 2 % de la valeur du bien ?</summary><p>Le barème « Lease » impose le loyer selon la durée. La prime ou autre contrepartie hors loyer est ensuite imposée séparément comme une cession.</p></details><details><summary>Cette page peut-elle émettre une évaluation iTax ou prouver le paiement ?</summary><p>Non. C’est un calculateur local de préparation. Réalisez l’évaluation et le paiement par les canaux officiels de la KRA et de l’enregistrement foncier.</p></details></section>
 </section>
-<!-- fr-score76-qa-panel:end -->
+</main>
 <afro-footer></afro-footer>
-
-<script>
-function calculate() {
-  const value = +document.getElementById('value').value;
-  const location = document.getElementById('location').value;
-  const transType = document.getElementById('transType').value;
-  const includeLegal = document.getElementById('includeLegal').value === 'yes';
-
-  const transferRate = location === 'urban' ? 4 : 2;
-  const stampDutyRate = transType === 'lease' ? 2 : transferRate;
-  const stampDuty = value * (stampDutyRate / 100);
-
-  const legalFee = value <= 5000000 ? value * 0.02 :
-                   value <= 20000000 ? 100000 + (value - 5000000) * 0.01 :
-                   250000 + (value - 20000000) * 0.005;
-  const valuation = Math.max(10000, value * 0.001);
-  const landSearch = 5000;
-
-  const fmt = n => 'KES ' + Math.round(n).toLocaleString('en-KE');
-  const rateLabel = transType === 'lease'
-    ? 'Estimation simplifiee du bail'
-    : `${location === 'urban' ? 'Taux urbain' : 'Taux hors zone urbaine'}`;
-  const dutyLabel = transType === 'lease'
-    ? 'Droits du bail (est.)'
-    : `Droits de timbre (${stampDutyRate} %)`;
-
-  let html = '';
-  html += `<div class="result-box"><div class="num">${fmt(stampDuty)}</div><div class="lbl">${dutyLabel}</div></div>`;
-  html += `<div class="result-box"><div class="num">${stampDutyRate}%</div><div class="lbl">${rateLabel}</div></div>`;
-  html += `<div class="result-box"><div class="num">${fmt(value)}</div><div class="lbl">Valeur du bien</div></div>`;
-  const totalCosts = stampDuty + (includeLegal ? legalFee + valuation + landSearch : 0);
-  html += `<div class="result-box"><div class="num">${fmt(totalCosts)}</div><div class="lbl">Cout total estime</div></div>`;
-  document.getElementById('resultGrid').innerHTML = html;
-
-  let table = '<tr><th>Poste</th><th>Montant (KES)</th></tr>';
-  table += `<tr><td>${dutyLabel}</td><td>${fmt(stampDuty)}</td></tr>`;
-  if (transType === 'lease') {
-    table += `<tr><td colspan="2">Cette estimation de bail utilise 2 % de la valeur saisie. Le droit exact depend du loyer et de la duree inscrits dans l'instrument.</td></tr>`;
-  }
-  if (includeLegal) {
-    table += `<tr><td>Frais juridiques / mutation (est.)</td><td>${fmt(legalFee)}</td></tr>`;
-    table += `<tr><td>Frais de valorisation publique</td><td>${fmt(valuation)}</td></tr>`;
-    table += `<tr><td>Recherche fonciere</td><td>${fmt(landSearch)}</td></tr>`;
-  }
-  table += `<tr><td>Total</td><td>${fmt(totalCosts)}</td></tr>`;
-  document.getElementById('costTable').innerHTML = table;
-
-  const actions = document.getElementById('resultActions');
-  actions.innerHTML = [
-    '<save-result-button tool-slug="ke-stamp-duty" tool-name="Droits de timbre Kenya"></save-result-button>',
-    '<share-result-button tool-name="Droits de timbre Kenya" tool-slug="ke-stamp-duty"></share-result-button>'
-  ].join('');
-
-  document.getElementById('resultCard').style.display = 'block';
-  document.getElementById('resultCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-</script>
-
-<script>
-(function(){
-  const first = document.getElementById('resultCard');
-  if (!first) return;
-  const hint = document.createElement('p');
-  hint.className = 'note';
-  hint.style.marginTop = '14px';
-  hint.textContent = "Astuce : comparez la charge de timbre avec les autres coûts de transfert pour eviter les mauvaises surprises lors de la finalisation.";
-  first.querySelector('.card-body')?.appendChild(hint);
-})();
-</script>
 </body>
 </html>

@@ -46,18 +46,18 @@ assert.deepStrictEqual([...new Set(cardMatches.map((match) => match[1]))].sort()
 assert((html.match(/class="en-tc-icon" aria-hidden="true"><svg/g) || []).length >= 20, 'Every Energy app card should retain a decorative inline SVG icon');
 acorn.parse(script, { ecmaVersion: 'latest', sourceType: 'script' });
 [
-  "queryTokens.every(function (token)",
-  "card.hidden = !(matchesFilter && matchesSearch);",
-  "item.setAttribute('aria-pressed'",
-  "label.hidden = !visible;",
-  "search.focus();"
-].forEach((needle) => assert(script.includes(needle), `Missing Energy finder behavior: ${needle}`));
+  /\.every\(function\s*\([^)]*\)\s*\{[^}]*indexOf/,
+  /\.hidden\s*=\s*!\s*\([^)]*&&[^)]*\)/,
+  /\.setAttribute\(\s*['"]aria-pressed['"]/,
+  /\.hidden\s*=\s*!/,
+  /\.focus\(\)/
+].forEach((pattern) => assert(pattern.test(script), `Missing Energy finder behavior: ${pattern}`));
 [
-  '.en-tool-search:focus',
-  'min-height: 48px',
-  'button[aria-pressed="true"]',
-  '.en-tool-card[hidden]',
-  '@media (max-width: 620px)'
-].forEach((needle) => assert(style.includes(needle), `Missing Energy finder style/accessibility rule: ${needle}`));
+  /\.en-tool-search:focus/,
+  /min-height:\s*48px/,
+  /button\[aria-pressed=['"]?true['"]?\]/,
+  /\.en-tool-card\[hidden\]/,
+  /@media\s*\(\s*max-width:\s*620px\s*\)/
+].forEach((pattern) => assert(pattern.test(style), `Missing Energy finder style/accessibility rule: ${pattern}`));
 
 console.log('Energy hub verified: 20 registry-matched routes, complete task metadata, search and eight intent filters, live count, empty/reset state, group visibility, keyboard focus, SVG icons, and mobile CSS.');

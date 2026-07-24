@@ -48,6 +48,78 @@ assert.ok(prefill.getPrefillAdapter("vat-calc-pan-african"));
 assert.ok(prefill.getPrefillAdapter("invoice-generator"));
 assert.ok(prefill.getPrefillAdapter("paye-calculator"));
 assert.ok(prefill.getPrefillAdapter("cash-flow-forecast"));
+assert.strictEqual(prefill.getPrefillAdapter("employee-cost"), null, "employee-cost must not alias the PAYE prefill adapter");
+
+const employeeCostRouteOnly = prefill.buildSafeLaunch("employee-cost", {
+  grossPay: 123456,
+  salary: 123456,
+  sourceLabel: "Private payroll source",
+}, { selectedRoute: "/tools/employee-cost/" });
+assert.strictEqual(employeeCostRouteOnly.supported, false);
+assert.strictEqual(employeeCostRouteOnly.payload, null);
+assert.strictEqual(employeeCostRouteOnly.route, "/tools/employee-cost/");
+
+assert.strictEqual(prefill.getPrefillAdapter("contractor-vs-employee"), null, "contractor-vs-employee must not alias any prefill adapter");
+const contractorComparisonRouteOnly = prefill.buildSafeLaunch("contractor-vs-employee", {
+  employeeBase: 123456,
+  employeeAddons: 18000,
+  contractorQuote: 160000,
+  contractTerms: "Private engagement terms",
+}, { selectedRoute: "/tools/contractor-vs-employee/" });
+assert.strictEqual(contractorComparisonRouteOnly.supported, false);
+assert.strictEqual(contractorComparisonRouteOnly.payload, null);
+assert.strictEqual(contractorComparisonRouteOnly.route, "/tools/contractor-vs-employee/");
+
+assert.strictEqual(prefill.getPrefillAdapter("domestic-worker"), null, "domestic-worker must not alias any prefill adapter");
+const domesticWorkerRouteOnly = prefill.buildSafeLaunch("domestic-worker", {
+  basePay: 90000,
+  legalFloor: 70000,
+  sourceLabel: "Private labour authority notice",
+  sourceDate: "2026-07-01",
+  notes: "Private household terms",
+}, { selectedRoute: "/tools/domestic-worker/" });
+assert.strictEqual(domesticWorkerRouteOnly.supported, false);
+assert.strictEqual(domesticWorkerRouteOnly.payload, null);
+assert.strictEqual(domesticWorkerRouteOnly.route, "/tools/domestic-worker/");
+
+assert.strictEqual(prefill.getPrefillAdapter("gratuity-calculator"), null, "gratuity-calculator must not alias any prefill adapter");
+const gratuityRouteOnly = prefill.buildSafeLaunch("gratuity-calculator", {
+  monthlyPay: 250000,
+  serviceYears: 5,
+  eligibleDays: 21,
+  payrollDivisor: 30,
+  sourceLabel: "Private final-pay rule",
+  sourceDate: "2026-07-01",
+}, { selectedRoute: "/tools/gratuity-calculator/" });
+assert.strictEqual(gratuityRouteOnly.supported, false);
+assert.strictEqual(gratuityRouteOnly.payload, null);
+assert.strictEqual(gratuityRouteOnly.route, "/tools/gratuity-calculator/");
+
+assert.strictEqual(prefill.getPrefillAdapter("maternity-leave"), null, "maternity-leave must not alias any prefill adapter");
+const maternityLeaveRouteOnly = prefill.buildSafeLaunch("maternity-leave", {
+  monthlySalary: 250000,
+  startDate: "2026-08-01",
+  plannedDays: 90,
+  payRate: 80,
+  sourceLabel: "Private official leave rule",
+  leaveNotes: "Private employee circumstances",
+}, { selectedRoute: "/tools/maternity-leave/" });
+assert.strictEqual(maternityLeaveRouteOnly.supported, false);
+assert.strictEqual(maternityLeaveRouteOnly.payload, null);
+assert.strictEqual(maternityLeaveRouteOnly.route, "/tools/maternity-leave/");
+
+assert.strictEqual(prefill.getPrefillAdapter("retrenchment-calculator"), null, "retrenchment-calculator must not alias any prefill adapter");
+const retrenchmentRouteOnly = prefill.buildSafeLaunch("retrenchment-calculator", {
+  monthlyPay: 250000,
+  serviceYears: 7,
+  severanceWeeks: 1,
+  noticeMonths: 1,
+  deductions: 5000,
+  sourceLabel: "Private retrenchment rule",
+}, { selectedRoute: "/tools/retrenchment-calculator/" });
+assert.strictEqual(retrenchmentRouteOnly.supported, false);
+assert.strictEqual(retrenchmentRouteOnly.payload, null);
+assert.strictEqual(retrenchmentRouteOnly.route, "/tools/retrenchment-calculator/");
 
 const importLaunch = prefill.buildSafeLaunch("import-duty", {
   destinationCountry: "Nigeria",

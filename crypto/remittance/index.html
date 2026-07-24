@@ -1,811 +1,184 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crypto Remittance Calculator | AfroTools</title>
-<meta name="description" content="What's the cheapest way to send money to Africa? Compare crypto, Wise, Remitly, and Western Union side by side. See fees, exchange rates, and total received.">
-<meta property="og:title" content="Crypto Remittance Calculator — Compare Crypto vs Wise vs Western Union">
-<meta property="og:description" content="Compare the cheapest ways to send money to Africa. Crypto P2P, stablecoin direct, Wise, Remitly, and Western Union side by side.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-remittance.webp">
-<meta property="og:url" content="https://afrotools.com/crypto/remittance/">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Remittance Quote Comparator — Receipts & Expiry</title>
+<meta name="description" content="Compare two or three remittance quotes you obtained using the same currencies and total debit. Check amount received, expiry and payout route locally.">
+<meta name="theme-color" content="#102f62">
 <meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="Remittance Quote Comparator">
+<meta property="og:description" content="Compare user-entered remittance receipts by total debit, recipient amount and expiry. No provider feed or recommendation.">
+<meta property="og:url" content="https://afrotools.com/crypto/remittance/">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-remittance.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="robots" content="index, follow">
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Crypto Remittance Calculator",
-  "description": "Compare crypto, stablecoin, and traditional remittance routes for cross-border transfers in African corridors.",
-  "url": "https://afrotools.com/crypto/remittance/",
-  "inLanguage": "en",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/crypto-remittance.webp"
-}
-</script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Crypto Remittance Calculator",
-  "url": "https://afrotools.com/crypto/remittance/",
-  "description": "Compare crypto, stablecoin, and traditional remittance routes for cross-border transfers in African corridors.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/crypto-remittance.webp"
-}
-</script>
-
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Instrument+Serif&display=swap"></noscript>
-
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/crypto.css?v=7107dd8f">
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-
-<script defer src="https://cdn.jsdelivr.net/npm/chart.js@4/dist/chart.umd.min.js"></script>
-<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
-<script src="/assets/js/lib/crypto-data.js?v=b7faee1b"></script>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
-<script src="https://cdn.jsdelivr.net/npm/twemoji@14.0.2/dist/twemoji.min.js" defer></script>
-
-<style>
-/* ── Remittance-specific styles ─────────────────────── */
-.remit-form {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 16px;
-  margin-bottom: 32px;
-}
-.remit-form .form-group {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-}
-.remit-form label {
-  font-size: var(--text-sm);
-  font-weight: 600;
-  color: var(--color-text-muted);
-}
-.remit-form select,
-.remit-form input {
-  font-family: var(--font-body);
-  font-size: var(--text-base);
-  padding: 10px 14px;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-sm);
-  background: var(--color-bg);
-  color: var(--color-text);
-}
-.remit-form select:focus,
-.remit-form input:focus {
-  outline: none;
-  border-color: var(--color-primary);
-  box-shadow: 0 0 0 3px rgba(0,98,204,0.1);
-}
-.channels-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-  gap: 20px;
-  margin-top: 24px;
-}
-.channel-card {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  position: relative;
-  transition: all 0.2s;
-}
-.channel-card:hover {
-  box-shadow: var(--shadow-md);
-  transform: translateY(-2px);
-}
-.channel-card.winner {
-  border-color: #34C759;
-  box-shadow: 0 0 0 2px rgba(52,199,89,0.15);
-}
-.channel-card.winner::before {
-  content: 'BEST VALUE';
-  position: absolute;
-  top: -10px;
-  right: 16px;
-  background: #34C759;
-  color: #fff;
-  padding: 3px 12px;
-  border-radius: var(--radius-pill);
-  font-size: 11px;
-  font-weight: 700;
-}
-.channel-icon {
-  font-size: 28px;
-  margin-bottom: 8px;
-}
-.channel-title {
-  font-size: var(--text-lg);
-  font-weight: 800;
-  margin-bottom: 4px;
-}
-.channel-subtitle {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-bottom: 16px;
-}
-.channel-rows {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.channel-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  font-size: var(--text-sm);
-}
-.channel-row .label {
-  color: var(--color-text-muted);
-}
-.channel-row .value {
-  font-weight: 700;
-  text-align: right;
-}
-.channel-total {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 2px solid var(--color-border);
-}
-.channel-total .total-label {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: var(--tracking-wide);
-}
-.channel-total .total-amount {
-  font-size: var(--text-2xl);
-  font-weight: 800;
-  color: var(--color-text);
-  margin-top: 4px;
-}
-.channel-total .total-time {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin-top: 4px;
-}
-.savings-callout {
-  background: rgba(52,199,89,0.08);
-  border: 1px solid rgba(52,199,89,0.2);
-  border-radius: var(--radius-lg);
-  padding: 20px 24px;
-  margin-top: 24px;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-}
-.savings-callout .savings-icon {
-  font-size: 32px;
-  flex-shrink: 0;
-}
-.savings-callout .savings-text h3 {
-  font-size: var(--text-lg);
-  font-weight: 800;
-  color: #34C759;
-  margin-bottom: 4px;
-}
-.savings-callout .savings-text p {
-  font-size: var(--text-sm);
-  color: var(--color-text-muted);
-  margin: 0;
-}
-.provider-breakdown {
-  margin-top: 12px;
-}
-.provider-breakdown .provider-item {
-  display: flex;
-  justify-content: space-between;
-  padding: 6px 0;
-  font-size: var(--text-sm);
-  border-bottom: 1px solid var(--color-border-subtle);
-}
-.provider-breakdown .provider-item:last-child { border-bottom: none; }
-.provider-breakdown .provider-name { font-weight: 600; }
-.fee-highlight { color: #FF3B30; }
-.fee-low { color: #34C759; }
-.loading-spinner {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 60px 20px;
-  color: var(--color-text-muted);
-  font-size: var(--text-sm);
-}
-.loading-spinner::before {
-  content: '';
-  width: 24px;
-  height: 24px;
-  border: 3px solid var(--color-border);
-  border-top-color: var(--color-primary);
-  border-radius: 50%;
-  animation: spin 0.8s linear infinite;
-  margin-right: 12px;
-}
-@keyframes spin { to { transform: rotate(360deg); } }
-
-.comparison-chart-wrap {
-  background: var(--color-bg-card);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius-lg);
-  padding: 24px;
-  margin-top: 32px;
-}
-.comparison-chart-wrap h3 {
-  font-size: var(--text-lg);
-  font-weight: 700;
-  margin-bottom: 16px;
-}
-
-@media (max-width: 768px) {
-  .channels-grid { grid-template-columns: 1fr; }
-  .savings-callout { flex-direction: column; text-align: center; }
-}
-</style>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:title" content="Crypto Remittance Calculator — Compare Crypto vs Wise vs Western Union">
-<meta name="twitter:description" content="Compare the cheapest ways to send money to Africa. Crypto P2P, stablecoin direct, Wise, Remitly, and Western Union side by side.">
+<meta name="twitter:title" content="Remittance Quote Comparator">
+<meta name="twitter:description" content="Private receipt comparison with local PDF, CSV and JSON exports.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/crypto-remittance.webp">
+<link rel="stylesheet" href="/assets/css/remittance-quote-comparator.css?v=56b39c1c">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Remittance Quote Comparator",
+    "url": "https://afrotools.com/crypto/remittance/",
+    "applicationCategory": "FinanceApplication",
+    "operatingSystem": "Any",
+    "inLanguage": "en",
+    "description": "A private worksheet for comparing two or three user-entered remittance quote receipts with exact comparability and expiry checks.",
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
     },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Crypto",
-      "item": "https://afrotools.com/crypto/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Crypto Remittance Calculator",
-      "item": "https://afrotools.com/crypto/remittance/"
-    }
-  ]
-}
+    "featureList": [
+      "User-entered quote receipts",
+      "Exact same-currency and total-debit comparison",
+      "Expired-quote exclusion",
+      "Local PDF, CSV and JSON exports"
+    ],
+    "image": "https://afrotools.com/assets/img/tools/crypto-remittance.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Does this remittance comparator load live provider quotes?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Enter quotes you obtained directly. The worksheet makes no provider, exchange or rate API request."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "When can two remittance quotes be compared?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "They must have exactly the same send currency, receive currency and total debit. An explicitly expired quote is excluded."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Does the highest recipient amount mean the provider is best?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. It is only an arithmetic observation among eligible comparable entries. It does not assess safety, eligibility, availability, identity checks, settlement or suitability."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Is my quote data uploaded or saved?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "No. Calculation and export happen in the browser. The tool does not store quote fields or put them in a share URL."
+        }
+      }
+    ]
+  }
+]
 </script>
-<meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=73c56d01">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Crypto Remittance Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Crypto Remittance Calculator then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Crypto Remittance Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Crypto Remittance Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/crypto/remittance/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/remittance/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/remittance/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/remittance/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="remit-quote-page">
+<a class="rm-skip" href="#rm-form">Skip to comparator</a>
 <afro-navbar></afro-navbar>
-
-<!-- Hero -->
-<section class="crypto-hero">
-  <span class="crypto-badge">Remittance</span>
-  <h1>Crypto Remittance Calculator</h1>
-  <p>What's the cheapest way to send money to Africa? Compare crypto, Wise, and Western Union side by side.</p>
-</section>
-
-<!-- Controls -->
-<section class="crypto-section">
-  <div class="crypto-controls">
-    <div class="auto-refresh" style="margin-left:auto;">
-      <span class="dot"></span> Live exchange rates
-    </div>
+<header class="rm-hero"><div class="rm-wrap">
+  <nav class="rm-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/crypto/">Crypto</a> / Remittance quote comparator</nav>
+  <h1>Compare remittance quote receipts on equal terms.</h1>
+  <p>Enter two or three quotes you obtained. The worksheet only compares non-expired entries with exactly the same send currency, receive currency and total debit.</p>
+  <div class="rm-badges"><span>Private in your browser</span><span>No provider or rate API</span><span>Local PDF and data exports</span></div>
+</div></header>
+<main class="rm-main" data-remittance-comparator data-locale="en"><div class="rm-wrap">
+<div class="rm-grid">
+<section class="rm-card" aria-labelledby="rm-form-title">
+  <h2 id="rm-form-title">Enter the quote receipts you checked</h2>
+  <p class="rm-intro">Use the total amount that would leave you, including any charge outside the displayed transfer amount. Do not enter recipient names, account numbers, wallet addresses, phone numbers or login details.</p>
+  <p class="rm-privacy"><strong>Local-only boundary:</strong> quote fields are not sent to AfroTools, AI, analytics, Supabase or a provider. They are not saved in browser storage or added to the URL.</p>
+  <form id="rm-form" novalidate>
+  <div class="rm-quotes">
+    <fieldset class="rm-quote"><legend class="rm-help">Required receipt A</legend><h3>Quote A</h3><div class="rm-fields">
+      <div class="rm-field"><label for="rm-a-label">Generic provider or route label</label><input id="rm-a-label" maxlength="48" required autocomplete="off" placeholder="e.g. Bank quote A"><small>Use a generic label, not a person or account identifier.</small></div>
+      <div class="rm-field"><label for="rm-a-payout">Payout method (optional)</label><select id="rm-a-payout" data-optional="true"><option value="">Not entered</option><option value="bank">Bank account</option><option value="mobile-wallet">Mobile wallet</option><option value="cash">Cash pickup</option><option value="crypto-wallet">Crypto wallet</option><option value="other">Other</option></select></div>
+      <div class="rm-field"><label for="rm-a-send">Send currency or unit</label><input id="rm-a-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="e.g. USD"></div>
+      <div class="rm-field"><label for="rm-a-debit">Total debit</label><input id="rm-a-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal" placeholder="Exact total leaving you"></div>
+      <div class="rm-field"><label for="rm-a-receive">Receive currency or unit</label><input id="rm-a-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="e.g. NGN"></div>
+      <div class="rm-field"><label for="rm-a-recipient">Recipient amount</label><input id="rm-a-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-a-fee">Stated fee within total debit (optional)</label><input id="rm-a-fee" type="number" min="0" max="1000000000000000" step="any" inputmode="decimal" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-a-delivery">Stated delivery time in minutes (optional)</label><input id="rm-a-delivery" type="number" min="0" max="1000000000000000" step="any" inputmode="numeric" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-a-observed">Checked at</label><input id="rm-a-observed" type="datetime-local" required></div>
+      <div class="rm-field"><label for="rm-a-expires">Expires at (optional)</label><input id="rm-a-expires" type="datetime-local" data-optional="true"></div>
+    </div></fieldset>
+    <fieldset class="rm-quote"><legend class="rm-help">Required receipt B</legend><h3>Quote B</h3><div class="rm-fields">
+      <div class="rm-field"><label for="rm-b-label">Generic provider or route label</label><input id="rm-b-label" maxlength="48" required autocomplete="off" placeholder="e.g. Mobile quote B"><small>Use a generic label, not a person or account identifier.</small></div>
+      <div class="rm-field"><label for="rm-b-payout">Payout method (optional)</label><select id="rm-b-payout" data-optional="true"><option value="">Not entered</option><option value="bank">Bank account</option><option value="mobile-wallet">Mobile wallet</option><option value="cash">Cash pickup</option><option value="crypto-wallet">Crypto wallet</option><option value="other">Other</option></select></div>
+      <div class="rm-field"><label for="rm-b-send">Send currency or unit</label><input id="rm-b-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="e.g. USD"></div>
+      <div class="rm-field"><label for="rm-b-debit">Total debit</label><input id="rm-b-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-b-receive">Receive currency or unit</label><input id="rm-b-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required autocomplete="off" placeholder="e.g. NGN"></div>
+      <div class="rm-field"><label for="rm-b-recipient">Recipient amount</label><input id="rm-b-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required inputmode="decimal"></div>
+      <div class="rm-field"><label for="rm-b-fee">Stated fee within total debit (optional)</label><input id="rm-b-fee" type="number" min="0" max="1000000000000000" step="any" inputmode="decimal" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-b-delivery">Stated delivery time in minutes (optional)</label><input id="rm-b-delivery" type="number" min="0" max="1000000000000000" step="any" inputmode="numeric" data-optional="true"></div>
+      <div class="rm-field"><label for="rm-b-observed">Checked at</label><input id="rm-b-observed" type="datetime-local" required></div>
+      <div class="rm-field"><label for="rm-b-expires">Expires at (optional)</label><input id="rm-b-expires" type="datetime-local" data-optional="true"></div>
+    </div></fieldset>
   </div>
-
-  <div class="remit-form">
-    <div class="form-group">
-      <label for="origin-country">Sending From</label>
-      <select id="origin-country">
-        <option value="US" selected>United States (USD)</option>
-        <option value="UK">United Kingdom (GBP)</option>
-        <option value="CA">Canada (CAD)</option>
-        <option value="DE">Germany (EUR)</option>
-        <option value="FR">France (EUR)</option>
-        <option value="AE">UAE (AED)</option>
-        <option value="SA">Saudi Arabia (SAR)</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="dest-country">Sending To</label>
-      <select id="dest-country">
-        <option value="NG" selected>Nigeria (NGN)</option>
-        <option value="KE">Kenya (KES)</option>
-        <option value="ZA">South Africa (ZAR)</option>
-        <option value="GH">Ghana (GHS)</option>
-        <option value="EG">Egypt (EGP)</option>
-        <option value="TZ">Tanzania (TZS)</option>
-        <option value="UG">Uganda (UGX)</option>
-        <option value="ET">Ethiopia (ETB)</option>
-        <option value="RW">Rwanda (RWF)</option>
-      </select>
-    </div>
-    <div class="form-group">
-      <label for="send-amount">Amount to Send</label>
-      <input type="number" id="send-amount" value="500" min="10" max="50000" step="50">
-    </div>
-  </div>
-
-  <!-- Channel comparison -->
-  <h2>Side-by-Side Comparison</h2>
-  <div class="channels-grid" id="channels">
-    <div class="loading-spinner">Calculating best routes...</div>
-  </div>
-
-  <!-- Savings callout -->
-  <div id="savings-callout" style="display:none;"></div>
-
-  <!-- Bar chart comparison -->
-  <div class="comparison-chart-wrap">
-    <h3>Total Received Comparison</h3>
-    <div style="height:300px;"><canvas id="comparison-chart"></canvas></div>
-  </div>
+  <label class="rm-toggle" for="rm-third"><input id="rm-third" type="checkbox"> Add a third receipt</label>
+  <fieldset class="rm-quote" id="rm-quote-c" hidden><legend class="rm-help">Optional receipt C</legend><h3>Quote C</h3><div class="rm-fields">
+    <div class="rm-field"><label for="rm-c-label">Generic provider or route label</label><input id="rm-c-label" maxlength="48" required disabled autocomplete="off" placeholder="e.g. Cash quote C"><small>Use a generic label, not a person or account identifier.</small></div>
+    <div class="rm-field"><label for="rm-c-payout">Payout method (optional)</label><select id="rm-c-payout" disabled data-optional="true"><option value="">Not entered</option><option value="bank">Bank account</option><option value="mobile-wallet">Mobile wallet</option><option value="cash">Cash pickup</option><option value="crypto-wallet">Crypto wallet</option><option value="other">Other</option></select></div>
+    <div class="rm-field"><label for="rm-c-send">Send currency or unit</label><input id="rm-c-send" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required disabled autocomplete="off"></div>
+    <div class="rm-field"><label for="rm-c-debit">Total debit</label><input id="rm-c-debit" type="number" min="0.000000000001" max="1000000000000000" step="any" required disabled inputmode="decimal"></div>
+    <div class="rm-field"><label for="rm-c-receive">Receive currency or unit</label><input id="rm-c-receive" maxlength="8" pattern="[A-Za-z0-9]{2,8}" required disabled autocomplete="off"></div>
+    <div class="rm-field"><label for="rm-c-recipient">Recipient amount</label><input id="rm-c-recipient" type="number" min="0.000000000001" max="1000000000000000" step="any" required disabled inputmode="decimal"></div>
+    <div class="rm-field"><label for="rm-c-fee">Stated fee within total debit (optional)</label><input id="rm-c-fee" type="number" min="0" max="1000000000000000" step="any" disabled inputmode="decimal" data-optional="true"></div>
+    <div class="rm-field"><label for="rm-c-delivery">Stated delivery time in minutes (optional)</label><input id="rm-c-delivery" type="number" min="0" max="1000000000000000" step="any" disabled inputmode="numeric" data-optional="true"></div>
+    <div class="rm-field"><label for="rm-c-observed">Checked at</label><input id="rm-c-observed" type="datetime-local" required disabled></div>
+    <div class="rm-field"><label for="rm-c-expires">Expires at (optional)</label><input id="rm-c-expires" type="datetime-local" disabled data-optional="true"></div>
+  </div></fieldset>
+  <p id="rm-error" class="rm-error" role="alert"></p>
+  <div class="rm-actions"><button class="rm-btn" type="submit">Compare entered receipts</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-copy">Copy</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-csv">CSV</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-json">JSON</button><button class="rm-btn rm-btn-secondary" type="button" id="rm-pdf">PDF</button></div>
+  <p id="rm-status" class="rm-status" role="status" aria-live="polite"></p>
+  </form>
 </section>
-
-<!-- SEO Content -->
-<section class="crypto-content">
-  <h2>Crypto vs Wise for Sending Money to Africa</h2>
-  <p>The African diaspora sends over $100 billion in remittances to the continent every year, making it one of the largest financial flows into Africa. Yet traditional remittance services continue to charge exorbitant fees that eat into the money families actually receive. The average cost of sending $200 to Sub-Saharan Africa remains around 8%, nearly double the global average and far above the UN's Sustainable Development Goal target of 3%.</p>
-
-  <p>Wise (formerly TransferWise) disrupted the remittance market by offering mid-market exchange rates with transparent, low fees typically ranging from 0.4% to 1.5% depending on the corridor. For a $500 transfer from the US to Nigeria, Wise might charge $4-7 in fees, significantly less than Western Union's $15-40 range. Wise has become the go-to option for many in the African diaspora, especially for UK-to-Nigeria and US-to-Kenya corridors.</p>
-
-  <p>However, cryptocurrency is emerging as an even cheaper alternative for those willing to learn the process. The crypto remittance method typically works in three steps: buy USDT or USDC on a regulated exchange in the origin country, send the stablecoins to a wallet accessible in the destination country, then sell on a peer-to-peer marketplace for local currency. The total cost often comes to around 1.5% all-in, which can save $10-30 on a typical $500 transfer.</p>
-
-  <p>The stablecoin direct method is even cheaper. If both sender and recipient have crypto wallets, sending USDT on the Tron network costs roughly $0.50-$2 regardless of the amount. A $5,000 transfer for $1 is dramatically cheaper than any traditional service. The catch is that the recipient needs to be comfortable converting stablecoins to local currency, which typically involves selling on a P2P marketplace.</p>
-
-  <h2>Speed and Convenience Trade-offs</h2>
-  <p>Traditional services like Wise and Remitly excel in convenience. Money arrives in the recipient's bank account or mobile money wallet with no action required from them. Wise typically delivers within 1-2 business days for bank transfers, while Remitly offers instant delivery to mobile money in Kenya, Ghana, and other markets.</p>
-
-  <p>Crypto transfers are faster in theory but require more steps. The blockchain transaction itself takes minutes, but buying stablecoins and selling them on P2P markets adds time. A well-practiced user can complete the entire process in 30-60 minutes, but first-time users should expect longer as they learn the platforms.</p>
-
-  <p>Western Union remains relevant for cash pickup, which is critical in areas with limited banking infrastructure. In rural Ethiopia, Tanzania, and Uganda, cash pickup through Western Union or MoneyGram agent networks may be the only viable option, despite the higher fees.</p>
-
-  <p>The best choice depends on corridor, amount, and recipient capability. For tech-savvy recipients in Nigeria, Kenya, or South Africa, crypto offers significant savings. For recipients who need cash pickup or are not comfortable with digital wallets, Wise or Remitly provide the best balance of cost and convenience. Use the calculator above to compare your specific corridor and amount.</p>
+<section class="rm-card rm-results" id="rm-results" aria-labelledby="rm-results-title" aria-busy="true">
+  <h2 id="rm-results-title">Receipt comparison</h2>
+  <div class="rm-primary"><span id="rm-primary-label"></span><strong id="rm-primary-value">—</strong><p id="rm-primary-detail"></p></div>
+  <div id="rm-result-list" class="rm-result-list"></div>
+  <p class="rm-warning">The highest recipient amount is not a provider recommendation. This worksheet cannot verify that a quote remains executable or assess safety, identity checks, limits, reversibility, delivery reliability or suitability. Crypto transfers can be irreversible.</p>
 </section>
-
-<!-- FAQ -->
-<section class="crypto-faq">
-  <h2>Frequently Asked Questions</h2>
-  <details class="faq-item">
-    <summary>Is it legal to send money to Africa using crypto?</summary>
-    <p>In most corridors, using crypto for remittance is legal, though regulations vary by country. Nigeria, Kenya, and South Africa have growing crypto regulatory frameworks. Always comply with local KYC/AML requirements on both sending and receiving platforms.</p>
-  </details>
-  <details class="faq-item">
-    <summary>How long does a crypto remittance take?</summary>
-    <p>The blockchain transfer itself takes 1-5 minutes for most networks. The total process (buying stablecoins, sending, and selling for local currency) typically takes 30-60 minutes for experienced users.</p>
-  </details>
-  <details class="faq-item">
-    <summary>What if the recipient does not have a crypto wallet?</summary>
-    <p>If the recipient is not comfortable with crypto, traditional services like Wise or Remitly are better options. Alternatively, you can handle the crypto side yourself and sell on a P2P platform that delivers directly to the recipient's bank account.</p>
-  </details>
-  <details class="faq-item">
-    <summary>Are these calculations exact?</summary>
-    <p>The fees and exchange rates shown are estimates based on typical rates. Actual costs may vary depending on payment method, market conditions, and the specific providers available in your corridor. Always verify current rates before sending.</p>
-  </details>
+</div>
+<section class="rm-content">
+  <article><h2>Exact comparison rule</h2><p>Two entries are comparable only when their send currency, receive currency and total debit match exactly. Explicitly expired entries are excluded.</p><code>effective rate = recipient amount ÷ total debit</code></article>
+  <article><h2>Expiry and evidence</h2><p>Copy values from the final quote or confirmation screen and record when you checked it. An unknown expiry is allowed but carries a warning; it does not mean the quote is current.</p></article>
+  <article><h2>Total debit, not headline fee</h2><p>Use the full amount that would leave you. A separately stated fee is recorded for context but is not added again. Payout method and delivery time are descriptive and never change the arithmetic.</p></article>
+  <article><h2>Privacy and exports</h2><p>Calculation, CSV, JSON and parser-readable PDF generation happen on this device. Use generic route labels and never enter personal recipient, account, wallet or login information.</p></article>
 </section>
-
-
-<section class="df-upgrade" data-df-upgrade="crypto-remittance">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Crypto Remittance Calculator: quick guide</h2>
-      <p>Not sure how to get the most from the Crypto Remittance Calculator? Enter your amounts, rates and dates and it returns a clear estimate with the assumptions shown — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a clear estimate with the assumptions shown, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Crypto Remittance Calculator takes your amounts, rates and dates and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm current prices, fees and official rates for your country before you rely on the result. It is a planning estimate, not financial advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm current prices, fees and official rates for your country before acting. It is a planning estimate, not financial advice.</p>
-    </div>
-    <form class="df-form" data-df-form="crypto-remittance">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="crypto-remittance" data-df-base="Crypto Remittance Calculator — enter your details above to see your result." aria-live="polite">Crypto Remittance Calculator — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="crypto-remittance">Copy summary</button></div>
-    </form>
-  </div>
+<section class="rm-faq" aria-labelledby="rm-faq-title"><h2 id="rm-faq-title">Remittance quote comparison questions</h2>
+  <details><summary>Why was an entry excluded?</summary><p>It was explicitly expired, or no other eligible entry had the exact same send currency, receive currency and total debit.</p></details>
+  <details><summary>Can I compare a bank transfer with a crypto route?</summary><p>Yes, only as user-entered receipts with the same currencies and total debit. The arithmetic does not evaluate custody, reversibility, KYC, cash access, network risk or legal availability.</p></details>
+  <details><summary>Why does the tool avoid a provider ranking?</summary><p>Provider prices, eligibility and availability change. The tool reports only the highest recipient amount among the eligible comparable entries you supplied.</p></details>
 </section>
-<section class="df-faq" aria-labelledby="crypto-remittance-faq-title">
-  <h2 id="crypto-remittance-faq-title">Crypto Remittance Calculator FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Crypto Remittance Calculator?</summary><p>Enter your amounts, rates and dates in the fields above. The Crypto Remittance Calculator then gives you a clear estimate with the assumptions shown you can use straight away.</p></details><details><summary>How accurate is the Crypto Remittance Calculator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice.</p></details><details><summary>Is the Crypto Remittance Calculator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
-<section class="tool-verification-sec" data-tool-verification-panel="crypto-remittance">
-  <div class="container">
-    <div class="tool-verification-card">
-      <div class="tool-verification-head">
-        <div>
-          <span class="tool-verification-kicker">Remittance check</span>
-          <h2 class="tool-verification-title">Verify live price, fees, and cash-out before sending</h2>
-          <p class="tool-verification-lead">The calculator compares route cost, channel assumptions, and received value so you can decide what to verify before using crypto for a transfer.</p>
-        </div>
-        <div class="tool-verification-status">
-          <span class="tool-verification-badge">Planning comparison</span>
-          <p class="tool-verification-note">No wallet transaction, exchange order, or payout is initiated.</p>
-        </div>
-      </div>
-      <div class="tool-verification-grid">
-        <div class="tool-verification-block">
-          <h3>What to check</h3>
-          <ul class="tool-verification-list">
-            <li>Confirm live exchange rate, spread, network fee, payout method, recipient ID requirements, and settlement time before sending.</li>
-            <li>Check whether the sender and recipient countries restrict crypto transfers or require reporting.</li>
-            <li>Copy the summary for comparison, then run a small test transfer if you choose a new route.</li>
-          </ul>
-        </div>
-        <div class="tool-verification-block">
-          <h3>Limitations</h3>
-          <ul class="tool-verification-list">
-            <li>Disclaimer: estimate only. This is not financial advice, legal advice, a live quote, or a guaranteed payout.</li>
-            <li>Crypto price, liquidity, network congestion, compliance checks, and cash-out fees can change within minutes.</li>
-            <li>Do not enter seed phrases, private keys, passwords, or full recipient identity details on this page.</li>
-          </ul>
-        </div>
-      </div>
-      <div class="tool-verification-actions">
-        <a class="tool-verification-report" href="#savings-callout">Review comparison result</a>
-        <p class="tool-verification-disclaimer">Source/freshness note: verify with current exchange quotes, wallet fees, payout partner terms, and local regulation before transferring value.</p>
-      </div>
-    </div>
-  </div>
-</section>
-<afro-business-cta tool-name="Crypto Remittance Calculator" prospect-segment="fintech-crypto" save-note="Compare transfer routes, then copy the fee and verification brief for finance, product, or family review."></afro-business-cta>
+</div></main>
+<button id="rm-theme" class="rm-theme" type="button" aria-label="Toggle light or dark preview" aria-pressed="false">◐ Theme</button>
 <afro-related-tools data-ssr="1" category="financial" current="crypto-remittance">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-
-<script>
-(function() {
-  'use strict';
-
-  // Origin country data
-  var ORIGINS = {
-    US: { currency: 'USD', symbol: '$', flag: '&#x1F1FA;&#x1F1F8;', name: 'United States' },
-    UK: { currency: 'GBP', symbol: '\u00A3', flag: '&#x1F1EC;&#x1F1E7;', name: 'United Kingdom' },
-    CA: { currency: 'CAD', symbol: 'C$', flag: '&#x1F1E8;&#x1F1E6;', name: 'Canada' },
-    DE: { currency: 'EUR', symbol: '\u20AC', flag: '&#x1F1E9;&#x1F1EA;', name: 'Germany' },
-    FR: { currency: 'EUR', symbol: '\u20AC', flag: '&#x1F1EB;&#x1F1F7;', name: 'France' },
-    AE: { currency: 'AED', symbol: 'AED', flag: '&#x1F1E6;&#x1F1EA;', name: 'UAE' },
-    SA: { currency: 'SAR', symbol: 'SAR', flag: '&#x1F1F8;&#x1F1E6;', name: 'Saudi Arabia' }
-  };
-
-  // Destination country data
-  var DESTS = {
-    NG: { currency: 'NGN', cryptoCurrency: 'ngn', symbol: '\u20A6', flag: '&#x1F1F3;&#x1F1EC;', name: 'Nigeria' },
-    KE: { currency: 'KES', cryptoCurrency: 'kes', symbol: 'KSh', flag: '&#x1F1F0;&#x1F1EA;', name: 'Kenya' },
-    ZA: { currency: 'ZAR', cryptoCurrency: 'zar', symbol: 'R', flag: '&#x1F1FF;&#x1F1E6;', name: 'South Africa' },
-    GH: { currency: 'GHS', cryptoCurrency: 'ghs', symbol: 'GH\u20B5', flag: '&#x1F1EC;&#x1F1ED;', name: 'Ghana' },
-    EG: { currency: 'EGP', cryptoCurrency: 'egp', symbol: 'E\u00A3', flag: '&#x1F1EA;&#x1F1EC;', name: 'Egypt' },
-    TZ: { currency: 'TZS', cryptoCurrency: 'tzs', symbol: 'TSh', flag: '&#x1F1F9;&#x1F1FF;', name: 'Tanzania' },
-    UG: { currency: 'UGX', cryptoCurrency: 'ugx', symbol: 'USh', flag: '&#x1F1FA;&#x1F1EC;', name: 'Uganda' },
-    ET: { currency: 'ETB', cryptoCurrency: 'etb', symbol: 'Br', flag: '&#x1F1EA;&#x1F1F9;', name: 'Ethiopia' },
-    RW: { currency: 'RWF', cryptoCurrency: 'rwf', symbol: 'FRw', flag: '&#x1F1F7;&#x1F1FC;', name: 'Rwanda' }
-  };
-
-  // Simulated exchange rates from origin to USD
-  var TO_USD = {
-    USD: 1, GBP: 1.27, CAD: 0.74, EUR: 1.08, AED: 0.2723, SAR: 0.2667
-  };
-
-  // Simulated exchange rates from USD to local currency
-  var USD_TO_LOCAL = {
-    NGN: 1580, KES: 153, ZAR: 18.2, GHS: 14.8, EGP: 49.5,
-    TZS: 2570, UGX: 3780, ETB: 57.2, RWF: 1320
-  };
-
-  // Corridor-specific Wise fee percentages
-  var WISE_FEES = {
-    'US-NG': 0.0065, 'US-KE': 0.0055, 'US-ZA': 0.0045, 'US-GH': 0.0070, 'US-EG': 0.0080,
-    'UK-NG': 0.0040, 'UK-KE': 0.0045, 'UK-ZA': 0.0040, 'UK-GH': 0.0060, 'UK-EG': 0.0070,
-    'default': 0.0080
-  };
-
-  // Western Union markup on exchange rate + flat fee
-  var WU_FEE_PCT = 0.05; // 5% average total cost
-  var REMITLY_FEE_PCT = 0.02; // 2% average
-
-  var comparisonChart = null;
-
-  // DOM refs
-  var originSelect = document.getElementById('origin-country');
-  var destSelect = document.getElementById('dest-country');
-  var amountInput = document.getElementById('send-amount');
-  var channelsContainer = document.getElementById('channels');
-  var savingsCallout = document.getElementById('savings-callout');
-
-  originSelect.addEventListener('change', calculate);
-  destSelect.addEventListener('change', calculate);
-  amountInput.addEventListener('input', calculate);
-
-  function getWiseFee(origin, dest) {
-    var key = origin + '-' + dest;
-    return WISE_FEES[key] || WISE_FEES['default'];
-  }
-
-  function calculate() {
-    var originCode = originSelect.value;
-    var destCode = destSelect.value;
-    var amount = parseFloat(amountInput.value) || 500;
-    var origin = ORIGINS[originCode];
-    var dest = DESTS[destCode];
-
-    if (!origin || !dest) return;
-
-    var amountUSD = amount * TO_USD[origin.currency];
-    var localRate = USD_TO_LOCAL[dest.currency] || 1580;
-
-    // Channel 1: Traditional providers
-    var wiseFee = getWiseFee(originCode, destCode);
-    var wiseTotal = amountUSD * (1 - wiseFee);
-    var wiseReceived = wiseTotal * localRate * 0.998; // Wise uses near mid-market rate
-    var wiseFeeAmount = amountUSD * wiseFee;
-
-    var remitlyFeeAmt = amountUSD * REMITLY_FEE_PCT;
-    var remitlyReceived = (amountUSD - remitlyFeeAmt) * localRate * 0.995;
-
-    var wuFeeAmt = amountUSD * WU_FEE_PCT;
-    var wuReceived = (amountUSD - wuFeeAmt) * localRate * 0.97; // WU uses poor exchange rate
-
-    // Channel 2: Crypto P2P
-    var cryptoExchangeFee = amountUSD * 0.005; // 0.5% to buy USDT
-    var networkFee = 1.00; // $1 network fee
-    var p2pSpread = 0.01; // 1% P2P spread
-    var cryptoAfterFees = amountUSD - cryptoExchangeFee - networkFee;
-    var cryptoReceived = cryptoAfterFees * localRate * (1 - p2pSpread);
-    var cryptoTotalFees = cryptoExchangeFee + networkFee + (cryptoAfterFees * localRate * p2pSpread / localRate);
-
-    // Channel 3: Stablecoin direct
-    var stableNetworkFee = 1.00; // $0.50-$2 averaged
-    var stableReceived = (amountUSD - stableNetworkFee) * localRate;
-    var stableTotalFees = stableNetworkFee;
-
-    // Find winner
-    var results = [
-      { name: 'traditional', received: Math.max(wiseReceived, remitlyReceived) },
-      { name: 'crypto', received: cryptoReceived },
-      { name: 'stablecoin', received: stableReceived }
-    ];
-    results.sort(function(a, b) { return b.received - a.received; });
-    var winnerName = results[0].name;
-
-    // Render channels
-    var html = '';
-
-    // Traditional card
-    html += '<div class="channel-card' + (winnerName === 'traditional' ? ' winner' : '') + '">';
-    html += '<div class="channel-icon">&#x1F3E6;</div>';
-    html += '<div class="channel-title">Traditional Transfer</div>';
-    html += '<div class="channel-subtitle">Wise, Remitly, Western Union</div>';
-    html += '<div class="channel-rows">';
-
-    html += '<div class="provider-breakdown">';
-    html += '<div class="provider-item"><span class="provider-name">Wise</span><span>Fee: ' + origin.symbol + wiseFeeAmount.toFixed(2) + ' (' + (wiseFee * 100).toFixed(1) + '%)</span></div>';
-    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(wiseReceived) + '</span></div>';
-    html += '<div class="provider-item"><span class="provider-name">Remitly</span><span>Fee: ' + origin.symbol + remitlyFeeAmt.toFixed(2) + ' (' + (REMITLY_FEE_PCT * 100).toFixed(0) + '%)</span></div>';
-    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(remitlyReceived) + '</span></div>';
-    html += '<div class="provider-item"><span class="provider-name">Western Union</span><span class="fee-highlight">Fee: ' + origin.symbol + wuFeeAmt.toFixed(2) + ' (' + (WU_FEE_PCT * 100).toFixed(0) + '%)</span></div>';
-    html += '<div class="provider-item"><span class="provider-name">&nbsp;</span><span>Received: ' + dest.symbol + formatNum(wuReceived) + '</span></div>';
-    html += '</div>';
-
-    html += '</div>';
-    html += '<div class="channel-total">';
-    html += '<div class="total-label">Best Traditional (Wise)</div>';
-    html += '<div class="total-amount">' + dest.symbol + formatNum(wiseReceived) + '</div>';
-    html += '<div class="total-time">&#x23F1; 1-2 business days</div>';
-    html += '<div style="display:flex;gap:8px;margin-top:10px;flex-wrap:wrap;justify-content:center;">';
-    html += '<a href="https://wise.com/send" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Wise &rarr;</a>';
-    html += '<a href="https://www.remitly.com" target="_blank" rel="noopener noreferrer" style="font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Remitly &rarr;</a>';
-    html += '</div>';
-    html += '</div></div>';
-
-    // Crypto P2P card
-    html += '<div class="channel-card' + (winnerName === 'crypto' ? ' winner' : '') + '">';
-    html += '<div class="channel-icon">&#x1F4B1;</div>';
-    html += '<div class="channel-title">Crypto P2P</div>';
-    html += '<div class="channel-subtitle">Buy USDT &rarr; Send &rarr; Sell on P2P</div>';
-    html += '<div class="channel-rows">';
-    html += '<div class="channel-row"><span class="label">Exchange fee (0.5%)</span><span class="value">' + origin.symbol + cryptoExchangeFee.toFixed(2) + '</span></div>';
-    html += '<div class="channel-row"><span class="label">Network fee</span><span class="value">' + origin.symbol + networkFee.toFixed(2) + '</span></div>';
-    html += '<div class="channel-row"><span class="label">P2P spread (1%)</span><span class="value">~' + dest.symbol + formatNum(cryptoAfterFees * localRate * p2pSpread) + '</span></div>';
-    html += '<div class="channel-row"><span class="label">Exchange rate</span><span class="value">1 USD = ' + dest.symbol + localRate.toLocaleString() + '</span></div>';
-    html += '</div>';
-    html += '<div class="channel-total">';
-    html += '<div class="total-label">Recipient Receives</div>';
-    html += '<div class="total-amount">' + dest.symbol + formatNum(cryptoReceived) + '</div>';
-    html += '<div class="total-time">&#x23F1; 30-60 minutes</div>';
-    html += '<a href="/crypto/p2p-rates/" style="display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Compare P2P Rates &rarr;</a>';
-    html += '</div></div>';
-
-    // Stablecoin Direct card
-    html += '<div class="channel-card' + (winnerName === 'stablecoin' ? ' winner' : '') + '">';
-    html += '<div class="channel-icon">&#x26A1;</div>';
-    html += '<div class="channel-title">Stablecoin Direct</div>';
-    html += '<div class="channel-subtitle">Wallet to wallet (both have crypto wallets)</div>';
-    html += '<div class="channel-rows">';
-    html += '<div class="channel-row"><span class="label">Network fee only</span><span class="value fee-low">' + origin.symbol + stableNetworkFee.toFixed(2) + '</span></div>';
-    html += '<div class="channel-row"><span class="label">Exchange fee</span><span class="value fee-low">$0.00</span></div>';
-    html += '<div class="channel-row"><span class="label">Exchange rate</span><span class="value">1 USD = ' + dest.symbol + localRate.toLocaleString() + '</span></div>';
-    html += '<div class="channel-row"><span class="label">Requirement</span><span class="value" style="font-size:12px;">Both need wallets</span></div>';
-    html += '</div>';
-    html += '<div class="channel-total">';
-    html += '<div class="total-label">Recipient Receives</div>';
-    html += '<div class="total-amount">' + dest.symbol + formatNum(stableReceived) + '</div>';
-    html += '<div class="total-time">&#x23F1; 1-5 minutes</div>';
-    html += '<a href="/crypto/stablecoins/" style="display:inline-block;margin-top:10px;font-size:12px;font-weight:700;color:var(--color-primary);text-decoration:none;">Compare Stablecoins &rarr;</a>';
-    html += '</div></div>';
-
-    channelsContainer.innerHTML = html;
-    if (typeof twemoji !== 'undefined') twemoji.parse(channelsContainer);
-
-    // Savings callout
-    var bestCrypto = Math.max(cryptoReceived, stableReceived);
-    var worstTraditional = wuReceived;
-    var savingsVsWU = bestCrypto - worstTraditional;
-    var savingsVsWise = stableReceived - wiseReceived;
-
-    if (savingsVsWU > 0) {
-      savingsCallout.style.display = 'flex';
-      savingsCallout.className = 'savings-callout';
-      savingsCallout.innerHTML =
-        '<div class="savings-icon">&#x1F4B0;</div>' +
-        '<div class="savings-text">' +
-        '<h3>Save ' + dest.symbol + formatNum(savingsVsWU) + ' by using crypto instead of Western Union</h3>' +
-        '<p>Even compared to Wise, stablecoin direct transfer saves you ' + dest.symbol + formatNum(Math.max(0, savingsVsWise)) + ' on this ' + origin.symbol + amount + ' transfer to ' + dest.name + '.</p>' +
-        '</div>';
-      if (typeof twemoji !== 'undefined') twemoji.parse(savingsCallout);
-    } else {
-      savingsCallout.style.display = 'none';
-    }
-
-    // Update chart
-    renderChart(dest.symbol, wiseReceived, remitlyReceived, wuReceived, cryptoReceived, stableReceived);
-  }
-
-  function formatNum(n) {
-    if (!n || isNaN(n)) return '0';
-    return Number(n).toLocaleString(undefined, { minimumFractionDigits: 0, maximumFractionDigits: 0 });
-  }
-
-  function renderChart(sym, wise, remitly, wu, crypto, stable) {
-    var chartCanvas = document.getElementById('comparison-chart');
-    if (!window.Chart || !chartCanvas) {
-      var chartWrap = chartCanvas ? chartCanvas.parentElement : null;
-      if (chartWrap) {
-        chartWrap.innerHTML = '<div style="padding:18px;border:1px solid #dbe4f0;border-radius:12px;background:#f8fafc;color:#475569;line-height:1.6;">Chart preview is unavailable offline. The comparison results above remain usable; reload with Chart.js available for the visual bar chart.</div>';
-      }
-      return;
-    }
-    var ctx = chartCanvas.getContext('2d');
-    if (comparisonChart) comparisonChart.destroy();
-
-    var colors = window.AfroChartColors || { series: ['#0062CC','#5AC8FA','#FF9500','#34C759','#AF52DE'] };
-    comparisonChart = new Chart(ctx, {
-      type: 'bar',
-      data: {
-        labels: ['Wise', 'Remitly', 'Western Union', 'Crypto P2P', 'Stablecoin Direct'],
-        datasets: [{
-          label: 'Recipient Receives (' + sym + ')',
-          data: [wise, remitly, wu, crypto, stable],
-          backgroundColor: [
-            colors.series[0],
-            colors.series[1],
-            '#FF3B30',
-            colors.series[2],
-            colors.series[4]
-          ],
-          borderRadius: 6,
-          borderSkipped: false
-        }]
-      },
-      options: Object.assign({}, window.AfroChartDefaults || {}, {
-        indexAxis: 'y',
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: (window.AfroChartColors || {}).tooltipBg || '#1E293B',
-            titleColor: '#fff',
-            bodyColor: '#fff',
-            callbacks: {
-              label: function(ctx) {
-                return sym + Number(ctx.raw).toLocaleString(undefined, { maximumFractionDigits: 0 });
-              }
-            }
-          }
-        },
-        scales: {
-          x: {
-            grid: { color: (window.AfroChartColors || {}).grid || 'rgba(0,0,0,0.04)' },
-            ticks: {
-              callback: function(val) { return sym + Number(val).toLocaleString(); },
-              color: (window.AfroChartColors || {}).tickText || '#94A3B8'
-            }
-          },
-          y: {
-            grid: { display: false },
-            ticks: { color: (window.AfroChartColors || {}).tickText || '#94A3B8' }
-          }
-        }
-      })
-    });
-  }
-
-  // Use CryptoData to get real exchange rates when available
-  function loadWithLiveRates() {
-    var destCode = destSelect.value;
-    var dest = DESTS[destCode];
-    if (dest && CryptoData) {
-      CryptoData.getPrices(dest.cryptoCurrency).then(function(prices) {
-        if (prices && prices['tether'] && prices['tether'][dest.cryptoCurrency]) {
-          USD_TO_LOCAL[dest.currency] = prices['tether'][dest.cryptoCurrency];
-        }
-        calculate();
-      }).catch(function(err) {
-        console.warn('[remittance] Live rates unavailable, using estimates:', err && err.message);
-        calculate();
-      });
-    } else {
-      calculate();
-    }
-  }
-
-  // Initial load
-  loadWithLiveRates();
-
-  // Recalculate on change with live rates
-  destSelect.addEventListener('change', loadWithLiveRates);
-})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=996960fa"></script>
+<script src="/assets/js/components/footer.min.js?v=dfb30911"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/engines/remittance-quote-comparator-engine.js?v=c1099d99"></script>
+<script src="/assets/js/pages/remittance-quote-comparator.js?v=628d388d"></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

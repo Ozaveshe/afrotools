@@ -1,479 +1,87 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>São Tomé & Príncipe PAYE Calculator 2026 | AfroTools</title>
-<meta name="description" content="São Tomé & Príncipe PAYE calculator 2025/26. DGTF progressive tax 0%–25%, INSS 6% employee + 6% employer social security. STN currency. Free PDF download.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title"       content="São Tomé & Príncipe PAYE Calculator 2025/26 | AfroTools">
-<meta property="og:description" content="ST PAYE: DGTF 0%–25% progressive tax, INSS 6% employee + 6% employer, STN currency. 2025/26 rates.">
-<meta property="og:type"        content="website">
-<meta property="og:url" content="https://afrotools.com/sao-tome/st-paye">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/st-paye.webp">
-<meta property="og:locale"      content="pt_ST">
-<meta property="og:site_name"   content="AfroTools">
-<meta name="twitter:card"       content="summary_large_image">
-<meta name="twitter:title"      content="São Tomé & Príncipe PAYE Calculator 2025/26 | AfroTools">
-<meta name="twitter:description" content="DGTF progressive 0%–25%, INSS 6% employee + 6% employer. STN currency. 2025/26 rates.">
-<meta name="robots"             content="index, follow">
-<meta name="author"             content="AfroTools">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"São Tomé & Príncipe","item":"https://afrotools.com/sao-tome/"},{"@type":"ListItem","position":3,"name":"PAYE Calculator","item":"https://afrotools.com/sao-tome/st-paye"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"São Tomé & Príncipe PAYE Calculator 2025/26","description":"Calculate São Tomé take-home pay using 2025/26 DGTF IRS progressive rates and INSS contributions.","url":"https://afrotools.com/sao-tome/st-paye","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/st-paye.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"São Tomé & Príncipe PAYE Calculator 2025/26","url":"https://afrotools.com/sao-tome/st-paye","description":"Calculate São Tomé take-home pay using 2025/26 DGTF IRS progressive rates and INSS contributions.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/st-paye.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What are the São Tomé & Príncipe PAYE tax bands for 2025/26?","acceptedAnswer":{"@type":"Answer","text":"Five progressive bands: STN 0–2,500,000 annual (0%); STN 2,500,001–5,000,000 (10%); STN 5,000,001–10,000,000 (15%); STN 10,000,001–20,000,000 (20%); above STN 20,000,000 (25%). DGTF IRS administers. Annual tax-free threshold: STN 2,500,000."}},{"@type":"Question","name":"What is INSS in São Tomé & Príncipe?","acceptedAnswer":{"@type":"Answer","text":"Instituto Nacional de Segurança Social (INSS) covers all employees. Total contribution is 12% of gross salary — employee pays 6% and employer pays 6%. There is no upper cap. Employee INSS contribution is deductible from taxable income before income tax is calculated."}},{"@type":"Question","name":"When must employers remit PAYE in São Tomé & Príncipe?","acceptedAnswer":{"@type":"Answer","text":"PAYE and INSS must be filed and remitted to DGTF by the 10th of the following month. Monthly withholding is mandatory for all employers with employees."}}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
-<style>
-  :root {
-    --calc-accent: #2563EB;
-    --calc-accent-rgb: 18,173,43;
-    --calc-accent-subtle: #2563EB12;
-    --calc-gold: #f5d76e;
-    --calc-gold-rgb: 245,215,110;
-    --st-green:   #2563EB;   /* São Tomé flag green  */
-    --st-gold:    #FFCE00;   /* São Tomé flag gold   */
-    --st-red:     #D21034;   /* São Tomé flag red    */
-    --st-black:   #000;      /* Black */
-    --st-dark:    #0a0a0a;
-  }
-  .tool-hero::after { content: '🇸🇹'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: .06; pointer-events: none; }
-  .tool-hero { background: #0a0a0a; }
-
-  .tool-info-card{background:#fff;border:1px solid #DBEAFE;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-  .tool-info-header{display:flex;align-items:center;gap:12px;padding:16px 18px;border-bottom:1px solid #EFF6FF;background:#F5F9FF}
-  .tool-info-img{width:44px;height:44px;border-radius:8px;object-fit:cover;flex-shrink:0}
-  .tool-info-meta{flex:1;min-width:0}
-  .tool-info-name{font-size:.82rem;font-weight:700;color:#0f172a;line-height:1.2;margin-bottom:2px}
-  .tool-info-cat{font-size:.62rem;font-weight:600;letter-spacing:.05em;text-transform:uppercase;color:#6B8CAE}
-  .tool-info-body{padding:14px 18px}
-  .tool-info-stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:12px}
-  .tool-stat{text-align:center}
-  .tool-stat-val{font-size:1rem;font-weight:800;color:#0062CC;line-height:1}
-  .tool-stat-lbl{font-size:.6rem;font-weight:500;color:#6B8CAE;text-transform:uppercase;letter-spacing:.04em;margin-top:3px}
-  .tool-info-features{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:12px}
-  .tool-feat{font-size:.62rem;font-weight:600;padding:3px 8px;background:#EFF6FF;border:1px solid #DBEAFE;border-radius:3px;color:#0f172a}
-  .tool-info-footer{display:flex;justify-content:space-between;align-items:center;padding:10px 18px;border-top:1px solid #EFF6FF;background:#FAFBFF}
-  .tool-info-updated{font-size:.62rem;color:#6B8CAE}
-  .tool-info-actions{display:flex;gap:6px}
-  .tool-info-action{font-size:.62rem;font-weight:600;color:#0062CC;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
-  .tool-info-action:hover{background:#EFF6FF;border-color:#0062CC}
-  @media(max-width:900px){.tool-info-card{order:1}}
-  @media(max-width:480px){.tool-info-stats{grid-template-columns:1fr 1fr 1fr}.tool-info-header{padding:12px 14px}.tool-info-body{padding:10px 14px}}
-
-  @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
-</style>
-<meta name="tool-id" content="st-paye">
-<script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
-<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
-<script>window.PAYE_SAVE_SLUG='st-paye';</script>
-<meta id="afro-share-img-js" name="afrotools:share-image" content="disabled">
-
-  <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<meta property="og:locale:alternate" content="fr_FR">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/st-paye.webp">
-<meta property="article:modified_time" content="2026-04-06">
-<link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
-<style>
-.skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;}
-.skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
-@media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
-</style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<link rel="stylesheet" href="/assets/css/country-tax-page-ui-refresh.css?v=fcc20688">
-<script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Sao Tome Payroll Contributions Checker | INSS</title>
+  <meta name="description" content="Check verified Sao Tome and Principe employee and employer INSS contributions. IRS is clearly paused until a current official schedule is confirmed.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Sao Tome Payroll Contributions Checker">
+  <meta property="og:description" content="A private INSS contribution estimate with an explicit safety pause on unconfirmed IRS calculations.">
+  <meta property="og:url" content="https://afrotools.com/sao-tome/st-paye">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/st-paye.webp">
+  <meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Sao Tome Payroll Contributions Checker">
+  <meta name="twitter:description" content="Verified INSS estimate; current IRS calculation intentionally paused.">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/st-paye.webp">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+  <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+  <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Sao Tome Payroll Contributions Checker",
+  "url": "https://afrotools.com/sao-tome/st-paye",
+  "description": "Estimate verified employee and employer INSS contributions. IRS is not calculated while the current official schedule is unconfirmed.",
+  "inLanguage": "en",
+  "applicationCategory": "FinanceApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "dateModified": "2026-07-22",
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/st-paye.webp"
+}
+</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Sao Tome and Principe","item":"https://afrotools.com/sao-tome/"},{"@type":"ListItem","position":3,"name":"Payroll contributions","item":"https://afrotools.com/sao-tome/st-paye"}]}</script>
+  <style>
+    :root{--st-forest:#075b4f;--st-ocean:#096f91;--st-sun:#f0b429;--st-bg:#f3f8f7;--st-card:#fff;--st-ink:#102a2b;--st-muted:#536b6b;--st-border:#d3e2df;--st-soft:#e8f4f1;--st-alert:#fff7df;--st-alert-border:#e4b84d}
+    *{box-sizing:border-box}body{margin:0;background:var(--st-bg);color:var(--st-ink)}.st-wrap{width:min(1120px,100%);margin:0 auto}.st-hero{padding:52px 20px 36px;background:linear-gradient(140deg,#063f39 0%,var(--st-forest) 52%,var(--st-ocean) 100%);color:#fff;position:relative;overflow:hidden}.st-hero:after{content:"";position:absolute;width:280px;height:280px;border-radius:50%;right:-100px;top:-120px;background:rgba(240,180,41,.24)}.st-hero>*{position:relative;z-index:1}.st-crumb{font-size:.86rem;color:#d8f6ef}.st-crumb a{color:inherit}.st-hero h1{max-width:820px;margin:14px 0 10px;font-size:clamp(2rem,5vw,3.35rem);line-height:1.04}.st-hero p{max-width:780px;margin:0;color:#e1f7f2;font-size:1.04rem;line-height:1.65}.st-badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:18px}.st-badge{padding:7px 11px;border:1px solid rgba(255,255,255,.32);border-radius:999px;background:rgba(255,255,255,.1);font-size:.82rem;font-weight:750}
+    .st-main{display:grid;grid-template-columns:minmax(0,1.42fr) minmax(280px,.78fr);gap:24px;padding:30px 20px 50px}.st-card{background:var(--st-card);border:1px solid var(--st-border);border-radius:16px;box-shadow:0 12px 32px rgba(9,69,63,.07)}.st-head{padding:20px 22px;border-bottom:1px solid var(--st-border)}.st-head h2,.st-head h3{margin:0 0 6px}.st-head p{margin:0;color:var(--st-muted);font-size:.91rem;line-height:1.55}.st-body{padding:22px}.st-alert{display:grid;grid-template-columns:auto 1fr;gap:12px;margin-bottom:20px;padding:14px;border:1px solid var(--st-alert-border);border-radius:12px;background:var(--st-alert);line-height:1.55}.st-alert-icon{font-size:1.35rem}.st-alert strong{display:block;margin-bottom:2px}.st-field{display:grid;gap:7px;max-width:540px}.st-field label{font-size:.92rem;font-weight:780}.st-field input{width:100%;min-height:50px;border:1px solid #a9c1bc;border-radius:10px;background:var(--st-card);color:var(--st-ink);padding:10px 12px;font:inherit}.st-field input:focus{outline:3px solid rgba(9,111,145,.2);border-color:var(--st-ocean)}.st-help{margin:0;color:var(--st-muted);font-size:.81rem;line-height:1.5}.st-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:20px}.st-btn{min-height:46px;border-radius:10px;padding:11px 16px;font:inherit;font-weight:800;cursor:pointer}.st-btn-primary{border:0;background:var(--st-forest);color:#fff}.st-btn-secondary{background:var(--st-soft);color:#07584e;border:1px solid #a9d0c8}.st-btn:focus-visible{outline:3px solid rgba(9,111,145,.3);outline-offset:2px}.st-status{min-height:22px;margin:12px 0 0;color:var(--st-muted);font-size:.88rem}.st-status.error{color:#b42318}
+    .st-results{display:none;margin-top:22px}.st-results.on{display:block}.st-result-hero{padding:24px;text-align:center;background:linear-gradient(140deg,var(--st-forest),var(--st-ocean));color:#fff;border-radius:16px 16px 0 0}.st-result-hero span{display:block;font-size:.8rem;text-transform:uppercase;letter-spacing:.08em}.st-result-hero strong{display:block;margin:7px 0;font-size:clamp(2rem,7vw,3rem)}.st-result-hero small{display:block;max-width:600px;margin:auto;line-height:1.45}.st-result-body{padding:20px 22px}.st-row{display:flex;justify-content:space-between;gap:16px;padding:11px 0;border-bottom:1px solid var(--st-border)}.st-row span{color:var(--st-muted)}.st-row strong{text-align:right}.st-row.warning strong{color:#9a6700}.st-row.total{font-size:1.04rem;border-bottom:0}.st-note{margin:16px 0 0;padding:13px;border-left:4px solid var(--st-sun);background:var(--st-alert);line-height:1.55;font-size:.88rem}
+    .st-side{display:grid;gap:18px;align-content:start}.st-side .st-body{font-size:.9rem;line-height:1.62}.st-source-list{padding-left:20px;margin:0}.st-source-list li{margin:9px 0}.st-source-list a{color:#07698b;font-weight:720}.st-confidence{display:grid;gap:10px}.st-confidence div{padding:12px;border-radius:10px;background:var(--st-soft)}.st-confidence strong{display:block}.st-content{padding:0 20px 64px}.st-content .st-card{padding:26px}.st-content h2{margin-top:0}.st-content p,.st-content li{line-height:1.72;color:var(--st-muted)}.st-timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}.st-timeline div{padding:14px;border:1px solid var(--st-border);border-radius:12px;background:var(--st-soft)}.st-timeline strong{display:block;margin-bottom:5px}
+    [data-theme="dark"]{--st-bg:#071715;--st-card:#0e2421;--st-ink:#eefaf7;--st-muted:#b7cfca;--st-border:#2a4741;--st-soft:#13342e;--st-alert:#302716;--st-alert-border:#73591c}[data-theme="dark"] .st-source-list a{color:#7ad8f2}[data-theme="dark"] .st-row.warning strong{color:#ffd271}@media(prefers-color-scheme:dark){html:not([data-theme="light"]){--st-bg:#071715;--st-card:#0e2421;--st-ink:#eefaf7;--st-muted:#b7cfca;--st-border:#2a4741;--st-soft:#13342e;--st-alert:#302716;--st-alert-border:#73591c}}
+    @media(max-width:800px){.st-main{grid-template-columns:1fr;padding-inline:14px}.st-hero{padding:38px 16px 28px}.st-head,.st-body,.st-result-body{padding-inline:17px}.st-timeline{grid-template-columns:1fr 1fr}}@media(max-width:480px){.st-timeline{grid-template-columns:1fr}.st-row{align-items:flex-start}.st-actions .st-btn{flex:1 1 145px}}@media print{afro-navbar,afro-footer,.st-hero,.st-side,.st-actions,.st-content,.st-card:first-child{display:none!important}.st-main{display:block;padding:0}.st-card{border:0;box-shadow:none}.st-results{display:block!important}.st-result-hero{background:#fff!important;color:#111!important;border-bottom:2px solid #111}}
+  </style>
 <link rel="canonical" href="https://afrotools.com/sao-tome/st-paye">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/sao-tome/st-paye">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/sao-tome/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/sao-tome/st-paye">
 </head>
-<body class="tool-page country-tax-page-ui-refresh top-level-page-ui-refresh">
-<a href="#main-content" class="skip-link">Skip to main content</a>
-<afro-navbar active="tools"></afro-navbar>
+<body>
+  <afro-navbar></afro-navbar>
+  <header class="st-hero"><div class="st-wrap"><nav class="st-crumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/sao-tome/">Sao Tome and Principe</a> / Payroll contributions</nav><h1>Sao Tome Payroll Contributions Checker</h1><p>Calculate the INSS amounts supported by current official evidence. IRS is intentionally not calculated until a current withholding schedule is confirmed.</p><div class="st-badges"><span class="st-badge">Sources checked 22 July 2026</span><span class="st-badge">Private in your browser</span><span class="st-badge">Free local PDF</span></div></div></header>
 
-<!-- HERO -->
-<section class="tool-hero">
-  <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
-      <a href="/">Home</a> / <a href="/sao-tome/">🇸🇹 São Tomé & Príncipe</a> / <span>PAYE Calculator</span>
-    </nav>
-    <h1>São Tomé & Príncipe PAYE<br><em>Calculator 2025/26</em></h1>
-    <p class="hero-sub">DGTF IRS progressive tax (0%–25%) with INSS social security (6% employee + 6% employer). Annual and monthly estimate for standard São Tomé employment income.</p>
-    <div class="hero-badges">
-      <span class="badge b-gold">✦ Includes AI Advisor</span>
-      <span class="badge b-green">DGTF 2025/26 Page Model</span>
-      <span class="badge b-red">INSS Estimate</span>
-      <span class="badge b-grey">STN · Dobra</span>
-    </div>
-    <p class="hero-meta">Last reviewed: 6 April 2026 · Source references: DGTF, INSS, employment-law materials · Informational estimate</p>
-    <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Also see: <a href="/sao-tome/st-vat" style="color:#0062CC;font-weight:600;">São Tomé & Príncipe VAT Calculator</a></p>
-  </div>
-</section>
+  <main id="main-content" class="st-wrap st-main">
+    <section>
+      <div class="st-card"><div class="st-head"><h2>Enter monthly gross employment income</h2><p>This release calculates verified social-security contributions only. It does not guess an IRS amount.</p></div><div class="st-body"><div class="st-alert" role="note"><span class="st-alert-icon" aria-hidden="true">!</span><div><strong>IRS safety pause</strong>The official catalog does not yet provide a confirmed post-2023 withholding schedule. Your result will show pay after employee INSS, not final take-home pay.</div></div><div class="st-field"><label for="grossSalary">Monthly gross salary in dobras (STN)</label><input id="grossSalary" type="number" min="0" step="0.01" inputmode="decimal" placeholder="For example, 10,000" aria-describedby="grossHelp status" autocomplete="off"><p class="st-help" id="grossHelp">Enter salary before INSS and IRS. No salary data leaves this page.</p></div><div class="st-actions"><button class="st-btn st-btn-primary" id="calculateBtn" type="button">Check contributions</button><button class="st-btn st-btn-secondary" id="clearBtn" type="button">Clear</button></div><p id="status" class="st-status" role="status" aria-live="polite">Enter a salary to begin. Nothing is stored or sent.</p></div></div>
 
-<!-- UPDATE BAR -->
-<div class="amendment-bar">
-  <div class="amendment-bar-inner">
-    <p><strong>Current page model:</strong> DGTF IRS progressive tax bands: 0% on first <strong>STN 2,500,000/year</strong>, 10% on STN 2.5M–5M, 15% on STN 5M–10M, 20% on STN 10M–20M, 25% above STN 20M. INSS total 12% (employee 6% + employer 6%), no cap. Employee INSS contribution is fully deductible from taxable income.</p>
-  </div>
-</div>
+      <section class="st-card st-results" id="resultsCard" aria-live="polite"><div class="st-result-hero"><span>Pay after verified employee INSS</span><strong id="afterInss">STN 0.00</strong><small>Before IRS. This is not final take-home pay.</small></div><div class="st-result-body"><div class="st-row"><span>Monthly gross salary</span><strong id="grossResult">STN 0.00</strong></div><div class="st-row"><span>Employee INSS (4%)</span><strong id="employeeInss">STN 0.00</strong></div><div class="st-row warning"><span>IRS withholding</span><strong>Not calculated</strong></div><div class="st-row"><span>Employer INSS (6%)</span><strong id="employerInss">STN 0.00</strong></div><div class="st-row total"><span>Total monthly employer cost</span><strong id="employerCost">STN 0.00</strong></div><p class="st-note" id="annualSummary"></p><div class="st-actions"><button class="st-btn st-btn-primary" id="pdfBtn" type="button">Download PDF</button><button class="st-btn st-btn-secondary" id="copyBtn" type="button">Copy summary</button><button class="st-btn st-btn-secondary" id="shareBtn" type="button">Share checker</button></div></div></section>
+    </section>
 
-<!-- MAIN -->
-<div class="tool-main" id="main-content">
-  <div class="tool-main-inner">
+    <aside class="st-side">
+      <section class="st-card"><div class="st-head"><h3>What is verified</h3><p>Current contribution rules from INSS.</p></div><div class="st-body st-confidence"><div><strong>Employee INSS: 4%</strong>Withheld from gross remuneration.</div><div><strong>Employer INSS: 6%</strong>Added to the employer payroll cost.</div><div><strong>IRS: paused</strong>No current schedule is inferred from expired or older tables.</div></div></section>
+      <span class="sr-only">Sources and verification</span><div class="afro-source-meta" data-source-meta-id="paye-st-source" data-source-meta-compact="true"></div>
+      <section class="st-card" id="sources-verification" data-tool-verification-panel><div class="st-head"><h3>Sources &amp; verification</h3><p>Primary evidence behind this release.</p></div><div class="st-body"><ul class="st-source-list"><li><a href="https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf" target="_blank" rel="noopener">INSS Decreto-Lei 19/2022, Articles 101-102</a></li><li><a href="https://inss.gov.st/trabalhador-outrem.html" target="_blank" rel="noopener">INSS employee guidance</a></li><li><a href="https://impostos.financas.gov.st/index.php/legislacao/leg-tributaria/category/26-irs" target="_blank" rel="noopener">Direccao dos Impostos IRS legislation catalog</a></li><li><a href="https://cipstp.st/wp-content/uploads/2026/05/Lei-OGE-2026_23-marco-2026.pdf" target="_blank" rel="noopener">2026 State Budget, Law 3/2026</a></li></ul><p class="st-alert">Planning aid only. Confirm IRS, special remuneration, exemptions, contribution coverage and payroll filing with the relevant authority before paying staff.</p><a class="tool-verification-report" href="/contact/?topic=calculation-error&amp;tool=st-paye">Report calculation error</a></div></section>
+    </aside>
+  </main>
 
-    <!-- LEFT COLUMN -->
-    <div>
-      <div class="card">
-        <div class="card-head">
-          <span class="card-title">Enter Your Details</span>
-          <span class="card-sub">Dobra · STN</span>
-        </div>
-        <div class="card-body">
-
-          <!-- SALARY SLIDER -->
-          <div class="slider-wrap">
-            <div class="slider-row">
-              <span class="slider-label">Monthly Gross Salary</span>
-              <span class="slider-val" id="sliderVal">STN 200,000</span>
-            </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="25000" value="200000" oninput="onSlider(this)">
-            <div class="slider-limits"><span>STN 50,000</span><span>STN 5,000,000</span></div>
-          </div>
-
-          <!-- INPUT -->
-          <div class="field">
-            <div class="f-label"><span class="f-label-text">Or type exact monthly amount</span><span class="f-hint">Before any deductions</span></div>
-            <div class="f-wrap">
-              <span class="f-prefix">STN</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="200,000" min="0" step="25000" value="200000" oninput="onInput(this)">
-            </div>
-          </div>
-          <!-- Quick Presets -->
-          <div class="presets">
-            <button type="button" class="preset-btn" onclick="setPreset(100000, this)">STN 100k</button>
-            <button type="button" class="preset-btn" onclick="setPreset(200000, this)">STN 200k</button>
-            <button type="button" class="preset-btn" onclick="setPreset(500000, this)">STN 500k</button>
-            <button type="button" class="preset-btn" onclick="setPreset(1000000, this)">STN 1M</button>
-            <button type="button" class="preset-btn" onclick="setPreset(3000000, this)">STN 3M</button>
-          </div>
-
-          <!-- CONTRIBUTION TOGGLES -->
-          <div class="field">
-            <div class="f-label"><span class="f-label-text">Active Deductions</span><span class="f-hint">Toggle to include / exclude</span></div>
-            <div class="toggles">
-              <div class="tog on" data-tog="inss" onclick="togItem(this)">
-                <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">INSS</div><div class="tog-rate">6% employee — tax-deductible</div></div>
-              </div>
-            </div>
-            <p class="f-note">INSS employee contribution (6%) is fully deductible from taxable income before DGTF income tax is calculated. Employer INSS (6%) is an additional cost shown in employer summary.</p>
-          </div>
-
-          <button type="button" class="calc-btn" onclick="calculate()">Calculate My Take-Home Pay →</button>
-        </div>
-      </div>
-
-      <!-- RESULTS -->
-      <div class="card results-card" id="resultsCard">
-        <div class="res-hero">
-          <div class="res-hero-label">Monthly Take-Home Pay</div>
-          <div class="res-hero-amount" id="resAmount">STN 0</div>
-          <div class="res-hero-period">After DGTF income tax & INSS deductions</div>
-          <div class="res-hero-gross" id="resGross"></div>
-        </div>
-        <div class="res-body">
-          <div class="period-row">
-            <button type="button" class="per-btn on" onclick="setPeriod('monthly',this)">Monthly</button>
-            <button type="button" class="per-btn" onclick="setPeriod('annual',this)">Annual</button>
-          </div>
-          <div id="resContent"></div>
-          <div class="rate-bar-wrap">
-            <div class="rate-bar-hdr">
-              <span class="rate-bar-lbl">Effective Tax Rate</span>
-              <span class="rate-bar-pct" id="effRateDisplay">0%</span>
-            </div>
-            <div class="rate-track"><div class="rate-fill" id="rateFill"></div></div>
-          </div>
-          <div class="employer-strip" id="employerStrip"></div>
-        </div>
-
-        <div class="chart-section">
-          <div class="chart-tabs">
-            <button type="button" class="chart-tab on" onclick="setChart('donut',this)">Breakdown</button>
-            <button type="button" class="chart-tab" onclick="setChart('bar',this)">Tax Bands</button>
-            <button type="button" class="chart-tab" onclick="setChart('employer',this)">Employer Cost</button>
-          </div>
-          <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
-        </div>
-
-        <div class="action-row">
-          <button type="button" class="act-btn act-pdf" id="pdfBtn" data-no-gate="true" onclick="downloadPdfSummary()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-            Download PDF
-          </button>
-          <button type="button" class="act-btn act-share" id="stShareBtn" onclick="shareResult()">
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-            Share Result
-          </button>
-        </div>
-
-          <salary-benchmark country-code="ST" currency="STN"></salary-benchmark>
-      </div>
-    </div>
-
-    <!-- SIDEBAR -->
-    <div class="sidebar">
-
-      <!-- AI ADVISOR -->
-      <div class="ai-card">
-        <div class="ai-head">
-          <div class="ai-dot"></div>
-          <span class="ai-head-title">AI Tax Advisor</span>
-          <span class="ai-head-by">Optional AI · provider required</span>
-        </div>
-        <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Calculate your salary first — I'll analyse your DGTF income tax position, explain INSS deductibility, and give specific optimization tips for São Tomé employment.</p>
-          <div class="ai-response" id="aiResp"></div>
-          <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Calculate first to unlock →</button>
-          <div class="ai-chat" id="aiChat">
-            <div class="chat-msgs" id="chatMsgs"></div>
-            <div class="chat-row">
-              <input aria-label="Ask a follow up" class="chat-in" id="chatIn" placeholder="Ask a follow-up…" onkeydown="if(event.key==='Enter')sendChat()">
-              <button type="button" class="chat-send" onclick="sendChat()">→</button>
-            </div>
-          </div>
-
-              </div>
-      </div>
-
-<!-- DGTF TAX BANDS -->
-      <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">DGTF 2025/26 Annual Bands</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
-          <div class="band-row"><span class="band-range">STN 0 – 2,500,000</span><span class="band-zero">0% — exempt</span></div>
-          <div class="band-row"><span class="band-range">STN 2,500,001 – 5,000,000</span><span class="band-rate">10% on excess above 2.5M</span></div>
-          <div class="band-row"><span class="band-range">STN 5,000,001 – 10,000,000</span><span class="band-rate">15% on excess above 5M</span></div>
-          <div class="band-row"><span class="band-range">STN 10,000,001 – 20,000,000</span><span class="band-rate">20% on excess above 10M</span></div>
-          <div class="band-row"><span class="band-range">Above STN 20,000,000</span><span class="band-rate">25% on excess above 20M</span></div>
-          <p class="band-note">Calculated annually on taxable income (gross minus INSS). INSS employee contribution (6%) is fully deductible from taxable income before tax calculation.</p>
-        </div>
-      </div>
-
-      <!-- LEVIES -->
-      <div class="card bands-card">
-        <div class="card-head" onclick="toggleBands(this)">
-          <span class="card-title">INSS Rates 2025</span>
-          <span class="tog-arrow">▾</span>
-        </div>
-        <div class="bands-body">
-          <div class="band-row"><span class="band-range">Employee INSS</span><span class="band-rate">6% of gross (no cap)</span></div>
-          <div class="band-row"><span class="band-range">Employer INSS</span><span class="band-rate">6% of gross (no cap)</span></div>
-          <p class="band-note">Total INSS contribution is 12% of gross salary. Employee contribution is tax-deductible. Employer contribution is a separate cost. INSS must be remitted by 10th of following month.</p>
-        </div>
-      </div>
-
-      <div class="disclaimer">
-        <strong>Disclaimer:</strong> For informational purposes only. Not professional tax or legal advice. Rates based on DGTF regulations and Employment Law. Verify with DGTF or a qualified São Tomé tax advisor.
-      </div>
-
-      <div class="tool-info-card">
-        <div class="tool-info-header">
-          <img height="44" width="44" src="/assets/img/tools/st-paye.webp" alt="São Tomé & Príncipe PAYE Calculator" class="tool-info-img" loading="lazy">
-          <div class="tool-info-meta">
-            <div class="tool-info-name">São Tomé & Príncipe PAYE Calculator</div>
-            <div class="tool-info-cat">Tax &amp; Finance</div>
-          </div>
-        </div>
-        <div class="tool-info-body">
-          <div class="tool-info-stats">
-            <div class="tool-stat"><div class="tool-stat-val">2.4K</div><div class="tool-stat-lbl">Calculations</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Sources</div><div class="tool-stat-lbl">Linked</div></div>
-            <div class="tool-stat"><div class="tool-stat-val">Free</div><div class="tool-stat-lbl">Forever</div></div>
-          </div>
-          <div class="tool-info-features">
-            <span class="tool-feat">Net Pay Calc</span>
-            <span class="tool-feat">Tax Bands</span>
-            <span class="tool-feat">PDF Export</span>
-            <span class="tool-feat">AI Advisor</span>
-            <span class="tool-feat">Deductions</span>
-          </div>
-        </div>
-        <div class="tool-info-save">
-          <button type="button" class="tool-info-save-btn" id="sidebarSaveBtn" onclick="toggleSaveTool()">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-            <span id="sidebarSaveLabel">Save to My Tools</span>
-          </button>
-        </div>
-        <div class="tool-info-footer">
-          <span class="tool-info-updated">Updated: Mar 2026</span>
-          <div class="tool-info-actions">
-            <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
-            <a class="tool-info-action" href="/salary-tax/">All Countries</a>
-          </div>
-        </div>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-<!-- FAQ -->
-
-<!-- PDF MODAL -->
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Download Your PAYE Summary</h3>
-      <p>Enter your email to get a detailed PDF — we'll notify you when São Tomé tax rates change.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="São Tomé & Príncipe">
-        <input type="hidden" name="country_code" value="ST">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="st-paye">
-        <input type="hidden" name="currency"     value="STN">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Your name (optional)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Your name (optional)" autocomplete="name">
-        <input aria-label="Your email address" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Your email address" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Get My PDF →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">No thanks</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Close">✕</button>
-      <div class="big-check">✅</div>
-      <h4>PDF opening now</h4>
-      <p>Click <strong>Save as PDF</strong> in the print dialog.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Done →</button>
-    </div>
-  </div>
-</div>
-
-<!-- SAVE TOOL CTA -->
-<section class="ng-save-sec">
-  <div class="container">
-    <div class="ng-save-card">
-      <div class="ng-save-left">
-        <div class="ng-save-icon">
-          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-        </div>
-        <div>
-          <h3 class="ng-save-title">Save this calculator</h3>
-          <p class="ng-save-desc">Bookmark São Tomé & Príncipe PAYE to your personal dashboard for quick access anytime.</p>
-        </div>
-      </div>
-      <div class="ng-save-actions">
-        <button type="button" class="ng-save-btn" id="inlineSaveBtn" onclick="toggleSaveTool()">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
-          Save to My Tools
-        </button>
-        <button type="button" class="ng-save-btn ng-save-btn-ghost" onclick="typeof shareCalc==='function'?shareCalc():navigator.share?.({title:document.title,url:location.href})">
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
-          Share
-        </button>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- TWO-COLUMN GUIDE -->
-<section class="ng-guide-sec">
-  <div class="container">
-    <div class="ng-guide-header">
-      <h2 class="ng-guide-title">São Tomé and Príncipe PAYE Tax Guide 2025/26</h2>
-    </div>
-    <div class="ng-guide-grid">
-      <div class="ng-guide-col">
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">São Tomé and Príncipe levies <strong>IRS (Imposto sobre o Rendimento de Singulares)</strong> on employment income, administered by the Direcção Geral dos Tributos e Fiscalização (DGTF). The schedule has five progressive bands denominated in São Tomé Dobra (STN), from 0% on the first STN 2,800,000 annually to a top rate of 25% on income above STN 8,000,000 per year.</p>
-        </div>
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">The <strong>INSS (Instituto Nacional de Segurança Social)</strong> collects social security contributions: employees pay 6% of gross salary and employers contribute 6%, covering pensions and sickness benefits.</p>
-        </div>
-        <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Use the calculator above to estimate your monthly net salary in São Tomé and Príncipe. The tool models INSS deductions for both employee and employer, giving an accurate view of take-home pay and total payroll cost.</p>
-        </div>
-      </div>
-      <div class="ng-guide-col">
-        <div class="ng-guide-card ng-guide-card-table">
-          <h3>São Tomé & Príncipe Tax Bands</h3>
-          <div class="ng-bands-table-wrap"><div>
-      <table class="ng-bands-table">
-        <thead><tr><th>Annual Income (STN)</th><th>Rate</th></tr></thead>
-        <tbody>
-          <tr><td>0 – 2,800,000</td><td>0%</td></tr>
-          <tr><td>2,800,001 – 4,200,000</td><td>10%</td></tr>
-          <tr><td>4,200,001 – 5,600,000</td><td>15%</td></tr>
-          <tr><td>5,600,001 – 8,000,000</td><td>20%</td></tr>
-          <tr><td>Above 8,000,000</td><td>25%</td></tr>
-        </tbody>
-      </table>
-    </div></div>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- FAQ -->
-<section class="ng-faq-sec">
-  <div class="container">
-    <div class="ng-faq-header">
-      <span class="eyebrow">São Tomé & Príncipe Tax FAQ</span>
-      <h2 class="ng-faq-title">Common PAYE Questions</h2>
-    </div>
-    <div class="ng-faq-grid">
-      <div class="ng-faq-col">
-        <details class="ng-faq-item" open>
-          <summary>What are the São Tomé & Príncipe PAYE tax bands for 2025/26?</summary>
-          <p>Five annual bands: 0% on first STN 2,500,000; 10% on STN 2,500,001–5,000,000; 15% on STN 5,000,001–10,000,000; 20% on STN 10,000,001–20,000,000; 25% above STN 20,000,000. Applied annually against taxable income (after INSS deduction).</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>Is INSS contribution deductible from income tax?</summary>
-          <p>Yes — the employee's mandatory 6% INSS contribution is fully deductible from gross pay before calculating income tax. This reduces your taxable income and therefore your DGTF tax. The employer's matching 6% contribution is a separate employer cost.</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>What is INSS in São Tomé & Príncipe?</summary>
-          <p>Instituto Nacional de Segurança Social (INSS) is the mandatory social security system. Total contribution is 12% of gross salary — 6% from employee and 6% from employer. There is no upper cap. INSS covers retirement, disability, and survivor benefits.</p>
-        </details>
-      </div>
-      <div class="ng-faq-col">
-        <details class="ng-faq-item">
-          <summary>When must employers remit PAYE and INSS?</summary>
-          <p>Both DGTF income tax and INSS contributions must be filed and paid by the 10th of the following month. Monthly withholding is mandatory for all employers with employees in São Tomé & Príncipe.</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>How is tax calculated for monthly salary?</summary>
-          <p>This calculator applies annual bands to your monthly salary (multiplied by 12), then divides the result by 12 to show accurate monthly PAYE. This ensures consistency with DGTF annual assessment methodology.</p>
-        </details>
-        <details class="ng-faq-item">
-          <summary>What happens if I earn below the tax-free threshold?</summary>
-          <p>If your annual income is below STN 2,500,000 (approximately STN 208,333/month), you pay no DGTF income tax. However, you still pay INSS (6% employee). The tax-free threshold applies to gross income minus INSS.</p>
-        </details>
-      </div>
-    </div>
-  </div>
-</section>
-
+  <section class="st-wrap st-content"><article class="st-card"><h2>Why the IRS result is paused</h2><p>A serious payroll tool should show uncertainty instead of turning an old rule into a current claim. The evidence trail does not yet establish a safe 2026 IRS withholding table.</p><div class="st-timeline"><div><strong>2009</strong>The IRS code published an annual table in the former dobra denomination.</div><div><strong>2016</strong>An official decree amended the table's deduction amounts.</div><div><strong>2023</strong>A high-income tier and IERS were explicitly temporary until the next State Budget.</div><div><strong>2026</strong>Law 3/2026 does not re-enact that overlay and authorizes a future IRS revision.</div></div><p>Until the tax authority publishes or confirms the operative employee schedule, AfroTools reports only the current INSS calculation. The amount labelled “pay after INSS” must not be treated as final net salary.</p></article></section>
 <!-- TOOL_VERIFICATION_PANEL_START -->
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="st-paye">
-  <!-- AfroTools source confidence -->
-  <div class="container afro-source-meta" data-source-meta-id="paye-st-source" data-source-meta-compact="true"></div>
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -483,15 +91,19 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-04-06</span>
-          <p class="tool-verification-note">São Tomé &amp; Príncipe - high risk - AfroTools source audit</p>
+          <span class="tool-verification-badge">Last verified 2026-07-22</span>
+          <p class="tool-verification-note">Sao Tome Payroll Contributions Checker - high risk - AfroTools primary-source and browser audit</p>
         </div>
       </div>
       <div class="tool-verification-grid">
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
-<li><a href="https://mf.gov.st" target="_blank" rel="noopener">mf.gov.st</a></li>
+<li><a href="https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf" target="_blank" rel="noopener">INSS Decreto-Lei 19/2022, Articles 101-102</a></li>
+<li><a href="https://inss.gov.st/trabalhador-outrem.html" target="_blank" rel="noopener">INSS employee guidance</a></li>
+<li><a href="https://impostos.financas.gov.st/index.php/legislacao/leg-tributaria/category/26-irs" target="_blank" rel="noopener">Direccao dos Impostos IRS legislation catalog</a></li>
+<li><a href="https://cipstp.st/wp-content/uploads/2026/05/Lei-OGE-2026_23-marco-2026.pdf" target="_blank" rel="noopener">2026 State Budget, Law 3/2026</a></li>
+<li><a href="https://www2.camara.leg.br/saotomeeprincipe/diarios-da-an/xii-legislatura-8-11-22-a-8-11-26/i-serie/2.a-sessao/DAN04-IS.pdf/at_download/file" target="_blank" rel="noopener">National Assembly 2023 CIVA amendment record</a></li>
           </ul>
         </div>
         <div class="tool-verification-block">
@@ -500,25 +112,27 @@
         </div>
         <div class="tool-verification-block">
           <h3>Calculation methodology</h3>
-          <p class="tool-verification-meta">The calculator annualizes salary where needed, applies modeled employee statutory deductions, runs taxable income through the country PAYE bands, and derives net pay from gross pay minus modeled PAYE and statutory deductions. Employer-cost lines are informational where the page exposes them.</p>
+          <p class="tool-verification-meta">The checker applies the verified 4% employee and 6% employer INSS rates to monthly gross remuneration. It reports pay after employee INSS and employer cost. It deliberately returns no IRS or final-net value while the current official IRS schedule is unconfirmed.</p>
         </div>
         <div class="tool-verification-block">
           <h3>Known limitations</h3>
           <ul class="tool-verification-list">
-<li>Informational estimate only. It is not professional tax, legal, payroll, or filing advice.</li>
-<li>Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.</li>
-<li>Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission.</li>
+<li>IRS withholding and final take-home pay are intentionally not calculated.</li>
+<li>No claim is made that employee INSS reduces the IRS taxable base.</li>
+<li>Special remuneration, exemptions, contribution coverage and filing treatment require confirmation with the authorities.</li>
+<li>Planning aid only; it is not professional tax, legal, payroll or filing advice.</li>
           </ul>
         </div>
         <div class="tool-verification-block">
           <h3>Test-case examples</h3>
-<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary: 0.<br><strong>Expected:</strong> PAYE and statutory deductions should be 0 and net pay should not be negative.<br><strong>Why:</strong> Establishes the zero-income baseline and catches negative liability regressions.</p></div>
-<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Annual gross salary entered in the page currency.<br><strong>Expected:</strong> Taxable income is processed through the visible country bands and net pay equals gross pay minus modeled deductions.<br><strong>Why:</strong> Confirms the calculator is using the documented methodology rather than an opaque flat estimate.</p></div>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Monthly gross salary: STN 0.<br><strong>Expected:</strong> Employee INSS, employer INSS and pay after INSS are zero; IRS and final net remain null.<br><strong>Why:</strong> Protects the zero-income baseline without inventing a tax result.</p></div>
+<div class="tool-verification-case"><p class="tool-verification-meta"><strong>Input:</strong> Monthly gross salary: STN 10,000.<br><strong>Expected:</strong> Employee INSS STN 400, employer INSS STN 600, pay after employee INSS STN 9,600 and employer cost STN 10,600; IRS not calculated.<br><strong>Why:</strong> Confirms both statutory contribution rates and the IRS safety lock.</p></div>
         </div>
         <div class="tool-verification-block">
           <h3>Change history</h3>
           <ul class="tool-verification-list">
 <li><strong>2026-05-02:</strong> Trust and verification panel added with source links, methodology, limitations, and report-error CTA.</li>
+<li><strong>2026-07-22:</strong> Removed unsupported IRS bands, corrected INSS to 4% employee and 6% employer, and added an explicit IRS safety pause, local PDF and privacy-safe sharing.</li>
           </ul>
         </div>
       </div>
@@ -530,648 +144,30 @@
   </div>
 </section>
 <!-- TOOL_VERIFICATION_PANEL_END -->
-<afro-related-tools category="financial" current="st-paye" data-ssr="1">
+<afro-related-tools data-ssr="1" category="financial" current="st-paye">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script>
-// ══════════════════════════════════════════════════════════════════
-//  SÃO TOMÉ & PRÍNCIPE PAYE CALCULATOR 2025/26
-//  DGTF IRS Progressive Tax · INSS Social Security
-//  Source: DGTF (Direção Geral dos Tributação) · INSS · Employment Law
-// ══════════════════════════════════════════════════════════════════
-
-var RESULT=null;
-let PERIOD       = 'monthly';
-let CHART        = null;
-let CHART_TYPE   = 'donut';
-let CHAT_HISTORY = [];
-
-const fmt = n => 'STN\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-ST');
-const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
-
-// ── SLIDER ────────────────────────────────────────────────────
-function onSlider(el) {
-  const v = parseInt(el.value);
-  document.getElementById('grossSalary').value = v;
-  document.getElementById('sliderVal').textContent = fmt(v);
-  updateSliderFill(el);
-  clearTimeout(window._sliderDebounce);
-  window._sliderDebounce = setTimeout(calculate, 280);
-}
-function onInput(el) {
-  const v = Math.min(Math.max(parseInt(el.value) || 0, 50000), 5000000);
-  const s = document.getElementById('salarySlider');
-  s.value = v;
-  document.getElementById('sliderVal').textContent = fmt(parseInt(el.value) || 0);
-  updateSliderFill(s);
-  clearTimeout(window._sliderDebounce);
-  window._sliderDebounce = setTimeout(calculate, 280);
-}
-function updateSliderFill(el) {
-  var p = ((parseInt(el.value) - parseInt(el.min)) / (parseInt(el.max) - parseInt(el.min))) * 100;
-  var c = getComputedStyle(document.documentElement).getPropertyValue('--calc-accent');
-  c = c ? c.trim() : 'var(--color-primary)';
-  el.style.background = 'linear-gradient(to right, ' + c + ' 0%, ' + c + ' ' + p + '%, #e2e8f0 ' + p + '%, #e2e8f0 100%)';
-}
-updateSliderFill(document.getElementById('salarySlider'));
-
-// ── TOGGLES ───────────────────────────────────────────────────
-function togItem(el) { el.classList.toggle('on'); }
-function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.classList.contains('on'); }
-
-// ══════════════════════════════════════════════════════════════
-//  DGTF INCOME TAX ENGINE (ANNUAL)
-//  Bands on ANNUAL TAXABLE INCOME (gross minus INSS):
-//  0%    on first  STN 2,500,000
-//  10%   on next   STN 2,500,000  (2.5M–5M)
-//  15%   on next   STN 5,000,000  (5M–10M)
-//  20%   on next   STN 10,000,000 (10M–20M)
-//  25%   above     STN 20,000,000
-// ══════════════════════════════════════════════════════════════
-
-function calcAnnualDGTF(annualTaxableIncome) {
-  const income = Math.max(0, annualTaxableIncome);
-  const bandBreakdown = [];
-
-  if (income <= 2500000) {
-    bandBreakdown.push({ rate: 0, income, tax: 0 });
-    return { tax: 0, bandBreakdown };
-  }
-
-  let tax = 0;
-
-  // Band 1: 0% on first 2,500,000
-  bandBreakdown.push({ rate: 0, income: 2500000, tax: 0 });
-
-  // Band 2: 10% on 2,500,001–5,000,000
-  if (income > 2500000) {
-    const chunk = Math.min(income - 2500000, 2500000);
-    const t = chunk * 0.10;
-    tax += t;
-    bandBreakdown.push({ rate: 0.10, income: chunk, tax: t });
-  }
-
-  // Band 3: 15% on 5,000,001–10,000,000
-  if (income > 5000000) {
-    const chunk = Math.min(income - 5000000, 5000000);
-    const t = chunk * 0.15;
-    tax += t;
-    bandBreakdown.push({ rate: 0.15, income: chunk, tax: t });
-  }
-
-  // Band 4: 20% on 10,000,001–20,000,000
-  if (income > 10000000) {
-    const chunk = Math.min(income - 10000000, 10000000);
-    const t = chunk * 0.20;
-    tax += t;
-    bandBreakdown.push({ rate: 0.20, income: chunk, tax: t });
-  }
-
-  // Band 5: 25% above 20,000,000
-  if (income > 20000000) {
-    const chunk = income - 20000000;
-    const t = chunk * 0.25;
-    tax += t;
-    bandBreakdown.push({ rate: 0.25, income: chunk, tax: t });
-  }
-
-  return { tax, bandBreakdown: bandBreakdown.filter(b => b.income > 0) };
-}
-
-// ── MAIN CALCULATE ────────────────────────────────────────────
-  function setPreset(val, btn) {
-    document.getElementById('grossSalary').value = val;
-    document.getElementById('salarySlider').value = val;
-    onSlider(document.getElementById('salarySlider'));
-    document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
-    if(btn) btn.classList.add('active');
-    calculate();
-  }
-
-  function calculate() {
-  const gross = parseFloat(document.getElementById('grossSalary').value) || 0;
-  if (!gross || gross <= 0) {
-    const el = document.getElementById('grossSalary');
-    el.focus(); el.style.borderColor = '#e53e3e';
-    el.setAttribute('placeholder', 'Enter a valid salary');
-    setTimeout(() => { el.style.borderColor = ''; el.removeAttribute('placeholder'); }, 3000);
-    return;
-  }
-
-  const hasINSS = isOn('inss');
-
-  // INSS calculation
-  const inssRate      = hasINSS ? 0.06 : 0;
-  const empINSSRate   = 0.06;
-  const inss          = gross * inssRate;
-  const empINSS       = gross * empINSSRate;
-
-  // DGTF Tax (on annual basis)
-  let annualGross = gross * 12;
-  let annualINSS = inss * 12;
-  let annualTaxableIncome = Math.max(0, annualGross - annualINSS);
-  const result = calcAnnualDGTF(annualTaxableIncome);
-  let annualPAYE = result.tax;
-  let monthlyPAYE = annualPAYE / 12;
-  let bandBreakdown = result.bandBreakdown;
-
-  // Net pay
-  const totalEmployeeDeductions = inss + monthlyPAYE;
-  const netMonthly = gross - totalEmployeeDeductions;
-  const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
-
-  // Annual figures
-  RESULT = {
-    gross, monthly: gross, inss, inssRate, empINSS,
-    monthlyPAYE, bandBreakdown, annualPAYE,
-    totalEmployeeDeductions, netMonthly, effectiveRate,
-    annualGross, annualNet: netMonthly * 12,
-    annualTax: annualPAYE, annualINSS,
-    totalEmployerCostMonthly: gross + empINSS,
-  };
-
-  document.getElementById('resAmount').textContent      = fmt(netMonthly);
-  document.getElementById('resGross').textContent       = `Gross: ${fmt(gross)}/month · ${fmt(annualGross)}/year`;
-  document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
-  document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
-  setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
-
-  const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Total Employer Cost: ${fmt(RESULT.totalEmployerCostMonthly)}/month</strong><br>Gross + INSS ${fmt(empINSS)}/mo.`;
-  strip.classList.add('on');
-
-  document.getElementById('resultsCard').classList.add('on');
-  // Benchmark wiring
-  var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly); }
-  renderChart(CHART_TYPE);
-  document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
-
-  document.getElementById('aiBtn').disabled = false;
-  document.getElementById('aiBtn').textContent = 'Get AI Tax Analysis →';
-  document.getElementById('aiStatus').textContent = `Gross: ${fmt(gross)}/mo · Take-home: ${fmt(netMonthly)}/mo · Tax: ${fmt(monthlyPAYE)}/mo · Effective: ${pct(effectiveRate)}`;
-}
-
-// ── RENDER ROWS ───────────────────────────────────────────────
-function renderRows(R, period) {
-  const isAnnual = period === 'annual';
-  const gross  = isAnnual ? R.annualGross   : R.gross;
-  const inss   = isAnnual ? R.annualINSS    : R.inss;
-  const paye   = isAnnual ? R.annualTax     : R.monthlyPAYE;
-  const net    = isAnnual ? R.annualNet     : R.netMonthly;
-  const totalDeductions = isAnnual ? R.annualTax + R.annualINSS : R.totalEmployeeDeductions;
-  const lbl = isAnnual ? '/year' : '/month';
-
-  const row = (l, v, cls='') => `<div class="res-row"><span class="res-row-lbl">${l}</span><span class="res-row-val ${cls}">${v}</span></div>`;
-
-  return `
-    <div class="res-section">
-      <div class="res-section-title">Gross Income</div>
-      ${row(`Gross Salary${lbl}`, fmt(gross))}
-    </div>
-    <div class="res-section">
-      <div class="res-section-title">Deductions</div>
-      ${R.inss > 0 ? row(`INSS (${pct(R.inssRate)}, no cap)`, fmt(inss), 'c-red') : ''}
-      ${row(`Net taxable income${lbl}`, fmt(isAnnual ? R.annualGross - R.annualINSS : R.gross - R.inss), 'c-mut')}
-    </div>
-    <div class="res-section">
-      <div class="res-section-title">DGTF Income Tax</div>
-      ${row(`Income tax${lbl}`, fmt(paye), 'c-red')}
-    </div>
-    <div class="res-section">
-      ${row('Total Deductions', fmt(totalDeductions), 'c-red')}
-      <div class="res-row total"><span class="res-row-lbl">Take-Home Pay</span><span class="res-row-val c-grn">${fmt(net)}</span></div>
-    </div>`;
-}
-
-// ── PERIOD ────────────────────────────────────────────────────
-function setPeriod(period, btn) {
-  PERIOD = period;
-  document.querySelectorAll('.per-btn').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  if (RESULT) {
-    // Update hero
-    var isMonthly = period === 'monthly';
-    var net = isMonthly ? RESULT.netMonthly : (RESULT.annualNet || RESULT.netAnnual || RESULT.netMonthly * 12);
-    var gr = isMonthly ? RESULT.gross : (RESULT.annualGross || RESULT.gross * 12);
-    document.getElementById('resAmount').textContent = fmt(net);
-    document.getElementById('resGross').textContent = isMonthly
-      ? 'Gross: ' + fmt(gr) + '/month'
-      : 'Gross: ' + fmt(gr) + '/year';
-    document.getElementById('resContent').innerHTML = renderRows(RESULT, period);
-  }
-}
-
-// ── BANDS TOGGLE ──────────────────────────────────────────────
-function toggleBands(header) {
-  const body = header.nextElementSibling;
-  const arr  = header.querySelector('.tog-arrow');
-  body.classList.toggle('open');
-  arr.classList.toggle('open');
-}
-
-// ── CHARTS ────────────────────────────────────────────────────
-function setChart(type, btn) {
-  CHART_TYPE = type;
-  document.querySelectorAll('.chart-tab').forEach(b => b.classList.remove('on'));
-  btn.classList.add('on');
-  renderChart(type);
-}
-
-function renderChart(type) {
-  if (!RESULT) return;
-  const R = RESULT;
-  const canvas = document.getElementById('mainChart');
-  if (CHART) { CHART.destroy(); CHART = null; }
-
-  if (type === 'donut') {
-    CHART = new Chart(canvas, {
-      type: 'doughnut',
-      data: {
-        labels: ['Take-Home', 'DGTF Tax', 'INSS'],
-        datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.inss], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
-    });
-  } else if (type === 'bar') {
-    const bands = R.bandBreakdown.filter(b => b.tax > 0);
-    if (!bands.length) return;
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Annual Tax (STN)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series[0], borderRadius:5 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
-    });
-  } else if (type === 'employer') {
-    CHART = new Chart(canvas, {
-      type: 'bar',
-      data: {
-        labels: ['Take-Home', 'DGTF Tax', 'INSS Employee', 'Emp INSS'],
-        datasets: [{ label:'STN', data:[R.netMonthly, R.monthlyPAYE, R.inss, R.empINSS], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
-      },
-      options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'STN'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
-    });
-  }
-}
-
-// ── PDF MODAL ─────────────────────────────────────────────────
-async function downloadPdfSummary() {
-  if (!RESULT || !window.AfroTools?.pdf) return;
-  const R = RESULT;
-  const bandRows = (R.bandBreakdown || []).map(b => [
-    `Band at ${pct(b.rate)}`,
-    `${fmt(b.income)} income -> ${fmt(b.tax)} tax`
-  ]);
-  await window.AfroTools.pdf.generate({
-    filename: 'afrotools-st-paye-sao-tome-2026-07-03.pdf',
-    title: 'São Tomé and Príncipe PAYE Summary',
-    subtitle: 'DGTF IRS and INSS estimate',
-    country: 'São Tomé and Príncipe',
-    currency: 'STN',
-    summary: [
-      { label: 'Take-home', value: fmt(R.netMonthly) },
-      { label: 'Gross', value: fmt(R.gross) },
-      { label: 'IRS', value: fmt(R.monthlyPAYE) },
-      { label: 'Effective rate', value: pct(R.effectiveRate) }
-    ],
-    sections: [
-      { heading: 'Monthly result', rows: [
-        ['Gross salary', fmt(R.gross)],
-        ['INSS employee contribution', fmt(R.inss)],
-        ['Monthly IRS', fmt(R.monthlyPAYE)],
-        ['Total employee deductions', fmt(R.totalEmployeeDeductions)],
-        ['Take-home pay', fmt(R.netMonthly)]
-      ] },
-      { heading: 'Annual and employer view', rows: [
-        ['Annual gross salary', fmt(R.annualGross)],
-        ['Annual IRS', fmt(R.annualTax)],
-        ['Annual INSS', fmt(R.annualINSS)],
-        ['Annual take-home pay', fmt(R.annualNet)],
-        ['Employer INSS', fmt(R.empINSS)],
-        ['Total employer monthly cost', fmt(R.totalEmployerCostMonthly)]
-      ] },
-      { heading: 'Tax bands used', rows: bandRows.length ? bandRows : [['IRS', 'Income remains in the zero-tax band']] }
-    ],
-    skipGate: true
-  });
-}
-
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'São Tomé & Príncipe',country_code:'ST',tool:'paye',tool_id:'st-paye',currency:'STN',gross_salary:RESULT.gross}).toString() });
-  } catch(e){}
-  document.getElementById('modalForm').style.display  = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
-}
-
-function generatePdf() {
-  if (!RESULT) return;
-  const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-ST',{day:'numeric',month:'long',year:'numeric'});
-  const refNo  = 'AFT-ST-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
-
-  const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">Annual rate ${(b.rate*100)}% on STN ${Math.round(b.income).toLocaleString()}</td><td class="num red">(STN ${Math.round(b.tax).toLocaleString()})</td></tr>`
-  ).join('');
-
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>AfroTools São Tomé PAYE — ${refNo}</title>
-<style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
-.cover{background:linear-gradient(135deg,#0a0a0a 0%,#1a1a1a 100%);padding:28px 36px 22px;color:#fff}
-.cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
-.brand{font-size:13pt;font-weight:800;color:#fff}.brand b{color:#2563EB}
-.brand-sub{font-size:6pt;font-weight:500;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.32);margin-top:2px}
-.ref-label{font-size:6pt;font-weight:600;letter-spacing:.1em;text-transform:uppercase;color:rgba(255,255,255,.32);text-align:right}
-.ref-val{font-size:8pt;font-weight:700;color:rgba(255,255,255,.65);margin-top:2px;text-align:right}
-.doc-title{font-size:18pt;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1}
-.doc-title span{color:#FFCE00}.doc-meta{margin-top:8px;font-size:7.5pt;color:rgba(255,255,255,.4)}
-.badge{display:inline-block;margin-top:10px;padding:3px 10px;border-radius:3px;font-size:7pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(37,99,235,.22);color:#93C5FD;border:1px solid rgba(37,99,235,.4)}
-.body{padding:24px 36px 28px}
-.sh{background:#f9fafb;border:1px solid #e5e7eb;border-radius:8px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;justify-content:space-between;gap:12px}
-.shi{text-align:center;flex:1}.sh-lbl{font-size:6pt;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#9ca3af;margin-bottom:3px}
-.sh-val{font-size:13pt;font-weight:800;color:#111827}.sh-val.gold{color:#c9a200}.sh-val.red{color:#c0392b}
-.sh-div{width:1px;height:40px;background:#e5e7eb;flex-shrink:0}
-.sec-head{font-size:6.5pt;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#9ca3af;padding:0 0 5px;border-bottom:1.5px solid #e5e7eb;margin:16px 0 8px}
-table{width:100%;border-collapse:collapse}tr{border-bottom:1px solid #f3f4f6}td{padding:5.5px 4px;font-size:8.5pt;vertical-align:middle}
-td.num{text-align:right;font-weight:600;font-variant-numeric:tabular-nums;white-space:nowrap}
-.red{color:#c0392b}.green{color:#2563EB}.muted{color:#9ca3af}
-tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-size:9.5pt}
-.src{display:inline-block;padding:2px 7px;background:#f3f4f6;border-radius:3px;font-size:6.5pt;font-weight:600;color:#6b7280;margin-right:4px}
-<meta property="article:modified_time" content="2026-04-06">
-</style><link rel="stylesheet" href="/assets/css/paye-tool.css?v=075c178d">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-</head><body>
-<div class="cover">
-  <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
-    <div><div class="ref-label">Reference</div><div class="ref-val">${refNo}</div></div>
-  </div>
-  <div class="doc-title">São Tomé & Príncipe PAYE<br><span>Summary 2025/26</span></div>
-  <div class="doc-meta">Generated ${dateStr} · afrotools.com/sao-tome/st-paye</div>
-  <div class="badge">DGTF 2025/26 · INSS Compliant</div>
-</div>
-<div class="body">
-  <div class="sh">
-    <div class="shi"><div class="sh-lbl">Monthly Take-Home</div><div class="sh-val gold">STN ${Math.round(R.netMonthly).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly Gross</div><div class="sh-val">STN ${Math.round(R.gross).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly Tax</div><div class="sh-val red">STN ${Math.round(R.monthlyPAYE).toLocaleString()}</div></div>
-    <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Effective Rate</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
-  </div>
-
-  <div class="sec-head">Section 1 — Monthly Income & Deductions</div>
-  <table>
-    <tr><td>Monthly Gross Salary</td><td class="num">STN ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.inss > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">INSS employee contribution (${pct(R.inssRate)}, no cap)</td><td class="num red">(STN ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
-    <tr><td style="font-weight:600">Monthly Taxable Income</td><td class="num muted">STN ${Math.round(R.gross - R.inss).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 2 — DGTF Income Tax Computation (2025/26)</div>
-  <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no tax due</td></tr>'}
-    <tr class="total"><td>Monthly DGTF Tax (annual ÷ 12)</td><td class="num red">STN ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 3 — Monthly Net Pay Summary</div>
-  <table>
-    ${R.inss > 0 ? `<tr><td>INSS (employee)</td><td class="num red">(STN ${Math.round(R.inss).toLocaleString()})</td></tr>` : ''}
-    <tr><td>DGTF income tax</td><td class="num red">(STN ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
-    <tr><td style="font-weight:700">Total Monthly Deductions</td><td class="num red">(STN ${Math.round(R.totalEmployeeDeductions).toLocaleString()})</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Monthly Take-Home Pay</td><td class="num green">STN ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr class="total"><td style="color:#2563EB;font-weight:800">Annual Take-Home Pay</td><td class="num green">STN ${Math.round(R.annualNet).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 4 — Employer Cost (Monthly)</div>
-  <table>
-    <tr><td>Employee gross salary</td><td class="num">STN ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer INSS (6%)</td><td class="num red">STN ${Math.round(R.empINSS).toLocaleString()}</td></tr>
-    <tr class="total"><td style="font-weight:800">Total Employer Monthly Cost</td><td class="num red">STN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
-  </table>
-
-  <div class="sec-head">Section 5 — Legal Basis & Sources</div>
-  <table>
-    <tr><td style="width:30%"><span class="src">DGTF</span>Tax Authority</td><td style="color:#6b7280;font-size:8pt">Direção Geral dos Tributação administers income tax (IRS). Progressive annual bands applied to employment income, net of INSS contributions.</td></tr>
-    <tr><td><span class="src">INSS</span>Social Security</td><td style="color:#6b7280;font-size:8pt">Instituto Nacional de Segurança Social: 6% employee + 6% employer = 12% total. No cap. Must be remitted by 10th of following month.</td></tr>
-  </table>
-</div>
-<div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
-  <div style="display:flex;justify-content:space-between;align-items:flex-start">
-    <div>
-      <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#2563EB">TOOLS</b>.COM — Africa's Financial Calculator Platform</div>
-      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational only. Not professional tax advice. Verify with DGTF or a qualified São Tomé & Príncipe tax advisor.</div>
-    </div>
-    <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
-    </div>
-  </div>
-</div>
-
-<script>window._grossToNet=function(g){var d=isOn('inss')?g*0.06:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);};<\/script>
-<script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-
-</body></html>`;
-
-  const blob = new Blob([html],{type:'text/html;charset=utf-8'});
-  const url  = URL.createObjectURL(blob);
-  const w    = window.open(url,'_blank');
-  if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.print()}catch(e){}},1200);
-  }
-}
-
-// ── SHARE ─────────────────────────────────────────────────────
-function shareResult() {
-  if (!RESULT) return;
-  const text = `My São Tomé & Príncipe PAYE: Gross STN ${Math.round(RESULT.gross).toLocaleString()}/mo → Take-home STN ${Math.round(RESULT.netMonthly).toLocaleString()}/mo (${pct(RESULT.effectiveRate)} effective rate). Calculated at afrotools.com/sao-tome/st-paye`;
-  if (navigator.share) {
-    navigator.share({title:'My ST PAYE',text,url:'https://afrotools.com/sao-tome/st-paye'});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text);
-    const btn = document.getElementById('stShareBtn');
-    btn.textContent = '✓ Copied!';
-    setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Share Result`,2500);
-  }
-}
-
-// ── AI ADVISOR ────────────────────────────────────────────────
-async function getAI() {
-  if (!RESULT) return;
-  const R   = RESULT;
-  const btn = document.getElementById('aiBtn');
-  const respEl = document.getElementById('aiResp');
-
-  btn.disabled = true; btn.textContent = 'Analysing…';
-  respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
-  document.getElementById('aiStatus').style.display = 'none';
-
-  const prompt = `São Tomé & Príncipe PAYE analysis (2025/26, DGTF):
-- Monthly gross: STN ${Math.round(R.gross).toLocaleString()}
-- INSS employee (6%): STN ${Math.round(R.inss).toLocaleString()}/mo
-- Taxable income after INSS: STN ${Math.round(R.gross - R.inss).toLocaleString()}/mo
-- Monthly DGTF tax: STN ${Math.round(R.monthlyPAYE).toLocaleString()}
-- Monthly take-home: STN ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Employer INSS (6%): STN ${Math.round(R.empINSS).toLocaleString()}/mo
-- Total employer cost: STN ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mo
-
-Give: 1) Plain English summary of São Tomé PAYE position 2) Two specific ways to reduce tax liability 3) One DGTF compliance point to know. Under 150 words. No markdown, no asterisks.`;
-
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor', {
-      method:'POST', headers:{'Content-Type':'application/json'},
-      body: JSON.stringify({
-        system:'You are AfroTools AI Tax Advisor specialising in São Tomé & Príncipe PAYE — DGTF income tax, INSS social security. Be concise, specific, practical. No markdown.',
-        messages:[{role:'user',content:prompt}]
-      })
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const text = data.text || 'Unable to generate analysis.';
-    respEl.className = 'ai-response'; respEl.textContent = '';
-    let i = 0;
-    const type = () => {
-      if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}
-      else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];}
-    };
-    type();
-    btn.textContent = 'Ask a follow-up below ↓';
-  } catch(err) {
-    respEl.className='ai-response';respEl.textContent='AI analysis temporarily unavailable.';
-    btn.disabled=false;btn.textContent='Try Again';
-  }
-}
-
-async function sendChat() {
-  const input = document.getElementById('chatIn');
-  const msg   = input.value.trim();
-  if(!msg||!RESULT) return;
-  input.value = '';
-  const R = RESULT;
-  const msgs = document.getElementById('chatMsgs');
-  msgs.innerHTML += `<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;
-  const aiEl = document.createElement('div');
-  aiEl.className = 'msg a'; aiEl.textContent = '…';
-  msgs.appendChild(aiEl); msgs.scrollTop = msgs.scrollHeight;
-  CHAT_HISTORY.push({role:'user',content:msg});
-  try {
-    const res = await fetch('/.netlify/functions/ai-advisor',{
-      method:'POST',headers:{'Content-Type':'application/json'},
-      body:JSON.stringify({
-        system:`AfroTools AI Tax Advisor, São Tomé & Príncipe. User: gross STN ${Math.round(R.gross).toLocaleString()}/mo, take-home STN ${Math.round(R.netMonthly).toLocaleString()}/mo, effective rate ${pct(R.effectiveRate)}. Concise. No markdown.`,
-        messages:CHAT_HISTORY
-      })
-    });
-    if(!res.ok) throw new Error('HTTP '+res.status);
-    const data = await res.json();
-    const text = data.text || 'Unable to respond.';
-    aiEl.textContent = text;
-  } catch(err) {
-    aiEl.textContent = 'Unable to respond at this time.';
-  }
-}
-</script>
-<script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
-<script>window._grossToNet=function(g){var d=isOn('inss')?g*0.06:0;return g-(d+calcMonthlyPAYE(Math.max(0,g-d)).tax);};</script>
-<script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>
-<script>
-(function(){
-  var KEY='afro_favs_v2',TOOL_ID='st-paye',LIMIT=10;
-  function isLoggedIn(){return typeof AfroAuth!=='undefined'&&AfroAuth.isLoggedIn();}
-  function isPro(){return typeof AfroAuth!=='undefined'&&AfroAuth.isPro();}
-  function getFavs(){try{return JSON.parse(localStorage.getItem(KEY)||'[]')}catch(e){return[];}}
-  function isSaved(){return getFavs().indexOf(TOOL_ID)>-1;}
-
-  window.toggleSaveTool=function(){
-    if(!isLoggedIn()){
-      if(typeof AfroAuth!=='undefined'&&AfroAuth.openModal){
-        AfroAuth.openModal('login',function(){updateSaveUI();});
-      }else{window.location.href='/auth/?mode=login&next=/dashboard/';}
-      return;
-    }
-    var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
-    if(idx>-1){favs.splice(idx,1);}else{
-      if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Free accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
-        return;
-      }
-      favs.push(TOOL_ID);
-    }
-    localStorage.setItem(KEY,JSON.stringify(favs));
-    updateSaveUI();
-  };
-
-  function showSaveToast(msg){
-    var t=document.createElement('div');
-    t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#0f172a;color:#fff;padding:12px 24px;border-radius:10px;font-size:.85rem;font-family:DM Sans,sans-serif;z-index:9999;box-shadow:0 8px 32px rgba(0,0,0,.2);max-width:400px;text-align:center';
-    t.textContent=msg;document.body.appendChild(t);
-    setTimeout(function(){t.style.opacity='0';t.style.transition='opacity .3s';setTimeout(function(){t.remove()},300)},4000);
-  }
-
-  function updateSaveUI(){
-    var loggedIn=isLoggedIn(),saved=loggedIn&&isSaved();
-    var svgSaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-    var svgUnsaved='<svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>';
-
-    // Inline save button
-    var btn=document.getElementById('inlineSaveBtn');
-    if(btn){
-      if(!loggedIn){btn.innerHTML=svgUnsaved+' Sign in to Save';btn.classList.remove('saved');}
-      else if(saved){btn.innerHTML=svgSaved+' Saved';btn.classList.add('saved');}
-      else{btn.innerHTML=svgUnsaved+' Save to My Tools';btn.classList.remove('saved');}
-    }
-
-    // Sidebar save button
-    var sb=document.getElementById('sidebarSaveBtn');
-    if(sb){
-      var lbl=document.getElementById('sidebarSaveLabel');
-      if(!loggedIn){
-        if(lbl)lbl.textContent='Sign in to Save';
-        sb.classList.remove('saved');
-      }else if(saved){
-        if(lbl)lbl.textContent='Saved';
-        sb.classList.add('saved');
-      }else{
-        if(lbl)lbl.textContent='Save to My Tools';
-        sb.classList.remove('saved');
-      }
-    }
-
-    // Save CTA banner text
-    var title=document.querySelector('.ng-save-title');
-    var desc=document.querySelector('.ng-save-desc');
-    if(!loggedIn){
-      if(title)title.textContent='Sign in to save this calculator';
-      if(desc)desc.textContent='Create a free account to bookmark tools, track calculations, and access your dashboard.';
-    }
-  }
-  window.updateSaveUI=updateSaveUI;
-
-  // Run on load + auth changes
-  document.addEventListener('DOMContentLoaded',updateSaveUI);
-  window.addEventListener('afro-auth-change',updateSaveUI);
-})();
-</script>
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script><script src="/assets/js/engines/st-paye.js?v=66dbede1"></script><script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+  <script>
+    (function () {
+      'use strict';
+      var grossInput = document.getElementById('grossSalary'); var results = document.getElementById('resultsCard'); var status = document.getElementById('status'); var lastResult = null;
+      function format(value) { return 'STN ' + Number(value || 0).toLocaleString('en', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+      function clearResult(message, error) { lastResult = null; results.classList.remove('on'); status.textContent = message; status.classList.toggle('error', Boolean(error)); }
+      function calculate() { var gross = Number(grossInput.value); if (!Number.isFinite(gross) || gross <= 0) return clearResult('Enter a monthly gross salary greater than zero.', true); lastResult = window.AfroTools.saoTomePayroll.calculate({ grossMonthly: gross }); document.getElementById('afterInss').textContent = format(lastResult.afterEmployeeInssMonthly); document.getElementById('grossResult').textContent = format(lastResult.grossMonthly); document.getElementById('employeeInss').textContent = format(lastResult.employeeInssMonthly); document.getElementById('employerInss').textContent = format(lastResult.employerInssMonthly); document.getElementById('employerCost').textContent = format(lastResult.employerCostMonthly); document.getElementById('annualSummary').textContent = 'Annual verified amounts: employee INSS ' + format(lastResult.employeeInssAnnual) + '; employer INSS ' + format(lastResult.employerInssAnnual) + '. IRS and final take-home remain uncalculated.'; results.classList.add('on'); status.classList.remove('error'); status.textContent = 'Verified INSS estimate updated locally. IRS remains paused.'; }
+      document.getElementById('calculateBtn').addEventListener('click', calculate); document.getElementById('clearBtn').addEventListener('click', function () { grossInput.value = ''; clearResult('Cleared. Nothing was stored or sent.', false); grossInput.focus(); }); grossInput.addEventListener('input', function () { if (lastResult) clearResult('Salary changed. Check contributions again to refresh.', false); }); grossInput.addEventListener('keydown', function (event) { if (event.key === 'Enter') calculate(); });
+      document.getElementById('copyBtn').addEventListener('click', async function () { if (!lastResult) return; await navigator.clipboard.writeText('Sao Tome payroll contribution check\nMonthly gross: ' + format(lastResult.grossMonthly) + '\nEmployee INSS (4%): ' + format(lastResult.employeeInssMonthly) + '\nPay after employee INSS, before IRS: ' + format(lastResult.afterEmployeeInssMonthly) + '\nEmployer INSS (6%): ' + format(lastResult.employerInssMonthly) + '\nIRS: not calculated; current official schedule unconfirmed.'); status.textContent = 'Contribution summary copied locally.'; });
+      document.getElementById('shareBtn').addEventListener('click', async function () { var data = { title: 'Sao Tome Payroll Contributions Checker', url: 'https://afrotools.com/sao-tome/st-paye' }; if (navigator.share) await navigator.share(data); else { await navigator.clipboard.writeText(data.url); status.textContent = 'Checker link copied without salary data.'; } });
+      document.getElementById('pdfBtn').addEventListener('click', async function () { if (!lastResult) return; if (!window.AfroTools || !window.AfroTools.pdf) { status.textContent = 'PDF support is still loading. Try again.'; return; } await window.AfroTools.pdf.generate({ filename: 'afrotools-sao-tome-inss-2026-07-22.pdf', title: 'Sao Tome Payroll Contribution Summary', subtitle: 'Verified INSS estimate; IRS intentionally not calculated', country: 'Sao Tome and Principe', currency: 'STN', summary: [{ label: 'Gross monthly salary', value: format(lastResult.grossMonthly) }, { label: 'Employee INSS (4%)', value: format(lastResult.employeeInssMonthly) }, { label: 'Pay after INSS, before IRS', value: format(lastResult.afterEmployeeInssMonthly) }, { label: 'IRS', value: 'Not calculated - current schedule unconfirmed' }], sections: [{ heading: 'Employer view', rows: [['Employer INSS (6%)', format(lastResult.employerInssMonthly)], ['Total monthly employer cost', format(lastResult.employerCostMonthly)]] }, { heading: 'Source and limitation', rows: [['Checked', 'INSS DL 19/2022, official IRS catalog and 2026 State Budget on 22 July 2026'], ['Use', 'Planning aid only; confirm IRS and payroll treatment with the authorities']] }], skipGate: true }); status.textContent = 'Private PDF generated in your browser.'; });
+    }());
+  </script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

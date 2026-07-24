@@ -16,6 +16,7 @@ const { getData } = require('./_shared/data-store');
 const { getOrFetch, cacheHeaders } = require('./_lib/cache');
 const { getAllowedOrigin } = require('./utils/cors');
 const { validateApiKey, rateLimitHeaders, authErrorBody } = require('./utils/api-auth');
+const ratesEvidence = require('../../assets/js/engines/afrorates-verified');
 
 const CORS_HEADERS = {
   'Access-Control-Allow-Origin': 'https://afrotools.com',
@@ -115,18 +116,33 @@ exports.handler = async function (event) {
   }
   _reqCacheHdrs = cacheHeaders(CACHE_OPTS, fromCache, CORS_HEADERS);
 
-  let countries = data.countries;
+  const evidenceCoverage = ratesEvidence.coverage(data, { maxAgeDays: 45 });
+  let countries = ratesEvidence.selectVerified(data, { maxAgeDays: 45 });
+  if (!countries.length) {
+    return jsonResponse(503, {
+      error: 'No policy-rate rows currently pass the official-source evidence gate.',
+      coverage: evidenceCoverage,
+      data_policy: 'fail_closed_official_policy_rows',
+    }, rlHeaders);
+  }
 
   // --- Single country: ?country=NG ---
   if (params.country) {
     const code = params.country.toUpperCase();
     const country = countries.find(c => c.code === code);
     if (!country) {
-      return jsonResponse(404, { error: `Country ${code} not found` });
+      const candidateExists = data.countries.some(c => c.code === code);
+      return jsonResponse(404, {
+        error: candidateExists ? `Country ${code} is withheld because its policy-rate evidence is incomplete or stale.` : `Country ${code} not found`,
+        coverage: evidenceCoverage,
+        data_policy: 'fail_closed_official_policy_rows',
+      });
     }
     return jsonResponse(200, {
       timestamp: data.timestamp,
       country,
+      coverage: evidenceCoverage,
+      data_policy: 'fail_closed_official_policy_rows',
     }, rlHeaders);
   }
 
@@ -147,59 +163,41 @@ exports.handler = async function (event) {
     const metric = params.metric.toLowerCase();
 
     if (metric === 'inflation') {
-      const inflationData = countries.map(c => ({
+      const inflationData = countries.filter(c => c.annual_inflation).map(c => ({
         code: c.code,
         name: c.name,
         currency: c.currency,
         region: c.region,
-        inflation: c.inflation,
+        annual_inflation: c.annual_inflation,
       }));
 
       return jsonResponse(200, {
         timestamp: data.timestamp,
         metric: 'inflation',
+        series: 'World Bank annual consumer-price inflation from the committed rates snapshot',
+        comparability_note: 'Annual CPI is lagging context and is not period-matched to the point-in-time policy rate.',
+        coverage: evidenceCoverage,
         countries: inflationData,
       }, rlHeaders);
     }
 
     if (metric === 'policy_rate') {
-      const rateData = countries.map(c => ({
-        code: c.code,
-        name: c.name,
-        central_bank: c.central_bank,
-        currency: c.currency,
-        region: c.region,
-        policy_rate: c.policy_rate,
-        policy_rate_name: c.policy_rate_name,
-        last_rate_change: c.last_rate_change,
-        next_mpc: c.next_mpc,
-      }));
-
       return jsonResponse(200, {
         timestamp: data.timestamp,
         metric: 'policy_rate',
-        countries: rateData,
+        data_policy: 'fail_closed_official_policy_rows',
+        coverage: evidenceCoverage,
+        countries,
       }, rlHeaders);
     }
 
     if (metric === 'tbills') {
-      const tbillData = countries
-        .filter(c => c.tbill_91d || c.tbill_182d || c.tbill_364d)
-        .map(c => ({
-          code: c.code,
-          name: c.name,
-          currency: c.currency,
-          region: c.region,
-          tbill_91d: c.tbill_91d,
-          tbill_182d: c.tbill_182d,
-          tbill_364d: c.tbill_364d,
-          bond_10y: c.bond_10y,
-        }));
-
       return jsonResponse(200, {
         timestamp: data.timestamp,
         metric: 'tbills',
-        countries: tbillData,
+        available: false,
+        message: 'No T-bill or bond rows in the committed snapshot pass an owned evidence contract.',
+        countries: [],
       }, rlHeaders);
     }
 
@@ -213,10 +211,10 @@ exports.handler = async function (event) {
     const sortKey = params.sort.toLowerCase();
     switch (sortKey) {
       case 'inflation_desc':
-        countries = [...countries].sort((a, b) => (b.inflation?.headline || 0) - (a.inflation?.headline || 0));
+        countries = [...countries].sort((a, b) => (b.annual_inflation?.value || 0) - (a.annual_inflation?.value || 0));
         break;
       case 'inflation_asc':
-        countries = [...countries].sort((a, b) => (a.inflation?.headline || 999) - (b.inflation?.headline || 999));
+        countries = [...countries].sort((a, b) => (a.annual_inflation?.value || 999) - (b.annual_inflation?.value || 999));
         break;
       case 'rate_desc':
         countries = [...countries].sort((a, b) => (b.policy_rate || 0) - (a.policy_rate || 0));
@@ -232,7 +230,7 @@ exports.handler = async function (event) {
 
   // --- Summary stats ---
   const policyRates = countries.map(c => c.policy_rate).filter(r => r !== null && r !== undefined);
-  const inflationRates = countries.map(c => c.inflation?.headline).filter(r => r !== null && r !== undefined);
+  const inflationRates = countries.map(c => c.annual_inflation?.value).filter(r => r !== null && r !== undefined);
 
   const summary = {
     total_countries: countries.length,
@@ -242,14 +240,12 @@ exports.handler = async function (event) {
     avg_inflation: inflationRates.length ? Math.round((inflationRates.reduce((a, b) => a + b, 0) / inflationRates.length) * 100) / 100 : null,
     max_inflation: inflationRates.length ? Math.max(...inflationRates) : null,
     min_inflation: inflationRates.length ? Math.min(...inflationRates) : null,
-    upcoming_mpc: countries
-      .filter(c => c.next_mpc)
-      .map(c => ({ code: c.code, name: c.name, date: c.next_mpc }))
-      .sort((a, b) => a.date.localeCompare(b.date)),
   };
 
   return jsonResponse(200, {
     timestamp: data.timestamp,
+    data_policy: 'fail_closed_official_policy_rows',
+    coverage: evidenceCoverage,
     summary,
     countries,
   }, rlHeaders);

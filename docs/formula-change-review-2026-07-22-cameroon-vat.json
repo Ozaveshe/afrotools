@@ -1,0 +1,56 @@
+{
+  "reviewedBy": "AfroTools Day 3 VAT VIP review",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://www.impots.cm/sites/default/files/documents/arr%C3%AAt%C3%A9%20RTS%202026%20VF.pdf",
+  "reason": "Replace duplicated locale formulas and arbitrary VAT-withholding percentages with one reviewed Cameroon VAT engine and explicit evidence boundaries.",
+  "formulaIds": ["route-cm-vat"],
+  "fixtureDeltas": [],
+  "toolId": "cm-vat",
+  "reviewedOn": "2026-07-22",
+  "scope": [
+    "/cameroon/cm-vat",
+    "/fr/cameroun/calculateur-tva",
+    "/fr/cameroon/cm-vat (legacy redirect)",
+    "/sw/cameroon/kikokotoo-vat/"
+  ],
+  "formulaOwner": "assets/js/engines/cm-vat.js",
+  "formula": {
+    "standard": "17.5% base VAT + CAC equal to 10% of base VAT = 19.25% effective",
+    "socialHousing": "10% only for qualifying 2026 social-housing operations",
+    "turnoverBoundary": "XAF 50,000,000 is included in the real-regime review path; below it is the IGS review path",
+    "withholding": "full VAT withholding is shown only after explicit confirmation that the buyer is currently DGI-authorized"
+  },
+  "primarySources": [
+    {
+      "publisher": "Direction Générale des Impôts du Cameroun",
+      "title": "Arrêté MINFI fixant les entités tenues d'opérer la retenue à la source au titre de 2026",
+      "url": "https://www.impots.cm/sites/default/files/documents/arr%C3%AAt%C3%A9%20RTS%202026%20VF.pdf",
+      "supports": ["19.25% VAT rate", "authorized-buyer boundary", "system-generated ARS", "15th-of-next-month remittance for authorized collectors"]
+    },
+    {
+      "publisher": "Ministère des Finances du Cameroun",
+      "title": "Loi de finances 2026 : comprendre les nouvelles mesures",
+      "url": "https://minfi.gov.cm/loi-de-finances-2026-comprendre-les-nouvelles-mesures/",
+      "supports": ["10% reduced VAT for qualifying social-housing acquisition and rental"]
+    },
+    {
+      "publisher": "Ministère des Finances du Cameroun",
+      "title": "Budget citoyen 2026",
+      "url": "https://minfi.gov.cm/wp-content/uploads/2026/01/BUDGET_CITOYEN_2026_VERSION_FRANCAISE.pdf",
+      "supports": ["qualifying social-housing acquisition, sale and rental contexts"]
+    },
+    {
+      "publisher": "Direction Générale des Impôts du Cameroun",
+      "title": "Tout savoir sur l'IRPP - IGS turnover range",
+      "url": "https://www.impots.cm/fr/document/tout-savoir-sur-lirpp",
+      "supports": ["IGS annual turnover range is strictly below XAF 50,000,000"]
+    }
+  ],
+  "failClosedBoundaries": [
+    "Unknown reduced rates are rejected by the engine",
+    "Zero-rate and exemption classifications require external statutory evidence",
+    "The turnover screen does not claim automatic VAT registration or exemption",
+    "No buyer withholding is assumed without explicit current-authorization confirmation",
+    "The PDF is an ungated local planning estimate, not a filing or certificate"
+  ]
+}

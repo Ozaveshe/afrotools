@@ -1,0 +1,20 @@
+const assert = require('assert');
+const engine = require('../../assets/js/engines/so-paye');
+const server = require('../../netlify/functions/_engines/so-paye');
+function near(actual, expected, label) { assert.ok(Math.abs(actual - expected) < 0.001, `${label}: expected ${expected}, received ${actual}`); }
+near(engine.calculate({ grossMonthly: 100 }).taxMonthly, 0, 'resident first band');
+near(engine.calculate({ grossMonthly: 500 }).taxMonthly, 24, 'resident second boundary');
+near(engine.calculate({ grossMonthly: 1000 }).taxMonthly, 84, 'resident mid third band');
+near(engine.calculate({ grossMonthly: 1500 }).taxMonthly, 144, 'resident third boundary');
+near(engine.calculate({ grossMonthly: 2000 }).taxMonthly, 234, 'resident top band');
+near(engine.calculate({ grossMonthly: 1000, category: 'nonresident' }).taxMonthly, 180, 'non-resident flat rate');
+near(engine.calculate({ grossMonthly: 1000, category: 'resident-under-18' }).taxMonthly, 200, 'resident under 18 flat rate');
+near(engine.calculate({ grossMonthly: 1000 }).netMonthly, 916, 'resident net');
+assert.strictEqual(engine.formulaParameters.currency, 'USD');
+assert.strictEqual(engine.formulaParameters.employmentDeductionsAllowed, false);
+assert.strictEqual(engine.sourceCheckedOn, '2026-07-22');
+const serverResult = server.calculate({ grossMonthly: 1000, category: 'resident-adult' });
+near(serverResult.result.netMonthly, 916, 'server monthly parity');
+near(serverResult.deductions.incomeTax, 1008, 'server annual tax');
+assert.strictEqual(serverResult.meta.scope, 'Federal Republic of Somalia income tax only');
+console.log('Somalia PAYE 2025 federal fixtures passed.');

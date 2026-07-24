@@ -6,24 +6,24 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 10687 |
-| native | 8109 |
-| localizedShell | 2519 |
+| rawPages | 10695 |
+| native | 8136 |
+| localizedShell | 2499 |
 | englishFallback | 38 |
-| unavailable | 21 |
-| deprecated | 0 |
-| indexableEligible | 9704 |
-| sitemapEligible | 9704 |
+| unavailable | 20 |
+| deprecated | 2 |
+| indexableEligible | 9706 |
+| sitemapEligible | 9706 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 5858 | 5858 | 0 | 0 | 0 | 0 | 5017 | 180 |
-| fr | launched | 3721 | 2087 | 1634 | 0 | 0 | 0 | 3641 | 180 |
-| sw | launched | 958 | 144 | 811 | 3 | 0 | 0 | 952 | 180 |
-| yo | partial | 45 | 8 | 13 | 3 | 21 | 0 | 21 | 180 |
-| ha | partial | 105 | 12 | 61 | 32 | 0 | 0 | 73 | 180 |
+| en | default | 5873 | 5873 | 0 | 0 | 0 | 0 | 5022 | 180 |
+| fr | launched | 3715 | 2092 | 1621 | 0 | 0 | 2 | 3638 | 180 |
+| sw | launched | 957 | 148 | 806 | 3 | 0 | 0 | 951 | 180 |
+| yo | partial | 45 | 9 | 13 | 3 | 20 | 0 | 22 | 180 |
+| ha | partial | 105 | 14 | 59 | 32 | 0 | 0 | 73 | 180 |
 | pt | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ar | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | ig | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -33,14 +33,14 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | Page type | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable |
 |---|---:|---:|---:|---:|---:|---:|---:|
 | api | 3 | 3 | 0 | 0 | 0 | 0 | 3 |
-| article | 379 | 379 | 0 | 0 | 0 | 0 | 377 |
+| article | 382 | 382 | 0 | 0 | 0 | 0 | 380 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
 | category | 694 | 694 | 0 | 0 | 0 | 0 | 690 |
-| country-tool | 499 | 107 | 392 | 0 | 0 | 0 | 465 |
+| country-tool | 497 | 113 | 382 | 0 | 0 | 2 | 466 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
-| page | 4795 | 4106 | 631 | 37 | 21 | 0 | 4161 |
-| tool | 3941 | 2589 | 1352 | 0 | 0 | 0 | 3858 |
-| widget | 369 | 225 | 144 | 0 | 0 | 0 | 146 |
+| page | 4790 | 4106 | 627 | 37 | 20 | 0 | 4158 |
+| tool | 3943 | 2597 | 1346 | 0 | 0 | 0 | 3859 |
+| widget | 379 | 235 | 144 | 0 | 0 | 0 | 146 |
 
 ## Definitions
 

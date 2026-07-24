@@ -503,21 +503,6 @@
       verified_by: "afrotools-team",
       tools_affected: [ "social-security", "payslip-generator" ]
     }, {
-      id: "mock-za-2",
-      country_code: "ZA",
-      change_type: "social-security",
-      title: "South Africa UIF Remuneration Ceiling Updated",
-      summary: "The UIF monthly remuneration ceiling was updated in line with BCEA. Contributions remain capped at 1% employee + 1% employer on earnings up to the ceiling.",
-      old_value: "R17,712/month ceiling",
-      new_value: "R19,400/month ceiling",
-      effective_date: "2025-03-01",
-      announced_date: "2025-02-20",
-      source_url: null,
-      source_name: "Department of Employment and Labour",
-      verified: !0,
-      verified_by: "afrotools-team",
-      tools_affected: [ "za-uif", "payslip-generator", "staff-cost" ]
-    }, {
       id: "mock-ng-2",
       country_code: "NG",
       change_type: "pension-rate",

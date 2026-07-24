@@ -1,57 +1,206 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Calculateur DCA (investissement programme) | AfroTools</title>
-<meta name="description" content="Calculateur DCA (investissement programme) — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Calculateur DCA (investissement programme)">
-<meta property="og:url" content="https://afrotools.com/fr/crypto/dca-calculator/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Reconstitution historique DCA crypto en NGN, ZAR ou USD | AfroTools</title>
+  <meta name="description" content="Reconstituez un calendrier d’achats Bitcoin ou Ethereum sur 365 jours UTC maximum avec les prix quotidiens CoinGecko, les coûts et un reçu de source.">
+  <meta name="robots" content="index, follow">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:locale" content="fr_FR">
+  <meta property="og:locale:alternate" content="en_US">
+  <meta property="og:title" content="Reconstitution historique d’un calendrier DCA crypto">
+  <meta property="og:description" content="Reconstitution historique avec reçu de source pour BTC ou ETH en NGN, ZAR ou USD. Sans prévision, ancien prix de secours ni recommandation.">
+  <meta property="og:url" content="https://afrotools.com/fr/crypto/dca-calculator/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-dca.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/crypto-dca-replay.css?v=2f1c72c5">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "WebApplication",
+        "@id": "https://afrotools.com/fr/crypto/dca-calculator/#app",
+        "name": "Reconstitution historique d’un calendrier DCA crypto",
+        "url": "https://afrotools.com/fr/crypto/dca-calculator/",
+        "applicationCategory": "FinanceApplication",
+        "operatingSystem": "Any",
+        "isAccessibleForFree": true,
+        "inLanguage": ["fr", "en"],
+        "description": "Reconstitution éducative d’achats Bitcoin ou Ethereum avec des points de référence quotidiens CoinGecko validés et un reçu de source explicite.",
+        "featureList": ["BTC et ETH", "NGN, ZAR et USD", "365 jours maximum", "Exports CSV, JSON, PDF et impression", "Aucun ancien prix ni prix synthétique de secours"]
+      },
+      {
+        "@type": "FAQPage",
+        "@id": "https://afrotools.com/fr/crypto/dca-calculator/#faq",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "S’agit-il d’une prévision du prix des cryptomonnaies ?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Non. L’outil reconstitue un ancien calendrier d’achats à partir de points de référence quotidiens. Il ne prévoit pas les rendements et ne recommande aucun actif."}
+          },
+          {
+            "@type": "Question",
+            "name": "Quels actifs, devises et dates sont pris en charge ?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Bitcoin et Ethereum sont pris en charge en NGN, ZAR ou USD. La date de début peut remonter jusqu’à 365 jours avant le dernier jour UTC terminé."}
+          },
+          {
+            "@type": "Question",
+            "name": "Comment les prix manquants sont-ils traités ?",
+            "acceptedAnswer": {"@type": "Answer", "text": "Une opération est marquée comme manquée s’il n’existe aucun point fournisseur inutilisé à cette date UTC ou avant, dans un délai maximal de 36 heures. AfroTools n’insère ni estimation ni ancien prix de secours."}
+          }
+        ]
+      }
+    ]
+  }
+  </script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/fr/crypto/dca-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/dca-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/dca-calculator/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/dca-calculator/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Calculateur DCA (investissement programme)</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/dca-calculator/" title="Calculateur DCA (investissement programme)" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-</div>
-<p class="fr-note"><a href="/fr/crypto/dca-calculator/">Lire la version originale en anglais</a></p>
-<afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+<body>
+  <afro-navbar></afro-navbar>
+  <main class="dca-replay-page" data-dca-replay>
+    <header class="dca-replay-hero">
+      <div class="dca-shell">
+        <span class="dca-kicker">Reconstitution historique</span>
+        <h1>Reconstituez des achats crypto réguliers avec une source vérifiable</h1>
+        <p>Modélisez des achats de BTC ou d’ETH sur les 365 derniers jours UTC terminés. Chaque résultat affiche la demande CoinGecko, la période source réelle, les coûts, les opérations utilisées et celles qui sont manquées. Il s’agit d’un outil éducatif historique, pas d’une prévision ni d’une recommandation.</p>
+      </div>
+    </header>
+
+    <div class="dca-shell dca-layout">
+      <section class="dca-panel dca-form-panel" aria-labelledby="dca-input-title">
+        <h2 id="dca-input-title">Définir le calendrier historique</h2>
+        <p class="dca-panel-intro">Votre versement et vos coûts restent dans ce navigateur. Seuls l’actif, la devise et la période UTC sont envoyés au service d’historique.</p>
+        <form id="dca-replay-form">
+          <div class="dca-field-grid">
+            <div class="dca-field">
+              <label for="dca-asset">Actif</label>
+              <select id="dca-asset" name="asset" required>
+                <option value="bitcoin">Bitcoin (BTC)</option>
+                <option value="ethereum">Ethereum (ETH)</option>
+              </select>
+            </div>
+            <div class="dca-field">
+              <label for="dca-currency">Devise de référence</label>
+              <select id="dca-currency" name="currency" required>
+                <option value="ngn">NGN — naira nigérian</option>
+                <option value="zar">ZAR — rand sud-africain</option>
+                <option value="usd">USD — dollar américain</option>
+              </select>
+            </div>
+            <div class="dca-field">
+              <label for="dca-start">Date de début (UTC)</label>
+              <input id="dca-start" name="startDate" type="date" required>
+            </div>
+            <div class="dca-field">
+              <label for="dca-end">Date de fin (UTC)</label>
+              <input id="dca-end" name="endDate" type="date" required readonly aria-describedby="dca-end-help">
+              <small id="dca-end-help">Fixée au dernier jour UTC terminé.</small>
+            </div>
+            <fieldset class="dca-frequency">
+              <legend>Fréquence d’achat</legend>
+              <div class="dca-frequency-options">
+                <input id="dca-daily" name="frequency" type="radio" value="daily">
+                <label for="dca-daily">Chaque jour</label>
+                <input id="dca-weekly" name="frequency" type="radio" value="weekly" checked>
+                <label for="dca-weekly">Chaque semaine</label>
+                <input id="dca-biweekly" name="frequency" type="radio" value="biweekly">
+                <label for="dca-biweekly">Toutes les 2 semaines</label>
+                <input id="dca-monthly" name="frequency" type="radio" value="mensuel">
+                <label for="dca-monthly">Chaque mois civil</label>
+              </div>
+            </fieldset>
+            <div class="dca-field dca-field-wide">
+              <label for="dca-contribution">Versement brut par opération</label>
+              <input id="dca-contribution" name="contribution" type="number" min="0.01" max="1000000000000" step="any" inputmode="decimal" value="50000" required>
+              <small>Il s’agit du décaissement total. Les coûts saisis réduisent le montant investi dans l’actif.</small>
+            </div>
+            <div class="dca-field">
+              <label for="dca-percent-cost">Coût global en pourcentage</label>
+              <input id="dca-percent-cost" name="percentCost" type="number" min="0" max="100" step="0.01" inputmode="decimal" value="0">
+              <small>Pourcentage facultatif pour frais ou écart de prix.</small>
+            </div>
+            <div class="dca-field">
+              <label for="dca-fixed-cost">Coût fixe par opération</label>
+              <input id="dca-fixed-cost" name="fixedCost" type="number" min="0" max="1000000000000" step="any" inputmode="decimal" value="0">
+              <small>Coût facultatif dans la devise choisie.</small>
+            </div>
+          </div>
+          <div class="dca-button-row">
+            <button class="dca-button" id="dca-submit" type="submit">Reconstituer le calendrier</button>
+          </div>
+          <div class="dca-status" id="dca-status" role="status" aria-live="polite" aria-atomic="true"></div>
+        </form>
+      </section>
+
+      <div class="dca-result-stack">
+        <section class="dca-panel dca-empty" id="dca-empty" aria-labelledby="dca-empty-title">
+          <div class="dca-empty-icon" aria-hidden="true">↻</div>
+          <h2 id="dca-empty-title">Un reçu, pas une boîte noire</h2>
+          <p>Lancez la reconstitution pour voir le décaissement brut, les coûts modélisés, les unités acquises, la couverture du calendrier et la valeur au dernier prix source disponible.</p>
+        </section>
+
+        <section class="dca-results" id="dca-results" hidden aria-labelledby="dca-results-title">
+          <h2 id="dca-results-title" tabindex="-1">Résultats de la reconstitution</h2>
+          <div class="dca-summary" id="dca-summary"></div>
+          <section class="dca-panel dca-receipt" aria-labelledby="dca-receipt-title">
+            <h3 id="dca-receipt-title">Reçu de source</h3>
+            <p class="dca-panel-intro">Ces champs décrivent l’historique réellement utilisé. Une réponse en cache n’est acceptée que pendant les cinq minutes prévues par le service.</p>
+            <dl class="dca-receipt-grid" id="dca-receipt-grid"></dl>
+          </section>
+          <section class="dca-panel dca-chart-panel" aria-labelledby="dca-visual-title">
+            <h3 id="dca-visual-title">Valeur historique modélisée</h3>
+            <p class="dca-panel-intro">La courbe utilise le prix de référence de chaque opération acceptée. Elle ne se prolonge pas dans le futur.</p>
+            <svg class="dca-chart" id="dca-chart"></svg>
+          </section>
+          <section class="dca-panel dca-history-panel" aria-labelledby="dca-history-title">
+            <h3 id="dca-history-title">Calendrier et export</h3>
+            <div class="dca-button-row">
+              <button class="dca-button dca-button-secondary" id="dca-export-csv" type="button">Exporter en CSV</button>
+              <button class="dca-button dca-button-secondary" id="dca-export-json" type="button">Exporter en JSON</button>
+              <button class="dca-button dca-button-secondary" id="dca-export-pdf" type="button">Exporter en PDF</button>
+              <button class="dca-button dca-button-secondary" id="dca-print" type="button">Imprimer</button>
+            </div>
+            <button class="dca-disclosure" id="dca-history-toggle" type="button" aria-expanded="false" aria-controls="dca-history-scroll">Voir le calendrier</button>
+            <div class="dca-table-scroll" id="dca-history-scroll" hidden tabindex="0" aria-label="Calendrier d’achats défilant">
+              <table class="dca-table">
+                <thead><tr><th>Opération</th><th>Date UTC prévue</th><th>Statut</th><th>Heure UTC de référence</th><th>Prix de référence</th><th>Versement brut</th><th>Coût en pourcentage</th><th>Coût fixe</th><th>Montant investi</th><th>Unités</th><th>Motif</th></tr></thead>
+                <tbody id="dca-history-body"></tbody>
+              </table>
+            </div>
+          </section>
+        </section>
+      </div>
+    </div>
+
+    <section class="dca-shell dca-panel dca-method" aria-labelledby="dca-method-title">
+      <h2 id="dca-method-title">Méthode et limites</h2>
+      <div class="dca-method-grid">
+        <article class="dca-method-card"><h3>Calendrier UTC</h3><p>Les fréquences quotidienne, hebdomadaire et toutes les deux semaines utilisent des intervalles UTC fixes. La fréquence mensuelle conserve le jour civil choisi et s’arrête au dernier jour du mois si nécessaire.</p></article>
+        <article class="dca-method-card"><h3>Aucune anticipation</h3><p>Chaque opération utilise le dernier point CoinGecko inutilisé à cette date UTC ou avant, seulement si l’écart ne dépasse pas 36 heures.</p></article>
+        <article class="dca-method-card"><h3>Comparaison au décaissement brut</h3><p>Les coûts fixes et en pourcentage réduisent le montant investi. La variation modélisée compare la valeur au dernier prix source au décaissement brut des opérations acceptées.</p></article>
+      </div>
+      <ul class="dca-limitations">
+        <li>Les prix de référence quotidiens historiques ne sont pas des prix d’exécution et peuvent différer du prix ou de l’écart d’une plateforme.</li>
+        <li>Aucun prix ancien, synthétique ou converti n’est inséré lorsque le fournisseur est indisponible ou lorsqu’une opération ne possède aucun point admissible.</li>
+        <li>Cette reconstitution exclut les impôts, la garde, la disponibilité des plateformes et les coûts non saisis. Elle ne prévoit pas les rendements et ne recommande aucun actif.</li>
+      </ul>
+    </section>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
+  <script src="/assets/js/engines/crypto-dca-replay.js?v=8f3acc7a" defer></script>
+  <script src="/assets/js/pages/crypto-dca-replay.js?v=6bdd00a2" defer></script>
 </body>
 </html>

@@ -39,7 +39,7 @@ module.exports = {
   regimes: ['STANDARD'],
   lastUpdated: '2026-04-06',
   /* source-confidence-stamp:start */
-  sourceCheckedOn: '2026-04-01',
+  sourceCheckedOn: '2026-07-01',
   nextReviewDate: '2026-06-30',
   /* source-confidence-stamp:end */
 

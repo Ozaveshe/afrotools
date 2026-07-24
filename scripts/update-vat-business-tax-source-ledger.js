@@ -10,10 +10,10 @@
  * VAT & Business Tax is HIGH-STAKES -- a wrong standard rate or registration
  * threshold flows straight into an invoice or a return. The perishable numbers
  * are the standard VAT/GST rate and the registration threshold per country;
- * they change with each finance act. The reference table is the flagship
- * calculator's `const DB` in tools/vat-calculator/index.html, which carries a
- * rate for all 54 markets. This validator binds that table to the revenue
- * authorities we can cite and records the rest as explicit, named gaps.
+ * they change with each finance act. The reference pack is
+ * data/vat-business-tax/pan-african-vat-presets.json. It deliberately carries
+ * a rate only for authority-bound planning presets; every other market is an
+ * explicit source gap or an unverified no-VAT claim.
  *
  *   node scripts/update-vat-business-tax-source-ledger.js           # report
  *   node scripts/update-vat-business-tax-source-ledger.js --check   # exit 1 on error
@@ -27,7 +27,7 @@ const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
 const LEDGER = path.join(ROOT, 'data', 'vat-business-tax', 'official-sources.json');
-const FLAGSHIP = path.join(ROOT, 'tools', 'vat-calculator', 'index.html');
+const PRESETS = path.join(ROOT, 'data', 'vat-business-tax', 'pan-african-vat-presets.json');
 const check = process.argv.includes('--check');
 
 const errors = [];
@@ -42,22 +42,18 @@ function readLedger() {
   }
 }
 
-// The authoritative rate table lives in the flagship calculator as `const DB`.
-// Parse it out rather than duplicating rates into a second store that could
-// drift -- the drift between the flagship and api-vat.js is exactly the failure
-// this ledger exists to record.
-function readFlagshipDB() {
+// The preset pack is the product source of truth. The page and widget consume
+// the matching shared engine instead of embedding a second 54-market table.
+function readPresetPack() {
   try {
-    const html = fs.readFileSync(FLAGSHIP, 'utf8');
-    const m = html.match(/const DB = (\{[\s\S]*?\n {2}\});/);
-    if (!m) {
-      errors.push('Could not locate `const DB` in tools/vat-calculator/index.html.');
+    const pack = JSON.parse(fs.readFileSync(PRESETS, 'utf8'));
+    if (!pack || !pack.countries || typeof pack.countries !== 'object') {
+      errors.push('Pan-African VAT preset pack has no countries object.');
       return null;
     }
-    // eslint-disable-next-line no-eval
-    return eval('(' + m[1] + ')');
+    return pack;
   } catch (e) {
-    errors.push(`Cannot parse flagship DB: ${e.message}`);
+    errors.push(`Cannot parse ${path.relative(ROOT, PRESETS)}: ${e.message}`);
     return null;
   }
 }
@@ -70,12 +66,13 @@ function daysSince(iso) {
 }
 
 const ledger = readLedger();
-const DB = readFlagshipDB();
-if (!ledger || !DB) {
+const presetPack = readPresetPack();
+if (!ledger || !presetPack) {
   console.error(errors.join('\n'));
   process.exit(1);
 }
 
+const DB = presetPack.countries;
 const dbCountries = Object.keys(DB);
 const sources = ledger.sources || [];
 const ids = new Set();
@@ -117,12 +114,13 @@ for (const cc of dbCountries) {
   }
 }
 
-// A no-VAT gap must actually be rate 0 in the table -- otherwise it is hiding a
-// real rate behind a "no system" label.
+// A no-VAT gap must remain explicitly unverified and must not carry a rate.
+// This prevents the product from converting a research gap into a zero-rate
+// claim merely because no primary authority source has been bound yet.
 for (const g of noVat) {
   if (!g.country || !DB[g.country]) errors.push(`gaps.noVatSystem: ${g.country} is not in the flagship table.`);
-  else if (DB[g.country].rate !== 0) {
-    errors.push(`gaps.noVatSystem: ${g.country} has rate ${DB[g.country].rate} in the table, not 0 -- it is not a no-VAT market.`);
+  else if (DB[g.country].status !== 'unverified-no-vat-claim' || Object.prototype.hasOwnProperty.call(DB[g.country], 'standardRate')) {
+    errors.push(`gaps.noVatSystem: ${g.country} must be an unverified-no-vat-claim without standardRate.`);
   }
 }
 
@@ -157,7 +155,7 @@ if (reviewed && age === null) {
 const revs = sources.filter((s) => s.sourceType === 'revenue-authority');
 const revCountries = new Set(revs.map((s) => s.country));
 const marketCount = dbCountries.length;
-const vatMarkets = dbCountries.filter((c) => DB[c].rate > 0).length;
+const vatMarkets = dbCountries.filter((c) => DB[c].status !== 'unverified-no-vat-claim').length;
 if (revCountries.size < vatMarkets) {
   warnings.push(
     `${vatMarkets - revCountries.size} of ${vatMarkets} VAT/GST markets have no bound revenue-authority source (recorded in gaps.regulatorsWithoutUrl).`

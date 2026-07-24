@@ -31,6 +31,42 @@ for (const entry of manifest) {
 
 const byId = new Map(manifest.map((entry) => [entry.id, entry]));
 
+const marketStall = byId.get("market-stall-profit");
+assert.ok(marketStall, "market-stall-profit should be present");
+assert.deepStrictEqual(marketStall.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(marketStall.requiredInputs, []);
+assert.deepStrictEqual(marketStall.optionalInputs, []);
+assert.deepStrictEqual(marketStall.outputTypes, ["number", "table", "pdf", "json", "report"]);
+assert.strictEqual(marketStall.privacyMode, "browser_local");
+assert.strictEqual(marketStall.sourcePolicy, "user_input");
+assert.strictEqual(marketStall.highStakesDomain, "finance");
+assert.deepStrictEqual(marketStall.monetizationSurfaces, []);
+assert.strictEqual(prefill.getPrefillAdapter("market-stall-profit"), null);
+
+const businessPlanDraft = byId.get("business-plan-builder");
+assert.ok(businessPlanDraft, "business-plan-builder should be present");
+assert.deepStrictEqual(businessPlanDraft.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(businessPlanDraft.requiredInputs, []);
+assert.deepStrictEqual(businessPlanDraft.optionalInputs, []);
+assert.deepStrictEqual(businessPlanDraft.outputTypes, ["table", "pdf", "json", "report"]);
+assert.strictEqual(businessPlanDraft.privacyMode, "browser_local");
+assert.strictEqual(businessPlanDraft.sourcePolicy, "user_input");
+assert.strictEqual(businessPlanDraft.highStakesDomain, "finance");
+assert.deepStrictEqual(businessPlanDraft.monetizationSurfaces, []);
+assert.strictEqual(prefill.getPrefillAdapter("business-plan-builder"), null);
+
+const ideaEvidence = byId.get("idea-board");
+assert.ok(ideaEvidence, "idea-board should be present");
+assert.deepStrictEqual(ideaEvidence.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(ideaEvidence.requiredInputs, []);
+assert.deepStrictEqual(ideaEvidence.optionalInputs, []);
+assert.deepStrictEqual(ideaEvidence.outputTypes, ["table", "shortlist", "pdf", "json", "report"]);
+assert.strictEqual(ideaEvidence.privacyMode, "server_required");
+assert.strictEqual(ideaEvidence.sourcePolicy, "mixed");
+assert.strictEqual(ideaEvidence.highStakesDomain, "finance");
+assert.deepStrictEqual(ideaEvidence.monetizationSurfaces, []);
+assert.strictEqual(prefill.getPrefillAdapter("idea-board"), null);
+
 const STRATEGIC_AI_ROUTABLE_TOOLS = [
   { id: "cv-builder", privacyMode: "browser_local", sourcePolicy: "user_input", highStakesDomain: "employment", prefill: true },
   { id: "cover-letter", privacyMode: "browser_local", sourcePolicy: "user_input", highStakesDomain: "employment", prefill: false },
@@ -78,6 +114,157 @@ assert.ok(expectEntry("import-duty").aiCapabilities.includes("prefill"));
 assert.strictEqual(expectEntry("solar-roi").highStakesDomain, "energy");
 assert.strictEqual(expectEntry("medical-report").highStakesDomain, "health");
 assert.strictEqual(expectEntry("pdf-workspace").privacyMode, "browser_local");
+
+const contractorComparison = expectEntry("contractor-vs-employee");
+assert.deepStrictEqual(contractorComparison.aiCapabilities, ["route_only"], "contractor-vs-employee must not advertise AI prefill, comparison, explanation, or export");
+assert.deepStrictEqual(contractorComparison.requiredInputs, [], "route-only contractor-vs-employee must not ask AI for calculator fields");
+assert.deepStrictEqual(contractorComparison.optionalInputs, [], "route-only contractor-vs-employee must not accept calculator fields from AI");
+assert.deepStrictEqual(contractorComparison.outputTypes, ["number", "report", "pdf"], "contractor-vs-employee outputs must match the local calculator");
+assert.strictEqual(contractorComparison.privacyMode, "browser_local");
+assert.strictEqual(contractorComparison.sourcePolicy, "user_input");
+assert.deepStrictEqual(contractorComparison.monetizationSurfaces, [], "contractor-vs-employee has no API or AI monetization surface");
+const contractorComparisonCall = manifestApi.buildToolInvocation(contractorComparison);
+assert.strictEqual(contractorComparisonCall.action, "open_existing_tool");
+assert.strictEqual(contractorComparisonCall.invocationMode, "route_only");
+assert.strictEqual(contractorComparisonCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("contractor-vs-employee"), null, "contractor-vs-employee must remain adapter-free until a separately reviewed prefill contract exists");
+
+const domesticWorker = expectEntry("domestic-worker");
+assert.deepStrictEqual(domesticWorker.aiCapabilities, ["route_only"], "domestic-worker must not advertise AI prefill, explanation, comparison, or export");
+assert.deepStrictEqual(domesticWorker.requiredInputs, [], "route-only domestic-worker must not ask AI for calculator fields");
+assert.deepStrictEqual(domesticWorker.optionalInputs, [], "route-only domestic-worker must not accept calculator fields from AI");
+assert.deepStrictEqual(domesticWorker.outputTypes, ["number", "report", "pdf"], "domestic-worker outputs must represent its local result, TXT summary, and print-to-PDF only");
+assert.strictEqual(domesticWorker.privacyMode, "browser_local");
+assert.strictEqual(domesticWorker.sourcePolicy, "user_input");
+assert.deepStrictEqual(domesticWorker.monetizationSurfaces, [], "domestic-worker has no API or AI monetization surface");
+const domesticWorkerCall = manifestApi.buildToolInvocation(domesticWorker);
+assert.strictEqual(domesticWorkerCall.action, "open_existing_tool");
+assert.strictEqual(domesticWorkerCall.invocationMode, "route_only");
+assert.strictEqual(domesticWorkerCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("domestic-worker"), null, "domestic-worker must remain adapter-free until a separately reviewed prefill contract exists");
+
+const gratuity = expectEntry("gratuity-calculator");
+assert.deepStrictEqual(gratuity.aiCapabilities, ["route_only"], "gratuity-calculator must not advertise AI prefill, explanation, or export");
+assert.deepStrictEqual(gratuity.requiredInputs, [], "route-only gratuity-calculator must not ask AI for calculator fields");
+assert.deepStrictEqual(gratuity.optionalInputs, [], "route-only gratuity-calculator must not accept calculator fields from AI");
+assert.deepStrictEqual(gratuity.outputTypes, ["number", "report", "pdf"], "gratuity-calculator outputs must represent its local result, TXT summary, and print-to-PDF only");
+assert.strictEqual(gratuity.privacyMode, "browser_local");
+assert.strictEqual(gratuity.sourcePolicy, "user_input");
+assert.deepStrictEqual(gratuity.monetizationSurfaces, [], "gratuity-calculator has no API or AI monetization surface");
+const gratuityCall = manifestApi.buildToolInvocation(gratuity);
+assert.strictEqual(gratuityCall.action, "open_existing_tool");
+assert.strictEqual(gratuityCall.invocationMode, "route_only");
+assert.strictEqual(gratuityCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("gratuity-calculator"), null, "gratuity-calculator must remain adapter-free until a separately reviewed prefill contract exists");
+
+const maternityLeave = expectEntry("maternity-leave");
+assert.deepStrictEqual(maternityLeave.aiCapabilities, ["route_only"], "maternity-leave must not advertise AI prefill, explanation, or export");
+assert.deepStrictEqual(maternityLeave.requiredInputs, [], "route-only maternity-leave must not ask AI for sensitive calculator fields");
+assert.deepStrictEqual(maternityLeave.optionalInputs, [], "route-only maternity-leave must not accept sensitive calculator fields from AI");
+assert.deepStrictEqual(maternityLeave.outputTypes, ["number", "report", "pdf"], "maternity-leave outputs must represent its local result, TXT summary, and print-to-PDF only");
+assert.strictEqual(maternityLeave.privacyMode, "browser_local");
+assert.strictEqual(maternityLeave.sourcePolicy, "user_input");
+assert.deepStrictEqual(maternityLeave.monetizationSurfaces, [], "maternity-leave has no API or AI monetization surface");
+const maternityLeaveCall = manifestApi.buildToolInvocation(maternityLeave);
+assert.strictEqual(maternityLeaveCall.action, "open_existing_tool");
+assert.strictEqual(maternityLeaveCall.invocationMode, "route_only");
+assert.strictEqual(maternityLeaveCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("maternity-leave"), null, "maternity-leave must remain adapter-free until a separately reviewed prefill contract exists");
+
+const retrenchment = expectEntry("retrenchment-calculator");
+assert.deepStrictEqual(retrenchment.aiCapabilities, ["route_only"], "retrenchment-calculator must not advertise AI prefill, explanation, or export");
+assert.deepStrictEqual(retrenchment.requiredInputs, [], "route-only retrenchment-calculator must not ask AI for sensitive calculator fields");
+assert.deepStrictEqual(retrenchment.optionalInputs, [], "route-only retrenchment-calculator must not accept sensitive calculator fields from AI");
+assert.deepStrictEqual(retrenchment.outputTypes, ["number", "report", "pdf"], "retrenchment-calculator outputs must represent its local result, TXT summary, and print-to-PDF only");
+assert.strictEqual(retrenchment.privacyMode, "browser_local");
+assert.strictEqual(retrenchment.sourcePolicy, "user_input");
+assert.deepStrictEqual(retrenchment.monetizationSurfaces, [], "retrenchment-calculator has no API or AI monetization surface");
+const retrenchmentCall = manifestApi.buildToolInvocation(retrenchment);
+assert.strictEqual(retrenchmentCall.action, "open_existing_tool");
+assert.strictEqual(retrenchmentCall.invocationMode, "route_only");
+assert.strictEqual(retrenchmentCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("retrenchment-calculator"), null, "retrenchment-calculator must remain adapter-free until a separately reviewed prefill contract exists");
+
+const employeeCost = expectEntry("employee-cost");
+assert.deepStrictEqual(employeeCost.aiCapabilities, ["route_only"], "employee-cost must not advertise AI prefill, explanation, or export");
+assert.deepStrictEqual(employeeCost.requiredInputs, [], "route-only employee-cost must not ask AI for calculator fields");
+assert.deepStrictEqual(employeeCost.optionalInputs, [], "route-only employee-cost must not accept calculator fields from AI");
+assert.deepStrictEqual(employeeCost.outputTypes, ["number", "report", "pdf"], "employee-cost outputs must match the local calculator");
+assert.strictEqual(employeeCost.privacyMode, "browser_local");
+assert.strictEqual(employeeCost.sourcePolicy, "user_input");
+assert.deepStrictEqual(employeeCost.monetizationSurfaces, [], "employee-cost has no API or AI monetization surface");
+const employeeCostCall = manifestApi.buildToolInvocation(employeeCost);
+assert.strictEqual(employeeCostCall.action, "open_existing_tool");
+assert.strictEqual(employeeCostCall.invocationMode, "route_only");
+assert.strictEqual(employeeCostCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("employee-cost"), null, "employee-cost must remain adapter-free until a separately reviewed prefill contract exists");
+
+const inventory = expectEntry("inventory");
+assert.strictEqual(inventory.route, "/tools/inventory/");
+assert.strictEqual(inventory.title, "Inventory Calculator & Local Stock Tracker");
+assert.deepStrictEqual(inventory.languagesSupported, ["en", "fr", "sw"]);
+assert.deepStrictEqual(inventory.requiredInputs, [], "route-only inventory must not ask AI for stock data");
+assert.deepStrictEqual(inventory.optionalInputs, [], "route-only inventory must not accept stock data from AI");
+assert.deepStrictEqual(inventory.aiCapabilities, ["route_only"], "inventory must remain a browser-local route-only worksheet");
+assert.deepStrictEqual(inventory.outputTypes, ["table", "pdf", "json", "report"]);
+assert.strictEqual(inventory.privacyMode, "browser_local");
+assert.strictEqual(inventory.sourcePolicy, "user_input");
+assert.strictEqual(inventory.highStakesDomain, "finance");
+assert.deepStrictEqual(inventory.monetizationSurfaces, []);
+const inventoryCall = manifestApi.buildToolInvocation(inventory);
+assert.strictEqual(inventoryCall.action, "open_existing_tool");
+assert.strictEqual(inventoryCall.invocationMode, "route_only");
+assert.strictEqual(inventoryCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("inventory"), null, "inventory must remain adapter-free until a separately reviewed prefill contract exists");
+
+const shippingPlanner = expectEntry("shipping-calc");
+assert.strictEqual(shippingPlanner.route, "/tools/shipping-calc/");
+assert.strictEqual(shippingPlanner.title, "Shipping Cost & Chargeable Weight Planner");
+assert.deepStrictEqual(shippingPlanner.languagesSupported, ["en", "fr", "sw"]);
+assert.deepStrictEqual(shippingPlanner.requiredInputs, []);
+assert.deepStrictEqual(shippingPlanner.optionalInputs, []);
+assert.deepStrictEqual(shippingPlanner.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(shippingPlanner.outputTypes, ["number", "table", "pdf", "json", "report"]);
+assert.strictEqual(shippingPlanner.privacyMode, "browser_local");
+assert.strictEqual(shippingPlanner.sourcePolicy, "user_input");
+assert.strictEqual(shippingPlanner.highStakesDomain, "finance");
+assert.deepStrictEqual(shippingPlanner.monetizationSurfaces, []);
+const shippingPlannerCall = manifestApi.buildToolInvocation(shippingPlanner);
+assert.strictEqual(shippingPlannerCall.action, "open_existing_tool");
+assert.strictEqual(shippingPlannerCall.invocationMode, "route_only");
+assert.strictEqual(shippingPlannerCall.canPrefill, false);
+
+const discountPlanner = expectEntry("discount-calc");
+assert.strictEqual(discountPlanner.route, "/tools/discount-calc/");
+assert.strictEqual(discountPlanner.title, "Discount Calculator");
+assert.deepStrictEqual(discountPlanner.languagesSupported, ["en", "fr", "sw"]);
+assert.deepStrictEqual(discountPlanner.requiredInputs, []);
+assert.deepStrictEqual(discountPlanner.optionalInputs, []);
+assert.deepStrictEqual(discountPlanner.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(discountPlanner.outputTypes, ["number", "table", "pdf", "json", "report"]);
+assert.strictEqual(discountPlanner.privacyMode, "browser_local");
+assert.strictEqual(discountPlanner.sourcePolicy, "user_input");
+assert.strictEqual(discountPlanner.highStakesDomain, "finance");
+assert.deepStrictEqual(discountPlanner.monetizationSurfaces, []);
+const discountPlannerCall = manifestApi.buildToolInvocation(discountPlanner);
+assert.strictEqual(discountPlannerCall.action, "open_existing_tool");
+assert.strictEqual(discountPlannerCall.invocationMode, "route_only");
+assert.strictEqual(discountPlannerCall.canPrefill, false);
+assert.strictEqual(prefill.getPrefillAdapter("discount-calc"), null);
+
+const businessNameWorkshop = expectEntry("business-name-gen");
+assert.strictEqual(businessNameWorkshop.route, "/tools/business-name-gen/");
+assert.strictEqual(businessNameWorkshop.title, "African Business Name Shortlist Workshop");
+assert.deepStrictEqual(businessNameWorkshop.languagesSupported, ["en", "fr", "sw"]);
+assert.deepStrictEqual(businessNameWorkshop.requiredInputs, []);
+assert.deepStrictEqual(businessNameWorkshop.optionalInputs, []);
+assert.deepStrictEqual(businessNameWorkshop.aiCapabilities, ["route_only"]);
+assert.deepStrictEqual(businessNameWorkshop.outputTypes, ["shortlist", "table", "pdf", "json", "report"]);
+assert.strictEqual(businessNameWorkshop.privacyMode, "browser_local");
+assert.strictEqual(businessNameWorkshop.sourcePolicy, "user_input");
+assert.strictEqual(businessNameWorkshop.highStakesDomain, "none");
+assert.deepStrictEqual(businessNameWorkshop.monetizationSurfaces, []);
+assert.strictEqual(prefill.getPrefillAdapter("business-name-gen"), null);
 
 assert.strictEqual(STRATEGIC_AI_ROUTABLE_TOOLS.length, 25, "first AI-routable batch should cover exactly 25 strategic tools");
 for (const expected of STRATEGIC_AI_ROUTABLE_TOOLS) {

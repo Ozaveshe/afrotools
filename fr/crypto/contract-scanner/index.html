@@ -1,57 +1,36 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Analyseur de contrats intelligents | AfroTools</title>
-<meta name="description" content="Analyseur de contrats intelligents — Lisez cet article sur AfroTools.">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Analyseur de contrats intelligents">
-<meta property="og:url" content="https://afrotools.com/fr/crypto/contract-scanner/">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Vérification de preuves d’adresse de contrat | AfroTools</title>
+<meta name="description" content="Vérifiez la syntaxe EVM et recherchez un enregistrement exact dans un petit registre local révisé. Aucun score de sécurité ni connexion de portefeuille.">
+<meta name="robots" content="index,follow">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
-<link rel="preload" href="/assets/css/tokens.min.css?v=c13f04eb" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<link rel="preload" href="/assets/css/global.min.css?v=2777b75b" as="style" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-</noscript>
-<style>
-.fr-hero{background:var(--color-bg-dark,#0A1628);padding:48px 0 32px;text-align:center}
-.fr-hero .container{max-width:900px;margin:0 auto;padding:0 24px}
-.fr-hero .section-label{font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--color-brand-light,#4DA3FF);margin-bottom:12px}
-.fr-hero h1{font-size:clamp(1.5rem,3vw,2.2rem);font-weight:800;color:#fff;max-width:800px;margin:0 auto 12px;line-height:1.2}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.9rem;margin:0 auto;max-width:600px}
-.fr-iframe-wrap{max-width:900px;margin:0 auto;padding:32px 16px 64px}
-.fr-iframe-wrap iframe{width:100%;min-height:80vh;border:none;border-radius:12px;background:#fff}
-.fr-note{text-align:center;padding:16px;font-size:.8rem;color:var(--color-text-muted,#64748b)}
-.fr-note a{color:var(--color-brand,#0062CC);text-decoration:underline}
-</style>
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:url" content="https://afrotools.com/fr/crypto/contract-scanner/"><meta property="og:title" content="Vérification de preuves d’adresse de contrat | AfroTools"><meta property="og:description" content="Syntaxe EVM locale et recherche d’enregistrement révisé avec limites explicites."><meta property="og:image" content="https://afrotools.com/assets/img/tools/crypto-contract.webp"><meta name="twitter:card" content="summary_large_image">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Vérification de preuves d’adresse de contrat","url":"https://afrotools.com/fr/crypto/contract-scanner/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","description":"Vérification locale de syntaxe EVM et recherche dans un registre de preuves révisées. Aucun contrôle blockchain ni verdict de sécurité.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Que prouve cette vérification ?","acceptedAnswer":{"@type":"Answer","text":"Uniquement la syntaxe de base 0x suivie de 40 caractères hexadécimaux et l’existence éventuelle d’un enregistrement exact chaîne-adresse dans le petit registre révisé."}},{"@type":"Question","name":"L’absence d’enregistrement prouve-t-elle la sécurité ?","acceptedAnswer":{"@type":"Answer","text":"Non. Elle ne prouve ni existence, ni checksum, ni statut de jeton, ni code source, ni permissions, ni détenteurs, ni liquidité, ni possibilité de vente, ni sécurité."}},{"@type":"Question","name":"AfroTools connecte-t-il un portefeuille ?","acceptedAnswer":{"@type":"Answer","text":"Non. Aucun portefeuille, signature, transaction, appel d’API d’adresse ou stockage de l’adresse."}}]}</script>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/contract-address-evidence.css?v=fe578438">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/fr/crypto/contract-scanner/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/crypto/contract-scanner/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/crypto/contract-scanner/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/crypto/contract-scanner/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="contract-evidence-page">
 <afro-navbar></afro-navbar>
-<section class="fr-hero"><div class="container">
-<p class="section-label">Crypto</p>
-<h1>Analyseur de contrats intelligents</h1>
-<p>Contenu disponible en anglais — traduction à venir.</p>
-</div></section>
-<div class="fr-iframe-wrap">
-<iframe src="/crypto/contract-scanner/" title="Analyseur de contrats intelligents" loading="lazy" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
+<header class="contract-hero"><div class="contract-shell"><span class="contract-kicker">Syntaxe + preuve révisée</span><h1>Vérification de preuves d’adresse de contrat</h1><p>Vérifiez la syntaxe EVM de base pour une chaîne choisie et recherchez un enregistrement exact dans un petit registre local.</p></div></header>
+<main class="contract-shell contract-main">
+<aside class="contract-boundary" role="note"><strong>Ce n’est ni un scan de contrat ni un contrôle de sécurité.</strong> Aucun résultat ne prouve l’existence, le checksum, le statut de jeton, le code source, les permissions, les détenteurs, la liquidité, la possibilité de vente, l’absence de honeypot ou la sécurité. Ne saisissez jamais une phrase de récupération ou une clé privée.</aside>
+<div class="contract-grid">
+<section class="contract-card" aria-labelledby="check-title"><h2 id="check-title">Vérifier une adresse</h2><form id="contractEvidenceForm" novalidate>
+<label for="networkSelect">Chaîne EVM</label><select id="networkSelect" name="chain"><option value="ethereum">Ethereum</option><option value="bsc">BNB Smart Chain</option><option value="polygon">Polygon</option></select>
+<label for="contractAddress">Texte de l’adresse de contrat</label><input id="contractAddress" name="address" autocomplete="off" spellcheck="false" maxlength="42" placeholder="0x + 40 caractères hexadécimaux" required>
+<button type="submit" id="scanBtn">Vérifier la syntaxe et les enregistrements</button><p id="registryStatus" class="contract-registry-status" role="status" aria-live="polite">Chargement du registre local révisé…</p></form></section>
+<section class="contract-card contract-result" aria-labelledby="result-title"><h2 id="result-title">Résultat des preuves</h2><div id="resultsContent" tabindex="-1"><p class="contract-empty">Saisissez une adresse pour créer un résultat local.</p></div><div class="contract-actions"><button type="button" id="downloadContractEvidence" disabled>Télécharger le relevé texte</button></div></section>
 </div>
-<p class="fr-note"><a href="/fr/crypto/contract-scanner/">Lire la version originale en anglais</a></p>
-<afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-</body>
-</html>
+<section class="contract-card contract-explain"><h2>Comment lire le résultat</h2><div class="contract-points"><article><h3>Syntaxe uniquement</h3><p>Les chaînes proposées partagent la même forme EVM. Aucun contrôle de checksum n’est revendiqué.</p></article><article><h3>Enregistrements exacts seulement</h3><p>Un résultat apparaît uniquement si la chaîne et l’adresse normalisée correspondent à une entrée révisée avec une source HTTPS citée.</p></article><article><h3>Explorateur choisi seulement</h3><p>Une syntaxe valide affiche uniquement l’explorateur de la chaîne choisie. L’ouverture divulgue l’adresse à ce service externe.</p></article></div></section>
+<section class="contract-card contract-faq"><h2>Questions</h2><details><summary>« Aucun enregistrement » est-il une validation ?</summary><p>Non. La couverture est petite et incomplète. Une absence ne constitue pas une preuve de sécurité.</p></details><details><summary>Que faut-il vérifier manuellement ?</summary><p>Confirmez vous-même la chaîne et l’adresse. Le code, les permissions, les détenteurs, la liquidité et le comportement transactionnel restent hors du périmètre.</p></details><details><summary>L’adresse est-elle envoyée ailleurs ?</summary><p>Pas par AfroTools. Le registre local est chargé sans l’adresse. Elle quitte la page seulement si vous ouvrez volontairement l’explorateur externe ou téléchargez votre relevé local.</p></details></section>
+</main>
+<afro-related-tools current="crypto-contract" category="financial" limit="4"></afro-related-tools><afro-footer></afro-footer>
+<script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script><script src="/assets/js/engines/contract-address-evidence.js?v=9d2f8d73"></script><script src="/assets/js/pages/contract-address-evidence.js?v=b60d8c9c"></script><script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+</body></html>

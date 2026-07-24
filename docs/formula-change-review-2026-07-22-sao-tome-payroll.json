@@ -1,0 +1,70 @@
+{
+  "reviewedBy": "Codex Day 3 release gate",
+  "reviewedAt": "2026-07-22",
+  "sourceUrl": "https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf",
+  "reason": "Remove four contradictory and unsupported Sao Tome IRS implementations. The shared browser engine, server adapter, English and Swahili routes, and widget now calculate only the current INSS rates established by Decreto-Lei 19/2022: 4% employee and 6% employer on gross remuneration. IRS and final net values deliberately remain null because the official post-2023 schedule could not be confirmed from the tax catalog or 2026 State Budget.",
+  "formulaIds": [
+    "paye-browser-st",
+    "paye-server-st",
+    "route-st-paye"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-st-defaults",
+      "previousExpected": {
+        "deductions.totalDeductions": 154000,
+        "result.netAnnual": 846000,
+        "result.netMonthly": 70500,
+        "tax.netTax": 94000
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 39999.96,
+        "result.netAnnual": null,
+        "result.netMonthly": null,
+        "tax.netTax": null
+      },
+      "reason": "At STN 1,000,000 annual gross, only employee INSS at 4% is a verified deduction. IRS and final net remain intentionally uncalculated.",
+      "sourceUrl": "https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-st-large-decimal",
+      "previousExpected": {
+        "deductions.totalDeductions": 286300000,
+        "result.netAnnual": 713700001,
+        "result.netMonthly": 59475000,
+        "tax.netTax": 226300000
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 40000000.08,
+        "result.netAnnual": null,
+        "result.netMonthly": null,
+        "tax.netTax": null
+      },
+      "reason": "The large-value case preserves currency precision for verified 4% employee INSS and refuses to extrapolate unconfirmed IRS bands.",
+      "sourceUrl": "https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    },
+    {
+      "fixtureId": "paye-st-zero",
+      "previousExpected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": 0,
+        "result.netMonthly": 0,
+        "tax.netTax": 0
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 0,
+        "result.netAnnual": null,
+        "result.netMonthly": null,
+        "tax.netTax": null
+      },
+      "reason": "The zero-income case keeps verified INSS at zero while retaining the IRS safety lock.",
+      "sourceUrl": "https://inss.gov.st/assets/Leis/Lei_n_19_2022.pdf",
+      "reviewedBy": "Codex Day 3 release gate",
+      "reviewedAt": "2026-07-22"
+    }
+  ]
+}

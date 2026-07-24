@@ -11,7 +11,7 @@
     "The reference table is the flagship calculator's `const DB` in tools/vat-calculator/index.html. It carries a rate for all 54 markets, an explicit rate:0 for the three no-VAT states (Somalia, Eritrea, Libya), and a threshold for the ten headline markets. The dropdown is built from DB, so there is no 'dropdown offers more countries than the data' zero-bug: every selectable country has a real rate. A 0% result for SO/ER/LY is a genuine rate, not missing data.",
     "Never update a VAT rate or a registration threshold because a URL's content hash changed. Open the authority's page and read the gazetted rate or finance-act notice, exactly as .claude/rules/government.md and .claude/rules/telecom.md require. A changed homepage is not a rate change.",
     "A national revenue authority always outranks an accountancy-firm summary, a Wikipedia table or an aggregator for the same claim. Firm 'VAT guides' (PwC, KPMG, Deloitte) are useful cross-checks, never the citation of record.",
-    "Only 15 of 54 markets have a bound revenue-authority URL today. The other 36 rate-bearing markets are recorded in gaps.regulatorsWithoutUrl as known liabilities, not to-dos; the 3 no-VAT states are in gaps.noVatSystem. Do not delete a gap without either binding the source or showing the figure as planning-grade.",
+    "Only 20 of 54 markets have a bound revenue-authority URL today. The other 31 rate-bearing markets are recorded in gaps.regulatorsWithoutUrl as known liabilities, not to-dos; the 3 no-VAT states are in gaps.noVatSystem. Do not delete a gap without either binding the source or showing the figure as planning-grade.",
     "The public API function netlify/functions/api-vat.js carries its own VAT_DB with lastUpdated:'2024-01-01' stamps that are ~2.5 years stale and already drift from the flagship (e.g. it still lists Kenya's deleted 8% petroleum rate). It is recorded in gaps.unsourcedClaims. Treat the flagship DB, not api-vat.js, as the current public table until the API stamps are re-verified against each authority."
   ],
   "tools": [
@@ -23,6 +23,9 @@
     "tz-vat",
     "rw-vat",
     "ug-vat",
+    "dz-vat",
+    "ao-vat",
+    "bj-vat",
     "eg-vat",
     "et-vat",
     "ma-vat",
@@ -31,6 +34,9 @@
     "bw-vat",
     "zm-vat",
     "na-vat",
+    "td-vat",
+    "sz-vat",
+    "bi-vat",
     "paystack-calculator"
   ],
   "sources": [
@@ -62,13 +68,17 @@
       "id": "rev-za",
       "country": "ZA",
       "authority": "SARS (South African Revenue Service)",
-      "title": "SARS — South Africa revenue service",
-      "url": "https://www.sars.gov.za/",
+      "title": "SARS — VAT rates and registration thresholds",
+      "url": "https://www.sars.gov.za/tax-rates/other-taxes/",
+      "supportingUrls": [
+        "https://www.sars.gov.za/about/sars-tax-and-customs-system/budget/budget-2026-frequently-asked-questions/",
+        "https://www.sars.gov.za/legal-counsel/legal-counsel-publications/find-a-guide/value-added-tax-vat/"
+      ],
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "za-vat"],
-      "notes": "Standard VAT 15% (the proposed 2025 increase to 15.5%/16% was withdrawn). Compulsory registration threshold R1m taxable supplies/12 months — the DB's R2.3M figure needs re-reading against SARS guidance."
+      "notes": "SARS confirms the current standard VAT rate is 15%. For rolling 12-month taxable supplies, compulsory registration applies above R2.3 million and the general voluntary-registration range is above R120,000 through R2.3 million; those thresholds apply from 1 April 2026. Confirm exceptions, classification, invoicing, input-tax, filing and remittance against current SARS guidance. Reviewed 2026-07-22."
     },
     {
       "id": "rev-gh",
@@ -92,7 +102,7 @@
       "watch": "availability-and-content",
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "tz-vat"],
-      "notes": "Standard VAT 18%. Confirm the rate and the TZS 200M registration threshold against the VAT Act and the current Finance Act."
+      "notes": "Mainland standard VAT is 18%. Finance Act 2025 section 125 provides a conditional 16% treatment only for qualifying supplies to unregistered Mainland customers paid through an approved bank or electronic method and subject to Commissioner-General public-notice eligibility. Appointed agents retain three percentage points from an 18% invoice. Registration tests include prospective/prior 12-month TZS 200M and prior-six-month TZS 100M paths. VAT Act, Finance Act and current revenue strategy reviewed 2026-07-22."
     },
     {
       "id": "rev-rw",
@@ -104,7 +114,7 @@
       "watch": "availability-and-content",
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "rw-vat"],
-      "notes": "Standard VAT 18%. Confirm the rate and the FRw 20M registration threshold against RRA guidance."
+      "notes": "Standard VAT is 18% under Law 049/2023 Article 4. Registration applies strictly above RWF 20M in the previous fiscal year or strictly above RWF 5M in the preceding quarter, with current RRA guidance requiring action within seven days. Article 7 zero-rating and Article 8 exemptions must be confirmed against Law 009/2025 amendments; no broad category is inferred. Reviewed 2026-07-22."
     },
     {
       "id": "rev-ug",
@@ -122,13 +132,77 @@
       "id": "rev-eg",
       "country": "EG",
       "authority": "ETA (Egyptian Tax Authority)",
-      "title": "ETA — Egypt tax authority",
-      "url": "https://www.eta.gov.eg/",
+      "title": "ETA - Egypt VAT laws and registration guidance",
+      "url": "https://www.eta.gov.eg/ar/content/qwanyn-aldrybt-ly-alqymt-almdaft",
+      "supportingUrls": [
+        "https://www.eta.gov.eg/sites/default/files/2024-02/Law-english-no.67-2016.pdf.pdf",
+        "https://www.eta.gov.eg/sites/default/files/2024-02/VAT-Executive-Regulations-English.pdf",
+        "https://eta.gov.eg/en/node/250",
+        "https://eta.gov.eg/sites/default/files/2025-07/vat-law_no.157.of_.2025.pdf"
+      ],
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
-      "fields": ["vatRate", "registrationThreshold"],
+      "fields": [
+        "vatRate",
+        "registrationThreshold",
+        "classification",
+        "amendments"
+      ],
       "tools": ["vat-calculator", "eg-vat"],
-      "notes": "Standard VAT 14%. Confirm the rate and the EGP 500K registration threshold against ETA guidance; a reduced 5% band applies to some goods."
+      "notes": "VAT Law No. 67 of 2016 and its Executive Regulations, as amended through Law No. 157 of 2025, support the current 14% standard rate and the general EGP 500,000 prior-12-month registration boundary. Table Tax, zero-rating and exemptions are item-specific; do not expose a generic reduced 5% band. Importers, exporters, distribution agents and other special cases require separate ETA review. Proposed July 2026 amendments remain a review frontier until enacted, published and effective. Reviewed 2026-07-22."
+    },
+    {
+      "id": "rev-dz",
+      "country": "DZ",
+      "authority": "DGI Algérie (Direction Générale des Impôts)",
+      "title": "DGI Algérie — current VAT guidance",
+      "url": "https://www.mfdgi.gov.dz/fr/professionnels/services-pro/regime-reel/la-taxe-sur-la-valeur-ajoutee",
+      "supportingUrls": [
+        "https://www.mfdgi.gov.dz/fr/a-propos/actu-fr/codes-fiscaux-fr",
+        "https://www.mfdgi.gov.dz/fr/professionnels/calandrier-fiscal-pro/593-regime-reel/421-paiement-mensuel-tva"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["vatRate", "taxpayerRegime", "classification", "filing"],
+      "tools": ["vat-calculator", "dz-vat"],
+      "notes": "DGI guidance updated 23 February 2026 confirms the 19% normal rate, limits the 9% rate to article 23 TCA operations and points exemptions to articles 8-13. Real and simplified regimes are VAT-relevant; DGI says IFU taxpayers are not concerned by VAT and invoice TTC. No generic VAT-registration threshold is modeled. Reviewed 2026-07-22."
+    },
+    {
+      "id": "rev-ao",
+      "country": "AO",
+      "authority": "AGT (Administração Geral Tributária)",
+      "title": "AGT Angola tax portal and republished VAT Code",
+      "url": "https://agt.minfin.gov.ao/",
+      "supportingUrls": [
+        "https://lex.ao/docs/assembleia-nacional/2023/lei-n-o-14-23-de-28-de-dezembro/",
+        "https://lex.ao/docs/presidente-da-republica/2025/decreto-presidencial-n-o-71-25-de-20-de-marco/"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["vatRate", "taxpayerRegime", "classification", "captiveTax"],
+      "tools": ["vat-calculator", "ao-vat"],
+      "notes": "Lei 14/23 republishes the VAT Code: 14% general, 7% simplified, conditional 7% hospitality, 5% Annex I/II food and agricultural inputs, and AOA 25 million/AOA 350 million regime boundaries. Decreto Presidencial 71/25 governs the conditional 1% Cabinda treatment. Article 21 imposto cativo applies only to named entities and is not a VAT rate. Reviewed 2026-07-22."
+    },
+    {
+      "id": "rev-bj",
+      "country": "BJ",
+      "authority": "DGI Benin (Direction Generale des Impots)",
+      "title": "DGI Benin - official General Tax Code and VAT guide",
+      "url": "https://api.impots.bj/media/63c7b8d3eef3c_Benin-CGI-2023-officiel.pdf",
+      "supportingUrls": [
+        "https://api.impots.bj/media/619276da1364b_CE%20QUE%20VOUS%20DEVEZ%20SAVOIR%20SUR%20LA%20TVA.pdf",
+        "https://budgetbenin.bj/loi-de-finances-gestion-2026/"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": [
+        "vatRate",
+        "registrationThreshold",
+        "classification",
+        "filing"
+      ],
+      "tools": ["vat-calculator", "bj-vat"],
+      "notes": "CGI Article 241 fixes the standard rate at 18%. The DGI guide supports the export zero-rate convention. Article 229 classification, the current Article 228 threshold set by ministerial order, and Article 259 declaration and payment by the 10th require current confirmation. Reviewed 2026-07-22."
     },
     {
       "id": "rev-et",
@@ -183,12 +257,12 @@
       "country": "BW",
       "authority": "BURS (Botswana Unified Revenue Service)",
       "title": "BURS — Botswana revenue service",
-      "url": "https://www.burs.org.bw/",
+      "url": "https://www.burs.org.bw/index.php/brochure?download=815%3Aburs-vat-brochures",
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "bw-vat"],
-      "notes": "Standard VAT 14% (the temporary reduction to 12% ended; 14% resumed). Re-read the current BURS notice — Botswana has moved this rate more than once since 2021."
+      "notes": "Standard VAT 14%; compulsory registration above BWP 1 million and voluntary registration from BWP 500,000 through BWP 1 million subject to BURS approval. Reviewed 2026-07-22; monitor the 2025 reform Bill and 2026 remote-digital-services transition separately."
     },
     {
       "id": "rev-zm",
@@ -213,56 +287,286 @@
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "na-vat"],
       "notes": "Standard VAT 15%. Confirm the rate and the compulsory-registration threshold against NamRA guidance."
+    },
+    {
+      "id": "rev-td",
+      "country": "TD",
+      "authority": "Ministère des Finances, du Budget, de l'Economie et du Plan - Tchad",
+      "title": "Circulaire d'application de la loi de finances 2024 - taux définitifs de TVA",
+      "url": "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0",
+      "supportingUrls": [
+        "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/403_f415c0610b4b26d6bae5aeec20c82e81",
+        "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/438_afa372566d4acca63cb857e846d67eef",
+        "https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/454_94f28246efd69cb6a80af5e0e49b36e9"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["vatRate", "registrationThreshold", "classification", "invoicing"],
+      "tools": ["vat-calculator", "td-vat"],
+      "notes": "The 2024 application circular paragraphs 31-36 require provincial and communal centimes equal to 10% of base TVA, producing definitive invoice rates of 19.25% on the 17.5% base and 9.9% on the Article 238 9% base from 1 January 2024. The 9.9% and 0% paths require exact statutory classification evidence. Reviewed 2026-07-22."
+    },
+    {
+      "id": "rev-sz",
+      "country": "SZ",
+      "authority": "ERS (Eswatini Revenue Service)",
+      "title": "ERS — Eswatini VAT overview and current tax legislation",
+      "url": "https://www.ers.org.sz/VAT/Eswatini",
+      "supportingUrls": [
+        "https://www.ers.org.sz/LegalandPolicy/TaxLegislation"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": [
+        "vatRate",
+        "classification",
+        "schedules"
+      ],
+      "tools": [
+        "vat-calculator",
+        "sz-vat"
+      ],
+      "notes": "ERS states that VAT applies to most goods and services at 15%. VAT Act 2011 section 24 ties 0% to the Second Schedule; ERS currently lists the 2022 amendment and schedules and Legal Notice 130 of 2025. No registration threshold is claimed. Reviewed 2026-07-22."
+    },
+    {
+      "id": "rev-bi",
+      "country": "BI",
+      "authority": "OBR (Office Burundais des Recettes)",
+      "title": "OBR — Burundi VAT law, registration and electronic billing",
+      "url": "https://www.obr.bi/images/PDF/VULGARISATION_DES_LOIS_FISCALES_final.pdf",
+      "supportingUrls": [
+        "https://www.obr.bi/index.php/communiques/2528-communique-aux-contribuables-ayant-un-chiffre-d-affaires-de-25-millions-de-fbu",
+        "https://obr.bi/index.php/systeme-de-facturation-electronique-ebms"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["vatRate", "registrationThreshold", "classification", "invoicing", "filing"],
+      "tools": ["vat-calculator", "bi-vat"],
+      "notes": "VAT Law 2020 Article 15 sets 18% standard, 10% for exact intermediate classifications and 0% for exact listed operations. The 2026/27 OBR communique sets compulsory registration at taxable turnover of at least BIF 25 million since FY2025, VAT charging from 1 July 2026 and monthly declaration by the 15th. Electronic invoices must use OBR-approved billing. Reviewed 2026-07-23."
+    },
+    {
+      "id": "rev-sd",
+      "country": "SD",
+      "authority": "Sudan Tax Authority / Taxation Chamber",
+      "title": "Sudan Tax Authority — current VAT rate, scope, laws and regulations",
+      "url": "https://tax.gov.sd/en/newsen/",
+      "supportingUrls": [
+        "https://tax.gov.sd/en/value-added-tax-vat/",
+        "https://tax.gov.sd/en/tax-laws/"
+      ],
+      "sourceType": "revenue-authority",
+      "watch": "availability-and-content",
+      "fields": ["vatRate", "scope", "law"],
+      "tools": ["vat-calculator", "sd-vat"],
+      "notes": "The Tax Authority's 28 March 2026 clarification states that Article 22 of the 2001 VAT Law applies a fixed 17% rate, changeable only through legislation. No registration threshold, exemption, zero-rate or transaction classification is claimed by the calculator. Reviewed 2026-07-23."
     }
   ],
   "gaps": {
     "regulatorsWithoutUrl": [
-      { "country": "DZ", "authority": "DGI Algérie (Direction Générale des Impôts)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 19% + 9% reduced, unbound." },
-      { "country": "TN", "authority": "DGI Tunisie", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 19% + 7–13% reduced, unbound." },
-      { "country": "CM", "authority": "DGI Cameroun", "needs": ["vatRate", "registrationThreshold"], "note": "DB effective 19.25% (VAT + council surtax), unbound." },
-      { "country": "SN", "authority": "DGID (Direction Générale des Impôts et des Domaines)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "CI", "authority": "DGI Côte d'Ivoire", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "AO", "authority": "AGT (Administração Geral Tributária)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 14% + 5% reduced, unbound." },
-      { "country": "CD", "authority": "DGI RDC", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 16%, unbound." },
-      { "country": "MZ", "authority": "AT (Autoridade Tributária de Moçambique)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 16% (reduced from 17% in 2023), unbound — re-verify." },
-      { "country": "MW", "authority": "MRA (Malawi Revenue Authority)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 16.5%, unbound." },
-      { "country": "MG", "authority": "DGI Madagascar", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 20%, unbound." },
-      { "country": "DJ", "authority": "Direction des Impôts de Djibouti", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 10%, unbound." },
-      { "country": "SC", "authority": "SRC (Seychelles Revenue Commission)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "SZ", "authority": "ERS (Eswatini Revenue Service)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "LS", "authority": "RSL (Revenue Services Lesotho)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "CV", "authority": "DNRE Cabo Verde", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15% + 8% reduced, unbound." },
-      { "country": "LR", "authority": "LRA (Liberia Revenue Authority)", "needs": ["gstRate", "registrationThreshold"], "note": "GST 10% (Liberia uses GST, not VAT), unbound." },
-      { "country": "SL", "authority": "NRA (National Revenue Authority, Sierra Leone)", "needs": ["gstRate", "registrationThreshold"], "note": "GST 15% (Sierra Leone uses GST), unbound." },
-      { "country": "GM", "authority": "GRA (Gambia Revenue Authority)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "MR", "authority": "DGI Mauritanie", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 16%, unbound." },
-      { "country": "BJ", "authority": "DGI Bénin", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "BF", "authority": "DGI Burkina Faso", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "ML", "authority": "DGI Mali", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "NE", "authority": "DGI Niger", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 19%, unbound." },
-      { "country": "TG", "authority": "OTR (Office Togolais des Recettes)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "GN", "authority": "DGI Guinée", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "TD", "authority": "DGI Tchad", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "GA", "authority": "DGI Gabon", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "CG", "authority": "DGID Congo", "needs": ["vatRate", "registrationThreshold"], "note": "DB effective 18.9%, unbound." },
-      { "country": "GQ", "authority": "DGI Guinée Équatoriale", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "CF", "authority": "DGID Centrafrique", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 19%, unbound." },
-      { "country": "ST", "authority": "Direcção dos Impostos São Tomé", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15%, unbound." },
-      { "country": "SD", "authority": "Sudan Taxation Chamber", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 17%, unbound." },
-      { "country": "SS", "authority": "NRA (National Revenue Authority, South Sudan)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "BI", "authority": "OBR (Office Burundais des Recettes)", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 18%, unbound." },
-      { "country": "KM", "authority": "AGID Comores", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 10%, unbound." },
-      { "country": "GW", "authority": "DGCI Guiné-Bissau", "needs": ["vatRate", "registrationThreshold"], "note": "DB rate 15% (VAT introduced 2024 replacing sales tax), unbound — re-verify." }
+      {
+        "country": "TN",
+        "authority": "DGI Tunisie",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 19% + 7–13% reduced, unbound."
+      },
+      {
+        "country": "CM",
+        "authority": "DGI Cameroun",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB effective 19.25% (VAT + council surtax), unbound."
+      },
+      {
+        "country": "SN",
+        "authority": "DGID (Direction Générale des Impôts et des Domaines)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "CI",
+        "authority": "DGI Côte d'Ivoire",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "CD",
+        "authority": "DGI RDC",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 16%, unbound."
+      },
+      {
+        "country": "MZ",
+        "authority": "AT (Autoridade Tributária de Moçambique)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 16% (reduced from 17% in 2023), unbound — re-verify."
+      },
+      {
+        "country": "MW",
+        "authority": "MRA (Malawi Revenue Authority)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 16.5%, unbound."
+      },
+      {
+        "country": "MG",
+        "authority": "DGI Madagascar",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 20%, unbound."
+      },
+      {
+        "country": "DJ",
+        "authority": "Direction des Impôts de Djibouti",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 10%, unbound."
+      },
+      {
+        "country": "SC",
+        "authority": "SRC (Seychelles Revenue Commission)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15%, unbound."
+      },
+      {
+        "country": "LS",
+        "authority": "RSL (Revenue Services Lesotho)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15%, unbound."
+      },
+      {
+        "country": "CV",
+        "authority": "DNRE Cabo Verde",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15% + 8% reduced, unbound."
+      },
+      {
+        "country": "LR",
+        "authority": "LRA (Liberia Revenue Authority)",
+        "needs": ["gstRate", "registrationThreshold"],
+        "note": "GST 10% (Liberia uses GST, not VAT), unbound."
+      },
+      {
+        "country": "SL",
+        "authority": "NRA (National Revenue Authority, Sierra Leone)",
+        "needs": ["gstRate", "registrationThreshold"],
+        "note": "GST 15% (Sierra Leone uses GST), unbound."
+      },
+      {
+        "country": "GM",
+        "authority": "GRA (Gambia Revenue Authority)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15%, unbound."
+      },
+      {
+        "country": "MR",
+        "authority": "DGI Mauritanie",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 16%, unbound."
+      },
+      {
+        "country": "BF",
+        "authority": "DGI Burkina Faso",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "ML",
+        "authority": "DGI Mali",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "NE",
+        "authority": "DGI Niger",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 19%, unbound."
+      },
+      {
+        "country": "TG",
+        "authority": "OTR (Office Togolais des Recettes)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "GN",
+        "authority": "DGI Guinée",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "GA",
+        "authority": "DGI Gabon",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "CG",
+        "authority": "DGID Congo",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB effective 18.9%, unbound."
+      },
+      {
+        "country": "GQ",
+        "authority": "DGI Guinée Équatoriale",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15%, unbound."
+      },
+      {
+        "country": "CF",
+        "authority": "DGID Centrafrique",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 19%, unbound."
+      },
+      {
+        "country": "ST",
+        "authority": "Direcção dos Impostos São Tomé",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15%, unbound."
+      },
+      {
+        "country": "SS",
+        "authority": "NRA (National Revenue Authority, South Sudan)",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 18%, unbound."
+      },
+      {
+        "country": "KM",
+        "authority": "AGID Comores",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 10%, unbound."
+      },
+      {
+        "country": "GW",
+        "authority": "DGCI Guiné-Bissau",
+        "needs": ["vatRate", "registrationThreshold"],
+        "note": "DB rate 15% (VAT introduced 2024 replacing sales tax), unbound — re-verify."
+      }
     ],
     "noVatSystem": [
-      { "country": "SO", "authority": "None (no operational VAT/GST)", "note": "DB rate 0 with 'No VAT system'. A 0% result is definitional here, not missing data." },
-      { "country": "ER", "authority": "None (no operational VAT/GST)", "note": "DB rate 0 with 'No VAT system'." },
-      { "country": "LY", "authority": "None (no operational VAT/GST)", "note": "DB rate 0 with 'No VAT system'." }
+      {
+        "country": "SO",
+        "authority": "None (no operational VAT/GST)",
+        "note": "DB rate 0 with 'No VAT system'. A 0% result is definitional here, not missing data."
+      },
+      {
+        "country": "ER",
+        "authority": "None (no operational VAT/GST)",
+        "note": "DB rate 0 with 'No VAT system'."
+      },
+      {
+        "country": "LY",
+        "authority": "None (no operational VAT/GST)",
+        "note": "DB rate 0 with 'No VAT system'."
+      }
     ],
     "unsourcedClaims": [
-      { "field": "registrationThreshold", "why": "The DB carries a registration threshold for only the 10 headline markets, and several (e.g. ZA R2.3M vs SARS's R1m) need re-reading against the authority. Thresholds are shown for context, not as a compliance trigger; never advise a client to register or not on the DB figure alone." },
-      { "field": "api-vat.js VAT_DB", "why": "netlify/functions/api-vat.js has its own VAT_DB with lastUpdated:'2024-01-01' stamps (~2.5 years stale) that already drift from the flagship (e.g. Kenya's deleted 8% petroleum rate). Re-verify each row against its authority before trusting the API; the flagship DB is the current public table." },
-      { "field": "ghana.compositeRate", "why": "Ghana's 20% is a modelled effective charge (15% VAT + 2.5% NHIL + 2.5% GETFund). In practice NHIL/GETFund are flat-rate levies on the exclusive value and the interaction with VAT is more nuanced; the flat 20% is a planning approximation the tool flags with a rate notice." }
+      {
+        "field": "registrationThreshold",
+        "why": "The DB carries a registration threshold for only the 10 headline markets, and several (e.g. ZA R2.3M vs SARS's R1m) need re-reading against the authority. Thresholds are shown for context, not as a compliance trigger; never advise a client to register or not on the DB figure alone."
+      },
+      {
+        "field": "api-vat.js VAT_DB",
+        "why": "netlify/functions/api-vat.js has its own VAT_DB with lastUpdated:'2024-01-01' stamps (~2.5 years stale) that already drift from the flagship (e.g. Kenya's deleted 8% petroleum rate). Re-verify each row against its authority before trusting the API; the flagship DB is the current public table."
+      },
+      {
+        "field": "ghana.compositeRate",
+        "why": "Ghana's 20% is a modelled effective charge (15% VAT + 2.5% NHIL + 2.5% GETFund). In practice NHIL/GETFund are flat-rate levies on the exclusive value and the interaction with VAT is more nuanced; the flat 20% is a planning approximation the tool flags with a rate notice."
+      }
     ]
   }
 }

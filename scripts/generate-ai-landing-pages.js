@@ -3,12 +3,21 @@ const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
 const DATA_PATH = path.join(ROOT, "data", "ai", "vertical-landing-pages.json");
+const BUNDLE_MANIFEST_PATH = path.join(ROOT, "assets", "js", "bundles", "manifest.json");
 const BASE_URL = "https://afrotools.com";
 const promptExamples = require(path.join(ROOT, "assets", "js", "ai", "example-registry.js"));
 const { imageSizeFromUrl } = require("./lib/image-size.js");
 
 function readData() {
   return JSON.parse(fs.readFileSync(DATA_PATH, "utf8"));
+}
+
+function readBundlePaths() {
+  const manifest = JSON.parse(fs.readFileSync(BUNDLE_MANIFEST_PATH, "utf8"));
+  if (!manifest.core || !manifest.core.path || !manifest.chat || !manifest.chat.path) {
+    throw new Error("generate-ai-landing-pages: bundle manifest is missing core or chat paths");
+  }
+  return { core: manifest.core.path, chat: manifest.chat.path };
 }
 
 /**
@@ -126,11 +135,12 @@ function renderStructuredData(page, data) {
 
 function renderPage(page, data) {
   const canonical = BASE_URL + page.path;
+  const bundles = readBundlePaths();
   const primaryPrompt = pagePrimaryPrompt(page);
   const examplePrompts = pageExamplePrompts(page);
   const prompt = promptHref(primaryPrompt);
   return `<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js" lang="en">
+<html data-chat-bundle="${escapeHtml(bundles.chat)}" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -146,7 +156,7 @@ function renderPage(page, data) {
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
-  <script src="/assets/js/bundles/core.be3f97db.min.js" defer></script>
+  <script src="${escapeHtml(bundles.core)}" defer></script>
   <meta property="og:url" content="${escapeHtml(canonical)}">
   <meta property="og:title" content="${escapeHtml(page.metaTitle)}">
   <meta property="og:description" content="${escapeHtml(page.description)}">
@@ -167,7 +177,7 @@ function renderPage(page, data) {
 <body>
   <afro-navbar></afro-navbar>
   <main>
-    <section class="ai-landing-hero" style="--hero-image:${page.heroBackground ? `url('${escapeHtml(page.heroBackground)}')` : "none"}">
+    <section class="ai-landing-hero" style="--hero-image:${(page.heroBackground || page.heroImage) ? `url('${escapeHtml(page.heroBackground || page.heroImage)}')` : "none"}">
       <div class="ai-landing-wrap">
         <span class="ai-kicker">${escapeHtml(page.kicker)}</span>
         <h1>${escapeHtml(page.title)}</h1>

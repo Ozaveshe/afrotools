@@ -1,1483 +1,173 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en" data-tool="za-uif">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SA UIF Calculator & Claim Guide | AfroTools</title>
-<meta name="description" content="Calculate your UIF benefits, check credit days, and get step-by-step claim guides for retrenchment, maternity, illness, and short-time. South Africa's most complete UIF tool — correct IRR formula, all claim types, uFiling guide.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="SA UIF Calculator & Claim Guide | AfroTools">
-<meta property="og:description" content="UIF benefit calculator, claim wizard, credits tracker, maternity guide, short-time calculator, and employer compliance checker for South Africa.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/tools/za-uif/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<style>
-/* ── UIF tool — sky blue accent, uif- prefix ── */
-:root{--uif-sky:#0369A1;--uif-dark:#075985;--uif-pale:#F0F9FF;--uif-border:#BAE6FD;--uif-text:#0c4a6e}
-html,body{max-width:100%;overflow-x:hidden}
-
-/* Hero */
-.uif-hero{background:linear-gradient(135deg,#0c2a45 0%,#0369A1 55%,#0284C7 100%);padding:44px 0 36px}
-.uif-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.uif-breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.35);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.uif-breadcrumb a{color:rgba(255,255,255,.35);text-decoration:none}
-.uif-breadcrumb span{color:#BAE6FD}
-.uif-hero h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-.uif-hero h1 em{color:#BAE6FD;font-style:normal}
-.uif-hero-sub{font-size:.88rem;color:rgba(255,255,255,.5);line-height:1.6;max-width:580px;margin-bottom:14px}
-.uif-badges{display:flex;flex-wrap:wrap;gap:7px}
-.uif-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em;background:rgba(186,230,253,.2);color:#BAE6FD;border:1px solid rgba(186,230,253,.4)}
-
-/* Main */
-.uif-main{padding:0 0 72px;background:#f8fafc}
-.uif-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-
-/* Tab nav */
-.uif-tab-nav{display:flex;gap:0;overflow-x:auto;border-bottom:2px solid #e2e8f0;background:#fff;scrollbar-width:none}
-.uif-tab-nav::-webkit-scrollbar{display:none}
-.uif-tab-btn{flex-shrink:0;padding:14px 18px;font-size:.78rem;font-weight:600;color:#64748b;background:none;border:none;border-bottom:3px solid transparent;cursor:pointer;white-space:nowrap;margin-bottom:-2px;transition:color .15s,border-color .15s;font-family:inherit}
-.uif-tab-btn:hover{color:var(--uif-sky)}
-.uif-tab-btn.active{color:var(--uif-sky);border-bottom-color:var(--uif-sky)}
-
-/* Panels */
-.uif-panels{padding-top:24px}
-.uif-panel{display:none}
-.uif-panel.active{display:block}
-
-/* Card */
-.uif-card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 6px rgba(0,0,0,.04)}
-.uif-card+.uif-card{margin-top:16px}
-.uif-card-head{padding:14px 20px;border-bottom:1px solid #f1f5f9;background:#f8fafc;display:flex;align-items:center;gap:8px}
-.uif-card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:#0f172a}
-
-/* Form */
-.uif-label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-.uif-input,.uif-select{width:100%;padding:9px 12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.84rem;background:#f8fafc;font-family:inherit;box-sizing:border-box;color:#0f172a}
-.uif-input:focus,.uif-select:focus{outline:none;border-color:var(--uif-sky);box-shadow:0 0 0 3px rgba(3,105,161,.12)}
-.uif-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
-.uif-row-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
-.uif-field{margin-bottom:14px}
-
-/* Buttons */
-.uif-btn{display:block;width:100%;padding:12px;border:none;border-radius:8px;font-size:.84rem;font-weight:700;cursor:pointer;font-family:inherit;transition:opacity .15s;margin-top:4px}
-.uif-btn:hover{opacity:.88}
-.uif-btn-primary{background:linear-gradient(135deg,#075985,#0369A1);color:#fff}
-
-/* Layout */
-.uif-calc-layout{display:grid;grid-template-columns:1fr 320px;gap:20px;align-items:start}
-.uif-card-body{padding:20px}
-
-/* Result boxes */
-.uif-result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:16px}
-.uif-result-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px;text-align:center}
-.uif-result-box .rnum{font-size:1.25rem;font-weight:800;color:var(--uif-sky)}
-.uif-result-box .rlbl{font-size:.66rem;color:#64748b;font-weight:600;margin-top:3px;text-transform:uppercase;letter-spacing:.04em}
-.uif-result-box.hl{background:linear-gradient(135deg,var(--uif-pale),#e0f2fe);border-color:var(--uif-border);grid-column:1/-1}
-.uif-result-box.hl .rnum{font-size:1.8rem;color:var(--uif-dark)}
-
-/* Sidebar info */
-.uif-info-box{background:var(--uif-pale);border:1px solid var(--uif-border);border-radius:8px;padding:16px}
-.uif-info-box+.uif-info-box{margin-top:12px}
-.uif-info-box h4{font-size:.72rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--uif-dark);margin-bottom:8px}
-.uif-info-box p,.uif-info-box li{font-size:.78rem;color:var(--uif-text);line-height:1.65}
-.uif-info-box ul{padding-left:16px;margin:6px 0}
-.uif-info-box li{margin-bottom:4px}
-.uif-info-box ol{padding-left:16px;margin:6px 0}
-.uif-info-box ol li{margin-bottom:6px}
-
-/* Formula display */
-.uif-formula{background:#0f172a;border-radius:8px;padding:14px 18px;margin:14px 0;font-family:'Courier New',monospace;font-size:.82rem;color:#7dd3fc;line-height:1.9}
-.uif-formula .cmt{color:#475569}
-
-/* IRR table */
-.uif-tbl{width:100%;border-collapse:collapse;font-size:.8rem;margin-top:14px}
-.uif-tbl th{background:var(--uif-pale);color:var(--uif-dark);font-size:.68rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:8px 12px;text-align:left;border-bottom:1px solid var(--uif-border)}
-.uif-tbl td{padding:9px 12px;border-bottom:1px solid #f1f5f9;color:#334155}
-.uif-tbl tr:last-child td{border-bottom:none}
-.uif-tbl tr:hover td{background:#f8fafc}
-.uif-tbl .cap-tag{font-size:.66rem;color:#94a3b8;margin-left:4px}
-
-/* Wizard */
-.uif-wizard-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:10px;margin-bottom:20px}
-.uif-type-btn{padding:12px 14px;border:2px solid #e2e8f0;border-radius:8px;background:#fff;font-size:.8rem;font-weight:600;color:#475569;cursor:pointer;text-align:left;font-family:inherit;transition:all .15s;line-height:1.4}
-.uif-type-btn:hover{border-color:var(--uif-sky);color:var(--uif-sky)}
-.uif-type-btn.active{border-color:var(--uif-sky);background:var(--uif-pale);color:var(--uif-dark)}
-.uif-type-btn .icon{font-size:1.3rem;display:block;margin-bottom:5px}
-.uif-steps{display:none}
-.uif-steps.active{display:block}
-.uif-step-list{list-style:none;padding:0;margin:0}
-.uif-step-item{display:flex;gap:14px;padding:14px 0;border-bottom:1px solid #f1f5f9}
-.uif-step-item:last-child{border-bottom:none}
-.uif-step-num{flex-shrink:0;width:28px;height:28px;background:var(--uif-sky);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.78rem;font-weight:800;margin-top:1px}
-.uif-step-body h5{font-size:.84rem;font-weight:700;color:#0f172a;margin-bottom:4px}
-.uif-step-body p{font-size:.78rem;color:#475569;line-height:1.6;margin:0}
-.form-tag{display:inline-block;padding:2px 8px;background:#dbeafe;color:#1e40af;border-radius:4px;font-size:.68rem;font-weight:700;margin-top:5px;margin-right:4px}
-
-/* Alerts */
-.uif-alert{padding:12px 16px;border-radius:8px;font-size:.8rem;line-height:1.6;margin:14px 0}
-.uif-alert-info{background:var(--uif-pale);border:1px solid var(--uif-sky);color:var(--uif-text);border-radius:8px}
-.uif-alert-warn{background:#fffbeb;border:1px solid #f59e0b;color:#78350f;border-radius:8px}
-.uif-alert-ok{background:#f0fdf4;border:1px solid #22c55e;color:#14532d;border-radius:8px}
-
-/* Progress bar */
-.uif-progress-wrap{background:#e2e8f0;border-radius:99px;height:12px;overflow:hidden;margin:8px 0}
-.uif-progress-bar{height:100%;background:linear-gradient(90deg,var(--uif-sky),#0284C7);border-radius:99px;transition:width .6s ease}
-
-/* Credits output boxes */
-.uif-credits-out{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:16px}
-
-/* uFiling guide steps */
-.uif-guide-steps{display:flex;flex-direction:column}
-.uif-guide-step{display:flex;gap:18px;padding:18px 0;border-bottom:1px solid #f1f5f9}
-.uif-guide-step:last-child{border-bottom:none}
-.uif-guide-num{flex-shrink:0;width:36px;height:36px;background:linear-gradient(135deg,var(--uif-dark),var(--uif-sky));color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.84rem;font-weight:800}
-.uif-guide-step h5{font-size:.9rem;font-weight:700;color:#0f172a;margin-bottom:5px}
-.uif-guide-step p{font-size:.8rem;color:#475569;line-height:1.65;margin:0}
-.uif-guide-step ul{font-size:.8rem;color:#475569;line-height:1.65;margin:6px 0;padding-left:18px}
-
-/* Rejection list */
-.uif-reject-list{list-style:none;padding:0;margin:0}
-.uif-reject-list li{display:flex;gap:10px;padding:8px 0;font-size:.8rem;color:#475569;line-height:1.5;border-bottom:1px solid #f8fafc}
-.uif-reject-list li:before{content:"\2715";color:#ef4444;font-weight:700;flex-shrink:0}
-
-/* Employer checklist */
-.uif-checklist{list-style:none;padding:0;margin:0}
-.uif-checklist-item{display:flex;align-items:flex-start;gap:12px;padding:12px 0;border-bottom:1px solid #f1f5f9}
-.uif-checklist-item:last-child{border-bottom:none}
-.uif-checklist-item input[type="checkbox"]{flex-shrink:0;width:18px;height:18px;accent-color:var(--uif-sky);margin-top:2px;cursor:pointer}
-.uif-checklist-item label{font-size:.84rem;color:#334155;line-height:1.5;cursor:pointer}
-.uif-checklist-item label .chk-sub{display:block;font-size:.75rem;color:#64748b;font-weight:500;margin-top:2px}
-
-/* Q&A */
-.uif-qa{border:1px solid #e2e8f0;border-radius:8px;overflow:hidden}
-.uif-qa-item{border-bottom:1px solid #e2e8f0}
-.uif-qa-item:last-child{border-bottom:none}
-.uif-qa-item summary{font-weight:700;font-size:.84rem;cursor:pointer;padding:12px 16px;color:#0f172a;list-style:none;display:flex;align-items:center;justify-content:space-between}
-.uif-qa-item summary::-webkit-details-marker{display:none}
-.uif-qa-item summary::after{content:'+';color:var(--uif-sky);font-size:1.1rem;font-weight:400}
-.uif-qa-item[open] summary::after{content:'\2212'}
-.uif-qa-item p{padding:0 16px 12px;font-size:.82rem;color:#475569;line-height:1.7;margin:0}
-
-/* SEO section */
-.uif-seo{max-width:800px;margin:0 auto;padding:52px 24px}
-.uif-seo h2{font-size:1.25rem;font-weight:800;margin-bottom:12px;color:#0f172a}
-.uif-seo p{font-size:.88rem;color:#475569;line-height:1.75;margin-bottom:14px}
-.uif-faq-item{border-bottom:1px solid #e2e8f0;padding:14px 0}
-.uif-faq-item summary{font-weight:700;font-size:.88rem;cursor:pointer;color:#0f172a}
-.uif-faq-item p{margin-top:8px;font-size:.84rem;color:#475569;line-height:1.7}
-
-/* Mobile */
-@media(max-width:768px){
-  .uif-calc-layout{grid-template-columns:1fr}
-  .uif-row{grid-template-columns:1fr}
-  .uif-row-3{grid-template-columns:1fr 1fr}
-  .uif-credits-out{grid-template-columns:1fr 1fr}
-  .uif-wizard-grid{grid-template-columns:1fr 1fr}
-  .uif-tab-btn{padding:12px 14px;font-size:.75rem}
-}
-@media(max-width:480px){
-  .uif-row-3,.uif-credits-out{grid-template-columns:1fr}
-  .uif-wizard-grid{grid-template-columns:1fr 1fr}
-}
-
-/* ── Skip link ── */
-.uif-skip-link{position:absolute;left:-9999px;top:auto;width:1px;height:1px;overflow:hidden;z-index:9999}
-.uif-skip-link:focus{position:fixed;top:10px;left:10px;width:auto;height:auto;padding:10px 18px;background:var(--uif-sky);color:#fff;font-weight:700;font-size:.84rem;border-radius:6px;text-decoration:none;outline:3px solid #fff;outline-offset:2px}
-
-/* ── Focus rings — WCAG 2.1 AA ── */
-.uif-tab-btn:focus-visible{outline:3px solid var(--uif-sky);outline-offset:2px;border-radius:4px}
-.uif-btn:focus-visible{outline:3px solid var(--uif-sky);outline-offset:3px;border-radius:8px}
-.uif-type-btn:focus-visible{outline:3px solid var(--uif-sky);outline-offset:2px}
-.uif-qa-item summary:focus-visible,.uif-faq-item summary:focus-visible{outline:3px solid var(--uif-sky);outline-offset:2px;border-radius:4px}
-.uif-checklist-item input[type="checkbox"]:focus-visible{outline:3px solid var(--uif-sky);outline-offset:2px}
-
-/* ── Panel fade animation ── */
-@keyframes uifPanelIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:translateY(0)}}
-.uif-panel.active{animation:uifPanelIn .2s ease}
-
-/* ── prefers-reduced-motion ── */
-@media(prefers-reduced-motion:reduce){
-  .uif-panel.active{animation:none}
-  .uif-progress-bar{transition:none}
-  .uif-tab-btn,.uif-btn,.uif-type-btn,.uif-input,.uif-select{transition:none}
-}
-
-/* ── Sticky sidebar (desktop) ── */
-@media(min-width:769px){.uif-sticky{position:sticky;top:24px}}
-
-/* ── Mobile: IRR table horizontal scroll ── */
-.uif-tbl-wrap{overflow-x:auto;-webkit-overflow-scrolling:touch;border-radius:8px;border:1px solid #e2e8f0;margin-top:14px}
-.uif-tbl-wrap>.uif-tbl{margin-top:0;border:none;min-width:480px}
-
-/* ── Hero stats strip ── */
-.uif-hero-stats{display:flex;margin-top:20px;background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.14);border-radius:10px;overflow:hidden;flex-wrap:wrap}
-.uif-hero-stat{padding:11px 20px;flex:1;min-width:110px}
-.uif-hero-stat+.uif-hero-stat{border-left:1px solid rgba(255,255,255,.12)}
-.uif-hero-stat .sval{font-size:1.1rem;font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.2}
-.uif-hero-stat .slbl{font-size:.62rem;color:rgba(255,255,255,.45);font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-top:2px}
-
-/* ── Result highlight top accent ── */
-.uif-result-box.hl{border-top:3px solid var(--uif-sky)}
-.uif-result-box.hl .rnum{color:var(--uif-dark)}
-
-/* ── SVG icons in wizard type buttons ── */
-.uif-type-btn{display:flex;flex-direction:column;align-items:flex-start;min-height:70px}
-.uif-type-btn .uif-icon{width:20px;height:20px;display:block;margin-bottom:6px;flex-shrink:0;opacity:.75;transition:opacity .15s}
-.uif-type-btn:hover .uif-icon,.uif-type-btn.active .uif-icon{opacity:1}
-
-/* ── IRR table: highlight rows ── */
-.uif-tbl .row-hi td:nth-child(3){color:#15803d;font-weight:700}
-.uif-tbl .row-mid td:nth-child(3){color:var(--uif-sky);font-weight:700}
-.uif-tbl .row-cap td:nth-child(3){color:#92400e;font-weight:700}
-.uif-tbl .row-hi td:first-child{color:#15803d}
-.uif-tbl .row-cap{opacity:.85}
-
-/* ── Checked checklist label ── */
-.uif-checklist-item input:checked~label{color:#14532d}
-.uif-checklist-item input:checked~label .chk-sub{color:#166534}
-
-/* ── Loading button ── */
-.uif-btn[aria-busy="true"]{opacity:.68;cursor:wait;pointer-events:none}
-.uif-btn[aria-busy="true"]::after{content:"\00a0\2026"}
-</style>
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script>
-<script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/engines/za-uif-engine.js?v=3872ffe5"></script>
-<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="SA UIF Calculator & Claim Guide | AfroTools">
-<meta name="twitter:description" content="Calculate your UIF benefits. Full claim wizard, credits tracker, maternity guide, short-time calculator, employer compliance checker.">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>South Africa UIF Calculator: Contributions & Benefits</title>
+  <meta name="description" content="Calculate South Africa UIF contributions and plan unemployment or maternity benefits using current SARS and Labour formulas, caps and source notes.">
+  <meta name="robots" content="index,follow,max-image-preview:large">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="South Africa UIF Calculator">
+  <meta property="og:description" content="UIF contribution and benefit planning with current official formulas and transparent assumptions.">
+  <meta property="og:url" content="https://afrotools.com/tools/za-uif/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
+  <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="South Africa UIF Calculator: Contributions &amp; Benefits">
+<meta name="twitter:description" content="Calculate South Africa UIF contributions and plan unemployment or maternity benefits using current SARS and Labour formulas, caps and source notes.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/za-uif.webp">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"SA UIF Calculator","item":"https://afrotools.com/tools/za-uif/"}]}
-</script>
-<meta property="article:modified_time" content="2026-04-04">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
+  <link rel="stylesheet" href="/assets/css/za-uif-vip.css?v=98ea07ae">
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
+  <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+  <script src="/engines/za-uif-engine.js?v=287d019c" defer></script>
+  <script src="/assets/js/pages/za-uif-vip.js?v=3948fcf6" defer></script>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "SA UIF Calculator & Claim Guide",
-  "description": "Calculate your UIF benefits, check credit days, and get step-by-step claim guides for retrenchment, maternity, illness, and short-time. South Africa",
+  "name": "South Africa UIF Calculator",
   "url": "https://afrotools.com/tools/za-uif/",
-  "inLanguage": "en",
   "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
+  "operatingSystem": "Any",
+  "inLanguage": "en",
+  "isAccessibleForFree": true,
+  "description": "Calculate UIF payroll contributions and planning estimates for unemployment and maternity benefits in South Africa.",
+  "dateModified": "2026-07-22",
   "author": {
     "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
+    "name": "AfroTools"
   },
   "image": "https://afrotools.com/assets/img/tools/za-uif.webp"
 }
 </script>
+  <script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Does this calculate reduced-work-time benefits?","acceptedAnswer":{"@type":"Answer","text":"No. Reduced-work-time is a statutory top-up only when current total income is below the wholly-unemployed benefit level. A lost salary multiplied by the IRR is not the official rule."}},{"@type":"Question","name":"Are adoption and parental claims the same as maternity?","acceptedAnswer":{"@type":"Answer","text":"No. They have separate benefit and leave conditions. This route keeps them guidance-only instead of applying the 121-day maternity calculation."}},{"@type":"Question","name":"Where is my data stored?","acceptedAnswer":{"@type":"Answer","text":"Inputs and results remain in this page while it is open. They are not uploaded and are not saved to local storage."}}]}
+</script>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"My employer is paying full salary — do I still claim UIF?","acceptedAnswer":{"@type":"Answer","text":"Yes. UIF maternity benefit is paid directly to you, not your employer. However, if your employer pays full salary during maternity leave, they may legally deduct the UIF amount from their payment — check your employment contract or maternity policy . If your contract is silent on this, you receive both."}},{"@type":"Question","name":"Can I claim before my baby is born?","acceptedAnswer":{"@type":"Answer","text":"Yes. Submit your claim before birth using the expected due date on the UI-2.2 medical certificate. This allows benefits to start from the first day of your maternity leave. You don't need to wait for delivery."}},{"@type":"Question","name":"What if I have a miscarriage or stillbirth?","acceptedAnswer":{"@type":"Answer","text":"You can still claim maternity UIF benefit in the case of a miscarriage or stillbirth. The same forms apply. There is no minimum period of pregnancy required by the UIF Act."}},{"@type":"Question","name":"Can my partner (commissioning parent) also claim?","acceptedAnswer":{"@type":"Answer","text":"Yes. Commissioning parents in a surrogacy arrangement can claim the same maternity benefit (up to 121 days) upon receiving the commissioning parent court order under the Children's Act."}},{"@type":"Question","name":"What is the difference between maternity leave and UIF maternity benefit?","acceptedAnswer":{"@type":"Answer","text":"The BCEA grants you 4 consecutive months of unpaid maternity leave as a legal right — employers cannot require you to work for 6 weeks after birth. UIF maternity benefit is the financial payment that covers you during this period. They are different things: one is a leave entitlement, the other is an insurance payout."}},{"@type":"Question","name":"How much will I get from UIF?","acceptedAnswer":{"@type":"Answer","text":"UIF pays 38%–58% of your daily insurable earnings depending on your salary level. Lower earners receive a higher replacement rate. For someone earning R10,000/month, the monthly benefit is approximately R5,000. For someone at the R17,712 ceiling, the maximum monthly benefit is approximately R7,300. The exact formula is: IRR% = 29.2 + (7173.92 ÷ daily remuneration)."}},{"@type":"Question","name":"Can I claim UIF if I resigned?","acceptedAnswer":{"@type":"Answer","text":"Generally no — UIF unemployment benefits are for involuntary loss of income. However, if you resigned due to constructive dismissal (working conditions made intolerable by your employer), you may qualify. Maternity, illness, and adoption benefits apply regardless of how your employment ended."}},{"@type":"Question","name":"How long does UIF take to pay out?","acceptedAnswer":{"@type":"Answer","text":"Processing typically takes 6–8 weeks from submission. If you haven't received a decision after 8 weeks, follow up using your reference number on uFiling or call 0800 030 007 (free). Once approved, payments are made monthly directly to your bank account."}},{"@type":"Question","name":"What is the difference between UIF credit days and benefit duration?","acceptedAnswer":{"@type":"Answer","text":"Credit days are what you have available based on your employment history (1 per 4 working days, max 238). Benefit duration is the actual number of days you will be paid — limited by both your available credit days and the maximum allowed for your claim type (e.g., 121 days for maternity, 238 days for unemployment/illness). You can only receive benefits for as many days as you have credits."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"South Africa UIF Calculator: Contributions & Benefits","item":"https://afrotools.com/tools/za-uif/"}]}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/za-uif/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/za-uif/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/za-uif/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/za-uif/">
 </head>
-<body class="top-level-page-ui-refresh">
-<a class="uif-skip-link" href="#uif-main">Skip to calculator</a>
-<afro-navbar></afro-navbar>
-
-<!-- ═══ HERO ═══ -->
-<section class="uif-hero">
-<div class="uif-hero-inner">
-<div class="uif-breadcrumb"><a href="/">Home</a> / <a href="/tools/">Tools</a> / <span>SA UIF</span></div>
-<h1>SA UIF <em>Calculator &amp; Claim Guide</em></h1>
-<p class="uif-hero-sub">You've paid in. Now know what you can claim. Calculate benefits, check your credit days, and get step-by-step guides for every UIF claim type.</p>
-<div class="uif-badges">
-  <span class="uif-badge">2026 Rates</span>
-  <span class="uif-badge">South Africa</span>
-  <span class="uif-badge">Correct IRR Formula</span>
-  <span class="uif-badge">All Claim Types</span>
-  <span class="uif-badge">uFiling Guide</span>
-  <span class="uif-badge">Employer Compliance</span>
-</div>
-<div class="uif-hero-stats" aria-label="Key UIF facts">
-  <div class="uif-hero-stat">
-    <div class="sval">R 7,324</div>
-    <div class="slbl">Max Monthly Benefit</div>
-  </div>
-  <div class="uif-hero-stat">
-    <div class="sval">238 days</div>
-    <div class="slbl">Max Claim Period</div>
-  </div>
-  <div class="uif-hero-stat">
-    <div class="sval">38–58%</div>
-    <div class="slbl">Income Replacement</div>
-  </div>
-  <div class="uif-hero-stat">
-    <div class="sval">5 types</div>
-    <div class="slbl">Claim Categories</div>
-  </div>
-</div>
-</div>
-</section>
-
-<!-- ═══ MAIN ═══ -->
-<section class="uif-main" id="uif-main">
-<div class="uif-inner">
-
-<!-- Tab nav -->
-<nav class="uif-tab-nav" role="tablist" aria-label="UIF tool sections">
-  <button type="button" class="uif-tab-btn active" data-tab="calc" role="tab" aria-selected="true"  aria-controls="panel-calc">Calculator</button>
-  <button type="button" class="uif-tab-btn" data-tab="wizard"   role="tab" aria-selected="false" aria-controls="panel-wizard">Claim Wizard</button>
-  <button type="button" class="uif-tab-btn" data-tab="credits"  role="tab" aria-selected="false" aria-controls="panel-credits">UIF Credits</button>
-  <button type="button" class="uif-tab-btn" data-tab="maternity" role="tab" aria-selected="false" aria-controls="panel-maternity">Maternity</button>
-  <button type="button" class="uif-tab-btn" data-tab="shorttime" role="tab" aria-selected="false" aria-controls="panel-shorttime">Short-Time</button>
-  <button type="button" class="uif-tab-btn" data-tab="ufiling"  role="tab" aria-selected="false" aria-controls="panel-ufiling">uFiling Guide</button>
-  <button type="button" class="uif-tab-btn" data-tab="employer" role="tab" aria-selected="false" aria-controls="panel-employer">Employer</button>
-</nav>
-
-<div class="uif-panels">
-
-<!-- ═══════════════ TAB 1: CALCULATOR ═══════════════ -->
-<div id="panel-calc" class="uif-panel active">
-<div class="uif-calc-layout">
-<div>
-  <!-- Input -->
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Your Details</span></div>
-    <div class="uif-card-body">
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="calc-salary">Monthly Gross Salary (R)</label>
-          <input class="uif-input" type="number" id="calc-salary" value="25000" min="0" step="500">
-        </div>
-        <div>
-          <label class="uif-label" for="calc-type">Claim Type</label>
-          <select class="uif-select" id="calc-type">
-            <option value="unemployment">Unemployment / Retrenchment</option>
-            <option value="illness">Illness (up to 8 months)</option>
-            <option value="maternity">Maternity (up to 17.32 weeks)</option>
-            <option value="adoption">Adoption / Commissioning Parent</option>
-            <option value="death">Death (Dependants)</option>
-          </select>
-        </div>
+<body class="uif-page" data-locale="en">
+  <a class="uif-skip" href="#uif-main">Skip to calculator</a>
+  <afro-navbar></afro-navbar>
+  <main class="uif-shell" id="uif-main">
+    <header class="uif-hero">
+      <div>
+        <p class="uif-kicker">South Africa · verified 22 July 2026</p>
+        <h1>UIF numbers you can inspect, not just trust.</h1>
+        <p class="uif-lede">Calculate the 1% employee and 1% employer contribution, or make a clearly labelled planning estimate for ordinary unemployment and maternity benefits. Every important assumption stays visible.</p>
       </div>
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="calc-start">Employment Start Date</label>
-          <input class="uif-input" type="date" id="calc-start" value="2020-01-01">
-        </div>
-        <div>
-          <label class="uif-label" for="calc-end">Employment End Date</label>
-          <input class="uif-input" type="date" id="calc-end">
-        </div>
+      <aside class="uif-hero-note" aria-label="Important scope">
+        <strong>Planning, not a claim decision</strong>
+        <p>This local-first tool sends no salary or claim information to a server. UIF decides eligibility, credit days and approved payments.</p>
+        <span class="uif-privacy">Private in this browser</span>
+      </aside>
+    </header>
+
+    <section class="uif-facts" aria-label="Current UIF facts">
+      <div class="uif-fact"><strong>1% + 1%</strong><span>Employee and employer</span></div>
+      <div class="uif-fact"><strong>R17,712</strong><span>Monthly contribution ceiling</span></div>
+      <div class="uif-fact"><strong>365 days</strong><span>Maximum credits in four years</span></div>
+      <div class="uif-fact"><strong>38%–60%</strong><span>Ordinary sliding replacement range</span></div>
+    </section>
+
+    <div class="uif-tabs" role="tablist" aria-label="UIF calculation type">
+      <button class="uif-tab" id="uif-contribution-tab" type="button" role="tab" aria-selected="true" aria-controls="uif-contribution-panel">Contributions</button>
+      <button class="uif-tab" id="uif-benefit-tab" type="button" role="tab" aria-selected="false" aria-controls="uif-benefit-panel">Unemployment plan</button>
+      <button class="uif-tab" id="uif-maternity-tab" type="button" role="tab" aria-selected="false" aria-controls="uif-maternity-panel">Maternity plan</button>
+    </div>
+
+    <section class="uif-panel" id="uif-contribution-panel" role="tabpanel" aria-labelledby="uif-contribution-tab">
+      <div class="uif-workspace">
+        <article class="uif-card">
+          <h2>Monthly UIF contribution</h2>
+          <p class="uif-card-intro">Use UIF-liable monthly remuneration before the employee deduction. The ceiling and statutory rates are fixed in the reviewed engine.</p>
+          <form class="uif-form-grid" id="uif-contribution-form">
+            <div class="uif-field"><label for="uif-remuneration">Monthly UIF-liable remuneration (R)</label><input id="uif-remuneration" type="number" min="0" step="0.01" value="25000" inputmode="decimal" required></div>
+            <div class="uif-field"><label for="uif-employees">Employees at this remuneration</label><input id="uif-employees" type="number" min="1" step="1" value="1" inputmode="numeric" required></div>
+            <div class="uif-field"><label for="uif-months">Months in planning period</label><input id="uif-months" type="number" min="1" step="1" value="1" inputmode="numeric" required></div>
+            <div class="uif-actions"><button class="uif-button uif-button-primary" type="submit">Calculate contribution</button><button class="uif-button" type="button" id="uif-example-contribution">Use team example</button></div>
+          </form>
+          <div class="uif-results" id="uif-contribution-results" aria-live="polite"></div>
+        </article>
+        <aside class="uif-side">
+          <section class="uif-card uif-method"><h3>Contribution method</h3><ul><li>Base = lower of UIF-liable remuneration and R17,712.</li><li>Employee = 1% of base.</li><li>Employer = 1% of base.</li><li>Combined maximum = R354.24 monthly per employee.</li></ul></section>
+          <section class="uif-card uif-source"><h3>Official contribution source</h3><p><a href="https://www.sars.gov.za/types-of-tax/unemployment-insurance-fund/" rel="noopener">SARS: Unemployment Insurance Fund</a></p><p>Confirms the rates, ceiling and employer payment framework.</p></section>
+        </aside>
       </div>
-      <div class="uif-field">
-        <label class="uif-label" for="calc-prior">Prior UIF Claim Days (if any)</label>
-        <input aria-label="Line item amount" class="uif-input" type="number" id="calc-prior" value="0" min="0" max="238" placeholder="0">
+    </section>
+
+    <section class="uif-panel" id="uif-benefit-panel" role="tabpanel" aria-labelledby="uif-benefit-tab" hidden>
+      <div class="uif-workspace">
+        <article class="uif-card">
+          <h2>Ordinary unemployment benefit plan</h2>
+          <p class="uif-card-intro">Enter credit days from your UIF record or official confirmation. This calculator does not infer credits from dates because contribution records and earlier claims can change the balance.</p>
+          <form class="uif-form-grid" id="uif-benefit-form">
+            <div class="uif-field"><label for="uif-average">Average monthly remuneration (R)</label><input id="uif-average" type="number" min="0" step="0.01" value="12000" inputmode="decimal" required></div>
+            <div class="uif-field"><label for="uif-credits">Available verified credit days</label><input id="uif-credits" type="number" min="0" max="365" step="1" value="238" inputmode="numeric" required><small>Credits accrue at one day per four days contributed, up to 365 days in the prior four-year cycle.</small></div>
+            <div class="uif-field"><label for="uif-requested">Days to plan</label><input id="uif-requested" type="number" min="0" max="365" step="1" value="238" inputmode="numeric" required></div>
+            <div class="uif-actions"><button class="uif-button uif-button-primary" type="submit">Calculate planning estimate</button><button class="uif-button" type="button" id="uif-example-benefit">Use 260-day example</button></div>
+          </form>
+          <div class="uif-results" id="uif-benefit-results" aria-live="polite"></div>
+        </article>
+        <aside class="uif-side">
+          <section class="uif-card uif-method"><h3>Ordinary benefit method</h3><p class="uif-formula">Y1 = min(monthly pay, 17,712) × 12 ÷ 365<br>IRR% = 29.2 + 7,173.92 ÷ (232.92 + Y1)</p><ul><li>IRR is bounded to 38%–60% for days 1–238.</li><li>Days 239–365 use a flat 20% rate.</li></ul></section>
+          <section class="uif-card uif-source"><h3>Official benefit source</h3><p><a href="https://www.labour.gov.za/DocumentCenter/Publications/Unemployment%20Insurance%20Fund/EASY%20AID%20Guide%20Spreadsheet%20Application.pdf" rel="noopener">Department of Employment and Labour: UIF Easy Aid Guide</a></p><p>The guide supplies the credit-day tiers and income replacement formula.</p></section>
+        </aside>
       </div>
-      <button type="button" class="uif-btn uif-btn-primary" id="btn-calc" onclick="uifCalcRun()">Calculate UIF Benefit</button>
-    </div>
-  </div>
+    </section>
 
-  <!-- Result -->
-  <div class="uif-card" id="uif-result-card" style="display:none">
-    <div class="uif-card-head"><span class="uif-card-title">Your UIF Benefit Estimate</span></div>
-    <div class="uif-card-body">
-      <div class="uif-result-grid" id="uif-result-grid"></div>
-      <div id="uif-result-actions" style="display:flex;gap:8px;margin-top:18px;flex-wrap:wrap"></div>
-    </div>
-  </div>
-
-  <!-- IRR Deep Dive -->
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">How Much Will I Receive? — The IRR Formula</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:12px">UIF uses a sliding <strong>Income Replacement Rate (IRR)</strong>. Lower earners get a higher replacement rate — up to 58%. Higher earners receive 38%. The official formula:</p>
-      <div class="uif-formula">
-        IRR (%) = 29.2 + (7173.92 &divide; daily remuneration)<br>
-        <span class="cmt">// e.g. daily = R590.40 (R17,712/month) &rarr; IRR = 41.3%</span><br>
-        <span class="cmt">// Capped at 58% (low earners) and floored at 38% (high earners)</span><br>
-        <span class="cmt">// Max daily benefit: R 632.84 | Insurable ceiling: R 17,712/month</span>
+    <section class="uif-panel" id="uif-maternity-panel" role="tabpanel" aria-labelledby="uif-maternity-tab" hidden>
+      <div class="uif-workspace">
+        <article class="uif-card">
+          <h2>Maternity benefit plan</h2>
+          <p class="uif-card-intro">Maternity is modelled at 66% of the capped benefit basis for up to 121 days. Add monthly employer leave pay so the combined amount can be limited against the actual normal remuneration entered.</p>
+          <form class="uif-form-grid" id="uif-maternity-form">
+            <div class="uif-field"><label for="uif-maternity-average">Average monthly remuneration (R)</label><input id="uif-maternity-average" type="number" min="0" step="0.01" value="12000" inputmode="decimal" required></div>
+            <div class="uif-field"><label for="uif-employer-pay">Employer pay during leave (R/month)</label><input id="uif-employer-pay" type="number" min="0" step="0.01" value="0" inputmode="decimal" required></div>
+            <div class="uif-field"><label for="uif-maternity-days">Days to plan</label><input id="uif-maternity-days" type="number" min="0" max="121" step="1" value="121" inputmode="numeric" required></div>
+            <div class="uif-actions"><button class="uif-button uif-button-primary" type="submit">Calculate maternity plan</button><button class="uif-button" type="button" id="uif-example-maternity">Use partial-pay example</button></div>
+          </form>
+          <div class="uif-results" id="uif-maternity-results" aria-live="polite"></div>
+        </article>
+        <aside class="uif-side">
+          <section class="uif-card uif-method"><h3>Scope boundary</h3><p>This calculator does not apply maternity rules to adoption, commissioning-parent or parental benefits. Reduced-work-time claims are also guidance-only because they use a statutory top-up test, not a simple lost-salary percentage.</p></section>
+          <section class="uif-card uif-source"><h3>Official maternity source</h3><p><a href="https://www.labour.gov.za/DocumentCenter/Publications/Unemployment%20Insurance%20Fund/EASY%20AID%20Guide%20Spreadsheet%20Application.pdf" rel="noopener">Department of Employment and Labour: UIF Easy Aid Guide</a></p></section>
+        </aside>
       </div>
-      <div class="uif-tbl-wrap" role="region" aria-label="IRR examples by salary" tabindex="0">
-      <table class="uif-tbl">
-        <thead>
-          <tr>
-            <th>Monthly Salary</th><th>Daily Rate</th><th>IRR</th><th>Daily Benefit</th><th>Monthly Benefit</th>
-          </tr>
-        </thead>
-        <tbody id="uif-irr-table"></tbody>
-      </table>
-      </div>
-    </div>
-  </div>
-</div>
+    </section>
 
-<!-- Sidebar -->
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>How UIF Works</h4>
-    <p>Both you and your employer contribute <strong>1% of your salary each</strong> (2% total), capped at R17,712/month. Maximum monthly contribution: <strong>R354.24</strong>.</p>
-    <p style="margin-top:8px">UIF pays <strong>38%–58%</strong> of your daily salary. Lower earners get a higher replacement rate.</p>
-    <p style="margin-top:8px"><strong>Credit days:</strong> 1 credit day per 4 working days. Maximum <strong>238 days</strong> (~8 months).</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>Contribution vs. Benefit ROI</h4>
-    <p>On R17,712/month with 4 years of contributions:</p>
-    <ul>
-      <li>Total contributed: ~R17,000</li>
-      <li>Max benefit payout: ~R58,000+</li>
-      <li><strong>3–5× return on contributions</strong></li>
-    </ul>
-  </div>
-  <div class="uif-info-box">
-    <h4>Who Qualifies?</h4>
-    <ul>
-      <li>Worked 24+ hours/month</li>
-      <li>UIF contributions were deducted</li>
-      <li>Not a public servant (GEPF covers them)</li>
-      <li>Not currently receiving other income</li>
-      <li>Registered as work-seeker (unemployment)</li>
-    </ul>
-  </div>
-  <div class="uif-alert uif-alert-info" style="margin-top:4px">
-    <strong>Claim deadline:</strong> Submit within <strong>6 months</strong> of losing income to avoid forfeiting benefits.
-  </div>
-</div>
-</div><!-- end uif-calc-layout -->
-</div><!-- end panel-calc -->
+    <p class="uif-status" id="uif-status" role="status" aria-live="polite"></p>
+    <button class="uif-button" type="button" id="uif-copy">Copy latest summary</button>
 
-<!-- ═══════════════ TAB 2: CLAIM WIZARD ═══════════════ -->
-<div id="panel-wizard" class="uif-panel">
-<div class="uif-card">
-  <div class="uif-card-head"><span class="uif-card-title">Select Your Claim Type</span></div>
-  <div class="uif-card-body">
-    <div class="uif-wizard-grid" role="group" aria-label="Select claim type">
-      <button type="button" class="uif-type-btn active" onclick="showWizard('retrenchment',this)" aria-pressed="true">
-        <svg class="uif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="9" y1="15" x2="15" y2="15"/><line x1="9" y1="11" x2="15" y2="11"/></svg>
-        Retrenchment / Dismissal
-      </button>
-      <button type="button" class="uif-type-btn" onclick="showWizard('maternity',this)" aria-pressed="false">
-        <svg class="uif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
-        Maternity
-      </button>
-      <button type="button" class="uif-type-btn" onclick="showWizard('illness',this)" aria-pressed="false">
-        <svg class="uif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
-        Illness
-      </button>
-      <button type="button" class="uif-type-btn" onclick="showWizard('adoption',this)" aria-pressed="false">
-        <svg class="uif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-        Adoption / Surrogacy
-      </button>
-      <button type="button" class="uif-type-btn" onclick="showWizard('reduced',this)" aria-pressed="false">
-        <svg class="uif-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="23 18 13.5 8.5 8.5 13.5 1 6"/><polyline points="17 18 23 18 23 12"/></svg>
-        Reduced Work Time
-      </button>
-    </div>
-
-    <!-- Retrenchment -->
-    <div class="uif-steps active" id="wizard-retrenchment">
-      <div class="uif-alert uif-alert-info">Processing time: <strong>6–8 weeks</strong>. Submit at your nearest DoEL Labour Centre or via uFiling (efiling.uif.gov.za).</div>
-      <ol class="uif-step-list">
-        <li class="uif-step-item">
-          <div class="uif-step-num">1</div>
-          <div class="uif-step-body">
-            <h5>Get UI-19 from your employer</h5>
-            <p>Your employer must provide this within <strong>4 days</strong> of your termination. It confirms your employment history and reason for leaving.</p>
-            <span class="form-tag">Form: UI-19</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">2</div>
-          <div class="uif-step-body">
-            <h5>Get UI-2.7 retrenchment confirmation</h5>
-            <p>Confirms the retrenchment from your employer. Required for retrenchment claims (not dismissal for misconduct).</p>
-            <span class="form-tag">Form: UI-2.7</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">3</div>
-          <div class="uif-step-body">
-            <h5>Get your 13-week bank statement</h5>
-            <p>A statement covering the last 13 weeks from the account where you want benefits deposited.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">4</div>
-          <div class="uif-step-body">
-            <h5>Prepare identity documents</h5>
-            <p>Certified copy of your South African ID or passport. Certification must be recent (within 3 months). Certify at a police station or commissioner of oaths.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">5</div>
-          <div class="uif-step-body">
-            <h5>Register as a work-seeker</h5>
-            <p>Register at your nearest Labour Centre or on the Employment Services of South Africa (ESSA) portal. Required for unemployment claims.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">6</div>
-          <div class="uif-step-body">
-            <h5>Submit your claim</h5>
-            <p>Submit at your nearest DoEL Labour Centre, or online via uFiling (faster, no queues). You will need all documents in step 1–5.</p>
-            <span class="form-tag">Form: UI-2.1</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">7</div>
-          <div class="uif-step-body">
-            <h5>Track and collect — sign off every 4 weeks</h5>
-            <p>Once approved, benefits are paid monthly. You must <strong>sign off at a Labour Centre every 4 weeks</strong> to continue receiving payments. Missing a sign-off stops your benefits.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">8</div>
-          <div class="uif-step-body">
-            <h5>If rejected — appeal</h5>
-            <p>Appeal within 90 days to the UIF Commissioner. If the appeal fails, escalate to the CCMA or Labour Court. Keep all reference numbers and correspondence.</p>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-    <!-- Maternity -->
-    <div class="uif-steps" id="wizard-maternity">
-      <div class="uif-alert uif-alert-info">You can claim <strong>before or after birth</strong>. Retroactive claims are allowed. Duration: up to <strong>17.32 weeks (121 days)</strong>.</div>
-      <ol class="uif-step-list">
-        <li class="uif-step-item">
-          <div class="uif-step-num">1</div>
-          <div class="uif-step-body">
-            <h5>Get UI-2.2 from your doctor or midwife</h5>
-            <p>Medical certificate confirming your pregnancy and expected birth date (or actual birth date if claiming after). Must be from a registered practitioner.</p>
-            <span class="form-tag">Form: UI-2.2</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">2</div>
-          <div class="uif-step-body">
-            <h5>Get UI-19 from your employer</h5>
-            <p>Confirms your salary and UIF contribution history. Employer must provide on request.</p>
-            <span class="form-tag">Form: UI-19</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">3</div>
-          <div class="uif-step-body">
-            <h5>Gather supporting documents</h5>
-            <p>13-week bank statement, certified copy of your ID, and proof of employment. Same checklist as standard UIF claims.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">4</div>
-          <div class="uif-step-body">
-            <h5>Submit your claim</h5>
-            <p>Submit at nearest Labour Centre or via uFiling before or after birth. Don't wait — submit as early as possible to avoid delays in payment.</p>
-            <span class="form-tag">Form: UI-2.1</span>
-          </div>
-        </li>
-      </ol>
-      <div class="uif-alert uif-alert-warn"><strong>Important:</strong> If your employer pays full salary during maternity leave, UIF benefit still goes directly to <strong>you</strong>, not your employer. Your employer may deduct the UIF amount from their payment if your contract allows — check your contract before assuming.</div>
-    </div>
-
-    <!-- Illness -->
-    <div class="uif-steps" id="wizard-illness">
-      <div class="uif-alert uif-alert-info">Illness benefit is paid monthly while you are ill. Claim <strong>every month</strong> with a fresh medical certificate. Maximum: <strong>8 months (238 days)</strong> per benefit cycle.</div>
-      <ol class="uif-step-list">
-        <li class="uif-step-item">
-          <div class="uif-step-num">1</div>
-          <div class="uif-step-body">
-            <h5>Get UI-2.2 from your registered doctor</h5>
-            <p>Medical certificate from a registered practitioner confirming your illness and expected duration of incapacity. Required for each monthly submission.</p>
-            <span class="form-tag">Form: UI-2.2</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">2</div>
-          <div class="uif-step-body">
-            <h5>Get UI-19 from your employer</h5>
-            <p>Needed for the first submission. Confirms employment and salary.</p>
-            <span class="form-tag">Form: UI-19</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">3</div>
-          <div class="uif-step-body">
-            <h5>Submit monthly with updated medical certificate</h5>
-            <p>Submit each month with a fresh UI-2.2 confirming you are still ill. Payments stop when you recover or exhaust your 238 credit days.</p>
-            <span class="form-tag">Form: UI-2.1</span>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-    <!-- Adoption -->
-    <div class="uif-steps" id="wizard-adoption">
-      <div class="uif-alert uif-alert-info">Adoption and commissioning parent (surrogacy) benefits follow the same process as maternity. Duration: up to <strong>121 days</strong>.</div>
-      <ol class="uif-step-list">
-        <li class="uif-step-item">
-          <div class="uif-step-num">1</div>
-          <div class="uif-step-body">
-            <h5>Get proof of adoption or commissioning parent order</h5>
-            <p>For adoption: court adoption order. For surrogacy: commissioning parent court order. Both are required to establish eligibility.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">2</div>
-          <div class="uif-step-body">
-            <h5>Get UI-19 from your employer</h5>
-            <p>Confirms your employment details and UIF contribution history.</p>
-            <span class="form-tag">Form: UI-19</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">3</div>
-          <div class="uif-step-body">
-            <h5>Submit at Labour Centre or via uFiling</h5>
-            <p>Same process as maternity benefit. Bring certified ID, bank statement, and the court order.</p>
-            <span class="form-tag">Form: UI-2.1</span>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-    <!-- Reduced Work Time -->
-    <div class="uif-steps" id="wizard-reduced">
-      <div class="uif-alert uif-alert-info">If your employer cut your hours or salary, you can claim UIF on the lost portion <strong>every month</strong> while on short-time. Use the <button type="button" onclick="switchTab('shorttime')" style="background:none;border:none;color:var(--uif-sky);font-weight:700;cursor:pointer;padding:0;font-size:inherit;text-decoration:underline">Short-Time Calculator</button> to estimate your benefit.</div>
-      <ol class="uif-step-list">
-        <li class="uif-step-item">
-          <div class="uif-step-num">1</div>
-          <div class="uif-step-body">
-            <h5>Confirm your employer has applied for Reduced Work Time</h5>
-            <p>Your employer must first apply on uFiling (efiling.uif.gov.za). Without this employer registration, your individual claim will be rejected.</p>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">2</div>
-          <div class="uif-step-body">
-            <h5>Get UI-19 showing original and reduced salary</h5>
-            <p>Your employer issues a UI-19 each month showing both your normal and current reduced salary or hours.</p>
-            <span class="form-tag">Form: UI-19</span>
-          </div>
-        </li>
-        <li class="uif-step-item">
-          <div class="uif-step-num">3</div>
-          <div class="uif-step-body">
-            <h5>Submit monthly claim</h5>
-            <p>Submit each month while on short-time. Provide the updated UI-19 as proof of the reduction.</p>
-            <span class="form-tag">Form: UI-2.1</span>
-          </div>
-        </li>
-      </ol>
-    </div>
-
-  </div>
-</div>
-</div><!-- end panel-wizard -->
-
-<!-- ═══════════════ TAB 3: UIF CREDITS ═══════════════ -->
-<div id="panel-credits" class="uif-panel">
-<div class="uif-calc-layout">
-<div>
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">UIF Credit Days Calculator</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:16px">UIF accumulates at <strong>1 credit day for every 4 working days</strong>, up to a maximum of <strong>238 days</strong> (~8 months). These credits determine how long you can claim.</p>
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="cred-start">Employment Start Date</label>
-          <input class="uif-input" type="date" id="cred-start" value="2020-01-01">
-        </div>
-        <div>
-          <label class="uif-label" for="cred-end">Employment End Date (leave blank for today)</label>
-          <input class="uif-input" type="date" id="cred-end">
-        </div>
-      </div>
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="cred-prior">Prior UIF Claim Days Already Used</label>
-          <input aria-label="Line item amount" class="uif-input" type="number" id="cred-prior" value="0" min="0" placeholder="0">
-        </div>
-        <div>
-          <label class="uif-label" for="cred-salary">Monthly Salary (R) — for benefit estimate</label>
-          <input class="uif-input" type="number" id="cred-salary" value="20000" min="0" step="500">
-        </div>
-      </div>
-      <button type="button" class="uif-btn uif-btn-primary" id="btn-credits" onclick="uifCreditsRun()">Calculate My Credit Days</button>
-    </div>
-  </div>
-
-  <div class="uif-card" id="cred-result-card" style="display:none">
-    <div class="uif-card-head"><span class="uif-card-title">Your UIF Credit Balance</span></div>
-    <div class="uif-card-body">
-      <div class="uif-credits-out" id="cred-boxes"></div>
-      <div style="margin-top:16px">
-        <div style="display:flex;justify-content:space-between;margin-bottom:4px">
-          <span style="font-size:.72rem;font-weight:600;color:#64748b">CREDITS BUILT</span>
-          <span style="font-size:.72rem;font-weight:600;color:#64748b">MAX 238 DAYS</span>
-        </div>
-        <div class="uif-progress-wrap"><div class="uif-progress-bar" id="cred-bar" style="width:0%"></div></div>
-      </div>
-      <div id="cred-summary" class="uif-alert uif-alert-ok" style="margin-top:14px"></div>
-    </div>
-  </div>
-</div>
-
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>How UIF Credits Work</h4>
-    <p>For every <strong>4 days you work</strong>, you earn <strong>1 UIF credit day</strong>. Credits accumulate across all employers throughout your working life.</p>
-    <ul>
-      <li>Maximum credits: <strong>238 days</strong></li>
-      <li>Equivalent to ~8 months of benefits</li>
-      <li>Credits are deducted as you claim</li>
-      <li>Credits can be rebuilt after claiming</li>
-    </ul>
-  </div>
-  <div class="uif-info-box">
-    <h4>How Long to Build Maximum Credits</h4>
-    <ul>
-      <li><strong>1 year worked:</strong> ~91 credit days</li>
-      <li><strong>2 years worked:</strong> ~182 credit days</li>
-      <li><strong>2.6 years worked:</strong> 238 days (maximum)</li>
-    </ul>
-    <p style="margin-top:8px">You need approximately <strong>952 working days</strong> (~2.6 years) to reach the 238-day maximum. After that, additional working days don't add more credits.</p>
-  </div>
-  <div class="uif-alert uif-alert-info" style="margin-top:4px">
-    <strong>Note:</strong> These calculations assume continuous employment. Gaps between jobs may affect your actual credit balance.
-  </div>
-</div>
-</div>
-</div><!-- end panel-credits -->
-
-<!-- ═══════════════ TAB 4: MATERNITY ═══════════════ -->
-<div id="panel-maternity" class="uif-panel">
-<div class="uif-calc-layout">
-<div>
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Maternity UIF Calculator</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:16px">UIF maternity benefit lasts up to <strong>17.32 weeks (121 days)</strong>. The same IRR formula applies — lower earners get closer to 58% replacement.</p>
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="mat-salary">Monthly Gross Salary (R)</label>
-          <input class="uif-input" type="number" id="mat-salary" value="20000" min="0" step="500">
-        </div>
-        <div>
-          <label class="uif-label" for="mat-years">Years of UIF Contributions</label>
-          <input class="uif-input" type="number" id="mat-years" value="3" min="0" max="20" step="0.5">
-        </div>
-      </div>
-      <div class="uif-field">
-        <label class="uif-label" for="mat-employer-pays">Will your employer pay salary during maternity leave?</label>
-        <select class="uif-select" id="mat-employer-pays">
-          <option value="no">No — employer not paying (UIF is my only income)</option>
-          <option value="full">Yes — employer paying full salary</option>
-          <option value="partial">Yes — employer paying partial salary</option>
-        </select>
-      </div>
-      <button type="button" class="uif-btn uif-btn-primary" id="btn-mat" onclick="uifMaternityRun()">Calculate Maternity Benefit</button>
-    </div>
-  </div>
-
-  <div class="uif-card" id="mat-result-card" style="display:none">
-    <div class="uif-card-head"><span class="uif-card-title">Your Maternity Benefit</span></div>
-    <div class="uif-card-body">
-      <div class="uif-result-grid" id="mat-result-grid"></div>
-      <div id="mat-employer-note" class="uif-alert" style="margin-top:14px"></div>
-    </div>
-  </div>
-
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Maternity UIF — Common Questions</span></div>
-    <div class="uif-card-body">
-      <div class="uif-qa">
-        <details class="uif-qa-item">
-          <summary>My employer is paying full salary — do I still claim UIF?</summary>
-          <p>Yes. UIF maternity benefit is paid directly to you, not your employer. However, if your employer pays full salary during maternity leave, they may legally deduct the UIF amount from their payment — <strong>check your employment contract or maternity policy</strong>. If your contract is silent on this, you receive both.</p>
-        </details>
-        <details class="uif-qa-item">
-          <summary>Can I claim before my baby is born?</summary>
-          <p>Yes. Submit your claim before birth using the expected due date on the UI-2.2 medical certificate. This allows benefits to start from the first day of your maternity leave. You don't need to wait for delivery.</p>
-        </details>
-        <details class="uif-qa-item">
-          <summary>What if I have a miscarriage or stillbirth?</summary>
-          <p>You can still claim maternity UIF benefit in the case of a miscarriage or stillbirth. The same forms apply. There is no minimum period of pregnancy required by the UIF Act.</p>
-        </details>
-        <details class="uif-qa-item">
-          <summary>Can my partner (commissioning parent) also claim?</summary>
-          <p>Yes. Commissioning parents in a surrogacy arrangement can claim the same maternity benefit (up to 121 days) upon receiving the commissioning parent court order under the Children's Act.</p>
-        </details>
-        <details class="uif-qa-item">
-          <summary>What is the difference between maternity leave and UIF maternity benefit?</summary>
-          <p>The BCEA grants you <strong>4 consecutive months of unpaid maternity leave</strong> as a legal right — employers cannot require you to work for 6 weeks after birth. UIF maternity benefit is the financial payment that covers you during this period. They are different things: one is a leave entitlement, the other is an insurance payout.</p>
-        </details>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>Maternity Benefit Facts</h4>
-    <ul>
-      <li>Duration: up to <strong>17.32 weeks (121 days)</strong></li>
-      <li>Replacement rate: 38%–58% of salary</li>
-      <li>Can claim before or after birth</li>
-      <li>Retroactive claims allowed</li>
-      <li>Same IRR formula as standard UIF</li>
-      <li>Deducts from your credit days</li>
-    </ul>
-  </div>
-  <div class="uif-info-box">
-    <h4>BCEA Maternity Leave vs. UIF</h4>
-    <p>The BCEA grants <strong>4 consecutive months</strong> of unpaid maternity leave (employers cannot require you to work for 6 weeks after birth).</p>
-    <p style="margin-top:8px">UIF maternity benefit is the payment that replaces your income during this leave. Some employers voluntarily top up the UIF benefit to full salary — but this is optional unless required by your contract or a collective agreement.</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>Documents Needed</h4>
-    <ul>
-      <li>UI-2.2 (medical certificate)</li>
-      <li>UI-19 from employer</li>
-      <li>UI-2.1 (claim form)</li>
-      <li>Certified ID copy</li>
-      <li>13-week bank statement</li>
-    </ul>
-  </div>
-</div>
-</div>
-</div><!-- end panel-maternity -->
-
-<!-- ═══════════════ TAB 5: SHORT-TIME ═══════════════ -->
-<div id="panel-shorttime" class="uif-panel">
-<div class="uif-calc-layout">
-<div>
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Reduced Work Time (Short-Time) Calculator</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:16px">If your employer reduced your hours or salary, you can claim UIF on the <strong>difference every month</strong> while on short-time. This is called <em>Reduced Work Time</em> UIF — a permanent benefit introduced after COVID-19.</p>
-      <div class="uif-row uif-field">
-        <div>
-          <label class="uif-label" for="st-prev">Previous Full Monthly Salary (R)</label>
-          <input class="uif-input" type="number" id="st-prev" value="20000" min="0" step="500">
-        </div>
-        <div>
-          <label class="uif-label" for="st-curr">Current Reduced Monthly Salary (R)</label>
-          <input class="uif-input" type="number" id="st-curr" value="12000" min="0" step="500">
-        </div>
-      </div>
-      <button type="button" class="uif-btn uif-btn-primary" onclick="uifShortTimeRun()">Calculate Short-Time Benefit</button>
-    </div>
-  </div>
-
-  <div class="uif-card" id="st-result-card" style="display:none">
-    <div class="uif-card-head"><span class="uif-card-title">Your Reduced Work Time Benefit</span></div>
-    <div class="uif-card-body">
-      <div class="uif-result-grid" id="st-result-grid"></div>
-      <div class="uif-alert uif-alert-info" id="st-note" style="margin-top:14px"></div>
-    </div>
-  </div>
-</div>
-
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>How Short-Time UIF Works</h4>
-    <p>If your employer cuts your hours or pay, you can claim UIF on the lost portion. This bridges the gap between your reduced salary and your normal income.</p>
-    <ul>
-      <li>Your employer must apply on uFiling first</li>
-      <li>You claim the difference monthly</li>
-      <li>Normal IRR formula applies to the lost portion</li>
-      <li>Deducts from your 238 credit days</li>
-    </ul>
-  </div>
-  <div class="uif-info-box">
-    <h4>Employer Requirement</h4>
-    <p>Your employer must apply for <strong>Reduced Work Time</strong> on uFiling before you can claim individually. Without this employer application, your claim will be rejected.</p>
-    <p style="margin-top:8px">Ask your HR or employer to visit <strong>efiling.uif.gov.za</strong> and apply before you submit.</p>
-  </div>
-  <div class="uif-alert uif-alert-warn" style="margin-top:4px">
-    Falsely claiming UIF when your salary has not been genuinely reduced is a <strong>criminal offence</strong>. Only claim for months with a real reduction in pay.
-  </div>
-</div>
-</div>
-</div><!-- end panel-shorttime -->
-
-<!-- ═══════════════ TAB 6: uFILING GUIDE ═══════════════ -->
-<div id="panel-ufiling" class="uif-panel">
-<div class="uif-calc-layout">
-<div>
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">How to Claim on uFiling — Step by Step</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:4px">The uFiling portal is the fastest way to submit — no queues, available 24/7.</p>
-      <div class="uif-guide-steps">
-        <div class="uif-guide-step">
-          <div class="uif-guide-num">1</div>
-          <div>
-            <h5>Register on uFiling (or log in)</h5>
-            <p>Go to <strong>efiling.uif.gov.za</strong>. Click "Register" if new — you'll need your SA ID number, email address, and a phone number for OTP verification. Existing users log in directly.</p>
-          </div>
-        </div>
-        <div class="uif-guide-step">
-          <div class="uif-guide-num">2</div>
-          <div>
-            <h5>Select your claim type</h5>
-            <p>After logging in, navigate to "Claim" and select: Unemployment, Maternity, Illness, Adoption, or Reduced Work Time. Each claim type shows different document requirements.</p>
-          </div>
-        </div>
-        <div class="uif-guide-step">
-          <div class="uif-guide-num">3</div>
-          <div>
-            <h5>Upload your documents</h5>
-            <p>Scan or photograph each document clearly (all 4 corners visible, good lighting):</p>
-            <ul>
-              <li>UI-19 from employer (all claims)</li>
-              <li>UI-2.2 medical/pregnancy certificate (illness/maternity)</li>
-              <li>UI-2.7 retrenchment letter (retrenchment only)</li>
-              <li>Certified copy of ID</li>
-              <li>13-week bank statement</li>
-            </ul>
-            <p style="margin-top:6px"><strong>File limits:</strong> PDF or JPG, max 2MB per file. Documents must be legible — blurry uploads are a top rejection reason.</p>
-          </div>
-        </div>
-        <div class="uif-guide-step">
-          <div class="uif-guide-num">4</div>
-          <div>
-            <h5>Submit and save your reference number</h5>
-            <p>Review all details, then submit. <strong>Save your reference number</strong> immediately — you'll need it to track your claim. You should receive a confirmation SMS and/or email.</p>
-          </div>
-        </div>
-        <div class="uif-guide-step">
-          <div class="uif-guide-num">5</div>
-          <div>
-            <h5>Track your claim status</h5>
-            <p>Log into uFiling → "Track My Claim". Status sequence: <em>Submitted → Under Review → Approved / Rejected → Payment Processed</em>.</p>
-            <p style="margin-top:6px">Processing: <strong>6–8 weeks</strong> for new claims. Follow up after 8 weeks via uFiling or call <strong>0800 030 007</strong> (free).</p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Common Rejection Reasons — and How to Avoid Them</span></div>
-    <div class="uif-card-body">
-      <ul class="uif-reject-list">
-        <li>UI-19 not provided by employer — follow up immediately; employers are legally required to provide within 4 days of termination</li>
-        <li>Bank account name doesn't match your ID — always use your own account, not a family member's</li>
-        <li>Documents are blurry or illegible — photograph in natural light; ensure all 4 corners are visible</li>
-        <li>ID copy not certified — certify at a police station or commissioner of oaths (within 3 months)</li>
-        <li>Claim submitted more than 6 months after losing income — submit as soon as possible</li>
-        <li>Still receiving income from another source — declare all current income accurately</li>
-        <li>Not registered as a work-seeker (unemployment claims) — register on the ESSA portal first</li>
-        <li>Employer not registered for Reduced Work Time (short-time claims) — employer must apply first</li>
-      </ul>
-    </div>
-  </div>
-</div>
-
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>Key UIF Contacts</h4>
-    <ul>
-      <li>UIF Call Centre: <strong>0800 030 007</strong> (free)</li>
-      <li>uFiling portal: efiling.uif.gov.za</li>
-      <li>DoEL website: labour.gov.za</li>
-      <li>CCMA (disputes): ccma.org.za</li>
-    </ul>
-  </div>
-  <div class="uif-info-box">
-    <h4>Labour Centre Alternative</h4>
-    <p>If uFiling doesn't work, visit your nearest Department of Employment and Labour (DoEL) office in person.</p>
-    <p style="margin-top:8px">Bring <strong>original documents</strong> when visiting in person — certified copies are accepted for submission but originals may be required for verification.</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>Monthly Sign-Off</h4>
-    <p>For unemployment claims, you must <strong>sign off at a Labour Centre every 4 weeks</strong> to continue receiving payments.</p>
-    <p style="margin-top:8px">Missing even one sign-off stops your UIF payments — and restarting can take weeks.</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>Appeal Process</h4>
-    <p>If your claim is rejected:</p>
-    <ol>
-      <li>Appeal to the UIF Commissioner within 90 days</li>
-      <li>If appeal fails, escalate to the CCMA</li>
-      <li>Final recourse: Labour Court</li>
-    </ol>
-  </div>
-</div>
-</div>
-</div><!-- end panel-ufiling -->
-
-<!-- ═══════════════ TAB 7: EMPLOYER ═══════════════ -->
-<div id="panel-employer" class="uif-panel">
-<div class="uif-calc-layout">
-<div>
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Employer UIF Compliance Checklist</span></div>
-    <div class="uif-card-body">
-      <p style="font-size:.82rem;color:#475569;line-height:1.65;margin-bottom:16px">South African employers are legally required to register with and contribute to UIF. Check each item you have in place.</p>
-      <ul class="uif-checklist">
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp1">
-          <label for="emp1">Registered as a UIF employer on uFiling
-            <span class="chk-sub">Required for all employers with one or more employees. Register at efiling.uif.gov.za.</span>
-          </label>
-        </li>
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp2">
-          <label for="emp2">Deducting 1% from each employee's monthly gross salary
-            <span class="chk-sub">Capped at R177.12/month per employee (based on R17,712 insurable ceiling).</span>
-          </label>
-        </li>
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp3">
-          <label for="emp3">Contributing the 1% employer portion each month
-            <span class="chk-sub">The employer also pays 1% — total 2% of salary per employee per month.</span>
-          </label>
-        </li>
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp4">
-          <label for="emp4">Submitting UI-19 (monthly return) by the 7th of the following month
-            <span class="chk-sub">Monthly declaration for all employees. Late submission triggers penalties.</span>
-          </label>
-        </li>
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp5">
-          <label for="emp5">Submitting UI-19 within 4 days of each employee termination
-            <span class="chk-sub">Mandatory on every termination regardless of reason. Failure prevents the ex-employee from claiming.</span>
-          </label>
-        </li>
-        <li class="uif-checklist-item">
-          <input type="checkbox" id="emp6">
-          <label for="emp6">Domestic workers included in UIF registration
-            <span class="chk-sub">Domestic employers and employees must both contribute to UIF — same rules apply.</span>
-          </label>
-        </li>
-      </ul>
-      <div id="emp-status" class="uif-alert uif-alert-info" style="margin-top:16px">Check items above to see your compliance status.</div>
-    </div>
-  </div>
-
-  <div class="uif-card">
-    <div class="uif-card-head"><span class="uif-card-title">Penalties for Non-Compliance</span></div>
-    <div class="uif-card-body">
-      <div class="uif-alert uif-alert-warn"><strong>Penalty:</strong> 10% of arrears + interest at the prime lending rate. Persistent non-compliance = criminal prosecution under the Unemployment Insurance Act.</div>
-      <table class="uif-tbl" style="margin-top:14px">
-        <thead>
-          <tr><th>Violation</th><th>Consequence</th></tr>
-        </thead>
-        <tbody>
-          <tr><td>Late monthly UI-19 submission</td><td>10% penalty on contributions owed</td></tr>
-          <tr><td>Not registered as UIF employer</td><td>Criminal prosecution + back-payment of all contributions + penalties</td></tr>
-          <tr><td>Not submitting UI-19 within 4 days of termination</td><td>Employee cannot claim; employer may be held liable for lost benefits</td></tr>
-          <tr><td>Deducting employee UIF but not remitting to UIF</td><td>Criminal fraud + 10% penalty + interest</td></tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</div>
-
-<div class="uif-sticky">
-  <div class="uif-info-box">
-    <h4>How to Register as UIF Employer</h4>
-    <ol>
-      <li>Go to efiling.uif.gov.za</li>
-      <li>Click "Register" → select "Employer"</li>
-      <li>Enter your company registration or ID number</li>
-      <li>Add employee details</li>
-      <li>Set up monthly contribution payment method</li>
-    </ol>
-  </div>
-  <div class="uif-info-box">
-    <h4>SDL — Skills Development Levy</h4>
-    <p>Employers with annual payrolls above <strong>R500,000/year</strong> must also pay SDL at <strong>1% of payroll</strong> to SARS. This is separate from UIF but often confused with it. SDL funds SETA training programs.</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>UIF for Foreign Nationals</h4>
-    <p>Foreign employees with valid work permits are entitled to UIF. Both employer and employee contributions are required from day one of employment, regardless of nationality.</p>
-  </div>
-  <div class="uif-info-box">
-    <h4>COIDA (Workmen's Compensation)</h4>
-    <p>In addition to UIF, employers must also register with COIDA (Compensation for Occupational Injuries and Diseases). COIDA covers workplace injuries and occupational diseases — separate from UIF.</p>
-  </div>
-</div>
-</div>
-</div><!-- end panel-employer -->
-
-</div><!-- end uif-panels -->
-</div><!-- end uif-inner -->
-</section>
-
-<!-- ═══ SEO CONTENT ═══ -->
-<section class="uif-seo">
-<h2>Understanding UIF in South Africa</h2>
-<p>The Unemployment Insurance Fund (UIF) is South Africa's primary income protection safety net, established under the Unemployment Insurance Act of 2001. Despite millions of South Africans contributing throughout their working lives, the majority never claim — either because they don't know they qualify, or because they find the process overwhelming. UIF covers not just unemployment but maternity, illness, adoption, commissioning parents, and reduced work time.</p>
-<p>Both you and your employer contribute 1% of your gross salary to UIF each month (2% total), capped at an insurable monthly salary of R17,712. The maximum monthly contribution is R354.24 (R177.12 from each side). Benefits are calculated using the Income Replacement Rate (IRR) formula — a sliding scale that pays lower earners up to 58% of their daily salary and higher earners approximately 38%, with a maximum daily benefit cap of R632.84.</p>
-<p>Credit days determine how long you can claim. For every 4 days of employment, you earn 1 UIF credit day, up to a maximum of 238 days (about 8 months). You reach the maximum in approximately 2.6 years of continuous contributions. When you claim, credit days are deducted from your balance.</p>
-<p>To claim, register on uFiling (efiling.uif.gov.za) or visit your nearest Department of Employment and Labour Labour Centre. Claims must be submitted within 6 months of losing income. Processing takes 6–8 weeks for new claims. For unemployment, you must sign off at a Labour Centre every 4 weeks to keep receiving payments.</p>
-
-<h2>Frequently Asked Questions</h2>
-<details class="uif-faq-item"><summary>How much will I get from UIF?</summary><p>UIF pays 38%–58% of your daily insurable earnings depending on your salary level. Lower earners receive a higher replacement rate. For someone earning R10,000/month, the monthly benefit is approximately R5,000. For someone at the R17,712 ceiling, the maximum monthly benefit is approximately R7,300. The exact formula is: IRR% = 29.2 + (7173.92 ÷ daily remuneration).</p></details>
-<details class="uif-faq-item"><summary>Can I claim UIF if I resigned?</summary><p>Generally no — UIF unemployment benefits are for involuntary loss of income. However, if you resigned due to constructive dismissal (working conditions made intolerable by your employer), you may qualify. Maternity, illness, and adoption benefits apply regardless of how your employment ended.</p></details>
-<details class="uif-faq-item"><summary>How long does UIF take to pay out?</summary><p>Processing typically takes 6–8 weeks from submission. If you haven't received a decision after 8 weeks, follow up using your reference number on uFiling or call 0800 030 007 (free). Once approved, payments are made monthly directly to your bank account.</p></details>
-<details class="uif-faq-item"><summary>What is the difference between UIF credit days and benefit duration?</summary><p>Credit days are what you have available based on your employment history (1 per 4 working days, max 238). Benefit duration is the actual number of days you will be paid — limited by both your available credit days and the maximum allowed for your claim type (e.g., 121 days for maternity, 238 days for unemployment/illness). You can only receive benefits for as many days as you have credits.</p></details>
-</section>
-
-<section class="tool-verification-sec" data-tool-verification-panel data-tool-id="za-uif">
-  <div class="tool-verification-card">
-    <span class="tool-verification-kicker">UIF claim source check</span>
-    <h2>Use the estimate with your actual claim documents and current UIF rules</h2>
-    <ul class="tool-verification-list">
-      <li><strong>Inputs:</strong> monthly salary, claim type, employment dates, prior UIF claims, and benefit-cycle assumptions.</li>
-      <li><strong>Method:</strong> applies the UIF engine's insurable salary cap, credit-day rules, and Income Replacement Rate estimate to show monthly and total benefits.</li>
-      <li><strong>Verify before acting:</strong> current Department of Employment and Labour guidance, UI-19, service certificate, bank documents, medical or maternity documents, and uFiling status.</li>
-      <li><strong>Privacy:</strong> salary and dates stay in your browser unless you choose to copy, save, or share the summary.</li>
-    </ul>
-    <p class="tool-verification-note"><strong>Reviewed 2026.</strong> Planning estimate only. It is not an official UIF decision, legal advice, or a claim submission.</p>
-  </div>
-</section>
-<afro-business-cta tool-name="South Africa UIF Calculator" prospect-segment="payroll-benefits" headline="Need UIF estimates in a payroll review workflow?" subhead="AfroPayroll Pro helps teams keep UIF assumptions, employee handoff notes, and accountant review files together before payroll close."></afro-business-cta>
-<afro-related-tools category="financial" current="za-uif" data-ssr="1">
+    <section class="uif-explainer" aria-labelledby="uif-guide-title">
+      <h2 id="uif-guide-title">Before you submit a UIF claim</h2>
+      <p>Apply through the official UIF channel and confirm the claim-specific documents, contribution history and deadline. Current Department material gives an ordinary application window of 12 months; do not rely on the old six-month wording. Maternity claims after miscarriage apply only under the official third-trimester or stillbirth conditions.</p>
+      <details><summary>Does this calculate reduced-work-time benefits?</summary><p>No. Reduced-work-time is a statutory top-up only when current total income is below the wholly-unemployed benefit level. A lost salary multiplied by the IRR is not the official rule.</p></details>
+      <details><summary>Are adoption and parental claims the same as maternity?</summary><p>No. They have separate benefit and leave conditions. This route keeps them guidance-only instead of applying the 121-day maternity calculation.</p></details>
+      <details><summary>Where is my data stored?</summary><p>Inputs and results remain in this page while it is open. They are not uploaded and are not saved to local storage.</p></details>
+    </section>
+    <afro-business-cta tool-name="South Africa UIF Calculator" save-note="Payroll teams can request a verified UIF contribution widget or a custom local payroll workflow."></afro-business-cta>
+  </main>
+<afro-related-tools data-ssr="1" category="financial" current="za-uif">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Tracker" data-category="financial" data-icon="AA" data-desc="Compare petrol, diesel, and LPG prices across 54 African countries, then estimate generator fuel costs in local currency">AfroFuel — African Fuel Price Tracker</a></li></ul>
+<ul class="seo-links-list"><li><a href="/kenya/ke-paye" data-related-tool data-id="ke-paye" data-name="Kenya PAYE Calculator" data-category="financial" data-icon="KP" data-desc="KRA 5-band PAYE, NSSF Tier I/II, SHIF 2.75%, AHL 1.5%. Tax Laws Amendment Act 2024.">Kenya PAYE Calculator</a></li><li><a href="/nigeria/ng-salary-tax" data-related-tool data-id="ng-paye" data-name="Nigeria PAYE Calculator" data-category="financial" data-icon="NP" data-desc="NTA 2026 vs PITA 2025 dual-regime. CRA/Rent Relief, pension, NHF. AI tax advisor + PDF.">Nigeria PAYE Calculator</a></li><li><a href="/pro/" data-related-tool data-id="afrotools-pro" data-name="AfroTools Pro (All Tools)" data-category="financial" data-icon="AP" data-desc="Unlimited PDF exports, no ads, AI advisor, priority support. $5/month.">AfroTools Pro (All Tools)</a></li><li><a href="/ghana/gh-paye" data-related-tool data-id="gh-paye" data-name="Ghana PAYE + SSNIT" data-category="financial" data-icon="GP" data-desc="GRA 2025 7-band tax, SSNIT Tier I/II/III, all personal reliefs. PDF export + optional AI assist.">Ghana PAYE + SSNIT</a></li><li><a href="/south-africa/za-paye" data-related-tool data-id="za-paye" data-name="South Africa PAYE Calculator" data-category="financial" data-icon="SA" data-desc="2025/26 SARS net salary estimate with UIF, retirement deductions, medical credits and eFiling context.">South Africa PAYE Calculator</a></li><li><a href="/tools/fuel-tracker/" data-related-tool data-id="fuel-tracker" data-name="AfroFuel — African Fuel Price Reference" data-category="financial" data-icon="AA" data-desc="Inspect dated, row-sourced African petrol, diesel, and LPG snapshots, then estimate generator cost from a verified local">AfroFuel — African Fuel Price Reference</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-
-<script>
-// ── Engine fallback (if engine script fails to load) ──
-if (typeof UIFEngine === 'undefined') {
-  window.UIFEngine = {
-    MAX_INSURABLE_SALARY: 17712,
-    MAX_DAILY_BENEFIT: 632.84,
-    MAX_CREDIT_DAYS: 238,
-    calcIRR: function(d) {
-      if (!d || d <= 0) return 0.58;
-      return Math.min(0.58, Math.max(0.38, (29.2 + (7173.92 / d)) / 100));
-    },
-    calcDailyRate: function(s) { return Math.min(s, 17712) / 30; },
-    calcDailyBenefit: function(s) {
-      var d = Math.min(s, 17712) / 30;
-      return Math.min(d * this.calcIRR(d), 632.84);
-    },
-    calcCreditDays: function(s, e, p) {
-      var days = Math.max(0, Math.floor((new Date(e || Date.now()) - new Date(s)) / 86400000));
-      return { daysWorked: days, rawCredits: Math.floor(days/4), creditsCapped: Math.min(Math.floor(days/4), 238), available: Math.max(0, Math.min(Math.floor(days/4), 238) - (p||0)) };
-    },
-    calcReducedWorkTime: function(prev, curr) {
-      var ip = Math.min(prev, 17712), ic = Math.min(curr, 17712);
-      var pd = ip/30, ld = (ip-ic)/30;
-      var irr = Math.min(0.58, Math.max(0.38, (29.2 + (7173.92/pd))/100));
-      var db = Math.min(ld*irr, 632.84);
-      return { prevSalary:prev, currSalary:curr, lostSalary:prev-curr, irr:irr, irrPct:+(irr*100).toFixed(2), dailyBenefit:db, monthlyBenefit:db*30, totalMonthlyIncome:curr+db*30 };
-    },
-    getIRRExamples: function() {
-      return [3500,5000,8000,10000,15000,17712,25000,50000].map(function(s) {
-        var ins = Math.min(s,17712), d = ins/30, irr = Math.min(0.58,Math.max(0.38,(29.2+7173.92/d)/100));
-        var db = Math.min(d*irr,632.84);
-        return { salary:s, insurableSalary:ins, daily:d, irr:irr, irrPct:+(irr*100).toFixed(1), dailyBenefit:db, monthlyBenefit:db*30, capped:s>17712 };
-      });
-    },
-    fmtZAR: function(n) { return 'R\u00a0'+Math.round(n).toLocaleString('en'); },
-    fmtPct: function(r) { return (r*100).toFixed(1)+'%'; }
-  };
-}
-
-var E = UIFEngine;
-
-// ── Tab switching ──
-document.querySelectorAll('.uif-tab-btn').forEach(function(btn) {
-  btn.addEventListener('click', function() { switchTab(this.dataset.tab); });
-  btn.addEventListener('keydown', function(e) {
-    var tabs = Array.from(document.querySelectorAll('.uif-tab-btn'));
-    var i = tabs.indexOf(this);
-    if (e.key === 'ArrowRight') { e.preventDefault(); tabs[(i+1) % tabs.length].focus(); tabs[(i+1) % tabs.length].click(); }
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); tabs[(i-1+tabs.length) % tabs.length].focus(); tabs[(i-1+tabs.length) % tabs.length].click(); }
-    if (e.key === 'Home') { e.preventDefault(); tabs[0].focus(); tabs[0].click(); }
-    if (e.key === 'End')  { e.preventDefault(); tabs[tabs.length-1].focus(); tabs[tabs.length-1].click(); }
-  });
-});
-
-function switchTab(tab) {
-  document.querySelectorAll('.uif-tab-btn').forEach(function(b) {
-    b.classList.remove('active');
-    b.setAttribute('aria-selected', 'false');
-  });
-  document.querySelectorAll('.uif-panel').forEach(function(p) { p.classList.remove('active'); });
-  var b = document.querySelector('.uif-tab-btn[data-tab="'+tab+'"]');
-  var p = document.getElementById('panel-'+tab);
-  if (b) { b.classList.add('active'); b.setAttribute('aria-selected', 'true'); }
-  if (p) p.classList.add('active');
-  var mainEl = document.getElementById('uif-main');
-  if (mainEl) mainEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
-
-// ── Claim wizard ──
-function showWizard(type, el) {
-  document.querySelectorAll('.uif-type-btn').forEach(function(b) {
-    b.classList.remove('active');
-    b.setAttribute('aria-pressed', 'false');
-  });
-  document.querySelectorAll('.uif-steps').forEach(function(s) { s.classList.remove('active'); });
-  if (el) { el.classList.add('active'); el.setAttribute('aria-pressed', 'true'); }
-  var s = document.getElementById('wizard-'+type);
-  if (s) s.classList.add('active');
-}
-
-// ── IRR examples table ──
-(function() {
-  var rows = '';
-  E.getIRRExamples().forEach(function(r) {
-    var rowClass = r.capped ? 'row-cap' : (r.irr >= 0.50 ? 'row-hi' : 'row-mid');
-    var capTag = r.capped ? '<span class="cap-tag">(capped)</span>' : '';
-    rows += '<tr class="'+rowClass+'">';
-    rows += '<td>'+E.fmtZAR(r.salary)+'/month'+capTag+'</td>';
-    rows += '<td>'+E.fmtZAR(r.daily)+'/day</td>';
-    rows += '<td><strong>'+E.fmtPct(r.irr)+'</strong></td>';
-    rows += '<td>'+E.fmtZAR(r.dailyBenefit)+'/day</td>';
-    rows += '<td><strong>'+E.fmtZAR(r.monthlyBenefit)+'/month</strong></td>';
-    rows += '</tr>';
-  });
-  document.getElementById('uif-irr-table').innerHTML = rows;
-})();
-
-// ── Default dates ──
-(function() {
-  var today = new Date().toISOString().split('T')[0];
-  ['calc-end','cred-end'].forEach(function(id) {
-    var el = document.getElementById(id);
-    if (el && !el.value) el.value = today;
-  });
-})();
-
-// ── Loading state helper ──
-function setBusy(id, busy) {
-  var el = document.getElementById(id);
-  if (!el) return;
-  el.setAttribute('aria-busy', busy ? 'true' : 'false');
-}
-
-// ── Tab 1: Main Calculator ──
-function uifCalcRun() {
-  setBusy('btn-calc', true);
-  var salary    = +document.getElementById('calc-salary').value || 0;
-  var claimType = document.getElementById('calc-type').value;
-  var startDate = document.getElementById('calc-start').value;
-  var endDate   = document.getElementById('calc-end').value || new Date().toISOString().split('T')[0];
-  var prior     = +document.getElementById('calc-prior').value || 0;
-
-  var cred = E.calcCreditDays(startDate, endDate, prior);
-  var res  = E.calcBenefit({ monthlySalary: salary, claimType: claimType, creditDays: cred.available });
-
-  var html = '';
-  html += '<div class="uif-result-box hl"><div class="rnum">'+E.fmtZAR(res.monthlyBenefit)+'/month</div><div class="rlbl">Estimated Monthly Benefit</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.totalBenefit)+'</div><div class="rlbl">Total Benefit</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+res.benefitMonths+' months</div><div class="rlbl">Benefit Duration</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtPct(res.irr)+'</div><div class="rlbl">Replacement Rate (IRR)</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+cred.available+' days</div><div class="rlbl">Available Credit Days</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.dailyBenefit)+'/day</div><div class="rlbl">Daily Benefit</div></div>';
-  document.getElementById('uif-result-grid').innerHTML = html;
-
-  var actEl = document.getElementById('uif-result-actions');
-  if (actEl && !actEl.querySelector('save-result-button')) {
-    actEl.innerHTML = '<button type="button" class="uif-btn uif-btn-secondary" id="uif-copy-summary" style="width:auto;margin-top:0">Copy summary</button><button type="button" class="uif-btn uif-btn-secondary" id="uif-download-summary" data-no-gate="true" style="width:auto;margin-top:0">Download TXT</button><save-result-button tool-slug="za-uif" tool-name="South Africa UIF Calculator"></save-result-button><share-result-button tool-name="South Africa UIF Calculator" tool-slug="za-uif"></share-result-button><span id="uif-export-status" role="status" aria-live="polite" style="flex-basis:100%;font-size:.78rem;color:#64748b"></span>';
-    document.getElementById('uif-copy-summary').addEventListener('click', uifCopySummary);
-    document.getElementById('uif-download-summary').addEventListener('click', uifDownloadSummary);
-  }
-
-  document.getElementById('uif-result-card').style.display = 'block';
-  document.getElementById('uif-result-card').scrollIntoView({ behavior: 'smooth' });
-  setBusy('btn-calc', false);
-}
-
-function uifBuildSummary() {
-  var claimType = document.getElementById('calc-type').value;
-  var salary = document.getElementById('calc-salary').value;
-  var startDate = document.getElementById('calc-start').value;
-  var endDate = document.getElementById('calc-end').value || new Date().toISOString().split('T')[0];
-  var boxes = Array.prototype.map.call(document.querySelectorAll('#uif-result-grid .uif-result-box'), function (box) {
-    return box.textContent.replace(/\s+/g, ' ').trim();
-  });
-  return [
-    'South Africa UIF estimate summary',
-    'Claim type: ' + claimType,
-    'Monthly gross salary input: R' + salary,
-    'Employment period: ' + startDate + ' to ' + endDate,
-    'Results: ' + (boxes.length ? boxes.join(' | ') : 'Run the calculator to generate results'),
-    'Note: planning estimate only. Verify current UIF guidance, UI-19, service certificate, bank documents, claim type documents, and uFiling status before acting.'
-  ].join('\n');
-}
-
-function uifSetExportStatus(message) {
-  var status = document.getElementById('uif-export-status');
-  if (status) status.textContent = message;
-}
-
-function uifCopySummary() {
-  var text = uifBuildSummary();
-  if (navigator.clipboard && navigator.clipboard.writeText) {
-    navigator.clipboard.writeText(text).then(function () { uifSetExportStatus('UIF summary copied.'); }).catch(function () { uifSetExportStatus('Copy failed. Select and copy the summary manually.'); });
-  } else {
-    uifSetExportStatus(text);
-  }
-}
-
-function uifDownloadSummary() {
-  var blob = new Blob([uifBuildSummary()], { type: 'text/plain;charset=utf-8' });
-  var url = URL.createObjectURL(blob);
-  var a = document.createElement('a');
-  a.href = url;
-  a.download = 'south-africa-uif-summary.txt';
-  document.body.appendChild(a);
-  a.click();
-  a.remove();
-  URL.revokeObjectURL(url);
-  uifSetExportStatus('TXT summary downloaded.');
-}
-
-// ── Tab 3: Credits Calculator ──
-function uifCreditsRun() {
-  setBusy('btn-credits', true);
-  var startDate = document.getElementById('cred-start').value;
-  var endDate   = document.getElementById('cred-end').value || new Date().toISOString().split('T')[0];
-  var prior     = +document.getElementById('cred-prior').value || 0;
-  var salary    = +document.getElementById('cred-salary').value || 0;
-
-  var cred = E.calcCreditDays(startDate, endDate, prior);
-  var pct  = Math.min(100, Math.round(cred.creditsCapped / E.MAX_CREDIT_DAYS * 100));
-
-  var boxes = '';
-  boxes += '<div class="uif-result-box"><div class="rnum">'+cred.daysWorked.toLocaleString()+'</div><div class="rlbl">Days Worked</div></div>';
-  boxes += '<div class="uif-result-box"><div class="rnum">'+cred.creditsCapped+' / 238</div><div class="rlbl">Credits Earned</div></div>';
-  boxes += '<div class="uif-result-box"><div class="rnum">'+cred.available+' days</div><div class="rlbl">Available Credits</div></div>';
-  document.getElementById('cred-boxes').innerHTML = boxes;
-  document.getElementById('cred-bar').style.width = pct+'%';
-
-  var weeks = (cred.available / 7).toFixed(1);
-  var months = (cred.available / 30).toFixed(1);
-  var summary = 'You have <strong>'+cred.available+' UIF credit days</strong> available (~'+weeks+' weeks / '+months+' months of benefits).';
-  if (salary > 0) {
-    var db = E.calcDailyBenefit(salary);
-    summary += ' At '+E.fmtZAR(salary)+'/month, your estimated monthly benefit would be <strong>'+E.fmtZAR(db*30)+'</strong>.';
-  }
-  document.getElementById('cred-summary').innerHTML = summary;
-  document.getElementById('cred-result-card').style.display = 'block';
-  document.getElementById('cred-result-card').scrollIntoView({ behavior: 'smooth' });
-  setBusy('btn-credits', false);
-}
-
-// ── Tab 4: Maternity ──
-function uifMaternityRun() {
-  setBusy('btn-mat', true);
-  var salary       = +document.getElementById('mat-salary').value || 0;
-  var years        = +document.getElementById('mat-years').value || 0;
-  var employerPays = document.getElementById('mat-employer-pays').value;
-
-  var creditDays = Math.min(Math.floor(years * 365 / 4), E.MAX_CREDIT_DAYS);
-  var res = E.calcBenefit({ monthlySalary: salary, claimType: 'maternity', creditDays: creditDays });
-
-  var html = '';
-  html += '<div class="uif-result-box hl"><div class="rnum">'+E.fmtZAR(res.monthlyBenefit)+'/month</div><div class="rlbl">Monthly Maternity Benefit</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.totalBenefit)+'</div><div class="rlbl">Total Maternity Benefit</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+res.benefitWeeks+' weeks</div><div class="rlbl">Benefit Duration</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtPct(res.irr)+'</div><div class="rlbl">Replacement Rate</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+res.benefitDays+' days</div><div class="rlbl">Benefit Days</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.dailyBenefit)+'/day</div><div class="rlbl">Daily Benefit</div></div>';
-  document.getElementById('mat-result-grid').innerHTML = html;
-
-  var noteEl = document.getElementById('mat-employer-note');
-  if (employerPays === 'full') {
-    noteEl.className = 'uif-alert uif-alert-warn';
-    noteEl.innerHTML = '<strong>Your employer is paying full salary.</strong> UIF maternity benefit still goes directly to you. Your employer may deduct the UIF amount from their payment — but only if your contract or maternity policy explicitly allows it. If your contract is silent, you may be entitled to both.';
-  } else if (employerPays === 'partial') {
-    noteEl.className = 'uif-alert uif-alert-info';
-    noteEl.innerHTML = '<strong>Your employer is topping up with partial payment.</strong> UIF pays you directly. Your total income = employer partial payment + UIF benefit, unless your contract allows deduction.';
-  } else {
-    noteEl.className = 'uif-alert uif-alert-ok';
-    noteEl.innerHTML = '<strong>UIF maternity benefit is your primary income during leave.</strong> Submit your claim before maternity leave starts so payments begin on time. Processing takes 6–8 weeks.';
-  }
-
-  document.getElementById('mat-result-card').style.display = 'block';
-  document.getElementById('mat-result-card').scrollIntoView({ behavior: 'smooth' });
-  setBusy('btn-mat', false);
-}
-
-// ── Tab 5: Short-Time ──
-function uifShortTimeRun() {
-  var prev = +document.getElementById('st-prev').value || 0;
-  var curr = +document.getElementById('st-curr').value || 0;
-
-  if (curr >= prev || prev <= 0) {
-    document.getElementById('st-result-card').style.display = 'none';
-    return;
-  }
-
-  var res = E.calcReducedWorkTime(prev, curr);
-
-  var html = '';
-  html += '<div class="uif-result-box hl"><div class="rnum">'+E.fmtZAR(res.monthlyBenefit)+'/month</div><div class="rlbl">UIF Short-Time Benefit</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.lostSalary)+'/month</div><div class="rlbl">Lost Salary</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtZAR(res.totalMonthlyIncome)+'/month</div><div class="rlbl">Total Income (Salary + UIF)</div></div>';
-  html += '<div class="uif-result-box"><div class="rnum">'+E.fmtPct(res.irr)+'</div><div class="rlbl">IRR Applied</div></div>';
-  document.getElementById('st-result-grid').innerHTML = html;
-
-  document.getElementById('st-note').innerHTML = 'Your employer must apply for <strong>Reduced Work Time</strong> on uFiling first. Once approved, claim this benefit <strong>every month</strong> while on short-time. Combined with your reduced salary of '+E.fmtZAR(curr)+', your total monthly income would be approximately <strong>'+E.fmtZAR(res.totalMonthlyIncome)+'</strong>.';
-
-  document.getElementById('st-result-card').style.display = 'block';
-  document.getElementById('st-result-card').scrollIntoView({ behavior: 'smooth' });
-}
-
-// ── Tab 7: Employer checklist ──
-document.querySelectorAll('.uif-checklist-item input[type="checkbox"]').forEach(function(cb) {
-  cb.addEventListener('change', updateEmpChecklist);
-});
-
-function updateEmpChecklist() {
-  var all     = document.querySelectorAll('.uif-checklist-item input[type="checkbox"]');
-  var checked = document.querySelectorAll('.uif-checklist-item input[type="checkbox"]:checked');
-  var n = checked.length, t = all.length;
-  var el = document.getElementById('emp-status');
-  if (n === t) {
-    el.className = 'uif-alert uif-alert-ok';
-    el.innerHTML = '<strong>Fully compliant</strong> ('+n+'/'+t+' items). All UIF obligations are met.';
-  } else if (n >= Math.ceil(t / 2)) {
-    el.className = 'uif-alert uif-alert-warn';
-    el.innerHTML = n+'/'+t+' items checked. Review the unchecked items — non-compliance risks 10% penalties.';
-  } else {
-    el.className = 'uif-alert uif-alert-warn';
-    el.innerHTML = n+'/'+t+' items checked. Significant compliance gaps detected. Non-compliance risks 10% penalties and criminal prosecution under the Unemployment Insurance Act.';
-  }
-}
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-<script src="/assets/js/components/related-tools.min.js?v=e25622fc" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
 </body>
 </html>

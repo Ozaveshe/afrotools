@@ -1,0 +1,427 @@
+:root {
+  --cit-ink: #15201b;
+  --cit-muted: #56645d;
+  --cit-line: #d6dfda;
+  --cit-paper: #f4f7f5;
+  --cit-card: #fff;
+  --cit-green: #07633d;
+  --cit-deep: #082d20;
+  --cit-gold: #d6a634;
+  --cit-soft: #e8f4ed;
+  --cit-warn: #fff4d8;
+  --cit-danger: #a52a2a;
+}
+* {
+  box-sizing: border-box;
+}
+.cit-page {
+  margin: 0;
+  background: var(--cit-paper);
+  color: var(--cit-ink);
+  font-family: Inter, system-ui, sans-serif;
+}
+.cit-wrap {
+  width: min(1140px, calc(100% - 32px));
+  margin-inline: auto;
+}
+.cit-hero {
+  padding: 46px 0 42px;
+  background: var(--cit-deep);
+  color: #fff;
+  border-bottom: 5px solid var(--cit-gold);
+}
+.cit-crumb {
+  margin-bottom: 25px;
+  font-size: 0.84rem;
+}
+.cit-crumb a {
+  color: #d5eee1;
+}
+.cit-kicker {
+  display: inline-block;
+  padding: 7px 10px;
+  border: 1px solid #598777;
+  border-radius: 6px;
+  color: #f3d889;
+  font-size: 0.73rem;
+  font-weight: 850;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+}
+.cit-hero h1 {
+  max-width: 850px;
+  margin: 15px 0 12px;
+  font:
+    800 clamp(2rem, 5vw, 4rem)/1.02 Georgia,
+    serif;
+  letter-spacing: -0.035em;
+}
+.cit-hero p {
+  max-width: 780px;
+  margin: 0;
+  color: #d5e5dd;
+  font-size: 1.04rem;
+  line-height: 1.65;
+}
+.cit-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 20px;
+}
+.cit-badge {
+  padding: 8px 10px;
+  border: 1px solid #527c6d;
+  border-radius: 7px;
+  background: #153e2e;
+  font-size: 0.8rem;
+  font-weight: 800;
+}
+.cit-main {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 330px;
+  gap: 24px;
+  padding-block: 28px 52px;
+}
+.cit-stack,
+.cit-side {
+  display: grid;
+  align-content: start;
+  gap: 20px;
+}
+.cit-card {
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid var(--cit-line);
+  border-radius: 14px;
+  background: var(--cit-card);
+  box-shadow: 0 8px 25px rgba(21, 32, 27, 0.06);
+}
+.cit-head {
+  padding: 20px 22px;
+  border-bottom: 1px solid var(--cit-line);
+}
+.cit-head h2 {
+  margin: 0;
+  font-size: 1.16rem;
+}
+.cit-head p {
+  margin: 6px 0 0;
+  color: var(--cit-muted);
+  line-height: 1.55;
+}
+.cit-body {
+  padding: 20px 22px;
+}
+.cit-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+}
+.cit-field {
+  display: grid;
+  align-content: start;
+  gap: 7px;
+  min-width: 0;
+}
+.cit-field label,
+.cit-check strong {
+  font-size: 0.85rem;
+  font-weight: 850;
+}
+.cit-field input,
+.cit-field select {
+  width: 100%;
+  min-height: 48px;
+  border: 1px solid #9caf9f;
+  border-radius: 9px;
+  background: var(--cit-card);
+  color: var(--cit-ink);
+  padding: 10px 12px;
+  font: inherit;
+}
+.cit-field small,
+.cit-check small {
+  color: var(--cit-muted);
+  line-height: 1.45;
+}
+.cit-check {
+  grid-column: 1/-1;
+  display: grid;
+  grid-template-columns: 24px 1fr;
+  gap: 9px;
+  align-items: start;
+  padding: 13px;
+  border: 1px solid var(--cit-line);
+  border-radius: 9px;
+  background: var(--cit-soft);
+}
+.cit-check input {
+  width: 20px;
+  height: 20px;
+  margin: 1px 0 0;
+}
+.cit-check span {
+  display: grid;
+  gap: 4px;
+}
+.cit-actions {
+  grid-column: 1/-1;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+.cit-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  border: 0;
+  border-radius: 9px;
+  background: var(--cit-green);
+  color: #fff;
+  padding: 10px 17px;
+  font:
+    850 0.9rem/1 Inter,
+    system-ui,
+    sans-serif;
+  cursor: pointer;
+}
+.cit-button.secondary {
+  border: 1px solid var(--cit-line);
+  background: var(--cit-card);
+  color: var(--cit-green);
+}
+.cit-error {
+  grid-column: 1/-1;
+  margin: 0;
+  color: var(--cit-danger);
+  font-weight: 800;
+}
+.cit-error:empty {
+  display: none;
+}
+.cit-result[hidden] {
+  display: none;
+}
+.cit-result {
+  padding: 20px 22px;
+}
+.cit-total {
+  padding: 18px;
+  border-radius: 11px;
+  background: var(--cit-soft);
+  border-left: 5px solid var(--cit-green);
+}
+.cit-total span {
+  display: block;
+  color: var(--cit-muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.cit-total strong {
+  display: block;
+  margin-top: 5px;
+  font-size: clamp(1.5rem, 5vw, 2.25rem);
+  overflow-wrap: anywhere;
+}
+.cit-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 11px;
+  margin-top: 14px;
+}
+.cit-metric {
+  padding: 14px;
+  border: 1px solid var(--cit-line);
+  border-radius: 9px;
+}
+.cit-metric span {
+  display: block;
+  color: var(--cit-muted);
+  font-size: 0.75rem;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+.cit-metric strong {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+}
+.cit-warning {
+  margin-top: 14px;
+  padding: 13px;
+  border: 1px solid #d9b95d;
+  border-radius: 9px;
+  background: var(--cit-warn);
+  color: #624c16;
+  line-height: 1.55;
+}
+.cit-formula {
+  margin-top: 14px;
+  padding: 14px;
+  border: 1px solid var(--cit-line);
+  border-radius: 9px;
+  background: var(--cit-paper);
+  color: var(--cit-muted);
+  line-height: 1.6;
+  overflow-wrap: anywhere;
+}
+.cit-export-status {
+  min-height: 20px;
+  margin: 10px 0 0;
+  color: var(--cit-muted);
+  font-size: 0.82rem;
+}
+.cit-side .cit-card {
+  padding: 19px;
+}
+.cit-side .cit-head,
+.cit-side .cit-body {
+  padding: 0;
+  border: 0;
+}
+.cit-side .cit-head + .cit-body {
+  margin-top: 12px;
+}
+.cit-side p,
+.cit-side li,
+.cit-body > p,
+.cit-body li {
+  color: var(--cit-muted);
+  line-height: 1.62;
+}
+.cit-source,
+.cit-list {
+  margin: 0;
+  padding-left: 19px;
+}
+.cit-source li + li,
+.cit-list li + li {
+  margin-top: 9px;
+}
+.cit-card a {
+  color: var(--cit-green);
+  font-weight: 750;
+}
+.cit-alert {
+  padding: 13px;
+  border: 1px solid #d9b95d;
+  border-radius: 9px;
+  background: var(--cit-warn);
+  color: #624c16;
+  line-height: 1.55;
+}
+.cit-faq details {
+  padding: 16px 22px;
+  border-bottom: 1px solid var(--cit-line);
+}
+.cit-faq summary {
+  cursor: pointer;
+  font-weight: 850;
+}
+.cit-faq p {
+  margin: 8px 0 0;
+  color: var(--cit-muted);
+  line-height: 1.6;
+}
+.cit-page :focus-visible {
+  outline: 3px solid #e1ad32;
+  outline-offset: 3px;
+}
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  z-index: 9999;
+  background: #fff;
+  color: #082d20;
+  padding: 10px;
+}
+.skip-link:focus {
+  left: 8px;
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) {
+    --cit-ink: #eff7f2;
+    --cit-muted: #b8c9bf;
+    --cit-line: #3b5148;
+    --cit-paper: #0b1712;
+    --cit-card: #14241e;
+    --cit-soft: #19372a;
+    --cit-warn: #382f17;
+  }
+  html:not([data-theme="light"]) .cit-field input,
+  html:not([data-theme="light"]) .cit-field select {
+    border-color: #61786c;
+  }
+  html:not([data-theme="light"]) .cit-card a {
+    color: #8cddb5;
+  }
+  html:not([data-theme="light"]) .cit-warning,
+  html:not([data-theme="light"]) .cit-alert {
+    color: #f2dc9c;
+    border-color: #826b31;
+  }
+  html:not([data-theme="light"]) .cit-button.secondary {
+    color: #93ddb9;
+  }
+}
+html[data-theme="dark"] {
+  --cit-ink: #eff7f2;
+  --cit-muted: #b8c9bf;
+  --cit-line: #3b5148;
+  --cit-paper: #0b1712;
+  --cit-card: #14241e;
+  --cit-soft: #19372a;
+  --cit-warn: #382f17;
+}
+html[data-theme="dark"] .cit-field input,
+html[data-theme="dark"] .cit-field select {
+  border-color: #61786c;
+}
+html[data-theme="dark"] .cit-card a {
+  color: #8cddb5;
+}
+html[data-theme="dark"] .cit-warning,
+html[data-theme="dark"] .cit-alert {
+  color: #f2dc9c;
+  border-color: #826b31;
+}
+html[data-theme="dark"] .cit-button.secondary {
+  color: #93ddb9;
+}
+@media (max-width: 830px) {
+  .cit-main {
+    grid-template-columns: 1fr;
+  }
+  .cit-side {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 580px) {
+  .cit-wrap {
+    width: min(100% - 20px, 1140px);
+  }
+  .cit-hero {
+    padding: 34px 0 30px;
+  }
+  .cit-main {
+    padding-top: 16px;
+    gap: 16px;
+  }
+  .cit-form,
+  .cit-side,
+  .cit-grid {
+    grid-template-columns: 1fr;
+  }
+  .cit-head,
+  .cit-body,
+  .cit-result {
+    padding: 17px;
+  }
+  .cit-actions .cit-button {
+    flex: 1 1 145px;
+  }
+}

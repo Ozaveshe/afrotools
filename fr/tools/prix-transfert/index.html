@@ -1,484 +1,76 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur prix de transfert | AfroTools</title>
-<meta name="description" content="Testez une marge, un prix CUP ou un taux d'intérêt intra-groupe contre une plage comparable, avec méthode, sources, export et avertissement fiscal 2026.">
-<meta name="robots" content="index, follow">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:title" content="Calculateur prix de transfert | AfroTools">
-<meta property="og:description" content="Analyse locale d'une transaction intra-groupe contre une plage de pleine concurrence fournie par l'utilisateur.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/prix-transfert/">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/transfer-pricing.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur prix de transfert | AfroTools">
-<meta name="twitter:description" content="Calculez une marge ou un écart de prix de transfert et exportez un memo de revue.">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Feuille de comparabilité prix de transfert | AfroTools</title>
+  <meta name="description" content="Comparez un indicateur prix de transfert à votre plage comparable documentée. TNMM, coût majoré, revente, CUP et prêt, sans benchmark inventé.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:title" content="Feuille de comparabilité prix de transfert"><meta property="og:description" content="Compare uniquement votre indicateur avec votre plage documentée."><meta property="og:url" content="https://afrotools.com/fr/tools/prix-transfert/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/transfer-pricing.webp"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Feuille de comparabilité prix de transfert | AfroTools">
+<meta name="twitter:description" content="Comparez un indicateur prix de transfert à votre plage comparable documentée. TNMM, coût majoré, revente, CUP et prêt, sans benchmark inventé.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/transfer-pricing.webp">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script>
-<script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<style>
-:root{--tp-ink:#0f172a;--tp-muted:#526179;--tp-line:#d8e1ee;--tp-soft:#f6f9fc;--tp-blue:#2457c5;--tp-green:#0f7a5c;--tp-red:#b42318;--tp-gold:#9a6700}
-body{background:#f4f7fb;color:var(--tp-ink)}
-.tp-shell{max-width:1180px;margin:0 auto;padding:32px 20px 64px}
-.tp-hero{display:grid;grid-template-columns:minmax(0,1fr) 370px;gap:22px;align-items:stretch;margin-bottom:20px}
-.eyebrow{display:inline-flex;border:1px solid #bcd0ff;background:#edf4ff;color:#1648a8;border-radius:999px;padding:7px 12px;font-size:.74rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase}
-.tp-hero h1{font-size:clamp(2rem,4.6vw,3.8rem);line-height:.98;letter-spacing:0;margin:18px 0 14px}
-.tp-hero p{font-size:1rem;line-height:1.74;color:var(--tp-muted);max-width:720px}
-.hero-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
-.btn{border:0;border-radius:8px;padding:12px 15px;font-weight:850;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;min-height:44px}
-.btn-primary{background:var(--tp-blue);color:#fff}
-.btn-secondary{background:#fff;color:#173f91;border:1px solid #cbd9f4}
-.btn-ghost{background:transparent;color:#173f91;border:1px solid #d7e0ee}
-.hero-card,.tp-card,.source-card{background:#fff;border:1px solid var(--tp-line);border-radius:14px;box-shadow:0 16px 42px rgba(15,23,42,.06)}
-.hero-card{padding:20px;display:grid;gap:13px}
-.hero-card strong{display:block;font-size:1.05rem;margin-bottom:4px}
-.hero-card span{display:block;color:var(--tp-muted);font-size:.9rem;line-height:1.55}
-.tp-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:18px;align-items:start}
-.tp-card{padding:20px}
-.tp-card h2,.source-card h2{font-size:1.13rem;margin:0 0 12px}
-.form-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
-.field{display:grid;gap:6px}
-.field label{font-weight:850;font-size:.84rem;color:#1f2937}
-.field input,.field select{width:100%;min-height:44px;border:1px solid #ced9e8;border-radius:8px;background:#fff;padding:11px 12px;font:inherit;color:#111827}
-.field input:focus,.field select:focus{outline:3px solid rgba(36,87,197,.18);border-color:var(--tp-blue)}
-.help{font-size:.77rem;color:#667085;line-height:1.4}
-.wide{grid-column:1/-1}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
-.result-panel{display:grid;gap:12px;margin-top:16px}
-.metric-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
-.metric{border:1px solid #dfe7f2;background:#f8fbff;border-radius:12px;padding:14px}
-.metric span{display:block;font-size:.72rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;color:#61728d;margin-bottom:7px}
-.metric strong{font-size:1.25rem;color:#0f172a}
-.status{border:1px solid #dfe7f2;background:#fff;border-radius:12px;padding:14px;line-height:1.58}
-.status strong{display:block;margin-bottom:5px}
-.status[data-tone="ok"]{border-color:#b6e1d4;background:#f1fbf7;color:#0f513f}
-.status[data-tone="warn"]{border-color:#f0d295;background:#fff8e8;color:#744604}
-.status[data-tone="risk"]{border-color:#f3b5ad;background:#fff4f2;color:#8f2219}
-.range{border:1px solid #dfe7f2;border-radius:12px;background:#fff;padding:14px}
-.bar{height:18px;background:#e7edf5;border-radius:999px;position:relative;overflow:visible;margin:12px 0}
-.zone{position:absolute;top:0;height:100%;background:#bdebdc;border-radius:999px}
-.marker{position:absolute;top:-7px;width:4px;height:32px;background:#b42318;border-radius:3px}
-.range-labels{display:flex;justify-content:space-between;gap:8px;flex-wrap:wrap;font-size:.76rem;color:#526179;font-weight:800}
-.memo{border:1px solid #dfe7f2;border-radius:12px;background:#fff;overflow:hidden}
-.memo-row{display:flex;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #edf2f7}
-.memo-row:last-child{border-bottom:0}
-.memo-row span:first-child{color:#526179}
-.memo-row strong{white-space:nowrap;text-align:right}
-.source-stack{display:grid;gap:14px}
-.source-card{padding:18px}
-.source-card p,.source-card li{font-size:.9rem;line-height:1.65;color:#53627a}
-.source-card ul{margin:8px 0 0;padding-left:19px}
-.source-card a{color:#174ea6;font-weight:800}
-.badge-list{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
-.badge{border-radius:999px;background:#edf5ff;color:#1d4fb8;padding:6px 10px;font-size:.75rem;font-weight:900}
-.checklist{display:grid;gap:8px;margin-top:8px}
-.checklist label{display:flex;gap:9px;align-items:flex-start;font-size:.88rem;color:#344054;line-height:1.45}
-.related-list{display:grid;gap:8px}
-.related-list a{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border:1px solid #dfe7f2;border-radius:10px;text-decoration:none;color:#173e91;background:#fff}
-.faq{margin-top:22px}
-.faq details{background:#fff;border:1px solid var(--tp-line);border-radius:12px;padding:14px 16px;margin-bottom:10px}
-.faq summary{cursor:pointer;font-weight:900}
-.faq p{color:#526179;line-height:1.65}
-@media(max-width:880px){.tp-hero,.tp-grid{grid-template-columns:1fr}.hero-card{order:-1}.form-grid,.metric-grid{grid-template-columns:1fr}.tp-shell{padding:22px 14px 52px}.tp-hero h1{font-size:clamp(2rem,11vw,3rem)}}
-</style>
-<script type="application/ld+json">
+  <link rel="icon" href="/assets/img/logo-mark.svg" type="image/svg+xml"><link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb"><link rel="stylesheet" href="/assets/css/global.min.css?v=2777b75b"><link rel="stylesheet" href="/assets/css/transfer-pricing-vip.css?v=4b097f0c">
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=b1c2dbd7" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script><script src="/assets/js/engines/transfer-pricing-planner.js?v=b9cad6dd" defer></script><script src="/assets/js/pages/transfer-pricing-vip.js?v=cf953eca" defer></script>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Calculateur prix de transfert AfroTools",
+  "name": "Feuille de comparabilité prix de transfert",
   "url": "https://afrotools.com/fr/tools/prix-transfert/",
   "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
   "inLanguage": "fr",
-  "description": "Outil de planification pour tester une marge ou un prix intra-groupe contre une plage comparable fournie par l'utilisateur.",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "description": "Feuille locale comparant un indicateur à une plage fournie et documentée par l'utilisateur.",
+  "featureList": [
+    "Marge opérationnelle TNMM",
+    "Coût majoré et marge de revente",
+    "Comparaison CUP",
+    "Comparaison de taux de prêt",
+    "Exports TXT, JSON et impression locale"
+  ],
   "image": "https://afrotools.com/assets/img/tools/transfer-pricing.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce calculateur remplace-t-il une étude prix de transfert ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il produit un contrôle de coherence preliminaire. Une étude formelle doit examiner la comparabilite, les fonctions, les actifs, les risques, les contrats et les données de marche."}},{"@type":"Question","name":"Pourquoi dois-je saisir ma plage comparable ?","acceptedAnswer":{"@type":"Answer","text":"Les plages de pleine concurrence dependent du pays, de l'industrie, de la transaction et des comparables. AfroTools ne pretend pas fournir une base officielle en direct."}},{"@type":"Question","name":"Quelles sources vérifier ?","acceptedAnswer":{"@type":"Answer","text":"Vérifiez les lignes directrices OCDE, les ressources ATAF et les instructions de l'administration fiscale du pays concerne avant toute décision fiscale."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cet outil détermine-t-il un prix de pleine concurrence ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il calcule un indicateur et le situe uniquement dans la plage fournie par l'utilisateur. La méthode, la comparabilité, le droit local et la documentation nécessitent une revue séparée."}},{"@type":"Question","name":"AfroTools fournit-il des benchmarks africains ?","acceptedAnswer":{"@type":"Answer","text":"Non. La feuille exige une plage et une note de source documentées par l'utilisateur."}}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Accueil","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/all-tools/"},{"@type":"ListItem","position":3,"name":"Comparabilité prix de transfert","item":"https://afrotools.com/fr/tools/prix-transfert/"}]}</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/prix-transfert/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/transfer-pricing/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/prix-transfert/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/transfer-pricing/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<main class="tp-shell">
-  <section class="tp-hero">
-    <div>
-      <span class="eyebrow">Revue prix de transfert 2026</span>
-      <h1>Calculateur prix de transfert</h1>
-      <p>Contrôlez rapidement une transaction intra-groupe avant de préparer une note plus formelle. L'outil compare votre marge, prix ou taux a une plage comparable que vous fournissez, puis genere un memo avec les points de vérification.</p>
-      <div class="hero-actions">
-        <a class="btn btn-primary" href="#analyse">Analyser une transaction</a>
-        <button class="btn btn-secondary" type="button" id="sampleBtn">Charger un exemple TNMM</button>
-      </div>
+<body class="tp-page">
+  <afro-navbar active="tools"></afro-navbar>
+  <header class="tp-hero"><div class="tp-wrap"><p class="tp-crumb"><a href="/fr/">Accueil</a> / <a href="/fr/all-tools/">Outils</a> / Prix de transfert</p><span class="tp-kicker">Planification de comparabilité · sources revues le 22 juillet 2026</span><h1>Feuille de comparabilité prix de transfert</h1><p>Calculez un indicateur propre à la méthode et comparez-le à une plage que vous pouvez documenter. AfroTools ne fournit ni benchmark national, ni conclusion de pleine concurrence, ni audit, déclaration, pénalité ou ajustement fiscal.</p><div class="tp-badges"><span>Données locales</span><span>Plage fournie par vous</span><span>Cinq méthodes</span><span>TXT · JSON · impression/PDF</span></div></div></header>
+  <section class="tp-answer"><div class="tp-wrap"><p><strong>Réponse rapide :</strong> être dans une plage comparable est une observation de préparation, pas une preuve de conformité. Selon l'OCDE, l'analyse de comparabilité est centrale : délimitation, fonctions, actifs, risques, contrats, circonstances économiques et droit national restent déterminants.</p></div></section>
+  <main class="tp-wrap tp-main" data-tp-app data-locale="fr">
+    <div class="tp-stack">
+      <section class="tp-card" aria-labelledby="tpf-calc"><div class="tp-head"><h2 id="tpf-calc">Construire la comparaison</h2><p>Utilisez des données synthétiques ou correctement protégées. Ne collez pas de contrats, données personnelles ou récits confidentiels.</p></div><div class="tp-body"><form class="tp-form" data-form>
+        <div class="tp-field"><label for="tpf-jurisdiction">Juridiction à vérifier</label><input id="tpf-jurisdiction" name="jurisdiction" placeholder="Exemple : Kenya" maxlength="80"></div>
+        <div class="tp-field"><label for="tpf-period">Période de transaction</label><input id="tpf-period" name="period" placeholder="Exemple : exercice 2025" maxlength="40"></div>
+        <div class="tp-field"><label for="tpf-transaction">Transaction contrôlée</label><select id="tpf-transaction" name="transactionType"><option>Distribution de biens</option><option>Services intragroupe</option><option>Fabrication contractuelle</option><option>Licence / redevance</option><option>Prêt ou garantie</option><option>Autre — documenter séparément</option></select></div>
+        <div class="tp-field"><label for="tpf-method">Méthode de comparaison</label><select id="tpf-method" name="method"><option value="tnmm">TNMM — marge opérationnelle</option><option value="costPlus">Coût majoré</option><option value="resale">Prix de revente — marge brute</option><option value="cup">CUP — prix unitaire contrôlé</option><option value="loan">Prêt — taux annuel</option></select></div>
+        <div class="tp-field"><label for="tpf-currency">Libellé de devise</label><input id="tpf-currency" name="currency" value="EUR" maxlength="12"></div>
+        <div class="tp-field"><label for="tpf-a" data-label-a>Chiffre d'affaires / ventes</label><input id="tpf-a" name="amountA" type="number" value="1000000" step="any" inputmode="decimal"></div>
+        <div class="tp-field" data-secondary-field><label for="tpf-b" data-label-b>Coûts opérationnels</label><input id="tpf-b" name="amountB" type="number" value="950000" step="any" inputmode="decimal"></div>
+        <div class="tp-field"><label for="tpf-low">Bas comparable</label><input id="tpf-low" name="rangeLow" type="number" value="3" step="any" inputmode="decimal"></div>
+        <div class="tp-field"><label for="tpf-median">Médiane comparable</label><input id="tpf-median" name="rangeMedian" type="number" value="5" step="any" inputmode="decimal"></div>
+        <div class="tp-field"><label for="tpf-high">Haut comparable</label><input id="tpf-high" name="rangeHigh" type="number" value="8" step="any" inputmode="decimal"></div>
+        <div class="tp-field tp-wide"><label for="tpf-source">Source et période des comparables</label><textarea id="tpf-source" name="comparableSource" maxlength="300" placeholder="Exemple : recherche filtrée, date, exercices, géographie et critères de sélection"></textarea><small>Cette note est obligatoire. AfroTools ne fournit ni ne valide la plage.</small></div>
+        <label class="tp-check"><input type="checkbox" name="scopeConfirmed"><span><strong>Cette plage vient de ma source documentée, pas d'AfroTools</strong><small>Le résultat situe un indicateur ; ce n'est ni une conclusion de pleine concurrence, ni un audit ou une déclaration.</small></span></label>
+        <p class="tp-error" data-error role="alert"></p><div class="tp-actions"><button class="tp-button" type="submit">Comparer l'indicateur</button></div>
+      </form></div>
+      <section class="tp-result" data-result hidden aria-live="polite" aria-labelledby="tpf-result"><div class="tp-total"><span id="tpf-result">Position dans la plage</span><strong data-position></strong></div><div class="tp-grid"><div><span data-indicator-name>Indicateur</span><strong data-indicator></strong></div><div><span>Bas / médiane / haut fournis</span><strong data-range></strong></div><div><span>Écart à votre médiane</span><strong data-difference></strong></div><div><span>Source comparable</span><strong data-source></strong></div></div><p class="tp-alert">Ne comptabilisez aucun ajustement et ne déclarez rien à partir de cette sortie. Revoyez la transaction, la comparabilité, la partie testée, le droit local et les conséquences d'un différend avec un spécialiste.</p><div class="tp-actions"><button class="tp-button secondary" type="button" data-copy>Copier le mémo</button><button class="tp-button secondary" type="button" data-txt>Télécharger TXT</button><button class="tp-button secondary" type="button" data-json>Télécharger JSON</button><button class="tp-button secondary" type="button" data-print>Imprimer / PDF</button></div><p class="tp-status" data-status role="status" aria-live="polite"></p></section>
+      </section>
+      <section class="tp-card tp-faq"><div class="tp-head"><h2>Méthodes et preuves</h2></div><details><summary>« Dans la plage » signifie-t-il conforme ?</summary><p>Non. Cela signifie seulement que l'indicateur arithmétique est entre les bornes saisies. Une conclusion fiable dépend des transactions et circonstances comparables.</p></details><details><summary>Pourquoi aucun benchmark africain ?</summary><p>Une plage générique sans année, fonctions, risques, géographie, filtrage et droit local serait trompeuse. Une note de source est donc exigée.</p></details><details><summary>L'outil applique-t-il montant B ?</summary><p>Non. montant B est une approche simplifiée optionnelle pour certains distributeurs de référence ; elle dépend de l'adoption nationale et d'un champ détaillé.</p></details></section>
     </div>
-    <aside class="hero-card" aria-label="Cadre de l'outil">
-      <div><strong>Pas une base officielle</strong><span>Les comparables doivent venir de votre étude, de votre conseiller, de données publiques ou d'une source fiscale pertinente.</span></div>
-      <div><strong>Méthodes couvertes</strong><span>TNMM, coût majore, prix de revente, CUP simplifie et prêt intra-groupe.</span></div>
-      <div><strong>Memo exportable</strong><span>Copie, téléchargement TXT et sauvegarde locale pour conserver l'hypothèse de travail.</span></div>
+    <aside class="tp-side">
+      <section class="tp-card"><div class="tp-head"><h3>Preuves avant revue</h3></div><div class="tp-body tp-checklist"><label><input type="checkbox"> Transaction et parties associées délimitées</label><label><input type="checkbox"> Contrats rapprochés de la conduite réelle</label><label><input type="checkbox"> Fonctions, actifs et risques analysés</label><label><input type="checkbox"> Partie testée et indicateur justifiés</label><label><input type="checkbox"> Recherche comparable et ajustements documentés</label><label><input type="checkbox"> Droit, déclaration et documentation locaux vérifiés</label></div></section>
+      <section class="tp-card"><div class="tp-head"><h3>Arithmétique</h3></div><div class="tp-body tp-content"><p><strong>TNMM :</strong> (ventes − coûts opérationnels) ÷ ventes.</p><p><strong>Coût majoré :</strong> (rémunération − base de coûts) ÷ base de coûts.</p><p><strong>Revente :</strong> (ventes indépendantes − prix contrôlé) ÷ ventes.</p><p><strong>CUP :</strong> prix unitaire contrôlé comparé directement à votre plage de prix.</p><p><strong>Prêt :</strong> taux annuel saisi comparé à votre plage de taux.</p></div></section>
+      <section class="tp-card"><div class="tp-head"><h3>Limites officielles</h3></div><div class="tp-body"><ul class="tp-list"><li><a href="https://www.oecd.org/fr/publications/principes-de-l-ocde-applicables-en-matiere-de-prix-de-transfert-a-l-intention-des-entreprises-multinationales-et-des-administrations-fiscales-2022_5357f003-fr.html" rel="noopener">Principes OCDE 2022</a></li><li><a href="https://www.oecd.org/fr/topics/transfer-pricing.html" rel="noopener">OCDE — prix de transfert</a></li><li><a href="https://ataftax.org/international-tax/" rel="noopener">ATAF — fiscalité internationale</a></li><li><a href="https://ataftax.org/fr/library/ataf-suggested-approach-to-drafting-transfer-pricing-legislation/" rel="noopener">Approche législative suggérée par l'ATAF</a></li></ul><p>Sources revues le 22 juillet 2026. Vérifiez toujours le droit et l'administration de chaque juridiction concernée.</p></div></section>
+      <section class="tp-card"><div class="tp-head"><h3>Confidentialité</h3></div><div class="tp-body tp-content"><p>Les saisies restent dans ce navigateur et ne sont pas sauvegardées automatiquement. TXT, JSON et impression sont créés localement.</p></div></section>
     </aside>
-  </section>
-
-  <section class="tp-grid" id="analyse">
-    <div class="tp-card">
-      <h2>Transaction et comparables</h2>
-      <form id="tpForm" class="form-grid">
-        <div class="field">
-          <label for="country">Pays principal</label>
-          <select id="country">
-            <option>Nigeria</option>
-            <option>Kenya</option>
-            <option>Afrique du Sud</option>
-            <option>Ghana</option>
-            <option>Maroc</option>
-            <option>Côte d'Ivoire</option>
-            <option>Cameroun</option>
-            <option>Sénégal</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="method">Méthode</label>
-          <select id="method">
-            <option value="tnmm" selected>TNMM - marge nette</option>
-            <option value="cost-plus">Coût majore</option>
-            <option value="resale">Prix de revente</option>
-            <option value="cup">CUP - prix comparable</option>
-            <option value="loan">Prêt intra-groupe</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="currency">Devise</label>
-          <select id="currency">
-            <option value="NGN" selected>NGN</option>
-            <option value="KES">KES</option>
-            <option value="ZAR">ZAR</option>
-            <option value="GHS">GHS</option>
-            <option value="XOF">XOF</option>
-            <option value="MAD">MAD</option>
-            <option value="USD">USD</option>
-            <option value="EUR">EUR</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="transactionType">Type de transaction</label>
-          <select id="transactionType">
-            <option>Distribution de biens</option>
-            <option>Services intra-groupe</option>
-            <option>Fabrication contractuelle</option>
-            <option>Licence / redevance</option>
-            <option>Prêt ou garantie</option>
-          </select>
-        </div>
-        <div class="field">
-          <label for="baseAmount">Ventes, prix ou principal</label>
-          <input id="baseAmount" type="number" min="0" step="any" value="100000000" inputmode="decimal">
-          <span class="help" id="baseHelp">Pour TNMM/revente: ventes. Pour CUP: prix contrôle. Pour prêt: principal.</span>
-        </div>
-        <div class="field">
-          <label for="costAmount">Coûts, prix d'achat ou comparable</label>
-          <input id="costAmount" type="number" min="0" step="any" value="92000000" inputmode="decimal">
-          <span class="help" id="costHelp">Pour TNMM/coût majore: coûts. Pour CUP: prix comparable median. Pour prêt: taux applique (%).</span>
-        </div>
-        <div class="field">
-          <label for="rangeLow">Bas de plage comparable</label>
-          <input id="rangeLow" type="number" step="0.01" value="3" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="rangeMedian">Median comparable</label>
-          <input id="rangeMedian" type="number" step="0.01" value="5" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="rangeHigh">Haut de plage comparable</label>
-          <input id="rangeHigh" type="number" step="0.01" value="8" inputmode="decimal">
-        </div>
-        <div class="field">
-          <label for="materiality">Seuil de materialite</label>
-          <input id="materiality" type="number" min="0" step="any" value="1000000" inputmode="decimal">
-        </div>
-        <div class="field wide">
-          <label for="sourceNote">Source des comparables</label>
-          <input id="sourceNote" type="text" maxlength="140" value="Plage provisoire issue d'une revue interne; a confirmer avec une etude complete">
-        </div>
-        <div class="wide actions">
-          <button class="btn btn-primary" type="submit">Analyser</button>
-          <button class="btn btn-secondary" type="button" id="copyMemo">Copier le memo</button>
-          <button class="btn btn-ghost" type="button" id="downloadMemo">Télécharger TXT</button>
-          <button class="btn btn-ghost" type="button" id="saveLocal">Sauvegarder localement</button>
-        </div>
-      </form>
-
-      <div class="result-panel" id="resultPanel" aria-live="polite">
-        <div class="status"><strong>Entrez une transaction pour commencer.</strong><span>Le résultat indiquera si l'indicateur calcule se situe sous, dans ou au-dessus de la plage comparable saisie.</span></div>
-      </div>
-    </div>
-
-    <aside class="source-stack">
-      <section class="source-card" data-tool-verification-panel="prix-transfert-fr">
-        <h2>Sources et limites</h2>
-        <p><strong>Dernière vérification: 2026.</strong> Les prix de transfert sont une matière fiscale sensible. Ce calculateur est un contrôle de coherence, pas une déclaration officielle.</p>
-        <ul>
-          <li><a href="https://www.oecd.org/en/topics/sub-issues/transfer-pricing.html" rel="noopener">OCDE</a>: cadre international de l'application du principe de pleine concurrence.</li>
-          <li><a href="https://ataftax.org/" rel="noopener">ATAF</a>: ressources africaines et approches de legislation prix de transfert.</li>
-          <li><strong>Source officielle locale:</strong> administration fiscale du pays concerne, textes en vigueur, circulaires, formulaires et seuils de documentation.</li>
-        </ul>
-        <div class="badge-list">
-          <span class="badge">Méthode visible</span>
-          <span class="badge">Plage utilisateur</span>
-          <span class="badge">Export memo</span>
-        </div>
-      </section>
-
-      <section class="source-card">
-        <h2>Checklist de documentation</h2>
-        <div class="checklist">
-          <label><input type="checkbox"> Parties liees et structure du groupe identifiees</label>
-          <label><input type="checkbox"> Contrats et factures rapproches</label>
-          <label><input type="checkbox"> Analyse fonctions, actifs et risques preparee</label>
-          <label><input type="checkbox"> Plage comparable documentee</label>
-          <label><input type="checkbox"> Source officielle locale vérifiée</label>
-        </div>
-      </section>
-
-      <section class="source-card">
-        <h2>Outils proches</h2>
-        <div class="related-list">
-          <a href="/fr/tools/transfer-pricing/">Version anglaise <span>Ouvrir</span></a>
-          <a href="/fr/tools/ng-impot-societes/">Conformite fiscale <span>Ouvrir</span></a>
-          <a href="/fr/tools/ng-impot-societes/">Impôt société <span>Ouvrir</span></a>
-          <a href="/business-enquiry/">Calculateur fiscal sur mesure <span>Demander</span></a>
-        </div>
-      </section>
-    </aside>
-  </section>
-
-  <section class="faq" aria-labelledby="faq-title">
-    <h2 id="faq-title">Questions fréquentes</h2>
-    <details open>
-      <summary>Comment choisir la méthode ?</summary>
-      <p>Le choix depend de la transaction, des données comparables, des fonctions exercees et des risques portes. TNMM est souvent utilise quand les comparables prix directs sont rares, mais ce n'est pas une regle universelle.</p>
-    </details>
-    <details>
-      <summary>Pourquoi AfroTools ne fournit-il pas une plage officielle ?</summary>
-      <p>Une plage de pleine concurrence depend de l'année, du marche, du secteur, des fonctions et des données disponibles. Une plage générique pourrait être trompeuse; l'outil vous laisse donc saisir la plage que vous pouvez documenter.</p>
-    </details>
-    <details>
-      <summary>Que faire si le résultat est hors plage ?</summary>
-      <p>Traitez-le comme un signal de revue. Confirmez les données, la méthode, la comparabilite et les textes locaux avant tout ajustement comptable ou fiscal.</p>
-    </details>
-  </section>
-
-  <afro-business-cta
-    tool-name="Calculateur prix de transfert"
-    save-note="Les cabinets, fiscalistes et groupes regionaux peuvent demander un calculateur de documentation ou de revue prix de transfert adapte a leur methode."></afro-business-cta>
-</main>
-<afro-footer></afro-footer>
-<script>
-(function(){
-  'use strict';
-  var STORAGE_KEY = 'afrotools:fr:prix-transfert:last';
-  var lastMemo = '';
-  var form = document.getElementById('tpForm');
-  var panel = document.getElementById('resultPanel');
-  var method = document.getElementById('method');
-
-  function n(id){
-    var value = parseFloat(document.getElementById(id).value);
-    return Number.isFinite(value) ? value : 0;
-  }
-
-  function fmt(amount){
-    return document.getElementById('currency').value + ' ' + Math.round(amount).toLocaleString('fr-FR');
-  }
-
-  function pct(value){
-    return value.toFixed(2).replace(/\\.00$/,'') + '%';
-  }
-
-  function updateHints(){
-    var m = method.value;
-    document.getElementById('baseHelp').textContent =
-      m === 'cup' ? 'Prix controle par unite ou montant facture a la partie liee.' :
-      m === 'loan' ? 'Principal du pret intra-groupe.' :
-      'Ventes ou chiffre d affaires de la partie testee.';
-    document.getElementById('costHelp').textContent =
-      m === 'cup' ? 'Prix comparable median ou prix de pleine concurrence vise.' :
-      m === 'loan' ? 'Taux d interet applique au pret (%).' :
-      'Couts ou prix d achat lies a la transaction.';
-  }
-
-  function indicator(){
-    var m = method.value;
-    var base = n('baseAmount');
-    var cost = n('costAmount');
-    if (m === 'loan') return {label:'Taux applique', value:cost, base:base, profit:base * cost / 100, adjustmentBase:base};
-    if (m === 'cup') {
-      var comparable = cost || 1;
-      return {label:'Ecart CUP', value:(base - comparable) / comparable * 100, base:base, profit:base - comparable, adjustmentBase:comparable};
-    }
-    var profit = base - cost;
-    if (m === 'cost-plus') return {label:'Marge cout majore', value:cost ? profit / cost * 100 : 0, base:base, profit:profit, adjustmentBase:cost};
-    return {label:m === 'resale' ? 'Marge prix de revente' : 'Marge nette TNMM', value:base ? profit / base * 100 : 0, base:base, profit:profit, adjustmentBase:base};
-  }
-
-  function analyze(){
-    var low = n('rangeLow');
-    var med = n('rangeMedian');
-    var high = n('rangeHigh');
-    var materiality = n('materiality');
-    var ind = indicator();
-    var tone = 'ok';
-    var status = 'Dans la plage comparable saisie';
-    if (ind.value < low) { tone = 'risk'; status = 'Sous la plage comparable: revue prioritaire'; }
-    else if (ind.value > high) { tone = 'warn'; status = 'Au-dessus de la plage comparable: expliquer la difference'; }
-    var targetProfit = method.value === 'cup'
-      ? ind.adjustmentBase * (1 + med / 100)
-      : ind.adjustmentBase * med / 100;
-    var adjustment = method.value === 'cup' ? targetProfit - ind.base : targetProfit - ind.profit;
-    var material = Math.abs(adjustment) >= materiality;
-    var source = document.getElementById('sourceNote').value.trim();
-    var country = document.getElementById('country').value;
-
-    lastMemo = [
-      'Memo prix de transfert - AfroTools',
-      'Verification: 2026 | Pays: ' + country + ' | Methode: ' + method.options[method.selectedIndex].text,
-      'Transaction: ' + document.getElementById('transactionType').value,
-      ind.label + ': ' + pct(ind.value) + ' | Plage: ' + pct(low) + ' - ' + pct(high) + ' | Mediane: ' + pct(med),
-      'Statut: ' + status,
-      'Ajustement indicatif vers mediane: ' + fmt(adjustment) + ' | Materiel: ' + (material ? 'oui' : 'non'),
-      'Source des comparables: ' + (source || 'Non renseignee'),
-      'Avertissement: controle de coherence uniquement; verifiez OCDE, ATAF, textes locaux et conseiller fiscal avant action.'
-    ].join('\\n');
-
-    panel.innerHTML =
-      '<div class="metric-grid">' +
-        metric(ind.label, pct(ind.value)) +
-        metric('Plage comparable', pct(low) + ' - ' + pct(high)) +
-        metric('Ajustement indicatif', fmt(adjustment)) +
-        metric('Materialite', material ? 'A verifier' : 'Faible') +
-      '</div>' +
-      '<div class="status" data-tone="' + tone + '"><strong>' + status + '</strong><span>' + recommendation(tone, material) + '</span></div>' +
-      rangeHtml(ind.value, low, med, high) +
-      '<div class="memo">' +
-        memoRow('Pays', country) +
-        memoRow('Methode', method.options[method.selectedIndex].text) +
-        memoRow('Transaction', document.getElementById('transactionType').value) +
-        memoRow('Source comparables', source || 'A documenter') +
-        memoRow('Seuil materialite', fmt(materiality)) +
-      '</div>';
-    return { indicator: ind.value, tone: tone, adjustment: adjustment, material: material };
-  }
-
-  function metric(label,value){ return '<div class="metric"><span>' + label + '</span><strong>' + value + '</strong></div>'; }
-  function memoRow(label,value){ return '<div class="memo-row"><span>' + label + '</span><strong>' + value + '</strong></div>'; }
-
-  function recommendation(tone, material){
-    if (tone === 'risk') return 'Revoyez les donnees, la methode et la politique de prix. Si l ecart est materiel, preparez une justification ou demandez conseil avant declaration.';
-    if (tone === 'warn') return 'Documentez pourquoi le resultat est au-dessus de la plage: fonctions, risques, marche, annee, contrats et donnees comparables.';
-    return 'Conservez le memo, la source des comparables et les contrats. Une analyse complete reste necessaire pour une position fiscale.';
-  }
-
-  function rangeHtml(value, low, med, high){
-    var min = Math.min(value, low, 0) - 2;
-    var max = Math.max(value, high, med) + 2;
-    var span = max - min || 1;
-    function pos(x){ return Math.max(0, Math.min(100, (x - min) / span * 100)); }
-    return '<div class="range"><strong>Visualisation de la plage</strong>' +
-      '<div class="bar"><div class="zone" style="left:' + pos(low) + '%;width:' + (pos(high) - pos(low)) + '%"></div><div class="marker" style="left:' + pos(value) + '%"></div></div>' +
-      '<div class="range-labels"><span>Bas ' + pct(low) + '</span><span>Mediane ' + pct(med) + '</span><span>Haut ' + pct(high) + '</span><span>Votre resultat ' + pct(value) + '</span></div></div>';
-  }
-
-  function copyMemo(button){
-    if (!lastMemo) analyze();
-    function done(){
-      var old = button.textContent;
-      button.textContent = 'Copie';
-      setTimeout(function(){ button.textContent = old; }, 1200);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(lastMemo).then(done).catch(function(){ fallbackCopy(lastMemo, done); });
-    } else {
-      fallbackCopy(lastMemo, done);
-    }
-  }
-
-  function fallbackCopy(text, done){
-    var area = document.createElement('textarea');
-    area.value = text;
-    area.setAttribute('readonly','');
-    area.style.position = 'fixed';
-    area.style.left = '-9999px';
-    document.body.appendChild(area);
-    area.select();
-    try { document.execCommand('copy'); done(); } catch (error) {}
-    area.remove();
-  }
-
-  function downloadMemo(){
-    if (!lastMemo) analyze();
-    var blob = new Blob([lastMemo], {type:'text/plain;charset=utf-8'});
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = 'memo-prix-transfert-afrotools.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
-  }
-
-  function saveLocal(){
-    var result = analyze();
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify({savedAt:new Date().toISOString(), memo:lastMemo, result:result}));
-      panel.insertAdjacentHTML('beforeend','<div class="status"><strong>Sauvegarde locale effectuee.</strong><span>Le memo est conserve seulement dans ce navigateur.</span></div>');
-    } catch (error) {
-      panel.insertAdjacentHTML('beforeend','<div class="status"><strong>Sauvegarde indisponible.</strong><span>Votre navigateur bloque peut-etre le stockage local.</span></div>');
-    }
-  }
-
-  method.addEventListener('change', updateHints);
-  form.addEventListener('submit', function(event){ event.preventDefault(); analyze(); });
-  document.getElementById('copyMemo').addEventListener('click', function(){ copyMemo(this); });
-  document.getElementById('downloadMemo').addEventListener('click', downloadMemo);
-  document.getElementById('saveLocal').addEventListener('click', saveLocal);
-  document.getElementById('sampleBtn').addEventListener('click', function(){
-    document.getElementById('country').value = 'Nigeria';
-    document.getElementById('method').value = 'tnmm';
-    document.getElementById('currency').value = 'NGN';
-    document.getElementById('transactionType').value = 'Distribution de biens';
-    document.getElementById('baseAmount').value = '100000000';
-    document.getElementById('costAmount').value = '96500000';
-    document.getElementById('rangeLow').value = '3';
-    document.getElementById('rangeMedian').value = '5';
-    document.getElementById('rangeHigh').value = '8';
-    document.getElementById('materiality').value = '1000000';
-    document.getElementById('sourceNote').value = 'Exemple de plage comparable a remplacer par une etude documentee';
-    updateHints();
-    analyze();
-    document.getElementById('analyse').scrollIntoView({behavior:'smooth',block:'start'});
-  });
-  updateHints();
-  analyze();
-})();
-</script>
+  </main>
+  <afro-related-tools tool-id="prix-transfert-fr"></afro-related-tools><afro-business-cta></afro-business-cta><afro-footer></afro-footer>
 </body>
 </html>

@@ -123,15 +123,21 @@ assert(favorite.includes('Imehifadhiwa'));
 assert(consent.includes('/sw/faragha/'));
 
 const fx = read('sw/zana/kibadilishaji-sarafu/index.html');
-assert(fx.includes('id="fxDataStatus"'));
-assert(fx.includes('Chanzo cha mtandao hakipatikani'));
-assert(fx.includes('si viwango vya moja kwa moja'));
-assert(fx.includes("Object.keys(data.rates).length"));
-assert.strictEqual((fx.match(/addEventListener\('click',fetchFx\)/g) || []).length, 1, 'retry listener must be idempotent');
+const fxController = read('assets/js/pages/currency-converter-locales-vip.js');
+assert(fx.includes('data-currency-locale-vip="sw"'));
+assert(fx.includes('id="fxStatus"'));
+assert(fx.includes('id="fxManualRate"'));
+assert(fx.includes('Snapshot husitishwa baada ya siku 7'));
+assert(fx.includes('Hakuna viwango vya soko lisilo rasmi'));
+assert(fxController.includes("var sources = ['/api/forex?base=USD', '/data/forex/latest.json']"));
+assert(fxController.includes("Object.keys(rates).some"));
+assert(fxController.includes("failClosed(sawStale ? 'stale' : 'error')"));
+assert.strictEqual((fxController.match(/addEventListener\('submit', calculate\)/g) || []).length, 1, 'conversion submit listener must be idempotent');
 
 const vat = read('sw/zana/kikokotoo-vat/index.html');
-assert(vat.includes('id="vatStatus"'));
-assert(vat.includes('role="status"'));
+assert(vat.includes('id="pageStatus"'));
+assert(vat.includes('id="singleStatus" role="status"'));
+assert(vat.includes('id="invoiceStatus" role="status"'));
 assert(!vat.includes("alert('Tafadhali ingiza kiasi.');"));
 
 for (const rel of ['sw/biashara-ndogo/index.html', 'sw/biashara-na-uzingatiaji/index.html']) {

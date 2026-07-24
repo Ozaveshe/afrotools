@@ -115,7 +115,9 @@ function priorityOrder(tools) {
 
 function widgetFallback() {
   return widgets.slice().sort((a, b) => a.name.localeCompare(b.name)).slice(0, 24).map((widget) => {
-    const route = widget.fullToolLink && widget.fullToolLink.startsWith('/') ? widget.fullToolLink : '/widgets/';
+    const route = widget.id === 'break-even-lite'
+      ? '/tools/break-even/'
+      : widget.fullToolLink && widget.fullToolLink.startsWith('/') ? widget.fullToolLink : '/widgets/';
     return `        <article class="widget-card" data-initial-record="${escapeHtml(widget.id)}">
           <div class="widget-card__meta"><span class="widget-card__cat">${escapeHtml(widget.category)}</span><span class="widget-card__source">${widget.source === 'lite-pack' ? 'Lite' : 'Core'}</span></div>
           <h2><a href="${escapeHtml(route)}" data-directory-record>${escapeHtml(widget.name)}</a></h2>

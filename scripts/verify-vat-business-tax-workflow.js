@@ -73,14 +73,23 @@ function verifyHub() {
 
 function verifyCalculator() {
   const calc = read('tools/vat-calculator/index.html');
-  assert(calc.includes('vat-business-tax-report-sync.js'), 'VAT calculator should load VAT report sync');
-  assert(calc.includes("category: 'vat-business-tax'"), 'VAT PDF exports should declare vat-business-tax category');
-  assert(calc.includes("GH:{name:'Ghana'") && calc.includes('rate:20'), 'Ghana VAT calculator rate should be 20 effective');
-  assert(calc.includes('GHS 750K/yr'), 'Ghana threshold should be GHS 750K/yr');
-  assert(!calc.includes('21.9'), 'VAT calculator should not keep stale Ghana 21.9% copy');
-  assert(!calc.includes('8% (petroleum)'), 'VAT calculator should not keep stale Kenya petroleum reduced rate');
-  assert(!calc.includes('R1M/yr'), 'South Africa VAT threshold should not keep stale R1M/yr copy');
-  assert(calc.includes('R2.3M/yr'), 'South Africa VAT threshold should be R2.3M/yr');
+  const controller = read('assets/js/pages/pan-african-vat-vip.js');
+  const pack = JSON.parse(read('data/vat-business-tax/pan-african-vat-presets.json'));
+  const statuses = Object.values(pack.countries || {}).reduce((counts, country) => {
+    counts[country.status] = (counts[country.status] || 0) + 1;
+    return counts;
+  }, {});
+  assert(calc.includes('/assets/js/engines/pan-african-vat.js'), 'VAT calculator should load the shared pure VAT engine');
+  assert(calc.includes('/assets/js/pages/pan-african-vat-vip.js'), 'VAT calculator should load the custom-rate-first controller');
+  assert(calc.includes('/assets/vendor/jspdf/jspdf.umd.min.js'), 'VAT calculator should load the local PDF dependency');
+  assert(controller.includes("category: 'vat-business-tax'"), 'VAT PDF events should declare vat-business-tax category');
+  assert(!/ai-advisor|auto-email-gate|share-state|workspace-sync|vat-business-tax-report-sync/.test(calc + controller), 'VAT flagship must not load AI, email gate, workspace sync, or stateful share code');
+  assert(!/localStorage|sessionStorage|afro_vat|history/i.test(controller), 'VAT calculation controller must not persist amounts or history');
+  assert(Object.keys(pack.countries || {}).length === 54, 'VAT planning pack should name exactly 54 markets');
+  assert(statuses['authority-bound-planning-preset'] === 15, 'VAT planning pack should expose only 15 authority-bound presets');
+  assert(statuses['authority-source-gap'] === 36, 'VAT planning pack should retain 36 explicit authority-source gaps');
+  assert(statuses['unverified-no-vat-claim'] === 3, 'VAT planning pack should keep 3 no-VAT claims unverified and rate-free');
+  assert(!Object.values(pack.countries || {}).some((country) => country.status !== 'authority-bound-planning-preset' && Object.prototype.hasOwnProperty.call(country, 'standardRate')), 'VAT source gaps must not receive legacy rates');
 }
 
 function main() {

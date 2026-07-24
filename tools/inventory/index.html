@@ -1,356 +1,80 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Inventory Tracker — Simple Stock Management | AfroTools</title>
-<meta name="description" content="Free inventory tracker for African small businesses. Track stock levels, costs, and sales. Get low-stock alerts and profit reports. Works offline.">
-<meta name="keywords" content="inventory tracker, stock management, small business inventory, product tracker, stock control, African business tools">
-<meta property="og:title" content="Simple Inventory Tracker for Small Businesses">
-<meta property="og:description" content="Track your product inventory, costs, and stock levels. Low-stock alerts and profit reports. Free, works offline.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/inventory/">
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=c13f04eb">
-<style>
-:root{--green:#16a34a;--green-light:#f0fdf4;--green-dark:#15803d}
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc;color:#1e293b;line-height:1.6}
-.hero{background:linear-gradient(135deg,#14532d 0%,#15803d 50%,#22c55e 100%);color:#fff;padding:3rem 1.5rem 2.5rem;text-align:center}
-.hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem}
-.hero p{font-size:1.05rem;opacity:.9;max-width:600px;margin:0 auto}
-.container{max-width:1000px;margin:0 auto;padding:1.5rem}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;padding:1.5rem;box-shadow:0 1px 3px rgba(0,0,0,.06);margin-bottom:1.5rem}
-.card h2{font-size:1.1rem;font-weight:700;margin-bottom:1rem;color:#14532d}
-.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.5rem}
-.stat-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:1rem;text-align:center}
-.stat-card.warning{background:#fffbeb;border-color:#fde68a}
-.stat-label{font-size:.8rem;color:#64748b;font-weight:600;text-transform:uppercase}
-.stat-value{font-size:1.4rem;font-weight:800;color:var(--green);margin-top:.2rem}
-.toolbar{display:flex;gap:.75rem;margin-bottom:1rem;flex-wrap:wrap;align-items:center}
-.btn{padding:.5rem 1rem;border:none;border-radius:7px;font-weight:600;font-size:.85rem;cursor:pointer;transition:all .2s}
-.btn-primary{background:var(--green);color:#fff}.btn-primary:hover{background:var(--green-dark)}
-.btn-outline{background:#fff;color:var(--green);border:1.5px solid var(--green)}.btn-outline:hover{background:var(--green-light)}
-.btn-danger{background:#fef2f2;color:#dc2626;border:1px solid #fecaca}.btn-danger:hover{background:#fee2e2}
-.search-input{flex:1;min-width:200px;padding:.5rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.85rem;background:#f8fafc;font-family:inherit}
-.search-input:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.12)}
-.inv-table{width:100%;border-collapse:collapse;font-size:.85rem}
-.inv-table th{background:#f0fdf4;color:#14532d;padding:.6rem .75rem;text-align:left;font-weight:600;border-bottom:2px solid #bbf7d0;cursor:pointer;white-space:nowrap}
-.inv-table th:hover{background:#dcfce7}
-.inv-table td{padding:.5rem .75rem;border-bottom:1px solid #f1f5f9}
-.inv-table tr:hover td{background:#f8fafc}
-.low-stock{color:#dc2626;font-weight:700}
-.stock-ok{color:#16a34a}
-.modal-overlay{position:fixed;top:0;left:0;right:0;bottom:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:1000;padding:1rem}
-.modal-overlay.open{display:flex}
-.modal{background:#fff;border-radius:12px;padding:1.5rem;max-width:500px;width:100%;max-height:90vh;overflow-y:auto}
-.modal h2{font-size:1.1rem;font-weight:700;color:#14532d;margin-bottom:1rem}
-.form-group{display:flex;flex-direction:column;gap:.3rem;margin-bottom:.75rem}
-.form-group label{font-weight:600;font-size:.85rem;color:#475569}
-.form-group input,.form-group select{padding:.55rem .75rem;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.95rem;background:#f8fafc;font-family:inherit}
-.form-group input:focus,.form-group select:focus{outline:none;border-color:var(--green);box-shadow:0 0 0 3px rgba(22,163,74,.15)}
-.modal-actions{display:flex;gap:.75rem;justify-content:flex-end;margin-top:1rem}
-.seo-section{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.seo-section h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
-.seo-section h3{font-size:1.1rem;font-weight:700;color:#334155;margin:1.5rem 0 .5rem}
-.seo-section p{color:#475569;margin-bottom:1rem}
-.faq{max-width:800px;margin:2rem auto;padding:0 1.5rem}
-.faq h2{font-size:1.4rem;font-weight:800;color:#14532d;margin-bottom:1rem}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff}
-.faq summary{padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center}
-.faq summary::after{content:'+';font-size:1.3rem;color:#94a3b8;font-weight:300}
-.faq details[open] summary::after{content:'-'}
-.faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
-.inventory-workflow-note{margin:.75rem 0 1rem;padding:.85rem 1rem;border:1px solid #bbf7d0;border-radius:10px;background:#f0fdf4;color:#14532d;font-size:.86rem;line-height:1.55}
-</style>
-<link rel="stylesheet" href="/assets/css/vat-business-tax-focus.css?v=d060ff20">
-<script src="/assets/js/bundles/core.a7c76d68.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Simple Inventory Tracker for Small Businesses">
-<meta name="twitter:description" content="Track your product inventory, costs, and stock levels. Low-stock alerts and profit reports. Free, works offline.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Simple Inventory Tracker for Small Businesses",
-      "item": "https://afrotools.com/tools/inventory/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Inventory Calculator & Local Stock Tracker | AfroTools</title>
+  <meta name="description" content="Track stock locally, calculate input-based inventory cost value, potential sales, signed gross profit, low-stock alerts and optional reorder quantities.">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Inventory Calculator & Local Stock Tracker"><meta property="og:description" content="Private browser-local stock calculations, backup and export for small businesses."><meta property="og:url" content="https://afrotools.com/tools/inventory/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=0d9e4d75"><link rel="stylesheet" href="/assets/css/inventory-vip.css?v=4752332f">
+  <script>(function(){try{var t=localStorage.getItem("aft_theme"),d=matchMedia("(prefers-color-scheme: dark)").matches,a=t==="dark"||t==="light"?t:(d?"dark":"light");document.documentElement.setAttribute("data-theme",a);document.documentElement.style.colorScheme=a}catch(_){}})();</script>
+  <script src="/assets/js/components/navbar.min.js?v=996960fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script><script src="/assets/js/engines/inventory-planner.js?v=3cf76554" defer></script><script src="/assets/js/pages/inventory-vip.js?v=8b66590f" defer></script>
+  <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Inventory Tracker — Simple Stock Management",
-  "description": "Free inventory tracker for African small businesses. Track stock levels, costs, and sales. Get low-stock alerts and profit reports. Works offline.",
+  "name": "Inventory Calculator and Local Stock Tracker",
   "url": "https://afrotools.com/tools/inventory/",
+  "description": "Calculate input-based stock cost value, potential sales, signed potential gross profit and optional reorder quantities from user-entered inventory.",
   "inLanguage": "en",
-  "applicationCategory": "UtilitiesApplication",
+  "applicationCategory": "BusinessApplication",
   "operatingSystem": "Web",
   "offers": {
     "@type": "Offer",
     "price": "0",
     "priceCurrency": "USD"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "isAccessibleForFree": true,
+  "featureList": [
+    "Browser-local stock tracking",
+    "User-set low-stock alerts",
+    "Optional target-stock reorder arithmetic",
+    "Local JSON, CSV and PDF exports"
+  ],
   "image": "https://afrotools.com/assets/img/tools/inventory.webp"
 }
 </script>
-<!-- tool-structured-data:auto -->
+
+  <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where is my data stored?","acceptedAnswer":{"@type":"Answer","text":"All data is stored locally in your browser's localStorage. It persists across sessions but is tied to this browser on this device. If you clear your browser data, the inventory will be reset. Use the Export CSV feature regularly to back up your data."}},{"@type":"Question","name":"How many products can I track?","acceptedAnswer":{"@type":"Answer","text":"There's no hard limit, but performance is best with up to 500 products. For most small businesses, this is more than sufficient. If you need to track more, consider a dedicated inventory management app."}},{"@type":"Question","name":"Can I import my existing inventory?","acceptedAnswer":{"@type":"Answer","text":"Yes. Export JSON from this page as a local backup, then import that JSON on the same or another browser. CSV export is available for bookkeeping review."}},{"@type":"Question","name":"Is this suitable for a retail shop?","acceptedAnswer":{"@type":"Answer","text":"Yes, this tool is designed for small retail businesses: provision stores, phone accessory shops, cosmetics stores, hardware shops, etc. For businesses with complex needs like multiple locations, barcode scanning, or employee access control, consider a dedicated POS system."}}]}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Inventory Calculator & Local Stock Tracker","item":"https://afrotools.com/tools/inventory/"}]}
 </script>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Inventory Calculator &amp; Local Stock Tracker | AfroTools">
+<meta name="twitter:description" content="Track stock locally, calculate input-based inventory cost value, potential sales, signed gross profit, low-stock alerts and optional reorder quantities.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/inventory.webp">
 <link rel="canonical" href="https://afrotools.com/tools/inventory/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/inventory/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/gestion-stocks/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kifuatiliaji-inventory/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/inventory/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="hero"><h1>Inventory Tracker</h1><p>Simple stock management for African small businesses. Track products, costs, and stock levels. All data stays in your browser.</p></section>
-<div class="container">
-<div class="stats-grid" id="statsGrid"></div>
-<div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;padding:0 0 8px">
-<save-result-button tool-slug="inventory" tool-name="Inventory"></save-result-button>
-<share-result-button tool-name="Inventory" tool-slug="inventory"></share-result-button>
-</div>
-<div class="card">
-<div class="toolbar">
-<button type="button" class="btn btn-primary" onclick="openModal()">+ Add Product</button>
-<input aria-label="Search products" type="text" class="search-input" id="searchInput" placeholder="Search products..." oninput="renderTable()">
-<button type="button" class="btn btn-outline" onclick="copyInventorySummary()">Copy Summary</button>
-<button type="button" class="btn btn-outline" data-no-gate="true" onclick="exportCSV()">Export CSV</button>
-<button type="button" class="btn btn-outline" data-no-gate="true" onclick="exportJSON()">Backup JSON</button>
-<label class="btn btn-outline" for="importJson" style="cursor:pointer">Import JSON</label>
-<input id="importJson" type="file" accept="application/json,.json" style="position:absolute;left:-9999px" onchange="importJSON(this)">
-</div>
-<p id="inventoryStatus" style="min-height:22px;margin:0 0 10px;color:#475569;font-size:.85rem" aria-live="polite"></p>
-<p class="inventory-workflow-note">Local-first stock tracker. Product names, quantities, margins, and supplier-sensitive details stay in this browser unless you choose copy, CSV export, JSON backup, save, or share. Recount physical stock and verify supplier prices before using exports for purchasing or bookkeeping.</p>
-<div style="overflow-x:auto">
-<table class="inv-table">
-<thead><tr><th>Product</th><th>Category</th><th>Cost Price</th><th>Sell Price</th><th>Stock</th><th>Min Stock</th><th>Status</th><th>Value</th><th>Actions</th></tr></thead>
-<tbody id="invBody"></tbody>
-</table>
-</div>
-</div>
-</div>
-<div class="modal-overlay" id="modal">
-<div class="modal">
-<h2 id="modalTitle">Add Product</h2>
-<div class="form-group"><label>Product Name</label><input aria-label="E.g. Indomie Noodles (Carton)" type="text" id="mName" placeholder="e.g. Indomie Noodles (Carton)"></div>
-<div class="form-group"><label>Category</label><select id="mCategory" aria-label="M Category"><option>Food & Beverage</option><option>Electronics</option><option>Clothing</option><option>Beauty & Cosmetics</option><option>Household</option><option>Stationery</option><option>Raw Materials</option><option>Other</option></select></div>
-<div class="form-group"><label>Cost Price</label><input aria-label="MCost" type="number" id="mCost" placeholder="0" min="0"></div>
-<div class="form-group"><label>Selling Price</label><input aria-label="MSell" type="number" id="mSell" placeholder="0" min="0"></div>
-<div class="form-group"><label>Current Stock</label><input aria-label="MStock" type="number" id="mStock" placeholder="0" min="0"></div>
-<div class="form-group"><label>Minimum Stock (alert level)</label><input aria-label="MMinStock" type="number" id="mMinStock" value="5" min="0"></div>
-<div class="modal-actions">
-<button type="button" class="btn btn-outline" onclick="closeModal()">Cancel</button>
-<button type="button" class="btn btn-primary" id="modalSaveBtn" onclick="saveProduct()">Save</button>
-</div>
-</div>
-</div>
-<section class="seo-section">
-<h2>Simple Inventory Management for African Businesses</h2>
-<p>Inventory management is a constant challenge for African small businesses. Whether you run a provision store in Lagos, a duka in Nairobi, a container shop in Accra, or a spaza shop in Johannesburg, knowing exactly what's in stock — and what's running low — is essential for maintaining sales and managing cash flow.</p>
-<h3>No Internet Required</h3>
-<p>This inventory tracker stores all data locally in your browser using localStorage. There's no account to create, no monthly subscription, and no internet required after the initial page load. Your product data stays private on your device. This is perfect for market traders and shop owners who may have inconsistent internet connectivity.</p>
-<h3>Low-Stock Alerts</h3>
-<p>Set minimum stock levels for each product and instantly see which items need restocking. The dashboard highlights products below their minimum threshold, helping you place orders before you run out. This prevents lost sales from stockouts — one of the biggest revenue killers for small retailers.</p>
-<h3>Stock Value at a Glance</h3>
-<p>The dashboard shows your total inventory value based on cost price and potential revenue based on selling prices. This gives you a clear picture of the capital tied up in stock and the potential profit if everything sells. Use the export feature to download your inventory as a CSV file for record-keeping or for sharing with your accountant.</p>
-<h3>Next Business Workflows</h3>
-<p>Use <a href="/tools/cash-flow-forecast/">cash flow forecast</a> to test whether you can afford the next purchase order, <a href="/tools/market-stall-profit/">market stall profit</a> to compare item margins, and <a href="/tools/invoice-generator/">invoice generator</a> when stock moves into a billable customer order.</p>
-<h3>Sources &amp; Verification Methodology</h3>
-<p><strong>Method:</strong> this tracker uses only the product, cost, selling price, stock, and reorder values you enter. Stock value is calculated as cost price multiplied by quantity, and potential revenue is selling price multiplied by quantity.</p>
-<p><strong>Source:</strong> your current browser inventory is the source of truth. Recount physical stock, verify supplier prices, and review damaged, expired, reserved, or unpaid items before using an export for purchasing or bookkeeping.</p>
-<p><strong>Disclaimer:</strong> this is a local planning worksheet, not a POS, accounting ledger, tax filing record, audit report, or multi-user inventory system.</p>
-</section>
-
-<div style="max-width:960px;margin:0 auto;padding:0 20px 20px">
-  <afro-business-cta
-    tool-name="Inventory Tracker"
-    save-note="Track stock locally, then export CSV or JSON for accountant, buyer, or operations review."></afro-business-cta>
-</div>
-<section class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Where is my data stored?</summary><p>All data is stored locally in your browser's localStorage. It persists across sessions but is tied to this browser on this device. If you clear your browser data, the inventory will be reset. Use the Export CSV feature regularly to back up your data.</p></details>
-<details><summary>How many products can I track?</summary><p>There's no hard limit, but performance is best with up to 500 products. For most small businesses, this is more than sufficient. If you need to track more, consider a dedicated inventory management app.</p></details>
-<details><summary>Can I import my existing inventory?</summary><p>Yes. Export JSON from this page as a local backup, then import that JSON on the same or another browser. CSV export is available for bookkeeping review.</p></details>
-<details><summary>Is this suitable for a retail shop?</summary><p>Yes, this tool is designed for small retail businesses: provision stores, phone accessory shops, cosmetics stores, hardware shops, etc. For businesses with complex needs like multiple locations, barcode scanning, or employee access control, consider a dedicated POS system.</p></details>
-</section>
-<afro-related-tools category="ecommerce" current="inventory" data-ssr="1">
+<body>
+<a class="skip-link" href="#main-content">Skip to inventory</a><afro-navbar active="tools"></afro-navbar>
+<main id="main-content" class="inv-shell" tabindex="-1">
+  <header class="inv-hero"><span class="inv-kicker">Local-first stock planning</span><h1>Inventory calculator and tracker</h1><p>Track products without uploading them. Calculate stock cost value, potential sales, signed potential gross profit and optional target-stock reorder quantities from your own entries.</p></header>
+  <section aria-label="Inventory controls">
+    <div class="inv-toolbar"><button id="invAdd" class="inv-button inv-primary" type="button">Add product</button><label class="inv-field inv-search">Search inventory<input id="invSearch" class="inv-input" type="search" autocomplete="off"></label><label class="inv-field">Display unit<select id="invUnit" class="inv-input"><option>USD</option><option>NGN</option><option>KES</option><option>ZAR</option><option>GHS</option><option>XOF</option><option>XAF</option><option>UGX</option><option>TZS</option><option>RWF</option><option>ETB</option><option>Other</option></select><span>Formatting label only; no FX conversion.</span></label></div>
+    <div id="invMetrics" class="inv-metrics" aria-live="polite"></div>
+    <div class="inv-card">
+      <div class="inv-toolbar"><button id="invCopy" class="inv-button" type="button">Copy aggregate summary</button><button id="invCsv" class="inv-button" type="button">Export safe CSV</button><button id="invJson" class="inv-button" type="button">Backup JSON</button><button id="invPdf" class="inv-button" type="button">Download PDF</button><select id="invImportMode" class="inv-input" aria-label="JSON import mode" style="width:auto"><option value="merge">Merge JSON</option><option value="replace">Replace with JSON</option></select><button id="invImportButton" class="inv-button" type="button">Import JSON</button><input id="invImport" type="file" accept="application/json,.json" hidden><button id="invSample" class="inv-button" type="button">Load sample</button><button id="invClear" class="inv-button inv-danger" type="button">Clear all</button></div>
+      <p id="invStatus" class="inv-status" aria-live="polite"></p><p class="inv-privacy"><strong>Private by default.</strong> Product, SKU and price data remain in this browser. Recount physical stock and verify invoices, damage, expiry, returns and reserved stock before purchasing or bookkeeping.</p>
+      <div class="inv-table-wrap" tabindex="0" aria-label="Scrollable inventory table"><table class="inv-table"><thead><tr><th>Product</th><th>SKU</th><th>Category</th><th>Unit cost</th><th>Selling price</th><th>On hand</th><th>Reorder point</th><th>Target</th><th>Cost value</th><th>Reorder units</th><th>Actions</th></tr></thead><tbody id="invBody"></tbody></table></div>
+    </div>
+  </section>
+  <section class="inv-method"><h2>Method and limits</h2><ul><li>Stock cost value = unit cost × quantity on hand. This is not FIFO, weighted-average valuation or COGS.</li><li>Potential sales = selling price × quantity. Potential gross profit = (selling price − unit cost) × quantity and may be negative.</li><li>Low stock means quantity on hand is less than or equal to your reorder point. Optional reorder units = max(target stock − quantity, 0).</li><li>No tax, VAT, FX rate, demand forecast, supplier price, lead time or purchase advice is supplied.</li></ul></section>
+</main>
+<div id="invModal" class="inv-modal" role="dialog" aria-modal="true" aria-labelledby="invModalTitle" aria-hidden="true"><div class="inv-dialog"><div class="inv-dialog-head"><h2 id="invModalTitle">Add product</h2><button id="invClose" class="inv-button inv-close" type="button" aria-label="Close product dialog">×</button></div><form id="invForm"><div class="inv-form-grid"><label class="inv-field">Product name<input id="invName" class="inv-input" maxlength="120" required></label><label class="inv-field">SKU (optional)<input id="invSku" class="inv-input" maxlength="80"></label><label class="inv-field">Category (optional)<input id="invCategory" class="inv-input" maxlength="80"></label><label class="inv-field">Unit cost<input id="invCost" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Selling price<input id="invSell" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Quantity on hand<input id="invQty" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Reorder point<input id="invReorder" class="inv-input" type="number" min="0" step="any" required></label><label class="inv-field">Target stock (optional)<input id="invTarget" class="inv-input" type="number" min="0" step="any"><span>Enables reorder arithmetic only.</span></label></div><p id="invModalError" class="inv-modal-error" aria-live="assertive"></p><div class="inv-dialog-actions"><button id="invCancel" class="inv-button" type="button">Cancel</button><button class="inv-button inv-primary" type="submit">Save product</button></div></form></div></div>
+<afro-related-tools data-ssr="1" category="ecommerce" current="inventory">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="All 50+ African countries. Add VAT, extract VAT, compare countries side-by-side. 2025/26 rates.">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="NTA 2026 VAT: 7.5% standard, zero-rated, exempt categories. Reverse VAT included.">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="SARS VAT 15%, zero-rated, exempt. Inclusive/exclusive. Vendor registration threshold.">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="KRA VAT 16%, zero-rated, exempt. Reverse VAT and inclusive/exclusive toggle.">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="ETA VAT 14%. Standard + reduced rates. Table tax.">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="GRA VAT 15% + 2.5% NHIL + 2.5% GETFund. Standard effective charge and zero-rated supplies.">Ghana VAT Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/vat-calculator/" data-related-tool data-id="vat-calc-pan-african" data-name="VAT Calculator (Pan-African)" data-category="ecommerce" data-icon="VC" data-desc="Custom-rate-first VAT planning, invoices, withholding scenarios, and rate comparisons, with authority-bound presets only">VAT Calculator (Pan-African)</a></li><li><a href="/nigeria/ng-vat" data-related-tool data-id="ng-vat" data-name="Nigeria VAT Calculator" data-category="ecommerce" data-icon="NV" data-desc="Add or extract Nigeria VAT at 7.5%, compare zero-rated and exempt treatment, build invoice estimates, and export a priva">Nigeria VAT Calculator</a></li><li><a href="/south-africa/za-vat" data-related-tool data-id="za-vat" data-name="South Africa VAT Calculator" data-category="ecommerce" data-icon="SA" data-desc="Add or extract VAT at the current 15% rate, keep confirmed zero-rated and exempt treatment distinct, screen 2026 registr">South Africa VAT Calculator</a></li><li><a href="/kenya/ke-vat" data-related-tool data-id="ke-vat" data-name="Kenya VAT Calculator" data-category="ecommerce" data-icon="KV" data-desc="Add or extract Kenya VAT at 16%, keep confirmed zero-rated and exempt treatment distinct, build invoice estimates, and e">Kenya VAT Calculator</a></li><li><a href="/egypt/eg-vat" data-related-tool data-id="eg-vat" data-name="Egypt VAT Calculator" data-category="ecommerce" data-icon="EV" data-desc="Add or extract Egypt&#39;s standard 14% VAT, screen the general registration threshold, and test clearly labelled non-statut">Egypt VAT Calculator</a></li><li><a href="/ghana/gh-vat" data-related-tool data-id="gh-vat" data-name="Ghana VAT Calculator" data-category="ecommerce" data-icon="GV" data-desc="Plan Ghana invoices under the 2026 GRA structure: 15% VAT, 2.5% NHIL and 2.5% GETFund on the same base.">Ghana VAT Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
-</afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=ecde82fa" defer></script><script src="/assets/js/components/footer.min.js?v=dfb30911" defer></script><script src="/assets/js/components/related-tools.js?v=b1c2dbd7" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
-<script>
-let products=JSON.parse(localStorage.getItem('afro_inventory')||'[]');
-let editingId=null;
-function save(){localStorage.setItem('afro_inventory',JSON.stringify(products));}
-function inventoryTotals(){
-  return {
-    total:products.length,
-    low:products.filter(p=>p.stock<=p.minStock).length,
-    totalValue:products.reduce((s,p)=>s+p.cost*p.stock,0),
-    totalRevenue:products.reduce((s,p)=>s+p.sell*p.stock,0)
-  };
-}
-function setInventoryStatus(message){
-  var el=document.getElementById('inventoryStatus');
-  if(el)el.textContent=message;
-}
-function renderStats(){
-  const totals=inventoryTotals();
-  const total=totals.total;
-  const low=totals.low;
-  const totalValue=totals.totalValue;
-  const totalRevenue=totals.totalRevenue;
-  document.getElementById('statsGrid').innerHTML=`
-    <div class="stat-card"><div class="stat-label">Total Products</div><div class="stat-value">${total}</div></div>
-    <div class="stat-card ${low>0?'warning':''}"><div class="stat-label">Low Stock</div><div class="stat-value" style="color:${low>0?'#dc2626':'#16a34a'}">${low}</div></div>
-    <div class="stat-card"><div class="stat-label">Stock Value (Cost)</div><div class="stat-value" style="font-size:1.1rem">${totalValue.toLocaleString()}</div></div>
-    <div class="stat-card"><div class="stat-label">Potential Revenue</div><div class="stat-value" style="font-size:1.1rem">${totalRevenue.toLocaleString()}</div></div>`;
-
-  var saveBtn=document.querySelector('save-result-button[tool-slug="inventory"]');
-  var shareBtn=document.querySelector('share-result-button[tool-slug="inventory"]');
-  if(saveBtn&&typeof saveBtn.setData==='function'){saveBtn.setData({inputs:{totalProducts:total,lowStockItems:low},outputs:{stockValueCost:totalValue,potentialRevenue:totalRevenue,potentialProfit:totalRevenue-totalValue}});}
-  if(shareBtn&&typeof shareBtn.setResult==='function'){shareBtn.setResult({headline:'Inventory Summary',mainValue:total+' Products',subValues:[{label:'Stock Value',value:totalValue.toLocaleString()},{label:'Potential Revenue',value:totalRevenue.toLocaleString()},{label:'Low Stock',value:String(low)}],inputs:{totalProducts:total,lowStockItems:low}});}
-  var workflow=document.getElementById('inventoryWorkflowResult');
-  if(workflow){workflow.textContent=total+' product(s), '+low+' low-stock item(s), cost value '+totalValue.toLocaleString()+', potential revenue '+totalRevenue.toLocaleString()+'.';}
-}
-function renderTable(){
-  const search=document.getElementById('searchInput').value.toLowerCase();
-  const filtered=products.filter(p=>!search||p.name.toLowerCase().includes(search)||p.category.toLowerCase().includes(search));
-  document.getElementById('invBody').innerHTML=filtered.map(p=>{
-    const isLow=p.stock<=p.minStock;
-    return `<tr>
-      <td style="font-weight:600">${p.name}</td>
-      <td>${p.category}</td>
-      <td>${p.cost.toLocaleString()}</td>
-      <td>${p.sell.toLocaleString()}</td>
-      <td class="${isLow?'low-stock':'stock-ok'}">${p.stock}</td>
-      <td>${p.minStock}</td>
-      <td><span style="padding:.15rem .5rem;border-radius:4px;font-size:.75rem;font-weight:600;${isLow?'background:#fef2f2;color:#dc2626':'background:#f0fdf4;color:#16a34a'}">${isLow?'LOW':'OK'}</span></td>
-      <td>${(p.cost*p.stock).toLocaleString()}</td>
-      <td>
-        <button type="button" onclick="editProduct('${p.id}')" style="background:none;border:none;cursor:pointer;font-size:1rem" title="Edit">&#9998;</button>
-        <button type="button" onclick="adjustStock('${p.id}',1)" style="background:none;border:none;cursor:pointer;font-size:1rem" title="Add stock">+</button>
-        <button type="button" onclick="adjustStock('${p.id}',-1)" style="background:none;border:none;cursor:pointer;font-size:1rem" title="Remove stock">-</button>
-        <button type="button" onclick="deleteProduct('${p.id}')" style="background:none;border:none;cursor:pointer;font-size:1rem;color:#dc2626" title="Delete">&#10005;</button>
-      </td></tr>`;
-  }).join('')||'<tr><td colspan="9" style="text-align:center;color:#94a3b8;padding:2rem">No products yet. Click "Add Product" to get started.</td></tr>';
-  renderStats();
-}
-function openModal(id){
-  editingId=id||null;
-  if(id){
-    const p=products.find(x=>x.id===id);
-    document.getElementById('mName').value=p.name;
-    document.getElementById('mCategory').value=p.category;
-    document.getElementById('mCost').value=p.cost;
-    document.getElementById('mSell').value=p.sell;
-    document.getElementById('mStock').value=p.stock;
-    document.getElementById('mMinStock').value=p.minStock;
-    document.getElementById('modalTitle').textContent='Edit Product';
-  } else {
-    document.getElementById('mName').value='';document.getElementById('mCost').value='';document.getElementById('mSell').value='';document.getElementById('mStock').value='';document.getElementById('mMinStock').value='5';
-    document.getElementById('modalTitle').textContent='Add Product';
-  }
-  document.getElementById('modal').classList.add('open');
-}
-function closeModal(){document.getElementById('modal').classList.remove('open');editingId=null;}
-function saveProduct(){
-  const data={name:document.getElementById('mName').value,category:document.getElementById('mCategory').value,cost:parseFloat(document.getElementById('mCost').value)||0,sell:parseFloat(document.getElementById('mSell').value)||0,stock:parseInt(document.getElementById('mStock').value)||0,minStock:parseInt(document.getElementById('mMinStock').value)||0};
-  if(!data.name)return;
-  if(editingId){const idx=products.findIndex(p=>p.id===editingId);if(idx>=0)products[idx]={...products[idx],...data};}
-  else{data.id=Date.now().toString(36)+Math.random().toString(36).slice(2,6);products.push(data);}
-  save();renderTable();closeModal();
-}
-function editProduct(id){openModal(id);}
-function deleteProduct(id){if(confirm('Delete this product?')){products=products.filter(p=>p.id!==id);save();renderTable();}}
-function adjustStock(id,delta){const p=products.find(x=>x.id===id);if(p){p.stock=Math.max(0,p.stock+delta);save();renderTable();}}
-function exportCSV(){
-  let csv='Product,Category,Cost Price,Sell Price,Stock,Min Stock,Stock Value\n';
-  products.forEach(p=>{csv+=`"${p.name}","${p.category}",${p.cost},${p.sell},${p.stock},${p.minStock},${p.cost*p.stock}\n`;});
-  const blob=new Blob([csv],{type:'text/csv'});const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='inventory-export.csv';a.dataset.noGate='true';a.dataset.noPdfGate='true';a.click();
-  setInventoryStatus('CSV exported. Review supplier prices and stock counts before sharing.');
-}
-function inventorySummary(){
-  const t=inventoryTotals();
-  const lowItems=products.filter(p=>p.stock<=p.minStock).slice(0,8).map(p=>p.name+' ('+p.stock+' left)').join('; ')||'none';
-  return 'Inventory summary: '+t.total+' products, '+t.low+' low-stock items, stock cost value '+t.totalValue.toLocaleString()+', potential revenue '+t.totalRevenue.toLocaleString()+'. Low stock: '+lowItems+'. Data is stored locally in this browser unless exported.';
-}
-function copyInventorySummary(){
-  const text=inventorySummary();
-  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(()=>setInventoryStatus('Inventory summary copied.'));}
-  else setInventoryStatus(text);
-}
-function exportJSON(){
-  const payload={exportedAt:new Date().toISOString(),tool:'inventory',products:products};
-  const blob=new Blob([JSON.stringify(payload,null,2)],{type:'application/json'});
-  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='afrotools-inventory-backup.json';a.dataset.noGate='true';a.dataset.noPdfGate='true';document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(a.href);
-  setInventoryStatus('JSON backup exported. Keep it private; it contains your product list.');
-}
-function importJSON(input){
-  const file=input.files&&input.files[0];
-  if(!file)return;
-  const reader=new FileReader();
-  reader.onload=function(){
-    try{
-      const payload=JSON.parse(reader.result);
-      const incoming=Array.isArray(payload)?payload:payload.products;
-      if(!Array.isArray(incoming))throw new Error('Missing products array');
-      products=incoming.map(p=>({id:p.id||Date.now().toString(36)+Math.random().toString(36).slice(2,6),name:String(p.name||'Unnamed product'),category:String(p.category||'Other'),cost:parseFloat(p.cost)||0,sell:parseFloat(p.sell)||0,stock:parseInt(p.stock,10)||0,minStock:parseInt(p.minStock,10)||0}));
-      save();renderTable();setInventoryStatus('JSON inventory imported locally.');
-    }catch(err){setInventoryStatus('Import failed. Use a JSON backup exported from this tool.');}
-    input.value='';
-  };
-  reader.readAsText(file);
-}
-document.getElementById('modal').addEventListener('click',function(e){if(e.target===this)closeModal();});
-renderTable();
-</script>
-<script src="/assets/js/pages/vat-business-tax-focus.js?v=e9a5ee9c" defer></script>
-<script defer src="/assets/js/lazy-analytics.js?v=71239a16"></script>
-</body>
-</html>
+</afro-related-tools>
+<afro-footer></afro-footer>
+<script>window.INVENTORY_VIP_CONFIG={locale:"en",defaultUnit:"USD",sample:{name:"Sample soap",sku:"SOAP-01",category:"Household",unitCost:10,sellPrice:15,quantity:4,reorderPoint:4,targetStock:12},t:{products:"Products",lowStock:"Low stock",stockValue:"Stock cost value",potentialSales:"Potential sales",potentialProfit:"Potential gross profit",reorderUnits:"Suggested reorder units",edit:"Edit",addOne:"Add 1",removeOne:"Remove 1",delete:"Delete",empty:"No products yet. Add a product or explicitly load the sample.",editProduct:"Edit product",addProduct:"Add product",saved:"Inventory saved locally.",adjusted:"Stock adjusted locally.",deleted:"Product deleted locally.",unitSaved:"Display unit saved locally.",storageBlocked:"Browser storage is unavailable. Changes remain in this tab.",corrupt:"Saved inventory could not be read. No data was changed.",migrated:"Loaded {count} legacy records; {duplicates} exact duplicates were skipped. Legacy keys were preserved.",pdfMissing:"PDF library is unavailable.",pdfTitle:"AfroTools inventory summary",formulaCost:"Stock cost value = sum(unit cost x quantity on hand). This is not COGS or an accounting valuation method.",formulaSales:"Potential sales = sum(selling price x quantity on hand).",formulaProfit:"Potential gross profit = sum((selling price - unit cost) x quantity on hand).",formulaReorder:"Suggested reorder units = max(target stock - quantity on hand, 0), only when target stock is entered.",pdfLimits:"Planning worksheet only. Verify physical stock, invoices, damage, expiry, returns and reserved stock.",lowList:"Low-stock and reorder list",exported:"Export created locally.",fileTooLarge:"Backup exceeds the 1 MB file limit.",confirmMerge:"Merge this validated backup into the current inventory? Exact duplicates will be skipped.",confirmReplace:"Replace current inventory with this validated backup?",cancelled:"Action cancelled; inventory was not changed.",importedMerge:"Backup merged; {duplicates} exact duplicates were skipped.",importedReplace:"Backup replaced the current inventory.",confirmDelete:"Delete {name}?",confirmSample:"Replace current inventory with one explicit sample product?",confirmClear:"Clear all versioned inventory records? Legacy keys will remain.",sampleLoaded:"Sample loaded locally.",cleared:"Inventory cleared locally.",copied:"Aggregate summary copied."}};</script>
+<noscript>This inventory calculator requires JavaScript.</noscript><script src="/assets/js/lazy-analytics.js?v=71239a16" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+</body></html>
