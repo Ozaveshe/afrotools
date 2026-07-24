@@ -1,7 +1,9 @@
 # Image & Design Day 4 evidence ledger
 
-Branch: `codex/day4-image-design-20260725`  
-Base: `4544d89142efdbd1eeb67e5f4a30e5d1696f16b4`  
+Branch: `codex/day4-image-design-20260725`
+
+Base: `4544d89142efdbd1eeb67e5f4a30e5d1696f16b4`
+
 Scope: English canonical free Image & Design tools only. Pro apps are excluded.
 
 ## Acceptance contract
@@ -29,7 +31,7 @@ Status: accepted in commit `6500b67`.
 | 3 | QR Generator | Light-DOM overflow 0 at 320/360/375/768 after verification-status reflow fix | Manual + system panels use dark surfaces; workflow clutter retired | Text QR generates locally. Found and fixed a real defect: SVG button was a no-op because the canvas renderer never created an SVG node | Signed-out PNG 256x256 plus matrix-derived SVG with valid root/viewBox and quiet zone | Synthetic QR payload did not appear in any request; SVG object URL is revoked after download | Canonical + valid JSON-LD; 0 unnamed controls; 0 undersized actions | Accepted |
 | 4 | Background Remover | Light-DOM overflow 0 at 320/360/375/768 after hero/status min-content fixes | Manual + system: 15.08:1 primary panel/title | Smart-edge removal and render complete; text file gives supported-format guidance | Signed-out direct PNG, 640x480, 285.4 KB, reopened | No image payload/filename in requests. Found and fixed export URL surviving navigation; pagehide now closes the lifecycle at 2 created/2 revoked | Canonical + valid JSON-LD; 0 unnamed controls; 0 undersized actions | Accepted |
 | 5 | Passport Photo | Light-DOM overflow 0 at 320/360/375/768 after status reflow fix | Manual + system: 15.08:1 primary panel/title | South Africa preset renders; text file gives an explicit browser-supported-image error | Signed-out direct JPG 4x6 sheet, exact 1800x1200, 172.1 KB, reopened | No image payload/filename in requests; 2 URLs created/2 revoked on page lifecycle | Canonical + valid JSON-LD; 0 unnamed controls; 0 undersized actions; requirement caveat retained | Accepted |
-| 6 | Image Crop | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
+| 6 | Image Crop | Light-DOM overflow 0 at 320/360/375/768 and 200% | Manual + system: 15.08:1 primary panel/title | Exact selection (100,60,320x240), resize, and PNG render complete; text file reports “Choose a valid image file.” | Signed-out direct PNG, exact 320x240, 86.0 KB, reopened | No payload/filename leak; 1 URL created/1 revoked on lifecycle | Canonical + valid JSON-LD; 0 unnamed controls; 0 undersized actions | Accepted |
 | 7 | Color Picker | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 | 8 | Favicon Generator | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
 | 9 | Image to Text | Pending | Pending | Pending | Pending | Pending | Pending | Pending |
