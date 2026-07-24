@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Organize PDF Pages Online Free | Reorder, Rotate, Extract | AfroTools</title>
+<title>Organize PDF Pages | Reorder, Rotate &amp; Extract | AfroTools</title>
 <meta name="description" content="Organize PDF pages locally. Reorder, rotate, delete, duplicate, insert, extract selected pages, review the visible order, and download without uploads.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Organize PDF Pages Online Free | AfroTools">
@@ -140,6 +140,10 @@
   .result-bar.error { background: #fef2f2; border-top-color: #fecaca; }
   .result-msg { font-size: 0.82rem; font-weight: 600; color: #1e40af; }
   .result-bar.error .result-msg { color: #991b1b; }
+  .review-check { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 10px; margin: 10px 0; padding: 10px 12px; }
+  .review-check input { flex: 0 0 auto; height: 18px; margin-top: 2px; width: 18px; }
+  .review-check span { cursor: pointer; font-size: 0.78rem; font-weight: 750; line-height: 1.45; }
+  .review-check:focus-within { box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
 
   /* ── Tips ── */
   .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
@@ -158,6 +162,36 @@
   .modal-btn:hover { background: #f3f4f6; }
   .modal-btn.confirm-delete { background: #dc2626; color: #fff; border-color: #dc2626; }
   .modal-btn.confirm-delete:hover { background: #b91c1c; }
+  .page-card:focus-visible, .upload-zone:focus-within { outline: 3px solid var(--color-primary); outline-offset: 3px; }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .page-card,
+  :root[data-theme="dark"] .modal-box,
+  :root[data-theme="dark"] .tip-item { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .upload-zone,
+  :root[data-theme="dark"] .page-thumb,
+  :root[data-theme="dark"] .page-label,
+  :root[data-theme="dark"] .tb-btn,
+  :root[data-theme="dark"] .range-input { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .upload-title,
+  :root[data-theme="dark"] .page-num,
+  :root[data-theme="dark"] .tips-title,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .modal-title,
+  :root[data-theme="dark"] section h2,
+  :root[data-theme="dark"] section h3,
+  :root[data-theme="dark"] .landing-faq summary { color: #eef5ff!important; }
+  :root[data-theme="dark"] .upload-hint,
+  :root[data-theme="dark"] .page-info,
+  :root[data-theme="dark"] .modal-desc,
+  :root[data-theme="dark"] section p { color: #d8e4f5!important; }
+  :root[data-theme="dark"] .result-bar { background: #172f52; border-color: #5685c4; }
+  :root[data-theme="dark"] .result-msg { color: #dbeafe; }
+  :root[data-theme="dark"] .review-check { background: #312711; border-color: #8a681d; color: #fde68a; }
+  :root[data-theme="dark"] .tips-section { background: #0f1b2d; border-color: #3a4c68; }
+  :root[data-theme="dark"] .landing-faq details { background: #121f33!important; border-color: #3a4c68!important; }
 
   /* ── Responsive ── */
   @media (max-width: 768px) {
@@ -217,9 +251,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kupanga-kurasa-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-reorder/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main>
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb"><a href="/">AfroTools</a> / <span>PDF Page Manager</span></div>
@@ -333,11 +368,12 @@
     </div>
   </div>
 </div>
+</main>
 
 <!-- Delete Confirmation Modal -->
-<div class="modal-overlay" id="deleteModal">
+<div class="modal-overlay" id="deleteModal" role="dialog" aria-modal="true" aria-labelledby="deleteModalTitle" aria-describedby="deleteModalDesc">
   <div class="modal-box">
-    <div class="modal-title">Delete Pages</div>
+    <div class="modal-title" id="deleteModalTitle">Delete Pages</div>
     <div class="modal-desc" id="deleteModalDesc">Are you sure you want to delete the selected pages? This cannot be undone (use Reset to restore).</div>
     <div class="modal-actions">
       <button type="button" class="modal-btn" id="btnCancelDelete">Cancel</button>
@@ -456,6 +492,7 @@
   let dragSrcIdx      = null;
   let lastClickIdx    = null;
   let historyStack    = [];
+  let lastModalFocus  = null;
 
   function isPdfFile(file) {
     return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
@@ -641,6 +678,10 @@
       card.draggable = true;
       card.dataset.idx = idx;
       card.title = sourceLabel(pg);
+      card.setAttribute('role', 'checkbox');
+      card.setAttribute('tabindex', '0');
+      card.setAttribute('aria-checked', selectedSet.has(idx) ? 'true' : 'false');
+      card.setAttribute('aria-label', 'Page ' + (idx + 1) + ': ' + sourceLabel(pg));
 
       // Check indicator
       const check = document.createElement('div');
@@ -693,6 +734,26 @@
       card.addEventListener('click', e => {
         if (e.target.closest('.page-actions')) return;
         handleSelect(idx, e);
+      });
+      card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+          e.preventDefault();
+          handleSelect(idx, e);
+          return;
+        }
+        if (e.altKey && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+          e.preventDefault();
+          const target = e.key === 'ArrowLeft' ? idx - 1 : idx + 1;
+          if (target < 0 || target >= pages.length) return;
+          pushHistory('Keyboard reorder');
+          const moved = pages.splice(idx, 1)[0];
+          pages.splice(target, 0, moved);
+          selectedSet = new Set([target]);
+          renderGrid();
+          updateToolbar();
+          const movedCard = pageGrid.querySelector('[data-idx="' + target + '"]');
+          if (movedCard) movedCard.focus();
+        }
       });
 
       // Per-page actions
@@ -749,6 +810,7 @@
 
   /* ── Selection ── */
   function handleSelect(idx, e) {
+    resetReview();
     if (e.shiftKey && lastClickIdx !== null) {
       // Range select
       const start = Math.min(lastClickIdx, idx);
@@ -798,11 +860,13 @@
 
   /* ── Select / Deselect All ── */
   btnSelectAll.addEventListener('click', () => {
+    resetReview();
     for (let i = 0; i < pages.length; i++) selectedSet.add(i);
     renderGrid();
     updateToolbar();
   });
   btnDeselectAll.addEventListener('click', () => {
+    resetReview();
     selectedSet.clear();
     renderGrid();
     updateToolbar();
@@ -813,6 +877,7 @@
       PdfUtils.showToast('Enter a valid range, for example 1-3, 7.', true);
       return;
     }
+    resetReview();
     selectedSet = new Set(range);
     renderGrid();
     updateToolbar();
@@ -891,9 +956,7 @@
       const extractedPages = indices.map(idx => pages[idx]);
       const pdfBytes = await buildPdfBytes(extractedPages);
       const baseName = (currentFile ? currentFile.name : 'document').replace(/\.pdf$/i, '');
-      function doExtractDownload() { PdfUtils.downloadPdf(pdfBytes, baseName + '_selected_pages.pdf'); }
-      const gate = document.querySelector('email-gate-modal');
-      if (gate) { gate.show(doExtractDownload); } else { doExtractDownload(); }
+      PdfUtils.downloadPdf(pdfBytes, baseName + '_selected_pages.pdf');
       resultBar.classList.remove('error');
       resultBar.classList.add('on');
       resultMsg.textContent = 'Extracted ' + indices.length + ' page' + (indices.length !== 1 ? 's' : '') + ' (' + PdfUtils.formatSize(pdfBytes.byteLength) + ')';
@@ -950,11 +1013,19 @@
       return;
     }
     deleteDesc.textContent = 'Are you sure you want to delete ' + count + ' page' + (count > 1 ? 's' : '') + '? Use Reset to restore all pages.';
+    lastModalFocus = document.activeElement;
     deleteModal.classList.add('on');
+    btnCancelDel.focus();
+  }
+
+  function closeDeleteModal() {
+    deleteModal.classList.remove('on');
+    if (lastModalFocus && typeof lastModalFocus.focus === 'function') lastModalFocus.focus();
+    lastModalFocus = null;
   }
 
   btnDelete.addEventListener('click', showDeleteModal);
-  btnCancelDel.addEventListener('click', () => { deleteModal.classList.remove('on'); });
+  btnCancelDel.addEventListener('click', closeDeleteModal);
   btnConfirmDel.addEventListener('click', () => {
     deleteModal.classList.remove('on');
     pushHistory('Delete pages');
@@ -964,11 +1035,20 @@
     selectedSet.clear();
     renderGrid();
     updateToolbar();
+    lastModalFocus = null;
+    const firstRemainingPage = pageGrid.querySelector('.page-card');
+    if (firstRemainingPage) firstRemainingPage.focus();
     PdfUtils.showToast(toDelete.length + ' page' + (toDelete.length > 1 ? 's' : '') + ' deleted');
   });
 
   // Close modal on overlay click
-  deleteModal.addEventListener('click', e => { if (e.target === deleteModal) deleteModal.classList.remove('on'); });
+  deleteModal.addEventListener('click', e => { if (e.target === deleteModal) closeDeleteModal(); });
+  deleteModal.addEventListener('keydown', e => {
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeDeleteModal();
+    }
+  });
 
   /* ── Reset ── */
   btnReset.addEventListener('click', () => {
@@ -997,9 +1077,7 @@
     try {
       const pdfBytes = await buildPdfBytes(pages);
       const baseName = currentFile.name.replace(/\.pdf$/i, '');
-      function doReorderDownload() { PdfUtils.downloadPdf(pdfBytes, baseName + '_managed.pdf'); }
-      const gate = document.querySelector('email-gate-modal');
-      if (gate) { gate.show(doReorderDownload); } else { doReorderDownload(); }
+      PdfUtils.downloadPdf(pdfBytes, baseName + '_managed.pdf');
 
       resultBar.classList.remove('error');
       resultBar.classList.add('on');
@@ -1122,13 +1200,7 @@
 })();
 </script>
 
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
 </html>
-  .review-check { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 10px; margin: 10px 0; padding: 10px 12px; }
-  .review-check input { flex: 0 0 auto; height: 18px; margin-top: 2px; width: 18px; }
-  .review-check label { cursor: pointer; font-size: 0.78rem; font-weight: 750; line-height: 1.45; }
-  .review-check:focus-within { box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
