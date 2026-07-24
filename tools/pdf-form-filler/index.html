@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fill PDF Form Online Free | Fill and Flatten PDF Forms | AfroTools</title>
+<title>Fill PDF Forms | Edit &amp; Flatten Locally | AfroTools</title>
 <meta name="description" content="Fill interactive PDF forms in your browser. Complete text fields, checkboxes, dropdowns, and radio buttons, review progress, flatten, and download.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="Fill PDF Form Online Free | AfroTools">
@@ -152,6 +152,36 @@
   .download-wrap.on { display: block; }
   .field-review-note { padding: 10px 12px; border: 1px solid #FDE68A; border-radius: 8px; background: #FFFBEB; color: #92400E; font-size: 0.78rem; line-height: 1.5; margin: 0 0 12px; }
   .action-row .act-share-image { display: none !important; }
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .field-label,
+  :root[data-theme="dark"] .page-nav span,
+  :root[data-theme="dark"] .tips-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] #fileInfo { color:#eef5ff!important; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .upload-zone,
+  :root[data-theme="dark"] .flatten-row,
+  :root[data-theme="dark"] .tips-section,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .field-count-bar,
+  :root[data-theme="dark"] .completion-meter { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .upload-zone .uz-text,
+  :root[data-theme="dark"] .upload-zone .uz-sub,
+  :root[data-theme="dark"] .flatten-row,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .completion-meter__top,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .no-fields { color:#d8e4f5; }
+  .split-layout > *,
+  .card,
+  .card-body,
+  .fields-panel,
+  .field-group { min-width:0; }
   @media (max-width: 520px) {
     .tool-main { padding-inline: 16px; }
     .card-head { align-items: flex-start; flex-direction: column; gap: 6px; }
@@ -201,7 +231,7 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kujaza-fomu-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-form-filler/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero">
@@ -217,7 +247,7 @@
   </div>
 </div>
 
-<div class="tool-main">
+<main class="tool-main">
   <!-- Upload card (shown initially) -->
   <div class="card" id="uploadCard">
     <div class="card-head"><span class="card-title">Upload PDF with Form Fields</span></div>
@@ -305,7 +335,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <!-- SEO content -->
 <div class="seo-section">
@@ -316,7 +346,7 @@
   <p>When you choose a PDF, the tool uses pdf-lib to detect interactive form fields locally. Each field appears in the sidebar with a matching control and a completion meter. Filled values are written back into a fresh copy of the PDF, and optional flattening can lock supported field values into the page.</p>
 
   <h3>Supported Field Types</h3>
-  <p>The tool supports all standard AcroForm field types: single-line and multi-line text fields, checkboxes, dropdown menus (select lists), and radio button groups. Field names are displayed alongside each input to help you identify which part of the form you are filling.</p>
+  <p>The tool supports common AcroForm field types: single-line and multi-line text fields, checkboxes, single-choice dropdown or option lists, and radio button groups. Field names are displayed alongside each input to help you identify which part of the form you are filling.</p>
 
   <h3>Privacy and Security</h3>
   <p>Your PDF is not uploaded by this tool. Form detection, filling, previewing, and flattening run locally in your browser using JavaScript. Before submitting the result, open the downloaded copy and verify every important field with the recipient's current requirements.</p>
@@ -334,7 +364,7 @@
       </div>
       <div class="tool-verification-status">
         <span class="tool-verification-badge">Local-first PDF tool</span>
-        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before submitting the filled form. The shared PDF account gate does not upload your form.</p>
+        <p class="tool-verification-note">Reviewed 2026. Disclaimer: verify with the recipient before submitting the filled form. Direct local downloads do not upload your form values.</p>
       </div>
     </div>
     <div class="tool-verification-grid">
@@ -823,7 +853,7 @@
             const cb = form.getCheckBox(info.name);
             if (el.checked) cb.check(); else cb.uncheck();
           } else if (info.kind === 'dropdown') {
-            const dd = form.getDropdown(info.name);
+            const dd = info.type === 'PDFOptionList' ? form.getOptionList(info.name) : form.getDropdown(info.name);
             if (el.value) dd.select(el.value); else dd.clear();
           } else if (info.kind === 'radio') {
             const rg = form.getRadioGroup(info.name);
@@ -875,8 +905,6 @@
 })();
 </script>
 
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
