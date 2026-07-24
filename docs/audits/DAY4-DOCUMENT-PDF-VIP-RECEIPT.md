@@ -80,4 +80,4 @@ Each route is reviewed for:
 
 - Serial app audit is in progress.
 - Export parser/reopen evidence must be recorded per app; a browser download event alone is not sufficient.
-- `pdf-merge-split` requires explicit guest-blocked and registered-user download-path proof.
+- Every export-capable app requires explicit signed-out direct-download proof with no modal, registration, email capture, document-content request, or parser/reopen failure.

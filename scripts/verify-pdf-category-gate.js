@@ -99,6 +99,9 @@ function verifyToolPages(tools) {
       if (!gateExempt && gateCount !== 1) failures.push(`${rel(file)} should load pdf-download-gate.js exactly once, found ${gateCount}.`);
       if (!gateExempt && modalCount < 1) failures.push(`${rel(file)} is missing <email-gate-modal>.`);
       if (gateExempt && (gateCount > 0 || modalCount > 0)) failures.push(`${rel(file)} is local-first and should not load the PDF/email gate.`);
+      if (declaresLocalFirstDownloads && /account gate|after the gate|free account required|create an account.{0,40}download|sign in.{0,40}download/i.test(html)) {
+        failures.push(`${rel(file)} declares local-first downloads but still contains account-gate download wording.`);
+      }
       if (oldGateCount > 0) failures.push(`${rel(file)} still loads auto-email-gate.js.`);
       [...html.matchAll(/["'](\/assets\/vendor\/[^"']+)["']/g)].forEach((match) => {
         const cleanRef = match[1].split('?')[0].split('#')[0];
