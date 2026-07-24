@@ -503,6 +503,29 @@
     margin-top: 14px;
   }
 
+  .review-check {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .review-check input {
+    width: 19px;
+    height: 19px;
+    margin: 1px 0 0;
+    flex: 0 0 auto;
+    accent-color: var(--color-primary);
+  }
+
   .act-btn {
     padding: 11px;
     font-size: 0.75rem;
@@ -712,6 +735,68 @@
     .queue-row {
       grid-template-columns: 1fr;
     }
+    .tool-main,
+    .seo-section {
+      padding-inline: 16px;
+    }
+  }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .result-card,
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .faq-item {
+    background: #101a2b;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .summary-stat,
+  :root[data-theme="dark"] .review-check,
+  :root[data-theme="dark"] .repair-log,
+  :root[data-theme="dark"] .faq-q,
+  :root[data-theme="dark"] .info-text > div {
+    background: #152238 !important;
+    border-color: #294164 !important;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .field-row input,
+  :root[data-theme="dark"] .field-row select,
+  :root[data-theme="dark"] .act-secondary {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-row select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .file-input-label {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #bcd6f6;
+  }
+
+  :root[data-theme="dark"] .field-row label,
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .report-value,
+  :root[data-theme="dark"] .summary-stat strong,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-q {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-note,
+  :root[data-theme="dark"] .report-label,
+  :root[data-theme="dark"] .summary-stat span,
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .faq-a,
+  :root[data-theme="dark"] .queue-meta {
+    color: #b7c5d8;
   }
 </style>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
@@ -756,9 +841,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kurekebisha-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-repair/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main id="main-content">
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
@@ -858,6 +944,10 @@
             <div id="errorListInner" style="font-size:0.78rem;color:#6b7280;line-height:1.6;"></div>
           </div>
           <div class="action-row" id="actionRow" style="display:none;">
+            <label class="review-check" for="reviewConfirm">
+              <input type="checkbox" id="reviewConfirm">
+              <span>I reviewed the repair method, recovered-page count, warnings, and output report before downloading.</span>
+            </label>
             <button type="button" class="act-btn act-download" id="downloadBtn">Download Repaired PDF</button>
             <button type="button" class="act-btn act-download" id="downloadZipBtn" style="display:none">Download ZIP</button>
             <button type="button" class="act-btn act-secondary" id="downloadReportBtn">Download Report</button>
@@ -903,30 +993,31 @@
   <h2>Frequently Asked Questions</h2>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">What types of PDF corruption can this tool fix?</button>
-    <div class="faq-a">It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="repair-faq-1">What types of PDF corruption can this tool fix?</button>
+    <div class="faq-a" id="repair-faq-1">It can often recover PDFs with extra bytes before the PDF header, broken cross-reference tables, incomplete trailers, missing EOF markers, and fragile object streams. It works best when the page content still exists somewhere inside the file.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Is my PDF uploaded to a server?</button>
-    <div class="faq-a">No. The entire repair process runs locally in your browser using JavaScript. Your file never leaves your device and no data is sent to any server. This ensures complete privacy for sensitive documents.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="repair-faq-2">Is my PDF uploaded to a server?</button>
+    <div class="faq-a" id="repair-faq-2">No. The entire repair process runs locally in your browser using JavaScript. Your file never leaves your device and no data is sent to any server. This ensures complete privacy for sensitive documents.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">What does raster salvage mean?</button>
-    <div class="faq-a">Raster salvage renders each readable page as an image and places those images into a new PDF. It can rescue a document that still displays, but the resulting file is image-based and may lose selectable text, links, forms, and tags.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="repair-faq-3">What does raster salvage mean?</button>
+    <div class="faq-a" id="repair-faq-3">Raster salvage renders each readable page as an image and places those images into a new PDF. It can rescue a document that still displays, but the resulting file is image-based and may lose selectable text, links, forms, and tags.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Why did the repair fail?</button>
-    <div class="faq-a">Repair can fail when the file is not a PDF, the page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided. Try re-downloading the original file if possible.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="repair-faq-4">Why did the repair fail?</button>
+    <div class="faq-a" id="repair-faq-4">Repair can fail when the file is not a PDF, the page data is missing, the file is heavily truncated, or an encrypted document needs a password that was not provided. Try re-downloading the original file if possible.</div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Will the repaired PDF look identical to the original?</button>
-    <div class="faq-a">Structural rebuilds should preserve recoverable content closely. Raster salvage prioritizes readability over editability, so the page appearance is preserved as images while selectable text and form behavior may not survive.</div>
+    <button type="button" class="faq-q" aria-expanded="false" aria-controls="repair-faq-5">Will the repaired PDF look identical to the original?</button>
+    <div class="faq-a" id="repair-faq-5">Structural rebuilds should preserve recoverable content closely. Raster salvage prioritizes readability over editability, so the page appearance is preserved as images while selectable text and form behavior may not survive.</div>
   </div>
 </div>
+</main>
 
 <afro-related-tools category="document-pdf" current="pdf-repair" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -944,7 +1035,7 @@
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/qpdf/qpdf.js?v=5842eaa2"></script>
 <script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f"></script>
-<script src="/assets/js/pages/pdf-repair.js?v=e716725e"></script>
+<script src="/assets/js/pages/pdf-repair.js?v=50b3bb36"></script>
 
 <script type="application/x-afrotools-legacy-disabled">
 (function() {
@@ -1183,8 +1274,7 @@
   }
 
   downloadBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+    doActualDownload();
   });
 
   // FAQ toggles
@@ -1205,8 +1295,6 @@
 
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
