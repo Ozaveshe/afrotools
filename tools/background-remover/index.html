@@ -28,14 +28,46 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/background-remover-studio.css?v=9f7fcd64">
+<style>
+  @media (max-width: 740px) {
+    .br-hero-inner { grid-template-columns: minmax(0, 1fr); }
+    .br-hero-inner > div { min-width: 0; }
+    .br-hero h1,
+    .br-eyebrow { overflow-wrap: anywhere; }
+  }
+</style>
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=8941fca1">
+<link rel="stylesheet" href="/assets/css/image-design-day4-tools.css?v=b25ad14e">
 <script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<script>
+  (() => {
+    const activeObjectUrls = new Set();
+    const createObjectUrl = URL.createObjectURL.bind(URL);
+    const revokeObjectUrl = URL.revokeObjectURL.bind(URL);
+
+    URL.createObjectURL = (blob) => {
+      const url = createObjectUrl(blob);
+      activeObjectUrls.add(url);
+      return url;
+    };
+
+    URL.revokeObjectURL = (url) => {
+      activeObjectUrls.delete(url);
+      revokeObjectUrl(url);
+    };
+
+    window.addEventListener('pagehide', () => {
+      activeObjectUrls.forEach(revokeObjectUrl);
+      activeObjectUrls.clear();
+    }, { once: true });
+  })();
+</script>
 <script src="/assets/js/lib/background-remover-studio.js?v=a017d13d" defer></script>
 <script type="application/ld+json">
 {
