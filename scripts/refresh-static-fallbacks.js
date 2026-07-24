@@ -152,6 +152,7 @@ function buildMetaEntry(existing, remote, payload, asOf, category) {
   entry.last_fetch = asOf;
   entry.source = payload.source || entry.source || 'live_data_store';
   entry.status = 'ok';
+  entry.error = null;
   entry.as_of = asOf;
   if (payload.source_state) entry.source_state = payload.source_state;
   if (payload.source_reviewed_at) entry.source_reviewed_at = payload.source_reviewed_at;
