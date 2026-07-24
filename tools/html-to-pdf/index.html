@@ -515,8 +515,41 @@
 
   .download-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+  }
+
+  .output-review {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .output-review input {
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    flex: 0 0 auto;
+    accent-color: var(--afro-accent);
+  }
+
+  .field-label {
+    display: block;
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 
   .dl-btn {
@@ -668,9 +701,79 @@
     .download-row {
       flex-direction: column;
     }
+    .tool-main-inner,
+    .seo-section,
+    .faq-section {
+      padding-inline: 16px;
+    }
+    .card-body {
+      padding: 16px;
+    }
+    .tab-btn {
+      padding-inline: 10px;
+    }
     .advanced-grid {
       grid-template-columns: 1fr;
     }
+  }
+
+  :root[data-theme="dark"] .tab-toggle,
+  :root[data-theme="dark"] .dl-btn.secondary,
+  :root[data-theme="dark"] .sample-btn,
+  :root[data-theme="dark"] .mini-action {
+    background: #111c30;
+    border-color: #294164;
+    color: #9cc8ff;
+  }
+
+  :root[data-theme="dark"] .tab-btn {
+    color: #aebdd2;
+  }
+
+  :root[data-theme="dark"] .tab-btn.active,
+  :root[data-theme="dark"] .tool-card,
+  :root[data-theme="dark"] details {
+    background: #101a2b;
+    border-color: #294164;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .result-metrics,
+  :root[data-theme="dark"] .output-review {
+    background: #152238;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] #htmlInput,
+  :root[data-theme="dark"] #richEditor,
+  :root[data-theme="dark"] .option-group input,
+  :root[data-theme="dark"] .option-group select,
+  :root[data-theme="dark"] .option-group textarea {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .option-group select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-label,
+  :root[data-theme="dark"] .option-group label,
+  :root[data-theme="dark"] .check-row,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] details summary {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] details .faq-body,
+  :root[data-theme="dark"] .hint-line,
+  :root[data-theme="dark"] .doc-stats {
+    color: #b7c5d8;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -764,9 +867,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/html-kwenda-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/html-to-pdf/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main id="main-content">
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
@@ -786,16 +890,16 @@
   <div class="tool-main-inner">
 
     <!-- Tab Toggle -->
-    <div class="tab-toggle">
-      <button type="button" class="tab-btn active" data-tab="html">Paste HTML</button>
-      <button type="button" class="tab-btn" data-tab="rte">Rich Text Editor</button>
+    <div class="tab-toggle" role="tablist" aria-label="Document input mode">
+      <button type="button" class="tab-btn active" data-tab="html" role="tab" aria-selected="true" aria-controls="tab-html">Paste HTML</button>
+      <button type="button" class="tab-btn" data-tab="rte" role="tab" aria-selected="false" aria-controls="tab-rte">Rich Text Editor</button>
     </div>
 
     <!-- Status -->
     <div id="statusMsg" class="status-msg" role="status" aria-live="polite"></div>
 
     <!-- Tab 1: Paste HTML -->
-    <div id="tab-html" class="tab-content active">
+    <div id="tab-html" class="tab-content active" role="tabpanel">
       <div class="tool-card">
         <div class="card-head">HTML Input</div>
         <div class="card-body">
@@ -806,7 +910,8 @@
             <button class="sample-btn" type="button" data-template="certificate">Certificate</button>
             <button class="mini-action" id="previewHtmlBtn" type="button">Preview HTML</button>
           </div>
-          <textarea id="htmlInput" aria-label="HTML source" placeholder="&lt;h2&gt;Hello World&lt;/h2&gt;&#10;&lt;p&gt;Paste your HTML code here...&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;  &lt;li&gt;Supports inline styles&lt;/li&gt;&#10;  &lt;li&gt;Tables, images, lists&lt;/li&gt;&#10;  &lt;li&gt;Multi-page content&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
+          <label class="field-label" for="htmlInput">HTML source</label>
+          <textarea id="htmlInput" placeholder="&lt;h2&gt;Hello World&lt;/h2&gt;&#10;&lt;p&gt;Paste your HTML code here...&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;  &lt;li&gt;Supports inline styles&lt;/li&gt;&#10;  &lt;li&gt;Tables, images, lists&lt;/li&gt;&#10;  &lt;li&gt;Multi-page content&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
 
           <div class="options-row">
             <div class="option-group">
@@ -820,14 +925,14 @@
             </div>
             <div class="option-group">
               <label for="orientation">Orientation</label>
-              <select id="orientation" aria-label="Orientation">
+              <select id="orientation">
                 <option value="portrait" selected>Portrait</option>
                 <option value="landscape">Landscape</option>
               </select>
             </div>
             <div class="option-group">
               <label for="margins">Margins</label>
-              <select id="margins" aria-label="Margins">
+              <select id="margins">
                 <option value="normal" selected>Normal (20mm)</option>
                 <option value="narrow">Narrow (10mm)</option>
                 <option value="wide">Wide (30mm)</option>
@@ -880,11 +985,11 @@
               <div class="hint-line">External images may need CORS. Scripts are removed before rendering for safer local conversion.</div>
             </div>
             <label class="check-row">
-              <input aria-label="Add page numbers" id="pageNumbers" type="checkbox" checked>
+               <input id="pageNumbers" type="checkbox" checked>
               <span>Add page numbers</span>
             </label>
             <label class="check-row">
-              <input aria-label="Add generated date" id="includeDate" type="checkbox">
+               <input id="includeDate" type="checkbox">
               <span>Add generated date</span>
             </label>
           </div>
@@ -900,7 +1005,7 @@
     </div>
 
     <!-- Tab 2: Rich Text Editor -->
-    <div id="tab-rte" class="tab-content">
+    <div id="tab-rte" class="tab-content" role="tabpanel">
       <div class="tool-card">
         <div class="card-head">Rich Text Editor</div>
         <div class="rte-toolbar">
@@ -922,7 +1027,7 @@
           <button type="button" class="rte-btn" data-cmd="justifyCenter" title="Align Center">Center</button>
           <button type="button" class="rte-btn" data-cmd="justifyRight" title="Align Right">Right</button>
         </div>
-        <div id="richEditor" contenteditable="true">
+        <div id="richEditor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Rich text document editor">
           <h2>Start typing here...</h2>
           <p>Use the toolbar above to format your text. Bold, italic, headings, lists, links, and alignment are all supported.</p>
         </div>
@@ -977,6 +1082,10 @@
           <iframe id="pdfPreview" class="preview-frame" title="PDF Preview"></iframe>
           <div class="result-metrics" id="resultMetrics"></div>
           <div class="download-row">
+            <label class="output-review" for="htmlPdfReviewConfirm">
+              <input id="htmlPdfReviewConfirm" type="checkbox">
+              <span>I reviewed the source, page preview, layout metrics, headers, footers, and page numbering before export.</span>
+            </label>
             <button type="button" class="dl-btn" id="downloadBtn">Download PDF</button>
             <button type="button" class="dl-btn secondary" id="openPreviewBtn">Open Preview</button>
             <button type="button" class="dl-btn secondary" id="copyHtmlSourceBtn">Copy source</button>
@@ -1044,6 +1153,7 @@
     </details>
   </div>
 </section>
+</main>
 
 <afro-related-tools category="document-pdf" current="html-to-pdf" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -1055,7 +1165,7 @@
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="/assets/js/pages/html-to-pdf.js?v=674d3f39"></script>
+<script src="/assets/js/pages/html-to-pdf.js?v=1778fc7b"></script>
 <script type="application/x-afrotools-legacy-disabled">
 (function() {
   'use strict';
@@ -1316,8 +1426,7 @@
   }
 
   downloadBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+    doActualDownload();
   });
 
   /* ── Reset ── */
@@ -1396,7 +1505,15 @@
       navigator.clipboard.writeText(src.content).then(function(){ status('Source copied. It stayed in this browser.','success'); }).catch(function(){ status('Copy failed. Select the source manually.','error'); });
     } else status('Copy is unavailable in this browser. Select the source manually.','error');
   }
+  function requireReview(){
+    var review=byId('htmlPdfReviewConfirm');
+    if(review&&review.checked) return true;
+    status('Review the source, page preview, layout metrics, and footer settings before export.','error');
+    if(review) review.focus();
+    return false;
+  }
   function downloadSource(){
+    if(!requireReview()) return;
     var data=htmlSettings();
     if(!data.content.trim()){ status('Add HTML or rich text before downloading source.','error'); return; }
     var html=data.mode==='rte'?'<!doctype html><html><head><meta charset="utf-8"><title>'+escHtml(data.documentTitle)+'</title></head><body>'+data.content+'</body></html>':data.content;
@@ -1404,6 +1521,7 @@
     status('HTML source downloaded locally.','success');
   }
   function downloadSettings(){
+    if(!requireReview()) return;
     var data=htmlSettings();
     downloadBlob(safeName(data.fileName,'.json'),'application/json',JSON.stringify(data,null,2));
     status('JSON backup downloaded. Keep it private if the content is sensitive.','success');
@@ -1416,8 +1534,6 @@
   if(json) json.addEventListener('click',downloadSettings);
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
