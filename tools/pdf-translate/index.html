@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PDF Translator - African Languages, AI and Local Drafts | AfroTools</title>
+<title>PDF Translator | African Languages &amp; Local Drafts | AfroTools</title>
 <meta name="description" content="Translate PDF text into African and global languages with API, AI, and local glossary draft modes. Built for African documents, review packs, and bilingual exports.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="PDF Translator for African Languages | AfroTools">
@@ -611,6 +611,42 @@
     color: #1e293b;
     margin: 20px 0 8px;
   }
+  .output-review { align-items: flex-start; background: #fffbeb; border: 1px solid #fde68a; border-radius: 8px; color: #92400e; display: flex; gap: 10px; margin: 12px 0; padding: 11px 12px; }
+  .output-review input { flex: 0 0 auto; height: 18px; margin-top: 2px; width: 18px; }
+  .output-review span { cursor: pointer; font-size: 0.78rem; font-weight: 750; line-height: 1.45; }
+  .output-review:focus-within { box-shadow: 0 0 0 3px rgba(245,158,11,0.18); }
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .preview-panel,
+  :root[data-theme="dark"] .quality-panel { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .file-input-label,
+  :root[data-theme="dark"] .lang-select,
+  :root[data-theme="dark"] .terms-box,
+  :root[data-theme="dark"] .option-note,
+  :root[data-theme="dark"] .document-brief,
+  :root[data-theme="dark"] .brief-stat,
+  :root[data-theme="dark"] .panel-header,
+  :root[data-theme="dark"] .panel-body,
+  :root[data-theme="dark"] .page-tab { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .lang-col label,
+  :root[data-theme="dark"] .option-block > label,
+  :root[data-theme="dark"] .check-row,
+  :root[data-theme="dark"] .file-info-name,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] .quality-panel strong { color: #eef5ff!important; }
+  :root[data-theme="dark"] .option-note,
+  :root[data-theme="dark"] .file-info-meta,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .seo-section li,
+  :root[data-theme="dark"] .quality-panel { color: #d8e4f5!important; }
+  :root[data-theme="dark"] .output-review { background: #312711; border-color: #8a681d; color: #fde68a; }
+  .tool-verification-card,
+  .tool-verification-head,
+  .tool-verification-grid,
+  .tool-verification-status { min-width: 0; }
+  .tool-verification-badge { max-width: 100%; white-space: normal; overflow-wrap: anywhere; }
 
   /* ── Responsive ── */
   @media (max-width: 640px) {
@@ -667,9 +703,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kutafsiri-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-translate/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main>
 <!-- ── Hero ── -->
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -827,11 +864,11 @@
           </div>
           <div class="option-block full">
             <label class="check-row">
-              <input aria-label="PreserveNumbers" type="checkbox" id="preserveNumbers" checked>
+              <input type="checkbox" id="preserveNumbers" checked>
               <span>Preserve names, numbers, currencies, dates, phone numbers, and official acronyms where possible.</span>
             </label>
             <label class="check-row">
-              <input aria-label="Cloud translation consent" type="checkbox" id="cloudConsent">
+              <input type="checkbox" id="cloudConsent">
               <span>Send extracted PDF text to cloud API/AI translation for this request. Leave unchecked and use local draft mode for private IDs, contracts, health, school, legal, or client documents.</span>
             </label>
             <div class="option-note" id="engineNote">Balanced mode tries the AfroTools translation API first, uses AI for context when needed, and falls back to a private local glossary draft if cloud translation is unavailable.</div>
@@ -886,6 +923,10 @@
       </div>
 
       <!-- Download Row -->
+      <label class="output-review" for="translationReviewConfirm">
+        <input type="checkbox" id="translationReviewConfirm">
+        <span>I reviewed names, dates, amounts, official terms, untranslated text, and the route label before export.</span>
+      </label>
       <div class="download-row">
         <button type="button" class="dl-btn dl-primary" id="downloadPdf">Download Translated PDF</button>
         <button type="button" class="dl-btn dl-secondary" id="downloadTxt">Download as .txt</button>
@@ -956,6 +997,7 @@
   </div>
 </section>
 
+</main>
 
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
@@ -1025,6 +1067,7 @@
   const downloadTxtBtn = $('downloadTxt');
   const copyTranslationBtn = $('copyTranslation');
   const downloadReviewBtn = $('downloadReview');
+  const translationReviewConfirm = $('translationReviewConfirm');
   const tabPageByPage = $('tabPageByPage');
   const tabShowAll = $('tabShowAll');
 
@@ -1171,6 +1214,30 @@
     errorBanner.innerHTML = '';
   }
 
+  function hasCloudContentConsent() {
+    var consentApi = window.AfroTools && window.AfroTools.AIConsent;
+    return !!(consentApi && typeof consentApi.hasConsent === 'function' &&
+      consentApi.hasConsent('ai_optional_content_included', 'pdf-translate'));
+  }
+
+  function ensureCloudContentConsent(requireFresh) {
+    var consentApi = window.AfroTools && window.AfroTools.AIConsent;
+    return !!(consentApi && typeof consentApi.ensureConsent === 'function' && consentApi.ensureConsent({
+      mode: 'ai_optional_content_included',
+      toolId: 'pdf-translate',
+      action: 'Send extracted PDF text for translation',
+      contentIncluded: true,
+      requireFresh: !!requireFresh
+    }));
+  }
+
+  function requireExportReview() {
+    if (translationReviewConfirm && translationReviewConfirm.checked) return true;
+    showWarning('Review names, dates, amounts, official terms, untranslated text, and route labels before export.');
+    if (translationReviewConfirm) translationReviewConfirm.focus();
+    return false;
+  }
+
   function resetState() {
     pdfData = null;
     textData = [];
@@ -1178,6 +1245,7 @@
     translationMeta = [];
     currentPage = 0;
     documentStats = { words: 0, characters: 0, nonEmptyPages: 0 };
+    if (translationReviewConfirm) translationReviewConfirm.checked = false;
     fileInfo.classList.remove('on');
     translateBtn.disabled = true;
     resultSection.classList.remove('on');
@@ -1325,7 +1393,11 @@
     for (var i = 0; i < chunks.length; i++) {
       var response = await fetch('/api/translate', {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: {
+          'Content-Type': 'application/json',
+          'X-AfroTools-AI-Consent': 'accepted',
+          'X-AfroTools-AI-Content-Consent': 'accepted'
+        },
         body: JSON.stringify({
           text: chunks[i],
           source: src === 'auto' ? 'auto' : src,
@@ -1350,7 +1422,11 @@
     var translated = [];
     var terms = parseTermBank();
     for (var i = 0; i < chunks.length; i++) {
-      var headers = { 'Content-Type': 'application/json' };
+      var headers = {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      };
       if (window.AfroAuth && AfroAuth.getSessionToken()) {
         headers['Authorization'] = 'Bearer ' + AfroAuth.getSessionToken();
       }
@@ -1536,6 +1612,15 @@
 
   engineMode.addEventListener('change', updateEngineNote);
   updateEngineNote();
+  cloudConsent.addEventListener('change', function() {
+    if (!this.checked) return;
+    if (!ensureCloudContentConsent(true)) {
+      this.checked = false;
+      showWarning('Cloud translation stays off. Local glossary draft mode remains available.');
+      return;
+    }
+    showNotice('Cloud translation enabled with document-content consent for this browser.');
+  });
 
   /* ── Swap Languages ── */
   swapBtn.addEventListener('click', function() {
@@ -1562,6 +1647,11 @@
       showError('Cloud API/AI translation sends extracted PDF text. Tick consent or switch Translation Mode to Local glossary draft only.');
       return;
     }
+    if (cloudModeSelected(settings.mode) && !hasCloudContentConsent()) {
+      cloudConsent.checked = false;
+      showError('Cloud translation needs document-content consent. Review the consent notice or switch to Local glossary draft only.');
+      return;
+    }
 
     if (src !== 'auto' && src === tgt) {
       showError('Source and target languages are the same. Please select different languages.');
@@ -1577,6 +1667,7 @@
     progressFill.style.width = '0%';
     translatedPages = [];
     translationMeta = [];
+    if (translationReviewConfirm) translationReviewConfirm.checked = false;
 
     var totalPages = textData.length;
     var translatedCount = 0;
@@ -1872,20 +1963,16 @@
   }
 
   downloadPdfBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doTranslatePdfDownload); } else { doTranslatePdfDownload(); }
+    if (!requireExportReview()) return;
+    doTranslatePdfDownload();
   });
 
   /* ── Download as TXT ── */
   downloadTxtBtn.addEventListener('click', function() {
-    function doTxtDownload() {
-      if (!translatedPages.length) return;
-      var blob = new Blob([translatedTextExport()], { type: 'text/plain' });
-      var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.txt';
-      PdfUtils.downloadBlob(blob, outputName);
-    }
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doTxtDownload); } else { doTxtDownload(); }
+    if (!requireExportReview() || !translatedPages.length) return;
+    var blob = new Blob([translatedTextExport()], { type: 'text/plain' });
+    var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translated.txt';
+    PdfUtils.downloadBlob(blob, outputName);
   });
 
   copyTranslationBtn.addEventListener('click', function() {
@@ -1899,14 +1986,10 @@
   });
 
   downloadReviewBtn.addEventListener('click', function() {
-    function doReviewDownload() {
-      if (!translatedPages.length) return;
-      var blob = new Blob([reviewPackText()], { type: 'text/plain' });
-      var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translation_review_pack.txt';
-      PdfUtils.downloadBlob(blob, outputName);
-    }
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doReviewDownload); } else { doReviewDownload(); }
+    if (!requireExportReview() || !translatedPages.length) return;
+    var blob = new Blob([reviewPackText()], { type: 'text/plain' });
+    var outputName = pdfData.fileName.replace(/\.pdf$/i, '') + '_translation_review_pack.txt';
+    PdfUtils.downloadBlob(blob, outputName);
   });
 
 })();
@@ -1923,8 +2006,6 @@
   target.appendChild(div);
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
