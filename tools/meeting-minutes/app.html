@@ -37,7 +37,7 @@ button{cursor:pointer}
 .topbar a{color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
 .topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
 .topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
-.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:38px}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:44px}
 .btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
 .btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
 .btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
@@ -82,6 +82,9 @@ button{cursor:pointer}
 .preview-card{overflow:hidden}
 .preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
 .preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.export-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:12px 16px 0;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0b63ce}
+.export-review-status{grid-column:1/-1;margin:0;color:#475569;font-size:.76rem;font-weight:700}
 .minutes-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,430px);gap:0;min-height:760px}
 .minutes-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
 #minutesText{width:100%;min-height:700px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.58;font-family:Consolas,'JetBrains Mono',monospace;font-size:13px}
@@ -113,7 +116,23 @@ button{cursor:pointer}
 .toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .import-input{display:none}
-@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.minutes-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.minutes-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.export-review,.minutes-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.minutes-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+:root[data-theme=dark] body{background:#0b1120;color:#e5edf8}
+:root[data-theme=dark] .topbar,:root[data-theme=dark] .panel,:root[data-theme=dark] .preview-card,:root[data-theme=dark] .insights-card,:root[data-theme=dark] .list-item,:root[data-theme=dark] .agenda-card,:root[data-theme=dark] .saved-item{background:#101a2b;border-color:#294164;color:#e5edf8}
+:root[data-theme=dark] .preview-top,:root[data-theme=dark] .minutes-text-wrap,:root[data-theme=dark] .row-builder,:root[data-theme=dark] .metric{background:#152238;border-color:#294164}
+:root[data-theme=dark] .field input,:root[data-theme=dark] .field select,:root[data-theme=dark] .field textarea,:root[data-theme=dark] #minutesText{background:#0b1423;border-color:#35527b;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme=dark] .field span,:root[data-theme=dark] .panel h2,:root[data-theme=dark] .panel h3,:root[data-theme=dark] .preview-card h2,:root[data-theme=dark] .insights-card h2,:root[data-theme=dark] .list-title,:root[data-theme=dark] .metric strong,:root[data-theme=dark] .topbar-title{color:#f1f5f9}
+:root[data-theme=dark] .helper,:root[data-theme=dark] .list-meta,:root[data-theme=dark] .score-copy,:root[data-theme=dark] .metric span,:root[data-theme=dark] .hero-strip p{color:#b7c5d8}
+:root[data-theme=dark] .export-review{background:#101d31;border-color:#35527b;color:#dbeafe}
+:root[data-theme=dark] .export-review-status{color:#b7c5d8}
+:root[data-theme=dark] .check{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme=dark] .check strong{color:#f1f5f9}
+:root[data-theme=dark] .check.good{background:#10271f;border-color:#2f6f50}
+:root[data-theme=dark] .check.warn{background:#2b2515;border-color:#7c6723}
+:root[data-theme=dark] .paper{background:#fff;color:#1f2937;border-color:#cbd5e1}
+:root[data-theme=dark] .paper p,:root[data-theme=dark] .paper .paper-title{color:#1f2937!important}
+:root[data-theme=dark] .paper h3{color:#0b63ce!important}
+:root[data-theme=dark] .paper .paper-muted{color:#64748b!important;border-color:#e2e8f0!important}
 @media(max-width:1220px){.workspace{grid-template-columns:minmax(310px,430px) minmax(440px,1fr)}.insights-card{grid-column:1/-1;position:static}.minutes-editor{grid-template-columns:1fr}}
 @media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid,.row-builder .form-grid{grid-template-columns:1fr}.minutes-editor{min-height:auto}.minutes-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
 </style>
@@ -123,7 +142,7 @@ button{cursor:pointer}
 <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/meeting-minutes/app">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <h1 class="sr-only">Meeting Minutes Generator for professional meeting follow-up</h1>
 <div class="topbar">
   <a href="index.html" aria-label="Back to meeting minutes landing page">Back</a>
@@ -131,7 +150,7 @@ button{cursor:pointer}
   <div class="topbar-actions">
     <button class="btn" type="button" data-action="copy">Copy recap</button>
     <button class="btn" type="button" data-action="save">Save</button>
-    <button class="btn btn-primary" type="button" data-action="pdf">PDF</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Download PDF</button>
   </div>
 </div>
 
@@ -249,6 +268,11 @@ button{cursor:pointer}
           <input aria-label="ImportInput" class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
+      <label class="export-review" for="exportReviewConfirm">
+        <input id="exportReviewConfirm" type="checkbox">
+        <span>I reviewed the attendees, agenda, decisions, action owners, deadlines, risks, next meeting, and final minutes preview.</span>
+        <span class="export-review-status" id="exportReviewStatus" role="status" aria-live="polite">Build and review the minutes before downloading, copying, or printing.</span>
+      </label>
       <div class="minutes-editor">
         <div class="minutes-text-wrap">
           <label class="field full" style="margin:0">
@@ -286,6 +310,63 @@ button{cursor:pointer}
 
 <div class="toast" id="toast" role="status" aria-live="polite"></div>
 <script src="/assets/js/pages/meeting-minutes.js?v=e9e0856d" defer></script>
+<script>
+(function(){
+  var review=document.getElementById('exportReviewConfirm');
+  var status=document.getElementById('exportReviewStatus');
+  var exportActions=['pdf','word','txt','csv','ics','json','print','copy'];
+  function actionProblem(action){
+    if(action==='json')return '';
+    if(action==='csv'&&!document.querySelector('#actionList .list-item'))return 'Add at least one action item before exporting the actions CSV.';
+    if(action==='ics'&&!String((document.getElementById('nextDate')||{}).value||''))return 'Add the next meeting date before exporting the calendar file.';
+    var text=String((document.getElementById('minutesText')||{}).value||'').trim();
+    var title=String((document.getElementById('meetingTitle')||{}).value||'').trim();
+    var date=String((document.getElementById('meetingDate')||{}).value||'').trim();
+    var chair=String((document.getElementById('chair')||{}).value||'').trim();
+    if(!title||!date||!chair||text.length<120||/^MEETING MINUTES\b/i.test(text))return 'Add a named meeting, date, chair, and complete minutes before this export.';
+    return '';
+  }
+  function requireReview(event){
+    var button=event.target&&event.target.closest&&event.target.closest('[data-action]');
+    if(!button)return;
+    var action=button.getAttribute('data-action');
+    if(exportActions.indexOf(action)===-1)return;
+    var problem=actionProblem(action);
+    if(problem){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent=problem;
+      var target=action==='ics'?document.getElementById('nextDate'):action==='csv'?document.getElementById('actionText'):document.getElementById('meetingTitle');
+      if(target)target.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final minutes preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.app-shell')){
+      review.checked=false;
+      if(status)status.textContent='Minutes changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var mutation=event.target.closest('[data-action="rebuild"],[data-action^="add-"],[data-remove-attendee],[data-remove-agenda],[data-remove-decision],[data-remove-action],[data-toggle-action],[data-load],[data-delete]');
+    if(!mutation)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Minutes changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
