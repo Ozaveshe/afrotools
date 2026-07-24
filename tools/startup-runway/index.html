@@ -102,7 +102,9 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .cost-line input{flex:1}
 .cost-line .cost-name{flex:1.4}
 .cost-line .cost-amt{flex:1}
-.cost-line .remove-btn{background:none;border:none;color:#dc2626;cursor:pointer;font-size:1rem;padding:0 4px;flex:0}
+.cost-line .remove-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;background:none;border:1px solid transparent;border-radius:8px;color:#dc2626;cursor:pointer;padding:0;flex:0 0 44px}
+.cost-line .remove-btn:hover{background:#fee2e2;border-color:#fecaca}
+.cost-line .remove-btn svg{width:18px;height:18px;stroke:currentColor}
 .cost-total{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:2px solid #e2e8f0;margin-top:6px;font-weight:700;font-size:.88rem}
 .scenario-row{display:flex;align-items:center;gap:12px;margin-bottom:10px;background:#f8fafc;border-radius:8px;padding:10px}
 .scenario-label{font-size:.78rem;font-weight:600;color:#64748b;flex:1}
@@ -404,7 +406,7 @@ function addCostLine(name, amount) {
   div.className = 'cost-line';
   div.innerHTML = '<input aria-label="Cost name" type="text" class="cost-name" placeholder="Cost name" value="' + (name||'') + '">' +
     '<input aria-label="Amount" type="number" class="cost-amt" placeholder="Amount" value="' + (amount||'') + '" min="0" oninput="updateCostTotal()">' +
-    '<button type="button" class="remove-btn" onclick="this.parentElement.remove();updateCostTotal()">✕</button>';
+'<button type="button" class="remove-btn" aria-label="Remove cost" onclick="this.parentElement.remove();updateCostTotal()"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>';
   container.appendChild(div);
   updateCostTotal();
 }
@@ -543,6 +545,6 @@ function downloadStartupRunwaySummary(){ downloadToolSummary(buildStartupRunwayS
 
 </script>
 <script src="/assets/js/pages/small-business-focus.js?v=e121adab" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
 </html>

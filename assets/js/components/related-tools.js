@@ -261,6 +261,9 @@ class AfroRelatedTools extends HTMLElement {
           letter-spacing: -0.025em;
           line-height: 1.15;
         }
+        :host-context(html[data-theme="dark"]) .title {
+          color: #eef5ff;
+        }
         .all-link {
           display: inline-flex;
           align-items: center;
@@ -441,5 +444,61 @@ class AfroRelatedTools extends HTMLElement {
     `;
   }
 }
+
+function applyDayOneTwoRefinement() {
+  const categoryRoots = [
+    '.diaspora-tool-focus',
+    '.career-tool-focus',
+    '.security-tool-focus',
+    '.personal-finance-tool-focus',
+    '.small-business-focus',
+    '.small-business-tool-focus',
+    '.fintech-focus',
+    '.fintech-payment-focus'
+  ];
+  const related = document.querySelector('afro-related-tools[category]');
+  const category = related ? related.getAttribute('category') : '';
+  const dayOneTwoCategories = [
+    'diaspora',
+    'career',
+    'security',
+    'personal-finance',
+    'small-business',
+    'fintech'
+  ];
+  const isScopedCategory = dayOneTwoCategories.includes(category);
+  if (
+    !document.body ||
+    (!document.body.matches(categoryRoots.join(',')) && !isScopedCategory)
+  ) return;
+
+  if (!document.querySelector('link[data-day1-day2-ui-refinement]')) {
+    const stylesheet = document.createElement('link');
+    stylesheet.rel = 'stylesheet';
+    stylesheet.href = '/assets/css/day1-day2-ui-refinement.css';
+    stylesheet.dataset.day1Day2UiRefinement = 'true';
+    document.head.appendChild(stylesheet);
+  }
+
+  if (!document.querySelector('main,[role="main"]')) {
+    const hero = document.querySelector('.tool-hero,.rc-hero');
+    const heroSibling = hero && hero.nextElementSibling;
+    const primary = document.querySelector(
+      '.ds-tool-layout,.en-tool-layout,.en-tool-layout-wide,.tool-main,.tool-main-inner,.fin-main'
+    ) || (
+      heroSibling &&
+      heroSibling.matches('.container,.tool-layout,.page-main') &&
+      heroSibling
+    );
+    if (primary) primary.setAttribute('role', 'main');
+  }
+
+  document.querySelectorAll('.remove-btn,.btn-del,.btn-del-row,.btn-rm').forEach((button) => {
+    if (!button.getAttribute('aria-label')) button.setAttribute('aria-label', 'Remove item');
+  });
+}
+
+applyDayOneTwoRefinement();
+document.addEventListener('DOMContentLoaded', applyDayOneTwoRefinement, { once: true });
 
 customElements.define('afro-related-tools', AfroRelatedTools);

@@ -80,6 +80,7 @@ select:focus,input:focus{outline:none;border-color:var(--color-primary)}
 .person-row{display:flex;gap:.75rem;align-items:center;margin-bottom:.5rem}
 .person-row input{flex:1}
 .person-row .pct-input{width:80px;flex:none}
+.person-row .btn-rm{display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;border:1px solid transparent;border-radius:8px;background:transparent;color:#ef4444;cursor:pointer}
 .btn-rm{padding:.3rem .6rem;background:#fee2e2;border:none;border-radius:6px;color:#991b1b;font-size:.8rem;cursor:pointer}
 .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-bottom:1.25rem}
 .metric{background:#f8fafd;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
@@ -160,10 +161,10 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
     <div id="bs-people-section" style="margin-top:1rem">
       <label style="font-size:.82rem;font-weight:600;color:#374151;display:block;margin-bottom:.5rem">People</label>
       <div id="bs-people">
-        <div class="person-row"><input aria-label="Person 1 name" type="text" placeholder="Person 1 name" value="Person 1"><input aria-label="Bs p0 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p0-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
-        <div class="person-row"><input aria-label="Person 2 name" type="text" placeholder="Person 2 name" value="Person 2"><input aria-label="Bs p1 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p1-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
-        <div class="person-row"><input aria-label="Person 3 name" type="text" placeholder="Person 3 name" value="Person 3"><input aria-label="Bs p2 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p2-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
-        <div class="person-row"><input aria-label="Person 4 name" type="text" placeholder="Person 4 name" value="Person 4"><input aria-label="Bs p3 pct" type="number" class="pct-input" placeholder="%" value="25" id="bs-p3-pct" style="display:none"><button type="button" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 1 name" type="text" placeholder="Person 1 name" value="Person 1"><input aria-label="Person 1 percentage" type="number" class="pct-input" placeholder="%" value="25" id="bs-p0-pct" style="display:none"><button type="button" aria-label="Remove person 1" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 2 name" type="text" placeholder="Person 2 name" value="Person 2"><input aria-label="Person 2 percentage" type="number" class="pct-input" placeholder="%" value="25" id="bs-p1-pct" style="display:none"><button type="button" aria-label="Remove person 2" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 3 name" type="text" placeholder="Person 3 name" value="Person 3"><input aria-label="Person 3 percentage" type="number" class="pct-input" placeholder="%" value="25" id="bs-p2-pct" style="display:none"><button type="button" aria-label="Remove person 3" class="btn-rm" onclick="removePerson(this)">✕</button></div>
+        <div class="person-row"><input aria-label="Person 4 name" type="text" placeholder="Person 4 name" value="Person 4"><input aria-label="Person 4 percentage" type="number" class="pct-input" placeholder="%" value="25" id="bs-p3-pct" style="display:none"><button type="button" aria-label="Remove person 4" class="btn-rm" onclick="removePerson(this)">✕</button></div>
       </div>
       <button type="button" class="btn-add" onclick="addPerson()">+ Add Person</button>
     </div>
@@ -217,7 +218,7 @@ function addPerson(){
   var method=document.getElementById('bs-method').value;
   div.innerHTML='<input aria-label="Person '+(personCount+1)+' name" type="text" placeholder="Person '+(personCount+1)+' name" value="Person '+(personCount+1)+'">'
     +'<input aria-label="Pct input" type="number" class="pct-input" placeholder="%" value="0" style="display:'+(method==='custom'?'block':'none')+'">'
-    +'<button type="button" class="btn-rm" onclick="removePerson(this)">✕</button>';
+    +'<button type="button" aria-label="Remove person '+(personCount+1)+'" class="btn-rm" onclick="removePerson(this)">✕</button>';
   document.getElementById('bs-people').appendChild(div);
   personCount++;
 }
@@ -274,6 +275,6 @@ function calcBillSplit(){
 }
 </script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
 </html>

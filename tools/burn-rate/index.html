@@ -82,8 +82,9 @@ select:focus,input:focus{outline:none;border-color:#ea580c;box-shadow:0 0 0 3px 
 .cost-line{display:flex;align-items:center;gap:8px;margin-bottom:8px}
 .cost-line .cost-name{flex:1.5;min-width:0}
 .cost-line .cost-amt{flex:1;min-width:0}
-.cost-line .remove-btn{background:none;border:none;color:#dc2626;cursor:pointer;font-size:1rem;padding:2px 4px;flex:0;border-radius:4px}
+.cost-line .remove-btn{display:inline-flex;align-items:center;justify-content:center;width:44px;min-width:44px;height:44px;background:none;border:1px solid transparent;color:#dc2626;cursor:pointer;padding:0;flex:0 0 44px;border-radius:8px}
 .cost-line .remove-btn:hover{background:#fee2e2}
+.cost-line .remove-btn svg{width:18px;height:18px;stroke:currentColor}
 .section-total{display:flex;justify-content:space-between;padding:7px 10px;background:#f8fafc;border-radius:6px;font-size:.78rem;font-weight:600;color:#374151;margin-top:4px}
 .grand-total{display:flex;justify-content:space-between;padding:12px;background:#f1f5f9;border-radius:8px;font-size:.88rem;font-weight:700;color:#0f172a;margin-top:10px;border:1.5px solid #e2e8f0}
 .result-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
@@ -397,7 +398,7 @@ function addLine(sectionId, name, amount) {
   div.className = 'cost-line';
   div.innerHTML = '<input aria-label="Description" type="text" class="cost-name" placeholder="Description" value="' + (name||'') + '">' +
     '<input aria-label="Amount" type="number" class="cost-amt" placeholder="Amount" value="' + (amount||'') + '" min="0" oninput="refreshTotals()">' +
-    '<button type="button" class="remove-btn" onclick="this.parentElement.remove();refreshTotals()" title="Remove">✕</button>';
+'<button type="button" class="remove-btn" aria-label="Remove cost" onclick="this.parentElement.remove();refreshTotals()"><svg viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"></path></svg></button>';
   container.appendChild(div);
   refreshTotals();
 }
@@ -505,6 +506,6 @@ function copyBurnRateSummary(){ copyToolSummary(buildBurnRateSummary(),'burn-sum
 function downloadBurnRateSummary(){ downloadToolSummary(buildBurnRateSummary(),'burn-rate-summary.txt','burn-summary-status'); }
 
 </script>
-<script src="/assets/js/components/related-tools.min.js?v=f3f910a8" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
 </html>
