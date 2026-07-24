@@ -35,36 +35,36 @@ Each app receives this checklist independently; a shared component pass does not
 
 Snapshot date: 2026-07-24
 
-Clean integration branch: `codex/day3-reconciliation`
-Live/base commit: `bf399f3732a85e202d2e7e17fbbd8d7f0e829e9d`
-Day 3 release branch: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37); latest source-validation head `c5ca1762c6dc56fbaaa1047a0daee4faa2787c8c` followed only by this ledger receipt
+Merged integration branch: `codex/day3-reconciliation`
+Live production commit: `d3665833ced779d3542eb19ae59ff99b29677b0f`
+Day 3 release: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37), source-validation head `78af183e52f23cebaa4e6ee79ddce2398781c983`, merged as `d3665833ced779d3542eb19ae59ff99b29677b0f`
 
 | Measure | Current evidence-backed count |
 | --- | ---: |
-| Categories at `LOCAL PASS` | 9: all three categories on Days 1, 2 and 3 |
+| Categories at `LIVE PASS` | 9: all three categories on Days 1, 2 and 3 |
 | English canonical category rows in the nine completed categories | 278: 77 across Days 1-2 plus 132 Finance, 6 HR and 63 VAT/business-tax rows; Paystack appears in both Finance and VAT, so this category sum is one higher than the unique-app count |
 | Day 3 Finance apps accepted | 132 of 132 current free canonical hrefs; the raw 133-row Finance registry includes the already consolidated Crypto Tax alias, Paystack cross-credits from its one strict VAT acceptance without duplicate app credit, and the former Tithe & Offering Finance alias now redirects to the single Religious & Cultural canonical |
 | Day 3 VAT apps with strict accepted rows | 63 of 63 strict; Burundi VAT closed the carried gap across native English, French and Swahili routes |
 | Unique apps with recorded work or review evidence across Days 1-3 | 277 app rows; 9 category hubs have separate receipts, for 286 worked pages total |
 | Strictly accepted apps across Days 1-3 | 277 |
-| Day 3 category completion | 3/3 locally: Finance, HR & Payroll and VAT & Business Tax are `ARTIFACT PASS`; preview and production gates remain separate |
-| Deployment of this reconciliation branch | PAUSED EXTERNALLY: Netlify production deploys and Agent Runners are disabled after the team exhausted its billing-cycle credit allowance; published production remains on the prior deployment. Preview/branch deploys remain available. User reported 2026-07-22; billing-cycle reset stated as 2026-08-09 unless credits are restored sooner. |
+| Day 3 category completion | 3/3 `LIVE PASS`: Finance, HR & Payroll and VAT & Business Tax passed local, artifact, exact-SHA preview, production and representative live-route gates |
+| Deployment of this reconciliation branch | LIVE: Netlify production deploy `6a63496316b56c0008cc0183` published merge commit `d3665833ced779d3542eb19ae59ff99b29677b0f` on 2026-07-24 |
 
-Day 3 has reached its local app/category and generated-artifact gates. It must not be described as previewed, production-deployed or live until those remaining release layers are proved separately.
+Day 3 is closed and deployed. The exact source candidate passed local verification, generated-artifact verification, GitHub CI, Netlify preview checks, production deployment and live browser smoke before receiving `LIVE PASS`.
 
-GitHub CI for PR head `c5ca1762c6dc56fbaaa1047a0daee4faa2787c8c` independently passed `Build and audit` and all 8 `Playwright smoke` cases. The `Verify` job remains red only at the prerequisite static-fallback freshness gate: committed forex, fuel, rates and commodities snapshots exceed the seven-day limit. Repeated refresh attempts against the verified AfroTools Supabase project `zpclagtgczsygrgztlts` returned Cloudflare HTTP 522 origin timeouts across both forex and commodities reads. No timestamp was forged and the freshness limit was not relaxed. This is an external data-origin release blocker, not a promotion to preview or production proof.
+GitHub CI passed all three required jobs (`Verify`, `Build and audit`, and `Playwright smoke`) for both the PR candidate and the merged `main` commit. The verified AfroTools Supabase project `zpclagtgczsygrgztlts` recovered to `ACTIVE_HEALTHY`; the forex, fuel, rates and commodities fallback refresh and freshness checks passed without relaxing the seven-day limit or forging timestamps.
 
-Production deployment is additionally blocked by the current Netlify billing state. Local acceptance, generated-artifact proof and preview/branch proof may continue, but no row or category may receive `LIVE PASS` from preview evidence. Exact-SHA production deployment and live-route verification must be replayed after production deploy authority is restored.
+Netlify preview deploy `6a634601158ec4000886c00d` published candidate `78af183e52f23cebaa4e6ee79ddce2398781c983`; header and redirect validations passed. Production deploy `6a63496316b56c0008cc0183` then published merge commit `d3665833ced779d3542eb19ae59ff99b29677b0f` with zero secret-scan matches, 3,548 redirect rules, 48 header rules, 177 functions and two edge functions.
 
-Read-only Netlify verification on 2026-07-23 confirmed site `afrotools` (`8aa543db-b4bd-4631-98f8-221440055c41`) still serves production deploy `6a5fac0ae4d2e80008bd10bc`, commit `bf399f3732a85e202d2e7e17fbbd8d7f0e829e9d`, published 2026-07-21 17:38 UTC. That deploy is `ready`; its recorded mobile Lighthouse averages are Performance 63, Accessibility 98, Best Practices 100, SEO 98 and PWA 100. This is production-base evidence only, not proof for the dirty reconciliation branch.
+Live browser verification returned HTTP 200, no document overflow and no application console errors for all nine completed category hubs at 390px. Additional live smoke covered Import Duty, Fuel Tracker, Somalia VAT, the English Lobola calculator and its native French route. The language selector exposes French in desktop and mobile navigation; the desktop dropdown and selector button right edges align exactly. Production Lighthouse recorded Performance 69, Accessibility 98, Best Practices 100, SEO 98 and PWA 100.
 
 ## 15-day schedule
 
 | Day | Categories / purpose | State |
 | --- | --- | --- |
-| 1 | Diaspora; Career & Development; Security & Safety | LOCAL PASS |
-| 2 | Personal Finance; Small Business & SME; Fintech & Banking | LOCAL PASS |
-| 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | ARTIFACT PASS: 3/3 categories; preview and production gates remain |
+| 1 | Diaspora; Career & Development; Security & Safety | LIVE PASS |
+| 2 | Personal Finance; Small Business & SME; Fintech & Banking | LIVE PASS |
+| 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
 | 4 | Document & PDF; Image & Design; Developer Tools | QUEUED |
 | 5 | Education; Health & Wellness; Language & Translation | QUEUED |
 | 6 | Agriculture; Transport & Logistics; Trade & Import | QUEUED |
@@ -94,15 +94,15 @@ Counts are current English live/new registry rows, excluding each category hub; 
 | 6 | Transport & Logistics | 17 | `/transport/` | `/tools/car-import-cost/` | 0 |
 | 6 | Trade & Import | 13 | `/trade/` | `/tools/hs-code-lookup/` | 0 |
 
-Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 4 product changes begin only after Day 3 reaches its local closeout gate; this inventory work does not promote the queued categories.
+Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is now closed, so Day 4 may begin; this inventory work does not promote the queued categories.
 
 ## Day 3 category status
 
 | Category | Hub | Canonical apps | Accepted | Active frontier | State |
 | --- | --- | ---: | ---: | --- | --- |
-| Finance, Tax & Market Data | `/finance/` and salary/tax surfaces | 132 current free English canonical hrefs after Crypto Tax and Tithe alias consolidation | 132 | Closed locally; raw registry still contains the explicit Crypto Tax redirect alias and paid `/pro/` remains excluded | ARTIFACT PASS |
-| HR & Payroll | `/hr-payroll/` | 6 | 6 strict; hub accepted | Closed locally | ARTIFACT PASS |
-| VAT & Business Tax | `/vat-business-tax/` (`LOCAL PASS`) | 63 current deduplicated apps | 63 strict | Closed locally | ARTIFACT PASS |
+| Finance, Tax & Market Data | `/finance/` and salary/tax surfaces | 132 current free English canonical hrefs after Crypto Tax and Tithe alias consolidation | 132 | Closed and live; raw registry still contains the explicit Crypto Tax redirect alias and paid `/pro/` remains excluded | LIVE PASS |
+| HR & Payroll | `/hr-payroll/` | 6 | 6 strict; hub accepted | Closed and live | LIVE PASS |
+| VAT & Business Tax | `/vat-business-tax/` | 63 current deduplicated apps | 63 strict | Closed and live | LIVE PASS |
 
 ## HR & Payroll local acceptance
 
