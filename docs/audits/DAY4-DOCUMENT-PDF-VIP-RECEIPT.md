@@ -34,7 +34,7 @@ Each route is reviewed for:
 | Route | Inventory | Review state | Improvement or no-change evidence |
 | --- | --- | --- | --- |
 | `/document-pdf/` | Hub; 31 ItemList entries | IMPROVED | Added a semantic, compact 31-link no-JS catalog; raised all six filter buttons from 38px to 44px. Browser proof: 31 unique no-JS routes, 8 Popular/31 All interactive cards, one H1, no horizontal overflow at 320/360/375/768/1440, and no local console/network failures. |
-| `/tools/pdf-workspace/` | Canonical app | PENDING | |
+| `/tools/pdf-workspace/` | Canonical app | IMPROVED | Added the missing main landmark and command-search accessible name; shortened the title from 70 to 54 characters and description from 164 to 159; raised Fast Start, AI helper, disabled-consent, and mobile controls to 44px; repaired severe light-card/dark-text conflicts in system/manual dark mode. Browser proof at 320/360/375/768/1440: one H1/main, no overflow or local errors, 200% text reflow clean. Synthetic one-page PDF loaded locally, exported as a 737-byte PDF for a synthetic signed-in state, then reopened as one page; guest export displayed the account gate; local helper made no document-content request and remained usable after going offline. |
 | `/tools/pdf-merge-split/` | Canonical app | PENDING | |
 | `/tools/pdf-compress/` | Canonical app | PENDING | |
 | `/tools/pdf-image-convert/` | Canonical app | PENDING | |
@@ -72,6 +72,8 @@ Each route is reviewed for:
 - Hub after screenshots: `artifacts/day4-document-pdf/hub-after/`
 - Per-app screenshots: `artifacts/day4-document-pdf/apps/`
 - Hub workflow contract: `npm run document-pdf:verify` — PASS (31 registry tools, report sync, public planner boundary, dashboard workspace).
+- PDF gate/category contract: `npm run pdf:verify` — PASS (31 registry tools, 34 HTML/app surfaces, gate coverage).
+- PDF Workspace AI/privacy contracts: `node tests/ai-pdf-workspace-assist.test.js` and `node tests/ai-consent-server.test.js` — PASS.
 - Source whitespace: `git diff --check` — PASS.
 
 ## Remaining risks
