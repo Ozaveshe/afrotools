@@ -64,6 +64,7 @@
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=8941fca1">
+<link rel="stylesheet" href="/assets/css/image-design-day4-tools.css?v=b25ad14e">
 <script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
 <script src="/assets/js/components/navbar.min.js?v=783a8ae4" defer></script>
 <script src="/assets/js/components/footer.min.js?v=6f4a0d1b" defer></script>
@@ -404,11 +405,11 @@
         <p class="card-sub">Pick multiple JPG, PNG, or WebP files. Click any thumbnail to preview that image before you export the full batch.</p>
       </div>
       <div class="card-body">
-        <div class="drop-zone" id="dropZone">
+        <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Choose or drop images to watermark">
           <div class="drop-icon">📷</div>
           <div class="drop-title">Drop files here or click to browse</div>
           <div class="drop-copy">Great for product photos, event coverage, social creatives, or client proofs.</div>
-          <input aria-label="FileInput" type="file" id="fileInput" accept="image/*" multiple>
+          <input aria-label="Choose images to watermark" type="file" id="fileInput" accept="image/*" multiple>
         </div>
         <div class="thumb-row" id="thumbs"></div>
         <div class="helper-text" id="uploadSummary">No images selected yet.</div>
@@ -522,7 +523,7 @@
           <button class="btn btn-primary" id="downloadAllBtn" type="button">Download All Watermarked</button>
           <button class="btn btn-secondary" id="downloadCurrentBtn" type="button">Download Current</button>
         </div>
-        <div class="status" id="statusText">Everything runs locally in your browser. No files leave your device.</div>
+        <div class="status" id="statusText" role="status" aria-live="polite">Everything runs locally in your browser. No files leave your device.</div>
         <div class="result-actions" style="display:flex;gap:8px;flex-wrap:wrap;margin-top:18px">
           <share-result-button tool-name="Watermark Bulk" tool-slug="watermark-bulk"></share-result-button>
         </div>
@@ -725,7 +726,7 @@ function isImageFile(file) {
 
 function renderWorkflowButtons() {
   elements.workflowGrid.innerHTML = Object.entries(WORKFLOWS).map(([key, workflow]) => `
-    <button class="workflow-btn${key === activeWorkflow ? ' active' : ''}" type="button" data-workflow="${key}">
+    <button class="workflow-btn${key === activeWorkflow ? ' active' : ''}" type="button" data-workflow="${key}" aria-pressed="${key === activeWorkflow}">
       <span class="workflow-label">${workflow.label}</span>
       <span class="workflow-copy">${workflow.copy}</span>
     </button>
@@ -767,7 +768,9 @@ function applyWorkflow(key) {
   if (!workflow) return;
   activeWorkflow = key;
   document.querySelectorAll('.workflow-btn').forEach((button) => {
-    button.classList.toggle('active', button.dataset.workflow === key);
+    const selected = button.dataset.workflow === key;
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', String(selected));
   });
   elements.wmPos.value = workflow.defaults.position;
   elements.wmOpacity.value = workflow.defaults.opacity;
@@ -933,6 +936,11 @@ updateRangeLabels();
 renderGuide();
 
 elements.dropZone.addEventListener('click', () => elements.fileInput.click());
+elements.dropZone.addEventListener('keydown', (event) => {
+  if (event.key !== 'Enter' && event.key !== ' ') return;
+  event.preventDefault();
+  elements.fileInput.click();
+});
 elements.dropZone.addEventListener('dragover', (event) => { event.preventDefault(); elements.dropZone.classList.add('active'); });
 elements.dropZone.addEventListener('dragleave', () => elements.dropZone.classList.remove('active'));
 elements.dropZone.addEventListener('drop', (event) => {
