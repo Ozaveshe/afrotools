@@ -115,6 +115,9 @@ button{cursor:pointer;min-height:44px}
 .preview-card{overflow:hidden}
 .preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
 .preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.export-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:12px 16px 0;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0b63ce}
+.export-review-status{grid-column:1/-1;margin:0;color:#475569;font-size:.76rem;font-weight:700}
 .letter-editor{display:grid;grid-template-columns:1fr;gap:0;min-height:0;flex:1;overflow:auto}
 .letter-text-wrap{padding:16px;border-bottom:1px solid #e5e7eb;background:#f9fafb}
 #letterText{width:100%;min-height:285px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
@@ -163,7 +166,20 @@ button{cursor:pointer;min-height:44px}
 .toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
 .import-input{display:none}
-@media print{body{background:#fff}.topbar,.hero-strip,.workflow-progress,.panel,.insights-card,.preview-top,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+@media print{body{background:#fff}.topbar,.hero-strip,.workflow-progress,.panel,.insights-card,.preview-top,.export-review,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+:root[data-theme=dark] body{background:#0b1120;color:#e5edf8}
+:root[data-theme=dark] .topbar,:root[data-theme=dark] .panel,:root[data-theme=dark] .preview-card,:root[data-theme=dark] .insights-card,:root[data-theme=dark] .progress-step,:root[data-theme=dark] .saved-item{background:#101a2b;border-color:#294164;color:#e5edf8}
+:root[data-theme=dark] .preview-top,:root[data-theme=dark] .letter-text-wrap,:root[data-theme=dark] .readiness-summary,:root[data-theme=dark] .stage-tabs,:root[data-theme=dark] .flow-stage,:root[data-theme=dark] .readiness-section,:root[data-theme=dark] .mobile-stage-actions{background:#152238;border-color:#294164}
+:root[data-theme=dark] .field input,:root[data-theme=dark] .field select,:root[data-theme=dark] .field textarea,:root[data-theme=dark] #letterText,:root[data-theme=dark] .ai-assist-preview,:root[data-theme=dark] .ai-assist-output{background:#0b1423;border-color:#35527b;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme=dark] .field>span:first-child,:root[data-theme=dark] .panel h2,:root[data-theme=dark] .panel h3,:root[data-theme=dark] .preview-card h2,:root[data-theme=dark] .insights-card h2,:root[data-theme=dark] .readiness-section h3,:root[data-theme=dark] .stage-heading h3,:root[data-theme=dark] .progress-step strong,:root[data-theme=dark] .topbar-title{color:#f1f5f9}
+:root[data-theme=dark] .field-help,:root[data-theme=dark] .helper,:root[data-theme=dark] .stage-heading p,:root[data-theme=dark] .readiness-section p,:root[data-theme=dark] .score-copy,:root[data-theme=dark] .progress-step small,:root[data-theme=dark] .hero-strip p{color:#b7c5d8}
+:root[data-theme=dark] .export-review,:root[data-theme=dark] .ai-assist-panel,:root[data-theme=dark] .ai-jump-card,:root[data-theme=dark] .empty-state,:root[data-theme=dark] .upload-placeholder{background:#101d31;border-color:#35527b;color:#dbeafe}
+:root[data-theme=dark] .export-review-status{color:#b7c5d8}
+:root[data-theme=dark] .check{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme=dark] .check strong{color:#f1f5f9}
+:root[data-theme=dark] .check.good{background:#10271f;border-color:#2f6f50}
+:root[data-theme=dark] .check.warn{background:#2b2515;border-color:#7c6723}
+:root[data-theme=dark] .paper{background:#fff;color:#1f2937;border-color:#cbd5e1}
 @media(max-width:1320px){#letterText{min-height:300px}}
 @media(max-width:1180px){.app-shell{--workbench-height:clamp(620px,calc(100vh - 290px),760px)}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress ol{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:minmax(300px,390px) minmax(0,1fr);grid-template-areas:"inputs draft" "insights draft";align-items:start}.insights-card{height:auto;min-height:360px}.readiness-details{overflow:visible}.checks{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
 @media(max-width:900px){.app-shell{--workbench-height:auto}.topbar{position:static;align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto;min-height:44px}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress{position:sticky;top:0;z-index:18;background:linear-gradient(180deg,#f6f7f3 78%,rgba(246,247,243,0));padding-top:8px}.workflow-progress ol{display:flex;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}.progress-step{min-width:180px;scroll-snap-align:start}.workspace{grid-template-columns:1fr;grid-template-areas:"inputs" "insights" "draft"}.panel,.preview-card,.insights-card{height:auto}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.flow-stage,.insights-card,.preview-card{display:none}.app-shell[data-stage=profile] .flow-stage[data-stage-panel=profile],.app-shell[data-stage=job] .flow-stage[data-stage-panel=job],.app-shell[data-stage=draft] .flow-stage[data-stage-panel=draft]{display:block}.app-shell[data-stage=job] .insights-card{display:flex}.app-shell[data-stage=draft] .preview-card{display:flex}.stage-tabs{position:sticky;top:92px;z-index:10}.mobile-stage-actions{display:flex;position:sticky;bottom:12px;z-index:12;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-top:16px;box-shadow:0 18px 35px rgba(15,23,42,.16)}.mobile-stage-actions .btn{flex:1}.desktop-actions{display:none}.letter-editor{min-height:auto}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}.readiness-details{padding:16px}.checks{grid-template-columns:1fr}#afro-theme-fallback-toggle{display:none!important}}
@@ -184,7 +200,7 @@ window.addEventListener('unhandledrejection', function (event) {
 <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
 <link rel="canonical" href="https://afrotools.com/tools/cover-letter-generator/app">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <h1 class="sr-only">Cover Letter Generator for African job applications</h1>
 <div class="topbar">
   <a href="index.html" aria-label="Back to cover letter landing page">Back</a>
@@ -194,7 +210,7 @@ window.addEventListener('unhandledrejection', function (event) {
     <button class="btn" type="button" data-action="save">Save</button>
     <a class="btn btn-soft" href="#job-match">Check job match</a>
     <button class="btn btn-soft" type="button" data-ai-assist-open>AI Assist</button>
-    <button class="btn btn-primary" type="button" data-action="pdf">Export draft</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Download PDF</button>
   </div>
 </div>
 
@@ -426,6 +442,11 @@ window.addEventListener('unhandledrejection', function (event) {
           <input aria-label="Import saved cover letter JSON" class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
+      <label class="export-review" for="exportReviewConfirm">
+        <input id="exportReviewConfirm" type="checkbox">
+        <span>I reviewed the recipient, company, role, evidence, contact details, spelling, and final letter preview before export.</span>
+        <span class="export-review-status" id="exportReviewStatus" role="status" aria-live="polite">Create and review a complete letter before downloading or printing.</span>
+      </label>
       <div class="letter-editor">
         <div class="letter-text-wrap">
           <label class="field full" style="margin:0">
@@ -563,6 +584,53 @@ window.addEventListener('unhandledrejection', function (event) {
 })();
 </script>
 <script src="/assets/js/pages/cover-letter-ai-assist.js?v=b9d820e8" defer></script>
+<script>
+(function(){
+  var review=document.getElementById('exportReviewConfirm');
+  var status=document.getElementById('exportReviewStatus');
+  var exportActions=['pdf','word','txt','json','print'];
+  function draftReady(){
+    var text=String((document.getElementById('letterText')||{}).value||'').trim();
+    return text.length>=160&&!/Your Name|your organization|the advertised role/i.test(text);
+  }
+  function requireReview(event){
+    var action=event.target&&event.target.closest&&event.target.closest('[data-action]');
+    if(!action||exportActions.indexOf(action.getAttribute('data-action'))===-1)return;
+    if(!draftReady()){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent='Complete the named recipient, role, company, and letter content before export.';
+      var letter=document.getElementById('letterText');
+      if(letter)letter.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final letter preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.app-shell')){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var action=event.target.closest('[data-action="rebuild"],[data-load],[data-delete],#aiAssistApply');
+    if(!action)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
