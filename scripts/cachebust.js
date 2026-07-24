@@ -14,6 +14,16 @@ const crypto = require('crypto');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+const onlyAssetPaths = onlyArg
+  ? new Set(
+      onlyArg
+        .slice('--only='.length)
+        .split(',')
+        .map((entry) => path.resolve(ROOT, entry.trim()).toLowerCase())
+        .filter(Boolean)
+    )
+  : null;
 const SKIP_DIRS = new Set([
   'node_modules',
   '.git',
@@ -66,6 +76,10 @@ function resolveAssetPath(htmlPath, ref) {
   return path.resolve(path.dirname(htmlPath), ref);
 }
 
+function isSelectedAsset(assetPath) {
+  return !onlyAssetPaths || onlyAssetPaths.has(path.resolve(assetPath).toLowerCase());
+}
+
 // Match CSS/JS tags, including stale query strings from earlier cache-bust passes.
 const CSS_RE = /(<link\b[^>]*\bhref=["'])([^"']+\.css(?:\?[^"']*)?)(["'][^>]*>)/g;
 const JS_RE = /(<script\b[^>]*\bsrc=["'])([^"']+\.js(?:\?[^"']*)?)(["'][^>]*>)/g;
@@ -87,6 +101,7 @@ function bustReferences(html, htmlPath) {
     // Strip any existing query string
     const cleanRef = ref.split('?')[0];
     const assetPath = resolveAssetPath(htmlPath, cleanRef);
+    if (!isSelectedAsset(assetPath)) return match;
     const hash = getFileHash(assetPath);
     if (!hash) return match; // file not found, leave as-is
 
@@ -106,6 +121,7 @@ function bustReferences(html, htmlPath) {
     }
     const cleanRef = ref.split('?')[0];
     const assetPath = resolveAssetPath(htmlPath, cleanRef);
+    if (!isSelectedAsset(assetPath)) return match;
     const hash = getFileHash(assetPath);
     if (!hash) return match;
 
@@ -144,4 +160,5 @@ for (const htmlPath of htmlFiles) {
   }
 }
 
-console.log(`  CACHE   ${updatedCount} HTML files updated, ${refCount} refs cache-busted, ${hashCache.size} unique assets hashed`);
+const scopeLabel = onlyAssetPaths ? `, ${onlyAssetPaths.size} selected assets` : '';
+console.log(`  CACHE   ${updatedCount} HTML files updated, ${refCount} refs cache-busted, ${hashCache.size} unique assets hashed${scopeLabel}`);

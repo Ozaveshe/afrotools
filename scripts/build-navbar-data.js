@@ -64,7 +64,14 @@ function buildNavbarData() {
   const outputChanged = writeIfChanged(DATA_OUTPUT_PATH, output);
   const hrefCount = (output.match(/"href(?:Fr|Sw|Ha|Yo)?":/g) || []).length;
 
-  const navbarCss = minifyCss(fs.readFileSync(NAVBAR_CSS_PATH, "utf8"));
+  // The legacy source starts with a Google Fonts import. Keep the deployed
+  // shadow stylesheet on the same canonical, same-origin font contract as the
+  // document while the one-line source remains backward compatible.
+  const navbarCss = minifyCss(fs.readFileSync(NAVBAR_CSS_PATH, "utf8"))
+    .replace(
+      /^@import url\(['"]https:\/\/fonts\.googleapis\.com\/[^'"]+['"]\);/,
+      "@import url('/assets/fonts/typography.css');"
+    );
   const cssChanged = writeIfChanged(NAVBAR_MIN_CSS_PATH, navbarCss);
   const cssHash = crypto.createHash("md5").update(navbarCss.replace(/\r\n?/g, "\n")).digest("hex").slice(0, 8);
 

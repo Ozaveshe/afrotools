@@ -5,6 +5,17 @@
 (function () {
   'use strict';
 
+  function ensureTypography() {
+    if (document.querySelector('link[data-afrotools-typography]')) return;
+    var link = document.createElement('link');
+    link.rel = 'stylesheet';
+    link.href = '/assets/fonts/typography.css';
+    link.dataset.afrotoolsTypography = '';
+    document.head.appendChild(link);
+  }
+
+  ensureTypography();
+
   const THEME_KEY = 'aft_theme';
   let darkModeRuntimePromise = null;
 
@@ -87,7 +98,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=b7a1deaf';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=03a68137';
   // NAVBAR_CSS_HREF_END
 
   // NAVBAR_TOP_LEVEL_DATA_START
