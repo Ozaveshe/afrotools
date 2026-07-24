@@ -179,7 +179,9 @@
     background: #fafbfc;
     position: relative;
     touch-action: manipulation;
+    display: block;
   }
+  .drop-zone > * { max-width: 100%; overflow-wrap: anywhere; }
 
   .drop-zone:hover,
   .drop-zone.dragover {
@@ -880,6 +882,35 @@
     line-height: 1.7;
   }
 
+  .drop-zone:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 4px; }
+  :root[data-theme="dark"] .upload-view,
+  :root[data-theme="dark"] .pdf-panel,
+  :root[data-theme="dark"] .chat-panel,
+  :root[data-theme="dark"] .chat-header,
+  :root[data-theme="dark"] .chat-input-bar,
+  :root[data-theme="dark"] .file-bar,
+  :root[data-theme="dark"] .doc-tools { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .drop-zone,
+  :root[data-theme="dark"] .privacy-choice,
+  :root[data-theme="dark"] .quick-btn,
+  :root[data-theme="dark"] .chat-input-bar textarea,
+  :root[data-theme="dark"] .doc-search { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .upload-title,
+  :root[data-theme="dark"] .drop-zone-text,
+  :root[data-theme="dark"] .chat-header-title,
+  :root[data-theme="dark"] .privacy-choice label,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] .faq-q { color: #eef5ff; }
+  :root[data-theme="dark"] .upload-subtitle,
+  :root[data-theme="dark"] .drop-zone-hint,
+  :root[data-theme="dark"] .chat-header-subtitle,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .faq-a p { color: #d8e4f5; }
+  :root[data-theme="dark"] .msg-ai .msg-bubble { background: #1d2b40; color: #eef5ff; }
+  :root[data-theme="dark"] .faq-item { border-color: #3a4c68; }
+
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .workspace.show {
@@ -970,9 +1001,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/chat-na-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-chat/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
 
+<main>
 <!-- Hero -->
 <section class="tool-hero">
   <div class="tool-hero-inner">
@@ -994,7 +1026,7 @@
   <h2 class="upload-title">Chat with your <b>PDF</b></h2>
   <p class="upload-subtitle">Upload a text-based PDF and ask questions. The assistant indexes pages, answers from the document, and links back to sources.</p>
 
-  <div class="drop-zone" id="dropZone">
+  <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Choose a PDF file">
     <div class="drop-zone-icon">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/></svg>
     </div>
@@ -1090,7 +1122,7 @@
     <div class="privacy-choice">
       <label for="aiAssistConsent">
         <input type="checkbox" id="aiAssistConsent">
-        <span>AI Assist optional: send this question and a capped extracted-text excerpt to AfroTools AI for a richer answer. Leave off for local page-cited answers.</span>
+        <span>Enable AI Assist: review and approve sending this question and a capped extracted-text excerpt to AfroTools AI. Leave off for local page-cited answers.</span>
       </label>
     </div>
 
@@ -1149,6 +1181,7 @@
   </div>
 </section>
 
+</main>
 
 <afro-related-tools category="document-pdf" current="pdf-chat" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -1217,6 +1250,12 @@
 
   fileInput.addEventListener('change', function() {
     if (this.files[0]) handleFile(this.files[0]);
+  });
+  dropZone.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      fileInput.click();
+    }
   });
 
   /* ── File Handling ── */
@@ -1643,7 +1682,24 @@
         return;
       }
 
-      const headers = { 'Content-Type': 'application/json' };
+      const consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      const hasContentConsent = consentApi && typeof consentApi.hasConsent === 'function' &&
+        consentApi.hasConsent('ai_optional_content_included', 'pdf-chat');
+      if (!hasContentConsent) {
+        aiAssistConsent.checked = false;
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText + '\n\nAI Assist stayed off because document-content consent was not confirmed.');
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally. Review the AI content notice before enabling AI Assist.';
+        return;
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      };
       if (window.AfroAuth && typeof window.AfroAuth.getSessionToken === 'function') {
         const token = window.AfroAuth.getSessionToken();
         if (token) headers['Authorization'] = 'Bearer ' + token;
@@ -1740,8 +1796,23 @@
   updateSendBtn(); /* initial state */
 
   aiAssistConsent.addEventListener('change', function() {
+    if (this.checked) {
+      var consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      var accepted = consentApi && typeof consentApi.ensureConsent === 'function' && consentApi.ensureConsent({
+        mode: 'ai_optional_content_included',
+        toolId: 'pdf-chat',
+        action: 'Send question and capped PDF excerpt',
+        contentIncluded: true,
+        requireFresh: true
+      });
+      if (!accepted) {
+        this.checked = false;
+        chatFooter.textContent = 'AI Assist stays off. Local page-cited answers remain available.';
+        return;
+      }
+    }
     chatFooter.textContent = this.checked
-      ? 'AI Assist is on. Questions may send capped extracted text to AfroTools AI.'
+      ? 'AI Assist is on with content consent. Questions may send capped extracted text to AfroTools AI.'
       : 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
   });
 
@@ -1812,12 +1883,23 @@
   });
 
   /* ── FAQs ── */
-  document.querySelectorAll('.faq-q').forEach(function(btn) {
+  document.querySelectorAll('.faq-q').forEach(function(btn, index) {
+    var panel = btn.nextElementSibling;
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'pdfChatFaq' + index);
+    if (panel) panel.id = 'pdfChatFaq' + index;
     btn.addEventListener('click', function() {
       const item = this.closest('.faq-item');
       const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
-      if (!wasOpen) item.classList.add('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) {
+        el.classList.remove('open');
+        var openButton = el.querySelector('.faq-q');
+        if (openButton) openButton.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 
@@ -1835,8 +1917,6 @@
 </script>
 
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 </body>
 </html>
