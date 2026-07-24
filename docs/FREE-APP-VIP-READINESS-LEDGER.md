@@ -104,6 +104,16 @@ Day 4-6 therefore contains 635 app rows plus nine hubs under the current registr
 | HR & Payroll | `/hr-payroll/` | 6 | 6 strict; hub accepted | Closed and live | LIVE PASS |
 | VAT & Business Tax | `/vat-business-tax/` | 63 current deduplicated apps | 63 strict | Closed and live | LIVE PASS |
 
+### Day 3 structured UI refinement — release candidate
+
+Status: `LOCAL PASS` on 2026-07-24; production promotion and live-route receipts are tracked separately.
+
+- Finance was reconciled as 131 local non-Pro routes plus the one intentional external free-tool handoff. All 131 local routes returned HTTP 200 at desktop and 390px, with zero horizontal overflow or page errors. Import Duty now presents one focused initial task instead of an empty split layout, and its report action is readable and touch-safe. Thirty legacy PAYE pages received a one-line script-boundary repair so their unchanged calculators and PDF actions execute in the browser; the Nigeria PAYE shared bundle was also regenerated from its source.
+- HR & Payroll received one shared, category-scoped refinement across its hub and all six accepted apps. The seven routes now share calmer hierarchy, grouped form/action states, explicit empty-result treatment, 44px controls, responsive dark-mode behavior, and searchable country-route previews that retain every crawlable link and preserve the no-JavaScript inventory.
+- VAT & Business Tax was replayed across all 63 accepted English routes at 390px: 63/63 returned HTTP 200 with zero overflow, console errors or page errors. The hub now offers Featured, VAT, Business and All views while retaining all 63 anchors in the document. Benin and Burkina Faso legacy VAT routes gained a semantic main region, visible labels, accessible control names, touch-safe actions and compact mobile source disclosure without altering their add/extract formulas.
+- The reported Wallet Address Validator privacy strip was treated as an explicit carryover, not a fourth category. Its unchanged warning now renders as a compact shield notice on desktop and a full-width readable card on mobile; light/dark contrast, engine behavior and route privacy contracts passed.
+- Focused browser evidence: Import Duty 4/4, HR 7/7 and Wallet 5/5. Category, VAT, hreflang, lint and type/import gates passed. The protected calculation-quality registry records this as a reviewed UI-only digest change with zero golden-fixture deltas.
+
 ## HR & Payroll local acceptance
 
 | Page | VIP treatment | Mobile | Dark | SEO | Function | PDF/export | A11y/privacy/source | Browser | State |
