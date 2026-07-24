@@ -732,6 +732,31 @@
     margin-top: 12px;
   }
 
+  .review-check {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 11px 12px;
+    border: 1px solid #cbd5e1;
+    border-radius: 8px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1.5;
+    text-align: left;
+    cursor: pointer;
+  }
+
+  .review-check input {
+    width: 19px;
+    height: 19px;
+    margin: 1px 0 0;
+    flex: 0 0 auto;
+    accent-color: var(--color-primary);
+  }
+
   .workflow-report {
     margin-top: 14px;
     text-align: left;
@@ -867,6 +892,77 @@
     .angle-grid { grid-template-columns: repeat(3, 1fr); }
     .workflow-toolbar { justify-content: flex-start; }
     .mini-btn { width: 100%; justify-content: center; }
+    .tool-main-inner,
+    .seo-section,
+    .faq-section {
+      padding-inline: 16px;
+    }
+  }
+
+  :root[data-theme="dark"] .card,
+  :root[data-theme="dark"] .run-section,
+  :root[data-theme="dark"] .palette-box,
+  :root[data-theme="dark"] .config-box,
+  :root[data-theme="dark"] .faq-item {
+    background: #101a2b;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .pipeline-strip,
+  :root[data-theme="dark"] .pipeline-step,
+  :root[data-theme="dark"] .workflow-report,
+  :root[data-theme="dark"] .review-check,
+  :root[data-theme="dark"] .pal-head,
+  :root[data-theme="dark"] .cfg-head,
+  :root[data-theme="dark"] .cfg-foot,
+  :root[data-theme="dark"] .faq-q {
+    background: #152238;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .pal-op,
+  :root[data-theme="dark"] .cfg-input,
+  :root[data-theme="dark"] .cfg-select,
+  :root[data-theme="dark"] .btn-secondary,
+  :root[data-theme="dark"] .mini-btn {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .cfg-select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .file-input-label {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #bcd6f6;
+  }
+
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .ps-name,
+  :root[data-theme="dark"] .pal-op-name,
+  :root[data-theme="dark"] .cfg-label,
+  :root[data-theme="dark"] .result-msg,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] .faq-q {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .ps-sub,
+  :root[data-theme="dark"] .pal-op-desc,
+  :root[data-theme="dark"] .preset-desc,
+  :root[data-theme="dark"] .result-size,
+  :root[data-theme="dark"] .progress-label,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .faq-a {
+    color: #b7c5d8;
   }
 </style>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
@@ -912,9 +1008,10 @@
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/workflow-ya-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-workflow/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
 
+<main id="main-content">
 <!-- Hero -->
 <section class="tool-hero">
   <div class="tool-hero-inner">
@@ -1002,6 +1099,10 @@
         <div class="result-msg" id="resultMsg">Pipeline complete!</div>
         <div class="result-size" id="resultSize"></div>
         <div class="result-actions-row">
+          <label class="review-check" for="reviewConfirm">
+            <input type="checkbox" id="reviewConfirm">
+            <span>I reviewed the operation order, step report, final page count, and output size before downloading.</span>
+          </label>
           <button type="button" class="download-btn" id="downloadBtn">Download PDF</button>
           <button class="mini-btn" id="downloadReportBtn" type="button">Download report</button>
         </div>
@@ -1013,11 +1114,11 @@
 </div>
 
 <!-- Operation Palette Modal -->
-<div class="palette-overlay" id="paletteOverlay">
+<div class="palette-overlay" id="paletteOverlay" role="dialog" aria-modal="true" aria-labelledby="paletteTitle">
   <div class="palette-box">
     <div class="pal-head">
-      <h2>Add Operation</h2>
-      <button type="button" class="pal-close" id="paletteClose">&times;</button>
+      <h2 id="paletteTitle">Add Operation</h2>
+      <button type="button" class="pal-close" id="paletteClose" aria-label="Close operation palette">&times;</button>
     </div>
     <div class="pal-body">
       <div class="pal-grid" id="paletteGrid">
@@ -1077,11 +1178,11 @@
 </div>
 
 <!-- Config Modal -->
-<div class="config-overlay" id="configOverlay">
+<div class="config-overlay" id="configOverlay" role="dialog" aria-modal="true" aria-labelledby="configTitle">
   <div class="config-box">
     <div class="cfg-head">
       <h2 id="configTitle">Configure</h2>
-      <button type="button" class="cfg-close" id="configClose">&times;</button>
+      <button type="button" class="cfg-close" id="configClose" aria-label="Close operation settings">&times;</button>
     </div>
     <div class="cfg-body" id="configBody"></div>
     <div class="cfg-foot">
@@ -1104,30 +1205,31 @@
 <section class="faq-section">
   <h2>Frequently Asked Questions</h2>
   <div class="faq-item">
-    <button type="button" class="faq-q">Does the order of operations matter?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Does the order of operations matter?</button>
     <div class="faq-a">Yes. Operations execute in sequence from left to right. For example, if you compress before adding a watermark, the watermark text will be sharp. If you compress after, the watermark may lose some quality. A common order is: merge, rotate, page numbers, watermark, compress, password.</div>
   </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">Are my files uploaded to a server?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Are my files uploaded to a server?</button>
     <div class="faq-a">No. The workflow runs in your browser using local pdf.js, pdf-lib, and qpdf/WASM assets. Your PDF never leaves your device.</div>
   </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I use the same operation more than once?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I use the same operation more than once?</button>
     <div class="faq-a">Yes. You can add the same operation multiple times with different configurations. For example, you could add two watermark steps to place text at both the top and bottom of each page.</div>
   </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">Is there a page or file size limit?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Is there a page or file size limit?</button>
     <div class="faq-a">There is no hard limit, but very large PDFs (over 100 MB or hundreds of pages) may be slow to process since everything runs in the browser. For best results, keep files under 50 MB.</div>
   </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">What does the Compress step actually do?</button>
+    <button type="button" class="faq-q" aria-expanded="false">What does the Compress step actually do?</button>
     <div class="faq-a">The compress step rasterizes pages at the selected quality and rebuilds the PDF. This can reduce file size for image-heavy files, but it can also make text image-based. Use optimize when you only want structural cleanup.</div>
   </div>
   <div class="faq-item">
-    <button type="button" class="faq-q">Can I save a workflow?</button>
+    <button type="button" class="faq-q" aria-expanded="false">Can I save a workflow?</button>
     <div class="faq-a">Yes. You can save a recipe in this browser, load it later, or export/import it as JSON so another team member can reuse the same steps.</div>
   </div>
 </section>
+</main>
 
 <afro-related-tools category="document-pdf" current="pdf-workflow" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -1139,13 +1241,11 @@
 </afro-related-tools>
 <afro-footer></afro-footer>
 
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/qpdf/qpdf.js?v=5842eaa2"></script>
-<script src="/assets/js/pages/pdf-workflow.js?v=f9d5f5aa"></script>
+<script src="/assets/js/pages/pdf-workflow.js?v=beb35ffe"></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
