@@ -1,0 +1,81 @@
+# Day 4 Document & PDF VIP receipt
+
+Branch: `codex/day4-document-pdf`
+
+Baseline SHA: `4544d89142efdbd1eeb67e5f4a30e5d1696f16b4`
+
+Scope: `/document-pdf/` plus 31 English canonical free app routes. Paid `/pro/` apps and localized output routes are excluded.
+
+## Inventory reconciliation
+
+- Registry: 32 English `document-pdf` rows, consisting of 31 `/tools/` apps plus the `/document-pdf/` hub row.
+- Hub ItemList: 31 app entries.
+- Local route existence: 31/31 app routes present.
+- Hub catalog: eight popular tools render initially; filters and search expose all 31 when JavaScript is available.
+- No-JavaScript baseline defect: the catalog container was empty even though the page advertised 31 tools.
+- Hub repair: a complete 31-link `<noscript>` catalog now preserves user access and crawlable route discovery without changing the interactive registry-backed catalog.
+- Post-repair browser proof: the no-JavaScript catalog exposes 31 links with 31 unique `href` values; JavaScript mode renders 8 Popular cards and exactly 31 cards after selecting All 31.
+
+## Acceptance dimensions
+
+Each route is reviewed for:
+
+- responsive rendering at 320, 360, 375, and 768 CSS pixels;
+- manual and operating-system dark mode;
+- canonical, title, description, structured data, and AI-search contract;
+- primary workflow, invalid input, empty state, stale state, and export state;
+- local-file privacy, network boundaries, logging, storage, and explicit AI consent;
+- generated PDF or document validity, parser/reopen proof where applicable;
+- labels, keyboard flow, focus, live status, contrast, and 44px primary controls;
+- performance, offline/degraded behavior, console errors, and unexpected network requests.
+
+## Serial route ledger
+
+| Route | Inventory | Review state | Improvement or no-change evidence |
+| --- | --- | --- | --- |
+| `/document-pdf/` | Hub; 31 ItemList entries | IMPROVED | Added a semantic, compact 31-link no-JS catalog; raised all six filter buttons from 38px to 44px. Browser proof: 31 unique no-JS routes, 8 Popular/31 All interactive cards, one H1, no horizontal overflow at 320/360/375/768/1440, and no local console/network failures. |
+| `/tools/pdf-workspace/` | Canonical app | PENDING | |
+| `/tools/pdf-merge-split/` | Canonical app | PENDING | |
+| `/tools/pdf-compress/` | Canonical app | PENDING | |
+| `/tools/pdf-image-convert/` | Canonical app | PENDING | |
+| `/tools/pdf-watermark/` | Canonical app | PENDING | |
+| `/tools/pdf-password/` | Canonical app | PENDING | |
+| `/tools/pdf-page-numbers/` | Canonical app | PENDING | |
+| `/tools/pdf-sign/` | Canonical app | PENDING | |
+| `/tools/pdf-ocr/` | Canonical app | PENDING | |
+| `/tools/pdf-form-filler/` | Canonical app | PENDING | |
+| `/tools/pdf-redact/` | Canonical app | PENDING | |
+| `/tools/pdf-header-footer/` | Canonical app | PENDING | |
+| `/tools/pdf-editor/` | Canonical app | PENDING | |
+| `/tools/pdf-convert/` | Canonical app | PENDING | |
+| `/tools/pdf-reorder/` | Canonical app | PENDING | |
+| `/tools/pdf-chat/` | Canonical app | PENDING | |
+| `/tools/pdf-translate/` | Canonical app | PENDING | |
+| `/tools/pdf-compare/` | Canonical app | PENDING | |
+| `/tools/pdf-to-audio/` | Canonical app | PENDING | |
+| `/tools/pdf-bates/` | Canonical app | PENDING | |
+| `/tools/html-to-pdf/` | Canonical app | PENDING | |
+| `/tools/pdf-find-replace/` | Canonical app | PENDING | |
+| `/tools/pdf-repair/` | Canonical app | PENDING | |
+| `/tools/pdf-workflow/` | Canonical app | PENDING | |
+| `/tools/cv-builder/` | Canonical app | PENDING | Confirmed baseline defect: two `h1` elements; repair in serial pass. |
+| `/tools/invoice-generator/` | Canonical app | PENDING | |
+| `/tools/cover-letter-generator/` | Canonical app | PENDING | |
+| `/tools/meeting-minutes/` | Canonical app | PENDING | |
+| `/tools/receipt-generator/` | Canonical app | PENDING | |
+| `/tools/business-plan/` | Canonical app | PENDING | |
+| `/tools/freelance-invoice/` | Canonical app | PENDING | |
+
+## Evidence locations
+
+- Hub before screenshots: `artifacts/day4-document-pdf/hub-before/`
+- Hub after screenshots: `artifacts/day4-document-pdf/hub-after/`
+- Per-app screenshots: `artifacts/day4-document-pdf/apps/`
+- Hub workflow contract: `npm run document-pdf:verify` — PASS (31 registry tools, report sync, public planner boundary, dashboard workspace).
+- Source whitespace: `git diff --check` — PASS.
+
+## Remaining risks
+
+- Serial app audit is in progress.
+- Export parser/reopen evidence must be recorded per app; a browser download event alone is not sufficient.
+- `pdf-merge-split` requires explicit guest-blocked and registered-user download-path proof.
