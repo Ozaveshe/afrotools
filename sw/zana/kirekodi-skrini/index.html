@@ -124,5 +124,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 let rec,chunks=[];async function calc(){try{const stream=await navigator.mediaDevices.getDisplayMedia({video:true,audio:true});chunks=[];rec=new MediaRecorder(stream);rec.ondataavailable=e=>chunks.push(e.data);rec.onstop=()=>{const blob=new Blob(chunks,{type:'video/webm'});setDetail('<video controls src="'+URL.createObjectURL(blob)+'" style="max-width:100%"></video>')};rec.start();setResults(metric('Recording','Imeanza','Bonyeza tena kusimamisha'));q('calculate').textContent='Simamisha recording'}catch(e){setResults(metric('Haikuweza kuanza',e.message,'Browser permission inahitajika'))}}q('calculate').addEventListener('click',()=>{if(rec&&rec.state==='recording'){rec.stop();rec.stream.getTracks().forEach(t=>t.stop());q('calculate').textContent='Tengeneza';setResults(metric('Recording','Imesimama','Preview iko chini'))}else calc()});q('reset').addEventListener('click',()=>{setResults(metric('Tayari','Chagua screen','Hakiki sauti na taarifa nyeti kabla ya kurekodi'));setDetail(rows(['Script: '+val('notes'),'Jina: '+val('title')]))});q('reset').click();
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

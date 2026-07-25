@@ -143,5 +143,6 @@ Anglais:64:1</textarea><small>Format : matière:note actuelle sur 100:poids. Une
   document.querySelectorAll("#examForm input,#examForm select,#examForm textarea").forEach(function(node){node.addEventListener("input",render);node.addEventListener("change",render)});el("planButton").addEventListener("click",render);el("planButton2").addEventListener("click",render);el("copySummary").addEventListener("click",function(){render();navigator.clipboard.writeText(el("summaryText").textContent).then(function(){el("copySummary").textContent="Résumé copié";setTimeout(function(){el("copySummary").textContent="Copier le résumé"},1800)})});el("downloadText").addEventListener("click",function(){render();download("resume-compte-rebours-examen-afrotools.txt","text/plain;charset=utf-8",el("summaryText").textContent)});el("downloadJson").addEventListener("click",function(){render();download("resume-compte-rebours-examen-afrotools.json","application/json;charset=utf-8",JSON.stringify(window.__examCountdown,null,2))});render();
 })();
 </script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

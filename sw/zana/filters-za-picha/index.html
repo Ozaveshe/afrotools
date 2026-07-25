@@ -117,5 +117,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 function calc(){const f=q('file').files[0];if(!f){basicCanvas('Photo filters','Chagua picha');setResults(metric('Hali','Hakuna faili','Pakia picha'));return}readImage(f,img=>{canvas().width=img.width;canvas().height=img.height;const c=ctx();c.filter='brightness('+num('brightness')+'%) contrast('+num('contrast')+'%) grayscale('+num('grayscale')+'%) sepia('+num('sepia')+'%) blur('+num('blur')+'px)';c.drawImage(img,0,0);c.filter='none';setResults(metric('Filter','Imetumika','Pakua PNG'))})}function reset(){q('brightness').value=105;q('contrast').value=110;q('grayscale').value=0;q('sepia').value=0;q('blur').value=0;basicCanvas('Vichujio','Chagua picha')}bind(calc,reset);
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

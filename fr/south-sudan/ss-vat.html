@@ -152,5 +152,6 @@
 <script data-fr-vat-fallback-script>
 (function(){document.querySelectorAll('[data-vat-fallback-calc]').forEach(function(card){var out=card.querySelector('[data-vat-output]');function money(x){return (isFinite(x)?x:0).toLocaleString('fr-FR',{maximumFractionDigits:2});}function calc(){var amount=parseFloat(card.querySelector('[data-vat-amount]').value)||0;var rate=(parseFloat(card.querySelector('[data-vat-rate]').value)||0)/100;var mode=card.querySelector('[data-vat-mode]').value;var net,tax,total;if(mode==='remove'){total=amount;net=rate?amount/(1+rate):amount;tax=total-net;}else{net=amount;tax=net*rate;total=net+tax;}out.textContent='HT: '+money(net)+' | TVA: '+money(tax)+' | TTC: '+money(total);}card.addEventListener('input',calc);var btn=card.querySelector('[data-vat-run]');if(btn)btn.addEventListener('click',calc);});})();
 </script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

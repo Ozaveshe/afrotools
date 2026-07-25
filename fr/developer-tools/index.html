@@ -124,5 +124,6 @@ function attachFiltersFr(){document.querySelectorAll('.pill').forEach(function(p
 function filterGridFr(f,q){var cards=document.querySelectorAll('#tool-grid .tc');var slugs=FILTER_MAP[f]||[];var visible=0;cards.forEach(function(card){var id=card.getAttribute('data-id')||'';var text=(card.textContent||'').toLowerCase();var mf=(f==='all')||slugs.some(function(s){return id.includes(s);});var ms=!q||text.includes(q)||id.includes(q);var show=mf&&ms;card.style.display=show?'':'none';if(show)visible+=1;});var labels=document.querySelectorAll('#tool-grid .grid-label');labels.forEach(function(lbl){var grid=lbl.nextElementSibling;if(!grid)return;var any=false;grid.querySelectorAll('.tc').forEach(function(c){if(c.style.display!=='none')any=true;});lbl.style.display=any?'':'none';grid.style.display=any?'':'none';});if(window.AfroProgressiveDirectory){if(visible)window.AfroProgressiveDirectory.markReady();else window.AfroProgressiveDirectory.markNoResults(Boolean(q||f!=='all'));}}
 if(typeof onRegistryReady==='function'){onRegistryReady(_initDevFr);}else{document.addEventListener('DOMContentLoaded',function(){if(typeof AFRO_TOOLS!=='undefined')_initDevFr();else document.addEventListener('afrotools:registry-ready',_initDevFr);});}
 </script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

@@ -113,5 +113,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 function calc(){const points=val('points').split(',').map(s=>s.trim()).filter(Boolean);const count=Math.max(2,num('slides'));let list=[];for(let i=1;i<=count;i++){list.push('Slide '+i+': '+(points[i-1]|| (i===1?'Hook: '+val('topic'):i===count?'CTA na next step':'Point ya maelezo')))}setResults(metric('Slides',count,q('platform').selectedOptions[0].text)+metric('Mada',val('topic'),'Keep one idea per slide'));setDetail(rows(list))}function reset(){q('topic').value='Jinsi ya kupanga brand collab';q('slides').value=6;q('platform').value='instagram';q('points').value='Hook, Tatizo, Hatua 1, Hatua 2, Proof, CTA'}bind(calc,reset);
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

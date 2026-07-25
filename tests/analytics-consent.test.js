@@ -166,4 +166,41 @@ const privacyPolicy = fs.readFileSync(path.join(ROOT, "privacy", "index.html"), 
 assert.ok(cookiePolicy.includes("data-afro-cookie-consent-open"), "cookie policy exposes a consent management control");
 assert.ok(cookiePolicy.includes("cookieless") && privacyPolicy.includes("cookieless"), "policies disclose denied-consent measurement");
 
+// Campaign attribution. Standard campaign parameters must survive on
+// page_location so GA4 can attribute traffic to its source; every other query
+// parameter, and any campaign value that looks like personal data, is still
+// discarded before it reaches Google.
+function pageLocationFor(search) {
+  const context = createSandbox(null);
+  context.window.location.search = search;
+  vm.runInNewContext(lazySource, context.sandbox, { filename: "lazy-analytics.js" });
+  return commandRows(context, "config", "G-D859CGF391")[0][2].page_location;
+}
+
+assert.strictEqual(
+  pageLocationFor("?utm_source=newsletter&utm_medium=email&utm_campaign=july"),
+  "https://afrotools.com/tools/salary-calculator/?utm_source=newsletter&utm_medium=email&utm_campaign=july",
+  "standard campaign parameters reach GA4 so traffic can be attributed"
+);
+assert.strictEqual(
+  pageLocationFor("?gclid=ABC123"),
+  "https://afrotools.com/tools/salary-calculator/?gclid=ABC123",
+  "ad click identifiers reach GA4"
+);
+assert.strictEqual(
+  pageLocationFor("?q=salary&sessionid=abc123&utm_source=bing"),
+  "https://afrotools.com/tools/salary-calculator/?utm_source=bing",
+  "non-campaign query parameters are still discarded"
+);
+assert.strictEqual(
+  pageLocationFor("?utm_source=private@example.com"),
+  "https://afrotools.com/tools/salary-calculator/",
+  "campaign values that look like an e-mail address are dropped"
+);
+assert.strictEqual(
+  pageLocationFor("?email=private@example.com"),
+  "https://afrotools.com/tools/salary-calculator/",
+  "personal data in the query string never reaches GA4"
+);
+
 console.log("analytics-consent.test.js passed");

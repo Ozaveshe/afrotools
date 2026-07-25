@@ -113,5 +113,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 let recorder,parts=[];async function calc(){try{const stream=await navigator.mediaDevices.getUserMedia({audio:true});parts=[];recorder=new MediaRecorder(stream);recorder.ondataavailable=e=>parts.push(e.data);recorder.onstop=()=>{const blob=new Blob(parts,{type:'audio/webm'});setDetail('<audio controls src="'+URL.createObjectURL(blob)+'"></audio>')};recorder.start();setResults(metric('Recording','Imeanza',val('use')));q('calculate').textContent='Simamisha'}catch(e){setResults(metric('Haikuweza kurekodi',e.message,'Ruhusu microphone'))}}q('calculate').addEventListener('click',()=>{if(recorder&&recorder.state==='recording'){recorder.stop();recorder.stream.getTracks().forEach(t=>t.stop());q('calculate').textContent='Tengeneza';setResults(metric('Audio','Imesimama',val('title')))}else calc()});q('reset').addEventListener('click',()=>{q('title').value='Voiceover ya reel';q('use').value='voiceover';q('duration').value=45;setResults(metric('Tayari','Ruhusu microphone','Lengo '+val('duration')+' sec'));setDetail('')});q('reset').click();
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

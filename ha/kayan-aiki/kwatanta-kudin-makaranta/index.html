@@ -154,5 +154,6 @@
 !function(){var name=document.getElementById('schoolName'),cost=document.getElementById('schoolCost'),gap=document.getElementById('schoolGap'),out=document.getElementById('schoolBrief'),status=document.getElementById('schoolBriefStatus');function brief(){var parts=[];if(name.value.trim())parts.push('Makaranta: '+name.value.trim());if(cost.value.trim())parts.push('Kudin da aka fada: '+cost.value.trim());if(gap.value.trim())parts.push('A tabbatar: '+gap.value.trim());return parts.length?parts.join(' | ')+' | Tabbatar da adadi daga makaranta ko portal kafin biya.':'Rubuta makaranta, kudin da aka fada da abin da bai bayyana ba.'}function render(){out.textContent=brief();if(status)status.textContent=''}[name,cost,gap].forEach(function(el){el.addEventListener('input',render)});document.getElementById('copySchoolBrief').addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief ya kwafu.'}).catch(function(){if(status)status.textContent=text})}else if(status){status.textContent=text}});render()}();
 </script>
   <script src="/ha/assets/ha-surface.js?v=6a9f01c5" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

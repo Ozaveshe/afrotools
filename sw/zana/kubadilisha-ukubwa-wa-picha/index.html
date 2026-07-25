@@ -117,5 +117,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 function calc(){const f=q('file').files[0];if(!f){canvas().width=num('width');canvas().height=num('height');basicCanvas('Muonekano wa ukubwa mpya','Chagua picha');setResults(metric('Lengo',num('width')+' x '+num('height')+' px','Pakia picha'));return}readImage(f,img=>{canvas().width=num('width');canvas().height=num('height');ctx().drawImage(img,0,0,canvas().width,canvas().height);const data=canvas().toDataURL(val('format'),num('quality')/100);setResults(metric('Lengo',canvas().width+' x '+canvas().height+' px','Tokeo '+(data.length*0.75/1024).toFixed(0)+' KB'))})}function reset(){q('width').value=1080;q('height').value=1080;q('quality').value=82;q('format').value='image/jpeg';basicCanvas('Badilisha ukubwa wa picha','Chagua picha')}bind(calc,reset);
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

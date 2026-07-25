@@ -73,7 +73,7 @@ function fmtPos(n){return Math.round(n).toLocaleString('en');}
 function calcPOS(){var mdr=parseFloat(document.getElementById('posMdr').value)/100,flat=parseFloat(document.getElementById('posFlat').value)||0,cap=parseFloat(document.getElementById('posCap').value)||0,monthlyFee=parseFloat(document.getElementById('posMonthly').value)||0,avg=parseFloat(document.getElementById('posAvg').value)||0,daily=parseInt(document.getElementById('posCount').value)||0,pct=parseFloat(document.getElementById('posPct').value)/100,dailyCardTxns=daily*pct,dailyCardVol=dailyCardTxns*avg,monthlyVol=dailyCardVol*22,txnFee=avg*mdr+flat;if(cap>0)txnFee=Math.min(txnFee,cap);var monthlyTxn=txnFee*dailyCardTxns*22,total=monthlyTxn+monthlyFee,effective=monthlyVol?total/monthlyVol*100:0;document.getElementById('posTotal').textContent=fmtPos(total);document.getElementById('posMonthlyVol').textContent=fmtPos(monthlyVol);document.getElementById('posTxnFees').textContent=fmtPos(monthlyTxn);document.getElementById('posEffective').textContent=effective.toFixed(2)+'%';document.getElementById('posAnnual').textContent=fmtPos(total*12);document.getElementById('posResult').classList.add('on');}
 calcPOS();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=2cd970f9"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>
 </html>

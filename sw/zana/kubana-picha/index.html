@@ -117,5 +117,6 @@ const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').t
 function calc(){const f=q('file').files[0];if(!f){basicCanvas('Chagua picha','Kisha bonyeza tengeneza');setResults(metric('Hali','Hakuna faili','Pakia picha'));return}readImage(f,img=>{canvas().width=img.width;canvas().height=img.height;ctx().drawImage(img,0,0);const data=canvas().toDataURL(val('format'),num('quality')/100);setResults(metric('Faili asili',(f.size/1024).toFixed(0)+' KB','Makadirio ya browser')+metric('Matokeo',(data.length*0.75/1024).toFixed(0)+' KB',q('format').selectedOptions[0].text))})}function reset(){q('quality').value=72;q('format').value='image/jpeg';basicCanvas('Kubana picha','Chagua picha ili kuona muonekano wa awali')}bind(calc,reset);
   </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
