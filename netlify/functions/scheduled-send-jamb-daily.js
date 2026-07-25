@@ -4,6 +4,15 @@ const { createClient } = require('@supabase/supabase-js');
 const { getStore } = require('@netlify/blobs');
 const { withScheduledProof } = require('./_shared/scheduled-proof');
 
+// Declared before PRACTICE_POOL because the filter below runs at module load and
+// calls isLaunchSafeQuestion(), which dereferences this regex. `const` is not
+// hoisted like the function is, so declaring it further down put it in the
+// temporal dead zone: requiring this module threw "Cannot access
+// 'VISUAL_DEPENDENT_RE' before initialization" before the handler was ever
+// reached. Netlify could not load the function at all, so this hourly job never
+// ran and never recorded scheduled proof.
+const VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
+
 const PRACTICE_POOL = ((require('../../data/jamb/pools/practice-pool.json') || {}).questions || []).filter(isLaunchSafeQuestion);
 const SUPABASE_URL = process.env.SUPABASE_URL_DATA || 'https://zpclagtgczsygrgztlts.supabase.co';
 const SUPABASE_SERVICE_KEY =
@@ -16,7 +25,6 @@ const EMAIL_FROM = process.env.EMAIL_FROM || 'AfroJAMB <hello@afrotools.com>';
 const DELIVERY_TIMEZONE = 'Africa/Lagos';
 const DELIVERY_STORE = 'jamb-daily-delivery';
 const SITE_URL = process.env.URL || process.env.DEPLOY_PRIME_URL || 'https://afrotools.com';
-const VISUAL_DEPENDENT_RE = /use the diagram|use the figure|diagram below|diagram above|figure above|graph above|illustration above|circuit above|bar chart above|pie chart above|histogram above/i;
 const SUBJECT_LABELS = {
   english: 'Use of English',
   mathematics: 'Mathematics',

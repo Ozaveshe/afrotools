@@ -408,6 +408,55 @@ function nextScheduledAt(expression, fromDate) {
   return null;
 }
 
+function previousScheduledAt(expression, fromDate) {
+  const schedule = parseCronSchedule(expression);
+  if (!schedule) return null;
+
+  const start = fromDate instanceof Date ? fromDate : new Date(fromDate || Date.now());
+  if (!Number.isFinite(start.getTime())) return null;
+
+  const candidate = new Date(start.getTime());
+  candidate.setUTCSeconds(0, 0);
+
+  const maxMinutes = 366 * 24 * 60;
+  for (let i = 0; i < maxMinutes; i += 1) {
+    if (cronMatches(schedule, candidate)) return candidate.toISOString();
+    candidate.setUTCMinutes(candidate.getUTCMinutes() - 1);
+  }
+  return null;
+}
+
+// statusFor() compares wall-clock age against a flat SLA, which is wrong for any
+// cron that does not fire uniformly. `scheduled-fetch-stocks` runs hourly on
+// weekdays only (`11 * * * 1-5`) with a 2h SLA, so from Friday 23:11 until Monday
+// it is always "15+ hours old" and was reported stale every single weekend --
+// a guaranteed false alarm two days in seven.
+//
+// A job is only late if it has not run since its most recent *scheduled*
+// occurrence. Measuring from there keeps every genuine miss (a weekly scraper
+// that skipped its slot is still reported) while dropping the weekend noise.
+function reconcileStatusWithSchedule(result, expression, nowMs) {
+  if (!result || result.status !== 'stale' || !expression) return result;
+
+  const previous = previousScheduledAt(expression, new Date(nowMs));
+  if (!previous) return result;
+
+  const latest = toIso(result.latest_at);
+  if (!latest) return result;
+
+  if (new Date(latest).getTime() >= new Date(previous).getTime()) {
+    result.status = 'ok';
+    result.previous_scheduled_at = previous;
+    result.note = [result.note, 'Ran at or after its last scheduled occurrence (' + previous + '); flat-age SLA does not model this cron.']
+      .filter(Boolean)
+      .join(' ');
+    return result;
+  }
+
+  result.previous_scheduled_at = previous;
+  return result;
+}
+
 function minutesUntil(timestamp, nowMs) {
   const iso = toIso(timestamp);
   if (!iso) return null;
@@ -870,6 +919,9 @@ async function main() {
     result.netlify_schedule = netlifySchedule;
     result.next_scheduled_at = nextScheduledAt(netlifySchedule, now);
     result.minutes_until_next_scheduled = minutesUntil(result.next_scheduled_at, nowMs);
+    // Status is computed from a flat age/SLA comparison inside runCheck, before the
+    // cron is known. Re-judge it now that we have the schedule.
+    reconcileStatusWithSchedule(result, netlifySchedule, nowMs);
     checks.push(result);
   }
 
@@ -922,6 +974,8 @@ module.exports = {
   latestRowStatus,
   liveDataRowStatus,
   nextScheduledAt,
+  previousScheduledAt,
+  reconcileStatusWithSchedule,
   parseCronField,
   scraperRunNote,
   scheduledProofKey,

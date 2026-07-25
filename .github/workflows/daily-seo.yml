@@ -26,6 +26,7 @@ jobs:
         uses: actions/setup-node@v5
         with:
           node-version: '22'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -45,6 +46,20 @@ jobs:
         # Never fail the workflow — fixes are best-effort
         continue-on-error: true
 
+      # The SEO pass rewrites HTML, and data/calculation-quality/formula-registry.json
+      # pins a content digest for several of those pages (route-itax-guide et al).
+      # Rewriting the HTML without recomputing the digest leaves main failing
+      # `calculation-quality:check`. On 2026-07-25 a purely cosmetic normalisation
+      # (`/>` to `>` on one meta tag) did exactly that.
+      - name: Reconcile calculation-quality digests
+        run: npm run calculation-quality:build
+
+      # This bot pushes straight to main. It must never push a commit that main's
+      # own gate would reject -- previously it did, and `[skip ci]` meant nobody
+      # found out.
+      - name: Verify the working tree still passes the gates
+        run: npm run calculation-quality:check
+
       - name: Commit any fixes back to main
         run: |
           git config user.name  "AfroTools SEO Bot"
@@ -55,13 +70,16 @@ jobs:
             sitemap-i18n.xml \
             robots.txt \
             _redirects \
+            data/calculation-quality/formula-registry.json \
             $(git diff --name-only -- '*.html' 2>/dev/null || true)
 
           # Only commit if there are staged changes
           if git diff --staged --quiet; then
             echo "No SEO changes today — site is clean."
           else
-            git commit -m "chore(seo): daily auto-fix $(date -u +%Y-%m-%d) [skip ci]"
+            # No [skip ci]: this bot writes to main unattended, so its commits are
+            # exactly the ones that most need CI to report on them.
+            git commit -m "chore(seo): daily auto-fix $(date -u +%Y-%m-%d)"
             git push origin main
             echo "SEO fixes committed and pushed. Netlify will redeploy automatically."
           fi
