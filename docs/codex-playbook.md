@@ -200,6 +200,9 @@
   - `Scholarship Source Expansion Agent`
   - `Car Price Intelligence Refresh Agent`
 - Prefer `worktree` execution for recurring repo jobs so runs stay isolated from the main checkout.
+- For any parallel repo work, fetch first, record the verified `origin/main` SHA, and use one branch plus one worktree per session. Parallel sessions must not edit the canonical checkout.
+- Keep integration coordinator-owned. Before landing a session commit, inspect deletion-only drift with `git diff --diff-filter=D --summary`; before removing its worktree, verify that it is clean, its intended commits are preserved or merged, and no live process is using the path.
+- Never prune a dirty, unmerged, rescue, or investigation worktree merely because it is old. Reconcile or checkpoint its unique work first.
 - For content-batch automations on Windows, keep the Supabase MCP config in global Codex config so clean worktrees can see it.
 - If a fallback secret appears missing during a Windows worktree run, check the Windows user environment store before concluding the live publish path is blocked.
 - If you change Supabase MCP URL query parameters such as `read_only=true`, restart Codex before expecting the current session's MCP tools to use the new mode.

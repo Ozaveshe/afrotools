@@ -217,6 +217,9 @@ Do not use the AfroTools Supabase project for LATMtools work, and do not use the
 
 - Inspect `git status --short` before editing when the tree may be dirty.
 - Keep unrelated dirty files untouched.
+- For concurrent or delegated work, fetch first and record the verified `origin/main` SHA, then give each session its own branch and worktree. Do not let parallel sessions edit the canonical checkout.
+- Use one coordinator to integrate session commits. Review `git diff --diff-filter=D --summary` before integration so a stale or partially populated worktree cannot silently delete current files.
+- Remove a worktree only after its tree is clean, its intended commits are merged or otherwise preserved, and no live process is using its path. Preserve dirty, unmerged, rescue, and investigation worktrees until they are explicitly reconciled.
 - Prefer source files over generated output.
 - Prefer scripts for bulk edits across many pages.
 - If changing a tool, review `docs/ADDING-A-TOOL.md`.
