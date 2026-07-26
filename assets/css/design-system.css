@@ -2647,6 +2647,10 @@ html body.top-level-page-ui-refresh :where(
   width: auto !important;
 }
 
+/* Undoes `.top-level-page-ui-refresh a[href] { display: inline-flex }`, which
+   would otherwise turn every card link into a button. The homepage overrides this
+   back to its compact icon-left grid below 720px via #home-tool-grid, which
+   outranks this selector. */
 html body.top-level-page-ui-refresh .home-tool-card {
   align-items: flex-start !important;
   display: flex !important;
@@ -2741,25 +2745,10 @@ html body.top-level-page-ui-refresh #education .edu-grid > a > div:last-of-type 
   line-height: 1.55 !important;
 }
 
-html body.top-level-page-ui-refresh #categories .cat-card {
-  align-items: flex-start !important;
-  display: flex !important;
-  flex-direction: column !important;
-  justify-content: flex-start !important;
-  text-align: left !important;
-}
-
-html body.top-level-page-ui-refresh #categories .cat-icon-wrap {
-  margin-left: 0 !important;
-  margin-right: 0 !important;
-}
-
-html body.top-level-page-ui-refresh #categories .cat-name,
-html body.top-level-page-ui-refresh #categories .cat-desc,
-html body.top-level-page-ui-refresh #categories .cat-count {
-  text-align: left !important;
-  width: 100% !important;
-}
+/* The #categories tiles own their own layout in the homepage's
+   `home-categories-revamp` block. The left-align !important patches that used to
+   live here (plus a .cat-icon-wrap margin reset for an icon wrapper that no
+   longer exists) are redundant against that block and only made it un-overridable. */
 
 @media (max-width: 980px) {
   html body.top-level-page-ui-refresh #education .edu-grid {
@@ -2781,9 +2770,9 @@ html body.top-level-page-ui-refresh #categories .cat-count {
     padding: 16px !important;
   }
 
-  html body.top-level-page-ui-refresh #categories .cats-grid {
-    grid-template-columns: minmax(0, 1fr) !important;
-  }
+  /* Removed: `#categories .cats-grid { grid-template-columns: minmax(0,1fr) }`.
+     That single !important line is what made 32 full-height category cards stack
+     one per row on every phone. The grid is two columns below 900px now. */
 }
 
 html body.top-level-page-ui-refresh .ak-social-card,

@@ -103,8 +103,8 @@
   <script src="/assets/js/components/country-selector.js?v=c13ac60b" defer></script>
   <script src="/assets/js/data/registry-counts.js?v=ea294a71" defer></script>
 
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script>
   <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/lib/recent-tools.js?v=78dbe87f" defer></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81" defer></script>
   <!-- Twemoji: consistent flag rendering on Windows -->
@@ -412,9 +412,6 @@
     .signup-bar-close{display:inline-flex;align-items:center;justify-content:center;width:44px;height:44px;border:1px solid #dbe4ef;border-radius:999px;background:#fff;color:#475569;box-shadow:0 1px 4px rgba(15,23,42,.08)}
     .signup-bar-close:hover{background:#eef5ff;border-color:#bfdbfe;color:#0f172a}
     .signup-bar-close:focus-visible{outline:3px solid rgba(0,98,204,.22);outline-offset:2px}
-    .cat-icon-wrap{font-size:2.75rem!important;line-height:1!important;overflow:hidden!important}
-    .cat-icon-wrap>img:not(.emoji){width:58px!important;height:58px!important;object-fit:contain!important;transform:scale(1.16);transform-origin:center}
-    .cat-icon-wrap img.emoji{width:46px!important;height:46px!important;display:block!important;margin:0!important;object-fit:contain!important}
     .tcard{color:inherit;text-decoration:none;cursor:pointer}
     .tcard:focus-visible{outline:3px solid rgba(0,98,204,.28);outline-offset:4px}
     .home-section-action,
@@ -1009,7 +1006,7 @@
       .ai-example-chip { min-height:40px !important; padding:7px 10px !important; font-size:.7rem !important; }
     }
   </style>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <style id="homepage-tool-image-fit">
   body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
@@ -1042,6 +1039,177 @@
       margin:12px 12px 0 !important;
       width:calc(100% - 24px) !important;
     }
+  }
+</style>
+<style id="home-categories-revamp">
+  /* Categories section.
+     Previously: eight PNG "sticker" cards in the HTML, replaced on load by 32
+     twemoji cards. Two icon languages on one screen, a full-page reflow on
+     hydration, and 32 full-height cards stacked one-per-row on a phone.
+     Now: one stroke-icon set matching .home-tool-icon, static markup so nothing
+     reflows, and a compact tile grid that clamps to 12 on small screens.
+     Everything is #categories-scoped so it wins over homepage.css,
+     homepage-refine.css and theme-dark.css without !important. */
+  #categories { padding-block: 56px 64px; }
+  #categories .cats-head {
+    display:flex; align-items:flex-end; justify-content:space-between;
+    gap:24px; margin-bottom:26px;
+  }
+  #categories .cats-head-copy { max-width:760px; min-width:0; }
+  #categories .sec-title { font-size:1.78rem; line-height:1.16; letter-spacing:0; margin:12px 0 0; }
+  #categories .sec-sub { color:#5b6b82; font-size:.93rem; line-height:1.62; margin:10px 0 0; }
+  #categories .home-section-action { flex:0 0 auto; white-space:nowrap; }
+
+  #categories .cats-grid {
+    display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:12px;
+  }
+  #categories .cat-card {
+    display:flex; flex-direction:column; align-items:flex-start; min-width:0;
+    background:#fff; border:1px solid rgba(148,163,184,.36); border-radius:12px;
+    box-shadow:0 6px 18px rgba(15,23,42,.05); padding:16px; text-decoration:none;
+    transition:border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+  }
+  #categories .cat-card:hover,
+  #categories .cat-card:focus-visible {
+    border-color:rgba(43,109,216,.5); box-shadow:0 12px 28px rgba(15,23,42,.10);
+    transform:translateY(-2px);
+  }
+  #categories .cat-icon {
+    display:inline-flex; align-items:center; justify-content:center; flex:0 0 auto;
+    width:40px; height:40px; margin-bottom:12px; border-radius:10px;
+    background:#eef5ff; border:1px solid #d6e6ff; color:#0057b8;
+    transition:background .18s ease, border-color .18s ease, color .18s ease;
+  }
+  #categories .cat-icon svg {
+    width:21px; height:21px; fill:none; stroke:currentColor;
+    stroke-width:1.8; stroke-linecap:round; stroke-linejoin:round;
+  }
+  #categories .cat-card:hover .cat-icon,
+  #categories .cat-card:focus-visible .cat-icon { background:#0057b8; border-color:#0057b8; color:#fff; }
+  #categories .cat-name {
+    display:block; color:#0f172a; font-size:.94rem; font-weight:800;
+    line-height:1.25; margin-bottom:5px;
+  }
+  #categories .cat-desc {
+    display:block; flex:1 1 auto; color:#5b6b82; font-size:.79rem;
+    line-height:1.5; margin-bottom:12px;
+  }
+  /* Block, not inline-flex: the count is "<span>478</span> tools" and flex would
+     make the trailing text its own item, so the literal space plus the flex gap
+     rendered a double space. */
+  #categories .cat-count {
+    display:block; margin-top:auto;
+    color:#7386a1; font-size:.72rem; font-weight:800; line-height:1.2;
+  }
+  #categories .cat-count.live { color:#0758b8; }
+  #categories .cat-count.live::after {
+    content:"\2192"; display:inline-block; margin-left:5px; transition:transform .18s ease;
+  }
+  #categories .cat-card:hover .cat-count.live::after,
+  #categories .cat-card:focus-visible .cat-count.live::after { transform:translateX(3px); }
+
+  #categories .cats-toggle {
+    display:flex; align-items:center; justify-content:center; gap:6px;
+    width:100%; min-height:48px; margin-top:14px; padding:12px 18px;
+    background:#fff; border:1px solid rgba(148,163,184,.42); border-radius:10px;
+    color:#0758b8; font:inherit; font-size:.86rem; font-weight:800; cursor:pointer;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  #categories .cats-toggle:hover { border-color:#9fc4ff; background:#eff6ff; }
+  #categories .cats-toggle[hidden] { display:none; }
+
+  /* Same clamp+toggle for the 16-card flagship grid, which stacked one per row on
+     a phone for ~3,000px before anyone reached the categories at all. */
+  .home-tool-toggle {
+    display:flex; align-items:center; justify-content:center;
+    width:100%; min-height:48px; margin-top:14px; padding:12px 18px;
+    background:#fff; border:1px solid rgba(148,163,184,.42); border-radius:10px;
+    color:#0758b8; font:inherit; font-size:.86rem; font-weight:800; cursor:pointer;
+    transition:border-color .18s ease, background .18s ease;
+  }
+  .home-tool-toggle:hover { border-color:#9fc4ff; background:#eff6ff; }
+  .home-tool-toggle[hidden] { display:none; }
+  :root[data-theme="dark"] .home-tool-toggle {
+    background:rgba(18,31,51,.7); border-color:rgba(77,163,255,.24); color:#93c5fd;
+  }
+  @media (max-width:900px) {
+    /* Id + !important: both design-system.css and the compact-row block below
+       force `display` on these cards. */
+    #home-tool-grid.is-clamped .home-tool-card:nth-child(n+7) { display:none !important; }
+  }
+
+  /* The compact icon-left row this page defines at <=720px has never actually
+     rendered: `html body.top-level-page-ui-refresh .home-tool-card` in
+     design-system.css sets display/flex-direction/align-self with !important at
+     every width, so each card stayed a ~157px block and the 16-card grid ran
+     ~3,000px down a phone. An id beats that selector, so the row wins here. */
+  @media (max-width:720px) {
+    #home-tool-grid .home-tool-card {
+      align-items:center !important;
+      display:grid !important;
+      grid-template-areas:"icon title" "icon desc" "icon cta";
+      grid-template-columns:44px minmax(0,1fr) !important;
+    }
+    #home-tool-grid .home-tool-card .home-tool-icon { align-self:center !important; }
+    #home-tool-grid .home-tool-card strong { align-self:end !important; }
+    #home-tool-grid .home-tool-card p,
+    #home-tool-grid .home-tool-card em { align-self:start !important; }
+  }
+  @media (max-width:380px) {
+    #home-tool-grid .home-tool-card { grid-template-columns:40px minmax(0,1fr) !important; }
+  }
+
+  @media (max-width:1100px) {
+    #categories .cats-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+  }
+  @media (max-width:900px) {
+    #categories { padding-block:44px 52px; }
+    #categories .cats-head { flex-direction:column; align-items:flex-start; gap:12px; margin-bottom:20px; }
+    #categories .sec-title { font-size:1.46rem; }
+    #categories .cats-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; }
+    #categories .cats-grid.is-clamped .cat-card:nth-child(n+13) { display:none; }
+    #categories .cat-card { padding:14px; border-radius:11px; }
+    #categories .cat-icon { width:34px; height:34px; border-radius:9px; margin-bottom:10px; }
+    #categories .cat-icon svg { width:18px; height:18px; }
+    #categories .cat-name { font-size:.87rem; }
+    /* Two columns on a phone is ~150px per tile — a three-line description there
+       reads as noise. Icon, name and count carry the tile; the description stays
+       in the markup for search engines and screen readers. */
+    #categories .cat-desc { display:none; }
+    #categories .cat-count { font-size:.7rem; }
+  }
+  /* homepage.css already pins two columns with !important below 640px and 380px,
+     which matches the two-column rule above — no narrower override is added here
+     because an !important rule would win over any #categories-scoped selector. */
+
+  :root[data-theme="dark"] #categories .cat-card {
+    background:rgba(18,31,51,.7); border-color:rgba(77,163,255,.22);
+    box-shadow:0 10px 26px rgba(2,10,24,.34);
+  }
+  :root[data-theme="dark"] #categories .cat-card:hover,
+  :root[data-theme="dark"] #categories .cat-card:focus-visible { border-color:rgba(147,197,253,.46); }
+  :root[data-theme="dark"] #categories .cat-icon {
+    background:rgba(77,163,255,.14); border-color:rgba(147,197,253,.26); color:#93c5fd;
+  }
+  :root[data-theme="dark"] #categories .cat-card:hover .cat-icon,
+  :root[data-theme="dark"] #categories .cat-card:focus-visible .cat-icon {
+    background:#1d64c4; border-color:#1d64c4; color:#fff;
+  }
+  :root[data-theme="dark"] #categories .cat-name { color:#eef5ff; }
+  :root[data-theme="dark"] #categories .cat-desc { color:#b8c7dc; }
+  :root[data-theme="dark"] #categories .cat-count { color:#8fa3bf; }
+  :root[data-theme="dark"] #categories .cat-count.live { color:#93c5fd; }
+  :root[data-theme="dark"] #categories .sec-sub { color:#b8c7dc; }
+  :root[data-theme="dark"] #categories .cats-toggle {
+    background:rgba(18,31,51,.7); border-color:rgba(77,163,255,.24); color:#93c5fd;
+  }
+
+  @media (prefers-reduced-motion:reduce) {
+    #categories .cat-card,
+    #categories .cat-icon,
+    #categories .cat-count.live::after { transition:none; }
+    #categories .cat-card:hover,
+    #categories .cat-card:focus-visible { transform:none; }
   }
 </style>
 <link rel="canonical" href="https://afrotools.com/">
@@ -1246,7 +1414,7 @@
       <h2>Start with the tools people come back to</h2>
       <p>Grouped by what you are trying to do: money and tax, uniquely African planning, documents and career, then home and energy. Describe your task to AfroTools AI, or browse the full directory if you already know what you need.</p>
     </div>
-    <div class="home-tool-six-grid">
+    <div class="home-tool-six-grid" id="home-tool-grid">
       <a class="home-tool-card" href="/tools/currency-converter/" data-tone="fx"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h14"/><path d="m13 4 4 4-4 4"/><path d="M21 16H7"/><path d="m11 12-4 4 4 4"/></svg></span><small class="home-tool-tag">Money</small><strong>Currency Converter</strong><p>Convert African currencies with the time each rate was captured and where it came from.</p><em>Check rates</em></a>
       <a class="home-tool-card" href="/salary-tax/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2"/><path d="M14 11h2"/><path d="M8 15h2"/><path d="M14 15h2"/><path d="M8 19h8"/></svg></span><small class="home-tool-tag">Tax</small><strong>Salary &amp; Tax</strong><p>Estimate take-home pay, statutory deductions, and country payroll rules.</p><em>Calculate tax</em></a>
       <a class="home-tool-card" href="/tools/vat-calculator/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></span><small class="home-tool-tag">Tax</small><strong>VAT Calculator</strong><p>Add or remove VAT at each country&rsquo;s rate, with the registration threshold alongside it.</p><em>Work out VAT</em></a>
@@ -1264,6 +1432,9 @@
       <a class="home-tool-card" href="/engineering/floor-planner/" data-tone="plan"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h6"/><path d="M10 4v16"/><path d="M10 14h10"/><path d="M15 14v6"/><path d="M6 7h2"/></svg></span><small class="home-tool-tag">Building</small><strong>Floor Planner</strong><p>Draw rooms, place furniture, estimate materials, and export a bill of quantities.</p><em>Open planner</em></a>
       <a class="home-tool-card" href="/cars/" data-tone="cars"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13 5 7a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 6"/><path d="M5 13h14v5H5z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M7 10h10"/></svg></span><small class="home-tool-tag">Cars</small><strong>Car Price Directory</strong><p>Compare local prices against import costs before you commit to a vehicle.</p><em>Compare cars</em></a>
     </div>
+    <button type="button" class="home-tool-toggle" id="home-tool-toggle" aria-expanded="true" aria-controls="home-tool-grid" hidden>
+      <span class="grid-toggle-label">Show all 16 tools</span>
+    </button>
     <p class="home-tool-more">Also popular: <a href="/tools/remittance-compare/">Remittance Compare</a> &middot; <a href="/tools/japa-calculator/">Japa Calculator</a> &middot; <a href="/tools/mobile-money-fees/">Mobile Money Fees</a> &middot; <a href="/tools/">Browse every tool &rarr;</a></p>
   </div>
 </section>
@@ -1484,17 +1655,16 @@
     el = document.getElementById('hp-stat-tools');
     if (el) el.textContent = countText;
 
-    el = document.getElementById('cats-browse-count');
-    if (el) el.textContent = countText;
-
     el = document.getElementById('embed-tool-count');
     if (el) el.textContent = countText;
 
     el = document.getElementById('hero-search-input');
     if (el) el.placeholder = 'Search CV, PDF, solar, fuel, recipe, invoice...';
 
-    el = document.getElementById('cats-heading');
-    if (el) el.innerHTML = countText + ' Tools. 54 Countries. <span id="cats-tool-count">English, French &amp; Swahili</span>.';
+    // The categories heading is editorial copy now. It used to be overwritten here
+    // with a hardcoded "54 Countries. English, French & Swahili." string that both
+    // destroyed the data-registry-count markers and under-reported the site's
+    // published languages.
   }
 
   window.syncHomepageToolCounts = syncHomepageToolCounts;
@@ -1524,8 +1694,6 @@
     syncHomepageToolCounts(live);
     var el = document.getElementById('hp-stat-categories');
     if (el) el.textContent = cats;
-    el = document.getElementById('cats-all-label');
-    if (el) el.textContent = 'All ' + cats + ' Categories';
     window._afroStats = { total: live, live: live, cats: cats, liveF: liveF };
   };
 })();
@@ -1816,65 +1984,215 @@
 <!-- ═══════════════════════════════════════════════════════════
   TOOL CATEGORIES
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec sec--white" id="categories" aria-label="All tool categories">
+<section class="sec sec--white sec--cats" id="categories" aria-label="All tool categories">
   <div class="wrap">
-    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
-      <div class="eyebrow" style="margin-bottom:0">Categories</div>
-      <a href="/tools/" class="home-section-action">Explore All →</a>
+    <div class="cats-head">
+      <div class="cats-head-copy">
+        <div class="eyebrow" style="margin-bottom:0">Categories</div>
+        <h2 class="sec-title" id="cats-heading">Every tool, grouped the way you actually work.</h2>
+        <p class="sec-sub"><span data-registry-count="tools.live_experiences">2606</span> live tool experiences across <span data-registry-count="categories.published">32</span> categories, <span data-registry-count="countries.published">54</span> countries and <span data-registry-count="languages.site_published">5</span> site languages. Ask AfroTools AI for a route, or pick a category below.</p>
+      </div>
+      <a href="/tools/" class="home-section-action">Explore all &rarr;</a>
     </div>
-    <h2 class="sec-title" id="cats-heading"><span data-registry-count="tools.live_experiences">2606</span> live tool experiences. <span data-registry-count="countries.published">54</span> countries. <span id="cats-tool-count"><span data-registry-count="languages.site_published">5</span> site languages</span>.</h2>
-    <p class="sec-sub">AfroTools brings work, money, documents, country, career, food, energy, transport, and planning tools into one African context. Ask AI for a route, or browse by category.</p>
 
     <div class="cats-grid" id="cats-grid">
-  <a href="/salary-tax/" class="cat-card rv">
-    <div class="cat-icon-wrap" style="background:#eff6ff"><img src="/assets/img/categories/salary-tax.png" alt="Salary & Tax" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Salary &amp; Tax</div>
-    <div class="cat-desc">PAYE calculators for all 54 African countries with named assumptions and optional guidance.</div>
-    <div class="cat-count"><span data-registry-count="countries.published">54</span> countries &middot; guided estimates</div>
-  </a>
-  <a href="/tools/pdf-workspace/" class="cat-card rv d1">
-    <div class="cat-icon-wrap" style="background:#fef3c7"><img src="/assets/img/categories/pdf-workspace.png" alt="PDF Workspace" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">PDF Workspace</div>
-    <div class="cat-desc">Merge, split, compress, watermark and protect PDFs. Browser-based where supported.</div>
-    <div class="cat-count">PDF work stays on your device</div>
-  </a>
-  <a href="/creative/" class="cat-card rv d2">
-    <div class="cat-icon-wrap" style="background:#f3e8ff"><img src="/assets/img/categories/creator-suite.png" alt="Creator Suite" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Creator Suite</div>
-    <div class="cat-desc">Thumbnail maker, script generator, caption writer, and practical creator workflows.</div>
-    <div class="cat-count">Built for creators</div>
-  </a>
-  <a href="/legal/" class="cat-card rv d3">
-    <div class="cat-icon-wrap" style="background:#ede9fe"><img src="/assets/img/categories/legal-compliance.png" alt="Legal & Compliance" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Legal &amp; Compliance</div>
-    <div class="cat-desc">CAC, TIN, NDPR, business registration, and country compliance checklists.</div>
-    <div class="cat-count">Country-aware compliance workflows</div>
-  </a>
-  <a href="/tools/currency-converter/" class="cat-card rv">
-    <div class="cat-icon-wrap" style="background:#ecfdf5"><img src="/assets/img/categories/currency-fx.png" alt="Currency & FX" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Currency &amp; FX</div>
-      <div class="cat-desc">Latest available snapshots for African currencies, bank rates, crypto, and remittance where supported.</div>
-      <div class="cat-count"><span data-registry-count="currencies.country">42</span> country currencies &middot; timestamped rates</div>
-  </a>
-  <a href="/engineering/afrodraft/" class="cat-card rv d1">
-    <div class="cat-icon-wrap" style="background:#f0f9ff"><img src="/assets/img/categories/engineering-cad.png" alt="Engineering & CAD" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Engineering &amp; CAD</div>
-    <div class="cat-desc">AfroDraft 2D CAD, structural calculators, quantity-surveying tools, and familiar CAD features.</div>
-    <div class="cat-count">Mobile-ready engineering workflows</div>
-  </a>
-  <a href="/agriculture/" class="cat-card rv d2">
-    <div class="cat-icon-wrap" style="background:#f0fdf4"><img src="/assets/img/categories/agriculture.png" alt="Agriculture" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name">Agriculture</div>
-    <div class="cat-desc">Crop yield, livestock cost, farm profit estimators &mdash; African varieties &amp; markets.</div>
-    <div class="cat-count">Country-aware farming workflows</div>
-  </a>
-  <a href="/tools/" class="cat-card rv d3" style="border-color:#0062CC;background:#eff6ff">
-    <div class="cat-icon-wrap" style="background:#dbeafe"><img src="/assets/img/categories/all-categories.png" alt="All Categories" width="64" height="64" onerror="this.style.display='none'"></div>
-    <div class="cat-name" id="cats-all-label">All <span data-registry-count="categories.published">32</span> Categories</div>
-    <div class="cat-desc">Finance, Health, Transport, Education, Energy, Legal, Climate, Diaspora &amp; more.</div>
-    <div class="cat-count" style="color:#0063d1">Browse <span id="cats-browse-count" data-registry-count="tools.live_experiences">2606</span> live tool experiences &rarr;</div>
-  </a>
-</div>
+      <a href="/salary-tax/" class="cat-card rv d0" data-cat="financial">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="6" width="19" height="12" rx="2.5"/><circle cx="12" cy="12" r="2.8"/><path d="M6 12h.01M18 12h.01"/></svg></span>
+        <strong class="cat-name">Finance, Tax &amp; Market Data</strong>
+        <span class="cat-desc">Salary, tax, FX, rates, fuel, prices and crypto for African money work.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.financial.published">478</span> tools</span>
+      </a>
+      <a href="/document-pdf/" class="cat-card rv d1" data-cat="document-pdf">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5"/><path d="M9 13.5h6M9 17h4"/></svg></span>
+        <strong class="cat-name">Document &amp; PDF</strong>
+        <span class="cat-desc">Merge, split, compress, watermark and password-protect PDFs.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.document-pdf.published">119</span> tools</span>
+      </a>
+      <a href="/vat-business-tax/" class="cat-card rv d2" data-cat="ecommerce">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2.5h12v19l-3-1.8-3 1.8-3-1.8-3 1.8z"/><path d="m14.6 8.4-5.2 7.2"/><circle cx="9.8" cy="8.8" r="1"/><circle cx="14.2" cy="15.2" r="1"/></svg></span>
+        <strong class="cat-name">VAT &amp; Business Tax</strong>
+        <span class="cat-desc">VAT calculators and business tax workflows for supported countries.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.ecommerce.published">251</span> tools</span>
+      </a>
+      <a href="/hr-payroll/" class="cat-card rv d3" data-cat="hr-payroll">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9.2" cy="8" r="3.3"/><path d="M2.8 20a6.4 6.4 0 0 1 12.8 0"/><path d="M16.4 5.4a3.3 3.3 0 0 1 0 6.4"/><path d="M18.2 14.6A6.4 6.4 0 0 1 21.2 20"/></svg></span>
+        <strong class="cat-name">HR &amp; Payroll</strong>
+        <span class="cat-desc">Employee cost, contractor vs employee, leave, gratuity, retrenchment.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.hr-payroll.published">153</span> tools</span>
+      </a>
+      <a href="/mortgage-property/" class="cat-card rv d0" data-cat="legal">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10.5 9-7 9 7"/><path d="M5.5 9.6V20h13V9.6"/><path d="M9.8 20v-5.2h4.4V20"/></svg></span>
+        <strong class="cat-name">Mortgage &amp; Property</strong>
+        <span class="cat-desc">Mortgage repayment, stamp duty and transfer fees, country by country.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.legal.published">272</span> tools</span>
+      </a>
+      <a href="/energy/" class="cat-card rv d1" data-cat="energy">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13.2 2.5 4.5 13.8h6.4l-1.1 7.7 8.7-11.3h-6.4z"/></svg></span>
+        <strong class="cat-name">Energy &amp; Utilities</strong>
+        <span class="cat-desc">Electricity tariffs, solar ROI, fuel cost, prepaid meters and usage.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.energy.published">267</span> tools</span>
+      </a>
+      <a href="/uniquely-african/" class="cat-card rv d2" data-cat="african">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m12 2.6 2.6 6.3 6.8.5-5.2 4.4 1.6 6.6L12 16.8 6.2 20.4l1.6-6.6L2.6 9.4l6.8-.5z"/></svg></span>
+        <strong class="cat-name">Uniquely African</strong>
+        <span class="cat-desc">Generator fuel, japa costs, Ajo, Chama, Tontine and mobile money fees.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.african.published">146</span> tools</span>
+      </a>
+      <a href="/education/" class="cat-card rv d3" data-cat="education">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 8.5 9-4.5 9 4.5-9 4.5z"/><path d="M6.5 10.8V15c0 2 2.6 3.6 5.5 3.6s5.5-1.6 5.5-3.6v-4.2"/><path d="M21 8.5v6"/></svg></span>
+        <strong class="cat-name">Education</strong>
+        <span class="cat-desc">GPA and CGPA (WAEC, KCSE, Matric), student loans and university fees.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.education.published">141</span> tools</span>
+      </a>
+      <a href="/health/" class="cat-card rv d0" data-cat="health">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 20.8C7.6 17.1 3.6 14 3.6 10.2A4.6 4.6 0 0 1 12 7.4a4.6 4.6 0 0 1 8.4 2.8c0 3.8-4 6.9-8.4 10.6z"/><path d="M12 10.4v3.6M10.2 12.2h3.6"/></svg></span>
+        <strong class="cat-name">Health &amp; Wellness</strong>
+        <span class="cat-desc">Vitals, lab interpretation, nutrition, family health and care costs.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.health.published">117</span> tools</span>
+      </a>
+      <a href="/agriculture/" class="cat-card rv d1" data-cat="agriculture">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21v-9.4"/><path d="M12 11.6C12 8 9.4 5.4 5.8 5.4c0 3.6 2.6 6.2 6.2 6.2z"/><path d="M12 13.6c0-3.6 2.6-6.2 6.2-6.2 0 3.6-2.6 6.2-6.2 6.2z"/><path d="M6 21h12"/></svg></span>
+        <strong class="cat-name">Agriculture</strong>
+        <span class="cat-desc">Crop yield, fertilizer, irrigation, livestock and farm profit.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.agriculture.published">509</span> tools</span>
+      </a>
+      <a href="/government/" class="cat-card rv d2" data-cat="government">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 10 9-6 9 6"/><path d="M5.5 10.5v7.5M9.8 10.5v7.5M14.2 10.5v7.5M18.5 10.5v7.5"/><path d="M3 21h18"/></svg></span>
+        <strong class="cat-name">Government &amp; Civic</strong>
+        <span class="cat-desc">Passports, national ID, voter registration, permits and land fees.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.government.published">94</span> tools</span>
+      </a>
+      <a href="/insurance/" class="cat-card rv d3" data-cat="insurance">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21s7-3.6 7-9.1V5.6L12 3 5 5.6v6.3C5 17.4 12 21 12 21z"/><path d="m9 11.8 2.2 2.2 4-4.2"/></svg></span>
+        <strong class="cat-name">Insurance</strong>
+        <span class="cat-desc">Motor, health, life, business, crop, cargo, claims and fraud tools.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.insurance.published">146</span> tools</span>
+      </a>
+      <a href="/creative/" class="cat-card rv d0" data-cat="creative">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21a9 9 0 1 1 0-18c4.9 0 9 3.5 9 7.9 0 2.2-1.8 4-4 4h-1.6a2 2 0 0 0-1.4 3.4A1.9 1.9 0 0 1 12 21z"/><circle cx="7.6" cy="12.2" r="1.1"/><circle cx="10.4" cy="7.8" r="1.1"/><circle cx="15.2" cy="8.8" r="1.1"/></svg></span>
+        <strong class="cat-name">Creative Economy</strong>
+        <span class="cat-desc">Film budgets, music royalties, photography pricing and social media.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.creative.published">112</span> tools</span>
+      </a>
+      <a href="/developer-tools/" class="cat-card rv d1" data-cat="developer">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m8 8.5-4.5 3.5L8 15.5"/><path d="m16 8.5 4.5 3.5L16 15.5"/><path d="m13.6 5-3.2 14"/></svg></span>
+        <strong class="cat-name">Developer Tools</strong>
+        <span class="cat-desc">API testing, USSD flows, JSON, JWT, regex, SQL, Docker and hosting.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.developer.published">83</span> tools</span>
+      </a>
+      <a href="/small-business/" class="cat-card rv d2" data-cat="small-business">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3.5 9 1.4-4.5h14.2L20.5 9"/><path d="M3.5 9a2.8 2.8 0 0 0 5.7 0 2.8 2.8 0 0 0 5.6 0 2.8 2.8 0 0 0 5.7 0"/><path d="M5.5 12v8h13v-8"/><path d="M10 20v-4.5h4V20"/></svg></span>
+        <strong class="cat-name">Small Business &amp; SME</strong>
+        <span class="cat-desc">POS agents, mini-importation, market stalls, runway and burn rate.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.small-business.published">82</span> tools</span>
+      </a>
+      <a href="/fintech/" class="cat-card rv d3" data-cat="fintech">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M2.5 9.8h19"/><path d="M6.2 14.8h4"/></svg></span>
+        <strong class="cat-name">Fintech &amp; Banking</strong>
+        <span class="cat-desc">Mobile money, merchant fees, POS, QR payments and crypto tax.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.fintech.published">81</span> tools</span>
+      </a>
+      <a href="/image-design/" class="cat-card rv d0" data-cat="image-design">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2.5"/><circle cx="8.5" cy="9.5" r="1.6"/><path d="m21 15.5-4.8-4.8L8.5 18.5"/></svg></span>
+        <strong class="cat-name">Image &amp; Design</strong>
+        <span class="cat-desc">Image editing, QR codes, ID photos, flyers, thumbnails and logos.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.image-design.published">78</span> tools</span>
+      </a>
+      <a href="/trade/" class="cat-card rv d1" data-cat="trade">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.5 18.4c1.5 1.2 3.3 1.2 4.9 0 1.6-1.2 3.3-1.2 4.9 0 1.6 1.2 3.3 1.2 4.9 0"/><path d="M4 14.8 5.6 10h12.8l1.6 4.8z"/><path d="M9.2 10V5.6h5.6V10"/><path d="M12 5.6V3"/></svg></span>
+        <strong class="cat-name">Trade &amp; Import</strong>
+        <span class="cat-desc">AfCFTA tariffs, landed cost, shipping, incoterms and rules of origin.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.trade.published">68</span> tools</span>
+      </a>
+      <a href="/engineering/" class="cat-card rv d2" data-cat="engineering">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="4.6" width="18" height="14.8" rx="1.8"/><path d="M3 9.5h18M3 14.5h18"/><path d="M8.4 4.6v4.9M15.6 4.6v4.9M12 9.5v5M6.6 14.5v4.9M17.4 14.5v4.9"/></svg></span>
+        <strong class="cat-name">Engineering &amp; Construction</strong>
+        <span class="cat-desc">BOQ, concrete mix, electrical load, rebar, roofing and boreholes.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.engineering.published">60</span> tools</span>
+      </a>
+      <a href="/religious-cultural/" class="cat-card rv d3" data-cat="religious-cultural">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 2.4v2.2"/><path d="M5 21v-8.6a7 7 0 0 1 14 0V21"/><path d="M9.6 21v-4.4a2.4 2.4 0 0 1 4.8 0V21"/><path d="M3 21h18"/></svg></span>
+        <strong class="cat-name">Religious &amp; Cultural</strong>
+        <span class="cat-desc">Zakat, prayer times, Ramadan, halal, Faraid, giving and ceremonies.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.religious-cultural.published">59</span> tools</span>
+      </a>
+      <a href="/telecom/" class="cat-card rv d0" data-cat="telecom">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="7.5" y="2.5" width="9" height="19" rx="2.5"/><path d="M11 18.6h2"/><path d="M20 8.2a6.2 6.2 0 0 1 0 7.6"/><path d="M4 8.2a6.2 6.2 0 0 0 0 7.6"/></svg></span>
+        <strong class="cat-name">Telecom &amp; Mobile</strong>
+        <span class="cat-desc">Data plans, roaming, Starlink, USSD and network fee comparisons.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.telecom.published">52</span> tools</span>
+      </a>
+      <a href="/transport/" class="cat-card rv d1" data-cat="transport">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2.8 6.2h11v10.4h-11z"/><path d="M13.8 9.6h4.1l3.3 3.6v3.4h-7.4z"/><circle cx="7.2" cy="18.6" r="1.9"/><circle cx="17.2" cy="18.6" r="1.9"/></svg></span>
+        <strong class="cat-name">Transport &amp; Logistics</strong>
+        <span class="cat-desc">Fuel, vehicle import, fleets, roads, ports, customs and flights.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.transport.published">52</span> tools</span>
+      </a>
+      <a href="/language/" class="cat-card rv d2" data-cat="language">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4.5h16v11.5H10l-5 4v-4H4z"/><path d="m9 13 3-6.5 3 6.5"/><path d="M10 11h4"/></svg></span>
+        <strong class="cat-name">Language &amp; Translation</strong>
+        <span class="cat-desc">Translation for Yoruba, Swahili, Amharic, Zulu, Hausa and more.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.language.published">39</span> tools</span>
+      </a>
+      <a href="/sports/" class="cat-card rv d3" data-cat="sports">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="m12 7.2 3.6 2.6-1.4 4.3H9.8L8.4 9.8z"/><path d="M12 3.2v4M4.4 9.6l4 .2M19.6 9.6l-4 .2M8.2 20l1.6-5.9M15.8 20l-1.6-5.9"/></svg></span>
+        <strong class="cat-name">Sports &amp; Entertainment</strong>
+        <span class="cat-desc">Football, AFCON, fantasy, events, gym ROI and sports scholarships.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.sports.published">36</span> tools</span>
+      </a>
+      <a href="/climate/" class="cat-card rv d0" data-cat="climate">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M11 20.2A7 7 0 0 1 9.8 6.3c5.7-1.1 7.2-1.7 9.2-4.2 1 2 2 4.2 2 8 0 5.6-4.8 10.1-10 10.1z"/><path d="M2.6 21.4c0-3 1.9-5.4 5.1-6"/></svg></span>
+        <strong class="cat-name">Climate &amp; Environment</strong>
+        <span class="cat-desc">Carbon footprint, e-waste, flood risk, tree planting and sustainability.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.climate.published">34</span> tools</span>
+      </a>
+      <a href="/business-roi/" class="cat-card rv d1" data-cat="data-productivity">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 3v18h18"/><path d="m7 14.5 3.8-4 3 3 5.2-6"/><path d="M19 7.5h-3.4M19 7.5V11"/></svg></span>
+        <strong class="cat-name">Business &amp; ROI</strong>
+        <span class="cat-desc">Break-even, profit margin, invoices, payroll cost and runway.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.data-productivity.published">34</span> tools</span>
+      </a>
+      <a href="/personal-finance/" class="cat-card rv d2" data-cat="personal-finance">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 7.6A2.6 2.6 0 0 1 5.6 5H19a2 2 0 0 1 2 2v10.6a2 2 0 0 1-2 2H5.6A2.6 2.6 0 0 1 3 17V7.6z"/><path d="M3 7.6h13.4"/><circle cx="17.2" cy="12.4" r="1.3"/></svg></span>
+        <strong class="cat-name">Personal Finance</strong>
+        <span class="cat-desc">Budgets, debt snowball, emergency fund, net worth and credit score.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.personal-finance.published">28</span> tools</span>
+      </a>
+      <a href="/travel/" class="cat-card rv d3" data-cat="travel-tourism">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M17.6 19.6 15.8 11l3.6-3.6c1.5-1.5 2-3.5 1.5-4.5-1-.5-3 0-4.5 1.5L12.8 8 4.8 6.2a1 1 0 0 0-1 .5l-.3.5a1 1 0 0 0 .3 1.3L9 12l-2 3H4l-1 1 3 2 2 3 1-1v-3l3-2 3.4 5.2a1 1 0 0 0 1.3.3l.5-.2a1 1 0 0 0 .4-1.2z"/></svg></span>
+        <strong class="cat-name">Travel &amp; Tourism</strong>
+        <span class="cat-desc">Safari cost, hotel guides, visa tracker and flight comparison.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.travel-tourism.published">25</span> tools</span>
+      </a>
+      <a href="/security/" class="cat-card rv d0" data-cat="security">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5"/><path d="M8 10V7a4 4 0 0 1 8 0v3"/><path d="M12 14.4v2.6"/></svg></span>
+        <strong class="cat-name">Security &amp; Safety</strong>
+        <span class="cat-desc">CCTV cost, cybersecurity, breach checks, phishing quiz and passwords.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.security.published">19</span> tools</span>
+      </a>
+      <a href="/career/" class="cat-card rv d1" data-cat="career">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="10" cy="7.8" r="3.4"/><path d="M3.4 20a6.6 6.6 0 0 1 10.4-5.4"/><path d="M16.6 20.6v-6.4"/><path d="m13.9 16.9 2.7-2.7 2.7 2.7"/></svg></span>
+        <strong class="cat-name">Career &amp; Development</strong>
+        <span class="cat-desc">Career growth, career switch, certification ROI and salary negotiation.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.career.published">18</span> tools</span>
+      </a>
+      <a href="/diaspora/" class="cat-card rv d2" data-cat="diaspora">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3.3 9.2h17.4M3.3 14.8h17.4"/><path d="M12 3a15 15 0 0 1 0 18 15 15 0 0 1 0-18z"/></svg></span>
+        <strong class="cat-name">Diaspora</strong>
+        <span class="cat-desc">Return migration, diaspora business registration and investment tools.</span>
+        <span class="cat-count live"><span data-registry-count="tools.category.diaspora.published">4</span> tools</span>
+      </a>
+      <a href="/mining/" class="cat-card rv d3" data-cat="mining">
+        <span class="cat-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14.4 12.4 6.4 20.4a1.4 1.4 0 1 1-2-2l8-8"/><path d="M17.6 3.8a1 1 0 0 0-1.4 0l-4.5 4.5a1 1 0 0 0 0 1.4l2.6 2.6a1 1 0 0 0 1.4 0l4.5-4.5a1 1 0 0 0 0-1.4z"/><path d="M15.6 4.4A12.4 12.4 0 0 0 5.6 3.1"/><path d="M19.6 8.4a12.4 12.4 0 0 1 1.3 10"/></svg></span>
+        <strong class="cat-name">Mining &amp; Extractives</strong>
+        <span class="cat-desc">Artisanal mining, diamond valuation, gold price and mining royalty.</span>
+        <span class="cat-count">Coming soon</span>
+      </a>
+    </div>
+
+    <button type="button" class="cats-toggle" id="cats-toggle" aria-expanded="true" aria-controls="cats-grid" hidden>
+      <span class="grid-toggle-label">Show all categories</span>
+    </button>
   </div>
 </section>
 
@@ -2335,7 +2653,7 @@ document.addEventListener('DOMContentLoaded', function() {
   function parseTwemoji() {
     if (typeof twemoji !== 'undefined') {
       var opts = { folder: 'svg', ext: '.svg', base: 'https://cdn.jsdelivr.net/gh/twitter/twemoji@14.0.2/assets/' };
-      var targets = document.querySelectorAll('.tool-card, .category-card, .emoji-icon, .pill, .fb-flags, .showcase-tab-icon, .marquee-track, .cat-icon-wrap, .disc-badge, .ad-pills, .mk-field, .mk-creator-grid, .mk-recipe, .mk-recipe-list, .mk-fx-flag, .trusted-badge, .my-tool-icon, .fb-visual');
+      var targets = document.querySelectorAll('.tool-card, .category-card, .emoji-icon, .pill, .fb-flags, .showcase-tab-icon, .marquee-track, .disc-badge, .ad-pills, .mk-field, .mk-creator-grid, .mk-recipe, .mk-recipe-list, .mk-fx-flag, .trusted-badge, .my-tool-icon, .fb-visual');
       targets.forEach(function(el) { twemoji.parse(el, opts); });
     }
     hydrateFlagTargets();
@@ -3190,43 +3508,59 @@ document.addEventListener('DOMContentLoaded', function() {
     if (el) el.textContent = 'PAYE Calculators \u2014 ' + liveF + ' Countr' + (liveF===1?'y':'ies') + ' Live';
 
   }
+  // The 32 category tiles are static markup with build-time registry counts, so
+  // the section renders complete on first paint. This only refreshes a count when
+  // the client registry carries a newer one. It must never rebuild the grid: the
+  // old version swapped 8 server-rendered cards for 32 client-rendered ones and
+  // shifted every section below it.
   function renderCategories() {
     var grid = document.getElementById('cats-grid');
-    if (!grid || typeof AFRO_CATEGORIES === 'undefined' || typeof AFRO_TOOLS === 'undefined' || typeof getPublicToolStats !== 'function') return;
-
-    // Count live/new tools per category
-    var liveCounts = {};
-    AFRO_TOOLS.forEach(function(t) {
-      if (t.status === 'live' || t.status === 'new') {
-        liveCounts[t.category] = (liveCounts[t.category] || 0) + 1;
-      }
+    var counts = window.AFRO_REGISTRY_COUNTS;
+    if (!grid || !counts) return;
+    grid.querySelectorAll('.cat-card[data-cat]').forEach(function (card) {
+      var value = counts['tools.category.' + card.getAttribute('data-cat') + '.published'];
+      if (!Number.isInteger(value) || value <= 0) return;
+      // A missing marker means the card is currently "Coming soon". Leave it —
+      // promoting it here would claim tools the published registry has not shipped.
+      var marker = card.querySelector('.cat-count [data-registry-count]');
+      if (marker) marker.textContent = value;
     });
-
-    var keys = Object.keys(AFRO_CATEGORIES);
-    var html = '';
-    keys.forEach(function(key, i) {
-      var cat = AFRO_CATEGORIES[key];
-      var selectorId = 'tools.category.' + key + '.published';
-      var count = (window.AFRO_REGISTRY_COUNTS && Number.isInteger(window.AFRO_REGISTRY_COUNTS[selectorId]))
-        ? window.AFRO_REGISTRY_COUNTS[selectorId]
-        : (liveCounts[key] || 0);
-      var delay = i > 0 ? ' d' + (i % 8) : '';
-      var countHtml = count > 0
-        ? '<div class="cat-count live">' + count + ' Tool' + (count === 1 ? '' : 's') + ' Available</div>'
-        : '<div class="cat-count">Coming Soon</div>';
-      var href = cat.href || '#';
-      html += '<a href="' + href + '" class="cat-card rv' + delay + '">'
-            + '<div class="cat-icon-wrap" style="background:' + (cat.bg || '#f3f4f6') + '">' + cat.icon + '</div>'
-            + '<div class="cat-name">' + cat.name + '</div>'
-            + '<div class="cat-desc">' + cat.desc + '</div>'
-            + countHtml
-            + '</a>';
-    });
-    grid.innerHTML = html;
-
-    // Re-observe new cards for reveal animation
-    if (window._afroObs) grid.querySelectorAll('.rv').forEach(function(el) { window._afroObs.observe(el); });
   }
+
+  // Small screens clamp long card grids behind a toggle — 32 categories and 16
+  // flagship tools were a 3,000px single-column wall each. Both the clamp and the
+  // button are JS-only, so a no-JS visitor still gets every card.
+  function initGridToggle(gridId, btnId, moreLabel, lessLabel) {
+    var grid = document.getElementById(gridId);
+    var btn = document.getElementById(btnId);
+    if (!grid || !btn || !window.matchMedia) return;
+    var label = btn.querySelector('.grid-toggle-label');
+    var compact = window.matchMedia('(max-width: 900px)');
+    var expanded = false;
+
+    function paint() {
+      if (!compact.matches) {
+        btn.hidden = true;
+        grid.classList.remove('is-clamped');
+        return;
+      }
+      btn.hidden = false;
+      grid.classList.toggle('is-clamped', !expanded);
+      btn.setAttribute('aria-expanded', expanded ? 'true' : 'false');
+      if (label) label.textContent = expanded ? lessLabel : moreLabel;
+    }
+
+    btn.addEventListener('click', function () {
+      expanded = !expanded;
+      paint();
+      if (!expanded) grid.scrollIntoView({ block: 'start', behavior: 'smooth' });
+    });
+    if (compact.addEventListener) compact.addEventListener('change', paint);
+    else if (compact.addListener) compact.addListener(paint);
+    paint();
+  }
+  initGridToggle('cats-grid', 'cats-toggle', 'Show all categories', 'Show fewer categories');
+  initGridToggle('home-tool-grid', 'home-tool-toggle', 'Show all 16 tools', 'Show fewer tools');
 
 
   // MY TOOLS — Favorites system (Supabase-backed, sign-in required)
@@ -3334,7 +3668,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if(document.querySelector('script[src*="tool-registry"]'))return;
     loaded = true;
     var s=document.createElement('script');
-    s.src='/assets/js/components/tool-registry.min.js?v=42392ccc';
+    s.src='/assets/js/components/tool-registry.min.js?v=32cae627';
     s.onload=function(){
       if (typeof window.refreshHomepageRegistryStats === 'function') window.refreshHomepageRegistryStats();
       window.dispatchEvent(new CustomEvent('afrotools:registry-ready'));
