@@ -191,17 +191,20 @@ body {
   border: 1px solid var(--fx-border);
   box-shadow: var(--fx-shadow);
   padding: 24px;
+  /* Prevent wide rate tables from forcing grid/flex cards beyond the viewport. */
+  min-width: 0;
+  max-width: 100%;
 }
 
 /* ── Converter + Chart Layout ────────────────────────────── */
 .fx-main-grid {
   display: grid;
-  grid-template-columns: 420px 1fr;
+  grid-template-columns: minmax(0, 420px) minmax(0, 1fr);
   gap: 24px;
   align-items: start;
 }
 @media (max-width: 900px) {
-  .fx-main-grid { grid-template-columns: 1fr; }
+  .fx-main-grid { grid-template-columns: minmax(0, 1fr); }
 }
 
 /* ── Converter ───────────────────────────────────────────── */
