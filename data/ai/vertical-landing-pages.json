@@ -5,306 +5,1262 @@
     "description": "Ask AfroTools AI turns practical prompts into the right AfroTools calculators, planners, documents, exports, and source-aware tools.",
     "heroImage": "/assets/img/afrotools-hero-banner.webp"
   },
+  "capturedAt": "2026-07-26",
   "verticals": [
     {
       "slug": "education",
       "path": "/ai/education/",
       "kicker": "Education AI",
+      "accent": {
+        "base": "#4f46e5",
+        "soft": "#eef2ff",
+        "ink": "#3730a3"
+      },
       "title": "AI Scholarship and Study Abroad Planner",
       "metaTitle": "AI Scholarship and Study Abroad Planner | AfroTools",
-      "description": "Plan study abroad from Africa with destination fit, budget gaps, scholarship routes, document checklists, IELTS/GPA helpers, and source warnings.",
+      "description": "Turn a study-abroad idea into scholarship matches, a funding-gap estimate, and a document checklist — with African starting points built in.",
+      "promise": "Say where you want to study and what you have. It matches scholarships, prices the gap, and lines up your documents.",
+      "inputPlaceholder": "e.g. I want to study in Canada from Nigeria with a budget of $8,000",
       "heroImage": "/assets/img/tools/study-abroad-campus-banner.webp",
-      "heroBackground": "/assets/img/tools/study-abroad-campus-banner.webp",
       "primaryPromptId": "study-canada-ng",
       "primaryPrompt": "I want to study in Canada from Nigeria with a budget of $8,000",
-      "summary": "Use this page when a student or parent needs to turn a study-abroad idea into practical next steps. AfroTools AI points them to Scholarship Finder, Study Abroad Cost, GPA, IELTS, and education planning tools instead of inventing admissions promises.",
+      "summary": "Bring a study-abroad idea and leave with practical next steps. AfroTools AI takes you into Scholarship Finder, Study Abroad Cost, GPA, IELTS, and the education planning tools rather than making promises about admission.",
+      "routing": {
+        "understood": [
+          {
+            "label": "From",
+            "value": "Nigeria"
+          },
+          {
+            "label": "Destination",
+            "value": "Canada"
+          },
+          {
+            "label": "Budget",
+            "value": "USD 8,000"
+          }
+        ],
+        "asks": "Study level — undergraduate, masters, PhD, or diploma",
+        "opens": {
+          "label": "Study Abroad Planner",
+          "href": "/tools/study-abroad-cost/"
+        },
+        "privacyLine": "Matching runs on this page. Stays in this browser."
+      },
+      "demo": {
+        "type": "transcript",
+        "title": "A real run, step by step",
+        "note": "Transcribed from a live routing run on 26 Jul 2026 — the router re-derives this from your own question."
+      },
       "useCases": [
-        "Compare destination fit by origin country, budget, study level, field, GPA or grade band, English score, and intake timeline.",
-        "Estimate the funding gap between budget, tuition, living costs, visa/proof-of-funds assumptions, and scholarship possibilities.",
-        "Build a document and deadline checklist before opening the underlying education tools."
+        {
+          "title": "Compare where to study",
+          "detail": "Weigh destinations against your home country, budget, study level, field, grade band, English score, and the intake you are aiming for."
+        },
+        {
+          "title": "See the funding gap",
+          "detail": "Work out the distance between your budget and real tuition, living costs, and proof-of-funds requirements, then which scholarships could close it."
+        },
+        {
+          "title": "Get your documents in order",
+          "detail": "Leave with a checklist of documents and deadlines before you open the application tools."
+        }
       ],
-      "examplePromptIds": ["study-canada-ng", "scholarships-gh-uk", "study-germany-cm", "study-australia-ke"],
+      "examplePromptIds": [
+        "study-canada-ng",
+        "scholarships-gh-uk",
+        "study-germany-cm",
+        "study-australia-ke"
+      ],
       "examplePrompts": [
         "I want to study in Canada from Nigeria with a budget of $8,000",
         "Find scholarships for a Ghanaian master's student in public health in the UK",
         "Plan Germany study abroad from Cameroon with no IELTS yet",
         "Which documents should a Kenyan student prepare for Australia intake?"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH",
+          "ZA"
+        ],
+        "NG": {
+          "line": "Run the eligibility check as a Nigerian applicant and the scholarship feed filters to awards you can actually enter, with deadlines tracked — and the cost planner prices Canada, UK, and Schengen routes from a naira budget.",
+          "links": [
+            {
+              "label": "Scholarship Finder",
+              "href": "/tools/scholarship-finder/"
+            },
+            {
+              "label": "Study Abroad Cost",
+              "href": "/tools/study-abroad-cost/"
+            }
+          ]
+        },
+        "KE": {
+          "line": "Kenyan applicants get the same filtered scholarship search plus the document checklist the router built above — study level, transcripts, English scores, and proof-of-funds lines for Australia, UK, and Canada intakes.",
+          "links": [
+            {
+              "label": "Scholarship Finder",
+              "href": "/tools/scholarship-finder/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "Ghanaian students can work a master's plan end to end — scholarship matches, GPA conversion to the destination scale, and the funding-gap estimate in cedis.",
+          "links": [
+            {
+              "label": "GPA Calculator",
+              "href": "/tools/gpa-calculator/"
+            },
+            {
+              "label": "Scholarship Finder",
+              "href": "/tools/scholarship-finder/"
+            }
+          ]
+        },
+        "ZA": {
+          "line": "South African applicants can convert marks across GPA scales, check IELTS band requirements, and price a study route in rand before committing to applications.",
+          "links": [
+            {
+              "label": "IELTS Calculator",
+              "href": "/tools/ielts-calculator/"
+            }
+          ]
+        },
+        "default": {
+          "line": "Every plan starts from an African home country — local currency budgets, origin-aware scholarship filtering, and destination costs priced from where you actually are.",
+          "links": [
+            {
+              "label": "Scholarship Finder",
+              "href": "/tools/scholarship-finder/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "Scholarship Finder", "href": "/tools/scholarship-finder/", "note": "Scholarship matching, deadline notes, and provider verification links." },
-        { "label": "Study Abroad Cost", "href": "/tools/study-abroad-cost/", "note": "Tuition, living-cost, FX, and budget-gap planning." },
-        { "label": "GPA Calculator", "href": "/tools/gpa-calculator/", "note": "Grade and GPA conversion support before scholarship matching." },
-        { "label": "IELTS Band Calculator", "href": "/tools/ielts-calculator/", "note": "English-score readiness checks for destination requirements." }
+        {
+          "label": "Scholarship Finder",
+          "href": "/tools/scholarship-finder/",
+          "note": "Filtered scholarship search with eligibility checks and deadlines."
+        },
+        {
+          "label": "Study Abroad Cost",
+          "href": "/tools/study-abroad-cost/",
+          "note": "Tuition, living, visa, and proof-of-funds estimates by destination."
+        },
+        {
+          "label": "GPA Calculator",
+          "href": "/tools/gpa-calculator/",
+          "note": "Convert grades across African and international GPA scales."
+        },
+        {
+          "label": "IELTS Calculator",
+          "href": "/tools/ielts-calculator/",
+          "note": "Band score planning for UK, Canada, and Australia requirements."
+        }
       ],
       "limitations": [
         "AfroTools does not guarantee admission, funding, visa approval, or scholarship availability.",
-        "Scholarship deadlines, fees, visa requirements, and proof-of-funds rules can change quickly.",
-        "Always verify final requirements on the university, funder, and government source pages."
+        "Deadlines, fees, and proof-of-funds rules change quickly — verify on the university, funder, and government pages before you apply."
       ],
-      "privacy": "Education prompts can include personal academic details. Local matching works without AI consent; any model-assisted study-plan brief should be optional and consented.",
+      "privacy": "Study plans include personal academic details. Matching scholarships and destinations happens on this page without sending anything to an AI model. If you want a written study-plan brief, you are asked first and can skip it.",
       "faqs": [
-        { "question": "Does AfroTools AI apply for scholarships for me?", "answer": "No. It helps organize your profile, likely tools, document checklist, and source links. Applications still happen on the official provider or university site." },
-        { "question": "Can I use it without sending my academic details to AI?", "answer": "Yes. Local matching and tool links work without model consent. Optional AI text should require consent before profile details are sent." },
-        { "question": "Which countries does the planner support?", "answer": "The planner is designed for African origin countries and common destinations such as Canada, the UK, Germany, Australia, the US, and regional African study options where data exists." }
+        {
+          "question": "Can AfroTools AI apply or get me admitted?",
+          "answer": "No. It matches scholarships, prices the route, and builds your document checklist. Applications, admissions, and visa decisions stay with the institutions — no tool changes that."
+        },
+        {
+          "question": "Where do the scholarship listings come from?",
+          "answer": "From the public scholarship feed AfroTools maintains, with each award carrying its deadline and eligibility notes. The feed's coverage state is shown rather than hidden — if something looks stale, the date tells you."
+        },
+        {
+          "question": "Does it work without IELTS or final grades?",
+          "answer": "Yes. Tell it what you are missing — the Cameroon-to-Germany example on this page starts with no IELTS — and the plan includes the test or document as a step instead of blocking on it."
+        }
       ]
     },
     {
       "slug": "career",
       "path": "/ai/career/",
       "kicker": "Career AI",
+      "accent": {
+        "base": "#7c3aed",
+        "soft": "#f5f3ff",
+        "ink": "#5b21b6"
+      },
       "title": "AI CV and Career Agent",
       "metaTitle": "AI CV and Career Agent | AfroTools",
-      "description": "Turn career prompts into CV Builder, cover letters, ATS guidance, LinkedIn help, templates, and application packs with a private handoff.",
+      "description": "Go from a job goal to a finished CV, cover letter, and application pack — with templates tuned for African and international employers.",
+      "promise": "Name the role and the country. It sets up the right CV, checks it reads well, and lines up the rest of the application.",
+      "inputPlaceholder": "e.g. Write me a CV for an electrical engineer in Ghana",
       "heroImage": "/assets/img/tools/cv-builder.webp",
-      "heroBackground": null,
       "primaryPromptId": "cv-engineer-gh",
       "primaryPrompt": "Build a Ghana electrical engineer CV and open the CV Builder",
-      "summary": "Use the Career Agent to move from a job goal to the right CV, cover-letter, LinkedIn, and ATS tools. It can suggest country-aware starting structure, but it should never invent degrees, employers, dates, certifications, or achievements.",
+      "summary": "Go from a job goal to the right CV, cover-letter, LinkedIn, and ATS tools. It can suggest a country-aware structure to start from, and it will not invent degrees, employers, dates, certifications, or achievements on your behalf.",
+      "routing": {
+        "understood": [
+          {
+            "label": "Role",
+            "value": "Electrical engineer"
+          },
+          {
+            "label": "Country",
+            "value": "Ghana"
+          }
+        ],
+        "asks": "Years of experience — to pick the right template depth",
+        "opens": {
+          "label": "CV Builder",
+          "href": "/tools/cv-builder/"
+        },
+        "privacyLine": "Your CV text never goes into a link or address bar. Stays in this browser."
+      },
+      "demo": {
+        "type": "transcript",
+        "title": "A real run, step by step",
+        "note": "Transcribed from a live routing run on 26 Jul 2026 — the router re-derives this from your own question."
+      },
       "useCases": [
-        "Turn a role and country into a CV template suggestion without storing private CV content in the URL.",
-        "Prepare an application-pack checklist with CV, cover letter, LinkedIn, ATS, and job-tracker next steps.",
-        "Offer optional AI starter profile text only after consent, with manual templates always available."
+        {
+          "title": "Pick the right CV format",
+          "detail": "Get a template suited to your target role and country, without your CV content ending up in a shareable link."
+        },
+        {
+          "title": "Build the whole application pack",
+          "detail": "Line up your CV, cover letter, LinkedIn profile, ATS check, and job tracker as one checklist."
+        },
+        {
+          "title": "Start from a draft, or from scratch",
+          "detail": "Use optional AI starter text if you want it. The manual templates are always available and never require it."
+        }
       ],
-      "examplePromptIds": ["cv-engineer-gh", "cover-letter-accountant-ke", "ats-data-za", "job-pack-ng"],
+      "examplePromptIds": [
+        "cv-engineer-gh",
+        "cover-letter-accountant-ke",
+        "ats-data-za",
+        "job-pack-ng"
+      ],
       "examplePrompts": [
         "Write me a CV for an electrical engineer in Ghana",
         "Create a cover letter for a junior accountant role in Kenya",
         "Help me improve my ATS score for a South Africa data analyst CV",
         "Make a job application pack for a Nigerian graduate trainee role"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH",
+          "ZA"
+        ],
+        "NG": {
+          "line": "Nigerian graduate-trainee applications get a full pack — CV, cover letter, and the readiness check — built in the browser so nothing personal sits in a URL.",
+          "links": [
+            {
+              "label": "CV Builder",
+              "href": "/tools/cv-builder/"
+            }
+          ]
+        },
+        "KE": {
+          "line": "Kenyan applicants can draft the cover letter against the specific role wording — the junior-accountant example on this page routes straight into the generator with role and country carried.",
+          "links": [
+            {
+              "label": "Cover Letter Generator",
+              "href": "/tools/cover-letter-generator/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "The Ghana run above lands in the CV Builder with role and country prefilled — six templates, an ATS-plain export for scanners, and PDF output.",
+          "links": [
+            {
+              "label": "CV Builder",
+              "href": "/tools/cv-builder/"
+            }
+          ]
+        },
+        "ZA": {
+          "line": "South African CVs can run the ATS readiness check before submission — the data-analyst example on this page goes straight to it.",
+          "links": [
+            {
+              "label": "CV Builder",
+              "href": "/tools/cv-builder/"
+            },
+            {
+              "label": "LinkedIn Optimizer",
+              "href": "/tools/linkedin-optimizer/"
+            }
+          ]
+        },
+        "default": {
+          "line": "Templates cover African and international employers, exports stay on your device, and the assistant never invents work history on your behalf.",
+          "links": [
+            {
+              "label": "CV Builder",
+              "href": "/tools/cv-builder/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "CV Builder", "href": "/tools/cv-builder/", "note": "Templates, local editing, ATS-friendly structure, and export." },
-        { "label": "Cover Letter Generator", "href": "/tools/cover-letter-generator/", "note": "Role-specific cover letter drafting with local-first handling." },
-        { "label": "LinkedIn Optimizer", "href": "/tools/linkedin-optimizer/", "note": "Profile headline, about, and keyword planning." },
-        { "label": "Job Offer Evaluator", "href": "https://africa-tools.com/tools/job-offer-evaluator/", "note": "Compare pay, benefits, and risk signals before accepting." }
+        {
+          "label": "CV Builder",
+          "href": "/tools/cv-builder/",
+          "note": "Six templates, ATS-plain export, readiness check, PDF output."
+        },
+        {
+          "label": "Cover Letter Generator",
+          "href": "/tools/cover-letter-generator/",
+          "note": "Role-specific cover letters you edit before sending."
+        },
+        {
+          "label": "LinkedIn Optimizer",
+          "href": "/tools/linkedin-optimizer/",
+          "note": "Profile structure and keyword suggestions for recruiters."
+        },
+        {
+          "label": "Job Offer Evaluator",
+          "href": "https://africa-tools.com/tools/job-offer-evaluator/",
+          "note": "Weigh an offer against pay, growth, and cost of living."
+        }
       ],
       "limitations": [
-        "AfroTools cannot verify a user's work history, degrees, certifications, or references.",
-        "Generated career text must be edited so it stays truthful and specific to the user.",
+        "AfroTools cannot verify your work history, degrees, or references — generated text must stay truthful and edited by you.",
         "Do not paste sensitive CV content into optional AI features unless you understand and consent to what is sent."
       ],
-      "privacy": "Career data is sensitive. Core CV and cover-letter tools should remain local-first by default, and analytics must use metadata only.",
+      "privacy": "Your CV is sensitive. The CV and cover-letter tools run in your browser, and your CV text is never put into the page address or into a link you share. Optional AI writing help runs only when you ask for it.",
       "faqs": [
-        { "question": "Will the Career Agent fabricate experience for me?", "answer": "No. It should not invent employers, degrees, dates, certifications, metrics, or achievements. It can suggest structure and wording for details you provide." },
-        { "question": "Can I continue without AI-generated text?", "answer": "Yes. Manual templates, ATS guidance, and local exports remain available without model assistance." },
-        { "question": "Does the CV handoff expose my private data in the URL?", "answer": "No. The Ask AfroTools AI handoff uses short-lived browser storage for supported setup fields instead of putting private CV content into query strings." }
+        {
+          "question": "Will it write my whole CV for me?",
+          "answer": "It sets up the structure, suggests wording, and checks readability — but it will not invent employers, dates, degrees, or achievements. The truthful content is yours; the assistant makes it read well."
+        },
+        {
+          "question": "Is my CV uploaded anywhere?",
+          "answer": "The CV Builder runs in your browser and your CV text is never placed in a URL or share link. Optional AI writing help is the one exception, and it asks for your consent before any text is sent."
+        },
+        {
+          "question": "What does the ATS check actually test?",
+          "answer": "It checks the things applicant-tracking systems commonly trip on — structure, headings, parseable dates, and keyword coverage against the role you named — and shows you what to fix, not just a score."
+        }
       ]
     },
     {
       "slug": "business",
       "path": "/ai/business/",
       "kicker": "Business AI",
+      "accent": {
+        "base": "#0062CC",
+        "soft": "#eef5ff",
+        "ink": "#0a3d7a"
+      },
       "title": "AI SME Finance Assistant",
       "metaTitle": "AI SME Finance Assistant | AfroTools",
-      "description": "Turn African SME prompts into PAYE, payroll, VAT, invoice, TIN, registration, cash-flow, and compliance checklist help.",
+      "description": "Payroll, VAT, invoices, registration, and cash flow for African SMEs — ask in plain language and land in the right calculator with your figures carried.",
+      "promise": "Ask a payroll, VAT, or invoicing question the way you would ask a colleague. It answers with your country's rules and opens the calculator already filled in.",
+      "inputPlaceholder": "e.g. Run payroll for 4 staff in Nairobi earning KES 45,000 each",
       "heroImage": "/assets/img/og/og-business-tools.webp",
-      "heroBackground": null,
       "primaryPromptId": "payroll-ke",
       "primaryPrompt": "Run Kenya payroll for 5 employees and prepare a review checklist",
-      "summary": "Use the SME Finance Assistant when a business owner asks for payroll, VAT, invoice, registration, or cash-flow help. It points them to calculators and document tools with high-stakes warnings instead of pretending to be a tax adviser.",
+      "summary": "Bring a payroll, VAT, invoice, registration, or cash-flow question and land on the calculator or document tool that answers it, with the high-stakes parts flagged. It does not stand in for a tax adviser.",
+      "routing": {
+        "understood": [
+          {
+            "label": "Country",
+            "value": "Kenya"
+          },
+          {
+            "label": "Employees",
+            "value": "5"
+          },
+          {
+            "label": "Task",
+            "value": "Payroll + review checklist"
+          }
+        ],
+        "asks": "Gross salary — kept in this browser session",
+        "opens": {
+          "label": "PAYE Calculator",
+          "href": "/tools/paye-calculator/"
+        },
+        "privacyLine": "Salaries never enter analytics. Stays in this browser."
+      },
+      "demo": {
+        "type": "paye",
+        "title": "Live from the payroll engine",
+        "note": "Computed in your browser as this page loads, by the same engine behind the country's PAYE calculator — not a screenshot.",
+        "variants": {
+          "NG": {
+            "engineSrc": "/assets/js/engines/ng-paye.js",
+            "engineKey": "ngPAYE",
+            "mode": "annual",
+            "gross": 3000000,
+            "grossLabel": "₦250,000 monthly gross",
+            "options": {},
+            "assumptions": "NTA 2026 regime · no pension or NHF elected · single employee",
+            "toolHref": "/nigeria/ng-salary-tax",
+            "toolLabel": "Nigeria PAYE Calculator",
+            "country": "Nigeria"
+          },
+          "KE": {
+            "engineSrc": "/assets/js/engines/ke-paye.js",
+            "engineKey": "kePAYE",
+            "mode": "monthly",
+            "gross": 50000,
+            "grossLabel": "KES 50,000 monthly gross",
+            "options": {
+              "ahl": true
+            },
+            "assumptions": "KRA bands · NSSF Tier I+II · SHIF 2.75% · housing levy 1.5%",
+            "toolHref": "/kenya/ke-paye",
+            "toolLabel": "Kenya PAYE Calculator",
+            "country": "Kenya"
+          }
+        },
+        "defaultVariant": "KE"
+      },
       "useCases": [
-        "Collect country, employee count, gross pay, pay period, deductions, benefits, invoice amount, currency, and VAT treatment.",
-        "Send payroll questions to PAYE, business tax to VAT, invoices to invoice generation, and compliance questions to TIN or registration checklists.",
-        "Prepare sponsor-safe accounting partner surfaces without changing formulas or rankings."
+        {
+          "title": "Run payroll for your team",
+          "detail": "Enter country, headcount, gross pay, pay period, deductions, and benefits, and get PAYE and payroll figures you can check line by line."
+        },
+        {
+          "title": "Land on the right tax tool",
+          "detail": "Payroll questions open PAYE, business tax opens VAT, invoices open the invoice builder, and registration questions open the TIN and company-registration checklists."
+        },
+        {
+          "title": "Sanity-check before you file",
+          "detail": "Pull VAT treatment, invoice amounts, and currency into one place so you can review a return before it reaches your accountant."
+        }
       ],
-      "examplePromptIds": ["payroll-ke", "vat-invoice-gh", "ghana-paye-monthly", "business-registration-ng"],
+      "examplePromptIds": [
+        "payroll-ke",
+        "vat-invoice-gh",
+        "ghana-paye-monthly",
+        "business-registration-ng"
+      ],
       "examplePrompts": [
         "Help me calculate payroll for 5 employees in Kenya",
         "Create a VAT invoice in Ghana for GHS 12,000",
         "What PAYE should I estimate for a Ghana employee earning 6,000 monthly?",
         "Help me register a small business and get a TIN in Nigeria"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH",
+          "ZA"
+        ],
+        "NG": {
+          "line": "Nigeria PAYE runs the PITA 2025 and NTA 2026 band regimes side by side, with pension and NHF options — and VAT prefills at 7.5% under the Nigeria Tax Act 2025.",
+          "links": [
+            {
+              "label": "Nigeria PAYE",
+              "href": "/nigeria/ng-salary-tax"
+            },
+            {
+              "label": "Nigeria VAT",
+              "href": "/nigeria/ng-vat"
+            }
+          ]
+        },
+        "KE": {
+          "line": "Kenya payroll carries KRA's five bands, SHIF at 2.75% (minimum KES 300), the 1.5% housing levy, and NSSF on the KES 108,000 ceiling that took effect in February 2026.",
+          "links": [
+            {
+              "label": "Kenya PAYE",
+              "href": "/kenya/ke-paye"
+            }
+          ]
+        },
+        "GH": {
+          "line": "Ghana runs GRA's seven bands (0–35%) with SSNIT Tier I+II at 5.5% and an optional Tier III deduction, on 2025 rates.",
+          "links": [
+            {
+              "label": "Ghana PAYE",
+              "href": "/ghana/gh-paye"
+            }
+          ]
+        },
+        "ZA": {
+          "line": "South Africa applies SARS 2025/26 bands (18–45%) with rebates and medical tax credits, plus UIF and SDL at 1% each.",
+          "links": [
+            {
+              "label": "South Africa PAYE",
+              "href": "/south-africa/za-paye"
+            }
+          ]
+        },
+        "default": {
+          "line": "Every one of the 54 countries has a PAYE calculator with named assumptions and local currency — ask in plain language and the assistant opens yours.",
+          "links": [
+            {
+              "label": "All PAYE calculators",
+              "href": "/salary-tax/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "PAYE Calculator", "href": "/tools/paye-calculator/", "note": "Salary tax and payroll planning by supported country." },
-        { "label": "VAT Calculator", "href": "/tools/vat-calculator/", "note": "VAT-exclusive, VAT-inclusive, and planning estimates." },
-        { "label": "Invoice Generator", "href": "/tools/invoice-generator/", "note": "Draft invoices and receipts with export options." },
-        { "label": "Cash Flow Forecast", "href": "/tools/cash-flow-forecast/", "note": "Plan monthly inflows, outflows, and cash pressure." },
-        { "label": "Business Registration Checklist", "href": "/tools/business-registration/", "note": "Registration steps, documents, and official-source reminders." },
-        { "label": "TIN Registration Guide", "href": "/tools/tin-guide/", "note": "Tax identification steps for supported countries." }
+        {
+          "label": "PAYE Calculator",
+          "href": "/tools/paye-calculator/",
+          "note": "Salary tax and payroll planning by supported country."
+        },
+        {
+          "label": "VAT Calculator",
+          "href": "/tools/vat-calculator/",
+          "note": "VAT-exclusive, VAT-inclusive, and planning estimates."
+        },
+        {
+          "label": "Invoice Generator",
+          "href": "/tools/invoice-generator/",
+          "note": "Draft invoices and receipts with export options."
+        },
+        {
+          "label": "Cash Flow Forecast",
+          "href": "/tools/cash-flow-forecast/",
+          "note": "Plan monthly inflows, outflows, and cash pressure."
+        },
+        {
+          "label": "Business Registration Checklist",
+          "href": "/tools/business-registration/",
+          "note": "Registration steps, documents, and official-source reminders."
+        },
+        {
+          "label": "TIN Registration Guide",
+          "href": "/tools/tin-guide/",
+          "note": "Tax identification steps for supported countries."
+        }
       ],
       "limitations": [
-        "Outputs are planning estimates, not tax, accounting, legal, payroll filing, or revenue-authority advice.",
-        "Rates, exemptions, filings, and social-security rules can change and need official verification.",
-        "Sponsors or partners must not alter calculations, eligibility logic, or source labels."
+        "Outputs are planning estimates, not tax, accounting, legal, or filing advice.",
+        "Rates and statutory rules change with finance acts — verify with the revenue authority before you file or pay."
       ],
-      "privacy": "Payroll, invoice, and finance data can be sensitive. Do not store raw salaries, client names, invoice contents, or tax identifiers in analytics.",
+      "privacy": "Payroll and invoice details are sensitive. The calculators and invoice builder run in your browser, and salaries, client names, invoice contents, and tax numbers are not included in the usage data AfroTools collects.",
       "faqs": [
-        { "question": "Can AfroTools AI file my taxes or payroll?", "answer": "No. It points you to calculators and planning checklists. Final filings should be verified with the revenue authority or a qualified accountant." },
-        { "question": "Does sponsor placement affect the formulas?", "answer": "No. Sponsor-safe surfaces must be clearly labeled and cannot change formulas, rankings, or compliance warnings." },
-        { "question": "Which SME tasks are supported first?", "answer": "PAYE, payroll planning, VAT, invoices, cash flow, TIN, and business-registration checklist help are supported first." }
+        {
+          "question": "Can AfroTools AI file my taxes or payroll?",
+          "answer": "No. It prepares the figures and the review checklist; filing stays with you, your accountant, or the revenue authority's own portal. That separation is deliberate."
+        },
+        {
+          "question": "Are the payroll numbers on this page real?",
+          "answer": "Yes — the worked example is computed in your browser when the page loads, by the same engine the PAYE calculator uses, on the assumptions listed under it. Open the calculator and change the assumptions, and you will see the numbers move."
+        },
+        {
+          "question": "Do sponsors or partners change the numbers?",
+          "answer": "Never. Sponsored placements are labeled and cannot alter a calculation, an eligibility result, or a source label anywhere on AfroTools."
+        }
       ]
     },
     {
       "slug": "trade",
       "path": "/ai/trade/",
       "kicker": "Trade AI",
+      "accent": {
+        "base": "#b45309",
+        "soft": "#fff7ed",
+        "ink": "#92400e"
+      },
       "title": "AI Import Duty and Trade Advisor",
       "metaTitle": "AI Import Duty and Trade Advisor | AfroTools",
-      "description": "Estimate import duty, landed cost, CIF assumptions, car-import scenarios, HS-code help, and trade planning checklists with source confidence warnings.",
+      "description": "Price a shipment or a car import end to end — CIF, duty, VAT, port and clearing — with every rate editable and a checklist before you commit.",
+      "promise": "Describe what you are importing. It prices the landed cost with every rate shown and editable, then hands you the questions to ask your clearing agent.",
+      "inputPlaceholder": "e.g. How much duty will I pay to import a 2016 Toyota Axio into Nigeria?",
       "heroImage": "/assets/img/tools/import-duty.webp",
-      "heroBackground": null,
       "primaryPromptId": "import-axio-ng",
       "primaryPrompt": "Estimate a 2016 Toyota Axio landed cost into Nigeria before clearing",
-      "summary": "Use the Trade Advisor when a user asks about import duty, car imports, electronics, clothing, machinery, CIF, shipping, insurance, FX, or HS-code planning. It asks for missing values and opens the import-duty and car-import calculators.",
+      "summary": "Ask about import duty, car imports, electronics, clothing, machinery, CIF, shipping, insurance, exchange rates, or HS-code planning. It asks for whatever is missing, then opens the import-duty and car-import calculators with your figures already in place.",
+      "routing": {
+        "understood": [
+          {
+            "label": "Item",
+            "value": "2016 Toyota Axio"
+          },
+          {
+            "label": "Destination",
+            "value": "Nigeria"
+          },
+          {
+            "label": "Task",
+            "value": "Landed cost before clearing"
+          }
+        ],
+        "asks": "Purchase price / FOB value — kept in this browser session",
+        "opens": {
+          "label": "Import Duty Calculator",
+          "href": "/tools/import-duty/"
+        },
+        "privacyLine": "Purchase details never enter analytics. Stays in this browser."
+      },
+      "demo": {
+        "type": "duty",
+        "title": "Live from the Nigeria import-duty engine",
+        "note": "Computed in your browser as this page loads, by the same engine behind the Import Duty Calculator — not a screenshot.",
+        "engineSrc": "/assets/js/engines/import-duty-nigeria-engine.js",
+        "inputs": {
+          "fob": 4000000,
+          "freight": 350000,
+          "insurance": 60000,
+          "dutyRate": 20,
+          "vatRate": 7.5,
+          "portCharges": 150000,
+          "clearingFee": 250000,
+          "otherImportCharges": 0,
+          "customsValue": 0,
+          "fxRate": 0
+        },
+        "inputsLabel": "Used saloon · FOB ₦4.0m · freight ₦350k · insurance ₦60k · port ₦150k · clearing ₦250k",
+        "assumptions": "The 20% duty band is an editable planning default — confirm the band and current schedule with Nigeria Customs before you ship",
+        "toolHref": "/tools/import-duty/",
+        "toolLabel": "Import Duty Calculator"
+      },
       "useCases": [
-        "Extract destination country, product or vehicle mode, make, model, year, value, shipping, insurance, origin, port, engine size, and FX rate.",
-        "Produce a planning estimate with CIF, duty/tax assumptions, clearing/port estimates, landed cost, and verification checklist.",
-        "Open Car Import Cost for vehicle questions and Import Duty, Landed Cost, HS Code, or trade finance tools for product questions."
+        {
+          "title": "Price a shipment end to end",
+          "detail": "Enter destination, product or vehicle, value, shipping, insurance, origin, port, and exchange rate in one pass."
+        },
+        {
+          "title": "See the real landed cost",
+          "detail": "Get CIF, duty and tax assumptions, clearing and port estimates, and a landed cost you can check against your own quotes."
+        },
+        {
+          "title": "Open the right calculator",
+          "detail": "Vehicle questions open Car Import Cost. Product questions open Import Duty, Landed Cost, HS Code, or the trade finance tools."
+        }
       ],
-      "examplePromptIds": ["import-axio-ng", "electronics-ghana", "clothing-kenya", "machinery-tanzania"],
+      "examplePromptIds": [
+        "import-axio-ng",
+        "electronics-ghana",
+        "clothing-kenya",
+        "machinery-tanzania"
+      ],
       "examplePrompts": [
         "How much duty will I pay to import a 2016 Toyota Axio into Nigeria?",
         "Estimate landed cost for electronics from China to Ghana",
         "What should I ask a clearing agent before importing clothing into Kenya?",
         "Help me compare CIF, duty and port charges for machinery into Tanzania"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH"
+        ],
+        "NG": {
+          "line": "Nigeria import maths uses the ECOWAS CET bands (0, 5, 10, 20, 35%) with 7.5% import VAT on the duty-inclusive base — and the duty band always stays an editable input you confirm against the NCS tariff.",
+          "links": [
+            {
+              "label": "Import Duty Calculator",
+              "href": "/tools/import-duty/"
+            }
+          ]
+        },
+        "KE": {
+          "line": "Kenya vehicle costing walks through the age-rule check before anything else — a car outside the passenger-vehicle age rule is flagged as ineligible rather than silently priced.",
+          "links": [
+            {
+              "label": "Car Import Cost",
+              "href": "/tools/car-import-cost/"
+            },
+            {
+              "label": "Car Price Directory",
+              "href": "/cars/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "Ghana landed-cost runs CIF plus duty plus levies with every rate editable against the GRA/ICUMS schedule, so the calculator's defaults never outrank your broker's current figures.",
+          "links": [
+            {
+              "label": "Landed Cost Calculator",
+              "href": "/tools/landed-cost/"
+            }
+          ]
+        },
+        "default": {
+          "line": "Duty rates are always planning defaults you confirm with the destination authority — the tools never treat a missing rate as zero or a preference as automatic.",
+          "links": [
+            {
+              "label": "Import Duty Calculator",
+              "href": "/tools/import-duty/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "Import Duty Calculator", "href": "/tools/import-duty/", "note": "Duty, levy, tax, and landed-cost planning with source labels." },
-        { "label": "Car Import Cost", "href": "/tools/car-import-cost/", "note": "Vehicle landed-cost and on-road planning for key African markets." },
-        { "label": "Car Price Directory", "href": "/cars/", "note": "Source-market, landed-cost, and local asking-range context." },
-        { "label": "Landed Cost Calculator", "href": "/tools/landed-cost/", "note": "FOB, freight, insurance, port, duty, VAT, and landed-cost structure." },
-        { "label": "HS Code Lookup", "href": "/tools/hs-code-lookup/", "note": "Search product classification starting points." }
+        {
+          "label": "Import Duty Calculator",
+          "href": "/tools/import-duty/",
+          "note": "CIF, duty, VAT, and levy estimates with editable rates."
+        },
+        {
+          "label": "Car Import Cost",
+          "href": "/tools/car-import-cost/",
+          "note": "Vehicle-specific landed cost with country rule packs."
+        },
+        {
+          "label": "Car Price Directory",
+          "href": "/cars/",
+          "note": "Local prices vs import costs across African markets."
+        },
+        {
+          "label": "Landed Cost Calculator",
+          "href": "/tools/landed-cost/",
+          "note": "Full shipment costing from FOB to warehouse."
+        },
+        {
+          "label": "HS Code Lookup",
+          "href": "/tools/hs-code-lookup/",
+          "note": "Find the tariff heading before you price the duty."
+        }
       ],
       "limitations": [
-        "Import estimates are planning estimates only; final customs assessment may differ.",
-        "HS classification, valuation, waivers, FX, port fees, and clearing charges require official or professional verification.",
-        "AfroTools does not replace a licensed clearing agent, customs broker, or revenue authority decision."
+        "Import estimates are planning figures — the final customs assessment can differ, and HS classification needs professional confirmation.",
+        "AfroTools does not replace a licensed clearing agent, customs broker, or the revenue authority's own valuation."
       ],
-      "privacy": "Trade prompts can reveal commercial plans. Analytics should store category, country, and confidence metadata rather than raw purchase details.",
+      "privacy": "What you plan to import is commercial information. AfroTools records the broad category and country of a trade question, not the product, supplier, or amounts you enter.",
       "faqs": [
-        { "question": "Can the Trade Advisor guarantee the final duty?", "answer": "No. It produces a planning estimate and a verification checklist. Customs valuation and classification remain the official decision points." },
-        { "question": "Does it support cars and non-vehicle products?", "answer": "Yes. Vehicle prompts can open car import tools, while electronics, clothing, machinery, and other goods can open import-duty, landed-cost, and HS-code tools." },
-        { "question": "What inputs improve the estimate?", "answer": "Destination country, product category or vehicle details, purchase value, currency, freight, insurance, port, origin country, and any user FX rate." }
+        {
+          "question": "Are the duty numbers on this page real?",
+          "answer": "The worked example is computed in your browser by the same engine behind the Import Duty Calculator, on the inputs listed under it. The 20% band is a planning default — the whole point is that you can edit it once you confirm your item's band."
+        },
+        {
+          "question": "Why does it keep telling me to confirm with customs?",
+          "answer": "Because classification and valuation are decisions the authority makes, not the calculator. A tool that presented its defaults as final would misprice shipments — ours shows its assumptions and makes every rate editable instead."
+        },
+        {
+          "question": "Can it find my HS code?",
+          "answer": "The HS Code Lookup gets you to a likely heading fast, and the advisor carries it into the duty estimate. Final classification still belongs to customs or your broker — treat the lookup as the starting point it is."
+        }
       ]
     },
     {
       "slug": "energy",
       "path": "/ai/energy/",
       "kicker": "Energy AI",
+      "accent": {
+        "base": "#047857",
+        "soft": "#ecfdf5",
+        "ink": "#065f46"
+      },
       "title": "AI Solar and Generator Advisor",
       "metaTitle": "AI Solar and Generator Advisor | AfroTools",
-      "description": "Compare generator fuel exposure, grid bills, outage costs, rough solar sizing, payback, installer questions, and source freshness warnings.",
+      "description": "Compare generator dependence, fuel exposure, and solar payback before you talk to installers — for a home, shop, office, school, or farm.",
+      "promise": "Tell it what you run and what you pay. It sizes the tradeoff — generator cost, fuel exposure, solar payback — and arms you for the installer conversation.",
+      "inputPlaceholder": "e.g. Should I install solar for my shop in Lagos?",
       "heroImage": "/assets/img/blog/generator-vs-solar.webp",
-      "heroBackground": "/assets/img/blog/generator-vs-solar.webp",
       "primaryPromptId": "solar-shop-lagos",
       "primaryPrompt": "Compare solar vs generator costs for a Lagos shop",
-      "summary": "Use the Energy Advisor when a household, shop, office, school, farm, or small business wants to compare generator dependence, grid bills, fuel exposure, outage hours, and solar payback before talking to installers.",
+      "summary": "Compare generator dependence, grid bills, fuel exposure, outage hours, and solar payback before you talk to installers — for a home, shop, office, school, farm, or small business.",
+      "routing": {
+        "understood": [
+          {
+            "label": "Country",
+            "value": "Nigeria"
+          },
+          {
+            "label": "City",
+            "value": "Lagos"
+          },
+          {
+            "label": "Site",
+            "value": "Shop"
+          }
+        ],
+        "asks": "Monthly electricity bill — kept in this browser session",
+        "opens": {
+          "label": "Solar ROI Calculator",
+          "href": "/tools/solar-roi/"
+        },
+        "privacyLine": "Bills and operating hours stay in this browser."
+      },
+      "demo": {
+        "type": "transcript",
+        "title": "A real run, step by step",
+        "note": "Transcribed from a live routing run on 26 Jul 2026 — once you add your bill, it computes generator cost, fuel exposure, rough system size, and payback."
+      },
       "useCases": [
-        "Collect country, city, user type, electricity bill, generator size, generator hours, fuel type, load estimate, outage hours, and budget range.",
-        "Calculate monthly generator cost, annual fuel exposure, rough solar system size, payback estimate, and installer questions.",
-        "Open Solar ROI, Fuel Tracker, generator sizing, backup duration, and electricity tools."
+        {
+          "title": "Describe what you run today",
+          "detail": "Country, city, electricity bill, generator size and hours, fuel type, load, outage hours, and budget range."
+        },
+        {
+          "title": "See what solar would change",
+          "detail": "Monthly generator cost, annual fuel exposure, rough system size, payback estimate, and the questions worth putting to an installer."
+        },
+        {
+          "title": "Open the underlying tools",
+          "detail": "Move straight into Solar ROI, AfroFuel, generator sizing, backup duration, and the electricity calculators."
+        }
       ],
-      "examplePromptIds": ["solar-shop-lagos", "generator-nairobi", "solar-accra-office", "solar-johannesburg-small-business"],
+      "examplePromptIds": [
+        "solar-shop-lagos",
+        "generator-nairobi",
+        "solar-accra-office",
+        "solar-johannesburg-small-business"
+      ],
       "examplePrompts": [
         "Should I install solar for my shop in Lagos?",
         "Estimate generator cost for a Nairobi home running 4 hours daily",
         "Compare solar payback for an Accra office with a diesel generator",
         "What questions should a Johannesburg small business ask a solar installer?"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH",
+          "ZA"
+        ],
+        "NG": {
+          "line": "Nigeria planning starts from dated petrol and diesel snapshots — every price shows when it was captured, and a missing pump price blocks the calculation instead of costing fuel at zero.",
+          "links": [
+            {
+              "label": "AfroFuel",
+              "href": "/tools/fuel-tracker/"
+            },
+            {
+              "label": "Solar ROI",
+              "href": "/tools/solar-roi/"
+            }
+          ]
+        },
+        "KE": {
+          "line": "Kenyan homes running a generator a few hours daily can price the habit annually and compare it against a solar system sized from the same inputs.",
+          "links": [
+            {
+              "label": "Solar ROI",
+              "href": "/tools/solar-roi/"
+            },
+            {
+              "label": "Backup Duration",
+              "href": "/tools/backup-duration/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "Accra offices get the diesel-vs-solar payback comparison with tariff and fuel assumptions shown as editable planning defaults, each with its review date.",
+          "links": [
+            {
+              "label": "Solar ROI",
+              "href": "/tools/solar-roi/"
+            }
+          ]
+        },
+        "ZA": {
+          "line": "South African small businesses planning around load-shedding can size battery backup by the hours they actually lose, then test solar payback against grid tariffs.",
+          "links": [
+            {
+              "label": "Backup Duration",
+              "href": "/tools/backup-duration/"
+            },
+            {
+              "label": "Solar ROI",
+              "href": "/tools/solar-roi/"
+            }
+          ]
+        },
+        "default": {
+          "line": "Energy prices are perishable, so the tools show dated planning defaults and force your own pump price or tariff where it matters — never a silent zero.",
+          "links": [
+            {
+              "label": "Solar ROI",
+              "href": "/tools/solar-roi/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "Solar ROI Calculator", "href": "/tools/solar-roi/", "note": "Payback, battery, tariff, fuel, and source-assumption planning." },
-        { "label": "Fuel Tracker", "href": "/tools/fuel-tracker/", "note": "Fuel-price context for generator operating costs." },
-        { "label": "Generator Sizing", "href": "/tools/generator-sizing/", "note": "Generator/load sizing before comparing backup options." },
-        { "label": "Backup Duration", "href": "/tools/backup-duration/", "note": "Battery and backup runtime planning." },
-        { "label": "Electricity Bill Verify", "href": "/tools/electricity-bill-verify/", "note": "Check grid bill assumptions before payback estimates." }
+        {
+          "label": "Solar ROI Calculator",
+          "href": "/tools/solar-roi/",
+          "note": "Payback, battery needs, and the generator tradeoff."
+        },
+        {
+          "label": "AfroFuel",
+          "href": "/tools/fuel-tracker/",
+          "note": "Dated petrol, diesel, and LPG price snapshots."
+        },
+        {
+          "label": "Generator Sizing",
+          "href": "/tools/generator-sizing/",
+          "note": "Match generator capacity to your actual load."
+        },
+        {
+          "label": "Backup Duration",
+          "href": "/tools/backup-duration/",
+          "note": "How long batteries last against your outage pattern."
+        },
+        {
+          "label": "Bill Verify",
+          "href": "/tools/electricity-bill-verify/",
+          "note": "Check a bill against the published tariff structure."
+        }
       ],
       "limitations": [
-        "Solar sizing and payback are rough planning estimates, not installer quotes or engineering designs.",
-        "Fuel prices, tariffs, battery costs, and outage patterns vary by city, supplier, and date.",
-        "Always ask installers about load audit, roof/site survey, warranties, after-sales support, and code compliance."
+        "Solar sizing and payback are planning estimates, not installer quotes or engineering designs.",
+        "Fuel prices and tariffs move faster than any bundled dataset — the tools show review dates, and you should confirm locally before spending."
       ],
-      "privacy": "Energy inputs are usually low sensitivity, but business bills and operating hours can be commercially sensitive. Keep raw details local unless the user consents to AI text help.",
+      "privacy": "A business electricity bill and its running hours say a lot about the business. Those figures stay on your device unless you choose to use the optional AI write-up.",
       "faqs": [
-        { "question": "Can the Energy Advisor design my solar system?", "answer": "No. It gives a planning brief and questions to ask installers. Final design needs a site survey and qualified installer." },
-        { "question": "Does it account for fuel price freshness?", "answer": "The tool should show source and freshness state for fuel and tariff assumptions when those assumptions affect results." },
-        { "question": "What makes the estimate more useful?", "answer": "Monthly bill, generator kVA, fuel type, hours per day, outage hours, appliance load, city, and rough budget." }
+        {
+          "question": "Will it tell me exactly what system to buy?",
+          "answer": "No — it gives you a rough size, a payback estimate, and the installer questions that protect you: load audit, site survey, warranties, after-sales support. The final design belongs to a qualified installer."
+        },
+        {
+          "question": "Are the fuel prices live?",
+          "answer": "They are dated snapshots, and the date is always shown. Pump prices move faster than any dataset, which is why the generator tools ask for your local price instead of assuming one."
+        },
+        {
+          "question": "Does it work for homes as well as businesses?",
+          "answer": "Yes — the same maths runs for a home, shop, office, school, or farm. The Nairobi example on this page is a home running a generator four hours a day."
+        }
       ]
     },
     {
       "slug": "local-life",
       "path": "/ai/local-life/",
       "kicker": "Local Life AI",
+      "accent": {
+        "base": "#0284c7",
+        "soft": "#f0f9ff",
+        "ink": "#075985"
+      },
       "title": "AI Cost of Living and Relocation Planner",
       "metaTitle": "AI Cost of Living and Relocation Planner | AfroTools",
-      "description": "Plan city moves, rent, food, transport, utilities, school fees, relocation budgets, and cost-of-living comparisons with practical AfroTools tools.",
+      "description": "Compare cities, plan rent, and price a move in local currency — with dataset-based estimates that show their assumptions.",
+      "promise": "Name two cities or a budget. It prices the life you are describing — rent, food, transport, school — and shows where the pressure lands.",
+      "inputPlaceholder": "e.g. Can I live in Nairobi on a budget of $1,200 per month?",
       "heroImage": "/assets/img/tools/cost-of-living.webp",
-      "heroBackground": "/assets/img/tools/cost-of-living.webp",
       "primaryPromptId": "live-nairobi-budget",
       "primaryPrompt": "Can I live in Nairobi on a budget of $1,200 per month?",
-      "summary": "Use Local Life AI when a user wants to compare cities, plan rent, estimate monthly expenses, relocate, or understand budget pressure. It opens cost-of-living, rent, transport, school-fee, and relocation tools.",
+      "summary": "Compare cities, plan rent, estimate monthly expenses, or work out the budget pressure of a move. It opens the cost-of-living, rent, transport, school-fee, and relocation tools with your details carried across.",
+      "routing": {
+        "understood": [
+          {
+            "label": "From",
+            "value": "Lagos"
+          },
+          {
+            "label": "To",
+            "value": "Nairobi"
+          },
+          {
+            "label": "Household",
+            "value": "Family"
+          }
+        ],
+        "asks": "Monthly budget or income — kept in this browser session",
+        "opens": {
+          "label": "Cost of Living Planner",
+          "href": "/tools/cost-of-living/"
+        },
+        "privacyLine": "Income and family details stay in this browser.",
+        "computed": {
+          "label": "Monthly estimate for a Nairobi family",
+          "value": "KES 191,175",
+          "caption": "from the bundled city dataset — the planner recomputes this from current data when you run it"
+        }
+      },
+      "demo": {
+        "type": "transcript",
+        "title": "A real run, step by step",
+        "note": "Transcribed from a live routing run on 26 Jul 2026 — including the dataset-based monthly estimate it computed before asking a single question."
+      },
       "useCases": [
-        "Collect origin, destination, city, household size, monthly income or budget, currency, rent expectation, school needs, and transport pattern.",
-        "Estimate budget pressure across rent, food, transport, utilities, school, healthcare, and one-off relocation costs.",
-        "Open Cost of Living, Rent Affordability, School Fees, Transport Fare, Visa Cost, and city/country tools."
+        {
+          "title": "Plan a move",
+          "detail": "Where you are coming from and going to, household size, income or budget, currency, rent expectation, school needs, and how you will get around."
+        },
+        {
+          "title": "See where the budget strains",
+          "detail": "Pressure across rent, food, transport, utilities, school, healthcare, and the one-off costs of moving."
+        },
+        {
+          "title": "Open the city tools",
+          "detail": "Cost of Living, Rent Affordability, School Fees, Transport Fare, Visa Cost, and the country pages."
+        }
       ],
-      "examplePromptIds": ["live-nairobi-budget", "compare-lagos-accra", "relocation-ng-uk", "rent-johannesburg"],
+      "examplePromptIds": [
+        "live-nairobi-budget",
+        "compare-lagos-accra",
+        "relocation-ng-uk",
+        "rent-johannesburg"
+      ],
       "examplePrompts": [
         "Can I live in Nairobi on a budget of $1,200 per month?",
         "Compare cost of living in Lagos and Accra for a family of four",
         "Plan relocation from Nigeria to the UK with a 6-month savings target",
         "What rent can I afford in Johannesburg if I earn R35,000 monthly?"
       ],
+      "countryFacts": {
+        "order": [
+          "KE",
+          "NG",
+          "GH",
+          "ZA"
+        ],
+        "KE": {
+          "line": "The Nairobi family estimate on this page — KES 191,175 a month — came straight from the bundled city dataset before the router asked a single question. Add your income and it shows the gap or buffer.",
+          "links": [
+            {
+              "label": "Cost of Living",
+              "href": "/tools/cost-of-living/"
+            }
+          ]
+        },
+        "NG": {
+          "line": "Lagos and Abuja budgets price in naira with rent, food, transport, and school lines separated, so you can see which line breaks the budget rather than one blended number.",
+          "links": [
+            {
+              "label": "Cost of Living",
+              "href": "/tools/cost-of-living/"
+            },
+            {
+              "label": "Rent Affordability",
+              "href": "/tools/rent-affordability/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "The Lagos-vs-Accra comparison for a family of four is one of the router's stock runs — same household, both cities, side by side in each currency.",
+          "links": [
+            {
+              "label": "Cost of Living",
+              "href": "/tools/cost-of-living/"
+            }
+          ]
+        },
+        "ZA": {
+          "line": "The Johannesburg rent question works backwards from a R35,000 salary to an affordable rent band, before you ever talk to an agent.",
+          "links": [
+            {
+              "label": "Rent Affordability",
+              "href": "/tools/rent-affordability/"
+            }
+          ]
+        },
+        "default": {
+          "line": "City estimates come from a bundled dataset with visible assumptions — treat them as planning figures that vary by neighbourhood and lifestyle, not quotes.",
+          "links": [
+            {
+              "label": "Cost of Living",
+              "href": "/tools/cost-of-living/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "Cost of Living Planner", "href": "/tools/cost-of-living/", "note": "Monthly budget and expense-pressure planning." },
-        { "label": "Rent Affordability", "href": "/tools/rent-affordability/", "note": "Estimate sustainable rent from income and other obligations." },
-        { "label": "School Fees", "href": "/tools/school-fees/", "note": "Education-cost planning for families." },
-        { "label": "Route Cost", "href": "/tools/route-cost/", "note": "Transport and commute cost planning." },
-        { "label": "Visa Cost", "href": "/tools/visa-cost/", "note": "Relocation and travel cost assumptions." }
+        {
+          "label": "Cost of Living Planner",
+          "href": "/tools/cost-of-living/",
+          "note": "City budgets split across rent, food, transport, and school."
+        },
+        {
+          "label": "Rent Affordability",
+          "href": "/tools/rent-affordability/",
+          "note": "Work backwards from income to an affordable rent band."
+        },
+        {
+          "label": "School Fees Planner",
+          "href": "/tools/school-fees/",
+          "note": "Term-by-term school cost planning."
+        },
+        {
+          "label": "Route Cost",
+          "href": "/tools/route-cost/",
+          "note": "Daily transport costs for your actual commute."
+        },
+        {
+          "label": "Visa Cost",
+          "href": "/tools/visa-cost/",
+          "note": "Visa and permit costs for a cross-border move."
+        }
       ],
       "limitations": [
-        "Cost-of-living figures can vary widely by neighborhood, lifestyle, household needs, and exchange rate.",
-        "Relocation and visa estimates are planning aids, not immigration advice.",
-        "Verify rents, fees, utilities, visa rules, and exchange rates before making commitments."
+        "Cost-of-living figures vary widely by neighbourhood, lifestyle, and exchange rate — treat estimates as planning aids.",
+        "Relocation and visa estimates are not immigration advice; verify rules and fees with official sources before committing."
       ],
-      "privacy": "Budget and relocation prompts can reveal salary, family, or travel details. Saved projects should keep only non-sensitive summaries by default.",
+      "privacy": "Relocation questions can reveal your salary, family, and travel plans. A saved project keeps only a short, non-sensitive summary unless you add more to it yourself.",
       "faqs": [
-        { "question": "Is the relocation planner immigration advice?", "answer": "No. It helps organize costs, documents, and next steps. Immigration and visa decisions must be checked with official sources or qualified advisers." },
-        { "question": "Can I compare two African cities?", "answer": "Yes. Use city, budget, household size, rent preference, and transport assumptions to open cost-of-living and rent tools." },
-        { "question": "Does AfroTools store my salary or family details?", "answer": "The default Ask AfroTools AI project model should save only clean summaries and structured inputs, not raw sensitive personal details." }
+        {
+          "question": "Where do the city numbers come from?",
+          "answer": "From a bundled dataset the planner ships with, and the assumptions are shown alongside the estimate. The Nairobi figure on this page was computed by a real run of the router — the planner recomputes from current data every time you use it."
+        },
+        {
+          "question": "Can it compare cities in different currencies?",
+          "answer": "Yes — comparisons show each city in its own currency and flag the exchange-rate state, rather than silently converting at a rate that may have moved."
+        },
+        {
+          "question": "Is this good enough to decide a relocation?",
+          "answer": "It is good enough to know whether a move is worth investigating and where the budget pressure will land. Final decisions deserve real quotes for rent and school, which the checklist points you to."
+        }
       ]
     },
     {
       "slug": "construction",
       "path": "/ai/construction/",
       "kicker": "Construction AI",
+      "accent": {
+        "base": "#c2410c",
+        "soft": "#fff7ed",
+        "ink": "#9a3412"
+      },
       "title": "AI Floor Planner and Construction Cost Assistant",
       "metaTitle": "AI Floor Planner and Construction Cost Assistant | AfroTools",
-      "description": "Turn room, house, shop, renovation, BOQ, material, and construction budget prompts into floor-planning and cost-estimation help.",
+      "description": "Go from a building idea to a floor plan, bill of quantities, and material estimate — with planning-grade rates you replace with real quotes.",
+      "promise": "Describe the build. It sets up the floor plan, prices the materials at planning rates, and leaves you with a contractor-ready question list.",
+      "inputPlaceholder": "e.g. Estimate the cost of building a 3-bedroom bungalow in Nigeria",
       "heroImage": "/assets/img/tools/afroplan-floor-planner.webp",
-      "heroBackground": "/assets/img/tools/afroplan-floor-planner.webp",
       "primaryPromptId": "floor-plan-benin",
       "primaryPrompt": "Design a simple 2-bedroom floor plan for a 450 sqm plot in Benin City",
-      "summary": "Use the Construction Assistant when a user wants to move from a room or building idea into a practical floor plan, BOQ, material estimate, renovation budget, or contractor checklist. It opens tools rather than pretending to be a licensed architect or quantity surveyor.",
+      "summary": "Go from a room or building idea to a practical floor plan, bill of quantities, material estimate, renovation budget, or contractor checklist. It opens the tools rather than standing in for a licensed architect or quantity surveyor.",
+      "routing": {
+        "understood": [
+          {
+            "label": "Build",
+            "value": "3-bedroom bungalow"
+          },
+          {
+            "label": "Country",
+            "value": "Nigeria"
+          }
+        ],
+        "asks": "City or town — material rates differ by market",
+        "opens": {
+          "label": "Floor Planner",
+          "href": "/engineering/floor-planner/"
+        },
+        "privacyLine": "Plot details and budgets stay in this browser."
+      },
+      "demo": {
+        "type": "transcript",
+        "title": "A real run, step by step",
+        "note": "Transcribed from a live routing run on 26 Jul 2026 — the router re-derives this from your own question."
+      },
       "useCases": [
-        "Collect country, city, room type, floor area, number of rooms, finish level, budget, material assumptions, and export needs.",
-        "Open Floor Planner, BOQ Builder, construction budget, home renovation, roofing, tiles, paint, and material calculators.",
-        "Prepare a contractor question checklist and a source/assumption warning for prices and quantities."
+        {
+          "title": "Describe the build",
+          "detail": "Country, city, room types, floor area, room count, finish level, budget, and the material assumptions you want to price against."
+        },
+        {
+          "title": "Open the estimating tools",
+          "detail": "Floor Planner, BOQ builder, construction budget, renovation, roofing, tiles, paint, and the material calculators."
+        },
+        {
+          "title": "Get ready to brief a contractor",
+          "detail": "Leave with the questions worth asking and a clear note of which prices and quantities still need checking locally."
+        }
       ],
-      "examplePromptIds": ["floor-plan-benin", "floor-plan-plot", "renovation-lagos", "boq-kenya"],
+      "examplePromptIds": [
+        "floor-plan-benin",
+        "floor-plan-plot",
+        "renovation-lagos",
+        "boq-kenya"
+      ],
       "examplePrompts": [
         "Design a small shop floor plan and estimate construction cost in Ghana",
         "Create a 2-bedroom floor plan for a 12 by 18 metre plot",
         "Estimate renovation cost for a kitchen in Lagos",
         "Prepare a BOQ checklist for a small office fit-out in Kenya"
       ],
+      "countryFacts": {
+        "order": [
+          "NG",
+          "KE",
+          "GH"
+        ],
+        "NG": {
+          "line": "Nigeria BOQ pricing uses bundled default rates that the export explicitly marks as planning figures to replace with supplier, QS, or contractor quotes — never presented as current market prices.",
+          "links": [
+            {
+              "label": "Floor Planner",
+              "href": "/engineering/floor-planner/"
+            }
+          ]
+        },
+        "KE": {
+          "line": "The Kenya office fit-out example on this page builds the BOQ checklist first, so the quantity conversation with your contractor starts from a written list instead of memory.",
+          "links": [
+            {
+              "label": "Construction Budget",
+              "href": "/tools/construction-budget/"
+            }
+          ]
+        },
+        "GH": {
+          "line": "Ghanaian shop builds can be drawn and priced in one sitting — floor plan, wall and finish quantities, and a cedi estimate at planning rates.",
+          "links": [
+            {
+              "label": "Floor Planner",
+              "href": "/engineering/floor-planner/"
+            }
+          ]
+        },
+        "default": {
+          "line": "Material rates differ by city and month, which is why the tools ship planning-grade defaults with review dates and expect your local quotes to replace them.",
+          "links": [
+            {
+              "label": "Floor Planner",
+              "href": "/engineering/floor-planner/"
+            }
+          ]
+        }
+      },
       "tools": [
-        { "label": "Floor Planner", "href": "/engineering/floor-planner/", "note": "Layout planning, room notes, and export-oriented workspace." },
-        { "label": "BOQ Builder", "href": "/tools/boq-generator/", "note": "Bill of quantities structure and cost-line planning." },
-        { "label": "Home Renovation Cost", "href": "/tools/home-renovation-cost/", "note": "Room-by-room renovation cost planning." },
-        { "label": "Construction Budget", "href": "/tools/construction-budget/", "note": "Budget structure for building projects." },
-        { "label": "Paint Calculator", "href": "/tools/paint-calculator/", "note": "Paint quantities and cost assumptions." },
-        { "label": "Tiles Calculator", "href": "/tools/tiles-calc/", "note": "Tile quantity and wastage planning." }
+        {
+          "label": "Floor Planner",
+          "href": "/engineering/floor-planner/",
+          "note": "Draw rooms, place furniture, export a bill of quantities."
+        },
+        {
+          "label": "BOQ Generator",
+          "href": "/tools/boq-generator/",
+          "note": "Structured quantities from your plan dimensions."
+        },
+        {
+          "label": "Renovation Cost",
+          "href": "/tools/home-renovation-cost/",
+          "note": "Room-by-room renovation budgeting."
+        },
+        {
+          "label": "Construction Budget",
+          "href": "/tools/construction-budget/",
+          "note": "Whole-project cost planning by stage."
+        },
+        {
+          "label": "Paint Calculator",
+          "href": "/tools/paint-calculator/",
+          "note": "Litres and coats from wall area."
+        },
+        {
+          "label": "Tiles Calculator",
+          "href": "/tools/tiles-calc/",
+          "note": "Tile counts with waste allowance."
+        }
       ],
       "limitations": [
-        "AfroTools is not a licensed architect, engineer, quantity surveyor, or building-control authority.",
-        "Material prices, labor rates, code requirements, and site conditions vary by location and date.",
-        "Use outputs as planning notes for a qualified professional, not as final construction drawings or approvals."
+        "AfroTools is not a licensed architect, engineer, or quantity surveyor — outputs are planning notes for a qualified professional.",
+        "Material prices and labour rates vary by location and date; the bundled rates are defaults to replace with local quotes."
       ],
-      "privacy": "Construction prompts can include property and budget details. Keep exact addresses, client names, and private plans out of analytics and share links.",
+      "privacy": "Property details and budgets stay private to your device. Keep exact addresses, client names, and private plans out of any link you share from this page.",
       "faqs": [
-        { "question": "Can AfroTools AI produce approved building drawings?", "answer": "No. It can open floor-planning and cost tools, but approvals and professional drawings require qualified local professionals." },
-        { "question": "Does it estimate materials?", "answer": "It can open BOQ, paint, tiles, roofing, renovation, and construction-budget tools that provide planning estimates." },
-        { "question": "What should I verify before building?", "answer": "Confirm land title, permits, setbacks, structural design, contractor scope, material specs, and current local prices." }
+        {
+          "question": "Can I build from these plans?",
+          "answer": "No — they are planning drawings and quantity estimates, not approved construction documents. Take them to an architect or engineer for the real thing; they make that conversation faster and cheaper."
+        },
+        {
+          "question": "How accurate is the cost estimate?",
+          "answer": "As accurate as planning-grade defaults can be — which is why every export marks its rates as figures to replace with supplier and contractor quotes. The value is the structure and the quantities, not the last digit."
+        },
+        {
+          "question": "Does it handle renovations, not just new builds?",
+          "answer": "Yes — the Lagos kitchen example on this page is a renovation run. Room-by-room renovation budgeting has its own tool, and the router sends you there when the question is about an existing building."
+        }
       ]
     }
   ]
