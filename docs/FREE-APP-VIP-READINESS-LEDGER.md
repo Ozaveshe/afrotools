@@ -65,7 +65,7 @@ Live browser verification returned HTTP 200, no document overflow and no applica
 | 1 | Diaspora; Career & Development; Security & Safety | LIVE PASS |
 | 2 | Personal Finance; Small Business & SME; Fintech & Banking | LIVE PASS |
 | 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
-| 4 | Document & PDF; Image & Design; Developer Tools | IN REVIEW: Document & PDF 31/31 at `LOCAL PASS`; Image & Design 19/19 at `ARTIFACT PASS`; live release is grouped after all three categories |
+| 4 | Document & PDF; Image & Design; Developer Tools | LOCAL COMPLETE: Document & PDF 31/31, Image & Design 19/19, Developer Tools 32/32; one grouped build/deploy/live gate remains |
 | 5 | Education; Health & Wellness; Language & Translation | QUEUED |
 | 6 | Agriculture; Transport & Logistics; Trade & Import | QUEUED |
 | 7 | Government & Civic; Insurance; Mortgage & Property | QUEUED |
@@ -86,7 +86,7 @@ Counts are current English live/new registry rows, excluding each category hub; 
 | --- | --- | ---: | --- | --- | ---: |
 | 4 | Document & PDF | 31 | `/document-pdf/` | `/tools/pdf-workspace/` | 31 |
 | 4 | Image & Design | 19 | `/image-design/` | `/tools/image-compress/` | 19 |
-| 4 | Developer Tools | 32 | `/developer-tools/` | `/tools/json-formatter/` | 0 |
+| 4 | Developer Tools | 32 | `/developer-tools/` | `/tools/json-formatter/` | 32 |
 | 5 | Education | 33 | `/education/` | `/tools/waec-calculator/` | 0 |
 | 5 | Health & Wellness | 32 | `/health/` | `/tools/medical-report/` | 0 |
 | 5 | Language & Translation | 11 | `/language/` | `/tools/swahili-translator/` | 0 |
@@ -94,7 +94,7 @@ Counts are current English live/new registry rows, excluding each category hub; 
 | 6 | Transport & Logistics | 17 | `/transport/` | `/tools/car-import-cost/` | 0 |
 | 6 | Trade & Import | 13 | `/trade/` | `/tools/hs-code-lookup/` | 0 |
 
-Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is closed. Day 4 is active, with Document & PDF accepted locally and Image & Design accepted through the generated-artifact gate. Production deployment is deliberately deferred to one combined Day 4 release.
+Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is closed. All three Day 4 categories are accepted locally; production deployment is deliberately deferred to one combined Day 4 release.
 
 ## Day 4 category status
 
@@ -102,11 +102,13 @@ Day 4-6 therefore contains 635 app rows plus nine hubs under the current registr
 | --- | --- | ---: | ---: | --- | --- |
 | Document & PDF | `/document-pdf/` | 31 | 31; hub accepted | Grouped exact-SHA build, production deploy and live replay after Developer Tools passes | LOCAL PASS |
 | Image & Design | `/image-design/` | 19 | 19; hub accepted | Grouped exact-SHA preview, production and live replay after all Day 4 categories pass | ARTIFACT PASS |
-| Developer Tools | `/developer-tools/` | 32 | 0 on current main | Reconcile preserved serial worktree after Image & Design release closure | QUEUED |
+| Developer Tools | `/developer-tools/` | 32 | 32; hub accepted | Grouped exact-SHA build, production deploy and live replay | LOCAL PASS |
 
 Image & Design was replayed from its clean 19-commit preserved branch onto current main without conflict. The independent maintained browser gate then found and closed one hub filtering defect and four residual narrow-screen/200%-text defects. Evidence lives in `docs/image-design-day4-evidence.md`; 21/21 category browser tests, registry audit, link scan, SEO report, OCR same-origin runtime guard and `git diff --check` pass locally. The full deploy build, deploy-artifact audit and security scan also pass. No individual production deploy will be used; Day 4 will ship once after all three categories close.
 
 Document & PDF was then replayed as 34 serial hub/app commits rather than a bulk branch merge. Every one of the 31 canonical apps retains route-specific usefulness, invalid-state, export/PDF, privacy, mobile, dark-mode and accessibility evidence in `docs/audits/DAY4-DOCUMENT-PDF-VIP-RECEIPT.md`. Independent browser proof passes 33/33; the CV Builder focused gate passes 4/4 after restoring its six career starter paths and repairing the overlapping sample chooser; privacy/AI passes 3/3; focused Node contracts pass 9/9; both PDF workflow verifiers pass. The category is locally accepted, with build/deploy/live proof reserved for the grouped Day 4 release.
+
+Developer Tools retained a 32-row per-app functional receipt covering primary results, invalid/security behavior, and copy/export paths. Its seven preserved commits were replayed onto current main, then independently checked through a 34/34 browser gate and the canonical registry, progressive-directory, and API-doc contracts. The hub now presents the truthful 32 unique free app routes without corrupting the separate 83-record expanded registry count. No individual category deploy was used.
 
 ## Day 3 category status
 

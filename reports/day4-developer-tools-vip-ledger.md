@@ -1,8 +1,11 @@
 # Day 4 Developer Tools VIP Ledger
 
 Date: 2026-07-25  
-Branch: `codex/day4-developer-tools`  
-Base: `4544d89142efdbd1eeb67e5f4a30e5d1696f16b4`  
+Integration branch: `codex/day4-image-design-integrate-20260726`
+
+Production baseline: `b67e291dc154e96159212b2c33961b41f9a16ac7`
+
+Serial source branch: `codex/day4-developer-tools`
 Scope: English canonical free Developer Tools hub plus 32 free app routes. Pro apps and localized derivatives were not changed.
 
 ## Inventory reconciliation
@@ -112,3 +115,11 @@ Local, uncommitted browser artifacts:
 
 - Full-repository generated-output/build gates must run after this local branch is reconciled into a complete checkout; the sparse worktree cannot provide honest whole-site route or deploy proof.
 - No push, merge, Netlify deploy or production verification was performed in this lane.
+
+## Current-main reconciliation
+
+- The seven preserved category/shared-UI commits were replayed cleanly onto the current production baseline; no stale branch merge was used.
+- Independent maintained browser gate: `tests/e2e/day4-developer-tools-vip.spec.js` - PASS, 34/34 (hub, 32 canonical apps, inventory/segment reconciliation) at 320px light and 375px dark with 200% root text.
+- The hub now keeps the two different counts explicit: 32 unique free canonical app routes are user-visible, while the canonical registry marker retains the 83 expanded published records required by the progressive-directory contract.
+- `tests/progressive-directories.test.js`, `tests/canonical-registry.test.js`, and `tests/api-docs-consistency.test.js` - PASS, 3/3.
+- State: **LOCAL PASS**. The grouped Day 4 build, deploy and live-route replay remain separate proof layers.
