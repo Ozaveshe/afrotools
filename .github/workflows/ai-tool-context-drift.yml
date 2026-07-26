@@ -1,0 +1,110 @@
+name: AI Tool Context Drift PR
+
+# netlify/functions/_shared/ai-tool-context.generated.js hashes the PAYE engines,
+# formula registry, and the forex/fuel/rates snapshots. Any of those can change
+# without the artifact being regenerated in the same commit, which turns the CI
+# "Verify generated outputs are committed" gate red on main until someone runs
+# `npm run ai:tool-context` by hand. This job does that on a schedule and raises
+# the regenerated artifact as a reviewable PR.
+
+on:
+  schedule:
+    - cron: '41 3 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: ai-tool-context-drift
+  cancel-in-progress: false
+
+jobs:
+  refresh-ai-tool-context:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      # A throw here is a real defect in a source binding (a malformed verification
+      # panel, a missing engine), not drift. Let it fail loudly -- the generator
+      # names the offending file and field.
+      - name: Regenerate AI tool context
+        run: npm run ai:tool-context
+
+      - name: Detect drift
+        id: changes
+        shell: bash
+        run: |
+          artifact=netlify/functions/_shared/ai-tool-context.generated.js
+          git status --short -- "$artifact"
+          if [ -n "$(git status --short -- "$artifact")" ]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            git diff --stat -- "$artifact"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      # Only propose an artifact that would actually pass CI. This test also pins
+      # the expected context counts, so a genuine catalogue change fails here and
+      # gets a human instead of an auto-PR.
+      - name: Verify regenerated artifact passes the drift test
+        if: steps.changes.outputs.changed == 'true'
+        run: npm run test:ai-tool-context
+
+      - name: Open AI tool context refresh PR
+        id: cpr
+        if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/ai-tool-context-refresh
+          delete-branch: true
+          add-paths: |
+            netlify/functions/_shared/ai-tool-context.generated.js
+          title: "chore(ai): regenerate AI tool context artifact"
+          commit-message: "chore(ai): regenerate AI tool context artifact"
+          body: |
+            Scheduled regeneration of `netlify/functions/_shared/ai-tool-context.generated.js`.
+
+            The artifact hashes the PAYE engines, the formula registry, and the forex/fuel/rates
+            snapshots. It drifted from those inputs, which fails the CI "Verify generated outputs
+            are committed" gate on main until it is refreshed.
+
+            This diff is generated output, not authored content. Review it for *what moved*: a
+            changed hash means an upstream engine, formula, or data snapshot changed, and that
+            upstream change is what deserves the scrutiny.
+
+            `npm run test:ai-tool-context` passed against this artifact before the PR was opened.
+
+      - name: Report outcome
+        if: always() && steps.changes.outputs.changed == 'true'
+        env:
+          COMPARE_URL: ${{ github.server_url }}/${{ github.repository }}/compare/${{ github.event.repository.default_branch }}...automation/ai-tool-context-refresh?expand=1
+        run: |
+          {
+            if [ "${{ steps.cpr.outcome }}" = "success" ]; then
+              echo "## AI tool context refreshed"
+              echo
+              echo "Pull request: ${{ steps.cpr.outputs.pull-request-url }}"
+            else
+              echo "## AI tool context drifted - branch pushed, PR not opened"
+              echo
+              echo "Open it manually: $COMPARE_URL"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report no drift
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "AI tool context artifact is current - no drift." >> "$GITHUB_STEP_SUMMARY"

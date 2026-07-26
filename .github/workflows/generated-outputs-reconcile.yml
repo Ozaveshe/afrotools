@@ -1,0 +1,112 @@
+name: Generated Outputs Reconcile PR
+
+# CI's "Verify generated outputs are committed" gate fails whenever the committed
+# tree diverges from what `npm run build:deploy` produces. Recovering from that
+# has been a manual chore, so the divergence accumulates: on 2026-07-25 it stood
+# at ~700 files after the SEO bot minified JSON-LD across 766 pages in one run.
+#
+# This job reproduces the build on a clean checkout and raises the reconciliation
+# as a reviewable PR. Run it on demand to clear an existing divergence, and weekly
+# so one cannot silently build up again.
+
+on:
+  schedule:
+    - cron: '23 4 * * 2'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: generated-outputs-reconcile
+  cancel-in-progress: false
+
+jobs:
+  reconcile-generated-outputs:
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '22'
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build deploy artifact
+        run: npm run build:deploy
+
+      - name: Reconcile calculation-quality digests
+        run: npm run calculation-quality:build
+
+      - name: Detect divergence
+        id: changes
+        shell: bash
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo 'changed=true' >> "$GITHUB_OUTPUT"
+            {
+              echo '## Divergence detected'
+              echo
+              echo '```'
+              git diff --stat | tail -25
+              echo '```'
+            } >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'changed=false' >> "$GITHUB_OUTPUT"
+          fi
+
+      # Only propose a tree that actually satisfies the gates it is meant to fix.
+      - name: Verify the reconciled tree passes its own gates
+        if: steps.changes.outputs.changed == 'true'
+        run: |
+          npm run calculation-quality:check
+          npm run audit:dist
+
+      - name: Open reconciliation PR
+        id: cpr
+        if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
+        uses: peter-evans/create-pull-request@v7
+        with:
+          branch: automation/generated-outputs-reconcile
+          delete-branch: true
+          title: "chore: reconcile generated outputs with build:deploy"
+          commit-message: "chore: reconcile generated outputs with build:deploy"
+          body: |
+            The committed tree diverged from `npm run build:deploy` output. This PR is
+            that build's result, so CI's "Verify generated outputs are committed" gate
+            can pass again.
+
+            This diff is **generated output, not authored content**. Review it for
+            *what moved* rather than line by line: a large diff usually means something
+            upstream rewrote files the build owns, and that upstream cause is what
+            deserves the scrutiny. The 2026-07-25 case was the daily SEO bot minifying
+            JSON-LD across 766 pages, which is fixed at source in
+            `scripts/lib/seo-tags.js`.
+
+            `calculation-quality:check` and `audit:dist` both passed against this tree
+            before the PR was opened.
+
+      - name: Report outcome
+        if: always() && steps.changes.outputs.changed == 'true'
+        env:
+          COMPARE_URL: ${{ github.server_url }}/${{ github.repository }}/compare/${{ github.event.repository.default_branch }}...automation/generated-outputs-reconcile?expand=1
+        run: |
+          {
+            if [ "${{ steps.cpr.outcome }}" = "success" ]; then
+              echo "Pull request: ${{ steps.cpr.outputs.pull-request-url }}"
+            else
+              echo "Branch pushed but PR not opened. Open it manually: $COMPARE_URL"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report no divergence
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "Committed tree matches build:deploy output - nothing to reconcile." >> "$GITHUB_STEP_SUMMARY"

@@ -31,18 +31,27 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
-      - name: Check live automation health
-        id: health
-        continue-on-error: true
+      - name: Preflight monitor configuration
+        id: preflight
         env:
           SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
         run: |
           rm -f reports/live-automation-health-latest.json reports/live-automation-health-latest.md
           if [ -z "$SUPABASE_SERVICE_ROLE_KEY" ]; then
-            echo "::error::Repository secret SUPABASE_SERVICE_ROLE_KEY is not configured."
-            exit 1
+            echo "::error::Repository secret SUPABASE_SERVICE_ROLE_KEY is not configured. \
+          The monitor cannot read live_data_store, so feed freshness is UNKNOWN, not healthy."
+            echo 'configured=false' >> "$GITHUB_OUTPUT"
+          else
+            echo 'configured=true' >> "$GITHUB_OUTPUT"
           fi
-          npm run automation:live-health:strict
+
+      - name: Check live automation health
+        id: health
+        if: steps.preflight.outputs.configured == 'true'
+        continue-on-error: true
+        env:
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: npm run automation:live-health:strict
 
       - name: Upload automation health evidence
         if: always()
@@ -55,7 +64,7 @@ jobs:
             reports/live-automation-health-latest.md
 
       - name: Prepare failure alert
-        if: steps.health.outcome == 'failure'
+        if: steps.preflight.outputs.configured != 'true' || steps.health.outcome == 'failure'
         id: alert
         shell: bash
         run: |
@@ -65,23 +74,48 @@ jobs:
           const report = fs.existsSync(reportPath)
             ? JSON.parse(fs.readFileSync(reportPath, 'utf8'))
             : null;
+          const configured = process.env.MONITOR_CONFIGURED === 'true';
           const counts = report && report.counts ? report.counts : {};
           const stale = Number(counts.stale || 0);
           const missing = Number(counts.missing || 0);
-          const title = `Automation health: ${stale} stale, ${missing} missing`;
           const failedChecks = report && Array.isArray(report.checks)
             ? report.checks.filter((check) => check.status !== 'ok')
             : [];
-          const lines = [
-            'The scheduled automation health gate failed.',
-            '',
-            `- Generated: ${report ? report.generated_at : 'no fresh report; check workflow configuration'}`,
-            `- Stale: ${stale}`,
-            `- Missing: ${missing}`,
-            `- Degraded: ${Number(counts.degraded || 0)}`,
-            `- Unavailable: ${Number(counts.unavailable || 0)}`,
-            `- Workflow run: ${process.env.RUN_URL}`,
-          ];
+
+          // Three distinct failure modes. Never report "0 stale, 0 missing" for a run
+          // that measured nothing -- an unmeasured feed is UNKNOWN, not healthy.
+          let title;
+          let summary;
+          if (!configured) {
+            title = 'Automation health: monitor not configured (cannot measure feeds)';
+            summary = 'The monitor did not run. Repository secret `SUPABASE_SERVICE_ROLE_KEY` '
+              + 'is not set, so `live_data_store` could not be read. Feed freshness is '
+              + '**unknown** -- this issue is not evidence that the feeds are healthy, '
+              + 'and not evidence that they are stale.';
+          } else if (!report) {
+            title = 'Automation health: no report produced (monitor crashed)';
+            summary = 'The monitor ran but produced no report, so feed freshness is '
+              + '**unknown**. Check the workflow logs for a crash in '
+              + '`scripts/audit-live-automation-health.js`.';
+          } else {
+            title = `Automation health: ${stale} stale, ${missing} missing`;
+            summary = 'The scheduled automation health gate failed against a real report.';
+          }
+
+          const lines = [summary, ''];
+          if (configured && report) {
+            lines.push(
+              `- Generated: ${report.generated_at}`,
+              `- Stale: ${stale}`,
+              `- Missing: ${missing}`,
+              `- Degraded: ${Number(counts.degraded || 0)}`,
+              `- Unavailable: ${Number(counts.unavailable || 0)}`,
+            );
+          } else {
+            lines.push('- Stale: unknown', '- Missing: unknown');
+          }
+          lines.push(`- Workflow run: ${process.env.RUN_URL}`);
+
           if (failedChecks.length) {
             lines.push('', '### Non-healthy checks', '');
             for (const check of failedChecks) {
@@ -90,17 +124,28 @@ jobs:
                 `SLA=${check.sla_hours || 'n/a'}h; next=${check.next_scheduled_at || 'n/a'}`
               );
             }
-          } else if (!report) {
-            lines.push('', 'No fresh report was produced. Verify the Actions secret and workflow logs.');
+          }
+          if (!configured) {
+            lines.push(
+              '',
+              '### How to fix',
+              '',
+              '```',
+              'gh secret set SUPABASE_SERVICE_ROLE_KEY --repo ' + process.env.GITHUB_REPOSITORY,
+              '```',
+              '',
+              'The same secret also gates the weekly `Static Data Fallback Refresh PR` workflow.',
+            );
           }
           fs.writeFileSync('automation-health-issue.md', `${lines.join('\n')}\n`);
           fs.appendFileSync(process.env.GITHUB_OUTPUT, `title=${title}\n`);
           NODE
         env:
+          MONITOR_CONFIGURED: ${{ steps.preflight.outputs.configured }}
           RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
 
       - name: Open or update automation health issue
-        if: steps.health.outcome == 'failure'
+        if: steps.preflight.outputs.configured != 'true' || steps.health.outcome == 'failure'
         env:
           GH_TOKEN: ${{ github.token }}
           ALERT_TITLE: ${{ steps.alert.outputs.title }}
@@ -125,5 +170,5 @@ jobs:
           fi
 
       - name: Fail workflow when health is not green
-        if: steps.health.outcome == 'failure'
+        if: steps.preflight.outputs.configured != 'true' || steps.health.outcome == 'failure'
         run: exit 1

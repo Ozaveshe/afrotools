@@ -20,6 +20,7 @@ jobs:
       - uses: actions/setup-node@v5
         with:
           node-version: '22'
+          cache: npm
 
       - name: Install dependencies
         run: npm ci
@@ -68,7 +69,9 @@ jobs:
             ${{ runner.temp }}/source-ledger-refresh.patch
 
       - name: Open source ledger refresh PR
+        id: cpr
         if: steps.changes.outputs.changed == 'true'
+        continue-on-error: true
         uses: peter-evans/create-pull-request@v7
         with:
           branch: automation/source-ledger-refresh
@@ -79,3 +82,34 @@ jobs:
             Weekly official-source ledger refresh.
 
             This PR updates generated source status, reports, and hub source-summary timestamps for government and transport ledgers. Changed hashes are review signals only. Review blocked, broken, manual-review, or changed rows before updating public fees, eligibility, documents, timelines, duties, tariffs, fares, or rates.
+
+      # PR creation needs Settings -> Actions -> General -> "Allow GitHub Actions to
+      # create and approve pull requests". Without it the refresh still succeeds and
+      # the branch is still pushed, so surface the compare link rather than going red
+      # every Monday over a repository setting.
+      - name: Report refresh outcome
+        if: always() && steps.changes.outputs.changed == 'true'
+        env:
+          COMPARE_URL: ${{ github.server_url }}/${{ github.repository }}/compare/${{ github.event.repository.default_branch }}...automation/source-ledger-refresh?expand=1
+        run: |
+          {
+            if [ "${{ steps.cpr.outcome }}" = "success" ]; then
+              echo "## Source ledger refresh"
+              echo
+              echo "Pull request: ${{ steps.cpr.outputs.pull-request-url }}"
+            else
+              echo "## Source ledger refresh - branch pushed, PR not opened"
+              echo
+              echo "The ledgers refreshed successfully and \`automation/source-ledger-refresh\` was pushed,"
+              echo "but this repository does not permit GitHub Actions to create pull requests."
+              echo
+              echo "Open it manually: $COMPARE_URL"
+              echo
+              echo "To automate this, enable **Settings -> Actions -> General -> Workflow permissions ->"
+              echo "Allow GitHub Actions to create and approve pull requests**."
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Report no-op refresh
+        if: steps.changes.outputs.changed != 'true'
+        run: echo "No source ledger changes this week." >> "$GITHUB_STEP_SUMMARY"

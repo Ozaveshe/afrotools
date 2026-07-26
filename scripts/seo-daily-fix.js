@@ -140,29 +140,10 @@ function resolvePreferredPageUrl(filePath, content) {
   return defaultPageUrl(filePath);
 }
 
-function upsertCanonical(content, url) {
-  const line = `<link rel="canonical" href="${url}">`;
-  const pattern =
-    /<link\b(?=[^>]*\brel=["']canonical["'])(?=[^>]*\bhref=["'][^"']+["'])[^>]*>/i;
+// Defined in scripts/lib/seo-tags.js, which documents and tests the idempotence
+// contract: rewrite a tag only when the URL actually changes.
+const { upsertCanonical, upsertOgUrl, rewriteJsonLdUrlLiterals } = require('./lib/seo-tags');
 
-  if (pattern.test(content)) {
-    return content.replace(pattern, line);
-  }
-
-  return content.replace(/<\/head>/i, `${line}\n</head>`);
-}
-
-function upsertOgUrl(content, url) {
-  const line = `<meta property="og:url" content="${url}">`;
-  const pattern =
-    /<meta\b(?=[^>]*\bproperty=["']og:url["'])(?=[^>]*\bcontent=["'][^"']*["'])[^>]*>/i;
-
-  if (pattern.test(content)) {
-    return content.replace(pattern, line);
-  }
-
-  return content.replace(/<\/head>/i, `${line}\n</head>`);
-}
 
 function normalizeKnownSiteUrl(url) {
   if (
@@ -188,24 +169,10 @@ function normalizeKnownSiteUrl(url) {
   return hash && !preferred.includes('#') ? `${preferred}${hash}` : preferred;
 }
 
-function normalizeJsonLdValue(value, key = '') {
-  if (Array.isArray(value)) {
-    return value.map((item) => normalizeJsonLdValue(item, key));
-  }
-
-  if (!value || typeof value !== 'object') {
-    if (key === 'urlTemplate' && typeof value === 'string' && value.includes('{search_term_string}')) {
-      return value;
-    }
-    return typeof value === 'string' ? normalizeKnownSiteUrl(value) : value;
-  }
-
-  for (const key of Object.keys(value)) {
-    value[key] = normalizeJsonLdValue(value[key], key);
-  }
-
-  return value;
-}
+// normalizeJsonLdValue() used to walk the parsed object here. It was replaced by
+// rewriteJsonLdUrlLiterals() in scripts/lib/seo-tags.js, which does the same URL
+// normalisation against the raw text so the block's formatting survives. Its
+// `{search_term_string}` exception is preserved there.
 
 function normalizeJsonLdUrls(content) {
   let blocksFixed = 0;
@@ -217,18 +184,18 @@ function normalizeJsonLdUrls(content) {
       if (!trimmed) return match;
 
       try {
-        const parsed = JSON.parse(trimmed);
-        const before = JSON.stringify(parsed);
-        const normalized = normalizeJsonLdValue(parsed);
-        const after = JSON.stringify(normalized);
-
-        if (before === after) return match;
-
-        blocksFixed += 1;
-        return `<script${attrs}>${after}</script>`;
+        // Validity gate only. The rewrite itself runs on the raw text so the
+        // block's original formatting survives -- see rewriteJsonLdUrlLiterals.
+        JSON.parse(trimmed);
       } catch {
         return match;
       }
+
+      const { text, changed } = rewriteJsonLdUrlLiterals(jsonText, normalizeKnownSiteUrl);
+      if (!changed) return match;
+
+      blocksFixed += 1;
+      return `<script${attrs}>${text}</script>`;
     }
   );
 
