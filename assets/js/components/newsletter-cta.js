@@ -9,8 +9,7 @@
   const DISMISS_DAYS = 7;
 
   const CSS = `
-    @import url('https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap');
-    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;font-family:'DM Sans',system-ui,sans-serif}
     :host{display:block}
     .bar{
       position:fixed;bottom:0;left:0;right:0;z-index:400;

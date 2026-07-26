@@ -18,6 +18,7 @@ const FUEL_PATH = path.join(ROOT, 'data', 'fuel', 'latest.json');
 const FOREX_PATH = path.join(ROOT, 'data', 'forex', 'latest.json');
 const RATES_PATH = path.join(ROOT, 'data', 'rates', 'latest.json');
 const TOOL_VERIFICATION_PATH = path.join(ROOT, 'data', 'tool-verification.json');
+const ALLOWED_STATUSES = Object.freeze(['source-coupled', 'unverified-static']);
 
 const formulaRegistry = readJson(FORMULA_PATH);
 const formulaById = new Map(
@@ -285,7 +286,7 @@ function rewriteAdvisorImport() {
 function validateDefinition(definition, filePath) {
   if (!definition || definition.schemaVersion !== 1) throw new Error(filePath + ': schemaVersion must be 1');
   if (!/^[a-z0-9-]+$/.test(definition.toolKey || '')) throw new Error(filePath + ': invalid toolKey');
-  if (!['source-coupled', 'unverified-static'].includes(definition.status)) throw new Error(filePath + ': invalid status');
+  if (!ALLOWED_STATUSES.includes(definition.status)) throw new Error(filePath + ': invalid status');
   if (typeof definition.staticText !== 'string') throw new Error(filePath + ': staticText must be a string');
   if (!/^sha256:[a-f0-9]{64}$/.test(definition.legacyTextSha256 || '')) throw new Error(filePath + ': invalid legacyTextSha256');
   if (definition.status === 'source-coupled') {
@@ -1639,4 +1640,16 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { CONTEXT_DIR, GENERATED_PATH, atomicWrite, buildAll, buildSourceRecord, definitionFromLegacy, extractInlineContexts, rewriteAdvisorImport, sourceBindingForKey };
+module.exports = {
+  ALLOWED_STATUSES,
+  CONTEXT_DIR,
+  GENERATED_PATH,
+  atomicWrite,
+  buildAll,
+  buildSourceRecord,
+  definitionFromLegacy,
+  extractInlineContexts,
+  rewriteAdvisorImport,
+  sourceBindingForKey,
+  validateDefinition
+};

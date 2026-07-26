@@ -1,1 +1,208 @@
-!function(){"use strict";var e=window.TRANSLATOR_CONFIG;if(e){var t="afro_translate_cache_"+e.target,n=3e5;"loading"===document.readyState?document.addEventListener("DOMContentLoaded",a):a()}function a(){var t=document.querySelector(".container");if(t){var n,a,o=document.createElement("div");o.className="card",o.id="liveTranslateCard",o.style.borderColor="#c4b5fd",o.style.borderWidth="2px",o.innerHTML='<h2 style="display:flex;align-items:center;gap:8px;margin-bottom:1rem;"><span style="font-size:1.3rem;">🌍</span> Live Translator<span style="font-size:.7rem;font-weight:600;background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:10px;margin-left:auto;">API-Powered</span></h2><div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem;" id="translateGrid"><div><label style="font-size:.78rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;">English</label><textarea id="translateInput" rows="3" aria-label="English text to translate" placeholder="Type any English text to translate..." style="width:100%;padding:.65rem 1rem;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.95rem;font-family:inherit;resize:vertical;background:#f8fafc;"></textarea></div><div><label style="font-size:.78rem;font-weight:600;color:#64748b;text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:4px;">'+(n=e.langName,(a=document.createElement("div")).textContent=n,a.innerHTML+'</label><div id="translateOutput" style="width:100%;min-height:82px;padding:.65rem 1rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.95rem;background:#f5f3ff;color:#4c1d95;font-weight:600;line-height:1.6;display:flex;align-items:center;">Translation appears here...</div></div></div><div style="display:flex;gap:.75rem;align-items:center;"><button id="translateBtn" style="padding:.5rem 1.25rem;background:#7c3aed;color:#fff;border:none;border-radius:7px;font-weight:700;font-size:.88rem;cursor:pointer;font-family:inherit;transition:background .15s;">Translate →</button><button id="swapBtn" style="padding:.5rem .75rem;background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:7px;font-size:.95rem;cursor:pointer;" title="Swap languages">⇄</button><span id="translateStatus" style="font-size:.78rem;color:#94a3b8;margin-left:auto;"></span></div><p style="font-size:.72rem;color:#94a3b8;margin-top:.75rem;">Powered by MyMemory Translation API · Results may vary for informal/slang text · <a href="#" onclick="document.getElementById(\'liveTranslateCard\').nextElementSibling.scrollIntoView({behavior:\'smooth\'});return false;" style="color:#7c3aed;">Browse curated phrasebook below ↓</a></p>'),t.insertBefore(o,t.firstChild),document.getElementById("translateBtn").addEventListener("click",r),document.getElementById("translateInput").addEventListener("keydown",function(e){"Enter"!==e.key||e.shiftKey||(e.preventDefault(),r())});var l=!1;document.getElementById("swapBtn").addEventListener("click",function(){l=!l;var t=o.querySelectorAll("label");l?(t[0].textContent=e.langName,t[1].textContent="English",document.getElementById("translateInput").placeholder="Type "+e.langName+" text to translate..."):(t[0].textContent="English",t[1].textContent=e.langName,document.getElementById("translateInput").placeholder="Type any English text to translate...")}),o._swapped=function(){return l}}}function r(){var a=document.getElementById("liveTranslateCard"),r=document.getElementById("translateInput"),o=document.getElementById("translateOutput"),l=document.getElementById("translateStatus"),i=document.getElementById("translateBtn"),s=r.value.trim();if(s)if(s.length>2e3)o.textContent="Text too long (max 2000 characters).";else{var d=a._swapped(),c=d?e.target:e.source||"en",m=d?e.source||"en":e.target,p=c+"|"+m+"|"+s,u=function(e){try{var a=JSON.parse(localStorage.getItem(t)||"{}")[e];if(a&&Date.now()-a.ts<n)return a.data}catch(e){}return null}(p);if(u)return o.textContent=u.translatedText,void(l.textContent="Cached · "+u.provider);i.disabled=!0,i.textContent="Translating...",o.innerHTML='<span style="color:#94a3b8;">Translating...</span>',l.textContent="",fetch("/api/translate",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({text:s,source:c,target:m})}).then(function(e){return e.json()}).then(function(e){if(i.disabled=!1,i.textContent="Translate →",e.error)return o.textContent="Translation unavailable. Try the phrasebook below.",void(l.textContent=e.error);o.textContent=e.translatedText,l.textContent=e.provider+" · "+e.characters+" chars",function(e,n){try{var a=JSON.parse(localStorage.getItem(t)||"{}"),r=Object.keys(a);r.length>50&&(r.sort(function(e,t){return a[e].ts-a[t].ts}),r.slice(0,20).forEach(function(e){delete a[e]})),a[e]={ts:Date.now(),data:n},localStorage.setItem(t,JSON.stringify(a))}catch(e){}}(p,e)}).catch(function(e){i.disabled=!1,i.textContent="Translate →",o.textContent="Connection error. Try the phrasebook below.",l.textContent=e.message})}else o.textContent="Enter text above to translate."}}();
+(function () {
+  'use strict';
+
+  var config = window.TRANSLATOR_CONFIG;
+  if (!config) return;
+
+  var toolId = String(config.toolId || config.langCode || config.target || 'language-translator');
+  var memoryCache = new Map();
+  var activeController = null;
+
+  function consentApi() {
+    return window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  }
+
+  function escapeHtml(value) {
+    var node = document.createElement('div');
+    node.textContent = String(value || '');
+    return node.innerHTML;
+  }
+
+  function setStatus(text) {
+    var status = document.getElementById('translateStatus');
+    if (status) status.textContent = text || '';
+  }
+
+  function setBusy(busy) {
+    var button = document.getElementById('translateBtn');
+    if (!button) return;
+    button.dataset.busy = busy ? 'true' : 'false';
+    button.disabled = busy || !(consentApi() && consentApi().hasConsent(toolId));
+    button.textContent = busy ? 'Translating…' : 'Translate →';
+  }
+
+  function cacheKey(source, target, text) {
+    return source + '|' + target + '|' + text;
+  }
+
+  function remember(key, value) {
+    if (memoryCache.size >= 20) {
+      memoryCache.delete(memoryCache.keys().next().value);
+    }
+    memoryCache.set(key, value);
+  }
+
+  function clearTranslation() {
+    if (activeController) activeController.abort();
+    activeController = null;
+    memoryCache.clear();
+    var input = document.getElementById('translateInput');
+    var output = document.getElementById('translateOutput');
+    if (input) input.value = '';
+    if (output) output.textContent = 'Cloud translation appears here after you opt in.';
+    setStatus('Text and temporary translation state cleared.');
+    if (input) input.focus();
+  }
+
+  function render() {
+    var container = document.querySelector('.container');
+    var consent = consentApi();
+    if (!container || !consent) return;
+
+    var card = document.createElement('section');
+    card.className = 'card';
+    card.id = 'liveTranslateCard';
+    card.setAttribute('aria-labelledby', 'liveTranslateTitle');
+    card.style.borderColor = '#bfdbfe';
+    card.innerHTML = [
+      '<h2 id="liveTranslateTitle" style="display:flex;align-items:center;gap:8px;margin-bottom:.35rem;">',
+      '<span aria-hidden="true">🌍</span> Optional cloud translation',
+      '<span style="font-size:.7rem;font-weight:700;background:#dbeafe;color:#1d4ed8;padding:2px 8px;border-radius:10px;margin-left:auto;">External service</span>',
+      '</h2>',
+      '<p style="font-size:.82rem;color:#475569;margin:0 0 .75rem;">The local phrasebook above works without a network request. Use this separate service only for text you choose to send.</p>',
+      '<div data-external-translation-consent-host></div>',
+      '<div style="display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1rem;margin-bottom:1rem;" id="translateGrid">',
+      '<div><label for="translateInput" style="font-size:.78rem;font-weight:700;color:#475569;display:block;margin-bottom:4px;">Source text</label>',
+      '<textarea id="translateInput" rows="3" maxlength="2000" placeholder="Enter non-sensitive text…" style="width:100%;padding:.65rem 1rem;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.95rem;font-family:inherit;resize:vertical;background:var(--surface,#fff);"></textarea></div>',
+      '<div><div id="translateOutputLabel" style="font-size:.78rem;font-weight:700;color:#475569;margin-bottom:4px;">',
+      escapeHtml(config.langName || config.target),
+      ' output</div><div id="translateOutput" role="region" aria-labelledby="translateOutputLabel" style="width:100%;min-height:82px;padding:.65rem 1rem;border:1.5px solid #e2e8f0;border-radius:8px;font-size:.95rem;background:var(--surface-subtle,#f8fafc);color:inherit;line-height:1.6;">Cloud translation appears here after you opt in.</div></div>',
+      '</div>',
+      '<div style="display:flex;gap:.75rem;align-items:center;flex-wrap:wrap;">',
+      '<button type="button" id="translateBtn" disabled style="min-height:44px;padding:.5rem 1.25rem;background:#0057b8;color:#fff;border:none;border-radius:8px;font-weight:800;font-family:inherit;cursor:pointer;">Translate →</button>',
+      '<button type="button" id="swapBtn" style="min-height:44px;padding:.5rem .85rem;background:#fff;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:800;cursor:pointer;" aria-label="Swap source and target languages">Swap</button>',
+      '<button type="button" id="clearTranslateBtn" style="min-height:44px;padding:.5rem .85rem;background:#fff;border:1.5px solid #cbd5e1;border-radius:8px;font-weight:800;cursor:pointer;">Clear</button>',
+      '<span id="translateStatus" role="status" aria-live="polite" style="font-size:.78rem;color:#475569;margin-left:auto;"></span>',
+      '</div>',
+      '<style>@media(max-width:640px){#translateGrid{grid-template-columns:1fr!important}}@media(prefers-reduced-motion:reduce){#liveTranslateCard *{scroll-behavior:auto!important}}</style>'
+    ].join('');
+
+    container.appendChild(card);
+    consent.render(card.querySelector('[data-external-translation-consent-host]'), {
+      toolId: toolId,
+      primaryProvider: 'MyMemory'
+    });
+
+    var swapped = false;
+    var input = document.getElementById('translateInput');
+    var outputLabel = document.getElementById('translateOutputLabel');
+    var button = document.getElementById('translateBtn');
+
+    card.addEventListener('afrotools:external-translation-consent-change', function () {
+      setBusy(false);
+    });
+    button.addEventListener('click', runTranslation);
+    document.getElementById('clearTranslateBtn').addEventListener('click', clearTranslation);
+    input.addEventListener('keydown', function (event) {
+      if (event.key === 'Enter' && !event.shiftKey) {
+        event.preventDefault();
+        runTranslation();
+      }
+    });
+    document.getElementById('swapBtn').addEventListener('click', function () {
+      swapped = !swapped;
+      input.placeholder = swapped
+        ? 'Enter non-sensitive ' + (config.langName || 'target-language') + ' text…'
+        : 'Enter non-sensitive source text…';
+      outputLabel.textContent = swapped ? 'English output' : (config.langName || config.target) + ' output';
+      document.getElementById('translateOutput').textContent = 'Cloud translation appears here after you opt in.';
+      setStatus('');
+    });
+    card._isSwapped = function () { return swapped; };
+  }
+
+  async function runTranslation() {
+    var consent = consentApi();
+    var card = document.getElementById('liveTranslateCard');
+    var input = document.getElementById('translateInput');
+    var output = document.getElementById('translateOutput');
+    if (!consent || !card || !input || !output) return;
+    if (!consent.requireConsent(toolId, 'Cloud translation is off. Review the notice and opt in first.')) {
+      setStatus('No text was sent. Cloud translation needs your explicit opt-in.');
+      return;
+    }
+
+    var text = input.value.trim();
+    if (!text) {
+      output.textContent = 'Enter text above to translate.';
+      return;
+    }
+    if (Array.from(text).length > 2000) {
+      output.textContent = 'Text is too long. Use 2,000 characters or fewer.';
+      return;
+    }
+
+    var swapped = card._isSwapped();
+    var source = swapped ? config.target : (config.source || 'en');
+    var target = swapped ? (config.source || 'en') : config.target;
+    var key = cacheKey(source, target, text);
+    if (memoryCache.has(key)) {
+      var cached = memoryCache.get(key);
+      output.textContent = cached.translatedText;
+      setStatus('Temporary in-page result · ' + cached.provider);
+      return;
+    }
+
+    if (activeController) activeController.abort();
+    activeController = typeof AbortController === 'function' ? new AbortController() : null;
+    setBusy(true);
+    output.textContent = 'Translating…';
+    setStatus('Sending the text you selected to the external translation service.');
+
+    var requestHeaders = Object.assign({ 'Content-Type': 'application/json' }, consent.headers(toolId));
+    try {
+      var response = await fetch('/api/translate', {
+        method: 'POST',
+        headers: requestHeaders,
+        credentials: 'same-origin',
+        cache: 'no-store',
+        signal: activeController ? activeController.signal : undefined,
+        body: JSON.stringify({
+          text: text,
+          source: source,
+          target: target,
+          allowFallback: consent.allowsFallback(toolId)
+        })
+      });
+      var data = await response.json().catch(function () { return {}; });
+      if (!response.ok || !data.translatedText) {
+        if (response.status === 428) consent.reset(toolId);
+        output.textContent = 'Cloud translation is unavailable. The local phrasebook above still works.';
+        setStatus(data.message || data.error || 'No external translation was returned.');
+        return;
+      }
+      output.textContent = data.translatedText;
+      setStatus((data.provider || 'External provider') + (data.unchanged ? ' · unchanged; verify this result' : '') + ' · temporary in-page result');
+      remember(key, {
+        translatedText: data.translatedText,
+        provider: data.provider || 'external provider'
+      });
+    } catch (error) {
+      if (error && error.name === 'AbortError') {
+        setStatus('Cloud translation request cancelled.');
+      } else {
+        output.textContent = 'Cloud translation is unavailable. The local phrasebook above still works.';
+        setStatus('Connection error. No result was stored.');
+      }
+    } finally {
+      activeController = null;
+      setBusy(false);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', render, { once: true });
+  } else {
+    render();
+  }
+}());

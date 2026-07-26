@@ -1,0 +1,104 @@
+.tool-hero { background: #0b1f35; }
+.tool-hero::after { content: "ƒ(x)"; font-family: var(--font-mono); }
+.hero-sub, .breadcrumb, .breadcrumb a { color: #d8e5f4; }
+.b-blue { color: #dbeafe; border-color: rgba(147, 197, 253, .45); }
+.copy-hint, .btn, .hist-copy, .hist-clear, .calc-action-panel button,
+[data-tool-verification-panel] *, .faq-section * { font-family: var(--font-body) !important; }
+.calc-result { width: 100%; background: transparent; }
+
+.calc-result:focus-visible,
+.calc-mode:focus-visible,
+.hist-value:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
+}
+
+.calc-result,
+.calc-mode,
+.hist-value { border: 0; }
+
+.hist-value {
+  min-width: 0;
+  padding: 3px 4px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: inherit;
+}
+
+.hist-expr { flex: 1 1 auto; justify-content: flex-start; color: #557391; }
+.hist-result { flex: 0 1 auto; justify-content: flex-end; font-weight: 800; color: #1e293b; }
+.hist-copy { opacity: 1; min-height: 34px; }
+.scientific-privacy {
+  margin: 0 12px 12px;
+  padding: 12px 14px;
+  border-left: 4px solid var(--color-primary);
+  border-radius: 8px;
+  background: #eff6ff;
+  color: #1e3a5f;
+  font-size: .78rem;
+  line-height: 1.55;
+}
+
+[data-theme="dark"] .calc-wrap,
+[data-theme="dark"] .history-section,
+[data-theme="dark"] .calc-action-panel,
+[data-theme="dark"] .calc-action-status,
+[data-theme="dark"] .info-card,
+[data-theme="dark"] .method-card,
+[data-theme="dark"] [data-tool-verification-panel] details,
+[data-theme="dark"] .faq-section details {
+  background: #111c2d !important;
+  border-color: #334155 !important;
+}
+[data-theme="dark"] .calc-buttons { background: #0d1727; }
+[data-theme="dark"] .btn,
+[data-theme="dark"] .calc-action-panel button,
+[data-theme="dark"] .shortcut-key {
+  background: #172337;
+  border-color: #52677f;
+  color: #e2e8f0;
+}
+[data-theme="dark"] .hist-expr,
+[data-theme="dark"] .hist-result,
+[data-theme="dark"] .info-title,
+[data-theme="dark"] .info-text,
+[data-theme="dark"] .method-card h2,
+[data-theme="dark"] .method-card p,
+[data-theme="dark"] .method-card li,
+[data-theme="dark"] [data-tool-verification-panel] h2,
+[data-theme="dark"] [data-tool-verification-panel] p,
+[data-theme="dark"] [data-tool-verification-panel] summary,
+[data-theme="dark"] [data-tool-verification-panel] div,
+[data-theme="dark"] .faq-section h2,
+[data-theme="dark"] .faq-section summary,
+[data-theme="dark"] .faq-section .faq-answer {
+  color: #e2e8f0 !important;
+}
+[data-theme="dark"] .scientific-privacy { background: #10243d; color: #dbeafe; }
+
+@media (max-width: 680px) {
+  .tool-main-inner { grid-template-columns: minmax(0, 1fr); padding-inline: 12px; }
+  .tool-main-inner > *, .calc-wrap, .sidebar { min-width: 0; max-width: 100%; }
+  .calc-buttons { gap: 3px; }
+  .btn { min-width: 0; padding-inline: 2px; }
+  .calc-action-panel button { width: 100%; }
+  .hist-item { flex-wrap: wrap; }
+  .hist-expr { flex-basis: 60%; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; }
+}
+
+@media print {
+  afro-navbar, afro-footer, afro-related-tools, afro-newsletter-cta,
+  .tool-hero, .calc-display, .calc-buttons, .sidebar, .calc-action-panel,
+  .calc-action-status, .scientific-privacy, .method-card, .faq-section,
+  [data-tool-verification-panel], .seo-links { display: none !important; }
+  body, .tool-main, .calc-wrap, .history-section { background: #fff !important; color: #000 !important; }
+  .tool-main-inner { display: block !important; max-width: none !important; }
+  .calc-wrap { border: 0 !important; box-shadow: none !important; }
+  .history-section { max-height: none !important; overflow: visible !important; }
+  .hist-copy { display: none !important; }
+}

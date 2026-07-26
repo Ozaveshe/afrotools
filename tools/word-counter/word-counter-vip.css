@@ -1,0 +1,408 @@
+.word-counter-vip {
+  --wc-surface: var(--color-surface, #fff);
+  --wc-surface-soft: var(--color-surface-muted, #f5f8fc);
+  --wc-border: var(--color-border, #d9e2ec);
+  --wc-text: var(--color-text, #172033);
+  --wc-muted: var(--color-text-secondary, #5d6b82);
+  font-family: "DM Sans", system-ui, sans-serif;
+}
+
+.word-counter-vip :where(.tool-hero, .tool-main, .content-section, .faq-section) * {
+  font-family: "DM Sans", system-ui, sans-serif !important;
+}
+
+.word-counter-vip .tool-hero {
+  background: #071b31;
+}
+
+.word-counter-vip .tool-hero::after {
+  content: "";
+}
+
+.word-counter-vip .hero-sub {
+  color: #d4deeb;
+  font-size: 1rem;
+  max-width: 700px;
+}
+
+.word-counter-vip .badge {
+  border-radius: 999px;
+  font-size: .75rem;
+  letter-spacing: 0;
+}
+
+.word-counter-vip .card,
+.word-counter-vip .read-score-box,
+.word-counter-vip .stat-box,
+.word-counter-vip .social-item,
+.word-counter-vip details {
+  background: var(--wc-surface);
+  border-color: var(--wc-border);
+  color: var(--wc-text);
+}
+
+.word-counter-vip details {
+  background: var(--wc-surface) !important;
+  border-color: var(--wc-border) !important;
+}
+
+.word-counter-vip .card {
+  overflow: visible;
+}
+
+.word-counter-vip .card-head {
+  background: var(--wc-surface-soft);
+  border-color: var(--wc-border);
+  align-items: flex-start;
+}
+
+.word-counter-vip .card-title,
+.word-counter-vip .stat-label,
+.word-counter-vip .read-score-label,
+.word-counter-vip .social-name,
+.word-counter-vip .goal-header span,
+.word-counter-vip .kw-toggle-row label,
+.word-counter-vip .kw-word {
+  color: var(--wc-text);
+}
+
+.card-kicker {
+  display: block;
+  margin-top: .25rem;
+  color: var(--wc-muted);
+  font-size: .8rem;
+  line-height: 1.45;
+}
+
+.input-label {
+  display: block;
+  margin-bottom: .5rem;
+  color: var(--wc-text);
+  font-size: .9rem;
+  font-weight: 700;
+}
+
+.word-counter-vip .f-textarea,
+.limit-input,
+.assumption-input {
+  background: var(--wc-surface);
+  border: 1.5px solid var(--wc-border);
+  color: var(--wc-text);
+  font-family: inherit;
+  font-size: 1rem;
+}
+
+.word-counter-vip .f-textarea {
+  min-height: 280px;
+  font-weight: 400;
+  line-height: 1.65;
+}
+
+.word-counter-vip .f-textarea::placeholder {
+  color: var(--wc-muted);
+  opacity: .9;
+}
+
+.word-counter-vip button,
+.word-counter-vip .file-input-label {
+  min-height: 44px;
+  font-family: inherit;
+}
+
+.word-counter-vip .file-input-label {
+  display: inline-flex;
+  align-items: center;
+  padding: .65rem .85rem;
+}
+
+.privacy-note {
+  margin: 0 0 1rem;
+  padding: .8rem 1rem;
+  border-left: 4px solid var(--color-primary, #1769d2);
+  border-radius: 0 var(--radius-md, 8px) var(--radius-md, 8px) 0;
+  background: var(--wc-surface-soft);
+  color: var(--wc-muted);
+  font-size: .86rem;
+  line-height: 1.55;
+}
+
+.privacy-note strong {
+  color: var(--wc-text);
+}
+
+.limit-grid,
+.assumption-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: .75rem;
+}
+
+.limit-field,
+.assumption-field {
+  display: grid;
+  gap: .35rem;
+}
+
+.limit-field label,
+.assumption-field label {
+  color: var(--wc-text);
+  font-size: .78rem;
+  font-weight: 700;
+}
+
+.limit-input,
+.assumption-input {
+  width: 100%;
+  min-height: 44px;
+  padding: .65rem .75rem;
+  border-radius: var(--radius-md, 8px);
+}
+
+.limit-help,
+.assumption-help,
+.method-note {
+  color: var(--wc-muted);
+  font-size: .76rem;
+  line-height: 1.5;
+}
+
+.limit-result {
+  margin-top: .8rem;
+  padding: .8rem 1rem;
+  border: 1px solid var(--wc-border);
+  border-radius: var(--radius-md, 8px);
+  background: var(--wc-surface-soft);
+  color: var(--wc-text);
+  font-size: .85rem;
+  line-height: 1.55;
+}
+
+.limit-result[data-state="over"],
+.limit-result[data-state="invalid"] {
+  border-color: #c2410c;
+}
+
+.limit-result[data-state="met"] {
+  border-color: #15803d;
+}
+
+.limit-result:empty {
+  display: none;
+}
+
+.word-counter-vip .stats-grid {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.word-counter-vip .stat-box {
+  padding: .9rem .65rem;
+  text-align: left;
+}
+
+.word-counter-vip .stat-value {
+  color: var(--color-primary, #1769d2);
+  font-size: clamp(1.2rem, 3vw, 1.65rem);
+}
+
+.word-counter-vip .stat-label {
+  white-space: normal;
+}
+
+.word-counter-vip .action-row button {
+  min-width: 145px;
+  font-size: .8rem;
+}
+
+.print-btn {
+  border: 1.5px solid var(--wc-border);
+  background: var(--wc-surface);
+  color: var(--wc-text);
+}
+
+.word-counter-vip .read-score-desc,
+.word-counter-vip .social-count,
+.word-counter-vip .kw-pct,
+.word-counter-vip .kw-count,
+.word-counter-vip .kw-empty,
+.word-counter-vip .method-note {
+  color: var(--wc-muted);
+}
+
+.word-counter-vip .read-score-box,
+.word-counter-vip .social-item,
+.word-counter-vip .stat-box,
+.word-counter-vip .kw-tab,
+.word-counter-vip .case-btn,
+.word-counter-vip .input-toolbar .tb-btn,
+.word-counter-vip .file-input-label {
+  background: var(--wc-surface-soft);
+  border-color: var(--wc-border);
+}
+
+.word-counter-vip .kw-tab,
+.word-counter-vip .case-btn,
+.word-counter-vip .input-toolbar .tb-btn,
+.word-counter-vip .file-input-label {
+  color: var(--wc-text);
+}
+
+.word-counter-vip .kw-tabs {
+  flex-wrap: wrap;
+}
+
+.word-counter-vip .kw-tab.active,
+.word-counter-vip .input-toolbar .tb-btn.active {
+  background: var(--color-primary, #1769d2);
+  color: #fff;
+}
+
+.word-counter-vip .kw-tab:focus-visible,
+.word-counter-vip .case-btn:focus-visible,
+.word-counter-vip button:focus-visible,
+.word-counter-vip .file-input-label:focus-within,
+.word-counter-vip input:focus-visible,
+.word-counter-vip textarea:focus-visible {
+  outline: 3px solid var(--color-focus, #60a5fa);
+  outline-offset: 2px;
+}
+
+.assumptions {
+  margin-top: 1rem;
+}
+
+.assumptions summary {
+  min-height: 44px;
+  padding: .75rem 0;
+  color: var(--wc-text);
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.page-note,
+.readability-caution {
+  margin: .75rem 0 0;
+  color: var(--wc-muted);
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.content-section {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 0 1.25rem;
+  color: var(--wc-muted);
+  line-height: 1.75;
+}
+
+.content-section,
+.content-section div,
+.content-section li,
+.content-section code {
+  color: var(--wc-muted) !important;
+}
+
+.content-section strong {
+  color: var(--wc-text);
+}
+
+.content-section h2,
+.word-counter-vip .faq-section h2,
+.word-counter-vip details summary,
+.word-counter-vip details strong {
+  color: var(--wc-text) !important;
+}
+
+.word-counter-vip details > div {
+  color: var(--wc-muted) !important;
+}
+
+@media (max-width: 760px) {
+  .word-counter-vip .stats-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .limit-grid,
+  .assumption-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 400px) {
+  .word-counter-vip .tool-hero-inner,
+  .word-counter-vip .tool-main-inner {
+    padding-inline: 16px;
+  }
+
+  .word-counter-vip .card-head,
+  .word-counter-vip .card-body {
+    padding: 16px;
+  }
+
+  .word-counter-vip .action-row {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .word-counter-vip .action-row button {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .word-counter-vip .kw-tabs {
+    display: grid;
+    grid-template-columns: 1fr;
+  }
+
+  .word-counter-vip .kw-tab {
+    width: 100%;
+    min-width: 0;
+  }
+
+  .word-counter-vip .kw-item {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .word-counter-vip .kw-word {
+    min-width: calc(100% - 70px);
+    overflow-wrap: anywhere;
+  }
+
+  .word-counter-vip .kw-bar-wrap {
+    flex-basis: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .word-counter-vip *,
+  .word-counter-vip *::before,
+  .word-counter-vip *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media print {
+  afro-navbar,
+  afro-footer,
+  afro-related-tools,
+  afro-newsletter-cta,
+  .tool-hero,
+  .input-toolbar,
+  .action-row,
+  .case-btns,
+  .kw-tabs,
+  .kw-toggle-row,
+  .faq-section {
+    display: none !important;
+  }
+
+  .word-counter-vip .tool-main {
+    padding: 0;
+  }
+
+  .word-counter-vip .card {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

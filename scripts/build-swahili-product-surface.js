@@ -5,6 +5,10 @@ const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
 const { buildCanonicalRegistry, getSelector } = require('./lib/canonical-registry');
+const {
+  repairPdfTranslatorConsent,
+  repairPidginTranslatorConsent
+} = require('./lib/swahili-translation-consent-repairs');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -447,6 +451,18 @@ repair('sw/zana/kikokotoo-vat/index.html', [
   ['<div class="sw-field"><label for="vatAmount" id="amountLabel">Kiasi bila VAT</label><input class="sw-input" id="vatAmount" type="number" min="0" step="any" placeholder="Ingiza kiasi"></div>', '<div class="sw-field"><label for="vatAmount" id="amountLabel">Kiasi bila VAT</label><input class="sw-input" id="vatAmount" type="number" min="0" step="any" placeholder="Ingiza kiasi" aria-describedby="vatStatus"></div><p id="vatStatus" class="sw-muted" role="status" aria-live="polite"></p>'],
   ["function calcVat(){var amt=parseFloat(document.getElementById('vatAmount').value)||0;if(!amt){alert('Tafadhali ingiza kiasi.');return;}var c=currentCountry||VAT_DB.KE;", "function calcVat(){var amountInput=document.getElementById('vatAmount'),status=document.getElementById('vatStatus'),amt=parseFloat(amountInput.value)||0;if(!amt){status.textContent='Tafadhali ingiza kiasi kikubwa kuliko sifuri.';amountInput.focus();return;}status.textContent='';var c=currentCountry||VAT_DB.KE;"]
 ]);
+
+// These native Swahili routes are normalized by this builder rather than by
+// page-level locale packs. Keep their external translation requests aligned
+// with the explicit, non-persistent consent contract used by the English tools.
+output(
+  'sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html',
+  repairPidginTranslatorConsent(read('sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html'))
+);
+output(
+  'sw/zana/kutafsiri-pdf/index.html',
+  repairPdfTranslatorConsent(read('sw/zana/kutafsiri-pdf/index.html'))
+);
 
 output('sw/faragha/index.html', withAnalyticsLoader(withAnalyticsDisclosure(privacyPage())));
 output('sw/masharti/index.html', withAnalyticsLoader(termsPage()));

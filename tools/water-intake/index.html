@@ -1,420 +1,75 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Water Intake Calculator — Daily Hydration Needs | AfroTools</title>
-<meta name="description" content="Calculate how much water you should drink daily based on weight, activity level, and climate. Adjusted for hot African climates. Free hydration calculator.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Water Intake Calculator | AfroTools">
-<meta property="og:description" content="How much water should you drink? Adjusted for African climates.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
-<meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/water-intake/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script>
-<script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script>
-<style>
-:root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
-.tool-hero{background:linear-gradient(135deg,#0c4a6e 0%,#164e63 100%);padding:44px 0 36px;overflow:hidden}
-.tool-hero-inner{max-width:1200px;margin:0 auto;padding:0 24px}
-.breadcrumb{font-size:.72rem;font-weight:500;color:rgba(255,255,255,.3);letter-spacing:.08em;text-transform:uppercase;margin-bottom:14px}
-.breadcrumb a{color:rgba(255,255,255,.3);text-decoration:none}.breadcrumb span{color:#22d3ee}
-h1{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;letter-spacing:-.02em;line-height:1.1;margin-bottom:10px}
-h1 em{color:#22d3ee;font-style:normal}
-.hero-sub{font-size:.88rem;color:rgba(255,255,255,.45);line-height:1.6;max-width:560px;margin-bottom:14px}
-.hero-badges{display:flex;flex-wrap:wrap;gap:7px}
-.badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
-.b-cyan{background:rgba(34,211,238,.15);color:#22d3ee;border:1px solid rgba(34,211,238,.35)}
-.tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
-.card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
-.card+.card{margin-top:18px}
-.card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
-.card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
-.card-body{padding:22px}
-.field{margin-bottom:16px}
-.f-label{font-size:.75rem;font-weight:700;color:var(--afro-dark);margin-bottom:6px;display:block}
-.f-input,.f-select{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'Inter',sans-serif;box-sizing:border-box}
-.f-input:focus,.f-select:focus{border-color:#22d3ee;box-shadow:0 0 0 3px rgba(34,211,238,.15)}
-.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.calc-btn{width:100%;padding:13px;background:#0891b2;color:#fff;border:none;border-radius:8px;font-size:.92rem;font-weight:700;cursor:pointer;transition:all .18s;font-family:'Inter',sans-serif}
-.calc-btn:hover{background:#0e7490;transform:translateY(-1px);box-shadow:0 6px 20px rgba(8,145,178,.3)}
-.result-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-top:18px}
-.result-box{background:#f0fdfa;border:1px solid #99f6e4;border-radius:8px;padding:16px;text-align:center}
-.result-box.wide{grid-column:1/-1}
-.r-label{font-size:.68rem;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:#64748b;margin-bottom:4px}
-.r-value{font-size:1.35rem;font-weight:800;color:var(--afro-dark)}
-.r-value.cyan{color:#0891b2}
-#results{display:none}
-.glass-visual{display:flex;align-items:flex-end;justify-content:center;gap:6px;margin:18px 0;height:120px}
-.glass{width:28px;background:#e0f2fe;border:2px solid #bae6fd;border-radius:0 0 6px 6px;position:relative;transition:height .5s}
-.glass.filled{background:linear-gradient(to top,#0891b2,#22d3ee);border-color:#06b6d4}
-.glass-count{text-align:center;font-size:.82rem;font-weight:700;color:#0891b2;margin-top:6px}
-.schedule{margin-top:16px}
-.sched-row{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid #f1f5f9}
-.sched-time{font-size:.78rem;font-weight:700;color:var(--afro-dark);width:65px}
-.sched-bar{flex:1;height:8px;background:#e2e8f0;border-radius:4px;overflow:hidden}
-.sched-fill{height:100%;background:linear-gradient(90deg,#22d3ee,#0891b2);border-radius:4px}
-.sched-ml{font-size:.72rem;font-weight:600;color:#0891b2;width:55px;text-align:right}
-.sidebar .card-body{font-size:.82rem;color:#475569;line-height:1.7}
-.seo-content{max-width:800px;margin:0 auto;padding:48px 24px}
-.seo-content h2{font-size:1.4rem;font-weight:800;color:var(--afro-dark);margin:32px 0 12px}
-.seo-content p,.seo-content li{font-size:.92rem;color:#475569;line-height:1.8}
-.seo-content ul{padding-left:20px}
-.faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;overflow:hidden}
-.faq summary{padding:14px 18px;font-weight:700;font-size:.88rem;cursor:pointer;background:#f8fafc;color:var(--afro-dark)}
-.faq details[open] summary{border-bottom:1px solid #e2e8f0}
-.faq details div{padding:14px 18px;font-size:.85rem;color:#475569;line-height:1.7}
-@media(max-width:768px){.tool-main-inner{grid-template-columns:1fr}.field-row{grid-template-columns:1fr}}
-</style>
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){try{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light'}catch(_){}})();</script>
+<title>Private Fluid Intake Log | AfroTools</title><meta name="description" content="Total a day's drinks locally and optionally compare with a clinician-provided target. This tool does not prescribe how much water you should drink.">
+<meta property="og:title" content="Private Fluid Intake Log"><meta property="og:description" content="A local daily fluid total—not a clinical water prescription."><meta property="og:url" content="https://afrotools.com/tools/water-intake/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Water Intake Calculator",
-  "description": "Calculate daily water intake needs based on weight, activity level, and climate. Adjusted for African climates.",
+  "name": "Private Fluid Intake Log",
   "url": "https://afrotools.com/tools/water-intake/",
-  "inLanguage": "en",
-  "applicationCategory": "WebApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "applicationCategory": "HealthApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "description": "Totals user-entered fluids without prescribing a clinical target.",
   "image": "https://afrotools.com/assets/img/tools/water-intake.webp"
 }
 </script>
+<style>
+:root{color-scheme:light dark;--bg:#f3f8fc;--p:#fff;--t:#142230;--m:#526777;--l:#d4e1ea;--b:#0369a1;--s:#e0f2fe;--w:#fff7ed;--f:#f59e0b}[data-theme=dark]{--bg:#07131c;--p:#102330;--t:#f2f8fb;--m:#bdd1dc;--l:#345061;--b:#7dd3fc;--s:#123247;--w:#352417;--f:#fbbf24}*{box-sizing:border-box}html{font:100%/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}body{margin:0}a{color:var(--b)}button,input,select{font:inherit}button{min-height:44px;border:0;border-radius:.65rem;padding:.7rem 1rem;font-weight:800;cursor:pointer}.pri{background:var(--b);color:#fff}.sec{background:var(--p);color:var(--t);border:1px solid var(--l)}:focus-visible{outline:3px solid var(--f);outline-offset:3px}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--p);padding:.7rem;z-index:3}header{background:var(--p);border-bottom:1px solid var(--l)}nav{max-width:70rem;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem}.brand{font-weight:900;color:var(--t);text-decoration:none}main{max-width:70rem;margin:auto;padding:clamp(1rem,4vw,3rem)}.hero{max-width:53rem}.tag{display:inline-block;background:var(--s);padding:.4rem .7rem;border-radius:2rem;font-weight:800;color:var(--b)}h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:.6rem 0}.notice{background:var(--w);border-left:5px solid #c2410c;padding:1rem;margin:1.2rem 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start}.card{background:var(--p);border:1px solid var(--l);border-radius:1rem;padding:clamp(1rem,3vw,1.5rem)}label{display:block;font-weight:750;margin:.8rem 0 .3rem}input,select{width:100%;min-height:46px;border:1px solid var(--l);border-radius:.55rem;padding:.65rem;background:var(--p);color:var(--t)}.hint,.source{color:var(--m);font-size:.9rem}.entry{display:grid;grid-template-columns:.8fr 1.2fr .9fr auto;gap:.55rem;align-items:end;border-bottom:1px solid var(--l);padding-bottom:.8rem}.entry label{margin-top:.35rem}.remove{padding:.65rem}.confirm{display:flex;gap:.6rem;align-items:center;min-height:44px;font-weight:700}.confirm input{width:1.2rem;min-height:1.2rem}.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}.value{font-size:3rem;line-height:1;font-weight:900;color:var(--b)}footer{max-width:70rem;margin:auto;padding:1rem;color:var(--m);border-top:1px solid var(--l)}@media(max-width:900px){.entry{grid-template-columns:1fr 1fr}.remove{grid-column:1/-1}}@media(max-width:720px){.grid{grid-template-columns:1fr}.actions>*{flex:1 1 100%}}@media(max-width:400px){.entry{grid-template-columns:1fr}.remove{grid-column:auto}}@media(max-width:340px){main{padding:.7rem}h1{font-size:1.8rem}.card{padding:.85rem}}@media print{header,.actions,.tag,.remove,#addDrink{display:none}.grid{display:block}.card{margin-bottom:1rem;border-color:#777}}
+.entry-title{grid-column:1/-1;margin:.4rem 0 0}.card,.grid>*{min-width:0}body{overflow-wrap:anywhere}[data-theme=dark] .pri{background:#0369a1}
+</style><!-- tool-structured-data:auto -->
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebPage",
-  "name": "Water Intake Calculator",
-  "url": "https://afrotools.com/tools/water-intake/",
-  "description": "Calculate daily water intake needs based on weight, activity level, and climate. Adjusted for African climates.",
-  "inLanguage": "en",
-  "isPartOf": {
-    "@type": "WebSite",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/water-intake.webp"
-}
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Private Fluid Intake Log","item":"https://afrotools.com/tools/water-intake/"}]}
 </script>
-<script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
-<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<meta property="og:locale" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Water Intake Calculator | AfroTools">
-<meta name="twitter:description" content="How much water should you drink? Adjusted for African climates.">
+<meta name="twitter:title" content="Private Fluid Intake Log | AfroTools">
+<meta name="twitter:description" content="Total a day">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "AfroTools",
-      "item": "https://afrotools.com/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 2,
-      "name": "Tools",
-      "item": "https://afrotools.com/tools/"
-    },
-    {
-      "@type": "ListItem",
-      "position": 3,
-      "name": "Water Intake Calculator",
-      "item": "https://afrotools.com/tools/water-intake/"
-    }
-  ]
-}
-</script>
-<meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
-<meta name="tool-id" content="water-intake">
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<!-- tool-structured-data:auto -->
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is the \"8 glasses a day\" rule accurate?","acceptedAnswer":{"@type":"Answer","text":"It's a reasonable starting point but oversimplified. Actual needs vary from 2 to 5+ litres depending on weight, activity, and climate. A 90kg person in Lagos heat needs far more than 8 glasses. Use this calculator for a personalised recommendation."}},{"@type":"Question","name":"Does tea and coffee count toward water intake?","acceptedAnswer":{"@type":"Answer","text":"Yes, caffeinated beverages do contribute to hydration despite mild diuretic effects. However, the caffeine causes slight additional water loss, which is why our calculator adds extra water for caffeine consumers. Water and herbal teas are still the best choices."}},{"@type":"Question","name":"How do I know if I'm dehydrated?","acceptedAnswer":{"@type":"Answer","text":"Key signs: dark yellow urine, thirst, dry mouth, headaches, fatigue, dizziness, reduced urination. In severe cases: rapid heartbeat, confusion, fainting. In African heat, dehydration can progress quickly — don't wait until you feel thirsty to drink."}},{"@type":"Question","name":"Can you drink too much water?","acceptedAnswer":{"@type":"Answer","text":"Yes, overhydration (hyponatremia) is possible but rare. It occurs when you drink excessive water in a short period, diluting blood sodium levels. Stick to spreading intake throughout the day rather than drinking large amounts at once."}}]}
-</script>
 <link rel="canonical" href="https://afrotools.com/tools/water-intake/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/water-intake/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/apport-eau/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-maji-ya-kunywa/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/water-intake/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar></afro-navbar>
-<section class="tool-hero"><div class="tool-hero-inner">
-<div class="breadcrumb"><a href="/">Home</a> / <a href="/health/">Health</a> / <span>Water Intake</span></div>
-<h1>Water Intake <em>Calculator</em></h1>
-<p class="hero-sub">Calculate how much water you should drink daily based on your weight, activity level, and climate. Adjusted for hot African climates.</p>
-<div class="hero-badges"><span class="badge b-cyan">Climate Adjusted</span><span class="badge b-cyan">Drinking Schedule</span></div>
-</div></section>
-
-<section class="tool-main"><div class="tool-main-inner">
-<div class="calc-area">
-<div class="card"><div class="card-head"><span class="card-title">Your Details</span></div>
-<div class="card-body">
-<div class="field-row">
-<div class="field"><label class="f-label">Weight</label><input aria-label="Weight" type="number" id="weight" class="f-input" placeholder="70" min="20" max="300"></div>
-<div class="field"><label class="f-label">Unit</label><select id="unit" class="f-select" aria-label="Unit"><option value="kg">Kilograms (kg)</option><option value="lbs">Pounds (lbs)</option></select></div>
-</div>
-<div class="field"><label class="f-label">Activity Level</label>
-<select id="activity" class="f-select" aria-label="Activity">
-<option value="sedentary">Sedentary (office work, little exercise)</option>
-<option value="light">Light Activity (walking, light exercise 1-3 days)</option>
-<option value="moderate" selected>Moderate (exercise 3-5 days/week)</option>
-<option value="active">Active (hard exercise 6-7 days/week)</option>
-<option value="very-active">Very Active (physical job + exercise)</option>
-</select></div>
-<div class="field"><label class="f-label">Climate</label>
-<select id="climate" class="f-select" aria-label="Climate">
-<option value="temperate">Temperate (15-25°C)</option>
-<option value="hot" selected>Hot (25-35°C) — Most of Sub-Saharan Africa</option>
-<option value="very-hot">Very Hot (35°C+) — Sahel, Desert regions</option>
-<option value="humid">Hot & Humid — Coastal West/Central Africa</option>
-</select></div>
-<div class="field-row">
-<div class="field"><label class="f-label">Pregnant or Breastfeeding?</label>
-<select id="pregnant" class="f-select" aria-label="Pregnant"><option value="no">No</option><option value="pregnant">Pregnant</option><option value="breastfeeding">Breastfeeding</option></select></div>
-<div class="field"><label class="f-label">Caffeinated Drinks/Day</label>
-<select id="caffeine" class="f-select" aria-label="Caffeine"><option value="0">None</option><option value="1">1-2 cups</option><option value="2" selected>3-4 cups</option><option value="3">5+ cups</option></select></div>
-</div>
-<button type="button" class="calc-btn" onclick="calculate()">Calculate Water Intake</button>
-</div></div>
-
-<div class="card" id="results">
-<div class="card-head"><span class="card-title">Your Daily Water Needs</span></div>
-<div class="card-body">
-<div class="result-grid">
-<div class="result-box wide"><div class="r-label">Recommended Daily Intake</div><div class="r-value cyan" id="rLitres">--</div></div>
-<div class="result-box"><div class="r-label">In Glasses (250ml)</div><div class="r-value" id="rGlasses">--</div></div>
-<div class="result-box"><div class="r-label">In Bottles (500ml)</div><div class="r-value" id="rBottles">--</div></div>
-<div class="result-box"><div class="r-label">In Sachets (500ml)</div><div class="r-value" id="rSachets">--</div></div>
-<div class="result-box"><div class="r-label">Hourly Target (16hr day)</div><div class="r-value" id="rHourly">--</div></div>
-</div>
-<div class="glass-visual" id="glassVisual"></div>
-<div class="glass-count" id="glassCount"></div>
-<div class="schedule" id="schedule"></div>
-</div></div>
-</div>
-
-<div class="sidebar">
-<div class="card"><div class="card-head"><span class="card-title">Hydration in Africa</span></div>
-<div class="card-body">
-<p><strong>Climate matters:</strong> In hot African climates, you lose 1-2 extra litres of water through sweat compared to temperate regions. Increase intake accordingly.</p>
-<p style="margin-top:8px"><strong>Water sources:</strong> Fruits like watermelon, oranges, and cucumbers common in African markets contribute to hydration — roughly 20% of daily water comes from food.</p>
-<p style="margin-top:8px"><strong>Signs of dehydration:</strong> Dark yellow urine, headaches, fatigue, dry mouth, dizziness. In hot climates, these can escalate quickly.</p>
-<p style="margin-top:8px"><strong>Safe water:</strong> Always drink clean, treated water. Sachet water (pure water) is widely available in West Africa. Boil or filter if unsure.</p>
-</div></div>
-<div class="card"><div class="card-head"><span class="card-title">Quick Reference</span></div>
-<div class="card-body">
-<p><strong>WHO Minimum:</strong> 2 litres/day for adults in temperate climates</p>
-<p style="margin-top:6px"><strong>Hot climate:</strong> 2.5 - 3.5 litres/day</p>
-<p style="margin-top:6px"><strong>Active in heat:</strong> 3.5 - 5+ litres/day</p>
-<p style="margin-top:6px"><strong>Pregnant:</strong> Add 0.3 litres/day</p>
-<p style="margin-top:6px"><strong>Breastfeeding:</strong> Add 0.7 litres/day</p>
-</div></div>
-</div>
-</div></section>
-
-<section class="seo-content">
-<h2>How Much Water Should You Drink in Africa?</h2>
-<p>Staying hydrated is crucial for health, and it's especially important in Africa's predominantly hot and humid climates. While the common advice of "8 glasses a day" is a reasonable starting point, your actual needs depend on your body weight, activity level, climate, and other factors. People living in Sahel regions, coastal humid areas, or anyone working outdoors in African heat may need significantly more water than someone in a temperate European climate.</p>
-
-<h2>How This Calculator Works</h2>
-<p>Our water intake calculator uses a weight-based formula (30-35ml per kg of body weight) as the baseline, then adjusts for activity level, climate, pregnancy/breastfeeding status, and caffeine consumption. The climate adjustment is particularly important for African users — living in a hot climate can increase your needs by 30-50% compared to temperate regions.</p>
-
-<h2>Hydration Tips for African Climates</h2>
-<ul>
-<li><strong>Start early:</strong> Drink a glass of water immediately upon waking — your body is dehydrated after 6-8 hours of sleep</li>
-<li><strong>Carry water:</strong> In cities like Lagos, Nairobi, or Accra, always have a water bottle or sachet when commuting</li>
-<li><strong>Eat hydrating foods:</strong> Watermelon, cucumber, oranges, pineapple, and tomatoes are widely available in African markets and contribute to hydration</li>
-<li><strong>Watch the colour:</strong> Your urine should be pale yellow. Dark yellow or amber means you need more water</li>
-<li><strong>Replace electrolytes:</strong> If working in extreme heat, add a pinch of salt or oral rehydration salts to your water</li>
-<li><strong>Limit sugary drinks:</strong> Soft drinks and sweetened beverages don't hydrate as effectively as plain water</li>
-</ul>
-
-
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
-<div class="faq">
-<h2>Frequently Asked Questions</h2>
-<details><summary>Is the "8 glasses a day" rule accurate?</summary><div>It's a reasonable starting point but oversimplified. Actual needs vary from 2 to 5+ litres depending on weight, activity, and climate. A 90kg person in Lagos heat needs far more than 8 glasses. Use this calculator for a personalised recommendation.</div></details>
-<details><summary>Does tea and coffee count toward water intake?</summary><div>Yes, caffeinated beverages do contribute to hydration despite mild diuretic effects. However, the caffeine causes slight additional water loss, which is why our calculator adds extra water for caffeine consumers. Water and herbal teas are still the best choices.</div></details>
-<details><summary>How do I know if I'm dehydrated?</summary><div>Key signs: dark yellow urine, thirst, dry mouth, headaches, fatigue, dizziness, reduced urination. In severe cases: rapid heartbeat, confusion, fainting. In African heat, dehydration can progress quickly — don't wait until you feel thirsty to drink.</div></details>
-<details><summary>Can you drink too much water?</summary><div>Yes, overhydration (hyponatremia) is possible but rare. It occurs when you drink excessive water in a short period, diluting blood sodium levels. Stick to spreading intake throughout the day rather than drinking large amounts at once.</div></details>
-</div>
-</section>
-
+</head><body>
+<a class="skip" href="#main">Skip to log</a><header><nav><a class="brand" href="/">AfroTools</a><button id="theme" class="sec" type="button" aria-pressed="false">Dark mode</button></nav></header>
+<main id="main"><section class="hero"><span class="tag">Local daily total</span><h1>Fluid intake log</h1><p>Add drinks consumed during one day. The tool totals millilitres and does not invent a personal target.</p><div class="notice"><strong>No clinical prescription.</strong> Fluid needs and restrictions can change with kidney or heart conditions, pregnancy, breastfeeding, medicines, fever, vomiting, diarrhoea, heat and activity. Follow advice from your own qualified care team. Seek urgent help for confusion, fainting, inability to keep fluids down, severe weakness, breathing difficulty or very little urine.</div></section>
+<div class="grid"><form id="form" class="card" novalidate><h2>Today's drinks</h2>
+<div id="entries"></div>
+<button id="addDrink" class="sec" type="button">Add another drink</button><p class="hint">Log drinks only. Food moisture is not estimated, and this app does not rate drink choices.</p>
+<label for="clinicalTarget">Target supplied by your clinician (mL, optional)</label><input id="clinicalTarget" name="clinicalTarget" type="number" min="100" max="20000" step="10" inputmode="numeric"><p class="hint">Leave blank unless a qualified professional gave you a specific daily fluid target.</p>
+<label class="confirm"><input id="targetConfirmed" name="targetConfirmed" type="checkbox"> I confirm this optional target came from a qualified clinician</label>
+<div id="error" role="alert"></div><button class="pri" type="submit">Total logged fluids</button></form>
+<section id="resultPanel" class="card" aria-live="polite" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle">Daily log summary</h2><div id="result"><p>Add drink entries to total the day.</p></div><div class="actions"><button id="txt" class="sec" type="button" disabled>Download TXT</button><button id="print" class="sec" type="button" disabled>Print / save PDF</button><button id="clear" class="sec" type="button">Clear</button></div></section></div>
+<section class="card"><h2>What this tool does</h2><p>It adds the quantities you enter. If—and only if—you enter a target already provided by your clinician, it shows the arithmetic difference. It does not estimate a need from body weight, prescribe extra water, or tell you to ignore thirst, symptoms or fluid restrictions.</p><p class="source"><strong>Official source, reviewed 26 July 2026:</strong> <a href="https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html" rel="noopener">CDC: About Water and Healthier Drinks (5 March 2026)</a>, which notes that intake needs vary with age, sex, pregnancy, activity and breastfeeding and that food and other beverages contribute.</p></section>
+</main><footer>Private and local: entries are not stored, sent, placed in URLs or included in analytics.</footer>
+<script src="./fluid-log-engine.js?v=8dd200e4"></script><script>
+(()=>{
+  const f=document.getElementById('form'),entriesNode=document.getElementById('entries'),panel=document.getElementById('resultPanel'),r=document.getElementById('result'),e=document.getElementById('error'),t=document.getElementById('txt'),p=document.getElementById('print'),theme=document.getElementById('theme');
+  let last=null,nextId=1;
+  const typeOptions=Object.entries(FluidLogEngine.TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('');
+  const renumber=()=>{[...entriesNode.children].forEach((row,index)=>{const number=index+1;row.dataset.number=number;row.querySelector('.entry-title').textContent=`Drink ${number}`;row.querySelector('.time-label').textContent=`Drink ${number} time (optional)`;row.querySelector('.type-label').textContent=`Drink ${number} type`;row.querySelector('.volume-label').textContent=`Drink ${number} volume (mL)`;row.querySelector('.remove').setAttribute('aria-label',`Remove drink ${number}`)});};
+  const addEntry=(values={})=>{const id=nextId++,row=document.createElement('section');row.className='entry';row.innerHTML=`<h3 class="entry-title">Drink</h3><div><label class="time-label" for="time-${id}">Time (optional)</label><input id="time-${id}" class="drink-time" type="time"></div><div><label class="type-label" for="type-${id}">Type</label><select id="type-${id}" class="drink-type">${typeOptions}</select></div><div><label class="volume-label" for="volume-${id}">Volume (mL)</label><input id="volume-${id}" class="drink-volume" type="number" min="1" max="5000" step="10" inputmode="numeric" required></div><button class="remove sec" type="button">Remove</button>`;entriesNode.append(row);row.querySelector('.drink-time').value=values.time||'';row.querySelector('.drink-type').value=values.type||'water';row.querySelector('.drink-volume').value=values.volumeMl||'';row.querySelector('.remove').addEventListener('click',()=>{row.remove();renumber();if(!entriesNode.children.length)addEntry()});renumber();};
+  const readEntries=()=>[...entriesNode.querySelectorAll('.entry')].map(row=>({time:row.querySelector('.drink-time').value,type:row.querySelector('.drink-type').value,volumeMl:row.querySelector('.drink-volume').value}));
+  document.getElementById('addDrink').addEventListener('click',()=>{addEntry();entriesNode.lastElementChild.querySelector('.drink-time').focus()});
+  f.addEventListener('submit',event=>{event.preventDefault();try{last=FluidLogEngine.total({entries:readEntries(),clinicalTargetMl:f.clinicalTarget.value,targetConfirmed:f.targetConfirmed.checked});e.textContent='';const categories=last.byType.map(item=>`<li>${item.label}: ${item.volumeMl.toLocaleString()} mL</li>`).join('');r.innerHTML=`<p class="value">${last.totalMl.toLocaleString()} mL</p><p><strong>${last.entryCount} drink ${last.entryCount===1?'entry':'entries'}</strong></p><ul>${categories}</ul><p>${last.targetContext}</p><p><strong>Warning:</strong> ${last.warning}</p>`;t.disabled=p.disabled=false;panel.focus()}catch(error){last=null;e.textContent=error.message;t.disabled=p.disabled=true}});
+  const report=()=>`AfroTools private fluid intake log\nReview date: 26 July 2026\n\nInputs — drink entries\n${last.entries.map((entry,index)=>`${index+1}. ${entry.time||'time not entered'} — ${entry.typeLabel}: ${entry.volumeMl} mL`).join('\n')}\n\nResult\nTotal logged fluid: ${last.totalMl} mL\nCategory totals:\n${last.byType.map(item=>`- ${item.label}: ${item.volumeMl} mL`).join('\n')}\nClinician-provided target: ${last.targetMl===null?'not entered':last.targetMl+' mL'}\n${last.targetContext}\n\nAssumption\nSimple addition of user-entered drinks only. Food moisture was not estimated. No personal fluid need was calculated.\n\nWarning\n${last.warning}`;
+  t.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='fluid-intake-log.txt';a.click();URL.revokeObjectURL(a.href)});
+  p.addEventListener('click',()=>last&&window.print());
+  document.getElementById('clear').addEventListener('click',()=>{f.reset();entriesNode.replaceChildren();addEntry({type:'water'});addEntry({type:'tea-coffee'});last=null;r.innerHTML='<p>Add drink entries to total the day.</p>';e.textContent='';t.disabled=p.disabled=true;entriesNode.querySelector('.drink-time').focus()});
+  const syncTheme=()=>{const dark=document.documentElement.getAttribute('data-theme')==='dark';theme.setAttribute('aria-pressed',String(dark));theme.textContent=dark?'Light mode':'Dark mode'};
+  theme.addEventListener('click',()=>{const root=document.documentElement,dark=root.getAttribute('data-theme')!=='dark';root.setAttribute('data-theme',dark?'dark':'light');root.style.colorScheme=dark?'dark':'light';syncTheme()});
+  addEntry({type:'water'});addEntry({type:'tea-coffee'});syncTheme();
+})();
+</script>
 <afro-related-tools data-ssr="1" category="health" current="water-intake">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Upload or paste lab results and get plain-English explanations for CBC, lipid, liver, kidney, thyroid, and diabetes mark">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Genotype Compatibility Checker" data-category="health" data-icon="GC" data-desc="Full pre-marriage genotype and blood group compatibility check. Sickle cell Punnett square, Rh factor incompatibility, b">Genotype Compatibility Checker</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Childbirth Cost Calculator" data-category="health" data-icon="CC" data-desc="Compare delivery costs across public hospitals, private clinics, and premium facilities in Nigeria, Kenya, South Africa,">Childbirth Cost Calculator</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Drug/Medicine Price Comparator" data-category="health" data-icon="DM" data-desc="Compare brand vs generic medicine prices across African countries. See savings on antimalarials, antibiotics, diabetes, ">Drug/Medicine Price Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Group Compatibility Checker" data-category="health" data-icon="BG" data-desc="Check blood transfusion compatibility (donor/recipient) and pregnancy Rh incompatibility. Includes African blood group f">Blood Group Compatibility Checker</a></li><li><a href="/tools/african-meal-plan/" data-related-tool data-id="african-meal-plan" data-name="African Meal Plan Generator" data-category="health" data-icon="AM" data-desc="Generate a personalized 7-day meal plan using African foods. Choose region (West/East/Southern/North Africa), health goa">African Meal Plan Generator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/medical-report/" data-related-tool data-id="medical-report" data-name="Medical Report Interpreter" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Medical Report Interpreter</a></li><li><a href="/tools/genotype-checker/" data-related-tool data-id="genotype-checker" data-name="Haemoglobin Result Verification Guide" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Haemoglobin Result Verification Guide</a></li><li><a href="/tools/childbirth-cost/" data-related-tool data-id="childbirth-cost" data-name="Provider-Quote Childbirth Budget" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Provider-Quote Childbirth Budget</a></li><li><a href="/tools/drug-price-compare/" data-related-tool data-id="drug-price-compare" data-name="Exact Medicine Quote Comparator" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Exact Medicine Quote Comparator</a></li><li><a href="/tools/blood-group/" data-related-tool data-id="blood-group" data-name="Blood Component Compatibility Reference" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Blood Component Compatibility Reference</a></li><li><a href="/tools/csection-vs-natural/" data-related-tool data-id="csection-vs-natural" data-name="Birth Options Question Builder" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Birth Options Question Builder</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
-<!-- HEALTH-DEEP-IMPROVEMENT:START -->
-<section class="health-deep" aria-labelledby="health-deep-title">
-<span class="health-deep-kicker">Deep Review - 27 April 2026</span>
-<h2 id="health-deep-title">Use Water Intake Calculator in a safer care workflow</h2>
-<p class="health-deep-lead">Use this as a screening and trend tool, not a diagnosis. The useful output is a number, a context band, and a clear next step for a clinic conversation.</p>
-<div class="health-deep-grid">
-<div class="health-deep-block"><h3>Use It To Decide</h3><ul><li>Whether the reading is worth tracking over time</li><li>Which lifestyle or follow-up question to raise with a clinician</li><li>Whether another health tool should be opened next</li></ul></div>
-<div class="health-deep-block"><h3>Better Workflow</h3><ul><li>Enter recent measurements and repeat them under similar conditions</li><li>Save the result with date, units, and context such as activity or illness</li><li>Use the result to prepare better questions for a health worker</li></ul></div>
-<div class="health-deep-block warning"><h3>Do Not Ignore</h3><ul><li>Severe symptoms with an abnormal reading</li><li>Repeated high or low readings without follow-up</li><li>Using one calculator result to start, stop, or change treatment</li></ul></div>
-</div>
-<div class="health-source-row">
-<div><span>Official Context</span><div class="health-source-links"><a href="https://www.cdc.gov/bmi/adult-calculator/bmi-categories.html">CDC BMI categories</a><a href="https://www.who.int/news-room/fact-sheets/detail/hypertension">WHO hypertension</a><a href="https://www.who.int/news-room/fact-sheets/detail/diabetes">WHO diabetes</a><a href="https://www.who.int/news-room/fact-sheets/detail/physical-activity">WHO physical activity</a></div></div>
-<div><span>Related AfroTools</span><div class="health-source-links internal"><a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/blood-pressure/">Blood Pressure Tracker</a><a href="/tools/diabetes-risk/">Diabetes Risk Calculator</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a></div></div>
-</div>
-</section>
-<!-- HEALTH-DEEP-IMPROVEMENT:END -->
-<!-- HEALTH-COMPLETE-PACKAGE:START -->
-<section class="health-action-kit" data-health-tool-id="water-intake" data-health-tool-name="Water Intake Calculator" data-health-href="/tools/water-intake/" data-health-bucket="vitals" data-health-journey="vitals" data-health-source-name="WHO drinking water" data-health-source-url="https://www.who.int/news-room/fact-sheets/detail/drinking-water" data-health-competitor="Mayo-style hydration calculators" data-health-feature="Hydration tools should record context and avoid one-size-fits-all targets." aria-labelledby="health-action-title-water-intake">
-<span class="health-action-kicker">Complete package upgrade</span>
-<h2 id="health-action-title-water-intake">Water Intake Calculator: save, export, and continue the workflow</h2>
-<p>This app now has its own benchmarked improvement layer, dashboard handoff, email-gated PDF plan, and a route into the Vitals checkup workflow.</p>
-<div class="health-action-grid">
-<div class="health-action-card">
-<h3>Competitor feature checked</h3>
-<p><strong>Mayo-style hydration calculators</strong>: Hydration tools should record context and avoid one-size-fits-all targets.</p>
-<p><strong>Implemented here:</strong> Added vitals workflow save/PDF actions and repeat-check dashboard storage.</p>
-<p><a href="https://www.who.int/news-room/fact-sheets/detail/drinking-water" rel="noopener" target="_blank">WHO drinking water</a></p>
-</div>
-<div class="health-action-card">
-<h3>Dashboard and PDF actions</h3>
-<ul>
-<li>Save this health plan to the dashboard workspace on this device.</li>
-<li>Unlock a PDF version through the Health email gate for follow-up and visit prep.</li>
-<li>Signed-in sessions attempt account workspace sync when the shared workspace API is available.</li>
-</ul>
-<div class="health-action-buttons">
-<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="water-intake">Save to dashboard</button>
-<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="water-intake">Get PDF plan</button>
-</div>
-</div>
-</div>
-<div class="health-action-card" style="margin-top:1rem">
-<h3>Continue in Vitals checkup</h3>
-<div class="health-action-links">
-<a href="/health/bmi-calculator/">Open workflow hub</a>
-<a href="/health/bmi-calculator/">BMI Calculator for Africans</a><a href="/tools/waist-hip-ratio/">Waist-Hip Ratio Calculator</a><a href="/tools/blood-pressure/">Blood Pressure Tracker</a><a href="/tools/diabetes-risk/">Diabetes Risk Calculator</a>
-</div>
-</div>
-</section>
-<!-- HEALTH-COMPLETE-PACKAGE:END -->
-<afro-footer></afro-footer>
-
-<script>
-function calculate(){
-  let weight=parseFloat(document.getElementById('weight').value);
-  const unit=document.getElementById('unit').value;
-  const activity=document.getElementById('activity').value;
-  const climate=document.getElementById('climate').value;
-  const pregnant=document.getElementById('pregnant').value;
-  const caffeine=parseInt(document.getElementById('caffeine').value);
-
-  if(!weight||weight<=0){alert('Please enter your weight.');return}
-  if(unit==='lbs')weight=weight*0.4536;
-
-  // Base: 30-35ml per kg
-  let ml=weight*33;
-
-  // Activity multiplier
-  const actMult={sedentary:1,light:1.1,moderate:1.2,active:1.35,'very-active':1.5};
-  ml*=actMult[activity]||1.2;
-
-  // Climate adjustment
-  const climMult={temperate:1,hot:1.25,'very-hot':1.45,humid:1.35};
-  ml*=climMult[climate]||1.25;
-
-  // Pregnancy/breastfeeding
-  if(pregnant==='pregnant')ml+=300;
-  if(pregnant==='breastfeeding')ml+=700;
-
-  // Caffeine (add 100ml per level)
-  ml+=caffeine*100;
-
-  const litres=ml/1000;
-  const glasses=Math.ceil(ml/250);
-  const bottles=Math.ceil(ml/500);
-  const hourly=Math.round(ml/16);
-
-  document.getElementById('rLitres').textContent=litres.toFixed(1)+' litres';
-  document.getElementById('rGlasses').textContent=glasses+' glasses';
-  document.getElementById('rBottles').textContent=bottles+' bottles';
-  document.getElementById('rSachets').textContent=bottles+' sachets';
-  document.getElementById('rHourly').textContent=hourly+'ml';
-
-  // Glass visualization
-  const vis=document.getElementById('glassVisual');
-  vis.innerHTML='';
-  for(let i=0;i<Math.min(glasses,16);i++){
-    const g=document.createElement('div');
-    g.className='glass filled';
-    g.style.height=(60+Math.random()*30)+'px';
-    g.style.animationDelay=(i*0.05)+'s';
-    vis.appendChild(g);
-  }
-  document.getElementById('glassCount').textContent=glasses+' glasses of 250ml throughout the day';
-
-  // Drinking schedule
-  const schedule=document.getElementById('schedule');
-  const perSlot=ml/8;
-  const times=['6:00 AM','8:00 AM','10:00 AM','12:00 PM','2:00 PM','4:00 PM','6:00 PM','8:00 PM'];
-  const labels=['Wake up','Breakfast','Mid-morning','Lunch','Afternoon','Pre-dinner','Dinner','Evening'];
-  let html='';
-  times.forEach((t,i)=>{
-    const pct=100/8;
-    html+=`<div class="sched-row"><div class="sched-time">${t}</div><div class="sched-bar"><div class="sched-fill" style="width:${pct}%"></div></div><div class="sched-ml">${Math.round(perSlot)}ml</div></div>`;
-  });
-  schedule.innerHTML=html;
-
-  document.getElementById('results').style.display='block';
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
-
-<script>
-(function(){
-  var target = document.getElementById('results');
-  if (!target) return;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<save-result-button tool-slug="water-intake" tool-name="Water Intake"></save-result-button><share-result-button tool-name="Water Intake" tool-slug="water-intake"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<script src="/assets/js/health-workflow.js?v=e8ad8f1d" defer></script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
-</body>
-</html>
+</body></html>

@@ -1,1 +1,412 @@
-!function(){"use strict";var e={system:"ng-waec",track:"",subjects:[],aggregate:0,credits:0},t=null;function n(e){return document.getElementById(e)}function a(e,t){return(t||document).querySelectorAll(e)}function r(){return"undefined"!=typeof WAEC_EXAM_SYSTEMS&&WAEC_EXAM_SYSTEMS[e.system]?WAEC_EXAM_SYSTEMS[e.system]:null}function s(e){var t=document.createElement("div");return t.textContent=e,t.innerHTML}function i(e,t){"function"==typeof gtag&&gtag("event",e,t||{})}function o(){var t=r();t&&(function(e){var t=n("bestOfInfo");if(t){var a=e.flag+" <strong>"+e.name+"</strong> — ";e.bestOfRule?a+=e.bestOfRule:a+="Best "+e.bestOf+" subjects",e.minCredit&&(a+=" (minimum credit: "+e.minCredit+")"),t.innerHTML=a}}(t),function(){var t=n("trackGroup"),a=n("trackSelect");if(t&&a){var r="undefined"!=typeof WAEC_SUBJECTS?WAEC_SUBJECTS[e.system]:null;if(r&&r.tracks){for(var s in t.style.display="",a.innerHTML='<option value="">Select Track (Optional)</option>',r.tracks)if(r.tracks.hasOwnProperty(s)){var i=r.tracks[s];a.innerHTML+='<option value="'+s+'">'+i.icon+" "+i.name+"</option>"}a.innerHTML+='<option value="custom">✏️ Custom (pick my own)</option>',a.value=e.track||""}else t.style.display="none"}}(),function(e){var t=n("aggMaxLabel"),a=n("resultBestOf");if(e){var r=9*e.bestOf;t&&(t.textContent=r+" (Worst)"),a&&(a.textContent=e.bestOfRule||"Best "+e.bestOf+" subjects")}}(t))}function c(){var t=r();if(t){e.subjects=[];var n="undefined"!=typeof WAEC_SUBJECTS?WAEC_SUBJECTS[e.system]:null;(n&&n.compulsory?n.compulsory:t.includeCompulsory||[]).forEach(function(t){e.subjects.push({name:t,grade:"",compulsory:!0})}),n&&n.tracks&&e.track&&"custom"!==e.track&&n.tracks[e.track]&&n.tracks[e.track].subjects.forEach(function(t){e.subjects.push({name:t,grade:"",compulsory:!1})});for(var a=Math.max((t.bestOf||5)+1,6);e.subjects.length<a;)e.subjects.push({name:"",grade:"",compulsory:!1});u()}}function u(){var t=n("subjectsContainer");if(t){t.innerHTML="";var a=r();e.subjects.forEach(function(n,r){t.appendChild(function(t,n,a){var r=document.createElement("div");r.className="wc-subject-row"+(t.compulsory?" compulsory":"");var i,o=document.createElement("div");if(o.className="wc-subject-name",t.compulsory)o.innerHTML=s(t.name)+' <span class="tag">Required</span>';else if(t.name)o.textContent=t.name;else{var c=document.createElement("input");c.type="text",c.className="wc-input",c.placeholder="Subject name",c.setAttribute("aria-label","Subject name "+(n+1)),c.value=t.name||"",c.addEventListener("input",function(){e.subjects[n].name=this.value,b()}),o.appendChild(c)}if(!a||"percentage"!==a.inputType&&"score"!==a.inputType)if(a&&a.grades){for(var d in(i=document.createElement("select")).className="wc-grade-select",i.setAttribute("aria-label","Grade for subject "+(n+1)),i.innerHTML='<option value="">—</option>',a.grades)if(a.grades.hasOwnProperty(d)){var p=document.createElement("option");p.value=d,p.textContent=d+" ("+a.grades[d].label+")",p.style.color=a.grades[d].color,t.grade===d&&(p.selected=!0),i.appendChild(p)}i.addEventListener("change",function(){e.subjects[n].grade=this.value,l(),b()})}else(i=document.createElement("input")).type="text",i.className="wc-input",i.placeholder="Grade",i.setAttribute("aria-label","Grade for subject "+(n+1)),i.value=t.grade||"",i.addEventListener("input",function(){e.subjects[n].grade=this.value,l(),b()});else(i=document.createElement("input")).type="number",i.className="wc-input",i.placeholder="score"===a.inputType?"/20":"%",i.min="0",i.max="score"===a.inputType?String(a.scoreMax||20):"100",i.step="0.5",i.setAttribute("aria-label","Score for subject "+(n+1)),i.value=t.grade||"",i.addEventListener("input",function(){e.subjects[n].grade=this.value,l(),b()});var f=document.createElement("button");return f.className="wc-subject-delete",f.innerHTML="×",f.setAttribute("aria-label","Remove subject"),t.compulsory?(f.disabled=!0,f.style.opacity="0.2",f.style.cursor="default"):f.addEventListener("click",function(){e.subjects.splice(n,1),u(),b()}),r.appendChild(o),r.appendChild(i),r.appendChild(f),r}(n,r,a))}),l()}}function l(){clearTimeout(t),t=setTimeout(d,150)}function d(){var t=r();if(t){var s=[],o=0;if(e.subjects.forEach(function(e){if(e.grade){var n=p(e.grade,t);null!==n&&(s.push({name:e.name,grade:e.grade,points:n,compulsory:e.compulsory}),t.grades&&t.minCredit&&n<=(t.grades[t.minCredit]?t.grades[t.minCredit].points:6)&&o++)}}),0!==s.length){var c=function(e){return!(!e||"percentage"!==e.inputType&&"score"!==e.inputType&&!{"za-nsc":1,"ke-kcse":1,"fr-bac":1,"na-bac":1}[e.id])}(t);s.sort(function(e,t){return c?t.points-e.points:e.points-t.points});var u=t.bestOf||5,l=function(e,t){var n=e.filter(function(e){return e.compulsory}),a=e.filter(function(e){return!e.compulsory}),r=t-n.length;return r<0&&(r=0),n.concat(a.slice(0,r))}(s,u),d=0;l.forEach(function(e){d+=e.points}),e.aggregate=d,e.credits=o;var m=function(e,t){var n=t.aggregateRanges||t.classifications||t.divisions;if(!n)return null;for(var a=0;a<n.length;a++){var r=n[a];if(e>=r.min&&e<=r.max)return r}return null}(d,t);!function(t,r,s,i,o,c,u){var l=n("resultAggregate");l&&(l.textContent=t);var d=n("resultSubjects");d&&(d.textContent=s);var p=n("resultCredits");p&&(p.textContent=i);var m=9*u,v=u,g=n("aggFill");if(g){var b=100-(t-v)/(m-v)*100;g.style.width=Math.max(b,2)+"%",g.style.background=o?o.color:"var(--wc-text-muted)"}var y=n("classBadge");y&&o?(y.textContent=o.name,y.style.background=f(o.color,.15),y.style.color=o.color):y&&(y.textContent="Aggregate: "+t,y.style.background="rgba(148,163,184,0.1)",y.style.color="var(--wc-text-muted)");var h=n("selectedSubjects");h&&r.length>0&&(h.style.display="",h.innerHTML="<strong>Best "+u+":</strong> "+r.map(function(e){return e.name+" ("+e.grade+")"}).join(", ")),a(".wc-subject-row").forEach(function(e,t){e.classList.remove("selected")}),r.forEach(function(t){e.subjects.forEach(function(e,n){if(e.name===t.name&&e.grade===t.grade){var r=a(".wc-subject-row");r[n]&&r[n].classList.add("selected")}})})}(d,l,s.length,o,m,0,u),function(t,a,r){var s=n("eligibilityList");if(s)if(0!==a){var i=[],o=e.subjects.some(function(e){return"English Language"===e.name&&e.grade&&p(e.grade,r)<=6}),c=e.subjects.some(function(e){return"Mathematics"===e.name&&e.grade&&p(e.grade,r)<=6});i.push({label:"English Language (C6+)",pass:o}),i.push({label:"Mathematics (C6+)",pass:c}),i.push({label:"5 Credits minimum",pass:a>=5}),i.push({label:"Aggregate ≤ 20",pass:t<=20}),s.innerHTML=i.map(function(e){var t=e.pass?"pass":"fail",n=e.pass?"✅":"❌";return'<div class="wc-elig-item '+t+'"><span>'+e.label+"</span><span>"+n+"</span></div>"}).join("")}else s.innerHTML='<p style="font-size:0.82rem;color:var(--wc-text-muted);">Enter grades to check eligibility.</p>'}(d,o,t),function(e,t){var a=n("mobileAgg"),r=n("mobileClass");a&&(a.textContent=e||"--"),r&&t?(r.textContent=t.name,r.style.background=f(t.color,.15),r.style.color=t.color):r&&(r.textContent="—",r.style.background="rgba(148,163,184,0.1)",r.style.color="var(--wc-text-muted)")}(d,m),i("calculation_completed",{aggregate:d,system:e.system,subjects:s.length})}else!function(){var e=n("resultAggregate");e&&(e.textContent="--");var t=n("classBadge");t&&(t.textContent="Enter grades to see classification",t.style.background="rgba(148,163,184,0.1)",t.style.color="var(--wc-text-muted)");var a=n("aggFill");a&&(a.style.width="0")}()}}function p(e,t){if("percentage"===t.inputType||"score"===t.inputType){var n=parseFloat(e);return isNaN(n)?null:n}return t.grades&&t.grades[e]?t.grades[e].points:null}function f(e,t){return e&&"#"===e[0]?"rgba("+parseInt(e.slice(1,3),16)+","+parseInt(e.slice(3,5),16)+","+parseInt(e.slice(5,7),16)+","+t+")":"rgba(148,163,184,"+t+")"}function m(){var t=(n("admCourseGroup")||{}).value,a=(n("admCourse")||{}).value,i=((n("admUniGroup")||{}).value,(n("admUniversity")||{}).value,parseInt((n("admJamb")||{}).value)||0);if(i>400){i=400;var o=n("admJamb");o&&(o.value=400),y("Maximum JAMB score is 400")}if(t&&a){var c="undefined"!=typeof WAEC_COURSES?WAEC_COURSES[t]:null;if(c){var u=c.courses.find(function(e){return e.id===a});if(u){var l=r(),d=[],f=!0;u.required.forEach(function(t){var n=e.subjects.find(function(e){return e.name===t&&e.grade}),a=!1;if(n&&l&&l.grades){var r=p(n.grade,l),s=l.grades[u.minGrade]?l.grades[u.minGrade].points:6;a=null!==r&&r<=s}a||(f=!1),d.push({subject:t,met:a,grade:n?n.grade:"Not entered"})});var m=n("admUniversity")?n("admUniversity").selectedOptions[0]:null,v=m&&parseInt(m.getAttribute("data-cutoff"))||0,g=i>=Math.max(v,u.typicalCutoff),b=n("admissionResult");if(b){var h='<div class="wc-admission-card">';h+="<h3>"+s(u.name)+"</h3>",h+='<div style="margin:12px 0;">',d.forEach(function(e){e.met;var t=e.met?"✅":"❌";h+='<div class="req"><span>'+t+" "+s(e.subject)+'</span><span style="font-family:var(--wc-mono);font-size:0.8rem;">'+e.grade+"</span></div>"}),h+="</div>",i>0&&(h+='<div class="wc-elig-item '+(g?"pass":"fail")+'"><span>JAMB Score: '+i+"</span><span>"+(g?"✅ Above cut-off":"❌ Below cut-off ("+Math.max(v,u.typicalCutoff)+")")+"</span></div>"),h+='<div style="margin-top:12px;padding:12px;border-radius:8px;text-align:center;font-weight:600;'+(f?'background:rgba(16,185,129,0.1);color:#10B981;">O-Level Requirements Met ✅':'background:rgba(239,68,68,0.08);color:#F87171;">Missing O-Level Requirements ❌')+"</div>",u.jambSubjects&&(h+='<div style="margin-top:8px;font-size:0.8rem;color:var(--wc-text-muted);">JAMB subjects: '+u.jambSubjects.join(", ")+"</div>"),h+="</div>",b.innerHTML=h}}}}else y("Select a course first.")}function v(e,t,n,a,r){return"<tr><td><strong>"+e+"</strong></td><td>"+t+"</td><td>"+n+"</td><td>"+a+"</td><td>"+r+"</td></tr>"}function g(){var t=r();return"My "+(t?t.name:"WAEC")+" Aggregate: "+e.aggregate+" | "+e.credits+" credits\n\nCalculated with AfroTools 🎓\nhttps://afrotools.com/tools/waec-calculator/"}function b(){try{localStorage.setItem("afrotools_waec",JSON.stringify({examSystem:e.system,track:e.track,subjects:e.subjects,aggregate:e.aggregate}))}catch(e){}}function y(e){if("function"!=typeof window.AfroToast)if("function"!=typeof window.showToast){var t=document.createElement("div");t.textContent=e,t.style.cssText="position:fixed;bottom:72px;left:50%;transform:translateX(-50%);background:#111D2E;color:#E2E8F0;padding:10px 20px;border-radius:8px;font-size:0.85rem;z-index:9999;border:1px solid rgba(0,201,167,0.2);",document.body.appendChild(t),setTimeout(function(){t.remove()},3e3)}else window.showToast(e);else window.AfroToast(e)}document.addEventListener("DOMContentLoaded",function(){!function(){var t=n("examSystem");if(t&&"undefined"!=typeof WAEC_EXAM_SYSTEMS){for(var a in t.innerHTML="",WAEC_EXAM_SYSTEMS)if(WAEC_EXAM_SYSTEMS.hasOwnProperty(a)){var r=WAEC_EXAM_SYSTEMS[a];t.innerHTML+='<option value="'+a+'">'+r.flag+" "+r.name+"</option>"}t.value=e.system}}(),a(".wc-tab").forEach(function(t){t.addEventListener("click",function(){var t=this.getAttribute("data-tab");a(".wc-tab").forEach(function(e){e.classList.remove("active"),e.setAttribute("aria-selected","false")}),a(".wc-tab-content").forEach(function(e){e.classList.remove("active")}),this.classList.add("active"),this.setAttribute("aria-selected","true");var r,o=n(t);o&&o.classList.add("active"),"tab-admission"===t&&function(){var t=e.system.startsWith("ng")?"ng":e.system.startsWith("gh")?"gh":null;if(t&&"undefined"!=typeof WAEC_UNIVERSITIES&&WAEC_UNIVERSITIES[t]){var a=WAEC_UNIVERSITIES[t],r=n("admUniGroup"),s=n("admUniversity"),i=n("admCourseGroup"),o=n("admCourse");if(r){for(var c in r.innerHTML='<option value="">Select type</option>',a.groups)a.groups.hasOwnProperty(c)&&(r.innerHTML+='<option value="'+c+'">'+a.groups[c].label+"</option>");r.onchange=function(){var e=a.groups[this.value];e&&s&&(s.innerHTML='<option value="">Select university</option>',e.schools.forEach(function(e){s.innerHTML+='<option value="'+e.id+'" data-cutoff="'+e.cutoff+'">'+e.name+"</option>"}))}}if(i&&"undefined"!=typeof WAEC_COURSES){for(var u in i.innerHTML='<option value="">Select category</option>',WAEC_COURSES)WAEC_COURSES.hasOwnProperty(u)&&(i.innerHTML+='<option value="'+u+'">'+WAEC_COURSES[u].label+"</option>");i.onchange=function(){var e=WAEC_COURSES[this.value];e&&o&&(o.innerHTML='<option value="">Select course</option>',e.courses.forEach(function(e){o.innerHTML+='<option value="'+e.id+'">'+e.name+"</option>"}))}}var l=n("checkEligibilityBtn");l&&(l.onclick=m)}else n("tab-admission").querySelector(".wc-section").innerHTML='<p style="color:var(--wc-text-secondary);">University admission checker is available for Nigerian and Ghanaian universities. Select a Nigerian or Ghanaian exam system to use this feature.</p>'}(),"tab-converter"===t&&(r=n("converterTable"))&&(r.innerHTML='<table class="wc-ref-table"><thead><tr><th>O-Level Grade</th><th>Points</th><th>Nigerian 5.0</th><th>US 4.0</th><th>UK Class</th></tr></thead><tbody>'+v("A1","1","5.0 (A)","4.0 (A)","First Class")+v("B2","2","4.0 (B)","3.5 (B+)","Upper Second")+v("B3","3","3.5 (B)","3.0 (B)","Upper Second")+v("C4","4","3.0 (C)","2.5 (C+)","Lower Second")+v("C5","5","2.5 (C)","2.0 (C)","Lower Second")+v("C6","6","2.0 (D)","1.5 (D+)","Third Class")+v("D7","7","1.0 (E)","1.0 (D)","Pass")+v("E8","8","0.5","0.5","Fail")+v("F9","9","0.0 (F)","0.0 (F)","Fail")+"</tbody></table>"),"tab-requirements"===t&&function(){var e=n("reqCourseGroup"),t=n("reqCourse");if(e&&t&&"undefined"!=typeof WAEC_COURSES){for(var a in e.innerHTML='<option value="">Select category</option>',WAEC_COURSES)WAEC_COURSES.hasOwnProperty(a)&&(e.innerHTML+='<option value="'+a+'">'+WAEC_COURSES[a].label+"</option>");e.onchange=function(){var e=WAEC_COURSES[this.value];e&&(t.innerHTML='<option value="">Select course</option>',e.courses.forEach(function(e){t.innerHTML+='<option value="'+e.id+'">'+e.name+"</option>"}))},t.onchange=function(){var t=e.value,a=this.value;if(t&&a){var r=WAEC_COURSES[t];if(r){var i=r.courses.find(function(e){return e.id===a});i&&function(e){var t=n("requirementsResult");if(t){var a='<div class="wc-admission-card" style="margin-top:16px;">';a+="<h3>"+s(e.name)+"</h3>",a+='<div style="margin:12px 0;">',a+='<div style="font-size:0.78rem;color:var(--wc-text-muted);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;">Required O-Level Subjects (min. '+e.minGrade+")</div>",e.required.forEach(function(t){a+='<div class="req"><span>✓ '+s(t)+'</span><span style="font-size:0.8rem;color:var(--wc-accent);">min. '+e.minGrade+"</span></div>"}),a+="</div>",e.jambSubjects&&(a+='<div style="margin-top:12px;padding:12px;background:var(--wc-primary-mid);border-radius:8px;">',a+='<div style="font-size:0.78rem;color:var(--wc-text-muted);margin-bottom:4px;text-transform:uppercase;">JAMB Subjects</div>',a+='<div style="font-size:0.88rem;color:var(--wc-text);">'+e.jambSubjects.join(", ")+"</div>",a+="</div>"),e.typicalCutoff&&(a+='<div style="margin-top:8px;font-size:0.82rem;color:var(--wc-text-secondary);">Typical JAMB cut-off: <strong style="color:var(--wc-accent);">'+e.typicalCutoff+"+</strong></div>"),a+="</div>",t.innerHTML=a}}(i)}}}}}(),i("tab_switched",{to:t})})}),function(){var t=n("examSystem");t&&t.addEventListener("change",function(){e.system=this.value,e.track="",e.subjects=[],o(),c(),b()})}(),function(){var t=n("trackSelect");t&&t.addEventListener("change",function(){e.track=this.value,e.subjects=[],c(),b()})}(),a(".wc-faq-q").forEach(function(e){e.addEventListener("click",function(){this.parentElement.classList.toggle("open")})}),function(){var e=n("shareWhatsapp");e&&e.addEventListener("click",function(){window.open("https://wa.me/?text="+encodeURIComponent(g()),"_blank"),i("result_shared",{method:"whatsapp"})});var t=n("shareTwitter");t&&t.addEventListener("click",function(){window.open("https://twitter.com/intent/tweet?text="+encodeURIComponent(g()),"_blank"),i("result_shared",{method:"twitter"})});var a=n("shareCopy");a&&a.addEventListener("click",function(){navigator.clipboard&&navigator.clipboard.writeText(g()).then(function(){y("Copied!")}),i("result_shared",{method:"copy"})});var r=n("sharePdf");r&&r.addEventListener("click",function(){window.print(),i("result_shared",{method:"pdf"})})}(),function(){try{var t=localStorage.getItem("afrotools_waec");if(!t)return;var a=JSON.parse(t);a.examSystem&&"undefined"!=typeof WAEC_EXAM_SYSTEMS&&WAEC_EXAM_SYSTEMS[a.examSystem]&&(e.system=a.examSystem),a.track&&(e.track=a.track),Array.isArray(a.subjects)&&a.subjects.length>0&&(e.subjects=a.subjects);var r=n("examSystem");r&&(r.value=e.system)}catch(e){}}(),o(),0===e.subjects.length&&c(),i("tool_opened",{system:e.system})}),document.addEventListener("DOMContentLoaded",function(){var t=n("addSubjectBtn");t&&t.addEventListener("click",function(){e.subjects.push({name:"",grade:"",compulsory:!1}),u(),b()})})}();
+(function () {
+  'use strict';
+
+  var STORAGE_KEY = 'afrotools_waec';
+  var state = {
+    system: 'ng-waec-neco',
+    pathway: 'science',
+    subjects: []
+  };
+
+  var SYSTEMS = {
+    'ng-waec-neco': {
+      name: 'Nigeria — WAEC or NECO',
+      metric: 'Best-five planning index',
+      info: 'Records your A1–F9 results, counts credits, and produces a best-five planning index. It does not predict admission.',
+      subjects: [
+        { name: 'English Language', compulsory: true },
+        { name: 'Mathematics', compulsory: true },
+        { name: 'Civic Education', compulsory: false },
+        { name: '', compulsory: false },
+        { name: '', compulsory: false },
+        { name: '', compulsory: false },
+        { name: '', compulsory: false },
+        { name: '', compulsory: false },
+        { name: '', compulsory: false }
+      ]
+    },
+    'gh-wassce': {
+      name: 'Ghana — WASSCE',
+      metric: 'Three core + three elective aggregate',
+      info: 'Uses English, Core Mathematics, your programme core, and the best three entered electives. Confirm the exact programme rules with the institution.',
+      subjects: [
+        { name: 'English Language', compulsory: true, role: 'core' },
+        { name: 'Core Mathematics', compulsory: true, role: 'core' },
+        { name: 'Integrated Science', compulsory: true, role: 'programme-core' },
+        { name: 'Social Studies', compulsory: false, role: 'alternate-core' },
+        { name: '', compulsory: false, role: 'elective' },
+        { name: '', compulsory: false, role: 'elective' },
+        { name: '', compulsory: false, role: 'elective' },
+        { name: '', compulsory: false, role: 'elective' }
+      ]
+    }
+  };
+
+  function byId(id) {
+    return document.getElementById(id);
+  }
+
+  function escapeHtml(value) {
+    var element = document.createElement('div');
+    element.textContent = String(value || '');
+    return element.innerHTML;
+  }
+
+  function announce(message) {
+    var target = byId('wcFormStatus');
+    if (target) target.textContent = message || '';
+  }
+
+  function track(eventName, metadata) {
+    if (typeof window.gtag === 'function') window.gtag('event', eventName, metadata || {});
+  }
+
+  function save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        examSystem: state.system,
+        pathway: state.pathway,
+        subjects: state.subjects
+      }));
+    } catch (error) {
+      // The calculator still works when local storage is unavailable.
+    }
+  }
+
+  function load() {
+    try {
+      var saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}');
+      if (SYSTEMS[saved.examSystem]) state.system = saved.examSystem;
+      if (saved.pathway === 'science' || saved.pathway === 'non-science') state.pathway = saved.pathway;
+      if (Array.isArray(saved.subjects) && saved.subjects.length) state.subjects = saved.subjects;
+    } catch (error) {
+      // Invalid local data is ignored.
+    }
+  }
+
+  function freshSubjects() {
+    return SYSTEMS[state.system].subjects.map(function (subject) {
+      return Object.assign({ grade: '' }, subject);
+    });
+  }
+
+  function syncGhanaProgrammeCore() {
+    if (state.system !== 'gh-wassce') return;
+    state.subjects.forEach(function (subject) {
+      if (subject.name === 'Integrated Science') subject.compulsory = state.pathway === 'science';
+      if (subject.name === 'Social Studies') subject.compulsory = state.pathway === 'non-science';
+    });
+  }
+
+  function renderSystemControls() {
+    var systemSelect = byId('examSystem');
+    systemSelect.innerHTML = Object.keys(SYSTEMS).map(function (id) {
+      return '<option value="' + id + '">' + SYSTEMS[id].name + '</option>';
+    }).join('');
+    systemSelect.value = state.system;
+
+    var pathwayGroup = byId('trackGroup');
+    var pathwaySelect = byId('trackSelect');
+    if (state.system === 'gh-wassce') {
+      pathwayGroup.style.display = '';
+      pathwayGroup.querySelector('label').textContent = 'Programme core used';
+      pathwaySelect.setAttribute('aria-label', 'Choose Ghana programme core');
+      pathwaySelect.innerHTML = [
+        '<option value="science">Science programme — Integrated Science</option>',
+        '<option value="non-science">Non-science programme — Social Studies</option>'
+      ].join('');
+      pathwaySelect.value = state.pathway;
+    } else {
+      pathwayGroup.style.display = 'none';
+    }
+  }
+
+  function renderSubjects() {
+    syncGhanaProgrammeCore();
+    var container = byId('subjectsContainer');
+    container.innerHTML = '';
+    state.subjects.forEach(function (subject, index) {
+      var row = document.createElement('div');
+      row.className = 'wc-subject-row' + (subject.compulsory ? ' compulsory' : '');
+
+      var nameWrap = document.createElement('div');
+      nameWrap.className = 'wc-subject-name';
+      if (subject.name && subject.compulsory) {
+        nameWrap.appendChild(document.createTextNode(subject.name + ' '));
+        var tag = document.createElement('span');
+        tag.className = 'tag';
+        tag.textContent = 'Included';
+        nameWrap.appendChild(tag);
+      } else {
+        var nameInput = document.createElement('input');
+        nameInput.type = 'text';
+        nameInput.className = 'wc-input';
+        nameInput.value = subject.name || '';
+        nameInput.placeholder = subject.role === 'alternate-core' ? 'Other core subject' : 'Subject name';
+        nameInput.setAttribute('aria-label', 'Subject name ' + (index + 1));
+        if (subject.name === 'Integrated Science' || subject.name === 'Social Studies') nameInput.readOnly = true;
+        nameInput.addEventListener('input', function () {
+          state.subjects[index].name = this.value;
+          calculate();
+        });
+        nameWrap.appendChild(nameInput);
+      }
+
+      var gradeSelect = document.createElement('select');
+      gradeSelect.className = 'wc-grade-select';
+      gradeSelect.setAttribute('aria-label', 'Grade for ' + (subject.name || ('subject ' + (index + 1))));
+      gradeSelect.innerHTML = '<option value="">Select grade</option>' +
+        Object.keys(window.WAECPlannerEngine.grades).map(function (grade) {
+          var detail = window.WAECPlannerEngine.grades[grade];
+          return '<option value="' + grade + '">' + grade + ' — ' + detail.label + '</option>';
+        }).join('');
+      gradeSelect.value = subject.grade || '';
+      gradeSelect.addEventListener('change', function () {
+        state.subjects[index].grade = this.value;
+        calculate();
+      });
+
+      var remove = document.createElement('button');
+      remove.type = 'button';
+      remove.className = 'wc-subject-delete';
+      remove.setAttribute('aria-label', 'Remove subject ' + (index + 1));
+      remove.textContent = '×';
+      if (subject.compulsory || subject.name === 'Integrated Science' || subject.name === 'Social Studies') {
+        remove.disabled = true;
+        remove.style.opacity = '0.2';
+      } else {
+        remove.addEventListener('click', function () {
+          state.subjects.splice(index, 1);
+          renderSubjects();
+          calculate();
+        });
+      }
+
+      row.appendChild(nameWrap);
+      row.appendChild(gradeSelect);
+      row.appendChild(remove);
+      container.appendChild(row);
+    });
+  }
+
+  function getResult() {
+    if (state.system === 'gh-wassce') {
+      return window.WAECPlannerEngine.calculateGhana(state.subjects, state.pathway);
+    }
+    return window.WAECPlannerEngine.calculateNigeria(state.subjects);
+  }
+
+  function setResultText(id, value) {
+    var element = byId(id);
+    if (element) element.textContent = value;
+  }
+
+  function renderChecks(result) {
+    var list = byId('eligibilityList');
+    list.innerHTML = result.checks.map(function (check) {
+      return '<div class="wc-elig-item ' + (check.pass ? 'pass' : 'warning') + '">' +
+        '<span>' + escapeHtml(check.label) + '</span><span>' + (check.pass ? '✓' : 'Review') + '</span></div>';
+    }).join('') +
+      '<p class="wc-check-note">' + escapeHtml(result.note) + '</p>';
+  }
+
+  function calculate() {
+    var result = getResult();
+    var value = result.value === null ? '--' : String(result.value);
+    setResultText('resultAggregate', value);
+    setResultText('mobileAgg', value);
+    setResultText('resultSubjects', String(result.entered));
+    setResultText('resultCredits', String(result.credits));
+    setResultText('resultBestOf', result.metricLabel);
+    setResultText('classBadge', result.complete ? 'Ready for official requirement checks' : 'Add the required results');
+    setResultText('mobileClass', result.complete ? 'Plan ready' : 'Incomplete');
+    setResultText('aggMaxLabel', state.system === 'gh-wassce' ? '54 (Highest)' : '45 (Highest)');
+
+    var resultLabel = document.querySelector('.wc-result-label');
+    if (resultLabel) resultLabel.textContent = result.metricLabel;
+    var minLabel = document.querySelector('.wc-agg-labels span:first-child');
+    if (minLabel) minLabel.textContent = state.system === 'gh-wassce' ? '6 (Lowest)' : '5 (Lowest)';
+
+    var badge = byId('classBadge');
+    if (badge) {
+      badge.style.background = result.complete ? 'rgba(16,185,129,0.1)' : 'rgba(245,158,11,0.1)';
+      badge.style.color = result.complete ? '#047857' : '#b45309';
+    }
+    var fill = byId('aggFill');
+    if (fill) {
+      var max = state.system === 'gh-wassce' ? 54 : 45;
+      var min = state.system === 'gh-wassce' ? 6 : 5;
+      var width = result.value === null ? 0 : Math.max(3, 100 - ((result.value - min) / (max - min) * 100));
+      fill.style.width = width + '%';
+      fill.style.background = result.complete ? 'var(--wc-success)' : 'var(--wc-amber)';
+    }
+
+    var selected = byId('selectedSubjects');
+    if (selected) {
+      selected.style.display = result.selected.length ? '' : 'none';
+      selected.innerHTML = result.selected.length
+        ? '<strong>Counted:</strong> ' + result.selected.map(function (row) {
+          return escapeHtml(row.name) + ' (' + row.grade + ')';
+        }).join(', ')
+        : '';
+    }
+    renderChecks(result);
+    save();
+    track('calculation_completed', {
+      tool_id: 'waec-calculator',
+      system: state.system,
+      complete: result.complete,
+      entered_subject_count: result.entered,
+      credit_count: result.credits
+    });
+  }
+
+  function renderReference() {
+    var table = byId('converterTable');
+    if (!table) return;
+    table.innerHTML = '<table class="wc-ref-table"><thead><tr><th>Result grade</th><th>Planning point</th><th>Result category</th></tr></thead><tbody>' +
+      Object.keys(window.WAECPlannerEngine.grades).map(function (grade) {
+        var detail = window.WAECPlannerEngine.grades[grade];
+        return '<tr><td><strong>' + grade + '</strong></td><td>' + detail.points + '</td><td>' + detail.label + '</td></tr>';
+      }).join('') +
+      '</tbody></table><p class="wc-check-note">These points support the planning summaries on this page. They are not a university GPA conversion.</p>';
+  }
+
+  function setupTabs() {
+    document.querySelectorAll('.wc-tab').forEach(function (tab) {
+      tab.addEventListener('click', function () {
+        var target = this.getAttribute('data-tab');
+        document.querySelectorAll('.wc-tab').forEach(function (item) {
+          item.classList.remove('active');
+          item.setAttribute('aria-selected', 'false');
+        });
+        document.querySelectorAll('.wc-tab-content').forEach(function (panel) {
+          panel.classList.remove('active');
+        });
+        this.classList.add('active');
+        this.setAttribute('aria-selected', 'true');
+        var panel = byId(target);
+        if (panel) panel.classList.add('active');
+      });
+    });
+  }
+
+  function shareText() {
+    var result = getResult();
+    return SYSTEMS[state.system].name + '\n' +
+      result.metricLabel + ': ' + (result.value === null ? 'Incomplete' : result.value) + '\n' +
+      'Credits recorded: ' + result.credits + '\n' +
+      result.note + '\nhttps://afrotools.com/tools/waec-calculator/';
+  }
+
+  function copyText(text) {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text);
+    }
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    document.execCommand('copy');
+    textarea.remove();
+    return Promise.resolve();
+  }
+
+  function setupShare() {
+    byId('shareWhatsapp').addEventListener('click', function () {
+      window.open('https://wa.me/?text=' + encodeURIComponent(shareText()), '_blank', 'noopener');
+    });
+    byId('shareTwitter').addEventListener('click', function () {
+      window.open('https://twitter.com/intent/tweet?text=' + encodeURIComponent(shareText()), '_blank', 'noopener');
+    });
+    byId('shareCopy').addEventListener('click', function () {
+      copyText(shareText()).then(function () { announce('Result summary copied.'); });
+    });
+    byId('sharePdf').addEventListener('click', function () {
+      window.print();
+    });
+  }
+
+  function setupFaq() {
+    document.querySelectorAll('.wc-faq-q').forEach(function (question) {
+      question.setAttribute('tabindex', '0');
+      question.setAttribute('role', 'button');
+      function toggle() {
+        question.parentElement.classList.toggle('open');
+      }
+      question.addEventListener('click', toggle);
+      question.addEventListener('keydown', function (event) {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          toggle();
+        }
+      });
+    });
+  }
+
+  window.loadWaecSample = function () {
+    state.system = 'ng-waec-neco';
+    state.subjects = [
+      { name: 'English Language', grade: 'B3', compulsory: true },
+      { name: 'Mathematics', grade: 'B2', compulsory: true },
+      { name: 'Civic Education', grade: 'A1', compulsory: false },
+      { name: 'Biology', grade: 'A1', compulsory: false },
+      { name: 'Chemistry', grade: 'B3', compulsory: false },
+      { name: 'Physics', grade: 'C4', compulsory: false },
+      { name: 'Economics', grade: 'C5', compulsory: false }
+    ];
+    renderSystemControls();
+    renderSubjects();
+    calculate();
+    announce('Sample Nigeria results loaded. Review the credit audit and official next steps.');
+  };
+
+  window.clearWaecGrades = function () {
+    state.subjects = freshSubjects();
+    renderSubjects();
+    calculate();
+    announce('Grades cleared.');
+  };
+
+  document.addEventListener('DOMContentLoaded', function () {
+    if (!window.WAECPlannerEngine) {
+      announce('The result engine did not load. Refresh the page and try again.');
+      return;
+    }
+    load();
+    if (!state.subjects.length) state.subjects = freshSubjects();
+    renderSystemControls();
+    renderSubjects();
+    renderReference();
+    setupTabs();
+    setupShare();
+    setupFaq();
+
+    byId('examSystem').addEventListener('change', function () {
+      state.system = this.value;
+      state.pathway = 'science';
+      state.subjects = freshSubjects();
+      renderSystemControls();
+      renderSubjects();
+      calculate();
+      announce('Exam system changed. Enter the results shown on your official statement.');
+    });
+    byId('trackSelect').addEventListener('change', function () {
+      state.pathway = this.value;
+      syncGhanaProgrammeCore();
+      renderSubjects();
+      calculate();
+      announce('Programme core changed. Confirm the choice with the programme you plan to apply for.');
+    });
+    byId('addSubjectBtn').addEventListener('click', function () {
+      state.subjects.push({ name: '', grade: '', compulsory: false, role: 'elective' });
+      renderSubjects();
+      calculate();
+    });
+
+    calculate();
+    track('tool_opened', { tool_id: 'waec-calculator', system: state.system });
+  });
+})();

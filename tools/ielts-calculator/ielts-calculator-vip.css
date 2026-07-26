@@ -1,0 +1,135 @@
+.ielts-page {
+  --ielts-font: var(--font-body, "DM Sans"), sans-serif;
+  --ielts-mono: var(--font-mono, "JetBrains Mono"), monospace;
+}
+
+.ielts-vip-hidden {
+  display: none !important;
+}
+
+.ielts-privacy-note {
+  margin: 12px 0 0;
+  color: var(--ielts-muted);
+  font-size: 0.78rem;
+  line-height: 1.55;
+}
+
+.ielts-export-head {
+  grid-template-columns: minmax(0, 1fr);
+}
+
+.ielts-export-buttons {
+  justify-content: flex-start;
+}
+
+[data-theme="dark"] .ielts-page {
+  --ielts-bg: #0b1220;
+  --ielts-surface: #121f33;
+  --ielts-surface-alt: #172942;
+  --ielts-ink: #eef5ff;
+  --ielts-muted: #bdcbe0;
+  --ielts-border: #31445f;
+  --ielts-primary: #69a7ff;
+  --ielts-primary-strong: #9bc5ff;
+  background: var(--ielts-bg);
+}
+
+[data-theme="dark"] .ielts-card,
+[data-theme="dark"] .ielts-info-card,
+[data-theme="dark"] .ielts-faq-item,
+[data-theme="dark"] .ielts-surface-point,
+[data-theme="dark"] .ielts-context-item,
+[data-theme="dark"] .ielts-gap-item,
+[data-theme="dark"] .ielts-verdict-box,
+[data-theme="dark"] .ielts-tips-box,
+[data-theme="dark"] .ielts-result-box,
+[data-theme="dark"] .ielts-comp,
+[data-theme="dark"] .ielts-export-pack,
+[data-theme="dark"] .ielts-export-cell,
+[data-theme="dark"] .ielts-export-item {
+  background: var(--ielts-surface);
+  border-color: var(--ielts-border);
+  color: var(--ielts-ink);
+}
+
+[data-theme="dark"] .ielts-select,
+[data-theme="dark"] .ielts-input,
+[data-theme="dark"] .ielts-btn-secondary,
+[data-theme="dark"] .ielts-cta-link {
+  background: var(--ielts-surface-alt);
+  border-color: var(--ielts-border);
+  color: var(--ielts-ink);
+}
+
+[data-theme="dark"] .ielts-form-group label,
+[data-theme="dark"] .ielts-result-desc,
+[data-theme="dark"] .ielts-conversion-note,
+[data-theme="dark"] .ielts-privacy-note {
+  color: var(--ielts-muted);
+}
+
+[data-theme="dark"] .ielts-reference-note {
+  background: #38270e;
+  border-color: #7c5414;
+  color: #fde2a7;
+}
+
+[data-theme="dark"] .ielts-reference-note strong {
+  color: #fff0c7;
+}
+
+@media (max-width: 400px) {
+  .ielts-header,
+  .ielts-container {
+    padding-inline: 14px;
+  }
+
+  .ielts-card,
+  .ielts-info-card {
+    min-width: 0;
+    padding: 16px;
+  }
+
+  .ielts-mode-switch,
+  .ielts-verdict-top,
+  .ielts-export-buttons {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    width: 100%;
+  }
+
+  .ielts-mode-btn,
+  .ielts-export-buttons .ielts-btn {
+    width: 100%;
+  }
+
+  .ielts-status-meta,
+  .ielts-status-badge {
+    min-width: 0;
+    white-space: normal;
+  }
+}
+
+@media print {
+  html.ielts-pack-printing body > * {
+    display: none !important;
+  }
+
+  html.ielts-pack-printing .ielts-container,
+  html.ielts-pack-printing #actionPlanCard,
+  html.ielts-pack-printing #ieltsExportPack {
+    display: block !important;
+  }
+
+  html.ielts-pack-printing #actionPlanCard > :not(.ielts-action-grid),
+  html.ielts-pack-printing .ielts-action-grid > :first-child,
+  html.ielts-pack-printing .ielts-cta-strip,
+  html.ielts-pack-printing .ielts-export-buttons {
+    display: none !important;
+  }
+
+  html.ielts-pack-printing #ieltsExportPack {
+    border: 0;
+    box-shadow: none;
+  }
+}

@@ -4,23 +4,19 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Statistics Calculator | AfroTools</title>
-<meta name="description" content="Free statistics calculator — mean, median, mode, standard deviation, variance, quartiles, skewness, and more. Paste your data and get instant results with visual distribution.">
+<title>Descriptive Statistics Calculator | AfroTools</title>
+<meta name="description" content="Calculate mean, median, mode, quartiles, variance, standard deviation, coefficient of variation and skewness locally, with explicit methods and private exports.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Statistics Calculator | AfroTools">
-<meta property="og:description" content="Calculate mean, median, mode, standard deviation, variance, quartiles, and more.">
+<meta property="og:title" content="Descriptive Statistics Calculator | AfroTools">
+<meta property="og:description" content="Private, browser-based descriptive statistics with explicit sample, population, quartile and skewness conventions.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/statistics-calc.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/statistics-calc/">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script>
-<script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <style>
 :root{--afro-dark:#0f1419;--accent:#7c3aed}
 .tool-hero{background:linear-gradient(135deg,#3b0764 0%,#7c3aed 50%,#6d28d9 100%);padding:44px 0 36px}
@@ -41,7 +37,7 @@ h1 em{color:#e9d5ff;font-style:normal}
 .card-title{font-size:.72rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--afro-dark)}
 .card-body{padding:22px}
 label{display:block;font-size:.72rem;font-weight:600;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
-textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:'Inter',monospace;box-sizing:border-box;resize:vertical;min-height:100px}
+textarea{width:100%;padding:12px;border:1.5px solid #cbd5e1;border-radius:7px;font-size:.82rem;background:#f8fafc;font-family:var(--font-mono);box-sizing:border-box;resize:vertical;min-height:100px}
 textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba(124,58,237,.15)}
 .btn-row{display:flex;gap:8px;margin-top:14px;flex-wrap:wrap}
 .btn{padding:10px 18px;border:none;border-radius:8px;font-size:.78rem;font-weight:700;cursor:pointer}
@@ -79,8 +75,8 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Statistics Calculator | AfroTools">
-<meta name="twitter:description" content="Calculate mean, median, mode, standard deviation, variance, quartiles, and more.">
+<meta name="twitter:title" content="Descriptive Statistics Calculator | AfroTools">
+<meta name="twitter:description" content="Private, browser-based descriptive statistics with explicit sample, population, quartile and skewness conventions.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/statistics-calc.webp">
 <script type="application/ld+json">
 {
@@ -109,19 +105,19 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's the difference between population and sample standard deviation?","acceptedAnswer":{"@type":"Answer","text":"Population SD divides by N (total count), while sample SD divides by N-1 (Bessel's correction). Use sample SD when your data is a subset of a larger population. This calculator provides both values."}},{"@type":"Question","name":"When should I use median instead of mean?","acceptedAnswer":{"@type":"Answer","text":"Use the median when your data is skewed or contains outliers. For example, salary data is typically right-skewed (a few very high earners pull the mean up), so the median salary better represents the \"typical\" worker. If your data is roughly symmetric, mean and median will be similar."}},{"@type":"Question","name":"What does a high coefficient of variation mean?","acceptedAnswer":{"@type":"Answer","text":"A CV above 30% is generally considered high variability. It means the standard deviation is large relative to the mean. CV is useful for comparing variability between datasets with different scales — for example, comparing the variability of heights (in cm) vs weights (in kg)."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What's the difference between population and sample standard deviation?","acceptedAnswer":{"@type":"Answer","text":"Population SD divides by N (total count), while sample SD divides by N-1 (Bessel's correction). Use sample SD when your data is a subset of a larger population. This calculator provides both values."}},{"@type":"Question","name":"When should I use median instead of mean?","acceptedAnswer":{"@type":"Answer","text":"Use the median when your data is skewed or contains outliers. For example, salary data is typically right-skewed (a few very high earners pull the mean up), so the median salary better represents the \"typical\" worker. If your data is roughly symmetric, mean and median will be similar."}},{"@type":"Question","name":"Which quartile method does this calculator use?","acceptedAnswer":{"@type":"Answer","text":"It uses inclusive linear interpolation at position (n − 1) × q. Other software and textbooks may use a different convention, so check the method required by your assignment or analysis."}},{"@type":"Question","name":"When is coefficient of variation meaningful?","acceptedAnswer":{"@type":"Answer","text":"CV is most useful for ratio-scale measurements with a meaningful zero and a non-zero mean. There is no universal percentage that makes every dataset “high variability”, and comparing unrelated units can be misleading."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/tools/statistics-calc/statistics-vip.css?v=7c93bc9d">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Statistics Calculator",
-  "description": "Free statistics calculator — mean, median, mode, standard deviation, variance, quartiles, skewness, and more. Paste your data and get instant results with visual distribution.",
+  "description": "Private browser-based descriptive statistics calculator with explicit sample, population, quartile and skewness conventions.",
   "url": "https://afrotools.com/tools/statistics-calc/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -149,8 +145,8 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / <span>Statistics Calculator</span></div>
 <h1>Statistics <em>Calculator</em></h1>
-<p class="hero-sub">Paste your numbers and instantly get mean, median, mode, standard deviation, variance, quartiles, range, skewness, and a visual distribution histogram.</p>
-<div class="hero-badges"><span class="badge b-em">Descriptive Stats</span><span class="badge b-em">Free</span><span class="badge b-em">Instant Results</span></div>
+<p class="hero-sub">Check a numeric dataset with explicit sample, population, quartile and skewness conventions. Invalid entries are identified instead of silently discarded.</p>
+<div class="hero-badges"><span class="badge b-em">Runs in your browser</span><span class="badge b-em">Method disclosed</span><span class="badge b-em">Free</span></div>
 </div></section>
 
 <section class="tool-main"><div class="tool-main-inner">
@@ -160,12 +156,14 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <div class="card-body">
 <label for="dataInput">Numbers (comma, space, or newline separated)</label>
 <textarea id="dataInput" placeholder="e.g. 12, 15, 18, 22, 25, 28, 30, 35, 40, 45">12, 15, 18, 22, 25, 28, 30, 35, 40, 45</textarea>
+<p class="stats-privacy-note">Your dataset stays in this browser. It is not saved or sent to AfroTools. Copy and TXT exports include the summary, not your raw values.</p>
 <div class="btn-row">
 <button type="button" class="btn btn-primary" onclick="calculate()">Calculate</button>
 <button type="button" class="btn btn-secondary" onclick="loadSample('exam')">Sample: Exam Scores</button>
 <button type="button" class="btn btn-secondary" onclick="loadSample('salary')">Sample: Salaries</button>
 <button type="button" class="btn btn-success" onclick="copyStatsReport()">Copy Report</button>
 <button type="button" class="btn btn-success" onclick="downloadStatsReport()">Download TXT</button>
+<button type="button" id="printStatsReport" class="btn btn-success" onclick="printStatsReport()">Print / Save PDF</button>
 <button type="button" class="btn btn-danger" onclick="clearStatsData()">Clear</button>
 </div>
 <div class="action-status" id="statsStatus" aria-live="polite"></div>
@@ -196,7 +194,7 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <li><strong>Skewness &gt; 0:</strong> Right-skewed (tail to right)</li>
 <li><strong>Skewness &lt; 0:</strong> Left-skewed (tail to left)</li>
 <li><strong>Skewness ≈ 0:</strong> Approximately symmetric</li>
-<li><strong>CV &gt; 30%:</strong> High variability</li>
+<li><strong>CV:</strong> Use only for ratio-scale data with a meaningful zero and non-zero mean</li>
 <li><strong>IQR:</strong> Middle 50% of data spread</li>
 </ul>
 </div>
@@ -211,278 +209,47 @@ textarea:focus{outline:none;border-color:var(--accent);box-shadow:0 0 0 3px rgba
 <h2>Free Online Statistics Calculator</h2>
 <p>This statistics calculator provides a comprehensive set of descriptive statistics for any dataset you enter. Whether you're a student working on a statistics assignment, a researcher analyzing survey data, or a professional making data-driven decisions, this tool gives you instant results without needing spreadsheet software or statistical packages.</p>
 <p>Descriptive statistics summarize and describe the main features of a dataset. The measures of central tendency — mean, median, and mode — tell you where the "center" of your data lies. The mean is the arithmetic average, the median is the middle value (resistant to outliers), and the mode is the most frequent value. For skewed data, the median is often more representative than the mean.</p>
-<p>Measures of dispersion — standard deviation, variance, range, and interquartile range (IQR) — tell you how spread out your data is. A low standard deviation means values are clustered close to the mean, while a high standard deviation indicates wide spread. The coefficient of variation (CV) expresses the standard deviation as a percentage of the mean, making it useful for comparing variability between datasets with different units or scales.</p>
+<p>Measures of dispersion — standard deviation, variance, range, and interquartile range (IQR) — tell you how spread out your data is. A low standard deviation means values are clustered close to the mean, while a high standard deviation indicates wide spread. The coefficient of variation (CV) expresses sample standard deviation relative to the absolute mean. It is most useful for ratio-scale measurements with a meaningful zero and non-zero mean; it is not a universal quality score.</p>
 <p>Quartiles divide your sorted data into four equal parts. Q1 (25th percentile) marks the lower quarter, Q2 (50th percentile) is the median, and Q3 (75th percentile) marks the upper quarter. The IQR (Q3 - Q1) represents the middle 50% of your data and is commonly used to identify outliers — values more than 1.5 times the IQR below Q1 or above Q3.</p>
 <p>Skewness measures the asymmetry of the distribution. Positive skewness indicates a right tail (common in income data), while negative skewness indicates a left tail. Understanding skewness helps you choose appropriate statistical methods and interpret your data correctly.</p>
 
 <h2>Frequently Asked Questions</h2>
 <details class="faq-item"><summary>What's the difference between population and sample standard deviation?</summary><p>Population SD divides by N (total count), while sample SD divides by N-1 (Bessel's correction). Use sample SD when your data is a subset of a larger population. This calculator provides both values.</p></details>
 <details class="faq-item"><summary>When should I use median instead of mean?</summary><p>Use the median when your data is skewed or contains outliers. For example, salary data is typically right-skewed (a few very high earners pull the mean up), so the median salary better represents the "typical" worker. If your data is roughly symmetric, mean and median will be similar.</p></details>
-<details class="faq-item"><summary>What does a high coefficient of variation mean?</summary><p>A CV above 30% is generally considered high variability. It means the standard deviation is large relative to the mean. CV is useful for comparing variability between datasets with different scales — for example, comparing the variability of heights (in cm) vs weights (in kg).</p></details>
+<details class="faq-item"><summary>Which quartile method does this calculator use?</summary><p>It uses inclusive linear interpolation at position (n − 1) × q. Other software and textbooks may use a different convention, so check the method required by your assignment or analysis.</p></details>
+<details class="faq-item"><summary>When is coefficient of variation meaningful?</summary><p>CV is most useful for ratio-scale measurements with a meaningful zero and a non-zero mean. There is no universal percentage that makes every dataset “high variability”, and comparing unrelated units can be misleading.</p></details>
 </section>
 
 <!-- Methodology, limitations & sources -->
 <section data-tool-verification-panel aria-labelledby="statistics-calc-method-title" style="max-width:900px;margin:32px auto;padding:0 20px;">
-  <h2 id="statistics-calc-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px;font-family:'Inter',sans-serif">How it works — methodology &amp; sources</h2>
-  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px;font-family:'Inter',sans-serif">Updated for 2026. Here is exactly how each statistic is produced, the assumptions behind it, and what to verify before you rely on it.</p>
+  <h2 id="statistics-calc-method-title" style="font-size:1.15rem;font-weight:800;color:#111;margin-bottom:6px">How it works — methodology &amp; sources</h2>
+  <p style="font-size:0.84rem;color:#64748b;line-height:1.6;margin:0 0 14px">Updated for 2026. Here is exactly how each statistic is produced, the assumptions behind it, and what to verify before you rely on it.</p>
   <details open style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Methodology &amp; assumptions</summary>
-    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">All statistics are computed in your browser from the numbers you paste (split on commas, spaces, or new lines; non-numeric tokens are ignored). We calculate the <strong>mean</strong> as sum&nbsp;&divide;&nbsp;count, the <strong>median</strong> as the middle value of the sorted data (the average of the two middle values when the count is even), and the <strong>mode</strong> as the most frequent value(s). Spread uses the standard formulas: <strong>sample variance</strong> divides the sum of squared deviations by n&minus;1 (Bessel's correction) while <strong>population variance</strong> divides by n, and each standard deviation is the square root of its variance. <strong>Quartiles</strong> use the inclusive linear-interpolation method at position (n&minus;1)&middot;q, so IQR&nbsp;=&nbsp;Q3&nbsp;&minus;&nbsp;Q1. The <strong>coefficient of variation</strong> is (sample SD&nbsp;&divide;&nbsp;|mean|)&nbsp;&times;&nbsp;100, and <strong>skewness</strong> is the adjusted Fisher–Pearson standardized moment coefficient, g&nbsp;=&nbsp;[n&nbsp;/&nbsp;((n&minus;1)(n&minus;2))]&nbsp;&middot;&nbsp;&Sigma;((x&minus;mean)&nbsp;/&nbsp;s)&sup3;. The histogram uses about &radic;n bins (clamped between 5 and 15).</div>
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;list-style:none">Methodology &amp; assumptions</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">All statistics are computed in your browser from the numbers you paste. Values may be separated by commas, semicolons, spaces, tabs or new lines; invalid or non-finite tokens stop the calculation so they cannot disappear silently. We calculate the <strong>mean</strong> as sum&nbsp;&divide;&nbsp;count, the <strong>median</strong> as the middle value of the sorted data (the average of the two middle values when the count is even), and the <strong>mode</strong> as the most frequent value(s). Spread uses the standard formulas: <strong>sample variance</strong> divides the sum of squared deviations by n&minus;1 (Bessel's correction) while <strong>population variance</strong> divides by n, and each standard deviation is the square root of its variance. <strong>Quartiles</strong> use inclusive linear interpolation at position (n&minus;1)&middot;q, so IQR&nbsp;=&nbsp;Q3&nbsp;&minus;&nbsp;Q1. The <strong>coefficient of variation</strong> is (sample SD&nbsp;&divide;&nbsp;|mean|)&nbsp;&times;&nbsp;100 and is not defined when the mean is zero. <strong>Skewness</strong> uses the adjusted Fisher–Pearson standardized moment coefficient and is not defined for fewer than three values or zero spread. The histogram uses about &radic;n bins (clamped between 5 and 15).</div>
   </details>
   <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Limitations &amp; what to verify</summary>
-    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">This is a descriptive-statistics helper for learning and quick analysis — it is informational only and does not replace a full statistical package or professional statistical advice. Confirm whether your assignment or study needs the <strong>sample</strong> or the <strong>population</strong> standard deviation, since the tool reports both and the right choice depends on whether your data is a sample of a larger population. Note that quartile and skewness definitions differ between textbooks and software: this tool uses inclusive linear interpolation for quartiles and the adjusted Fisher–Pearson coefficient for skewness, so values may differ slightly from Excel's <code>QUARTILE.INC</code>/<code>SKEW</code> or other calculators. Verify that your dataset is complete, numeric, and in a single consistent unit, and decide separately how to treat outliers before drawing conclusions.</div>
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;list-style:none">Limitations &amp; what to verify</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">This is a descriptive-statistics helper for learning and quick analysis — it is informational only and does not replace a full statistical package or professional statistical advice. Confirm whether your assignment or study needs the <strong>sample</strong> or the <strong>population</strong> standard deviation, since the tool reports both and the right choice depends on whether your data is a sample of a larger population. Note that quartile and skewness definitions differ between textbooks and software: this tool uses inclusive linear interpolation for quartiles and the adjusted Fisher–Pearson coefficient for skewness, so values may differ slightly from Excel's <code>QUARTILE.INC</code>/<code>SKEW</code> or other calculators. Verify that your dataset is complete, numeric, and in a single consistent unit, and decide separately how to treat outliers before drawing conclusions.</div>
   </details>
   <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
-    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;font-family:'Inter',sans-serif;list-style:none">Sources &amp; references</summary>
-    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'Inter',sans-serif">Formulas follow standard descriptive-statistics definitions, including Bessel's n&minus;1 correction for sample variance and the adjusted Fisher–Pearson coefficient of skewness. For the reference definitions used here, see the <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods &#8599;</a>. Last verified 2026.</div>
+    <summary style="padding:14px 18px;font-size:.88rem;font-weight:700;color:#111;cursor:pointer;list-style:none">Sources &amp; references</summary>
+    <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7">Formulas follow standard descriptive-statistics definitions, including Bessel's n&minus;1 correction for sample variance and the adjusted Fisher–Pearson coefficient of skewness. For the reference definitions used here, see the <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35b.htm" target="_blank" rel="noopener">NIST/SEMATECH e-Handbook of Statistical Methods &#8599;</a>. Last verified 2026.</div>
   </details>
 </section>
 <afro-related-tools category="education" current="statistics-calc" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Full scientific calculator with graphing. Works offline. African exam mode.">Scientific Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Planning Dashboard" data-category="education" data-icon="EP" data-desc="Privately organise saved education details, school and scholarship shortlists, cost scenarios and deadlines; filter over">Education Planning Dashboard</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Result Planner" data-category="education" data-icon="WN" data-desc="Organise Nigeria WAEC or NECO grades, count credits, and calculate a transparent Ghana WASSCE planning aggregate before ">WAEC/NECO Result Planner</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME, Post-UTME, and institution-published weights, then complete official eligibili">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
-<script>
-let currentStatsReport=null;
-
-function setStatsStatus(message){
-  const el=document.getElementById('statsStatus');
-  if(el)el.textContent=message||'';
-}
-
-function loadSample(type){
-  const samples={
-    exam:'65, 72, 78, 82, 85, 88, 90, 55, 60, 75, 80, 92, 68, 74, 77, 83, 95, 58, 70, 86, 73, 79, 81, 87, 63',
-    salary:'35000, 42000, 38000, 55000, 48000, 62000, 41000, 39000, 150000, 45000, 52000, 36000, 43000, 47000, 58000, 40000, 44000, 37000, 51000, 46000'
-  };
-  document.getElementById('dataInput').value=samples[type]||'';
-  calculate();
-}
-
-function parseData(str){
-  return str.split(/[\s,;\n\r\t]+/).map(s=>s.trim()).filter(s=>s!=='').map(Number).filter(n=>!isNaN(n));
-}
-
-function clearStatsData(){
-  document.getElementById('dataInput').value='';
-  document.getElementById('resultCard').style.display='none';
-  currentStatsReport=null;
-  setStatsStatus('Dataset cleared.');
-}
-
-function buildStatsReport(){
-  if(!currentStatsReport)calculate();
-  if(!currentStatsReport)return'';
-  const r=currentStatsReport;
-  return [
-    'Statistics Calculator report - AfroTools',
-    'Generated: '+new Date().toLocaleString(),
-    '',
-    'Dataset',
-    '- Count: '+r.n,
-    '- Sum: '+r.sum,
-    '- Minimum: '+r.min,
-    '- Maximum: '+r.max,
-    '- Range: '+r.range,
-    '',
-    'Central tendency',
-    '- Mean: '+r.mean,
-    '- Median: '+r.median,
-    '- Mode: '+r.mode,
-    '',
-    'Spread',
-    '- Sample standard deviation: '+r.sampleSD,
-    '- Population standard deviation: '+r.popSD,
-    '- Sample variance: '+r.sampleVar,
-    '- Q1: '+r.q1,
-    '- Q3: '+r.q3,
-    '- IQR: '+r.iqr,
-    '- Coefficient of variation: '+r.cv,
-    '- Skewness: '+r.skewness,
-    '',
-    'Interpretation notes',
-    '- Use sample standard deviation when this dataset is a sample of a larger population.',
-    '- Compare mean and median to spot skew or outlier influence.',
-    '- Inspect the sorted values before removing any outlier.',
-    '',
-    'Sorted data',
-    r.sorted.join(', ')
-  ].join('\n');
-}
-
-function copyStatsFallback(text){
-  const helper=document.createElement('textarea');
-  helper.value=text;
-  helper.setAttribute('readonly','');
-  helper.style.position='fixed';
-  helper.style.left='-9999px';
-  document.body.appendChild(helper);
-  helper.select();
-  try{
-    document.execCommand('copy');
-    setStatsStatus('Statistics report copied.');
-  }catch(e){
-    setStatsStatus('Copy failed. Download the TXT report instead.');
-  }
-  document.body.removeChild(helper);
-}
-
-function copyStatsReport(){
-  const text=buildStatsReport();
-  if(!text){setStatsStatus('Enter at least two numbers before copying.');return;}
-  if(!navigator.clipboard||!navigator.clipboard.writeText){
-    copyStatsFallback(text);
-    return;
-  }
-  navigator.clipboard.writeText(text).then(function(){
-    setStatsStatus('Statistics report copied.');
-  }).catch(function(){
-    copyStatsFallback(text);
-  });
-}
-
-function downloadStatsReport(){
-  const text=buildStatsReport();
-  if(!text){setStatsStatus('Enter at least two numbers before downloading.');return;}
-  const blob=new Blob([text],{type:'text/plain;charset=utf-8'});
-  const url=URL.createObjectURL(blob);
-  const a=document.createElement('a');
-  a.href=url;
-  a.download='statistics-report-'+new Date().toISOString().slice(0,10)+'.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  setStatsStatus('Statistics report downloaded.');
-}
-
-function calculate(){
-  const data=parseData(document.getElementById('dataInput').value);
-  if(data.length<2){setStatsStatus('Please enter at least 2 numbers.');return;}
-
-  const n=data.length;
-  const sorted=[...data].sort((a,b)=>a-b);
-  const sum=data.reduce((a,b)=>a+b,0);
-  const mean=sum/n;
-
-  // Median
-  const median=n%2===0?(sorted[n/2-1]+sorted[n/2])/2:sorted[Math.floor(n/2)];
-
-  // Mode
-  const freq={};
-  data.forEach(v=>{freq[v]=(freq[v]||0)+1;});
-  const maxFreq=Math.max(...Object.values(freq));
-  const modes=Object.keys(freq).filter(k=>freq[k]===maxFreq).map(Number);
-  const modeStr=maxFreq===1?'None':modes.join(', ');
-
-  // Variance & SD (sample)
-  const sampleVar=data.reduce((s,v)=>s+(v-mean)**2,0)/(n-1);
-  const sampleSD=Math.sqrt(sampleVar);
-  const popVar=data.reduce((s,v)=>s+(v-mean)**2,0)/n;
-  const popSD=Math.sqrt(popVar);
-
-  // Range
-  const min=sorted[0],max=sorted[n-1];
-  const range=max-min;
-
-  // Quartiles (inclusive method)
-  function quartile(arr,q){
-    const pos=(arr.length-1)*q;
-    const base=Math.floor(pos);
-    const rest=pos-base;
-    return arr[base+1]!==undefined?arr[base]+rest*(arr[base+1]-arr[base]):arr[base];
-  }
-  const q1=quartile(sorted,0.25);
-  const q3=quartile(sorted,0.75);
-  const iqr=q3-q1;
-
-  // CV
-  const cv=mean!==0?(sampleSD/Math.abs(mean))*100:0;
-
-  // Skewness (Fisher-Pearson)
-  const skewness=n>=3?(n/((n-1)*(n-2)))*data.reduce((s,v)=>s+((v-mean)/sampleSD)**3,0):0;
-
-  // Sum of squares
-  const sumSq=data.reduce((s,v)=>s+(v-mean)**2,0);
-
-  const fmt=v=>{
-    if(Math.abs(v)>=1000)return v.toLocaleString('en',{maximumFractionDigits:2});
-    if(Number.isInteger(v))return v.toString();
-    return v.toFixed(4);
-  };
-
-  currentStatsReport={
-    n:n,
-    sum:fmt(sum),
-    min:fmt(min),
-    max:fmt(max),
-    range:fmt(range),
-    mean:fmt(mean),
-    median:fmt(median),
-    mode:modeStr,
-    sampleSD:fmt(sampleSD),
-    popSD:fmt(popSD),
-    sampleVar:fmt(sampleVar),
-    q1:fmt(q1),
-    q3:fmt(q3),
-    iqr:fmt(iqr),
-    cv:fmt(cv)+'%',
-    skewness:fmt(skewness),
-    sorted:sorted
-  };
-
-  let html='';
-  html+=`<div class="stat-box big"><div class="num">${fmt(mean)}</div><div class="lbl">Mean</div></div>`;
-  html+=`<div class="stat-box big"><div class="num">${fmt(median)}</div><div class="lbl">Median</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${modeStr}</div><div class="lbl">Mode</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${n}</div><div class="lbl">Count (n)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(sampleSD)}</div><div class="lbl">Std Dev (Sample)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(popSD)}</div><div class="lbl">Std Dev (Pop)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(sampleVar)}</div><div class="lbl">Variance (Sample)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(range)}</div><div class="lbl">Range</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(min)}</div><div class="lbl">Minimum</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(max)}</div><div class="lbl">Maximum</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(q1)}</div><div class="lbl">Q1 (25th)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(q3)}</div><div class="lbl">Q3 (75th)</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(iqr)}</div><div class="lbl">IQR</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(cv)}%</div><div class="lbl">Coeff. of Variation</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(skewness)}</div><div class="lbl">Skewness</div></div>`;
-  html+=`<div class="stat-box"><div class="num">${fmt(sum)}</div><div class="lbl">Sum</div></div>`;
-
-  document.getElementById('statGrid').innerHTML=html;
-
-  // Histogram
-  const bins=Math.min(Math.max(5,Math.ceil(Math.sqrt(n))),15);
-  const binWidth=(range||1)/bins;
-  const binCounts=new Array(bins).fill(0);
-  sorted.forEach(v=>{
-    let idx=Math.min(Math.floor((v-min)/binWidth),bins-1);
-    binCounts[idx]++;
-  });
-  const maxCount=Math.max(...binCounts);
-  let histHtml='<div style="font-size:.7rem;font-weight:700;color:var(--afro-dark);text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Distribution</div>';
-  binCounts.forEach((c,i)=>{
-    const lo=(min+i*binWidth).toFixed(1);
-    const hi=(min+(i+1)*binWidth).toFixed(1);
-    const pct=maxCount>0?(c/maxCount)*100:0;
-    histHtml+=`<div class="hist-bar-row"><span class="hist-label">${lo}-${hi}</span><div class="hist-bar" style="width:${pct}%"></div><span class="hist-count">${c}</span></div>`;
-  });
-  document.getElementById('histogram').innerHTML=histHtml;
-
-  document.getElementById('sortedSection').innerHTML=`<div style="font-size:.7rem;font-weight:700;color:var(--afro-dark);text-transform:uppercase;letter-spacing:.06em;margin-top:18px;margin-bottom:6px">Sorted Data</div><div class="sorted-data">${sorted.join(', ')}</div>`;
-
-  document.getElementById('resultCard').style.display='block';
-  setStatsStatus('Statistics calculated for '+n+' values.');
-  document.getElementById('resultCard').scrollIntoView({behavior:'smooth'});
-}
-</script>
+<script src="/tools/statistics-calc/statistics-engine.js?v=ed615e2b"></script>
+<script src="/tools/statistics-calc/statistics-vip.js?v=5c987c96"></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
 </html>

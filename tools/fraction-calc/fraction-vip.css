@@ -1,0 +1,626 @@
+.fraction-page {
+  --fraction-hero-bg: #071d33;
+  --fraction-surface: var(--color-surface, #fff);
+  --fraction-border: var(--color-border, #d8e1ec);
+  --fraction-muted: var(--color-text-secondary, #52647a);
+  background: var(--color-bg, #f4f7fb);
+  color: var(--color-text, #10233a);
+  font-family: var(--font-body);
+}
+
+.fraction-page h1,
+.fraction-page h2,
+.fraction-page .card-title,
+.fraction-page .info-title,
+.fraction-page summary,
+.fraction-page button,
+.fraction-page input,
+.fraction-page select {
+  font-family: inherit !important;
+}
+
+.fraction-page .tool-hero {
+  background: var(--fraction-hero-bg);
+  overflow: hidden;
+  padding: 2.75rem 0 2.25rem;
+  position: relative;
+}
+
+.fraction-page .tool-hero::after {
+  color: #fff;
+  content: "\00BD";
+  font-size: clamp(6rem, 16vw, 10rem);
+  font-weight: 800;
+  opacity: .05;
+  pointer-events: none;
+  position: absolute;
+  right: 5%;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.fraction-page .tool-hero-inner,
+.fraction-page .tool-main-inner {
+  margin: 0 auto;
+  max-width: 1200px;
+  padding-inline: var(--page-gutter, 24px);
+}
+
+.fraction-page .breadcrumb {
+  color: #a8bbcf;
+  font-size: .75rem;
+  letter-spacing: .06em;
+  margin-bottom: .875rem;
+  text-transform: uppercase;
+}
+
+.fraction-page .breadcrumb a {
+  color: #c9d8e7;
+}
+
+.fraction-page h1 {
+  color: #fff;
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  margin: 0 0 .75rem;
+}
+
+.fraction-page h1 em {
+  color: #7cb8ff;
+  font-style: normal;
+}
+
+.fraction-page .hero-sub {
+  color: #d5e2ef;
+  font-size: 1rem;
+  line-height: 1.65;
+  margin: 0 0 1rem;
+  max-width: 680px;
+}
+
+.fraction-page .hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .5rem;
+}
+
+.fraction-page .badge {
+  border: 1px solid #4f7195;
+  border-radius: 999px;
+  color: #dcecff;
+  font-size: .75rem;
+  font-weight: 700;
+  padding: .35rem .75rem;
+}
+
+.fraction-page .tool-main {
+  padding: 2rem 0 4rem;
+}
+
+.fraction-page .tool-main-inner {
+  align-items: start;
+  display: grid;
+  gap: 1.5rem;
+  grid-template-columns: minmax(0, 1fr) 320px;
+}
+
+.fraction-page .tool-main-inner > *,
+.fraction-page .card,
+.fraction-page .sidebar {
+  min-width: 0;
+}
+
+.fraction-page .card,
+.fraction-page .info-card {
+  background: var(--fraction-surface);
+  border: 1px solid var(--fraction-border);
+  border-radius: var(--radius-lg, 16px);
+  box-shadow: var(--shadow-sm, 0 2px 8px rgba(15, 35, 55, .06));
+}
+
+.fraction-page .card + .card {
+  margin-top: 1.25rem;
+}
+
+.fraction-page .card-head {
+  align-items: center;
+  border-bottom: 1px solid var(--fraction-border);
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem 1.25rem;
+}
+
+.fraction-page .card-title,
+.fraction-page .info-title {
+  color: var(--color-text, #10233a);
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+}
+
+.fraction-page .card-body {
+  padding: 1.25rem;
+}
+
+.fraction-page .fraction-row {
+  align-items: end;
+  display: grid;
+  gap: 1rem;
+  grid-template-columns: minmax(0, 1fr) 64px minmax(0, 1fr);
+}
+
+.fraction-page .fraction-operand {
+  border: 0;
+  margin: 0;
+  min-width: 0;
+  padding: 0;
+}
+
+.fraction-page .fraction-operand legend {
+  color: var(--fraction-muted);
+  font-size: .78rem;
+  font-weight: 700;
+  margin-bottom: .75rem;
+}
+
+.fraction-page .frac-group {
+  align-items: center;
+  display: grid;
+  gap: .625rem;
+  grid-template-columns: minmax(72px, .75fr) minmax(88px, 1fr);
+}
+
+.fraction-page .frac-input {
+  display: grid;
+  gap: .35rem;
+}
+
+.fraction-page .fraction-stack {
+  display: grid;
+  gap: .35rem;
+}
+
+.fraction-page .frac-input label {
+  display: grid;
+  gap: .35rem;
+}
+
+.fraction-page .frac-label {
+  color: var(--fraction-muted);
+  font-size: .72rem;
+  font-weight: 700;
+}
+
+.fraction-page .frac-input input,
+.fraction-page .op-select {
+  background: var(--fraction-surface);
+  border: 1px solid var(--fraction-border);
+  border-radius: var(--radius-md, 10px);
+  color: var(--color-text, #10233a);
+  font: inherit;
+  font-size: 1rem;
+  min-height: 48px;
+  padding: .65rem .75rem;
+  text-align: center;
+  width: 100%;
+}
+
+html[data-theme="dark"] .fraction-page {
+  --fraction-surface: #121f33;
+  --fraction-border: #26364e;
+  --fraction-muted: #b8c7dc;
+  background: #09111f;
+  color: #eef5ff;
+}
+
+html[data-theme="dark"] .fraction-page .frac-input input {
+  background: #0d192a !important;
+  border-color: #3a4d69 !important;
+  color: #eef5ff !important;
+}
+
+html[data-theme="dark"] .fraction-page .solution-btn,
+html[data-theme="dark"] .fraction-page .clear-btn {
+  background: #16253b;
+  border-color: #3a4d69;
+  color: #eef5ff;
+}
+
+html[data-theme="dark"] .fraction-page .solution-btn.danger {
+  color: #ffb4ab;
+}
+
+html[data-theme="dark"] .fraction-page .action-status {
+  color: #7ddc9c;
+}
+
+html[data-theme="dark"] .fraction-page .action-status.is-error {
+  color: #ffb4ab;
+}
+
+.fraction-page .frac-line {
+  background: var(--color-text, #10233a);
+  height: 2px;
+  margin: 0 .25rem;
+}
+
+.fraction-page .op-select {
+  background: var(--color-primary, #0969da);
+  border-color: var(--color-primary, #0969da);
+  color: #fff;
+  cursor: pointer;
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+.fraction-page input:focus-visible,
+.fraction-page select:focus-visible,
+.fraction-page button:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--color-primary, #0969da) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.fraction-page input[aria-invalid="true"] {
+  border-color: var(--color-danger, #c5221f);
+}
+
+.fraction-page .calc-btn,
+.fraction-page .solution-btn,
+.fraction-page .clear-btn {
+  border-radius: var(--radius-md, 10px);
+  cursor: pointer;
+  font: inherit;
+  font-weight: 700;
+  min-height: 44px;
+}
+
+.fraction-page .calc-btn {
+  background: var(--color-primary, #0969da);
+  border: 1px solid var(--color-primary, #0969da);
+  color: #fff;
+  font-size: 1rem;
+  margin-top: 1.25rem;
+  padding: .75rem 1rem;
+  width: 100%;
+}
+
+.fraction-page .solution-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: .625rem;
+  margin-top: .75rem;
+}
+
+.fraction-page .solution-btn,
+.fraction-page .clear-btn {
+  background: var(--color-surface, #fff);
+  border: 1px solid var(--fraction-border);
+  color: var(--color-text, #10233a);
+  padding: .65rem .875rem;
+}
+
+.fraction-page .solution-btn {
+  flex: 1 1 145px;
+}
+
+.fraction-page .solution-btn.danger {
+  color: var(--color-danger, #a61b1b);
+}
+
+.fraction-page .action-status {
+  color: var(--color-success, #137333);
+  font-size: .82rem;
+  font-weight: 700;
+  min-height: 1.5rem;
+  padding-top: .75rem;
+}
+
+.fraction-page .action-status.is-error {
+  color: var(--color-danger, #b42318);
+}
+
+.fraction-page [hidden] {
+  display: none !important;
+}
+
+.fraction-page .result-box,
+.fraction-page .steps-box {
+  border: 1px solid var(--fraction-border);
+  border-radius: var(--radius-lg, 16px);
+  margin-top: 1rem;
+  padding: 1rem;
+}
+
+.fraction-page .result-box {
+  background: color-mix(in srgb, var(--color-primary, #0969da) 6%, var(--fraction-surface));
+}
+
+.fraction-page .result-grid {
+  display: grid;
+  gap: .75rem;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.fraction-page .result-item {
+  background: var(--fraction-surface);
+  border: 1px solid var(--fraction-border);
+  border-radius: var(--radius-md, 10px);
+  min-width: 0;
+  padding: .875rem;
+}
+
+.fraction-page .result-label {
+  color: var(--fraction-muted);
+  font-size: .7rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  margin-bottom: .3rem;
+  text-transform: uppercase;
+}
+
+.fraction-page .result-value {
+  color: var(--color-primary, #0969da);
+  font-size: clamp(1.05rem, 3vw, 1.35rem);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.fraction-page .steps-title {
+  font-size: .8rem;
+  font-weight: 700;
+  letter-spacing: .05em;
+  margin-bottom: .75rem;
+  text-transform: uppercase;
+}
+
+.fraction-page .steps-list {
+  display: grid;
+  gap: .65rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.fraction-page .steps-list li {
+  align-items: start;
+  color: var(--fraction-muted);
+  display: grid;
+  font-size: .9rem;
+  gap: .65rem;
+  grid-template-columns: 24px minmax(0, 1fr);
+  line-height: 1.55;
+}
+
+.fraction-page .step-num {
+  align-items: center;
+  background: var(--color-primary, #0969da);
+  border-radius: 50%;
+  color: #fff;
+  display: inline-flex;
+  font-size: .7rem;
+  font-weight: 700;
+  height: 24px;
+  justify-content: center;
+  width: 24px;
+}
+
+.fraction-page .history-list {
+  max-height: 240px;
+  overflow: auto;
+}
+
+.fraction-page .hist-item {
+  border-bottom: 1px solid var(--fraction-border);
+  display: flex;
+  gap: 1rem;
+  justify-content: space-between;
+  padding: .65rem 0;
+}
+
+.fraction-page .hist-expr {
+  color: var(--color-text, #10233a);
+  overflow-wrap: anywhere;
+}
+
+.fraction-page .hist-result {
+  color: var(--color-primary, #0969da);
+  font-weight: 800;
+  overflow-wrap: anywhere;
+}
+
+.fraction-page .empty-hist {
+  color: var(--fraction-muted);
+  font-size: .85rem;
+  margin: 0;
+}
+
+.fraction-page .info-card {
+  margin-bottom: 1rem;
+  padding: 1.25rem;
+}
+
+.fraction-page .info-title {
+  margin-bottom: .75rem;
+}
+
+.fraction-page .info-text,
+.fraction-page .method-copy,
+.fraction-page .how-to-list,
+.fraction-page .faq-list {
+  color: var(--fraction-muted);
+  line-height: 1.7;
+}
+
+.fraction-page .formula {
+  background: color-mix(in srgb, var(--color-primary, #0969da) 6%, var(--fraction-surface));
+  border: 1px solid var(--fraction-border);
+  border-radius: var(--radius-sm, 8px);
+  color: var(--color-text, #10233a);
+  font-family: var(--font-mono, monospace);
+  margin: .35rem 0 .8rem;
+  overflow-wrap: anywhere;
+  padding: .5rem .65rem;
+}
+
+.fraction-page .privacy-note {
+  border-left: 3px solid var(--color-primary, #0969da);
+}
+
+.fraction-page .content-section {
+  margin: 2rem auto;
+  max-width: 900px;
+  padding-inline: var(--page-gutter, 24px);
+}
+
+.fraction-page .content-section h2,
+.fraction-page .faq-section h2 {
+  color: var(--color-text, #10233a) !important;
+}
+
+.fraction-page .faq-section details {
+  background: var(--fraction-surface) !important;
+  border-color: var(--fraction-border) !important;
+  border-radius: var(--radius-md, 10px);
+  margin-bottom: .5rem;
+}
+
+.fraction-page .faq-section summary,
+.fraction-page .faq-section details > div {
+  color: var(--color-text, #10233a) !important;
+}
+
+.fraction-page .faq-section {
+  margin: 2.5rem auto;
+  max-width: 1200px;
+  padding-inline: var(--page-gutter, 24px);
+}
+
+.fraction-page .faq-section h2 {
+  margin-bottom: 1.25rem;
+}
+
+.fraction-page .faq-section summary {
+  align-items: center;
+  cursor: pointer;
+  display: flex;
+  font-size: .9rem;
+  font-weight: 700;
+  justify-content: space-between;
+  padding: .9rem 1rem;
+}
+
+.fraction-page .faq-answer {
+  color: var(--fraction-muted) !important;
+  font-size: .88rem;
+  line-height: 1.7;
+  padding: 0 1rem 1rem;
+}
+
+.fraction-page .copy-fallback {
+  left: -9999px;
+  position: fixed;
+}
+
+@media (max-width: 760px) {
+  .fraction-page .tool-main-inner {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 520px) {
+  .fraction-page .tool-hero {
+    padding-block: 2rem;
+  }
+
+  .fraction-page .tool-main-inner,
+  .fraction-page .tool-hero-inner,
+  .fraction-page .content-section {
+    padding-inline: 1rem;
+  }
+
+  .fraction-page .card-body,
+  .fraction-page .card-head {
+    padding: 1rem;
+  }
+
+  .fraction-page .card-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: .625rem;
+  }
+
+  .fraction-page .clear-btn {
+    width: 100%;
+  }
+
+  .fraction-page .fraction-row {
+    align-items: stretch;
+    grid-template-columns: 1fr;
+  }
+
+  .fraction-page .op-select {
+    justify-self: center;
+    width: 64px;
+  }
+
+  .fraction-page .frac-group {
+    grid-template-columns: minmax(0, .75fr) minmax(0, 1fr);
+  }
+
+  .fraction-page .solution-btn {
+    min-width: 0;
+  }
+
+  .fraction-page .result-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fraction-page *,
+  .fraction-page *::before,
+  .fraction-page *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
+}
+
+@media print {
+  .fraction-page afro-navbar,
+  .fraction-page afro-footer,
+  .fraction-page afro-related-tools,
+  .fraction-page afro-newsletter-cta,
+  .fraction-page .tool-hero,
+  .fraction-page .sidebar,
+  .fraction-page .solution-actions,
+  .fraction-page .calc-btn,
+  .fraction-page .history-card,
+  .fraction-page .content-section,
+  .fraction-page .faq-section {
+    display: none !important;
+  }
+
+  .fraction-page,
+  .fraction-page .tool-main,
+  .fraction-page .card,
+  .fraction-page .result-box,
+  .fraction-page .steps-box,
+  .fraction-page .result-item {
+    background: #fff !important;
+    box-shadow: none !important;
+    color: #111 !important;
+  }
+
+  .fraction-page .tool-main-inner {
+    display: block;
+    max-width: none;
+    padding: 0;
+  }
+
+  .fraction-page .fraction-row,
+  .fraction-page .calc-btn,
+  .fraction-page .action-status {
+    display: none !important;
+  }
+}

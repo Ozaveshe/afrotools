@@ -25,14 +25,108 @@ function assertGeneratedContextIsCurrent(key, candidate, freshlyBuilt) {
   );
 }
 
-function run() {
-  const freshlyBuilt = builder.buildAll();
-  assert.deepStrictEqual(freshlyBuilt.summary, {
-    total: 500,
-    sourceCoupled: 213,
-    unverifiedStatic: 287,
+function loadSourceDefinitions(contextDir) {
+  return fs.readdirSync(contextDir)
+    .filter(function (fileName) { return fileName.endsWith('.json'); })
+    .sort()
+    .map(function (fileName) {
+      const filePath = path.join(contextDir, fileName);
+      return {
+        fileName,
+        filePath,
+        definition: JSON.parse(fs.readFileSync(filePath, 'utf8')),
+      };
+    });
+}
+
+function duplicateToolKeys(keys) {
+  const seen = new Set();
+  const duplicates = new Set();
+  keys.forEach(function (key) {
+    if (seen.has(key)) duplicates.add(key);
+    seen.add(key);
   });
-  assert.strictEqual(Object.keys(generated).length, freshlyBuilt.summary.total);
+  return Array.from(duplicates).sort();
+}
+
+function loadGeneratedToolKeyOccurrences(filePath) {
+  const source = fs.readFileSync(filePath, 'utf8');
+  return Array.from(source.matchAll(/^\s{2}("(?:\\.|[^"])*"):\s/gm), function (match) {
+    return JSON.parse(match[1]);
+  });
+}
+
+function summarizeSourceDefinitions(entries) {
+  const keys = [];
+  const counts = Object.fromEntries(builder.ALLOWED_STATUSES.map(function (status) {
+    return [status, 0];
+  }));
+
+  entries.forEach(function (entry) {
+    const relativePath = path.relative(path.join(__dirname, '..'), entry.filePath);
+    builder.validateDefinition(entry.definition, relativePath);
+    assert.strictEqual(
+      entry.fileName,
+      entry.definition.toolKey + '.json',
+      entry.fileName + ': filename must match toolKey'
+    );
+    keys.push(entry.definition.toolKey);
+    counts[entry.definition.status] += 1;
+  });
+
+  const duplicates = duplicateToolKeys(keys);
+  assert.deepStrictEqual(duplicates, [], 'Duplicate tool keys: ' + duplicates.join(', '));
+  keys.sort();
+  return {
+    keys,
+    summary: {
+      total: entries.length,
+      sourceCoupled: counts['source-coupled'],
+      unverifiedStatic: counts['unverified-static'],
+    },
+  };
+}
+
+function diffToolKeys(expectedKeys, actualKeys) {
+  const expected = new Set(expectedKeys);
+  const actual = new Set(actualKeys);
+  return {
+    missing: expectedKeys.filter(function (key) { return !actual.has(key); }),
+    extra: actualKeys.filter(function (key) { return !expected.has(key); }),
+  };
+}
+
+function run() {
+  const sourceInventory = summarizeSourceDefinitions(loadSourceDefinitions(builder.CONTEXT_DIR));
+  const freshlyBuilt = builder.buildAll();
+  assert.deepStrictEqual(
+    freshlyBuilt.summary,
+    sourceInventory.summary,
+    'builder summary must be derived from the reviewed source definitions'
+  );
+
+  const generatedKeyOccurrences = loadGeneratedToolKeyOccurrences(builder.GENERATED_PATH);
+  const generatedDuplicates = duplicateToolKeys(generatedKeyOccurrences);
+  assert.deepStrictEqual(
+    generatedDuplicates,
+    [],
+    'generated AI context bundle contains duplicate tool keys'
+  );
+  const generatedKeys = Object.keys(generated).sort();
+  assert.deepStrictEqual(
+    generatedKeyOccurrences.slice().sort(),
+    generatedKeys,
+    'generated AI context source keys must match the keys exported at runtime'
+  );
+  const keyDiff = diffToolKeys(sourceInventory.keys, generatedKeys);
+  assert.deepStrictEqual(
+    keyDiff,
+    { missing: [], extra: [] },
+    'generated AI context keys drifted from source definitions; run npm run ai:tool-context'
+  );
+  sourceInventory.keys.forEach(function (key) {
+    assertGeneratedContextIsCurrent(key, generated[key], freshlyBuilt);
+  });
 
   const representativeKeys = ['ng-paye', 'ke-paye', 'ke-vat', 'bj-vat', 'km-vat', 'cg-vat', 'ci-vat', 'dj-vat', 'cd-vat', 'gq-vat', 'et-vat', 'sz-vat', 'ga-vat', 'gm-vat', 'gn-vat', 'gw-vat', 'salary-compare', 'salary-intelligence', 'retirement-planner', 'za-uif', 'employee-cost', 'contractor-vs-employee', 'domestic-worker', 'gratuity-calculator', 'maternity-leave', 'retrenchment-calculator', 'staff-cost', 'pension-proj', 'crypto-cgt', 'currency-converter', 'fuel-cost', 'route-fares', 'backup-power-costs', 'afrorates', 'remittance-v2'];
   representativeKeys.forEach(function (key) {
@@ -193,4 +287,13 @@ function run() {
   console.log('ai-tool-context-drift.test.js passed');
 }
 
-run();
+if (require.main === module) run();
+
+module.exports = {
+  diffToolKeys,
+  duplicateToolKeys,
+  loadGeneratedToolKeyOccurrences,
+  loadSourceDefinitions,
+  run,
+  summarizeSourceDefinitions,
+};

@@ -3660,26 +3660,25 @@ const CURATED_PAGES = [
   {
     enSlug: "pregnancy-nutrition",
     frSlug: "nutrition-grossesse",
-    title: "Calculateur nutrition grossesse | AfroTools",
-    name: "Nutrition grossesse",
+    title: "Fiche variété alimentaire grossesse | AfroTools",
+    name: "Fiche variété alimentaire grossesse",
     description:
-      "Preparez besoins, repas locaux, fer, folates, proteines et questions de suivi pendant la grossesse.",
+      "Préparez des questions sur la variété et la sécurité alimentaires pendant la grossesse, sans calcul de nutriments ni prescription.",
     eyebrow: "Sante maternelle",
     lead:
-      "Organisez un plan alimentaire indicatif avec aliments africains et marge pour conseil medical.",
+      "Préparez une discussion sur les groupes alimentaires disponibles et la sécurité des aliments, sans juger si l’alimentation est adéquate.",
     useCase:
-      "Utile pour femmes enceintes, familles, cliniques et agents communautaires.",
+      "Utile avant un échange avec l’équipe de maternité ou un diététicien qualifié; la fiche ne remplace pas une évaluation nutritionnelle.",
     safety:
-      "La grossesse necessite un suivi qualifie; adaptez toujours l'alimentation avec un professionnel.",
+      "Aucun objectif de calories, protéines, fer, folates, prise de poids ou dose de supplément n’est calculé ou prescrit.",
     related:
-      "A combiner avec cout accouchement, plan repas africain et budget clinique.",
+      "Les complications, symptômes, allergies et restrictions nécessitent un conseil individualisé de l’équipe de soins.",
+    handoffOnly: true,
     terms: [
-      ["Pregnancy Nutrition Calculator", "Calculateur nutrition grossesse"],
+      ["Pregnancy Food Variety Planner", "Fiche variété alimentaire grossesse"],
       ["Pregnancy", "Grossesse"],
-      ["Iron", "Fer"],
-      ["Folic acid", "Acide folique"],
-      ["Protein", "Proteines"],
-      ["Meal", "Repas"],
+      ["Food groups", "Groupes alimentaires"],
+      ["Food safety", "Sécurité alimentaire"],
     ],
   },
   {
@@ -7704,7 +7703,7 @@ function htmlFor(page) {
     2
   );
   const nativeTool = lobolaNativeMarkup(page);
-  const prepPanel = nativeTool ? "" : `    <section class="prep-panel" aria-label="Preparation rapide">
+  const prepPanel = nativeTool || page.handoffOnly ? "" : `    <section class="prep-panel" aria-label="Preparation rapide">
       <h2>Preparez votre saisie</h2>
       <p>Notez les trois informations utiles avant de lancer l'outil. Rien n'est envoye: ce brouillon reste dans votre navigateur.</p>
       <form class="prep-form" data-fr-prep>
@@ -7723,9 +7722,11 @@ function htmlFor(page) {
         <p class="privacy-note"><strong>Confidentialite locale 2026:</strong> le fichier selectionne et le brouillon restent dans votre navigateur; ne collez pas de donnees sensibles dans un service externe sans accord explicite.</p>
       </form>
     </section>`;
-  const toolEmbed = nativeTool || (page.iframeEmbed
-    ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
-    : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`);
+  const toolEmbed = nativeTool || (page.handoffOnly
+    ? `<div id="tool-mount" class="source-launch"><h2>Ouvrir la fiche interactive</h2><p>La fiche anglaise conserve les sélections dans le navigateur et produit uniquement des questions de discussion. Elle ne calcule aucun besoin nutritionnel et ne prescrit ni aliment ni supplément.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir la fiche de variété alimentaire</a></div>`
+    : page.iframeEmbed
+      ? `<iframe id="tool-mount" src="/tools/${page.enSlug}/" title="${escapeHtml(page.name)}" loading="lazy" style="width:100%;min-height:760px;border:1px solid #dbe4ef;border-radius:8px;background:#fff"></iframe>`
+      : `<div id="tool-mount" class="source-launch"><h2>Continuer dans le calculateur complet</h2><p>Le brief ci-dessus reste local. Ouvrez le calculateur principal pour utiliser tous les controles, puis copiez ou telechargez votre resume pour verification.</p><a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a></div>`);
   const sourceImportScript = nativeTool ? lobolaNativeScript() : "";
 
   return `<!DOCTYPE html>
@@ -7781,12 +7782,10 @@ function htmlFor(page) {
     <p class="lead">${escapeHtml(page.lead)}</p>
     <div class="route-note">
       <span>Interface en francais</span>
-      <span>Calculateur complet disponible</span>
-      <span>Estimation a verifier localement</span>
+      ${page.handoffOnly ? "<span>Fiche de discussion, pas un calcul nutritionnel</span><span>Données locales dans la fiche interactive</span>" : "<span>Calculateur complet disponible</span><span>Estimation a verifier localement</span>"}
     </div>
     <div class="action-row">
-      <a class="primary-action" href="#tool-mount">Utiliser l'outil ici</a>
-      <a class="secondary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a>
+      ${page.handoffOnly ? `<a class="primary-action" href="/tools/${page.enSlug}/">Ouvrir la fiche interactive</a>` : `<a class="primary-action" href="#tool-mount">Utiliser l'outil ici</a><a class="secondary-action" href="/tools/${page.enSlug}/">Ouvrir le calculateur complet</a>`}
     </div>
 ${prepPanel}
     ${toolEmbed}

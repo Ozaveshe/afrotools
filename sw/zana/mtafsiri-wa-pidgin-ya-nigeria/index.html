@@ -147,8 +147,11 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <style data-language-workbench-style>
 .language-workbench{max-width:960px;margin:22px auto;padding:18px 20px;border:1px solid #ddd6fe;border-radius:14px;background:#fff;box-shadow:0 14px 30px rgba(76,29,149,.08)}.language-workbench h2{margin:0 0 8px;color:#2e1065;font-size:clamp(1.1rem,2vw,1.42rem)}.language-workbench p{margin:0 0 14px;color:#475569;line-height:1.62}.language-workbench-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.language-workbench label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#334155}.language-workbench textarea,.language-workbench input,.language-workbench select{width:100%;box-sizing:border-box;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;padding:10px 12px;font:inherit;color:#0f172a}.language-workbench textarea{min-height:88px;resize:vertical}.language-workbench output{display:block;margin-top:12px;border:1px solid #e9d5ff;border-left:4px solid #7c3aed;border-radius:0 12px 12px 0;background:#faf5ff;padding:12px;color:#3b0764;line-height:1.55;white-space:pre-line}.language-workbench-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}.language-workbench-actions button,.language-workbench-actions a{border:0;border-radius:999px;padding:10px 14px;font:inherit;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center}.language-workbench-actions button{background:#2e1065;color:#fff;cursor:pointer}.language-workbench-actions a{background:#7c3aed;color:#fff}.language-proof{max-width:960px;margin:22px auto;padding:18px 20px;border:1px solid #ddd6fe;border-radius:14px;background:#faf5ff;color:#4c1d95;line-height:1.65}.language-proof h2{margin:0 0 10px;font-size:1.08rem;color:#2e1065}.language-proof-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.language-proof-grid div{border:1px solid #e9d5ff;background:#fff;border-radius:10px;padding:12px}.language-proof-grid strong{display:block;color:#2e1065;margin-bottom:4px}@media(max-width:640px){.language-workbench-actions button,.language-workbench-actions a{width:100%}}
 </style>
+<script src="/assets/js/lib/external-translation-consent.js?v=524e1efa" defer></script>
+<script src="/assets/js/lib/external-translation-consent.js?v=524e1efa" defer></script>
 <link rel="canonical" href="https://afrotools.com/sw/zana/mtafsiri-wa-pidgin-ya-nigeria/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pidgin-translator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/traducteur-pidgin/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mtafsiri-wa-pidgin-ya-nigeria/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pidgin-translator/">
 </head>
@@ -225,10 +228,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <div class="translate-output" id="tgtOutput">Tafsiri itaonekana hapa...</div>
 </div>
 </div>
+<div id="pidginTranslationConsent" data-tool-id="pidgin-translator"></div>
 <div class="translate-actions">
-<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()">Translate &#8594;</button>
+<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()" disabled>Translate &#8594;</button>
 <button type="button" class="p-btn" onclick="copyText(document.getElementById('tgtOutput').textContent)" title="Nakili translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
-<span class="translate-status" id="translateStatus"></span>
+<button type="button" class="p-btn" onclick="clearCloudTranslation()">Futa maandishi</button>
+<span class="translate-status" id="translateStatus" role="status" aria-live="polite"></span>
 </div>
 </div>
 </div>
@@ -272,7 +277,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <section class="sw-language-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #ddd6fe;background:#faf5ff;color:#4c1d95;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya lugha:</strong> Zana hizi husaidia kujifunza, kuandaa rasimu na kulinganisha maandishi. Hazitoi tafsiri iliyothibitishwa, ushauri wa kisheria au kitabibu, wala uthibitisho wa hati rasmi. Kwa lahaja, matamshi, hati za mahakama, visa, shule, afya au mikataba, hakiki na mtafsiri au mtaalamu aliyehitimu.</div></section>
 <afro-footer></afro-footer>
 <div class="toast" id="toast"></div>
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script><script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script><script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script><script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script><script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
 <script>
 /* ── Phrase Database ── */
 var PHRASES=[
@@ -507,6 +512,11 @@ function swapLangs() {
 }
 
 function doTranslate() {
+  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  if (!consent || !consent.requireConsent('pidgin-translator', 'Tafsiri ya cloud imezimwa. Soma taarifa na ukubali kwanza.')) {
+    document.getElementById('translateStatus').textContent = 'Hakuna maandishi yaliyotumwa. Tafsiri ya cloud inahitaji idhini yako ya wazi.';
+    return;
+  }
   var text = document.getElementById('srcText').value.trim();
   if (!text) return;
   var btn = document.getElementById('translateBtn');
@@ -516,19 +526,50 @@ function doTranslate() {
   status.textContent = '';
   var src = swapped ? 'pcm' : 'en';
   var tgt = swapped ? 'en' : 'pcm';
+  var requestHeaders = Object.assign({'Content-Type': 'application/json'}, consent.headers('pidgin-translator'));
   fetch('/api/translate', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({text: text, source: src, target: tgt})
-  }).then(function(r){ return r.json(); })
-  .then(function(d) {
+    headers: requestHeaders,
+    credentials: 'same-origin',
+    cache: 'no-store',
+    referrerPolicy: 'no-referrer',
+    body: JSON.stringify({text: text, source: src, target: tgt, allowFallback: false})
+  }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(data){ return {response:r,data:data}; }); })
+  .then(function(result) {
+    var r = result.response;
+    var d = result.data;
+    if (!r.ok) {
+      if (r.status === 428) consent.reset('pidgin-translator');
+      document.getElementById('tgtOutput').textContent = 'Tafsiri ya cloud haipatikani. Tumia phrasebook ya ndani.';
+      status.textContent = d.message || d.error || 'Hakuna tafsiri ya nje iliyorudishwa.';
+      return;
+    }
     document.getElementById('tgtOutput').textContent = d.translatedText || 'Tafsiri haipatikani';
-    status.textContent = d.provider ? 'via ' + d.provider + ' | ' + (d.characters || 0) + ' chars' : '';
+    status.textContent = d.provider ? 'kupitia ' + d.provider + (d.unchanged ? ' | haijabadilika; hakiki matokeo' : '') : '';
   }).catch(function() {
-    document.getElementById('tgtOutput').textContent = 'Translation failed. Try the mifano ya misemo instead!';
+    document.getElementById('tgtOutput').textContent = 'Tafsiri ya cloud haipatikani. Tumia phrasebook ya ndani.';
+    status.textContent = 'Hitilafu ya muunganisho. Hakuna matokeo yaliyohifadhiwa.';
   }).finally(function() {
-    btn.disabled = false;
-    btn.textContent = 'Tafsiri ->';
+    btn.disabled = !(consent && consent.hasConsent('pidgin-translator'));
+    btn.textContent = 'Tafsiri \u2192';
+  });
+}
+
+function clearCloudTranslation() {
+  document.getElementById('srcText').value = '';
+  document.getElementById('tgtOutput').textContent = 'Tafsiri itaonekana hapa baada ya kukubali.';
+  document.getElementById('translateStatus').textContent = 'Maandishi na hali ya muda ya tafsiri imefutwa.';
+  document.getElementById('srcText').focus();
+}
+
+function initExternalTranslationConsent() {
+  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  var host = document.getElementById('pidginTranslationConsent');
+  var button = document.getElementById('translateBtn');
+  if (!consent || !host || !button) return;
+  consent.render(host, {toolId: 'pidgin-translator', primaryProvider: 'MyMemory'});
+  host.addEventListener('afrotools:external-translation-consent-change', function() {
+    button.disabled = !consent.hasConsent('pidgin-translator');
   });
 }
 
@@ -598,6 +639,11 @@ document.addEventListener('keydown', function(e) {
 initDaily();
 initFC();
 initPB();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initExternalTranslationConsent, {once:true});
+} else {
+  initExternalTranslationConsent();
+}
 </script>
 
 <script>window.TRANSLATOR_CONFIG={source:"en",target:"pcm",langName:"Nigerian Pidgin",langCode:"pcm"};</script>

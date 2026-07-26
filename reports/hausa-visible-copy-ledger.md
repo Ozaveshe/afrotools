@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-07-24
+Generated: 2026-07-26
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -135,19 +135,19 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/waya-ko-banki/` | 88 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/waya-ko-banki/` | 118 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/waya-ko-banki/` | 134 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 123 | brand or platform name | AfroTools Hausa / Sadarwa / WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 124 | brand or platform name | Mai Gina WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 125 | brand or platform name | Gina hanyar wa.me da sakon farko domin a fara magana a WhatsApp. Yana da amfani ga masu sayarwa, isarwa, ajiyar lokaci da taimakon kwastoma. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 134 | brand or platform name | Gina WhatsApp link | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 179 | brand or platform name | Shirin link Hanyar WhatsApp wa.me tana bukatar cikakkiyar lambar kasa ba tare da alamar +, baka ko tazara ba. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 204 | brand or platform name | WhatsApp link dinka | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 211 | brand or platform name | Bude a WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 220 | brand or platform name | Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin ... | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 226 | brand or platform name | Ta yaya zan kirkiro WhatsApp link ga kasuwanci? | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 227 | brand or platform name | Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 235 | brand or platform name | Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 239 | brand or platform name | Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/whatsapp-link/` | 250 | brand or platform name | Duba lambar WhatsApp kafin rabawa | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 124 | brand or platform name | AfroTools Hausa / Sadarwa / WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 125 | brand or platform name | Mai Gina WhatsApp Link | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 126 | brand or platform name | Gina hanyar wa.me da sakon farko domin a fara magana a WhatsApp. Yana da amfani ga masu sayarwa, isarwa, ajiyar lokaci da taimakon kwastoma. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 135 | brand or platform name | Gina WhatsApp link | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 180 | brand or platform name | Shirin link Hanyar WhatsApp wa.me tana bukatar cikakkiyar lambar kasa ba tare da alamar +, baka ko tazara ba. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 205 | brand or platform name | WhatsApp link dinka | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 212 | brand or platform name | Bude a WhatsApp | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 221 | brand or platform name | Mai Gina WhatsApp Link yana gina hanyar da za ta bude tattaunawa kai tsaye ba tare da kwastoma ya fara ajiye lambar ba. Ka saka lambar waya da lambar kasa, ka kara sako idan kana so, sannan ka raba link din a bayanin ... | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 227 | brand or platform name | Ta yaya zan kirkiro WhatsApp link ga kasuwanci? | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 228 | brand or platform name | Zabi lambar kasa, saka lambar WhatsApp, kara sako idan kana so, sannan danna Gina link. Za ka samu wa.me link da zaka iya raba wa kwastomomi. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 236 | brand or platform name | Eh. Link din yana bude tattaunawa kai tsaye a WhatsApp, shi yasa yake da amfani ga taimakon kwastoma, sayarwa ta intanet, ajiyar lokaci da isarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 240 | brand or platform name | Bayan ka gina link, sauke QR code sannan ka saka shi a takardar talla, katin kasuwanci, rasit ko kan teburin shago. Kwastoma zai iya duba QR ya bude tattaunawa a WhatsApp. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/whatsapp-link/` | 251 | brand or platform name | Duba lambar WhatsApp kafin rabawa | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/wurin-aikin-pdf/` | 161 | brand or platform name | Akwai da Hausa Matsa PDF Rage girman fayil kafin aikawa ta email ko WhatsApp. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 
 ## ACCEPTED_TECH_TERM

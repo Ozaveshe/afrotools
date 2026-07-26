@@ -1,248 +1,305 @@
 /**
- * AfroTools Translation API Proxy
+ * AfroTools optional external translation proxy.
  *
- * POST /api/translate
- * Body: { text: "Hello", source: "en", target: "sw" }
- *
- * Uses MyMemory Translation API (free, 1000 calls/day)
- * Fallback: LibreTranslate public instance
- *
- * Supported African languages:
- *   sw (Swahili), ha (Hausa), yo (Yoruba), ig (Igbo), zu (Zulu),
- *   am (Amharic), af (Afrikaans), ar (Arabic), fr (French), pt (Portuguese),
- *   es (Spanish), tw (Twi), wo (Wolof), ln (Lingala), bm (Bambara),
- *   pcm (Nigerian Pidgin)
+ * Local phrasebooks do not use this function. Arbitrary text reaches a
+ * configured translation provider only after translation-specific consent.
  */
 
-const { getAllowedOrigin } = require('./utils/cors');
+const { corsHeaders } = require('./utils/cors');
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin': 'https://afrotools.com',
-  'Access-Control-Allow-Headers': 'Content-Type, x-api-key',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Content-Type': 'application/json',
-};
-
-// Simple rate limiting
-// LIMITATION: In-memory Map resets on each cold start / new Lambda instance.
-// This means rate limits are per-instance, not global. For persistent rate
-// limiting, migrate to Netlify Blobs or an external store (e.g. Supabase).
-const rateLimitMap = new Map();
-const RATE_LIMIT = 200; // per day per IP
+const CONSENT_HEADER = 'x-afrotools-external-translation-consent';
+const FALLBACK_CONSENT_HEADER = 'x-afrotools-translation-fallback-consent';
+const ACCEPTED = 'accepted';
+const MAX_TEXT_CHARACTERS = 2000;
+const MAX_BODY_BYTES = 16 * 1024;
+const MAX_PROVIDER_RESPONSE_BYTES = 128 * 1024;
+const PROVIDER_TIMEOUT_MS = 8000;
+const RATE_LIMIT = 200;
 const RATE_LIMIT_WINDOW = 24 * 60 * 60 * 1000;
+const PRIMARY_PROVIDER_URL = 'https://api.mymemory.translated.net/get';
+
+const LANGUAGE_CODES = new Set([
+  'af', 'am', 'ar', 'bm', 'en', 'es', 'fr', 'ha', 'ig', 'lg', 'ln', 'mg',
+  'ny', 'om', 'pcm', 'pt', 'rw', 'sn', 'so', 'st', 'sw', 'ti', 'tn', 'ts',
+  'tw', 'wo', 'xh', 'yo', 'zu',
+]);
+
+const rateLimitMap = new Map();
+
+class ProviderError extends Error {
+  constructor(code, retryable) {
+    super(code);
+    this.name = 'ProviderError';
+    this.code = code;
+    this.retryable = Boolean(retryable);
+  }
+}
+
+function getHeader(headers, name) {
+  if (!headers) return '';
+  const direct = headers[name] || headers[name.toLowerCase()] || headers[name.toUpperCase()];
+  if (direct) return String(direct);
+  const key = Object.keys(headers).find((candidate) => candidate.toLowerCase() === name.toLowerCase());
+  return key ? String(headers[key]) : '';
+}
+
+function hasAcceptedHeader(event, name) {
+  return getHeader(event && event.headers, name).toLowerCase() === ACCEPTED;
+}
+
+function responseHeaders(event) {
+  return corsHeaders(event, {
+    'Access-Control-Allow-Headers': [
+      'Content-Type',
+      'X-AfroTools-External-Translation-Consent',
+      'X-AfroTools-Translation-Fallback-Consent',
+      'X-AfroTools-AI-Consent',
+      'X-AfroTools-AI-Content-Consent',
+    ].join(', '),
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Cache-Control': 'private, no-store, max-age=0',
+    'Pragma': 'no-cache',
+    'Vary': 'Origin',
+  });
+}
+
+function json(event, statusCode, body, extraHeaders) {
+  return {
+    statusCode,
+    headers: Object.assign(responseHeaders(event), extraHeaders || {}),
+    body: JSON.stringify(body),
+  };
+}
+
+function clientIp(event) {
+  const forwarded = getHeader(event && event.headers, 'x-forwarded-for');
+  return (forwarded.split(',')[0] || getHeader(event && event.headers, 'client-ip') || 'unknown').trim();
+}
 
 function checkRateLimit(ip) {
   const now = Date.now();
-  const record = rateLimitMap.get(ip);
-  if (!record || now - record.start > RATE_LIMIT_WINDOW) {
-    rateLimitMap.set(ip, { start: now, count: 1 });
+  const current = rateLimitMap.get(ip);
+  if (!current || now - current.startedAt >= RATE_LIMIT_WINDOW) {
+    rateLimitMap.set(ip, { startedAt: now, count: 1 });
     return { allowed: true, remaining: RATE_LIMIT - 1 };
   }
-  record.count++;
-  if (record.count > RATE_LIMIT) {
-    return { allowed: false, remaining: 0 };
-  }
-  return { allowed: true, remaining: RATE_LIMIT - record.count };
+  current.count += 1;
+  return {
+    allowed: current.count <= RATE_LIMIT,
+    remaining: Math.max(0, RATE_LIMIT - current.count),
+  };
 }
 
-// Language code mapping for MyMemory API
-const LANG_MAP = {
-  'sw': 'sw',      // Swahili
-  'ha': 'ha',      // Hausa
-  'yo': 'yo',      // Yoruba
-  'ig': 'ig',      // Igbo
-  'zu': 'zu',      // Zulu
-  'am': 'am',      // Amharic
-  'af': 'af',      // Afrikaans
-  'ar': 'ar',      // Arabic
-  'fr': 'fr',      // French
-  'pt': 'pt',      // Portuguese
-  'es': 'es',      // Spanish
-  'en': 'en',      // English
-  'so': 'so',      // Somali
-  'wo': 'wo',      // Wolof
-  'tw': 'tw',      // Twi
-  'rw': 'rw',      // Kinyarwanda
-  'ny': 'ny',      // Chichewa
-  'sn': 'sn',      // Shona
-  'xh': 'xh',      // Xhosa
-  'st': 'st',      // Sesotho
-  'tn': 'tn',      // Setswana
-  'ts': 'ts',      // Tsonga
-  'lg': 'lg',      // Luganda
-  'ti': 'ti',      // Tigrinya
-  'om': 'om',      // Oromo
-  'mg': 'mg',      // Malagasy
-  'ln': 'ln',      // Lingala
-  'bm': 'bm',      // Bambara
-  'pcm': 'pcm',    // Nigerian Pidgin (MyMemory supports it)
-};
+function unicodeLength(value) {
+  return Array.from(value).length;
+}
 
-exports.handler = async (event) => {
-  CORS_HEADERS['Access-Control-Allow-Origin'] = getAllowedOrigin(event);
-  // CORS preflight
-  if (event.httpMethod === 'OPTIONS') {
-    return { statusCode: 204, headers: CORS_HEADERS, body: '' };
+function parseRequest(event) {
+  const raw = event.body || '';
+  if (Buffer.byteLength(raw, 'utf8') > MAX_BODY_BYTES) {
+    return { error: 'request_too_large', statusCode: 413 };
+  }
+  let body;
+  try {
+    body = JSON.parse(raw || '{}');
+  } catch (_) {
+    return { error: 'invalid_json', statusCode: 400 };
   }
 
-  if (event.httpMethod !== 'POST') {
-    return {
-      statusCode: 405,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: 'Method not allowed. Use POST.' }),
-    };
+  if (!body || typeof body !== 'object' || Array.isArray(body)) {
+    return { error: 'invalid_request', statusCode: 400 };
+  }
+  if (typeof body.text !== 'string') {
+    return { error: 'invalid_text', statusCode: 400 };
   }
 
-  // Rate limiting
-  const ip = event.headers['x-forwarded-for'] || event.headers['client-ip'] || 'unknown';
-  const rateCheck = checkRateLimit(ip);
-  if (!rateCheck.allowed) {
-    return {
-      statusCode: 429,
-      headers: { ...CORS_HEADERS, 'Retry-After': '3600' },
-      body: JSON.stringify({ error: 'Rate limit exceeded. Try again later.', limit: RATE_LIMIT }),
-    };
+  const text = body.text.trim();
+  if (!text) return { error: 'empty_text', statusCode: 400 };
+  if (unicodeLength(text) > MAX_TEXT_CHARACTERS) {
+    return { error: 'text_too_long', statusCode: 400 };
   }
+
+  const source = String(body.source || 'en').toLowerCase();
+  const target = String(body.target || '').toLowerCase();
+  const sourceAllowed = source === 'auto' || LANGUAGE_CODES.has(source);
+  const targetAllowed = LANGUAGE_CODES.has(target);
+  if (!sourceAllowed || !targetAllowed || source === target) {
+    return { error: 'unsupported_language_pair', statusCode: 400 };
+  }
+
+  return {
+    body,
+    text,
+    source,
+    target,
+    allowFallback: body.allowFallback === true,
+  };
+}
+
+async function fetchWithBounds(url, options, timeoutMs) {
+  const controller = typeof AbortController === 'function' ? new AbortController() : null;
+  const timer = controller ? setTimeout(() => controller.abort(), timeoutMs) : null;
+  const requestOptions = Object.assign({}, options || {});
+  if (controller) requestOptions.signal = controller.signal;
 
   try {
-    const body = JSON.parse(event.body || '{}');
-    const { text, source, target } = body;
-
-    if (!text || !target) {
-      return {
-        statusCode: 400,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: 'Missing required fields: text, target' }),
-      };
+    const response = await fetch(url, requestOptions);
+    if (response.status === 429 || response.status >= 500) {
+      throw new ProviderError(`upstream_${response.status}`, true);
     }
+    if (!response.ok) throw new ProviderError(`upstream_${response.status}`, false);
 
-    if (text.length > 2000) {
-      return {
-        statusCode: 400,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({ error: 'Text too long. Maximum 2000 characters.' }),
-      };
+    const responseText = await response.text();
+    if (Buffer.byteLength(responseText, 'utf8') > MAX_PROVIDER_RESPONSE_BYTES) {
+      throw new ProviderError('upstream_response_too_large', false);
     }
-
-    const sourceLang = LANG_MAP[source] || source || 'en';
-    const targetLang = LANG_MAP[target] || target;
-
-    // Try MyMemory first
-    let translation = null;
-    let provider = null;
-
     try {
-      translation = await translateMyMemory(text, sourceLang, targetLang);
-      provider = 'mymemory';
-    } catch (e) {
-      console.warn('[Translate] MyMemory failed:', e.message);
+      return JSON.parse(responseText);
+    } catch (_) {
+      throw new ProviderError('upstream_invalid_json', false);
     }
-
-    // Fallback to LibreTranslate
-    if (!translation) {
-      try {
-        translation = await translateLibre(text, sourceLang, targetLang);
-        provider = 'libretranslate';
-      } catch (e) {
-        console.warn('[Translate] LibreTranslate failed:', e.message);
-      }
+  } catch (error) {
+    if (error instanceof ProviderError) throw error;
+    if (error && error.name === 'AbortError') {
+      throw new ProviderError('upstream_timeout', true);
     }
-
-    if (!translation) {
-      return {
-        statusCode: 502,
-        headers: CORS_HEADERS,
-        body: JSON.stringify({
-          error: 'Translation service temporarily unavailable. Try again later.',
-          fallback: true,
-        }),
-      };
-    }
-
-    return {
-      statusCode: 200,
-      headers: {
-        ...CORS_HEADERS,
-        'X-RateLimit-Remaining': String(rateCheck.remaining),
-        'Cache-Control': 'public, max-age=3600',
-      },
-      body: JSON.stringify({
-        translatedText: translation,
-        source: sourceLang,
-        target: targetLang,
-        provider: provider,
-        characters: text.length,
-      }),
-    };
-  } catch (err) {
-    console.error('[Translate] Error:', err);
-    return {
-      statusCode: 500,
-      headers: CORS_HEADERS,
-      body: JSON.stringify({ error: 'Internal server error' }),
-    };
+    throw new ProviderError('upstream_network_error', true);
+  } finally {
+    if (timer) clearTimeout(timer);
   }
+}
+
+async function translateMyMemory(text, source, target) {
+  const params = new URLSearchParams({
+    q: text,
+    langpair: `${source}|${target}`,
+    de: 'hello@afrotools.com',
+  });
+  const data = await fetchWithBounds(`${PRIMARY_PROVIDER_URL}?${params.toString()}`, {
+    method: 'GET',
+    headers: { 'User-Agent': 'AfroTools/1.0' },
+    cache: 'no-store',
+  }, PROVIDER_TIMEOUT_MS);
+
+  const translatedText = data && data.responseData && data.responseData.translatedText;
+  const warning = typeof translatedText === 'string' && (
+    translatedText.toUpperCase().includes('MYMEMORY WARNING') ||
+    translatedText.toUpperCase().includes('PLEASE DEFINE')
+  );
+  if (data && data.responseStatus === 200 && typeof translatedText === 'string' && translatedText.trim() && !warning) {
+    return { translatedText: translatedText.trim(), provider: 'mymemory' };
+  }
+  throw new ProviderError('upstream_empty_translation', true);
+}
+
+function configuredFallbackUrl() {
+  const candidate = String(process.env.TRANSLATE_FALLBACK_URL || '').trim();
+  if (!candidate) return '';
+  try {
+    const parsed = new URL(candidate);
+    return parsed.protocol === 'https:' ? parsed.origin : '';
+  } catch (_) {
+    return '';
+  }
+}
+
+async function translateFallback(baseUrl, text, source, target) {
+  const data = await fetchWithBounds(`${baseUrl}/translate`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      q: text,
+      source,
+      target,
+      format: 'text',
+    }),
+    cache: 'no-store',
+  }, PROVIDER_TIMEOUT_MS);
+  if (data && typeof data.translatedText === 'string' && data.translatedText.trim()) {
+    return { translatedText: data.translatedText.trim(), provider: 'configured-fallback' };
+  }
+  throw new ProviderError('fallback_empty_translation', false);
+}
+
+exports.handler = async function handler(event) {
+  if (event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: responseHeaders(event), body: '' };
+  }
+  if (event.httpMethod !== 'POST') {
+    return json(event, 405, { error: 'method_not_allowed' });
+  }
+
+  const contentType = getHeader(event.headers, 'content-type').toLowerCase();
+  if (!contentType.startsWith('application/json')) {
+    return json(event, 415, { error: 'json_content_type_required' });
+  }
+  if (!hasAcceptedHeader(event, CONSENT_HEADER)) {
+    return json(event, 428, {
+      error: 'external_translation_consent_required',
+      message: 'Cloud translation was not contacted. Review the external translation notice and opt in first.',
+    });
+  }
+
+  const parsed = parseRequest(event);
+  if (parsed.error) return json(event, parsed.statusCode, { error: parsed.error });
+
+  const rate = checkRateLimit(clientIp(event));
+  if (!rate.allowed) {
+    return json(event, 429, { error: 'rate_limit_exceeded' }, {
+      'Retry-After': '3600',
+      'X-RateLimit-Remaining': '0',
+    });
+  }
+
+  let result;
+  let fallbackUsed = false;
+  try {
+    result = await translateMyMemory(parsed.text, parsed.source, parsed.target);
+  } catch (error) {
+    console.warn('[Translate] primary provider failed:', error instanceof ProviderError ? error.code : 'unknown_error');
+    const fallbackUrl = configuredFallbackUrl();
+    const fallbackConsented = hasAcceptedHeader(event, FALLBACK_CONSENT_HEADER);
+    if (!(error instanceof ProviderError && error.retryable && parsed.allowFallback && fallbackConsented && fallbackUrl)) {
+      return json(event, 502, {
+        error: 'translation_service_unavailable',
+        localFallbackAvailable: true,
+      }, { 'X-RateLimit-Remaining': String(rate.remaining) });
+    }
+    try {
+      result = await translateFallback(fallbackUrl, parsed.text, parsed.source, parsed.target);
+      fallbackUsed = true;
+    } catch (fallbackError) {
+      console.warn('[Translate] fallback provider failed:', fallbackError instanceof ProviderError ? fallbackError.code : 'unknown_error');
+      return json(event, 502, {
+        error: 'translation_service_unavailable',
+        localFallbackAvailable: true,
+      }, { 'X-RateLimit-Remaining': String(rate.remaining) });
+    }
+  }
+
+  return json(event, 200, {
+    translatedText: result.translatedText,
+    source: parsed.source,
+    target: parsed.target,
+    provider: result.provider,
+    characters: unicodeLength(parsed.text),
+    unchanged: result.translatedText === parsed.text,
+    fallbackUsed,
+  }, { 'X-RateLimit-Remaining': String(rate.remaining) });
 };
 
-/**
- * MyMemory Translation API (free, 1000 chars/call, 10000 chars/day without key)
- * With registered email: 50,000 chars/day
- */
-async function translateMyMemory(text, source, target) {
-  const langpair = `${source}|${target}`;
-  const url = `https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=${encodeURIComponent(langpair)}&de=hello@afrotools.com`;
-
-  const res = await fetch(url, { headers: { 'User-Agent': 'AfroTools/1.0' } });
-  if (!res.ok) throw new Error(`MyMemory HTTP ${res.status}`);
-
-  const data = await res.json();
-
-  if (data.responseStatus === 200 && data.responseData && data.responseData.translatedText) {
-    const translated = data.responseData.translatedText;
-    // MyMemory returns uppercase "MYMEMORY WARNING" when it can't translate
-    if (translated.toUpperCase().includes('MYMEMORY WARNING') ||
-        translated.toUpperCase().includes('PLEASE DEFINE') ||
-        translated === text) {
-      throw new Error('MyMemory could not translate this text');
-    }
-    return translated;
-  }
-
-  throw new Error('MyMemory returned no translation');
-}
-
-/**
- * LibreTranslate (public instance fallback)
- */
-async function translateLibre(text, source, target) {
-  // Public LibreTranslate instances
-  const instances = [
-    'https://libretranslate.com',
-    'https://translate.argosopentech.com',
-    'https://translate.terraprint.co',
-  ];
-
-  for (const baseUrl of instances) {
-    try {
-      const res = await fetch(`${baseUrl}/translate`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          q: text,
-          source: source === 'auto' ? 'auto' : source,
-          target: target,
-          format: 'text',
-        }),
-      });
-
-      if (!res.ok) continue;
-
-      const data = await res.json();
-      if (data.translatedText) return data.translatedText;
-    } catch (e) {
-      continue;
-    }
-  }
-
-  throw new Error('All LibreTranslate instances failed');
-}
+exports._test = {
+  CONSENT_HEADER,
+  FALLBACK_CONSENT_HEADER,
+  LANGUAGE_CODES,
+  ProviderError,
+  parseRequest,
+  responseHeaders,
+  fetchWithBounds,
+  translateMyMemory,
+  translateFallback,
+  unicodeLength,
+  resetRateLimits() {
+    rateLimitMap.clear();
+  },
+};

@@ -49,8 +49,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script>
-<script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <style>
   :root {
     --afro-green: var(--color-primary);
@@ -1012,7 +1012,7 @@
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=1d00fb00" defer></script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
@@ -1395,13 +1395,17 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
+          'X-AfroTools-External-Translation-Consent': 'accepted',
           'X-AfroTools-AI-Consent': 'accepted',
           'X-AfroTools-AI-Content-Consent': 'accepted'
         },
+        credentials: 'same-origin',
+        cache: 'no-store',
         body: JSON.stringify({
           text: chunks[i],
           source: src === 'auto' ? 'auto' : src,
-          target: tgt
+          target: tgt,
+          allowFallback: false
         })
       });
       if (response.status === 404 || response.status === 405 || response.status === 501 || response.status >= 500) {

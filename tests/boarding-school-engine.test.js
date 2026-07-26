@@ -1,0 +1,17 @@
+'use strict';
+const assert=require('node:assert/strict');
+const engine=require('../tools/boarding-school/boarding-school-engine.js');
+const base=engine.calculate({years:2,terms:3,months:9,trips:6,tuitionTerm:100,boardingTerm:50,mealsTerm:25,extrasTerm:25,monthly:10,tripCost:5,annual:20,startup:200,inflation:0,contingency:0,dayAnnual:500});
+assert.equal(base.baseRecurring,740);
+assert.equal(base.schedule[0].total,940);
+assert.equal(base.schedule[1].total,740);
+assert.equal(base.total,1680);
+assert.equal(base.dayTotal,1000);
+assert.equal(base.difference,680);
+const inflated=engine.calculate({years:3,terms:1,months:0,trips:0,tuitionTerm:1000,boardingTerm:0,mealsTerm:0,extrasTerm:0,monthly:0,tripCost:0,annual:0,startup:100,inflation:10,contingency:5,dayAnnual:0});
+assert.ok(Math.abs(inflated.schedule[0].total-1155)<1e-9);
+assert.ok(Math.abs(inflated.schedule[1].total-1155)<1e-9);
+assert.ok(Math.abs(inflated.schedule[2].total-1270.5)<1e-9);
+assert.ok(Math.abs(inflated.total-3580.5)<1e-9);
+[{years:0,terms:3,months:9,trips:6},{years:1,terms:0,months:9,trips:6},{years:1,terms:3,months:13,trips:6},{years:1,terms:3,months:9,trips:25},{years:1,terms:3,months:9,trips:6,tuitionTerm:-1}].forEach(input=>assert.throws(()=>engine.calculate(input)));
+console.log('boarding-school-engine: ok');

@@ -104,7 +104,9 @@ assert.strictEqual(risk.level, 'unknown', 'Missing budget FX should make afforda
 assert.match(risk.reasons.join(' '), /FX rate is missing/i, 'Missing FX risk should explain why');
 
 const html = require('fs').readFileSync(path.join(root, 'tools/study-abroad-cost/index.html'), 'utf8');
-assert(html.includes('study-abroad-fx-policy.js'), 'Study Abroad page must load the FX policy script');
-assert(html.includes('study-abroad-fx-policy.css'), 'Study Abroad page must load the FX policy CSS');
+assert(!html.includes('study-abroad-fx-policy.js'), 'The source-led worksheet must not load automatic FX behavior');
+assert(!html.includes('study-abroad-fx-policy.css'), 'The source-led worksheet must not load the retired FX presentation layer');
+assert.match(html, /No automatic FX/i, 'The worksheet must state its no-automatic-FX boundary');
+assert.match(html, /Convert all amounts with one dated FX source/i, 'The worksheet must tell users how to normalize currencies safely');
 
 console.log('Study Abroad FX policy verified.');

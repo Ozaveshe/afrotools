@@ -1,0 +1,10 @@
+'use strict';
+const assert=require('node:assert/strict');const engine=require('../tools/course-load/course-load-engine.js');
+const inside=engine.calculate({required:120,earned:45,min:12,max:21,courses:[{name:'BIO 201',credits:3},{name:'CHEM 203',credits:4},{name:'MATH 205',credits:5}],contact:15,study:24,work:10,commute:5,sleepNight:8,personal:14});
+assert.equal(inside.registered,12);assert.equal(inside.band,'inside');assert.equal(inside.remainingBefore,75);assert.equal(inside.remainingIfCompleted,63);assert.equal(inside.accounted,124);assert.equal(inside.unallocated,44);
+assert.equal(engine.calculate({...inside,required:120,earned:45,min:13,max:21,courses:[{credits:12}]}).band,'below');
+assert.equal(engine.calculate({required:120,earned:45,min:12,max:15,courses:[{credits:16}]}).band,'above');
+assert.throws(()=>engine.calculate({required:120,earned:0,min:22,max:21,courses:[{credits:3}]}));
+assert.throws(()=>engine.calculate({required:120,earned:0,min:0,max:21,courses:[]}));
+assert.throws(()=>engine.calculate({required:0,earned:0,min:0,max:21,courses:[{credits:3}]}));
+console.log('course-load-engine: ok');

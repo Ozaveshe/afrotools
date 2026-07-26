@@ -1,0 +1,147 @@
+.vaccine-finder-page {
+  --vf-ink: #14243a;
+  --vf-muted: #53657a;
+  --vf-line: #d4dee9;
+  --vf-surface: #fff;
+  --vf-soft: #f1f6fa;
+  --vf-blue: #075fbd;
+  --vf-blue-dark: #064990;
+  --vf-navy: #09263f;
+  background: #f7fafc;
+  color: var(--vf-ink);
+}
+.vaccine-finder-page *, .vaccine-finder-page *::before, .vaccine-finder-page *::after { box-sizing: border-box; }
+.vf-skip { position: fixed; z-index: 9999; top: .5rem; left: 1rem; padding: .75rem 1rem; border: 2px solid var(--vf-blue); border-radius: .5rem; background: #fff; color: #102132; transform: translateY(-200%); }
+.vf-skip:focus { transform: none; }
+.vf-shell { width: min(74rem, calc(100% - 2rem)); margin-inline: auto; }
+.vf-hero { padding: clamp(2.5rem, 6vw, 5rem) 0; background: var(--vf-navy); color: #fff; }
+.vf-breadcrumb { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.4rem; color: #bfd2e1; font-size: .86rem; }
+.vf-breadcrumb a { color: #d9efff; }
+.vf-eyebrow, .vf-kicker { margin: 0 0 .65rem; color: #70bcff; font-size: .78rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
+.vf-hero h1 { max-width: 58rem; margin: 0; color: #fff; font-size: clamp(2rem, 6vw, 4.2rem); line-height: 1.03; letter-spacing: -.045em; overflow-wrap: anywhere; }
+.vf-lede { max-width: 52rem; margin: 1.2rem 0 0; color: #d8e7f1; font-size: clamp(1rem, 2vw, 1.18rem); line-height: 1.7; }
+.vf-badges { display: flex; flex-wrap: wrap; gap: .55rem; padding: 0; margin: 1.5rem 0 0; list-style: none; }
+.vf-badges li { padding: .5rem .8rem; border: 1px solid #466b85; border-radius: 999px; background: #123550; color: #e5f4ff; font-size: .82rem; font-weight: 750; }
+.vf-emergency { padding: 1.2rem 0; border-bottom: 1px solid #e5aaa5; background: #fff1f0; color: #6f1919; }
+.vf-emergency h2 { margin: 0 0 .35rem; color: #811c1c; font-size: 1.08rem; }
+.vf-emergency p { margin: 0; line-height: 1.65; }
+.vf-truth { border-bottom: 1px solid var(--vf-line); background: #eaf3fc; }
+.vf-truth-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.vf-truth-grid div { padding: 1rem; border-right: 1px solid #c7d8e8; }
+.vf-truth-grid div:last-child { border-right: 0; }
+.vf-truth-grid strong, .vf-truth-grid span { display: block; }
+.vf-truth-grid strong { margin-bottom: .25rem; color: #154d80; }
+.vf-truth-grid span { color: #47637b; font-size: .86rem; line-height: 1.45; }
+.vf-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(18rem, 22rem); gap: 1.5rem; align-items: start; padding-block: 2rem 3rem; }
+.vf-workspace, .vf-aside { min-width: 0; }
+.vf-card { padding: clamp(1.1rem, 3vw, 1.75rem); margin: 0 0 1.25rem; border: 1px solid var(--vf-line); border-radius: 1rem; background: var(--vf-surface); box-shadow: 0 .5rem 1.8rem rgba(11, 36, 58, .06); overflow-wrap: anywhere; }
+.vf-card h2 { margin: 0 0 .7rem; color: var(--vf-ink); font-size: clamp(1.25rem, 3vw, 1.7rem); line-height: 1.2; }
+.vf-card p { color: var(--vf-muted); line-height: 1.65; }
+.vf-intro { border-left: .3rem solid var(--vf-blue); }
+.vf-kicker { color: var(--vf-blue); }
+.vf-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; }
+.vf-field { min-width: 0; margin-bottom: 1rem; }
+.vf-field label { display: block; margin-bottom: .45rem; color: var(--vf-ink); font-weight: 800; }
+.vf-field label span { color: var(--vf-muted); font-weight: 500; }
+.vf-field select, .vf-field input { width: 100%; min-height: 3rem; padding: .65rem .75rem; border: 1px solid #aebdca; border-radius: .55rem; background: var(--vf-surface); color: var(--vf-ink); font: inherit; }
+.vf-field select:focus, .vf-field input:focus { outline: 3px solid rgba(7, 95, 189, .23); outline-offset: 2px; border-color: var(--vf-blue); }
+[aria-invalid="true"] { border-color: #a92323 !important; box-shadow: 0 0 0 1px #a92323; }
+.vf-hint { margin: .4rem 0 0 !important; color: var(--vf-muted); font-size: .85rem; }
+.vf-actions { display: flex; flex-wrap: wrap; gap: .75rem; margin-top: 1.2rem; }
+.vf-actions button { min-height: 3rem; min-width: 11rem; padding: .7rem 1rem; border-radius: .55rem; font: inherit; font-weight: 850; cursor: pointer; }
+.vf-primary { border: 1px solid var(--vf-blue); background: var(--vf-blue); color: #fff; }
+.vf-primary:hover { background: var(--vf-blue-dark); }
+.vf-secondary { border: 1px solid #91a3b4; background: var(--vf-surface); color: var(--vf-ink); }
+.vf-actions button:focus-visible, .vf-source-link:focus-visible, .vf-source-grid a:focus-visible, .vf-faq summary:focus-visible { outline: 3px solid rgba(7, 95, 189, .3); outline-offset: 3px; }
+.vf-errors { padding: 1rem; margin-bottom: 1.2rem; border: 2px solid #a92323; border-radius: .65rem; background: #fff3f2; color: #741b1b; }
+.vf-errors h2 { color: #741b1b; font-size: 1.05rem; }
+.vf-errors a { color: #741b1b; font-weight: 750; }
+.vf-handoff { border-top: .35rem solid var(--vf-blue); }
+.vf-handoff:focus { outline: none; }
+.vf-source-status { padding: 1rem; border-radius: .7rem; background: var(--vf-soft); }
+.vf-source-status h3 { margin: 0 0 .4rem; color: var(--vf-ink); }
+.vf-source-status p { margin: .35rem 0; }
+.vf-source-link { display: block; width: fit-content; max-width: 100%; margin-top: .8rem; color: #0758a5; font-weight: 800; overflow-wrap: anywhere; }
+.vf-source-link.secondary { font-weight: 650; }
+.vf-no-verdict { padding: 1rem; margin-top: 1.2rem; border-left: .25rem solid #7a5a0d; background: #fff8e1; color: #5f490f; }
+.vf-no-verdict h3 { margin: 0 0 .35rem; color: #5f490f; }
+.vf-no-verdict p { margin: 0; color: #5f490f; }
+.vf-question-list { padding-left: 1.25rem; color: var(--vf-muted); }
+.vf-question-list li { margin-bottom: .7rem; line-height: 1.55; }
+.vf-aside { position: sticky; top: 1rem; }
+.vf-sources { padding: 3rem 0; background: #eaf2f8; }
+.vf-sources h2, .vf-explainer h2 { margin: 0 0 .65rem; color: var(--vf-ink); font-size: clamp(1.5rem, 4vw, 2.2rem); }
+.vf-sources p, .vf-explainer p { color: var(--vf-muted); line-height: 1.7; }
+.vf-source-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1rem; margin-top: 1.2rem; }
+.vf-source-grid a { display: flex; flex-direction: column; gap: .5rem; min-height: 8.5rem; padding: 1.1rem; border: 1px solid #bdd1e2; border-radius: .75rem; background: #fff; color: #0758a5; text-decoration: none; }
+.vf-source-grid a:hover { border-color: var(--vf-blue); }
+.vf-source-grid span { color: var(--vf-muted); line-height: 1.55; }
+.vf-explainer { padding-block: 3rem; }
+.vf-faq { margin-top: 1.4rem; border-top: 1px solid var(--vf-line); }
+.vf-faq details { border-bottom: 1px solid var(--vf-line); }
+.vf-faq summary { padding: 1rem 0; color: var(--vf-ink); font-weight: 850; cursor: pointer; }
+.vf-faq details p { margin: 0 0 1rem; }
+.vf-related { width: min(74rem, calc(100% - 2rem)); margin: 0 auto 3rem; }
+[hidden] { display: none !important; }
+html[data-theme="dark"] .vaccine-finder-page {
+  --vf-ink: #edf5fb; --vf-muted: #b8c8d7; --vf-line: #34495e; --vf-surface: #142536; --vf-soft: #1b3043;
+  background: #0b1826;
+}
+html[data-theme="dark"] .vf-truth { background: #10273b; }
+html[data-theme="dark"] .vf-truth-grid div { border-color: #365066; }
+html[data-theme="dark"] .vf-truth-grid strong { color: #9ed0ff; }
+html[data-theme="dark"] .vf-truth-grid span { color: #b8c8d7; }
+html[data-theme="dark"] .vf-errors { background: #3b2024; color: #ffc9c5; }
+html[data-theme="dark"] .vf-errors h2, html[data-theme="dark"] .vf-errors a { color: #ffc9c5; }
+html[data-theme="dark"] .vf-no-verdict { background: #382f18; color: #f1d995; }
+html[data-theme="dark"] .vf-no-verdict h3, html[data-theme="dark"] .vf-no-verdict p { color: #f1d995; }
+html[data-theme="dark"] .vf-sources { background: #101f2d; }
+html[data-theme="dark"] .vf-source-grid a { background: #142536; border-color: #34495e; color: #8ac9ff; }
+html[data-theme="dark"] .vf-source-link { color: #8ac9ff; }
+html[data-theme="dark"] .vf-secondary { background: #142536; border-color: #657a8e; color: #edf5fb; }
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .vaccine-finder-page {
+    --vf-ink: #edf5fb; --vf-muted: #b8c8d7; --vf-line: #34495e; --vf-surface: #142536; --vf-soft: #1b3043;
+    background: #0b1826;
+  }
+  html:not([data-theme="light"]) .vf-truth { background: #10273b; }
+  html:not([data-theme="light"]) .vf-truth-grid div { border-color: #365066; }
+  html:not([data-theme="light"]) .vf-truth-grid strong { color: #9ed0ff; }
+  html:not([data-theme="light"]) .vf-truth-grid span { color: #b8c8d7; }
+  html:not([data-theme="light"]) .vf-errors { background: #3b2024; color: #ffc9c5; }
+  html:not([data-theme="light"]) .vf-errors h2, html:not([data-theme="light"]) .vf-errors a { color: #ffc9c5; }
+  html:not([data-theme="light"]) .vf-no-verdict { background: #382f18; color: #f1d995; }
+  html:not([data-theme="light"]) .vf-no-verdict h3, html:not([data-theme="light"]) .vf-no-verdict p { color: #f1d995; }
+  html:not([data-theme="light"]) .vf-sources { background: #101f2d; }
+  html:not([data-theme="light"]) .vf-source-grid a { background: #142536; border-color: #34495e; color: #8ac9ff; }
+  html:not([data-theme="light"]) .vf-source-link { color: #8ac9ff; }
+  html:not([data-theme="light"]) .vf-secondary { background: #142536; border-color: #657a8e; color: #edf5fb; }
+}
+@media (max-width: 56rem) {
+  .vf-layout { grid-template-columns: 1fr; }
+  .vf-aside { position: static; }
+}
+@media (max-width: 40rem) {
+  .vf-shell, .vf-related { width: min(100% - 1rem, 74rem); }
+  .vf-hero { padding-block: 2rem; }
+  .vf-layout { padding-top: 1rem; }
+  .vf-card { border-radius: .7rem; }
+  .vf-fields, .vf-source-grid, .vf-truth-grid { grid-template-columns: 1fr; }
+  .vf-truth-grid div { border-right: 0; border-bottom: 1px solid #c7d8e8; }
+  .vf-truth-grid div:last-child { border-bottom: 0; }
+  .vf-actions { flex-direction: column; }
+  .vf-actions button { width: 100%; min-width: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vaccine-finder-page *, .vaccine-finder-page *::before, .vaccine-finder-page *::after { scroll-behavior: auto !important; animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+@media print {
+  afro-navbar, afro-footer, .vf-emergency, .vf-truth, .vf-aside, .vf-sources, .vf-explainer, .vf-related, #programme-form, .vf-intro, .vf-handoff .vf-actions, .vf-handoff .vf-hint { display: none !important; }
+  .vaccine-finder-page { background: #fff !important; color: #111 !important; }
+  .vf-hero { padding: 1rem 0; background: #fff !important; }
+  .vf-hero h1, .vf-hero p { color: #111 !important; }
+  .vf-breadcrumb, .vf-badges { display: none; }
+  .vf-layout { display: block; padding: 1rem 0; }
+  .vf-handoff { display: block !important; border: 2px solid #111; box-shadow: none; }
+  .vf-handoff::before { content: "VISIT BRIEF - NOT A SCHEDULE OR MEDICAL RECORD"; display: block; margin-bottom: 1rem; font-weight: 900; }
+}

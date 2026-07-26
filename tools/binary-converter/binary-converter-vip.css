@@ -1,0 +1,309 @@
+.binary-converter-vip {
+  --bc-blue: var(--color-primary, #0062cc);
+  --bc-blue-light: var(--color-primary-light, #4da3ff);
+  --bc-dark: #071b31;
+  --bc-bg: var(--color-bg, #f8fafd);
+  --bc-card-bg: var(--color-surface, #fff);
+  --bc-border: var(--color-border, #dbeafe);
+  --bc-border-light: var(--color-border-subtle, #eff6ff);
+  --bc-text: var(--color-text, #0f172a);
+  --bc-text-muted: var(--color-text-muted, #64748b);
+  --bc-accent-bg: var(--color-surface-muted, #e8f2ff);
+  font-family: var(--font-body);
+}
+
+.binary-converter-vip :where(.tool-hero, .tool-main, .faq-section) * {
+  font-family: var(--font-body);
+}
+
+.binary-converter-vip :where(.f-input, .base-value, .twos-val, .bitwise-bin, .arith-display, code) {
+  font-family: "JetBrains Mono", "Cascadia Code", Consolas, monospace;
+}
+
+.binary-converter-vip .tool-hero {
+  background: #071b31;
+}
+
+.binary-converter-vip .hero-sub {
+  max-width: 720px;
+  color: #d4deeb;
+  font-size: 1rem;
+}
+
+.binary-converter-vip .badge {
+  border-radius: 999px;
+  letter-spacing: 0;
+  font-size: .75rem;
+}
+
+.binary-converter-vip .card,
+.binary-converter-vip .info-card,
+.binary-converter-vip details {
+  background: var(--bc-card-bg);
+  border-color: var(--bc-border);
+  color: var(--bc-text);
+}
+
+.binary-converter-vip details {
+  background: var(--bc-card-bg) !important;
+}
+
+.binary-converter-vip .card-head,
+.binary-converter-vip .output-box,
+.binary-converter-vip .ascii-box,
+.binary-converter-vip .bit-length-box,
+.binary-converter-vip .steps-box,
+.binary-converter-vip .twos-item,
+.binary-converter-vip .bitwise-result,
+.binary-converter-vip .arith-display {
+  background: var(--bc-accent-bg);
+  border-color: var(--bc-border);
+}
+
+.binary-converter-vip :where(
+  .card-title,
+  .f-label-text,
+  .base-value,
+  .steps-box,
+  .steps-box h3,
+  .twos-val,
+  .bitwise-dec,
+  .arith-result,
+  .info-title,
+  .info-text,
+  .ref-table th,
+  .ref-table td,
+  details summary
+) {
+  color: var(--bc-text);
+}
+
+.binary-converter-vip :where(
+  .base-label,
+  .field-help,
+  .card-kicker,
+  .twos-label,
+  .bitwise-op,
+  .bitwise-bin,
+  .bit-info-label,
+  .faq-answer
+) {
+  color: var(--bc-text-muted) !important;
+}
+
+.card-kicker {
+  display: block;
+  margin-top: .25rem;
+  font-size: .78rem;
+  line-height: 1.45;
+  text-transform: none;
+  letter-spacing: 0;
+}
+
+.field-help {
+  margin: .5rem 0 0;
+  font-size: .78rem;
+  line-height: 1.5;
+}
+
+.binary-converter-vip .f-input,
+.binary-converter-vip .f-select,
+.binary-converter-vip .custom-base-input {
+  min-height: 46px;
+  background: var(--color-surface-inset, var(--bc-card-bg));
+  border-color: var(--bc-border);
+  color: var(--bc-text);
+}
+
+.binary-converter-vip button,
+.binary-converter-vip .group-toggle {
+  min-height: 44px;
+}
+
+.binary-converter-vip .btn-action {
+  justify-content: center;
+  padding: .65rem .85rem;
+  background: var(--bc-accent-bg);
+  border-color: var(--bc-border);
+  color: var(--bc-text);
+}
+
+.binary-converter-vip .btn-action:focus-visible,
+.binary-converter-vip .copy-btn:focus-visible,
+.binary-converter-vip .tab-btn:focus-visible,
+.binary-converter-vip input:focus-visible,
+.binary-converter-vip select:focus-visible,
+.binary-converter-vip summary:focus-visible {
+  outline: 3px solid var(--color-focus, #60a5fa);
+  outline-offset: 2px;
+}
+
+.conversion-status,
+.section-error {
+  min-height: 1.5rem;
+  margin-top: .65rem;
+  color: var(--bc-text-muted);
+  font-size: .8rem;
+  line-height: 1.5;
+}
+
+.section-error {
+  display: none;
+  padding: .65rem .75rem;
+  border: 1px solid #c2410c;
+  border-radius: 8px;
+  color: #9a3412;
+  background: color-mix(in srgb, #c2410c 10%, var(--bc-card-bg));
+}
+
+.section-error.visible {
+  display: block;
+}
+
+.precision-note {
+  margin-top: .35rem;
+  color: var(--bc-text-muted);
+  font-size: .72rem;
+  line-height: 1.45;
+}
+
+.binary-converter-vip .output-box {
+  min-width: 0;
+  padding-top: 2.4rem;
+}
+
+.binary-converter-vip .copy-btn {
+  min-height: 32px;
+  min-width: 52px;
+}
+
+.binary-converter-vip .steps-box {
+  overflow-wrap: anywhere;
+}
+
+.binary-converter-vip .base-value,
+.binary-converter-vip .twos-val {
+  word-break: normal;
+  overflow-wrap: anywhere;
+}
+
+.binary-converter-vip .steps-box p {
+  color: var(--bc-text-muted);
+}
+
+.binary-converter-vip .ref-table {
+  table-layout: fixed;
+}
+
+.binary-converter-vip .ref-table th,
+.binary-converter-vip .ref-table td {
+  overflow-wrap: anywhere;
+}
+
+.binary-converter-vip .faq-section .info-text,
+.binary-converter-vip .faq-section .info-text p,
+.binary-converter-vip .faq-section .info-text li {
+  color: var(--bc-text-muted) !important;
+}
+
+.binary-converter-vip .faq-section strong {
+  color: var(--bc-text);
+}
+
+@media (max-width: 768px) {
+  .binary-converter-vip .tool-main-inner {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .binary-converter-vip .action-row {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .binary-converter-vip .btn-action {
+    width: 100%;
+  }
+
+  .binary-converter-vip .group-toggle {
+    grid-column: 1 / -1;
+  }
+}
+
+@media (max-width: 400px) {
+  .binary-converter-vip .tool-hero-inner,
+  .binary-converter-vip .tool-main-inner,
+  .binary-converter-vip .faq-section {
+    padding-inline: 16px;
+  }
+
+  .binary-converter-vip .card-head,
+  .binary-converter-vip .card-body {
+    padding: 16px;
+  }
+
+  .binary-converter-vip .action-row {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .binary-converter-vip .group-toggle {
+    grid-column: auto;
+  }
+
+  .binary-converter-vip .tab-bar,
+  .binary-converter-vip #arithCard .card-head > div {
+    display: grid;
+    grid-template-columns: 1fr;
+    width: 100%;
+  }
+
+  .binary-converter-vip #arithCard .card-head {
+    align-items: stretch;
+    flex-direction: column;
+    gap: .5rem;
+  }
+
+  .binary-converter-vip .ieee-bits {
+    overflow-wrap: anywhere;
+  }
+
+  .binary-converter-vip .ieee-bits span {
+    min-width: 0;
+    padding: 2px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .binary-converter-vip *,
+  .binary-converter-vip *::before,
+  .binary-converter-vip *::after {
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+@media print {
+  afro-navbar,
+  afro-footer,
+  afro-related-tools,
+  afro-newsletter-cta,
+  .tool-hero,
+  .action-row,
+  #ieeeCard,
+  #bitwiseCard,
+  #arithCard,
+  .sidebar,
+  .faq-section,
+  .copy-btn {
+    display: none !important;
+  }
+
+  .binary-converter-vip .tool-main-inner {
+    display: block;
+    max-width: none;
+  }
+
+  .binary-converter-vip .card {
+    break-inside: avoid;
+    box-shadow: none;
+  }
+}

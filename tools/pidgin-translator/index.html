@@ -6,9 +6,9 @@
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nigerian Pidgin Translator — English to Pidgin | AfroTools</title>
-<meta name="description" content="Translate English to Nigerian Pidgin (Naija). 400+ phrases, slang, and expressions used across Nigeria and West Africa with pronunciation guides.">
+<meta name="description" content="Browse 109 local Nigerian Pidgin phrasebook entries with regional and spelling cautions, local exports, and optional one-session cloud translation consent.">
 <meta name="keywords" content="Nigerian Pidgin translator, Naija language, English to Pidgin, Pidgin English, broken English Nigeria, West African Pidgin">
-<meta property="og:title" content="Nigerian Pidgin Translator"><meta property="og:description" content="400+ English-to-Pidgin phrases, slang, and expressions used across Nigeria and West Africa.">
+<meta property="og:title" content="Nigerian Pidgin Phrasebook"><meta property="og:description" content="109 locally available Nigerian Pidgin phrasebook entries with regional-variation cautions and optional consented translation.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pidgin-translator.webp">
 <meta property="og:type" content="website"><meta property="og:url" content="https://afrotools.com/tools/pidgin-translator/">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
@@ -23,9 +23,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .hero::after{content:'';position:absolute;bottom:0;left:0;right:0;height:60px;background:linear-gradient(transparent,rgba(248,250,252,.08))}
 .hero h1{color:#fff;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.35rem}
 .hero h1 span{color:var(--accent)}
-.hero p{font-size:1rem;opacity:.85;max-width:580px;margin:0 auto .75rem}
+.hero p{font-size:1rem;opacity:1;max-width:580px;margin:0 auto .75rem}
 .hero-stats{display:flex;justify-content:center;gap:1.5rem;flex-wrap:wrap}
-.hero-stat{font-size:.78rem;font-weight:700;opacity:.9}
+.hero-stat{font-size:.78rem;font-weight:700;opacity:1}
 .hero-stat b{display:block;font-size:1.3rem;color:var(--accent)}
 
 /* Container */
@@ -84,6 +84,15 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .fc-score span{font-size:.78rem;font-weight:600}
 .fc-score .correct{color:#16a34a}
 .fc-score .total{color:#7c3aed}
+.study-settings{width:100%;max-width:480px;background:#f8fafc;border:1px solid #cbd5e1;border-radius:10px;padding:.85rem}
+.study-settings legend{font-weight:800;color:#334155;padding:0 .25rem}
+.study-directions{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.direction-btn{min-height:44px;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;color:#475569;font-weight:700;padding:.55rem;cursor:pointer}
+.direction-btn.active{background:var(--p);border-color:var(--p);color:#fff}
+.session-note,.voice-note,.results-note{font-size:.78rem;color:#64748b}
+.session-note{max-width:480px;text-align:center}
+.fc-btn:disabled{opacity:.48;cursor:not-allowed}
+.fc-restart[hidden]{display:none}
 
 /* === TRANSLATE MODE === */
 .translate-wrap{display:grid;grid-template-columns:1fr auto 1fr;gap:.75rem;align-items:start}
@@ -101,7 +110,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 @media(max-width:640px){.translate-wrap{grid-template-columns:1fr;}.swap-btn{justify-self:center;transform:rotate(90deg)}}
 
 /* === PHRASEBOOK === */
-.search-box{display:flex;gap:.75rem;margin-bottom:1rem}
+.search-box{display:grid;gap:.4rem;margin-bottom:1rem}
 .search-box input{flex:1;padding:.65rem 1rem;border:1.5px solid #cbd5e1;border-radius:8px;font-size:.95rem;background:#f8fafc;font-family:inherit}
 .search-box input:focus{outline:none;border-color:var(--p);box-shadow:0 0 0 3px rgba(124,58,237,.12)}
 .cats{display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1.25rem}
@@ -114,9 +123,10 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .phrase .lang{font-size:.92rem;font-weight:700;color:var(--p-dark)}
 .phrase .note{font-size:.72rem;color:#94a3b8;font-style:italic}
 .phrase-actions{display:flex;gap:.35rem}
-.p-btn{background:none;border:none;font-size:1rem;cursor:pointer;padding:.3rem;border-radius:6px;opacity:.45;transition:all .2s;line-height:1}
+.p-btn{background:none;border:none;font-size:1rem;cursor:pointer;padding:.45rem;border-radius:6px;opacity:.78;transition:all .2s;line-height:1}
 .p-btn:hover{opacity:1;background:var(--p-light)}
 .count-badge{background:var(--p-light);color:var(--p);padding:.15rem .55rem;border-radius:10px;font-size:.75rem;font-weight:700}
+.empty-state{padding:1.25rem;border:1px dashed #94a3b8;border-radius:10px;color:#475569;text-align:center}
 @media(max-width:600px){.phrase{grid-template-columns:1fr;gap:.25rem}}
 
 /* SEO & FAQ */
@@ -126,15 +136,34 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 /* Toast */
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(80px);background:#1e293b;color:#fff;padding:.6rem 1.25rem;border-radius:8px;font-size:.82rem;font-weight:600;opacity:0;transition:all .3s;z-index:999;pointer-events:none}
 .toast.show{transform:translateX(-50%) translateY(0);opacity:1}
+.top-level-page-ui-refresh .hero{background:linear-gradient(135deg,#006b40 0%,#4c1d95 60%,#6d28d9 100%)!important}
+.top-level-page-ui-refresh .hero h1,.top-level-page-ui-refresh .hero p{color:#fff!important}
+.dataset-note{background:#ecfdf5;border:1px solid #6ee7b7;border-radius:10px;padding:1rem;margin-bottom:1rem;color:#14532d}
+.dataset-note strong{display:block;margin-bottom:.25rem}
+.local-actions{display:flex;gap:.6rem;flex-wrap:wrap;margin-top:1rem}
+button:focus-visible,input:focus-visible,textarea:focus-visible,summary:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+[data-theme="dark"] body{background:#0f172a;color:#e2e8f0}
+[data-theme="dark"] .card,[data-theme="dark"] .tabs,[data-theme="dark"] .faq details{background:#172033;border-color:#475569}
+[data-theme="dark"] .card h2,[data-theme="dark"] .faq h2,[data-theme="dark"] .faq summary,[data-theme="dark"] .seo-section h2,[data-theme="dark"] .seo-section h3{color:#ddd6fe}
+[data-theme="dark"] .seo-section p,[data-theme="dark"] .faq details p,[data-theme="dark"] .phrase .en{color:#cbd5e1}
+[data-theme="dark"] .flashcard,[data-theme="dark"] .translate-output{background:#241b3d;border-color:#8b5cf6}
+[data-theme="dark"] .fc-english,[data-theme="dark"] .translate-wrap textarea,[data-theme="dark"] .search-box input{color:#e2e8f0;background:#111827;border-color:#64748b}
+[data-theme="dark"] .study-settings,[data-theme="dark"] .direction-btn{background:#111827;border-color:#64748b;color:#e2e8f0}
+[data-theme="dark"] .session-note,[data-theme="dark"] .voice-note,[data-theme="dark"] .results-note{color:#cbd5e1}
+[data-theme="dark"] .empty-state{color:#e2e8f0;border-color:#64748b}
+@media(max-width:375px){.container{padding:1rem}.hero{padding:2rem 1rem 1.5rem}.card{padding:1rem}.tabs{overflow-x:auto}.tab{min-width:88px}.fc-btn{padding:.6rem .9rem}.phrase{overflow-wrap:anywhere}}
+@media(max-width:340px){.study-directions{grid-template-columns:1fr}}
+@media print{afro-navbar,afro-footer,afro-related-tools,afro-newsletter-cta,.hero,.tabs,.translate-actions,.local-actions,.phrase-actions{display:none!important}.panel{display:none!important}#panel-phrasebook{display:block!important}.card{box-shadow:none;border:0}}
 </style>
 <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<script src="/assets/js/lib/external-translation-consent.js?v=524e1efa" defer></script>
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Nigerian Pidgin Translator">
-<meta name="twitter:description" content="400+ English-to-Pidgin phrases, slang, and expressions used across Nigeria and West Africa.">
+<meta name="twitter:description" content="109 locally available Nigerian Pidgin phrasebook entries with regional-variation cautions.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pidgin-translator.webp">
 <script type="application/ld+json">
 {
@@ -148,10 +177,9 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 }
 </script>
 <meta property="article:modified_time" content="2026-03-31">
-<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
 <link rel="stylesheet" href="/assets/css/language-focus.css?v=05ea1d6d">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Nigerian Pidgin Translator?","acceptedAnswer":{"@type":"Answer","text":"Enter your text or word in the fields above. The Nigerian Pidgin Translator then gives you a clear result with local context you can use straight away."}},{"@type":"Question","name":"How accurate is the Nigerian Pidgin Translator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it."}},{"@type":"Question","name":"Is the Nigerian Pidgin Translator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria."}},{"@type":"Question","name":"Is Pidgin a real language?","acceptedAnswer":{"@type":"Answer","text":"Yes. Nigerian Pidgin is a fully developed creole language with consistent grammar, vocabulary, and rules. It has an estimated 75-100 million speakers, its own BBC news service, and growing use in literature and education. Linguists classify it as an English-based creole, distinct from Standard English."}},{"@type":"Question","name":"Where is Nigerian Pidgin spoken?","acceptedAnswer":{"@type":"Answer","text":"Nigerian Pidgin is spoken throughout Nigeria, especially in urban areas and the southern states. It is most prevalent in Lagos, the Niger Delta region (Warri, Port Harcourt), and Benin City. Related Pidgin varieties are spoken in Cameroon, Ghana, and other West African countries. It serves as the primary lingua franca in many Nigerian workplaces, markets, and social settings."}},{"@type":"Question","name":"Can I use Pidgin in formal settings?","acceptedAnswer":{"@type":"Answer","text":"Pidgin is primarily used in informal settings, markets, social conversations, and entertainment. Standard English remains the language of formal education, government, and business in Nigeria. However, attitudes are changing — BBC Pidgin is a professional news outlet, and some advertisers and politicians now use Pidgin to reach broader audiences."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Is this one authoritative Pidgin standard?","acceptedAnswer":{"@type":"Answer","text":"No. Nigerian Pidgin is a language with regional and speaker variation, and its spelling is not fully standardised. Treat these 109 entries as a learning aid and confirm high-stakes wording locally."}},{"@type":"Question","name":"Where is Nigerian Pidgin spoken?","acceptedAnswer":{"@type":"Answer","text":"Nigerian Pidgin is spoken throughout Nigeria, especially in urban areas and the southern states. It is most prevalent in Lagos, the Niger Delta region (Warri, Port Harcourt), and Benin City. Related Pidgin varieties are spoken in Cameroon, Ghana, and other West African countries. It serves as the primary lingua franca in many Nigerian workplaces, markets, and social settings."}},{"@type":"Question","name":"Can I use Pidgin in formal settings?","acceptedAnswer":{"@type":"Answer","text":"Pidgin is primarily used in informal settings, markets, social conversations, and entertainment. Standard English remains the language of formal education, government, and business in Nigeria. However, attitudes are changing — BBC Pidgin is a professional news outlet, and some advertisers and politicians now use Pidgin to reach broader audiences."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -161,7 +189,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Nigerian Pidgin Translator — English to Pidgin",
-  "description": "Translate English to Nigerian Pidgin (Naija). 400+ phrases, slang, and expressions used across Nigeria and West Africa with pronunciation guides.",
+  "description": "Browse 109 local Nigerian Pidgin phrasebook entries. Optional external translation requires explicit, non-persistent consent.",
   "url": "https://afrotools.com/tools/pidgin-translator/",
   "inLanguage": "en",
   "applicationCategory": "UtilitiesApplication",
@@ -181,6 +209,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/pidgin-translator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pidgin-translator/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/traducteur-pidgin/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mtafsiri-wa-pidgin-ya-nigeria/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pidgin-translator/">
 </head>
@@ -189,52 +218,61 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 <main id="main">
 <section class="hero">
-<h1>Learn Naija <span>Like a Local</span></h1>
-<p>Master Nigerian Pidgin with flashcards, live translation, and 200+ real phrases used by 100 million+ speakers across West Africa.</p>
+<h1>Nigerian Pidgin <span>Phrasebook</span></h1>
+<p>Practise 109 locally available entries. Wording and spelling vary by region and speaker; this is not an authoritative form of Nigerian or African Pidgin.</p>
 <div class="hero-stats">
-<div class="hero-stat"><b>200+</b> Phrases</div>
-<div class="hero-stat"><b>10</b> Categories</div>
-<div class="hero-stat"><b>100M+</b> Speakers</div>
+<div class="hero-stat"><b>109</b> Entries</div>
+<div class="hero-stat"><b>9</b> Categories</div>
+<div class="hero-stat"><b>Regional</b> Variation</div>
 </div>
 </section>
 
 <div class="container">
+<aside class="dataset-note" aria-label="Dataset scope"><strong>Dataset scope</strong>109 phrasebook rows are stored in this page. Spellings are non-standardised and may reflect mixed Nigerian regional usage. Confirm important wording with speakers from the intended community.</aside>
 <!-- Daily Pidgin -->
-<div class="daily-card" id="dailyCard"></div>
+<div class="daily-card" id="dailyCard" aria-live="polite"></div>
 
 <!-- Tabs -->
-<div class="tabs">
-<button type="button" class="tab active" onclick="switchTab('learn')"><span class="tab-icon">&#127891;</span> Learn</button>
-<button type="button" class="tab" onclick="switchTab('translate')"><span class="tab-icon">&#127760;</span> Translate</button>
-<button type="button" class="tab" onclick="switchTab('phrasebook')"><span class="tab-icon">&#128218;</span> Phrasebook</button>
+<div class="tabs" role="tablist" aria-label="Pidgin learning modes">
+<button type="button" class="tab active" id="tab-learn" role="tab" aria-selected="true" aria-controls="panel-learn" onclick="switchTab('learn')"><span class="tab-icon" aria-hidden="true">&#127891;</span> Learn</button>
+<button type="button" class="tab" id="tab-translate" role="tab" aria-selected="false" aria-controls="panel-translate" tabindex="-1" onclick="switchTab('translate')"><span class="tab-icon" aria-hidden="true">&#127760;</span> Translate</button>
+<button type="button" class="tab" id="tab-phrasebook" role="tab" aria-selected="false" aria-controls="panel-phrasebook" tabindex="-1" onclick="switchTab('phrasebook')"><span class="tab-icon" aria-hidden="true">&#128218;</span> Phrasebook</button>
 </div>
 
 <!-- LEARN PANEL -->
-<div class="panel active" id="panel-learn">
+<div class="panel active" id="panel-learn" role="tabpanel" aria-labelledby="tab-learn">
 <div class="card">
-<h2>Flashcard Mode</h2>
+<h2>Session-only flashcards</h2>
 <div class="flashcard-area">
+<fieldset class="study-settings">
+<legend>Choose a study direction</legend>
+<div class="study-directions">
+<button type="button" class="direction-btn active" id="directionEnglish" aria-pressed="true" onclick="setStudyDirection('english')">English to listed Pidgin</button>
+<button type="button" class="direction-btn" id="directionPidgin" aria-pressed="false" onclick="setStudyDirection('pidgin')">Listed Pidgin to English</button>
+</div>
+</fieldset>
+<p class="session-note">Your score exists only in this open page. Phrase text and learning results are not saved.</p>
 <div class="fc-cats" id="fcCats"></div>
 <div class="fc-progress">
-<div class="fc-progress-bar"><div class="fc-progress-fill" id="fcFill" style="width:0%"></div></div>
+<div class="fc-progress-bar" id="fcProgress" role="progressbar" aria-label="Flashcard round progress" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0"><div class="fc-progress-fill" id="fcFill" style="width:0%"></div></div>
 <div class="fc-progress-text" id="fcProgressText">0 / 0 phrases</div>
 </div>
-<div class="flashcard" id="flashcard" onclick="revealAnswer()">
-<div class="fc-label">How do you say this in Pidgin?</div>
+<button type="button" class="flashcard" id="flashcard" onclick="revealAnswer()" aria-describedby="fcHint" aria-expanded="false">
+<div class="fc-label" id="fcPromptLabel">How do you say this in the listed Pidgin wording?</div>
 <div class="fc-english" id="fcEnglish"></div>
 <div class="fc-answer" id="fcAnswer">
 <div class="fc-pidgin" id="fcPidgin"></div>
 <div class="fc-note" id="fcNote"></div>
 </div>
 <div class="fc-reveal-hint" id="fcHint">Tap to reveal answer</div>
-</div>
+</button>
 <div class="fc-controls">
-<button type="button" class="fc-btn fc-btn-skip" onclick="nextCard(false)">Skip</button>
-<button type="button" class="fc-btn fc-btn-knew" onclick="nextCard(true)">I Knew It &#10003;</button>
-<button type="button" class="fc-btn fc-btn-next" onclick="nextCard(false)">Next &#8594;</button>
+<button type="button" class="fc-btn fc-btn-skip" id="againBtn" onclick="nextCard(false)" disabled>Study again</button>
+<button type="button" class="fc-btn fc-btn-knew" id="knewBtn" onclick="nextCard(true)" disabled>I knew it &#10003;</button>
+<button type="button" class="fc-btn fc-btn-next fc-restart" id="restartBtn" onclick="buildDeck()" hidden>Start another round &#8635;</button>
 </div>
 <div class="fc-score">
-<span class="correct" id="fcCorrect">&#10003; 0 known</span>
+<span class="correct" id="fcCorrect" aria-live="polite">&#10003; 0 known</span>
 <span class="total" id="fcTotal">&#128218; Card 1 of 0</span>
 </div>
 </div>
@@ -242,34 +280,40 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </div>
 
 <!-- TRANSLATE PANEL -->
-<div class="panel" id="panel-translate">
+<div class="panel" id="panel-translate" role="tabpanel" aria-labelledby="tab-translate" hidden>
 <div class="card">
-<h2>Live Translator</h2>
+<h2>Optional Cloud Translator</h2>
+<p>The phrasebook stays in this browser. This separate translator uses an external service only after you opt in.</p>
+<div id="pidginTranslationConsent"></div>
 <div class="translate-wrap">
 <div>
-<div class="lang-label" id="srcLabel">English</div>
-<textarea id="srcText" placeholder="Type English text here..." maxlength="2000" aria-label="Type English text here..."></textarea>
+<label class="lang-label" id="srcLabel" for="srcText">English text to send</label>
+<textarea id="srcText" placeholder="Type English text here..." maxlength="2000" autocomplete="off" spellcheck="true"></textarea>
 </div>
-<button type="button" class="swap-btn" onclick="swapLangs()" title="Swap languages">&#8646;</button>
+<button type="button" class="swap-btn" onclick="swapLangs()" title="Swap languages" aria-label="Swap source and target languages">&#8646;</button>
 <div>
-<div class="lang-label" id="tgtLabel">Nigerian Pidgin</div>
-<div class="translate-output" id="tgtOutput">Translation will appear here...</div>
+<div class="lang-label" id="tgtLabel">Nigerian Pidgin result</div>
+<div class="translate-output" id="tgtOutput" role="region" aria-live="polite" aria-label="Temporary translation result">Translation will appear here...</div>
 </div>
 </div>
 <div class="translate-actions">
-<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()">Translate &#8594;</button>
-<button type="button" class="p-btn" onclick="copyText(document.getElementById('tgtOutput').textContent)" title="Copy translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
-<span class="translate-status" id="translateStatus"></span>
+<button type="button" class="translate-btn" id="translateBtn" onclick="doTranslate()" disabled>Translate &#8594;</button>
+<button type="button" class="p-btn" onclick="copyText(document.getElementById('tgtOutput').textContent)" aria-label="Copy temporary translation" title="Copy translation" style="font-size:1.2rem;opacity:.7">&#128203;</button>
+<button type="button" class="p-btn" onclick="clearCloudTranslation()">Clear</button>
+<span class="translate-status" id="translateStatus" role="status" aria-live="polite"></span>
 </div>
 </div>
 </div>
 
 <!-- PHRASEBOOK PANEL -->
-<div class="panel" id="panel-phrasebook">
+<div class="panel" id="panel-phrasebook" role="tabpanel" aria-labelledby="tab-phrasebook" hidden>
 <div class="card">
 <h2>Phrasebook <span class="count-badge" id="countBadge">0</span></h2>
-<div class="search-box"><input aria-label="Search in English or Pidgin" type="text" id="search" placeholder="Search in English or Pidgin..." oninput="filterPhrases()"></div>
+<div class="search-box"><label class="lang-label" for="search">Search English or listed Pidgin wording</label><input type="text" id="search" placeholder="Search in English or Pidgin..." oninput="filterPhrases()"></div>
 <div class="cats" id="cats"></div>
+<p class="voice-note">Listen uses your device's synthetic English (Nigeria) voice. It is a convenience preview, not verified pronunciation.</p>
+<p class="results-note" id="phrasebookStatus" role="status" aria-live="polite"></p>
+<div class="local-actions"><button type="button" class="fc-btn fc-btn-next" onclick="downloadPhrasebook()">Download visible TXT</button><button type="button" class="fc-btn fc-btn-skip" onclick="window.print()">Print visible list / Save PDF</button><button type="button" class="fc-btn fc-btn-skip" onclick="resetPhrasebook()">Reset filters</button></div>
 </div>
 <div class="card"><div class="phrase-list" id="phrases"></div></div>
 </div>
@@ -277,17 +321,16 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 
 <!-- SEO Content -->
 <section class="seo-section">
-<h2>Nigerian Pidgin — Africa's Most Spoken Creole</h2>
-<p>Nigerian Pidgin (also called Naija, Broken English, or simply Pidgin) is an English-based creole spoken by an estimated 75-100 million Nigerians as a first or second language. It serves as the most widely understood lingua franca across Nigeria, bridging hundreds of ethnic groups and languages. BBC Pidgin, launched in 2017, broadcasts news to millions across West Africa in this vibrant language.</p>
-<h3>Not "Broken" English</h3>
-<p>Despite sometimes being called "broken English," Nigerian Pidgin is a fully developed language with its own grammar, vocabulary, and rules. It has consistent verb conjugation patterns (using markers like "dey" for continuous, "don" for past, and "go" for future), its own phonology, and creative expressions that cannot be directly translated from English. Linguists classify it as an English-based creole language.</p>
-<h3>Regional Variations</h3>
-<p>Pidgin varies across Nigeria. Lagos Pidgin is heavily influenced by Yoruba, while Port Harcourt and Warri Pidgin incorporates more Niger Delta languages. Northern Nigerian Pidgin has Hausa influences. Pidgin in Cameroon (known as Cameroonian Pidgin English or Kamtok) and Ghana (Ghanaian Pidgin) are related but distinct varieties. Despite these differences, speakers across West Africa generally understand each other.</p>
-<h3>Cultural Impact</h3>
-<p>Pidgin is increasingly used in music (Afrobeats, Afropop), comedy, advertising, and social media. Artists like Burna Boy, Wizkid, and Davido frequently use Pidgin in their music, helping to globalize the language. Nollywood films often feature Pidgin dialogue, and many Nigerian brands now advertise in Pidgin to connect with wider audiences.</p>
+<h2>Nigerian Pidgin varies by place and speaker</h2>
+<p>This 109-entry learning set focuses on common Nigerian Pidgin wording. It does not establish one authoritative spelling, grammar, pronunciation or regional standard.</p>
+<h3>How to use this learning set</h3>
+<p>Use the rows as prompts for recognition and conversation practice, not as proof of one correct translation. Several rows contain alternatives separated by a slash; that shows options recorded in this page, not equal usage in every community.</p>
+<h3>What remains unverified</h3>
+<p>The route-local dataset does not contain phrase-level source citations, speaker community, region, register, date checked, or verified pronunciation. The interface therefore labels its wording as listed wording and asks users to confirm important phrases with speakers from the intended community.</p>
 </section>
 
 
+<!-- Generic amount/priority workflow omitted because it is not a language task.
 <section class="df-upgrade" data-df-upgrade="pidgin-translator">
   <div class="df-upgrade__card">
     <div>
@@ -312,11 +355,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
   <h2 id="pidgin-translator-faq-title">Nigerian Pidgin Translator FAQ</h2>
   <div class="df-faq__grid"><details><summary>How do I use the Nigerian Pidgin Translator?</summary><p>Enter your text or word in the fields above. The Nigerian Pidgin Translator then gives you a clear result with local context you can use straight away.</p></details><details><summary>How accurate is the Nigerian Pidgin Translator?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm a native speaker for important or public use before you rely on it.</p></details><details><summary>Is the Nigerian Pidgin Translator free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria.</p></details></div>
 </section>
+-->
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <section class="faq">
 <h2>Frequently Asked Questions</h2>
-<details><summary>Is Pidgin a real language?</summary><p>Yes. Nigerian Pidgin is a fully developed creole language with consistent grammar, vocabulary, and rules. It has an estimated 75-100 million speakers, its own BBC news service, and growing use in literature and education. Linguists classify it as an English-based creole, distinct from Standard English.</p></details>
+<details><summary>Is this one authoritative Pidgin standard?</summary><p>No. Nigerian Pidgin is a language with regional and speaker variation, and its spelling is not fully standardised. Treat these 109 entries as a learning aid and confirm high-stakes wording locally.</p></details>
 <details><summary>Where is Nigerian Pidgin spoken?</summary><p>Nigerian Pidgin is spoken throughout Nigeria, especially in urban areas and the southern states. It is most prevalent in Lagos, the Niger Delta region (Warri, Port Harcourt), and Benin City. Related Pidgin varieties are spoken in Cameroon, Ghana, and other West African countries. It serves as the primary lingua franca in many Nigerian workplaces, markets, and social settings.</p></details>
 <details><summary>Can I use Pidgin in formal settings?</summary><p>Pidgin is primarily used in informal settings, markets, social conversations, and entertainment. Standard English remains the language of formal education, government, and business in Nigeria. However, attitudes are changing — BBC Pidgin is a professional news outlet, and some advertisers and politicians now use Pidgin to reach broader audiences.</p></details>
 </section>
@@ -326,12 +370,12 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/african-name-meaning/" data-related-tool data-id="african-name-meaning" data-name="African Name Meaning Finder" data-category="language" data-icon="AN" data-desc="Find meaning, origin, and pronunciation of 5,000+ African names across 50 cultures.">African Name Meaning Finder</a></li><li><a href="/tools/swahili-translator/" data-related-tool data-id="swahili-translator" data-name="Swahili Translator" data-category="language" data-icon="ST" data-desc="English ↔ Swahili. 50,000+ word pairs including business terms.">Swahili Translator</a></li><li><a href="/tools/french-african/" data-related-tool data-id="french-african" data-name="Francophone Africa Translator" data-category="language" data-icon="FA" data-desc="French ↔ English with West &amp; Central African French business terminology.">Francophone Africa Translator</a></li><li><a href="/tools/yoruba-translator/" data-related-tool data-id="yoruba-translator" data-name="Yoruba Translator &amp; Phrasebook" data-category="language" data-icon="YT" data-desc="English ↔ Yoruba with tones. Business, greetings, legal phrases.">Yoruba Translator &amp; Phrasebook</a></li><li><a href="/tools/hausa-translator/" data-related-tool data-id="hausa-translator" data-name="Hausa Translator &amp; Phrasebook" data-category="language" data-icon="HT" data-desc="English ↔ Hausa. Business, market, greetings, legal phrases.">Hausa Translator &amp; Phrasebook</a></li><li><a href="/tools/amharic-translator/" data-related-tool data-id="amharic-translator" data-name="Amharic Translator" data-category="language" data-icon="AT" data-desc="English ↔ Amharic with Ge&#39;ez script support.">Amharic Translator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/african-name-meaning/" data-related-tool data-id="african-name-meaning" data-name="African Name Provenance Review" data-category="language" data-icon="AN" data-desc="Review 308 embedded African name records while missing per-entry meaning, country, community, gender and pronunciation e">African Name Provenance Review</a></li><li><a href="/tools/swahili-translator/" data-related-tool data-id="swahili-translator" data-name="Swahili Phrasebook &amp; Optional Translator" data-category="language" data-icon="SP" data-desc="Search 193 embedded English–Swahili starter records locally, export TXT/PDF, or explicitly opt into cloud machine transl">Swahili Phrasebook &amp; Optional Translator</a></li><li><a href="/tools/french-african/" data-related-tool data-id="french-african" data-name="French for Africa Phrasebook" data-category="language" data-icon="FF" data-desc="Explore 95 embedded French learning phrases with country and register limits shown, local TXT/PDF and optional consented">French for Africa Phrasebook</a></li><li><a href="/tools/yoruba-translator/" data-related-tool data-id="yoruba-translator" data-name="Yoruba Phrasebook &amp; Optional Translator" data-category="language" data-icon="YP" data-desc="Search 175 embedded English–Yoruba starter records locally, export TXT/PDF, or explicitly opt into cloud machine transla">Yoruba Phrasebook &amp; Optional Translator</a></li><li><a href="/tools/hausa-translator/" data-related-tool data-id="hausa-translator" data-name="Hausa Draft Phrasebook &amp; Optional Translator" data-category="language" data-icon="HD" data-desc="Search 131 app-local unreviewed Boko Hausa starter records with gender and writing notes; optional cloud translation nee">Hausa Draft Phrasebook &amp; Optional Translator</a></li><li><a href="/tools/amharic-translator/" data-related-tool data-id="amharic-translator" data-name="Amharic Draft Phrasebook &amp; Optional Translator" data-category="language" data-icon="AD" data-desc="Search 106 app-local unverified English–Amharic draft rows; optional cloud translation requires explicit session consent">Amharic Draft Phrasebook &amp; Optional Translator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools><afro-newsletter-cta></afro-newsletter-cta><afro-footer></afro-footer>
 <div class="toast" id="toast"></div>
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script><script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script><script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script><script src="/assets/js/components/newsletter-cta.js?v=73bdfbf4" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script><script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script><script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
 <script>
 /* ── Phrase Database ── */
 var PHRASES=[
@@ -453,17 +497,26 @@ var fcDeck = [];
 var fcIndex = 0;
 var fcKnown = 0;
 var fcRevealed = false;
+var studyDirection = 'english';
 var pbCat = 'All';
 var swapped = false;
-var learned = JSON.parse(localStorage.getItem('pidgin_learned') || '{}');
+var dailyIndex = 0;
 
 /* ── Tab Switching ── */
-function switchTab(tab) {
+function switchTab(tab, moveFocus) {
   activeTab = tab;
-  document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
-  document.querySelectorAll('.panel').forEach(function(p){ p.classList.remove('active'); });
-  document.querySelector('.tab:nth-child(' + ({learn:1,translate:2,phrasebook:3}[tab]) + ')').classList.add('active');
-  document.getElementById('panel-' + tab).classList.add('active');
+  document.querySelectorAll('[role="tab"]').forEach(function(t) {
+    var selected = t.id === 'tab-' + tab;
+    t.classList.toggle('active', selected);
+    t.setAttribute('aria-selected', selected ? 'true' : 'false');
+    t.tabIndex = selected ? 0 : -1;
+    if (selected && moveFocus) t.focus();
+  });
+  document.querySelectorAll('[role="tabpanel"]').forEach(function(p) {
+    var selected = p.id === 'panel-' + tab;
+    p.classList.toggle('active', selected);
+    p.hidden = !selected;
+  });
 }
 
 /* ── Daily Phrase ── */
@@ -471,19 +524,28 @@ function initDaily() {
   var day = new Date();
   var seed = day.getFullYear() * 1000 + day.getMonth() * 32 + day.getDate();
   var idx = seed % PHRASES.length;
+  dailyIndex = idx;
   var p = PHRASES[idx];
   document.getElementById('dailyCard').innerHTML =
     '<div class="daily-label">Pidgin of the Day</div>' +
     '<div class="daily-en">' + p.en + '</div>' +
     '<div class="daily-pidgin">' + p.lang + '</div>' +
-    (p.note ? '<div class="daily-note">' + p.note + '</div>' : '');
+    (p.note ? '<div class="daily-note">' + p.note + '</div>' : '') +
+    '<div class="local-actions"><button type="button" class="fc-btn fc-btn-next" onclick="findDailyPhrase()">Find this entry in the phrasebook</button></div>';
+}
+
+function findDailyPhrase() {
+  pbCat = 'All';
+  document.getElementById('search').value = PHRASES[dailyIndex].en;
+  switchTab('phrasebook', true);
+  filterPhrases();
 }
 
 /* ── Flashcard Mode ── */
 function initFC() {
   var cats = ['All'].concat([...new Set(PHRASES.map(function(p){ return p.cat; }))]);
   document.getElementById('fcCats').innerHTML = cats.map(function(c){
-    return '<button type="button" class="fc-cat' + (c === fcCat ? ' active' : '') + '" onclick="setFCCat(\'' + c.replace(/'/g,"\\'") + '\')">' + c + '</button>';
+    return '<button type="button" class="fc-cat' + (c === fcCat ? ' active' : '') + '" aria-pressed="' + (c === fcCat ? 'true' : 'false') + '" onclick="setFCCat(\'' + c.replace(/'/g,"\\'") + '\')">' + c + '</button>';
   }).join('');
   buildDeck();
 }
@@ -491,8 +553,21 @@ function initFC() {
 function setFCCat(c) {
   fcCat = c;
   fcIndex = 0; fcKnown = 0; fcRevealed = false;
-  document.querySelectorAll('.fc-cat').forEach(function(b){ b.classList.toggle('active', b.textContent === c); });
+  document.querySelectorAll('.fc-cat').forEach(function(b){
+    var selected = b.textContent === c;
+    b.classList.toggle('active', selected);
+    b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+  });
   buildDeck();
+}
+
+function setStudyDirection(direction) {
+  studyDirection = direction === 'pidgin' ? 'pidgin' : 'english';
+  document.getElementById('directionEnglish').classList.toggle('active', studyDirection === 'english');
+  document.getElementById('directionPidgin').classList.toggle('active', studyDirection === 'pidgin');
+  document.getElementById('directionEnglish').setAttribute('aria-pressed', studyDirection === 'english' ? 'true' : 'false');
+  document.getElementById('directionPidgin').setAttribute('aria-pressed', studyDirection === 'pidgin' ? 'true' : 'false');
+  if (fcIndex < fcDeck.length) showCard();
 }
 
 function buildDeck() {
@@ -507,21 +582,42 @@ function buildDeck() {
 }
 
 function showCard() {
+  var flashcard = document.getElementById('flashcard');
+  var againButton = document.getElementById('againBtn');
+  var knewButton = document.getElementById('knewBtn');
+  var restartButton = document.getElementById('restartBtn');
   if (fcIndex >= fcDeck.length) {
-    document.getElementById('flashcard').innerHTML =
-      '<div class="fc-label">Round Complete!</div>' +
-      '<div class="fc-english">You knew <b>' + fcKnown + '</b> of <b>' + fcDeck.length + '</b> phrases</div>' +
-      '<div style="margin-top:1rem"><button type="button" class="fc-btn fc-btn-next" onclick="buildDeck()">Start Again &#8635;</button></div>';
+    document.getElementById('fcPromptLabel').textContent = 'Round complete';
+    document.getElementById('fcEnglish').textContent = 'You knew ' + fcKnown + ' of ' + fcDeck.length + ' phrases.';
+    document.getElementById('fcPidgin').textContent = '';
+    document.getElementById('fcNote').textContent = '';
+    document.getElementById('fcAnswer').classList.remove('show');
     document.getElementById('fcHint').style.display = 'none';
+    flashcard.disabled = true;
+    flashcard.setAttribute('aria-expanded', 'false');
+    againButton.hidden = true;
+    knewButton.hidden = true;
+    restartButton.hidden = false;
     updateProgress();
     return;
   }
   var p = fcDeck[fcIndex];
-  document.getElementById('fcEnglish').textContent = p.en;
-  document.getElementById('fcPidgin').textContent = p.lang;
+  var asksInEnglish = studyDirection === 'english';
+  document.getElementById('fcPromptLabel').textContent = asksInEnglish ?
+    'How do you say this in the listed Pidgin wording?' :
+    'What English prompt is paired with this listed Pidgin wording?';
+  document.getElementById('fcEnglish').textContent = asksInEnglish ? p.en : p.lang;
+  document.getElementById('fcPidgin').textContent = asksInEnglish ? p.lang : p.en;
   document.getElementById('fcNote').textContent = p.note || '';
   document.getElementById('fcAnswer').classList.remove('show');
   document.getElementById('fcHint').style.display = '';
+  flashcard.disabled = false;
+  flashcard.setAttribute('aria-expanded', 'false');
+  againButton.hidden = false;
+  knewButton.hidden = false;
+  againButton.disabled = true;
+  knewButton.disabled = true;
+  restartButton.hidden = true;
   fcRevealed = false;
   updateProgress();
 }
@@ -530,16 +626,16 @@ function revealAnswer() {
   if (fcRevealed || fcIndex >= fcDeck.length) return;
   document.getElementById('fcAnswer').classList.add('show');
   document.getElementById('fcHint').style.display = 'none';
+  document.getElementById('flashcard').setAttribute('aria-expanded', 'true');
+  document.getElementById('againBtn').disabled = false;
+  document.getElementById('knewBtn').disabled = false;
   fcRevealed = true;
 }
 
 function nextCard(knew) {
-  if (!fcRevealed) { revealAnswer(); return; }
+  if (!fcRevealed) return;
   if (knew) {
     fcKnown++;
-    var key = fcDeck[fcIndex].en;
-    learned[key] = 1;
-    localStorage.setItem('pidgin_learned', JSON.stringify(learned));
   }
   fcIndex++;
   fcRevealed = false;
@@ -554,6 +650,8 @@ function updateProgress() {
   document.getElementById('fcProgressText').textContent = fcIndex + ' / ' + total + ' phrases';
   document.getElementById('fcCorrect').innerHTML = '&#10003; ' + fcKnown + ' known';
   document.getElementById('fcTotal').innerHTML = '&#128218; Card ' + Math.min(fcIndex + 1, total) + ' of ' + total;
+  document.getElementById('fcProgress').setAttribute('aria-valuemax', String(total));
+  document.getElementById('fcProgress').setAttribute('aria-valuenow', String(Math.min(fcIndex, total)));
 }
 
 /* ── Translate Mode ── */
@@ -566,6 +664,11 @@ function swapLangs() {
 }
 
 function doTranslate() {
+  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  if (!consent || !consent.requireConsent('pidgin-translator', 'Cloud translation is off. Review the notice and opt in first.')) {
+    document.getElementById('translateStatus').textContent = 'No text was sent. Cloud translation needs your explicit opt-in.';
+    return;
+  }
   var text = document.getElementById('srcText').value.trim();
   if (!text) return;
   var btn = document.getElementById('translateBtn');
@@ -575,19 +678,67 @@ function doTranslate() {
   status.textContent = '';
   var src = swapped ? 'pcm' : 'en';
   var tgt = swapped ? 'en' : 'pcm';
+  var requestHeaders = Object.assign({'Content-Type': 'application/json'}, consent.headers('pidgin-translator'));
   fetch('/api/translate', {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
-    body: JSON.stringify({text: text, source: src, target: tgt})
-  }).then(function(r){ return r.json(); })
-  .then(function(d) {
+    headers: requestHeaders,
+    credentials: 'same-origin',
+    cache: 'no-store',
+    body: JSON.stringify({text: text, source: src, target: tgt, allowFallback: false})
+  }).then(function(r){ return r.json().catch(function(){ return {}; }).then(function(data){ return {response:r,data:data}; }); })
+  .then(function(result) {
+    var r = result.response;
+    var d = result.data;
+    if (!r.ok) {
+      if (r.status === 428) consent.reset('pidgin-translator');
+      document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+      status.textContent = d.message || d.error || 'No external translation was returned.';
+      return;
+    }
     document.getElementById('tgtOutput').textContent = d.translatedText || 'Translation not available';
-    status.textContent = d.provider ? 'via ' + d.provider + ' | ' + (d.characters || 0) + ' chars' : '';
+    status.textContent = d.provider ? 'via ' + d.provider + (d.unchanged ? ' | unchanged; verify this result' : '') : '';
   }).catch(function() {
-    document.getElementById('tgtOutput').textContent = 'Translation failed. Try the phrasebook instead!';
+    document.getElementById('tgtOutput').textContent = 'Cloud translation is unavailable. Try the local phrasebook instead.';
+    status.textContent = 'Connection error. No result was stored.';
   }).finally(function() {
-    btn.disabled = false;
+    btn.disabled = !(consent && consent.hasConsent('pidgin-translator'));
     btn.textContent = 'Translate \u2192';
+  });
+}
+
+function clearCloudTranslation() {
+  document.getElementById('srcText').value = '';
+  document.getElementById('tgtOutput').textContent = 'Translation will appear here after you opt in.';
+  document.getElementById('translateStatus').textContent = 'Text and temporary translation state cleared.';
+  document.getElementById('srcText').focus();
+}
+
+function downloadPhrasebook() {
+  var visibleRows = getFilteredPhrases();
+  var rows = ['Nigerian Pidgin phrasebook — 109 locally available entries',
+    'Regional wording and non-standardised spelling may vary. Confirm important wording locally.', ''];
+  rows[0] = 'Nigerian Pidgin phrasebook - ' + visibleRows.length + ' visible entries from 109 local rows';
+  visibleRows.forEach(function(p) {
+    rows.push(p.en + '\t' + p.lang + (p.note ? '\t' + p.note : ''));
+  });
+  var url = URL.createObjectURL(new Blob([rows.join('\n')], {type:'text/plain;charset=utf-8'}));
+  var link = document.createElement('a');
+  link.href = url;
+  link.download = visibleRows.length === PHRASES.length ?
+    'nigerian-pidgin-phrasebook-109.txt' :
+    'nigerian-pidgin-visible-' + visibleRows.length + '.txt';
+  link.click();
+  URL.revokeObjectURL(url);
+}
+
+function initExternalTranslationConsent() {
+  var consent = window.AfroTools && window.AfroTools.ExternalTranslationConsent;
+  var host = document.getElementById('pidginTranslationConsent');
+  var button = document.getElementById('translateBtn');
+  if (!consent || !host || !button) return;
+  consent.render(host, {toolId: 'pidgin-translator', primaryProvider: 'MyMemory'});
+  host.addEventListener('afrotools:external-translation-consent-change', function() {
+    button.disabled = !consent.hasConsent('pidgin-translator');
   });
 }
 
@@ -595,47 +746,91 @@ function doTranslate() {
 function initPB() {
   var cats = ['All'].concat([...new Set(PHRASES.map(function(p){ return p.cat; }))]);
   document.getElementById('cats').innerHTML = cats.map(function(c){
-    return '<button type="button" class="cat-btn' + (c === 'All' ? ' active' : '') + '" onclick="setPBCat(\'' + c.replace(/'/g,"\\'") + '\')">' + c + '</button>';
+    return '<button type="button" class="cat-btn' + (c === 'All' ? ' active' : '') + '" aria-pressed="' + (c === 'All' ? 'true' : 'false') + '" onclick="setPBCat(\'' + c.replace(/'/g,"\\'") + '\')">' + c + '</button>';
   }).join('');
   filterPhrases();
 }
 
 function setPBCat(c) {
   pbCat = c;
-  document.querySelectorAll('.cat-btn').forEach(function(b){ b.classList.toggle('active', b.textContent === c); });
+  document.querySelectorAll('.cat-btn').forEach(function(b){
+    var selected = b.textContent === c;
+    b.classList.toggle('active', selected);
+    b.setAttribute('aria-pressed', selected ? 'true' : 'false');
+  });
   filterPhrases();
 }
 
-function filterPhrases() {
+function getFilteredPhrases() {
   var q = (document.getElementById('search').value || '').toLowerCase();
-  var list = PHRASES.filter(function(p) {
+  return PHRASES.filter(function(p) {
     if (pbCat !== 'All' && p.cat !== pbCat) return false;
     if (!q) return true;
     return p.en.toLowerCase().indexOf(q) !== -1 || p.lang.toLowerCase().indexOf(q) !== -1;
   });
+}
+
+function filterPhrases() {
+  var list = getFilteredPhrases();
   document.getElementById('countBadge').textContent = list.length + ' phrases';
+  document.getElementById('phrasebookStatus').textContent =
+    'Showing ' + list.length + ' of ' + PHRASES.length + ' entries' + (pbCat === 'All' ? '.' : ' in ' + pbCat + '.');
+  if (!list.length) {
+    document.getElementById('phrases').innerHTML =
+      '<div class="empty-state">No entries match this search and category. Clear the search or reset the filters.</div>';
+    return;
+  }
   document.getElementById('phrases').innerHTML = list.map(function(p) {
     var escaped = p.lang.replace(/'/g, "\\'");
     return '<div class="phrase">' +
       '<span class="en">' + p.en + '</span>' +
       '<span><span class="lang">' + p.lang + '</span>' + (p.note ? '<br><span class="note">' + p.note + '</span>' : '') + '</span>' +
       '<span class="phrase-actions">' +
-        '<button type="button" class="p-btn" onclick="speak(\'' + escaped + '\')" title="Listen">&#128266;</button>' +
-        '<button type="button" class="p-btn" onclick="copyText(\'' + escaped + '\')" title="Copy">&#128203;</button>' +
+        '<button type="button" class="p-btn" onclick="speak(\'' + escaped + '\')" aria-label="Play synthetic voice preview of listed Pidgin wording" title="Synthetic voice preview; not verified pronunciation">&#128266;</button>' +
+        '<button type="button" class="p-btn" onclick="copyText(\'' + escaped + '\')" aria-label="Copy listed Pidgin wording" title="Copy">&#128203;</button>' +
       '</span></div>';
   }).join('');
 }
 
+function resetPhrasebook() {
+  pbCat = 'All';
+  document.getElementById('search').value = '';
+  document.querySelectorAll('.cat-btn').forEach(function(button) {
+    var selected = button.textContent === 'All';
+    button.classList.toggle('active', selected);
+    button.setAttribute('aria-pressed', selected ? 'true' : 'false');
+  });
+  filterPhrases();
+  document.getElementById('search').focus();
+}
+
 function speak(text) {
-  if (!window.speechSynthesis) return;
+  if (!window.speechSynthesis) {
+    showToast('Synthetic voice is not available in this browser.');
+    return;
+  }
+  speechSynthesis.cancel();
   var u = new SpeechSynthesisUtterance(text);
   u.lang = 'en-NG';
   u.rate = 0.85;
   speechSynthesis.speak(u);
+  showToast('Playing a synthetic preview, not verified pronunciation.');
 }
 
 function copyText(text) {
-  navigator.clipboard.writeText(text).then(function() { showToast('Copied!'); });
+  if (!text || /^Translation will appear/.test(text)) {
+    showToast('Nothing to copy yet.');
+    return;
+  }
+  if (!navigator.clipboard || !navigator.clipboard.writeText) {
+    showToast('Copy is not available in this browser.');
+    return;
+  }
+  navigator.clipboard.writeText(text).then(function() {
+    showToast('Copied.');
+  }).catch(function() {
+    showToast('Copy failed. Select the text and copy it manually.');
+  });
 }
 
 function showToast(msg) {
@@ -647,6 +842,14 @@ function showToast(msg) {
 
 /* ── Enter key for translate ── */
 document.addEventListener('keydown', function(e) {
+  if (e.target.getAttribute && e.target.getAttribute('role') === 'tab' && (e.key === 'ArrowLeft' || e.key === 'ArrowRight')) {
+    e.preventDefault();
+    var order = ['learn', 'translate', 'phrasebook'];
+    var current = order.indexOf(activeTab);
+    var offset = e.key === 'ArrowRight' ? 1 : -1;
+    switchTab(order[(current + offset + order.length) % order.length], true);
+    return;
+  }
   if (e.key === 'Enter' && activeTab === 'translate' && document.activeElement.id === 'srcText' && !e.shiftKey) {
     e.preventDefault();
     doTranslate();
@@ -657,9 +860,16 @@ document.addEventListener('keydown', function(e) {
 initDaily();
 initFC();
 initPB();
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initExternalTranslationConsent, {once:true});
+} else {
+  initExternalTranslationConsent();
+}
+window.addEventListener('pagehide', function() {
+  document.getElementById('srcText').value = '';
+  document.getElementById('tgtOutput').textContent = '';
+});
 </script>
-
-<script>window.TRANSLATOR_CONFIG={source:"en",target:"pcm",langName:"Nigerian Pidgin",langCode:"pcm"};</script>
 
 <script>
 (function(){
@@ -673,7 +883,5 @@ initPB();
 })();
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/pages/language-tool-focus.js?v=86ea7c32" defer></script>
-<script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>

@@ -111,8 +111,8 @@ for (const pattern of unsupportedPatterns) {
 }
 
 const html = fs.readFileSync(path.join(root, 'tools/study-abroad-cost/index.html'), 'utf8');
-assert(html.includes('study-abroad-hero-sources.js'), 'Study Abroad page must load hero source metadata before the upgraded engine');
-assert(html.includes('study-abroad-data-trust.js'), 'Study Abroad page must load the data trust policy script');
+assert(!html.includes('study-abroad-hero-sources.js'), 'The source-led worksheet must not load retired country-default source metadata');
+assert(!html.includes('study-abroad-data-trust.js'), 'The source-led worksheet must not load the retired country-default trust renderer');
 assert(html.includes('Costs can change. Use AfroTools as a planning estimate'), 'Study Abroad page must show the global cost-change disclaimer');
 assert(fs.existsSync(path.join(root, 'audit-results/study-abroad-cost-data-quality.md')), 'Study Abroad data-quality markdown audit must remain available');
 assert(fs.existsSync(path.join(root, 'audit-results/study-abroad-cost-data-quality.json')), 'Study Abroad data-quality JSON audit must remain available');

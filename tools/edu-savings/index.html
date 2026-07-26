@@ -1,387 +1,177 @@
-<!DOCTYPE html>
+<!doctype html>
 <html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Education Savings Plan Calculator Africa 2026 | AfroTools</title>
-<meta name="description" content="Calculate how much to save for your child's university education in Africa. Gap analysis, projected fund value, recommended monthly savings.">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Education Savings Goal Calculator | AfroTools</title>
+<meta name="description" content="Project an education savings goal from your own cost, timing, inflation, contributions and nominal growth assumptions, with gap and monthly contribution math.">
 <meta name="tool-id" content="edu-savings">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/edu-savings/">
-<meta property="og:title" content="Education Savings Plan Calculator Africa | AfroTools">
-<meta property="og:description" content="Calculate how much to save monthly for your child's education. Gap analysis vs expected tuition costs in Africa.">
+<meta property="og:title" content="Education Savings Goal Calculator | AfroTools">
+<meta property="og:description" content="Compare a future education-cost target with user-entered savings and contribution assumptions.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/edu-savings.webp">
-<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Education Savings Plan Calculator Africa 2026 | AfroTools">
-<meta name="twitter:description" content="Calculate how much to save for your child">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=5913ef0f" defer></script>
-<script src="/assets/js/components/footer.min.js?v=92b461d6" defer></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Education Savings Plan Calculator Africa",
-  "description": "Calculate required monthly savings for child's university education in Africa. Projection and gap analysis.",
-  "url": "https://afrotools.com/tools/edu-savings/",
-  "applicationCategory": "FinanceApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/edu-savings.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Education Savings Plan Calculator"}]}
-</script>
-<style>
-*,*::before,*::after{box-sizing:border-box}
-body{font-family:'DM Sans',sans-serif;background:#fff;color:#0f1419;line-height:1.6;margin:0}
-.hero{background:linear-gradient(135deg,#1a1000 0%,#1e293b 40%,#1e3a5f 100%);padding:48px 0 40px;color:#fff}
-.container{max-width:860px;margin:0 auto;padding:0 24px}
-.bc{font-size:.72rem;color:rgba(255,255,255,.6);padding-bottom:16px}
-.bc a{color:rgba(255,255,255,.6);text-decoration:none}.bc a:hover{color:#fff}
-.badges{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}
-.badge{padding:4px 12px;border-radius:6px;font-size:.68rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase}
-.badge-multi{background:rgba(99,102,241,.15);border:1px solid rgba(99,102,241,.3);color:#a5b4fc}
-.badge-free{background:rgba(16,185,129,.15);border:1px solid rgba(16,185,129,.3);color:#6ee7b7}
-.hero h1{font-size:clamp(1.6rem,3.5vw,2.2rem);font-weight:800;margin:0 0 10px;line-height:1.1;color:#fff}
-.hero h1 em{color:#fbbf24;font-style:normal}
-.hero-sub{font-size:.93rem;color:rgba(255,255,255,.85);max-width:520px;margin:0}
-.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.05)}
-.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1rem;color:#111}
-label{display:block;font-weight:600;font-size:.88rem;margin-bottom:.3rem;color:#374151}
-select,input[type=number]{width:100%;padding:.6rem .85rem;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.93rem;transition:border .2s;background:#fff}
-select:focus,input:focus{outline:none;border-color:var(--color-primary)}
-.help{font-size:.75rem;color:#9ca3af;margin-top:.2rem}
-.row{display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem}
-.btn{display:inline-flex;align-items:center;gap:.5rem;padding:.7rem 1.5rem;border:none;border-radius:10px;font-family:inherit;font-size:.93rem;font-weight:700;cursor:pointer;transition:all .2s;background:var(--color-primary);color:#fff}
-.btn:hover{background:#0063D1;transform:translateY(-1px)}
-.result-box{display:none;margin-top:1rem}
-.result-box.show{display:block}
-.result-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:.75rem;margin-bottom:1rem}
-.rs{background:#f9fafb;border:1.5px solid #e5e7eb;border-radius:10px;padding:1rem;text-align:left;display:grid;align-content:start;gap:.18rem;min-width:0}
-.rs .lbl{font-size:.7rem;text-transform:uppercase;letter-spacing:.05em;color:#888;margin-bottom:.2rem}
-.rs .val{font-size:1.2rem;font-weight:800;color:var(--color-primary);line-height:1.15;overflow-wrap:anywhere}
-.rs .sub{font-size:.75rem;color:#6b7280;margin-top:.1rem}
-.gap-box{border-radius:12px;padding:1.25rem;margin-bottom:1rem}
-.gap-box.on-track{background:#f0fdf4;border:1.5px solid #86efac}
-.gap-box.behind{background:#fffbeb;border:1.5px solid #fcd34d}
-.gap-box.critical{background:#fef2f2;border:1.5px solid #fca5a5}
-.gap-box h3{font-size:.95rem;font-weight:800;margin:0 0 .5rem}
-.gap-box p{font-size:.85rem;margin:0;line-height:1.6}
-.milestone-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:1rem}
-.milestone-table th{background:#f3f4f6;padding:.5rem .7rem;text-align:left;font-weight:700;font-size:.72rem;color:#374151;border-bottom:2px solid #e5e7eb}
-.milestone-table td{padding:.45rem .7rem;border-bottom:1px solid #f3f4f6}
-.result-note{margin:1rem 0 0;padding:1rem;background:#fffbeb;border:1.5px solid #fcd34d;border-radius:12px;color:#78350f;font-size:.82rem;line-height:1.65}
-.result-actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}
-.secondary-btn{display:inline-flex;align-items:center;justify-content:center;padding:.65rem 1rem;border:1.5px solid #bfdbfe;border-radius:10px;background:#fff;color:#1d4ed8;font-family:inherit;font-size:.84rem;font-weight:800;cursor:pointer}
-.secondary-btn:hover,.secondary-btn:focus-visible{background:#eff6ff;border-color:#1d4ed8;outline:none}
-.action-status{min-height:20px;margin-top:.7rem;color:#1d4ed8;font-size:.8rem;font-weight:800}
-.method-list{margin:.75rem 0 0;padding-left:1.1rem;color:#4b5563;font-size:.86rem;line-height:1.7}
-.sec-body{padding:40px 0}
-@media(max-width:600px){.row{grid-template-columns:1fr}.result-actions .secondary-btn{width:100%}}
-</style>
+<meta name="twitter:title" content="Education Savings Goal Calculator | AfroTools">
+<meta name="twitter:description" content="Model education costs, timing, contributions, inflation and nominal growth without product presets.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/edu-savings.webp">
-
+<meta property="article:modified_time" content="2026-07-26">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/tools/edu-savings/edu-savings-vip.css?v=4be1859c">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Education Savings Goal Calculator","url":"https://afrotools.com/tools/edu-savings/","description":"Project a future education-cost target and savings fund from user-entered timing, inflation, current savings, monthly contributions and nominal growth assumptions.","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/edu-savings.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Education","item":"https://afrotools.com/education/"},{"@type":"ListItem","position":3,"name":"Education Savings Goal Calculator","item":"https://afrotools.com/tools/edu-savings/"}]}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Where are the country tuition and product-return presets?","acceptedAnswer":{"@type":"Answer","text":"They were removed because costs, rates, fees and products change by provider, country and date. Use current figures you can trace to official fee schedules and regulated product documents."}},{"@type":"Question","name":"Why are beginning-of-month and end-of-month deposits different?","acceptedAnswer":{"@type":"Answer","text":"A beginning-of-month deposit compounds for one additional month. Choose the timing that matches when contributions will actually enter the account."}},{"@type":"Question","name":"What does a negative nominal-growth amount mean?","acceptedAnswer":{"@type":"Answer","text":"It means the entered negative growth assumption reduces the projected fund below the cash contributed. The model does not estimate investment volatility or probability."}},{"@type":"Question","name":"Is the calculated monthly amount a recommendation?","acceptedAnswer":{"@type":"Answer","text":"No. It is the constant contribution that solves this specific formula with the entered assumptions. It does not assess affordability, suitability or a financial product."}}]}
+</script>
 <link rel="canonical" href="https://afrotools.com/tools/edu-savings/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/edu-savings/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/epargne-etudes/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/akiba-ya-elimu/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/edu-savings/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar theme="dark" active="education"></afro-navbar>
-<div class="hero">
-  <div class="container">
-    <nav class="bc"><a href="/">AfroTools</a> / <a href="/education/">Education</a> / Education Savings Plan</nav>
-    <div class="badges">
-      <span class="badge badge-multi">Multi-Country</span>
-      <span class="badge badge-free">Free Tool</span>
-    </div>
-    <h1>Education <em>Savings Plan Calculator</em></h1>
-    <p class="hero-sub">Project how much your education savings will grow and whether you will hit your target university fees. Get a recommended monthly savings amount.</p>
+<body class="edu-savings-page top-level-page-ui-refresh">
+<afro-navbar active="education"></afro-navbar>
+<header class="es-hero">
+  <div class="es-shell">
+    <nav class="es-breadcrumb" aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/education/">Education</a> / Education savings</nav>
+    <p class="es-kicker">Your target · your assumptions · nominal values</p>
+    <h1>Model an education goal without product promises.</h1>
+    <p>Start with an education cost you have checked, choose when the money is needed, and test your own contribution, inflation and nominal-growth assumptions. The calculator keeps target growth and savings growth separate.</p>
+    <div class="es-badges"><span>No country presets</span><span>No return promise</span><span>Runs in this browser</span></div>
   </div>
-</div>
+</header>
 
-<div class="sec-body">
-<div class="container">
+<main class="es-main">
+  <div class="es-shell">
+    <div class="es-grid">
+      <section class="es-card es-form-card" aria-labelledby="es-form-title">
+        <div class="es-head"><h2 id="es-form-title">Goal assumptions</h2><p>Use one currency throughout. Enter annual rates as nominal percentages, not decimals.</p></div>
+        <div class="es-body">
+          <div class="es-fields">
+            <div class="es-field"><label for="esGoal">Education goal name (optional)</label><input id="esGoal" type="text" maxlength="80" placeholder="e.g. First-year fees"></div>
+            <div class="es-field"><label for="esCurrency">Currency or unit</label><input id="esCurrency" type="text" maxlength="12" value="NGN" placeholder="e.g. KES"></div>
+            <div class="es-section">Target cost</div>
+            <div class="es-field"><label for="esTodayCost">Education cost in today’s money</label><input id="esTodayCost" type="number" min="0.01" step="0.01" inputmode="decimal" value="0"><small>Use a current fee or cost estimate you have verified.</small></div>
+            <div class="es-field"><label for="esMonths">Whole months until the money is needed</label><input id="esMonths" type="number" min="1" max="600" step="1" inputmode="numeric" value="60"></div>
+            <div class="es-field"><label for="esInflation">Annual education-cost inflation assumption (%)</label><input id="esInflation" type="number" min="-50" max="100" step="0.1" inputmode="decimal" value="0"><small>This grows only the target cost. Enter your own scenario.</small></div>
+            <div class="es-section">Savings projection</div>
+            <div class="es-field"><label for="esCurrent">Current amount set aside</label><input id="esCurrent" type="number" min="0" step="0.01" inputmode="decimal" value="0"></div>
+            <div class="es-field"><label for="esMonthly">Monthly contribution</label><input id="esMonthly" type="number" min="0" step="0.01" inputmode="decimal" value="0"></div>
+            <div class="es-field"><label for="esGrowth">Nominal annual growth assumption (%)</label><input id="esGrowth" type="number" min="-50" max="100" step="0.1" inputmode="decimal" value="0"><small>Before product fees and tax. Negative scenarios are allowed.</small></div>
+            <div class="es-field"><label for="esTiming">Monthly contribution timing</label><select id="esTiming"><option value="end">End of each month</option><option value="beginning">Beginning of each month</option></select></div>
+          </div>
+          <button type="button" class="es-primary es-submit" id="esCalculate">Calculate this savings scenario</button>
+          <div id="esStatus" aria-live="polite"></div>
+          <div class="es-save"><button type="button" class="es-secondary" id="esSave">Save on this device</button><button type="button" class="es-secondary" id="esClearSaved">Clear saved scenario</button></div>
+          <p class="es-privacy">Saving is optional and local to this browser. Values are not uploaded, sent to AI or placed in the page URL.</p>
+          <div id="esSaveStatus" aria-live="polite"></div>
+        </div>
+      </section>
 
-<div class="card">
-  <h2>Plan Your Education Savings</h2>
-  <div class="row">
-    <div>
-      <label for="es-country">Country</label>
-      <select id="es-country" onchange="prefillSavings()">
-        <option value="nigeria">Nigeria</option>
-        <option value="kenya">Kenya</option>
-        <option value="southafrica">South Africa</option>
-        <option value="ghana">Ghana</option>
-        <option value="rwanda">Rwanda</option>
-      </select>
+      <aside class="es-card es-method" aria-labelledby="es-method-title">
+        <div class="es-head"><h2 id="es-method-title">How the two projections differ</h2></div>
+        <div class="es-body">
+          <p class="es-formula"><strong>Future target:</strong> today’s cost × (1 + annual cost inflation)<sup>years</sup>.<br><strong>Projected fund:</strong> compounded current savings + future value of monthly contributions.<br><strong>Target difference:</strong> projected fund − future target.</p>
+          <ul><li>Annual nominal growth is divided by 12 for monthly compounding.</li><li>Deposit timing changes how many months each contribution compounds.</li><li>The monthly amount needed is mathematical scenario output, not advice.</li><li>The target is treated as one amount needed on the entered date.</li></ul>
+          <p class="es-warning"><strong>Nominal scenario only.</strong> Growth is not guaranteed. Volatility, product fees, tax, missed deposits, exchange rates and withdrawal restrictions are excluded. Check regulated products and current education costs independently.</p>
+        </div>
+      </aside>
     </div>
-    <div>
-      <label for="es-target">Target Institution Type</label>
-      <select id="es-target">
-        <option value="public">Public University (government)</option>
-        <option value="private">Private University (local)</option>
-        <option value="abroad">Study Abroad (UK/Canada/Australia)</option>
-      </select>
-    </div>
+
+    <section class="es-results" id="esResults" aria-labelledby="es-results-title">
+      <div class="es-card">
+        <div class="es-head"><h2 id="es-results-title">Savings projection</h2><p id="esResultContext"></p></div>
+        <div class="es-body">
+          <div class="es-stats" id="esStats"></div>
+          <div class="es-verdict" id="esVerdict"></div>
+          <div class="es-table-wrap"><table class="es-table"><thead><tr><th>Projection line</th><th>Basis</th><th>Nominal amount</th></tr></thead><tbody id="esBreakdown"></tbody></table></div>
+          <div class="es-actions"><button type="button" class="es-primary" id="esPrint">Print / PDF</button><button type="button" class="es-secondary" id="esDownload">Download TXT</button><button type="button" class="es-secondary" id="esCopy">Copy projection</button></div>
+          <div id="esActionStatus" aria-live="polite"></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="es-content">
+      <h2>Separate the education-cost assumption from the savings-growth assumption</h2>
+      <p>A fund can grow while an education target also becomes more expensive. This calculator projects those two sides independently. A high nominal fund value is not enough by itself; compare it with the future-cost target produced by the separate inflation assumption.</p>
+      <p>Run several scenarios. A zero-growth case shows contributions without investment growth. A lower-growth or higher-cost-inflation case can expose sensitivity. If costs will be paid over several academic years, prepare a separate cash-flow plan—the single target here is treated as needed on the first entered date.</p>
+      <h2>Frequently asked questions</h2>
+      <details><summary>Where are the country tuition and product-return presets?</summary><p>They were removed because costs, rates, fees and products change by provider, country and date. Use current figures you can trace to official fee schedules and regulated product documents.</p></details>
+      <details><summary>Why are beginning-of-month and end-of-month deposits different?</summary><p>A beginning-of-month deposit compounds for one additional month. Choose the timing that matches when contributions will actually enter the account.</p></details>
+      <details><summary>What does a negative nominal-growth amount mean?</summary><p>It means the entered negative growth assumption reduces the projected fund below the cash contributed. The model does not estimate investment volatility or probability.</p></details>
+      <details><summary>Is the calculated monthly amount a recommendation?</summary><p>No. It is the constant contribution that solves this specific formula with the entered assumptions. It does not assess affordability, suitability or a financial product.</p></details>
+    </section>
   </div>
-  <div class="row">
-    <div>
-      <label for="es-age">Child's Current Age</label>
-      <input type="number" id="es-age" placeholder="e.g. 5" min="0" max="17">
-      <div class="help">Age at which you start saving</div>
-    </div>
-    <div>
-      <label for="es-start-age">Target University Start Age</label>
-      <input type="number" id="es-start-age" value="18" min="16" max="25">
-      <div class="help">When you need the money ready</div>
-    </div>
-  </div>
-  <div class="row">
-    <div>
-      <label for="es-monthly">Monthly Savings Amount</label>
-      <input type="number" id="es-monthly" placeholder="e.g. 20000">
-      <div class="help" id="es-currency">In your local currency</div>
-    </div>
-    <div>
-      <label for="es-return">Expected Annual Return (%)</label>
-      <input type="number" id="es-return" value="12" min="1" max="30" step="0.5">
-      <div class="help" id="es-return-help">Pre-filled based on typical insurance/investment plans</div>
-    </div>
-  </div>
-  <button type="button" class="btn" onclick="calcEduSavings()">Project Savings</button>
+</main>
 
-  <div class="result-box" id="es-result">
-    <div class="result-grid" id="es-grid"></div>
-    <div id="es-gap"></div>
-    <div id="es-milestones"></div>
-    <div class="result-note" id="es-note"></div>
-    <div class="result-actions" aria-label="Education savings report actions">
-      <button type="button" class="secondary-btn" onclick="copySavingsReport()">Copy savings plan</button>
-      <button type="button" class="secondary-btn" onclick="downloadSavingsReport()">Download TXT</button>
-      <button type="button" class="secondary-btn" onclick="saveSavingsReport()">Save in browser</button>
-    </div>
-    <div class="action-status" id="es-action-status" aria-live="polite"></div>
-  </div>
-</div>
-
-</div>
-</div>
-
-<div class="container">
-  <section class="card" aria-labelledby="edu-savings-method-title">
-    <h2 id="edu-savings-method-title">Method and checks</h2>
-    <p class="help">This projection estimates future school fees using country and institution assumptions, then compares that target with the future value of your monthly savings. It is a planning aid, not advice.</p>
-    <ul class="method-list">
-      <li>Update the target institution type and expected return to match your family plan before trusting the gap figure.</li>
-      <li>Check official fee schedules, living costs, exchange rates, inflation, product fees, tax rules, and withdrawal restrictions.</li>
-      <li>Export the plan before speaking with a school, scholarship adviser, regulated financial adviser, or family decision-maker.</li>
-    </ul>
-  </section>
-</div>
-<afro-related-tools data-ssr="1" category="education" current="edu-savings">
+<afro-related-tools category="education" current="edu-savings" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
 <h2 class="seo-links-title">Related tools</h2>
-<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Hub" data-category="education" data-icon="EH" data-desc="Your complete education journey for GPA, JAMB, IELTS pathway planning, and personalized scholarship matching.">Education Hub</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Grade Calculator" data-category="education" data-icon="WN" data-desc="Aggregate score, JAMB + O’Level eligibility, GPA converter (4.0 &amp; 5.0 scale), Ghana WASSCE. 12 universities, all cut-off">WAEC/NECO Grade Calculator</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Quick scholarship check using source-linked opportunities where available, with profile-aware match scoring, fit notes, ">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Calculator" data-category="education" data-icon="SA" data-desc="Total cost of studying abroad from Africa — tuition, visa, accommodation, living expenses. 20 destination countries.">Study Abroad Cost Calculator</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Aggregate Calculator" data-category="education" data-icon="JA" data-desc="Calculate JAMB aggregate score for any Nigerian university department.">JAMB Aggregate Calculator</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Full scientific calculator with graphing. Works offline. African exam mode.">Scientific Calculator</a></li></ul>
+<ul class="seo-links-list"><li><a href="/tools/education-hub/" data-related-tool data-id="education-hub" data-name="Education Planning Dashboard" data-category="education" data-icon="EP" data-desc="Privately organise saved education details, school and scholarship shortlists, cost scenarios and deadlines; filter over">Education Planning Dashboard</a></li><li><a href="/tools/waec-calculator/" data-related-tool data-id="waec-calculator" data-name="WAEC/NECO Result Planner" data-category="education" data-icon="WN" data-desc="Organise Nigeria WAEC or NECO grades, count credits, and calculate a transparent Ghana WASSCE planning aggregate before ">WAEC/NECO Result Planner</a></li><li><a href="/tools/scholarship-finder/" data-related-tool data-id="scholarship-finder" data-name="African Scholarship Finder" data-category="education" data-icon="AS" data-desc="Search source-linked opportunities where available, review shortlist relevance without eligibility predictions, and save">African Scholarship Finder</a></li><li><a href="/tools/study-abroad-cost/" data-related-tool data-id="study-abroad-cost" data-name="Study Abroad Cost Worksheet" data-category="education" data-icon="SA" data-desc="Build a one-currency budget from user-verified tuition, travel, visa, insurance, living, aid and funding assumptions wit">Study Abroad Cost Worksheet</a></li><li><a href="/tools/jamb-aggregate/" data-related-tool data-id="jamb-aggregate" data-name="JAMB Screening Calculation Worksheet" data-category="education" data-icon="JS" data-desc="Calculate a planning aggregate from UTME, Post-UTME, and institution-published weights, then complete official eligibili">JAMB Screening Calculation Worksheet</a></li><li><a href="/tools/scientific-calc/" data-related-tool data-id="scientific-calc" data-name="Scientific Calculator" data-category="education" data-icon="SC" data-desc="Evaluate supported arithmetic, powers, factorials and real-domain scientific functions with an explicit degree or radian">Scientific Calculator</a></li></ul>
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var TUITION_TARGETS={
-  nigeria:{public:{annual:200000,years:4,currency:'₦',inflation:0.15},private:{annual:1500000,years:4,currency:'₦',inflation:0.15},abroad:{annual:12000000,years:3,currency:'₦',inflation:0.1}},
-  kenya:{public:{annual:50000,years:4,currency:'KSh',inflation:0.09},private:{annual:300000,years:4,currency:'KSh',inflation:0.09},abroad:{annual:1500000,years:3,currency:'KSh',inflation:0.08}},
-  southafrica:{public:{annual:60000,years:4,currency:'R',inflation:0.07},private:{annual:100000,years:4,currency:'R',inflation:0.07},abroad:{annual:600000,years:3,currency:'R',inflation:0.06}},
-  ghana:{public:{annual:4000,years:4,currency:'GH₵',inflation:0.15},private:{annual:18000,years:4,currency:'GH₵',inflation:0.15},abroad:{annual:120000,years:3,currency:'GH₵',inflation:0.1}},
-  rwanda:{public:{annual:500000,years:4,currency:'RWF',inflation:0.08},private:{annual:1500000,years:4,currency:'RWF',inflation:0.08},abroad:{annual:10000000,years:3,currency:'RWF',inflation:0.07}}
-};
-var COUNTRY_LABELS={nigeria:'Nigeria',kenya:'Kenya',southafrica:'South Africa',ghana:'Ghana',rwanda:'Rwanda'};
-var TARGET_LABELS={public:'Public University (government)',private:'Private University (local)',abroad:'Study Abroad (UK/Canada/Australia)'};
-var currentSavingsPlan=null;
-function prefillSavings(){
-  var country=document.getElementById('es-country').value;
-  var d=TUITION_TARGETS[country];
-  document.getElementById('es-currency').textContent='In '+d.public.currency;
-  var returns={nigeria:15,kenya:10,southafrica:10,ghana:18,rwanda:9};
-  document.getElementById('es-return').value=returns[country]||12;
-  document.getElementById('es-return-help').textContent='Typical return for '+country+' education insurance plans';
-}
-function fmt(n,c){return c+Math.round(n).toLocaleString();}
-function calcEduSavings(){
-  var country=document.getElementById('es-country').value;
-  var targetType=document.getElementById('es-target').value;
-  var childAge=parseInt(document.getElementById('es-age').value)||0;
-  var startAge=parseInt(document.getElementById('es-start-age').value)||18;
-  var monthly=parseFloat(document.getElementById('es-monthly').value)||0;
-  var annualReturn=parseFloat(document.getElementById('es-return').value)||12;
-  var years=Math.max(startAge-childAge,1);
-  var r=annualReturn/100/12;
-  var n=years*12;
-  var d=TUITION_TARGETS[country][targetType];
-  var c=d.currency;
-  if(!monthly){alert('Please enter your monthly savings amount.');return;}
-  // FV of monthly savings
-  var fv=monthly*((Math.pow(1+r,n)-1)/r)*(1+r);
-  // Inflation-adjusted target
-  var targetTotal=d.annual*d.years;
-  var inflatedTarget=targetTotal*Math.pow(1+d.inflation,years);
-  var gap=inflatedTarget-fv;
-  // Required monthly to hit target
-  var reqMonthly=inflatedTarget/((Math.pow(1+r,n)-1)/r)/(1+r);
-  document.getElementById('es-grid').innerHTML=
-    '<div class="rs"><div class="lbl">Projected Fund</div><div class="val">'+fmt(fv,c)+'</div><div class="sub">At university start age '+startAge+'</div></div>'+
-    '<div class="rs"><div class="lbl">Expected Target</div><div class="val">'+fmt(inflatedTarget,c)+'</div><div class="sub">Inflation-adjusted fees</div></div>'+
-    '<div class="rs"><div class="lbl">Funding Gap</div><div class="val" style="color:'+(gap<=0?'var(--color-primary)':'#dc2626')+'">'+fmt(Math.abs(gap),c)+'</div><div class="sub">'+(gap<=0?'You are on track!':'Shortfall to cover')+'</div></div>'+
-    '<div class="rs"><div class="lbl">Required Monthly</div><div class="val">'+fmt(reqMonthly,c)+'</div><div class="sub">To fully fund target</div></div>';
-  var gapClass=gap<=0?'on-track':gap<inflatedTarget*0.3?'behind':'critical';
-  var gapTitle=gap<=0?'On Track!':gap<inflatedTarget*0.3?'Slightly Behind':'Significant Gap';
-  var gapMsg=gap<=0?'Your current savings rate of '+fmt(monthly,c)+'/month will be enough to cover the expected '+fmt(inflatedTarget,c)+' in fees (inflation-adjusted). Keep up the good work!':
-    'Your savings will fall short by '+fmt(gap,c)+'. You need to save '+fmt(reqMonthly,c)+'/month to fully fund the target. Consider increasing contributions or exploring education insurance plans for higher returns.';
-  document.getElementById('es-gap').innerHTML='<div class="gap-box '+gapClass+'"><h3>'+(gap<=0?'✓ ':'⚠ ')+gapTitle+'</h3><p>'+gapMsg+'</p></div>';
-  currentSavingsPlan={
-    country:COUNTRY_LABELS[country]||country,
-    targetType:TARGET_LABELS[targetType]||targetType,
-    childAge:childAge,
-    startAge:startAge,
-    yearsToSave:years,
-    monthly:monthly,
-    annualReturn:annualReturn,
-    currency:c,
-    annualFee:d.annual,
-    studyYears:d.years,
-    feeInflation:d.inflation,
-    baseTarget:targetTotal,
-    inflatedTarget:inflatedTarget,
-    projectedFund:fv,
-    gap:gap,
-    requiredMonthly:reqMonthly,
-    status:gapTitle,
-    milestones:[]
-  };
-  // Milestone table
-  var milestones='<h3 style="font-size:.9rem;font-weight:700;margin:1rem 0 .5rem">Savings Growth Milestones</h3>'+
-    '<table class="milestone-table"><thead><tr><th>Year</th><th>Child\'s Age</th><th>Fund Value</th><th>% of Target</th></tr></thead><tbody>';
-  for(var yr=1;yr<=years;yr+=Math.max(1,Math.floor(years/5))){
-    var n2=yr*12;var fv2=monthly*((Math.pow(1+r,n2)-1)/r)*(1+r);var pct=(fv2/inflatedTarget*100).toFixed(0);
-    currentSavingsPlan.milestones.push({year:yr,age:Math.min(childAge+yr,startAge),fundValue:fv2,percent:pct});
-    milestones+='<tr><td>Year '+yr+'</td><td>'+Math.min(childAge+yr,startAge)+'</td><td>'+fmt(fv2,c)+'</td><td>'+pct+'%</td></tr>';
-  }
-  milestones+='</tbody></table>';
-  document.getElementById('es-milestones').innerHTML=milestones;
-  document.getElementById('es-note').innerHTML='<strong>Planning estimate only.</strong> This projection depends on assumed fee inflation and investment return. Before acting, verify current tuition, living costs, exchange rates, product fees, tax treatment, withdrawal rules, and whether a savings or insurance product is regulated and suitable.';
-  setSavingsStatus('');
-  document.getElementById('es-result').classList.add('show');
-}
-function buildSavingsReport(){
-  if(!currentSavingsPlan){calcEduSavings();}
-  var p=currentSavingsPlan;
-  if(!p){return '';}
-  var milestoneRows=p.milestones.map(function(row){
-    return '- Year '+row.year+' (age '+row.age+'): '+fmt(row.fundValue,p.currency)+' / '+row.percent+'% of target';
-  });
-  return [
-    'Education savings plan - AfroTools',
-    'Country: '+p.country,
-    'Target: '+p.targetType,
-    'Child age now: '+p.childAge,
-    'Target start age: '+p.startAge,
-    'Years to save: '+p.yearsToSave,
-    '',
-    'Savings assumptions',
-    '- Monthly savings: '+fmt(p.monthly,p.currency),
-    '- Expected annual return: '+p.annualReturn+'%',
-    '- Current annual fee assumption: '+fmt(p.annualFee,p.currency),
-    '- Study duration assumption: '+p.studyYears+' year(s)',
-    '- Fee inflation assumption: '+Math.round(p.feeInflation*100)+'% per year',
-    '',
-    'Projection',
-    '- Projected fund: '+fmt(p.projectedFund,p.currency),
-    '- Inflation-adjusted target: '+fmt(p.inflatedTarget,p.currency),
-    '- Funding gap: '+(p.gap<=0?'Surplus '+fmt(Math.abs(p.gap),p.currency):fmt(p.gap,p.currency)+' shortfall'),
-    '- Required monthly savings: '+fmt(p.requiredMonthly,p.currency),
-    '- Status: '+p.status,
-    '',
-    'Milestones',
-    milestoneRows.join('\n'),
-    '',
-    'Before acting, verify current tuition, living costs, exchange rates, inflation, product fees, tax treatment, withdrawal restrictions, and regulated financial-advice requirements. This is a planning estimate, not financial advice or a guaranteed return.'
-  ].join('\n');
-}
-function setSavingsStatus(message){
-  var el=document.getElementById('es-action-status');
-  if(el){el.textContent=message||'';}
-}
-function fallbackSavingsCopy(text){
-  var field=document.createElement('textarea');
-  field.value=text;
-  field.setAttribute('readonly','');
-  field.style.position='fixed';
-  field.style.left='-9999px';
-  document.body.appendChild(field);
-  field.select();
-  try{document.execCommand('copy');setSavingsStatus('Savings plan copied.');}
-  catch(e){window.prompt('Copy savings plan',text);setSavingsStatus('Copy prompt opened.');}
-  document.body.removeChild(field);
-}
-function copySavingsReport(){
-  var text=buildSavingsReport();
-  if(!text){return;}
-  if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(text).then(function(){setSavingsStatus('Savings plan copied.');}).catch(function(){fallbackSavingsCopy(text);});
-  }else{
-    fallbackSavingsCopy(text);
-  }
-}
-function slugify(value){return String(value||'education-savings-plan').toLowerCase().replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,'')||'education-savings-plan';}
-function downloadSavingsReport(){
-  var text=buildSavingsReport();
-  if(!text){return;}
-  var blob=new Blob([text],{type:'text/plain;charset=utf-8'});
-  var url=URL.createObjectURL(blob);
-  var a=document.createElement('a');
-  a.href=url;
-  a.download=slugify(currentSavingsPlan.country+' education savings plan')+'.txt';
-  document.body.appendChild(a);
-  a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-  setSavingsStatus('TXT savings plan downloaded.');
-}
-function saveSavingsReport(){
-  var text=buildSavingsReport();
-  if(!text){return;}
-  try{
-    localStorage.setItem('afrotools-education-savings-plan',JSON.stringify({savedAt:Date.now(),plan:currentSavingsPlan,report:text}));
-    setSavingsStatus('Savings plan saved in this browser.');
-  }catch(e){
-    setSavingsStatus('Browser storage is unavailable. Download the TXT plan instead.');
-  }
-}
-document.addEventListener('DOMContentLoaded',function(){prefillSavings();});
-</script>
+<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
+<script src="/tools/edu-savings/edu-savings-engine.js?v=667bc473"></script>
+<script>
+(function () {
+  'use strict';
+  var engine = window.AfroTools && window.AfroTools.eduSavingsEngine;
+  var current = null;
+  var storageKey = 'afrotools.eduSavings.v3';
+  function el(id){return document.getElementById(id);}
+  function value(id){return el(id).value;}
+  function esc(text){return String(text||'').replace(/[&<>"']/g,function(char){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char];});}
+  function read(){return{todayCost:value('esTodayCost'),months:value('esMonths'),inflationRate:value('esInflation'),currentSavings:value('esCurrent'),monthlyContribution:value('esMonthly'),annualGrowthRate:value('esGrowth'),timing:value('esTiming')};}
+  function unit(){return value('esCurrency').trim()||'unit';}
+  function amount(number){return unit()+' '+Number(number).toLocaleString('en-US',{maximumFractionDigits:2});}
+  function rate(number){return Number(number).toLocaleString('en-US',{maximumFractionDigits:2})+'%';}
+  function calculate(){
+    var result=engine.calculate(read());
+    if(!result.ok){el('esStatus').textContent=result.errors.join(' ');return false;}
+    current=result;el('esStatus').textContent='';
+    var goal=value('esGoal').trim()||'Unnamed education goal';
+    el('esResultContext').textContent=goal+' · '+result.months+' months ('+result.years.toLocaleString('en-US',{maximumFractionDigits:1})+' years) · '+(result.timing==='beginning'?'beginning':'end')+'-of-month contributions.';
+    el('esStats').innerHTML=
+      '<div class="es-stat"><span>Future cost target</span><strong>'+esc(amount(result.futureCost))+'</strong></div>'+
+      '<div class="es-stat"><span>Projected savings fund</span><strong>'+esc(amount(result.projectedFund))+'</strong></div>'+
+      '<div class="es-stat"><span>Target difference</span><strong>'+esc(amount(result.projectedFund-result.futureCost))+'</strong></div>'+
+      '<div class="es-stat"><span>Monthly amount for target</span><strong>'+esc(amount(result.requiredMonthlyContribution))+'</strong></div>';
+    var comparison=result.gap>0?'The projected fund is below the modeled target by '+amount(result.gap)+'.':'The projected fund is above the modeled target by '+amount(Math.abs(result.gap))+'.';
+    el('esVerdict').className='es-verdict'+(result.gap>0?' gap':'');
+    el('esVerdict').textContent=comparison+' The monthly amount shown solves only this nominal scenario and is not a contribution recommendation or return promise.';
+    el('esBreakdown').innerHTML=
+      '<tr><td>Cost entered in today’s money</td><td>Starting target</td><td>'+esc(amount(result.todayCost))+'</td></tr>'+
+      '<tr><td>Future education cost</td><td>'+rate(result.inflationRate)+' annual cost inflation</td><td>'+esc(amount(result.futureCost))+'</td></tr>'+
+      '<tr><td>Current savings at target date</td><td>'+rate(result.annualGrowthRate)+' nominal annual growth</td><td>'+esc(amount(result.currentSavingsFutureValue))+'</td></tr>'+
+      '<tr><td>Monthly contributions at target date</td><td>'+result.months+' '+(result.timing==='beginning'?'beginning':'end')+'-month deposits</td><td>'+esc(amount(result.contributionFutureValue))+'</td></tr>'+
+      '<tr><td>Cash put into the scenario</td><td>Opening savings + deposits</td><td>'+esc(amount(result.totalCashContributed))+'</td></tr>'+
+      '<tr><td>Modeled nominal growth</td><td>Projected fund − cash contributed</td><td>'+esc(amount(result.nominalGrowthAmount))+'</td></tr>';
+    el('esResults').classList.add('show');el('esResults').scrollIntoView({behavior:'smooth',block:'start'});el('esSaveStatus').textContent='Unsaved changes.';return true;
+  }
+  function report(){
+    if(!current&&!calculate())return'';
+    var goal=value('esGoal').trim()||'Unnamed education goal';
+    return['Education savings projection — AfroTools','Goal: '+goal,'Currency/unit: '+unit(),'Target date: '+current.months+' months ('+current.years.toLocaleString('en-US',{maximumFractionDigits:1})+' years)','','Target assumptions','Cost in today’s money: '+amount(current.todayCost),'Annual education-cost inflation: '+rate(current.inflationRate),'Future cost target: '+amount(current.futureCost),'','Savings assumptions','Current savings: '+amount(current.currentSavings),'Monthly contribution: '+amount(current.monthlyContribution),'Contribution timing: '+(current.timing==='beginning'?'Beginning':'End')+' of each month','Nominal annual growth: '+rate(current.annualGrowthRate),'','Projection','Current savings at target date: '+amount(current.currentSavingsFutureValue),'Contributions at target date: '+amount(current.contributionFutureValue),'Projected savings fund: '+amount(current.projectedFund),'Target difference: '+amount(current.projectedFund-current.futureCost),'Monthly amount that solves this model: '+amount(current.requiredMonthlyContribution),'Cash put into scenario: '+amount(current.totalCashContributed),'Modeled nominal growth: '+amount(current.nominalGrowthAmount),'','Nominal scenario arithmetic only. Not financial advice, a return promise, a product recommendation or an affordability assessment. Product fees, tax, volatility, missed deposits, exchange rates and withdrawal restrictions are excluded.'].join('\n');
+  }
+  function actionStatus(message){el('esActionStatus').textContent=message;}
+  function copyReport(){var text=report();if(!text)return;var fallback=function(){var field=document.createElement('textarea');field.value=text;field.setAttribute('readonly','');field.style.position='fixed';field.style.left='-9999px';document.body.appendChild(field);field.select();try{document.execCommand('copy');actionStatus('Projection copied.');}catch(error){window.prompt('Copy education savings projection',text);actionStatus('Copy prompt opened.');}field.remove();};if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(text).then(function(){actionStatus('Projection copied.');}).catch(fallback);else fallback();}
+  function downloadReport(){var text=report();if(!text)return;var blob=new Blob([text],{type:'text/plain;charset=utf-8'});var url=URL.createObjectURL(blob);var link=document.createElement('a');link.href=url;link.download='education-savings-projection.txt';document.body.appendChild(link);link.click();link.remove();setTimeout(function(){URL.revokeObjectURL(url);},0);actionStatus('Text projection downloaded.');}
+  function payload(){return{goal:value('esGoal'),currency:value('esCurrency'),inputs:read()};}
+  function save(){try{localStorage.setItem(storageKey,JSON.stringify(payload()));el('esSaveStatus').textContent='Scenario saved on this device.';}catch(error){el('esSaveStatus').textContent='This browser did not allow local saving.';}}
+  function clearSaved(){try{localStorage.removeItem(storageKey);el('esSaveStatus').textContent='Saved scenario cleared. Current fields remain.';}catch(error){el('esSaveStatus').textContent='This browser did not allow saved data to be cleared.';}}
+  function load(){try{var saved=JSON.parse(localStorage.getItem(storageKey)||'null');if(!saved)return;var input=saved.inputs||{};el('esGoal').value=saved.goal||'';el('esCurrency').value=saved.currency||'NGN';var map={esTodayCost:input.todayCost,esMonths:input.months,esInflation:input.inflationRate,esCurrent:input.currentSavings,esMonthly:input.monthlyContribution,esGrowth:input.annualGrowthRate,esTiming:input.timing};Object.keys(map).forEach(function(id){if(map[id]!==undefined)el(id).value=map[id];});el('esSaveStatus').textContent='Saved scenario loaded from this device.';}catch(error){}}
+  el('esCalculate').addEventListener('click',calculate);el('esSave').addEventListener('click',save);el('esClearSaved').addEventListener('click',clearSaved);el('esCopy').addEventListener('click',copyReport);el('esDownload').addEventListener('click',downloadReport);el('esPrint').addEventListener('click',function(){if(current||calculate())window.print();});
+  load();window.AFROTOOLS_EDU_SAVINGS_VIP=true;
+})();
+</script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
