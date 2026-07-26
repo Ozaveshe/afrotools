@@ -58,7 +58,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 23 | Small Business | `/small-business/` | ⬜ pending | ⬜ | ⬜ | ? | — | invoice/receipt/business-name workflow |
 | 24 | Document & PDF | `/document-pdf/` | ⬜ pending | ⬜ | ⬜ | ? | — | client-side utilities; privacy (local processing) + SEO |
 | 25 | Developer Tools | `/developer-tools/` | ⬜ pending | ⬜ | ⬜ | ? | — | encoder/hash/uuid correctness; client-side |
-| 26 | Image & Design | `/image-design/` | ⬜ pending | ⬜ | ⬜ | ? | — | favicon/palette/watermark; performance + SEO |
+| 26 | Image & Design | `/image-design/` | 🔵 in-progress | ⬜ | ⬜ | ? | codex-day4-image-design-2026-07-26 | Reconciling the completed 19-app Day 4 VIP worktree onto current `main`; local, artifact and live release proof pending |
 | 27 | Engineering | `/engineering/` | ⬜ pending | ⬜ | ⬜ | ? | — | BOQ/structural formula + unit correctness |
 | 28 | Creative | `/creative/` | ⬜ pending | ⬜ | ⬜ | ? | — | client-side creative tools; functionality + SEO |
 | 29 | Security | `/security/` | ⬜ pending | ⬜ | ⬜ | ? | — | password/phishing-quiz; correctness + privacy |
