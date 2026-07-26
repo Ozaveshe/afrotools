@@ -65,7 +65,7 @@ Live browser verification returned HTTP 200, no document overflow and no applica
 | 1 | Diaspora; Career & Development; Security & Safety | LIVE PASS |
 | 2 | Personal Finance; Small Business & SME; Fintech & Banking | LIVE PASS |
 | 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
-| 4 | Document & PDF; Image & Design; Developer Tools | QUEUED |
+| 4 | Document & PDF; Image & Design; Developer Tools | IN REVIEW: Image & Design 19/19 at `ARTIFACT PASS`; live release is grouped after all three categories |
 | 5 | Education; Health & Wellness; Language & Translation | QUEUED |
 | 6 | Agriculture; Transport & Logistics; Trade & Import | QUEUED |
 | 7 | Government & Civic; Insurance; Mortgage & Property | QUEUED |
@@ -85,7 +85,7 @@ Counts are current English live/new registry rows, excluding each category hub; 
 | Day | Category | Apps excluding hub | Hub | First serial app | Accepted now |
 | --- | --- | ---: | --- | --- | ---: |
 | 4 | Document & PDF | 31 | `/document-pdf/` | `/tools/pdf-workspace/` | 0 |
-| 4 | Image & Design | 19 | `/image-design/` | `/tools/image-compress/` | 0 |
+| 4 | Image & Design | 19 | `/image-design/` | `/tools/image-compress/` | 19 |
 | 4 | Developer Tools | 32 | `/developer-tools/` | `/tools/json-formatter/` | 0 |
 | 5 | Education | 33 | `/education/` | `/tools/waec-calculator/` | 0 |
 | 5 | Health & Wellness | 32 | `/health/` | `/tools/medical-report/` | 0 |
@@ -94,7 +94,17 @@ Counts are current English live/new registry rows, excluding each category hub; 
 | 6 | Transport & Logistics | 17 | `/transport/` | `/tools/car-import-cost/` | 0 |
 | 6 | Trade & Import | 13 | `/trade/` | `/tools/hs-code-lookup/` | 0 |
 
-Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is now closed, so Day 4 may begin; this inventory work does not promote the queued categories.
+Day 4-6 therefore contains 635 app rows plus nine hubs under the current registry contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is closed. Day 4 is active, with Image & Design accepted through the generated-artifact gate. Production deployment is deliberately deferred to one combined Day 4 release.
+
+## Day 4 category status
+
+| Category | Hub | Canonical apps | Accepted | Active frontier | State |
+| --- | --- | ---: | ---: | --- | --- |
+| Document & PDF | `/document-pdf/` | 31 | 0 on current main | Reconcile preserved serial worktree, then rerun its maintained category/browser/export gates | IN REVIEW |
+| Image & Design | `/image-design/` | 19 | 19; hub accepted | Grouped exact-SHA preview, production and live replay after all Day 4 categories pass | ARTIFACT PASS |
+| Developer Tools | `/developer-tools/` | 32 | 0 on current main | Reconcile preserved serial worktree after Image & Design release closure | QUEUED |
+
+Image & Design was replayed from its clean 19-commit preserved branch onto current main without conflict. The independent maintained browser gate then found and closed one hub filtering defect and four residual narrow-screen/200%-text defects. Evidence lives in `docs/image-design-day4-evidence.md`; 21/21 category browser tests, registry audit, link scan, SEO report, OCR same-origin runtime guard and `git diff --check` pass locally. The full deploy build, deploy-artifact audit and security scan also pass. No individual production deploy will be used; Day 4 will ship once after all three categories close.
 
 ## Day 3 category status
 

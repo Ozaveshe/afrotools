@@ -567,8 +567,36 @@ body.image-design-tool-focus :is(
 }
 
 @media (max-width: 740px) {
+  body.image-design-tool-focus :is(.br-hero-inner, .ocr-hero-inner) {
+    width: 100%;
+    max-width: calc(100vw - 36px);
+    box-sizing: border-box;
+  }
+
+  body.image-design-tool-focus :is(
+    .br-hero-inner > *,
+    .ocr-hero-inner > *,
+    .br-hero-content,
+    .ocr-hero-content,
+    .br-hero-badges,
+    .ocr-hero-badges
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
   body.image-design-tool-focus .ocr-hero-inner {
     grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.image-design-tool-focus :is(.scene-grid, .pack-grid) {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  body.image-design-tool-focus :is(.scene-btn, .pack-btn) {
+    width: 100%;
+    max-width: 100%;
   }
 }
 

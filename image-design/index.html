@@ -388,7 +388,7 @@
 </style>
 <link rel="stylesheet" href="/assets/css/image-design-focus.css?v=f64c5e3d">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<link rel="stylesheet" href="/assets/css/image-design-day4.css">
+<link rel="stylesheet" href="/assets/css/image-design-day4.css?v=9957becc">
 <script src="/assets/js/pages/image-design-focus.js?v=1f757262" defer></script>
 <link rel="canonical" href="https://afrotools.com/image-design/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/image-design/">
@@ -1140,7 +1140,7 @@ function initImageDesignDirectory() {
     var imageId = tool.imageId || tool.sourceId || tool.id;
     var imgPath = (typeof getToolCardImagePath === 'function' && getToolCardImagePath(tool)) || toolImageSrc(imageId);
     var img = imgPath ? '<img src="' + escapeHtml(imgPath) + '" alt="" aria-hidden="true" loading="lazy" onerror="this.style.display=\'none\';">' : '';
-    return '<a class="tool-card" href="' + escapeHtml(tool.href) + '" data-tool-id="' + escapeHtml(tool.id) + '" data-lang="' + escapeHtml(tool.lang || 'en') + '"><div class="tool-thumb"><div class="tool-thumb-fallback">' + toolMark(tool, 'thumb-mark') + '</div>' + img + '</div><div class="tool-body"><div class="tool-meta"><span class="tool-icon">' + toolMark(tool, 'meta-mark') + '</span><span class="tool-badge">' + escapeHtml(languageLabel(tool)) + '</span></div><h3 class="tool-name">' + escapeHtml(tool.name) + '</h3><p class="tool-desc">' + escapeHtml(tool.desc) + '</p><div class="tool-foot"><span class="tool-label">' + escapeHtml((AFRO_CATEGORIES[CATEGORY_KEY] && AFRO_CATEGORIES[CATEGORY_KEY].name) || 'Image & Design') + '</span><span class="tool-cta">Open app</span></div></div></a>';
+    return '<a class="tool-card" href="' + escapeHtml(tool.href) + '" data-tool-id="' + escapeHtml(tool.id) + '" data-tool-href="' + escapeHtml(tool.href) + '" data-lang="' + escapeHtml(tool.lang || 'en') + '"><div class="tool-thumb"><div class="tool-thumb-fallback">' + toolMark(tool, 'thumb-mark') + '</div>' + img + '</div><div class="tool-body"><div class="tool-meta"><span class="tool-icon">' + toolMark(tool, 'meta-mark') + '</span><span class="tool-badge">' + escapeHtml(languageLabel(tool)) + '</span></div><h3 class="tool-name">' + escapeHtml(tool.name) + '</h3><p class="tool-desc">' + escapeHtml(tool.desc) + '</p><div class="tool-foot"><span class="tool-label">' + escapeHtml((AFRO_CATEGORIES[CATEGORY_KEY] && AFRO_CATEGORIES[CATEGORY_KEY].name) || 'Image & Design') + '</span><span class="tool-cta">Open app</span></div></div></a>';
   }
 
   function featureCard(tool) {
@@ -1175,8 +1175,8 @@ function initImageDesignDirectory() {
   }
 
   function renderGroupedDirectory(filteredTools, query) {
-    var visibleIds = Object.create(null);
-    filteredTools.forEach(function(tool) { visibleIds[tool.id] = true; });
+    var visibleRoutes = Object.create(null);
+    filteredTools.forEach(function(tool) { visibleRoutes[tool.href] = true; });
 
     toolGrid.innerHTML = GROUPS.map(function(group) {
       var tools = liveTools.filter(function(tool) { return toolFamily(tool) === group.key; });
@@ -1184,8 +1184,8 @@ function initImageDesignDirectory() {
       return '<section class="group" data-tool-group="' + escapeHtml(group.key) + '"><div class="group-head"><div><h2 class="group-title">' + escapeHtml(group.title) + '</h2><p class="group-copy">' + escapeHtml(group.copy) + '</p></div><span class="group-count" data-group-count></span></div><div class="card-grid">' + tools.map(toolCard).join('') + '</div></section>';
     }).join('') + '<div class="empty-state" data-empty-state hidden><p>No tools matched <strong>' + escapeHtml(query) + '</strong>.</p><p>Try a broader task like compress, poster, QR, passport, or thumbnail.</p></div>';
 
-    Array.prototype.forEach.call(toolGrid.querySelectorAll('.tool-card[data-tool-id]'), function(card) {
-      card.hidden = !visibleIds[card.getAttribute('data-tool-id')];
+    Array.prototype.forEach.call(toolGrid.querySelectorAll('.tool-card[data-tool-href]'), function(card) {
+      card.hidden = !visibleRoutes[card.getAttribute('data-tool-href')];
     });
     Array.prototype.forEach.call(toolGrid.querySelectorAll('[data-tool-group]'), function(group) {
       var visibleCount = group.querySelectorAll('.tool-card:not([hidden])').length;
