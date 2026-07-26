@@ -1,8 +1,10 @@
 # Day 4 Document & PDF VIP receipt
 
-Branch: `codex/day4-document-pdf`
+Integration branch: `codex/day4-image-design-integrate-20260726`
 
-Baseline SHA: `4544d89142efdbd1eeb67e5f4a30e5d1696f16b4`
+Production baseline SHA: `b67e291dc154e96159212b2c33961b41f9a16ac7`
+
+Serial source branch: `codex/day4-document-pdf` (34 hub/app commits replayed individually)
 
 Scope: `/document-pdf/` plus 31 English canonical free app routes. Paid `/pro/` apps and localized output routes are excluded.
 
@@ -75,6 +77,16 @@ Each route is reviewed for:
 - PDF gate/category contract: `npm run pdf:verify` — PASS (31 registry tools, 34 HTML/app surfaces, gate coverage).
 - PDF Workspace AI/privacy contracts: `node tests/ai-pdf-workspace-assist.test.js` and `node tests/ai-consent-server.test.js` — PASS.
 - Source whitespace: `git diff --check` — PASS.
+
+## Current-main reconciliation
+
+- All 34 preserved hub/app commits were replayed onto the production baseline without bulk-merging the stale branch.
+- Independent maintained category browser gate: `tests/e2e/day4-document-pdf-vip.spec.js` - PASS, 33/33 (hub, 31 canonical apps, inventory reconciliation).
+- CV Builder focused functional gate: `tests/e2e/cv-builder-ats-proof.spec.js` - PASS, 4/4. This reconciliation restored the six career starter paths, converted the overlapping sample chooser into a modal, aligned the proof with the current sample personas and export-review checkpoint, and re-proved local-only handoff behavior.
+- Privacy/AI browser gate: `tests/e2e/privacy-ai-consent.spec.js` - PASS, 3/3.
+- Focused Node contracts: PDF workspace assist, central AI consent, and business-plan draft contracts/engine - PASS, 9/9.
+- `npm run pdf:verify` and `npm run document-pdf:verify` - PASS.
+- State: **LOCAL PASS**. Exact-SHA build, deploy, and live-route proof are deliberately deferred to the single grouped Day 4 release.
 
 ## Remaining risks
 

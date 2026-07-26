@@ -58,12 +58,17 @@
 .cv-starter-guidance-panel ul{display:grid;gap:5px;margin:0;padding-left:18px;color:#334155;font-size:.76rem;line-height:1.4}
 .cv-section.cv-starter-priority{border-color:#bfdbfe;box-shadow:0 0 0 2px rgba(37,99,235,.08)}
 .cv-section.cv-starter-support{border-color:#d1fae5}
+.cv-sample-panel{position:fixed!important;inset:0!important;z-index:2147483500!important;display:grid!important;align-items:start!important;max-width:none!important;margin:0!important;padding:clamp(12px,3vw,28px)!important;overflow-y:auto!important;background:rgba(7,20,38,.72)!important}
+.cv-sample-panel[hidden]{display:none!important}
+.cv-sample-panel>.cv-sample-shell{width:min(1180px,100%);margin:auto}
+@media(min-width:1024px){.cv-app.cv-toolbar-groups-ready .cv-toolbar{top:var(--nav-height,62px)!important;z-index:120!important}}
 .cv-handoff-panel{max-width:1180px;margin:14px auto 0;padding:14px 16px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;box-shadow:none;display:grid;grid-template-columns:minmax(250px,.92fr) minmax(0,1.25fr);gap:12px;align-items:center}
 .cv-handoff-copy{display:grid;gap:4px;min-width:0}.cv-handoff-kicker{color:#087f5b;font-size:10px;font-weight:900;text-transform:uppercase}.cv-handoff-copy h2{margin:0;color:#071426;font-size:18px;font-weight:900;line-height:1.15;letter-spacing:0}.cv-handoff-copy p{margin:0;color:#536172;font-size:12.5px;font-weight:700;line-height:1.45}.cv-handoff-note{color:#0f766e!important}
 .cv-handoff-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.cv-handoff-cta{display:flex;align-items:center;justify-content:center;min-height:40px;padding:8px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;text-align:center;text-decoration:none;font-size:12px;font-weight:850;line-height:1.2}.cv-handoff-cta:hover,.cv-handoff-cta:focus-visible{border-color:#0b63ce;background:#f8fbff;box-shadow:0 0 0 3px rgba(11,99,206,.13);outline:none;text-decoration:none}.cv-handoff-cta[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
 .cv-handoff-tools{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cv-handoff-tools button{min-height:36px;padding:7px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;font:inherit;font-size:12px;font-weight:850;cursor:pointer}.cv-handoff-tools button:disabled{opacity:.5;cursor:not-allowed}.cv-handoff-tools button:hover:not(:disabled),.cv-handoff-tools button:focus-visible{border-color:#087f5b;box-shadow:0 0 0 3px rgba(8,127,91,.12);outline:none}.cv-handoff-tools span{color:#64748b;font-size:12px;font-weight:750;line-height:1.35}
 .cv-flow-dashboard+.cv-landing{display:block!important;padding:0 0 28px!important;background:#f4f8fb!important;border-bottom:1px solid #d7e1ea!important}
-.cv-flow-dashboard+.cv-landing>.cv-landing-shell,.cv-flow-dashboard+.cv-landing>.cv-quick-start,.cv-flow-dashboard+.cv-landing>.cv-privacy-note{display:none!important}
+.cv-flow-dashboard+.cv-landing>.cv-landing-shell,.cv-flow-dashboard+.cv-landing>.cv-privacy-note{display:none!important}
+.cv-flow-dashboard+.cv-landing>.cv-quick-start{display:grid!important;max-width:1180px;margin:0 auto 18px;padding:0 14px}
 .cv-flow-dashboard+.cv-landing .cv-template-landing-gallery{display:grid!important}
 .cv-template-index-list{margin:8px 0 0;color:#64748b;font-size:12px;font-weight:800;line-height:1.45}
 .cv-privacy-note{max-width:1180px;margin:14px auto 0;color:#334155;font-size:13px;font-weight:800}
@@ -826,6 +831,22 @@ window.loadPdfLibs=function(){
 <script src="./js/cv-design-foundation.js?v=50609f44"></script>
 <script src="./js/cv-next-steps-polish.js?v=0ca9a04c"></script>
 <script src="./js/cv-sample-mode.js?v=96bcee78"></script>
+<script>
+(function(){
+  document.addEventListener("click", function(event){
+    var openTrigger = event.target.closest && event.target.closest("[data-cv-sample]");
+    var useTrigger = event.target.closest && event.target.closest("[data-cv-sample-use]");
+    if(!openTrigger && !useTrigger) return;
+    setTimeout(function(){
+      var panel = document.querySelector(".cv-sample-panel");
+      if(!panel) return;
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-modal", "true");
+      if(useTrigger) panel.hidden = true;
+    }, 0);
+  }, true);
+})();
+</script>
 <script src="./js/cv-starter-paths.js?v=423fde81"></script>
 <script src="./js/cv-privacy-handoff.js?v=cd6a8eea"></script>
 <script src="./js/cv-workflow-dashboard.js?v=053226e4"></script>

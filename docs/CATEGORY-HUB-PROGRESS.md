@@ -56,7 +56,7 @@ Copy that shape. See also `.claude/rules/{government,telecom,transport}.md`.
 | 21 | Travel & Tourism | `/travel/` | ⬜ pending | ⬜ | ⬜ | ? | — | visa fees + travel costs perishable |
 | 22 | Career | `/career/` | ⬜ pending | ⬜ | ⬜ | ? | — | CV/cover-letter/salary workflow + privacy |
 | 23 | Small Business | `/small-business/` | ⬜ pending | ⬜ | ⬜ | ? | — | invoice/receipt/business-name workflow |
-| 24 | Document & PDF | `/document-pdf/` | ⬜ pending | ⬜ | ⬜ | ? | — | client-side utilities; privacy (local processing) + SEO |
+| 24 | Document & PDF | `/document-pdf/` | 🟠 local-pass | n/a | ✅ | ✅ | codex-day4-document-pdf-2026-07-26 | 31/31 English apps plus hub accepted locally. Browser 33/33, CV functional 4/4, privacy/AI 3/3, focused Node 9/9, PDF workflow gates pass. Grouped Day 4 deploy/live proof remains. |
 | 25 | Developer Tools | `/developer-tools/` | ⬜ pending | ⬜ | ⬜ | ? | — | encoder/hash/uuid correctness; client-side |
 | 26 | Image & Design | `/image-design/` | 🟠 artifact-pass | ✅ | ✅ | ✅ | codex-day4-image-design-2026-07-26 | 19/19 English apps plus hub independently replayed on current main; browser 21/21, build, dist audit and security scan pass. Exact-SHA deploy/live proof deferred to the single grouped Day 4 release. |
 | 27 | Engineering | `/engineering/` | ⬜ pending | ⬜ | ⬜ | ? | — | BOQ/structural formula + unit correctness |

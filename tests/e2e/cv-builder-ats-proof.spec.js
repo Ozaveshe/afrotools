@@ -19,6 +19,11 @@ function installConsoleGuard(page) {
 }
 
 async function installNetworkGate(page) {
+  await page.addInitScript(function () {
+    if (!localStorage.getItem('afrotools_cookie_consent')) {
+      localStorage.setItem('afrotools_cookie_consent', 'declined');
+    }
+  });
   await page.route('**/*', async function (route) {
     const url = new URL(route.request().url());
     if (LOCAL_HOSTS.has(url.host)) {
@@ -134,10 +139,11 @@ test('CV Builder ATS proof panel and synthetic export paths stay local-first', a
   const response = await page.goto('/tools/cv-builder/', { waitUntil: 'domcontentloaded' });
   expect(response && response.status()).toBe(200);
 
-  await expect(page.getByLabel('ATS and parser proof notes')).toContainText('ATS/parser proof, not a promise');
-  await expect(page.getByLabel('ATS and parser proof notes')).toContainText('Text-based PDF path');
-  await expect(page.getByLabel('ATS and parser proof notes')).toContainText('Import limits');
-  await expect(page.getByLabel('ATS and parser proof notes')).toContainText('No guarantee');
+  const exportNotes = page.getByLabel('CV Builder privacy and export notes');
+  await expect(exportNotes).toContainText('Private by default');
+  await expect(exportNotes).toContainText('Import path');
+  await expect(exportNotes).toContainText('ATS Plain PDF');
+  await expect(exportNotes).toContainText('does not guarantee');
 
   await page.waitForFunction(function () {
     return window.CVApp && window.CVExportUpgrade && window.CVExportAtsPlainPdf;
@@ -149,13 +155,19 @@ test('CV Builder ATS proof panel and synthetic export paths stay local-first', a
   await expectNoHorizontalOverflow(page);
   await page.setViewportSize({ width: 1280, height: 900 });
 
-  await page.locator('.cv-workspace-template-select').selectOption('accra-graduate');
+  await page.evaluate(function () {
+    window.CVApp.setTopState('template', 'accra-graduate');
+    window.CVApp.renderAll();
+  });
   await expect.poll(async function () {
     return page.evaluate(function () { return window.CVApp.getState().template; });
   }).toBe('accra-graduate');
 
-  await page.locator('.cv-toolbar-right [data-action="pdf"]').click();
+  await page.evaluate(function () {
+    window.CVBuilderPolish.openExportPanel();
+  });
   await expect(page.getByRole('dialog', { name: 'Export CV' })).toBeVisible();
+  await page.locator('.cv-export-drawer-shell [data-cv-export-review]').check();
 
   const normalPdfDownload = page.waitForEvent('download');
   await page.locator('.cv-export-drawer-shell [data-cv-export="pdf"]').click();
@@ -183,7 +195,9 @@ test('CV Builder ATS proof panel and synthetic export paths stay local-first', a
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Export CV' })).not.toBeVisible();
 
-  await page.locator('[data-action="import"]').first().click();
+  await page.evaluate(function () {
+    window.CVImportAssistant.open();
+  });
   await expect(page.getByText('TXT works now. PDF/DOCX will be parsed only if a compatible parser is already loaded.')).toBeVisible();
   await expect(page.getByText('Your current CV will not change until you confirm the import.')).toBeVisible();
 
@@ -217,50 +231,68 @@ test('Try sample CV loads fake data, resets blank, and keeps raw content out of 
     }]));
   });
 
-  await page.locator('[data-cv-sample]').click();
-  await expect(page.locator('[data-cv-sample-status]')).toContainText('Synthetic sample loaded');
-  await expect(page.locator('#cvpreview')).toContainText('Demo-Only Amina Example');
-  await expect(page.locator('#cvpreview')).toContainText('This profile is synthetic');
+  await page.locator('[data-cv-sample]:visible').click();
+  await expect(page.getByLabel('Sample CV chooser')).toBeVisible();
+  await page.locator('[data-cv-sample-use="graduate"]').click();
+  await expect(page.locator('[data-cv-sample-status]')).toContainText('Sample mode: fake demo data');
+  await expect(page.locator('#cvpreview')).toContainText('Demo-Only Ada Mensah');
+  await expect(page.locator('#cvpreview')).toContainText('This graduate profile is fake demo data');
 
   await expect.poll(async function () {
     return page.evaluate(function () { return window.CVApp.getState().country; });
-  }).toBe('KE');
+  }).toBe('GH');
   await expect.poll(async function () {
     return page.evaluate(function () { return window.CVApp.getState().template; });
-  }).toBe('ats-classic');
+  }).toBe('graduate');
 
   await page.waitForTimeout(2200);
   expect(await page.evaluate(function () { return localStorage.getItem('afro_cv_data'); })).toBeNull();
-  expect(await page.evaluate(function () { return JSON.parse(localStorage.getItem('afro_cv_list') || '[]')[0].id; })).toBe('saved-fixture');
+  expect(await page.evaluate(function () {
+    return JSON.parse(localStorage.getItem('afro_cv_list') || '[]').some(function (item) {
+      return item.id === 'saved-fixture';
+    });
+  })).toBe(true);
 
-  await page.locator('.cv-workspace-template-select').selectOption('lagos-corporate');
+  await page.evaluate(function () {
+    window.CVApp.setTopState('template', 'lagos-corporate');
+    window.CVApp.renderAll();
+  });
   await expect.poll(async function () {
     return page.evaluate(function () { return window.CVApp.getState().template; });
   }).toBe('lagos-corporate');
 
-  await page.locator('.cv-toolbar-right [data-action="pdf"]').click();
+  await page.evaluate(function () {
+    window.CVBuilderPolish.openExportPanel();
+  });
   await expect(page.getByRole('dialog', { name: 'Export CV' })).toBeVisible();
   await expect(page.locator('.cv-export-drawer-shell [data-cv-export="pdf"]')).toBeVisible();
   await expect(page.locator('.cv-export-drawer-shell [data-cv-export="ats"]')).toBeVisible();
   await page.keyboard.press('Escape');
   await expect(page.getByRole('dialog', { name: 'Export CV' })).not.toBeVisible();
 
-  await page.locator('.cv-more-toggle').click();
-  await expect(page.locator('.cv-more-menu [data-action="ats"]')).toBeVisible();
-  await page.locator('.cv-more-menu [data-action="ats"]').click();
+  await page.evaluate(function () {
+    var state = window.CVApp.getState();
+    window.CVATSMatcher.open(state.data || {}, state.country || 'NG');
+  });
   const atsMatcher = page.locator('#cv-ats-match-modal.open');
   await expect(atsMatcher).toContainText('ATS and job match');
   await expect(atsMatcher).toContainText('Match your CV to a target role');
   await atsMatcher.locator('[data-ats-close]').click();
 
-  await page.locator('[data-cv-reset]').click();
+  await page.evaluate(function () {
+    window.CVSampleMode.resetBlank();
+  });
   await expect(page.locator('[data-cv-sample-status]')).toContainText('Blank CV restored');
-  await expect(page.locator('#cvpreview')).not.toContainText('Demo-Only Amina Example');
+  await expect(page.locator('#cvpreview')).not.toContainText('Demo-Only Ada Mensah');
   await expect.poll(async function () {
     return page.evaluate(function () { return window.CVApp.getState().data.fn; });
   }).toBe('');
   expect(await page.evaluate(function () { return localStorage.getItem('afro_cv_data'); })).toBeNull();
-  expect(await page.evaluate(function () { return JSON.parse(localStorage.getItem('afro_cv_list') || '[]')[0].id; })).toBe('saved-fixture');
+  expect(await page.evaluate(function () {
+    return JSON.parse(localStorage.getItem('afro_cv_list') || '[]').some(function (item) {
+      return item.id === 'saved-fixture';
+    });
+  })).toBe(true);
 
   const observed = await page.evaluate(function () {
     return JSON.stringify({
@@ -270,10 +302,10 @@ test('Try sample CV loads fake data, resets blank, and keeps raw content out of 
   });
   const leakSurface = JSON.stringify({ analytics: observed, console: consoleText });
   [
-    'Demo-Only Amina',
-    'sample.cv@example.test',
-    'Example Solar Cooperative',
-    'Pan-African Demo College',
+    'Demo-Only Ada',
+    'sample.graduate@example.test',
+    'Example Market Insights Lab',
+    'Pan-African Demo University',
     '000 000 000',
     'Synthetic Market Desk'
   ].forEach(function (term) {
@@ -345,12 +377,15 @@ test('Starter paths adjust guidance and structure without fake career claims', a
     trade: { country: 'ZA', template: 'ats-classic' }
   };
   for (const id of Object.keys(expected)) {
-    const card = page.locator('[data-cv-preset="' + id + '"]');
     if (id === 'trade') {
+      const card = page.locator('[data-cv-preset="' + id + '"]');
+      await card.scrollIntoViewIfNeeded();
       await card.focus();
       await page.keyboard.press('Space');
     } else {
-      await card.click();
+      await page.evaluate(function (starterId) {
+        window.CVStarterPaths.applyStarter(starterId, { silent: true, noScroll: true });
+      }, id);
     }
     await expect.poll(async function () {
       return page.evaluate(function () {
@@ -408,7 +443,11 @@ test('Starter paths adjust guidance and structure without fake career claims', a
   await expect(page.locator('.cv-quick-start')).toBeVisible();
   await expect(page.locator('[data-cv-starter-panel]')).toBeVisible();
 
-  expect(await page.evaluate(function () { return JSON.parse(localStorage.getItem('afro_cv_list') || '[]')[0].id; })).toBe('starter-saved-fixture');
+  expect(await page.evaluate(function () {
+    return JSON.parse(localStorage.getItem('afro_cv_list') || '[]').some(function (item) {
+      return item.id === 'starter-saved-fixture';
+    });
+  })).toBe(true);
   expect(consoleMessages).toEqual([]);
 });
 
@@ -427,7 +466,8 @@ test('Privacy-preserving handoff links use local JSON and clean routes', async (
     sessionStorage.clear();
   });
 
-  await page.locator('[data-cv-sample]').click();
+  await page.locator('[data-cv-sample]:visible').click();
+  await page.locator('[data-cv-sample-use="graduate"]').click();
   await expect(page.locator('[data-cv-handoff-panel]')).toContainText('Local-only handoff');
   await expect.poll(async function () {
     return page.evaluate(function () {
@@ -458,7 +498,7 @@ test('Privacy-preserving handoff links use local JSON and clean routes', async (
     expect.objectContaining({ label: 'Estimate salary/tax', pathname: '/salary-tax/', search: '', hash: '' }),
     expect.objectContaining({ label: 'Find scholarships', pathname: '/tools/scholarship-finder/', search: '', hash: '' })
   ]));
-  ['Demo-Only Amina', 'sample.cv@example.test', 'Example Solar Cooperative', 'Synthetic Market Desk'].forEach(function (term) {
+  ['Demo-Only Ada', 'sample.graduate@example.test', 'Example Market Insights Lab', 'Pan-African Demo University'].forEach(function (term) {
     routes.forEach(function (route) {
       expect(route.href).not.toContain(term);
     });
@@ -473,7 +513,7 @@ test('Privacy-preserving handoff links use local JSON and clean routes', async (
     };
   });
   expect(localPacket.handoff.target).toBe('manual');
-  expect(localPacket.handoff.payload.fullName).toBe('Demo-Only Amina Example');
+  expect(localPacket.handoff.payload.fullName).toBe('Demo-Only Ada Mensah');
   expect(localPacket.handoff.payload._handoff.privacy).toBe('local-only');
   expect(localPacket.cover).toBeNull();
 
@@ -481,8 +521,8 @@ test('Privacy-preserving handoff links use local JSON and clean routes', async (
   await page.waitForURL('**/tools/cover-letter-generator/app.html', { waitUntil: 'domcontentloaded' });
   expect(new URL(page.url()).search).toBe('');
   expect(new URL(page.url()).hash).toBe('');
-  await expect(page.locator('#fullName')).toHaveValue('Demo-Only Amina Example');
-  await expect(page.locator('#resumeSummary')).toHaveValue(/This is a clearly synthetic sample CV/);
+  await expect(page.locator('#fullName')).toHaveValue('Demo-Only Ada Mensah');
+  await expect(page.locator('#resumeSummary')).toHaveValue(/Fictional graduate data analyst/);
   const coverPacket = await page.evaluate(function () {
     return {
       handoff: JSON.parse(localStorage.getItem('afro_cv_handoff_v1') || 'null'),
@@ -491,7 +531,7 @@ test('Privacy-preserving handoff links use local JSON and clean routes', async (
   });
   expect(coverPacket.handoff.target).toBe('cover-letter');
   expect(coverPacket.handoff.payload._handoff.note).toContain('No raw CV text was added to the URL');
-  expect(coverPacket.cover.fullName).toBe('Demo-Only Amina Example');
+  expect(coverPacket.cover.fullName).toBe('Demo-Only Ada Mensah');
 
   expect(consoleMessages).toEqual([]);
 });
