@@ -484,13 +484,26 @@
     .home-tool-card:hover,.home-tool-card:focus-visible{border-color:rgba(43,109,216,.48);box-shadow:0 12px 28px rgba(15,23,42,.10);transform:translateY(-1px)}
     .home-tool-card .home-tool-icon{align-items:center;background:#0057b8;border:1px solid #0057b8;border-radius:10px;color:#fff;display:inline-flex;height:46px;justify-content:center;margin-bottom:14px;min-width:46px;position:relative;z-index:1}
     .home-tool-card .home-tool-icon svg{width:23px;height:23px;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;fill:none}
+    .home-tool-more{color:#60708a;font-size:.86rem;line-height:1.6;margin:18px 0 0}
+    .home-tool-more a{color:#0758b8;font-weight:700;text-decoration:none}
+    .home-tool-more a:hover,.home-tool-more a:focus-visible{text-decoration:underline}
+    :root[data-theme="dark"] .home-tool-more{color:#8fa3bf}
+    :root[data-theme="dark"] .home-tool-more a{color:#93c5fd}
+    .home-tool-card .home-tool-tag{color:#60708a;display:block;font-size:.64rem;font-weight:800;letter-spacing:.09em;line-height:1;margin:0 0 7px;position:relative;text-transform:uppercase;z-index:1}
     .home-tool-card strong{color:#0f172a;display:block;font-size:1.02rem;line-height:1.2;margin:0 0 6px}
     .home-tool-card p{display:block;flex:1;font-size:.82rem;line-height:1.54;margin:0 0 13px}
-    .home-tool-card em{align-items:center;background:#eff6ff;border:1px solid #bfdbfe;border-radius:8px;color:#0758b8;display:inline-flex;font-size:.78rem;font-style:normal;font-weight:800;justify-content:center;line-height:1.15;max-width:100%;min-height:34px;padding:6px 10px;position:relative;width:max-content;z-index:1}
+    /* Text CTA rather than 16 filled pills: the whole card is already the link,
+       so the pill was repeated chrome competing with the titles. */
+    .home-tool-card em{align-items:center;background:none;border:0;border-radius:0;color:#0758b8;display:inline-flex;font-size:.79rem;font-style:normal;font-weight:800;gap:6px;line-height:1.15;margin-top:auto;max-width:100%;min-height:22px;padding:0;position:relative;width:max-content;z-index:1}
+    .home-tool-card em::after{content:"\2192";display:inline-block;font-weight:700;transition:transform .18s ease}
+    .home-tool-card:hover em::after,.home-tool-card:focus-visible em::after{transform:translateX(3px)}
+    .home-tool-card:hover em,.home-tool-card:focus-visible em{color:#0a49a0}
+    .home-tool-card:hover .home-tool-icon,.home-tool-card:focus-visible .home-tool-icon{background:#004c9f;border-color:#004c9f}
     .home-tool-card strong,.home-tool-card p{position:relative;z-index:1}
+    :root[data-theme="dark"] .home-tool-card .home-tool-tag{color:#8fa3bf}
     :root[data-theme="dark"] .home-entry-section,:root[data-theme="dark"] .home-entry-section--tools,:root[data-theme="dark"] .home-trust-section,:root[data-theme="dark"] .home-about-section{background:linear-gradient(135deg,#07111f 0%,#0b1728 48%,#09111f 100%)!important}
     :root[data-theme="dark"] .country-picker-card,:root[data-theme="dark"] .home-trust-grid div,:root[data-theme="dark"] .home-about-card,:root[data-theme="dark"] .home-tool-card{background:rgba(18,31,51,.7)!important;border-color:rgba(77,163,255,.22)!important;backdrop-filter:blur(18px)}
-    :root[data-theme="dark"] .home-tool-card em{background:rgba(77,163,255,.13)!important;border-color:rgba(147,197,253,.24)!important;color:#93c5fd!important}
+    :root[data-theme="dark"] .home-tool-card em{background:none!important;border:0!important;color:#93c5fd!important}
     .sec--grey,.sec--showcase,#newsletter,.embed-sec{background:#f8fafc!important}
     .sec--showcase{padding-top:64px!important}
     .sec--showcase .sec-header{margin-bottom:28px!important}
@@ -538,12 +551,6 @@
     :root[data-theme="dark"] .mk-unique-name{color:#eef5ff}
     :root[data-theme="dark"] .mk-unique-meta{color:#b8c7dc}
     :root[data-theme="dark"] .mk-unique-note{background:rgba(22,101,52,.18);border-color:rgba(74,222,128,.24);color:#bbf7d0}
-    #new-tools .tc-thumb,
-    #new-tools .ut-thumb{position:relative;background:#eef4fb;overflow:hidden}
-    #new-tools .tc-thumb img,
-    #new-tools .ut-thumb img{position:relative!important;z-index:2;display:block!important;width:100%!important;height:100%!important;object-fit:cover!important}
-    #new-tools .tc-thumb.has-image .tc-thumb-ph,
-    #new-tools .ut-thumb.has-image .ut-thumb-ph{display:none!important}
     .hero-search-btn,.btn-primary,.btn-secondary,.country-picker-form button,.country-popular-list a,.cat-card{touch-action:manipulation}
     @media (max-width:1180px){
       .home-preview-card,.home-hero-visual{display:none}
@@ -630,6 +637,9 @@
       .country-popular-list[aria-label="Popular countries"]{display:none}
       .home-tool-six-grid{grid-template-columns:1fr;gap:8px}
       .home-tool-card{align-items:center;background:rgba(255,255,255,.84);border-radius:14px;box-shadow:0 8px 22px rgba(15,23,42,.055);column-gap:12px;display:grid;grid-template-areas:"icon title" "icon desc" "icon cta";grid-template-columns:44px minmax(0,1fr);min-height:0;padding:12px 13px 11px 15px}
+      /* The compact mobile row has no room for the category label; the title
+         and one-line description already carry the meaning. */
+      .home-tool-card .home-tool-tag{display:none}
       .home-tool-card::before{bottom:12px;height:auto;left:8px;right:auto;top:12px;width:3px}
       .home-tool-card::after{display:none}
       .home-tool-card .home-tool-icon{align-self:center;border-radius:12px;grid-area:icon;height:44px;margin:0;min-width:44px;padding:0;box-shadow:0 8px 18px rgba(0,87,184,.16)}
@@ -1002,9 +1012,7 @@
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <style id="homepage-tool-image-fit">
-  body.top-level-page-ui-refresh #tools .tc > .tc-thumb,
-  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
-  body.top-level-page-ui-refresh #new-tools .ut-thumb {
+  body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
     align-items:stretch !important;
     aspect-ratio:3/2 !important;
     display:flex !important;
@@ -1013,22 +1021,9 @@
     min-height:0 !important;
     overflow:hidden !important;
     padding:0 !important;
-  }
-  body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
     width:calc(100% - 28px) !important;
   }
-  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
-  body.top-level-page-ui-refresh #new-tools .ut-thumb {
-    margin:14px 14px 0 !important;
-    width:calc(100% - 28px) !important;
-  }
-  body.top-level-page-ui-refresh #new-tools .tc--wide > .tc-thumb {
-    aspect-ratio:3/1 !important;
-    min-height:240px !important;
-  }
-  body.top-level-page-ui-refresh #tools .tc > .tc-thumb img,
-  body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb img,
-  body.top-level-page-ui-refresh #new-tools .ut-thumb img {
+  body.top-level-page-ui-refresh #tools .tc > .tc-thumb img {
     flex:1 1 auto !important;
     display:block !important;
     height:100% !important;
@@ -1043,15 +1038,9 @@
     width:100% !important;
   }
   @media (max-width:640px) {
-    body.top-level-page-ui-refresh #tools .tc > .tc-thumb,
-    body.top-level-page-ui-refresh #new-tools .tc > .tc-thumb,
-    body.top-level-page-ui-refresh #new-tools .ut-thumb {
+    body.top-level-page-ui-refresh #tools .tc > .tc-thumb {
       margin:12px 12px 0 !important;
       width:calc(100% - 24px) !important;
-    }
-    body.top-level-page-ui-refresh #new-tools .tc--wide > .tc-thumb {
-      aspect-ratio:3/2 !important;
-      min-height:0 !important;
     }
   }
 </style>
@@ -1108,6 +1097,7 @@
 </nav>
 </noscript>
 
+<main id="main-content">
 <!-- AfroToolsAICommandHero -->
 <section class="afrotools-ai-command-hero" id="afrotoolsAiCommandHero" data-component="AfroToolsAICommandHero" aria-label="Ask AfroTools AI command homepage">
   <div class="ai-command-hero-inner">
@@ -1254,53 +1244,30 @@
     <div class="home-section-heading">
       <div class="sec-eyebrow">Flagship tools</div>
       <h2>Start with the tools people come back to</h2>
-      <p>Practical, cross-domain tools for money, documents, career, energy, food, maps, creators, cars, study, and business. Ask AfroTools AI to find a path, or browse the full directory when you already know what you need.</p>
+      <p>Grouped by what you are trying to do: money and tax, uniquely African planning, documents and career, then home and energy. Describe your task to AfroTools AI, or browse the full directory if you already know what you need.</p>
     </div>
     <div class="home-tool-six-grid">
-      <a class="home-tool-card" href="/tools/lobola-calculator/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3.5-8-6.6-8-10.5A4.5 4.5 0 0 1 8.5 6c1.4 0 2.7.7 3.5 1.8A4.4 4.4 0 0 1 15.5 6 4.5 4.5 0 0 1 20 10.5c0 3.9-4 7-8 10.5z"/></svg></span><strong>Lobola Calculator</strong><p>Plan cattle, cash, gifts, and ceremony budgets for the family talk — Zimbabwe, South Africa, and more.</p><em>Plan lobola &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/naira-to-words/" data-tone="invoice"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h4"/><path d="M7 14h7"/><circle cx="17" cy="12" r="1.5"/></svg></span><strong>Naira to Words</strong><p>Turn any NGN amount into exact cheque and invoice wording, kobo included.</p><em>Convert amount &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/cv-builder/" data-tone="cv"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/><path d="M9 9h1"/></svg></span><strong>CV Builder</strong><p>Create a clean CV, choose a template, check readiness, and export PDF.</p><em>Build CV &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/pdf-workspace/" data-tone="pdf"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h1"/><path d="M10 15h5"/><path d="M10 18h3"/></svg></span><strong>PDF Workspace</strong><p>Merge, split, compress, watermark, and protect files locally.</p><em>Open workspace &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/solar-roi/" data-tone="solar"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M12 1v2"/><path d="M12 13v2"/><path d="m4.9 3.9 1.4 1.4"/><path d="m17.7 5.3 1.4-1.4"/><path d="M3 8h2"/><path d="M19 8h2"/><path d="M4 21h16"/><path d="m6 21 2-6h8l2 6"/><path d="M8.7 18h6.6"/></svg></span><strong>Solar ROI</strong><p>Estimate monthly savings, payback, battery needs, and generator tradeoffs.</p><em>Plan solar &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/fuel-tracker/" data-tone="fuel"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 21h14"/><path d="M7 7h6"/><path d="M16 8h2l2 2v8a2 2 0 0 1-4 0v-4h4"/><path d="m18 8 2-2"/></svg></span><strong>AfroFuel</strong><p>Track petrol, diesel, and LPG snapshots with source labels and decision briefs.</p><em>Check fuel &rarr;</em></a>
-      <a class="home-tool-card" href="/engineering/floor-planner/" data-tone="plan"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h6"/><path d="M10 4v16"/><path d="M10 14h10"/><path d="M15 14v6"/><path d="M6 7h2"/></svg></span><strong>Floor Planner</strong><p>Draw rooms, place furniture, estimate materials, and export project notes.</p><em>Open planner &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/afrokitchen/" data-tone="food"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 14h12"/><path d="M8 14V9a4 4 0 0 1 8 0v5"/><path d="M5 14h14l-1 6H6z"/><path d="M9 5c-.6-1.7.7-3 2-3"/><path d="M15 5c.6-1.7-.7-3-2-3"/></svg></span><strong>AfroKitchen</strong><p>Cook, scale servings, plan costs, and explore recipes across Africa.</p><em>Open kitchen &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/afroatlas/" data-tone="atlas"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18 3 21V6l6-3 6 3 6-3v15l-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/><circle cx="12" cy="11" r="2"/></svg></span><strong>AfroAtlas</strong><p>Compare countries, resources, business context, and trade signals.</p><em>Explore Africa &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/afrostream/" data-tone="stream"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/><path d="M7 21h10"/><path d="M12 19v2"/></svg></span><strong>AfroStream</strong><p>Discover African creators, channels, rankings, live streams, and media updates.</p><em>Open AfroStream &rarr;</em></a>
-      <a class="home-tool-card" href="/salary-tax/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2"/><path d="M14 11h2"/><path d="M8 15h2"/><path d="M14 15h2"/><path d="M8 19h8"/></svg></span><strong>Salary &amp; Tax</strong><p>Estimate take-home pay, deductions, and country payroll rules.</p><em>Calculate tax &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/invoice-generator/" data-tone="invoice"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h4"/></svg></span><strong>Invoice Generator</strong><p>Create VAT-aware invoices in African currencies with PDF export.</p><em>Create invoice &rarr;</em></a>
-      <a class="home-tool-card" href="/cars/" data-tone="cars"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13 5 7a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 6"/><path d="M5 13h14v5H5z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M7 10h10"/></svg></span><strong>Car Price Directory</strong><p>Compare local prices, import costs, and ownership decisions.</p><em>Compare cars &rarr;</em></a>
-      <a class="home-tool-card" href="/tools/scholarship-finder/" data-tone="aid"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4z"/><path d="M6 10v5c0 2 3 4 6 4s6-2 6-4v-5"/><path d="M21 8v6"/></svg></span><strong>Scholarship Finder</strong><p>Search funding options, compare fit, and keep deadlines organized.</p><em>Find funding &rarr;</em></a>
+      <a class="home-tool-card" href="/tools/currency-converter/" data-tone="fx"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 8h14"/><path d="m13 4 4 4-4 4"/><path d="M21 16H7"/><path d="m11 12-4 4 4 4"/></svg></span><small class="home-tool-tag">Money</small><strong>Currency Converter</strong><p>Convert African currencies with the time each rate was captured and where it came from.</p><em>Check rates</em></a>
+      <a class="home-tool-card" href="/salary-tax/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2"/><path d="M8 7h8"/><path d="M8 11h2"/><path d="M14 11h2"/><path d="M8 15h2"/><path d="M14 15h2"/><path d="M8 19h8"/></svg></span><small class="home-tool-tag">Tax</small><strong>Salary &amp; Tax</strong><p>Estimate take-home pay, statutory deductions, and country payroll rules.</p><em>Calculate tax</em></a>
+      <a class="home-tool-card" href="/tools/vat-calculator/" data-tone="tax"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M19 5 5 19"/><circle cx="7.5" cy="7.5" r="2.5"/><circle cx="16.5" cy="16.5" r="2.5"/></svg></span><small class="home-tool-tag">Tax</small><strong>VAT Calculator</strong><p>Add or remove VAT at each country&rsquo;s rate, with the registration threshold alongside it.</p><em>Work out VAT</em></a>
+      <a class="home-tool-card" href="/tools/invoice-generator/" data-tone="invoice"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 2h12v20l-3-2-3 2-3-2-3 2z"/><path d="M9 7h6"/><path d="M9 11h6"/><path d="M9 15h4"/></svg></span><small class="home-tool-tag">Business</small><strong>Invoice Generator</strong><p>Create VAT-aware invoices in African currencies and export them as PDF.</p><em>Create invoice</em></a>
+      <a class="home-tool-card" href="/tools/lobola-calculator/" data-tone="culture"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 21c-4-3.5-8-6.6-8-10.5A4.5 4.5 0 0 1 8.5 6c1.4 0 2.7.7 3.5 1.8A4.4 4.4 0 0 1 15.5 6 4.5 4.5 0 0 1 20 10.5c0 3.9-4 7-8 10.5z"/></svg></span><small class="home-tool-tag">Family &amp; custom</small><strong>Lobola Calculator</strong><p>Plan cattle, cash, gifts, and ceremony budgets before the family conversation.</p><em>Plan lobola</em></a>
+      <a class="home-tool-card" href="/tools/afrokitchen/" data-tone="food"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6 14h12"/><path d="M8 14V9a4 4 0 0 1 8 0v5"/><path d="M5 14h14l-1 6H6z"/><path d="M9 5c-.6-1.7.7-3 2-3"/><path d="M15 5c.6-1.7-.7-3-2-3"/></svg></span><small class="home-tool-tag">Food</small><strong>AfroKitchen</strong><p>Cook, scale servings, plan costs, and explore recipes from across the continent.</p><em>Open kitchen</em></a>
+      <a class="home-tool-card" href="/tools/afroatlas/" data-tone="atlas"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18 3 21V6l6-3 6 3 6-3v15l-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/><circle cx="12" cy="11" r="2"/></svg></span><small class="home-tool-tag">Countries</small><strong>AfroAtlas</strong><p>Compare countries on resources, economy, business context, and trade signals.</p><em>Explore Africa</em></a>
+      <a class="home-tool-card" href="/tools/afrostream/" data-tone="stream"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="5" width="18" height="14" rx="3"/><path d="m10 9 5 3-5 3z"/><path d="M7 21h10"/><path d="M12 19v2"/></svg></span><small class="home-tool-tag">Creators</small><strong>AfroStream</strong><p>Discover African creators, channels, rankings, live streams, and media updates.</p><em>Open AfroStream</em></a>
+      <a class="home-tool-card" href="/tools/cv-builder/" data-tone="cv"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M14 2H7a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7z"/><path d="M14 2v5h5"/><path d="M9 13h6"/><path d="M9 17h4"/><path d="M9 9h1"/></svg></span><small class="home-tool-tag">Career</small><strong>CV Builder</strong><p>Build a clean CV, pick a template, check it reads well, and export to PDF.</p><em>Build CV</em></a>
+      <a class="home-tool-card" href="/tools/pdf-workspace/" data-tone="pdf"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M5 7H4a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h1"/><path d="M10 15h5"/><path d="M10 18h3"/></svg></span><small class="home-tool-tag">Documents</small><strong>PDF Workspace</strong><p>Merge, split, compress, watermark, and protect files without uploading them.</p><em>Open workspace</em></a>
+      <a class="home-tool-card" href="/tools/scholarship-finder/" data-tone="aid"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4z"/><path d="M6 10v5c0 2 3 4 6 4s6-2 6-4v-5"/><path d="M21 8v6"/></svg></span><small class="home-tool-tag">Study</small><strong>Scholarship Finder</strong><p>Search funding, check whether you qualify, and keep deadlines in one place.</p><em>Find funding</em></a>
+      <a class="home-tool-card" href="/tools/naira-to-words/" data-tone="invoice"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><path d="M7 10h4"/><path d="M7 14h7"/><circle cx="17" cy="12" r="1.5"/></svg></span><small class="home-tool-tag">Money</small><strong>Naira to Words</strong><p>Turn any naira amount into exact cheque and invoice wording, kobo included.</p><em>Convert amount</em></a>
+      <a class="home-tool-card" href="/tools/solar-roi/" data-tone="solar"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3"/><path d="M12 1v2"/><path d="M12 13v2"/><path d="m4.9 3.9 1.4 1.4"/><path d="m17.7 5.3 1.4-1.4"/><path d="M3 8h2"/><path d="M19 8h2"/><path d="M4 21h16"/><path d="m6 21 2-6h8l2 6"/><path d="M8.7 18h6.6"/></svg></span><small class="home-tool-tag">Energy</small><strong>Solar ROI</strong><p>Estimate monthly savings, payback, battery needs, and the generator tradeoff.</p><em>Plan solar</em></a>
+      <a class="home-tool-card" href="/tools/fuel-tracker/" data-tone="fuel"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 21V5a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v16"/><path d="M3 21h14"/><path d="M7 7h6"/><path d="M16 8h2l2 2v8a2 2 0 0 1-4 0v-4h4"/><path d="m18 8 2-2"/></svg></span><small class="home-tool-tag">Energy</small><strong>AfroFuel</strong><p>Check petrol, diesel, and LPG prices with the date and source on every figure.</p><em>Check fuel</em></a>
+      <a class="home-tool-card" href="/engineering/floor-planner/" data-tone="plan"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h6"/><path d="M10 4v16"/><path d="M10 14h10"/><path d="M15 14v6"/><path d="M6 7h2"/></svg></span><small class="home-tool-tag">Building</small><strong>Floor Planner</strong><p>Draw rooms, place furniture, estimate materials, and export a bill of quantities.</p><em>Open planner</em></a>
+      <a class="home-tool-card" href="/cars/" data-tone="cars"><span class="home-tool-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13 5 7a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 6"/><path d="M5 13h14v5H5z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/><path d="M7 10h10"/></svg></span><small class="home-tool-tag">Cars</small><strong>Car Price Directory</strong><p>Compare local prices against import costs before you commit to a vehicle.</p><em>Compare cars</em></a>
     </div>
+    <p class="home-tool-more">Also popular: <a href="/tools/remittance-compare/">Remittance Compare</a> &middot; <a href="/tools/japa-calculator/">Japa Calculator</a> &middot; <a href="/tools/mobile-money-fees/">Mobile Money Fees</a> &middot; <a href="/all-tools/">Browse every tool &rarr;</a></p>
   </div>
 </section>
 
-<section class="sec sec--white" id="how-afrotools-ai-works" aria-label="How AfroTools AI works">
-  <div class="wrap">
-    <div class="home-section-heading">
-      <div class="sec-eyebrow">How it works</div>
-      <h2>Three layers, one clear answer.</h2>
-      <p>AfroTools AI is not a generic chatbot sitting on top of empty pages. It connects African data, guidance, calculators, documents, and exports so you can move from a question to a useful next step.</p>
-    </div>
-    <div class="home-model-grid">
-      <div class="home-model-card">
-        <span class="home-model-step">01</span>
-        <h3>Local data</h3>
-        <p>Country pages, rates, tax rules, fuel snapshots, scholarship records, import-duty packs, and market data carry country context, source notes, freshness labels, or cautious fallback states where available.</p>
-      </div>
-      <div class="home-model-card">
-        <span class="home-model-step">02</span>
-        <h3>AI guidance</h3>
-        <p>Ask AfroTools AI what you want to do. It detects the likely workflow, asks for missing details when needed, and routes you to the right tool without hiding the underlying calculator or source assumptions.</p>
-      </div>
-      <div class="home-model-card">
-        <span class="home-model-step">03</span>
-        <h3>Tools and exports</h3>
-        <p>Use the calculator, document builder, checklist, comparison, widget, API, or export that fits the task. Many document and planning workflows stay browser-private where possible.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <!-- MARQUEE -->
 <div class="marquee-strip" aria-hidden="true"><div class="marquee-track">
@@ -1748,186 +1715,6 @@
 <!-- ═══════════════════════════════════════════════════════════
   TOOLS
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec sec--grey" id="new-tools" aria-label="Tools">
-  <div class="wrap">
-    <div style="display:flex;align-items:baseline;justify-content:space-between;margin-bottom:4px">
-      <div class="eyebrow" style="margin-bottom:0">Tools</div>
-      <a href="/tools/" class="home-section-action">See All →</a>
-    </div>
-    <h2 class="sec-title">Built for Africa's everyday work.</h2>
-    <p class="sec-sub">PDF workspace, CV builder, solar and fuel tools, recipes, maps, creator discovery, currency tools, and practical calculators built around African context, source labels, and usable exports.</p>
-
-    <div class="tools-main-grid">
-
-      <!-- ── FLAGSHIP: PDF WORKSPACE ── -->
-      <a href="/tools/pdf-workspace/" class="tc tc--wide rv">
-        <div class="tc-thumb tc-thumb--wide">
-          <img src="/assets/img/tools/pdf-workspace.webp" alt="AfroTools PDF Workspace" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-        </div>
-        <div class="tc-body">
-          <div class="tc-badge tc-badge--live">● Available Now</div>
-          <div class="tc-name">AfroTools PDF Workspace</div>
-          <div class="tc-desc">Everything PDF in one place — merge, split, compress, convert to images, add watermarks, password protect, and add page numbers. Local PDF workflows run in your browser by default.</div>
-          <div class="tc-tools-row">
-            <span class="tc-mini">Merge &amp; Split</span>
-            <span class="tc-mini">Compress</span>
-            <span class="tc-mini">PDF ↔ Image</span>
-            <span class="tc-mini">Watermark</span>
-            <span class="tc-mini">Password</span>
-            <span class="tc-mini">Page Numbers</span>
-          </div>
-          <div class="tc-cta">Open Workspace →</div>
-        </div>
-      </a>
-
-      <!-- More flagship tools -->
-      <div class="tools-sub-grid">
-
-        <a href="/tools/currency-converter/" class="ut rv">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">💱</div>
-            <img src="/assets/img/tools/currency-converter.webp" alt="Currency Converter" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Currency Converter</div>
-        <div class="ut-desc">Latest available forex and crypto snapshots for African currencies, with bank-rate comparison and remittance corridors where supported.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/vat-calculator/" class="ut rv d1">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">🧾</div>
-            <img src="/assets/img/tools/vat-calculator.webp" alt="VAT Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">VAT Calculator</div>
-          <div class="ut-desc">Pan-African VAT references across all 54 countries, plus multi-item invoice mode and country assumptions.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/cv-builder/" class="ut rv d2">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">📄</div>
-            <img src="/assets/img/tools/cv-builder.webp" alt="CV and Resume Builder" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">CV / Résumé Builder</div>
-          <div class="ut-desc">6 modern templates (Slate, Ember, Phantom, Indigo, Noir, Stone). Africa-country formats. PDF download.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/invoice-generator/" class="ut rv d3">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">🧾 </div>
-            <img src="/assets/img/tools/invoice-generator.webp" alt="Invoice Generator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Invoice Generator</div>
-          <div class="ut-desc">Create professional invoices in any African currency. VAT-aware. Download PDF or send by email.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/remittance-compare/" class="ut rv">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">✈️</div>
-            <img src="/assets/img/tools/remittance-compare.webp" alt="Remittance Comparator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Remittance Comparator</div>
-          <div class="ut-desc">Compare fees and exchange rates across Western Union, Wise, Remitly, M-Pesa Global and more.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/import-duty/" class="ut rv d1">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">📦</div>
-            <img src="/assets/img/tools/import-duty.webp" alt="Import Duty Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Import Duty Calculator</div>
-          <div class="ut-desc">Import-duty planning for key African customs regimes, landed-cost estimates, assumptions, and source confidence notes.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/japa-calculator/" class="ut rv d2">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">🌍</div>
-            <img src="/assets/img/tools/japa-calculator.webp" alt="Japa Cost Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Japa Cost Calculator</div>
-          <div class="ut-desc">Total relocation cost from Africa. 38 origins, 22 destinations, 73 visa pathways. Full breakdown.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/waec-calculator/" class="ut rv d3">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">🎓</div>
-            <img src="/assets/img/tools/waec-calculator.webp" alt="WAEC and NECO Grade Calculator" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">WAEC / NECO Grade Calc</div>
-          <div class="ut-desc">Aggregate, JAMB + O'Level eligibility checker, GPA converter (4.0 & 5.0 scale), Ghana WASSCE. All 12 top Nigerian universities + cut-offs.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-        <a href="/tools/mobile-money-fees/" class="ut rv">
-          <div class="ut-thumb">
-            <div class="ut-thumb-ph">📱</div>
-            <img src="/assets/img/tools/mobile-money-fees.webp" alt="Mobile Money Fee Checker" width="600" height="400" loading="lazy" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block">
-          </div>
-          <div class="ut-body">
-          <div class="ut-name">Mobile Money Fee Checker</div>
-          <div class="ut-desc">M-Pesa, MTN MoMo, Airtel Money — see exact send/withdraw fees before you transact.</div>
-          <div class="ut-foot">
-            <span class="ut-badge badge-live">● Live</span>
-            <span class="ut-cta">Open Tool →</span>
-          </div>
-          </div>
-        </a>
-
-      </div><!-- /tools-sub-grid -->
-    </div><!-- /tools-main-grid -->
-
-    <div style="text-align:center;margin-top:32px">
-      <a href="/tools/" class="btn-outline-dark">See all tools in the pipeline →</a>
-    </div>
-
-  </div>
-</section>
-
 
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -2049,7 +1836,7 @@
     <div class="cat-icon-wrap" style="background:#fef3c7"><img src="/assets/img/categories/pdf-workspace.png" alt="PDF Workspace" width="64" height="64" onerror="this.style.display='none'"></div>
     <div class="cat-name">PDF Workspace</div>
     <div class="cat-desc">Merge, split, compress, watermark and protect PDFs. Browser-based where supported.</div>
-    <div class="cat-count">Local-first PDF workflows</div>
+    <div class="cat-count">PDF work stays on your device</div>
   </a>
   <a href="/creative/" class="cat-card rv d2">
     <div class="cat-icon-wrap" style="background:#f3e8ff"><img src="/assets/img/categories/creator-suite.png" alt="Creator Suite" width="64" height="64" onerror="this.style.display='none'"></div>
@@ -2090,8 +1877,6 @@
 </div>
   </div>
 </section>
-
-
 
 
 <!-- ═══════════════════════════════════════════════════════════
@@ -2204,7 +1989,7 @@
   <div class="wrap">
     <div class="eyebrow"><span class="live-dot"></span> Market Data</div>
     <h2 class="sec-title">African market data with freshness labels</h2>
-    <p class="sec-sub">Timestamped financial snapshots for African markets, with source and freshness labels plus fallback states when a feed is unavailable.</p>
+    <p class="sec-sub">Timestamped financial snapshots for African markets. Every figure shows its source and when it was captured, and says plainly when a rate could not be refreshed.</p>
 
     <div class="ld-grid">
       <a href="/tools/currency-converter/" class="ld-card">
@@ -2266,100 +2051,10 @@
 </section>
 
 
-
 <!-- ═══════════════════════════════════════════════════════════
   COMMON WORKFLOWS
 ═══════════════════════════════════════════════════════════ -->
-<section class="sec testimonials-sec" aria-label="Ways to use AfroTools">
-  <div class="wrap">
-    <div class="sec-header center rv">
-      <div class="sec-eyebrow">Common workflows</div>
-      <h2 class="sec-h2">Pick a task, then keep moving.</h2>
-      <p class="sec-desc">Start with a country, a document, a plan, or a decision. AfroTools helps you move from first estimate to a practical export, comparison, list, or next step.</p>
-    </div>
-    <div class="testimonials-grid">
 
-      <a class="tcard rv" href="/salary-tax/" aria-label="Open Salary and Tax tools">
-        <div class="tcard-stars"><span class="tcard-star">01</span></div>
-        <p class="tcard-quote">Run salary and tax checks, then open the matching country hub when you need local rules, currency, and next steps.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">PAY</div>
-          <div>
-            <div class="tcard-name">Salary &amp; Tax</div>
-            <div class="tcard-role">PAYE, deductions, pension, take-home estimates</div>
-            <div class="tcard-country">Open tools &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-      <a class="tcard rv d1" href="/tools/cv-builder/" aria-label="Open CV Builder">
-        <div class="tcard-stars"><span class="tcard-star">02</span></div>
-        <p class="tcard-quote">Build a clean CV, switch templates, check readiness, create a cover letter, and export files without putting private text in a URL.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">CV</div>
-          <div>
-            <div class="tcard-name">CV Builder</div>
-            <div class="tcard-role">Templates, ATS checks, application pack, PDF export</div>
-            <div class="tcard-country">Build CV &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-      <a class="tcard rv d2" href="/tools/pdf-workspace/" aria-label="Open PDF Workspace">
-        <div class="tcard-stars"><span class="tcard-star">03</span></div>
-        <p class="tcard-quote">Merge, split, compress, watermark, protect, and organize PDF files with browser-first tools made for everyday document work.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">PDF</div>
-          <div>
-            <div class="tcard-name">PDF Workspace</div>
-            <div class="tcard-role">Merge, split, compress, watermark, password tools</div>
-            <div class="tcard-country">Open workspace &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-      <a class="tcard rv d3" href="/tools/afrokitchen/" aria-label="Open AfroKitchen">
-        <div class="tcard-stars"><span class="tcard-star">04</span></div>
-        <p class="tcard-quote">Find African recipes, scale servings, plan shopping, compare country dishes, and estimate kitchen costs where supported.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">FD</div>
-          <div>
-            <div class="tcard-name">AfroKitchen</div>
-            <div class="tcard-role">Recipes, serving scales, meal planning, country food guides</div>
-            <div class="tcard-country">Open kitchen &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-      <a class="tcard rv d4" href="/energy/" aria-label="Open Solar and Fuel energy tools">
-        <div class="tcard-stars"><span class="tcard-star">05</span></div>
-        <p class="tcard-quote">Estimate solar payback, battery needs, generator fuel spend, outage impact, and fuel snapshots before making energy decisions.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">EN</div>
-          <div>
-            <div class="tcard-name">Solar &amp; Fuel</div>
-            <div class="tcard-role">Solar ROI, generator fuel, AfroFuel snapshots</div>
-            <div class="tcard-country">Open energy tools &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-      <a class="tcard rv d5" href="/engineering/floor-planner/" aria-label="Open Floor Planner">
-        <div class="tcard-stars"><span class="tcard-star">06</span></div>
-        <p class="tcard-quote">Sketch rooms, place furniture, estimate materials, export notes, and keep small building projects organized.</p>
-        <div class="tcard-author">
-          <div class="tcard-avatar">FP</div>
-          <div>
-            <div class="tcard-name">Floor Planner</div>
-            <div class="tcard-role">Room layout, furniture, materials, export notes</div>
-            <div class="tcard-country">Open planner &rarr;</div>
-          </div>
-        </div>
-      </a>
-
-    </div>
-  </div>
-</section>
 
 <!-- DISCOVER MORE -->
 <section class="sec sec--grey" aria-label="Discover unique AfroTools">
@@ -2464,7 +2159,7 @@
         <ul class="embed-bullets">
           <li><span class="embed-check">&#x2713;</span> <span data-registry-count="widgets.published">223</span> ready-to-embed widgets</li>
           <li><span class="embed-check">&#x2713;</span> Built-in updates for payroll, tax, and finance widgets</li>
-          <li><span class="embed-check">&#x2713;</span> Mobile-responsive, zero-config script and iframe options</li>
+          <li><span class="embed-check">&#x2713;</span> Mobile-responsive script and iframe options, no setup required</li>
           <li><span class="embed-check">&#x2713;</span> Free widgets include a small Powered by AfroTools badge</li>
         </ul>
         <a href="/widgets/demo/" class="btn-primary embed-cta">Browse Embeddable Tools &rarr;</a>
@@ -2531,6 +2226,7 @@
   </div>
 </section>
 
+</main>
 <afro-footer></afro-footer>
 
 <script src="/assets/js/ai/example-registry.js?v=ee83a08c"></script>
@@ -2563,7 +2259,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 });
 </script>
-
 
 
 <script>
@@ -3459,22 +3154,6 @@ document.addEventListener('DOMContentLoaded', function() {
   });
 
   // Scroll reveal — robust observer with fallback
-  // Homepage tool thumbnails: keep emoji fallbacks only for missing images.
-  document.querySelectorAll('#new-tools .tc-thumb img, #new-tools .ut-thumb img').forEach(img => {
-    const thumb = img.closest('.tc-thumb, .ut-thumb');
-    if (!thumb) return;
-    const markLoaded = () => {
-      if (img.complete && img.naturalWidth > 0) thumb.classList.add('has-image');
-    };
-    const markFallback = () => {
-      thumb.classList.remove('has-image');
-      img.style.display = 'none';
-    };
-    if (img.complete) markLoaded();
-    img.addEventListener('load', markLoaded, { once: true });
-    img.addEventListener('error', markFallback, { once: true });
-  });
-
   const obs = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('in'); obs.unobserve(e.target); }});
   }, { threshold: 0.01, rootMargin: '0px 0px -40px 0px' });
