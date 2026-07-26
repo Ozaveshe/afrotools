@@ -65,4 +65,15 @@ assert.strictEqual(
   'African creator and music news should remain eligible'
 );
 
+assert.strictEqual(
+  monitor.shouldInsertNewsCandidate(null),
+  true,
+  'a genuinely new feed item should be inserted'
+);
+assert.strictEqual(
+  monitor.shouldInsertNewsCandidate({ id: 13884, is_published: false, category: 'collabs' }),
+  false,
+  'an existing row must not be rewritten because editorial moderation may have changed it'
+);
+
 console.log('afrostream news monitor relevance tests passed');

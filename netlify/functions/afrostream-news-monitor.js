@@ -167,6 +167,12 @@ function hash(value) {
   return Math.abs(h).toString(36);
 }
 
+function shouldInsertNewsCandidate(existingNews) {
+  // Existing rows may have been unpublished or corrected during editorial review.
+  // A recurring feed observation must never overwrite that moderation state.
+  return !existingNews;
+}
+
 function parseFeedsFromEnv() {
   if (!ENV_FEEDS.trim()) return [];
   try {
@@ -376,26 +382,28 @@ async function processNewsCandidate(source, item, matches, summary, dryRun, inse
     return;
   }
 
-  var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
-    title: item.title,
-    slug: slugify(item.title) + '-' + externalId.slice(0, 6),
-    category: source.category || 'creator-news',
-    author: source.name || 'RSS source',
-    excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
-    body: item.description || item.title,
-    source_url: item.link || source.feed_url,
-    source_name: source.name || 'RSS source',
-    external_id: externalId,
-    is_featured: false,
-    is_published: true,
-    published_at: item.published_at
-  }, true);
-  var news = Array.isArray(newsRows) ? newsRows[0] : null;
-  if (!news || !news.id) return;
-  if (existingNews) summary.existing_news++;
-  else {
+  var news = existingNews;
+  if (shouldInsertNewsCandidate(existingNews)) {
+    var newsRows = await sb('POST', 'as_news?on_conflict=external_id', {
+      title: item.title,
+      slug: slugify(item.title) + '-' + externalId.slice(0, 6),
+      category: source.category || 'creator-news',
+      author: source.name || 'RSS source',
+      excerpt: item.description || (matches.length ? 'Creator mention from ' : 'AfroStream source update from ') + (source.name || 'RSS source'),
+      body: item.description || item.title,
+      source_url: item.link || source.feed_url,
+      source_name: source.name || 'RSS source',
+      external_id: externalId,
+      is_featured: false,
+      is_published: true,
+      published_at: item.published_at
+    }, true);
+    news = Array.isArray(newsRows) ? newsRows[0] : null;
+    if (!news || !news.id) return;
     summary.inserted_news++;
     insertBudget.remaining--;
+  } else {
+    summary.existing_news++;
   }
 
   for (var m = 0; m < matches.length; m++) {
@@ -565,5 +573,6 @@ exports.__test = {
   decodeXml: decodeXml,
   isEditoriallyRelevant: isEditoriallyRelevant,
   hasAfricaSignal: hasAfricaSignal,
-  shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch
+  shouldPublishWithoutCreatorMatch: shouldPublishWithoutCreatorMatch,
+  shouldInsertNewsCandidate: shouldInsertNewsCandidate
 };
