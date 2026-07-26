@@ -13,6 +13,7 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const EDGE_DIR = path.join(ROOT, 'netlify', 'edge-functions');
+const ROUTE_MAP_PATH = path.join(EDGE_DIR, '_shared', 'locale-route-map.js');
 
 // Must mirror BLOCKED_ROOT_DIRS in scripts/build-locale-route-map.js.
 const BLOCKED_ROOT_DIRS = new Set([
@@ -64,7 +65,12 @@ function originStatus(pathname) {
 // route map) and evaluating the result as a data: URL. This also asserts the
 // generated map still has the shape the function expects.
 async function loadRouteFallback() {
-  const mapSource = fs.readFileSync(path.join(EDGE_DIR, 'locale-route-map.js'), 'utf8');
+  assert.equal(
+    fs.existsSync(path.join(EDGE_DIR, 'locale-route-map.js')),
+    false,
+    'generated route-map data must stay outside top-level Edge Function discovery'
+  );
+  const mapSource = fs.readFileSync(ROUTE_MAP_PATH, 'utf8');
   const marker = 'export default ';
   const start = mapSource.indexOf(marker);
   assert.ok(start !== -1, 'locale-route-map.js must have a default export');

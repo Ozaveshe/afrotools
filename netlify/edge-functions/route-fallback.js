@@ -16,7 +16,7 @@
 // 2. Trailing slash on directory paths, unchanged from the original
 //    trailing-slash function: only redirect when the origin would 404 and the
 //    trailing-slash form actually resolves.
-import LOCALE_ROUTES, { ALIASES } from './locale-route-map.js';
+import LOCALE_ROUTES, { ALIASES } from './_shared/locale-route-map.js';
 
 // Locale path prefix -> map letter. 'e' is the unprefixed (English) root.
 const LOCALE_LETTERS = { fr: 'f', sw: 's', ha: 'h', yo: 'y' };

@@ -17,7 +17,12 @@
  * a path body to the locale that actually owns it, and verify the target
  * returns 200 before redirecting.
  *
- * Output: netlify/edge-functions/locale-route-map.js
+ * Output: netlify/edge-functions/_shared/locale-route-map.js
+ *
+ * The generated map lives in a shared-module subdirectory. Netlify discovers
+ * top-level JavaScript modules in `netlify/edge-functions` as Edge Functions,
+ * but a subdirectory is only a function when it contains an index file or a
+ * same-named module. This file is imported data, not a standalone function.
  *
  *   export default { "<normalized path body>": "<prefix flags>" }
  *   export const ALIASES = { "<normalized path body>": "<canonical route>" }
@@ -44,7 +49,7 @@ const path = require('path');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const ROOT = path.resolve(__dirname, '..');
-const OUT_PATH = path.join(ROOT, 'netlify', 'edge-functions', 'locale-route-map.js');
+const OUT_PATH = path.join(ROOT, 'netlify', 'edge-functions', '_shared', 'locale-route-map.js');
 
 // Must mirror BLOCKED_ROOT_DIRS in scripts/build-dist.js — a route that is not
 // copied into dist/ must never become a redirect target.
@@ -217,7 +222,7 @@ function main() {
 
   if (check) {
     if (current !== next) {
-      console.error('build-locale-route-map: netlify/edge-functions/locale-route-map.js is stale. Run `npm run locale:route-map`.');
+      console.error('build-locale-route-map: netlify/edge-functions/_shared/locale-route-map.js is stale. Run `npm run locale:route-map`.');
       process.exit(1);
     }
     console.log(`build-locale-route-map: up to date (${result.count} routes).`);
@@ -229,6 +234,7 @@ function main() {
     return;
   }
 
+  fs.mkdirSync(path.dirname(OUT_PATH), { recursive: true });
   writeFileSyncWithRetry(OUT_PATH, next, 'utf8');
   console.log(`build-locale-route-map: wrote ${result.count} routes (${(next.length / 1024).toFixed(0)} KB).`);
 }
