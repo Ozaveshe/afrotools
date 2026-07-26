@@ -197,6 +197,10 @@ function ensureAccessibilityRuntime(rel) {
   const runtimePattern = /^[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gim;
   let html = read(rel);
   const existingScripts = html.match(runtimePattern) || [];
+  // SEO and analytics post-processing may place another deferred script after
+  // this runtime. A single valid runtime is already correct; moving it on every
+  // surface check would make the pre-SEO generator and final build disagree.
+  if (existingScripts.length === 1) return;
   const versionedScript = existingScripts.find((tag) => /\?v=[a-f0-9]{8}/i.test(tag));
   const script = versionedScript ? versionedScript.trim() : canonicalScript;
   html = html.replace(runtimePattern, '');

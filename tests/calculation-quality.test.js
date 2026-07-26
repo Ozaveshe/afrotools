@@ -57,6 +57,43 @@ test('legacy HTML formula digests ignore presentation-only disclosure state', fu
   assert.strictEqual(quality.digestFile(ROOT, egyptRoute.artifactPath), egyptRoute.artifactDigest);
 });
 
+test('HTML formula digests ignore lazy analytics cache versions only', function () {
+  const formulaPage = (cacheVersion, rate) => [
+    '<html><body><script>',
+    'const rate = ' + rate + ';',
+    'function calculate(amount) { return amount * rate; }',
+    'const printable = \'<script defer src="/assets/js/lazy-analytics.js?v=' + cacheVersion + '"><\\/script>\';',
+    '</script></body></html>'
+  ].join('\n');
+  const shellPage = (cacheVersion) =>
+    '<html><body><script src="/assets/js/lazy-analytics.js?v=' + cacheVersion + '" defer></script></body></html>';
+
+  assert.strictEqual(
+    quality.digestHtmlFormulaSource(formulaPage('2cd970f9', '0.15')),
+    quality.digestHtmlFormulaSource(formulaPage('630f8a7d', '0.15'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(formulaPage('11111111', '0.15')),
+    quality.digestHtmlFormulaSource(formulaPage('11111111', '0.16'))
+  );
+  assert.strictEqual(
+    quality.digestHtmlFormulaSource(shellPage('2cd970f9')),
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d')),
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d').replace('lazy-analytics.js', 'analytics.js'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d')),
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d').replace('" defer>', '&mode=debug" defer>'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(shellPage('630f8a7d')),
+    quality.digestHtmlFormulaSource('<html><body></body></html>')
+  );
+});
+
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {
   const verification = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/tool-verification.json'), 'utf8'));
   const result = quality.checkHighRiskRouteTraceability(verification, artifacts.formulas);

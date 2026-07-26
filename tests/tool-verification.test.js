@@ -4,7 +4,13 @@ const fs = require('fs');
 const path = require('path');
 
 const ROOT = path.resolve(__dirname, '..');
-const EXCLUDED_DIRS = new Set(['.git', '.netlify', '.cache', 'audit-results', 'dist', 'node_modules', 'playwright-report', 'test-results']);
+const EXCLUDED_DIRS = new Set([
+  'audit-results',
+  'dist',
+  'node_modules',
+  'playwright-report',
+  'test-results'
+]);
 const TARGET_RE = /(^|[\\/])(?:fr[\\/])?[^\\/]+[\\/](?:[a-z]{2}-(?:paye|vat)|ng-salary-tax)\.html$/i;
 const EXPLICIT_TARGETS = new Set(['tools/ng-cgt/index.html', 'fr/tools/ng-plus-value/index.html', 'ha/kayan-aiki/cgt-najeriya/index.html', 'tools/ng-cit/index.html', 'fr/tools/ng-impot-societes/index.html', 'ha/kayan-aiki/cit-najeriya/index.html', 'yo/awon-ise/cit-naijiria/index.html', 'fr/algerie/calculateur-tva.html', 'sw/algeria/kikokotoo-vat/index.html', 'sw/angola/kikokotoo-vat/index.html', 'fr/benin/calculateur-tva.html', 'sw/benin/kikokotoo-vat/index.html', 'fr/comores/calculateur-tva.html', 'sw/comoros/kikokotoo-vat/index.html']);
 const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
@@ -12,7 +18,7 @@ const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
 function walk(start, out = []) {
   if (!fs.existsSync(start)) return out;
   for (const entry of fs.readdirSync(start, { withFileTypes: true })) {
-    if (EXCLUDED_DIRS.has(entry.name)) continue;
+    if (entry.isDirectory() && (entry.name.startsWith('.') || EXCLUDED_DIRS.has(entry.name))) continue;
     const fullPath = path.join(start, entry.name);
     if (entry.isDirectory()) {
       walk(fullPath, out);

@@ -118,24 +118,22 @@ function normalizeLegacyHtmlFormulaScript(source) {
   );
 }
 
-function digestFile(root, relativePath) {
-  let source = fs.readFileSync(path.join(root, relativePath), "utf8");
-  if (
-    /^netlify\/functions\/_engines\/[a-z]{2}-paye\.js$/i.test(
-      slash(relativePath),
-    )
-  ) {
-    // Review scheduling metadata does not change calculation behavior. The
-    // explicit marker keeps these fields outside protected formula digests,
-    // while every unmarked engine line remains covered by the digest gate.
-    source = source.replace(
-      /^[ \t]*\/\* source-confidence-stamp:start \*\/[\s\S]*?^[ \t]*\/\* source-confidence-stamp:end \*\/\r?\n?(?:[ \t]*\r?\n)?/gm,
-      "",
-    );
-  }
-  if (!relativePath.endsWith(".html")) return digestText(source);
+function normalizeHtmlFormulaPresentation(source) {
+  // The lazy analytics asset version is a deployment cache key, not executable
+  // calculator logic. It can appear in the page shell or inside a printable
+  // HTML template that otherwise contains a protected formula. Normalize only
+  // the exact eight-character build hash so real script paths and formula code
+  // remain covered by the digest gate.
+  return String(source).replace(
+    /(assets\/js\/lazy-analytics\.js\?v=)[a-f0-9]{8}/gi,
+    "$1__FORMULA_DIGEST_CACHE__",
+  );
+}
+
+function digestHtmlFormulaSource(source) {
+  const normalizedSource = normalizeHtmlFormulaPresentation(source);
   const executableScripts = [];
-  for (const match of source.matchAll(
+  for (const match of normalizedSource.matchAll(
     /<script\b([^>]*)>([\s\S]*?)<\/script>/gi,
   )) {
     const attributes = match[1] || "";
@@ -156,8 +154,27 @@ function digestFile(root, relativePath) {
   return digestText(
     executableScripts.length
       ? executableScripts.join("\n/* formula-script-boundary */\n")
-      : source,
+      : normalizedSource,
   );
+}
+
+function digestFile(root, relativePath) {
+  let source = fs.readFileSync(path.join(root, relativePath), "utf8");
+  if (
+    /^netlify\/functions\/_engines\/[a-z]{2}-paye\.js$/i.test(
+      slash(relativePath),
+    )
+  ) {
+    // Review scheduling metadata does not change calculation behavior. The
+    // explicit marker keeps these fields outside protected formula digests,
+    // while every unmarked engine line remains covered by the digest gate.
+    source = source.replace(
+      /^[ \t]*\/\* source-confidence-stamp:start \*\/[\s\S]*?^[ \t]*\/\* source-confidence-stamp:end \*\/\r?\n?(?:[ \t]*\r?\n)?/gm,
+      "",
+    );
+  }
+  if (!relativePath.endsWith(".html")) return digestText(source);
+  return digestHtmlFormulaSource(source);
 }
 
 function routeToFile(root, route) {
@@ -5236,5 +5253,6 @@ module.exports = {
   generateQualityReport,
   reportMarkdown,
   stableJson,
+  digestHtmlFormulaSource,
   digestFile,
 };

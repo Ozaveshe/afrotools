@@ -82,6 +82,16 @@ walk(path.join(ROOT, 'ha')).forEach((file) => {
 
 const visible = audit.buildReport();
 assert.strictEqual(visible.counts.blockers, 0, 'Hausa visible-copy audit has blockers');
+const unchangedLedger = audit.preserveGeneratedAt(
+  { generatedAt: '2026-07-26T00:00:00.000Z', counts: { blockers: 0 } },
+  { generatedAt: '2026-07-24T00:00:00.000Z', counts: { blockers: 0 } }
+);
+assert.strictEqual(unchangedLedger.generatedAt, '2026-07-24T00:00:00.000Z', 'unchanged Hausa ledgers must preserve their timestamp');
+const changedLedger = audit.preserveGeneratedAt(
+  { generatedAt: '2026-07-26T00:00:00.000Z', counts: { blockers: 1 } },
+  { generatedAt: '2026-07-24T00:00:00.000Z', counts: { blockers: 0 } }
+);
+assert.strictEqual(changedLedger.generatedAt, '2026-07-26T00:00:00.000Z', 'changed Hausa ledgers must receive a fresh timestamp');
 const coverage = coverageApi.buildReport();
 assert.strictEqual(coverage.summary.total, 105);
 assert.strictEqual(coverage.summary['english-fallback'], 32);

@@ -463,8 +463,24 @@ function buildReport() {
   };
 }
 
+function preserveGeneratedAt(report, previous) {
+  if (!previous || typeof previous !== "object") return report;
+  const before = { ...previous, generatedAt: null };
+  const after = { ...report, generatedAt: null };
+  if (JSON.stringify(before) !== JSON.stringify(after)) return report;
+  return { ...report, generatedAt: previous.generatedAt };
+}
+
 function main() {
-  const report = buildReport();
+  let report = buildReport();
+  if (fs.existsSync(REPORT_JSON)) {
+    try {
+      const previous = JSON.parse(fs.readFileSync(REPORT_JSON, "utf8"));
+      report = preserveGeneratedAt(report, previous);
+    } catch (_error) {
+      // A malformed prior report should be replaced by a valid fresh report.
+    }
+  }
   fs.mkdirSync(path.dirname(REPORT_JSON), { recursive: true });
   fs.writeFileSync(REPORT_JSON, `${JSON.stringify(report, null, 2)}\n`, "utf8");
   fs.writeFileSync(REPORT_MD, buildMarkdown(report), "utf8");
@@ -478,4 +494,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { buildReport, main };
+module.exports = { buildReport, main, preserveGeneratedAt };

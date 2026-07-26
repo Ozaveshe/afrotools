@@ -7,11 +7,23 @@ const { ROOT, dedupeRepeatedParagraphs } = require('./lib/content-integrity');
 
 const WRITE = process.argv.includes('--write');
 const CHECK = process.argv.includes('--check') || !WRITE;
-const SKIP = new Set(['.git', 'dist', 'node_modules', 'reports', 'test-results', 'tests']);
+const SKIP = new Set([
+  'artifacts',
+  'audit-results',
+  'dist',
+  'node_modules',
+  'reports',
+  'test-results',
+  'tests'
+]);
+
+function shouldSkipDirectory(name) {
+  return name.startsWith('.') || SKIP.has(name);
+}
 
 function walk(dir, output = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
-    if (SKIP.has(entry.name)) continue;
+    if (entry.isDirectory() && shouldSkipDirectory(entry.name)) continue;
     const file = path.join(dir, entry.name);
     if (entry.isDirectory()) walk(file, output);
     else if (entry.isFile() && entry.name.endsWith('.html')) output.push(file);
@@ -43,3 +55,5 @@ function main() {
 }
 
 if (require.main === module) main();
+
+module.exports = { shouldSkipDirectory, walk };
