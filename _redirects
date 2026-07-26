@@ -763,6 +763,9 @@
 /sw/tools/*                    /tools/:splat                     301
 /sw/countries/                 /sw/nchi/                         301
 /sw/countries                  /sw/nchi/                         301
+# Swahili contact page is /sw/wasiliana/; the English slug never existed under /sw/.
+/sw/contact                    /sw/wasiliana/                    301
+/sw/contact/                   /sw/wasiliana/                    301
 
 # Search Console legacy language aliases from old generated paths.
 # Exact stale localized aliases must stay before the broad language catch-alls.
@@ -832,10 +835,14 @@
 /yo/crypto/*                   /crypto/:splat                    301
 /ha/tools/*                    /tools/:splat                     301
 /yo/tools/*                    /tools/:splat                     301
+# /zana/ is the Swahili tool namespace, so every prefix-swapped variant of it
+# belongs to /sw/zana/. Sending /ha/zana/<swahili-slug> to /tools/<swahili-slug>
+# (as this did until 2026-07-26) just 301s into a second 404 — the English
+# namespace has no Swahili slugs.
 /fr/zana/*                     /sw/zana/:splat                   301
 /zana/*                        /sw/zana/:splat                   301
-/ha/zana/*                     /tools/:splat                     301
-/yo/zana/*                     /tools/:splat                     301
+/ha/zana/*                     /sw/zana/:splat                   301
+/yo/zana/*                     /sw/zana/:splat                   301
 
 # Search Console country-code and legacy localized country tool aliases.
 /mz                            /mozambique/                      301
@@ -949,6 +956,49 @@
 /fr/:country/:page    /:country/:page     301
 /fr/:country/         /:country/          301
 /fr/:country          /:country/          301
+
+
+# ── SEO cleanup (Jul 2026): targeted redirects for GSC 404s ──
+# These MUST stay above the `/tools/:tool` and `/:page` placeholder rules below.
+# Netlify takes the first matching rule, so anything placed after a placeholder
+# that matches the same shape is dead: the whole block previously sat below them
+# and never fired (/tools/rent-own-abroad/ was still 404ing on 2026-07-26).
+#
+# Docs hub was removed from deploy; PDF hub content lives in the Document & PDF category
+/docs/pdf-tools-hub.html   /document-pdf/        301
+/docs/pdf-tools-hub        /document-pdf/        301
+# Renamed / consolidated / retired tools
+/tools/rent-own-abroad/         /tools/rent-vs-buy/            301
+/tools/rent-own-abroad          /tools/rent-vs-buy/            301
+/tools/property-transfert-cost/ /tools/property-transfer-cost/ 301
+/tools/property-transfert-cost  /tools/property-transfer-cost/ 301
+/tools/ielts-toefl-converter/   /tools/ielts-calculator/       301
+/tools/ielts-toefl-converter    /tools/ielts-calculator/       301
+/tools/oil-production/          /tools/oil-well-production/    301
+/tools/oil-production           /tools/oil-well-production/    301
+/tools/label-branding-cost/     /tools/made-in-africa-label/   301
+/tools/label-branding-cost      /tools/made-in-africa-label/   301
+/tools/overseas-healthcare/     /tools/medical-tourism/        301
+/tools/overseas-healthcare      /tools/medical-tourism/        301
+/tools/return-migration/        /diaspora/                     301
+/tools/return-migration         /diaspora/                     301
+/tools/double-taxation/         /salary-tax/                   301
+/tools/double-taxation          /salary-tax/                   301
+# Car landed cost publishes a country page only where data/trade/car-import-cost-*.json
+# exists (GH, KE, NG, TZ, UG, ZM). Every other country deep-link goes to the
+# calculator itself rather than a fabricated country page. Non-forced, so the six
+# real country pages keep serving.
+/tools/car-import-cost/*   /tools/car-import-cost/  301
+# French country hub reached without /fr/ prefix
+/guinee-equatoriale/*      /fr/guinee-equatoriale/:splat  301
+/guinee-equatoriale        /fr/guinee-equatoriale/        301
+# Retired experiments — tell crawlers these are permanently gone
+/games/*                   /404.html             410
+/games                     /404.html             410
+/matchday-os/*             /404.html             410
+/wp-admin/*                /404.html             410
+/wp-login.php              /404.html             410
+/xmlrpc.php                /404.html             410
 
 # BEGIN AUTO HTML CANONICAL ALIASES
 # Generated from HTML pages whose preferred canonical route differs from the .html file URL.
@@ -3530,27 +3580,16 @@
 # Country & top-level pages: /xyz → /xyz/index.html (200, no redirect)
 /:page                /:page/index.html                200
 
-# ── SEO cleanup (Jul 2026): targeted redirects for GSC 404s ──
-# Docs hub was removed from deploy; PDF hub content lives in the Document & PDF category
-/docs/pdf-tools-hub.html   /document-pdf/        301
-/docs/pdf-tools-hub        /document-pdf/        301
-# Renamed / consolidated tools
-/tools/rent-own-abroad/    /tools/rent-vs-buy/   301
-/tools/rent-own-abroad     /tools/rent-vs-buy/   301
-# French country hub reached without /fr/ prefix
-/guinee-equatoriale/*      /fr/guinee-equatoriale/:splat  301
-/guinee-equatoriale        /fr/guinee-equatoriale/        301
-# Retired experiments — tell crawlers these are permanently gone
-/matchday-os/*             /404.html             410
-/wp-admin/*                /404.html             410
-/wp-login.php              /404.html             410
-/xmlrpc.php                /404.html             410
-
 # ── Language-prefix fallbacks (must stay LAST; non-forced so real pages win).
-# Old language-switcher builds emitted prefix-swapped URLs that never existed;
-# send any leftover phantom language path to its English equivalent.
-/fr/*   /:splat   301
-/sw/*   /:splat   301
-/ha/*   /:splat   301
-/yo/*   /:splat   301
+# Cross-locale phantom paths (/ha/zana/…, /tools/generateur-boq/, /mauritius/kikokotoo-vat/)
+# are now resolved by the `route-fallback` edge function, which looks the path body
+# up in netlify/edge-functions/locale-route-map.js and verifies the target returns
+# 200 before redirecting. The old blanket `/fr/* /:splat` rules are gone: they
+# stripped the locale prefix even when no English page existed, turning a 404 into
+# a 301 that landed on another 404. Only the asset passthrough is kept, because the
+# edge function deliberately skips static assets.
+/fr/assets/*   /assets/:splat   301
+/sw/assets/*   /assets/:splat   301
+/ha/assets/*   /assets/:splat   301
+/yo/assets/*   /assets/:splat   301
 # Inventory Calculator compatibility aliases
