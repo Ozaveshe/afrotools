@@ -156,7 +156,7 @@
   </div>
 </section>
 
-<div class="t-main">
+<div class="t-main" role="main">
   <div class="container">
 
     <!-- Input card -->
@@ -358,6 +358,17 @@ function calculate(){
 }
 
 function buildChart(series, sym, currency){
+  if (typeof Chart !== 'function') {
+    var canvas = document.getElementById('histChart');
+    if (canvas) {
+      canvas.hidden = true;
+      canvas.insertAdjacentHTML(
+        'afterend',
+        '<p class="calc-note" role="status">The trend chart is unavailable offline. The calculated totals and scenario table remain available below.</p>'
+      );
+    }
+    return;
+  }
   var labels = series.map(function(s){ return s.month; });
   var values = series.map(function(s){ return Math.round(s.localCost); });
   var ctx = document.getElementById('histChart').getContext('2d');
