@@ -93,6 +93,12 @@ class AfroRelatedTools extends HTMLElement {
   }
 
   _imageKey(t) {
+    const hasResolvedImage = t && Object.prototype.hasOwnProperty.call(t, 'imageExt');
+    if (hasResolvedImage) {
+      const resolvedExt = t.imageExt;
+      const resolvedKey = typeof t.imageKey === 'string' ? t.imageKey.trim() : '';
+      return (resolvedExt === 'svg' || resolvedExt === 'webp') ? resolvedKey : '';
+    }
     const candidates = [
       t && t.imageKey,
       t && t.imageId,
@@ -108,7 +114,9 @@ class AfroRelatedTools extends HTMLElement {
   }
 
   _imageExt(t, imageKey) {
-    if (t && (t.imageExt === 'svg' || t.imageExt === 'webp')) return t.imageExt;
+    if (t && Object.prototype.hasOwnProperty.call(t, 'imageExt')) {
+      return (t.imageExt === 'svg' || t.imageExt === 'webp') ? t.imageExt : '';
+    }
     const extMap = (typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined') ? TOOL_CARD_IMAGE_EXTENSIONS : null;
     if (extMap && imageKey && extMap[imageKey]) return extMap[imageKey];
     // The manifest ships with the lazily-loaded registry; before it arrives,

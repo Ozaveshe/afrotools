@@ -285,18 +285,26 @@ test('related tools uses a monogram immediately when the loaded manifest has no 
     <html lang="en">
       <head><title>Related tools fallback</title></head>
       <body>
-        <afro-related-tools category="mining" data-ssr="1">
-          <nav data-related-tools-ssr>
-            <a data-related-tool data-id="missing-artwork" data-name="Missing artwork"
-              data-icon="MR" data-desc="A related mining tool." data-category="mining"
-              href="/tools/missing-artwork/">Missing artwork</a>
-          </nav>
-        </afro-related-tools>
+        <afro-related-tools category="mining"></afro-related-tools>
       </body>
     </html>
   `);
   await page.evaluate(() => {
-    window.TOOL_CARD_IMAGE_EXTENSIONS = { 'known-artwork': 'webp' };
+    window.AFRO_RELATED_TOOLS = {
+      buckets: {
+        'en::mining': [{
+          id: 'missing-artwork',
+          name: 'Missing artwork',
+          icon: 'MR',
+          desc: 'A related mining tool.',
+          href: '/tools/missing-artwork/',
+          category: 'mining',
+          lang: 'en',
+          imageExt: ''
+        }]
+      },
+      fallback: { en: [] }
+    };
   });
   await page.addScriptTag({ content: source });
 

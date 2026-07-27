@@ -117,9 +117,11 @@ assert.match(miningRoyalty, /gEl\.focus\(\)/);
 assert.match(miningRoyalty, /gEl\.addEventListener\('input', clearResultForEdit\)/);
 
 const relatedTools = read('assets/js/components/related-tools.js');
+assert.match(relatedTools, /Object\.prototype\.hasOwnProperty\.call\(t, 'imageExt'\)/);
+assert.match(relatedTools, /return \(resolvedExt === 'svg' \|\| resolvedExt === 'webp'\) \? resolvedKey : '';/);
 assert.match(relatedTools, /const match = candidates\.find\(key => extMap\[key\]\);\s*return match \|\| '';/);
 const relatedToolsMin = read('assets/js/components/related-tools.min.js');
-assert.match(relatedToolsMin, /return \w+\?\w+\.find\(\w+=>\w+\[\w+\]\)\|\|"":\w+\[0\]\|\|""/);
+assert.match(relatedToolsMin, /Object\.prototype\.hasOwnProperty\.call\(\w+,"imageExt"\)/);
 
 const engineeringRuntime = read('assets/js/engineering-toolkit.js');
 assert.doesNotMatch(engineeringRuntime, /capture-lead|engineering-pdf-gate/);
