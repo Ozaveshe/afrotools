@@ -141,37 +141,86 @@ function extractFigures(text) {
   return numbers;
 }
 
-async function askModel(prompt) {
-  const key = process.env.ANTHROPIC_API_KEY;
-  if (!key) return { skipped: true, reason: "ANTHROPIC_API_KEY not set" };
+const ASK_SUFFIX = "\n\nAnswer with the monthly PAYE and the monthly take-home as plain numbers.";
+
+/* Providers are read from the environment only — a key is never accepted as an
+ * argument, so it cannot end up in a shell history or a committed script. */
+const PROVIDERS = {
+  openai: {
+    label: "OpenAI",
+    envKey: "OPENAI_API_KEY",
+    defaultModel: "gpt-5",
+    async call(prompt, key, model) {
+      const response = await fetch("https://api.openai.com/v1/chat/completions", {
+        method: "POST",
+        headers: { "content-type": "application/json", authorization: "Bearer " + key },
+        body: JSON.stringify({
+          model,
+          messages: [{ role: "user", content: prompt + ASK_SUFFIX }]
+        })
+      });
+      if (!response.ok) {
+        const detail = await response.text().catch(() => "");
+        return { skipped: true, reason: "http " + response.status + " " + detail.slice(0, 120) };
+      }
+      const data = await response.json();
+      const text = ((data.choices || [])[0] || {}).message;
+      return { text: (text && text.content) || "" };
+    }
+  },
+  anthropic: {
+    label: "Anthropic",
+    envKey: "ANTHROPIC_API_KEY",
+    defaultModel: "claude-sonnet-4-5",
+    async call(prompt, key, model) {
+      const response = await fetch("https://api.anthropic.com/v1/messages", {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+          "x-api-key": key,
+          "anthropic-version": "2023-06-01"
+        },
+        body: JSON.stringify({
+          model,
+          max_tokens: 500,
+          messages: [{ role: "user", content: prompt + ASK_SUFFIX }]
+        })
+      });
+      if (!response.ok) {
+        const detail = await response.text().catch(() => "");
+        return { skipped: true, reason: "http " + response.status + " " + detail.slice(0, 120) };
+      }
+      const data = await response.json();
+      return { text: (data.content || []).map((part) => part.text || "").join(" ") };
+    }
+  }
+};
+
+function selectedProviders() {
+  const flag = process.argv.find((arg) => arg.startsWith("--provider="));
+  const wanted = flag ? flag.split("=")[1].split(",") : Object.keys(PROVIDERS);
+  return wanted
+    .map((name) => PROVIDERS[name] && Object.assign({ name }, PROVIDERS[name]))
+    .filter(Boolean)
+    .filter((provider) => !!process.env[provider.envKey]);
+}
+
+async function askModel(provider, prompt) {
+  const key = process.env[provider.envKey];
+  if (!key) return { skipped: true, reason: provider.envKey + " not set" };
+  const model = process.env[provider.name.toUpperCase() + "_BENCH_MODEL"] ||
+    process.env.AFRO_BENCH_MODEL || provider.defaultModel;
   try {
-    const response = await fetch("https://api.anthropic.com/v1/messages", {
-      method: "POST",
-      headers: {
-        "content-type": "application/json",
-        "x-api-key": key,
-        "anthropic-version": "2023-06-01"
-      },
-      body: JSON.stringify({
-        model: process.env.AFRO_BENCH_MODEL || "claude-sonnet-4-5",
-        max_tokens: 400,
-        messages: [{
-          role: "user",
-          content: prompt + "\n\nGive the monthly PAYE and monthly take-home as plain numbers."
-        }]
-      })
-    });
-    if (!response.ok) return { skipped: true, reason: "http " + response.status };
-    const data = await response.json();
-    const text = (data.content || []).map((part) => part.text || "").join(" ");
-    return { text };
+    const result = await provider.call(prompt, key, model);
+    return Object.assign({ model }, result);
   } catch (err) {
-    return { skipped: true, reason: err.message.slice(0, 60) };
+    return { skipped: true, reason: err.message.slice(0, 80) };
   }
 }
 
 async function main() {
   const win = loadEngines();
+  const providers = WITH_MODEL ? selectedProviders() : [];
   const rows = [];
 
   for (const testCase of CASES) {
@@ -187,55 +236,68 @@ async function main() {
       within(afro.taxMonthly, truth.taxMonthly, TOLERANCE) &&
       within(afro.netMonthly, truth.netMonthly, TOLERANCE);
 
-    let model = { skipped: true, reason: "not requested" };
-    let modelCorrect = null;
-    if (WITH_MODEL) {
-      model = await askModel(testCase.prompt);
-      if (!model.skipped) {
-        const figures = extractFigures(model.text);
-        // Credit the model if EITHER key figure appears anywhere in its answer.
-        modelCorrect = figures.some((value) => within(value, truth.taxMonthly, TOLERANCE)) &&
+    const models = {};
+    for (const provider of providers) {
+      const reply = await askModel(provider, testCase.prompt);
+      let correct = null;
+      if (!reply.skipped) {
+        const figures = extractFigures(reply.text);
+        // Credit the model if BOTH key figures appear anywhere in its answer,
+        // in any order or format. Deliberately generous: we are testing whether
+        // the number is right, not how it chose to present it.
+        correct = figures.some((value) => within(value, truth.taxMonthly, TOLERANCE)) &&
           figures.some((value) => within(value, truth.netMonthly, TOLERANCE));
       }
+      models[provider.name] = { reply, correct, label: provider.label };
     }
 
-    rows.push({ testCase, truth, afro, afroCorrect, model, modelCorrect });
+    rows.push({ testCase, truth, afro, afroCorrect, models });
   }
 
-  console.log("=== Afro 1.0 vs frontier model — African statutory maths ===");
+  console.log("=== Afro 1.0 vs frontier models — African statutory maths ===");
   console.log("Ground truth computed by the engines behind each country's calculator.");
-  console.log("Correct = both monthly PAYE and monthly take-home within " + (TOLERANCE * 100) + "%.\n");
+  console.log("Correct = both monthly PAYE and monthly take-home within " + (TOLERANCE * 100) + "%.");
+  console.log("Fluency earns nothing; only the number counts.\n");
 
-  rows.forEach(({ testCase, truth, afro, afroCorrect, model, modelCorrect }) => {
+  rows.forEach(({ testCase, truth, afro, afroCorrect, models }) => {
     console.log(testCase.id + "  (" + testCase.why + ")");
-    console.log("   truth      PAYE " + truth.currency + " " + Math.round(truth.taxMonthly).toLocaleString("en-US") +
-      " / net " + truth.currency + " " + Math.round(truth.netMonthly).toLocaleString("en-US"));
-    console.log("   afro 1.0   " + (afroCorrect ? "CORRECT" : "wrong  ") + "  " +
+    console.log("   truth        PAYE " + truth.currency + " " + Math.round(truth.taxMonthly).toLocaleString("en-US") +
+      "  /  net " + truth.currency + " " + Math.round(truth.netMonthly).toLocaleString("en-US"));
+    console.log("   Afro 1.0     " + (afroCorrect ? "CORRECT" : "wrong  ") + "  " +
       (afro.answered
-        ? truth.currency + " " + Math.round(afro.taxMonthly).toLocaleString("en-US") + " / " +
+        ? truth.currency + " " + Math.round(afro.taxMonthly).toLocaleString("en-US") + "  /  " +
           truth.currency + " " + Math.round(afro.netMonthly).toLocaleString("en-US")
         : "declined: " + afro.reason));
-    if (WITH_MODEL) {
-      console.log("   frontier   " + (model.skipped ? "skipped (" + model.reason + ")"
-        : (modelCorrect ? "CORRECT" : "wrong") + "  " + String(model.text).replace(/\s+/g, " ").slice(0, 90)));
-    }
+    Object.keys(models).forEach((name) => {
+      const entry = models[name];
+      const head = "   " + entry.label.padEnd(12);
+      if (entry.reply.skipped) {
+        console.log(head + "skipped (" + entry.reply.reason + ")");
+        return;
+      }
+      const figures = extractFigures(entry.reply.text).slice(0, 6);
+      console.log(head + (entry.correct ? "CORRECT" : "wrong  ") + "  figures seen: " +
+        figures.map((f) => Math.round(f).toLocaleString("en-US")).join(", ").slice(0, 70));
+    });
     console.log("");
   });
 
   const afroScore = rows.filter((row) => row.afroCorrect).length;
-  console.log("Afro 1.0        " + afroScore + "/" + rows.length + " exact");
-  if (WITH_MODEL) {
-    const scored = rows.filter((row) => row.modelCorrect !== null);
-    if (!scored.length) {
-      console.log("Frontier model  not run — set ANTHROPIC_API_KEY to include it");
-    } else {
-      console.log("Frontier model  " + scored.filter((row) => row.modelCorrect).length + "/" + scored.length + " exact");
-    }
+  console.log("SCORE (exact figures)");
+  console.log("  Afro 1.0      " + afroScore + "/" + rows.length);
+  if (!providers.length) {
+    console.log("  frontier      not run — pass --with-model with OPENAI_API_KEY and/or ANTHROPIC_API_KEY set");
   } else {
-    console.log("Frontier model  not run — pass --with-model (requires ANTHROPIC_API_KEY)");
+    providers.forEach((provider) => {
+      const scored = rows.filter((row) => row.models[provider.name] && row.models[provider.name].correct !== null);
+      const won = scored.filter((row) => row.models[provider.name].correct).length;
+      const model = (rows[0] && rows[0].models[provider.name] && rows[0].models[provider.name].reply.model) || "";
+      console.log("  " + provider.label.padEnd(13) + (scored.length ? won + "/" + scored.length : "0 scored") +
+        (model ? "   (" + model + ")" : ""));
+    });
   }
-  console.log("\nScope: this measures bundled-engine tasks only. Outside them a frontier");
-  console.log("model is the stronger system, and the claim should never be stretched past this.");
+  console.log("\nScope: bundled-engine tasks only. Outside them a frontier model is the");
+  console.log("stronger system, and the claim should never be stretched past this.");
 }
 
 main();
