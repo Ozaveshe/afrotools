@@ -336,24 +336,8 @@ const DATA = {
   }
 };
 
-let modified = 0;
-
-for (const [slug, info] of Object.entries(DATA)) {
-  const filePath = path.join(DIR, slug + '.html');
-  if (!fs.existsSync(filePath)) {
-    console.log(`SKIP (not found): ${slug}.html`);
-    continue;
-  }
-
-  let html = fs.readFileSync(filePath, 'utf8');
-
-  // Check if content already added
-  if (html.includes('class="seo-content"')) {
-    console.log(`SKIP (already has seo-content): ${slug}.html`);
-    continue;
-  }
-
-  const seoBlock = `
+function renderSeoBlock(info) {
+  return `
 <section class="seo-content" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
 <h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Fertilizer Use in ${info.name}</h2>
 <p style="font-size:0.92rem;line-height:1.7;color:#6B7280;">${info.market}</p>
@@ -365,20 +349,42 @@ for (const [slug, info] of Object.entries(DATA)) {
 <p style="font-size:0.92rem;line-height:1.7;color:#6B7280;">${info.subsidy}</p>
 </section>
 `;
-
-  // Insert after </main> and before <afro-footer>
-  const insertPoint = html.indexOf('</main>');
-  if (insertPoint === -1) {
-    console.log(`SKIP (no </main> found): ${slug}.html`);
-    continue;
-  }
-
-  const afterMain = insertPoint + '</main>'.length;
-  html = html.slice(0, afterMain) + '\n' + seoBlock + '\n' + html.slice(afterMain);
-
-  fs.writeFileSync(filePath, html, 'utf8');
-  modified++;
-  console.log(`DONE: ${slug}.html`);
 }
 
-console.log(`\nTotal fertilizer pages modified: ${modified}`);
+module.exports = { DATA, renderSeoBlock };
+
+if (require.main === module) {
+  let modified = 0;
+
+  for (const [slug, info] of Object.entries(DATA)) {
+    const filePath = path.join(DIR, slug + '.html');
+    if (!fs.existsSync(filePath)) {
+      console.log(`SKIP (not found): ${slug}.html`);
+      continue;
+    }
+
+    let html = fs.readFileSync(filePath, 'utf8');
+
+    // Check if content already added
+    if (html.includes(`Fertilizer Use in ${info.name}`)) {
+      console.log(`SKIP (already has country fertilizer content): ${slug}.html`);
+      continue;
+    }
+
+    // Insert after </main> and before <afro-footer>
+    const insertPoint = html.indexOf('</main>');
+    if (insertPoint === -1) {
+      console.log(`SKIP (no </main> found): ${slug}.html`);
+      continue;
+    }
+
+    const afterMain = insertPoint + '</main>'.length;
+    html = html.slice(0, afterMain) + '\n' + renderSeoBlock(info) + '\n' + html.slice(afterMain);
+
+    fs.writeFileSync(filePath, html, 'utf8');
+    modified++;
+    console.log(`DONE: ${slug}.html`);
+  }
+
+  console.log(`\nTotal fertilizer pages modified: ${modified}`);
+}

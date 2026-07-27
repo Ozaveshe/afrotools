@@ -42,5 +42,68 @@ assert.match(
   }),
   /NGN 4,838,400/
 );
+assert.match(
+  calculators.calculate('cassava-processing-calculator', {
+    rawCost: 250000, yieldKg: 650, sellPrice: 650, otherCost: 90000, currency: 'NGN'
+  }),
+  /NGN 82,500.*19\.5%/
+);
+assert.match(
+  calculators.calculate('farm-loans-hub', {
+    monthlyRevenue: 650000, repayment: 180000, collateral: 'no', currency: 'NGN'
+  }),
+  /27\.7%.*not an eligibility or approval result/
+);
+assert.match(
+  calculators.calculate('crop-insurance', {
+    farmValue: 750000, premiumRate: 5, excess: 10, currency: 'NGN'
+  }),
+  /NGN 37,500.*NGN 75,000/
+);
+assert.match(
+  calculators.calculate('farm-payroll-calculator', {
+    workers: 12, dailyWage: 3500, days: 20, currency: 'NGN'
+  }),
+  /NGN 840,000/
+);
+assert.match(
+  calculators.calculate('livestock-feed-calculator', {
+    animals: 25, kgPerDay: 2.5, feedPrice: 420, days: 30, currency: 'NGN'
+  }),
+  /1,875\.0 kg.*NGN 787,500/
+);
+assert.match(
+  calculators.calculate('poultry-roi-calculator', {
+    birds: 500, feedCost: 1200000, otherCosts: 800000, salePrice: 6500, mortality: 5, currency: 'NGN'
+  }),
+  /475 birds.*NGN 1,087,500/
+);
+assert.match(
+  calculators.calculate('vaccination-schedule', {
+    animals: 40, doseCost: 650, visits: 2, currency: 'NGN'
+  }),
+  /80 dose events.*NGN 52,000.*does not set a vaccination schedule/
+);
+assert.match(
+  calculators.calculate('harvest-date-estimator', {
+    plantingDate: '2026-04-01', crop: 'maize', maturityDays: 110, weatherRisk: 'medium'
+  }),
+  /July 20, 2026/
+);
+assert.match(
+  calculators.calculate('input-prices', {
+    priceA: 18500, transportA: 0, priceB: 17200, transportB: 2500, currency: 'NGN'
+  }),
+  /Supplier A landed unit cost NGN 18,500.*Supplier B NGN 19,700.*NGN 1,200/
+);
 
-console.log('Day 6 Agriculture family calculator fixtures passed.');
+assert.match(
+  calculators.validate({ checkValidity: () => true }, { mortality: 101 }),
+  /Mortality must be between/
+);
+assert.match(
+  calculators.validate({ checkValidity: () => true }, { plantingDate: 'not-a-date' }),
+  /valid planting date/
+);
+
+console.log('Day 6 Agriculture family calculator fixtures passed for all 16 maintained entry workflows.');

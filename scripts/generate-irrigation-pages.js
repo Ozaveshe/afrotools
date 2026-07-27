@@ -6,10 +6,54 @@
 
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'agriculture/irrigation/nigeria.html');
 const OUTPUT_DIR = path.join(ROOT, 'agriculture/irrigation');
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g,
+    (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+}
+
+function renderCountryFacts(country, data) {
+  const stats = data.agriStats || {};
+  const food = Array.isArray(stats.mainFoodCrops) ? stats.mainFoodCrops.slice(0, 6).map((item) => String(item).replace(/_/g, ' ')).join(', ') : '';
+  const exports = Array.isArray(stats.mainExportCrops) ? stats.mainExportCrops.slice(0, 5).map((item) => String(item).replace(/_/g, ' ')).join(', ') : '';
+  const rows = [];
+  if (stats.gdpSharePercent != null) rows.push(`<tr><th scope="row">Agriculture share of GDP</th><td>~${escapeHtml(stats.gdpSharePercent)}%</td></tr>`);
+  if (stats.arableLandHectares != null) rows.push(`<tr><th scope="row">Arable land</th><td>${escapeHtml(Number(stats.arableLandHectares).toLocaleString('en-US'))} ha</td></tr>`);
+  if (stats.irrigatedPercent != null) rows.push(`<tr><th scope="row">Irrigated share</th><td>~${escapeHtml(stats.irrigatedPercent)}%</td></tr>`);
+  if (food) rows.push(`<tr><th scope="row">Main food crops</th><td>${escapeHtml(food)}</td></tr>`);
+  if (exports) rows.push(`<tr><th scope="row">Main export crops</th><td>${escapeHtml(exports)}</td></tr>`);
+  const regions = (data.regions || []).slice(0, 8).map((region) =>
+    `<tr><td>${escapeHtml(region.name)}</td><td>${escapeHtml(region.annualRainfall_mm)} mm</td><td>${escapeHtml((region.majorCrops || []).slice(0, 5).join(', '))}</td></tr>`
+  ).join('');
+  return `<section class="seo-content agri-country-facts" data-country-id="${escapeHtml(country.code)}" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: ${escapeHtml(country.name)}</h2>
+<p>${escapeHtml(country.name)} irrigation estimates use crop, region, planting date, area and efficiency assumptions from the ${escapeHtml(country.code)} agriculture dataset. Check field conditions before applying national averages.</p>
+<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody>${rows.join('')}</tbody></table>
+${regions ? `<h3 style="font-size:.95rem;font-weight:700;margin:1.2rem 0 .4rem;">Growing regions at a glance</h3><table style="width:100%;border-collapse:collapse;font-size:.82rem;"><thead><tr><th>Region</th><th>Annual rainfall</th><th>Major crops</th></tr></thead><tbody>${regions}</tbody></table>` : ''}
+<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset - planning reference, not an irrigation prescription. Confirm with local extension services.</p>
+</section>`;
+}
+
+function setIdentityMeta(html, country, data) {
+  const values = {
+    'afrotools-currency': data.currency,
+    'afrotools-formula-jurisdiction': country.code,
+    'afrotools-source-jurisdiction': country.code,
+    'afrotools-country-id': country.code
+  };
+  for (const name of Object.keys(values)) {
+    html = html.replace(new RegExp(`<meta name="${name}"[^>]*>\\s*`, 'g'), '');
+  }
+  const tags = Object.entries(values).map(([name, value]) =>
+    `<meta name="${name}" content="${escapeHtml(value)}">`
+  ).join('\n');
+  return html.replace('<meta charset="UTF-8">', `<meta charset="UTF-8">\n${tags}`);
+}
 
 // Country configurations (same as crop-yield generator, adapted for irrigation)
 const countries = [
@@ -72,7 +116,15 @@ const countries = [
 const template = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
 countries.forEach(c => {
+  const dataSandbox = { window: { AfroTools: {} } };
+  vm.createContext(dataSandbox);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'data/agriculture', c.dataFile), 'utf8'), dataSandbox, { filename: c.dataFile });
+  const countryData = dataSandbox.window.AfroTools.countryData;
+  if (!countryData || countryData.countryCode !== c.code) {
+    throw new Error(`[IRRIGATION_DATA_COUNTRY_MISMATCH] ${c.dataFile} must declare ${c.code}`);
+  }
   let html = template;
+  html = setIdentityMeta(html, c, countryData);
 
   // ── Title & meta ──
   html = html.replace(/Irrigation Water Calculator for Nigeria/g, `Irrigation Water Calculator for ${c.name}`);
@@ -90,6 +142,10 @@ countries.forEach(c => {
 
   // ── Breadcrumb ──
   html = html.replace(/Irrigation Calculators<\/a> &rsaquo;\s*\n\s*Nigeria/g, `Irrigation Calculators</a> &rsaquo;\n      ${c.name}`);
+  html = html.replace(
+    /"position":4,"name":"Nigeria","item":"https:\/\/afrotools\.com\/agriculture\/irrigation\/([^"]+)"/g,
+    `"position":4,"name":"${c.name}","item":"https://afrotools.com/agriculture/irrigation/$1"`
+  );
 
   // ── Hero H1 flag ──
   html = html.replace(/&#127475;&#127468;/g, c.flag);
@@ -115,6 +171,10 @@ countries.forEach(c => {
   // ── Country info paragraph (Nigeria-specific references) ──
   html = html.replace(/Nigeria's GDP/g, `${c.name}'s GDP`);
   html = html.replace(/Nigeria\\\'s GDP/g, `${c.name}'s GDP`);
+  html = html.replace(/current="irrigation-nigeria"/g, `current="irrigation-${c.slug}"`);
+  const inheritedFacts = /<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/;
+  if (!inheritedFacts.test(html)) throw new Error(`[IRRIGATION_COUNTRY_FACTS_OWNER_MISSING] ${c.slug}`);
+  html = html.replace(inheritedFacts, renderCountryFacts(c, countryData));
 
   // Write output
   const outPath = path.join(OUTPUT_DIR, `${c.slug}.html`);

@@ -1,6 +1,6 @@
 # Day 6 Agriculture, Transport and Trade evidence
 
-Branch base: `origin/main` at `ff501112a155374a304e6fa4b16fd3d83a1fe38f`
+Branch base refreshed before handoff: `origin/main` at `24f6aeb22f8aad529cea1384f96db780dd08a611`
 
 Proof boundary: this file records local source and browser evidence only. It does not edit the master readiness ledger and does not claim generated-artifact, preview, deployment or live production proof.
 
@@ -10,13 +10,13 @@ The maintained inventory selects registry rows whose category is `agriculture`, 
 
 | Category | English live/new registry routes | Hub | Hub-visible contract |
 |---|---:|---|---|
-| Agriculture | 447 | `/agriculture/` | Registry-backed taxonomy covers all 447 explicit routes |
+| Agriculture | 447 | `/agriculture/` | Static task directory covers all 447 explicit routes |
 | Transport & Logistics | 18 | `/transport/` | 23 cards: 18 category routes plus five cross-category planning routes |
 | Trade & Import | 22 | `/trade/` | 22 cards, matching the current live/new registry slice |
 
 The prior master-ledger snapshot lists Transport 17 and Trade 13 because it predates the current `phase: NEW` rows. Those rows remain separate acceptance targets here.
 
-The full app-specific inventory, file ownership, metadata, control count and artwork receipt is maintained in `reports/day6-agriculture-transport-trade-route-inventory.json`.
+The full app-specific inventory, file ownership, metadata and control receipt is maintained in `reports/day6-agriculture-transport-trade-route-inventory.json`. The deeper Agriculture implementation receipt is in `docs/DAY6-AGRICULTURE-DEEP-IMPROVEMENT-EVIDENCE.md`; artwork remains separate.
 
 ## Agriculture family reconciliation
 
@@ -41,7 +41,7 @@ The remaining Agriculture rows are individually enumerated in the route inventor
 
 ## Functional repairs and independent fixtures
 
-Seven family entry apps previously reused the same generic quantity/unit-cost/buffer form and returned an input echo. They now own job-specific deterministic calculations, invalid-input failure, stale-result clearing, reset and live output:
+The initial seven repaired family entries have been expanded to 16 maintained job-specific deterministic workflows with invalid-input failure, stale-result clearing, reset and live output. The full 16-app formula list and country-family repair receipts are recorded in `docs/DAY6-AGRICULTURE-DEEP-IMPROVEMENT-EVIDENCE.md`.
 
 | Route | Independent fixture |
 |---|---|
@@ -70,10 +70,10 @@ All changing agronomy, buyer-price and construction assumptions remain user-ente
 
 | Gate | Result |
 |---|---|
-| `npm run test:day6-category` | Pass: 487 explicit routes and seven independent Agriculture formulas |
+| `npm run test:day6-category` | Pass: 487 explicit routes, 16 independent Agriculture formulas and 414 country-route identities |
 | Day 6 category hub browser contract | Pass: Agriculture 447, Transport 23, Trade 22; route, focus, mobile, 200% reflow, theme, canonical and schema |
 | Day 6 exhaustive browser route contract | Pass: all 487 routes; 320px, 375px, 200% reflow, theme, metadata and schema |
-| Day 6 Agriculture browser fixtures | Pass: seven workflows with deterministic result, invalid input, stale-result clearing, reset, labels, focus and live output |
+| Day 6 Agriculture browser fixtures | Pass: 16 workflows with deterministic result, invalid input, stale-result clearing, reset, labels, focus and live output |
 | Day 6 Transport/Trade browser workflows | Pass: all 40 routes; primary workflows, named/focusable controls, local export parsing and no external write requests |
 | `npm run category-workflow:verify` | Pass |
 | `npm run agriculture:taxonomy` | Pass: 447/447 bucketed, no duplicate or missing assignments |
@@ -89,7 +89,7 @@ All changing agronomy, buyer-price and construction assumptions remain user-ente
 | `npm run lint` / `npm run type-check` / `npm run security:scan` | Pass |
 | `git diff --check` | Pass |
 
-The broad deploy build was intentionally not run under the Day 6 contract. No deployment or live-production claim is made.
+The broad deploy build was intentionally not run locally under the Day 6 contract. Current `origin/main` leaves the generated formula registry stale for multiple non-Day-6 routes, so the external calculation-quality job fails; this branch adds no seed-engine digest mismatch and does not edit the prohibited generated hash registry. The automatic Netlify PR preview failed during its build stage and published no preview. No deployment or live-production claim is made.
 
 ## Artwork
 
