@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const ARCHITECTURE_PATH = path.join(ROOT, "data", "ai", "product-architecture.json");
@@ -135,8 +136,7 @@ function buildReport() {
 }
 
 function writeReport(filePath, report) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(report, null, 2) + "\n");
+  writeStableGeneratedJson(filePath, report);
 }
 
 function main() {

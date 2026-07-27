@@ -9,6 +9,7 @@ const corpusBuilder = require("./generate-ai-tool-call-corpus.js");
 const splitBuilder = require("./build-ai-model-training-splits.js");
 const evalRunner = require("./evaluate-ai-tool-call-corpus.js");
 const catalogPackBuilder = require("./generate-ai-tool-catalog-pack.js");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(ROOT, "data", "ai", "ai-system-readiness-report.json");
@@ -149,8 +150,7 @@ function buildReport() {
 }
 
 function writeReport(filePath, report) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(report, null, 2) + "\n");
+  writeStableGeneratedJson(filePath, report);
 }
 
 function main() {

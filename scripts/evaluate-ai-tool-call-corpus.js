@@ -8,6 +8,7 @@ const router = require("../assets/js/ai/intent-router.js");
 const manifestApi = require("../assets/js/ai/tool-manifest.js");
 const promptRegistry = require("../assets/js/ai/prompt-registry.js");
 const invocationRuntime = require("../assets/js/ai/tool-invocation-runtime.js");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_REPORT = path.join(ROOT, "data", "ai", "tool-call-eval-report.json");
@@ -244,8 +245,7 @@ function runEvaluation() {
 }
 
 function writeReport(filePath, report) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(report, null, 2) + "\n");
+  writeStableGeneratedJson(filePath, report);
 }
 
 function main() {

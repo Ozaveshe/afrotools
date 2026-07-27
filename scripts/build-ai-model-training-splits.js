@@ -4,6 +4,7 @@ const fs = require("fs");
 const path = require("path");
 
 const corpusBuilder = require("./generate-ai-tool-call-corpus.js");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT_DIR = path.join(ROOT, "data", "ai", "model-training");
@@ -205,7 +206,7 @@ function main() {
     writeJsonl(path.join(outputDir, "router-tool-call-train.jsonl"), result.records.filter((record) => record.split === "train"));
     writeJsonl(path.join(outputDir, "router-tool-call-validation.jsonl"), result.records.filter((record) => record.split === "validation"));
     writeJsonl(path.join(outputDir, "router-tool-call-test.jsonl"), result.records.filter((record) => record.split === "test"));
-    fs.writeFileSync(reportPath, JSON.stringify(result.report, null, 2) + "\n");
+    writeStableGeneratedJson(reportPath, result.report);
   }
   if (json) {
     console.log(JSON.stringify(result.report, null, 2));
