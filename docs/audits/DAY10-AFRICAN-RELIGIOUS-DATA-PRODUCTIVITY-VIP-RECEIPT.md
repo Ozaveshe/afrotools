@@ -27,7 +27,13 @@ Expanded experiences are not counted as canonical destinations. The additional 1
 - African apps accepted: **0 of 35**; left: **35**.
 - Religious & Cultural apps accepted: **0 of 22**; left: **22**.
 
-The 57 left apps were browser-executed for route, interaction, reflow, theme, keyboard, status, and network-smoke coverage. They are not accepted because this pass does not yet contain an independent expected-output oracle for each app, and many require claim-by-claim source or authority review. A shared-helper repair is not counted as individual-app evidence.
+The 57 left apps were browser-executed for route, interaction, reflow, theme,
+keyboard, status, and network-smoke coverage. The corrected full matrix is
+**72/72 green** and excludes global newsletter/footer controls from app input.
+They are not accepted because this pass does not yet contain an independent
+expected-output oracle for each app, and many require claim-by-claim source or
+authority review. A shared-helper repair is not counted as individual-app
+evidence.
 
 ### Accepted Data & Productivity apps
 
@@ -78,6 +84,11 @@ These remain left until arithmetic/reference output is independently proved per 
 - `git diff --check`
 
 The maintained category browser suite uses the registry inventory and serially exercises all three hubs followed by every canonical app. It covers 320px and 375px viewports, 200% root-font reflow, light/manual-dark/system-dark modes, reduced motion, keyboard focus, labels/live regions, browser storage visibility, and unexpected console, page, and URL-leak signals.
+
+The full corrected run passed **72/72**. The legacy-page fallback explicitly
+excludes navbar, footer and newsletter controls, preventing the earlier false
+workflow and synthetic-email submission on Africa Conflict while preserving
+real controls on pages without a semantic `main`.
 
 The static contract also proves that every one of the 69 canonical routes has a registry search name/description and is present in the committed `data/ai/tool-catalog-pack.json`, in addition to its title, description, canonical, schema, source/freshness language, and confidence boundary.
 

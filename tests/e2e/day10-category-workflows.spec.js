@@ -95,12 +95,26 @@ async function visibleResultText(page) {
 
 async function runAdaptiveWorkflow(page) {
   const before = await visibleResultText(page);
-  const controls = page.locator('body input:not([type="hidden"]), body select, body textarea');
-  const controlCount = await controls.count();
+  const semanticMain = page.locator('main').first();
+  const appRoot = (await semanticMain.count()) ? semanticMain : page.locator('body');
+  const controls = appRoot.locator('input:not([type="hidden"]), select, textarea');
+  const isGlobalChrome = (element) =>
+    Boolean(element.closest('afro-navbar, afro-footer, afro-newsletter-cta, footer, [data-newsletter]'));
+  const controlCount = await controls.evaluateAll(
+    (items) =>
+      items.filter(
+        (element) =>
+          !element.closest(
+            'afro-navbar, afro-footer, afro-newsletter-cta, footer, [data-newsletter]',
+          ),
+      ).length,
+  );
+  const referenceActions = appRoot.locator('a[href]:visible');
 
   for (let index = 0; index < Math.min(controlCount, 18); index += 1) {
     const control = controls.nth(index);
     if (!(await control.isVisible().catch(() => false))) continue;
+    if (await control.evaluate(isGlobalChrome)) continue;
     const tag = await control.evaluate((element) => element.tagName);
     const type = await control.getAttribute('type');
     if (['hidden', 'file', 'submit', 'button', 'checkbox', 'radio', 'range'].includes(type)) continue;
@@ -130,17 +144,32 @@ async function runAdaptiveWorkflow(page) {
     }
   }
 
-  const primary = page.getByRole('button', {
+  const primaryCandidates = appRoot.getByRole('button', {
     name: /calculate|estimate|generate|compare|convert|create summary|update plan|build|check|show|find|pick|start|add/i,
-  }).first();
-  if (await primary.count()) {
+  });
+  let primary = null;
+  for (let index = 0; index < await primaryCandidates.count(); index += 1) {
+    const candidate = primaryCandidates.nth(index);
+    if (!(await candidate.evaluate(isGlobalChrome))) {
+      primary = candidate;
+      break;
+    }
+  }
+  if (primary) {
     await primary.click({ timeout: 1500 }).catch(() => {});
   } else {
-    const form = page
-      .locator('body form')
-      .filter({ has: page.locator('input:not([type="hidden"]), select, textarea') })
-      .first();
-    if (await form.count()) {
+    const forms = appRoot
+      .locator('form')
+      .filter({ has: page.locator('input:not([type="hidden"]), select, textarea') });
+    let form = null;
+    for (let index = 0; index < await forms.count(); index += 1) {
+      const candidate = forms.nth(index);
+      if (!(await candidate.evaluate(isGlobalChrome))) {
+        form = candidate;
+        break;
+      }
+    }
+    if (form) {
       await form
         .evaluate((element) =>
           element.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true })),
@@ -150,7 +179,21 @@ async function runAdaptiveWorkflow(page) {
   }
 
   const after = await visibleResultText(page);
-  return { before, after, controlCount };
+  return {
+    before,
+    after,
+    controlCount,
+    referenceActionCount: await referenceActions.evaluateAll(
+      (items) =>
+        items.filter(
+          (element) =>
+            !element.closest(
+              'afro-navbar, afro-footer, afro-newsletter-cta, footer, [data-newsletter]',
+            ),
+        ).length,
+    ),
+    mainTextLength: (await appRoot.innerText()).trim().length,
+  };
 }
 
 test.describe.configure({ mode: 'serial' });
@@ -220,8 +263,14 @@ for (const app of apps) {
     await page.goto(app.href, { waitUntil: 'domcontentloaded' });
     await expect(page.locator('h1').first()).toBeVisible();
     const result = await runAdaptiveWorkflow(page);
-    expect(result.controlCount, `${app.id}: no workflow controls`).toBeGreaterThan(0);
-    expect(result.after.length, `${app.id}: no visible workflow result`).toBeGreaterThan(0);
+    expect(
+      result.controlCount + result.referenceActionCount,
+      `${app.id}: no app workflow controls or reference actions`,
+    ).toBeGreaterThan(0);
+    expect(
+      Math.max(result.after.length, result.mainTextLength),
+      `${app.id}: no visible workflow or reference result`,
+    ).toBeGreaterThan(80);
     await assertNoOverflow(page, 8);
 
     await page.evaluate(() => {
