@@ -21,6 +21,22 @@ External context worth remembering:
 
 Treat French as a long-term acquisition channel, not a side translation project.
 
+## Measurement Window For The 2026 French Product Waves
+
+AfroTools launched at the end of March 2026. Search-performance gates for the
+current French product waves must therefore use the available launch-to-date
+window, from the first verified production impressions through the review date.
+
+- Do not require 32 weeks, 16 months, or any other pre-launch history.
+- Record the exact Search Console start and end dates whenever evidence is
+  available.
+- Compare French pages by route cohort, query intent, country, indexation,
+  impressions, clicks, CTR, and average position within that real window.
+- Mark unavailable or not-yet-mature evidence as `not yet measurable`; do not
+  convert it into a failed product-quality gate.
+- Product correctness, privacy, mobile, accessibility, metadata, hreflang, and
+  browser/PDF tests remain release gates even when the traffic window is short.
+
 ## Historical Repo Reality As Of April 15, 2026
 
 The April baseline showed that the French layer was substantial but inconsistent:

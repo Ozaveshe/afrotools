@@ -57,16 +57,30 @@ assert(!/Published guides|Tool-led articles|All Articles|Read article|Loading ar
 assert(fs.existsSync(path.join(ROOT, 'fr/blog/feed.xml')), 'French blog must publish a locale-specific feed');
 
 const home = read('fr/index.html');
-assert(/data-registry-count="tools.live_experiences"/.test(home), 'French homepage tool total must consume the canonical registry selector');
-for (const selector of ['countries.published', 'categories.published', 'languages.site_published']) {
-  assert(home.includes(`data-registry-count="${selector}"`), `French homepage must consume ${selector}`);
-}
+assert(/data-registry-count="tools.locale.fr.published"/.test(home), 'French homepage proof must consume the canonical French registry selector');
+assert(!/data-registry-count="tools.live_experiences"/.test(home), 'French homepage must not present the global tool total as French coverage');
 assert(!/Nigeria PAYE Calculator|Suggestions, examples|Calculate →|Feature catégories|Chaque outil sous 100 Ko|Fonctionne en 2G/i.test(home), 'French homepage must not retain mixed-language legacy showcase or unsupported performance claims');
 assert(/Le pays change la juridiction/.test(home) && /La langue change l’interface/.test(home), 'French homepage must keep country and language as separate dimensions');
+for (const href of [
+  '/fr/senegal/calculateur-salaire-net',
+  '/fr/cote-divoire/calculateur-tva',
+  '/fr/tools/generateur-factures/',
+  '/fr/tools/convertisseur-devises/'
+]) {
+  assert(home.includes(`href="${href}"`), `French homepage must link directly to ${href}`);
+}
+assert(/property="og:locale" content="fr_FR"/.test(home), 'French homepage must publish a French Open Graph locale');
+const homeSchemas = [...home.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g)].map((match) => JSON.parse(match[1]));
+const homeGraph = homeSchemas.flatMap((schema) => schema['@graph'] || [schema]);
+const collectionPage = homeGraph.find((item) => item['@type'] === 'CollectionPage');
+const featuredList = homeGraph.find((item) => item['@type'] === 'ItemList');
+assert(collectionPage && collectionPage.inLanguage === 'fr', 'French homepage schema must identify a French CollectionPage');
+assert(featuredList && featuredList.numberOfItems === 4 && featuredList.itemListElement.length === 4, 'French homepage schema must mirror the four visible featured tools');
 
 const directory = read('fr/all-tools/index.html');
 assert(/data-registry-count="tools.locale.fr.published"/.test(directory), 'French directory headline count must use the named French registry selector');
-assert(/t\.lang === 'fr'/.test(directory) && /startsWith\('\/fr\/'\)/.test(directory), 'French directory must render only records with genuine French routes');
+assert(/AFRO_TOOLS\.filter\(t => \(t\.lang \|\| 'en'\) === PAGE_LANG\)/.test(directory), 'French directory must filter registry records through the active French page language');
+assert(/function hydrateSearchFromUrl\(\)/.test(directory) && /URLSearchParams\(window\.location\.search\)\.get\('q'\)/.test(directory), 'French directory must hydrate the homepage search query from the URL');
 assert(/<div class="tools-grid" id="toolsGrid">[\s\S]*?PROGRESSIVE_DIRECTORY_FALLBACK_START[\s\S]*?<a href="\/fr\/[^"]+"[^>]*data-directory-record/.test(directory), 'French directory must provide useful no-JavaScript navigation before hydration');
 assert(!/>All <|>Live <|>Sort:|>Health<|>Engineering<|>Trade<|>Legal<|>Language<|>Energy<|>Career</i.test(directory), 'French directory controls and category labels must not expose English UI');
 
