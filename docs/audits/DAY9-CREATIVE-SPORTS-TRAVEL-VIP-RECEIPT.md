@@ -20,17 +20,17 @@ This receipt keeps discovery destinations, expanded experiences, and translation
 Local acceptance after this pass:
 
 - Hubs: **3 accepted / 0 left**
-- English app/destination surfaces: **100 accepted / 3 left**
-- Creative: **76 accepted / 3 left** across 79 landing plus expanded surfaces
+- English app/destination surfaces: **103 accepted / 0 left**
+- Creative: **79 accepted / 0 left** across 79 landing plus expanded surfaces
 - Sports: **15 accepted / 0 left**
 - Travel & Tourism: **9 accepted / 0 left**
 
-The three surfaces left are `creator-clip/app`, `creator-record/app`, and
-`creator-voice/app`. Their core workspaces, local input paths, privacy boundary,
-mobile reflow, and static media-output implementation were checked, but real
-device capture plus reopened codec output was not accepted in headless Chromium.
-They must not be described as fully VIP-ready until a device-permission lane
-reopens their WebM/WAV output.
+`creator-clip/app`, `creator-record/app`, and `creator-voice/app` now have
+synthetic-device browser proof in addition to their workspace checks.
+CreatorClip imported, exported and reopened a real WebM file; CreatorRecord
+captured, downloaded and reopened WebM audio; CreatorVoice captured microphone
+audio and exported a reopened RIFF/WAVE file. Physical-device permission prompts
+remain a manual release check, but codec/output acceptance is complete.
 
 ## Hub-first work
 
@@ -112,6 +112,11 @@ Reopened artifact proof:
 - CreatorThumb PNG reopened at exactly 1280 x 720.
 - CreatorResize PNG reopened at exactly 1080 x 1080.
 - CreatorResize rejected a synthetic text file before editor processing.
+- CreatorClip WebM had the expected EBML signature and reopened with non-zero
+  duration and dimensions.
+- CreatorRecord WebM had the expected EBML signature and reopened as playable
+  audio.
+- CreatorVoice WAV had valid RIFF/WAVE markers and reopened as playable audio.
 
 CreatorStock no longer substitutes invented provider, photo, or licensing
 results when its source is unavailable. CreatorKit no longer claims a generated
@@ -152,13 +157,16 @@ Passed:
   Resize PNG, and invalid upload all passed
 - `node --check` on the changed Day 9 helpers and browser specs
 - `git diff --check`
+- Full Day 9 browser matrix, including synthetic media devices and reopened
+  codec output: **165/165 passed**
 
 Browser runs used the maintained `playwright.day9.config.js` on port 4199 because
 other serialized lanes occupied the repository's default 4173 server.
 
 ## Risks and serialization notes
 
-- Device media capture remains the explicit three-app blocker described above.
+- Physical microphone/camera permission UX remains a manual release check; the
+  automated device, binary-format and codec-reopen lane is green.
 - The Sports and Travel helpers and the two Creative helpers are category-scoped
   shared files. They do not change the navbar, design system, registry, or
   localized output, but a director should serialize them with other category
