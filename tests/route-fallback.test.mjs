@@ -160,13 +160,51 @@ for (const [from, to] of cases) {
   check(`${from} -> ${to}`, { status, location }, { status: 301, location: `https://afrotools.com${to}` });
 }
 
-// ── 3. Paths with no target still 404 — never a redirect into another 404 ───
+// ── 3. Explicit static redirects win over cross-locale recovery ────────────
+// Explicit static redirects must win over cross-locale recovery. Netlify
+// evaluates the Edge Function before `_redirects`; the first context.next()
+// call represents that static alias, while a request argument would mean the
+// locale map tried to steal the route first.
+for (const [from, explicitTarget] of [
+  ['/fr/tools/remittance-v2', '/fr/tools/transfert-v2/'],
+  ['/sw/tools/vat-calculator', '/sw/zana/kikokotoo-vat/']
+]) {
+  let calls = 0;
+  const response = await routeFallback(
+    new Request(`https://afrotools.com${from}`),
+    {
+      next: async (req) => {
+        calls += 1;
+        if (req) return new Response(null, { status: 200 });
+        return new Response(null, {
+          status: 301,
+          headers: { Location: `https://afrotools.com${explicitTarget}` }
+        });
+      }
+    }
+  );
+  check(
+    `${from} preserves its explicit static redirect`,
+    {
+      status: response.status,
+      location: response.headers.get('Location'),
+      calls
+    },
+    {
+      status: 301,
+      location: `https://afrotools.com${explicitTarget}`,
+      calls: 1
+    }
+  );
+}
+
+// ── 4. Paths with no target still 404 — never a redirect into another 404 ───
 for (const dead of ['/nonexistent-page/', '/fr/nonexistent-page/', '/bin/sh']) {
   const { status } = await request(dead);
   check(`${dead} stays 404`, status, 404);
 }
 
-// ── 4. Assets and API routes are passed straight through ────────────────────
+// ── 5. Assets and API routes are passed straight through ────────────────────
 for (const passthrough of ['/assets/js/app.js', '/api/forex', '/.netlify/functions/ai-advisor']) {
   const { status } = await request(passthrough);
   check(`${passthrough} passes through`, status, 404); // origin's answer, unmodified
