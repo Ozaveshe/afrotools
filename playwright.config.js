@@ -1,1 +1,28 @@
-const{defineConfig:defineConfig,devices:devices}=require("@playwright/test");module.exports=defineConfig({testDir:"./tests/e2e",timeout:6e4,expect:{timeout:7e3},fullyParallel:!0,workers:4,reporter:[["list"]],use:{baseURL:process.env.PLAYWRIGHT_BASE_URL||"http://127.0.0.1:4173",trace:"retain-on-failure",serviceWorkers:"block"},webServer:{command:"node tests/support/static-server.js",url:"http://127.0.0.1:4173",reuseExistingServer:!process.env.CI,timeout:12e4},projects:[{name:"chromium",use:{...devices["Desktop Chrome"]}}]});
+const { defineConfig, devices } = require('@playwright/test');
+
+const testPort = Number(process.env.PORT || 4173);
+const testBaseUrl = process.env.PLAYWRIGHT_BASE_URL || `http://127.0.0.1:${testPort}`;
+
+module.exports = defineConfig({
+  testDir: './tests/e2e',
+  timeout: 60000,
+  expect: { timeout: 7000 },
+  fullyParallel: true,
+  workers: 4,
+  reporter: [['list']],
+  use: {
+    baseURL: testBaseUrl,
+    trace: 'retain-on-failure',
+    serviceWorkers: 'block'
+  },
+  webServer: {
+    command: 'node tests/support/static-server.js',
+    url: testBaseUrl,
+    reuseExistingServer: !process.env.CI,
+    timeout: 120000
+  },
+  projects: [{
+    name: 'chromium',
+    use: { ...devices['Desktop Chrome'] }
+  }]
+});

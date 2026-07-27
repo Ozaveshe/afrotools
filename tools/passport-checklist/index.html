@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>African Passport Application Checklist & Fees | AfroTools</title>
-<meta name="description" content="Get a country-specific passport application checklist for Nigeria, Kenya, South Africa, Ghana, Egypt and more. See exact fees, timelines, required documents, and issuing authorities.">
+<title>African Passport Application Preparation Checklist | AfroTools</title>
+<meta name="description" content="Build a passport application preparation checklist for supported African countries, then verify current fees, timelines, appointments, and documents with the official authority.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta property="og:title" content="African Passport Application Checklist | AfroTools">
-<meta property="og:description" content="Country-specific passport requirements, fees, and document checklists for African countries.">
+<meta property="og:description" content="Prepare a country-specific passport checklist and continue to the official authority for current requirements.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/passport-checklist.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/passport-checklist/">
@@ -17,7 +17,7 @@
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="African Passport Application Checklist | AfroTools">
-<meta name="twitter:description" content="Country-specific passport requirements, fees, and document checklists for African countries.">
+<meta name="twitter:description" content="Prepare a country-specific passport checklist and verify current requirements with the official authority.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/passport-checklist.webp">
 <meta property="article:modified_time" content="2026-03-29">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -35,7 +35,7 @@
       "@type": "WebApplication",
       "name": "African Passport Application Checklist",
       "url": "https://afrotools.com/tools/passport-checklist/",
-      "description": "Country-specific passport application checklist with fees, timelines, and required documents for African countries.",
+      "description": "Country-specific passport preparation checklist with an official-authority handoff for current fees, timelines, appointments, and required documents.",
       "applicationCategory": "GovernmentApplication",
       "operatingSystem": "Any",
       "offers": {
@@ -145,11 +145,11 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <section class="tool-hero"><div class="tool-hero-inner">
 <div class="breadcrumb"><a href="/">Home</a> / <a href="/government/">Government &amp; Civic</a> / <span>Passport Checklist</span></div>
 <h1>African <em>Passport Application</em> Checklist</h1>
-<p class="hero-sub">Get a tailored checklist of documents, fees, and timelines for passport applications in Nigeria, Kenya, South Africa, Ghana, Egypt and 5 more African countries.</p>
+<p class="hero-sub">Build a country-specific preparation checklist, then confirm the current fee, processing time, appointment route, and final document list on the linked official authority portal.</p>
 <div class="hero-badges">
-  <span class="badge b-em">10 Countries</span>
-  <span class="badge b-em">Standard &amp; Express</span>
-  <span class="badge b-em">2026 Fees</span>
+  <span class="badge b-em">11 country routes</span>
+  <span class="badge b-em">First-time &amp; renewal</span>
+  <span class="badge b-em">Official-source handoff</span>
 </div>
 </div></section>
 
@@ -202,9 +202,10 @@ select:focus,input:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 </div>
 
 <button type="button" class="btn btn-primary" onclick="generateChecklist()">Generate Checklist</button>
+<button type="button" class="btn" onclick="resetChecklist()" style="margin-top:8px">Reset</button>
 </div></div>
 
-<div class="card" id="resultCard" style="display:none">
+<div class="card" id="resultCard" style="display:none" aria-live="polite">
 <div class="card-head"><span class="card-title" id="resultTitle">Passport Details</span></div>
 <div class="card-body">
 <div class="result-grid" id="resultGrid"></div>
@@ -286,19 +287,19 @@ function setReason(r) {
   document.getElementById('btn-renewal').classList.toggle('active', r === 'renewal');
 }
 
-var PASSPORT_FEES = {
-  NG: { standard: { pages32: 35000, pages64: 70000 }, express: { pages32: 55000, pages64: 100000 }, currency: "NGN", symbol: "₦", authority: "Nigeria Immigration Service (NIS)", timeline: "6 weeks (standard), 3 weeks (express)", portal: "https://portal.immigration.gov.ng", notes: "NIN linkage mandatory since 2020." },
-  KE: { standard: 4550, express: 8550, currency: "KES", symbol: "KES", authority: "Directorate of Immigration", timeline: "10–21 days (standard), 7–10 days (express)", portal: "https://ecitizen.go.ke", notes: "50-page biometric passport. Apply via eCitizen portal." },
-  ZA: { standard: 400, currency: "ZAR", symbol: "R", authority: "Department of Home Affairs (DHA)", timeline: "4–8 weeks", portal: "https://www.dha.gov.za", notes: "Smart ID card: R140. Both documents issued by DHA.", pages: "32" },
-  GH: { standard: { pages32: 100, pages48: 150 }, express: { pages32: 200, pages48: 250 }, currency: "GHS", symbol: "GH₵", authority: "Passport Application Centre (PAC)", timeline: "15 working days (standard), 5 days (express)", portal: "https://passport.mfa.gov.gh", notes: "Online application at passport.mfa.gov.gh before visiting centre." },
-  EG: { standard: 500, currency: "EGP", symbol: "EGP", authority: "Ministry of Interior — Passports Authority", timeline: "15–30 days", notes: "Renewal requires presenting old passport. Cairo passport office processes fastest." },
-  ET: { standard: 400, currency: "ETB", symbol: "ETB", authority: "Immigration, Nationality and Vital Events Agency (INVEA)", timeline: "3–6 weeks", notes: "Main office in Addis Ababa. Regional offices available." },
-  TZ: { standard: 50000, currency: "TZS", symbol: "TZS", authority: "Immigration Services Department", timeline: "21 working days", notes: "Apply at zonal offices countrywide." },
-  RW: { standard: 40000, currency: "RWF", symbol: "RWF", authority: "Directorate General of Immigration & Emigration", timeline: "5–10 days", portal: "https://irembo.gov.rw", notes: "Rwanda has fastest processing in East Africa. Apply via Irembo portal." },
-  MA: { standard: 300, currency: "MAD", symbol: "MAD", authority: "Direction Générale de la Sûreté Nationale (DGSN)", timeline: "4–6 weeks", notes: "Biometric passport. Apply at regional police headquarters (Wilaya)." },
-  CI: { currency: "XOF", symbol: "XOF", authority: "Office National d'Identification (ONI)", timeline: "4–8 weeks", notes: "ECOWAS biometric passport. Fee varies by urgency." },
-  TN: { currency: "TND", symbol: "TND", authority: "Ministry of Interior — Passport Services", timeline: "4–6 weeks", notes: "Biometric passport required since 2011." },
-  OTHER: { currency: "", symbol: "", authority: "National Immigration / Interior Ministry", timeline: "4–8 weeks (typical)", notes: "Contact your country's immigration authority for exact fees and requirements." }
+var PASSPORT_AUTHORITIES = {
+  NG: { authority: "Nigeria Immigration Service (NIS)", portal: "https://passport.immigration.gov.ng/" },
+  KE: { authority: "Directorate of Immigration Services", portal: "https://dis.ecitizen.go.ke/" },
+  ZA: { authority: "Department of Home Affairs (DHA)", portal: "https://www.dha.gov.za/" },
+  GH: { authority: "Ministry of Foreign Affairs passport service", portal: "https://itcpassport.mfa.gov.gh/" },
+  RW: { authority: "Irembo government services", portal: "https://irembo.gov.rw/" },
+  EG: { authority: "National passport authority", portal: "" },
+  ET: { authority: "National immigration authority", portal: "" },
+  TZ: { authority: "Immigration Services Department", portal: "" },
+  MA: { authority: "National passport authority", portal: "" },
+  CI: { authority: "National identification authority", portal: "" },
+  TN: { authority: "National passport authority", portal: "" },
+  OTHER: { authority: "National immigration or interior authority", portal: "" }
 };
 
 var DOCS = {
@@ -311,7 +312,7 @@ var DOCS = {
     renewal: ["Previous Kenyan passport (original)", "National ID Card", "2 passport photographs", "Completed application form", "Application fee receipt"]
   },
   ZA: {
-    first: ["South African Identity Document (ID book or Smart Card)", "Unabridged Birth Certificate (DHA-issued)", "2 recent passport photographs", "Completed DHA-73 form", "Proof of payment (R400 at any Post Office or DHA office)"],
+    first: ["South African Identity Document (ID book or Smart Card)", "Birth certificate or civil-status evidence requested by DHA", "Recent passport photographs if requested by the current application route", "Current DHA application form", "Proof of the current official payment"],
     renewal: ["SA Identity Document", "Previous passport (original)", "2 passport photographs", "Completed DHA-73 form", "Proof of payment"]
   },
   GH: {
@@ -328,37 +329,17 @@ var DOCS = {
   }
 };
 
-function getFee(country, type, pages) {
-  var d = PASSPORT_FEES[country];
-  if (!d) return null;
-  var pg = pages === '64' ? 'pages64' : 'pages32';
-  var pg48 = pages === '64' ? 'pages48' : 'pages32';
-  if (country === 'NG') {
-    return d[type] ? (d[type][pg] || d[type]['pages32']) : d.standard[pg];
-  }
-  if (country === 'GH') {
-    var tier = type === 'express' ? d.express : d.standard;
-    return tier ? (tier[pg48] || tier[pg] || tier['pages32']) : null;
-  }
-  if (country === 'KE') {
-    return type === 'express' ? d.express : d.standard;
-  }
-  return d.standard || null;
-}
-
 function generateChecklist() {
   var country = document.getElementById('country').value;
-  var d = PASSPORT_FEES[country] || PASSPORT_FEES['OTHER'];
-  var fee = getFee(country, passportType, passportPages);
+  var d = PASSPORT_AUTHORITIES[country] || PASSPORT_AUTHORITIES.OTHER;
   var docs = (DOCS[country] || DOCS['DEFAULT'])[appReason] || DOCS['DEFAULT'][appReason];
 
   var grid = document.getElementById('resultGrid');
-  var feeStr = fee ? (d.symbol + ' ' + fee.toLocaleString()) : 'Contact authority';
 
   grid.innerHTML =
-    '<div class="result-box highlight"><div class="num">' + feeStr + '</div><div class="lbl">' + (passportType === 'express' ? 'Express' : 'Standard') + ' ' + passportPages + '-page Fee</div></div>' +
-    '<div class="result-box"><div class="num">' + (d.timeline || 'Varies') + '</div><div class="lbl">Processing Time</div></div>' +
-    '<div class="result-box"><div class="num" style="font-size:.9rem">' + (d.authority || 'Immigration Authority') + '</div><div class="lbl">Issuing Authority</div></div>';
+    '<div class="result-box highlight"><div class="num">Official check required</div><div class="lbl">Current fee and page option</div></div>' +
+    '<div class="result-box"><div class="num">Confirm before applying</div><div class="lbl">Processing time and appointment</div></div>' +
+    '<div class="result-box"><div class="num" style="font-size:.9rem">' + d.authority + '</div><div class="lbl">Authority to verify</div></div>';
 
   var list = document.getElementById('checklistItems');
   list.innerHTML = docs.map(function(item) {
@@ -371,12 +352,22 @@ function generateChecklist() {
   } else {
     portalSection.innerHTML = '';
   }
-  if (d.notes) {
-    portalSection.innerHTML += '<p style="font-size:.75rem;color:#64748b;margin-top:10px;line-height:1.6"><strong>Note:</strong> ' + d.notes + '</p>';
-  }
+  portalSection.innerHTML += '<p style="font-size:.75rem;color:#64748b;margin-top:10px;line-height:1.6"><strong>Source boundary:</strong> AfroTools does not verify a live fee, appointment slot, processing time, or approval status. Confirm every checklist item with the authority before payment or submission.</p>';
 
   document.getElementById('resultTitle').textContent = country + ' Passport — ' + (appReason === 'first' ? 'First Application' : 'Renewal');
   document.getElementById('resultCard').style.display = '';
+}
+
+function resetChecklist() {
+  document.getElementById('country').value = 'NG';
+  setType('standard');
+  setPages('32');
+  setReason('first');
+  document.getElementById('resultGrid').innerHTML = '';
+  document.getElementById('checklistItems').innerHTML = '';
+  document.getElementById('portalSection').innerHTML = '';
+  document.getElementById('resultCard').style.display = 'none';
+  document.getElementById('country').focus();
 }
 </script>
 <script src="/assets/js/pages/government-focus.js?v=45251590" defer></script>

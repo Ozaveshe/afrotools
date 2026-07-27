@@ -99,7 +99,7 @@ a{color:inherit}
 .et-metric strong{display:block;font-size:1.65rem;line-height:1;font-weight:800;color:var(--et-ink)}
 .et-layout{display:grid;grid-template-columns:minmax(0,1fr) 330px;gap:18px;align-items:start}
 .et-layout>*{min-width:0}
-.et-card{background:#fff;border:1px solid var(--et-line);border-radius:8px;box-shadow:0 1px 6px rgba(15,23,42,.04)}
+.et-card{min-width:0;background:#fff;border:1px solid var(--et-line);border-radius:8px;box-shadow:0 1px 6px rgba(15,23,42,.04)}
 .et-card+.et-card{margin-top:16px}
 .et-card-head{display:flex;align-items:flex-start;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid #edf2f7;background:#fbfdff}
 .et-card-title{font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;font-weight:800;color:#334155}
@@ -137,7 +137,7 @@ a{color:inherit}
 .et-side-item{border:1px solid var(--et-line);border-radius:8px;padding:12px;background:#fff}
 .et-side-item strong{display:block;font-size:.86rem;line-height:1.35;margin-bottom:4px}
 .et-side-item span{display:block;font-size:.75rem;color:var(--et-muted);line-height:1.5}
-.et-table-wrap{overflow:auto}
+.et-table-wrap{width:100%;max-width:100%;overflow-x:auto}
 .et-table{width:100%;border-collapse:collapse;min-width:640px}
 .et-table th,.et-table td{padding:10px 8px;border-bottom:1px solid #edf2f7;text-align:left;font-size:.8rem;vertical-align:top}
 .et-table th{font-size:.68rem;text-transform:uppercase;letter-spacing:.07em;color:var(--et-muted)}
@@ -173,9 +173,6 @@ a{color:inherit}
 }
 </style>
 <link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Africa Election Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your situation and documents in the fields above. The Africa Election Tracker then gives you a checklist and estimate for the process you can use straight away."}},{"@type":"Question","name":"How accurate is the Africa Election Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official government or agency source before you rely on it. It is general information, not legal advice."}},{"@type":"Question","name":"Is the Africa Election Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
-</script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/africa-election-tracker/">
@@ -270,6 +267,7 @@ a{color:inherit}
                 <input id="upcomingOnly" type="checkbox" checked>
                 <span>Upcoming only</span>
               </label>
+              <button class="et-source-link" id="resetFilters" type="button">Reset filters</button>
             </div>
           </div>
         </section>
@@ -349,30 +347,6 @@ a{color:inherit}
     </div>
   </section>
 
-<section class="df-upgrade" data-df-upgrade="africa-election-tracker">
-  <div class="df-upgrade__card">
-    <div>
-      <span class="df-upgrade__kicker">Practical workflow</span>
-      <h2>Africa Election Tracker: quick guide</h2>
-      <p>Not sure how to get the most from the Africa Election Tracker? Enter your situation and documents and it returns a checklist and estimate for the process — built for all 54 African countries.</p>
-      <ul class="df-upgrade__bullets"><li><strong>What you get:</strong> a checklist and estimate for the process, so you can move from a quick look to a real decision.</li><li><strong>How it works:</strong> the Africa Election Tracker takes your situation and documents and shows the working, not just a single number.</li><li><strong>What to check:</strong> confirm the official government or agency source before you rely on the result. It is general information, not legal advice.</li></ul>
-      <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Results are a guide — always confirm the official government or agency source before acting. It is general information, not legal advice.</p>
-    </div>
-    <form class="df-form" data-df-form="africa-election-tracker">
-      <label>Country<select name="country" aria-label="Country"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">South Africa</option></select></label>
-      <label>Amount or count<input name="amount" type="number" value="100" min="0" step="any" aria-label="Amount or count"></label>
-      <label>Priority<select name="priority" aria-label="Priority"><option value="cost">cost</option><option value="speed">speed</option><option value="quality">quality</option><option value="risk">risk</option></select></label>
-      <label>Buffer percent<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="africa-election-tracker" data-df-base="Africa Election Tracker — enter your details above to see your result." aria-live="polite">Africa Election Tracker — enter your details above to see your result.</output>
-      <div class="df-actions"><button type="button" data-df-copy="africa-election-tracker">Copy summary</button></div>
-    </form>
-  </div>
-</section>
-<section class="df-faq" aria-labelledby="africa-election-tracker-faq-title">
-  <h2 id="africa-election-tracker-faq-title">Africa Election Tracker FAQ</h2>
-  <div class="df-faq__grid"><details><summary>How do I use the Africa Election Tracker?</summary><p>Enter your situation and documents in the fields above. The Africa Election Tracker then gives you a checklist and estimate for the process you can use straight away.</p></details><details><summary>How accurate is the Africa Election Tracker?</summary><p>It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the official government or agency source before you rely on it. It is general information, not legal advice.</p></details><details><summary>Is the Africa Election Tracker free, and does it cover my country?</summary><p>Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries.</p></details></div>
-</section>
 </main>
 <afro-related-tools data-ssr="1" category="government" current="africa-election-tracker">
 <!-- RELATED_TOOLS_SSR_START -->
@@ -408,6 +382,7 @@ a{color:inherit}
     regionFilter: document.getElementById('regionFilter'),
     typeFilter: document.getElementById('typeFilter'),
     sourceFilter: document.getElementById('sourceFilter'),
+    resetFilters: document.getElementById('resetFilters'),
     executiveOnly: document.getElementById('executiveOnly'),
     upcomingOnly: document.getElementById('upcomingOnly'),
     electionList: document.getElementById('electionList'),
@@ -788,6 +763,24 @@ a{color:inherit}
       state.filters.upcomingOnly = els.upcomingOnly.checked;
       renderList();
     });
+    els.resetFilters.addEventListener('click', () => {
+      state.filters = {
+        search: '',
+        region: 'all',
+        type: 'all',
+        source: 'all',
+        executiveOnly: true,
+        upcomingOnly: true
+      };
+      els.searchInput.value = '';
+      els.regionFilter.value = 'all';
+      els.typeFilter.value = 'all';
+      els.sourceFilter.value = 'all';
+      els.executiveOnly.checked = true;
+      els.upcomingOnly.checked = true;
+      renderList();
+      els.searchInput.focus();
+    });
   }
 
   async function loadData() {
@@ -800,7 +793,10 @@ a{color:inherit}
     .then((data) => {
       state.data = data;
       state.records = Array.isArray(data.elections) ? data.elections : [];
-      els.ledgerMeta.textContent = `Generated ${formatDate(data.generatedAt)} / ${state.records.length} records / review every ${data.reviewCadenceDays || 7} days`;
+      const cadence = Number(data.reviewCadenceDays || 7);
+      const sourceAge = Math.max(0, Math.floor((todayUtc() - dateUtc(data.generatedAt)) / MS_PER_DAY));
+      const freshness = sourceAge > cadence ? `review overdue by ${sourceAge - cadence} days` : `within ${cadence}-day review cadence`;
+      els.ledgerMeta.textContent = `Generated ${formatDate(data.generatedAt)} / ${state.records.length} records / ${freshness}`;
       populateFilters();
       bindEvents();
       renderAll();

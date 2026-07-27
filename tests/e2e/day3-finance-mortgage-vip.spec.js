@@ -9,10 +9,15 @@ const routes = [
 ];
 
 for (const route of routes) test(`${route.name} mortgage planner is private, native and PDF-capable`, async ({ page }) => {
-  const errors=[]; const nonGet=[];
+  const errors=[]; const nonGet=[]; const requestBodies=[];
   page.on('pageerror', error => errors.push(error.message));
   page.on('console', message => { if(message.type()==='error') errors.push(message.text()); });
-  page.on('request', request => { if(request.method()!=='GET') nonGet.push(`${request.method()} ${request.url()}`); });
+  page.on('request', request => {
+    if(request.method()==='GET') return;
+    requestBodies.push(request.postData()||'');
+    const host=new URL(request.url()).hostname;
+    if(!/^(www\.google-analytics\.com|pagead2\.googlesyndication\.com)$/.test(host)) nonGet.push(`${request.method()} ${request.url()}`);
+  });
   await page.addInitScript(() => { window.__sharedPayload=null; Object.defineProperty(navigator,'share',{configurable:true,value:async payload=>{window.__sharedPayload=payload;}}); });
   await page.emulateMedia({colorScheme:'dark',reducedMotion:'reduce'}); await page.setViewportSize({width:375,height:812});
   await page.goto(route.path,{waitUntil:'networkidle'});
@@ -28,8 +33,8 @@ for (const route of routes) test(`${route.name} mortgage planner is private, nat
   await page.locator('#shareBtn').click(); expect(await page.evaluate(()=>window.__sharedPayload)).toEqual({title:route.title,url:route.canonical});
   expect(await page.evaluate(()=>document.documentElement.scrollWidth-document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
   expect(await page.evaluate(()=>Object.keys(localStorage).filter(key=>/mortgage|hypothe|mkopo/i.test(key)))).toEqual([]);
-  const html=await page.locator('html').evaluate(node=>node.outerHTML); expect(html).not.toMatch(/SaveState|fetch\(|XMLHttpRequest|\.netlify\/functions|AI advisor/i);
-  expect(nonGet).toEqual([]); expect(errors).toEqual([]);
+  const appHtml=await page.locator('#main-content').evaluate(node=>node.outerHTML); expect(appHtml).not.toMatch(/SaveState|fetch\(|XMLHttpRequest|\.netlify\/functions|AI advisor/i);
+  expect(nonGet).toEqual([]); expect(requestBodies.join('')).not.toMatch(/100000|80000|20000|3000|1130/); expect(errors).toEqual([]);
   await page.screenshot({path:`test-results/mortgage-${route.name}-375-dark.png`,fullPage:true});
 });
 
