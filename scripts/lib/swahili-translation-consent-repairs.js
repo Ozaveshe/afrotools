@@ -1,6 +1,7 @@
 "use strict";
 
 const EXTERNAL_CONSENT_SCRIPT = '<script src="/assets/js/lib/external-translation-consent.js" defer></script>';
+const EXTERNAL_CONSENT_SCRIPT_RE = /\s*<script\b[^>]*src=["']\/assets\/js\/lib\/external-translation-consent\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>\s*/gi;
 
 function insertBeforeHeadEnd(html, markup) {
   if (html.includes(markup)) return html;
@@ -17,7 +18,13 @@ function replaceFunctionBeforeMarker(html, functionName, marker, replacement) {
 }
 
 function repairPidginTranslatorConsent(source) {
-  let html = insertBeforeHeadEnd(source, EXTERNAL_CONSENT_SCRIPT);
+  // Cache busting adds a version query after this repair runs. Normalize every
+  // existing variant first so repeated builds cannot accumulate duplicate
+  // consent loaders.
+  let html = insertBeforeHeadEnd(
+    source.replace(EXTERNAL_CONSENT_SCRIPT_RE, '\n'),
+    EXTERNAL_CONSENT_SCRIPT
+  );
 
   if (!html.includes('id="pidginTranslationConsent"')) {
     html = html.replace(

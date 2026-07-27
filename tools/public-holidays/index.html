@@ -1,15 +1,38 @@
 <!DOCTYPE html>
-<html lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Official Holiday Calendar Entry Builder | AfroTools</title>
   <meta name="description" content="Turn a public-holiday date you confirmed from an official notice into a local ICS calendar entry without relying on a built-in or predicted holiday calendar.">
-  <link rel="canonical" href="https://afrotools.com/tools/public-holidays/"><link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/public-holidays/">
-  <meta property="og:title" content="Official Holiday Calendar Entry Builder | AfroTools"><meta property="og:description" content="Verify the date officially, then create a local ICS entry."><meta property="og:image" content="https://afrotools.com/assets/img/tools/public-holidays.webp"><meta property="og:url" content="https://afrotools.com/tools/public-holidays/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta name="twitter:card" content="summary_large_image"><meta property="article:modified_time" content="2026-07-27">
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Official Holiday Calendar Entry Builder","url":"https://afrotools.com/tools/public-holidays/","description":"A browser-local ICS builder for a user-confirmed public-holiday notice.","applicationCategory":"ProductivityApplication","operatingSystem":"Any","isAccessibleForFree":true}</script>
-  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/government-verification-planner.css">
-  <script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <meta property="og:title" content="Official Holiday Calendar Entry Builder | AfroTools"><meta property="og:description" content="Verify the date officially, then create a local ICS entry."><meta property="og:image" content="https://afrotools.com/assets/img/tools/public-holidays.webp"><meta property="og:url" content="https://afrotools.com/tools/public-holidays/"><meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Official Holiday Calendar Entry Builder | AfroTools">
+<meta name="twitter:description" content="Turn a public-holiday date you confirmed from an official notice into a local ICS calendar entry without relying on a built-in or predicted holiday calendar.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/public-holidays.webp"><meta property="article:modified_time" content="2026-07-27">
+  <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Official Holiday Calendar Entry Builder",
+  "url": "https://afrotools.com/tools/public-holidays/",
+  "description": "A browser-local ICS builder for a user-confirmed public-holiday notice.",
+  "applicationCategory": "ProductivityApplication",
+  "operatingSystem": "Any",
+  "isAccessibleForFree": true,
+  "image": "https://afrotools.com/assets/img/tools/public-holidays.webp"
+}
+</script>
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/government-verification-planner.css?v=00ccbc51">
+  <script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
   <style>.holiday-preview{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;border:1px solid #94a3b8;border-radius:10px;line-height:1.7}.holiday-actions{margin-top:14px}</style>
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Official Holiday Calendar Entry Builder","item":"https://afrotools.com/tools/public-holidays/"}]}
+</script>
+<link rel="canonical" href="https://afrotools.com/tools/public-holidays/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-feries/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalenda-likizo-za-umma/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/public-holidays/">
 </head>
 <body><afro-navbar active="government"></afro-navbar>
   <header class="gv-hero"><div class="gv-wrap"><nav aria-label="Breadcrumb"><a href="/">Home</a> / <a href="/government/">Government &amp; Civic</a> / Public holidays</nav><h1>Verify the notice, then add the date to your calendar.</h1><p>Enter one holiday date after checking an official government notice. AfroTools does not publish a complete national calendar, predict lunar or proclamation dates, apply weekend substitutions, or claim a closure, entitlement, or legal observance.</p></div></header>
@@ -23,7 +46,16 @@
       <div class="gv-actions"><button class="gv-primary" type="submit">Prepare calendar entry</button><button class="gv-secondary" type="reset">Reset</button></div>
     </form><p class="gv-note">Do not enter employee names, leave records, travel details, or business schedules. Inputs are not stored or sent.</p></section>
     <section class="gv-panel gv-result" id="holiday-result" aria-live="polite"><h2>Entry preview</h2><div class="holiday-preview" id="holiday-preview"></div><p class="gv-status">User-confirmed entry only - not an official calendar, closure notice, employment entitlement, or legal advice</p><a class="gv-official" id="holiday-official" target="_blank" rel="noopener">Open official source</a><div class="gv-actions holiday-actions"><button class="gv-secondary" id="holiday-download" type="button">Download ICS</button></div><p class="gv-note">Recheck the official source before travel, payroll, filing, school, banking, market, or operational decisions. One ICS entry does not prove all holidays or substitutions for the year.</p></section>
-  </div><div class="gv-wrap"><p id="holiday-status" role="status" aria-live="polite"></p></div></main><afro-footer></afro-footer>
+  </div><div class="gv-wrap"><p id="holiday-status" role="status" aria-live="polite"></p></div></main>
+<afro-related-tools data-ssr="1" category="data-productivity" current="public-holidays">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
+<h2 class="seo-links-title">Related tools</h2>
+<ul class="seo-links-list"><li><a href="/tools/unit-converter/" data-related-tool data-id="unit-converter" data-name="Unit Converter (African)" data-category="data-productivity" data-icon="UC" data-desc="Convert units including African measurements: Nigerian plots, SA morgen, etc.">Unit Converter (African)</a></li><li><a href="/tools/budget-planner/" data-related-tool data-id="budget-planner" data-name="Monthly Budget Planner" data-category="data-productivity" data-icon="MB" data-desc="50/30/20 rule adapted for African income patterns and mobile money.">Monthly Budget Planner</a></li><li><a href="/tools/grade-tracker/" data-related-tool data-id="grade-tracker" data-name="Student Grade Tracker" data-category="data-productivity" data-icon="SG" data-desc="Track CA and exam scores with Africa exam presets, risk flags, GPA, CGPA, and revision handoffs.">Student Grade Tracker</a></li><li><a href="/tools/pomodoro/" data-related-tool data-id="pomodoro" data-name="Pomodoro Timer" data-category="data-productivity" data-icon="PT" data-desc="Focus timer with African language motivational quotes. Works offline.">Pomodoro Timer</a></li><li><a href="/tools/age-calculator/" data-related-tool data-id="age-calculator" data-name="Age Calculator" data-category="data-productivity" data-icon="AC" data-desc="Exact age in years/months/days. Next birthday countdown.">Age Calculator</a></li><li><a href="/tools/time-zone/" data-related-tool data-id="time-zone" data-name="African Time Zone Converter" data-category="data-productivity" data-icon="AT" data-desc="All 8 African time zones. Team meeting planner across Africa.">African Time Zone Converter</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
   <script>
   (function(){
     'use strict';
@@ -53,4 +85,5 @@
     document.getElementById('holiday-download').addEventListener('click',function(){if(!ics)return;var blob=new Blob([ics],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='user-confirmed-public-holiday.ics';link.click();setTimeout(function(){URL.revokeObjectURL(url);},0);status.textContent='ICS entry downloaded.';});
   }());
   </script><script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body></html>
