@@ -7,7 +7,8 @@ on:
   workflow_dispatch:  # allow manual trigger from GitHub Actions UI
 
 permissions:
-  contents: write   # needed to commit & push fixes back
+  contents: write
+  pull-requests: write
 
 jobs:
   seo-fix:
@@ -31,21 +32,33 @@ jobs:
         run: npm ci
 
       - name: Check pause switch
+        id: maintenance
         run: |
           if [ "${{ vars.AFROTOOLS_DAILY_MAINTENANCE_PAUSED }}" = "1" ] || [ "${{ secrets.AFROTOOLS_DAILY_MAINTENANCE_PAUSED }}" = "1" ]; then
             echo "Daily maintenance paused by AFROTOOLS_DAILY_MAINTENANCE_PAUSED."
-            exit 0
+            echo "paused=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "paused=false" >> "$GITHUB_OUTPUT"
           fi
 
       - name: Run SEO daily fix
         id: seo
+        if: steps.maintenance.outputs.paused != 'true'
         # Preserve source-backed lastmod values. Broad daily restamps make the
         # committed sitemap index diverge from the deterministic site build.
         run: node scripts/seo-daily-fix.js
-        # Never fail the workflow — fixes are best-effort
-        continue-on-error: true
 
-      - name: Commit any fixes back to main
+      - name: Verify SEO fixes
+        if: steps.maintenance.outputs.paused != 'true'
+        run: |
+          npm run test:seo-preferred-url
+          npm run validate:hreflang
+          npm run seo:report
+
+      - name: Open a pull request for any fixes
+        if: steps.maintenance.outputs.paused != 'true'
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           git config user.name  "AfroTools SEO Bot"
           git config user.email "seo-bot@afrotools.com"
@@ -61,7 +74,14 @@ jobs:
           if git diff --staged --quiet; then
             echo "No SEO changes today — site is clean."
           else
-            git commit -m "chore(seo): daily auto-fix $(date -u +%Y-%m-%d) [skip ci]"
-            git push origin main
-            echo "SEO fixes committed and pushed. Netlify will redeploy automatically."
+            branch="automation/daily-seo-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+            git switch -c "$branch"
+            git commit -m "chore(seo): daily auto-fix $(date -u +%Y-%m-%d)"
+            git push --set-upstream origin "$branch"
+            gh pr create \
+              --base main \
+              --head "$branch" \
+              --title "chore(seo): daily auto-fix $(date -u +%Y-%m-%d)" \
+              --body "Automated SEO maintenance changes. Validation completed before this PR was opened: preferred-route regression coverage, hreflang validation, and the SEO report."
+            echo "SEO fixes pushed to a reviewable pull request."
           fi

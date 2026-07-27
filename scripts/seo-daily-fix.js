@@ -8,8 +8,8 @@
  *   1. Hreflang trailing-slash violations on .html-backed pages
  *   2. Sitemap <loc> trailing-slash violations
  *   3. Sitemap <lastmod> staleness when AFROTOOLS_REFRESH_SITEMAP_LASTMOD=1
- *   4. Canonical tag presence check (reports only, no auto-fix)
- *   5. Missing meta description (reports only)
+ *   4. Canonical and og:url alignment to the final permanent public route
+ *   5. Missing title and meta description checks (reports only)
  *
  * Usage:
  *   node scripts/seo-daily-fix.js
@@ -24,9 +24,9 @@ const path = require('path');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
 
 const {
-  fileToPublicRoute,
   fileToSourceHtmlRoute,
 } = require('./lib/canonical-aliases');
+const { createPreferredPageUrlResolver } = require('./lib/seo-preferred-url');
 
 const ROOT    = path.resolve(__dirname, '..');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -132,13 +132,9 @@ function normalizeSiteUrl(url) {
   }
 }
 
-function defaultPageUrl(filePath) {
-  return `${SITE_ORIGIN}${fileToPublicRoute(filePath)}`;
-}
-
-function resolvePreferredPageUrl(filePath, content) {
-  return defaultPageUrl(filePath);
-}
+const resolvePreferredPageUrl = createPreferredPageUrlResolver({
+  siteOrigin: SITE_ORIGIN,
+});
 
 function upsertCanonical(content, url) {
   const line = `<link rel="canonical" href="${url}">`;
@@ -245,7 +241,7 @@ walk(ROOT, (fp, fname) => {
   const content = readFile(fp);
   if (isRedirectLike(content)) return;
 
-  const preferredUrl = resolvePreferredPageUrl(fp, content);
+  const preferredUrl = resolvePreferredPageUrl(fp);
   const lookupKeys = [normalizeSiteUrl(preferredUrl)];
   const sourceHtmlRoute = fileToSourceHtmlRoute(fp);
 
@@ -279,7 +275,7 @@ walk(ROOT, (fp, fname) => {
   if (isRedirectLike(original)) return;
   if (hasNoindex(original)) return;
 
-  const preferredUrl = defaultPageUrl(fp);
+  const preferredUrl = resolvePreferredPageUrl(fp);
   const currentCanonical = extractCanonicalHref(original);
   let next = upsertCanonical(original, preferredUrl);
   if (currentCanonical !== preferredUrl) {
@@ -559,7 +555,7 @@ console.log(`\n${BOLD}── Summary ──────────────�
 
 if (anythingFixed) {
   if (FIX_MODE) {
-    console.log(`  ${GREEN}✓ Auto-fixes committed. Netlify will redeploy.${RESET}`);
+    console.log(`  ${GREEN}✓ Auto-fixes applied to the worktree. Commit and deploy remain caller-controlled.${RESET}`);
   } else {
     console.log(`  ${YELLOW}⚠ Auto-fixes available. Run npm run seo to apply them.${RESET}`);
   }
