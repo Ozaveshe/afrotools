@@ -701,7 +701,7 @@ function methodologyHtml(tool) {
 <div class="cl-method-list">
 <div><strong>Reference pattern</strong><span>${esc(tool.competitor || "Climate risk and sustainability planning tools")}</span></div>
 <div><strong>Dashboard path</strong><span>Save the result locally, then sync it to account workspace when signed in.</span></div>
-<div><strong>PDF gate</strong><span>${esc(tool.leadMagnet || "Download a gated PDF report when a result is ready.")}</span></div>
+<div><strong>Local PDF</strong><span>Generated in this browser with the bundled PDF engine. No email, account, or network submission is required.</span></div>
 </div>
 </section>`;
 }
@@ -760,7 +760,7 @@ function pageHtml(tool) {
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Climate & Environment","item":"https://afrotools.com/climate/"},{"@type":"ListItem","position":3,"name":${JSON.stringify(tool.shortName)},"item":"${canonical}"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/climate.css">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/climate.css"><link rel="stylesheet" href="/assets/css/climate-vip-guardrails.css">
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 </head>
@@ -787,6 +787,8 @@ ${presetHtml(tool)}
 <button class="cl-btn cl-btn-secondary" type="button" id="copyClimateSummary">Copy action plan</button>
 <button class="cl-btn cl-btn-secondary" type="button" id="saveClimateDashboard" disabled>Save to dashboard</button>
 <button class="cl-btn cl-btn-secondary" type="button" id="downloadClimatePdf" disabled>Download PDF report</button>
+<button class="cl-btn cl-btn-secondary" type="reset" id="resetClimateScenario">Reset scenario</button>
+<p class="cl-form-status" id="cl-form-status" role="status" aria-live="polite"></p>
 <p class="cl-compact-note">Estimates are planning signals, not official monitoring, legal, engineering or verification advice.</p>
 </div>
 </form>
@@ -820,6 +822,7 @@ ${faqHtml(tool.faqs)}
 <script>window.AfroClimateToolConfig=${JSON.stringify(config)};</script>
 <script src="/assets/js/afro-auth.js?v=6"></script>
 <script src="/assets/js/lib/workspace-sync.js?v=20260417a"></script>
+<script src="/assets/js/pages/climate-vip-guardrails.js"></script>
 <script src="/assets/js/climate-tools.js"></script>
 </body>
 </html>
@@ -869,7 +872,7 @@ function climateIndexHtml() {
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Climate & Environment","item":"https://afrotools.com/climate/"}]}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/climate.css">
+<link rel="stylesheet" href="/assets/css/tokens.min.css"><link rel="stylesheet" href="/assets/css/global.min.css"><link rel="stylesheet" href="/assets/css/climate.css"><link rel="stylesheet" href="/assets/css/climate-vip-guardrails.css">
 <script src="/assets/js/components/navbar.min.js?v=43e4d9b2" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 </head>

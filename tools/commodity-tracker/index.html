@@ -127,6 +127,17 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-matieres-premieres/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ufuatiliaji-bei-za-bidhaa/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/commodity-tracker/">
+<style>
+@media(max-width:420px){
+  .tool-shell,.tool-panel,.tool-section,#countryDetail{max-width:100%;min-width:0}
+  .tool-tabs{display:flex;justify-content:flex-start;max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+  .tool-tab{flex:0 0 auto}
+  #countryDetail>div[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr)!important}
+  .chart-wrap,.commodity-bar,.commodity-bar>*{max-width:100%;min-width:0;overflow-wrap:anywhere}
+  .price-table{display:block;max-width:100%;overflow-x:auto}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/mining-vip-reflow.css">
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="trade"></afro-navbar>
@@ -379,7 +390,7 @@ function renderBalance(summary, balance) {
   if (typeof Chart === 'undefined') {
     canvas.style.display = 'none';
     fallback.style.display = 'block';
-    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance);
+    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance.balance);
     return;
   }
   canvas.style.display = 'block';
