@@ -38,7 +38,7 @@ for (const [tool, expectedCount] of Object.entries(expected)) {
     assert.strictEqual(canonical, `https://afrotools.com${canonicalPath}`, `${route} canonical drifted`);
     assert.match(html, /<title>[^<]{20,}\| AfroTools<\/title>/, `${route} title is not useful`);
     assert.match(html, /<meta name="description" content="[^"]{80,}">/, `${route} description is not useful`);
-    assert.match(html, /"@type":"WebApplication"/, `${route} schema is missing`);
+    assert.match(html, /"@type"\s*:\s*"WebApplication"/, `${route} schema is missing`);
     assert.match(html, /data-insurance-workflow/, `${route} workflow is missing`);
     assert.match(html, /Empty inputs stay empty/, `${route} empty-state boundary is missing`);
     assert.match(html, /No form values are sent over the network or written to browser storage/, `${route} privacy boundary is missing`);

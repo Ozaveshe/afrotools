@@ -18,13 +18,20 @@ function replaceFunctionBeforeMarker(html, functionName, marker, replacement) {
 }
 
 function repairPidginTranslatorConsent(source) {
-  // Cache busting adds a version query after this repair runs. Normalize every
-  // existing variant first so repeated builds cannot accumulate duplicate
-  // consent loaders.
-  let html = insertBeforeHeadEnd(
-    source.replace(EXTERNAL_CONSENT_SCRIPT_RE, '\n'),
+  // Cache busting adds a version query after this repair runs. Preserve the
+  // versioned loader when it already exists so the source-surface check remains
+  // idempotent after the SEO/build pipeline, while still deduplicating loaders.
+  const existingConsentScripts = source.match(EXTERNAL_CONSENT_SCRIPT_RE) || [];
+  const consentScript = (
+    existingConsentScripts.find((tag) => /\?v=[a-f0-9]{8}/i.test(tag)) ||
     EXTERNAL_CONSENT_SCRIPT
-  );
+  ).trim();
+  let html = source;
+  if (existingConsentScripts.length === 0) {
+    html = insertBeforeHeadEnd(html, consentScript);
+  } else if (existingConsentScripts.length > 1) {
+    html = insertBeforeHeadEnd(html.replace(EXTERNAL_CONSENT_SCRIPT_RE, '\n'), consentScript);
+  }
 
   if (!html.includes('id="pidginTranslationConsent"')) {
     html = html.replace(

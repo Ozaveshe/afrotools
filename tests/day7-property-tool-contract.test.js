@@ -20,7 +20,7 @@ for (const tool of rebuilt) {
   assert.match(html, new RegExp(`<link rel="canonical" href="https://afrotools.com/tools/${tool}/">`));
   assert.match(html, /<title>[^<]{20,}\| AfroTools<\/title>/);
   assert.match(html, /<meta name="description" content="[^"]{80,}">/);
-  assert.match(html, /"@type":"WebApplication"/);
+  assert.match(html, /"@type"\s*:\s*"WebApplication"/);
   assert.match(html, new RegExp(`data-tool="${tool}"`));
   assert.match(html, /no live rate, price, valuation, legal rule, title status, eligibility, approval or official integration/i);
   assert.match(html, /sends no form values over the network and writes nothing to browser storage/i);

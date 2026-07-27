@@ -18,7 +18,9 @@ const PREVIOUS_FILE = PREVIOUS_FILE_ARG
 
 const EXCLUDED_DIRS = new Set(['.git', '.netlify', '.cache', 'dist', 'node_modules']);
 const EXTERNAL_DENY = /afrotools\.|fonts\.|cdn\.|schema\.org|ogp\.me|w3\.org|googletagmanager|google-analytics|jsdelivr|cloudflare|instagram|facebook|twitter|linkedin/i;
+const INVALID_SOURCE_HOSTS = new Set(['e.net', 'r.net', 'result.net', 's.net', 'sultat.net']);
 const TARGET_RE = /(^|[\\/])(?:fr[\\/])?[^\\/]+[\\/](?:[a-z]{2}-(?:paye|vat)|ng-salary-tax)\.html$/i;
+const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
 
 const FALLBACK_SOURCES = {
   bf: [{ title: 'Direction generale des impots - Burkina Faso', url: 'https://dgi.bf/' }],
@@ -49,6 +51,35 @@ function rel(file) {
 
 function routeFromFile(file) {
   return `/${rel(file).replace(/index\.html$/i, '').replace(/\.html$/i, '')}`;
+}
+
+function normalizeRoute(route) {
+  let clean = String(route || '/').split(/[?#]/)[0] || '/';
+  if (!clean.startsWith('/')) clean = `/${clean}`;
+  if (clean.length > 1 && clean.endsWith('/')) clean = clean.slice(0, -1);
+  return clean;
+}
+
+function buildRedirectSources() {
+  const redirectsPath = path.join(ROOT, '_redirects');
+  if (!fs.existsSync(redirectsPath)) return new Set();
+  const sources = new Set();
+  for (const line of fs.readFileSync(redirectsPath, 'utf8').split(/\r?\n/)) {
+    const trimmed = line.trim();
+    if (!trimmed || trimmed.startsWith('#')) continue;
+    const parts = trimmed.split(/\s+/);
+    if (parts.length < 3) continue;
+    const status = parts.slice(2).find((part) => REDIRECT_STATUS_RE.test(part));
+    if (!status || parts[0].includes('*') || parts[0].includes(':')) continue;
+    sources.add(normalizeRoute(parts[0]));
+  }
+  return sources;
+}
+
+function isHtmlRedirectAlias(file) {
+  const html = fs.readFileSync(file, 'utf8');
+  return /<meta\b[^>]*http-equiv=["']refresh["']/i.test(html)
+    || /<title>\s*(?:redirection|redirect\b)/i.test(html);
 }
 
 function stripScriptStyle(html) {
@@ -90,7 +121,25 @@ function normalizeUrl(url) {
 }
 
 function shouldKeepUrl(url) {
-  return /^https?:\/\//i.test(url) && !EXTERNAL_DENY.test(url);
+  if (!/^https?:\/\//i.test(url) || EXTERNAL_DENY.test(url)) return false;
+  try {
+    return !INVALID_SOURCE_HOSTS.has(new URL(url).hostname.toLowerCase().replace(/^www\./, ''));
+  } catch {
+    return false;
+  }
+}
+
+function shouldKeepToolSource(url, toolId) {
+  if (!shouldKeepUrl(url)) return false;
+  const decodedUrl = (() => {
+    try { return decodeURIComponent(url); } catch { return url; }
+  })();
+  if (
+    /^(?:rw-paye|rw-paye-fr)$/i.test(toolId)
+    && /\/value-added-tax\/|vat[_-]law/i.test(decodedUrl)
+  ) return false;
+  if (/^so-vat$/i.test(toolId) && /income[ _-]tax/i.test(decodedUrl)) return false;
+  return true;
 }
 
 function hostnameTitle(url) {
@@ -157,7 +206,7 @@ function codeFor(toolId, file) {
 }
 
 function kindFor(toolId) {
-  return toolId.endsWith('-vat') ? 'vat' : 'paye';
+  return /(?:^|-)vat(?:-|$)/i.test(toolId) ? 'vat' : 'paye';
 }
 
 function countryNameFor(file, html) {
@@ -167,6 +216,10 @@ function countryNameFor(file, html) {
     .replace(/\s+\|.*$/g, '')
     .trim();
   if (!country || country.length > 60) {
+    const parts = rel(file).split('/');
+    const slug = parts[0] === 'fr' ? parts[1] : parts[0];
+    country = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
+  } else if (/^(?:calculator|calculateur|kikokotoo)\b/i.test(country)) {
     const parts = rel(file).split('/');
     const slug = parts[0] === 'fr' ? parts[1] : parts[0];
     country = slug.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
@@ -309,28 +362,22 @@ function buildManifest(files) {
     };
   });
 
-  const sourcesByCode = new Map();
+  const sourcesByScope = new Map();
   for (const page of pages) {
     const records = page.sources.filter((item) => item.url);
-    if (!sourcesByCode.has(page.code)) sourcesByCode.set(page.code, []);
-    sourcesByCode.get(page.code).push(...records);
-  }
-  for (const previous of Object.values(previousTools)) {
-    const code = codeFor(previous.tool_id || '', '');
-    if (!code) continue;
-    const records = (previous.source_urls || []).map((url, index) => ({
-      title: (previous.source_titles || [])[index] || hostnameTitle(url),
-      url
-    })).filter((item) => item.url);
-    if (!sourcesByCode.has(code)) sourcesByCode.set(code, []);
-    sourcesByCode.get(code).push(...records);
+    const scope = `${page.code}:${page.kind}`;
+    if (!sourcesByScope.has(scope)) sourcesByScope.set(scope, []);
+    sourcesByScope.get(scope).push(...records);
   }
   for (const [code, fallback] of Object.entries(FALLBACK_SOURCES)) {
-    if (!sourcesByCode.has(code)) sourcesByCode.set(code, []);
-    sourcesByCode.get(code).push(...fallback);
+    for (const kind of ['paye', 'vat']) {
+      const scope = `${code}:${kind}`;
+      if (!sourcesByScope.has(scope)) sourcesByScope.set(scope, []);
+      sourcesByScope.get(scope).push(...fallback);
+    }
   }
-  for (const [code, records] of sourcesByCode) {
-    sourcesByCode.set(code, dedupeRecords(records).filter((item) => item.url));
+  for (const [scope, records] of sourcesByScope) {
+    sourcesByScope.set(scope, dedupeRecords(records).filter((item) => item.url));
   }
 
   // Preserve verification records owned by other workflows (for example
@@ -338,9 +385,21 @@ function buildManifest(files) {
   const tools = { ...previousTools };
   for (const page of pages) {
     const direct = page.sources.filter((item) => item.url);
-    const countrySources = sourcesByCode.get(page.code) || [];
-    const sourceRecords = dedupeRecords(direct.concat(countrySources)).filter((item) => item.url).slice(0, 5);
+    const countrySources = sourcesByScope.get(`${page.code}:${page.kind}`) || [];
     const existing = tools[page.toolId];
+    const priorRecords = existing
+      ? (existing.source_urls || []).map((url, index) => ({
+        title: (existing.source_titles || [])[index] || hostnameTitle(url),
+        url
+      })).filter((item) => shouldKeepToolSource(item.url, page.toolId))
+      : [];
+    const currentRecords = dedupeRecords(direct.concat(countrySources))
+      .filter((item) => item.url && shouldKeepToolSource(item.url, page.toolId));
+    // Preserve the same tool's reviewed order and enrich it with currently
+    // visible evidence. Invalid parser artifacts are removed before the merge.
+    const sourceRecords = dedupeRecords(priorRecords.concat(currentRecords))
+      .filter((item) => item.url)
+      .slice(0, 5);
     const entry = existing || {
       tool_id: page.toolId,
       jurisdiction: page.country,
@@ -372,13 +431,16 @@ function buildManifest(files) {
     });
 
     entry.routes = Array.from(new Set(entry.routes.concat(page.route))).sort();
-    entry.source_urls = Array.from(new Set(entry.source_urls.concat(sourceRecords.map((item) => item.url)))).slice(0, 5);
+    // Rebuild the refreshed PAYE/VAT source list from the currently parsed and
+    // country-curated records. Reusing the entry's previous list made invalid
+    // parser artifacts permanent even after the parser was corrected.
+    entry.source_urls = Array.from(new Set(sourceRecords.map((item) => item.url))).slice(0, 5);
     entry.source_titles = entry.source_urls.map((url) => titleByUrl.get(url) || hostnameTitle(url));
-    if (page.lang === 'en') {
-      entry.jurisdiction = page.country;
-      entry.last_verified = page.lastVerified;
-      entry.law_or_version = page.lawOrVersion;
-    }
+    entry.jurisdiction = page.country;
+    entry.last_verified = [entry.last_verified, page.lastVerified]
+      .filter(Boolean)
+      .sort()
+      .pop();
     tools[page.toolId] = entry;
   }
 
@@ -483,6 +545,8 @@ function localizeVerificationValue(value, lang) {
 function buildPanel(entry, lang = 'en') {
   const copy = PANEL_COPY[lang] || PANEL_COPY.en;
   const kind = kindFor(entry.tool_id);
+  const countryCode = codeFor(entry.tool_id, '');
+  const sourceMetaId = countryCode ? `${kind}-${countryCode}-source` : '';
   // Bespoke verification records are authored in English. Until a record has
   // an owned French translation, use the already translated, calculation-type
   // contract rather than leaking a large English block onto a French route.
@@ -506,6 +570,8 @@ function buildPanel(entry, lang = 'en') {
 
   return `${START}
 <section class="tool-verification-sec" id="sources-verification" data-tool-verification-panel data-tool-id="${escapeAttr(entry.tool_id)}">
+  ${sourceMetaId ? `<!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="${escapeAttr(sourceMetaId)}" data-source-meta-compact="true"></div>` : ''}
   <div class="container">
     <div class="tool-verification-card">
       <div class="tool-verification-head">
@@ -630,8 +696,18 @@ function applyPanelToFile(file, entry) {
 }
 
 function main() {
-  const allTargetFiles = walk(ROOT)
-    .filter((file) => TARGET_RE.test(rel(file)))
+  const redirectSources = buildRedirectSources();
+  const candidateFiles = walk(ROOT)
+    .filter((file) => TARGET_RE.test(rel(file)));
+  const redirectAliasFiles = candidateFiles.filter((file) => (
+    redirectSources.has(normalizeRoute(routeFromFile(file)))
+    || isHtmlRedirectAlias(file)
+  ));
+  const allTargetFiles = candidateFiles
+    .filter((file) => (
+      !redirectSources.has(normalizeRoute(routeFromFile(file)))
+      && !isHtmlRedirectAlias(file)
+    ))
     .sort((a, b) => rel(a).localeCompare(rel(b)));
   const targetFiles = allTargetFiles.filter((file) => {
     if (!LANG_FILTER) return true;
@@ -640,11 +716,29 @@ function main() {
   });
 
   const manifest = buildManifest(allTargetFiles);
+  for (const file of redirectAliasFiles) {
+    const html = removeOldVerificationPanels(fs.readFileSync(file, 'utf8'));
+    const toolId = toolIdFor(file, html);
+    const entry = manifest.tools[toolId];
+    if (!entry) continue;
+    entry.routes = Array.from(new Set(entry.routes.concat(routeFromFile(file)))).sort();
+  }
   const dataPath = path.join(ROOT, 'data', 'tool-verification.json');
   const dataJson = `${JSON.stringify(manifest, null, 2)}\n`;
   if (WRITE && !LANG_FILTER) fs.writeFileSync(dataPath, dataJson, 'utf8');
 
   let changed = 0;
+  if (WRITE) {
+    for (const file of redirectAliasFiles) {
+      const original = fs.readFileSync(file, 'utf8');
+      const next = removeOldVerificationPanels(original);
+      if (next !== original) {
+        fs.writeFileSync(file, next, 'utf8');
+        changed += 1;
+        if (LIST) console.log(`removed redirect alias panel: ${rel(file)}`);
+      }
+    }
+  }
   for (const file of targetFiles) {
     const html = fs.readFileSync(file, 'utf8');
     const toolId = toolIdFor(file, html);

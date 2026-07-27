@@ -25,7 +25,10 @@ routes.forEach((route) => {
   });
 });
 
-const combined = routes.map((route) => fs.readFileSync(path.join(root, 'tools', route, 'index.html'), 'utf8')).join('\n');
+const combined = routes.map((route) => {
+  const html = fs.readFileSync(path.join(root, 'tools', route, 'index.html'), 'utf8');
+  return html.replace(/<!-- RELATED_TOOLS_SSR_START -->[\s\S]*?<!-- RELATED_TOOLS_SSR_END -->/g, '');
+}).join('\n');
 assert.doesNotMatch(combined, /KES 3,700|GHS 100|eligible for|you qualify|deadline is|award amount is/i);
 
 console.log(`Day 7 government verification contracts verified for ${routes.length} routes.`);

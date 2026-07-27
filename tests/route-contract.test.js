@@ -13,6 +13,18 @@ function issueCodes(result) {
 const graph = routeApi.buildRouteGraph();
 const validation = routeApi.validateRouteGraph(graph, { checkArtifacts: true });
 assert.strictEqual(validation.ok, true, validation.errors.slice(0, 50).map(routeApi.formatIssue).join('\n'));
+assert.strictEqual(
+  (graph.ruleConflicts || []).length,
+  0,
+  'AC-1: earlier redirect rules must not silently shadow later destinations'
+);
+assert.deepStrictEqual(
+  (graph.shadowedRules || [])
+    .filter((rule) => rule.shadowedByFile && [301, 302, 307, 308].includes(Number(rule.statusCode)))
+    .map((rule) => `${rule.route} -> ${rule.target}`),
+  [],
+  'AC-1: a redirect must be forced or removed when a published file owns the same route'
+);
 
 assert.ok(graph.routes.length >= 10000, 'AC-1: graph must document every public page and routing rule');
 const routeIds = new Set();

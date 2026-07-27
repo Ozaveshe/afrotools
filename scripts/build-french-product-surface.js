@@ -4,6 +4,10 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
+const {
+  analyticsVersion,
+  canonicalLoaderTag
+} = require('./inject-analytics-loader');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -25,7 +29,8 @@ const PRODUCT_ALTERNATES = {
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
-  return html.replace(/<\/body>(\s*<\/html>\s*)$/i, '<script defer src="/assets/js/lazy-analytics.js"></script>\n</body>$1');
+  const tag = canonicalLoaderTag(analyticsVersion());
+  return html.replace(/<\/body>(\s*<\/html>\s*)$/i, `${tag}\n</body>$1`);
 }
 function alignOgUrlWithCanonical(html) {
   const canonical = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*\bhref=["']([^"']+)["'][^>]*>/i);
@@ -275,6 +280,53 @@ for (const rel of ['fr/all-tools/index.html', 'fr/nigeria/ng-salary-tax.html']) 
     ['<meta name="content-language" content="en">', '<meta name="content-language" content="fr">']
   ]);
 }
+repair('fr/all-tools/index.html', [
+  [
+    "let tools = AFRO_TOOLS.filter(t => (t.lang || 'en') === PAGE_LANG);",
+    "let tools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/'));"
+  ],
+  ['<div class="hero-eyebrow">Tool Library</div>', '<div class="hero-eyebrow">Bibliothèque d’outils</div>'],
+  ['<div class="s-lbl">Unpublished records</div>', '<div class="s-lbl">Fiches non publiées</div>'],
+  ['<div class="s-lbl">Categories</div>', '<div class="s-lbl">Catégories</div>'],
+  ['<div class="s-lbl">Price</div><div class="s-val blue">Core use without a paid subscription</div>', '<div class="s-lbl">Accès</div><div class="s-val blue">Usage principal sans abonnement payant</div>'],
+  ['>All <span class="filter-count"', '>Tous <span class="filter-count"'],
+  ['>Live <span class="filter-count"', '>Publiés <span class="filter-count"'],
+  ['data-filter="health" onclick="setFilter(\'health\',this)">Health</button>', 'data-filter="health" onclick="setFilter(\'health\',this)">Santé</button>'],
+  ['data-filter="ecommerce" onclick="setFilter(\'ecommerce\',this)">Business</button>', 'data-filter="ecommerce" onclick="setFilter(\'ecommerce\',this)">Entreprise</button>'],
+  ['data-filter="engineering" onclick="setFilter(\'engineering\',this)">Engineering</button>', 'data-filter="engineering" onclick="setFilter(\'engineering\',this)">Ingénierie</button>'],
+  ['data-filter="trade" onclick="setFilter(\'trade\',this)">Trade</button>', 'data-filter="trade" onclick="setFilter(\'trade\',this)">Commerce</button>'],
+  ['data-filter="african" onclick="setFilter(\'african\',this)">African</button>', 'data-filter="african" onclick="setFilter(\'african\',this)">Afrique</button>'],
+  ['data-filter="legal" onclick="setFilter(\'legal\',this)">Legal</button>', 'data-filter="legal" onclick="setFilter(\'legal\',this)">Juridique</button>'],
+  ['data-filter="language" onclick="setFilter(\'language\',this)">Language</button>', 'data-filter="language" onclick="setFilter(\'language\',this)">Langues</button>'],
+  ['data-filter="data-productivity" onclick="setFilter(\'data-productivity\',this)">Data</button>', 'data-filter="data-productivity" onclick="setFilter(\'data-productivity\',this)">Données</button>'],
+  ['data-filter="government" onclick="setFilter(\'government\',this)">Gov</button>', 'data-filter="government" onclick="setFilter(\'government\',this)">Administration</button>'],
+  ['data-filter="small-business" onclick="setFilter(\'small-business\',this)">SME</button>', 'data-filter="small-business" onclick="setFilter(\'small-business\',this)">PME</button>'],
+  ['data-filter="insurance" onclick="setFilter(\'insurance\',this)">Insurance</button>', 'data-filter="insurance" onclick="setFilter(\'insurance\',this)">Assurance</button>'],
+  ['data-filter="energy" onclick="setFilter(\'energy\',this)">Energy</button>', 'data-filter="energy" onclick="setFilter(\'energy\',this)">Énergie</button>'],
+  ['data-filter="travel-tourism" onclick="setFilter(\'travel-tourism\',this)">Travel</button>', 'data-filter="travel-tourism" onclick="setFilter(\'travel-tourism\',this)">Voyages</button>'],
+  ['data-filter="creative" onclick="setFilter(\'creative\',this)">Creative</button>', 'data-filter="creative" onclick="setFilter(\'creative\',this)">Création</button>'],
+  ['data-filter="sports" onclick="setFilter(\'sports\',this)">Sports</button>', 'data-filter="sports" onclick="setFilter(\'sports\',this)">Sport</button>'],
+  ['data-filter="career" onclick="setFilter(\'career\',this)">Career</button>', 'data-filter="career" onclick="setFilter(\'career\',this)">Carrière</button>'],
+  ['<option value="priority">Sort: Recommended</option>', '<option value="priority">Tri : recommandés</option>'],
+  ['<option value="name">Sort: A–Z</option>', '<option value="name">Tri : A–Z</option>'],
+  ['<option value="live">Sort: Live First</option>', '<option value="live">Tri : publiés d’abord</option>'],
+  ["'health':{name:'Health'", "'health':{name:'Santé'"],
+  ["'ecommerce':{name:'Business'", "'ecommerce':{name:'Entreprise'"],
+  ["'legal':{name:'Legal'", "'legal':{name:'Juridique'"],
+  ["'data-productivity':{name:'Productivity'", "'data-productivity':{name:'Productivité'"],
+  ["'language':{name:'Language'", "'language':{name:'Langues'"],
+  ["'african':{name:'African'", "'african':{name:'Afrique'"],
+  ["'engineering':{name:'Engineering'", "'engineering':{name:'Ingénierie'"],
+  ["'government':{name:'Government'", "'government':{name:'Administration'"],
+  ["'small-business':{name:'Small Business'", "'small-business':{name:'Petite entreprise'"],
+  ["'insurance':{name:'Insurance'", "'insurance':{name:'Assurance'"],
+  ["'personal-finance':{name:'Personal Finance'", "'personal-finance':{name:'Finances personnelles'"],
+  ["'religious-cultural':{name:'Religious & Cultural'", "'religious-cultural':{name:'Religion et culture'"],
+  ["'sports':{name:'Sports'", "'sports':{name:'Sport'"],
+  ["'creative':{name:'Creative'", "'creative':{name:'Création'"],
+  ["'travel-tourism':{name:'Travel'", "'travel-tourism':{name:'Voyages'"],
+  ["'career':{name:'Career'", "'career':{name:'Carrière'"]
+]);
 
 function homePage() {
   return `<!doctype html>
@@ -359,9 +411,9 @@ function blogFeed(manifest) {
 }
 
 output('fr/index.html', withAnalyticsLoader(homePage()));
-output('fr/privacy/index.html', privacyPage());
+output('fr/privacy/index.html', withAnalyticsLoader(privacyPage()));
 output('fr/terms-of-use/index.html', withAnalyticsLoader(termsPage()));
-output('fr/terms/index.html', aliasPage());
+output('fr/terms/index.html', withAnalyticsLoader(aliasPage()));
 const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
 output('fr/blog/index.html', withAnalyticsLoader(blogPage(blog)));
 output('fr/blog/feed.xml', blogFeed(blog));

@@ -6,23 +6,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 10699 |
+| Public pages | 10660 |
 | Indexable pages | 9709 |
-| Permanent and temporary redirects | 2806 |
+| Permanent and temporary redirects | 2853 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
 | Genuine equivalence groups | 5147 |
-| Documented fallbacks | 13795 |
+| Documented fallbacks | 13803 |
 | Routes eligible for primary sitemaps | 9709 |
 
 ## Locale Coverage
 
-- en: 5875 page records
-- fr: 3716 page records
+- en: 5874 page records
+- fr: 3679 page records
 - ha: 105 page records
-- sw: 958 page records
+- sw: 957 page records
 - yo: 45 page records
 
 ## Page Types
@@ -31,10 +31,10 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - article: 382
 - auth: 3
 - category: 695
-- country-tool: 497
+- country-tool: 473
 - legal: 4
-- page: 4791
-- tool: 3945
+- page: 4779
+- tool: 3942
 - widget: 379
 
 ## Canonical Migrations
@@ -1332,6 +1332,11 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/agriculture/vaccination-schedule/uganda.html` -> `/fr/agriculture/vaccination-schedule/uganda` (301, owner: _redirects)
 - `/fr/agriculture/vaccination-schedule/zambia.html` -> `/fr/agriculture/vaccination-schedule/zambia` (301, owner: _redirects)
 - `/fr/agriculture/vaccination-schedule/zimbabwe.html` -> `/fr/agriculture/vaccination-schedule/zimbabwe` (301, owner: _redirects)
+- `/fr/algeria/` -> `/fr/algerie/` (301, owner: _redirects)
+- `/fr/algeria/dz-paye` -> `/fr/algerie/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/algeria/dz-paye.html` -> `/fr/algerie/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/algeria/dz-vat` -> `/fr/algerie/calculateur-tva` (301, owner: _redirects)
+- `/fr/algeria/dz-vat.html` -> `/fr/algerie/calculateur-tva` (301, owner: _redirects)
 - `/fr/algerie/calculateur-salaire-net.html` -> `/fr/algerie/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/algerie/calculateur-tva.html` -> `/fr/algerie/calculateur-tva` (301, owner: _redirects)
 - `/fr/algerie/dz-paye` -> `/fr/algerie/calculateur-salaire-net` (301, owner: _redirects)
@@ -1348,12 +1353,16 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/burkina-faso/bf-paye` -> `/fr/burkina-faso/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/burkina-faso/bf-paye.html` -> `/fr/burkina-faso/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/burkina-faso/bf-vat.html` -> `/fr/burkina-faso/calculateur-tva` (301, owner: _redirects)
+- `/fr/burkina-faso/bf-vat/` -> `/fr/burkina-faso/calculateur-tva` (301, owner: _redirects)
 - `/fr/burkina-faso/calculateur-salaire-net.html` -> `/fr/burkina-faso/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/burkina-faso/calculateur-tva.html` -> `/fr/burkina-faso/calculateur-tva` (301, owner: _redirects)
 - `/fr/burundi/bi-paye.html` -> `/fr/burundi/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/burundi/bi-paye/` -> `/fr/burundi/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/burundi/bi-vat.html` -> `/fr/burundi/calculateur-tva` (301, owner: _redirects)
+- `/fr/burundi/bi-vat/` -> `/fr/burundi/calculateur-tva` (301, owner: _redirects)
 - `/fr/burundi/calculateur-tva.html` -> `/fr/burundi/calculateur-tva` (301, owner: _redirects)
 - `/fr/business/break-even/` -> `/fr/tools/seuil-rentabilite/` (301, owner: data/registry/route-policy.json)
+- `/fr/cameroon/` -> `/fr/cameroun/` (301, owner: _redirects)
 - `/fr/cameroon/cm-paye` -> `/fr/cameroun/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/cameroon/cm-paye.html` -> `/fr/cameroun/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/cameroon/cm-vat` -> `/fr/cameroun/calculateur-tva` (301, owner: _redirects)
@@ -1361,18 +1370,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/cameroun/calculateur-salaire-net.html` -> `/fr/cameroun/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/cameroun/calculateur-tva.html` -> `/fr/cameroun/calculateur-tva` (301, owner: _redirects)
 - `/fr/cameroun/cm-paye` -> `/fr/cameroun/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/cape-verde/` -> `/fr/cabo-verde/` (301, owner: _redirects)
 - `/fr/cape-verde/cv-paye.html` -> `/fr/cape-verde/cv-paye/` (301, owner: _redirects)
 - `/fr/cape-verde/cv-vat.html` -> `/fr/cape-verde/cv-vat/` (301, owner: _redirects)
 - `/fr/cape-verde/kikokotoo-vat/` -> `/cape-verde/cv-vat` (301, owner: _redirects)
 - `/fr/car/` -> `/fr/centrafrique/` (301, owner: _redirects)
 - `/fr/car/cf-paye.html` -> `/fr/centrafrique/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/car/cf-paye/` -> `/fr/centrafrique/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/car/cf-vat.html` -> `/fr/centrafrique/calculateur-tva` (301, owner: _redirects)
+- `/fr/car/cf-vat/` -> `/fr/centrafrique/calculateur-tva` (301, owner: _redirects)
 - `/fr/centrafrique/calculateur-tva.html` -> `/fr/centrafrique/calculateur-tva` (301, owner: _redirects)
+- `/fr/central-african-republic/` -> `/fr/centrafrique/` (301, owner: _redirects)
 - `/fr/chad/` -> `/fr/tchad/` (301, owner: _redirects)
 - `/fr/chad/td-paye` -> `/fr/tchad/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/chad/td-paye.html` -> `/fr/tchad/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/chad/td-vat.html` -> `/fr/chad/td-vat` (301, owner: _redirects)
 - `/fr/comores/calculateur-tva.html` -> `/fr/comores/calculateur-tva` (301, owner: _redirects)
+- `/fr/comoros/` -> `/fr/comores/` (301, owner: _redirects)
 - `/fr/comoros/km-paye` -> `/fr/comores/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/comoros/km-paye.html` -> `/fr/comores/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/comoros/km-vat` -> `/fr/comores/calculateur-tva` (301, owner: data/registry/route-policy.json)
@@ -1380,19 +1394,25 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/congo/calculateur-salaire-net.html` -> `/fr/congo/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/congo/calculateur-tva.html` -> `/fr/congo/calculateur-tva` (301, owner: _redirects)
 - `/fr/congo/cg-paye.html` -> `/fr/congo/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/congo/cg-paye/` -> `/fr/congo/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/congo/cg-vat.html` -> `/fr/congo/calculateur-tva` (301, owner: _redirects)
+- `/fr/congo/cg-vat/` -> `/fr/congo/calculateur-tva` (301, owner: _redirects)
 - `/fr/cote-divoire/calculateur-salaire-net.html` -> `/fr/cote-divoire/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/cote-divoire/calculateur-tva.html` -> `/fr/cote-divoire/calculateur-tva` (301, owner: _redirects)
 - `/fr/cote-divoire/ci-paye.html` -> `/fr/cote-divoire/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/cote-divoire/ci-paye/` -> `/fr/cote-divoire/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/cote-divoire/ci-vat.html` -> `/fr/cote-divoire/calculateur-tva` (301, owner: _redirects)
+- `/fr/cote-divoire/ci-vat/` -> `/fr/cote-divoire/calculateur-tva` (301, owner: _redirects)
 - `/fr/creative/` -> `/creative/` (301, owner: _redirects)
 - `/fr/crypto/tax-calculator/` -> `/fr/tools/impot-crypto/` (301, owner: netlify.toml)
 - `/fr/djibouti/dj-paye` -> `/fr/djibouti/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/djibouti/dj-paye.html` -> `/fr/djibouti/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/djibouti/dj-vat.html` -> `/fr/djibouti/dj-vat` (301, owner: _redirects)
+- `/fr/dr-congo/` -> `/fr/rdc/` (301, owner: _redirects)
 - `/fr/dr-congo/cd-paye.html` -> `/fr/rdc/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/dr-congo/cd-paye/` -> `/fr/rdc/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/dr-congo/cd-vat.html` -> `/fr/rdc/calculateur-tva` (301, owner: _redirects)
+- `/fr/dr-congo/cd-vat/` -> `/fr/rdc/calculateur-tva` (301, owner: _redirects)
 - `/fr/dr-congo/kikokotoo-vat/` -> `/dr-congo/cd-vat` (301, owner: _redirects)
 - `/fr/drc/` -> `/fr/rdc/` (301, owner: html-canonical)
 - `/fr/egypt/eg-paye.html` -> `/fr/egypt/eg-paye` (301, owner: _redirects)
@@ -1402,6 +1422,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/eq-guinea/` -> `/fr/guinee-equatoriale/` (301, owner: _redirects)
 - `/fr/eq-guinea/gq-paye.html` -> `/fr/eq-guinea/gq-paye/` (301, owner: _redirects)
 - `/fr/eq-guinea/gq-vat.html` -> `/fr/eq-guinea/gq-vat/` (301, owner: _redirects)
+- `/fr/equatorial-guinea/` -> `/fr/guinee-equatoriale/` (301, owner: _redirects)
 - `/fr/eritrea/er-paye.html` -> `/fr/eritrea/er-paye` (301, owner: _redirects)
 - `/fr/eritrea/er-vat.html` -> `/fr/eritrea/er-vat` (301, owner: _redirects)
 - `/fr/eswatini/sz-paye.html` -> `/fr/eswatini/sz-paye` (301, owner: _redirects)
@@ -1411,15 +1432,20 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/gabon/calculateur-salaire-net.html` -> `/fr/gabon/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/gabon/calculateur-tva.html` -> `/fr/gabon/calculateur-tva` (301, owner: _redirects)
 - `/fr/gabon/ga-paye.html` -> `/fr/gabon/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/gabon/ga-paye/` -> `/fr/gabon/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/gabon/ga-vat.html` -> `/fr/gabon/calculateur-tva` (301, owner: _redirects)
+- `/fr/gabon/ga-vat/` -> `/fr/gabon/calculateur-tva` (301, owner: _redirects)
 - `/fr/gambia/gm-paye.html` -> `/fr/gambia/gm-paye` (301, owner: _redirects)
 - `/fr/gambia/gm-vat.html` -> `/fr/gambia/gm-vat` (301, owner: _redirects)
 - `/fr/ghana/gh-paye.html` -> `/fr/ghana/gh-paye` (301, owner: _redirects)
 - `/fr/ghana/gh-vat.html` -> `/fr/ghana/gh-vat` (301, owner: _redirects)
 - `/fr/guinea-bissau/gw-paye.html` -> `/fr/guinea-bissau/gw-paye` (301, owner: _redirects)
 - `/fr/guinea-bissau/gw-vat.html` -> `/fr/guinea-bissau/gw-vat` (301, owner: _redirects)
+- `/fr/guinea/` -> `/fr/guinee/` (301, owner: _redirects)
 - `/fr/guinea/gn-paye.html` -> `/fr/guinee/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/guinea/gn-paye/` -> `/fr/guinee/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/guinea/gn-vat.html` -> `/fr/guinee/calculateur-tva` (301, owner: _redirects)
+- `/fr/guinea/gn-vat/` -> `/fr/guinee/calculateur-tva` (301, owner: _redirects)
 - `/fr/guinee/calculateur-salaire-net.html` -> `/fr/guinee/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/guinee/calculateur-tva.html` -> `/fr/guinee/calculateur-tva` (301, owner: _redirects)
 - `/fr/guinee/gn-paye` -> `/fr/guinee/calculateur-salaire-net` (301, owner: _redirects)
@@ -1444,10 +1470,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/mali/calculateur-tva.html` -> `/fr/mali/calculateur-tva` (301, owner: _redirects)
 - `/fr/mali/ml-paye` -> `/fr/mali/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/mali/ml-paye.html` -> `/fr/mali/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/mali/ml-vat` -> `/fr/mali/calculateur-tva` (301, owner: _redirects)
+- `/fr/mali/ml-vat.html` -> `/fr/mali/calculateur-tva` (301, owner: _redirects)
 - `/fr/maroc/calculateur-salaire-net.html` -> `/fr/maroc/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/maroc/calculateur-tva.html` -> `/fr/maroc/calculateur-tva` (301, owner: _redirects)
 - `/fr/maroc/ma-paye` -> `/fr/maroc/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/maroc/ma-vat` -> `/fr/maroc/calculateur-tva` (301, owner: _redirects)
+- `/fr/mauritania/` -> `/fr/mauritanie/` (301, owner: _redirects)
 - `/fr/mauritania/mr-paye` -> `/fr/mauritanie/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/mauritania/mr-paye.html` -> `/fr/mauritanie/calculateur-salaire-net/` (301, owner: _redirects)
 - `/fr/mauritania/mr-vat.html` -> `/fr/mauritania/mr-vat` (301, owner: _redirects)
@@ -1455,8 +1484,11 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/mauritius/mu-paye.html` -> `/fr/mauritius/mu-paye` (301, owner: _redirects)
 - `/fr/mauritius/mu-vat.html` -> `/fr/mauritius/mu-vat` (301, owner: _redirects)
 - `/fr/media-kit/` -> `/media-kit/` (301, owner: _redirects)
+- `/fr/morocco/` -> `/fr/maroc/` (301, owner: _redirects)
 - `/fr/morocco/ma-paye` -> `/fr/maroc/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/morocco/ma-paye.html` -> `/fr/maroc/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/morocco/ma-vat` -> `/fr/maroc/calculateur-tva` (301, owner: _redirects)
+- `/fr/morocco/ma-vat.html` -> `/fr/maroc/calculateur-tva` (301, owner: _redirects)
 - `/fr/mozambique/mz-paye.html` -> `/fr/mozambique/mz-paye` (301, owner: _redirects)
 - `/fr/mozambique/mz-vat.html` -> `/fr/mozambique/mz-vat` (301, owner: _redirects)
 - `/fr/namibia/na-paye.html` -> `/fr/namibia/na-paye` (301, owner: _redirects)
@@ -1464,7 +1496,9 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/niger/calculateur-salaire-net.html` -> `/fr/niger/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/niger/calculateur-tva.html` -> `/fr/niger/calculateur-tva` (301, owner: _redirects)
 - `/fr/niger/ne-paye.html` -> `/fr/niger/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/niger/ne-paye/` -> `/fr/niger/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/niger/ne-vat.html` -> `/fr/niger/calculateur-tva` (301, owner: _redirects)
+- `/fr/niger/ne-vat/` -> `/fr/niger/calculateur-tva` (301, owner: _redirects)
 - `/fr/nigeria/ng-salary-tax.html` -> `/fr/nigeria/ng-salary-tax` (301, owner: _redirects)
 - `/fr/nigeria/ng-vat.html` -> `/fr/nigeria/ng-vat` (301, owner: _redirects)
 - `/fr/offline.html` -> `/fr/offline` (301, owner: _redirects)
@@ -1481,6 +1515,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/senegal/calculateur-tva.html` -> `/fr/senegal/calculateur-tva` (301, owner: _redirects)
 - `/fr/senegal/sn-paye` -> `/fr/senegal/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/senegal/sn-paye.html` -> `/fr/senegal/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/senegal/sn-vat` -> `/fr/senegal/calculateur-tva` (301, owner: _redirects)
+- `/fr/senegal/sn-vat.html` -> `/fr/senegal/calculateur-tva` (301, owner: _redirects)
 - `/fr/seychelles/sc-paye.html` -> `/fr/seychelles/sc-paye` (301, owner: _redirects)
 - `/fr/seychelles/sc-vat.html` -> `/fr/seychelles/sc-vat` (301, owner: _redirects)
 - `/fr/sierra-leone/sl-paye.html` -> `/fr/sierra-leone/sl-paye` (301, owner: _redirects)
@@ -1500,6 +1536,10 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/terms/` -> `/fr/terms-of-use/` (301, owner: data/registry/route-policy.json)
 - `/fr/togo/calculateur-salaire-net.html` -> `/fr/togo/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/togo/calculateur-tva.html` -> `/fr/togo/calculateur-tva` (301, owner: _redirects)
+- `/fr/togo/tg-paye` -> `/fr/togo/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/togo/tg-paye.html` -> `/fr/togo/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/togo/tg-vat` -> `/fr/togo/calculateur-tva` (301, owner: _redirects)
+- `/fr/togo/tg-vat.html` -> `/fr/togo/calculateur-tva` (301, owner: _redirects)
 - `/fr/tools/` -> `/fr/all-tools/` (301, owner: data/registry/route-policy.json)
 - `/fr/tools/africa-conflict/actors.html` -> `/fr/tools/africa-conflict/actors` (301, owner: _redirects)
 - `/fr/tools/africa-conflict/conflicts.html` -> `/fr/tools/africa-conflict/conflicts` (301, owner: _redirects)
@@ -1740,20 +1780,25 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/fr/tools/japa-calculator/` -> `/fr/tools/calculateur-japa/` (301, owner: netlify.toml)
 - `/fr/tools/meeting-minutes/app.html` -> `/fr/tools/meeting-minutes/app` (301, owner: _redirects)
 - `/fr/tools/mobile-money-fees/` -> `/fr/tools/frais-mobile-money/` (301, owner: _redirects)
+- `/fr/tools/ng-wht/` -> `/fr/tools/ng-retenue-source/` (301, owner: _redirects)
 - `/fr/tools/paye-calculator/` -> `/fr/tools/calculateur-paye/` (301, owner: _redirects)
 - `/fr/tools/pdf-workspace/` -> `/fr/tools/espace-pdf/` (301, owner: netlify.toml)
 - `/fr/tools/plan-affaires/app.html` -> `/fr/tools/plan-affaires/app` (301, owner: _redirects)
 - `/fr/tools/prelevements-cedeao/` -> `/fr/tools/ecowas-levy/` (301, owner: html-canonical)
+- `/fr/tools/projection-retraite/` -> `/fr/tools/projection-pension/` (301, owner: _redirects)
 - `/fr/tools/remittance-compare/` -> `/fr/tools/transfert-argent/` (301, owner: _redirects)
-- `/fr/tools/remittance-v2/` -> `/fr/tools/transfert-argent/` (301, owner: _redirects)
+- `/fr/tools/remittance-v2/` -> `/fr/tools/transfert-v2/` (301, owner: _redirects)
 - `/fr/tools/scholarship-finder/` -> `/fr/tools/recherche-bourses/` (301, owner: netlify.toml)
 - `/fr/tools/school-fees/app.html` -> `/fr/tools/school-fees/app` (301, owner: _redirects)
 - `/fr/tools/study-planner/` -> `/fr/tools/planificateur-etudes/` (301, owner: netlify.toml)
 - `/fr/tools/vat-calculator/` -> `/fr/tools/calculateur-tva/` (301, owner: _redirects)
 - `/fr/tools/vat-calculator/vat-calc/` -> `/fr/tools/calculateur-tva/` (301, owner: _redirects)
 - `/fr/tools/waec-calculator/` -> `/fr/tools/calculateur-waec/` (301, owner: netlify.toml)
+- `/fr/tunisia/` -> `/fr/tunisie/` (301, owner: _redirects)
 - `/fr/tunisia/tn-paye` -> `/fr/tunisie/calculateur-salaire-net` (301, owner: html-canonical)
 - `/fr/tunisia/tn-paye.html` -> `/fr/tunisie/calculateur-salaire-net` (301, owner: _redirects)
+- `/fr/tunisia/tn-vat` -> `/fr/tunisie/calculateur-tva` (301, owner: _redirects)
+- `/fr/tunisia/tn-vat.html` -> `/fr/tunisie/calculateur-tva` (301, owner: _redirects)
 - `/fr/tunisie/calculateur-salaire-net.html` -> `/fr/tunisie/calculateur-salaire-net` (301, owner: _redirects)
 - `/fr/tunisie/calculateur-tva.html` -> `/fr/tunisie/calculateur-tva` (301, owner: _redirects)
 - `/fr/tunisie/tn-paye` -> `/fr/tunisie/calculateur-salaire-net` (301, owner: _redirects)
@@ -1881,6 +1926,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/sw/404.html` -> `/sw/404` (301, owner: _redirects)
 - `/sw/benin/calculateur-salaire-net/` -> `/benin/bj-paye` (301, owner: _redirects)
 - `/sw/contact` -> `/sw/wasiliana/` (301, owner: _redirects)
+- `/sw/countries/` -> `/sw/nchi/` (301, owner: _redirects)
 - `/sw/dr-congo/cd-paye.html` -> `/dr-congo/cd-paye` (301, owner: _redirects)
 - `/sw/guinea-bissau/gw-paye.html` -> `/guinea-bissau/gw-paye` (301, owner: _redirects)
 - `/sw/salary-tax/` -> `/sw/mshahara-na-kodi/` (301, owner: html-canonical)
@@ -1920,6 +1966,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/tools/africa-conflict/forecasts.html` -> `/tools/africa-conflict/forecasts` (301, owner: _redirects)
 - `/tools/africa-conflict/map.html` -> `/tools/africa-conflict/map` (301, owner: _redirects)
 - `/tools/africa-conflict/methodology.html` -> `/tools/africa-conflict/methodology` (301, owner: _redirects)
+- `/tools/afroatlas/_country-template` -> `/tools/afroatlas/` (301, owner: _redirects)
 - `/tools/afroatlas/_country-template.html` -> `/tools/afroatlas/` (301, owner: _redirects)
 - `/tools/afroatlas/compare.html` -> `/tools/afroatlas/compare` (301, owner: _redirects)
 - `/tools/afroatlas/map.html` -> `/tools/afroatlas/map` (301, owner: _redirects)
@@ -8088,254 +8135,205 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/api/v1/catalog/health/` -> `/.netlify/functions/api-tool-catalog` (_redirects:186)
 - `/api/ai/route-intent/` -> `/.netlify/functions/ai-route-intent` (_redirects:191)
 - `/pricing/` -> `/pricing/index.html` (_redirects:195)
-- `/pro` -> `/pricing` (_redirects:196) shadowed by `pro/index.html`
-- `/login/` -> `/auth/?mode=login&next=/dashboard/` (_redirects:214)
-- `/signin/` -> `/auth/?mode=login&next=/dashboard/` (_redirects:216)
-- `/signup/` -> `/auth/?mode=signup&next=/dashboard/` (_redirects:218)
-- `/vault/` -> `/dashboard/vault/` (_redirects:223)
-- `/admin/` -> `/404.html` (_redirects:233)
-- `/admin/review/` -> `/404.html` (_redirects:236)
-- `/tools/afroatlas/_country-template` -> `/tools/afroatlas/` (_redirects:255) shadowed by `tools/afroatlas/_country-template.html`
-- `/api/b2b-enquiry/` -> `/.netlify/functions/capture-b2b-lead` (_redirects:313)
-- `/api/tax-rates/` -> `/.netlify/functions/api-tax-rates` (_redirects:327)
-- `/api/countries/` -> `/.netlify/functions/api-countries` (_redirects:329)
-- `/api/fintech-fees/` -> `/.netlify/functions/api-fintech-fees` (_redirects:331)
-- `/api/fx-spreads/` -> `/.netlify/functions/api-fx-spreads` (_redirects:333)
-- `/api/staple-baskets/` -> `/.netlify/functions/api-staple-baskets` (_redirects:335)
-- `/api/backup-power-costs/` -> `/.netlify/functions/api-backup-power-costs` (_redirects:337)
-- `/api/wholesale-retail-spreads/` -> `/.netlify/functions/api-wholesale-retail-spreads` (_redirects:339)
-- `/api/rent-intelligence/` -> `/.netlify/functions/api-rent-intelligence` (_redirects:341)
-- `/api/lease-risk/` -> `/.netlify/functions/api-lease-risk` (_redirects:343)
-- `/api/remittance-quotes/` -> `/.netlify/functions/api-remittance-quotes` (_redirects:345)
-- `/api/market-data-ingest/` -> `/.netlify/functions/api-market-data-ingest` (_redirects:347)
-- `/api/market-data-refresh/` -> `/.netlify/functions/scheduled-refresh-market-data` (_redirects:349)
-- `/api/gazette-review/` -> `/.netlify/functions/api-gazette-review` (_redirects:351)
-- `/api/get-key/` -> `/.netlify/functions/api-keys-create` (_redirects:353)
-- `/api/keys/create/` -> `/.netlify/functions/api-keys-create` (_redirects:355)
-- `/south-africa/sa-income-tax/` -> `/south-africa/za-paye/` (_redirects:360)
-- `/egypt/eg-income-tax/` -> `/egypt/eg-paye/` (_redirects:362)
-- `/car/` -> `/central-african-republic/` (_redirects:366)
-- `/eq-guinea/` -> `/equatorial-guinea/` (_redirects:368)
-- `/tools/dev-tools` -> `/developer-tools/` (_redirects:383) shadowed by `tools/dev-tools/index.html`
-- `/tools/dev-tools/` -> `/developer-tools/` (_redirects:384) shadowed by `tools/dev-tools/index.html`
-- `/legal` -> `/mortgage-property/` (_redirects:391) shadowed by `legal/index.html`
-- `/legal/` -> `/mortgage-property/` (_redirects:392) shadowed by `legal/index.html`
-- `/search/` -> `/search/index.html` (_redirects:399)
-- `/salary-tax/` -> `/salary-tax/index.html` (_redirects:403)
-- `/document-pdf/` -> `/document-pdf/index.html` (_redirects:405)
-- `/image-design/` -> `/image-design/index.html` (_redirects:407)
-- `/developer-tools/` -> `/developer-tools/index.html` (_redirects:409)
-- `/education/` -> `/education/index.html` (_redirects:411)
-- `/health/` -> `/health/index.html` (_redirects:413)
-- `/vat-business-tax/` -> `/vat-business-tax/index.html` (_redirects:415)
-- `/mortgage-property/` -> `/mortgage-property/index.html` (_redirects:417)
-- `/business-roi/` -> `/business-roi/index.html` (_redirects:419)
-- `/language/` -> `/language/index.html` (_redirects:421)
-- `/uniquely-african/` -> `/uniquely-african/index.html` (_redirects:423)
-- `/engineering/` -> `/engineering/index.html` (_redirects:425)
-- `/crypto/` -> `/crypto/index.html` (_redirects:427)
-- `/api/crypto-scam/` -> `/.netlify/functions/crypto-scam` (_redirects:431)
-- `/api/crypto-portfolio/` -> `/.netlify/functions/crypto-portfolio` (_redirects:433)
-- `/api/crypto-advisor/` -> `/.netlify/functions/crypto-portfolio-advisor` (_redirects:435)
-- `/fr/` -> `/fr/index.html` (_redirects:439)
-- `/fr/madagascar/calculateur-salaire-net/` -> `/fr/madagascar/calculateur-salaire-net/index.html` (_redirects:457)
-- `/fr/benin/calculateur-salaire-net/` -> `/fr/benin/calculateur-salaire-net/index.html` (_redirects:459)
-- `/fr/tchad/calculateur-salaire-net/` -> `/fr/tchad/calculateur-salaire-net/index.html` (_redirects:461)
-- `/fr/burundi/calculateur-salaire-net/` -> `/fr/burundi/calculateur-salaire-net/index.html` (_redirects:463)
-- `/fr/mauritanie/calculateur-salaire-net/` -> `/fr/mauritanie/calculateur-salaire-net/index.html` (_redirects:465)
-- `/fr/centrafrique/calculateur-salaire-net/` -> `/fr/centrafrique/calculateur-salaire-net/index.html` (_redirects:467)
-- `/fr/djibouti/calculateur-salaire-net/` -> `/fr/djibouti/calculateur-salaire-net/index.html` (_redirects:469)
-- `/fr/comores/calculateur-salaire-net/` -> `/fr/comores/calculateur-salaire-net/index.html` (_redirects:471)
-- `/fr/algeria/dz-paye` -> `/fr/algerie/calculateur-salaire-net` (_redirects:490) shadowed by `fr/algeria/dz-paye.html`
-- `/fr/algeria/dz-paye/` -> `/fr/algerie/calculateur-salaire-net` (_redirects:491) shadowed by `fr/algeria/dz-paye.html`
-- `/fr/algeria/dz-vat` -> `/fr/algerie/calculateur-tva` (_redirects:492) shadowed by `fr/algeria/dz-vat.html`
-- `/fr/algeria/dz-vat/` -> `/fr/algerie/calculateur-tva` (_redirects:493) shadowed by `fr/algeria/dz-vat.html`
-- `/fr/cameroon/cm-vat/` -> `/fr/cameroun/calculateur-tva` (_redirects:495)
-- `/fr/dr-congo/cd-paye` -> `/fr/rdc/calculateur-salaire-net` (_redirects:496) shadowed by `fr/dr-congo/cd-paye/index.html`
-- `/fr/dr-congo/cd-paye/` -> `/fr/rdc/calculateur-salaire-net` (_redirects:497) shadowed by `fr/dr-congo/cd-paye/index.html`
-- `/fr/dr-congo/cd-vat` -> `/fr/rdc/calculateur-tva` (_redirects:498) shadowed by `fr/dr-congo/cd-vat/index.html`
-- `/fr/dr-congo/cd-vat/` -> `/fr/rdc/calculateur-tva` (_redirects:499) shadowed by `fr/dr-congo/cd-vat/index.html`
-- `/fr/guinea/gn-paye` -> `/fr/guinee/calculateur-salaire-net` (_redirects:500) shadowed by `fr/guinea/gn-paye/index.html`
-- `/fr/guinea/gn-paye/` -> `/fr/guinee/calculateur-salaire-net` (_redirects:501) shadowed by `fr/guinea/gn-paye/index.html`
-- `/fr/guinea/gn-vat` -> `/fr/guinee/calculateur-tva` (_redirects:502) shadowed by `fr/guinea/gn-vat/index.html`
-- `/fr/guinea/gn-vat/` -> `/fr/guinee/calculateur-tva` (_redirects:503) shadowed by `fr/guinea/gn-vat/index.html`
-- `/fr/morocco/ma-vat` -> `/fr/maroc/calculateur-tva` (_redirects:504) shadowed by `fr/morocco/ma-vat.html`
-- `/fr/morocco/ma-vat/` -> `/fr/maroc/calculateur-tva` (_redirects:505) shadowed by `fr/morocco/ma-vat.html`
-- `/fr/tunisia/tn-vat` -> `/fr/tunisie/calculateur-tva` (_redirects:506) shadowed by `fr/tunisia/tn-vat.html`
-- `/fr/tunisia/tn-vat/` -> `/fr/tunisie/calculateur-tva` (_redirects:507) shadowed by `fr/tunisia/tn-vat.html`
-- `/fr/cote-divoire/ci-paye/` -> `/fr/cote-divoire/calculateur-salaire-net` (_redirects:509)
-- `/fr/cote-divoire/ci-vat` -> `/fr/cote-divoire/calculateur-tva` (_redirects:510) shadowed by `fr/cote-divoire/ci-vat/index.html`
-- `/fr/cote-divoire/ci-vat/` -> `/fr/cote-divoire/calculateur-tva` (_redirects:511) shadowed by `fr/cote-divoire/ci-vat/index.html`
-- `/fr/senegal/sn-vat` -> `/fr/senegal/calculateur-tva` (_redirects:512) shadowed by `fr/senegal/sn-vat.html`
-- `/fr/senegal/sn-vat/` -> `/fr/senegal/calculateur-tva` (_redirects:513) shadowed by `fr/senegal/sn-vat.html`
-- `/fr/cameroun/cm-paye/` -> `/fr/cameroun/calculateur-salaire-net` (_redirects:515)
-- `/fr/rdc/cd-paye/` -> `/fr/rdc/calculateur-salaire-net` (_redirects:517)
-- `/fr/rdc/cd-vat/` -> `/fr/rdc/calculateur-tva` (_redirects:519)
-- `/fr/maroc/ma-paye/` -> `/fr/maroc/calculateur-salaire-net` (_redirects:521)
-- `/fr/maroc/ma-vat/` -> `/fr/maroc/calculateur-tva` (_redirects:523)
-- `/fr/algerie/dz-paye/` -> `/fr/algerie/calculateur-salaire-net` (_redirects:525)
-- `/fr/algerie/dz-vat/` -> `/fr/algerie/calculateur-tva` (_redirects:527)
-- `/fr/tunisie/tn-paye/` -> `/fr/tunisie/calculateur-salaire-net` (_redirects:529)
-- `/fr/tunisie/tn-vat/` -> `/fr/tunisie/calculateur-tva` (_redirects:531)
-- `/fr/guinee/gn-paye/` -> `/fr/guinee/calculateur-salaire-net` (_redirects:533)
-- `/fr/guinee/gn-vat/` -> `/fr/guinee/calculateur-tva` (_redirects:535)
-- `/fr/mali/ml-vat` -> `/fr/mali/calculateur-tva` (_redirects:536) shadowed by `fr/mali/ml-vat.html`
-- `/fr/mali/ml-vat/` -> `/fr/mali/calculateur-tva` (_redirects:537) shadowed by `fr/mali/ml-vat.html`
-- `/fr/burkina-faso/bf-vat` -> `/fr/burkina-faso/calculateur-tva` (_redirects:538) shadowed by `fr/burkina-faso/bf-vat/index.html`
-- `/fr/burkina-faso/bf-vat/` -> `/fr/burkina-faso/calculateur-tva` (_redirects:539) shadowed by `fr/burkina-faso/bf-vat/index.html`
-- `/fr/niger/ne-paye` -> `/fr/niger/calculateur-salaire-net` (_redirects:540) shadowed by `fr/niger/ne-paye/index.html`
-- `/fr/niger/ne-paye/` -> `/fr/niger/calculateur-salaire-net` (_redirects:541) shadowed by `fr/niger/ne-paye/index.html`
-- `/fr/niger/ne-vat` -> `/fr/niger/calculateur-tva` (_redirects:542) shadowed by `fr/niger/ne-vat/index.html`
-- `/fr/niger/ne-vat/` -> `/fr/niger/calculateur-tva` (_redirects:543) shadowed by `fr/niger/ne-vat/index.html`
-- `/fr/congo/cg-paye` -> `/fr/congo/calculateur-salaire-net` (_redirects:544) shadowed by `fr/congo/cg-paye/index.html`
-- `/fr/congo/cg-paye/` -> `/fr/congo/calculateur-salaire-net` (_redirects:545) shadowed by `fr/congo/cg-paye/index.html`
-- `/fr/congo/cg-vat` -> `/fr/congo/calculateur-tva` (_redirects:546) shadowed by `fr/congo/cg-vat/index.html`
-- `/fr/congo/cg-vat/` -> `/fr/congo/calculateur-tva` (_redirects:547) shadowed by `fr/congo/cg-vat/index.html`
-- `/fr/gabon/ga-paye` -> `/fr/gabon/calculateur-salaire-net` (_redirects:548) shadowed by `fr/gabon/ga-paye/index.html`
-- `/fr/gabon/ga-paye/` -> `/fr/gabon/calculateur-salaire-net` (_redirects:549) shadowed by `fr/gabon/ga-paye/index.html`
-- `/fr/gabon/ga-vat` -> `/fr/gabon/calculateur-tva` (_redirects:550) shadowed by `fr/gabon/ga-vat/index.html`
-- `/fr/gabon/ga-vat/` -> `/fr/gabon/calculateur-tva` (_redirects:551) shadowed by `fr/gabon/ga-vat/index.html`
-- `/fr/togo/tg-paye` -> `/fr/togo/calculateur-salaire-net` (_redirects:552) shadowed by `fr/togo/tg-paye.html`
-- `/fr/togo/tg-paye/` -> `/fr/togo/calculateur-salaire-net` (_redirects:553) shadowed by `fr/togo/tg-paye.html`
-- `/fr/togo/tg-vat` -> `/fr/togo/calculateur-tva` (_redirects:554) shadowed by `fr/togo/tg-vat.html`
-- `/fr/togo/tg-vat/` -> `/fr/togo/calculateur-tva` (_redirects:555) shadowed by `fr/togo/tg-vat.html`
-- `/fr/burundi/bi-paye` -> `/fr/burundi/calculateur-salaire-net` (_redirects:556) shadowed by `fr/burundi/bi-paye/index.html`
-- `/fr/burundi/bi-paye/` -> `/fr/burundi/calculateur-salaire-net` (_redirects:557) shadowed by `fr/burundi/bi-paye/index.html`
-- `/fr/burundi/bi-vat` -> `/fr/burundi/calculateur-tva` (_redirects:558) shadowed by `fr/burundi/bi-vat/index.html`
-- `/fr/burundi/bi-vat/` -> `/fr/burundi/calculateur-tva` (_redirects:559) shadowed by `fr/burundi/bi-vat/index.html`
-- `/fr/car/cf-paye` -> `/fr/centrafrique/calculateur-salaire-net` (_redirects:560) shadowed by `fr/car/cf-paye/index.html`
-- `/fr/car/cf-paye/` -> `/fr/centrafrique/calculateur-salaire-net` (_redirects:561) shadowed by `fr/car/cf-paye/index.html`
-- `/fr/car/cf-vat` -> `/fr/centrafrique/calculateur-tva` (_redirects:562) shadowed by `fr/car/cf-vat/index.html`
-- `/fr/car/cf-vat/` -> `/fr/centrafrique/calculateur-tva` (_redirects:563) shadowed by `fr/car/cf-vat/index.html`
-- `/categories/tax` -> `/salary-tax/` (_redirects:614)
-- `/categories/financial` -> `/salary-tax/` (_redirects:618)
-- `/categories/health` -> `/health/` (_redirects:620)
-- `/categories/legal` -> `/mortgage-property/` (_redirects:622)
-- `/categories/engineering` -> `/engineering/` (_redirects:624)
-- `/categories/developer` -> `/developer-tools/` (_redirects:626)
-- `/categories/mortgage-property` -> `/mortgage-property/` (_redirects:628)
-- `/categories/data-productivity` -> `/developer-tools/` (_redirects:630)
-- `/nigeria/ng-paye/` -> `/nigeria/ng-salary-tax` (_redirects:638)
-- `/kenya/ke-salary-tax/` -> `/kenya/ke-paye` (_redirects:640)
-- `/south-africa/za-salary-tax/` -> `/south-africa/za-paye` (_redirects:642)
-- `/tools/salary-tax` -> `/salary-tax/` (_redirects:644)
-- `/tools/whatsapp-link-generator` -> `/tools/whatsapp-link/` (_redirects:646)
-- `/tools/vat-calculator/vat-calc/` -> `/tools/vat-calculator/` (_redirects:650)
-- `/tools/crop-yield-calculator` -> `/tools/crop-yield/` (_redirects:654)
-- `/tools/payment-fee-calculator` -> `/tools/paystack-calculator/` (_redirects:656)
-- `/tools/pdf` -> `/document-pdf/` (_redirects:658)
-- `/tools/unicode-lookup` -> `/developer-tools/` (_redirects:660)
-- `/tools/lorem-ipsum` -> `/developer-tools/` (_redirects:662)
-- `/tools/event-flyer` -> `/image-design/` (_redirects:664)
-- `/tools/data-calculator` -> `/developer-tools/` (_redirects:666)
-- `/tools/business-name-generator` -> `/tools/business-name-gen/` (_redirects:668)
-- `/tools/recadrer-image` -> `/tools/image-crop/` (_redirects:670)
-- `/tools/contrat-travail` -> `/tools/employment-contract/` (_redirects:672)
-- `/tools/rapport-medical` -> `/tools/medical-report/` (_redirects:674)
-- `/tools/compte-a-rebours-examen` -> `/tools/exam-countdown/` (_redirects:676)
-- `/tools/calculateur-pourcentage` -> `/tools/percentage-calc/` (_redirects:678)
-- `/tools/planificateur-retraite` -> `/tools/retirement-planner/` (_redirects:680)
-- `/tools/generateur-citations` -> `/tools/citation-generator/` (_redirects:682)
-- `/tools/ocr-pdf` -> `/tools/pdf-ocr/` (_redirects:684)
-- `/tools/pdf-en-audio` -> `/tools/pdf-to-audio/` (_redirects:686)
-- `/tools/reorganiser-pdf` -> `/tools/pdf-reorder/` (_redirects:688)
-- `/tools/loan-calculator` -> `/tools/microfinance-loan/` (_redirects:690)
-- `/tools/profit-calculator` -> `/tools/profit-margin/` (_redirects:692)
-- `/tools/farm-income` -> `/agriculture/farm-profit/` (_redirects:694)
-- `/fr/algerie/` -> `/fr/algerie/index.html` (_redirects:698)
-- `/fr/burkina-faso/` -> `/fr/burkina-faso/index.html` (_redirects:700)
-- `/fr/cameroun/` -> `/fr/cameroun/index.html` (_redirects:702)
-- `/fr/congo/` -> `/fr/congo/index.html` (_redirects:704)
-- `/fr/cote-divoire/` -> `/fr/cote-divoire/index.html` (_redirects:706)
-- `/fr/gabon/` -> `/fr/gabon/index.html` (_redirects:708)
-- `/fr/guinee/` -> `/fr/guinee/index.html` (_redirects:710)
-- `/fr/mali/` -> `/fr/mali/index.html` (_redirects:712)
-- `/fr/maroc/` -> `/fr/maroc/index.html` (_redirects:714)
-- `/fr/niger/` -> `/fr/niger/index.html` (_redirects:716)
-- `/fr/rdc/` -> `/fr/rdc/index.html` (_redirects:718)
-- `/fr/senegal/` -> `/fr/senegal/index.html` (_redirects:720)
-- `/fr/togo/` -> `/fr/togo/index.html` (_redirects:722)
-- `/fr/tunisie/` -> `/fr/tunisie/index.html` (_redirects:724)
-- `/sw/tools/vat-calculator` -> `/sw/zana/kikokotoo-vat/` (_redirects:729)
-- `/sw/tools/currency-converter` -> `/sw/zana/kibadilishaji-sarafu/` (_redirects:731)
-- `/sw/tools/mobile-money-fees` -> `/sw/zana/ada-pesa-simu/` (_redirects:733)
-- `/sw/tools/remittance-compare` -> `/sw/zana/ulinganisho-uhamishaji-pesa/` (_redirects:735)
-- `/sw/tools/budget-planner` -> `/sw/zana/mpango-bajeti/` (_redirects:737)
-- `/sw/tools/fuel-tracker` -> `/sw/zana/bei-mafuta/` (_redirects:739)
-- `/sw/tools/cv-builder` -> `/sw/zana/mjenzi-cv/` (_redirects:741)
-- `/sw/tools/invoice-generator` -> `/sw/zana/kizalishaji-ankara/` (_redirects:743)
-- `/sw/tools/pdf-workspace` -> `/sw/zana/nafasi-pdf/` (_redirects:745)
-- `/sw/tools/import-duty` -> `/sw/zana/ushuru-forodha/` (_redirects:747)
-- `/sw/tools/gpa-calculator` -> `/sw/zana/kikokotoo-gpa/` (_redirects:749)
-- `/sw/tools/afrokitchen` -> `/sw/zana/jikoni/` (_redirects:751)
-- `/sw/tools/boq-builder` -> `/sw/zana/orodha-vifaa/` (_redirects:753)
-- `/sw/countries/` -> `/sw/nchi/` (_redirects:756) shadowed by `sw/countries/index.html`
-- `/sw/countries` -> `/sw/nchi/` (_redirects:757) shadowed by `sw/countries/index.html`
-- `/sw/contact/` -> `/sw/wasiliana/` (_redirects:760)
-- `/vat-calculator/` -> `/tools/vat-calculator/` (_redirects:765)
-- `/tools/gold-price-tracker/` -> `/tools/commodity-tracker/` (_redirects:767)
-- `/mz/` -> `/mozambique/` (_redirects:841)
-- `/tn/` -> `/tunisia/` (_redirects:843)
-- `/central-african-republic/cf-paye/` -> `/car/cf-paye` (_redirects:845)
-- `/equatorial-guinea/gq-paye/` -> `/eq-guinea/gq-paye` (_redirects:847)
-- `/senegal/calculateur-salaire-net/` -> `/senegal/sn-paye` (_redirects:852)
-- `/fr/tools/projection-retraite/` -> `/fr/tools/projection-pension/` (_redirects:857) shadowed by `fr/tools/projection-retraite/index.html`
-- `/fr/tools/projection-retraite` -> `/fr/tools/projection-pension/` (_redirects:858) shadowed by `fr/tools/projection-retraite/index.html`
-- `/fr/tools/vat-calculator/vat-calc` -> `/fr/tools/calculateur-tva/` (_redirects:860)
-- `/fr/tools/vat-calculator` -> `/fr/tools/calculateur-tva/` (_redirects:862)
-- `/fr/tools/paye-calculator` -> `/fr/tools/calculateur-paye/` (_redirects:864)
-- `/fr/tools/mobile-money-fees` -> `/fr/tools/frais-mobile-money/` (_redirects:866)
-- `/fr/tools/remittance-compare` -> `/fr/tools/transfert-argent/` (_redirects:868)
-- `/fr/tools/import-duty` -> `/fr/tools/droits-douane/` (_redirects:870)
-- `/fr/tools/remittance-v2` -> `/fr/tools/transfert-argent/` (_redirects:872)
-- `/fr/tools/ng-wht/` -> `/fr/tools/ng-retenue-source/` (_redirects:873) shadowed by `fr/tools/ng-wht/index.html`
-- `/fr/tools/ng-wht` -> `/fr/tools/ng-retenue-source/` (_redirects:874) shadowed by `fr/tools/ng-wht/index.html`
-- `/fr/benin/bj-paye/` -> `/fr/benin/calculateur-salaire-net/` (_redirects:881)
-- `/fr/chad/` -> `/fr/tchad/` (_redirects:883)
-- `/fr/chad/td-paye/` -> `/fr/tchad/calculateur-salaire-net/` (_redirects:885)
-- `/fr/comoros/km-paye/` -> `/fr/comores/calculateur-salaire-net/` (_redirects:887)
-- `/fr/djibouti/dj-paye/` -> `/fr/djibouti/calculateur-salaire-net/` (_redirects:889)
-- `/fr/madagascar/mg-paye/` -> `/fr/madagascar/calculateur-salaire-net/` (_redirects:891)
-- `/fr/mauritania/mr-paye/` -> `/fr/mauritanie/calculateur-salaire-net/` (_redirects:893)
-- `/tools/paye-calculator/` -> `/tools/paye-calculator/index.html` (_redirects:897)
-- `/fr/algeria/` -> `/fr/algerie/` (_redirects:907) shadowed by `fr/algeria/index.html`
-- `/fr/algeria` -> `/fr/algerie/` (_redirects:908) shadowed by `fr/algeria/index.html`
-- `/fr/cameroon/` -> `/fr/cameroun/` (_redirects:909) shadowed by `fr/cameroon/index.html`
-- `/fr/cameroon` -> `/fr/cameroun/` (_redirects:910) shadowed by `fr/cameroon/index.html`
-- `/fr/dr-congo/` -> `/fr/rdc/` (_redirects:911) shadowed by `fr/dr-congo/index.html`
-- `/fr/dr-congo` -> `/fr/rdc/` (_redirects:912) shadowed by `fr/dr-congo/index.html`
-- `/fr/guinea/` -> `/fr/guinee/` (_redirects:913) shadowed by `fr/guinea/index.html`
-- `/fr/guinea` -> `/fr/guinee/` (_redirects:914) shadowed by `fr/guinea/index.html`
-- `/fr/morocco/` -> `/fr/maroc/` (_redirects:915) shadowed by `fr/morocco/index.html`
-- `/fr/morocco` -> `/fr/maroc/` (_redirects:916) shadowed by `fr/morocco/index.html`
-- `/fr/tunisia/` -> `/fr/tunisie/` (_redirects:917) shadowed by `fr/tunisia/index.html`
-- `/fr/tunisia` -> `/fr/tunisie/` (_redirects:918) shadowed by `fr/tunisia/index.html`
-- `/fr/car` -> `/fr/centrafrique/` (_redirects:920)
-- `/fr/central-african-republic/` -> `/fr/centrafrique/` (_redirects:921) shadowed by `fr/central-african-republic/index.html`
-- `/fr/central-african-republic` -> `/fr/centrafrique/` (_redirects:922) shadowed by `fr/central-african-republic/index.html`
-- `/fr/equatorial-guinea/` -> `/fr/guinee-equatoriale/` (_redirects:923) shadowed by `fr/equatorial-guinea/index.html`
-- `/fr/equatorial-guinea` -> `/fr/guinee-equatoriale/` (_redirects:924) shadowed by `fr/equatorial-guinea/index.html`
-- `/fr/eq-guinea` -> `/fr/guinee-equatoriale/` (_redirects:926)
-- `/fr/cape-verde/` -> `/fr/cabo-verde/` (_redirects:927) shadowed by `fr/cape-verde/index.html`
-- `/fr/cape-verde` -> `/fr/cabo-verde/` (_redirects:928) shadowed by `fr/cape-verde/index.html`
-- `/fr/comoros/` -> `/fr/comores/` (_redirects:929) shadowed by `fr/comoros/index.html`
-- `/fr/comoros` -> `/fr/comores/` (_redirects:930) shadowed by `fr/comoros/index.html`
-- `/fr/mauritania/` -> `/fr/mauritanie/` (_redirects:931) shadowed by `fr/mauritania/index.html`
-- `/fr/mauritania` -> `/fr/mauritanie/` (_redirects:932) shadowed by `fr/mauritania/index.html`
-- `/fr/dashboard/vault/` -> `/dashboard/vault/` (_redirects:936) shadowed by `fr/dashboard/vault/index.html`
-- `/fr/salary-tax/` -> `/salary-tax/` (_redirects:940) shadowed by `fr/salary-tax/index.html`
-- `/fr/salary-tax` -> `/salary-tax/` (_redirects:941) shadowed by `fr/salary-tax/index.html`
-- `/fr/countries/` -> `/` (_redirects:942) shadowed by `fr/countries/index.html`
-- `/fr/countries` -> `/` (_redirects:943) shadowed by `fr/countries/index.html`
-- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:960)
-- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:962)
-- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:964)
-- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:966)
-- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:968)
-- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:970)
-- `/tools/return-migration` -> `/diaspora/` (_redirects:972)
-- `/tools/double-taxation` -> `/salary-tax/` (_redirects:974)
-- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3565)
+- `/login/` -> `/auth/?mode=login&next=/dashboard/` (_redirects:213)
+- `/signin/` -> `/auth/?mode=login&next=/dashboard/` (_redirects:215)
+- `/signup/` -> `/auth/?mode=signup&next=/dashboard/` (_redirects:217)
+- `/vault/` -> `/dashboard/vault/` (_redirects:222)
+- `/admin/` -> `/404.html` (_redirects:232)
+- `/admin/review/` -> `/404.html` (_redirects:235)
+- `/api/b2b-enquiry/` -> `/.netlify/functions/capture-b2b-lead` (_redirects:312)
+- `/api/tax-rates/` -> `/.netlify/functions/api-tax-rates` (_redirects:326)
+- `/api/countries/` -> `/.netlify/functions/api-countries` (_redirects:328)
+- `/api/fintech-fees/` -> `/.netlify/functions/api-fintech-fees` (_redirects:330)
+- `/api/fx-spreads/` -> `/.netlify/functions/api-fx-spreads` (_redirects:332)
+- `/api/staple-baskets/` -> `/.netlify/functions/api-staple-baskets` (_redirects:334)
+- `/api/backup-power-costs/` -> `/.netlify/functions/api-backup-power-costs` (_redirects:336)
+- `/api/wholesale-retail-spreads/` -> `/.netlify/functions/api-wholesale-retail-spreads` (_redirects:338)
+- `/api/rent-intelligence/` -> `/.netlify/functions/api-rent-intelligence` (_redirects:340)
+- `/api/lease-risk/` -> `/.netlify/functions/api-lease-risk` (_redirects:342)
+- `/api/remittance-quotes/` -> `/.netlify/functions/api-remittance-quotes` (_redirects:344)
+- `/api/market-data-ingest/` -> `/.netlify/functions/api-market-data-ingest` (_redirects:346)
+- `/api/market-data-refresh/` -> `/.netlify/functions/scheduled-refresh-market-data` (_redirects:348)
+- `/api/gazette-review/` -> `/.netlify/functions/api-gazette-review` (_redirects:350)
+- `/api/get-key/` -> `/.netlify/functions/api-keys-create` (_redirects:352)
+- `/api/keys/create/` -> `/.netlify/functions/api-keys-create` (_redirects:354)
+- `/south-africa/sa-income-tax/` -> `/south-africa/za-paye` (_redirects:359)
+- `/egypt/eg-income-tax/` -> `/egypt/eg-paye` (_redirects:361)
+- `/car/` -> `/central-african-republic/` (_redirects:365)
+- `/eq-guinea/` -> `/equatorial-guinea/` (_redirects:367)
+- `/search/` -> `/search/index.html` (_redirects:391)
+- `/salary-tax/` -> `/salary-tax/index.html` (_redirects:395)
+- `/document-pdf/` -> `/document-pdf/index.html` (_redirects:397)
+- `/image-design/` -> `/image-design/index.html` (_redirects:399)
+- `/developer-tools/` -> `/developer-tools/index.html` (_redirects:401)
+- `/education/` -> `/education/index.html` (_redirects:403)
+- `/health/` -> `/health/index.html` (_redirects:405)
+- `/vat-business-tax/` -> `/vat-business-tax/index.html` (_redirects:407)
+- `/mortgage-property/` -> `/mortgage-property/index.html` (_redirects:409)
+- `/business-roi/` -> `/business-roi/index.html` (_redirects:411)
+- `/language/` -> `/language/index.html` (_redirects:413)
+- `/uniquely-african/` -> `/uniquely-african/index.html` (_redirects:415)
+- `/engineering/` -> `/engineering/index.html` (_redirects:417)
+- `/crypto/` -> `/crypto/index.html` (_redirects:419)
+- `/api/crypto-scam/` -> `/.netlify/functions/crypto-scam` (_redirects:423)
+- `/api/crypto-portfolio/` -> `/.netlify/functions/crypto-portfolio` (_redirects:425)
+- `/api/crypto-advisor/` -> `/.netlify/functions/crypto-portfolio-advisor` (_redirects:427)
+- `/fr/` -> `/fr/index.html` (_redirects:431)
+- `/fr/madagascar/calculateur-salaire-net/` -> `/fr/madagascar/calculateur-salaire-net/index.html` (_redirects:449)
+- `/fr/benin/calculateur-salaire-net/` -> `/fr/benin/calculateur-salaire-net/index.html` (_redirects:451)
+- `/fr/tchad/calculateur-salaire-net/` -> `/fr/tchad/calculateur-salaire-net/index.html` (_redirects:453)
+- `/fr/burundi/calculateur-salaire-net/` -> `/fr/burundi/calculateur-salaire-net/index.html` (_redirects:455)
+- `/fr/mauritanie/calculateur-salaire-net/` -> `/fr/mauritanie/calculateur-salaire-net/index.html` (_redirects:457)
+- `/fr/centrafrique/calculateur-salaire-net/` -> `/fr/centrafrique/calculateur-salaire-net/index.html` (_redirects:459)
+- `/fr/djibouti/calculateur-salaire-net/` -> `/fr/djibouti/calculateur-salaire-net/index.html` (_redirects:461)
+- `/fr/comores/calculateur-salaire-net/` -> `/fr/comores/calculateur-salaire-net/index.html` (_redirects:463)
+- `/fr/algeria/dz-paye/` -> `/fr/algerie/calculateur-salaire-net` (_redirects:483)
+- `/fr/algeria/dz-vat/` -> `/fr/algerie/calculateur-tva` (_redirects:485)
+- `/fr/cameroon/cm-vat/` -> `/fr/cameroun/calculateur-tva` (_redirects:487)
+- `/fr/dr-congo/cd-paye/` -> `/fr/rdc/calculateur-salaire-net` (_redirects:489)
+- `/fr/dr-congo/cd-vat/` -> `/fr/rdc/calculateur-tva` (_redirects:491)
+- `/fr/guinea/gn-paye/` -> `/fr/guinee/calculateur-salaire-net` (_redirects:493)
+- `/fr/guinea/gn-vat/` -> `/fr/guinee/calculateur-tva` (_redirects:495)
+- `/fr/morocco/ma-vat/` -> `/fr/maroc/calculateur-tva` (_redirects:497)
+- `/fr/tunisia/tn-vat/` -> `/fr/tunisie/calculateur-tva` (_redirects:499)
+- `/fr/cote-divoire/ci-paye/` -> `/fr/cote-divoire/calculateur-salaire-net` (_redirects:501)
+- `/fr/cote-divoire/ci-vat/` -> `/fr/cote-divoire/calculateur-tva` (_redirects:503)
+- `/fr/senegal/sn-vat/` -> `/fr/senegal/calculateur-tva` (_redirects:505)
+- `/fr/cameroun/cm-paye/` -> `/fr/cameroun/calculateur-salaire-net` (_redirects:507)
+- `/fr/rdc/cd-paye/` -> `/fr/rdc/calculateur-salaire-net` (_redirects:509)
+- `/fr/rdc/cd-vat/` -> `/fr/rdc/calculateur-tva` (_redirects:511)
+- `/fr/maroc/ma-paye/` -> `/fr/maroc/calculateur-salaire-net` (_redirects:513)
+- `/fr/maroc/ma-vat/` -> `/fr/maroc/calculateur-tva` (_redirects:515)
+- `/fr/algerie/dz-paye/` -> `/fr/algerie/calculateur-salaire-net` (_redirects:517)
+- `/fr/algerie/dz-vat/` -> `/fr/algerie/calculateur-tva` (_redirects:519)
+- `/fr/tunisie/tn-paye/` -> `/fr/tunisie/calculateur-salaire-net` (_redirects:521)
+- `/fr/tunisie/tn-vat/` -> `/fr/tunisie/calculateur-tva` (_redirects:523)
+- `/fr/guinee/gn-paye/` -> `/fr/guinee/calculateur-salaire-net` (_redirects:525)
+- `/fr/guinee/gn-vat/` -> `/fr/guinee/calculateur-tva` (_redirects:527)
+- `/fr/mali/ml-vat/` -> `/fr/mali/calculateur-tva` (_redirects:529)
+- `/fr/burkina-faso/bf-vat/` -> `/fr/burkina-faso/calculateur-tva` (_redirects:531)
+- `/fr/niger/ne-paye/` -> `/fr/niger/calculateur-salaire-net` (_redirects:533)
+- `/fr/niger/ne-vat/` -> `/fr/niger/calculateur-tva` (_redirects:535)
+- `/fr/congo/cg-paye/` -> `/fr/congo/calculateur-salaire-net` (_redirects:537)
+- `/fr/congo/cg-vat/` -> `/fr/congo/calculateur-tva` (_redirects:539)
+- `/fr/gabon/ga-paye/` -> `/fr/gabon/calculateur-salaire-net` (_redirects:541)
+- `/fr/gabon/ga-vat/` -> `/fr/gabon/calculateur-tva` (_redirects:543)
+- `/fr/togo/tg-paye/` -> `/fr/togo/calculateur-salaire-net` (_redirects:545)
+- `/fr/togo/tg-vat/` -> `/fr/togo/calculateur-tva` (_redirects:547)
+- `/fr/burundi/bi-paye/` -> `/fr/burundi/calculateur-salaire-net` (_redirects:549)
+- `/fr/burundi/bi-vat/` -> `/fr/burundi/calculateur-tva` (_redirects:551)
+- `/fr/car/cf-paye/` -> `/fr/centrafrique/calculateur-salaire-net` (_redirects:553)
+- `/fr/car/cf-vat/` -> `/fr/centrafrique/calculateur-tva` (_redirects:555)
+- `/categories/tax` -> `/salary-tax/` (_redirects:606)
+- `/categories/financial` -> `/salary-tax/` (_redirects:610)
+- `/categories/health` -> `/health/` (_redirects:612)
+- `/categories/legal` -> `/mortgage-property/` (_redirects:614)
+- `/categories/engineering` -> `/engineering/` (_redirects:616)
+- `/categories/developer` -> `/developer-tools/` (_redirects:618)
+- `/categories/mortgage-property` -> `/mortgage-property/` (_redirects:620)
+- `/categories/data-productivity` -> `/developer-tools/` (_redirects:622)
+- `/nigeria/ng-paye/` -> `/nigeria/ng-salary-tax` (_redirects:630)
+- `/kenya/ke-salary-tax/` -> `/kenya/ke-paye` (_redirects:632)
+- `/south-africa/za-salary-tax/` -> `/south-africa/za-paye` (_redirects:634)
+- `/tools/salary-tax` -> `/salary-tax/` (_redirects:636)
+- `/tools/whatsapp-link-generator` -> `/tools/whatsapp-link/` (_redirects:638)
+- `/tools/vat-calculator/vat-calc/` -> `/tools/vat-calculator/` (_redirects:642)
+- `/tools/crop-yield-calculator` -> `/tools/crop-yield/` (_redirects:646)
+- `/tools/payment-fee-calculator` -> `/tools/paystack-calculator/` (_redirects:648)
+- `/tools/pdf` -> `/document-pdf/` (_redirects:650)
+- `/tools/unicode-lookup` -> `/developer-tools/` (_redirects:652)
+- `/tools/lorem-ipsum` -> `/developer-tools/` (_redirects:654)
+- `/tools/event-flyer` -> `/image-design/` (_redirects:656)
+- `/tools/data-calculator` -> `/developer-tools/` (_redirects:658)
+- `/tools/business-name-generator` -> `/tools/business-name-gen/` (_redirects:660)
+- `/tools/recadrer-image` -> `/tools/image-crop/` (_redirects:662)
+- `/tools/contrat-travail` -> `/tools/employment-contract/` (_redirects:664)
+- `/tools/rapport-medical` -> `/tools/medical-report/` (_redirects:666)
+- `/tools/compte-a-rebours-examen` -> `/tools/exam-countdown/` (_redirects:668)
+- `/tools/calculateur-pourcentage` -> `/tools/percentage-calc/` (_redirects:670)
+- `/tools/planificateur-retraite` -> `/tools/retirement-planner/` (_redirects:672)
+- `/tools/generateur-citations` -> `/tools/citation-generator/` (_redirects:674)
+- `/tools/ocr-pdf` -> `/tools/pdf-ocr/` (_redirects:676)
+- `/tools/pdf-en-audio` -> `/tools/pdf-to-audio/` (_redirects:678)
+- `/tools/reorganiser-pdf` -> `/tools/pdf-reorder/` (_redirects:680)
+- `/tools/loan-calculator` -> `/tools/microfinance-loan/` (_redirects:682)
+- `/tools/profit-calculator` -> `/tools/profit-margin/` (_redirects:684)
+- `/tools/farm-income` -> `/agriculture/farm-profit/` (_redirects:686)
+- `/fr/algerie/` -> `/fr/algerie/index.html` (_redirects:690)
+- `/fr/burkina-faso/` -> `/fr/burkina-faso/index.html` (_redirects:692)
+- `/fr/cameroun/` -> `/fr/cameroun/index.html` (_redirects:694)
+- `/fr/congo/` -> `/fr/congo/index.html` (_redirects:696)
+- `/fr/cote-divoire/` -> `/fr/cote-divoire/index.html` (_redirects:698)
+- `/fr/gabon/` -> `/fr/gabon/index.html` (_redirects:700)
+- `/fr/guinee/` -> `/fr/guinee/index.html` (_redirects:702)
+- `/fr/mali/` -> `/fr/mali/index.html` (_redirects:704)
+- `/fr/maroc/` -> `/fr/maroc/index.html` (_redirects:706)
+- `/fr/niger/` -> `/fr/niger/index.html` (_redirects:708)
+- `/fr/rdc/` -> `/fr/rdc/index.html` (_redirects:710)
+- `/fr/senegal/` -> `/fr/senegal/index.html` (_redirects:712)
+- `/fr/togo/` -> `/fr/togo/index.html` (_redirects:714)
+- `/fr/tunisie/` -> `/fr/tunisie/index.html` (_redirects:716)
+- `/sw/tools/vat-calculator` -> `/sw/zana/kikokotoo-vat/` (_redirects:721)
+- `/sw/tools/currency-converter` -> `/sw/zana/kibadilishaji-sarafu/` (_redirects:723)
+- `/sw/tools/mobile-money-fees` -> `/sw/zana/ada-pesa-simu/` (_redirects:725)
+- `/sw/tools/remittance-compare` -> `/sw/zana/ulinganisho-uhamishaji-pesa/` (_redirects:727)
+- `/sw/tools/budget-planner` -> `/sw/zana/mpango-bajeti/` (_redirects:729)
+- `/sw/tools/fuel-tracker` -> `/sw/zana/bei-mafuta/` (_redirects:731)
+- `/sw/tools/cv-builder` -> `/sw/zana/mjenzi-cv/` (_redirects:733)
+- `/sw/tools/invoice-generator` -> `/sw/zana/kizalishaji-ankara/` (_redirects:735)
+- `/sw/tools/pdf-workspace` -> `/sw/zana/nafasi-pdf/` (_redirects:737)
+- `/sw/tools/import-duty` -> `/sw/zana/ushuru-forodha/` (_redirects:739)
+- `/sw/tools/gpa-calculator` -> `/sw/zana/kikokotoo-gpa/` (_redirects:741)
+- `/sw/tools/afrokitchen` -> `/sw/zana/jikoni/` (_redirects:743)
+- `/sw/tools/boq-builder` -> `/sw/zana/orodha-vifaa/` (_redirects:745)
+- `/sw/countries` -> `/sw/nchi/` (_redirects:749)
+- `/sw/contact/` -> `/sw/wasiliana/` (_redirects:752)
+- `/vat-calculator/` -> `/tools/vat-calculator/` (_redirects:757)
+- `/tools/gold-price-tracker/` -> `/tools/commodity-tracker/` (_redirects:759)
+- `/mz/` -> `/mozambique/` (_redirects:833)
+- `/tn/` -> `/tunisia/` (_redirects:835)
+- `/central-african-republic/cf-paye/` -> `/car/cf-paye` (_redirects:837)
+- `/equatorial-guinea/gq-paye/` -> `/eq-guinea/gq-paye` (_redirects:839)
+- `/senegal/calculateur-salaire-net/` -> `/senegal/sn-paye` (_redirects:844)
+- `/fr/tools/projection-retraite` -> `/fr/tools/projection-pension/` (_redirects:850)
+- `/fr/tools/vat-calculator/vat-calc` -> `/fr/tools/calculateur-tva/` (_redirects:852)
+- `/fr/tools/vat-calculator` -> `/fr/tools/calculateur-tva/` (_redirects:854)
+- `/fr/tools/paye-calculator` -> `/fr/tools/calculateur-paye/` (_redirects:856)
+- `/fr/tools/mobile-money-fees` -> `/fr/tools/frais-mobile-money/` (_redirects:858)
+- `/fr/tools/remittance-compare` -> `/fr/tools/transfert-argent/` (_redirects:860)
+- `/fr/tools/import-duty` -> `/fr/tools/droits-douane/` (_redirects:862)
+- `/fr/tools/remittance-v2` -> `/fr/tools/transfert-v2/` (_redirects:864)
+- `/fr/tools/ng-wht` -> `/fr/tools/ng-retenue-source/` (_redirects:866)
+- `/fr/benin/bj-paye/` -> `/fr/benin/calculateur-salaire-net/` (_redirects:873)
+- `/fr/chad/` -> `/fr/tchad/` (_redirects:875)
+- `/fr/chad/td-paye/` -> `/fr/tchad/calculateur-salaire-net/` (_redirects:877)
+- `/fr/comoros/km-paye/` -> `/fr/comores/calculateur-salaire-net/` (_redirects:879)
+- `/fr/djibouti/dj-paye/` -> `/fr/djibouti/calculateur-salaire-net/` (_redirects:881)
+- `/fr/madagascar/mg-paye/` -> `/fr/madagascar/calculateur-salaire-net/` (_redirects:883)
+- `/fr/mauritania/mr-paye/` -> `/fr/mauritanie/calculateur-salaire-net/` (_redirects:885)
+- `/tools/paye-calculator/` -> `/tools/paye-calculator/index.html` (_redirects:889)
+- `/fr/algeria` -> `/fr/algerie/` (_redirects:900)
+- `/fr/cameroon` -> `/fr/cameroun/` (_redirects:902)
+- `/fr/dr-congo` -> `/fr/rdc/` (_redirects:904)
+- `/fr/guinea` -> `/fr/guinee/` (_redirects:906)
+- `/fr/morocco` -> `/fr/maroc/` (_redirects:908)
+- `/fr/tunisia` -> `/fr/tunisie/` (_redirects:910)
+- `/fr/car` -> `/fr/centrafrique/` (_redirects:912)
+- `/fr/central-african-republic` -> `/fr/centrafrique/` (_redirects:914)
+- `/fr/equatorial-guinea` -> `/fr/guinee-equatoriale/` (_redirects:916)
+- `/fr/eq-guinea` -> `/fr/guinee-equatoriale/` (_redirects:918)
+- `/fr/cape-verde` -> `/fr/cabo-verde/` (_redirects:920)
+- `/fr/comoros` -> `/fr/comores/` (_redirects:922)
+- `/fr/mauritania` -> `/fr/mauritanie/` (_redirects:924)
+- `/tools/rent-own-abroad` -> `/tools/rent-vs-buy/` (_redirects:947)
+- `/tools/property-transfert-cost` -> `/tools/property-transfer-cost/` (_redirects:949)
+- `/tools/ielts-toefl-converter` -> `/tools/ielts-calculator/` (_redirects:951)
+- `/tools/oil-production` -> `/tools/oil-well-production/` (_redirects:953)
+- `/tools/label-branding-cost` -> `/tools/made-in-africa-label/` (_redirects:955)
+- `/tools/overseas-healthcare` -> `/tools/medical-tourism/` (_redirects:957)
+- `/tools/return-migration` -> `/diaspora/` (_redirects:959)
+- `/tools/double-taxation` -> `/salary-tax/` (_redirects:961)
+- `/tools/helb-repayment/` -> `/tools/ke-helb/` (_redirects:3560)
 - `/admin` -> `/404.html` (netlify.toml:172)
 - `/admin/` -> `/404.html` (netlify.toml:178)
 - `/afrotools-mission-control` -> `/404.html` (netlify.toml:190)
@@ -8419,35 +8417,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - `/api/afropayroll` -> `/.netlify/functions/api-afropayroll` (netlify.toml:813)
 - `/api/crypto-dca-history/` -> `/.netlify/functions/crypto-dca-history` (netlify.toml:832)
 - `/nigeria/ng-paye` -> `/nigeria/ng-salary-tax` (netlify.toml:865)
-- `/fr/cote-divoire/` -> `/cote-divoire/` (netlify.toml:874)
-- `/categories/financial/` -> `/salary-tax/` (netlify.toml:880)
-- `/privacy-policy` -> `/privacy/` (netlify.toml:902)
-- `/privacy-policy.html` -> `/privacy/` (netlify.toml:907)
-- `/terms-of-use` -> `/terms/` (netlify.toml:912)
-- `/terms-of-use.html` -> `/terms/` (netlify.toml:917)
-- `/kenya/ke-salary-tax` -> `/kenya/ke-paye` (netlify.toml:935)
-- `/south-africa/za-salary-tax` -> `/south-africa/za-paye` (netlify.toml:940)
-- `/tools/salary-tax/` -> `/salary-tax/` (netlify.toml:950)
-- `/auth/` -> `/pricing/` (netlify.toml:960) shadowed by `auth/index.html`
-- `/auth/login.html` -> `/pricing/` (netlify.toml:965)
-- `/signup/` -> `/pricing/` (netlify.toml:970)
-- `/login` -> `/pricing/` (netlify.toml:975)
-- `/fr/tools/paye-calculator/` -> `/fr/tools/calculateur-paye/` (netlify.toml:980)
-- `/fr/tools/vat-calculator/` -> `/fr/tools/calculateur-tva/` (netlify.toml:985)
-- `/fr/tools/vat-calculator/vat-calc` -> `/fr/tools/calculateur-tva/` (netlify.toml:990)
-- `/fr/tools/import-duty/` -> `/fr/tools/droits-douane/` (netlify.toml:995)
-- `/fr/tools/mobile-money-fees/` -> `/fr/tools/frais-mobile-money/` (netlify.toml:1000)
-- `/fr/tools/remittance-compare/` -> `/fr/tools/transfert-argent/` (netlify.toml:1005)
-- `/fr/tools/remittance-v2/` -> `/fr/tools/transfert-v2/` (netlify.toml:1010)
-- `/crypto/tax-calculator/` -> `/tools/crypto-tax/` (netlify.toml:1148)
-- `/fr/crypto/tax-calculator/` -> `/fr/tools/impot-crypto/` (netlify.toml:1160)
+- `/categories/financial/` -> `/salary-tax/` (netlify.toml:875)
+- `/privacy-policy` -> `/privacy/` (netlify.toml:897)
+- `/privacy-policy.html` -> `/privacy/` (netlify.toml:902)
+- `/terms-of-use` -> `/terms/` (netlify.toml:907)
+- `/terms-of-use.html` -> `/terms/` (netlify.toml:912)
+- `/kenya/ke-salary-tax` -> `/kenya/ke-paye` (netlify.toml:930)
+- `/south-africa/za-salary-tax` -> `/south-africa/za-paye` (netlify.toml:935)
+- `/tools/salary-tax/` -> `/salary-tax/` (netlify.toml:945)
+- `/fr/tools/paye-calculator/` -> `/fr/tools/calculateur-paye/` (netlify.toml:955)
+- `/fr/tools/vat-calculator/` -> `/fr/tools/calculateur-tva/` (netlify.toml:960)
+- `/fr/tools/vat-calculator/vat-calc` -> `/fr/tools/calculateur-tva/` (netlify.toml:965)
+- `/fr/tools/import-duty/` -> `/fr/tools/droits-douane/` (netlify.toml:970)
+- `/fr/tools/mobile-money-fees/` -> `/fr/tools/frais-mobile-money/` (netlify.toml:975)
+- `/fr/tools/remittance-compare/` -> `/fr/tools/transfert-argent/` (netlify.toml:980)
+- `/crypto/tax-calculator/` -> `/tools/crypto-tax/` (netlify.toml:1118)
+- `/fr/crypto/tax-calculator/` -> `/fr/tools/impot-crypto/` (netlify.toml:1130)
 
 ## Conflicting Later Rules
 
-- `/south-africa/sa-income-tax`: effective `/south-africa/za-paye` (_redirects), later `/south-africa/za-paye/` (_redirects)
-- `/egypt/eg-income-tax`: effective `/egypt/eg-paye` (_redirects), later `/egypt/eg-paye/` (_redirects)
-- `/fr/cote-divoire`: effective `/fr/cote-divoire/index.html` (_redirects), later `/cote-divoire/` (netlify.toml)
-- `/auth/login.html`: effective `/auth/` (_redirects), later `/pricing/` (netlify.toml)
-- `/signup`: effective `/auth/?mode=signup&next=/dashboard/` (_redirects), later `/pricing/` (netlify.toml)
-- `/login`: effective `/auth/?mode=login&next=/dashboard/` (_redirects), later `/pricing/` (netlify.toml)
-- `/fr/tools/remittance-v2/`: effective `/fr/tools/transfert-argent/` (_redirects), later `/fr/tools/transfert-v2/` (netlify.toml)
+- None.
