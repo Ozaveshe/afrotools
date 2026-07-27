@@ -81,7 +81,7 @@
         </div>
       </div>
       <div style="text-align:center;margin-top:20px">
-        <button type="button" class="ck-ai-btn" onclick="surpriseTemplate()">🎲 Surprise Me — AI picks a template</button>
+        <button type="button" class="ck-ai-btn" onclick="surpriseTemplate()">🎲 Pick a random template</button>
       </div>
     </div>
 
@@ -112,7 +112,7 @@
           <div class="ck-field">
             <label>Tagline / One-liner</label>
             <input aria-label="E.g. Lagos based wedding photographer capturing love stories across West Africa" type="text" id="tagline" placeholder="e.g. Lagos-based wedding photographer capturing love stories across West Africa" oninput="updateData('tagline', this.value)">
-            <button type="button" class="ck-ai-btn" onclick="aiGenerate('tagline')">✨ Write my tagline</button>
+            <button type="button" class="ck-ai-btn" onclick="aiGenerate('tagline')">✨ Write my tagline with online AI</button>
           </div>
           <div class="ck-field">
             <label>Hero Image</label>
@@ -426,11 +426,11 @@
       </div>
       <div class="ck-share-option" onclick="downloadPDF()">
         <div class="ck-share-icon" style="background:rgba(59,130,246,.15)">📄</div>
-        <div><div class="ck-share-label">Download PDF</div><div class="ck-share-sub">A4 format, print-ready</div></div>
+        <div><div class="ck-share-label">Open print view</div><div class="ck-share-sub">Use your browser's print or Save as PDF dialog</div></div>
       </div>
-      <div class="ck-share-option" onclick="downloadPNG()">
+      <div class="ck-share-option" aria-disabled="true" title="PNG export is not available yet">
         <div class="ck-share-icon" style="background:rgba(168,85,247,.15)">📱</div>
-        <div><div class="ck-share-label">Download PNG</div><div class="ck-share-sub">Perfect for Instagram stories</div></div>
+        <div><div class="ck-share-label">PNG export — not available</div><div class="ck-share-sub">Use Preview or the print-to-PDF workflow</div></div>
       </div>
       <div style="text-align:center;margin-top:16px">
         <button type="button" class="ck-btn ck-btn-ghost" onclick="closeShare()">Close</button>
@@ -699,6 +699,13 @@ function stopVerbCycling() {
 }
 
 // ── AI INTEGRATION ──
+function confirmOnlineAi(prompt) {
+  return window.confirm(
+    'Online AI action\n\nThe exact prompt below will be sent to AfroTools and its configured model provider. ' +
+    'Cancel to keep editing locally.\n\n' + prompt
+  );
+}
+
 function aiGenerate(type) {
   var btn = event.target;
   btn.classList.add('loading');
@@ -722,6 +729,11 @@ function aiGenerate(type) {
       'Use price anchoring — make the middle tier the obvious best value. Format as JSON array.';
   }
 
+  if (!confirmOnlineAi(prompt)) {
+    btn.classList.remove('loading');
+    btn.textContent = '✨ ' + (type === 'tagline' ? 'Write my tagline' : type === 'bio' ? 'Write all 3 bios' : type === 'stats' ? 'Turn stats into brand-friendly insights' : 'Suggest packages for my craft');
+    return;
+  }
   startVerbCycling();
 
   fetch('/.netlify/functions/ai-advisor', {
@@ -771,6 +783,11 @@ function aiPolishTestimonial(btn) {
   var prompt = 'Transform this casual client feedback into a professional testimonial. Keep the authentic sentiment, elevate the language, never fabricate details. ' +
     'Original: "' + quoteEl.value + '" — ' + (nameEl.value || 'Client') + '. Return only the polished quote.';
 
+  if (!confirmOnlineAi(prompt)) {
+    btn.classList.remove('loading');
+    btn.textContent = '✨ Polish this testimonial';
+    return;
+  }
   startVerbCycling();
 
   fetch('/.netlify/functions/ai-advisor', {
@@ -949,6 +966,7 @@ function showToast(msg) {
 loadKit();
 updateNavBtns();
 </script>
+<script src="/assets/js/pages/day9-creative-expanded-safety.js"></script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>
