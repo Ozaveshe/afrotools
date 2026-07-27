@@ -119,13 +119,13 @@ function normalizeLegacyHtmlFormulaScript(source) {
 }
 
 function normalizeHtmlFormulaPresentation(source) {
-  // The lazy analytics asset version is a deployment cache key, not executable
-  // calculator logic. It can appear in the page shell or inside a printable
-  // HTML template that otherwise contains a protected formula. Normalize only
-  // the exact eight-character build hash so real script paths and formula code
-  // remain covered by the digest gate.
+  // These asset versions are deployment cache keys, not executable calculator
+  // logic. They can appear in the page shell or inside a printable HTML
+  // template that otherwise contains a protected formula. Normalize only the
+  // exact eight-character build hash for explicitly reviewed presentation
+  // assets so paths, query shape and formula code remain covered by the gate.
   return String(source).replace(
-    /(assets\/js\/lazy-analytics\.js\?v=)[a-f0-9]{8}/gi,
+    /(assets\/js\/(?:lazy-analytics|components\/related-tools\.min)\.js\?v=)[a-f0-9]{8}/gi,
     "$1__FORMULA_DIGEST_CACHE__",
   );
 }

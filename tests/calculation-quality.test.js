@@ -57,7 +57,7 @@ test('legacy HTML formula digests ignore presentation-only disclosure state', fu
   assert.strictEqual(quality.digestFile(ROOT, egyptRoute.artifactPath), egyptRoute.artifactDigest);
 });
 
-test('HTML formula digests ignore lazy analytics cache versions only', function () {
+test('HTML formula digests ignore reviewed presentation-asset cache versions only', function () {
   const formulaPage = (cacheVersion, rate) => [
     '<html><body><script>',
     'const rate = ' + rate + ';',
@@ -91,6 +91,17 @@ test('HTML formula digests ignore lazy analytics cache versions only', function 
   assert.notStrictEqual(
     quality.digestHtmlFormulaSource(shellPage('630f8a7d')),
     quality.digestHtmlFormulaSource('<html><body></body></html>')
+  );
+
+  const relatedToolsShell = (cacheVersion) =>
+    '<html><body><script src="/assets/js/components/related-tools.min.js?v=' + cacheVersion + '" defer></script></body></html>';
+  assert.strictEqual(
+    quality.digestHtmlFormulaSource(relatedToolsShell('2cd970f9')),
+    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d')),
+    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d').replace('related-tools.min.js', 'tool-registry.min.js'))
   );
 });
 
