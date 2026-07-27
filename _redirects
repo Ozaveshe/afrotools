@@ -981,7 +981,15 @@
 # exists (GH, KE, NG, TZ, UG, ZM). Every other country deep-link goes to the
 # calculator itself rather than a fabricated country page. Non-forced, so the six
 # real country pages keep serving.
-/tools/car-import-cost/*   /tools/car-import-cost/  301
+#
+# Must be a single-segment placeholder, NOT a splat. `/tools/car-import-cost/*`
+# also matches `/tools/car-import-cost/` itself (a splat matches the empty
+# string), making the rule its own target — an infinite redirect. Netlify drops
+# such a rule rather than ship the loop, so the splat form silently did nothing
+# and every unsupported country stayed 404. A placeholder requires a non-empty
+# segment, so it can never match the base path.
+/tools/car-import-cost/:country/  /tools/car-import-cost/  301
+/tools/car-import-cost/:country   /tools/car-import-cost/  301
 # French country hub reached without /fr/ prefix
 /guinee-equatoriale/*      /fr/guinee-equatoriale/:splat  301
 /guinee-equatoriale        /fr/guinee-equatoriale/        301
