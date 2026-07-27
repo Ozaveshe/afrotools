@@ -1,0 +1,27 @@
+{
+  "name": "Afro-Bench Holdout",
+  "version": "1.0.0",
+  "createdAt": "2026-07-26",
+  "purpose": "The number we are allowed to believe. Afro-Bench itself has become partly in-sample: lexicon entries were written after reading its failures, so its score now measures the lexicon's coverage of that set as much as the router's understanding. This file is the control — prompts written to be answered by nobody, never consulted while tuning.",
+  "rules": [
+    "NEVER add a lexicon phrase, manifest synonym or ranking rule because a case here failed. Fix the general mechanism, or leave it failing and record it.",
+    "If a case here is used to guide a change, delete it from this file and write a new one. A holdout consulted twice is not a holdout.",
+    "Prompts are deliberately harder than Afro-Bench: heavy pidgin, indirect phrasing, and domains with thin tool vocabulary.",
+    "Report the holdout number next to the Afro-Bench number, always. Quoting the tuned score alone is the exact dishonesty this file exists to prevent."
+  ],
+  "history": [
+    { "date": "2026-07-26", "version": "afro-1.1", "accuracy": "4/10", "errorRecall": "5/6", "note": "first run; routing generalises poorly, calibration generalises well" }
+  ],
+  "cases": [
+    { "id": "h-paye-pidgin", "prompt": "my oga never pay me, how much suppose enter my account after deduction", "acceptable": ["ng-paye", "paye-calculator", "salary-tax", "salary-intelligence"], "category": "salary-tax", "style": "pidgin" },
+    { "id": "h-import-gen", "prompt": "i dey plan to bring generator from china, wetin be the total cost", "acceptable": ["import-duty", "landed-cost", "shipping-calc", "shipping-estimator"], "category": "trade", "style": "pidgin" },
+    { "id": "h-cement", "prompt": "how many bags of cement for a 4 bedroom", "acceptable": ["building-materials", "construction-budget", "boq-generator", "boq-gen", "afroplan-floor-planner"], "category": "construction", "style": "indirect" },
+    { "id": "h-school-fees", "prompt": "school fees for my pikin next term", "acceptable": ["school-fees", "student-budget"], "category": "local-life", "style": "pidgin" },
+    { "id": "h-rice-price", "prompt": "i want compare price of rice for market", "acceptable": ["market-stall-profit", "food-cost", "input-prices-kenya", "market-price-tracker"], "category": "agriculture", "style": "pidgin" },
+    { "id": "h-gbp-ghs", "prompt": "change 200 pounds to cedis", "acceptable": ["currency-converter"], "category": "fx", "style": "indirect" },
+    { "id": "h-loan-interest", "prompt": "what be the interest if i borrow 500k", "acceptable": ["loan-compare", "digital-lending", "microfinance-loan", "loan-calculator"], "category": "fintech", "style": "pidgin" },
+    { "id": "h-company-tax", "prompt": "my company wan register for tax", "acceptable": ["business-registration", "tin-guide"], "category": "sme", "style": "pidgin" },
+    { "id": "h-poultry", "prompt": "how much i go take start poultry farm", "acceptable": ["poultry-roi-calculator", "poultry-calculator", "farm-profit", "farm-budget"], "category": "agriculture", "style": "pidgin" },
+    { "id": "h-overtime", "prompt": "calculate overtime for my staff", "acceptable": ["overtime-calc", "payslip-generator"], "category": "hr", "style": "plain" }
+  ]
+}

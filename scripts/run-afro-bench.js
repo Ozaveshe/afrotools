@@ -21,7 +21,9 @@ const fs = require("fs");
 const path = require("path");
 
 const ROOT = path.resolve(__dirname, "..");
-const bench = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-bench.json"), "utf8"));
+const HOLDOUT = process.argv.includes("--holdout");
+const BENCH_FILE = HOLDOUT ? "afro-bench-holdout.json" : "afro-bench.json";
+const bench = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", BENCH_FILE), "utf8"));
 const manifestApi = require(path.join(ROOT, "assets", "js", "ai", "tool-manifest.js"));
 const confidence = require(path.join(ROOT, "assets", "js", "ai", "afro-confidence.js"));
 const lexicon = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
@@ -37,14 +39,18 @@ function toolIdOf(candidate) {
 
 function runCase(testCase, manifest) {
   const ranked = manifestApi.rankToolCandidates(testCase.prompt, manifest, { limit: 5, minScore: 1 });
-  let candidates = (ranked && ranked.candidates) || [];
-  if (!process.argv.includes("--no-rerank")) {
-    candidates = confidence.rerank(testCase.prompt, candidates, { manifest, lexicon });
-  }
-  candidates = confidence.resolveCountryConflict(testCase.prompt, candidates);
+  const retrieved = (ranked && ranked.candidates) || [];
 
-  const graded = confidence.calibrate(testCase.prompt, candidates, { manifest });
-  const picked = toolIdOf(candidates[0]);
+  let graded;
+  if (process.argv.includes("--no-rerank")) {
+    graded = confidence.calibrate(testCase.prompt, retrieved, { manifest });
+    graded.candidates = retrieved;
+    graded.selectedToolId = toolIdOf(retrieved[0]);
+  } else {
+    // One entry point so injection can never be skipped — that was the 1.0 bug.
+    graded = confidence.resolve(testCase.prompt, retrieved, { manifest, lexicon });
+  }
+  const picked = graded.selectedToolId;
 
   const acceptable = testCase.acceptable || [];
   const rejects = testCase.rejects || [];
@@ -124,7 +130,15 @@ function main() {
     return;
   }
 
-  console.log("=== " + bench.name + " v" + bench.version + " ===\n");
+  console.log("=== " + bench.name + " v" + bench.version + " ===");
+  if (!HOLDOUT) {
+    // Printed every run on purpose. Afro-Bench is partly in-sample: lexicon
+    // entries were written after reading its failures, so this score flatters
+    // the system. Quoting it without the holdout is the dishonesty to avoid.
+    console.log("NOTE: partly in-sample — lexicon was tuned against these.");
+    console.log("      Run with --holdout for the number to actually believe.");
+  }
+  console.log("");
   if (VERBOSE) {
     results.forEach((r) => {
       const mark = r.correct ? " ok " : "MISS";

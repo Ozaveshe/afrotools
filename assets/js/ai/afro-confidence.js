@@ -431,19 +431,124 @@
    * vocabulary gap, not a ranking gap. The lexicon closes it, and it is the
    * layer that grows from real queries.
    */
+  /**
+   * Does a lexicon phrase appear in the query?
+   *
+   * Exact containment is too brittle for how people actually type. The lexicon
+   * carries "wetin go remain"; a user writes "how much go remain". Both mean
+   * take-home pay. So a multi-word phrase also matches when nearly all of its
+   * distinctive words are present — the phrase's meaning survives one word
+   * being swapped, which is precisely what colloquial variation does.
+   */
+  function phraseMatches(text, phrase) {
+    var needle = lower(phrase);
+    if (text.indexOf(" " + needle + " ") !== -1) return true;
+    if (text.indexOf(" " + needle) !== -1) return true;
+
+    var words = needle.split(/\s+/).filter(function (word) {
+      return word.length > 1 && !STOPWORDS[word];
+    });
+    /* Near-miss matching only for phrases with three or more distinctive words.
+     *
+     * With two, dropping one leaves a single word carrying the whole match, and
+     * a lexicon hit INJECTS a candidate in 1.1 — a false positive here does not
+     * just misrank, it manufactures a wrong answer and hands it a high score.
+     * The safe way to cover a colloquial variant is to add it to the lexicon,
+     * not to loosen the matcher until it catches it by accident. */
+    if (words.length < 3) return false;
+
+    var present = words.filter(function (word) {
+      return text.indexOf(" " + word + " ") !== -1 || text.indexOf(" " + word) !== -1;
+    }).length;
+    return present >= words.length - 1;
+  }
+
   function lexiconMatches(query, lexicon) {
     if (!lexicon || !lexicon.entries) return {};
     var text = " " + lower(query).replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ") + " ";
     var hits = {};
     lexicon.entries.forEach(function (entry) {
       var matched = (entry.phrases || []).some(function (phrase) {
-        return text.indexOf(" " + lower(phrase) + " ") !== -1 ||
-          text.indexOf(" " + lower(phrase)) !== -1;
+        return phraseMatches(text, phrase);
       });
       if (!matched) return;
       (entry.tools || []).forEach(function (toolId) { hits[toolId] = true; });
     });
     return hits;
+  }
+
+  /**
+   * Add tools the lexicon named but retrieval never surfaced.
+   *
+   * This is the fix that defines 1.1. In 1.0 the lexicon could only reorder
+   * what retrieval already found, so it was powerless exactly when it was most
+   * right. Measured on Afro-Bench, the lexicon named the correct tool and
+   * retrieval had not returned it at all in cases like:
+   *
+   *   "what will my take home pay be in Kenya"  retrieved five home-* tools,
+   *                                             lexicon knew ke-paye
+   *   "convert 5000 dolars to naria"            retrieved pdf/image converters,
+   *                                             lexicon knew currency-converter
+   *   "how much does M-Pesa charge"             retrieved service-charge,
+   *                                             lexicon knew mobile-money-fees
+   *
+   * A lexicon entry is a human assertion that this phrasing means this tool.
+   * That is stronger evidence than lexical overlap, so it earns a place in the
+   * candidate set rather than merely a nudge within it.
+   */
+  function injectLexiconCandidates(candidates, lexHits, manifest) {
+    var tools = Array.isArray(manifest) ? manifest : (manifest && manifest.tools) || [];
+    if (!tools.length) return candidates;
+
+    var present = {};
+    candidates.forEach(function (candidate) { present[candidateId(candidate)] = true; });
+
+    var missing = Object.keys(lexHits).filter(function (toolId) { return !present[toolId]; });
+    if (!missing.length) return candidates;
+
+    var topScore = candidates.length ? candidateScore(candidates[0]) : 100;
+    var injected = [];
+    missing.forEach(function (toolId) {
+      for (var i = 0; i < tools.length; i++) {
+        if (tools[i].id === toolId) {
+          injected.push({
+            tool: tools[i],
+            // Seeded at parity with the incumbent so it competes on fit in the
+            // re-rank rather than winning by fiat.
+            score: topScore,
+            matchedTerms: [],
+            fromLexicon: true
+          });
+          return;
+        }
+      }
+    });
+    return injected.concat(candidates);
+  }
+
+  /**
+   * The whole pipeline, in the order that matters.
+   *
+   * Retrieve -> inject what the lexicon knows -> re-rank on fit -> enforce
+   * country -> grade. Exposed as one call so callers cannot accidentally skip
+   * injection, which was the 1.0 defect.
+   */
+  function resolve(query, candidates, options) {
+    var opts = options || {};
+    var list = (candidates || []).filter(Boolean);
+    var lexHits = lexiconMatches(query, opts.lexicon);
+
+    if (opts.manifest && Object.keys(lexHits).length) {
+      list = injectLexiconCandidates(list, lexHits, opts.manifest);
+    }
+    list = rerank(query, list, opts);
+    list = resolveCountryConflict(query, list);
+
+    var graded = calibrate(query, list, opts);
+    graded.candidates = list;
+    graded.selectedToolId = candidateId(list[0]) || null;
+    graded.lexiconUsed = Object.keys(lexHits).length > 0;
+    return graded;
   }
 
   function rerank(query, candidates, options) {
@@ -488,11 +593,14 @@
   }
 
   return {
-    VERSION: "afro-1.0",
+    VERSION: "afro-1.1",
     BANDS: BANDS,
     calibrate: calibrate,
     rerank: rerank,
+    resolve: resolve,
     lexiconMatches: lexiconMatches,
+    phraseMatches: phraseMatches,
+    injectLexiconCandidates: injectLexiconCandidates,
     resolveCountryConflict: resolveCountryConflict,
     detectQueryCountry: detectQueryCountry,
     detectToolCountry: detectToolCountry,

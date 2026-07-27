@@ -101,6 +101,43 @@ function main() {
     assert.ok(values.size >= 3, "confidence must discriminate across queries, got " + values.size + " distinct values");
   }
 
+
+  // --- 9. Afro 1.1: the lexicon must be able to INJECT, not just reorder ----
+  // The 1.0 defect: the lexicon named the right tool but retrieval had never
+  // returned it, so re-ranking was powerless exactly when the lexicon was most
+  // right. resolve() must add it to the candidate set.
+  {
+    const lexicon = JSON.parse(require("fs").readFileSync(
+      require("path").join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
+    const query = "what will my take home pay be in Kenya if I earn 85000 a month";
+    const retrieved = rank(query, manifest);
+    assert.ok(!retrieved.some((c) => c.tool.id === "ke-paye"),
+      "precondition: retrieval alone should still miss ke-paye here");
+
+    const resolved = confidence.resolve(query, retrieved, { manifest, lexicon });
+    const ids = resolved.candidates.map((c) => (c.tool && c.tool.id) || c.toolId);
+    assert.ok(ids.indexOf("ke-paye") !== -1 || ids.indexOf("paye-calculator") !== -1,
+      "resolve() must inject the tool the lexicon named, got " + ids.slice(0, 4).join(", "));
+    assert.ok(resolved.lexiconUsed, "resolve() should report that the lexicon fired");
+  }
+
+  // --- 10. Phrase matching survives colloquial variation --------------------
+  // The lexicon carries "wetin go remain"; users write "how much go remain".
+  {
+    // Three or more distinctive words: one may be missing.
+    assert.ok(confidence.phraseMatches(" cheapest way to send money to lagos ", "cheapest way send money"),
+      "a 3+ word phrase should survive one word being absent");
+    // Two distinctive words must be exact — a lexicon hit injects a candidate
+    // in 1.1, so a false positive manufactures a confident wrong answer.
+    assert.ok(!confidence.phraseMatches(" how much go remain after tax ", "wetin go remain"),
+      "two-word phrases must not fuzzy-match; add the variant to the lexicon instead");
+    assert.ok(!confidence.phraseMatches(" i need a loan ", "bill of quantities"),
+      "loosening must not make unrelated phrases match");
+    // Single words stay exact — loosening them would fire constantly.
+    assert.ok(!confidence.phraseMatches(" zakariya is my friend ", "zakat"),
+      "single-word phrases must still require an exact match");
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 
