@@ -257,7 +257,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
   </div>
 </section>
 
-<div class="hub-main" id="hubMain">
+<div class="hub-main" id="hubMain" role="main">
 
   <div class="region-section">
     <div class="region-label">West Africa (16)</div>
@@ -384,12 +384,12 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       <ul class="df-upgrade__bullets"><li>Result output: Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: formControls, saveExport, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
     </div>
-    <form class="df-form" data-df-form="crop-yield-estimator">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
-      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
-      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
-      <button type="submit">Create summary</button>
+    <form class="df-form" data-df-form="crop-yield-estimator" data-day6-agriculture-calculator novalidate>
+      <label>Farm area (hectares)<input name="areaHa" type="number" value="2" min="0.01" step="0.01" required></label>
+      <label>Expected yield (tonnes per hectare)<input name="yieldPerHa" type="number" value="3.5" min="0" step="0.01" required></label>
+      <label>Field and post-harvest loss (%)<input name="lossPct" type="number" value="12" min="0" max="100" step="0.1" required></label>
+      <button type="submit">Calculate yield</button>
+      <button type="reset">Reset</button>
       <output class="df-result" data-df-result="crop-yield-estimator" data-df-base="Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Crop Yield Estimator: farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
       <div class="df-actions"><button type="button" data-df-copy="crop-yield-estimator">Copy summary</button></div>
     </form>
@@ -461,6 +461,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/day6-agriculture-family-calculators.js" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
