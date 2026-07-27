@@ -35,16 +35,18 @@ Each app receives this checklist independently; a shared component pass does not
 
 Snapshot date: 2026-07-27
 
-Active grouped source candidate: `codex/day6-11-batch-release`
-Current `main`: `24f6aeb`
-Current production commit: `ff501112a155374a304e6fa4b16fd3d83a1fe38f`
-Current production deploy: `6a66af4b289f7400085141cb` (`ready`, published 2026-07-27)
+Current release branch: `codex/free-app-live-ledger`
+Current `main`: `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
+Current production commit: `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
+Current production deploy: `6a676e650955d50008251407` (`ready`, published 2026-07-27 14:51 UTC)
+Day 6-11 release: [PR #54](https://github.com/Ozaveshe/afrotools/pull/54), merged as `7588a36ecd70d2c283aa75c4372225b6fa14287a`
+Localized redirect-precedence correction: [PR #55](https://github.com/Ozaveshe/afrotools/pull/55), merged as current production `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
 Day 3 release: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37), source-validation head `78af183e52f23cebaa4e6ee79ddce2398781c983`, merged as `d3665833ced779d3542eb19ae59ff99b29677b0f`
 
 | Measure | Current evidence-backed count |
 | --- | ---: |
 | Categories at strict `LIVE PASS` | 9: all three categories on Days 1, 2 and 3 |
-| Categories with accepted app-level work through Day 11 | 32: 9 strict live; 6 artifact-pass categories already present in production; 17 local-pass Day 6–11 categories awaiting the grouped release |
+| Categories with accepted app-level work through Day 11 | 32: 9 strict live; all 23 Day 4–11 categories are CI-green and deployed at the exact current production SHA, with final representative live workflow replay in progress |
 | Current English registry truth | 1,262 live/new English rows; 2,612 weighted public experiences. The 2,600+ measure is weighted expansion, not an English-app count |
 | English canonical category rows in the nine completed categories | 278: 77 across Days 1-2 plus 132 Finance, 6 HR and 63 VAT/business-tax rows; Paystack appears in both Finance and VAT, so this category sum is one higher than the unique-app count |
 | Day 3 Finance apps accepted | 132 of 132 current free canonical hrefs; the raw 133-row Finance registry includes the already consolidated Crypto Tax alias, Paystack cross-credits from its one strict VAT acceptance without duplicate app credit, and the former Tithe & Offering Finance alias now redirects to the single Religious & Cultural canonical |
@@ -71,16 +73,26 @@ Live browser verification returned HTTP 200, no document overflow and no applica
 | 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
 | 4 | Document & PDF; Image & Design; Developer Tools | ARTIFACT PASS: 82/82 accepted and present in production; strict green-CI/full-live replay proof remains incomplete |
 | 5 | Education; Health & Wellness; Language & Translation | ARTIFACT PASS: 95/95 accepted and present in production; exact-SHA preview and green-CI proof remain incomplete |
-| 6 | Agriculture; Transport & Logistics; Trade & Import | LOCAL PASS: 487/487 physical canonical hrefs and all three hubs accepted |
-| 7 | Government & Civic; Insurance; Mortgage & Property | LOCAL PASS: 59/59 hub-linked canonical apps, 60 routes including the Public Holidays adjunct, and 473/473 expanded experiences accepted |
-| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | LOCAL PASS: 45/45 category-owned apps and all 46 hub-linked routes accepted |
-| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | LOCAL PASS: 70 canonical destinations and 103/103 English surfaces accepted |
-| 10 | Uniquely African; Religious & Cultural; Data & Productivity | LOCAL PASS: 69/69 canonical apps, 84/84 expanded experiences and all three hubs accepted |
-| 11 | Telecom & Mobile; Energy & Utilities; directory/missed-route reconciliation | LOCAL PASS: 34/34 owners and 301/301 physical routes accepted |
-| 12 | 320/360/375/768 px regression; keyboard; dark-mode closure | QUEUED |
+| 6 | Agriculture; Transport & Logistics; Trade & Import | DEPLOYED LOCAL PASS: 487/487 physical canonical hrefs and all three hubs accepted; exact-SHA CI, preview and production gates passed; representative live app replay in progress |
+| 7 | Government & Civic; Insurance; Mortgage & Property | DEPLOYED LOCAL PASS: 59/59 hub-linked canonical apps, 60 routes including the Public Holidays adjunct, and 473/473 expanded experiences accepted; final live app replay in progress |
+| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | DEPLOYED LOCAL PASS: 45/45 category-owned apps and all 46 hub-linked routes accepted; final live app replay in progress |
+| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | DEPLOYED LOCAL PASS: 70 canonical destinations and 103/103 English surfaces accepted; final live app replay in progress |
+| 10 | Uniquely African; Religious & Cultural; Data & Productivity | DEPLOYED LOCAL PASS: 69/69 canonical apps, 84/84 expanded experiences and all three hubs accepted; final live app replay in progress |
+| 11 | Telecom & Mobile; Energy & Utilities; directory/missed-route reconciliation | DEPLOYED LOCAL PASS: 34/34 owners and 301/301 physical routes accepted; final live app replay in progress |
+| 12 | 320/360/375/768 px regression; keyboard; dark-mode closure | IN REVIEW: exact-production representative hub/app replay across all 23 Day 4–11 categories |
 | 13 | SEO; structured data; hreflang; PDF/export; function failure paths | QUEUED |
 | 14 | Build; dist; security; performance; offline; P0/P1 closure | QUEUED |
 | 15 | Final ledger; residual risks; paid-app handoff | QUEUED |
+
+### Day 12 live-closure review receipt
+
+- The exact current production SHA `134271ea98b71c655fd4ee0358bd1012a52a4f0b` was replayed at 320px and 375px across representative hub/app pairs for every Day 4-11 category. All 46 sampled routes returned 200, retained a served self-canonical and had no document-level horizontal overflow; keyboard focus was visible and system dark mode initialized. Netlify returned temporary 403 responses during the first rapid multi-route burst, so the accepted replay used paced navigation and blocked analytics requests. This is recorded as a production rate-limit evidence boundary, not an app failure.
+- Day 4-7 workflow replay proved Image Compress, Education Hub, Blood Pressure and Swahili Translator result/export paths and exposed two candidate defects: API Tester depended on a third-party sample blocked by the production CSP, and Blood Pressure supported system dark mode but had no manual control. The release candidate replaces the API default with the same-origin `/api/status` endpoint and adds a labelled, state-synchronized manual theme control to Blood Pressure.
+- Day 8-11 replay covered 22 hub/app routes. Carbon Credit accepted zero project size and produced a negative result; Mining Royalty silently ignored a blank gross value; five Mining related-tool cards probed nonexistent WebP/SVG artwork; Mining, Sports and Energy retained light inner surfaces in dark mode; Zakat lacked a manual theme control; and AfroStream creator search failed because the live creator API returned 500 after a non-JSON upstream response.
+- The release candidate now rejects Carbon project size and Mining gross values at the input boundary, clears stale Mining results and focuses/announces invalid fields, uses monograms when the loaded artwork manifest has no matching asset, closes the targeted category dark surfaces, and loads the shared manual/system theme controller on Zakat. The source and generated Related Tools assets are kept in sync.
+- AfroStream now fails useful and explicit: a malformed, unavailable or unconfigured creator upstream returns a small archived seed snapshot with `degraded: true`, filtering preserved, and visible `stale` labelling. The April 2026 seed snapshot was reviewed on 2026-07-27, but its audience metrics are explicitly not freshness-verified and are never labelled live. Healthy JSON responses keep the existing live contract and unsupported filters still fail closed.
+- The shared CSP now permits Google's documented cookieless consent-mode endpoint at `pagead2.googlesyndication.com`; the same allowlist remains synchronized across the global and two embeddable-widget policies. This removes the known consent-mode console error without broadening application API access.
+- Focused static/runtime gates pass for CSP, API Tester, Blood Pressure, Day 8 category contracts, Related Tools generation, AfroStream fallback (7/7), function syntax and diff hygiene. Candidate preview, exact-SHA production deploy and post-deploy replay remain required before promoting Days 4-11 to strict `LIVE PASS`.
 
 ### Day 4-6 verified starting inventory
 

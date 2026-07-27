@@ -1116,12 +1116,19 @@ function buildSourceLanes(data, health, healthError){
   var streamsLoaded = !!(data.streams && Array.isArray(data.streams.live));
   var calendarLoaded = !!(data.streams && Array.isArray(data.streams.upcoming));
   var creatorsLoaded = Array.isArray(data.creators);
+  var fallbackCreator = creatorsLoaded && data.creators.filter(function(creator){
+    return creator && creator._raw && creator._raw.source_state === 'fallback';
+  })[0];
+  var creatorsFallback = !!fallbackCreator;
+  var fallbackSnapshot = fallbackCreator && fallbackCreator._raw && fallbackCreator._raw.source_snapshot_label || 'archived seed snapshot';
   var newsLoaded = Array.isArray(data.news);
   var lanes = {
     streams: streamsLoaded
       ? laneHealth('live', (data.streams.live.length || 0) + ' live streams loaded.')
       : laneHealth('unavailable', 'Live streams could not be loaded right now.'),
-    rankings: creatorsLoaded && data.creators.length
+    rankings: creatorsFallback
+      ? laneHealth('stale', data.creators.length + ' archived sample creators shown (' + fallbackSnapshot + '). Audience metrics are not freshness-verified.')
+      : creatorsLoaded && data.creators.length
       ? laneHealth('live', data.creators.length + ' creators loaded.')
       : laneHealth('unavailable', 'Creator rankings could not be loaded right now.'),
     news: newsLoaded
@@ -1150,7 +1157,9 @@ function buildSourceLanes(data, health, healthError){
   var latestStreamAge = health.streams && (health.streams.latest_updated_age_hours != null ? health.streams.latest_updated_age_hours : sourceHoursAgo(health.streams.latest_updated_at));
   var latestNewsAge = health.news && (health.news.latest_age_hours != null ? health.news.latest_age_hours : sourceHoursAgo(health.news.latest_published_at));
 
-  if(isBlockedRun(syncRun)){
+  if(creatorsFallback){
+    lanes.rankings = laneHealth('stale', data.creators.length + ' archived sample creators shown (' + fallbackSnapshot + '). Audience metrics are not freshness-verified.');
+  } else if(isBlockedRun(syncRun)){
     lanes.rankings = laneHealth('blocked', 'Latest creator sync reported a failed source run.');
   } else if(creatorsLoaded && data.creators.length && (snapshotAge == null || snapshotAge > 2 || syncAge == null || syncAge > 6)){
     lanes.rankings = laneHealth('stale', 'Latest ranking snapshot is ' + (snapshotAge == null ? 'not dated' : snapshotAge + 'd old') + '.');
@@ -1847,7 +1856,7 @@ document.addEventListener('DOMContentLoaded', init);
 </script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(window.twemoji){setTimeout(function(){twemoji.parse(document.body,{folder:'svg',ext:'.svg'})},2000)}</script>
-<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

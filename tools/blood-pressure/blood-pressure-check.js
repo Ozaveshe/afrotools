@@ -6,6 +6,21 @@
   var results = document.getElementById('blood-pressure-results');
   var errorBox = document.getElementById('form-error');
   var lastResult = null;
+  var themeButton = document.getElementById('afro-theme-fallback-toggle');
+
+  function syncThemePressedState() {
+    if (!themeButton || !window.AfroTools || !window.AfroTools.darkMode) return;
+    themeButton.setAttribute('aria-pressed', String(window.AfroTools.darkMode.isDark()));
+  }
+
+  if (themeButton && window.AfroTools && window.AfroTools.darkMode) {
+    themeButton.addEventListener('click', function () {
+      window.AfroTools.darkMode.toggle();
+      syncThemePressedState();
+    });
+    document.addEventListener('afrotools:theme-change', syncThemePressedState);
+    syncThemePressedState();
+  }
 
   function readInput() {
     return {

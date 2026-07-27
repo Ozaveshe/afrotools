@@ -237,7 +237,7 @@
         <div class="card-body">
           <div class="request-line">
             <select id="method" class="method" aria-label="Method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
-            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="https://jsonplaceholder.typicode.com/posts/1" placeholder="{{baseUrl}}/v1/endpoint">
+            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
             <button type="button" class="send" id="send-request">Send</button>
           </div>
 
@@ -285,8 +285,8 @@
               <div><label for="test-time">Max response time (ms)</label><input id="test-time" type="number" value="3000" placeholder="1000"></div>
             </div>
             <div class="grid-2" style="margin-top:12px">
-              <div><label for="test-contains">Response contains</label><input id="test-contains" value="userId" placeholder="success"></div>
-              <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" value="$.id" placeholder="$.data.id"></div>
+              <div><label for="test-contains">Response contains</label><input id="test-contains" value="operational" placeholder="success"></div>
+              <div><label for="test-jsonpath">JSON path exists</label><input id="test-jsonpath" value="$.status" placeholder="$.data.id"></div>
             </div>
           </div>
 
@@ -362,7 +362,7 @@
 <section class="seo-section">
   <h2>API Testing Built For Practical African Workflows</h2>
   <p>Generic API testers are useful, but African developers often need to jump between local services, fintech sandboxes, USSD callbacks, mobile money authentication, identity providers and deployment constraints. This tool keeps the quick browser workflow while adding environments, presets, cURL export and saved requests for repeat debugging.</p>
-  <p>Use the built-in sample endpoint for CORS-friendly tests, then switch to templates for Paystack, Flutterwave, M-Pesa Daraja, MTN MoMo and Africa's Talking. Some production APIs intentionally reject browser-origin requests. That is not a tool failure. It is a security rule, and the cURL export gives you a safer terminal path for those requests.</p>
+  <p>Use the built-in same-origin AfroTools status endpoint for a first browser-safe test, then switch to templates for Paystack, Flutterwave, M-Pesa Daraja, MTN MoMo and Africa's Talking. Some production APIs intentionally reject browser-origin requests. That is not a tool failure. It is a security rule, and the cURL export gives you a safer terminal path for those requests.</p>
   <h2>Frequently Asked Questions</h2>
   <details class="faq-item"><summary>Why did my request fail with CORS?</summary><p>Browsers block responses from APIs that do not allow your page origin. If the API is not browser-enabled, copy the generated cURL command and run it from a terminal or backend service.</p></details>
   <details class="faq-item"><summary>Are my API keys uploaded to AfroTools?</summary><p>No. Requests are sent directly from your browser to the endpoint you choose. If you save environment variables, they are stored in your own browser localStorage, so avoid saving production secrets on shared devices.</p></details>
@@ -388,17 +388,18 @@
     saved: 'afrotools.apiTester.saved.v1',
     history: 'afrotools.apiTester.history.v1'
   };
+  var DEFAULT_STATUS_URL = location.origin + '/api/status';
 
   var PRESETS = [
     {
-      id: 'jsonplaceholder',
-      name: 'CORS safe sample',
-      desc: 'GET a public JSONPlaceholder post. Good first smoke test.',
+      id: 'afrotools-status',
+      name: 'AfroTools status sample',
+      desc: 'GET the same-origin AfroTools API status. Good first browser smoke test.',
       method: 'GET',
-      url: 'https://jsonplaceholder.typicode.com/posts/1',
+      url: DEFAULT_STATUS_URL,
       headers: [{key:'Accept', value:'application/json'}],
       body: '',
-      tests: {status:'200', contains:'userId', time:'1500', jsonpath:'$.id'}
+      tests: {status:'200', contains:'operational', time:'1500', jsonpath:'$.status'}
     },
     {
       id: 'paystack-init',
@@ -1023,6 +1024,7 @@
   }
 
   function init(){
+    $('url').value = DEFAULT_STATUS_URL;
     addRow('header-rows', 'Accept', 'application/json');
     addRow('header-rows', 'Content-Type', 'application/json');
     loadEnv();
@@ -1049,6 +1051,6 @@
 })();
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body>
 </html>
