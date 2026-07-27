@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Window & Door Sizing Guide Africa | AfroTools</title>
-<meta name="description" content="Calculate standard window and door sizes, quantities, and costs for African building projects. Covers aluminium, timber, uPVC, and steel options.">
+<meta name="description" content="Estimate window and door quantities, planning sizes, glazing and ventilation targets, and indicative costs from editable project inputs. Verify fabrication and local requirements before ordering.">
 <meta property="og:title" content="Window & Door Sizing Guide | AfroTools">
-<meta property="og:description" content="Calculate standard window and door sizes, quantities, and costs for African building projects. Covers aluminium, timber, uPVC, and steel options.">
+<meta property="og:description" content="Estimate window and door quantities, planning sizes, ventilation targets and indicative costs from editable project inputs.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/tools/window-door-sizing/">
 <meta name="twitter:card" content="summary_large_image">
@@ -46,12 +46,12 @@
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Window & Door Sizing Guide","item":"https://afrotools.com/tools/window-door-sizing/"}]}
 </script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/window-door-sizing.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/window-door-sizing.webp">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
@@ -93,7 +93,7 @@
   <div class="en-container">
     <div class="en-hero-badge">Construction</div>
     <h1>Window &amp; Door Sizing Guide</h1>
-    <p>Get standard window and door sizes, glazing area calculations, ventilation compliance, and cost estimates for your African building project.</p>
+    <p>Estimate opening quantities, planning sizes, glazing and ventilation targets, and indicative costs. Confirm fabrication dimensions, structure, escape, security and local requirements with qualified professionals before ordering.</p>
   </div>
 </section>
 <main class="en-main">
@@ -177,7 +177,7 @@
       <div class="en-results-grid">
         <div class="en-stat-card"><div class="en-stat-label">Windows Required</div><div class="en-stat-value" id="wd-win-count">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Total Glazing Area</div><div class="en-stat-value" id="wd-glaze-area">—</div></div>
-        <div class="en-stat-card"><div class="en-stat-label">Ventilation Compliance</div><div class="en-stat-value" id="wd-vent">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Ventilation Planning Check</div><div class="en-stat-value" id="wd-vent">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Total Windows Cost</div><div class="en-stat-value" id="wd-win-cost">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">External Doors Cost</div><div class="en-stat-value" id="wd-ext-cost">—</div></div>
         <div class="en-stat-card"><div class="en-stat-label">Internal Doors Cost</div><div class="en-stat-value" id="wd-int-cost">—</div></div>
@@ -194,7 +194,7 @@
         </div>
       </div>
       <div class="en-card" style="margin-top:1.5rem">
-        <h3 style="margin-bottom:.5rem">Building Code Compliance Notes</h3>
+        <h3 style="margin-bottom:.5rem">Design Review Notes</h3>
         <ul id="wd-compliance" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
       </div>
     </div>
@@ -211,7 +211,7 @@
         <p class="qe-status" id="window-door-sizing-qe-status" role="status" aria-live="polite"></p>
         <div class="qe-verification" aria-label="Window &amp; Door Sizing Guide verification notes">
           <div><strong>Source</strong><span>Planning size and cost assumptions built into the calculator plus drawings, supplier schedules, security requirements, and local building rules.</span></div>
-          <div><strong>Freshness</strong><span>Rates are static planning assumptions. Recheck aluminium, timber, glass, hardware, fabrication, delivery, and building-code requirements before ordering.</span></div>
+          <div><strong>Freshness</strong><span>Rates are static planning assumptions. Recheck aluminium, timber, glass, hardware, fabrication, delivery, and applicable local requirements before ordering.</span></div>
           <div><strong>Methodology</strong><span>Combines room counts, room area, openings, material choices, glazing, ventilation, and fitting allowance into a schedule and budget.</span></div>
           <div><strong>Limitations</strong><span>Not an architect schedule, code approval, fire-escape ruling, fabrication drawing, or guaranteed supplier quote.</span></div>
         </div>
@@ -312,24 +312,38 @@ function calcWindowDoor(){
   var intMat = document.getElementById('wd-int-mat').value;
   var r = WD_RATES[country], sym = r.sym;
 
-  // Windows per room: 10% of floor area as glazing (minimum standard in most codes)
+  // Transparent planning heuristic only. It is not a building-code minimum.
   var reqGlazePerRoom = roomArea * 0.10;
   var winsPerRoom = Math.max(1, Math.ceil(reqGlazePerRoom / WIN_AREA[winType]));
   var totalWins = winsPerRoom * rooms;
   var totalGlazeArea = totalWins * WIN_AREA[winType];
 
-  // Check ventilation: 5% of floor area should be openable
+  // Compare openable area with a visible 5% planning target; local rules still govern.
   var totalFloorArea = rooms * roomArea;
   var reqVentArea = totalFloorArea * 0.05;
   var actualVentArea = winType === 'fixed' ? 0 : totalGlazeArea * 0.5;
   var ventOk = actualVentArea >= reqVentArea;
 
-  var winRate = r['win_' + winMat];
+  var windowMaterialKeys = { aluminium: 'alum', upvc: 'upvc', timber: 'timber', steel: 'steel' };
+  var winRate = r['win_' + windowMaterialKeys[winMat]];
   var winCost = totalWins * winRate;
-  var extDoorRate = r['door_ext_' + doorMat.replace('_', '_ext_').replace('door_ext_ext_', 'door_ext_')];
-  // Fix key derivation
-  var extKey = 'door_ext_' + doorMat;
-  var intKey = 'door_int_' + intMat;
+  var extMaterialKeys = {
+    steel_security: 'steel',
+    aluminium_glass: 'alum',
+    timber_solid: 'timber',
+    fibreglass: 'fibreglass'
+  };
+  var intMaterialKeys = {
+    flush_hdf: 'flush',
+    panel_timber: 'panel',
+    flush_solid: 'solid'
+  };
+  var extKey = 'door_ext_' + extMaterialKeys[doorMat];
+  var intKey = 'door_int_' + intMaterialKeys[intMat];
+  if (!Number.isFinite(r[extKey]) || !Number.isFinite(r[intKey]) || !Number.isFinite(winRate)) {
+    document.getElementById('wd-results').classList.remove('on');
+    return;
+  }
   var extDoorCost = extDoors * r[extKey];
   var intDoorCost = intDoors * r[intKey];
   var subtotal = winCost + extDoorCost + intDoorCost;
@@ -340,7 +354,7 @@ function calcWindowDoor(){
   document.getElementById('wd-win-count').textContent = totalWins + ' windows (' + winsPerRoom + '/room)';
   document.getElementById('wd-glaze-area').textContent = totalGlazeArea.toFixed(1) + ' m²';
   var ventEl = document.getElementById('wd-vent');
-  ventEl.textContent = ventOk ? 'PASS ✓' : 'FAIL — add openable windows';
+  ventEl.textContent = ventOk ? 'MEETS 5% TARGET' : 'BELOW 5% TARGET';
   ventEl.style.color = ventOk ? '#16a34a' : '#dc2626';
   document.getElementById('wd-win-cost').textContent = fmtCur(sym, winCost);
   document.getElementById('wd-ext-cost').textContent = fmtCur(sym, extDoorCost);
@@ -359,12 +373,12 @@ function calcWindowDoor(){
   }).join('');
 
   var compliance = [
-    'Most African building codes require glazing area ≥ 10% of floor area per room. Your design meets this.',
-    ventOk ? 'Ventilation openings (≥5% of floor area) — COMPLIANT.' : 'Ventilation SHORTFALL: Fixed windows do not open. Minimum 5% of floor area must be openable. Consider louvre or casement windows.',
+    "The glazing area meets this calculator's 10% planning target. Verify daylight, ventilation, fire-safety and local approval requirements with the project professional.",
+    ventOk ? 'Openable area meets this calculator’s 5% planning target; verify the required ventilation locally.' : 'Openable area is below this calculator’s 5% planning target. Discuss window type and local ventilation requirements with the project professional.',
     winType === 'louvre' ? 'Louvre windows provide excellent ventilation for tropical climates but offer lower security — use with burglar bars.' : '',
-    'External doors: minimum clear opening width 900mm for accessibility. 820mm is minimum for residential.',
-    'Fire escape requirement: at least one openable window ≥ 450mm × 450mm in each bedroom.',
-    'Door frames must be set in concrete lintels — no timber frames in block walls without proper lintel above.'
+    'Verify accessible clear openings and door hardware against the project brief and current local requirements.',
+    'Verify bedroom escape-opening dimensions and operation with the project professional and approving authority.',
+    'Have the frame anchorage, lintel and surrounding wall reviewed for the selected opening and construction method.'
   ].filter(Boolean);
   document.getElementById('wd-compliance').innerHTML = compliance.map(function(c){ return '<li>' + c + '</li>'; }).join('');
   document.getElementById('wd-results').classList.add('on');
@@ -478,7 +492,7 @@ function calcWindowDoor(){
   });
 }());
 </script>
-  <script src="/assets/js/engineering-toolkit.js?v=6a55083f" defer></script>
+  <script src="/assets/js/engineering-toolkit.js?v=1a8b385b" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
 </html>

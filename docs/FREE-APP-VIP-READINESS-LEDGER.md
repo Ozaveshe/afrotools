@@ -33,15 +33,19 @@ Each app receives this checklist independently; a shared component pass does not
 
 ## Current director snapshot
 
-Snapshot date: 2026-07-24
+Snapshot date: 2026-07-27
 
-Merged integration branch: `codex/day3-reconciliation`
-Live production commit: `d3665833ced779d3542eb19ae59ff99b29677b0f`
+Active grouped source candidate: `codex/day6-11-batch-release`
+Current `main`: `24f6aeb`
+Current production commit: `ff501112a155374a304e6fa4b16fd3d83a1fe38f`
+Current production deploy: `6a66af4b289f7400085141cb` (`ready`, published 2026-07-27)
 Day 3 release: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37), source-validation head `78af183e52f23cebaa4e6ee79ddce2398781c983`, merged as `d3665833ced779d3542eb19ae59ff99b29677b0f`
 
 | Measure | Current evidence-backed count |
 | --- | ---: |
-| Categories at `LIVE PASS` | 9: all three categories on Days 1, 2 and 3 |
+| Categories at strict `LIVE PASS` | 9: all three categories on Days 1, 2 and 3 |
+| Categories with accepted app-level work through Day 11 | 32: 9 strict live; 6 artifact-pass categories already present in production; 17 local-pass Day 6–11 categories awaiting the grouped release |
+| Current English registry truth | 1,262 live/new English rows; 2,612 weighted public experiences. The 2,600+ measure is weighted expansion, not an English-app count |
 | English canonical category rows in the nine completed categories | 278: 77 across Days 1-2 plus 132 Finance, 6 HR and 63 VAT/business-tax rows; Paystack appears in both Finance and VAT, so this category sum is one higher than the unique-app count |
 | Day 3 Finance apps accepted | 132 of 132 current free canonical hrefs; the raw 133-row Finance registry includes the already consolidated Crypto Tax alias, Paystack cross-credits from its one strict VAT acceptance without duplicate app credit, and the former Tithe & Offering Finance alias now redirects to the single Religious & Cultural canonical |
 | Day 3 VAT apps with strict accepted rows | 63 of 63 strict; Burundi VAT closed the carried gap across native English, French and Swahili routes |
@@ -65,14 +69,14 @@ Live browser verification returned HTTP 200, no document overflow and no applica
 | 1 | Diaspora; Career & Development; Security & Safety | LIVE PASS |
 | 2 | Personal Finance; Small Business & SME; Fintech & Banking | LIVE PASS |
 | 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
-| 4 | Document & PDF; Image & Design; Developer Tools | LIVE PASS: 82/82 apps and all three hubs shipped in one grouped release |
-| 5 | Education; Health & Wellness; Language & Translation | RELEASE READY: 95/95 apps and all three hubs accepted; final grouped artifact passed and is the single production-deploy candidate |
-| 6 | Agriculture; Transport & Logistics; Trade & Import | QUEUED |
-| 7 | Government & Civic; Insurance; Mortgage & Property | QUEUED |
-| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | QUEUED |
-| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | QUEUED |
-| 10 | Uniquely African; Religious & Cultural; Business & ROI | QUEUED |
-| 11 | Telecom & Mobile; directory reconciliation; missed-route closure | QUEUED |
+| 4 | Document & PDF; Image & Design; Developer Tools | ARTIFACT PASS: 82/82 accepted and present in production; strict green-CI/full-live replay proof remains incomplete |
+| 5 | Education; Health & Wellness; Language & Translation | ARTIFACT PASS: 95/95 accepted and present in production; exact-SHA preview and green-CI proof remain incomplete |
+| 6 | Agriculture; Transport & Logistics; Trade & Import | LOCAL PASS: 487/487 physical canonical hrefs and all three hubs accepted |
+| 7 | Government & Civic; Insurance; Mortgage & Property | LOCAL PASS: 59/59 hub-linked canonical apps, 60 routes including the Public Holidays adjunct, and 473/473 expanded experiences accepted |
+| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | LOCAL PASS: 45/45 category-owned apps and all 46 hub-linked routes accepted |
+| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | LOCAL PASS: 70 canonical destinations and 103/103 English surfaces accepted |
+| 10 | Uniquely African; Religious & Cultural; Data & Productivity | LOCAL PASS: 69/69 canonical apps, 84/84 expanded experiences and all three hubs accepted |
+| 11 | Telecom & Mobile; Energy & Utilities; directory/missed-route reconciliation | LOCAL PASS: 34/34 owners and 301/301 physical routes accepted |
 | 12 | 320/360/375/768 px regression; keyboard; dark-mode closure | QUEUED |
 | 13 | SEO; structured data; hreflang; PDF/export; function failure paths | QUEUED |
 | 14 | Build; dist; security; performance; offline; P0/P1 closure | QUEUED |
@@ -90,19 +94,24 @@ Counts are current English live/new registry app rows. They exclude each categor
 | 5 | Education | 42 | `/education/` | `/tools/waec-calculator/` | 42 |
 | 5 | Health & Wellness | 42 route-level surfaces: 39 `/tools/` apps plus 3 native `/health/` flagships | `/health/` | `/tools/medical-report/` | 42 |
 | 5 | Language & Translation | 11 | `/language/` | `/tools/swahili-translator/` | 11 |
-| 6 | Agriculture | 447 | `/agriculture/` | `/tools/planting-calendar/` | 0 |
-| 6 | Transport & Logistics | 17 | `/transport/` | `/tools/car-import-cost/` | 0 |
-| 6 | Trade & Import | 13 | `/trade/` | `/tools/hs-code-lookup/` | 0 |
+| 6 | Agriculture | 447 | `/agriculture/` | `/tools/planting-calendar/` | 447 |
+| 6 | Transport & Logistics | 18 | `/transport/` | `/tools/car-import-cost/` | 18 |
+| 6 | Trade & Import | 22 | `/trade/` | `/tools/hs-code-lookup/` | 22 |
 
-Day 4-6 therefore contains 654 app surfaces plus nine hubs under the current route-level contract. Agriculture includes large programmatic country families; those routes must be reconciled explicitly and cannot be silently collapsed into one app. Day 3 is closed. All three Day 4 categories and all 82 canonical apps shipped in one grouped release. Day 5 will likewise deploy only at a category/day checkpoint, never app by app.
+Day 4-6 therefore contains 664 physical English app routes plus nine hubs under
+the current route-level contract. Agriculture includes large programmatic
+country families; those routes were reconciled explicitly rather than silently
+collapsed into one app. Day 6 additionally maps to 72 route families and 679
+weighted registry experiences, but only the 487 physically replayed hrefs are
+claimed as route acceptance.
 
 ## Day 4 category status
 
 | Category | Hub | Canonical apps | Accepted | Active frontier | State |
 | --- | --- | ---: | ---: | --- | --- |
-| Document & PDF | `/document-pdf/` | 31 | 31; hub accepted | Closed on exact-SHA grouped production release | LIVE PASS |
-| Image & Design | `/image-design/` | 19 | 19; hub accepted | Closed on exact-SHA grouped production release | LIVE PASS |
-| Developer Tools | `/developer-tools/` | 32 | 32; hub accepted | Closed on exact-SHA grouped production release | LIVE PASS |
+| Document & PDF | `/document-pdf/` | 31 | 31; hub accepted | Production present; strict green-CI/full-live closure pending | ARTIFACT PASS |
+| Image & Design | `/image-design/` | 19 | 19; hub accepted | Production present; strict green-CI/full-live closure pending | ARTIFACT PASS |
+| Developer Tools | `/developer-tools/` | 32 | 32; hub accepted | Production present; strict green-CI/full-live closure pending | ARTIFACT PASS |
 
 Image & Design was replayed from its clean 19-commit preserved branch onto current main without conflict. The independent maintained browser gate then found and closed one hub filtering defect and four residual narrow-screen/200%-text defects. Evidence lives in `docs/image-design-day4-evidence.md`; 21/21 category browser tests, registry audit, link scan, SEO report, OCR same-origin runtime guard and `git diff --check` pass locally. The full deploy build, deploy-artifact audit and security scan also pass. No individual production deploy will be used; Day 4 will ship once after all three categories close.
 
@@ -116,9 +125,48 @@ The final grouped release candidate replay passed 88/88 local browser checks acr
 
 | Category | Category hub | Registry app routes | Accepted | Active frontier | State |
 | --- | --- | ---: | ---: | --- | --- |
-| Education | `/education/` | 42 (including `/tools/education-hub/`) | 42; category hub accepted | Final artifact accepted for grouped Day 5 release | RELEASE READY |
-| Health & Wellness | `/health/` | 42 | 42; category hub and shared privacy/export foundation accepted | Final artifact accepted for grouped Day 5 release | RELEASE READY |
-| Language & Translation | `/language/` | 11 | 11; category hub and shared translation-consent foundation accepted | Final artifact accepted for grouped Day 5 release | RELEASE READY |
+| Education | `/education/` | 42 (including `/tools/education-hub/`) | 42; category hub accepted | Production present; exact-SHA preview and green CI pending | ARTIFACT PASS |
+| Health & Wellness | `/health/` | 42 | 42; category hub and shared privacy/export foundation accepted | Production present; exact-SHA preview and green CI pending | ARTIFACT PASS |
+| Language & Translation | `/language/` | 11 | 11; category hub and shared translation-consent foundation accepted | Production present; exact-SHA preview and green CI pending | ARTIFACT PASS |
+
+## Day 6-11 grouped-release status
+
+Counts below deliberately separate canonical owners, physical hrefs, expanded
+experiences and cross-links. They must not be summed as though they were the
+same unit.
+
+| Day | Category | Canonical owner/app count | Physical or expanded proof | State |
+| --- | --- | ---: | --- | --- |
+| 6 | Agriculture | 447 physical hrefs; 32 registry families | 447/447 route and 431/431 remaining-workflow replay | LOCAL PASS |
+| 6 | Transport & Logistics | 18 | 18/18 app workflows | LOCAL PASS |
+| 6 | Trade & Import | 22 | 22/22 app workflows | LOCAL PASS |
+| 7 | Government & Civic | 15 canonical apps | 123 expanded experiences plus one Public Holidays adjunct route | LOCAL PASS |
+| 7 | Insurance | 16 canonical apps | 322 expanded experiences | LOCAL PASS |
+| 7 | Mortgage & Property | 28 hub-linked routes | 20 Legal owners plus 8 Finance/Engineering adjuncts; 47 other Legal rows explicitly excluded | LOCAL PASS |
+| 8 | Engineering & Construction | 26 | 26/26 | LOCAL PASS |
+| 8 | Climate & Environment | 13 | 16 expanded experiences | LOCAL PASS |
+| 8 | Mining & Extractives | 6 | 6/6; Trade-owned Commodity Tracker is a seventh hub cross-link and receives no duplicate credit | LOCAL PASS |
+| 9 | Creative Economy | 46 canonical destinations | 79 surfaces including 33 app workspaces | LOCAL PASS |
+| 9 | Sports & Entertainment | 15 | 15/15 | LOCAL PASS |
+| 9 | Travel & Tourism | 9 | 9/9 | LOCAL PASS |
+| 10 | Uniquely African | 35 | 35/35 route-specific output/adverse-state oracles | LOCAL PASS |
+| 10 | Religious & Cultural | 22 | 22/22 authority/correctness oracles; 12 parsed PDFs and 7 reopened text exports | LOCAL PASS |
+| 10 | Data & Productivity | 12 | 12/12 deterministic contracts | LOCAL PASS |
+| 11 | Telecom & Mobile | 14 | 14/14 | LOCAL PASS |
+| 11 | Energy & Utilities | 20 canonical owners | 287/287 physical expanded routes | LOCAL PASS |
+
+Fresh director replay on the combined candidate passed Day 6 **6/6 exhaustive
+matrices** over 487 route contracts and 431 Agriculture workflows; Day 7
+**470/470**; Day 8 **6/6** over all 46 hub routes; Day 9 **165/165**; Day 10
+**162/162**; and Day 11 **4/4 exhaustive matrices** over 301 routes. Formula
+drift from already-landed Day 4/5 UI/export work was reviewed selectively:
+24 shell-only and 11 non-calculation UX/export digest changes, zero arithmetic,
+rate, threshold, rounding or fixture changes. The protected formula gate now
+passes 668 artifacts and 307/307 fixtures.
+
+These are source/local proof only until the consolidated candidate passes the
+generated artifact, second-build idempotence, CI, exact-SHA preview, production
+deploy and representative live-route gates.
 
 Day 5 final reconciliation covers 95 unique English app routes plus the three category hubs. All 100 touched Node/static test files pass (304 tests). The deterministic Health release audit accepts 42/42 routes with no regressions; the Language audit accepts 11/11 routes and all integration matrices; Education's frozen route and browser contracts remain green. AI tool context is current for 568 tools, hreflang validates 10,698 public pages in 5,252 equivalence groups, and the internal-link scan finds no broken links across 124,738 relationships.
 

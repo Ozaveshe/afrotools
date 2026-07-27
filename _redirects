@@ -3,6 +3,8 @@
 # Forced direct redirects preserve legacy equity and prevent static-file shadowing.
 /all-tools/  /tools/  301!
 /business/break-even/  /tools/break-even/  301!
+/central-africa/  /central-african-republic/  301!
+/drc/  /dr-congo/  301!
 /embed/  /widgets/demo/  301!
 /finance/  /salary-tax/  301!
 /fr/burkina-faso/bf-paye  /fr/burkina-faso/calculateur-salaire-net  301!
@@ -19,7 +21,10 @@
 /fr/terms/  /fr/terms-of-use/  301!
 /fr/tools/  /fr/all-tools/  301!
 /fr/tools/calculateur-offrande/  /fr/tools/calculateur-dime/  301!
+/fr/tools/currency-converter/  /fr/tools/convertisseur-devises/  301!
+/fr/tools/prelevements-cedeao/  /fr/tools/ecowas-levy/  301!
 /fr/tunisia/tn-paye  /fr/tunisie/calculateur-salaire-net  301!
+/health-insurance/  /health/  301!
 /jobs/  /education/  301!
 /jobs/cv-builder/  /education/  301!
 /jobs/freelance-rates/  /education/  301!
@@ -30,12 +35,14 @@
 /lifestyle/costs/  /data-productivity/  301!
 /lifestyle/inflation/  /data-productivity/  301!
 /lifestyle/savings/  /data-productivity/  301!
+/mortgage/  /mortgage-property/  301!
 /privacy-policy  /privacy/  301!
 /privacy-policy.html  /privacy/  301!
 /property/  /legal/  301!
 /property/rent-buy/  /legal/  301!
 /property/stamp-duty/  /legal/  301!
 /property/yield/  /legal/  301!
+/sw/salary-tax/  /sw/mshahara-na-kodi/  301!
 /terms-of-use  /terms/  301!
 /terms-of-use.html  /terms/  301!
 /tools/image-tools/  /image-design/  301!
@@ -56,10 +63,6 @@
 /tools/vehicle-import-duty   /tools/import-duty/  301!
 
 # French clean-route aliases
-/fr/tools/currency-converter/  /fr/tools/convertisseur-devises/  301!
-/fr/tools/currency-converter   /fr/tools/convertisseur-devises/  301!
-/fr/tools/prelevements-cedeao/ /fr/tools/ecowas-levy/            301!
-/fr/tools/prelevements-cedeao  /fr/tools/ecowas-levy/            301!
 /fr/creative/                 /creative/                         301
 /fr/creative                  /creative/                         301
 /fr/engineering/afrodraft/    /engineering/afrodraft/            301
@@ -190,7 +193,6 @@
 # Pricing page
 /pricing   /pricing/index.html   200
 /pricing/  /pricing/index.html   200
-/pro       /pricing              301
 
 # Creator Kit API
 /api/creator-kit/*     /.netlify/functions/creator-kit/:splat  200
@@ -249,7 +251,7 @@
 # AfroKitchen — SEO-friendly recipe URLs
 # AfroAtlas country and resource profiles
 /tools/afroatlas/_country-template.html  /tools/afroatlas/  301
-/tools/afroatlas/_country-template       /tools/afroatlas/  301
+/tools/afroatlas/_country-template       /tools/afroatlas/  301!
 /tools/afroatlas/country/:slug/  /tools/afroatlas/country/:slug/index.html  200
 /tools/afroatlas/country/:slug   /tools/afroatlas/country/:slug/index.html  200
 /tools/afroatlas/resource/:slug/  /tools/afroatlas/resource/:slug/index.html  200
@@ -354,9 +356,9 @@
 
 # SEO — alternate URL patterns (Fix 404s)
 /south-africa/sa-income-tax  /south-africa/za-paye  301
-/south-africa/sa-income-tax/ /south-africa/za-paye/ 301
+/south-africa/sa-income-tax/ /south-africa/za-paye  301
 /egypt/eg-income-tax         /egypt/eg-paye         301
-/egypt/eg-income-tax/        /egypt/eg-paye/        301
+/egypt/eg-income-tax/        /egypt/eg-paye         301
 
 # Short country aliases → canonical paths
 /car     /central-african-republic/  301
@@ -374,28 +376,15 @@
 /cabo-verde/*      /cape-verde/:splat                301!
 /cabo-verde        /cape-verde/                      301!
 /drc/*             /dr-congo/:splat                  301!
-/drc               /dr-congo/                        301!
 /central-africa/*  /central-african-republic/:splat  301!
-/central-africa    /central-african-republic/        301!
-
-# Redirect old dev-tools hub to canonical developer-tools page
-/tools/dev-tools   /developer-tools/  301
-/tools/dev-tools/  /developer-tools/  301
 
 # /mortgage/ duplicates the /mortgage-property/ category hub (same 'legal' tool set,
 # same "Mortgage & Property" title). Canonicalize to /mortgage-property/ — the /legal
 # migration target and navbar hub, with 46 vs 9 inbound links. 301! overrides its static file.
-/mortgage    /mortgage-property/    301!
-/mortgage/   /mortgage-property/    301!
 
-# /legal was the old slug — redirect to /mortgage-property/
-/legal       /mortgage-property/     301
-/legal/      /mortgage-property/     301
 # /health-insurance/ duplicates the /health/ category hub (JS-filters the same 'health'
 # tool set). Canonicalize to /health/ — the navbar Health hub, with 81 vs 6 inbound links.
 # 301! overrides its static file. (Health-insurance as a topic lives at /health/insurance.)
-/health-insurance    /health/    301!
-/health-insurance/   /health/    301!
 
 # Search page
 /search    /search/index.html    200
@@ -490,30 +479,30 @@
 /fr/togo/calculateur-tva                    /fr/togo/calculateur-tva.html                      200
 
 # French old English-slug tools → proper French slugs (301 permanent)
-/fr/algeria/dz-paye       /fr/algerie/calculateur-salaire-net    301
-/fr/algeria/dz-paye/      /fr/algerie/calculateur-salaire-net    301
-/fr/algeria/dz-vat        /fr/algerie/calculateur-tva            301
-/fr/algeria/dz-vat/       /fr/algerie/calculateur-tva            301
+/fr/algeria/dz-paye       /fr/algerie/calculateur-salaire-net    301!
+/fr/algeria/dz-paye/      /fr/algerie/calculateur-salaire-net    301!
+/fr/algeria/dz-vat        /fr/algerie/calculateur-tva            301!
+/fr/algeria/dz-vat/       /fr/algerie/calculateur-tva            301!
 /fr/cameroon/cm-vat       /fr/cameroun/calculateur-tva           301!
 /fr/cameroon/cm-vat/      /fr/cameroun/calculateur-tva           301!
-/fr/dr-congo/cd-paye      /fr/rdc/calculateur-salaire-net        301
-/fr/dr-congo/cd-paye/     /fr/rdc/calculateur-salaire-net        301
-/fr/dr-congo/cd-vat       /fr/rdc/calculateur-tva                301
-/fr/dr-congo/cd-vat/      /fr/rdc/calculateur-tva                301
-/fr/guinea/gn-paye        /fr/guinee/calculateur-salaire-net     301
-/fr/guinea/gn-paye/       /fr/guinee/calculateur-salaire-net     301
-/fr/guinea/gn-vat         /fr/guinee/calculateur-tva             301
-/fr/guinea/gn-vat/        /fr/guinee/calculateur-tva             301
-/fr/morocco/ma-vat        /fr/maroc/calculateur-tva              301
-/fr/morocco/ma-vat/       /fr/maroc/calculateur-tva              301
-/fr/tunisia/tn-vat        /fr/tunisie/calculateur-tva            301
-/fr/tunisia/tn-vat/       /fr/tunisie/calculateur-tva            301
+/fr/dr-congo/cd-paye      /fr/rdc/calculateur-salaire-net        301!
+/fr/dr-congo/cd-paye/     /fr/rdc/calculateur-salaire-net        301!
+/fr/dr-congo/cd-vat       /fr/rdc/calculateur-tva                301!
+/fr/dr-congo/cd-vat/      /fr/rdc/calculateur-tva                301!
+/fr/guinea/gn-paye        /fr/guinee/calculateur-salaire-net     301!
+/fr/guinea/gn-paye/       /fr/guinee/calculateur-salaire-net     301!
+/fr/guinea/gn-vat         /fr/guinee/calculateur-tva             301!
+/fr/guinea/gn-vat/        /fr/guinee/calculateur-tva             301!
+/fr/morocco/ma-vat        /fr/maroc/calculateur-tva              301!
+/fr/morocco/ma-vat/       /fr/maroc/calculateur-tva              301!
+/fr/tunisia/tn-vat        /fr/tunisie/calculateur-tva            301!
+/fr/tunisia/tn-vat/       /fr/tunisie/calculateur-tva            301!
 /fr/cote-divoire/ci-paye       /fr/cote-divoire/calculateur-salaire-net   301!
 /fr/cote-divoire/ci-paye/      /fr/cote-divoire/calculateur-salaire-net   301!
-/fr/cote-divoire/ci-vat        /fr/cote-divoire/calculateur-tva           301
-/fr/cote-divoire/ci-vat/       /fr/cote-divoire/calculateur-tva           301
-/fr/senegal/sn-vat             /fr/senegal/calculateur-tva                301
-/fr/senegal/sn-vat/            /fr/senegal/calculateur-tva                301
+/fr/cote-divoire/ci-vat        /fr/cote-divoire/calculateur-tva           301!
+/fr/cote-divoire/ci-vat/       /fr/cote-divoire/calculateur-tva           301!
+/fr/senegal/sn-vat             /fr/senegal/calculateur-tva                301!
+/fr/senegal/sn-vat/            /fr/senegal/calculateur-tva                301!
 /fr/cameroun/cm-paye           /fr/cameroun/calculateur-salaire-net       301
 /fr/cameroun/cm-paye/          /fr/cameroun/calculateur-salaire-net       301
 /fr/rdc/cd-paye                /fr/rdc/calculateur-salaire-net            301
@@ -536,34 +525,34 @@
 /fr/guinee/gn-paye/            /fr/guinee/calculateur-salaire-net         301
 /fr/guinee/gn-vat              /fr/guinee/calculateur-tva                 301
 /fr/guinee/gn-vat/             /fr/guinee/calculateur-tva                 301
-/fr/mali/ml-vat                /fr/mali/calculateur-tva                   301
-/fr/mali/ml-vat/               /fr/mali/calculateur-tva                   301
-/fr/burkina-faso/bf-vat        /fr/burkina-faso/calculateur-tva           301
-/fr/burkina-faso/bf-vat/       /fr/burkina-faso/calculateur-tva           301
-/fr/niger/ne-paye              /fr/niger/calculateur-salaire-net          301
-/fr/niger/ne-paye/             /fr/niger/calculateur-salaire-net          301
-/fr/niger/ne-vat               /fr/niger/calculateur-tva                  301
-/fr/niger/ne-vat/              /fr/niger/calculateur-tva                  301
-/fr/congo/cg-paye              /fr/congo/calculateur-salaire-net          301
-/fr/congo/cg-paye/             /fr/congo/calculateur-salaire-net          301
-/fr/congo/cg-vat               /fr/congo/calculateur-tva                  301
-/fr/congo/cg-vat/              /fr/congo/calculateur-tva                  301
-/fr/gabon/ga-paye              /fr/gabon/calculateur-salaire-net          301
-/fr/gabon/ga-paye/             /fr/gabon/calculateur-salaire-net          301
-/fr/gabon/ga-vat               /fr/gabon/calculateur-tva                  301
-/fr/gabon/ga-vat/              /fr/gabon/calculateur-tva                  301
-/fr/togo/tg-paye               /fr/togo/calculateur-salaire-net           301
-/fr/togo/tg-paye/              /fr/togo/calculateur-salaire-net           301
-/fr/togo/tg-vat                /fr/togo/calculateur-tva                   301
-/fr/togo/tg-vat/               /fr/togo/calculateur-tva                   301
-/fr/burundi/bi-paye            /fr/burundi/calculateur-salaire-net        301
-/fr/burundi/bi-paye/           /fr/burundi/calculateur-salaire-net        301
-/fr/burundi/bi-vat             /fr/burundi/calculateur-tva                301
-/fr/burundi/bi-vat/            /fr/burundi/calculateur-tva                301
-/fr/car/cf-paye                /fr/centrafrique/calculateur-salaire-net   301
-/fr/car/cf-paye/               /fr/centrafrique/calculateur-salaire-net   301
-/fr/car/cf-vat                 /fr/centrafrique/calculateur-tva           301
-/fr/car/cf-vat/                /fr/centrafrique/calculateur-tva           301
+/fr/mali/ml-vat                /fr/mali/calculateur-tva                   301!
+/fr/mali/ml-vat/               /fr/mali/calculateur-tva                   301!
+/fr/burkina-faso/bf-vat        /fr/burkina-faso/calculateur-tva           301!
+/fr/burkina-faso/bf-vat/       /fr/burkina-faso/calculateur-tva           301!
+/fr/niger/ne-paye              /fr/niger/calculateur-salaire-net          301!
+/fr/niger/ne-paye/             /fr/niger/calculateur-salaire-net          301!
+/fr/niger/ne-vat               /fr/niger/calculateur-tva                  301!
+/fr/niger/ne-vat/              /fr/niger/calculateur-tva                  301!
+/fr/congo/cg-paye              /fr/congo/calculateur-salaire-net          301!
+/fr/congo/cg-paye/             /fr/congo/calculateur-salaire-net          301!
+/fr/congo/cg-vat               /fr/congo/calculateur-tva                  301!
+/fr/congo/cg-vat/              /fr/congo/calculateur-tva                  301!
+/fr/gabon/ga-paye              /fr/gabon/calculateur-salaire-net          301!
+/fr/gabon/ga-paye/             /fr/gabon/calculateur-salaire-net          301!
+/fr/gabon/ga-vat               /fr/gabon/calculateur-tva                  301!
+/fr/gabon/ga-vat/              /fr/gabon/calculateur-tva                  301!
+/fr/togo/tg-paye               /fr/togo/calculateur-salaire-net           301!
+/fr/togo/tg-paye/              /fr/togo/calculateur-salaire-net           301!
+/fr/togo/tg-vat                /fr/togo/calculateur-tva                   301!
+/fr/togo/tg-vat/               /fr/togo/calculateur-tva                   301!
+/fr/burundi/bi-paye            /fr/burundi/calculateur-salaire-net        301!
+/fr/burundi/bi-paye/           /fr/burundi/calculateur-salaire-net        301!
+/fr/burundi/bi-vat             /fr/burundi/calculateur-tva                301!
+/fr/burundi/bi-vat/            /fr/burundi/calculateur-tva                301!
+/fr/car/cf-paye                /fr/centrafrique/calculateur-salaire-net   301!
+/fr/car/cf-paye/               /fr/centrafrique/calculateur-salaire-net   301!
+/fr/car/cf-vat                 /fr/centrafrique/calculateur-tva           301!
+/fr/car/cf-vat/                /fr/centrafrique/calculateur-tva           301!
 
 # Country ISO shortcode redirects → canonical paths
 /ao/*  /angola/:splat  301
@@ -756,8 +745,8 @@
 /sw/tools/boq-builder          /sw/zana/orodha-vifaa/            301
 # Remaining /sw/tools/* fallback to English tools
 /sw/tools/*                    /tools/:splat                     301
-/sw/countries/                 /sw/nchi/                         301
-/sw/countries                  /sw/nchi/                         301
+/sw/countries/                 /sw/nchi/                         301!
+/sw/countries                  /sw/nchi/                         301!
 # Swahili contact page is /sw/wasiliana/; the English slug never existed under /sw/.
 /sw/contact                    /sw/wasiliana/                    301
 /sw/contact/                   /sw/wasiliana/                    301
@@ -857,8 +846,8 @@
 /togo/calculateur-tva/                  /togo/tg-vat             301
 
 # French tool URL aliases — specific redirects to French pages (before generic catch-all)
-/fr/tools/projection-retraite/      /fr/tools/projection-pension/ 301
-/fr/tools/projection-retraite       /fr/tools/projection-pension/ 301
+/fr/tools/projection-retraite/      /fr/tools/projection-pension/ 301!
+/fr/tools/projection-retraite       /fr/tools/projection-pension/ 301!
 /fr/tools/vat-calculator/vat-calc/  /fr/tools/calculateur-tva/    301
 /fr/tools/vat-calculator/vat-calc   /fr/tools/calculateur-tva/    301
 /fr/tools/vat-calculator/           /fr/tools/calculateur-tva/    301
@@ -871,10 +860,10 @@
 /fr/tools/remittance-compare        /fr/tools/transfert-argent/   301
 /fr/tools/import-duty/              /fr/tools/droits-douane/      301
 /fr/tools/import-duty               /fr/tools/droits-douane/      301
-/fr/tools/remittance-v2/            /fr/tools/transfert-argent/   301
-/fr/tools/remittance-v2             /fr/tools/transfert-argent/   301
-/fr/tools/ng-wht/                   /fr/tools/ng-retenue-source/  301
-/fr/tools/ng-wht                    /fr/tools/ng-retenue-source/  301
+/fr/tools/remittance-v2/            /fr/tools/transfert-v2/       301
+/fr/tools/remittance-v2             /fr/tools/transfert-v2/       301
+/fr/tools/ng-wht/                   /fr/tools/ng-retenue-source/  301!
+/fr/tools/ng-wht                    /fr/tools/ng-retenue-source/  301!
 
 # French blog fallback — redirect unbuilt fr/ blog posts to English equivalents
 /fr/blog/*   /blog/:splat   302
@@ -894,8 +883,6 @@
 /fr/madagascar/mg-paye/    /fr/madagascar/calculateur-salaire-net/    301!
 /fr/mauritania/mr-paye     /fr/mauritanie/calculateur-salaire-net/    301!
 /fr/mauritania/mr-paye/    /fr/mauritanie/calculateur-salaire-net/    301!
-/sw/salary-tax             /sw/mshahara-na-kodi/                      301!
-/sw/salary-tax/            /sw/mshahara-na-kodi/                      301!
 
 # PAYE Calculator hub
 /tools/paye-calculator         /tools/paye-calculator/index.html  200
@@ -907,45 +894,40 @@
 # already handled above, eliminating the /path → /path/ 301 redirect that
 # Google Search Console flags as "Page with redirect".
 
-# French country slug normalization — English hub slug → French slug (301 permanent)
-# Specific index-page redirects only; tool pages stay in English-slug dirs (files exist there)
-/fr/algeria/           /fr/algerie/          301
-/fr/algeria            /fr/algerie/          301
-/fr/cameroon/          /fr/cameroun/         301
-/fr/cameroon           /fr/cameroun/         301
-/fr/dr-congo/          /fr/rdc/              301
-/fr/dr-congo           /fr/rdc/              301
-/fr/guinea/            /fr/guinee/           301
-/fr/guinea             /fr/guinee/           301
-/fr/morocco/           /fr/maroc/            301
-/fr/morocco            /fr/maroc/            301
-/fr/tunisia/           /fr/tunisie/          301
-/fr/tunisia            /fr/tunisie/          301
+# French country slug normalization — legacy English hub slugs → French slugs.
+# Forced redirects override the retained meta-refresh fallback files.
+/fr/algeria/           /fr/algerie/          301!
+/fr/algeria            /fr/algerie/          301!
+/fr/cameroon/          /fr/cameroun/         301!
+/fr/cameroon           /fr/cameroun/         301!
+/fr/dr-congo/          /fr/rdc/              301!
+/fr/dr-congo           /fr/rdc/              301!
+/fr/guinea/            /fr/guinee/           301!
+/fr/guinea             /fr/guinee/           301!
+/fr/morocco/           /fr/maroc/            301!
+/fr/morocco            /fr/maroc/            301!
+/fr/tunisia/           /fr/tunisie/          301!
+/fr/tunisia            /fr/tunisie/          301!
 /fr/car/               /fr/centrafrique/     301
 /fr/car                /fr/centrafrique/     301
-/fr/central-african-republic/ /fr/centrafrique/     301
-/fr/central-african-republic  /fr/centrafrique/     301
-/fr/equatorial-guinea/ /fr/guinee-equatoriale/ 301
-/fr/equatorial-guinea  /fr/guinee-equatoriale/ 301
+/fr/central-african-republic/ /fr/centrafrique/     301!
+/fr/central-african-republic  /fr/centrafrique/     301!
+/fr/equatorial-guinea/ /fr/guinee-equatoriale/ 301!
+/fr/equatorial-guinea  /fr/guinee-equatoriale/ 301!
 /fr/eq-guinea/         /fr/guinee-equatoriale/ 301
 /fr/eq-guinea          /fr/guinee-equatoriale/ 301
-/fr/cape-verde/        /fr/cabo-verde/       301
-/fr/cape-verde         /fr/cabo-verde/       301
-/fr/comoros/           /fr/comores/          301
-/fr/comoros            /fr/comores/          301
-/fr/mauritania/        /fr/mauritanie/       301
-/fr/mauritania         /fr/mauritanie/       301
+/fr/cape-verde/        /fr/cabo-verde/       301!
+/fr/cape-verde         /fr/cabo-verde/       301!
+/fr/comoros/           /fr/comores/          301!
+/fr/comoros            /fr/comores/          301!
+/fr/mauritania/        /fr/mauritanie/       301!
+/fr/mauritania         /fr/mauritanie/       301!
 
 # French fallback redirects — send unbuilt /fr/* paths to English equivalents
 # These fire only when no earlier rule or static file matches (first-match-wins)
-/fr/dashboard/vault/  /dashboard/vault/   301
 /fr/dashboard/*       /dashboard/:splat   301
 /fr/tools/*           /tools/:splat       301
 /fr/engineering/*     /engineering/:splat 301
-/fr/salary-tax/       /salary-tax/        301
-/fr/salary-tax        /salary-tax/        301
-/fr/countries/        /                   301
-/fr/countries         /                   301
 /fr/:country/:page    /:country/:page     301
 /fr/:country/         /:country/          301
 /fr/:country          /:country/          301
@@ -2257,6 +2239,8 @@
 /fr/agriculture/vaccination-schedule/uganda.html  /fr/agriculture/vaccination-schedule/uganda  301!
 /fr/agriculture/vaccination-schedule/zambia.html  /fr/agriculture/vaccination-schedule/zambia  301!
 /fr/agriculture/vaccination-schedule/zimbabwe.html  /fr/agriculture/vaccination-schedule/zimbabwe  301!
+/fr/algeria/dz-paye.html  /fr/algerie/calculateur-salaire-net  301!
+/fr/algeria/dz-vat.html  /fr/algerie/calculateur-tva  301!
 /fr/algerie/calculateur-salaire-net.html  /fr/algerie/calculateur-salaire-net  301!
 /fr/algerie/calculateur-tva.html  /fr/algerie/calculateur-tva  301!
 /fr/angola/ao-paye.html  /fr/angola/ao-paye  301!
@@ -2339,6 +2323,7 @@
 /fr/mali/calculateur-salaire-net.html  /fr/mali/calculateur-salaire-net  301!
 /fr/mali/calculateur-tva.html  /fr/mali/calculateur-tva  301!
 /fr/mali/ml-paye.html  /fr/mali/calculateur-salaire-net  301!
+/fr/mali/ml-vat.html  /fr/mali/calculateur-tva  301!
 /fr/maroc/calculateur-salaire-net.html  /fr/maroc/calculateur-salaire-net  301!
 /fr/maroc/calculateur-tva.html  /fr/maroc/calculateur-tva  301!
 /fr/mauritania/mr-paye.html  /fr/mauritanie/calculateur-salaire-net/  301!
@@ -2347,6 +2332,7 @@
 /fr/mauritius/mu-paye.html  /fr/mauritius/mu-paye  301!
 /fr/mauritius/mu-vat.html  /fr/mauritius/mu-vat  301!
 /fr/morocco/ma-paye.html  /fr/maroc/calculateur-salaire-net  301!
+/fr/morocco/ma-vat.html  /fr/maroc/calculateur-tva  301!
 /fr/mozambique/mz-paye.html  /fr/mozambique/mz-paye  301!
 /fr/mozambique/mz-vat.html  /fr/mozambique/mz-vat  301!
 /fr/namibia/na-paye.html  /fr/namibia/na-paye  301!
@@ -2367,6 +2353,7 @@
 /fr/senegal/calculateur-salaire-net.html  /fr/senegal/calculateur-salaire-net  301!
 /fr/senegal/calculateur-tva.html  /fr/senegal/calculateur-tva  301!
 /fr/senegal/sn-paye.html  /fr/senegal/calculateur-salaire-net  301!
+/fr/senegal/sn-vat.html  /fr/senegal/calculateur-tva  301!
 /fr/seychelles/sc-paye.html  /fr/seychelles/sc-paye  301!
 /fr/seychelles/sc-vat.html  /fr/seychelles/sc-vat  301!
 /fr/sierra-leone/sl-paye.html  /fr/sierra-leone/sl-paye  301!
@@ -2384,6 +2371,8 @@
 /fr/tchad/calculateur-tva.html  /fr/tchad/calculateur-tva  301!
 /fr/togo/calculateur-salaire-net.html  /fr/togo/calculateur-salaire-net  301!
 /fr/togo/calculateur-tva.html  /fr/togo/calculateur-tva  301!
+/fr/togo/tg-paye.html  /fr/togo/calculateur-salaire-net  301!
+/fr/togo/tg-vat.html  /fr/togo/calculateur-tva  301!
 /fr/tools/africa-conflict/actors.html  /fr/tools/africa-conflict/actors  301!
 /fr/tools/africa-conflict/conflicts.html  /fr/tools/africa-conflict/conflicts  301!
 /fr/tools/africa-conflict/detail.html  /fr/tools/africa-conflict/detail  301!
@@ -2614,6 +2603,7 @@
 /fr/tools/plan-affaires/app.html  /fr/tools/plan-affaires/app  301!
 /fr/tools/school-fees/app.html  /fr/tools/school-fees/app  301!
 /fr/tunisia/tn-paye.html  /fr/tunisie/calculateur-salaire-net  301!
+/fr/tunisia/tn-vat.html  /fr/tunisie/calculateur-tva  301!
 /fr/tunisie/calculateur-salaire-net.html  /fr/tunisie/calculateur-salaire-net  301!
 /fr/tunisie/calculateur-tva.html  /fr/tunisie/calculateur-tva  301!
 /fr/uganda/ug-paye.html  /fr/uganda/ug-paye  301!

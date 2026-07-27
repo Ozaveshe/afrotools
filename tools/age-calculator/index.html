@@ -19,7 +19,7 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
@@ -154,7 +154,7 @@ details summary::-webkit-details-marker{display:none}
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/age-calculator/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/age-calculator/">
@@ -193,6 +193,7 @@ details summary::-webkit-details-marker{display:none}
             <input aria-label="Calculate age at this date" type="date" class="f-input" id="atDate">
           </div>
           <button type="button" class="calc-btn" onclick="calculate()">Calculate Age</button>
+          <div id="ageStatus" role="status" aria-live="polite" style="min-height:1.25rem;margin-top:8px;font-size:.78rem;color:#b91c1c"></div>
           <div id="results" aria-live="polite" style="display:none">
             <div class="result-grid">
               <div class="result-box"><div class="result-num" id="rYears">0</div><div class="result-label">Years</div></div>
@@ -298,12 +299,18 @@ details summary::-webkit-details-marker{display:none}
 function calculate(){
   const dobStr=document.getElementById('dob').value;
   const atStr=document.getElementById('atDate').value;
-  if(!dobStr){alert('Please enter your date of birth');return;}
+  function reject(message,fieldId){
+    document.getElementById('results').style.display='none';
+    document.getElementById('ageStatus').textContent=message;
+    document.getElementById(fieldId).focus();
+  }
+  if(!dobStr){reject('Enter a date of birth before calculating.','dob');return;}
 
   const dob=new Date(dobStr+'T00:00:00');
   const now=atStr?new Date(atStr+'T00:00:00'):new Date();
 
-  if(dob>now){alert('Date of birth cannot be in the future');return;}
+  if(dob>now){reject('Date of birth must be on or before the calculation date.','dob');return;}
+  document.getElementById('ageStatus').textContent='';
 
   // Calculate years, months, days
   let years=now.getFullYear()-dob.getFullYear();

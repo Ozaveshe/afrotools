@@ -6,22 +6,22 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 10698 |
-| native | 8137 |
-| localizedShell | 2501 |
+| rawPages | 10660 |
+| native | 8125 |
+| localizedShell | 2476 |
 | englishFallback | 38 |
 | unavailable | 20 |
-| deprecated | 2 |
-| indexableEligible | 9708 |
-| sitemapEligible | 9708 |
+| deprecated | 1 |
+| indexableEligible | 9709 |
+| sitemapEligible | 9709 |
 
 ## By locale
 
 | Locale | Launch | Raw | Native | Shell | English fallback | Unavailable | Deprecated | Indexable | Catalog keys |
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
-| en | default | 5874 | 5874 | 0 | 0 | 0 | 0 | 5022 | 180 |
-| fr | launched | 3716 | 2092 | 1622 | 0 | 0 | 2 | 3639 | 180 |
-| sw | launched | 958 | 148 | 807 | 3 | 0 | 0 | 952 | 180 |
+| en | default | 5874 | 5874 | 0 | 0 | 0 | 0 | 5023 | 180 |
+| fr | launched | 3679 | 2081 | 1597 | 0 | 0 | 1 | 3639 | 180 |
+| sw | launched | 957 | 147 | 807 | 3 | 0 | 0 | 952 | 180 |
 | yo | partial | 45 | 9 | 13 | 3 | 20 | 0 | 22 | 180 |
 | ha | partial | 105 | 14 | 59 | 32 | 0 | 0 | 73 | 180 |
 | pt | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -35,11 +35,11 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | api | 3 | 3 | 0 | 0 | 0 | 0 | 3 |
 | article | 382 | 382 | 0 | 0 | 0 | 0 | 380 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
-| category | 694 | 694 | 0 | 0 | 0 | 0 | 690 |
-| country-tool | 497 | 113 | 382 | 0 | 0 | 2 | 466 |
+| category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
+| country-tool | 473 | 113 | 359 | 0 | 0 | 1 | 466 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
-| page | 4791 | 4106 | 628 | 37 | 20 | 0 | 4159 |
-| tool | 3945 | 2598 | 1347 | 0 | 0 | 0 | 3860 |
+| page | 4779 | 4094 | 628 | 37 | 20 | 0 | 4159 |
+| tool | 3942 | 2597 | 1345 | 0 | 0 | 0 | 3860 |
 | widget | 379 | 235 | 144 | 0 | 0 | 0 | 146 |
 
 ## Definitions

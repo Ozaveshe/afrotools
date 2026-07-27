@@ -5,6 +5,7 @@ const fs = require("fs");
 const path = require("path");
 
 const manifestApi = require("../assets/js/ai/tool-manifest.js");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(ROOT, "data", "ai", "tool-catalog-pack.json");
@@ -207,8 +208,7 @@ function buildPack(options = {}) {
 }
 
 function writePack(filePath, pack) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(pack, null, 2) + "\n");
+  writeStableGeneratedJson(filePath, pack);
 }
 
 function main() {

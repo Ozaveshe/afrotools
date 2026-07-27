@@ -7,6 +7,7 @@ const evalRunner = require("./evaluate-ai-routing.js");
 const manifestApi = require("../assets/js/ai/tool-manifest.js");
 const promptExamples = require("../assets/js/ai/example-registry.js");
 const promptRegistry = require("../assets/js/ai/prompt-registry.js");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const DEFAULT_OUTPUT = path.join(ROOT, "data", "ai", "tool-call-training-corpus.jsonl");
@@ -199,7 +200,7 @@ function main() {
   }
   if (write) {
     writeJsonl(output, result.records);
-    fs.writeFileSync(reportPath, JSON.stringify(result.report, null, 2) + "\n");
+    writeStableGeneratedJson(reportPath, result.report);
   }
   if (json) {
     console.log(JSON.stringify(result.report, null, 2));

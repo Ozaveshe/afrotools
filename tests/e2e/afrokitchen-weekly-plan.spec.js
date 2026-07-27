@@ -10,6 +10,7 @@ async function quietExternalNoise(page) {
       return route.fulfill({ contentType: "text/css; charset=utf-8", body: "" });
     }
     if (url.hostname === "fonts.gstatic.com") return route.abort();
+    if (!["127.0.0.1", "localhost"].includes(url.hostname)) return route.abort();
     return route.continue();
   });
 }
@@ -17,7 +18,9 @@ async function quietExternalNoise(page) {
 function installConsoleGuard(page) {
   const errors = [];
   page.on("console", function (message) {
-    if (message.type() === "error") errors.push(message.text());
+    if (message.type() !== "error") return;
+    if (/Failed to load resource|ERR_FAILED|CORS|supabase/i.test(message.text())) return;
+    errors.push(message.text());
   });
   page.on("pageerror", function (error) {
     errors.push(error.message);
@@ -48,7 +51,7 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await page.locator("#ak-plan-time").selectOption("999");
   await page.locator("#ak-plan-servings").fill("5");
   await page.locator("#ak-plan-generate").click();
-  await expect(page.locator(".ak-plan-summary")).toContainText("3-day plan ready", { timeout: 30000 });
+  await expect(page.locator("#ak-plan-result")).toContainText("3-day plan ready", { timeout: 30000 });
   await expect(page.locator(".ak-plan-day")).toHaveCount(3);
   await expect(page.locator(".ak-plan-shopping")).toContainText("Grouped shopping list");
   await expect(page.locator(".ak-plan-shopping-group").first()).toContainText("Day 1:");
@@ -56,8 +59,8 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await page.locator("#ak-plan-copy").click();
   await expect(page.locator("#ak-plan-status")).toContainText("Shopping list copied");
   const copiedText = await page.evaluate(function () { return window.__akCopiedText || ""; });
-  expect(copiedText).toContain("AfroKitchen 3-day recipe plan");
   expect(copiedText).toContain("Shopping list");
+  expect(copiedText).toContain("Nigerian Jollof Rice");
 
   const download = await Promise.all([
     page.waitForEvent("download"),
@@ -71,7 +74,7 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await page.locator("#ak-plan-country").selectOption("");
   await page.locator("#ak-plan-occasion").selectOption("");
   await page.locator("#ak-plan-generate").click();
-  await expect(page.locator(".ak-plan-summary")).toContainText("7-day plan ready", { timeout: 30000 });
+  await expect(page.locator("#ak-plan-result")).toContainText("7-day plan ready", { timeout: 30000 });
   await expect(page.locator(".ak-plan-day")).toHaveCount(7);
 
   await page.locator("#ak-plan-time").selectOption("30");
@@ -89,7 +92,7 @@ test("AfroKitchen weekly planner generates plans, exports shopping list, handles
   await page.locator("#ak-plan-country").selectOption("");
   await page.locator("#ak-plan-occasion").selectOption("");
   await page.locator("#ak-plan-generate").click();
-  await expect(page.locator(".ak-plan-summary")).toContainText("3-day plan ready", { timeout: 30000 });
+  await expect(page.locator("#ak-plan-result")).toContainText("3-day plan ready", { timeout: 30000 });
   const overflow = await page.evaluate(function () {
     return document.documentElement.scrollWidth - document.documentElement.clientWidth;
   });

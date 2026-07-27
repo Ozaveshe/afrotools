@@ -14,6 +14,7 @@ const EXCLUDED_DIRS = new Set([
 const TARGET_RE = /(^|[\\/])(?:fr[\\/])?[^\\/]+[\\/](?:[a-z]{2}-(?:paye|vat)|ng-salary-tax)\.html$/i;
 const EXPLICIT_TARGETS = new Set(['tools/ng-cgt/index.html', 'fr/tools/ng-plus-value/index.html', 'ha/kayan-aiki/cgt-najeriya/index.html', 'tools/ng-cit/index.html', 'fr/tools/ng-impot-societes/index.html', 'ha/kayan-aiki/cit-najeriya/index.html', 'yo/awon-ise/cit-naijiria/index.html', 'fr/algerie/calculateur-tva.html', 'sw/algeria/kikokotoo-vat/index.html', 'sw/angola/kikokotoo-vat/index.html', 'fr/benin/calculateur-tva.html', 'sw/benin/kikokotoo-vat/index.html', 'fr/comores/calculateur-tva.html', 'sw/comoros/kikokotoo-vat/index.html']);
 const REDIRECT_STATUS_RE = /^(?:301|302|307|308|410)!?$/;
+const INVALID_SOURCE_HOSTS = new Set(['e.net', 'r.net', 'result.net', 's.net', 'sultat.net']);
 
 function walk(start, out = []) {
   if (!fs.existsSync(start)) return out;
@@ -50,6 +51,12 @@ function fileToPublicRoute(filePath) {
     return `/${relative.slice(0, -'.html'.length)}`;
   }
   return `/${relative}`;
+}
+
+function isHtmlRedirectAlias(filePath) {
+  const html = fs.readFileSync(filePath, 'utf8');
+  return /<meta\b[^>]*http-equiv=["']refresh["']/i.test(html)
+    || /<title>\s*(?:redirection|redirect\b)/i.test(html);
 }
 
 function buildRedirectSources() {
@@ -97,6 +104,7 @@ const redirectSources = buildRedirectSources();
 const targetFiles = walk(ROOT)
   .filter((filePath) => TARGET_RE.test(rel(filePath)) || EXPLICIT_TARGETS.has(rel(filePath)))
   .filter((filePath) => !redirectSources.has(normalizeRoute(fileToPublicRoute(filePath))))
+  .filter((filePath) => !isHtmlRedirectAlias(filePath))
   .sort((left, right) => rel(left).localeCompare(rel(right)));
 
 assert(targetFiles.length >= 100, `expected at least 100 PAYE/VAT pages, found ${targetFiles.length}`, failures);
@@ -112,6 +120,15 @@ for (const filePath of targetFiles) {
 
   assert(entry.last_verified && /^\d{4}-\d{2}-\d{2}$/.test(entry.last_verified), `${toolId} is missing ISO last_verified`, failures);
   assert(Array.isArray(entry.source_urls) && entry.source_urls.some((url) => /^https?:\/\//.test(url)), `${toolId} is missing source_url`, failures);
+  for (const sourceUrl of entry.source_urls || []) {
+    let hostname = '';
+    try {
+      hostname = new URL(sourceUrl).hostname.toLowerCase().replace(/^www\./, '');
+    } catch {
+      // The existing source_url assertion reports malformed or missing URLs.
+    }
+    assert(!INVALID_SOURCE_HOSTS.has(hostname), `${toolId} contains invalid generated source ${sourceUrl}`, failures);
+  }
   assert(Array.isArray(entry.source_titles) && entry.source_titles.length > 0, `${toolId} is missing source_titles`, failures);
   assert(entry.methodology_markdown && entry.methodology_markdown.length > 20, `${toolId} is missing methodology_markdown`, failures);
   assert(entry.risk_level === 'high' || entry.risk_level === 'critical' || entry.risk_level === 'medium', `${toolId} has invalid risk_level`, failures);

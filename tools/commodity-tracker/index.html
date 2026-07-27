@@ -5,7 +5,7 @@
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>African Commodity Trade Tracker 2026 — Imports &amp; Exports by Country | AfroTools</title>
-<meta name="description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity prices, and top trading partners.">
+<meta name="description" content="Explore planning-grade import, export, trade-balance, price, and partner data for major African traded commodities.">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
@@ -83,7 +83,7 @@
   <meta name="twitter:description" content="Track Africa's top traded commodities. See import and export volumes for Nigeria, Kenya, South Africa, Ghana, Egypt and more. Trade balance, commodity pric">
   <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/commodity-tracker.webp">
 <meta property="article:modified_time" content="2026-03-28">
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <link rel="stylesheet" href="/assets/css/trade-toolkit.css?v=2465f40a">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
@@ -92,7 +92,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do I use the Commodity Trade Tracker?","acceptedAnswer":{"@type":"Answer","text":"Enter your amounts, rates and dates in the fields above. The Commodity Trade Tracker then gives you a clear estimate with the assumptions shown you can use straight away."}},{"@type":"Question","name":"How accurate is the Commodity Trade Tracker?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm current prices, fees and official rates for your country before you rely on it. It is a planning estimate, not financial advice."}},{"@type":"Question","name":"Is the Commodity Trade Tracker free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for Nigeria, Kenya, South Africa and other African markets."}}]}
 </script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
@@ -122,6 +122,17 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"African Commodity Trade Tracker 2026 — Imports & Exports by Country","item":"https://afrotools.com/tools/commodity-tracker/"}]}
 </script>
+<style>
+@media(max-width:420px){
+  .tool-shell,.tool-panel,.tool-section,#countryDetail{max-width:100%;min-width:0}
+  .tool-tabs{display:flex;justify-content:flex-start;max-width:100%;overflow-x:auto;overscroll-behavior-inline:contain}
+  .tool-tab{flex:0 0 auto}
+  #countryDetail>div[style*="grid-template-columns"]{grid-template-columns:minmax(0,1fr)!important}
+  .chart-wrap,.commodity-bar,.commodity-bar>*{max-width:100%;min-width:0;overflow-wrap:anywhere}
+  .price-table{display:block;max-width:100%;overflow-x:auto}
+}
+</style>
+<link rel="stylesheet" href="/assets/css/mining-vip-reflow.css?v=9765305d">
 <link rel="canonical" href="https://afrotools.com/tools/commodity-tracker/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/commodity-tracker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-matieres-premieres/">
@@ -379,7 +390,7 @@ function renderBalance(summary, balance) {
   if (typeof Chart === 'undefined') {
     canvas.style.display = 'none';
     fallback.style.display = 'block';
-    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance);
+    fallback.innerHTML = '<strong>Exports:</strong> ' + fmtB(summary.totalExports) + ' &nbsp; <strong>Imports:</strong> ' + fmtB(summary.totalImports) + ' &nbsp; <strong>Balance:</strong> ' + fmtB(balance.balance);
     return;
   }
   canvas.style.display = 'block';

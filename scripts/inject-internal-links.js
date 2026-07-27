@@ -647,6 +647,11 @@ const checkRelated = process.argv.includes('--check-related');
 const filesArg = process.argv.find((arg) => arg.startsWith('--files='));
 const selectedFiles = filesArg ? filesArg.slice('--files='.length).split(',').map((file) => file.trim()).filter(Boolean) : null;
 
+// Build the related-tools host first. The legacy country/category navigation
+// is then always placed immediately before the footer, whether the host was
+// already present or had to be created during this run.
+const relatedStats = processRelatedTools({ write: !checkRelated, files: selectedFiles });
+
 let legacyTotal = 0;
 if (!relatedOnly && !checkRelated && !selectedFiles) {
   const agCount = processAgriculture();
@@ -666,7 +671,6 @@ if (!relatedOnly && !checkRelated && !selectedFiles) {
   legacyTotal = agCount + hubCount + toolCount + frCount + catCount;
 }
 
-const relatedStats = processRelatedTools({ write: !checkRelated, files: selectedFiles });
 console.log(`  Related tools: ${relatedStats.links} links across ${relatedStats.targeted} English directory pages`);
 console.log(`                 ${relatedStats.updated} pages ${checkRelated ? 'need regeneration' : 'updated'}`);
 console.log(`                 ${relatedStats.dataScriptsRemoved} full related-data scripts removed, ${relatedStats.componentScriptsAdded} lightweight component scripts added`);

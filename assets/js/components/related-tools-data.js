@@ -4805,7 +4805,7 @@
         "id": "structural-calc",
         "name": "Structural Calculator",
         "icon": "🔩",
-        "desc": "KEBS/SABS/SON building code calculations. Premiu...",
+        "desc": "Preliminary beam, column and slab sizing prompts...",
         "href": "/tools/structural-calc/",
         "category": "engineering",
         "lang": "en",
@@ -17375,6 +17375,80 @@
         "lang": "en",
         "priority": 50,
         "estTraffic": 1000,
+        "imageExt": ""
+      }
+    ],
+    "en::mining": [
+      {
+        "id": "mining-royalty",
+        "name": "Mining Royalty Calculator",
+        "icon": "⛏️",
+        "desc": "Estimate royalties from gross mineral value and ...",
+        "href": "/tools/mining-royalty/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 74,
+        "estTraffic": 2200,
+        "imageExt": ""
+      },
+      {
+        "id": "mining-license-fee",
+        "name": "Mining Licence Cost Planner",
+        "icon": "📋",
+        "desc": "Total user-entered mining licence and area-cost ...",
+        "href": "/tools/mining-license-fee/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 70,
+        "estTraffic": 1400,
+        "imageExt": ""
+      },
+      {
+        "id": "artisanal-mining-income",
+        "name": "Artisanal Mining Income Planner",
+        "icon": "⚒️",
+        "desc": "Estimate income from quantity, price and formali...",
+        "href": "/tools/artisanal-mining-income/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 69,
+        "estTraffic": 1300,
+        "imageExt": ""
+      },
+      {
+        "id": "diamond-valuation",
+        "name": "Diamond Valuation Planner",
+        "icon": "💎",
+        "desc": "Estimate a planning value from carat weight and ...",
+        "href": "/tools/diamond-valuation/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 67,
+        "estTraffic": 1200,
+        "imageExt": ""
+      },
+      {
+        "id": "oil-gas-revenue",
+        "name": "Oil & Gas Revenue Split",
+        "icon": "⛽",
+        "desc": "Calculate an input-based oil and gas revenue spl...",
+        "href": "/tools/oil-gas-revenue/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 66,
+        "estTraffic": 1100,
+        "imageExt": ""
+      },
+      {
+        "id": "oil-well-production",
+        "name": "Oil Well Production Planner",
+        "icon": "🛢️",
+        "desc": "Model production and revenue from user-entered w...",
+        "href": "/tools/oil-well-production/",
+        "category": "mining",
+        "lang": "en",
+        "priority": 65,
+        "estTraffic": 900,
         "imageExt": ""
       }
     ],

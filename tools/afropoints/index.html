@@ -31,7 +31,8 @@
   .ap-planner-head{display:flex;align-items:flex-start;justify-content:space-between;gap:20px;margin-bottom:18px}
   .ap-planner-head .ap-section-title,.ap-planner-head .ap-section-sub{text-align:left;margin-left:0;margin-right:0}
   .ap-planner-head .ap-section-sub{margin-bottom:0}
-  .ap-planner-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:16px}
+  .ap-planner-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;margin-bottom:16px}
+  .ap-planner-grid .ap-field,.ap-planner-grid .ap-input,.ap-planner-grid .ap-select{box-sizing:border-box;width:100%;min-width:0;max-width:100%}
   .ap-planner-result{border-top:1px solid rgba(226,232,240,0.9);padding-top:16px}
   .ap-planner-result p{font-size:0.84rem;line-height:1.6;color:var(--color-text-muted,#64748b);margin:8px 0 0}
   .ap-planner-metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
@@ -47,8 +48,8 @@
   .ap-faq-item{border:1px solid var(--color-border,#e2e8f0);border-radius:8px;padding:16px 18px;background:#fff}
   .ap-faq-item h3{margin:0 0 6px;font-size:1rem;color:var(--color-text,#0f172a)}
   .ap-faq-item p{margin:0;font-size:0.9rem;line-height:1.6;color:var(--color-text-muted,#475569)}
-  @media (max-width:900px){.ap-planner-grid{grid-template-columns:repeat(2,1fr)}.ap-planner-metrics{grid-template-columns:repeat(2,1fr)}}
-  @media (max-width:560px){.ap-planner-card{padding:18px}.ap-planner-head{flex-direction:column}.ap-planner-grid,.ap-planner-metrics{grid-template-columns:1fr}.ap-planner-actions .ap-cta{width:100%}}
+  @media (max-width:900px){.ap-planner-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.ap-planner-metrics{grid-template-columns:repeat(2,minmax(0,1fr))}}
+  @media (max-width:560px){.ap-planner-card{padding:18px}.ap-planner-head{flex-direction:column}.ap-planner-grid,.ap-planner-metrics{grid-template-columns:minmax(0,1fr)}.ap-planner-actions .ap-cta{width:100%}}
 </style>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"AfroPoints - Crowdsourced Data Rewards","description":"Earn money by contributing real-world African market data. Prices, rates, salaries - earn points, cash out via mobile money.","url":"https://afrotools.com/tools/afropoints/","applicationCategory":"UtilityApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/afropoints.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"AfroPoints","item":"https://afrotools.com/tools/afropoints/"}]}</script>
@@ -57,9 +58,9 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How much can I earn, and how does cashout work?","acceptedAnswer":{"@type":"Answer","text":"Each accepted report earns roughly 5-18 points. Points convert at 100 points = $1. You can cash out once you reach 2,000 points ($20) via M-Pesa, MTN MoMo, Airtel Money, bank transfer, or supported crypto (USDT/BTC/ETH)."}},{"@type":"Question","name":"Is 2,000 points the only redemption option?","acceptedAnswer":{"@type":"Answer","text":"No. If you want to redeem sooner, 500 points can be converted to AfroTools Pro credit. The 2,000-point ($20) minimum applies to cash payouts."}},{"@type":"Question","name":"Is it safe to share my local market data?","acceptedAnswer":{"@type":"Answer","text":"You only report public prices and rates you observe - never personal financial credentials. Submissions are reviewed before publication, and buyer-facing data is aggregated. See our privacy and safety page for full details."}},{"@type":"Question","name":"How is my data verified?","acceptedAnswer":{"@type":"Answer","text":"Reports are scored on proof, source, recency, and location precision. When other contributors confirm similar data nearby, records are confirmed faster and you earn bonus points. Weaker proof moves a record into manual review."}}]}
 </script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afropoints.webp">
-<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c0a56b60">
-<script src="/assets/js/african-workflow.js?v=cf96f534" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/african-workflow.css?v=c6ef7903">
+<script src="/assets/js/african-workflow.js?v=eec2f0b5" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/tools/afropoints/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/afropoints/">
@@ -503,7 +504,7 @@
 <!-- seo-internal-links -->
 <afro-footer></afro-footer>
 
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script src="/assets/js/afro-auth.js?v=4250956b"></script>

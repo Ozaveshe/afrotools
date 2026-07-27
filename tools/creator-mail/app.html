@@ -1087,8 +1087,11 @@
     var a = document.createElement('a');
     a.href = URL.createObjectURL(blob);
     a.download = 'newsletter-' + Date.now() + '.html';
+    document.body.appendChild(a);
     a.click();
-    URL.revokeObjectURL(a.href);
+    var url = a.href;
+    a.remove();
+    setTimeout(function() { URL.revokeObjectURL(url); }, 1000);
     toast('Downloaded!');
     document.getElementById('exportOverlay').classList.remove('open');
   };
@@ -1306,6 +1309,7 @@
 
 }();
 </script>
+<script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

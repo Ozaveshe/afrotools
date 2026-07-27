@@ -146,7 +146,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </script>
 <meta property="article:modified_time" content="2026-03-28">
 <script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1bd26ae3">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
@@ -308,7 +308,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=11746cbb" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script src="/assets/js/components/related-tools.js?v=0edc780e" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
@@ -342,6 +342,14 @@ const EXAM_PRESETS={
 };
 
 function getSystem(){return SYSTEMS[document.getElementById('system').value];}
+function escapeHtml(value){
+  return String(value??'')
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;');
+}
 
 function updateGradeOptions(){
   const sys=getSystem();
@@ -489,7 +497,7 @@ function calculate(){
 
   let table='<thead><tr><th>Course</th><th>Credits</th><th>Grade</th><th>Points</th><th>Quality Points</th></tr></thead><tbody>';
   courseData.forEach(c=>{
-    table+=`<tr><td>${c.name}</td><td>${c.credits}</td><td>${c.grade}</td><td>${c.gp}</td><td>${c.qp.toFixed(1)}</td></tr>`;
+    table+=`<tr><td>${escapeHtml(c.name)}</td><td>${c.credits}</td><td>${escapeHtml(c.grade)}</td><td>${c.gp}</td><td>${c.qp.toFixed(1)}</td></tr>`;
   });
   table+=`<tr style="font-weight:700;background:#f5f3ff"><td>Total</td><td>${totalCredits}</td><td></td><td></td><td>${totalQP.toFixed(1)}</td></tr></tbody>`;
   document.getElementById('breakdownTable').innerHTML=table;
@@ -582,7 +590,7 @@ function renderTargetPlanner(courseData){
     const gap=Math.max(0,needed-(c.exam||0));
     const cls=targetCardClass({needed:needed,gap:gap});
     const status=needed>60?'Not reachable from CA alone':gap<=0?'Target already covered':'Need '+gap.toFixed(1)+' more exam marks';
-    return `<div class="target-card ${cls}"><div class="target-title">${c.name}</div><div class="target-value">${needed>60?'60+':clamped.toFixed(1)}/60</div><div class="target-note">CA ${c.ca.toFixed(1)}/40, current exam ${(c.exam||0).toFixed(1)}/60. ${status} for ${target}%.</div></div>`;
+    return `<div class="target-card ${cls}"><div class="target-title">${escapeHtml(c.name)}</div><div class="target-value">${needed>60?'60+':clamped.toFixed(1)}/60</div><div class="target-note">CA ${c.ca.toFixed(1)}/40, current exam ${(c.exam||0).toFixed(1)}/60. ${status} for ${target}%.</div></div>`;
   }).join('');
   return `<section class="target-panel"><div class="target-panel-head"><div><h3>Exam target planner</h3><p>See the exam mark needed from each CA score.</p></div><div><label for="examTargetSelect">Target total</label><select id="examTargetSelect" onchange="calculate()"><option value="50"${target===50?' selected':''}>Pass 50%</option><option value="65"${target===65?' selected':''}>Strong 65%</option><option value="75"${target===75?' selected':''}>Excellent 75%</option></select></div></div><div class="target-grid">${cards}</div><div class="target-actions"><button type="button" onclick="copyExamTargetPlan()">Copy target plan</button></div></section>`;
 }

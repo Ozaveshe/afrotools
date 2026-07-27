@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>CreatorStock Workspace | AfroTools</title>
+  <meta name="description" content="Search licensed stock providers when the live source is available, or organise your own local creative assets without invented fallback results.">
   <meta name="robots" content="noindex, follow">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -148,7 +149,7 @@
   "use strict";
 
   var API = '/.netlify/functions/stock-search';
-  var DEMO_MODE = true; // Fallback to mock data when API unavailable
+  var DEMO_MODE = false;
 
   // ── STATE ─────────────────────────────────────────────
   var state = {
@@ -454,17 +455,19 @@
     }
     $('statusBar').textContent = 'Loading...';
 
-    // Try API first, fallback to demo
+    // Use provider-backed results only. Never substitute invented stock records.
     fetchFromAPI()
       .then(function(data) {
         state.loading = false;
         handleResults(data, append);
       })
       .catch(function() {
-        // Fallback to mock
         state.loading = false;
-        var mockData = generateMockPhotos(state.query, state.page, state.perPage);
-        handleResults(mockData, append);
+        state.results = [];
+        state.hasMore = false;
+        $('photoGrid').innerHTML = '<div class="csk-empty"><strong>Live stock search is unavailable.</strong><br>Try again later or use Upload to organise a file you have the rights to use. No sample result is presented as a real licensed asset.</div>';
+        $('statusBar').textContent = 'Source unavailable — no results shown';
+        $('loadMoreBtn').style.display = 'none';
       });
   }
 
@@ -966,6 +969,7 @@
 
 }();
 </script>
+<script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
 <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

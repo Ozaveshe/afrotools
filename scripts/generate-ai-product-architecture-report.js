@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const { writeStableGeneratedJson } = require("./lib/stable-generated-json.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const ARCHITECTURE_PATH = path.join(ROOT, "data", "ai", "product-architecture.json");
@@ -63,7 +64,7 @@ function buildReport() {
   const installedHeavyFrameworks = HEAVY_UI_FRAMEWORKS.filter((name) => dependencyNames.includes(name));
   const missingFiles = missingLayerFiles(architecture);
   const checks = [
-    check("architecture_contract_present", architecture.schemaVersion === 1 && Array.isArray(architecture.layers), ARCHITECTURE_PATH),
+    check("architecture_contract_present", architecture.schemaVersion === 1 && Array.isArray(architecture.layers), "data/ai/product-architecture.json"),
     check("static_first_framework_decision", architecture.frameworkDecision && architecture.frameworkDecision.decision && installedHeavyFrameworks.length === 0, installedHeavyFrameworks.join(", ") || "no heavy UI framework dependencies"),
     check("layer_files_exist", missingFiles.length === 0, missingFiles.map((item) => item.layer + ":" + item.file).join(", ")),
     check("orchestrator_contract_present", layerHasFile(architecture, "routing", "assets/js/ai/orchestrator.js") && exists("assets/js/ai/orchestrator.js") && /AI orchestrator/.test(architecture.mermaid || ""), "assets/js/ai/orchestrator.js"),
@@ -135,8 +136,7 @@ function buildReport() {
 }
 
 function writeReport(filePath, report) {
-  fs.mkdirSync(path.dirname(filePath), { recursive: true });
-  fs.writeFileSync(filePath, JSON.stringify(report, null, 2) + "\n");
+  writeStableGeneratedJson(filePath, report);
 }
 
 function main() {
