@@ -47,8 +47,9 @@ body{font-family:'DM Sans',sans-serif;background:var(--fc-bg);color:var(--fc-tex
 
 /* Layout */
 .fc-main{padding:28px 0 48px}
-.fc-grid{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 360px;gap:22px;align-items:start}
-@media(max-width:800px){.fc-grid{grid-template-columns:1fr}}
+.fc-grid{width:100%;max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,360px);gap:22px;align-items:start}
+.fc-grid>*{min-width:0;max-width:100%}
+@media(max-width:800px){.fc-grid{grid-template-columns:minmax(0,1fr)}}
 @media(max-width:720px){.fc-family-grid{grid-template-columns:1fr 1fr}.fc-copy{width:100%}}
 @media(max-width:500px){.fc-family-grid{grid-template-columns:1fr}}
 

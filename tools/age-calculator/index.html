@@ -193,6 +193,7 @@ details summary::-webkit-details-marker{display:none}
             <input aria-label="Calculate age at this date" type="date" class="f-input" id="atDate">
           </div>
           <button type="button" class="calc-btn" onclick="calculate()">Calculate Age</button>
+          <div id="ageStatus" role="status" aria-live="polite" style="min-height:1.25rem;margin-top:8px;font-size:.78rem;color:#b91c1c"></div>
           <div id="results" aria-live="polite" style="display:none">
             <div class="result-grid">
               <div class="result-box"><div class="result-num" id="rYears">0</div><div class="result-label">Years</div></div>
@@ -298,12 +299,18 @@ details summary::-webkit-details-marker{display:none}
 function calculate(){
   const dobStr=document.getElementById('dob').value;
   const atStr=document.getElementById('atDate').value;
-  if(!dobStr){alert('Please enter your date of birth');return;}
+  function reject(message,fieldId){
+    document.getElementById('results').style.display='none';
+    document.getElementById('ageStatus').textContent=message;
+    document.getElementById(fieldId).focus();
+  }
+  if(!dobStr){reject('Enter a date of birth before calculating.','dob');return;}
 
   const dob=new Date(dobStr+'T00:00:00');
   const now=atStr?new Date(atStr+'T00:00:00'):new Date();
 
-  if(dob>now){alert('Date of birth cannot be in the future');return;}
+  if(dob>now){reject('Date of birth must be on or before the calculation date.','dob');return;}
+  document.getElementById('ageStatus').textContent='';
 
   // Calculate years, months, days
   let years=now.getFullYear()-dob.getFullYear();
