@@ -12,10 +12,8 @@ Branch: `codex/day8-engineering-climate-mining`
 
 - Engineering: **26 accepted / 0 left**. All 26 current English canonical live/new registry routes executed their deterministic primary workflow and passed the Day 8 browser contract.
 - Climate: **13 accepted / 0 left**. All 13 current English canonical registry routes executed, rejected invalid state, marked stale results, reset, and produced a reopened local PDF with a valid `%PDF-` signature.
-- Mining: **0 ledger-accepted / 7 left for director reconciliation**. All seven routes linked by the Mining hub executed and passed the browser contract, but the registry contains zero Mining rows. They are route-quality verified, not silently ledger-accepted.
-- Scheduled Day 8 total: **39 accepted / 7 left** across 46 hub-real routes.
-
-If the director treats the Trade-owned commodity tracker as already credited outside Mining, the precise unique candidate count becomes 45: 39 accepted plus six Mining-owned rows awaiting approval.
+- Mining: **6 accepted / 0 Mining-owned apps left**. All six Mining-owned routes now have explicit registry rows and all seven hub-linked routes passed the browser contract. Commodity Tracker remains Trade-owned and is a cross-link, not duplicate Mining credit.
+- Scheduled Day 8 total: **45 accepted / 0 category-owned apps left** across 46 hub-real routes. The 46th route is the Trade-owned Commodity Tracker cross-link.
 
 ## Registry and schedule reconciliation
 
@@ -25,24 +23,19 @@ Current source truth from `assets/js/components/tool-registry.js`:
 |---|---:|---:|
 | Engineering | 26 | 26 |
 | Climate | 13 | 16 |
-| Mining | 0 | 0 |
+| Mining | 6 | 6 |
 | Energy | 20 | 287 |
 
 Climate expands to 16 because carbon credit, flood risk and air quality each carry `toolCount: 2`.
 
 Energy is not a fourth Day 8 category. Its 20 rows expand to 287 under the registry's current `getTotalToolCount` contract, not 271. The 271 figure must not be used without naming a different selector or exclusion rule.
 
-### Director approval requested
+### Reconciled ownership
 
-1. Add or approve Mining registry rows for:
-   - `/tools/diamond-valuation/`
-   - `/tools/oil-well-production/`
-   - `/tools/oil-gas-revenue/`
-   - `/tools/mining-license-fee/`
-   - `/tools/mining-royalty/`
-   - `/tools/artisanal-mining-income/`
-2. Decide whether `/tools/commodity-tracker/` remains exclusively Trade-owned with a Mining hub cross-link, or receives explicit cross-category credit without duplicate app credit.
-3. Correct the schedule/ledger note for Energy to 20 rows and 287 registry-expanded experiences, or document the exact rule that intentionally produces 271.
+Six Mining-native routes now have approved Mining registry rows. Commodity
+Tracker remains exclusively Trade-owned and is cross-linked from the Mining hub
+without duplicate app credit. Energy remains outside Day 8 at 20 rows and 287
+registry-expanded experiences.
 
 The master readiness ledger was not edited in this PR.
 
@@ -96,19 +89,21 @@ The master readiness ledger was not edited in this PR.
 ### Mining hub — 7
 
 - `/tools/commodity-tracker/` — registry-owned by Trade
-- `/tools/diamond-valuation/` — no registry row
-- `/tools/oil-well-production/` — no registry row
-- `/tools/oil-gas-revenue/` — no registry row
-- `/tools/mining-license-fee/` — no registry row
-- `/tools/mining-royalty/` — no registry row
-- `/tools/artisanal-mining-income/` — no registry row
+- `/tools/diamond-valuation/` — Mining-owned
+- `/tools/oil-well-production/` — Mining-owned
+- `/tools/oil-gas-revenue/` — Mining-owned
+- `/tools/mining-license-fee/` — Mining-owned
+- `/tools/mining-royalty/` — Mining-owned
+- `/tools/artisanal-mining-income/` — Mining-owned
 
 ## Implemented evidence
 
 - Hubs: removed unsupported standards, reserves and market-stat claims; exposed the Mining registry mismatch; added mobile/200% reflow protection.
 - Engineering: repaired window/door material-key `NaN` output and balance fallback logic; removed automatic Build Pack storage; removed lead gates; added scoped small-screen reflow; replaced code-compliance and current-standard claims with planning-only safety boundaries.
 - Climate: removed email-gated export and CDN PDF dependency; uses the bundled local PDF engine; added invalid/empty/non-finite handling, stale result state, reset, accessible live status, dark-mode state and mobile/200% reflow across all 13 routes.
-- Mining: fixed commodity balance rendering, added deterministic route fixtures and category-local reflow without adding unsupported registry rows or official/live claims.
+- Mining: fixed commodity balance rendering, added deterministic route fixtures,
+  category-local reflow, and six honest Mining-owned discovery rows without
+  adding official/live claims.
 - Privacy: browser suite blocks external requests, observes no first-party non-GET writes, and verifies Engineering Build Pack does not persist until the user explicitly saves.
 - SEO/AI-search: every route has a title, description and matching canonical; unsupported structured FAQ claims were removed from Mining hub, structural calculator and electrical-load surfaces.
 
@@ -134,6 +129,9 @@ Passed:
 - `npm run type-check`
 - `npm run registry:check`
 - `npm run test:registry`
+- `npm run registry:build`
+- `node scripts/build-tool-directory.js`
+- `node scripts/build-search-index.js`
 - `npm run audit`
 - `npm run check-links`
 - `npm run ai:tool-context:check`
@@ -151,7 +149,8 @@ Known non-Day-8 gate result:
 
 ## Residual risks
 
-- Mining remains discovery-inconsistent until the director approves registry ownership; route functionality does not resolve that ledger decision.
+- Mining discovery and ownership are reconciled for its six native apps;
+  Commodity Tracker intentionally remains a Trade-owned cross-link.
 - Electrical, structural and other construction results are planning prompts. Licensed professionals and current local rules remain required.
 - The existing install reports 11 dependency audit findings (7 moderate, 4 high); no dependency or lockfile change is included.
 - Nine surfaces use valid shared fallback artwork and remain in the separate artwork queue.

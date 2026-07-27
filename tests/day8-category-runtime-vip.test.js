@@ -64,11 +64,14 @@ function categoryExperiences(category) {
 
 assert.deepEqual(Array.from(categoryRows('engineering'), (tool) => tool.href), engineeringRoutes);
 assert.deepEqual(Array.from(categoryRows('climate'), (tool) => tool.href), climateRoutes);
-assert.equal(categoryRows('mining').length, 0);
+assert.deepEqual(
+  Array.from(categoryRows('mining'), (tool) => tool.href),
+  miningHubRoutes.slice(1)
+);
 assert.equal(categoryRows('energy').length, 20);
 assert.equal(categoryExperiences('engineering'), 26);
 assert.equal(categoryExperiences('climate'), 16);
-assert.equal(categoryExperiences('mining'), 0);
+assert.equal(categoryExperiences('mining'), 6);
 assert.equal(categoryExperiences('energy'), 287);
 
 for (const href of [...engineeringRoutes, ...climateRoutes, ...miningHubRoutes]) {
@@ -82,12 +85,12 @@ for (const href of [...engineeringRoutes, ...climateRoutes, ...miningHubRoutes])
 const miningRegistryHrefs = new Set(context.AFRO_TOOLS.map((tool) => tool.href));
 assert.ok(miningRegistryHrefs.has('/tools/commodity-tracker/'));
 for (const href of miningHubRoutes.slice(1)) {
-  assert.ok(!miningRegistryHrefs.has(href), `${href} should remain receipt-visible until registry approval`);
+  assert.ok(miningRegistryHrefs.has(href), `${href} should be discoverable from the approved Mining registry`);
 }
 
 const miningHub = read('mining/index.html');
 for (const href of miningHubRoutes) assert.match(miningHub, new RegExp(href.replace(/\//g, '\\/')));
-assert.match(miningHub, /registry currently has no Mining category rows/i);
+assert.match(miningHub, /six Mining-owned registry rows/i);
 assert.doesNotMatch(miningHub, /Africa holds 30%|share of world gold|10 million across Africa/i);
 
 const climateRuntime = read('assets/js/climate-tools.js');
