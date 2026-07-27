@@ -8638,6 +8638,78 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
+      "artifactDigest": "sha256:55c07a69486d792d9058ba5feab0f07f875916baf5e8086d14448f742919c92a",
+      "artifactPath": "assets/js/engines/sn-paye.js",
+      "currency": "XOF",
+      "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
+      "currencyOverride": null,
+      "disclaimer": "Planning estimate only. Confirm rates, payroll treatment, filing, and remittance with the relevant authority or a qualified professional.",
+      "effectiveDateStatus": "review-required",
+      "effectiveFrom": null,
+      "effectiveTo": null,
+      "formulaFamily": "paye-browser",
+      "formulaVersion": "legacy-current+sha256.55c07a69486d",
+      "id": "paye-browser-sn",
+      "jurisdictions": [
+        "SN"
+      ],
+      "knownExclusions": [
+        "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
+      ],
+      "lastVerified": "2026-07-27",
+      "owner": "AfroTools formula review owners",
+      "parameters": {
+        "artifactDigest": "sha256:55c07a69486d792d9058ba5feab0f07f875916baf5e8086d14448f742919c92a",
+        "artifactPath": "assets/js/engines/sn-paye.js",
+        "mode": "protected-legacy-parameter-reference",
+        "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
+      },
+      "protectedDuplicates": [
+        "netlify/functions/_engines/sn-paye.js"
+      ],
+      "riskDomain": "tax_payroll",
+      "riskLevel": "high",
+      "rounding": {
+        "method": "runtime-defined",
+        "precision": "Preserve current executable behavior.",
+        "stages": [
+          "Formula artifact controls intermediate and final rounding; focused unit or golden-fixture assertions protect observed stages."
+        ]
+      },
+      "sourceJurisdictions": [
+        "SN"
+      ],
+      "sources": [
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "Ministère des Finances — rapport d’exécution budgétaire T4 2025",
+          "url": "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "DGTSS — Rapport annuel des statistiques du travail 2024",
+          "url": "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf"
+        },
+        {
+          "authorityStatus": "source-reviewed",
+          "kind": "authority-link",
+          "registryId": null,
+          "title": "DGID laws and regulations hub",
+          "url": "https://www.dgid.sn/loi-et-reglement/"
+        }
+      ],
+      "supportStatus": "registered",
+      "units": [
+        "currency"
+      ],
+      "verificationBasis": "AfroTools source audit"
+    },
+    {
+      "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
       "artifactDigest": "sha256:ca0e249832454df7fe71f30bdae6fff01317bfa99568e446cade534c9d5e60ec",
       "artifactPath": "assets/js/engines/so-paye.js",
       "currency": "SOS",
@@ -14055,7 +14127,7 @@
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:68f7f0c2574b5b4f40fb2ccf547b28a84bd47552998efa53f490fe3c38e507db",
+      "artifactDigest": "sha256:508050367e48f97209178f783c3f52c0226de9496ba6e0b3f73a19717a74df30",
       "artifactPath": "netlify/functions/_engines/sn-paye.js",
       "currency": "XOF",
       "currencyAssumption": "Currency follows the declared runtime or canonical country data.",
@@ -14065,7 +14137,7 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-server",
-      "formulaVersion": "2026-03-01+sha256.68f7f0c2574b",
+      "formulaVersion": "2026-07-27+sha256.508050367e48",
       "id": "paye-server-sn",
       "jurisdictions": [
         "SN"
@@ -14073,7 +14145,7 @@
       "knownExclusions": [
         "Special regimes, treaties, sector rules, regional reliefs, and individual filing adjustments may not be modeled."
       ],
-      "lastVerified": "2026-04-06",
+      "lastVerified": "2026-07-27",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "mode": "schema-exposed-runtime-parameters",
@@ -14085,28 +14157,33 @@
               0
             ],
             [
-              1500000,
+              870000,
               0.2
             ],
             [
-              4000000,
+              2500000,
               0.3
             ],
             [
-              8000000,
+              4000000,
               0.35
             ],
             [
-              13500000,
+              5500000,
               0.37
             ],
             [
-              "Infinity",
+              11500000,
               0.4
+            ],
+            [
+              "Infinity",
+              0.43
             ]
           ],
           "employerSS": [
             {
+              "baseCap": 432000,
               "key": "ipres",
               "label": "IPRES (8.4%)",
               "rate": 0.084
@@ -14119,6 +14196,7 @@
           ],
           "socialSecurity": [
             {
+              "baseCap": 432000,
               "key": "ipres",
               "label": "IPRES (5.6%)",
               "rate": 0.056
@@ -14126,7 +14204,9 @@
           ]
         }
       },
-      "protectedDuplicates": [],
+      "protectedDuplicates": [
+        "assets/js/engines/sn-paye.js"
+      ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
       "rounding": {
@@ -14148,29 +14228,15 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "impotsetdomaines.gouv.sn",
-          "url": "https://impotsetdomaines.gouv.sn"
+          "title": "Ministère des Finances — rapport d’exécution budgétaire T4 2025",
+          "url": "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "r.net",
-          "url": "https://r.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "result.net",
-          "url": "https://result.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "sultat.net",
-          "url": "https://sultat.net"
+          "title": "DGTSS — Rapport annuel des statistiques du travail 2024",
+          "url": "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
@@ -25730,17 +25796,17 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.249ab9639ab9",
+      "formulaVersion": "Seven-annual-IRPP-bands-reported-by-the-Ministry+sha256.249ab9639ab9",
       "id": "route-sn-paye",
       "jurisdictions": [
         "SN"
       ],
       "knownExclusions": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
+        "The family-charge reduction, cadres supplementary pension, CSS employer charges, other benefits and contract-specific payroll items are not modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "lastVerified": "2026-04-06",
+      "lastVerified": "2026-07-27",
       "owner": "AfroTools formula review owners",
       "parameters": {
         "artifactDigest": "sha256:249ab9639ab91b0fa1f7f1a18561a131c3c44d525fbe321aef84c21db43f0f8e",
@@ -25749,7 +25815,7 @@
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
       "protectedDuplicates": [
-        "fr/senegal/sn-paye.html"
+        "fr/senegal/calculateur-salaire-net.html"
       ],
       "riskDomain": "tax_payroll",
       "riskLevel": "high",
@@ -25768,29 +25834,15 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "impotsetdomaines.gouv.sn",
-          "url": "https://impotsetdomaines.gouv.sn"
+          "title": "Ministère des Finances — rapport d’exécution budgétaire T4 2025",
+          "url": "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "r.net",
-          "url": "https://r.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "result.net",
-          "url": "https://result.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "sultat.net",
-          "url": "https://sultat.net"
+          "title": "DGTSS — Rapport annuel des statistiques du travail 2024",
+          "url": "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
@@ -25804,12 +25856,12 @@
       "units": [
         "currency"
       ],
-      "verificationBasis": "AfroTools source audit"
+      "verificationBasis": "AfroTools French Wave 1 primary-source review"
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
-      "artifactDigest": "sha256:96a57cba8e25b8d5f6e5ae34e955c050958e506a5d7a020217bf21c1c9e1499e",
-      "artifactPath": "fr/senegal/sn-paye.html",
+      "artifactDigest": "sha256:62fd203d863a338ceaf3d075a9ef164fd657785a365962e755f045f18012330e",
+      "artifactPath": "fr/senegal/calculateur-salaire-net.html",
       "currency": "XOF",
       "currencyAssumption": "Canonical route currency from data/registry/countries.json; executable constants remain protected in the registered formula artifact.",
       "currencyOverride": null,
@@ -25818,21 +25870,21 @@
       "effectiveFrom": null,
       "effectiveTo": null,
       "formulaFamily": "paye-route",
-      "formulaVersion": "PAYE-income-tax-bands-and-statutory-deductions-s+sha256.96a57cba8e25",
+      "formulaVersion": "Seven-annual-IRPP-bands-reported-by-the-Ministry+sha256.62fd203d863a",
       "id": "route-sn-paye-fr",
       "jurisdictions": [
         "SN"
       ],
       "knownExclusions": [
         "Informational estimate only. It is not professional tax, legal, payroll, or filing advice.",
-        "Sector-specific, regional, treaty, relief, and special-regime rules may not be fully modeled.",
+        "The family-charge reduction, cadres supplementary pension, CSS employer charges, other benefits and contract-specific payroll items are not modeled.",
         "Confirm filing, registration, and remittance duties with the official authority or a qualified adviser before submission."
       ],
-      "lastVerified": "2026-04-06",
+      "lastVerified": "2026-07-27",
       "owner": "AfroTools formula review owners",
       "parameters": {
-        "artifactDigest": "sha256:96a57cba8e25b8d5f6e5ae34e955c050958e506a5d7a020217bf21c1c9e1499e",
-        "artifactPath": "fr/senegal/sn-paye.html",
+        "artifactDigest": "sha256:62fd203d863a338ceaf3d075a9ef164fd657785a365962e755f045f18012330e",
+        "artifactPath": "fr/senegal/calculateur-salaire-net.html",
         "mode": "protected-legacy-parameter-reference",
         "note": "Constants remain in the legacy runtime; the digest gate prevents silent drift until a behavior-preserving migration is available."
       },
@@ -25854,29 +25906,15 @@
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "sultat.net",
-          "url": "https://sultat.net"
+          "title": "Ministère des Finances — rapport d’exécution budgétaire T4 2025",
+          "url": "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
           "kind": "authority-link",
           "registryId": null,
-          "title": "r.net",
-          "url": "https://r.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "result.net",
-          "url": "https://result.net"
-        },
-        {
-          "authorityStatus": "source-reviewed",
-          "kind": "authority-link",
-          "registryId": null,
-          "title": "impotsetdomaines.gouv.sn",
-          "url": "https://impotsetdomaines.gouv.sn"
+          "title": "DGTSS — Rapport annuel des statistiques du travail 2024",
+          "url": "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf"
         },
         {
           "authorityStatus": "source-reviewed",
@@ -25890,7 +25928,7 @@
       "units": [
         "currency"
       ],
-      "verificationBasis": "AfroTools source audit"
+      "verificationBasis": "AfroTools French Wave 1 primary-source review"
     },
     {
       "applicablePopulation": "Employees, employers, payroll teams, and taxpayers covered by the declared jurisdiction and regime.",
@@ -30486,14 +30524,12 @@
     {
       "formulaId": "route-sn-paye",
       "routes": [
-        "/fr/senegal/sn-paye",
+        "/fr/senegal/calculateur-salaire-net",
         "/senegal/sn-paye"
       ],
       "sourceUrls": [
-        "https://impotsetdomaines.gouv.sn",
-        "https://r.net",
-        "https://result.net",
-        "https://sultat.net",
+        "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf",
+        "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf",
         "https://www.dgid.sn/loi-et-reglement/"
       ],
       "toolId": "sn-paye"
@@ -30501,13 +30537,11 @@
     {
       "formulaId": "route-sn-paye-fr",
       "routes": [
-        "/fr/senegal/sn-paye"
+        "/fr/senegal/calculateur-salaire-net"
       ],
       "sourceUrls": [
-        "https://sultat.net",
-        "https://r.net",
-        "https://result.net",
-        "https://impotsetdomaines.gouv.sn",
+        "https://www.vie-publique.sn/docs/3bba2f1b-0ee5-41e5-92be-19f4ba06353f/rapport-trimestriel-dexecution-budgetaire-quatrieme-trimestre-2025.pdf",
+        "https://dgtss.gouv.sn/wp-content/uploads/simple-file-list/Publications/Rapports-statistiques/Rapport-annuel-des-statistiques-du-travail-2024.pdf",
         "https://www.dgid.sn/loi-et-reglement/"
       ],
       "toolId": "sn-paye-fr"

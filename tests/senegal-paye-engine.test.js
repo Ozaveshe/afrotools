@@ -1,6 +1,7 @@
 const assert = require('node:assert/strict');
 const test = require('node:test');
-const engine = require('../assets/js/engines/senegal-paye.js');
+const engine = require('../assets/js/engines/sn-paye.js');
+const serverEngine = require('../netlify/functions/_engines/sn-paye.js');
 
 test('uses all seven current IRPP bands, including 43% above 25m XOF', () => {
   const result = engine.calculateIrpp(30_000_000);
@@ -31,4 +32,15 @@ test('marks family reduction and cadres supplement as excluded', () => {
 test('rejects invalid gross salary', () => {
   assert.match(engine.calculate(0).error, /invalide/);
   assert.match(engine.calculate('bad').error, /invalide/);
+});
+
+test('keeps the server engine aligned with the reviewed browser formula', () => {
+  const gross = 30_000_000;
+  const browserResult = engine.calculate(gross);
+  const serverResult = serverEngine.calculate({ grossAnnual: gross });
+
+  assert.equal(serverResult.deductions.ipres, Math.round(browserResult.ipres));
+  assert.equal(serverResult.tax.netTax, Math.round(browserResult.annualPAYE));
+  assert.equal(serverResult.result.marginalRate, '43%');
+  assert.equal(serverEngine.formulaParameters.socialSecurity[0].baseCap, 432_000);
 });
