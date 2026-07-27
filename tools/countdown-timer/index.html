@@ -32,7 +32,7 @@
 .badge{display:inline-flex;align-items:center;gap:5px;padding:4px 11px;border-radius:4px;font-size:.68rem;font-weight:700;letter-spacing:.05em}
 .b-blue{background:rgba(0,113,227,.18);color:var(--color-primary);border:1px solid rgba(0,113,227,.38)}
 .tool-main{padding:28px 0 72px}
-.tool-main-inner{max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:1fr 340px;gap:22px;align-items:start}
+.tool-main-inner{box-sizing:border-box;width:100%;max-width:1200px;margin:0 auto;padding:0 24px;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,340px);gap:22px;align-items:start}.tool-main-inner>*{min-width:0;max-width:100%}
 .card{background:#fff;border:1px solid #e2e8f0;border-radius:10px;overflow:hidden;box-shadow:0 1px 8px rgba(0,0,0,.05)}
 .card+.card{margin-top:18px}
 .card-head{padding:15px 22px;border-bottom:1px solid #f1f5f9;background:#f8fafc}
@@ -43,7 +43,7 @@
 .f-input{width:100%;padding:11px 13px;background:#f8fafc;border:1.5px solid #cbd5e1;border-radius:7px;font-size:1rem;font-weight:600;color:var(--afro-dark);outline:none;font-family:'DM Sans',sans-serif}
 .f-input:focus{border-color:var(--afro-blue);box-shadow:0 0 0 3px rgba(0,113,227,.1)}
 .field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-.countdown-display{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:20px}
+.countdown-display{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:20px}
 .cd-box{background:linear-gradient(135deg,#0f172a,#1e293b);border-radius:12px;padding:20px 12px;text-align:center}
 .cd-num{font-size:2.4rem;font-weight:800;color:#38bdf8;font-family:'DM Sans',sans-serif;line-height:1}
 .cd-label{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-top:6px}
@@ -65,13 +65,13 @@
 .saved-name:hover{color:var(--afro-blue)}
 .del-btn{background:none;border:none;color:#ef4444;cursor:pointer;font-size:.75rem;font-weight:700}
 @media(max-width:768px){
-  .tool-main-inner{grid-template-columns:1fr}
-  .countdown-display{grid-template-columns:repeat(4,1fr)}
+  .tool-main-inner{grid-template-columns:minmax(0,1fr)}
+  .countdown-display{grid-template-columns:repeat(4,minmax(0,1fr))}
   .cd-num{font-size:1.6rem}
   .field-row{grid-template-columns:1fr}
 }
 @media(max-width:400px){
-  .countdown-display{grid-template-columns:repeat(2,1fr)}
+  .countdown-display{grid-template-columns:repeat(2,minmax(0,1fr))}
 }
 details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-details-marker{display:none}
 </style>
@@ -186,6 +186,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
           <div class="field"><label class="f-label">Time (optional)</label><input aria-label="EventTime" type="time" class="f-input" id="eventTime" value="00:00"></div>
         </div>
         <button type="button" class="calc-btn" onclick="startCountdown()">Start Countdown</button>
+        <div id="countdownStatus" role="status" aria-live="polite" style="min-height:1.25rem;margin-top:8px;font-size:.78rem;color:#b91c1c"></div>
 
         <div class="countdown-display" id="cdDisplay" style="display:none">
           <div class="cd-box"><div class="cd-num" id="cdDays">0</div><div class="cd-label">Days</div></div>
@@ -291,9 +292,20 @@ function startCountdown(){
   const name=document.getElementById('eventName').value||'Event';
   const dateStr=document.getElementById('eventDate').value;
   const timeStr=document.getElementById('eventTime').value||'00:00';
-  if(!dateStr){alert('Please select a date');return;}
+  if(!dateStr){
+    targetDate=null;
+    if(intervalId){clearInterval(intervalId);intervalId=null;}
+    document.getElementById('cdDisplay').style.display='none';
+    document.getElementById('displayName').style.display='none';
+    document.getElementById('displayDate').style.display='none';
+    document.getElementById('pastBanner').style.display='none';
+    document.getElementById('countdownStatus').textContent='Choose an event date before starting the countdown.';
+    document.getElementById('eventDate').focus();
+    return;
+  }
 
   targetDate=new Date(dateStr+'T'+timeStr+':00');
+  document.getElementById('countdownStatus').textContent='';
   document.getElementById('cdDisplay').style.display='grid';
   document.getElementById('displayName').style.display='block';
   document.getElementById('displayName').textContent=name;

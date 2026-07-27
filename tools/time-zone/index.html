@@ -407,14 +407,44 @@ function filterTz(selectId,query){
   sel.value=curVal;
 }
 
+function zonedInputToDate(input,timeZone){
+  const match=/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/.exec(input);
+  if(!match)return null;
+  const desired=Date.UTC(+match[1],+match[2]-1,+match[3],+match[4],+match[5]);
+  const formatter=new Intl.DateTimeFormat('en-CA',{
+    timeZone,year:'numeric',month:'2-digit',day:'2-digit',
+    hour:'2-digit',minute:'2-digit',hourCycle:'h23'
+  });
+  function displayedUtc(timestamp){
+    const parts=Object.fromEntries(
+      formatter.formatToParts(new Date(timestamp))
+        .filter(part=>part.type!=='literal')
+        .map(part=>[part.type,part.value])
+    );
+    return Date.UTC(+parts.year,+parts.month-1,+parts.day,+parts.hour,+parts.minute);
+  }
+  let instant=desired-(displayedUtc(desired)-desired);
+  // A second pass handles offsets that differ around a daylight-saving boundary.
+  instant-=displayedUtc(instant)-desired;
+  return new Date(instant);
+}
+
 function convert(){
   const fromTz=document.getElementById('fromTz').value;
   const toTz=document.getElementById('toTz').value;
   const fromInput=document.getElementById('fromTime').value;
-  if(!fromInput)return;
+  if(!fromInput){
+    document.getElementById('fromDisplay').textContent='--:--';
+    document.getElementById('fromDate').textContent='Choose a date and time';
+    document.getElementById('toDisplay').textContent='--:--';
+    document.getElementById('toDate').textContent='';
+    document.getElementById('dayIndicator').textContent='';
+    return;
+  }
 
   // Parse the input as a time in the "from" timezone
-  const fromDate=new Date(fromInput);
+  const fromDate=zonedInputToDate(fromInput,fromTz);
+  if(!fromDate||Number.isNaN(fromDate.getTime()))return;
   const fromStr=fromDate.toLocaleString('en-US',{timeZone:fromTz,hour:'2-digit',minute:'2-digit',hour12:true});
   const fromDateStr=fromDate.toLocaleString('en-US',{timeZone:fromTz,weekday:'long',year:'numeric',month:'long',day:'numeric'});
 
