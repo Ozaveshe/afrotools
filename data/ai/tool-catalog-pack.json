@@ -1,12 +1,12 @@
 {
   "schemaVersion": 1,
-  "generatedAt": "2026-07-24T01:55:38.877Z",
+  "generatedAt": "2026-07-27T11:30:24.624Z",
   "task": "afrotools_full_tool_catalog_pack",
   "scope": "model_context_for_existing_tool_calls",
-  "manifestHash": "4d85a5f6bc673c953577da6dd0a85e7902b267d7e3c663729684d8eb634c8729",
-  "toolCount": 1252,
-  "categoryCount": 31,
-  "chunkCount": 58,
+  "manifestHash": "ea6cd7baf2b36a5d0dd092e8be46780953359ac2734ddd0cae30452aed72d002",
+  "toolCount": 1258,
+  "categoryCount": 32,
+  "chunkCount": 59,
   "maxChunkChars": 28000,
   "gate": {
     "passed": true,
@@ -153,6 +153,10 @@
     },
     {
       "category": "hr-payroll",
+      "count": 6
+    },
+    {
+      "category": "mining",
       "count": 6
     },
     {
@@ -31579,31 +31583,38 @@
             "Open Algebra Equation Solver",
             "Help me use Algebra Equation Solver"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "none",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "report"
+            "number",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "algebra-solver",
             "route": "/tools/algebra-solver/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "none"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "binary-converter",
-          "title": "Number Base Converter",
+          "title": "Exact Number Base Converter",
           "route": "/tools/binary-converter/",
           "category": "education",
           "subcategory": "education",
@@ -31614,12 +31625,12 @@
             "en"
           ],
           "hints": [
-            "number base converter",
+            "exact number base converter",
             "binary converter",
-            "open number base converter",
+            "open exact number base converter",
             "education tool",
-            "Open Number Base Converter",
-            "Help me use Number Base Converter"
+            "Open Exact Number Base Converter",
+            "Help me use Exact Number Base Converter"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -31645,7 +31656,7 @@
         },
         {
           "id": "boarding-school",
-          "title": "Boarding School Cost Calculator Africa 2026",
+          "title": "Boarding School Full-Cost Planner",
           "route": "/tools/boarding-school/",
           "category": "education",
           "subcategory": "education",
@@ -31656,12 +31667,12 @@
             "en"
           ],
           "hints": [
-            "boarding school cost calculator africa 2026",
+            "boarding school full-cost planner",
             "boarding school",
-            "open boarding school cost calculator africa 2026",
+            "open boarding school full-cost planner",
             "education tool",
-            "Open Boarding School Cost Calculator Africa 2026",
-            "Help me use Boarding School Cost Calculator Africa 2026"
+            "Open Boarding School Full-Cost Planner",
+            "Help me use Boarding School Full-Cost Planner"
           ],
           "requiredInputs": [
             {
@@ -31671,12 +31682,13 @@
             }
           ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "official",
-          "safetyDomain": "tax",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "education",
           "outputTypes": [
             "number",
-            "table"
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -31687,14 +31699,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "official",
-            "safetyDomain": "tax"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "education"
           }
         },
         {
           "id": "cert-roi",
-          "title": "Professional Certification ROI Calculator Africa 2026",
+          "title": "Certification Cost & Payback Scenario",
           "route": "/tools/cert-roi/",
           "category": "education",
           "subcategory": "education",
@@ -31705,18 +31717,18 @@
             "en"
           ],
           "hints": [
-            "professional certification roi calculator africa 2026",
+            "certification cost & payback scenario",
             "cert roi",
-            "open professional certification roi calculator africa 2026",
+            "open certification cost & payback scenario",
             "education tool",
-            "Open Professional Certification ROI Calculator Africa 2026",
-            "Help me use Professional Certification ROI Calculator Africa 2026"
+            "Open Certification Cost & Payback Scenario",
+            "Help me use Certification Cost & Payback Scenario"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "account_optional",
+          "privacyMode": "browser_local",
           "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "safetyDomain": "finance",
           "outputTypes": [
             "number"
           ],
@@ -31729,9 +31741,9 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "account_optional",
+            "privacyMode": "browser_local",
             "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "safetyDomain": "finance"
           }
         },
         {
@@ -31766,7 +31778,7 @@
           "safetyDomain": "energy",
           "outputTypes": [
             "pdf",
-            "json"
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -31784,7 +31796,7 @@
         },
         {
           "id": "classroom-size",
-          "title": "Classroom Size Calculator Africa",
+          "title": "Classroom Layout Planning Worksheet",
           "route": "/tools/classroom-size/",
           "category": "education",
           "subcategory": "education",
@@ -31795,45 +31807,38 @@
             "en"
           ],
           "hints": [
-            "classroom size calculator africa",
+            "classroom layout planning worksheet",
             "classroom size",
-            "open classroom size calculator africa",
+            "open classroom layout planning worksheet",
             "education tool",
-            "Open Classroom Size Calculator Africa",
-            "Help me use Classroom Size Calculator Africa"
+            "Open Classroom Layout Planning Worksheet",
+            "Help me use Classroom Layout Planning Worksheet"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "education",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "official",
+          "safetyDomain": "none",
           "outputTypes": [
-            "number",
-            "image"
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "classroom-size",
             "route": "/tools/classroom-size/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "education"
+            "invocationMode": "route_only",
+            "canPrefill": false,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "official",
+            "safetyDomain": "none"
           }
         },
         {
           "id": "coding-bootcamp",
-          "title": "Coding Bootcamp Comparator",
+          "title": "Coding Bootcamp Comparison Worksheet",
           "route": "/tools/coding-bootcamp/",
           "category": "education",
           "subcategory": "education",
@@ -31844,18 +31849,18 @@
             "en"
           ],
           "hints": [
-            "coding bootcamp comparator",
+            "coding bootcamp comparison worksheet",
             "coding bootcamp",
-            "open coding bootcamp comparator",
+            "open coding bootcamp comparison worksheet",
             "education tool",
-            "Open Coding Bootcamp Comparator",
-            "Help me use Coding Bootcamp Comparator"
+            "Open Coding Bootcamp Comparison Worksheet",
+            "Help me use Coding Bootcamp Comparison Worksheet"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "employment",
+          "privacyMode": "account_optional",
+          "sourcePolicy": "official",
+          "safetyDomain": "finance",
           "outputTypes": [
             "number",
             "table"
@@ -31869,14 +31874,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "employment"
+            "privacyMode": "account_optional",
+            "sourcePolicy": "official",
+            "safetyDomain": "finance"
           }
         },
         {
           "id": "course-load",
-          "title": "Course Load & Credit Hour Planner",
+          "title": "Course Load & Credit Audit",
           "route": "/tools/course-load/",
           "category": "education",
           "subcategory": "education",
@@ -31887,45 +31892,38 @@
             "en"
           ],
           "hints": [
-            "course load & credit hour planner",
+            "course load & credit audit",
             "course load",
-            "open course load & credit hour planner",
+            "open course load & credit audit",
             "education tool",
-            "Open Course Load & Credit Hour Planner",
-            "Help me use Course Load & Credit Hour Planner"
+            "Open Course Load & Credit Audit",
+            "Help me use Course Load & Credit Audit"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
           "sourcePolicy": "reviewed",
-          "safetyDomain": "education",
+          "safetyDomain": "none",
           "outputTypes": [
-            "pdf",
-            "report"
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "course-load",
             "route": "/tools/course-load/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "ai_optional",
             "sourcePolicy": "reviewed",
-            "safetyDomain": "education"
+            "safetyDomain": "none"
           }
         },
         {
           "id": "degree-checker",
-          "title": "African Degree Equivalency Tool",
+          "title": "Foreign Degree Recognition Route Checker",
           "route": "/tools/degree-checker/",
           "category": "education",
           "subcategory": "education",
@@ -31936,20 +31934,20 @@
             "en"
           ],
           "hints": [
-            "african degree equivalency tool",
+            "foreign degree recognition route checker",
             "degree checker",
-            "open african degree equivalency tool",
+            "open foreign degree recognition route checker",
             "education tool",
-            "Open African Degree Equivalency Tool",
-            "Help me use African Degree Equivalency Tool"
+            "Open Foreign Degree Recognition Route Checker",
+            "Help me use Foreign Degree Recognition Route Checker"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "user_input",
           "safetyDomain": "immigration",
           "outputTypes": [
-            "checklist"
+            "map"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -31961,7 +31959,7 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "user_input",
             "safetyDomain": "immigration"
           }
         },
@@ -32009,7 +32007,7 @@
         },
         {
           "id": "education-hub",
-          "title": "Education Hub",
+          "title": "Education Planning Dashboard",
           "route": "/tools/education-hub/",
           "category": "education",
           "subcategory": "education",
@@ -32020,11 +32018,12 @@
             "en"
           ],
           "hints": [
+            "education planning dashboard",
             "education hub",
-            "open education hub",
+            "open education planning dashboard",
             "education tool",
-            "Open Education Hub",
-            "Help me use Education Hub"
+            "Open Education Planning Dashboard",
+            "Help me use Education Planning Dashboard"
           ],
           "requiredInputs": [
             {
@@ -32034,10 +32033,11 @@
             }
           ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "education",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
+            "number",
             "table",
             "shortlist"
           ],
@@ -32050,14 +32050,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "education"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "exam-countdown",
-          "title": "Exam Countdown Timer",
+          "title": "Exam & Deadline Planner",
           "route": "/tools/exam-countdown/",
           "category": "education",
           "subcategory": "education",
@@ -32071,12 +32071,12 @@
             "en"
           ],
           "hints": [
-            "exam countdown timer",
+            "exam & deadline planner",
             "exam countdown",
-            "open exam countdown timer",
+            "open exam & deadline planner",
             "education tool",
-            "Open Exam Countdown Timer",
-            "Help me use Exam Countdown Timer"
+            "Open Exam & Deadline Planner",
+            "Help me use Exam & Deadline Planner"
           ],
           "requiredInputs": [
             {
@@ -32086,11 +32086,14 @@
             }
           ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "official",
-          "safetyDomain": "education",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
+            "number",
             "pdf",
+            "checklist",
+            "json",
             "report"
           ],
           "toolCall": {
@@ -32102,9 +32105,9 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "official",
-            "safetyDomain": "education"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
@@ -32159,7 +32162,7 @@
         },
         {
           "id": "flashcard-maker",
-          "title": "Flashcard Study Tool",
+          "title": "Private Flashcard Study Tool",
           "route": "/tools/flashcard-maker/",
           "category": "education",
           "subcategory": "education",
@@ -32170,12 +32173,12 @@
             "en"
           ],
           "hints": [
-            "flashcard study tool",
+            "private flashcard study tool",
             "flashcard maker",
-            "open flashcard study tool",
+            "open private flashcard study tool",
             "education tool",
-            "Open Flashcard Study Tool",
-            "Help me use Flashcard Study Tool"
+            "Open Private Flashcard Study Tool",
+            "Help me use Private Flashcard Study Tool"
           ],
           "requiredInputs": [
             {
@@ -32186,10 +32189,11 @@
           ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "education",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "checklist"
+            "number",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -32201,13 +32205,13 @@
             "invocationMode": "session_prefill",
             "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "education"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "fraction-calc",
-          "title": "Fraction Calculator",
+          "title": "Exact Fraction Calculator",
           "route": "/tools/fraction-calc/",
           "category": "education",
           "subcategory": "education",
@@ -32218,20 +32222,27 @@
             "en"
           ],
           "hints": [
-            "fraction calculator",
+            "exact fraction calculator",
             "fraction calc",
-            "open fraction calculator",
+            "open exact fraction calculator",
             "education tool",
-            "Open Fraction Calculator",
-            "Help me use Fraction Calculator"
+            "Open Exact Fraction Calculator",
+            "Help me use Exact Fraction Calculator"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -32242,14 +32253,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "gpa-calculator",
-          "title": "GPA/CGPA Calculator",
+          "title": "GPA/CGPA Worksheet",
           "route": "/tools/gpa-calculator/",
           "category": "education",
           "subcategory": "academic-grades",
@@ -32307,7 +32318,7 @@
         },
         {
           "id": "ielts-calculator",
-          "title": "IELTS Pathway Checker",
+          "title": "IELTS Score Worksheet",
           "route": "/tools/ielts-calculator/",
           "category": "education",
           "subcategory": "ielts-pathway",
@@ -32412,7 +32423,7 @@
         },
         {
           "id": "jamb-aggregate",
-          "title": "JAMB Aggregate Calculator",
+          "title": "JAMB Screening Calculation Worksheet",
           "route": "/tools/jamb-aggregate/",
           "category": "education",
           "subcategory": "education",
@@ -32423,12 +32434,12 @@
             "en"
           ],
           "hints": [
-            "jamb aggregate calculator",
+            "jamb screening calculation worksheet",
             "jamb aggregate",
-            "open jamb aggregate calculator",
+            "open jamb screening calculation worksheet",
             "education tool",
-            "Open JAMB Aggregate Calculator",
-            "Help me use JAMB Aggregate Calculator"
+            "Open JAMB Screening Calculation Worksheet",
+            "Help me use JAMB Screening Calculation Worksheet"
           ],
           "requiredInputs": [
             {
@@ -32439,28 +32450,28 @@
           ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
+          "sourcePolicy": "official",
           "safetyDomain": "education",
           "outputTypes": [
-            "number"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "jamb-aggregate",
             "route": "/tools/jamb-aggregate/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
+            "sourcePolicy": "official",
             "safetyDomain": "education"
           }
         },
         {
           "id": "kcse-calculator",
-          "title": "KCSE Grade Calculator",
+          "title": "KCSE Aggregate & Mean Grade Worksheet",
           "route": "/tools/kcse-calculator/",
           "category": "education",
           "subcategory": "education",
@@ -32471,24 +32482,18 @@
             "en"
           ],
           "hints": [
-            "kcse grade calculator",
+            "kcse aggregate & mean grade worksheet",
             "kcse calculator",
-            "open kcse grade calculator",
+            "open kcse aggregate & mean grade worksheet",
             "education tool",
-            "Open KCSE Grade Calculator",
-            "Help me use KCSE Grade Calculator"
+            "Open KCSE Aggregate & Mean Grade Worksheet",
+            "Help me use KCSE Aggregate & Mean Grade Worksheet"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
           "sourcePolicy": "estimated",
-          "safetyDomain": "education",
+          "safetyDomain": "none",
           "outputTypes": [
             "number"
           ],
@@ -32503,12 +32508,12 @@
             "canPrefill": true,
             "privacyMode": "browser_local",
             "sourcePolicy": "estimated",
-            "safetyDomain": "education"
+            "safetyDomain": "none"
           }
         },
         {
           "id": "ke-helb",
-          "title": "Kenya HELB Calculator",
+          "title": "Kenya HELB Repayment Worksheet",
           "route": "/tools/ke-helb/",
           "category": "education",
           "subcategory": "education",
@@ -32519,26 +32524,20 @@
             "en"
           ],
           "hints": [
-            "kenya helb calculator",
+            "kenya helb repayment worksheet",
             "ke helb",
-            "open kenya helb calculator",
+            "open kenya helb repayment worksheet",
             "education tool",
-            "Open Kenya HELB Calculator",
-            "Help me use Kenya HELB Calculator"
+            "Open Kenya HELB Repayment Worksheet",
+            "Help me use Kenya HELB Repayment Worksheet"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
           "sourcePolicy": "estimated",
-          "safetyDomain": "education",
+          "safetyDomain": "none",
           "outputTypes": [
-            "number"
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -32551,12 +32550,12 @@
             "canPrefill": true,
             "privacyMode": "browser_local",
             "sourcePolicy": "estimated",
-            "safetyDomain": "education"
+            "safetyDomain": "none"
           }
         },
         {
           "id": "matric-points",
-          "title": "Matric APS Score Calculator",
+          "title": "NSC Study Admission & Matric Points Planner",
           "route": "/tools/matric-points/",
           "category": "education",
           "subcategory": "education",
@@ -32567,20 +32566,27 @@
             "en"
           ],
           "hints": [
-            "matric aps score calculator",
+            "nsc study admission & matric points planner",
             "matric points",
-            "open matric aps score calculator",
+            "open nsc study admission & matric points planner",
             "education tool",
-            "Open Matric APS Score Calculator",
-            "Help me use Matric APS Score Calculator"
+            "Open NSC Study Admission & Matric Points Planner",
+            "Help me use NSC Study Admission & Matric Points Planner"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "reviewed",
+          "safetyDomain": "education",
           "outputTypes": [
-            "number"
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -32591,14 +32597,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "reviewed",
+            "safetyDomain": "education"
           }
         },
         {
           "id": "national-service-gh",
-          "title": "Ghana NSS Allowance",
+          "title": "Ghana National Service Budget Ledger",
           "route": "/tools/national-service-gh/",
           "category": "education",
           "subcategory": "education",
@@ -32609,38 +32615,39 @@
             "en"
           ],
           "hints": [
-            "ghana nss allowance",
+            "ghana national service budget ledger",
             "national service gh",
-            "open ghana nss allowance",
+            "open ghana national service budget ledger",
             "education tool",
-            "Open Ghana NSS Allowance",
-            "Help me use Ghana NSS Allowance"
+            "Open Ghana National Service Budget Ledger",
+            "Help me use Ghana National Service Budget Ledger"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "none",
+          "sourcePolicy": "official",
+          "safetyDomain": "finance",
           "outputTypes": [
-            "report"
+            "number",
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "national-service-gh",
             "route": "/tools/national-service-gh/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "none"
+            "sourcePolicy": "official",
+            "safetyDomain": "finance"
           }
         },
         {
           "id": "nysc-allowance",
-          "title": "NYSC Allowance Calculator",
+          "title": "NYSC Service-Period Budget Ledger",
           "route": "/tools/nysc-allowance/",
           "category": "education",
           "subcategory": "education",
@@ -32651,18 +32658,18 @@
             "en"
           ],
           "hints": [
-            "nysc allowance calculator",
+            "nysc service-period budget ledger",
             "nysc allowance",
-            "open nysc allowance calculator",
+            "open nysc service-period budget ledger",
             "education tool",
-            "Open NYSC Allowance Calculator",
-            "Help me use NYSC Allowance Calculator"
+            "Open NYSC Service-Period Budget Ledger",
+            "Help me use NYSC Service-Period Budget Ledger"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
+          "privacyMode": "ai_optional",
           "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "safetyDomain": "finance",
           "outputTypes": [
             "number"
           ],
@@ -32675,9 +32682,9 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
+            "privacyMode": "ai_optional",
             "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "safetyDomain": "finance"
           }
         },
         {
@@ -32742,26 +32749,33 @@
             "Open Interactive Periodic Table",
             "Help me use Interactive Periodic Table"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "none",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
+            "number",
             "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "periodic-table",
             "route": "/tools/periodic-table/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "none"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
@@ -32936,8 +32950,8 @@
           ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "education",
+          "sourcePolicy": "official",
+          "safetyDomain": "tax",
           "outputTypes": [
             "number",
             "pdf",
@@ -32945,20 +32959,20 @@
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "school-fees",
             "route": "/tools/school-fees/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "education"
+            "sourcePolicy": "official",
+            "safetyDomain": "tax"
           }
         }
       ],
-      "charCount": 27287
+      "charCount": 27792
     },
     {
       "id": "tool-catalog:education:02",
@@ -33002,9 +33016,9 @@
           ],
           "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "energy",
           "outputTypes": [
             "number"
           ],
@@ -33017,14 +33031,14 @@
             "subcategory": "education",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "energy"
           }
         },
         {
           "id": "statistics-calc",
-          "title": "Statistics Calculator",
+          "title": "Descriptive Statistics Calculator",
           "route": "/tools/statistics-calc/",
           "category": "education",
           "subcategory": "education",
@@ -33035,21 +33049,22 @@
             "en"
           ],
           "hints": [
-            "statistics calculator",
+            "descriptive statistics calculator",
             "statistics calc",
-            "open statistics calculator",
+            "open descriptive statistics calculator",
             "education tool",
-            "Open Statistics Calculator",
-            "Help me use Statistics Calculator"
+            "Open Descriptive Statistics Calculator",
+            "Help me use Descriptive Statistics Calculator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "none",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "employment",
           "outputTypes": [
             "number",
-            "json"
+            "cv",
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -33061,13 +33076,13 @@
             "invocationMode": "session_prefill",
             "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "none"
+            "sourcePolicy": "user_input",
+            "safetyDomain": "employment"
           }
         },
         {
           "id": "student-budget",
-          "title": "Student Budget Planner",
+          "title": "Private Student Budget Planner",
           "route": "/tools/student-budget/",
           "category": "education",
           "subcategory": "education",
@@ -33078,12 +33093,12 @@
             "en"
           ],
           "hints": [
-            "student budget planner",
+            "private student budget planner",
             "student budget",
-            "open student budget planner",
+            "open private student budget planner",
             "education tool",
-            "Open Student Budget Planner",
-            "Help me use Student Budget Planner"
+            "Open Private Student Budget Planner",
+            "Help me use Private Student Budget Planner"
           ],
           "requiredInputs": [
             {
@@ -33094,9 +33109,10 @@
           ],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "education",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
+            "number",
             "pdf",
             "report"
           ],
@@ -33110,13 +33126,13 @@
             "invocationMode": "session_prefill",
             "canPrefill": true,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "education"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "student-loan-repay",
-          "title": "Student Loan Repayment Calculator",
+          "title": "Fixed-Rate Student Loan Worksheet",
           "route": "/tools/student-loan-repay/",
           "category": "education",
           "subcategory": "education",
@@ -33130,12 +33146,12 @@
             "en"
           ],
           "hints": [
-            "student loan repayment calculator",
+            "fixed-rate student loan worksheet",
             "student loan repay",
-            "open student loan repayment calculator",
+            "open fixed-rate student loan worksheet",
             "education tool",
-            "Open Student Loan Repayment Calculator",
-            "Help me use Student Loan Repayment Calculator"
+            "Open Fixed-Rate Student Loan Worksheet",
+            "Help me use Fixed-Rate Student Loan Worksheet"
           ],
           "requiredInputs": [
             {
@@ -33145,29 +33161,29 @@
             }
           ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "estimated",
+          "privacyMode": "account_optional",
+          "sourcePolicy": "reviewed",
           "safetyDomain": "education",
           "outputTypes": [
             "number"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "student-loan-repay",
             "route": "/tools/student-loan-repay/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "estimated",
+            "invocationMode": "route_only",
+            "canPrefill": false,
+            "privacyMode": "account_optional",
+            "sourcePolicy": "reviewed",
             "safetyDomain": "education"
           }
         },
         {
           "id": "study-abroad-cost",
-          "title": "Study Abroad Cost Calculator",
+          "title": "Study Abroad Cost Worksheet",
           "route": "/tools/study-abroad-cost/",
           "category": "education",
           "subcategory": "study-abroad",
@@ -33259,9 +33275,11 @@
           "optionalInputs": [],
           "privacyMode": "ai_optional",
           "sourcePolicy": "official",
-          "safetyDomain": "education",
+          "safetyDomain": "tax",
           "outputTypes": [
+            "number",
             "pdf",
+            "json",
             "report"
           ],
           "toolCall": {
@@ -33275,12 +33293,12 @@
             "canPrefill": true,
             "privacyMode": "ai_optional",
             "sourcePolicy": "official",
-            "safetyDomain": "education"
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "teacher-salary",
-          "title": "Teacher Salary Scale Lookup",
+          "title": "Teacher Offer & Workload Checker",
           "route": "/tools/teacher-salary/",
           "category": "education",
           "subcategory": "education",
@@ -33291,39 +33309,33 @@
             "en"
           ],
           "hints": [
-            "teacher salary scale lookup",
+            "teacher offer & workload checker",
             "teacher salary",
-            "open teacher salary scale lookup",
+            "open teacher offer & workload checker",
             "education tool",
-            "Open Teacher Salary Scale Lookup",
-            "Help me use Teacher Salary Scale Lookup"
+            "Open Teacher Offer & Workload Checker",
+            "Help me use Teacher Offer & Workload Checker"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
           "sourcePolicy": "official",
-          "safetyDomain": "tax",
+          "safetyDomain": "none",
           "outputTypes": [
             "number"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "teacher-salary",
             "route": "/tools/teacher-salary/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "browser_local",
             "sourcePolicy": "official",
-            "safetyDomain": "tax"
+            "safetyDomain": "none"
           }
         },
         {
@@ -33371,7 +33383,7 @@
         },
         {
           "id": "university-admission",
-          "title": "University Admission Pathway Finder",
+          "title": "University Admission Route Planner",
           "route": "/tools/university-admission/",
           "category": "education",
           "subcategory": "education",
@@ -33386,46 +33398,41 @@
             "en"
           ],
           "hints": [
-            "university admission pathway finder",
+            "university admission route planner",
             "university admission",
-            "open university admission pathway finder",
+            "open university admission route planner",
             "education tool",
-            "Open University Admission Pathway Finder",
-            "Help me use University Admission Pathway Finder"
+            "Open University Admission Route Planner",
+            "Help me use University Admission Route Planner"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "education",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "official",
+          "safetyDomain": "none",
           "outputTypes": [
-            "table",
-            "shortlist",
+            "pdf",
+            "checklist",
+            "report",
             "map"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "university-admission",
             "route": "/tools/university-admission/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "education"
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "official",
+            "safetyDomain": "none"
           }
         },
         {
           "id": "university-ranking",
-          "title": "African University Rankings",
+          "title": "African University Comparison Worksheet",
           "route": "/tools/university-ranking/",
           "category": "education",
           "subcategory": "education",
@@ -33436,18 +33443,24 @@
             "en"
           ],
           "hints": [
-            "african university rankings",
+            "african university comparison worksheet",
             "university ranking",
-            "open african university rankings",
+            "open african university comparison worksheet",
             "education tool",
-            "Open African University Rankings",
-            "Help me use African University Rankings"
+            "Open African University Comparison Worksheet",
+            "Help me use African University Comparison Worksheet"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
           "privacyMode": "account_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "employment",
+          "sourcePolicy": "official",
+          "safetyDomain": "tax",
           "outputTypes": [
             "number",
             "table"
@@ -33462,13 +33475,13 @@
             "invocationMode": "session_prefill",
             "canPrefill": true,
             "privacyMode": "account_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "employment"
+            "sourcePolicy": "official",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "waec-calculator",
-          "title": "WAEC/NECO Grade Calculator",
+          "title": "WAEC/NECO Result Planner",
           "route": "/tools/waec-calculator/",
           "category": "education",
           "subcategory": "waec-neco-grades",
@@ -33522,7 +33535,7 @@
         },
         {
           "id": "word-counter",
-          "title": "Word & Character Counter",
+          "title": "Word Counter & Assignment Limit Checker",
           "route": "/tools/word-counter/",
           "category": "education",
           "subcategory": "education",
@@ -33533,37 +33546,44 @@
             "en"
           ],
           "hints": [
-            "word & character counter",
+            "word counter & assignment limit checker",
             "word counter",
-            "open word & character counter",
+            "open word counter & assignment limit checker",
             "education tool",
-            "Open Word & Character Counter",
-            "Help me use Word & Character Counter"
+            "Open Word Counter & Assignment Limit Checker",
+            "Help me use Word Counter & Assignment Limit Checker"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
-          "safetyDomain": "none",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "report"
+            "number",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "word-counter",
             "route": "/tools/word-counter/",
             "category": "education",
             "subcategory": "education",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
-            "safetyDomain": "none"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         }
       ],
-      "charCount": 11234
+      "charCount": 11471
     },
     {
       "id": "tool-catalog:energy:01",
@@ -34696,11 +34716,12 @@
           ],
           "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "account_optional",
+          "privacyMode": "browser_local",
           "sourcePolicy": "estimated",
           "safetyDomain": "finance",
           "outputTypes": [
-            "number"
+            "number",
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -34711,7 +34732,7 @@
             "subcategory": "engineering",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "account_optional",
+            "privacyMode": "browser_local",
             "sourcePolicy": "estimated",
             "safetyDomain": "finance"
           }
@@ -35213,9 +35234,11 @@
           "optionalInputs": [],
           "privacyMode": "browser_local",
           "sourcePolicy": "estimated",
-          "safetyDomain": "finance",
+          "safetyDomain": "none",
           "outputTypes": [
-            "number"
+            "number",
+            "table",
+            "image"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -35228,7 +35251,7 @@
             "canPrefill": true,
             "privacyMode": "browser_local",
             "sourcePolicy": "estimated",
-            "safetyDomain": "finance"
+            "safetyDomain": "none"
           }
         },
         {
@@ -35573,8 +35596,7 @@
           "safetyDomain": "none",
           "outputTypes": [
             "number",
-            "pdf",
-            "report"
+            "image"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -35761,7 +35783,7 @@
           }
         }
       ],
-      "charCount": 23445
+      "charCount": 23454
     },
     {
       "id": "tool-catalog:financial:01",
@@ -45415,7 +45437,7 @@
       "id": "tool-catalog:health:01",
       "category": "health",
       "part": 1,
-      "toolCount": 32,
+      "toolCount": 30,
       "toolIds": [
         "african-meal-plan",
         "blood-group",
@@ -45446,14 +45468,12 @@
         "hospital-cost",
         "malaria-risk",
         "maternal-mortality",
-        "medical-report",
-        "medical-tourism",
-        "mental-health-cost"
+        "medical-report"
       ],
       "tools": [
         {
           "id": "african-meal-plan",
-          "title": "African Meal Plan Generator",
+          "title": "Meal Logistics & Budget Planner",
           "route": "/tools/african-meal-plan/",
           "category": "health",
           "subcategory": "health",
@@ -45464,44 +45484,40 @@
             "en"
           ],
           "hints": [
-            "african meal plan generator",
+            "meal logistics & budget planner",
             "african meal plan",
-            "open african meal plan generator",
+            "open meal logistics & budget planner",
             "health tool",
-            "Open African Meal Plan Generator",
-            "Help me use African Meal Plan Generator"
+            "Open Meal Logistics & Budget Planner",
+            "Help me use Meal Logistics & Budget Planner"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "estimated",
           "safetyDomain": "health",
           "outputTypes": [
-            "pdf"
+            "number",
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "african-meal-plan",
             "route": "/tools/african-meal-plan/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "estimated",
             "safetyDomain": "health"
           }
         },
         {
           "id": "blood-group",
-          "title": "Blood Group Compatibility Checker",
+          "title": "Blood Component Compatibility Reference",
           "route": "/tools/blood-group/",
           "category": "health",
           "subcategory": "health",
@@ -45512,12 +45528,12 @@
             "en"
           ],
           "hints": [
-            "blood group compatibility checker",
+            "blood component compatibility reference",
             "blood group",
-            "open blood group compatibility checker",
+            "open blood component compatibility reference",
             "health tool",
-            "Open Blood Group Compatibility Checker",
-            "Help me use Blood Group Compatibility Checker"
+            "Open Blood Component Compatibility Reference",
+            "Help me use Blood Component Compatibility Reference"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45525,7 +45541,7 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "json"
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -45543,7 +45559,7 @@
         },
         {
           "id": "blood-pressure",
-          "title": "Blood Pressure Tracker",
+          "title": "Blood Pressure Measurement Check",
           "route": "/tools/blood-pressure/",
           "category": "health",
           "subcategory": "health",
@@ -45554,12 +45570,12 @@
             "en"
           ],
           "hints": [
-            "blood pressure tracker",
+            "blood pressure measurement check",
             "blood pressure",
-            "open blood pressure tracker",
+            "open blood pressure measurement check",
             "health tool",
-            "Open Blood Pressure Tracker",
-            "Help me use Blood Pressure Tracker"
+            "Open Blood Pressure Measurement Check",
+            "Help me use Blood Pressure Measurement Check"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45567,7 +45583,7 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "table"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -45585,7 +45601,7 @@
         },
         {
           "id": "bmi-calc-tools",
-          "title": "BMI Calculator",
+          "title": "Adult BMI Calculator — Metric & Imperial",
           "route": "/tools/bmi-calculator/",
           "category": "health",
           "subcategory": "health",
@@ -45596,12 +45612,12 @@
             "en"
           ],
           "hints": [
-            "bmi calculator",
+            "adult bmi calculator — metric & imperial",
             "bmi calc tools",
-            "open bmi calculator",
+            "open adult bmi calculator — metric & imperial",
             "health tool",
-            "Open BMI Calculator",
-            "Help me use BMI Calculator"
+            "Open Adult BMI Calculator — Metric & Imperial",
+            "Help me use Adult BMI Calculator — Metric & Imperial"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45627,7 +45643,7 @@
         },
         {
           "id": "bmi-calculator",
-          "title": "BMI Calculator for Africans",
+          "title": "BMI Measurement Quality Worksheet",
           "route": "/health/bmi-calculator/",
           "category": "health",
           "subcategory": "health",
@@ -45638,12 +45654,12 @@
             "en"
           ],
           "hints": [
-            "bmi calculator for africans",
+            "bmi measurement quality worksheet",
             "bmi calculator",
-            "open bmi calculator for africans",
+            "open bmi measurement quality worksheet",
             "health tool",
-            "Open BMI Calculator for Africans",
-            "Help me use BMI Calculator for Africans"
+            "Open BMI Measurement Quality Worksheet",
+            "Help me use BMI Measurement Quality Worksheet"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45651,7 +45667,8 @@
           "sourcePolicy": "estimated",
           "safetyDomain": "health",
           "outputTypes": [
-            "number"
+            "number",
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -45669,7 +45686,7 @@
         },
         {
           "id": "breastfeeding-tracker",
-          "title": "Breastfeeding Tracker",
+          "title": "Private Feeding and Nappy Log",
           "route": "/tools/breastfeeding-tracker/",
           "category": "health",
           "subcategory": "health",
@@ -45680,38 +45697,46 @@
             "en"
           ],
           "hints": [
+            "private feeding and nappy log",
             "breastfeeding tracker",
-            "open breastfeeding tracker",
+            "open private feeding and nappy log",
             "health tool",
-            "Open Breastfeeding Tracker",
-            "Help me use Breastfeeding Tracker"
+            "Open Private Feeding and Nappy Log",
+            "Help me use Private Feeding and Nappy Log"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "official",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
             "number",
-            "table"
+            "table",
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "breastfeeding-tracker",
             "route": "/tools/breastfeeding-tracker/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "route_only",
-            "canPrefill": false,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "official",
-            "safetyDomain": "health"
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "calorie-counter",
-          "title": "Calorie Counter (African Foods)",
+          "title": "Daily Food Calorie Diary",
           "route": "/health/calorie-counter/",
           "category": "health",
           "subcategory": "health",
@@ -45722,20 +45747,26 @@
             "en"
           ],
           "hints": [
-            "calorie counter (african foods)",
+            "daily food calorie diary",
             "calorie counter",
-            "open calorie counter (african foods)",
+            "open daily food calorie diary",
             "health tool",
-            "Open Calorie Counter (African Foods)",
-            "Help me use Calorie Counter (African Foods)"
+            "Open Daily Food Calorie Diary",
+            "Help me use Daily Food Calorie Diary"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "checklist"
+            "number"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -45747,13 +45778,13 @@
             "invocationMode": "session_prefill",
             "canPrefill": true,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "calorie-counter-tools",
-          "title": "African Food Calorie Counter",
+          "title": "Single-Food Calorie Estimator",
           "route": "/tools/calorie-counter/",
           "category": "health",
           "subcategory": "health",
@@ -45764,12 +45795,12 @@
             "en"
           ],
           "hints": [
-            "african food calorie counter",
+            "single-food calorie estimator",
             "calorie counter tools",
-            "open african food calorie counter",
+            "open single-food calorie estimator",
             "health tool",
-            "Open African Food Calorie Counter",
-            "Help me use African Food Calorie Counter"
+            "Open Single-Food Calorie Estimator",
+            "Help me use Single-Food Calorie Estimator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45795,7 +45826,7 @@
         },
         {
           "id": "child-growth",
-          "title": "Child Growth Chart (WHO + African Context)",
+          "title": "WHO Child Growth Screening Reference",
           "route": "/tools/child-growth/",
           "category": "health",
           "subcategory": "health",
@@ -45806,12 +45837,12 @@
             "en"
           ],
           "hints": [
-            "child growth chart (who + african context)",
+            "who child growth screening reference",
             "child growth",
-            "open child growth chart (who + african context)",
+            "open who child growth screening reference",
             "health tool",
-            "Open Child Growth Chart (WHO + African Context)",
-            "Help me use Child Growth Chart (WHO + African Context)"
+            "Open WHO Child Growth Screening Reference",
+            "Help me use WHO Child Growth Screening Reference"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45837,7 +45868,7 @@
         },
         {
           "id": "childbirth-cost",
-          "title": "Childbirth Cost Calculator",
+          "title": "Provider-Quote Childbirth Budget",
           "route": "/tools/childbirth-cost/",
           "category": "health",
           "subcategory": "health",
@@ -45853,27 +45884,36 @@
             "en"
           ],
           "hints": [
-            "childbirth cost calculator",
+            "provider-quote childbirth budget",
             "childbirth cost",
-            "open childbirth cost calculator",
+            "open provider-quote childbirth budget",
             "health tool",
-            "Open Childbirth Cost Calculator",
-            "Help me use Childbirth Cost Calculator"
+            "Open Provider-Quote Childbirth Budget",
+            "Help me use Provider-Quote Childbirth Budget"
           ],
           "requiredInputs": [
             {
               "name": "country",
               "label": "Country",
               "type": "country"
+            },
+            {
+              "name": "grossPay",
+              "label": "Gross pay",
+              "type": "number"
+            },
+            {
+              "name": "payPeriod",
+              "label": "Pay period",
+              "type": "select"
             }
           ],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
+          "privacyMode": "account_optional",
           "sourcePolicy": "mixed",
           "safetyDomain": "tax",
           "outputTypes": [
             "number",
-            "table",
             "pdf"
           ],
           "toolCall": {
@@ -45885,14 +45925,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
+            "privacyMode": "account_optional",
             "sourcePolicy": "mixed",
             "safetyDomain": "tax"
           }
         },
         {
           "id": "cholera-risk",
-          "title": "Cholera Risk Assessment Tool",
+          "title": "Cholera Urgency & Outbreak Checklist",
           "route": "/tools/cholera-risk/",
           "category": "health",
           "subcategory": "health",
@@ -45903,12 +45943,12 @@
             "en"
           ],
           "hints": [
-            "cholera risk assessment tool",
+            "cholera urgency & outbreak checklist",
             "cholera risk",
-            "open cholera risk assessment tool",
+            "open cholera urgency & outbreak checklist",
             "health tool",
-            "Open Cholera Risk Assessment Tool",
-            "Help me use Cholera Risk Assessment Tool"
+            "Open Cholera Urgency & Outbreak Checklist",
+            "Help me use Cholera Urgency & Outbreak Checklist"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45916,8 +45956,6 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "table",
-            "shortlist",
             "checklist"
           ],
           "toolCall": {
@@ -45936,7 +45974,7 @@
         },
         {
           "id": "clinic-costs",
-          "title": "Clinic Costs",
+          "title": "Clinic Visit & Follow-up Cost Planner",
           "route": "/tools/clinic-costs/",
           "category": "health",
           "subcategory": "health",
@@ -45950,11 +45988,12 @@
             "en"
           ],
           "hints": [
+            "clinic visit & follow-up cost planner",
             "clinic costs",
-            "open clinic costs",
+            "open clinic visit & follow-up cost planner",
             "health tool",
-            "Open Clinic Costs",
-            "Help me use Clinic Costs"
+            "Open Clinic Visit & Follow-up Cost Planner",
+            "Help me use Clinic Visit & Follow-up Cost Planner"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -45982,7 +46021,7 @@
         },
         {
           "id": "csection-vs-natural",
-          "title": "C-Section vs Natural Birth Cost",
+          "title": "Birth Options Question Builder",
           "route": "/tools/csection-vs-natural/",
           "category": "health",
           "subcategory": "health",
@@ -45996,22 +46035,26 @@
             "en"
           ],
           "hints": [
-            "c-section vs natural birth cost",
+            "birth options question builder",
             "csection vs natural",
-            "open c-section vs natural birth cost",
+            "open birth options question builder",
             "health tool",
-            "Open C-Section vs Natural Birth Cost",
-            "Help me use C-Section vs Natural Birth Cost"
+            "Open Birth Options Question Builder",
+            "Help me use Birth Options Question Builder"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number",
-            "table",
-            "pdf"
+            "number"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46022,14 +46065,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "dental-cost",
-          "title": "Dental Procedure Cost Estimator",
+          "title": "Dental Provider Quote Budget",
           "route": "/tools/dental-cost/",
           "category": "health",
           "subcategory": "health",
@@ -46043,24 +46086,18 @@
             "en"
           ],
           "hints": [
-            "dental procedure cost estimator",
+            "dental provider quote budget",
             "dental cost",
-            "open dental procedure cost estimator",
+            "open dental provider quote budget",
             "health tool",
-            "Open Dental Procedure Cost Estimator",
-            "Help me use Dental Procedure Cost Estimator"
+            "Open Dental Provider Quote Budget",
+            "Help me use Dental Provider Quote Budget"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "account_optional",
-          "sourcePolicy": "mixed",
-          "safetyDomain": "tax",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "health",
           "outputTypes": [
             "number"
           ],
@@ -46073,14 +46110,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "account_optional",
-            "sourcePolicy": "mixed",
-            "safetyDomain": "tax"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "health"
           }
         },
         {
           "id": "diabetes-risk",
-          "title": "Diabetes Risk Calculator",
+          "title": "Prediabetes Screening Conversation Tool",
           "route": "/tools/diabetes-risk/",
           "category": "health",
           "subcategory": "health",
@@ -46091,38 +46128,38 @@
             "en"
           ],
           "hints": [
-            "diabetes risk calculator",
+            "prediabetes screening conversation tool",
             "diabetes risk",
-            "open diabetes risk calculator",
+            "open prediabetes screening conversation tool",
             "health tool",
-            "Open Diabetes Risk Calculator",
-            "Help me use Diabetes Risk Calculator"
+            "Open Prediabetes Screening Conversation Tool",
+            "Help me use Prediabetes Screening Conversation Tool"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
+          "sourcePolicy": "official",
           "safetyDomain": "health",
           "outputTypes": [
-            "number"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "diabetes-risk",
             "route": "/tools/diabetes-risk/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
+            "sourcePolicy": "official",
             "safetyDomain": "health"
           }
         },
         {
           "id": "drug-dosage",
-          "title": "Medication Dosage Calculator",
+          "title": "Medication Dose Arithmetic Reference",
           "route": "/tools/drug-dosage/",
           "category": "health",
           "subcategory": "health",
@@ -46133,38 +46170,38 @@
             "en"
           ],
           "hints": [
-            "medication dosage calculator",
+            "medication dose arithmetic reference",
             "drug dosage",
-            "open medication dosage calculator",
+            "open medication dose arithmetic reference",
             "health tool",
-            "Open Medication Dosage Calculator",
-            "Help me use Medication Dosage Calculator"
+            "Open Medication Dose Arithmetic Reference",
+            "Help me use Medication Dose Arithmetic Reference"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
+          "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "number"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "drug-dosage",
             "route": "/tools/drug-dosage/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
+            "sourcePolicy": "reviewed",
             "safetyDomain": "health"
           }
         },
         {
           "id": "drug-price-compare",
-          "title": "Drug/Medicine Price Comparator",
+          "title": "Exact Medicine Quote Comparator",
           "route": "/tools/drug-price-compare/",
           "category": "health",
           "subcategory": "health",
@@ -46178,12 +46215,12 @@
             "en"
           ],
           "hints": [
-            "drug/medicine price comparator",
+            "exact medicine quote comparator",
             "drug price compare",
-            "open drug/medicine price comparator",
+            "open exact medicine quote comparator",
             "health tool",
-            "Open Drug/Medicine Price Comparator",
-            "Help me use Drug/Medicine Price Comparator"
+            "Open Exact Medicine Quote Comparator",
+            "Help me use Exact Medicine Quote Comparator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46210,7 +46247,7 @@
         },
         {
           "id": "due-date",
-          "title": "Pregnancy Due Date Calculator",
+          "title": "Antenatal Appointment Date Planner",
           "route": "/health/pregnancy-due-date/",
           "category": "health",
           "subcategory": "health",
@@ -46221,20 +46258,31 @@
             "en"
           ],
           "hints": [
-            "pregnancy due date calculator",
+            "antenatal appointment date planner",
             "due date",
-            "open pregnancy due date calculator",
+            "open antenatal appointment date planner",
             "health tool",
-            "Open Pregnancy Due Date Calculator",
-            "Help me use Pregnancy Due Date Calculator"
+            "Open Antenatal Appointment Date Planner",
+            "Help me use Antenatal Appointment Date Planner"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "pdf",
+            "json",
+            "report",
+            "image",
+            "map"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46245,14 +46293,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "due-date-tools",
-          "title": "Pregnancy Due Date Calculator",
+          "title": "Pregnancy Date Range Estimator",
           "route": "/tools/due-date/",
           "category": "health",
           "subcategory": "health",
@@ -46263,20 +46311,27 @@
             "en"
           ],
           "hints": [
-            "pregnancy due date calculator",
+            "pregnancy date range estimator",
             "due date tools",
-            "open pregnancy due date calculator",
+            "open pregnancy date range estimator",
             "health tool",
-            "Open Pregnancy Due Date Calculator",
-            "Help me use Pregnancy Due Date Calculator"
+            "Open Pregnancy Date Range Estimator",
+            "Help me use Pregnancy Date Range Estimator"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46287,14 +46342,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "ebola-checklist",
-          "title": "Ebola Preparedness Checklist",
+          "title": "Ebola Exposure & Public-Health Checklist",
           "route": "/tools/ebola-checklist/",
           "category": "health",
           "subcategory": "health",
@@ -46305,17 +46360,17 @@
             "en"
           ],
           "hints": [
-            "ebola preparedness checklist",
+            "ebola exposure & public-health checklist",
             "ebola checklist",
-            "open ebola preparedness checklist",
+            "open ebola exposure & public-health checklist",
             "health tool",
-            "Open Ebola Preparedness Checklist",
-            "Help me use Ebola Preparedness Checklist"
+            "Open Ebola Exposure & Public-Health Checklist",
+            "Help me use Ebola Exposure & Public-Health Checklist"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "official",
           "safetyDomain": "health",
           "outputTypes": [
             "checklist"
@@ -46330,13 +46385,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "official",
             "safetyDomain": "health"
           }
         },
         {
           "id": "eye-care-cost",
-          "title": "Eye Care Cost Calculator",
+          "title": "Eye Care Provider Quote Budget",
           "route": "/tools/eye-care-cost/",
           "category": "health",
           "subcategory": "health",
@@ -46347,24 +46402,18 @@
             "en"
           ],
           "hints": [
-            "eye care cost calculator",
+            "eye care provider quote budget",
             "eye care cost",
-            "open eye care cost calculator",
+            "open eye care provider quote budget",
             "health tool",
-            "Open Eye Care Cost Calculator",
-            "Help me use Eye Care Cost Calculator"
+            "Open Eye Care Provider Quote Budget",
+            "Help me use Eye Care Provider Quote Budget"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "browser_local",
-          "sourcePolicy": "mixed",
-          "safetyDomain": "tax",
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "health",
           "outputTypes": [
             "number"
           ],
@@ -46377,14 +46426,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "browser_local",
-            "sourcePolicy": "mixed",
-            "safetyDomain": "tax"
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "health"
           }
         },
         {
           "id": "genotype-checker",
-          "title": "Genotype Compatibility Checker",
+          "title": "Haemoglobin Result Verification Guide",
           "route": "/tools/genotype-checker/",
           "category": "health",
           "subcategory": "health",
@@ -46395,12 +46444,12 @@
             "en"
           ],
           "hints": [
-            "genotype compatibility checker",
+            "haemoglobin result verification guide",
             "genotype checker",
-            "open genotype compatibility checker",
+            "open haemoglobin result verification guide",
             "health tool",
-            "Open Genotype Compatibility Checker",
-            "Help me use Genotype Compatibility Checker"
+            "Open Haemoglobin Result Verification Guide",
+            "Help me use Haemoglobin Result Verification Guide"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46408,7 +46457,8 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "checklist"
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46426,7 +46476,7 @@
         },
         {
           "id": "gym-cost-compare",
-          "title": "Gym Membership Cost Comparator",
+          "title": "Gym Quote Cost Comparator",
           "route": "/tools/gym-cost-compare/",
           "category": "health",
           "subcategory": "health",
@@ -46437,12 +46487,12 @@
             "en"
           ],
           "hints": [
-            "gym membership cost comparator",
+            "gym quote cost comparator",
             "gym cost compare",
-            "open gym membership cost comparator",
+            "open gym quote cost comparator",
             "health tool",
-            "Open Gym Membership Cost Comparator",
-            "Help me use Gym Membership Cost Comparator"
+            "Open Gym Quote Cost Comparator",
+            "Help me use Gym Quote Cost Comparator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46469,7 +46519,7 @@
         },
         {
           "id": "hep-b-screening",
-          "title": "Hepatitis B Screening Cost Estimator",
+          "title": "Hepatitis B Testing, Diagnosis & Vaccine Pathway",
           "route": "/tools/hep-b-screening/",
           "category": "health",
           "subcategory": "health",
@@ -46480,97 +46530,12 @@
             "en"
           ],
           "hints": [
-            "hepatitis b screening cost estimator",
+            "hepatitis b testing, diagnosis & vaccine pathway",
             "hep b screening",
-            "open hepatitis b screening cost estimator",
+            "open hepatitis b testing, diagnosis & vaccine pathway",
             "health tool",
-            "Open Hepatitis B Screening Cost Estimator",
-            "Help me use Hepatitis B Screening Cost Estimator"
-          ],
-          "requiredInputs": [],
-          "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
-          "outputTypes": [
-            "number"
-          ],
-          "toolCall": {
-            "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
-            "toolId": "hep-b-screening",
-            "route": "/tools/hep-b-screening/",
-            "category": "health",
-            "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
-          }
-        },
-        {
-          "id": "hiv-treatment-cost",
-          "title": "HIV/AIDS Treatment Cost Calculator",
-          "route": "/tools/hiv-treatment-cost/",
-          "category": "health",
-          "subcategory": "health",
-          "countriesSupported": [
-            "ALL"
-          ],
-          "languagesSupported": [
-            "en"
-          ],
-          "hints": [
-            "hiv/aids treatment cost calculator",
-            "hiv treatment cost",
-            "open hiv/aids treatment cost calculator",
-            "health tool",
-            "Open HIV/AIDS Treatment Cost Calculator",
-            "Help me use HIV/AIDS Treatment Cost Calculator"
-          ],
-          "requiredInputs": [],
-          "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "official",
-          "safetyDomain": "health",
-          "outputTypes": [
-            "number",
-            "pdf"
-          ],
-          "toolCall": {
-            "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
-            "toolId": "hiv-treatment-cost",
-            "route": "/tools/hiv-treatment-cost/",
-            "category": "health",
-            "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "official",
-            "safetyDomain": "health"
-          }
-        },
-        {
-          "id": "home-workout",
-          "title": "Home Workout Calorie Burner",
-          "route": "/tools/home-workout/",
-          "category": "health",
-          "subcategory": "health",
-          "countriesSupported": [
-            "ALL"
-          ],
-          "languagesSupported": [
-            "en"
-          ],
-          "hints": [
-            "home workout calorie burner",
-            "home workout",
-            "open home workout calorie burner",
-            "health tool",
-            "Open Home Workout Calorie Burner",
-            "Help me use Home Workout Calorie Burner"
+            "Open Hepatitis B Testing, Diagnosis & Vaccine Pathway",
+            "Help me use Hepatitis B Testing, Diagnosis & Vaccine Pathway"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46583,8 +46548,8 @@
           "toolCall": {
             "type": "existing_tool_call",
             "action": "open_existing_tool",
-            "toolId": "home-workout",
-            "route": "/tools/home-workout/",
+            "toolId": "hep-b-screening",
+            "route": "/tools/hep-b-screening/",
             "category": "health",
             "subcategory": "health",
             "invocationMode": "route_only",
@@ -46595,8 +46560,99 @@
           }
         },
         {
+          "id": "hiv-treatment-cost",
+          "title": "Private HIV Care Cost Worksheet",
+          "route": "/tools/hiv-treatment-cost/",
+          "category": "health",
+          "subcategory": "health",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "private hiv care cost worksheet",
+            "hiv treatment cost",
+            "open private hiv care cost worksheet",
+            "health tool",
+            "Open Private HIV Care Cost Worksheet",
+            "Help me use Private HIV Care Cost Worksheet"
+          ],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
+          "optionalInputs": [],
+          "privacyMode": "browser_local",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
+          "outputTypes": [
+            "number"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "hiv-treatment-cost",
+            "route": "/tools/hiv-treatment-cost/",
+            "category": "health",
+            "subcategory": "health",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "browser_local",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
+          }
+        },
+        {
+          "id": "home-workout",
+          "title": "Home Activity Schedule Planner",
+          "route": "/tools/home-workout/",
+          "category": "health",
+          "subcategory": "health",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "home activity schedule planner",
+            "home workout",
+            "open home activity schedule planner",
+            "health tool",
+            "Open Home Activity Schedule Planner",
+            "Help me use Home Activity Schedule Planner"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "health",
+          "outputTypes": [
+            "pdf",
+            "report"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "home-workout",
+            "route": "/tools/home-workout/",
+            "category": "health",
+            "subcategory": "health",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "health"
+          }
+        },
+        {
           "id": "hospital-cost",
-          "title": "African Hospital Cost Estimator",
+          "title": "Hospital Quote Episode Budget",
           "route": "/tools/hospital-cost/",
           "category": "health",
           "subcategory": "health",
@@ -46607,12 +46663,12 @@
             "en"
           ],
           "hints": [
-            "african hospital cost estimator",
+            "hospital quote episode budget",
             "hospital cost",
-            "open african hospital cost estimator",
+            "open hospital quote episode budget",
             "health tool",
-            "Open African Hospital Cost Estimator",
-            "Help me use African Hospital Cost Estimator"
+            "Open Hospital Quote Episode Budget",
+            "Help me use Hospital Quote Episode Budget"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46638,7 +46694,7 @@
         },
         {
           "id": "malaria-risk",
-          "title": "Malaria Risk by Region",
+          "title": "Malaria Testing Urgency Checklist",
           "route": "/tools/malaria-risk/",
           "category": "health",
           "subcategory": "health",
@@ -46649,12 +46705,12 @@
             "en"
           ],
           "hints": [
-            "malaria risk by region",
+            "malaria testing urgency checklist",
             "malaria risk",
-            "open malaria risk by region",
+            "open malaria testing urgency checklist",
             "health tool",
-            "Open Malaria Risk by Region",
-            "Help me use Malaria Risk by Region"
+            "Open Malaria Testing Urgency Checklist",
+            "Help me use Malaria Testing Urgency Checklist"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46662,8 +46718,7 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "image",
-            "map"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46681,7 +46736,7 @@
         },
         {
           "id": "maternal-mortality",
-          "title": "Maternal Mortality Risk Assessment",
+          "title": "Maternal Health Conversation Guide",
           "route": "/tools/maternal-mortality/",
           "category": "health",
           "subcategory": "health",
@@ -46692,12 +46747,12 @@
             "en"
           ],
           "hints": [
-            "maternal mortality risk assessment",
+            "maternal health conversation guide",
             "maternal mortality",
-            "open maternal mortality risk assessment",
+            "open maternal health conversation guide",
             "health tool",
-            "Open Maternal Mortality Risk Assessment",
-            "Help me use Maternal Mortality Risk Assessment"
+            "Open Maternal Health Conversation Guide",
+            "Help me use Maternal Health Conversation Guide"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46705,7 +46760,7 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "table"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46766,10 +46821,33 @@
             "sourcePolicy": "user_input",
             "safetyDomain": "health"
           }
-        },
+        }
+      ],
+      "charCount": 27156
+    },
+    {
+      "id": "tool-catalog:health:02",
+      "category": "health",
+      "part": 2,
+      "toolCount": 12,
+      "toolIds": [
+        "medical-tourism",
+        "mental-health-cost",
+        "ovulation-calc",
+        "pharmacy-prices",
+        "pregnancy-nutrition",
+        "sickle-cell",
+        "tb-tracker",
+        "traditional-vs-western",
+        "vaccine-schedule",
+        "waist-hip-ratio",
+        "water-intake",
+        "water-quality"
+      ],
+      "tools": [
         {
           "id": "medical-tourism",
-          "title": "Medical Tourism Cost Comparator",
+          "title": "Medical Travel Quote Budget",
           "route": "/tools/medical-tourism/",
           "category": "health",
           "subcategory": "health",
@@ -46780,12 +46858,12 @@
             "en"
           ],
           "hints": [
-            "medical tourism cost comparator",
+            "medical travel quote budget",
             "medical tourism",
-            "open medical tourism cost comparator",
+            "open medical travel quote budget",
             "health tool",
-            "Open Medical Tourism Cost Comparator",
-            "Help me use Medical Tourism Cost Comparator"
+            "Open Medical Travel Quote Budget",
+            "Help me use Medical Travel Quote Budget"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46793,18 +46871,17 @@
           "sourcePolicy": "estimated",
           "safetyDomain": "health",
           "outputTypes": [
-            "number",
-            "table"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "medical-tourism",
             "route": "/tools/medical-tourism/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "ai_optional",
             "sourcePolicy": "estimated",
             "safetyDomain": "health"
@@ -46812,7 +46889,7 @@
         },
         {
           "id": "mental-health-cost",
-          "title": "Mental Health Service Cost Finder",
+          "title": "Mental Health Support Cost Planner",
           "route": "/tools/mental-health-cost/",
           "category": "health",
           "subcategory": "health",
@@ -46823,12 +46900,12 @@
             "en"
           ],
           "hints": [
-            "mental health service cost finder",
+            "mental health support cost planner",
             "mental health cost",
-            "open mental health service cost finder",
+            "open mental health support cost planner",
             "health tool",
-            "Open Mental Health Service Cost Finder",
-            "Help me use Mental Health Service Cost Finder"
+            "Open Mental Health Support Cost Planner",
+            "Help me use Mental Health Support Cost Planner"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46837,9 +46914,8 @@
           "safetyDomain": "health",
           "outputTypes": [
             "number",
-            "table",
-            "shortlist",
-            "pdf"
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46854,31 +46930,10 @@
             "sourcePolicy": "estimated",
             "safetyDomain": "health"
           }
-        }
-      ],
-      "charCount": 27849
-    },
-    {
-      "id": "tool-catalog:health:02",
-      "category": "health",
-      "part": 2,
-      "toolCount": 10,
-      "toolIds": [
-        "ovulation-calc",
-        "pharmacy-prices",
-        "pregnancy-nutrition",
-        "sickle-cell",
-        "tb-tracker",
-        "traditional-vs-western",
-        "vaccine-schedule",
-        "waist-hip-ratio",
-        "water-intake",
-        "water-quality"
-      ],
-      "tools": [
+        },
         {
           "id": "ovulation-calc",
-          "title": "Ovulation & Fertility Calculator",
+          "title": "Cycle Window Estimator",
           "route": "/tools/ovulation-calc/",
           "category": "health",
           "subcategory": "health",
@@ -46889,20 +46944,27 @@
             "en"
           ],
           "hints": [
-            "ovulation & fertility calculator",
+            "cycle window estimator",
             "ovulation calc",
-            "open ovulation & fertility calculator",
+            "open cycle window estimator",
             "health tool",
-            "Open Ovulation & Fertility Calculator",
-            "Help me use Ovulation & Fertility Calculator"
+            "Open Cycle Window Estimator",
+            "Help me use Cycle Window Estimator"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46913,14 +46975,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "pharmacy-prices",
-          "title": "Pharmacy Prices",
+          "title": "Pharmacy Package Quote Normalizer",
           "route": "/tools/pharmacy-prices/",
           "category": "health",
           "subcategory": "health",
@@ -46934,11 +46996,12 @@
             "en"
           ],
           "hints": [
+            "pharmacy package quote normalizer",
             "pharmacy prices",
-            "open pharmacy prices",
+            "open pharmacy package quote normalizer",
             "health tool",
-            "Open Pharmacy Prices",
-            "Help me use Pharmacy Prices"
+            "Open Pharmacy Package Quote Normalizer",
+            "Help me use Pharmacy Package Quote Normalizer"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -46946,9 +47009,7 @@
           "sourcePolicy": "estimated",
           "safetyDomain": "health",
           "outputTypes": [
-            "number",
-            "pdf",
-            "report"
+            "number"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -46966,7 +47027,7 @@
         },
         {
           "id": "pregnancy-nutrition",
-          "title": "Pregnancy Nutrition Calculator (African Diet)",
+          "title": "Pregnancy Food Variety Planner",
           "route": "/tools/pregnancy-nutrition/",
           "category": "health",
           "subcategory": "health",
@@ -46977,20 +47038,28 @@
             "en"
           ],
           "hints": [
-            "pregnancy nutrition calculator (african diet)",
+            "pregnancy food variety planner",
             "pregnancy nutrition",
-            "open pregnancy nutrition calculator (african diet)",
+            "open pregnancy food variety planner",
             "health tool",
-            "Open Pregnancy Nutrition Calculator (African Diet)",
-            "Help me use Pregnancy Nutrition Calculator (African Diet)"
+            "Open Pregnancy Food Variety Planner",
+            "Help me use Pregnancy Food Variety Planner"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "pdf",
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -47001,14 +47070,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "sickle-cell",
-          "title": "Sickle Cell Genotype Advisor",
+          "title": "Sickle Cell Inheritance Explorer",
           "route": "/tools/sickle-cell/",
           "category": "health",
           "subcategory": "health",
@@ -47019,39 +47088,38 @@
             "en"
           ],
           "hints": [
-            "sickle cell genotype advisor",
+            "sickle cell inheritance explorer",
             "sickle cell",
-            "open sickle cell genotype advisor",
+            "open sickle cell inheritance explorer",
             "health tool",
-            "Open Sickle Cell Genotype Advisor",
-            "Help me use Sickle Cell Genotype Advisor"
+            "Open Sickle Cell Inheritance Explorer",
+            "Help me use Sickle Cell Inheritance Explorer"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
+          "sourcePolicy": "reviewed",
           "safetyDomain": "health",
           "outputTypes": [
-            "number",
-            "report"
+            "checklist"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
+            "action": "open_existing_tool",
             "toolId": "sickle-cell",
             "route": "/tools/sickle-cell/",
             "category": "health",
             "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
+            "invocationMode": "route_only",
+            "canPrefill": false,
             "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
+            "sourcePolicy": "reviewed",
             "safetyDomain": "health"
           }
         },
         {
           "id": "tb-tracker",
-          "title": "Tuberculosis Treatment Tracker",
+          "title": "Private TB Clinic Date Tracker",
           "route": "/tools/tb-tracker/",
           "category": "health",
           "subcategory": "health",
@@ -47062,18 +47130,24 @@
             "en"
           ],
           "hints": [
-            "tuberculosis treatment tracker",
+            "private tb clinic date tracker",
             "tb tracker",
-            "open tuberculosis treatment tracker",
+            "open private tb clinic date tracker",
             "health tool",
-            "Open Tuberculosis Treatment Tracker",
-            "Help me use Tuberculosis Treatment Tracker"
+            "Open Private TB Clinic Date Tracker",
+            "Help me use Private TB Clinic Date Tracker"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "account_optional",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
             "number",
             "table"
@@ -47087,14 +47161,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "account_optional",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "traditional-vs-western",
-          "title": "Traditional vs Western Medicine Cost",
+          "title": "Care Plan Cost & Logistics Comparator",
           "route": "/tools/traditional-vs-western/",
           "category": "health",
           "subcategory": "health",
@@ -47105,12 +47179,12 @@
             "en"
           ],
           "hints": [
-            "traditional vs western medicine cost",
+            "care plan cost & logistics comparator",
             "traditional vs western",
-            "open traditional vs western medicine cost",
+            "open care plan cost & logistics comparator",
             "health tool",
-            "Open Traditional vs Western Medicine Cost",
-            "Help me use Traditional vs Western Medicine Cost"
+            "Open Care Plan Cost & Logistics Comparator",
+            "Help me use Care Plan Cost & Logistics Comparator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -47118,7 +47192,8 @@
           "sourcePolicy": "estimated",
           "safetyDomain": "health",
           "outputTypes": [
-            "number"
+            "number",
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -47136,7 +47211,7 @@
         },
         {
           "id": "vaccine-schedule",
-          "title": "African Child Vaccine Schedule",
+          "title": "Vaccination Programme Finder",
           "route": "/tools/vaccine-schedule/",
           "category": "health",
           "subcategory": "health",
@@ -47147,12 +47222,62 @@
             "en"
           ],
           "hints": [
-            "african child vaccine schedule",
+            "vaccination programme finder",
             "vaccine schedule",
-            "open african child vaccine schedule",
+            "open vaccination programme finder",
             "health tool",
-            "Open African Child Vaccine Schedule",
-            "Help me use African Child Vaccine Schedule"
+            "Open Vaccination Programme Finder",
+            "Help me use Vaccination Programme Finder"
+          ],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
+          "optionalInputs": [],
+          "privacyMode": "account_optional",
+          "sourcePolicy": "official",
+          "safetyDomain": "tax",
+          "outputTypes": [
+            "number",
+            "table",
+            "shortlist"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "vaccine-schedule",
+            "route": "/tools/vaccine-schedule/",
+            "category": "health",
+            "subcategory": "health",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "account_optional",
+            "sourcePolicy": "official",
+            "safetyDomain": "tax"
+          }
+        },
+        {
+          "id": "waist-hip-ratio",
+          "title": "Waist-to-Hip Ratio Measurement Tool",
+          "route": "/tools/waist-hip-ratio/",
+          "category": "health",
+          "subcategory": "health",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "waist-to-hip ratio measurement tool",
+            "waist hip ratio",
+            "open waist-to-hip ratio measurement tool",
+            "health tool",
+            "Open Waist-to-Hip Ratio Measurement Tool",
+            "Help me use Waist-to-Hip Ratio Measurement Tool"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -47165,8 +47290,8 @@
           "toolCall": {
             "type": "existing_tool_call",
             "action": "open_existing_tool",
-            "toolId": "vaccine-schedule",
-            "route": "/tools/vaccine-schedule/",
+            "toolId": "waist-hip-ratio",
+            "route": "/tools/waist-hip-ratio/",
             "category": "health",
             "subcategory": "health",
             "invocationMode": "route_only",
@@ -47177,50 +47302,8 @@
           }
         },
         {
-          "id": "waist-hip-ratio",
-          "title": "Waist-Hip Ratio Calculator",
-          "route": "/tools/waist-hip-ratio/",
-          "category": "health",
-          "subcategory": "health",
-          "countriesSupported": [
-            "ALL"
-          ],
-          "languagesSupported": [
-            "en"
-          ],
-          "hints": [
-            "waist-hip ratio calculator",
-            "waist hip ratio",
-            "open waist-hip ratio calculator",
-            "health tool",
-            "Open Waist-Hip Ratio Calculator",
-            "Help me use Waist-Hip Ratio Calculator"
-          ],
-          "requiredInputs": [],
-          "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
-          "outputTypes": [
-            "number"
-          ],
-          "toolCall": {
-            "type": "existing_tool_call",
-            "action": "prefill_existing_tool",
-            "toolId": "waist-hip-ratio",
-            "route": "/tools/waist-hip-ratio/",
-            "category": "health",
-            "subcategory": "health",
-            "invocationMode": "session_prefill",
-            "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
-          }
-        },
-        {
           "id": "water-intake",
-          "title": "Water Intake Calculator",
+          "title": "Private Fluid Intake Log",
           "route": "/tools/water-intake/",
           "category": "health",
           "subcategory": "health",
@@ -47231,20 +47314,27 @@
             "en"
           ],
           "hints": [
-            "water intake calculator",
+            "private fluid intake log",
             "water intake",
-            "open water intake calculator",
+            "open private fluid intake log",
             "health tool",
-            "Open Water Intake Calculator",
-            "Help me use Water Intake Calculator"
+            "Open Private Fluid Intake Log",
+            "Help me use Private Fluid Intake Log"
           ],
-          "requiredInputs": [],
+          "requiredInputs": [
+            {
+              "name": "country",
+              "label": "Country",
+              "type": "country"
+            }
+          ],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "estimated",
-          "safetyDomain": "health",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "mixed",
+          "safetyDomain": "tax",
           "outputTypes": [
-            "number"
+            "number",
+            "table"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -47255,14 +47345,14 @@
             "subcategory": "health",
             "invocationMode": "session_prefill",
             "canPrefill": true,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "estimated",
-            "safetyDomain": "health"
+            "privacyMode": "browser_local",
+            "sourcePolicy": "mixed",
+            "safetyDomain": "tax"
           }
         },
         {
           "id": "water-quality",
-          "title": "Water Safety Checker",
+          "title": "Drinking-Water Test Result Worksheet",
           "route": "/tools/water-quality/",
           "category": "health",
           "subcategory": "health",
@@ -47273,12 +47363,12 @@
             "en"
           ],
           "hints": [
-            "water safety checker",
+            "drinking-water test result worksheet",
             "water quality",
-            "open water safety checker",
+            "open drinking-water test result worksheet",
             "health tool",
-            "Open Water Safety Checker",
-            "Help me use Water Safety Checker"
+            "Open Drinking-Water Test Result Worksheet",
+            "Help me use Drinking-Water Test Result Worksheet"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -47303,7 +47393,7 @@
           }
         }
       ],
-      "charCount": 8714
+      "charCount": 10892
     },
     {
       "id": "tool-catalog:hr-payroll:01",
@@ -49205,7 +49295,7 @@
       "tools": [
         {
           "id": "african-name-meaning",
-          "title": "African Name Meaning Finder",
+          "title": "African Name Provenance Review",
           "route": "/tools/african-name-meaning/",
           "category": "language",
           "subcategory": "language",
@@ -49216,21 +49306,20 @@
             "en"
           ],
           "hints": [
-            "african name meaning finder",
+            "african name provenance review",
             "african name meaning",
-            "open african name meaning finder",
+            "open african name provenance review",
             "language tool",
-            "Open African Name Meaning Finder",
-            "Help me use African Name Meaning Finder"
+            "Open African Name Provenance Review",
+            "Help me use African Name Provenance Review"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "account_optional",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "official",
           "safetyDomain": "none",
           "outputTypes": [
-            "table",
-            "shortlist"
+            "report"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -49242,13 +49331,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "account_optional",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "official",
             "safetyDomain": "none"
           }
         },
         {
           "id": "amharic-translator",
-          "title": "Amharic Translator",
+          "title": "Amharic Draft Phrasebook & Optional Translator",
           "route": "/tools/amharic-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49260,16 +49349,17 @@
             "en"
           ],
           "hints": [
+            "amharic draft phrasebook & optional translator",
             "amharic translator",
-            "open amharic translator",
+            "open amharic draft phrasebook & optional translator",
             "language tool",
-            "Open Amharic Translator",
-            "Help me use Amharic Translator"
+            "Open Amharic Draft Phrasebook & Optional Translator",
+            "Help me use Amharic Draft Phrasebook & Optional Translator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "official",
           "safetyDomain": "none",
           "outputTypes": [
             "report"
@@ -49284,13 +49374,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "official",
             "safetyDomain": "none"
           }
         },
         {
           "id": "arabic-calc",
-          "title": "Arabic Number Converter",
+          "title": "Arabic-Indic Digit Shape Converter",
           "route": "/tools/arabic-numerals/",
           "category": "language",
           "subcategory": "language",
@@ -49307,12 +49397,12 @@
             "en"
           ],
           "hints": [
-            "arabic number converter",
+            "arabic-indic digit shape converter",
             "arabic calc",
-            "open arabic number converter",
+            "open arabic-indic digit shape converter",
             "language tool",
-            "Open Arabic Number Converter",
-            "Help me use Arabic Number Converter"
+            "Open Arabic-Indic Digit Shape Converter",
+            "Help me use Arabic-Indic Digit Shape Converter"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -49338,7 +49428,7 @@
         },
         {
           "id": "french-african",
-          "title": "Francophone Africa Translator",
+          "title": "French for Africa Phrasebook",
           "route": "/tools/french-african/",
           "category": "language",
           "subcategory": "language",
@@ -49351,20 +49441,20 @@
             "en"
           ],
           "hints": [
-            "francophone africa translator",
+            "french for africa phrasebook",
             "french african",
-            "open francophone africa translator",
+            "open french for africa phrasebook",
             "language tool",
-            "Open Francophone Africa Translator",
-            "Help me use Francophone Africa Translator"
+            "Open French for Africa Phrasebook",
+            "Help me use French for Africa Phrasebook"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "user_input",
           "safetyDomain": "none",
           "outputTypes": [
-            "report"
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -49376,13 +49466,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "user_input",
             "safetyDomain": "none"
           }
         },
         {
           "id": "hausa-translator",
-          "title": "Hausa Translator & Phrasebook",
+          "title": "Hausa Draft Phrasebook & Optional Translator",
           "route": "/tools/hausa-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49395,26 +49485,19 @@
             "en"
           ],
           "hints": [
-            "hausa translator & phrasebook",
+            "hausa draft phrasebook & optional translator",
             "hausa translator",
-            "open hausa translator & phrasebook",
+            "open hausa draft phrasebook & optional translator",
             "language tool",
-            "Open Hausa Translator & Phrasebook",
-            "Help me use Hausa Translator & Phrasebook"
+            "Open Hausa Draft Phrasebook & Optional Translator",
+            "Help me use Hausa Draft Phrasebook & Optional Translator"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "mixed",
-          "safetyDomain": "legal",
+          "sourcePolicy": "reviewed",
+          "safetyDomain": "none",
           "outputTypes": [
-            "table",
             "report"
           ],
           "toolCall": {
@@ -49427,13 +49510,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "mixed",
-            "safetyDomain": "legal"
+            "sourcePolicy": "reviewed",
+            "safetyDomain": "none"
           }
         },
         {
           "id": "igbo-translator",
-          "title": "Igbo Translator & Phrasebook",
+          "title": "Igbo Draft Phrasebook & Optional Translator",
           "route": "/tools/igbo-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49444,12 +49527,12 @@
             "en"
           ],
           "hints": [
-            "igbo translator & phrasebook",
+            "igbo draft phrasebook & optional translator",
             "igbo translator",
-            "open igbo translator & phrasebook",
+            "open igbo draft phrasebook & optional translator",
             "language tool",
-            "Open Igbo Translator & Phrasebook",
-            "Help me use Igbo Translator & Phrasebook"
+            "Open Igbo Draft Phrasebook & Optional Translator",
+            "Help me use Igbo Draft Phrasebook & Optional Translator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -49475,7 +49558,7 @@
         },
         {
           "id": "pidgin-translator",
-          "title": "Nigerian Pidgin Translator",
+          "title": "Nigerian Pidgin Learning Phrasebook",
           "route": "/tools/pidgin-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49486,20 +49569,20 @@
             "en"
           ],
           "hints": [
-            "nigerian pidgin translator",
+            "nigerian pidgin learning phrasebook",
             "pidgin translator",
-            "open nigerian pidgin translator",
+            "open nigerian pidgin learning phrasebook",
             "language tool",
-            "Open Nigerian Pidgin Translator",
-            "Help me use Nigerian Pidgin Translator"
+            "Open Nigerian Pidgin Learning Phrasebook",
+            "Help me use Nigerian Pidgin Learning Phrasebook"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "user_input",
           "safetyDomain": "none",
           "outputTypes": [
-            "report"
+            "pdf"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -49511,13 +49594,13 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "user_input",
             "safetyDomain": "none"
           }
         },
         {
           "id": "swahili-translator",
-          "title": "Swahili Translator",
+          "title": "Swahili Phrasebook & Optional Translator",
           "route": "/tools/swahili-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49531,43 +49614,39 @@
             "en"
           ],
           "hints": [
+            "swahili phrasebook & optional translator",
             "swahili translator",
-            "open swahili translator",
+            "open swahili phrasebook & optional translator",
             "language tool",
-            "Open Swahili Translator",
-            "Help me use Swahili Translator"
+            "Open Swahili Phrasebook & Optional Translator",
+            "Help me use Swahili Phrasebook & Optional Translator"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
-          "privacyMode": "ai_optional",
-          "sourcePolicy": "mixed",
-          "safetyDomain": "tax",
+          "privacyMode": "browser_local",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "none",
           "outputTypes": [
-            "report"
+            "pdf",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "swahili-translator",
             "route": "/tools/swahili-translator/",
             "category": "language",
             "subcategory": "language",
-            "invocationMode": "route_only",
-            "canPrefill": false,
-            "privacyMode": "ai_optional",
-            "sourcePolicy": "mixed",
-            "safetyDomain": "tax"
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "browser_local",
+            "sourcePolicy": "user_input",
+            "safetyDomain": "none"
           }
         },
         {
           "id": "transliterate",
-          "title": "Transliteration Tool",
+          "title": "Latin-to-African Script Mapping",
           "route": "/tools/transliterate/",
           "category": "language",
           "subcategory": "language",
@@ -49578,12 +49657,12 @@
             "en"
           ],
           "hints": [
-            "transliteration tool",
+            "latin-to-african script mapping",
             "transliterate",
-            "open transliteration tool",
+            "open latin-to-african script mapping",
             "language tool",
-            "Open Transliteration Tool",
-            "Help me use Transliteration Tool"
+            "Open Latin-to-African Script Mapping",
+            "Help me use Latin-to-African Script Mapping"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
@@ -49591,7 +49670,8 @@
           "sourcePolicy": "reviewed",
           "safetyDomain": "none",
           "outputTypes": [
-            "report"
+            "image",
+            "map"
           ],
           "toolCall": {
             "type": "existing_tool_call",
@@ -49609,7 +49689,7 @@
         },
         {
           "id": "yoruba-translator",
-          "title": "Yoruba Translator & Phrasebook",
+          "title": "Yoruba Phrasebook & Optional Translator",
           "route": "/tools/yoruba-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49620,44 +49700,39 @@
             "en"
           ],
           "hints": [
-            "yoruba translator & phrasebook",
+            "yoruba phrasebook & optional translator",
             "yoruba translator",
-            "open yoruba translator & phrasebook",
+            "open yoruba phrasebook & optional translator",
             "language tool",
-            "Open Yoruba Translator & Phrasebook",
-            "Help me use Yoruba Translator & Phrasebook"
+            "Open Yoruba Phrasebook & Optional Translator",
+            "Help me use Yoruba Phrasebook & Optional Translator"
           ],
-          "requiredInputs": [
-            {
-              "name": "country",
-              "label": "Country",
-              "type": "country"
-            }
-          ],
+          "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "mixed",
-          "safetyDomain": "legal",
+          "sourcePolicy": "user_input",
+          "safetyDomain": "none",
           "outputTypes": [
-            "report"
+            "pdf",
+            "json"
           ],
           "toolCall": {
             "type": "existing_tool_call",
-            "action": "open_existing_tool",
+            "action": "prefill_existing_tool",
             "toolId": "yoruba-translator",
             "route": "/tools/yoruba-translator/",
             "category": "language",
             "subcategory": "language",
-            "invocationMode": "route_only",
-            "canPrefill": false,
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
             "privacyMode": "browser_local",
-            "sourcePolicy": "mixed",
-            "safetyDomain": "legal"
+            "sourcePolicy": "user_input",
+            "safetyDomain": "none"
           }
         },
         {
           "id": "zulu-translator",
-          "title": "Zulu Translator & Phrasebook",
+          "title": "isiZulu Draft Phrasebook & Optional Translator",
           "route": "/tools/zulu-translator/",
           "category": "language",
           "subcategory": "language",
@@ -49668,17 +49743,17 @@
             "en"
           ],
           "hints": [
-            "zulu translator & phrasebook",
+            "isizulu draft phrasebook & optional translator",
             "zulu translator",
-            "open zulu translator & phrasebook",
+            "open isizulu draft phrasebook & optional translator",
             "language tool",
-            "Open Zulu Translator & Phrasebook",
-            "Help me use Zulu Translator & Phrasebook"
+            "Open isiZulu Draft Phrasebook & Optional Translator",
+            "Help me use isiZulu Draft Phrasebook & Optional Translator"
           ],
           "requiredInputs": [],
           "optionalInputs": [],
           "privacyMode": "browser_local",
-          "sourcePolicy": "reviewed",
+          "sourcePolicy": "official",
           "safetyDomain": "none",
           "outputTypes": [
             "report"
@@ -49693,12 +49768,12 @@
             "invocationMode": "route_only",
             "canPrefill": false,
             "privacyMode": "browser_local",
-            "sourcePolicy": "reviewed",
+            "sourcePolicy": "official",
             "safetyDomain": "none"
           }
         }
       ],
-      "charCount": 9753
+      "charCount": 10374
     },
     {
       "id": "tool-catalog:legal:01",
@@ -53086,6 +53161,284 @@
         }
       ],
       "charCount": 8591
+    },
+    {
+      "id": "tool-catalog:mining:01",
+      "category": "mining",
+      "part": 1,
+      "toolCount": 6,
+      "toolIds": [
+        "artisanal-mining-income",
+        "diamond-valuation",
+        "mining-license-fee",
+        "mining-royalty",
+        "oil-gas-revenue",
+        "oil-well-production"
+      ],
+      "tools": [
+        {
+          "id": "artisanal-mining-income",
+          "title": "Artisanal Mining Income Planner",
+          "route": "/tools/artisanal-mining-income/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "artisanal mining income planner",
+            "artisanal mining income",
+            "open artisanal mining income planner",
+            "mining tool",
+            "Open Artisanal Mining Income Planner",
+            "Help me use Artisanal Mining Income Planner"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "finance",
+          "outputTypes": [
+            "number",
+            "table",
+            "pdf",
+            "report"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "artisanal-mining-income",
+            "route": "/tools/artisanal-mining-income/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "finance"
+          }
+        },
+        {
+          "id": "diamond-valuation",
+          "title": "Diamond Valuation Planner",
+          "route": "/tools/diamond-valuation/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "diamond valuation planner",
+            "diamond valuation",
+            "open diamond valuation planner",
+            "mining tool",
+            "Open Diamond Valuation Planner",
+            "Help me use Diamond Valuation Planner"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "finance",
+          "outputTypes": [
+            "number",
+            "table",
+            "pdf",
+            "report"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "diamond-valuation",
+            "route": "/tools/diamond-valuation/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "finance"
+          }
+        },
+        {
+          "id": "mining-license-fee",
+          "title": "Mining Licence Cost Planner",
+          "route": "/tools/mining-license-fee/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "mining licence cost planner",
+            "mining license fee",
+            "open mining licence cost planner",
+            "mining tool",
+            "Open Mining Licence Cost Planner",
+            "Help me use Mining Licence Cost Planner"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "finance",
+          "outputTypes": [
+            "number",
+            "pdf",
+            "report"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "mining-license-fee",
+            "route": "/tools/mining-license-fee/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "finance"
+          }
+        },
+        {
+          "id": "mining-royalty",
+          "title": "Mining Royalty Calculator",
+          "route": "/tools/mining-royalty/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "mining royalty calculator",
+            "mining royalty",
+            "open mining royalty calculator",
+            "mining tool",
+            "Open Mining Royalty Calculator",
+            "Help me use Mining Royalty Calculator"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "browser_local",
+          "sourcePolicy": "official",
+          "safetyDomain": "none",
+          "outputTypes": [
+            "number"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "mining-royalty",
+            "route": "/tools/mining-royalty/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "browser_local",
+            "sourcePolicy": "official",
+            "safetyDomain": "none"
+          }
+        },
+        {
+          "id": "oil-gas-revenue",
+          "title": "Oil & Gas Revenue Split",
+          "route": "/tools/oil-gas-revenue/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "oil & gas revenue split",
+            "oil gas revenue",
+            "open oil & gas revenue split",
+            "mining tool",
+            "Open Oil & Gas Revenue Split",
+            "Help me use Oil & Gas Revenue Split"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "estimated",
+          "safetyDomain": "finance",
+          "outputTypes": [
+            "number"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "open_existing_tool",
+            "toolId": "oil-gas-revenue",
+            "route": "/tools/oil-gas-revenue/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "route_only",
+            "canPrefill": false,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "estimated",
+            "safetyDomain": "finance"
+          }
+        },
+        {
+          "id": "oil-well-production",
+          "title": "Oil Well Production Planner",
+          "route": "/tools/oil-well-production/",
+          "category": "mining",
+          "subcategory": "mining",
+          "countriesSupported": [
+            "ALL"
+          ],
+          "languagesSupported": [
+            "en"
+          ],
+          "hints": [
+            "oil well production planner",
+            "oil well production",
+            "open oil well production planner",
+            "mining tool",
+            "Open Oil Well Production Planner",
+            "Help me use Oil Well Production Planner"
+          ],
+          "requiredInputs": [],
+          "optionalInputs": [],
+          "privacyMode": "ai_optional",
+          "sourcePolicy": "reviewed",
+          "safetyDomain": "none",
+          "outputTypes": [
+            "pdf",
+            "report"
+          ],
+          "toolCall": {
+            "type": "existing_tool_call",
+            "action": "prefill_existing_tool",
+            "toolId": "oil-well-production",
+            "route": "/tools/oil-well-production/",
+            "category": "mining",
+            "subcategory": "mining",
+            "invocationMode": "session_prefill",
+            "canPrefill": true,
+            "privacyMode": "ai_optional",
+            "sourcePolicy": "reviewed",
+            "safetyDomain": "none"
+          }
+        }
+      ],
+      "charCount": 5350
     },
     {
       "id": "tool-catalog:personal-finance:01",
