@@ -150,7 +150,7 @@
   </div>
 </section>
 
-<div class="hub-main" id="hubMain">
+<div class="hub-main" id="hubMain" role="main">
 
   <div class="region-section">
     <div class="region-label">West Africa (16)</div>
@@ -279,18 +279,19 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Field planning workflow</span>
-      <h2>Seed Rate Calculator decision workspace</h2>
-      <p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. This panel is tuned for seed rate calculator so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Seed Rate Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: formControls, saveExport, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <h2>Estimate seed to procure for your field</h2>
+      <p>Enter area, the label or extension seed rate, tested germination, and a small procurement reserve.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Result:</strong> base seed need and germination-adjusted procurement quantity.</li><li><strong>Method:</strong> area ? rate ? germination ? reserve.</li><li><strong>Check:</strong> variety, certified-label germination, spacing, seed treatment, and local extension guidance.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
     </div>
-    <form class="df-form" data-df-form="seed-rate-calculator">
-      <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
-      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
-      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="seed-rate-calculator" data-df-base="Seed Rate Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Seed Rate Calculator: farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
+    <form class="df-form" data-df-form="seed-rate-calculator" data-day6-agriculture-calculator novalidate>
+      <label>Farm area (hectares)<input name="areaHa" type="number" value="2" min="0.01" step="0.01" required></label>
+      <label>Label rate (kg per hectare)<input name="rateKgHa" type="number" value="25" min="0" step="0.1" required></label>
+      <label>Label germination (%)<input name="germinationPct" type="number" value="90" min="0.1" max="100" step="0.1" required></label>
+      <label>Procurement reserve (%)<input name="reservePct" type="number" value="5" min="0" step="0.1" required></label>
+      <button type="submit">Calculate seed</button>
+      <button type="reset">Reset</button>
+      <output class="df-result" data-df-result="seed-rate-calculator" data-df-base="No current result. Enter assumptions and calculate." aria-live="polite">No current result. Enter assumptions and calculate.</output>
       <div class="df-actions"><button type="button" data-df-copy="seed-rate-calculator">Copy summary</button></div>
     </form>
   </div>
@@ -359,6 +360,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/day6-agriculture-family-calculators.js" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>

@@ -232,6 +232,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 </div>
 
 <!-- Tabs bar -->
+<main>
 <div class="bol-tabs-bar">
   <button type="button" class="tab-btn active" onclick="switchTab('generate',this)">Generate Draft B/L</button>
   <button type="button" class="tab-btn" onclick="switchTab('types',this)">B/L Types Guide</button>
@@ -559,6 +560,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <div style="max-width:960px;margin:0 auto;padding:0 20px 20px">
   <afro-business-cta tool-name="Bill of Lading Template Generator" save-note="Generate the draft locally, then export or copy it for forwarder, bank, carrier, or importer review."></afro-business-cta>
 </div>
+</main>
 <afro-related-tools category="trade" current="bol-generator" data-ssr="1">
 <!-- RELATED_TOOLS_SSR_START -->
 <nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Related tools">
@@ -622,7 +624,7 @@ function addCargo(){
     <td><input aria-label="Description of goods" type="text" placeholder="Description of goods" oninput="renderBL()"></td>
     <td><input aria-label="Line item amount" type="number" placeholder="0" min="0" step="any" value="0" style="width:72px" oninput="renderBL()"></td>
     <td><input type="number" placeholder="0.000" min="0" step="any" value="0" style="width:64px" oninput="renderBL()" aria-label="Input value"></td>
-    <td><button type="button" class="btn-remove" onclick="removeCargo(${id})">&#10005;</button></td>
+    <td><button type="button" class="btn-remove" onclick="removeCargo(${id})" aria-label="Remove cargo line">&#10005;</button></td>
   `;
   tbody.appendChild(tr);
   renderBL();

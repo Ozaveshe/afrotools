@@ -7,6 +7,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
 const TEMPLATE = fs.readFileSync(path.join(ROOT, 'agriculture/seed-rate/nigeria.html'), 'utf8');
@@ -31,6 +32,49 @@ function flagToHtml(flag) {
   return [...flag].map(ch => `&#${ch.codePointAt(0)};`).join('');
 }
 
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g,
+    (character) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[character]));
+}
+
+function renderCountryFacts(country, data) {
+  const stats = data.agriStats || {};
+  const food = Array.isArray(stats.mainFoodCrops) ? stats.mainFoodCrops.slice(0, 6).map((item) => String(item).replace(/_/g, ' ')).join(', ') : '';
+  const exports = Array.isArray(stats.mainExportCrops) ? stats.mainExportCrops.slice(0, 5).map((item) => String(item).replace(/_/g, ' ')).join(', ') : '';
+  const rows = [];
+  if (stats.gdpSharePercent != null) rows.push(`<tr><th scope="row">Agriculture share of GDP</th><td>~${escapeHtml(stats.gdpSharePercent)}%</td></tr>`);
+  if (stats.arableLandHectares != null) rows.push(`<tr><th scope="row">Arable land</th><td>${escapeHtml(Number(stats.arableLandHectares).toLocaleString('en-US'))} ha</td></tr>`);
+  if (stats.irrigatedPercent != null) rows.push(`<tr><th scope="row">Irrigated share</th><td>~${escapeHtml(stats.irrigatedPercent)}%</td></tr>`);
+  if (food) rows.push(`<tr><th scope="row">Main food crops</th><td>${escapeHtml(food)}</td></tr>`);
+  if (exports) rows.push(`<tr><th scope="row">Main export crops</th><td>${escapeHtml(exports)}</td></tr>`);
+  const regions = (data.regions || []).slice(0, 8).map((region) =>
+    `<tr><td>${escapeHtml(region.name)}</td><td>${escapeHtml(region.annualRainfall_mm)} mm</td><td>${escapeHtml((region.majorCrops || []).slice(0, 5).join(', '))}</td></tr>`
+  ).join('');
+  return `<section class="seo-content agri-country-facts" data-country-id="${escapeHtml(country.code)}" style="max-width:800px;margin:2rem auto;padding:0 1rem;">
+<h2 style="font-size:1.15rem;font-weight:700;color:#1e293b;margin:1.5rem 0 0.5rem;">Farming context: ${escapeHtml(country.name)}</h2>
+<p>${escapeHtml(country.name)} seed estimates use the selected crop, spacing, seed quality and field assumptions from the ${escapeHtml(country.code)} agriculture dataset. Check the variety label and local conditions before buying seed.</p>
+<table style="width:100%;border-collapse:collapse;font-size:.85rem;"><tbody>${rows.join('')}</tbody></table>
+${regions ? `<h3 style="font-size:.95rem;font-weight:700;margin:1.2rem 0 .4rem;">Growing regions at a glance</h3><table style="width:100%;border-collapse:collapse;font-size:.82rem;"><thead><tr><th>Region</th><th>Annual rainfall</th><th>Major crops</th></tr></thead><tbody>${regions}</tbody></table>` : ''}
+<p style="font-size:.78rem;color:#64748b;">Country context from the AfroTools agriculture dataset - planning reference, not agronomic advice. Confirm with local extension services.</p>
+</section>`;
+}
+
+function setIdentityMeta(html, country, data) {
+  const values = {
+    'afrotools-currency': data.currency,
+    'afrotools-formula-jurisdiction': country.code,
+    'afrotools-source-jurisdiction': country.code,
+    'afrotools-country-id': country.code
+  };
+  for (const name of Object.keys(values)) {
+    html = html.replace(new RegExp(`<meta name="${name}"[^>]*>\\s*`, 'g'), '');
+  }
+  const tags = Object.entries(values).map(([name, value]) =>
+    `<meta name="${name}" content="${escapeHtml(value)}">`
+  ).join('\n');
+  return html.replace('<meta charset="UTF-8">', `<meta charset="UTF-8">\n${tags}`);
+}
+
 let count = 0;
 const skipped = [];
 
@@ -46,8 +90,16 @@ countries.forEach(c => {
 
   const topCropsStr = c.topCrops.slice(0, 3).map(crop => crop.replace(/_/g, ' ')).join(', ');
   const flagHtml = flagToHtml(c.flag);
+  const dataSandbox = { window: { AfroTools: {} } };
+  vm.createContext(dataSandbox);
+  vm.runInContext(fs.readFileSync(path.join(ROOT, 'data/agriculture', dataFile), 'utf8'), dataSandbox, { filename: dataFile });
+  const countryData = dataSandbox.window.AfroTools.countryData;
+  if (!countryData || countryData.countryCode !== c.code) {
+    throw new Error(`[SEED_RATE_DATA_COUNTRY_MISMATCH] ${dataFile} must declare ${c.code}`);
+  }
 
   let html = TEMPLATE;
+  html = setIdentityMeta(html, c, countryData);
 
   // Page title
   html = html.replace(
@@ -57,8 +109,8 @@ countries.forEach(c => {
 
   // Meta description
   html = html.replace(
-    /Calculate seed rates for cassava, maize, rice, yam in Nigeria\. Get exact seed quantities, planting spacing, and local seed prices for your farm\./g,
-    `Calculate seed rates for ${topCropsStr} in ${c.name}. Get exact seed quantities, planting spacing, and local seed prices for your farm.`
+    /Estimate seed quantities and spacing for cassava, maize, rice and yam in Nigeria\. Check the result against the variety label and local advice\./g,
+    `Estimate seed quantities and spacing for ${topCropsStr} in ${c.name}. Check the result against the variety label and local advice.`
   );
 
   // OG/Twitter title
@@ -69,12 +121,12 @@ countries.forEach(c => {
 
   // OG/Twitter description
   html = html.replace(
-    /Calculate seed rates for cassava, maize, rice, yam in Nigeria\. Get exact seed quantities, planting spacing, and local seed prices for your farm\./g,
-    `Calculate seed rates for ${topCropsStr} in ${c.name}. Get exact seed quantities, planting spacing, and local seed prices for your farm.`
+    /Estimate seed quantities and planting spacing for cassava, maize, rice and yam in Nigeria\. Check the result locally before buying seed\./g,
+    `Estimate seed quantities and planting spacing for ${topCropsStr} in ${c.name}. Check the result locally before buying seed.`
   );
   html = html.replace(
-    /Calculate seed rates for cassava, maize, rice, yam in Nigeria\. Get exact seed quantities, planting spacing, and local seed prices\./g,
-    `Calculate seed rates for ${topCropsStr} in ${c.name}. Get exact seed quantities, planting spacing, and local seed prices.`
+    /Estimate seed quantities and planting spacing for cassava, maize, rice and yam in Nigeria\./g,
+    `Estimate seed quantities and planting spacing for ${topCropsStr} in ${c.name}.`
   );
 
   // Canonical + OG URL
@@ -86,14 +138,18 @@ countries.forEach(c => {
     `"name": "${c.name} Seed Rate Calculator"`
   );
   html = html.replace(
-    /"description": "Calculate exact seed quantities, planting spacing, and local seed prices for farms in Nigeria\."/g,
-    `"description": "Calculate exact seed quantities, planting spacing, and local seed prices for farms in ${c.name}."`
+    /"description": "Estimate seed quantities and planting spacing for farms in Nigeria\. Confirm the planning result against the variety label and local extension advice\."/g,
+    `"description": "Estimate seed quantities and planting spacing for farms in ${c.name}. Confirm the planning result against the variety label and local extension advice."`
   );
 
   // Breadcrumb "Nigeria"
   html = html.replace(
     /<span aria-current="page">Nigeria<\/span>/g,
     `<span aria-current="page">${c.name}</span>`
+  );
+  html = html.replace(
+    /"position":4,"name":"Nigeria","item":"https:\/\/afrotools\.com\/agriculture\/seed-rate\/([^"]+)"/g,
+    `"position":4,"name":"${c.name}","item":"https://afrotools.com/agriculture/seed-rate/$1"`
   );
 
   // Seed cost estimate section heading
@@ -110,8 +166,8 @@ countries.forEach(c => {
 
   // Hero subtitle
   html = html.replace(
-    /Calculate exact seed quantities for your Nigerian farm\. Get country-specific planting spacing, germination adjustments, and local seed pricing\./g,
-    `Calculate exact seed quantities for your ${c.name} farm. Get country-specific planting spacing, germination adjustments, and local seed pricing.`
+    /Estimate seed quantities for your Nigerian farm using maintained crop methods, spacing and germination adjustments\. Confirm the planning result against your variety label and local extension advice\./g,
+    `Estimate seed quantities for your ${c.name} farm using maintained crop methods, spacing and germination adjustments. Confirm the planning result against your variety label and local extension advice.`
   );
 
   // Hero badge
@@ -155,9 +211,13 @@ countries.forEach(c => {
 
   // Sources footer
   html = html.replace(
-    /Data sources: FAO, NASC \(National Agricultural Seed Council\), IITA, Nigeria National Bureau of Statistics, CGIAR, World Bank\./g,
-    `Data sources: FAO, CGIAR, ${c.name} national agricultural authority, World Bank.`
+    /Data sources: FAO crop guidance, NASC \(National Agricultural Seed Council\), IITA, Nigeria National Bureau of Statistics, CGIAR and World Bank\. Tomato planning parameters also reference <a href="https:\/\/www\.fao\.org\/land-water\/databases-and-software\/crop-information\/tomato\/en\/" rel="noopener noreferrer">FAO crop information<\/a>\./g,
+    `Data sources: FAO crop guidance, CGIAR, ${c.name} national agricultural authority and World Bank. Tomato planning parameters also reference <a href="https://www.fao.org/land-water/databases-and-software/crop-information/tomato/en/" rel="noopener noreferrer">FAO crop information</a>.`
   );
+  html = html.replace(/current="seed-rate-ng"/g, `current="seed-rate-${c.code.toLowerCase()}"`);
+  const inheritedFacts = /<section class="seo-content agri-country-facts"[\s\S]*?<\/section>/;
+  if (!inheritedFacts.test(html)) throw new Error(`[SEED_RATE_COUNTRY_FACTS_OWNER_MISSING] ${c.slug}`);
+  html = html.replace(inheritedFacts, renderCountryFacts(c, countryData));
 
   const outPath = path.join(OUTPUT_DIR, `${c.slug}.html`);
   fs.writeFileSync(outPath, html, 'utf8');

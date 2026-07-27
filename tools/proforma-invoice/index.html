@@ -59,7 +59,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .fg input:focus,.fg select:focus,.fg textarea:focus{outline:none;border-color:#0062CC;box-shadow:0 0 0 3px rgba(0,98,204,.12)}
 .fg textarea{resize:vertical;min-height:60px}
 .fg .optional{color:#94a3b8;font-weight:400;font-size:.72rem}
-.items-table-wrap{overflow-x:auto;margin-top:.5rem;max-width:100%}
+.items-table-wrap{display:block;width:100%;max-width:100%;min-width:0;overflow-x:auto;margin-top:.5rem;-webkit-overflow-scrolling:touch}
 .items-table{width:100%;border-collapse:collapse;font-size:.8rem}
 .items-table th{background:#F8FAFD;padding:.4rem .5rem;text-align:left;font-weight:700;color:#475569;border-bottom:1.5px solid #e2e8f0;white-space:nowrap}
 .items-table td{padding:.35rem .4rem;border-bottom:1px solid #f1f5f9;vertical-align:middle}
@@ -139,7 +139,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 .doc-header{border-bottom-color:#bfdbfe}
 .doc-table th{background:#f8fafc;color:#475569;border-bottom:1px solid #e2e8f0}
 .doc-title-block h2,.doc-term-label,.doc-totals-row.highlight,.doc-totals-row.cif-row{color:#0057B8}
-@media(max-width:720px){.pi-hero{padding:2rem 1rem 1.6rem}.pi-wrap{padding:1rem}.form-panel,.doc-panel{border-radius:8px}.action-bar{gap:.5rem}.items-table{min-width:760px}}
+@media(max-width:720px){.pi-hero{padding:2rem 1rem 1.6rem}.pi-wrap{width:100%;max-width:100%;min-width:0;padding:1rem}.pi-grid,.form-section,.form-row,.fg{width:100%;max-width:100%;min-width:0}.fg input,.fg select,.fg textarea{min-width:0;max-width:100%}.form-panel,.doc-panel{border-radius:8px}.doc-parties,.doc-terms-bar,.doc-terms-grid{grid-template-columns:1fr}.action-bar{gap:.5rem}.items-table{min-width:760px}}
 @media(prefers-reduced-motion:reduce){.btn-primary,.btn-secondary,.btn-add,.fg input,.fg select,.fg textarea{transition:none!important}}
 
 @media print{
@@ -214,7 +214,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
   </div>
 </div>
 
-<div class="pi-wrap">
+<div class="pi-wrap" role="main">
   <div class="pi-grid">
 
     <!-- ── FORM PANEL ── -->
@@ -478,7 +478,7 @@ function addItem(){
     <td><select onchange="calcTotals()" aria-label="Select option"><option>pcs</option><option>kg</option><option>MT</option><option>CBM</option><option>Cartons</option></select></td>
     <td><input type="number" placeholder="0.00" min="0" step="any" style="width:80px" oninput="calcItemTotal(${id})" value="0" aria-label="Input value"></td>
     <td class="td-total" id="item-total-${id}">0.00</td>
-    <td><button type="button" class="btn-remove" onclick="removeItem(${id})" title="Remove">&#10005;</button></td>
+    <td><button type="button" class="btn-remove" onclick="removeItem(${id})" title="Remove" aria-label="Remove line item">&#10005;</button></td>
   `;
   tbody.appendChild(tr);
   calcTotals();

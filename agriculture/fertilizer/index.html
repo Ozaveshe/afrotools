@@ -143,7 +143,7 @@
   </div>
 </section>
 
-<div class="hub-main" id="hubMain">
+<div class="hub-main" id="hubMain" role="main">
 
   <div class="region-section">
     <div class="region-label">West Africa (16)</div>
@@ -250,18 +250,20 @@
   <div class="df-upgrade__card">
     <div>
       <span class="df-upgrade__kicker">Field planning workflow</span>
-      <h2>Fertilizer Calculator (NPK) decision workspace</h2>
-      <p>Turn local farm assumptions into a quick planning summary before spending money or moving stock. This panel is tuned for fertilizer calculator (npk) so the user can move from a thin page to a usable first decision.</p>
-      <ul class="df-upgrade__bullets"><li>Result output: Fertilizer Calculator (NPK): farm planning summary ready with cost, buffer, timing, and field-check notes.</li><li>Methodology: combine the fields into a local planning summary, then compare the answer against current local terms.</li><li>Quality checks addressed here: formControls, saveExport, browserOk.</li><li>Source note: extension, buyer, input supplier, and farm-record references should be checked when live prices, rules, eligibility, or safety matter.</li></ul>
+      <h2>Turn an agronomist?s application rate into bags and budget</h2>
+      <p>Use your field area, recommended kilograms per hectare, bag size, and supplier price to plan a purchase.</p>
+      <ul class="df-upgrade__bullets"><li><strong>Result:</strong> required kilograms, whole bags to buy, and purchase budget.</li><li><strong>Method:</strong> area ? application rate, rounded up to whole bags.</li><li><strong>Check:</strong> soil test, crop stage, nutrient analysis, label, authenticity, and local agronomy advice.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture estimate only. Confirm local extension advice, weather, disease pressure, buyer price, and input quality before acting. Source/reference: extension, buyer, input supplier, and farm-record references.</p>
     </div>
-    <form class="df-form" data-df-form="fertilizer-calculator">
+    <form class="df-form" data-df-form="fertilizer-calculator" data-day6-agriculture-calculator novalidate>
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
-      <label>Quantity or area<input name="quantity" type="number" value="100" min="0" step="any" aria-label="Quantity or area"></label>
-      <label>Unit cost<input name="unitCost" type="number" value="2500" min="0" step="any" aria-label="Unit cost"></label>
-      <label>Risk buffer percent<input name="buffer" type="number" value="12" min="0" step="any" aria-label="Risk buffer percent"></label>
-      <button type="submit">Create summary</button>
-      <output class="df-result" data-df-result="fertilizer-calculator" data-df-base="Fertilizer Calculator (NPK): farm planning summary ready with cost, buffer, timing, and field-check notes." aria-live="polite">Fertilizer Calculator (NPK): farm planning summary ready with cost, buffer, timing, and field-check notes.</output>
+      <label>Farm area (hectares)<input name="areaHa" type="number" value="2" min="0.01" step="0.01" required></label>
+      <label>Application rate (kg per hectare)<input name="rateKgHa" type="number" value="200" min="0" step="0.1" required></label>
+      <label>Bag size (kg)<input name="bagKg" type="number" value="50" min="0.1" step="0.1" required></label>
+      <label>Price per bag<input name="bagPrice" type="number" value="35000" min="0" step="0.01" required></label>
+      <button type="submit">Calculate fertilizer</button>
+      <button type="reset">Reset</button>
+      <output class="df-result" data-df-result="fertilizer-calculator" data-df-base="No current result. Enter assumptions and calculate." aria-live="polite">No current result. Enter assumptions and calculate.</output>
       <div class="df-actions"><button type="button" data-df-copy="fertilizer-calculator">Copy summary</button></div>
     </form>
   </div>
@@ -324,6 +326,7 @@
 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/day6-agriculture-family-calculators.js" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>

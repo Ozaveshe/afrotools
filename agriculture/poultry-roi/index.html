@@ -243,7 +243,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
   </div>
 </section>
 
-<div class="hub-main">
+<div class="hub-main" role="main">
   <!-- Agriculture suite nav -->
   <div class="agri-nav" style="margin-top:2rem;">
     <div class="agri-nav-inner">
@@ -305,15 +305,16 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
       <ul class="df-upgrade__bullets"><li>Result output: Result: poultry ROI check ready with revenue, feed cost, mortality, and cycle margin.</li><li>Methodology: use the fields to create a local planning summary with visible assumptions.</li><li>Source note: Poultry extension references should be checked when live prices, policy, or eligibility matters.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture disclaimer: disease, feed price, mortality, market price, and biosecurity can change ROI. Source/reference: Poultry extension references.</p>
     </div>
-    <form class="df-form" data-df-form="poultry-roi-calculator">
+    <form class="df-form" data-df-form="poultry-roi-calculator" data-day6-agriculture-calculator>
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
       <label>Birds<input name="birds" type="number" value="500" min="0" step="any" aria-label="Birds"></label>
       <label>Feed cost<input name="feedCost" type="number" value="1200000" min="0" step="any" aria-label="Feed cost"></label>
+      <label>Other cycle costs<input name="otherCosts" type="number" value="800000" min="0" step="any" aria-label="Other cycle costs"></label>
       <label>Sale price per bird<input name="salePrice" type="number" value="6500" min="0" step="any" aria-label="Sale price per bird"></label>
       <label>Mortality percent<input name="mortality" type="number" value="5" min="0" step="any" aria-label="Mortality percent"></label>
       <button type="submit">Create summary</button>
       <output class="df-result" data-df-result="poultry-roi-calculator" data-df-base="Result: poultry ROI check ready with revenue, feed cost, mortality, and cycle margin." aria-live="polite">Result: poultry ROI check ready with revenue, feed cost, mortality, and cycle margin.</output>
-      <div class="df-actions"><button type="button" data-df-copy="poultry-roi-calculator">Copy summary</button></div>
+      <div class="df-actions"><button type="reset">Reset</button><button type="button" data-df-copy="poultry-roi-calculator">Copy summary</button></div>
     </form>
   </div>
 </section>
@@ -380,6 +381,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--color-bg); color: v
 
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>
+<script src="/assets/js/pages/day6-agriculture-family-calculators.js" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
