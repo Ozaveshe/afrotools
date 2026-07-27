@@ -476,7 +476,20 @@ function directPayeFacts(countryCode, filePath, engine) {
 function genericPayeFacts(filePath, engine) {
   const parameters = engine && engine.formulaParameters;
   if (parameters && Array.isArray(parameters.bands)) {
-    const deductions = [];
+    const period = parameters.isMonthly ? 'monthly' : 'annual';
+    const deductions = []
+      .concat(parameters.socialSecurity || [], parameters.employerSS || [])
+      .map(function (item) {
+        const baseCap = typeof item.baseCap === 'number'
+          ? item.baseCap * (period === 'annual' ? 12 : 1)
+          : null;
+        return {
+          key: item.key || '',
+          label: item.label || item.key || '',
+          rate: typeof item.rate === 'number' ? item.rate : null,
+          baseCap,
+        };
+      });
     if (typeof parameters.employeeCnssRate === 'number') {
       deductions.push({ key: 'cnss-employee', label: 'CNSS employee rate', rate: parameters.employeeCnssRate });
     }
@@ -487,12 +500,12 @@ function genericPayeFacts(filePath, engine) {
       deductions.push({ key: 'professional-deduction', label: 'Professional deduction', rate: parameters.professionalDeduction.rate, cap: parameters.professionalDeduction.cap });
     }
     return {
-      period: 'annual',
+      period,
       bands: normalizeBands(
         parameters.bands.map(function (band) {
-          return [band.width, band.rate];
+          return Array.isArray(band) ? band : [band.width, band.rate];
         }),
-        'width',
+        parameters.bandType === 'cumulative' ? 'threshold' : 'width',
       ),
       deductions,
       reliefs: typeof parameters.dependentReliefAnnual === 'number' ? [{ key: 'dependent-relief', label: 'Annual relief per qualifying dependent', amount: parameters.dependentReliefAnnual, maximumDependents: parameters.maximumDependents }] : [],
@@ -537,6 +550,7 @@ function deductionText(facts, currency) {
       let text = item.label || item.key;
       if (typeof item.rate === 'number' && !/%/.test(text)) text += ' ' + formatPercent(item.rate);
       if (typeof item.cap === 'number') text += ' (cap ' + currency + ' ' + formatNumber(item.cap) + ')';
+      if (typeof item.baseCap === 'number') text += ' (base cap ' + currency + ' ' + formatNumber(item.baseCap) + ')';
       if (typeof item.minimum === 'number') text += ' (minimum ' + currency + ' ' + formatNumber(item.minimum) + ')';
       return text;
     })

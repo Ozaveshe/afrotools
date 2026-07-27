@@ -31,14 +31,16 @@ Console evidence must record its actual start and end dates when available.
 - `git diff --check` — passed.
 - `npm run security:scan` — passed.
 - Senegal formula review — `paye-browser-sn`, `paye-server-sn`, `route-sn-paye`, and `route-sn-paye-fr` accepted; unrelated formula drift was not modified.
+- AI context generation — tuple-based PAYE bands now render as numeric ranges instead of `NaN`; Senegal French context exposes the 43% band and capped IPRES facts.
 - Full calculation-quality check — still fails on the same broad formula-registry backlog reproduced on clean `origin/main`; the Wave 1 filename crash and all Senegal PAYE mismatches are resolved.
-- `npm run build:deploy` — incomplete locally: the broad generated-output pass exceeded the 10-minute command window. Its unrelated source restamps were removed.
-- `npm run audit:dist` — incomplete locally: the partial artifact audit exceeded its 2-minute command window and is not accepted as deploy proof.
+- `npm run build:deploy` — passed locally; committed output is primarily mechanical navbar/design-system cache-bust refreshes across the static surface.
+- `npm run audit:dist` — passed.
 
 ## Evidence still needed
 
 - Search Console launch-to-date export for the French route cohort. This is
   `not yet measurable` in the repository, not a failed product gate.
-- A clean CI/Netlify build and deploy-artifact audit for the exact Wave 1
-  commit.
+- A green CI run for the final exact Wave 1 commit. The first exact-SHA run
+  exposed inherited formula-registry drift and required generated cache-bust
+  output; Playwright and the Netlify deploy preview passed.
 - Production deploy and live-route proof after the Wave 1 batch is merged.
