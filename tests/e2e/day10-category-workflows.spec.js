@@ -4,6 +4,7 @@ const {
   getCanonicalEnglishApps,
 } = require('../support/day10-category-inventory');
 
+const TEST_ORIGIN = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173';
 const apps = getCanonicalEnglishApps();
 
 function collectRuntimeErrors(page) {
@@ -21,7 +22,7 @@ function collectRuntimeErrors(page) {
 async function quietThirdParties(page) {
   await page.route('**/*', async (route) => {
     const url = new URL(route.request().url());
-    if (url.origin === 'http://127.0.0.1:4173') return route.continue();
+    if (url.origin === TEST_ORIGIN) return route.continue();
     if (['script', 'image', 'font', 'stylesheet'].includes(route.request().resourceType())) {
       return route.abort();
     }
@@ -283,7 +284,7 @@ for (const app of apps) {
       const serializedRequest = `${request.url}\n${request.postData}`;
       const containsEmail = /synthetic%40example\.test|synthetic@example\.test/i.test(serializedRequest);
       const sendsFixtureOffSite =
-        url.origin !== 'http://127.0.0.1:4173' &&
+        url.origin !== TEST_ORIGIN &&
         /synthetic(?:%20|\+| )planning(?:%20|\+| )fixture/i.test(serializedRequest);
       return containsEmail || sendsFixtureOffSite;
     });
