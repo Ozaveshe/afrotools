@@ -84,6 +84,51 @@ test('Day 6 hubs expose their reconciled workflows and responsive contracts', as
   }
 });
 
+test('Agriculture static directory exposes every calculator without JavaScript or user interaction', async ({ page }) => {
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await page.route('**/*.js*', (route) => route.abort());
+  await page.setViewportSize({ width: 320, height: 760 });
+  const response = await page.goto('/agriculture/all-tools/', { waitUntil: 'domcontentloaded' });
+  expect(response.status()).toBe(200);
+  const links = page.locator('main .agri-directory-links a');
+  await expect(links).toHaveCount(447);
+  const audit = await page.evaluate(() => {
+    const routeLinks = Array.from(document.querySelectorAll('main .agri-directory-links a'));
+    const first = routeLinks[0];
+    first.focus();
+    return {
+      unique: new Set(routeLinks.map((link) => link.getAttribute('href'))).size,
+      descriptive: routeLinks.every((link) => link.textContent.trim().length > 4 && !/^open (?:tool|calculator)$/i.test(link.textContent.trim())),
+      focused: document.activeElement === first,
+      canonical: document.querySelector('link[rel="canonical"]')?.href || '',
+      aiContext: document.querySelector('meta[name="ai-context"]')?.content || '',
+      schemaErrors: Array.from(document.querySelectorAll('script[type="application/ld+json"]'))
+        .map((node) => {
+          try { JSON.parse(node.textContent); return ''; } catch (error) { return error.message; }
+        }).filter(Boolean),
+      overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth
+    };
+  });
+  expect(audit.unique).toBe(447);
+  expect(audit.descriptive).toBe(true);
+  expect(audit.focused).toBe(true);
+  expect(audit.canonical).toBe('https://afrotools.com/agriculture/all-tools/');
+  expect(audit.aiContext).toContain('planning estimates');
+  expect(audit.schemaErrors).toEqual([]);
+  expect(audit.overflow).toBeLessThanOrEqual(1);
+
+  await page.setViewportSize({ width: 375, height: 844 });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth))
+    .toBeLessThanOrEqual(1);
+  await page.setViewportSize({ width: 640, height: 760 });
+  await page.evaluate(() => {
+    document.documentElement.style.fontSize = '200%';
+    document.documentElement.setAttribute('data-theme', 'dark');
+  });
+  expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth))
+    .toBeLessThanOrEqual(1);
+});
+
 test('all Day 6 English live/new routes keep route, mobile, theme and metadata contracts', async ({ page }) => {
   test.setTimeout(20 * 60 * 1000);
   await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
@@ -194,7 +239,16 @@ test('repaired Agriculture family entry apps execute independent deterministic f
     ['/agriculture/farm-profit/', 'Calculate profit', /750,000.*33\.3%/],
     ['/agriculture/seed-rate/', 'Calculate seed', /58\.3 kg/],
     ['/agriculture/fish-farming/', 'Calculate fish ROI', /1,020\.0 kg.*644,000/],
-    ['/agriculture/greenhouse/', 'Calculate greenhouse cost', /4,838,400/]
+    ['/agriculture/greenhouse/', 'Calculate greenhouse cost', /4,838,400/],
+    ['/agriculture/cassava-processing/', 'Create summary', /82,500.*19\.5%/],
+    ['/agriculture/farm-loans/', 'Create summary', /27\.7%.*not an eligibility or approval result/],
+    ['/agriculture/crop-insurance/', 'Estimate cover', /37,500.*75,000/],
+    ['/agriculture/farm-payroll/', 'Create summary', /840,000/],
+    ['/agriculture/livestock-feed/', 'Estimate feed cost', /1,875\.0 kg.*787,500/],
+    ['/agriculture/poultry-roi/', 'Create summary', /475 birds.*1,087,500/],
+    ['/agriculture/vaccination-schedule/', 'Create summary', /80 dose events.*52,000/],
+    ['/agriculture/harvest-date/', 'Create summary', /July 20, 2026/],
+    ['/agriculture/input-prices/', 'Create summary', /18,500.*19,700.*1,200/]
   ];
   for (const [route, button, result] of fixtures) {
     await page.goto(route, { waitUntil: 'domcontentloaded' });
@@ -226,6 +280,185 @@ test('repaired Agriculture family entry apps execute independent deterministic f
     await form.getByRole('button', { name: 'Reset' }).click();
     await expect(form.locator('output')).toContainText('No current result');
   }
+});
+
+test('every remaining Agriculture route executes its primary country or app workflow', async ({ page }) => {
+  test.setTimeout(12 * 60 * 1000);
+  const maintainedEntries = new Set([
+    '/agriculture/crop-yield/',
+    '/agriculture/fertilizer/',
+    '/agriculture/irrigation/',
+    '/agriculture/farm-profit/',
+    '/agriculture/seed-rate/',
+    '/agriculture/fish-farming/',
+    '/agriculture/greenhouse/',
+    '/agriculture/cassava-processing/',
+    '/agriculture/farm-loans/',
+    '/agriculture/crop-insurance/',
+    '/agriculture/farm-payroll/',
+    '/agriculture/livestock-feed/',
+    '/agriculture/poultry-roi/',
+    '/agriculture/vaccination-schedule/',
+    '/agriculture/harvest-date/',
+    '/agriculture/input-prices/'
+  ]);
+  const externalWrites = [];
+  const pageErrors = [];
+  page.on('pageerror', (error) => {
+    pageErrors.push(error.message);
+    console.log(`Agriculture page error: ${error.message}`);
+  });
+  page.on('request', (request) => {
+    if (!request.url().startsWith('http://127.0.0.1:4186/')
+      && !['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
+      externalWrites.push({ method: request.method(), url: request.url() });
+    }
+  });
+  page.on('dialog', (dialog) => dialog.dismiss());
+  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  let agricultureRoutes = ROUTES
+    .filter((row) => row.category === 'agriculture' && !maintainedEntries.has(row.route))
+    .filter((row) => !process.env.DAY6_ROUTE_PATTERN || new RegExp(process.env.DAY6_ROUTE_PATTERN).test(row.route));
+  if (process.env.DAY6_ROUTE_START_AFTER) {
+    const startIndex = agricultureRoutes.findIndex((row) => row.route === process.env.DAY6_ROUTE_START_AFTER);
+    if (startIndex < 0) throw new Error(`DAY6_ROUTE_START_AFTER route not found: ${process.env.DAY6_ROUTE_START_AFTER}`);
+    agricultureRoutes = agricultureRoutes.slice(startIndex + 1);
+  }
+
+  for (const [index, row] of agricultureRoutes.entries()) {
+    if (index % 40 === 0) console.log(`Agriculture workflow ${index + 1}/${agricultureRoutes.length}: ${row.route}`);
+    const response = await page.goto(row.route, { waitUntil: 'domcontentloaded' });
+    expect(response.status(), `${row.route} status`).toBe(200);
+    await page.waitForTimeout(100);
+    const before = await page.evaluate(() => {
+      const main = document.querySelector('main,[role="main"]') || document.body;
+      return {
+        text: main.innerText,
+        results: Array.from(main.querySelectorAll('output,[aria-live],.result,.results,[id*="result" i]'))
+          .map((node) => `${getComputedStyle(node).display}:${node.textContent.trim()}`).join('|')
+      };
+    });
+    const action = await page.evaluate(() => {
+      const main = document.querySelector('main,[role="main"]') || document.body;
+      const visible = (element) => {
+        const style = getComputedStyle(element);
+        const rect = element.getBoundingClientRect();
+        return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+      };
+      const controls = Array.from(main.querySelectorAll('input:not([type=hidden]),select,textarea,button'))
+        .filter(visible)
+        .filter((element) => !element.closest('afro-related-tools,.related-tools-ssr'));
+      const unnamed = controls.filter((element) => element.matches('button')
+        ? !Boolean(element.textContent.trim() || element.getAttribute('aria-label'))
+        : !Boolean(element.getAttribute('aria-label') || element.labels && element.labels.length));
+      const numberFields = controls.filter((element) => element.matches('input[type="number"]:not([readonly]):not([disabled])'));
+      let changedNumber = false;
+      numberFields.forEach((field) => {
+        if (field.value !== '') return;
+        const min = Number(field.min);
+        const max = Number(field.max);
+        let value = Number.isFinite(min) && min > 0 ? min + 1 : 10;
+        if (Number.isFinite(max) && value > max) value = Math.max(Number.isFinite(min) ? min : 0, max - 1);
+        field.value = String(value);
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        field.dispatchEvent(new Event('change', { bubbles: true }));
+        changedNumber = true;
+      });
+      if (!changedNumber && numberFields.length) {
+        const field = numberFields[0];
+        const min = Number(field.min);
+        const max = Number(field.max);
+        const current = Number(field.value);
+        let value = current + Math.max(1, Math.abs(current) * 0.1);
+        if (Number.isFinite(max) && value > max) value = Math.max(Number.isFinite(min) ? min : 0, max - 1);
+        if (value === current && Number.isFinite(min)) value = min;
+        field.value = String(value);
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        field.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      controls.filter((element) => element.matches('input[type="text"],input[type="search"],textarea'))
+        .forEach((field) => {
+          if (field.value) return;
+          const descriptor = [
+            field.id,
+            field.name,
+            field.placeholder,
+            field.getAttribute('aria-label'),
+            field.getAttribute('inputmode'),
+            ...Array.from(field.labels || [], (label) => label.textContent)
+          ].filter(Boolean).join(' ');
+          const expectsNumber = /amount|area|budget|cost|fee|income|market.?price|money|number|price|quantity|rate|revenue|salary|total|value|weight|numeric|decimal/i
+            .test(descriptor);
+          field.value = expectsNumber ? '1000' : 'Synthetic farm plan';
+          field.dispatchEvent(new Event('input', { bubbles: true }));
+          field.dispatchEvent(new Event('change', { bubbles: true }));
+        });
+      controls.filter((element) => element.matches('select')).forEach((field) => {
+        if (field.value || field.options.length < 2) return;
+        field.selectedIndex = 1;
+        field.dispatchEvent(new Event('input', { bubbles: true }));
+        field.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+      const primary = controls.find((element) => element.matches('button,input[type="submit"]')
+        && !element.matches('[role="tab"],[class*="tab"]')
+        && !/copy|print|reset|remove|add another|collapse|recalculate/i.test(`${element.textContent} ${element.value || ''}`)
+        && /calculate|estimate|generate|compare|check|lookup|track|create|build|run|search|get|show|formulate|convert|plan/i
+          .test(`${element.textContent} ${element.value || ''} ${element.getAttribute('aria-label') || ''}`));
+      if (primary) {
+        primary.click();
+        return { kind: 'button', label: (primary.textContent || primary.value || primary.getAttribute('aria-label')).trim(), unnamed };
+      }
+      const select = controls.find((element) => element.matches('select') && element.options.length > 1);
+      if (select) {
+        select.selectedIndex = select.selectedIndex === 0 ? 1 : 0;
+        select.dispatchEvent(new Event('change', { bubbles: true }));
+        return { kind: 'select', label: select.getAttribute('aria-label') || select.id || 'select', unnamed };
+      }
+      const checkbox = controls.find((element) => element.matches('input[type="checkbox"]'));
+      if (checkbox) {
+        checkbox.click();
+        return { kind: 'checkbox', label: checkbox.getAttribute('aria-label') || checkbox.id || 'checkbox', unnamed };
+      }
+      const routeLink = Array.from(main.querySelectorAll('a[href^="/"]'))
+        .filter(visible)
+        .filter((element) => !element.closest('afro-related-tools,.related-tools-ssr,.breadcrumb'))
+        .find((element) => element.matches('.country-card,.tool-card,[data-tool],[data-country]'));
+      if (routeLink) {
+        return {
+          kind: 'link',
+          label: routeLink.textContent.trim() || routeLink.getAttribute('aria-label') || routeLink.getAttribute('href'),
+          href: routeLink.getAttribute('href'),
+          unnamed
+        };
+      }
+      return {
+        kind: main.querySelector('ol,ul,table,[class*="checklist" i]') ? 'static-guide' : 'none',
+        label: '',
+        unnamed
+      };
+    });
+    if (action.kind === 'link') {
+      const linkedResponse = await page.goto(action.href, { waitUntil: 'domcontentloaded' });
+      expect(linkedResponse.status(), `${row.route} linked workflow ${action.href} status`).toBe(200);
+    }
+    await page.waitForTimeout(100);
+    const after = await page.evaluate(() => {
+      const main = document.querySelector('main,[role="main"]') || document.body;
+      return {
+        text: main.innerText,
+        results: Array.from(main.querySelectorAll('output,[aria-live],.result,.results,[id*="result" i]'))
+          .map((node) => `${getComputedStyle(node).display}:${node.textContent.trim()}`).join('|')
+      };
+    });
+    expect(action.unnamed, `${row.route} unnamed visible controls`).toEqual([]);
+    expect(action.kind, `${row.route} primary workflow`).not.toBe('none');
+    if (action.kind !== 'static-guide') {
+      expect(after.text !== before.text || after.results !== before.results,
+        `${row.route} ${action.kind} "${action.label}" workflow changes output`).toBe(true);
+    }
+  }
+  expect(externalWrites, 'Agriculture workflows make no external state-changing requests').toEqual([]);
+  expect(pageErrors, 'Agriculture workflows have no page errors').toEqual([]);
 });
 
 test('every Transport and Trade app exposes and executes an app-owned primary workflow', async ({ page }) => {

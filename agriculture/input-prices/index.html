@@ -356,14 +356,15 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#0f172a;margin:0}
       <ul class="df-upgrade__bullets"><li>Result output: Result: input-price comparison ready with landed cost, supplier risk, expiry, and authenticity checks.</li><li>Methodology: use the fields to create a local planning summary with clear assumptions.</li><li>Source note: confirm live prices, official rules, or platform terms before acting.</li></ul>
       <p class="df-upgrade__note"><strong>Reviewed 2026.</strong> Agriculture note: verify labels, expiry dates, registration numbers, and storage condition before buying inputs. Sources/reference: <a href="https://www.fao.org/soils-portal/soil-management/fertilizers/en/" target="_blank" rel="noopener">FAO fertilizer resources</a></p>
     </div>
-    <form class="df-form" data-df-form="input-prices">
+    <form class="df-form" data-df-form="input-prices" data-day6-agriculture-calculator>
       <label>Currency<select name="currency" aria-label="Currency"><option value="NGN">NGN</option><option value="KES">KES</option><option value="GHS">GHS</option><option value="ZAR">ZAR</option></select></label>
       <label>Supplier A unit price<input name="priceA" type="number" value="18500" min="0" step="any" aria-label="Supplier A unit price"></label>
       <label>Supplier B unit price<input name="priceB" type="number" value="17200" min="0" step="any" aria-label="Supplier B unit price"></label>
-      <label>Transport cost<input name="transport" type="number" value="2500" min="0" step="any" aria-label="Transport cost"></label>
+      <label>Supplier A transport per unit<input name="transportA" type="number" value="0" min="0" step="any" aria-label="Supplier A transport per unit"></label>
+      <label>Supplier B transport per unit<input name="transportB" type="number" value="2500" min="0" step="any" aria-label="Supplier B transport per unit"></label>
       <button type="submit">Create summary</button>
       <output class="df-result" data-df-result="input-prices" data-df-base="Result: input-price comparison ready with landed cost, supplier risk, expiry, and authenticity checks." aria-live="polite">Result: input-price comparison ready with landed cost, supplier risk, expiry, and authenticity checks.</output>
-      <div class="df-actions"><button type="button" data-df-copy="input-prices">Copy summary</button></div>
+      <div class="df-actions"><button type="reset">Reset</button><button type="button" data-df-copy="input-prices">Copy summary</button></div>
     </form>
   </div>
 </section>
@@ -392,6 +393,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#0f172a;margin:0}
 <afro-footer></afro-footer>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
+<script src="/assets/js/pages/day6-agriculture-family-calculators.js" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=7d171d76" defer></script>
 </body>
