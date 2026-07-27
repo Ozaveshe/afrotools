@@ -72,6 +72,9 @@ async function assertRouteShell(page, route) {
 }
 
 async function keepRunLocal(page) {
+  await page.addInitScript(() => {
+    localStorage.setItem('afrotools_cookie_consent', 'declined');
+  });
   await page.route(/^https?:\/\//, async (route) => {
     const hostname = new URL(route.request().url()).hostname;
     if (hostname === '127.0.0.1') await route.continue();
