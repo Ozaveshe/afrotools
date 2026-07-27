@@ -323,13 +323,19 @@ function calculate(){
   var country=document.getElementById('country').value;
   var sym=SYM[country];
   var pricePerYard=parseFloat(document.getElementById('pricePerYard').value)||0;
-  var yards=parseFloat(document.getElementById('yardsNeeded').value)||3;
+  var yards=parseFloat(document.getElementById('yardsNeeded').value);
   var garmentType=document.getElementById('garmentType').value;
   var garmentSize=document.getElementById('garmentSize').value;
   var garmentComplexity=document.getElementById('garmentComplexity').value;
   var labour=parseFloat(document.getElementById('garmentLabour').value)||0;
   var margin=parseFloat(document.getElementById('targetMargin').value)||0;
   var wastage=parseFloat(document.getElementById('wastage').value)/100;
+  if(!Number.isFinite(pricePerYard)||pricePerYard<=0||!Number.isFinite(yards)||yards<=0){
+    document.getElementById('results').style.display='none';
+    lastGarmentQuote='';
+    alert('Enter a price per yard and yard quantity above zero.');
+    return;
+  }
   var yardsWithWaste=yards*(1+wastage);
   var fabricCost=pricePerYard*yardsWithWaste;
   var notions=(parseFloat(document.getElementById('zippers').value)||0)+(parseFloat(document.getElementById('buttons').value)||0)+(parseFloat(document.getElementById('thread').value)||0)+(parseFloat(document.getElementById('lining').value)||0)+(parseFloat(document.getElementById('otherNotions').value)||0);

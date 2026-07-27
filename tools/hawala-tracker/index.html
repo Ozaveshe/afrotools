@@ -352,6 +352,12 @@ function compare(){
   const access=document.getElementById('recipientAccess').value;
   const urgency=document.getElementById('urgency').value;
   const repeats=Math.max(1,+document.getElementById('repeatTransfers').value||1);
+  if(!Number.isFinite(amount)||amount<=0){
+    document.getElementById('resultCard').style.display='none';
+    lastRemittanceBrief='';
+    alert('Enter a transfer amount above zero.');
+    return;
+  }
   const corridor=from+'-'+to;
   const adj=CORRIDOR_ADJ[corridor]||1.0;
 

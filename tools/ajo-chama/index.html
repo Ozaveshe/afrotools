@@ -497,9 +497,14 @@ function generateSchedule() {
   var defaultRule = document.getElementById('defaultRule').value;
   var meetingMode = document.getElementById('meetingMode').value;
 
-  if (!contribution || contribution <= 0) return alert('Enter a valid contribution amount.');
-  if (members.length < 2) return alert('At least 2 members are needed.');
-  if (isNaN(startDate.getTime())) return alert('Enter a valid start date.');
+  if (!contribution || contribution <= 0 || members.length < 2 || isNaN(startDate.getTime())) {
+    document.getElementById('resultsCard').style.display='none';
+    document.getElementById('scheduleCard').style.display='none';
+    window._ajoData=null;
+    if (!contribution || contribution <= 0) return alert('Enter a valid contribution amount.');
+    if (members.length < 2) return alert('At least 2 members are needed.');
+    return alert('Enter a valid start date.');
+  }
 
   var n = members.length;
   var poolPerRound = contribution * n;

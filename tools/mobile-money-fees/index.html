@@ -873,7 +873,12 @@ function compare(){
   const amount = parseFloat(document.getElementById('mmAmount').value);
   const txType = document.getElementById('mmTxType').value;
 
-  if(!amount || amount <= 0){ alert('Please enter a valid transfer amount.'); return; }
+  if(!amount || amount <= 0){
+    document.getElementById('resultsSection').style.display = 'none';
+    lastMobileMoneyBrief = '';
+    alert('Please enter a valid transfer amount.');
+    return;
+  }
 
   const countryData = FEE_TABLES[code];
   if(!countryData){ alert('Country data not available.'); return; }

@@ -302,7 +302,7 @@
     var input={genKVA:byId("gfKva").value,dailyHours:parseFloat(byId("gfHours").value)||0,fuelType:byId("gfFuel").value};
     var defaultFuelPrice=data&&data.fuel?Number(data.fuel[input.fuelType])||0:0;
     var fuelPrice=parseFloat(byId("gfFuelPrice").value)||0;
-    if(fuelPrice<=0){byId("gfFuelPrice").setAttribute("aria-invalid","true");byId("gfFuelPriceError").textContent="Enter a fuel price above zero.";byId("gfFuelPrice").focus();return;}
+    if(fuelPrice<=0){byId("gfFuelPrice").setAttribute("aria-invalid","true");byId("gfFuelPriceError").textContent="Enter a fuel price above zero.";byId("gfResults").classList.remove("on");latestEstimate=null;byId("gfStatus").textContent="Estimate cleared. Enter a fuel price above zero.";byId("gfFuelPrice").focus();return;}
     byId("gfFuelPrice").removeAttribute("aria-invalid");byId("gfFuelPriceError").textContent="";
     var result=AfroTools.GeneratorFuelEngine.calculate(input,cc);
     if(result.error){alert(result.error);return;}

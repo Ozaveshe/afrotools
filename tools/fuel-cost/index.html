@@ -551,7 +551,12 @@ function calcTrip() {
   const condition = document.getElementById('routeCondition').value;
   const passengers = Math.max(1, parseInt(document.getElementById('passengers').value) || 1);
   const reservePct = Math.max(0, Math.min(50, parseFloat(document.getElementById('reservePct').value) || 0));
-  if (!dist || !cons || !price) { showToast('Fill in all fields'); return; }
+  if (!dist || !cons || !price) {
+    document.getElementById('resultCard').style.display = 'none';
+    LAST_FUEL_PLAN = '';
+    showToast('Fill in all fields');
+    return;
+  }
 
   let distKm = unit === 'mi' ? dist * 1.60934 : dist;
   if (rt) distKm *= 2;

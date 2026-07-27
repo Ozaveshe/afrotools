@@ -289,13 +289,19 @@ function calculate(){
   var type=document.getElementById('fabricType').value;
   var quality=document.getElementById('quality').value;
   var pricePerYard=parseFloat(document.getElementById('pricePerYard').value)||0;
-  var yards=parseFloat(document.getElementById('yards').value)||6;
+  var yards=parseFloat(document.getElementById('yards').value);
   var purpose=document.getElementById('purpose').value;
   var units=Math.max(1,parseInt(document.getElementById('quoteUnits').value,10)||1);
   var labourPerPiece=parseFloat(document.getElementById('labourPerPiece').value)||0;
   var packagingPerPiece=parseFloat(document.getElementById('packagingPerPiece').value)||0;
   var shippingOrder=parseFloat(document.getElementById('shippingOrder').value)||0;
   var marginPct=parseFloat(document.getElementById('quoteMargin').value)||0;
+  if(!Number.isFinite(pricePerYard)||pricePerYard<=0||!Number.isFinite(yards)||yards<=0){
+    document.getElementById('results').style.display='none';
+    lastProductionQuote='';
+    alert('Enter a price per yard and yard quantity above zero.');
+    return;
+  }
   var sym=SYM[country];var rate=FX[country];
   var totalLocal=pricePerYard*yards;
   var totalUSD=totalLocal/rate;
