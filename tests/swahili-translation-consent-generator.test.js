@@ -29,6 +29,11 @@ test("Swahili Pidgin generator repair requires per-page consent and sends a priv
   const result = repairPidginTranslatorConsent(source);
 
   assert.match(result, /external-translation-consent\.js/);
+  assert.equal(
+    (result.match(/external-translation-consent\.js(?:\?v=[a-f0-9]{8})?/g) || []).length,
+    1,
+    "repair must collapse raw and cache-busted consent runtimes to one tag"
+  );
   assert.match(result, /id="pidginTranslationConsent"/);
   assert.match(result, /id="translateBtn"[^>]*disabled/);
   assert.match(result, /consent\.requireConsent\('pidgin-translator'/);
@@ -41,6 +46,21 @@ test("Swahili Pidgin generator repair requires per-page consent and sends a priv
   assert.match(result, /clearCloudTranslation/);
   assert.doesNotMatch(result, /afro_translate_cache_(?:sw|pcm)|localStorage\.setItem\(\s*['"][^'"]*(?:translate|translation|srcText|tgtOutput)/i);
   assert.equal(repairPidginTranslatorConsent(result), result, "repair must be idempotent");
+});
+
+test("Swahili Pidgin repair deduplicates cache-busted consent runtimes", () => {
+  const source = read("sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html");
+  const duplicated = source.replace(
+    "</head>",
+    '<script src="/assets/js/lib/external-translation-consent.js?v=524e1efa" defer></script>\n</head>'
+  );
+  const result = repairPidginTranslatorConsent(duplicated);
+
+  assert.equal(
+    (result.match(/external-translation-consent\.js(?:\?v=[a-f0-9]{8})?/g) || []).length,
+    1
+  );
+  assert.equal(repairPidginTranslatorConsent(result), result);
 });
 
 test("Swahili PDF generator repair requires document consent and sends translation text no-store", () => {

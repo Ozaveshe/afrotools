@@ -155,6 +155,18 @@ function run() {
     });
   });
 
+  // Factory engines expose tuple bands. They must remain numeric in generated
+  // context rather than degrading to NaN ranges.
+  {
+    const context = generated['sn-paye-fr'];
+    const facts = freshlyBuilt.records['sn-paye-fr'].sourceRecord.facts;
+    assert.ok(!context.includes('NaN'));
+    assert.ok(context.includes('43%'));
+    assert.ok(context.includes('IPRES'));
+    assert.strictEqual(facts.bands.at(-1).rate, 0.43);
+    assert.strictEqual(facts.deductions[0].baseCap, 5_184_000);
+  }
+
   // VAT rate comes from the formula-owned executable artifact, while the
   // formula record supplies the version, source, and review date.
   {

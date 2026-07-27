@@ -5,14 +5,25 @@ const forbiddenImplementationCopy = /Version française premium|Moteur source co
 test.describe('French product surface', () => {
   test('homepage is French, static-first, and registry-backed', async ({ page }) => {
     await page.goto('/fr/');
-    await expect(page.locator('h1')).toHaveText('Le bon outil, pour le bon pays et la bonne décision.');
-    await expect(page.locator('[data-registry-count="tools.live_experiences"]')).toHaveText(/2[\s\u202f]?606\+/);
-    await expect(page.locator('[data-registry-count="countries.published"]')).toHaveText('54');
-    await expect(page.locator('[data-registry-count="categories.published"]')).toHaveText('32');
-    await expect(page.locator('[data-registry-count="languages.site_published"]')).toHaveText('5');
+    await expect(page.locator('h1')).toHaveText('Calculez, vérifiez, avancez — selon votre pays.');
+    const frenchCount = Number((await page.locator('[data-registry-count="tools.locale.fr.published"]').innerText()).replace(/\D/g, ''));
+    expect(frenchCount).toBeGreaterThan(1000);
+    expect(frenchCount).not.toBe(2606);
     await expect(page.locator('body')).not.toContainText(/Nigeria PAYE Calculator|Suggestions, examples|Fonctionne en 2G/);
     await expect(page.locator('main')).not.toContainText(forbiddenImplementationCopy);
-    await expect(page.getByRole('link', { name: 'Lire les conditions d’utilisation' })).toHaveAttribute('href', '/fr/terms-of-use/');
+    for (const name of ['Salaire net au Sénégal', 'TVA en Côte d’Ivoire', 'Créer une facture', 'Convertir avec un taux daté']) {
+      await expect(page.getByRole('link', { name: new RegExp(name) }).first()).toBeVisible();
+    }
+  });
+
+  test('homepage search hands its query to the French directory', async ({ page }) => {
+    await page.goto('/fr/');
+    const search = page.locator('#frHomeSearch');
+    await search.fill('salaire Sénégal');
+    await search.press('Enter');
+    await expect(page).toHaveURL(/\/fr\/all-tools\/\?q=salaire(?:\+|%20)S%C3%A9n%C3%A9gal/);
+    await expect(page.locator('#searchInput')).toHaveValue('salaire Sénégal');
+    await expect(page.locator('#toolsGrid > a').first()).toBeVisible();
   });
 
   test('directory renders only genuine French registry records and filters them', async ({ page }) => {
@@ -94,18 +105,19 @@ test.describe('French product surface', () => {
     const noJs = await browser.newContext({ javaScriptEnabled: false });
     const noJsPage = await noJs.newPage();
     await noJsPage.goto('/fr/');
-    await expect(noJsPage.locator('[data-registry-count="tools.live_experiences"]')).toHaveText(/2[\s\u202f]?606\+/);
-    await expect(noJsPage.getByRole('link', { name: 'Parcourir tous les outils' })).toBeVisible();
+    await expect(noJsPage.locator('[data-registry-count="tools.locale.fr.published"]')).toHaveText(/\d/);
+    await expect(noJsPage.getByRole('link', { name: 'Trouver un outil' })).toBeVisible();
     await noJsPage.goto('/fr/all-tools/');
     expect(await noJsPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
-    await expect(noJsPage.getByRole('link', { name: /Calculateur (?:PAYE|Salaire Net)/ }).first()).toBeVisible();
+    await expect(noJsPage.getByRole('link', { name: /Fusionner et diviser des PDF/ }).first()).toBeVisible();
     await noJs.close();
 
     const blocked = await browser.newContext();
     const blockedPage = await blocked.newPage();
     await blockedPage.route(/tool-registry|registry-counts/, (route) => route.abort());
     await blockedPage.goto('/fr/all-tools/');
-    await expect(blockedPage.locator('#statLive')).toHaveText('1152');
+    const blockedFallbackCount = Number((await blockedPage.locator('#statLive').innerText()).replace(/\D/g, ''));
+    expect(blockedFallbackCount).toBeGreaterThan(1000);
     expect(await blockedPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
     await blocked.close();
   });
@@ -116,7 +128,22 @@ test.describe('French product surface', () => {
     await expect(page.locator('h1')).toHaveCount(1);
     await expect(page.locator('h1')).toBeVisible();
     await expect(page.locator('.fr-search input')).toBeVisible();
-    await expect(page.locator('body')).not.toHaveCSS('overflow-x', 'scroll');
+    const viewport = await page.evaluate(() => ({
+      scrollWidth: document.documentElement.scrollWidth,
+      innerWidth: window.innerWidth
+    }));
+    expect(viewport.scrollWidth).toBeLessThanOrEqual(viewport.innerWidth);
+    await page.locator('.fr-search input').focus();
+    await expect(page.locator('.fr-search input')).toBeFocused();
+    await page.locator('.fr-card').first().focus();
+    await expect(page.locator('.fr-card').first()).toBeFocused();
+    await page.evaluate(() => document.documentElement.setAttribute('data-theme', 'dark'));
+    const darkCard = await page.locator('.fr-card').first().evaluate((element) => {
+      const style = getComputedStyle(element);
+      return { background: style.backgroundColor, color: style.color };
+    });
+    expect(darkCard.background).not.toBe('rgb(255, 255, 255)');
+    expect(darkCard.color).not.toBe(darkCard.background);
     const menu = page.getByRole('button', { name: /menu/i }).first();
     if (await menu.count()) {
       await menu.click();

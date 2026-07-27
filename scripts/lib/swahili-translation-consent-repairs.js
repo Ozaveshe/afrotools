@@ -17,7 +17,13 @@ function replaceFunctionBeforeMarker(html, functionName, marker, replacement) {
 }
 
 function repairPidginTranslatorConsent(source) {
-  let html = insertBeforeHeadEnd(source, EXTERNAL_CONSENT_SCRIPT);
+  // Cache-busting versions this tag after generation. Normalize both raw and
+  // versioned copies first so repeated cross-platform builds stay idempotent.
+  let html = source.replace(
+    /[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/external-translation-consent\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gi,
+    ''
+  );
+  html = insertBeforeHeadEnd(html, EXTERNAL_CONSENT_SCRIPT);
 
   if (!html.includes('id="pidginTranslationConsent"')) {
     html = html.replace(

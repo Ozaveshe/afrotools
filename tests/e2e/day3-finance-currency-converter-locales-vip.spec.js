@@ -2,7 +2,7 @@ const { test, expect } = require('@playwright/test');
 
 const fresh = {
   base: 'USD',
-  rates: { USD: 1, NGN: 1400, KES: 130, GHS: 12, ZAR: 18, EUR: 0.9, GBP: 0.78 },
+  rates: { USD: 1, NGN: 1400, KES: 130, GHS: 12, ZAR: 18, EUR: 0.9, GBP: 0.78, XOF: 600, XAF: 600, CDF: 2850, MAD: 10, TND: 3.1 },
   source: 'fawazahmed',
   timestamp: new Date().toISOString()
 };
@@ -15,6 +15,7 @@ const routes = [
     manual: 'Mon taux prestataire',
     stale: 'Snapshot trop ancien',
     result: /175[\s\u202f,.]?700/,
+    filename: 'afrotools-conversion-devises.csv',
     artifact: 'artifacts/currency-converter-fr-vip-375-dark.png'
   },
   {
@@ -24,6 +25,7 @@ const routes = [
     manual: 'Kiwango cha mtoa huduma',
     stale: 'Snapshot ni ya zamani sana',
     result: /175[\s,]?700/,
+    filename: 'afrotools-ubadilishaji-sarafu.csv',
     artifact: 'artifacts/currency-converter-sw-vip-375-dark.png'
   }
 ];
@@ -61,7 +63,7 @@ for (const item of routes) {
     await page.screenshot({ path: item.artifact, fullPage: true });
     const download = page.waitForEvent('download');
     await page.locator('#fxCsv').click();
-    expect((await download).suggestedFilename()).toBe('afrotools-currency-conversion.csv');
+    expect((await download).suggestedFilename()).toBe(item.filename);
     await page.setViewportSize({ width: 200, height: 640 });
     const overflow = await page.evaluate(() => Array.from(document.querySelectorAll('body *')).map(element => ({ element, box: element.getBoundingClientRect() })).filter(item => item.box.left < -0.5 || item.box.right > document.documentElement.clientWidth + 0.5).map(item => ({ tag: item.element.tagName, id: item.element.id, className: String(item.element.className || ''), left: item.box.left, right: item.box.right })).slice(0, 20));
     expect(overflow).toEqual([]);
@@ -103,4 +105,45 @@ test('a failed API request falls back to the fresh committed snapshot', async ({
   await page.goto('/fr/tools/convertisseur-devises/');
   await expect(page.locator('#fxStatus')).toHaveText('Snapshot daté prêt');
   await expect(page.locator('#fxConvert')).toBeEnabled();
+});
+
+test('French route rejects a non-USD API base and accepts the valid USD fallback', async ({ page }) => {
+  await page.route('**/api/forex?base=USD', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ ...fresh, base: 'EUR', source: 'wrong-base-api' })
+  }));
+  await page.route('**/data/forex/latest.json', route => route.fulfill({
+    status: 200,
+    contentType: 'application/json',
+    body: JSON.stringify({ ...fresh, source: 'committed-fallback' })
+  }));
+  await page.goto('/fr/tools/convertisseur-devises/');
+  await expect(page.locator('#fxStatus')).toHaveText('Snapshot daté prêt');
+  await expect(page.locator('#fxSourceLabel')).toContainText('committed-fallback');
+  await expect(page.locator('#fxConvert')).toBeEnabled();
+});
+
+test('French currency names, francophone corridors and stale-result invalidation stay coherent', async ({ page }) => {
+  await stub(page, fresh);
+  await page.goto('/fr/tools/convertisseur-devises/');
+  const euroName = await page.evaluate(() => new Intl.DisplayNames(['fr-FR'], { type: 'currency' }).of('EUR'));
+  await expect(page.locator('#fxFrom option[value="EUR"]')).toHaveText(`EUR — ${euroName}`);
+
+  await page.getByRole('button', { name: 'EUR → XOF' }).click();
+  await expect(page.locator('#fxFrom')).toHaveValue('EUR');
+  await expect(page.locator('#fxTo')).toHaveValue('XOF');
+  await page.locator('#fxConvert').click();
+  await expect(page.locator('#fxResult')).toBeVisible();
+
+  await page.locator('#fxAmount').fill('250');
+  await expect(page.locator('#fxResult')).toBeHidden();
+  await expect(page.locator('#fxEmpty')).toBeVisible();
+
+  await page.locator('#fxConvert').click();
+  await expect(page.locator('#fxResult')).toBeVisible();
+  await page.locator('#fxSwap').click();
+  await expect(page.locator('#fxResult')).toBeHidden();
+  await expect(page.locator('#fxFrom')).toHaveValue('XOF');
+  await expect(page.locator('#fxTo')).toHaveValue('EUR');
 });
