@@ -162,6 +162,28 @@ function main() {
       "a decisive margin must still outrank a near-tie");
   }
 
+
+  // --- 12. Synonym expansion is additive and reaches institutional register --
+  {
+    const synonyms = JSON.parse(require("fs").readFileSync(
+      require("path").join(ROOT, "data", "ai", "afro-synonyms.json"), "utf8"));
+    const query = "how much to deliver baby for hospital";
+    const expanded = confidence.expandQuery(query, synonyms);
+
+    // Additive only: expansion may add reach, never remove a match the
+    // retriever would have made on the user's own words.
+    assert.ok(expanded.startsWith(query), "expansion must preserve the original query verbatim");
+    assert.ok(/childbirth/.test(expanded), "'deliver baby' should reach the 'childbirth' register");
+
+    // And it must actually change retrieval, not just the string.
+    const before = rank(query, manifest).map((c) => c.tool.id);
+    const after = rank(expanded, manifest).map((c) => c.tool.id);
+    assert.notDeepStrictEqual(before, after, "expansion should change what is retrieved");
+
+    // No synonyms configured => untouched.
+    assert.strictEqual(confidence.expandQuery(query, null), query);
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 

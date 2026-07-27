@@ -27,6 +27,7 @@ const bench = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", BENCH_FIL
 const manifestApi = require(path.join(ROOT, "assets", "js", "ai", "tool-manifest.js"));
 const confidence = require(path.join(ROOT, "assets", "js", "ai", "afro-confidence.js"));
 const lexicon = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
+const synonyms = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-synonyms.json"), "utf8"));
 
 const VERBOSE = process.argv.includes("--verbose");
 const AS_JSON = process.argv.includes("--json");
@@ -48,7 +49,7 @@ function runCase(testCase, manifest) {
     graded.selectedToolId = toolIdOf(retrieved[0]);
   } else {
     // One entry point so injection can never be skipped — that was the 1.0 bug.
-    graded = confidence.resolve(testCase.prompt, retrieved, { manifest, lexicon });
+    graded = confidence.retrieveAndResolve(testCase.prompt, manifestApi.rankToolCandidates, { manifest, lexicon, synonyms });
   }
   const picked = graded.selectedToolId;
 
