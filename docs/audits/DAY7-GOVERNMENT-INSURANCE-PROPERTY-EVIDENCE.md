@@ -111,8 +111,10 @@ No navbar, global design-system, registry, source-ledger, localized, sitemap, mi
 - Government canonical/hub/adjunct suite: 17/17 passed.
 - Visa country family: 54/54 passed.
 - Work Permit country contexts: 27/27 group A and 27/27 group B passed after the hidden-link repair.
-- Insurance + rebuilt Property matrix: 345/345 passed serially in 15.6 minutes.
-- Preserved Property workflow suites: 10/10 English browser/export cases passed across seven routes.
+- Combined Day 7 category browser matrix: **470/470 passed** across Government,
+  Insurance, Property, Visa and Work Permit routes.
+- Insurance and rebuilt/preserved Property coverage remain included in that
+  full matrix.
 - Privacy/AI consent suite: 3/3 passed.
 
 Coverage includes deterministic synthetic workflows, invalid or empty states, reset/focus, 320/375px widths, system and manual dark state, 200% text reflow, visible labels and live output, no raw input in network bodies or tool storage, and console/page-error checks.
@@ -124,6 +126,8 @@ Parser reopening includes mortgage, rent-vs-buy, mortgage budget, home-loan file
 Passed:
 
 - all `tests/day7-*.test.js`
+- `node --test tests/day7-*.test.js` — **20/20 passed**
+- all five maintained Day 7 Playwright suites — **470/470 passed**
 - `git diff --check`
 - `npm run insurance:sources:check` (advisory warnings remain)
 - `npm run category-workflow:verify`
@@ -143,6 +147,8 @@ Passed:
 Known non-Day-7 or source-state failures/warnings:
 
 - `npm run government:sources:check` fails: 67 sources, 10 changed, 26 blocked/manual and one broken source (`stp-cen`, HTTP 503). Route UI therefore does not present a live government verdict.
+- Ghana Work Permit now uses the official Ghana Immigration Service
+  fees-and-charges route while retaining the agency homepage as its base source.
 - `npm run insurance:sources:check` passes but reports the 29 March 2026 dataset floor as 120 days old, 29/54 markets without a bound regulator URL, eight unsourced claim classes and only five verified figures. The rebuilt workflows do not consume those premium/rate figures.
 - `npm run legal-workflow:verify` fails on the pre-existing sitewide expectation that the Legal hub title say “69 Apps.” Current scoped inventory finds 67 English live/new Legal rows. This verifier is not used to grant Mortgage & Property acceptance.
 - `npm run audit` passes but reports three unrelated missing career pages.
