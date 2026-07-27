@@ -429,7 +429,9 @@ function copyTaxPlan(){
   if(!lastTaxPlan)return;
   const btn=document.getElementById('copyTaxPlanBtn');
   if(navigator.clipboard&&navigator.clipboard.writeText){
-    navigator.clipboard.writeText(lastTaxPlan).then(()=>{if(btn){btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy checklist',1400)}});
+    navigator.clipboard.writeText(lastTaxPlan)
+      .then(()=>{if(btn){btn.textContent='Copied';setTimeout(()=>btn.textContent='Copy checklist',1400)}})
+      .catch(()=>{if(btn){btn.textContent='Copy unavailable';setTimeout(()=>btn.textContent='Copy checklist',1800)}});
   }else{
     window.prompt('Copy checklist',lastTaxPlan);
   }

@@ -183,6 +183,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
         </select>
       </div>
       <button type="button" class="calc-btn" onclick="calculate()">Calculate</button>
+      <div id="workingDaysStatus" role="status" aria-live="polite" style="min-height:1.25rem;margin-top:8px;font-size:.78rem;color:#b91c1c"></div>
 
       <div class="result-display" id="results" style="display:none">
         <div class="result-lbl">Working Days</div>
@@ -328,11 +329,18 @@ function calculate(){
   const startStr=document.getElementById('startDate').value;
   const endStr=document.getElementById('endDate').value;
   const country=document.getElementById('country').value;
-  if(!startStr||!endStr){alert('Please select both dates');return;}
+  function reject(message,fieldId){
+    document.getElementById('results').style.display='none';
+    document.getElementById('holList').innerHTML='';
+    document.getElementById('workingDaysStatus').textContent=message;
+    document.getElementById(fieldId).focus();
+  }
+  if(!startStr||!endStr){reject('Choose both a start date and an end date.',!startStr?'startDate':'endDate');return;}
 
   const start=new Date(startStr+'T00:00:00');
   const end=new Date(endStr+'T00:00:00');
-  if(start>end){alert('Start date must be before end date');return;}
+  if(start>end){reject('Start date must be on or before the end date.','endDate');return;}
+  document.getElementById('workingDaysStatus').textContent='';
 
   // Get holidays for all years in range
   const holidays=[];
