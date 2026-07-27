@@ -363,9 +363,15 @@ function speedDots(score){
 function compare(){
   const from=document.getElementById('fromCountry').value;
   const to=document.getElementById('toCountry').value;
-  const amount=parseFloat(document.getElementById('amount').value)||500;
+  const amount=parseFloat(document.getElementById('amount').value);
   const enteredFee=Math.max(0,parseFloat(document.getElementById('providerFee').value)||0);
   const enteredMarginPct=Math.max(0,parseFloat(document.getElementById('fxMargin').value)||0);
+  if(!Number.isFinite(amount)||amount<=0){
+    document.getElementById('results').style.display='none';
+    lastDecisionPlan='';
+    alert('Enter an amount above zero.');
+    return;
+  }
   if(!RATES[to]||!FROM_RATES[from]){alert('This corridor is not yet supported.');return;}
   const baseRate=RATES[to]/FROM_RATES[from];
   const sym=FROM_SYMS[from];

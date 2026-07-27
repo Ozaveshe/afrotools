@@ -309,6 +309,12 @@ function calculate(){
   const savePct=(+document.getElementById('savePct').value||0)/100;
   const bikeGoal=+document.getElementById('bikeGoal').value||0;
   const reserveGoal=+document.getElementById('reserveGoal').value||0;
+  if(!Number.isFinite(trips)||trips<=0||!Number.isFinite(fare)||fare<=0||!Number.isFinite(daysPerWeek)||daysPerWeek<=0){
+    document.getElementById('resultCard').style.display='none';
+    lastRiderPlan='';
+    alert('Enter trips, fare, and working days above zero.');
+    return;
+  }
 
   const daysPerMonth=Math.max(1,daysPerWeek*4.33-slowDays);
 

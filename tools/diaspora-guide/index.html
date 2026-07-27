@@ -487,6 +487,11 @@ function showGuide(){
   const rc=document.getElementById('resCountry').value;
   const home=DATA[hc];
   const res=RES_DATA[rc];
+  if(!home||!res){
+    document.getElementById('results').innerHTML='<div class="guide-block"><p>Select both a home country and a country of residence to build the guide.</p></div>';
+    lastTaxPlan='';
+    return;
+  }
   const treaty=home.treaties[rc];
   const hasTreaty=treaty.includes('in force');
 

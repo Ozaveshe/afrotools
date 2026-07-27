@@ -337,6 +337,13 @@ function generate(){
   const graceDays=+document.getElementById('graceDays').value||0;
   const latePenalty=+document.getElementById('latePenalty').value||0;
   const missedPayments=+document.getElementById('missedPayments').value||0;
+  if(!Number.isFinite(n)||n<2||!Number.isFinite(contrib)||contrib<=0){
+    document.getElementById('resultCard').style.display='none';
+    scheduleData=[];
+    lastGroupBrief='';
+    alert('Enter at least two members and a contribution above zero.');
+    return;
+  }
 
   let names=[];
   if(namesInput){

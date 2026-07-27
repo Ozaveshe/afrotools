@@ -372,7 +372,12 @@ function calculate(){
   const reservePct=Math.max(0,parseFloat(document.getElementById('reservePct').value)||0);
   const startDateStr=document.getElementById('startDate').value;
 
-  if(contribution<=0){alert('Please enter the contribution amount.');return}
+  if(contribution<=0){
+    document.getElementById('results').style.display='none';
+    lastAjoRiskBrief='';
+    alert('Please enter the contribution amount.');
+    return;
+  }
 
   const pool=contribution*members;
   const feeAmount=pool*(fee/100);
