@@ -423,6 +423,29 @@
    * as a secondary term so a strong lexical match is not thrown away, and a
    * country match is a real bonus rather than an accident of the tool id.
    */
+  /**
+   * Tools the Afro-Lexicon says this phrasing means, regardless of wording.
+   *
+   * The manifest describes tools in their own titles, so a user who says
+   * "clear my car for tincan" or "wetin go remain" matches nothing — the
+   * vocabulary gap, not a ranking gap. The lexicon closes it, and it is the
+   * layer that grows from real queries.
+   */
+  function lexiconMatches(query, lexicon) {
+    if (!lexicon || !lexicon.entries) return {};
+    var text = " " + lower(query).replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ") + " ";
+    var hits = {};
+    lexicon.entries.forEach(function (entry) {
+      var matched = (entry.phrases || []).some(function (phrase) {
+        return text.indexOf(" " + lower(phrase) + " ") !== -1 ||
+          text.indexOf(" " + lower(phrase)) !== -1;
+      });
+      if (!matched) return;
+      (entry.tools || []).forEach(function (toolId) { hits[toolId] = true; });
+    });
+    return hits;
+  }
+
   function rerank(query, candidates, options) {
     var opts = options || {};
     var list = (candidates || []).filter(Boolean);
@@ -431,6 +454,7 @@
     var queryCountry = detectQueryCountry(query);
     var topScore = candidateScore(list[0]) || 1;
     var idf = getIdf(opts.manifest);
+    var lexHits = lexiconMatches(query, opts.lexicon);
 
     var scored = list.map(function (candidate, index) {
       var precision = coverageSignal(query, candidate, idf);
@@ -438,6 +462,10 @@
       var toolCountry = detectToolCountry(candidateId(candidate));
 
       var fit = (precision * 0.6) + (retrieval * 0.4);
+
+      // A lexicon hit is strong evidence: a human has said this phrasing means
+      // this tool. It outweighs lexical overlap, which is exactly the point.
+      if (lexHits[candidateId(candidate)]) fit += 0.6;
 
       if (queryCountry && toolCountry === queryCountry) fit += 0.15;
       // A tool scoped to a different country cannot be the best answer.
@@ -464,6 +492,7 @@
     BANDS: BANDS,
     calibrate: calibrate,
     rerank: rerank,
+    lexiconMatches: lexiconMatches,
     resolveCountryConflict: resolveCountryConflict,
     detectQueryCountry: detectQueryCountry,
     detectToolCountry: detectToolCountry,

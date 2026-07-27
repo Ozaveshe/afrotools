@@ -24,6 +24,7 @@ const ROOT = path.resolve(__dirname, "..");
 const bench = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-bench.json"), "utf8"));
 const manifestApi = require(path.join(ROOT, "assets", "js", "ai", "tool-manifest.js"));
 const confidence = require(path.join(ROOT, "assets", "js", "ai", "afro-confidence.js"));
+const lexicon = JSON.parse(fs.readFileSync(path.join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
 
 const VERBOSE = process.argv.includes("--verbose");
 const AS_JSON = process.argv.includes("--json");
@@ -38,7 +39,7 @@ function runCase(testCase, manifest) {
   const ranked = manifestApi.rankToolCandidates(testCase.prompt, manifest, { limit: 5, minScore: 1 });
   let candidates = (ranked && ranked.candidates) || [];
   if (!process.argv.includes("--no-rerank")) {
-    candidates = confidence.rerank(testCase.prompt, candidates, { manifest });
+    candidates = confidence.rerank(testCase.prompt, candidates, { manifest, lexicon });
   }
   candidates = confidence.resolveCountryConflict(testCase.prompt, candidates);
 
