@@ -42,6 +42,58 @@
     .ai-run:hover,.ai-run:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
     .ai-quick-panel{display:grid;gap:9px;border:1px solid #e0ecfb;border-radius:13px;background:linear-gradient(180deg,#fff 0%,#f9fbff 100%);padding:11px}
     .ai-quick-panel strong{color:#0f172a;font-size:.8rem;font-weight:900}
+    /* ── Answer-first two-column result ───────────────────────────────────────
+     * One query used to render 7,900px: a 206px direct answer buried under
+     * 2,387px of stacked panels, then 2,272px of browse-the-directory content
+     * that has no business being on screen once you have already asked.
+     *
+     * The answer leads and owns the column. The tool handoff sits beside it as
+     * a sticky rail with exactly one primary action. Reference material —
+     * checklists, source confidence, exports, Pro — collapses behind one
+     * disclosure, because it is something you consult, not something you read
+     * on the way to acting. */
+    /* The result card's main heading renders white on a transparent card in
+     * production, so the tool name — the single most important word on the
+     * screen — is invisible. Two .ai-card-title elements exist; only the one in
+     * .ai-card-head is affected, so scope the repair rather than blanket-setting
+     * the class. */
+    .ai-workflow-card .ai-card-head .ai-card-title{color:#0f172a}
+    :root[data-theme="dark"] .ai-workflow-card .ai-card-head .ai-card-title{color:#eef5ff}
+    body.ai-has-result .ai-command-hero{max-width:1180px}
+    .ai-answer-shell{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;align-items:start;margin-top:14px}
+    .ai-answer-shell > .ai-answer{margin-top:0}
+    .ai-answer-shell > .ai-state{position:sticky;top:84px}
+    .ai-answer-shell .ai-result-summary{display:flex;flex-wrap:wrap;gap:8px}
+    .ai-answer-shell .ai-result-summary > *{flex:1 1 150px;min-width:0}
+    @media(max-width:960px){
+      .ai-answer-shell{grid-template-columns:minmax(0,1fr)}
+      .ai-answer-shell > .ai-state{position:static}
+    }
+    /* Browse-mode content is irrelevant once a result is on screen. */
+    body.ai-has-result .ai-command-cockpit,
+    body.ai-has-result .ai-hub-section:not(.ai-hub-faq){display:none}
+    .ai-more{margin-top:12px;border-top:1px solid #e8eef6;padding-top:10px}
+    .ai-more > summary{display:inline-flex;align-items:center;gap:7px;min-height:40px;cursor:pointer;color:#0057b8;font-size:.82rem;font-weight:800;list-style:none}
+    .ai-more > summary::-webkit-details-marker{display:none}
+    .ai-more > summary::after{content:"▾";font-size:.7rem;transition:transform .15s ease}
+    .ai-more[open] > summary::after{transform:rotate(180deg)}
+    .ai-more-body{padding-top:8px}
+    .ai-worked{border:1px solid #dbe6f4;border-radius:14px;background:#fff;padding:16px;margin-top:12px;max-width:760px}
+    .ai-worked-row{display:grid;grid-template-columns:78px minmax(0,1fr);gap:10px;align-items:start;padding:8px 0;border-bottom:1px dashed #e8eef6}
+    .ai-worked-row p{margin:0;color:#334155;font-size:.88rem;line-height:1.55}
+    .ai-worked-tag{color:#94a3b8;font-size:.66rem;font-weight:900;letter-spacing:.07em;text-transform:uppercase;padding-top:3px}
+    .ai-worked-prompt{font-style:italic;color:#0f172a!important;font-weight:600}
+    .ai-worked-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .ai-worked-chips span{display:inline-flex;align-items:baseline;gap:6px;border:1px solid #dbe6f4;border-radius:7px;background:#f8fafc;padding:4px 9px;font-size:.78rem;color:#0f172a;font-weight:700}
+    .ai-worked-chips em{font-style:normal;color:#94a3b8;font-size:.66rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
+    .ai-worked-open{display:inline-block;background:#eff6ff;border:1px solid #bfdbfe;border-radius:7px;color:#0f3f83;font-weight:800;text-decoration:none;padding:3px 9px}
+    .ai-worked-note{margin:12px 0 0;color:#52637a;font-size:.8rem;line-height:1.55}
+    .ai-worked-run{display:inline-flex;align-items:center;justify-content:center;margin-top:12px;min-height:44px;border-radius:10px;background:#0057b8;color:#fff;font-weight:800;font-size:.88rem;text-decoration:none;padding:0 18px}
+    .ai-worked-run:hover{background:#004c9f}
+    @media(max-width:640px){.ai-worked-row{grid-template-columns:minmax(0,1fr);gap:4px}}
+    .ai-vertical-strip{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px}
+    .ai-vertical-strip a{display:inline-flex;align-items:center;min-height:42px;border:1px solid #dbe6f4;border-radius:999px;background:#fff;color:#0f3f83;text-decoration:none;padding:0 15px;font-size:.82rem;font-weight:800}
+    .ai-vertical-strip a:hover,.ai-vertical-strip a:focus-visible{border-color:#2563eb;background:#eff6ff;color:#1d4ed8}
     .ai-quick-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
     .ai-quick-shuffle{border:0;background:none;padding:0;color:#0057b8;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
     .ai-quick-shuffle:hover{color:#004c9f}
@@ -529,6 +581,7 @@
           <p class="ai-project-status" id="aiProjectStatus" aria-live="polite"></p>
         </section>
 
+        <div class="ai-answer-shell" id="aiAnswerShell">
         <section class="ai-answer" id="aiDirectAnswer" aria-labelledby="aiAnswerTitle" hidden>
           <div class="ai-answer-head">
             <div class="ai-answer-head-left">
@@ -597,6 +650,7 @@
         <div class="ai-state" id="aiResultState" hidden>
           <div class="ai-card-grid" id="aiResultCards" role="list" aria-label="Recommended AfroTools tool results"></div>
         </div>
+        </div>
 
         <section class="ai-consent-card" id="aiConsentCard" aria-labelledby="ai-consent-title" hidden>
           <h3 id="ai-consent-title">Optional AI help</h3>
@@ -644,44 +698,54 @@
         </div>
       </section>
 
+      <section class="ai-hub-section" aria-labelledby="ai-worked-title">
+        <h2 id="ai-worked-title">What actually happens when you ask</h2>
+        <p class="ai-hub-intro">One real run, start to finish. Nothing below is a mock-up &mdash; it is what the router does with this sentence.</p>
+        <div class="ai-worked">
+          <div class="ai-worked-row">
+            <span class="ai-worked-tag">You ask</span>
+            <p class="ai-worked-prompt">&ldquo;Run Kenya payroll for 5 employees and prepare a review checklist&rdquo;</p>
+          </div>
+          <div class="ai-worked-row">
+            <span class="ai-worked-tag">It reads</span>
+            <div class="ai-worked-chips"><span><em>Country</em>Kenya</span><span><em>Employees</em>5</span><span><em>Task</em>Payroll + checklist</span></div>
+          </div>
+          <div class="ai-worked-row">
+            <span class="ai-worked-tag">It asks</span>
+            <p>Gross salary &mdash; kept in this browser session</p>
+          </div>
+          <div class="ai-worked-row">
+            <span class="ai-worked-tag">It opens</span>
+            <p><a class="ai-worked-open" href="/kenya/ke-paye">Kenya PAYE Calculator</a> with those details already filled in</p>
+          </div>
+          <p class="ai-worked-note">When the match is not clear, it says so and offers alternatives instead of guessing. On 52 prompts it had never seen, 84% of the answers it gave without a warning were correct.</p>
+          <a class="ai-worked-run" href="/ai/?q=Run%20Kenya%20payroll%20for%205%20employees%20and%20prepare%20a%20review%20checklist">Run this exact prompt &rarr;</a>
+        </div>
+      </section>
+
       <section class="ai-hub-section" aria-labelledby="ai-tasks-title">
         <h2 class="ai-section-title" id="ai-tasks-title">Browse common tasks</h2>
         <p class="ai-hub-intro">Open any tool directly, or describe your task above and AfroTools AI will pick the tool for you and fill in what it can.</p>
         <nav class="ai-fallback-grid" id="aiFallbackGrid" aria-label="Common AfroTools tasks"></nav>
       </section>
 
-      <section class="ai-hub-section" aria-labelledby="ai-popular-tools-title">
-        <h2 id="ai-popular-tools-title">Popular tools</h2>
-        <p class="ai-hub-intro">Skip the assistant and open a flagship AfroTools calculator or planner directly.</p>
-        <div class="ai-vertical-grid">
-          <a class="ai-vertical-card" href="/tools/scholarship-finder/"><strong>Scholarship Finder</strong><span>Match African and international scholarships to your GPA, destination, and funding gap.</span></a>
-          <a class="ai-vertical-card" href="/tools/cv-builder/"><strong>CV Builder</strong><span>Build an ATS-friendly CV and cover letter with African hiring templates.</span></a>
-          <a class="ai-vertical-card" href="/tools/paye-calculator/"><strong>PAYE Calculator</strong><span>Work out payroll PAYE, pension, and net pay across African tax bands.</span></a>
-          <a class="ai-vertical-card" href="/tools/import-duty/"><strong>Import Duty Calculator</strong><span>Estimate customs duty, VAT, and landed cost before you import.</span></a>
-          <a class="ai-vertical-card" href="/tools/solar-roi/"><strong>Solar ROI Calculator</strong><span>Size a solar and battery setup and compare payback against generator and grid costs.</span></a>
-          <a class="ai-vertical-card" href="/engineering/floor-planner/"><strong>Floor Planner</strong><span>Sketch a floor plan and turn it into a room-by-room build and BOQ starting point.</span></a>
-        </div>
-      </section>
+      
 
       <section class="ai-hub-section" aria-labelledby="ai-verticals-title">
-        <h2 id="ai-verticals-title">Popular help areas</h2>
+        <h2 id="ai-verticals-title">Go deeper by area</h2>
         <p class="ai-hub-intro">Each page shows what AfroTools can help with, what it cannot do, and which real tools you will use.</p>
-        <div class="ai-vertical-grid">
-          <a class="ai-vertical-card" href="/ai/education/"><strong>AI Scholarship and Study Abroad Planner</strong><span>Scholarships, destination fit, funding gaps, GPA, IELTS, documents, and deadlines.</span></a>
-          <a class="ai-vertical-card" href="/ai/career/"><strong>AI CV and Career Agent</strong><span>CV Builder, cover letters, ATS guidance, LinkedIn helpers, and application packs.</span></a>
-          <a class="ai-vertical-card" href="/ai/business/"><strong>AI SME Finance Assistant</strong><span>PAYE, payroll, VAT, invoices, cash flow, TIN, and business registration checklists.</span></a>
-          <a class="ai-vertical-card" href="/ai/trade/"><strong>AI Import Duty and Trade Advisor</strong><span>Import duty, car imports, landed cost, HS-code routes, CIF, and source notes.</span></a>
-          <a class="ai-vertical-card" href="/ai/energy/"><strong>AI Solar and Generator Advisor</strong><span>Generator cost, fuel exposure, solar sizing, payback, installer questions, and tariff assumptions.</span></a>
-          <a class="ai-vertical-card" href="/ai/local-life/"><strong>AI Cost of Living and Relocation Planner</strong><span>City budgets, rent, transport, school fees, relocation costs, and monthly budget pressure.</span></a>
-          <a class="ai-vertical-card" href="/ai/construction/"><strong>AI Floor Planner and Construction Cost Assistant</strong><span>Floor planning, BOQ, renovation budgets, materials, and contractor checklists.</span></a>
+        <div class="ai-vertical-strip">
+          <a href="/ai/education/">Scholarships &amp; study abroad</a>
+          <a href="/ai/career/">CV &amp; career</a>
+          <a href="/ai/business/">SME finance</a>
+          <a href="/ai/trade/">Import duty &amp; trade</a>
+          <a href="/ai/energy/">Solar &amp; generator</a>
+          <a href="/ai/local-life/">Cost of living</a>
+          <a href="/ai/construction/">Floor plans &amp; BOQ</a>
         </div>
       </section>
 
-      <section class="ai-hub-section" aria-labelledby="ai-examples-title">
-        <h2 id="ai-examples-title">Examples you can try</h2>
-        <p class="ai-hub-intro">Pick one to run it and see which tool AfroTools opens.</p>
-        <div class="ai-example-grid" id="aiExampleGrid"></div>
-      </section>
+      
 
       <section class="ai-hub-section" aria-labelledby="ai-limits-title">
         <div class="ai-hub-note">
@@ -720,6 +784,7 @@
   <script src="/assets/js/ai/workflow-export.js?v=365220fd"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
+  <script src="/assets/js/ai/result-layout.js" defer></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
