@@ -138,6 +138,30 @@ function main() {
       "single-word phrases must still require an exact match");
   }
 
+
+  // --- 11. A near-tie must gate confidence, not just an exact tie -----------
+  // Coverage saturates at 1.0 on one distinctive term, which used to carry a
+  // 1%-margin coin flip all the way to "confident". Every remaining
+  // confident-but-wrong answer on the 52-case holdout looked like this.
+  {
+    const near = [
+      { tool: { id: "alpha-tool" }, score: 100, matchedTerms: [] },
+      { tool: { id: "beta-tool" }, score: 99, matchedTerms: [] }
+    ];
+    const graded = confidence.calibrate("a reasonably specific sounding query about alpha", near, { manifest });
+    assert.ok(graded.confidence <= 0.6,
+      "a 1% margin must not read as confident, got " + graded.confidence);
+    assert.ok(graded.uncertain, "a near-tie must be flagged so alternatives are offered");
+
+    const clear = [
+      { tool: { id: "alpha-tool" }, score: 100, matchedTerms: [] },
+      { tool: { id: "beta-tool" }, score: 20, matchedTerms: [] }
+    ];
+    const gradedClear = confidence.calibrate("a reasonably specific sounding query about alpha", clear, { manifest });
+    assert.ok(gradedClear.confidence > graded.confidence,
+      "a decisive margin must still outrank a near-tie");
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 

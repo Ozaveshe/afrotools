@@ -1394,7 +1394,7 @@
     var route = normalizeRoute(record.url || record.href, id);
     var countries = normalizeCountries(record.countries);
     var stakes = inferHighStakes(record);
-    var base = { id: id, slug: slugFromRoute(route, id), route: route, title: text(record.name, id), shortDescription: text(record.description || record.desc, 'AfroTools workflow'), category: text(record.category_key || record.category, 'uncategorized'), subcategory: text(record.category_key || record.category, 'general'), countriesSupported: countries, languagesSupported: unique([text(record.language || record.lang, 'en').toLowerCase()]), currencySupport: unique(countries.indexOf('ALL') !== -1 || /forex|currency|fx|import|remittance|japa|study|travel|crypto/.test(haystack(record)) ? ['local', 'USD'] : ['local']), userIntents: unique([text(record.name, id).toLowerCase(), id.replace(/-/g, ' '), 'open ' + text(record.name, id).toLowerCase(), text(record.category_key, 'tools').replace(/-/g, ' ') + ' tool']), exampleQueries: ['Open ' + text(record.name, id), 'Help me use ' + text(record.name, id)], requiredInputs: inferRequired(record, stakes), optionalInputs: [], privacyMode: inferPrivacy(record, stakes), aiCapabilities: inferCapabilities(record), outputTypes: inferOutputs(record, stakes), sourcePolicy: inferSource(record, stakes), highStakesDomain: stakes, monetizationSurfaces: inferMonetization(record), aliases: array(record.aliases), status: text(record.status, 'Live'), priority: Number(record.priority || 0) };
+    var base = { id: id, slug: slugFromRoute(route, id), route: route, title: text(record.name, id), shortDescription: text(record.description || record.desc, 'AfroTools workflow'), category: text(record.category_key || record.category, 'uncategorized'), subcategory: text(record.category_key || record.category, 'general'), countriesSupported: countries, languagesSupported: unique([text(record.language || record.lang, 'en').toLowerCase()]), currencySupport: unique(countries.indexOf('ALL') !== -1 || /forex|currency|fx|import|remittance|japa|study|travel|crypto/.test(haystack(record)) ? ['local', 'USD'] : ['local']), userIntents: unique([text(record.name, id).toLowerCase(), id.replace(/-/g, ' '), 'open ' + text(record.name, id).toLowerCase(), text(record.category_key, 'tools').replace(/-/g, ' ') + ' tool'].concat(deriveNaturalIntents(text(record.name, id)))), exampleQueries: ['Open ' + text(record.name, id), 'Help me use ' + text(record.name, id)], requiredInputs: inferRequired(record, stakes), optionalInputs: [], privacyMode: inferPrivacy(record, stakes), aiCapabilities: inferCapabilities(record), outputTypes: inferOutputs(record, stakes), sourcePolicy: inferSource(record, stakes), highStakesDomain: stakes, monetizationSurfaces: inferMonetization(record), aliases: array(record.aliases), status: text(record.status, 'Live'), priority: Number(record.priority || 0) };
     return normalizeEntry(Object.assign({}, base, overrides[id] || {}));
   }
 
@@ -1494,6 +1494,64 @@
       if (!allAllowed(entry.monetizationSurfaces, ALLOWED_VALUES.monetizationSurfaces)) errors.push(entry.id + '.monetizationSurfaces contains invalid values');
     });
     return { valid: errors.length === 0, errors: errors };
+  }
+
+
+  /**
+   * Natural phrasings derived from a tool's own name.
+   *
+   * 86% of the 1,252 routable tools carried nothing but title-derived
+   * boilerplate — their own name, their slug, "open <name>", "<category> tool".
+   * That only matches a user who already speaks in product names, and a
+   * 52-case holdout showed the cost: 27% of realistic prompts never retrieved
+   * the right tool AT ALL, so no amount of re-ranking could reach them.
+   * "i want write my will" did not retrieve will-generator; "what should i eat
+   * while pregnant" did not retrieve pregnancy-nutrition.
+   *
+   * The missing ingredient is verbs. A tool named "<Subject> Generator" is
+   * asked for as "write <subject>" or "make <subject>", never as "<subject>
+   * generator". Deriving those from the suffix is general — it lifts every
+   * tool at once and cannot overfit to any test set, unlike hand-writing
+   * synonyms for the tools a benchmark happens to name.
+   */
+  var INTENT_SUFFIX_VERBS = [
+    [/\b(calculator|calc)$/i, ['calculate', 'work out', 'how much']],
+    [/\b(generator|gen)$/i, ['create', 'make', 'write', 'generate']],
+    [/\bbuilder$/i, ['build', 'create', 'make']],
+    [/\b(checker|check)$/i, ['check', 'verify']],
+    [/\bplanner$/i, ['plan']],
+    [/\btracker$/i, ['track']],
+    [/\b(comparator|compare)$/i, ['compare']],
+    [/\bestimator$/i, ['estimate', 'how much']],
+    [/\bconverter$/i, ['convert']],
+    [/\bfinder$/i, ['find']],
+    [/\bguide$/i, ['how to']],
+    [/\b(cost|costs|fees|price|prices)$/i, ['how much', 'cost of', 'price of']],
+    [/\broi$/i, ['is it profitable', 'profit from']]
+  ];
+
+  function deriveNaturalIntents(name) {
+    var label = String(name || '').toLowerCase().replace(/[^a-z0-9\s/-]/g, ' ').replace(/\s+/g, ' ').trim();
+    if (!label) return [];
+    var out = [];
+    for (var i = 0; i < INTENT_SUFFIX_VERBS.length; i++) {
+      var rule = INTENT_SUFFIX_VERBS[i];
+      if (!rule[0].test(label)) continue;
+      var subject = label.replace(rule[0], '').trim();
+      // A bare suffix ("Calculator") carries no subject worth phrasing.
+      if (!subject || subject.length < 2) continue;
+      /* "Will / Testament Generator" names two things. Emitting a single
+       * "write will / testament" matches neither, because the slash survives
+       * tokenisation — split so each alternative gets its own phrasing. */
+      subject.split('/').map(function (part) { return part.trim(); })
+        .filter(function (part) { return part.length > 1; })
+        .forEach(function (part) {
+          rule[1].forEach(function (verb) { out.push(verb + ' ' + part); });
+          out.push(part);
+        });
+      break;
+    }
+    return out;
   }
 
   function loadDefaultDirectoryEntries() {

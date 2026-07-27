@@ -260,19 +260,34 @@
     });
     if (!terms.length) return 0;
 
-    // Weighted, not counted: matching a tool's distinctive term is worth far
-    // more than matching a word it shares with a hundred other tools.
+    /* ABSOLUTE matched informativeness, not a ratio.
+     *
+     * A ratio silently rewards short tool names, because dividing by the tool's
+     * own term count means a one-word tool that matches scores a perfect 1.0.
+     * Measured on the 52-case holdout that broke more than it fixed:
+     *
+     *   "remove vat from 45000"  ->  bw-vat (Botswana) beat vat-calc-pan-african
+     *                                because after stripping the country prefix
+     *                                bw-vat is just ["vat"] and scored 1.0,
+     *                                while the pan-African tool scored 0.25 for
+     *                                matching the same single word.
+     *   "fish pond, e go profit" ->  market-stall-profit beat fish-farming-roi
+     *                                on the generic word "profit".
+     *
+     * Summing the rarity weight of the terms the user actually said — and
+     * normalising against a fixed expectation rather than the tool's own length
+     * — means a tool is rewarded for how much distinctive evidence the query
+     * gives it, never for having a short name.
+     */
     var matchedWeight = 0;
-    var totalWeight = 0;
     terms.forEach(function (term) {
-      var weight = termWeight(term, idf);
-      totalWeight += weight;
       var hit = queryText.indexOf(" " + term + " ") !== -1 ||
         (term.length > 4 && queryText.indexOf(" " + term.slice(0, term.length - 2)) !== -1);
-      if (hit) matchedWeight += weight;
+      if (hit) matchedWeight += termWeight(term, idf);
     });
 
-    return totalWeight ? matchedWeight / totalWeight : 0;
+    // ~3.0 is one strongly distinctive term or two moderate ones.
+    return Math.min(1, matchedWeight / 3);
   }
 
   /**
@@ -330,6 +345,20 @@
     if (countryConflict) confidence = Math.min(confidence, 0.25);
     // Exact ties mean the ordering carried no information at all.
     if (margin.tiedWith >= 1) confidence = Math.min(confidence, 0.35);
+
+    /* A NEAR-tie is just as uninformative as an exact one, and far more common.
+     *
+     * Coverage saturates — one distinctive term is enough to reach 1.0 — so a
+     * saturated coverage plus a specific query reached 0.70 before margin
+     * contributed anything at all. On the 52-case holdout every remaining
+     * confident-but-wrong answer had coverage >= 0.89, and three of them were
+     * separated from the runner-up by margins of 0.013, 0.017 and 0.024:
+     * arithmetic ties, presented as certainty.
+     *
+     * Margin therefore gates the result rather than merely adding to it. If the
+     * top two candidates are within a few percent, the ordering is a coin flip
+     * and nothing else the query offers can rescue it. */
+    if (margin.margin < 0.15) confidence = Math.min(confidence, 0.45 + margin.margin);
     if (margin.tiedWith >= 3) confidence = Math.min(confidence, 0.2);
     // A confident-looking margin means nothing if the query never mentions what
     // the tool actually does ("electrical engineer CV" -> electrical-load).
