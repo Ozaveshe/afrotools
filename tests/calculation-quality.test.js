@@ -105,6 +105,17 @@ test('HTML formula digests ignore reviewed presentation-asset cache versions onl
       quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d').replace(filename, 'tool-registry.min.js'))
     );
   }
+
+  const coreBundleShell = (cacheVersion) =>
+    '<html><body><script src="/assets/js/bundles/core.' + cacheVersion + '.min.js" defer></script></body></html>';
+  assert.strictEqual(
+    quality.digestHtmlFormulaSource(coreBundleShell('53e2e483')),
+    quality.digestHtmlFormulaSource(coreBundleShell('8401f4c6'))
+  );
+  assert.notStrictEqual(
+    quality.digestHtmlFormulaSource(coreBundleShell('8401f4c6')),
+    quality.digestHtmlFormulaSource(coreBundleShell('8401f4c6').replace('/core.', '/tool-page.'))
+  );
 });
 
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {

@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
   <script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
   <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-  <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
+  <script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5;--ai-shell:1080px;--ai-radius:12px;--ai-radius-lg:16px;--ai-measure:70ch}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -719,7 +719,7 @@
   <script src="/assets/js/ai/agriculture-workflow.js?v=9297fec5"></script>
   <script src="/assets/js/ai/workflow-export.js?v=365220fd"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
-<script src="/assets/js/ai/tool-manifest.js?v=11d4adef"></script>
+<script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -3546,9 +3546,11 @@
       target.querySelectorAll("[data-car-import-link]").forEach(function (link) {
         link.addEventListener("click", function (event) {
           var plan = workflowState.importAdvisorPlan || null;
-          if (!plan || !plan.importPrefillInputs || plan.importPrefillInputs.mode !== "car") return;
+          var inputs = plan && plan.importPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          if (!inputs) return;
           event.preventDefault();
-          var launch = buildToolPrefillUrl("car-import-cost", plan.importPrefillInputs, {}, plan.carWorkspaceUrl || "/tools/car-import-cost/");
+          var carInputs = Object.assign({}, inputs, { mode: "car", productCategory: "vehicle" });
+          var launch = buildToolPrefillUrl("car-import-cost", carInputs, {}, plan && plan.carWorkspaceUrl || link.getAttribute("href") || "/tools/car-import-cost/");
           workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
           trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
             tool_id: "car-import-cost",
