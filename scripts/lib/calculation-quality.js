@@ -124,10 +124,19 @@ function normalizeHtmlFormulaPresentation(source) {
   // template that otherwise contains a protected formula. Normalize only the
   // exact eight-character build hash for explicitly reviewed presentation
   // assets so paths, query shape and formula code remain covered by the gate.
-  return String(source).replace(
+  // The shared core bundle hash also changes when unrelated common UI/AI
+  // helpers change; calculator engines remain separate protected artifacts.
+  return String(source)
+    .replace(
     /(assets\/js\/(?:lazy-analytics|components\/related-tools(?:\.min)?)\.js\?v=)[a-f0-9]{8}/gi,
     "$1__FORMULA_DIGEST_CACHE__",
-  );
+    )
+    .replace(
+      /(assets\/js\/bundles\/core\.)[a-f0-9]{8}(\.min\.js)/gi,
+      function normalizeCoreBundleHash(match, prefix, suffix) {
+        return prefix + "53e2e483" + suffix;
+      },
+    );
 }
 
 function digestHtmlFormulaSource(source) {

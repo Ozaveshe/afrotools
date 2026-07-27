@@ -1,0 +1,70 @@
+{
+  "name": "Afro-Bench",
+  "version": "1.0.0",
+  "createdAt": "2026-07-26",
+  "purpose": "Held-out benchmark of how Africans actually ask for things. Measures whether the router lands on the right tool AND whether its confidence predicts its own correctness. Never used to tune the router: the committed routing-eval fixtures were authored alongside the router and score 112/112, which measures memorisation, not understanding.",
+  "rules": [
+    "Prompts must be phrased the way a user would type them, not the way a tool is titled.",
+    "acceptable[] lists every tool that would genuinely satisfy the user; the router is correct if it picks any of them.",
+    "A prompt whose honest answer is 'ask a clarifying question' has expectUncertain: true and no acceptable tool.",
+    "Do not add a prompt here after tuning the router on it. This set only stays honest while it stays held out."
+  ],
+  "cases": [
+    { "id": "paye-colloquial-ng", "prompt": "how much go remain for my salary after tax for naija", "acceptable": ["ng-paye", "paye-calculator", "salary-tax"], "category": "salary-tax", "style": "colloquial" },
+    { "id": "paye-plain-ke", "prompt": "what will my take home pay be in Kenya if I earn 85000 a month", "acceptable": ["ke-paye", "paye-calculator"], "category": "salary-tax", "style": "plain" },
+    { "id": "paye-typo", "prompt": "calculate my payee tax in kenyaa", "acceptable": ["ke-paye", "paye-calculator"], "category": "salary-tax", "style": "typo" },
+    { "id": "paye-employer", "prompt": "what does it actually cost me to employ someone in Ghana", "acceptable": ["gh-paye", "employee-cost", "paye-calculator"], "category": "salary-tax", "style": "plain" },
+
+    { "id": "vat-plain", "prompt": "add VAT to 250000 naira for an invoice", "acceptable": ["ng-vat", "vat-calc-pan-african", "vat-calculator"], "category": "business-tax", "style": "plain" },
+    { "id": "vat-question", "prompt": "do I need to register for VAT in Kenya and at what turnover", "acceptable": ["ke-vat", "vat-calc-pan-african", "vat-calculator"], "category": "business-tax", "style": "plain" },
+    { "id": "invoice-plain", "prompt": "I need to bill a client and send them a receipt", "acceptable": ["invoice-generator", "freelance-invoice", "proforma-invoice"], "category": "sme", "style": "plain" },
+
+    { "id": "fx-typo", "prompt": "convert 5000 dolars to naria", "acceptable": ["currency-converter"], "category": "fx", "style": "typo" },
+    { "id": "fx-plain", "prompt": "what is 500 dollars in Kenyan shillings today", "acceptable": ["currency-converter"], "category": "fx", "style": "plain" },
+    { "id": "remittance", "prompt": "cheapest way to send money from the UK to Nigeria", "acceptable": ["remittance-compare", "remittance-v2", "mobile-money-fees"], "category": "fintech", "style": "plain" },
+    { "id": "momo-fees", "prompt": "how much does M-Pesa charge to send 10000", "acceptable": ["mobile-money-fees", "momo-fees"], "category": "fintech", "style": "plain" },
+
+    { "id": "import-car-colloquial", "prompt": "wetin i go pay to clear my car for tincan", "acceptable": ["car-import-cost", "import-duty"], "category": "trade", "style": "colloquial" },
+    { "id": "import-car-plain", "prompt": "how much duty will I pay to import a 2016 Toyota into Nigeria", "acceptable": ["car-import-cost", "import-duty"], "category": "trade", "style": "plain" },
+    { "id": "import-goods", "prompt": "landed cost for a container of electronics from China to Ghana", "acceptable": ["import-duty", "landed-cost", "shipping-calc"], "category": "trade", "style": "plain" },
+
+    { "id": "solar-colloquial", "prompt": "i tire for generator, how much solar go cost for my shop", "acceptable": ["solar-roi", "solar-vs-generator", "solar-sizing"], "category": "energy", "style": "colloquial" },
+    { "id": "solar-plain", "prompt": "is solar worth it for a Lagos shop paying 200000 a month on diesel", "acceptable": ["solar-roi", "solar-vs-generator"], "category": "energy", "style": "plain" },
+    { "id": "fuel-price", "prompt": "what is the current petrol price", "acceptable": ["fuel-tracker", "fuel-cost"], "category": "energy", "style": "plain" },
+
+    { "id": "cv-plain", "prompt": "abeg help me write cv", "acceptable": ["cv-builder"], "category": "career", "style": "colloquial" },
+    { "id": "cv-role", "prompt": "build a CV for an electrical engineer role in Ghana", "acceptable": ["cv-builder"], "category": "career", "style": "plain" },
+    { "id": "cover-letter", "prompt": "write a cover letter for a junior accountant job", "acceptable": ["cover-letter", "cv-builder"], "category": "career", "style": "plain" },
+
+    { "id": "scholarship", "prompt": "find me a scholarship to study abroad from Nigeria", "acceptable": ["scholarship-finder", "study-abroad-cost"], "category": "education", "style": "plain" },
+    { "id": "study-cost", "prompt": "how much money do I need to study in Canada for a year", "acceptable": ["study-abroad-cost", "scholarship-finder"], "category": "education", "style": "plain" },
+
+    { "id": "col-plain", "prompt": "can a family of four live in Nairobi on 1200 dollars a month", "acceptable": ["cost-of-living", "rent-intelligence"], "category": "local-life", "style": "plain" },
+    { "id": "rent-colloquial", "prompt": "my landlord wan increase rent, how much i fit afford", "acceptable": ["rent-affordability", "rent-intelligence", "cost-of-living"], "category": "local-life", "style": "colloquial" },
+
+    { "id": "mortgage", "prompt": "what mortgage can I afford earning 40000 rand a month", "acceptable": ["mortgage-affordability", "mortgage-calculator"], "category": "property", "style": "plain" },
+    { "id": "stamp-duty-ng", "prompt": "stamp duty on a 50 million naira property in Lagos", "acceptable": ["stamp-duty"], "rejects": ["ke-stamp-duty"], "category": "property", "style": "country-sensitive" },
+
+    { "id": "bmi", "prompt": "am I a healthy weight for my height", "acceptable": ["bmi-calculator", "bmi-calc-tools"], "category": "health", "style": "plain" },
+    { "id": "health-insurance", "prompt": "compare health insurance plans in Kenya", "acceptable": ["health-insurance-compare"], "category": "health", "style": "plain" },
+    { "id": "motor-insurance", "prompt": "how much is third party motor insurance in Nigeria", "acceptable": ["motor-third-party", "car-insurance"], "category": "insurance", "style": "plain" },
+
+    { "id": "zakat", "prompt": "work out my zakat for this year", "acceptable": ["zakat-calculator"], "category": "religious-cultural", "style": "plain" },
+    { "id": "lobola", "prompt": "how much lobola should I budget in Zimbabwe", "acceptable": ["lobola-calculator", "lobola-gift-list"], "category": "religious-cultural", "style": "plain" },
+
+    { "id": "floorplan", "prompt": "design a 3 bedroom bungalow and tell me what it costs to build", "acceptable": ["afroplan-floor-planner", "boq-generator", "construction-budget"], "category": "construction", "style": "plain" },
+    { "id": "boq", "prompt": "I need a bill of quantities for a small office fit out", "acceptable": ["boq-generator", "boq-gen", "construction-budget"], "category": "construction", "style": "plain" },
+
+    { "id": "visa", "prompt": "how much is a visa to Dubai from Nigeria", "acceptable": ["visa-cost", "visa-checker"], "category": "travel", "style": "plain" },
+    { "id": "toll", "prompt": "toll fees driving from Lagos to Ibadan", "acceptable": ["toll-calc"], "category": "transport", "style": "plain" },
+    { "id": "data-bundle", "prompt": "compare data bundle prices in Kenya", "acceptable": ["telecom-data-plan"], "rejects": ["input-prices-kenya"], "category": "telecom", "style": "country-sensitive" },
+
+    { "id": "vague-tax", "prompt": "tax", "expectUncertain": true, "category": "ambiguous", "style": "vague" },
+    { "id": "vague-money", "prompt": "money", "expectUncertain": true, "category": "ambiguous", "style": "vague" },
+    { "id": "vague-help", "prompt": "help me", "expectUncertain": true, "category": "ambiguous", "style": "vague" },
+    { "id": "vague-business", "prompt": "i want to start a business", "expectUncertain": true, "category": "ambiguous", "style": "vague" },
+
+    { "id": "multi-intent-1", "prompt": "register my business and then run payroll for 3 staff", "acceptable": ["business-registration", "paye-calculator", "ng-paye", "business-planner"], "category": "multi-intent", "style": "multi" },
+    { "id": "multi-intent-2", "prompt": "compare Lagos and Nairobi cost of living then help me build a CV", "acceptable": ["cost-of-living", "cv-builder"], "category": "multi-intent", "style": "multi" }
+  ]
+}

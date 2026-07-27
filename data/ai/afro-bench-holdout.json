@@ -1,0 +1,564 @@
+{
+  "name": "Afro-Bench Holdout",
+  "version": "1.1.0",
+  "createdAt": "2026-07-26",
+  "purpose": "The number we are allowed to believe. Afro-Bench itself has become partly in-sample: lexicon entries were written after reading its failures, so its score now measures the lexicon's coverage of that set as much as the router's understanding. This file is the control — prompts written to be answered by nobody, never consulted while tuning.",
+  "rules": [
+    "NEVER add a lexicon phrase, manifest synonym or ranking rule because a case here failed. Fix the general mechanism, or leave it failing and record it.",
+    "If a case here is used to guide a change, delete it from this file and write a new one. A holdout consulted twice is not a holdout.",
+    "Prompts are deliberately harder than Afro-Bench: heavy pidgin, indirect phrasing, and domains with thin tool vocabulary.",
+    "Report the holdout number next to the Afro-Bench number, always. Quoting the tuned score alone is the exact dishonesty this file exists to prevent."
+  ],
+  "history": [
+    {
+      "date": "2026-07-26",
+      "version": "afro-1.1",
+      "accuracy": "4/10",
+      "errorRecall": "5/6",
+      "note": "first run; routing generalises poorly, calibration generalises well"
+    },
+    {
+      "date": "2026-07-26",
+      "version": "afro-1.1",
+      "note": "expanded to 52 cases; n=10 was too small to support any claim"
+    },
+    {
+      "date": "2026-07-26",
+      "version": "afro-1.1-final",
+      "cases": 52,
+      "accuracy": "28/52 (54%) vs production 27/52 — routing is NOT the win",
+      "wrongAndConfident": "8/24 (33%) vs production 22/25 (88%) — this is the win",
+      "note": "n=10 showed 40->50% accuracy; at n=52 that vanished as noise. Expanding the holdout is what made the real result visible."
+    }
+  ],
+  "cases": [
+    {
+      "id": "h-paye-pidgin",
+      "prompt": "my oga never pay me, how much suppose enter my account after deduction",
+      "acceptable": [
+        "ng-paye",
+        "paye-calculator",
+        "salary-tax",
+        "salary-intelligence"
+      ],
+      "category": "salary-tax",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-import-gen",
+      "prompt": "i dey plan to bring generator from china, wetin be the total cost",
+      "acceptable": [
+        "import-duty",
+        "landed-cost",
+        "shipping-calc",
+        "shipping-estimator"
+      ],
+      "category": "trade",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-cement",
+      "prompt": "how many bags of cement for a 4 bedroom",
+      "acceptable": [
+        "building-materials",
+        "construction-budget",
+        "boq-generator",
+        "boq-gen",
+        "afroplan-floor-planner"
+      ],
+      "category": "construction",
+      "style": "indirect"
+    },
+    {
+      "id": "h-school-fees",
+      "prompt": "school fees for my pikin next term",
+      "acceptable": [
+        "school-fees",
+        "student-budget"
+      ],
+      "category": "local-life",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-rice-price",
+      "prompt": "i want compare price of rice for market",
+      "acceptable": [
+        "market-stall-profit",
+        "food-cost",
+        "input-prices-kenya",
+        "market-price-tracker"
+      ],
+      "category": "agriculture",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-gbp-ghs",
+      "prompt": "change 200 pounds to cedis",
+      "acceptable": [
+        "currency-converter"
+      ],
+      "category": "fx",
+      "style": "indirect"
+    },
+    {
+      "id": "h-loan-interest",
+      "prompt": "what be the interest if i borrow 500k",
+      "acceptable": [
+        "loan-compare",
+        "digital-lending",
+        "microfinance-loan",
+        "loan-calculator"
+      ],
+      "category": "fintech",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-company-tax",
+      "prompt": "my company wan register for tax",
+      "acceptable": [
+        "business-registration",
+        "tin-guide"
+      ],
+      "category": "sme",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-poultry",
+      "prompt": "how much i go take start poultry farm",
+      "acceptable": [
+        "poultry-roi-calculator",
+        "poultry-calculator",
+        "farm-profit",
+        "farm-budget"
+      ],
+      "category": "agriculture",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-overtime",
+      "prompt": "calculate overtime for my staff",
+      "acceptable": [
+        "overtime-calc",
+        "payslip-generator"
+      ],
+      "category": "hr",
+      "style": "plain"
+    },
+    {
+      "id": "h-vat-inclusive",
+      "prompt": "remove vat from 45000 so i know the real price",
+      "acceptable": [
+        "vat-calc-pan-african",
+        "ng-vat",
+        "ke-vat",
+        "za-vat"
+      ],
+      "category": "business-tax",
+      "style": "indirect"
+    },
+    {
+      "id": "h-side-hustle",
+      "prompt": "i do freelance work on the side, do i pay tax on it",
+      "acceptable": [
+        "side-hustle-tax",
+        "paye-calculator"
+      ],
+      "category": "salary-tax",
+      "style": "indirect"
+    },
+    {
+      "id": "h-pension-proj",
+      "prompt": "how much pension go dey my account when i retire",
+      "acceptable": [
+        "pension-proj",
+        "pension-projection",
+        "national-pension",
+        "ng-pension"
+      ],
+      "category": "salary-tax",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-payslip",
+      "prompt": "i need to give my workers proper payslip",
+      "acceptable": [
+        "payslip-generator"
+      ],
+      "category": "hr",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-freelance-inv",
+      "prompt": "send bill to my client for design work",
+      "acceptable": [
+        "freelance-invoice",
+        "invoice-generator",
+        "creator-invoice"
+      ],
+      "category": "sme",
+      "style": "indirect"
+    },
+    {
+      "id": "h-savings-goal",
+      "prompt": "i want save 2 million in one year, how much per month",
+      "acceptable": [
+        "savings-goal",
+        "budget-planner"
+      ],
+      "category": "personal-finance",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-loan-shark",
+      "prompt": "this lender dey charge me plenty, is it normal",
+      "acceptable": [
+        "loan-shark-compare",
+        "loan-compare",
+        "digital-lending"
+      ],
+      "category": "fintech",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-freight",
+      "prompt": "how much to ship 20 boxes from lagos to accra",
+      "acceptable": [
+        "shipping-estimator",
+        "shipping-calc",
+        "landed-cost"
+      ],
+      "category": "trade",
+      "style": "plain"
+    },
+    {
+      "id": "h-stamp-za",
+      "prompt": "transfer duty on a house in cape town",
+      "acceptable": [
+        "za-transfer-duty",
+        "stamp-duty",
+        "property-transfer-cost"
+      ],
+      "category": "property",
+      "style": "country-sensitive"
+    },
+    {
+      "id": "h-plot",
+      "prompt": "convert 2 plots to square meters",
+      "acceptable": [
+        "plot-converter",
+        "land-size"
+      ],
+      "category": "property",
+      "style": "plain"
+    },
+    {
+      "id": "h-land-title",
+      "prompt": "how i go check if this land get proper papers",
+      "acceptable": [
+        "land-title-check",
+        "land-registry-fees"
+      ],
+      "category": "property",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-inverter",
+      "prompt": "how long my battery go last during blackout",
+      "acceptable": [
+        "backup-duration",
+        "solar-sizing",
+        "battery-sizing"
+      ],
+      "category": "energy",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-water-bill",
+      "prompt": "my water bill too high, is it correct",
+      "acceptable": [
+        "water-bill",
+        "water-tank"
+      ],
+      "category": "energy",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-tariff",
+      "prompt": "which band am i on for electricity",
+      "acceptable": [
+        "electricity-tariff",
+        "electricity-bill-verify"
+      ],
+      "category": "energy",
+      "style": "indirect"
+    },
+    {
+      "id": "h-roofing",
+      "prompt": "how many sheets of roofing for my house",
+      "acceptable": [
+        "roofing-calc",
+        "building-materials"
+      ],
+      "category": "construction",
+      "style": "plain"
+    },
+    {
+      "id": "h-paint",
+      "prompt": "how many buckets of paint for 3 rooms",
+      "acceptable": [
+        "paint-calc",
+        "building-materials"
+      ],
+      "category": "construction",
+      "style": "plain"
+    },
+    {
+      "id": "h-tiles",
+      "prompt": "tiles for a 4 by 5 room",
+      "acceptable": [
+        "tiles-calc",
+        "building-materials"
+      ],
+      "category": "construction",
+      "style": "plain"
+    },
+    {
+      "id": "h-permit",
+      "prompt": "do i need approval before i start building",
+      "acceptable": [
+        "building-permit"
+      ],
+      "category": "construction",
+      "style": "indirect"
+    },
+    {
+      "id": "h-interview",
+      "prompt": "i get interview next week, help me prepare",
+      "acceptable": [
+        "interview-prep",
+        "cv-builder"
+      ],
+      "category": "career",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-offer",
+      "prompt": "they offer me job, is the pay good",
+      "acceptable": [
+        "job-offer-evaluator",
+        "salary-compare",
+        "salary-negotiation"
+      ],
+      "category": "career",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-teacher-pay",
+      "prompt": "how much teachers dey earn",
+      "acceptable": [
+        "teacher-salary",
+        "salary-compare"
+      ],
+      "category": "career",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-boarding",
+      "prompt": "cost of boarding school for one session",
+      "acceptable": [
+        "boarding-school",
+        "school-fees"
+      ],
+      "category": "education",
+      "style": "plain"
+    },
+    {
+      "id": "h-edu-savings",
+      "prompt": "save money for my children university",
+      "acceptable": [
+        "edu-savings",
+        "savings-goal"
+      ],
+      "category": "education",
+      "style": "indirect"
+    },
+    {
+      "id": "h-pregnancy",
+      "prompt": "what should i eat while pregnant",
+      "acceptable": [
+        "pregnancy-nutrition"
+      ],
+      "category": "health",
+      "style": "plain"
+    },
+    {
+      "id": "h-childbirth",
+      "prompt": "how much to deliver baby for hospital",
+      "acceptable": [
+        "childbirth-cost"
+      ],
+      "category": "health",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-growth",
+      "prompt": "is my baby growing well for his age",
+      "acceptable": [
+        "child-growth"
+      ],
+      "category": "health",
+      "style": "indirect"
+    },
+    {
+      "id": "h-life-cover",
+      "prompt": "how much life insurance i suppose get",
+      "acceptable": [
+        "life-insurance-calc"
+      ],
+      "category": "insurance",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-travel-ins",
+      "prompt": "insurance for my trip abroad",
+      "acceptable": [
+        "travel-insurance"
+      ],
+      "category": "insurance",
+      "style": "plain"
+    },
+    {
+      "id": "h-fish",
+      "prompt": "i want start fish pond, e go profit",
+      "acceptable": [
+        "fish-farming-roi",
+        "farm-profit-calculator"
+      ],
+      "category": "agriculture",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-fertilizer",
+      "prompt": "how many bags of fertilizer for one hectare",
+      "acceptable": [
+        "fertilizer-calculator",
+        "fertilizer-calc"
+      ],
+      "category": "agriculture",
+      "style": "plain"
+    },
+    {
+      "id": "h-feed",
+      "prompt": "how much feed my goats need",
+      "acceptable": [
+        "livestock-feed-calculator"
+      ],
+      "category": "agriculture",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-yield",
+      "prompt": "how much maize i go harvest",
+      "acceptable": [
+        "crop-yield-estimator",
+        "farm-profit-calculator"
+      ],
+      "category": "agriculture",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-rotation",
+      "prompt": "what should i plant after maize",
+      "acceptable": [
+        "crop-rotation-planner"
+      ],
+      "category": "agriculture",
+      "style": "plain"
+    },
+    {
+      "id": "h-passport",
+      "prompt": "what documents i need for passport",
+      "acceptable": [
+        "passport-checklist"
+      ],
+      "category": "travel",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-flight",
+      "prompt": "cheapest flight from lagos to nairobi",
+      "acceptable": [
+        "africa-flight"
+      ],
+      "category": "travel",
+      "style": "plain"
+    },
+    {
+      "id": "h-matatu",
+      "prompt": "how much be matatu fare to town",
+      "acceptable": [
+        "matatu-fare",
+        "route-fares",
+        "ride-fare"
+      ],
+      "category": "transport",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-airbnb",
+      "prompt": "hotel or apartment, which one cheaper for one week",
+      "acceptable": [
+        "airbnb-vs-hotel"
+      ],
+      "category": "travel",
+      "style": "indirect"
+    },
+    {
+      "id": "h-logo",
+      "prompt": "i need logo for my new business",
+      "acceptable": [
+        "logo-maker"
+      ],
+      "category": "creative",
+      "style": "plain"
+    },
+    {
+      "id": "h-domain",
+      "prompt": "check if my business name dey available online",
+      "acceptable": [
+        "african-domains"
+      ],
+      "category": "creative",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-airtime",
+      "prompt": "how much airtime i dey burn every month",
+      "acceptable": [
+        "telecom-airtime",
+        "telecom-data-usage"
+      ],
+      "category": "telecom",
+      "style": "pidgin"
+    },
+    {
+      "id": "h-will",
+      "prompt": "i want write my will",
+      "acceptable": [
+        "will-generator"
+      ],
+      "category": "legal",
+      "style": "plain"
+    },
+    {
+      "id": "h-employment",
+      "prompt": "draft agreement for my new staff",
+      "acceptable": [
+        "employment-contract",
+        "contract-gen"
+      ],
+      "category": "legal",
+      "style": "indirect"
+    }
+  ]
+}

@@ -17,7 +17,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
   <script src="/assets/js/components/navbar.min.js?v=a6b3b822" defer></script>
   <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-  <script src="/assets/js/bundles/core.53e2e483.min.js" defer></script>
+  <script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
   <style>
     :root{--ai-bg:#f8fafc;--ai-surface:#fff;--ai-text:#0f172a;--ai-muted:#52637a;--ai-border:#dbe6f4;--ai-soft:#eef6ff;--ai-primary:#0057b8;--ai-primary-dark:#004c9f;--ai-warn:#92400e;--ai-warn-bg:#fffbeb;--ai-success:#065f46;--ai-success-bg:#ecfdf5;--ai-shell:1080px;--ai-radius:12px;--ai-radius-lg:16px;--ai-measure:70ch}
     body{margin:0;background:var(--ai-bg);color:var(--ai-text);font-family:"DM Sans",system-ui,sans-serif}
@@ -42,9 +42,16 @@
     .ai-run:hover,.ai-run:focus-visible{background:var(--ai-primary-dark);border-color:var(--ai-primary-dark)}
     .ai-quick-panel{display:grid;gap:9px;border:1px solid #e0ecfb;border-radius:13px;background:linear-gradient(180deg,#fff 0%,#f9fbff 100%);padding:11px}
     .ai-quick-panel strong{color:#0f172a;font-size:.8rem;font-weight:900}
-    .ai-quick-rail{display:flex;flex-wrap:wrap;gap:7px}
-    .ai-quick-task{display:inline-flex;align-items:center;justify-content:center;min-height:38px;max-width:100%;border:1px solid #cbdff7;border-radius:999px;background:#fff;color:#0f3f83;font:inherit;font-size:.76rem;font-weight:900;line-height:1.2;padding:7px 11px;cursor:pointer;text-align:center}
-    .ai-quick-task:hover,.ai-quick-task:focus-visible{border-color:#2563eb;background:#eff6ff;color:#1d4ed8}
+    .ai-quick-head{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
+    .ai-quick-shuffle{border:0;background:none;padding:0;color:#0057b8;font:inherit;font-size:.76rem;font-weight:800;cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+    .ai-quick-shuffle:hover{color:#004c9f}
+    /* Equal-width grid, not free-flowing pills: the prompts are full sentences of
+       very different lengths, so wrapping pills left ragged holes across the panel. */
+    .ai-quick-rail{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+    .ai-quick-task{display:flex;align-items:center;gap:9px;min-height:46px;width:100%;border:1px solid #dbe6f4;border-radius:10px;background:#fff;color:#0f3f83;font:inherit;font-size:.79rem;font-weight:700;line-height:1.35;padding:9px 12px;cursor:pointer;text-align:left}
+    .ai-quick-task:before{content:"";flex:0 0 auto;width:5px;height:5px;border-radius:999px;background:#93c5fd}
+    .ai-quick-task:hover,.ai-quick-task:focus-visible{border-color:#2563eb;background:#f8fbff;color:#1d4ed8}
+    .ai-quick-task:hover:before,.ai-quick-task:focus-visible:before{background:#2563eb}
     .ai-context-panel{display:grid;gap:11px;border:1px solid #dbeafe;border-radius:13px;background:#fff;padding:12px}
     .ai-context-head{display:flex;align-items:center;justify-content:space-between;gap:10px}
     .ai-context-head strong{color:#0f172a;font-size:.86rem;font-weight:900}
@@ -66,18 +73,17 @@
     /* `a[href]` is carried on these card selectors to out-specify the site-wide
        `.top-level-page-ui-refresh a[href]` touch-target rule, which otherwise forces every card
        link to display:inline-flex/align-items:center/min-block-size:44px and collapses its grid. */
-    .ai-main a[href].ai-lane-card{position:relative;display:grid;align-items:stretch;gap:10px;min-height:176px;border:1px solid #dbe6f4;border-radius:var(--ai-radius);background:#fff;color:inherit;text-decoration:none;padding:13px;overflow:hidden}
-    .ai-lane-card:before{content:"";position:absolute;inset:0 auto 0 0;width:5px;background:var(--lane-accent,#2563eb)}
+    .ai-main a[href].ai-lane-card{position:relative;display:grid;align-items:start;gap:9px;grid-template-rows:auto auto 1fr auto;min-height:176px;border:1px solid #dbe6f4;border-radius:var(--ai-radius);background:#fff;color:inherit;text-decoration:none;padding:13px;overflow:hidden}
+    /* .ai-lane-card span sets colour and display:block on every span in the card,
+       and beats a bare .ai-lane-icon on specificity — scope the icon to the card
+       or it renders as a dark block instead of a white glyph on the blue tile. */
+    .ai-lane-card .ai-lane-icon{display:inline-flex;align-items:center;justify-content:center;width:38px;height:38px;border-radius:10px;background:#0057b8;color:#fff}
+    .ai-lane-card .ai-lane-icon svg{width:19px;height:19px;fill:none;stroke:currentColor;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
     .ai-lane-card strong{display:block;color:#0f172a;font-size:.94rem;line-height:1.25}
     .ai-lane-card span{display:block;color:#52637a;font-size:.78rem;line-height:1.45}
     .ai-lane-card em{align-self:end;display:inline-flex;align-items:center;color:#0057b8;font-style:normal;font-size:.76rem;font-weight:900}
     .ai-lane-card:hover,.ai-lane-card:focus-visible{border-color:#93c5fd;background:#fbfdff;transform:translateY(-1px)}
-    .ai-lane-card[data-lane="business"]{--lane-accent:#0891b2}
-    .ai-lane-card[data-lane="trade"]{--lane-accent:#f59e0b}
-    .ai-lane-card[data-lane="career"]{--lane-accent:#16a34a}
-    .ai-lane-card[data-lane="energy"]{--lane-accent:#dc2626}
-    .ai-lane-card[data-lane="local"]{--lane-accent:#7c3aed}
-    .ai-lane-card[data-lane="build"]{--lane-accent:#475569}
+    .ai-lane-card:hover .ai-lane-icon,.ai-lane-card:focus-visible .ai-lane-icon{background:#004c9f}
     .ai-proof-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px;margin-top:12px}
     .ai-proof-card{border:1px solid #e2e8f0;border-radius:12px;background:rgba(255,255,255,.8);padding:10px}
     .ai-proof-card span{display:block;color:#64748b;font-size:.68rem;font-weight:900;text-transform:uppercase;letter-spacing:.05em}
@@ -360,7 +366,7 @@
     html[dir="rtl"] .ai-list,html[dir="rtl"] .ai-actions,html[dir="rtl"] .ai-clarification-actions,html[dir="rtl"] .ai-consent-actions{justify-content:flex-start}
     html[dir="rtl"] .ai-hub-list,html[dir="rtl"] .ai-education-plan ul,html[dir="rtl"] .ai-education-plan ol,html[dir="rtl"] .ai-career-plan ul,html[dir="rtl"] .ai-career-plan ol,html[dir="rtl"] .ai-import-plan ul,html[dir="rtl"] .ai-import-plan ol,html[dir="rtl"] .ai-energy-plan ul,html[dir="rtl"] .ai-energy-plan ol,html[dir="rtl"] .ai-finance-plan ul,html[dir="rtl"] .ai-finance-plan ol,html[dir="rtl"] .ai-country-plan ul,html[dir="rtl"] .ai-country-plan ol,html[dir="rtl"] .ai-local-life-plan ul,html[dir="rtl"] .ai-local-life-plan ol,html[dir="rtl"] .ai-construction-panel ul,html[dir="rtl"] .ai-agriculture-panel ul{padding-left:0;padding-right:20px}
     .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
-    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:1fr 1fr}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-job-grid,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-main a[href].ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
+    @media(max-width:760px){.ai-main{padding:26px 12px calc(42px + env(safe-area-inset-bottom))}.ai-header{text-align:left;margin-bottom:16px}.ai-kicker-line{margin-left:0}.ai-title{font-size:clamp(1.85rem,9vw,2.65rem)}.ai-copy{font-size:.95rem;line-height:1.58}.ai-command{padding:0}.ai-form{padding:13px;border-radius:14px}.ai-input-row{grid-template-columns:1fr;gap:9px}.ai-run{width:100%}.ai-quick-rail{display:grid;grid-template-columns:minmax(0,1fr)}.ai-quick-task{border-radius:11px}.ai-command-cockpit{border-radius:14px;padding:13px}.ai-cockpit-head{display:grid;align-items:start}.ai-cockpit-badge{justify-self:start}.ai-trust{font-size:.78rem;padding:10px 11px}.ai-card-head,.ai-projects-head,.ai-context-head,.ai-education-head,.ai-career-head,.ai-import-head,.ai-energy-head,.ai-finance-head,.ai-country-head,.ai-local-life-head,.ai-workflow-panel-head{display:grid}.ai-project-item{grid-template-columns:1fr}.ai-project-actions{display:grid;justify-content:stretch}.ai-chip{justify-self:start}.ai-card-body,.ai-job-grid,.ai-context-grid,.ai-clarification-grid,.ai-education-grid,.ai-education-tools,.ai-career-grid,.ai-career-tools,.ai-import-grid,.ai-import-tools,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-tools,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-tools,.ai-local-life-source-grid,.ai-result-grid,.ai-result-summary,.ai-vertical-grid,.ai-example-grid,.ai-hub-two,.ai-candidate-list,.ai-lane-grid,.ai-proof-grid{grid-template-columns:1fr}.ai-actions,.ai-context-actions,.ai-clarification-actions,.ai-consent-actions,.ai-education-actions,.ai-career-actions,.ai-import-actions,.ai-energy-actions,.ai-finance-actions,.ai-feedback{display:grid}.ai-open,.ai-browse,.ai-small-button,.ai-feedback button{width:100%}.ai-list{display:grid;grid-template-columns:1fr}.ai-list li{border-radius:10px}.ai-clarification-chips{display:grid;grid-template-columns:1fr}.ai-answer-chip{width:100%;text-align:center;justify-content:center}.ai-fallback-grid{grid-template-columns:1fr}.ai-main a[href].ai-fallback-card{min-height:112px}.ai-hub-section{margin-top:26px}}
     @media(min-width:761px) and (max-width:1060px){.ai-lane-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
     @media(min-width:761px) and (max-width:980px){.ai-fallback-grid,.ai-education-tools,.ai-career-tools,.ai-import-tools,.ai-country-tools,.ai-local-life-tools{grid-template-columns:repeat(2,minmax(0,1fr))}.ai-education-grid,.ai-career-grid,.ai-import-grid,.ai-energy-grid,.ai-energy-metrics,.ai-finance-grid,.ai-finance-metrics,.ai-country-grid,.ai-country-source-grid,.ai-local-life-grid,.ai-local-life-metrics,.ai-local-life-source-grid,.ai-result-grid,.ai-proof-grid{grid-template-columns:1fr 1fr}}
     @media(prefers-reduced-motion:reduce){.ai-spinner,.ai-skeleton-line{animation:none}}
@@ -443,7 +449,10 @@
             </div>
           </div>
           <div class="ai-quick-panel" aria-labelledby="aiQuickTaskTitle">
-            <strong id="aiQuickTaskTitle">Try a real-life task</strong>
+            <div class="ai-quick-head">
+              <strong id="aiQuickTaskTitle">Try a real-life task</strong>
+              <button type="button" class="ai-quick-shuffle" id="aiQuickShuffle">Show me others</button>
+            </div>
             <div class="ai-quick-rail" id="aiQuickTaskRail" aria-label="Example AfroTools AI tasks"></div>
           </div>
           <section class="ai-context-panel" aria-labelledby="aiContextTitle">
@@ -620,12 +629,12 @@
           <span class="ai-cockpit-badge">Private by default</span>
         </div>
         <div class="ai-lane-grid" aria-label="AfroTools AI workflow desks">
-          <a class="ai-lane-card" data-lane="business" href="/ai/?q=Set%20up%20a%20small%20business%20payroll%2C%20VAT%2C%20invoice%2C%20and%20cash%20flow%20workflow%20for%20Kenya"><strong>Business operating desk</strong><span>PAYE, VAT, invoices, cost of employee, cash flow, registration, and finance checklists.</span><em>Start business workflow</em></a>
-          <a class="ai-lane-card" data-lane="trade" href="/ai/?q=Estimate%20the%20landed%20cost%20and%20customs%20checks%20for%20importing%20a%20car%20into%20Nigeria"><strong>Import and trade desk</strong><span>Landed cost, customs assumptions, HS-code routes, shipping notes, and source warnings.</span><em>Start trade workflow</em></a>
-          <a class="ai-lane-card" data-lane="career" href="/ai/?q=Build%20a%20CV%2C%20cover%20letter%2C%20and%20scholarship%20plan%20for%20a%20Ghanaian%20graduate"><strong>Career and study desk</strong><span>CVs, cover letters, scholarships, study budgets, deadlines, and application packs.</span><em>Start career workflow</em></a>
-          <a class="ai-lane-card" data-lane="energy" href="/ai/?q=Compare%20solar%2C%20generator%2C%20battery%2C%20and%20tariff%20costs%20for%20a%20Lagos%20shop"><strong>Energy and home desk</strong><span>Solar ROI, generator exposure, battery sizing, tariff assumptions, and installer questions.</span><em>Start energy workflow</em></a>
-          <a class="ai-lane-card" data-lane="local" href="/ai/?q=Plan%20a%20Nairobi%20relocation%20budget%20with%20rent%2C%20transport%2C%20school%20fees%2C%20and%20monthly%20pressure"><strong>Local life planner</strong><span>Rent, transport, school fees, food, relocation costs, and monthly budget pressure.</span><em>Start local plan</em></a>
-          <a class="ai-lane-card" data-lane="build" href="/ai/?q=Plan%20a%20two-bedroom%20renovation%20budget%2C%20materials%2C%20BOQ%2C%20and%20contractor%20checklist%20in%20Accra"><strong>Build and renovate desk</strong><span>Floor plans, BOQ, materials, renovation budgets, permits, and contractor notes.</span><em>Start build workflow</em></a>
+          <a class="ai-lane-card" data-lane="business" href="/ai/?q=Set%20up%20a%20small%20business%20payroll%2C%20VAT%2C%20invoice%2C%20and%20cash%20flow%20workflow%20for%20Kenya"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 21h18"/><path d="M5 21V7l7-4 7 4v14"/><path d="M9 21v-6h6v6"/><path d="M9 11h.01"/><path d="M15 11h.01"/></svg></span><strong>Business operating desk</strong><span>PAYE, VAT, invoices, cost of employee, cash flow, registration, and finance checklists.</span><em>Start business workflow</em></a>
+          <a class="ai-lane-card" data-lane="trade" href="/ai/?q=Estimate%20the%20landed%20cost%20and%20customs%20checks%20for%20importing%20a%20car%20into%20Nigeria"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3 13 5 7a3 3 0 0 1 3-2h8a3 3 0 0 1 3 2l2 6"/><path d="M5 13h14v5H5z"/><circle cx="8" cy="18" r="2"/><circle cx="16" cy="18" r="2"/></svg></span><strong>Import and trade desk</strong><span>Landed cost, customs assumptions, HS-code routes, shipping notes, and source warnings.</span><em>Start trade workflow</em></a>
+          <a class="ai-lane-card" data-lane="career" href="/ai/?q=Build%20a%20CV%2C%20cover%20letter%2C%20and%20scholarship%20plan%20for%20a%20Ghanaian%20graduate"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="m3 8 9-4 9 4-9 4z"/><path d="M6 10v5c0 2 3 4 6 4s6-2 6-4v-5"/><path d="M21 8v6"/></svg></span><strong>Career and study desk</strong><span>CVs, cover letters, scholarships, study budgets, deadlines, and application packs.</span><em>Start career workflow</em></a>
+          <a class="ai-lane-card" data-lane="energy" href="/ai/?q=Compare%20solar%2C%20generator%2C%20battery%2C%20and%20tariff%20costs%20for%20a%20Lagos%20shop"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></svg></span><strong>Energy and home desk</strong><span>Solar ROI, generator exposure, battery sizing, tariff assumptions, and installer questions.</span><em>Start energy workflow</em></a>
+          <a class="ai-lane-card" data-lane="local" href="/ai/?q=Plan%20a%20Nairobi%20relocation%20budget%20with%20rent%2C%20transport%2C%20school%20fees%2C%20and%20monthly%20pressure"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M9 18 3 21V6l6-3 6 3 6-3v15l-6 3z"/><path d="M9 3v15"/><path d="M15 6v15"/></svg></span><strong>Local life planner</strong><span>Rent, transport, school fees, food, relocation costs, and monthly budget pressure.</span><em>Start local plan</em></a>
+          <a class="ai-lane-card" data-lane="build" href="/ai/?q=Plan%20a%20two-bedroom%20renovation%20budget%2C%20materials%2C%20BOQ%2C%20and%20contractor%20checklist%20in%20Accra"><span class="ai-lane-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4z"/><path d="M4 10h6"/><path d="M10 4v16"/><path d="M10 14h10"/><path d="M15 14v6"/></svg></span><strong>Build and renovate desk</strong><span>Floor plans, BOQ, materials, renovation budgets, permits, and contractor notes.</span><em>Start build workflow</em></a>
         </div>
         <div class="ai-proof-grid" aria-label="AfroTools AI product guarantees">
           <div class="ai-proof-card"><span>Route</span><strong>Known tools only</strong></div>
@@ -710,7 +719,7 @@
   <script src="/assets/js/ai/agriculture-workflow.js?v=9297fec5"></script>
   <script src="/assets/js/ai/workflow-export.js?v=365220fd"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
-<script src="/assets/js/ai/tool-manifest.js?v=11d4adef"></script>
+<script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -1260,16 +1269,64 @@
       ];
     }
 
+    // Surfaces whose prompts are appropriate for the hub rail. Drawing from all
+    // four gives ~38 eligible prompts instead of the 10 tagged homepage_command.
+    var QUICK_TASK_SURFACES = ["homepage_command", "ai_hub", "ai_vertical", "ai_widget"];
+    var QUICK_TASK_COUNT = 6;
+
+    function collectQuickPool(language) {
+      var seen = {};
+      var pool = [];
+      QUICK_TASK_SURFACES.forEach(function (surface) {
+        var found = promptExamples.getPromptExamplesForSurface(surface, { language: language, limit: 100 }) || [];
+        found.forEach(function (example) {
+          if (!example || seen[example.id]) return;
+          if (!example.expectedToolId || !byId(example.expectedToolId)) return;
+          seen[example.id] = true;
+          pool.push(example);
+        });
+      });
+      return pool;
+    }
+
+    /**
+     * Pick QUICK_TASK_COUNT prompts, spread across categories.
+     *
+     * The rail used to slice(0, 6), so every visitor on every load saw the same
+     * six tasks and the other ~32 prompts were dead weight. Shuffling alone
+     * would let one category take several slots, so take one per category first
+     * (categories themselves shuffled), then fill any remainder from what is left.
+     */
+    function pickQuickExamples(pool) {
+      var shuffled = pool.slice();
+      for (var i = shuffled.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var swap = shuffled[i];
+        shuffled[i] = shuffled[j];
+        shuffled[j] = swap;
+      }
+      var usedCategory = {};
+      var picked = [];
+      var leftovers = [];
+      shuffled.forEach(function (example) {
+        var category = example.category || "other";
+        if (!usedCategory[category] && picked.length < QUICK_TASK_COUNT) {
+          usedCategory[category] = true;
+          picked.push(example);
+        } else {
+          leftovers.push(example);
+        }
+      });
+      while (picked.length < QUICK_TASK_COUNT && leftovers.length) picked.push(leftovers.shift());
+      return picked;
+    }
+
     function getQuickExamples() {
       if (!promptExamples || typeof promptExamples.getPromptExamplesForSurface !== "function") return fallbackQuickExamples();
-      var examples = promptExamples.getPromptExamplesForSurface("homepage_command", { language: uiLocale, limit: 18 });
-      if (!examples.length && uiLocale !== "en") {
-        examples = promptExamples.getPromptExamplesForSurface("homepage_command", { language: "en", limit: 18 });
-      }
-      examples = examples.filter(function (example) {
-        return example && example.expectedToolId && byId(example.expectedToolId);
-      }).slice(0, 6);
-      return examples.length ? examples : fallbackQuickExamples();
+      var pool = collectQuickPool(uiLocale);
+      if (!pool.length && uiLocale !== "en") pool = collectQuickPool("en");
+      if (!pool.length) return fallbackQuickExamples();
+      return pickQuickExamples(pool);
     }
 
     function renderQuickTasks() {
@@ -3489,9 +3546,11 @@
       target.querySelectorAll("[data-car-import-link]").forEach(function (link) {
         link.addEventListener("click", function (event) {
           var plan = workflowState.importAdvisorPlan || null;
-          if (!plan || !plan.importPrefillInputs || plan.importPrefillInputs.mode !== "car") return;
+          var inputs = plan && plan.importPrefillInputs || mergeInputs(workflowState.extractedInputs, workflowState.clarificationAnswers);
+          if (!inputs) return;
           event.preventDefault();
-          var launch = buildToolPrefillUrl("car-import-cost", plan.importPrefillInputs, {}, plan.carWorkspaceUrl || "/tools/car-import-cost/");
+          var carInputs = Object.assign({}, inputs, { mode: "car", productCategory: "vehicle" });
+          var launch = buildToolPrefillUrl("car-import-cost", carInputs, {}, plan && plan.carWorkspaceUrl || link.getAttribute("href") || "/tools/car-import-cost/");
           workflowState.prefillPayload = launch && launch.payload || workflowState.prefillPayload;
           trackMany(["ai_prefill_payload_created", "ai_prefill_open_tool"], {
             tool_id: "car-import-cost",
@@ -4169,6 +4228,16 @@
     renderPromptExampleGrid();
     localizePageShell();
     renderQuickTasks();
+    var quickShuffle = document.getElementById("aiQuickShuffle");
+    if (quickShuffle) {
+      quickShuffle.addEventListener("click", function () {
+        renderQuickTasks();
+        if (quickTaskRail) {
+          var first = quickTaskRail.querySelector(".ai-quick-task");
+          if (first) first.focus();
+        }
+      });
+    }
     renderFallbackGrid();
     renderSavedProjects();
     fallbackGrid.addEventListener("click", function (event) {
