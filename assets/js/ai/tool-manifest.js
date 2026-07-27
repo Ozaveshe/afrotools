@@ -1166,7 +1166,29 @@
     return clean.length > 1 && clean.endsWith('/') ? clean.slice(0, -1).toLowerCase() : clean.toLowerCase();
   }
 
-  var SEARCH_STOP_WORDS = { a: true, about: true, all: true, an: true, and: true, any: true, app: true, are: true, as: true, be: true, build: true, calculate: true, calculator: true, can: true, check: true, checker: true, create: true, do: true, for: true, from: true, get: true, give: true, help: true, how: true, i: true, in: true, into: true, is: true, make: true, me: true, my: true, need: true, of: true, on: true, open: true, or: true, plan: true, planner: true, please: true, should: true, show: true, tell: true, the: true, this: true, to: true, tool: true, use: true, what: true, will: true, with: true };
+  /* Stopwords are TRUE function words only.
+ *
+ * This list used to delete the verbs that carry intent — build, calculate,
+ * calculator, check, checker, create, make, plan, planner, will — on the
+ * reasonable-sounding grounds that everyone says "calculate" so it does not
+ * discriminate. But deleting a term and down-weighting it are not the same
+ * thing, and the difference showed up as 27% of realistic prompts never
+ * retrieving the right tool at all on a 52-case holdout:
+ *
+ *   "i want write my will"   tokenised to ["want","write"] — "will" was gone,
+ *                            so will-generator could never be reached.
+ *   "what should i plant"    lost nothing, but "plan my budget" and "calculate
+ *                            my budget" collapsed to the same query.
+ *
+ * It also silently disabled the natural-verb intents derived for all 1,252
+ * tools: phrases like "create will" and "plan savings goal" were stripped on
+ * both sides, so the enrichment could not possibly fire.
+ *
+ * Low information content is what IDF is for. A term that names 300 tools gets
+ * a small weight and stops mattering on its own merits; a term deleted at
+ * tokenisation can never matter at all, even when it is the only word that
+ * distinguishes two intents. */
+  var SEARCH_STOP_WORDS = { a: true, about: true, all: true, an: true, and: true, any: true, app: true, are: true, as: true, be: true, can: true, do: true, for: true, from: true, get: true, give: true, help: true, how: true, i: true, in: true, into: true, is: true, me: true, my: true, need: true, of: true, on: true, open: true, or: true, please: true, should: true, show: true, tell: true, the: true, this: true, to: true, tool: true, use: true, what: true, with: true };
 
   var GEOGRAPHY_SEARCH_TERMS = { abidjan: true, abuja: true, accra: true, africa: true, african: true, cameroon: true, dakar: true, douala: true, egypt: true, ethiopia: true, ghana: true, ibadan: true, kenya: true, kigali: true, lagos: true, morocco: true, nairobi: true, nigeria: true, rwanda: true, senegal: true, tanzania: true, uganda: true, zambia: true, zimbabwe: true };
 
