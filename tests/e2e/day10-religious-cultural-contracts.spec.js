@@ -3,12 +3,14 @@ const fs = require('fs');
 const path = require('path');
 const pdfParse = require('pdf-parse');
 
+const TEST_ORIGIN = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173';
+
 test.describe.configure({ mode: 'serial' });
 
 async function open(page, route) {
   await page.route('**/*', async (requestRoute) => {
     const url = new URL(requestRoute.request().url());
-    if (url.origin === 'http://127.0.0.1:4173') return requestRoute.continue();
+    if (url.origin === TEST_ORIGIN) return requestRoute.continue();
     return requestRoute.abort();
   });
   await page.goto(route, { waitUntil: 'domcontentloaded' });

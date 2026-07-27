@@ -1,12 +1,14 @@
 const fs = require('fs');
 const { test, expect } = require('@playwright/test');
 
+const TEST_ORIGIN = process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173';
+
 test.describe.configure({ mode: 'serial' });
 
 async function openTool(page, route) {
   await page.route('**/*', async (requestRoute) => {
     const url = new URL(requestRoute.request().url());
-    if (url.origin === 'http://127.0.0.1:4173') return requestRoute.continue();
+    if (url.origin === TEST_ORIGIN) return requestRoute.continue();
     return requestRoute.abort();
   });
   await page.goto(route, { waitUntil: 'domcontentloaded' });
@@ -86,18 +88,25 @@ test('Time-zone converter applies the Lagos-to-Nairobi two-hour offset', async (
   await expect(page.locator('#toDisplay')).toHaveText('02:00 PM');
 });
 
-test('Public-holiday reference exports a parser-valid Nigeria 2026 calendar', async ({ page }) => {
+test('Public-holiday worksheet exports a parser-valid user-confirmed Nigeria entry', async ({ page }) => {
   await openTool(page, '/tools/public-holidays/');
-  await page.locator('#country').selectOption('NG');
-  await page.locator('#year').selectOption('2026');
+  await page.locator('#holiday-country').selectOption('NG');
+  await page.locator('#holiday-name').fill('Synthetic Civic Day');
+  await page.locator('#holiday-date').fill('2026-09-14');
+  await page.getByRole('button', { name: 'Prepare calendar entry' }).click();
+  await expect(page.getByRole('status')).toContainText('Confirm that you checked');
+  await page.locator('#holiday-confirmed').check();
+  await page.getByRole('button', { name: 'Prepare calendar entry' }).click();
   const downloadPromise = page.waitForEvent('download');
-  await page.getByRole('button', { name: /Export to Calendar/ }).click();
+  await page.getByRole('button', { name: 'Download ICS' }).click();
   const ics = await readDownload(await downloadPromise);
   expect(ics).toMatch(/^BEGIN:VCALENDAR\r?\n/);
-  expect(ics).toContain('DTSTART;VALUE=DATE:20260101');
-  expect(ics).toContain("SUMMARY:New Year's Day (Nigeria)");
+  expect(ics).toContain('DTSTART;VALUE=DATE:20260914');
+  expect(ics).toContain('DTEND;VALUE=DATE:20260915');
+  expect(ics).toContain('SUMMARY:Synthetic Civic Day');
+  expect(ics).toContain('X-AFROTOOLS-BOUNDARY:User-confirmed entry; not an official calendar');
   expect(ics.trimEnd()).toMatch(/END:VCALENDAR$/);
-  expect((ics.match(/BEGIN:VEVENT/g) || []).length).toBeGreaterThan(5);
+  expect((ics.match(/BEGIN:VEVENT/g) || []).length).toBe(1);
 });
 
 test('Working-days calculator proves an inclusive Monday-to-Friday interval', async ({ page }) => {

@@ -39,7 +39,8 @@ async function execute(page, tool) {
     await expect(output).toContainText('10%');
   } else if (['home-renovation-cost', 'building-materials', 'construction-budget', 'survey-cost'].includes(tool)) {
     await fill(page, { currency: 'GHS', quantity: 10, unitCost: 20, fixed: 50, contingency: 10 });
-    await page.getByRole('button', { name: 'Calculate from my inputs' }).click();
+    const action = tool === 'home-renovation-cost' ? 'Estimate from my inputs' : 'Calculate from my inputs';
+    await page.getByRole('button', { name: action }).click();
     await expect(output).toContainText('275');
   } else if (tool === 'property-valuation') {
     await fill(page, { currency: 'ZAR', area: 100, comparable: 1000, adjustment: 10 });
@@ -141,7 +142,11 @@ for (const tool of rebuilt) {
     await page.goto(`/tools/${tool}/`, { waitUntil: 'domcontentloaded' });
     const action = ['land-title-check', 'tenant-screening', 'building-permit'].includes(tool)
       ? 'Review checklist'
-      : tool === 'rental-agreement' ? 'Build review draft' : 'Calculate from my inputs';
+      : tool === 'rental-agreement'
+        ? 'Build review draft'
+        : tool === 'home-renovation-cost'
+          ? 'Estimate from my inputs'
+          : 'Calculate from my inputs';
     await page.getByRole('button', { name: action }).click();
     if (action === 'Review checklist') {
       await expect(page.locator('[data-result]')).toContainText('0 item(s) marked');

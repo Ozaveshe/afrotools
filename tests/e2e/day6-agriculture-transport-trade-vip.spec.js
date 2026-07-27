@@ -3,6 +3,15 @@ const path = require('path');
 const vm = require('vm');
 const { expect, test } = require('@playwright/test');
 
+const DAY6_ORIGIN = `http://127.0.0.1:${Number(process.env.DAY6_PORT || 4186)}`;
+
+async function blockExternalHttp(page) {
+  await page.route(/^https?:\/\//, (route) => {
+    if (route.request().url().startsWith(`${DAY6_ORIGIN}/`)) return route.continue();
+    return route.abort();
+  });
+}
+
 function inventory() {
   const registry = fs.readFileSync(path.resolve(__dirname, '../../assets/js/components/tool-registry.js'), 'utf8');
   const sandbox = { document: undefined, window: {} };
@@ -38,7 +47,7 @@ test('Day 6 hubs expose their reconciled workflows and responsive contracts', as
     { route: '/transport/', count: 23, selector: '.trp-tool-card' },
     { route: '/trade/', count: 22, selector: '.tool-card' }
   ];
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   for (const hub of hubs) {
     await page.setViewportSize({ width: 320, height: 760 });
     await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
@@ -85,7 +94,7 @@ test('Day 6 hubs expose their reconciled workflows and responsive contracts', as
 });
 
 test('Agriculture static directory exposes every calculator without JavaScript or user interaction', async ({ page }) => {
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   await page.route('**/*.js*', (route) => route.abort());
   await page.setViewportSize({ width: 320, height: 760 });
   const response = await page.goto('/agriculture/all-tools/', { waitUntil: 'domcontentloaded' });
@@ -131,7 +140,7 @@ test('Agriculture static directory exposes every calculator without JavaScript o
 
 test('all Day 6 English live/new routes keep route, mobile, theme and metadata contracts', async ({ page }) => {
   test.setTimeout(20 * 60 * 1000);
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   // Keep this exhaustive route contract fast and deterministic. The two workflow
   // tests below execute the category JavaScript and primary user paths separately.
   await page.route('**/*.js*', (route) => route.abort());
@@ -231,7 +240,7 @@ test('all Day 6 English live/new routes keep route, mobile, theme and metadata c
 
 test('repaired Agriculture family entry apps execute independent deterministic fixtures and failure/reset paths', async ({ page }) => {
   test.setTimeout(2 * 60 * 1000);
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   const fixtures = [
     ['/agriculture/crop-yield/', 'Calculate yield', /6\.16 tonnes/],
     ['/agriculture/fertilizer/', 'Calculate fertilizer', /8 bags.*280,000/],
@@ -309,13 +318,13 @@ test('every remaining Agriculture route executes its primary country or app work
     console.log(`Agriculture page error: ${error.message}`);
   });
   page.on('request', (request) => {
-    if (!request.url().startsWith('http://127.0.0.1:4186/')
+    if (!request.url().startsWith(`${DAY6_ORIGIN}/`)
       && !['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
       externalWrites.push({ method: request.method(), url: request.url() });
     }
   });
   page.on('dialog', (dialog) => dialog.dismiss());
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   let agricultureRoutes = ROUTES
     .filter((row) => row.category === 'agriculture' && !maintainedEntries.has(row.route))
     .filter((row) => !process.env.DAY6_ROUTE_PATTERN || new RegExp(process.env.DAY6_ROUTE_PATTERN).test(row.route));
@@ -465,12 +474,12 @@ test('every Transport and Trade app exposes and executes an app-owned primary wo
   test.setTimeout(6 * 60 * 1000);
   const externalWrites = [];
   page.on('request', (request) => {
-    if (!request.url().startsWith('http://127.0.0.1:4186/')
+    if (!request.url().startsWith(`${DAY6_ORIGIN}/`)
       && !['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
       externalWrites.push({ method: request.method(), url: request.url() });
     }
   });
-  await page.route(/^https?:\/\/(?!127\.0\.0\.1:4186)/, (route) => route.abort());
+  await blockExternalHttp(page);
   await page.emulateMedia({ reducedMotion: 'reduce' });
   page.on('dialog', (dialog) => dialog.dismiss());
   const routePattern = process.env.DAY6_ROUTE_PATTERN
