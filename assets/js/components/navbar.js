@@ -98,7 +98,7 @@
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=afec9b5b';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=1ae7d64b';
   // NAVBAR_CSS_HREF_END
 
   // NAVBAR_TOP_LEVEL_DATA_START
@@ -666,12 +666,15 @@
 
   window.AfroTools = window.AfroTools || {};
   window.AfroTools.loadNavbarData = ensureNavbarData;
-  const MARK = `<svg viewBox="0 0 68 68" fill="none" xmlns="http://www.w3.org/2000/svg" style="height:30px;width:30px;flex-shrink:0">
-    <polygon points="34,20 48,34 34,48 20,34" fill="#0062CC"/>
-    <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
-    <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
-    <polygon points="2,24  14,34 2,44  -10,34" fill="#0062CC" opacity="0.7"/>
-    <polygon points="52,24 64,34 52,44 40,34"  fill="#0062CC" opacity="0.55"/>
+  // Every polygon sits inside the viewBox. The previous mark placed the left
+  // diamond at x=-10 on a `0 0 68 68` box, so the browser clipped it in half and
+  // the lockup rendered lopsided at every size.
+  const MARK = `<svg class="logo-mark" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" focusable="false">
+    <polygon points="32,20 44,32 32,44 20,32" fill="#0062CC"/>
+    <polygon points="32,4  40,14 32,20 24,14" fill="#F5A623"/>
+    <polygon points="32,44 40,50 32,60 24,50" fill="#0047AB"/>
+    <polygon points="8,24  16,32 8,40  0,32"  fill="#0062CC" opacity="0.7"/>
+    <polygon points="56,24 64,32 56,40 48,32" fill="#0062CC" opacity="0.55"/>
   </svg>`;
 
   class AfroNavbar extends HTMLElement {

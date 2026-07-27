@@ -64,14 +64,15 @@ function buildNavbarData() {
   const outputChanged = writeIfChanged(DATA_OUTPUT_PATH, output);
   const hrefCount = (output.match(/"href(?:Fr|Sw|Ha|Yo)?":/g) || []).length;
 
-  // The legacy source starts with a Google Fonts import. Keep the deployed
-  // shadow stylesheet on the same canonical, same-origin font contract as the
-  // document while the one-line source remains backward compatible.
-  const navbarCss = minifyCss(fs.readFileSync(NAVBAR_CSS_PATH, "utf8"))
-    .replace(
-      /^@import url\(['"]https:\/\/fonts\.googleapis\.com\/[^'"]+['"]\);/,
-      "@import url('/assets/fonts/typography.css');"
-    );
+  // Keep both the source and deployed shadow stylesheet on the same canonical,
+  // same-origin font contract. Normalizing the source prevents a later
+  // minification or conflict resolution from restoring the network font.
+  const navbarCssSource = fs.readFileSync(NAVBAR_CSS_PATH, "utf8").replace(
+    /^@import url\(['"]https:\/\/fonts\.googleapis\.com\/[^'"]+['"]\);/,
+    "@import url('/assets/fonts/typography.css');"
+  );
+  const cssSourceChanged = writeIfChanged(NAVBAR_CSS_PATH, navbarCssSource);
+  const navbarCss = minifyCss(navbarCssSource);
   const cssChanged = writeIfChanged(NAVBAR_MIN_CSS_PATH, navbarCss);
   const cssHash = crypto.createHash("md5").update(navbarCss.replace(/\r\n?/g, "\n")).digest("hex").slice(0, 8);
 
@@ -95,7 +96,7 @@ function buildNavbarData() {
 
   console.log(`  NAVDATA ${data.navItems.length} categories, ${hrefCount} hrefs, ${Buffer.byteLength(output)} bytes`);
   console.log(`  NAVCSS  ${Buffer.byteLength(navbarCss)} bytes, v=${cssHash}`);
-  return { outputChanged, cssChanged, sourceChanged, hrefCount, cssHash };
+  return { outputChanged, cssSourceChanged, cssChanged, sourceChanged, hrefCount, cssHash };
 }
 
 if (require.main === module) {
