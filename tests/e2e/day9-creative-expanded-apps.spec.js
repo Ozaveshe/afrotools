@@ -12,11 +12,6 @@ const APP_IDS = [
   'creator-stock', 'creator-team', 'creator-thumb', 'creator-titles',
   'creator-voice'
 ];
-const KNOWN_REFLOW_LEFT = new Set([
-  'creator-brand', 'creator-kit', 'creator-page', 'creator-resize',
-  'creator-schedule', 'creator-split', 'creator-stock'
-]);
-
 async function openLocal(page, id) {
   const writes = [];
   await page.addInitScript(() => localStorage.setItem('afrotools_cookie_consent', 'declined'));
@@ -44,7 +39,6 @@ async function openLocal(page, id) {
 
 for (const id of APP_IDS) {
   test(`${id}: local primary input path, reflow, and network boundary`, async ({ page }) => {
-    test.fail(KNOWN_REFLOW_LEFT.has(id), 'Known Day 9 expanded-app reflow backlog');
     await page.setViewportSize({ width: 320, height: 800 });
     const writes = await openLocal(page, id);
 
