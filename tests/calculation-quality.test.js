@@ -93,16 +93,18 @@ test('HTML formula digests ignore reviewed presentation-asset cache versions onl
     quality.digestHtmlFormulaSource('<html><body></body></html>')
   );
 
-  const relatedToolsShell = (cacheVersion) =>
-    '<html><body><script src="/assets/js/components/related-tools.min.js?v=' + cacheVersion + '" defer></script></body></html>';
-  assert.strictEqual(
-    quality.digestHtmlFormulaSource(relatedToolsShell('2cd970f9')),
-    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d'))
-  );
-  assert.notStrictEqual(
-    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d')),
-    quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d').replace('related-tools.min.js', 'tool-registry.min.js'))
-  );
+  for (const filename of ['related-tools.js', 'related-tools.min.js']) {
+    const relatedToolsShell = (cacheVersion) =>
+      '<html><body><script src="/assets/js/components/' + filename + '?v=' + cacheVersion + '" defer></script></body></html>';
+    assert.strictEqual(
+      quality.digestHtmlFormulaSource(relatedToolsShell('2cd970f9')),
+      quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d'))
+    );
+    assert.notStrictEqual(
+      quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d')),
+      quality.digestHtmlFormulaSource(relatedToolsShell('630f8a7d').replace(filename, 'tool-registry.min.js'))
+    );
+  }
 });
 
 test('all high-risk PAYE and VAT routes map to one formula and external source', function () {

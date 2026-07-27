@@ -125,7 +125,7 @@ function normalizeHtmlFormulaPresentation(source) {
   // exact eight-character build hash for explicitly reviewed presentation
   // assets so paths, query shape and formula code remain covered by the gate.
   return String(source).replace(
-    /(assets\/js\/(?:lazy-analytics|components\/related-tools\.min)\.js\?v=)[a-f0-9]{8}/gi,
+    /(assets\/js\/(?:lazy-analytics|components\/related-tools(?:\.min)?)\.js\?v=)[a-f0-9]{8}/gi,
     "$1__FORMULA_DIGEST_CACHE__",
   );
 }

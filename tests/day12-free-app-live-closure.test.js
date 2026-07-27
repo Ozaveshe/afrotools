@@ -23,9 +23,15 @@ test('live-closure category surfaces opt into targeted dark-mode ownership', () 
 
 test('custom Zakat shell loads the shared manual/system theme controller', () => {
   const html = read('tools/zakat-calculator/index.html');
-  assert.match(html, /<script src="\/assets\/js\/lib\/dark-mode\.js" defer><\/script>/);
+  const standaloneTheme = html.match(/<script src="(\/assets\/js\/lib\/dark-mode\.js(?:\?v=[a-f0-9]{8})?)" defer><\/script>/);
+  const coreBundle = html.match(/<script src="(\/assets\/js\/bundles\/core\.[a-f0-9]+\.min\.js)" defer><\/script>/);
+  assert.ok(standaloneTheme || coreBundle, 'Zakat must load the shared theme controller directly or through the owned core bundle');
+  if (coreBundle) {
+    assert.match(read(coreBundle[1].replace(/^\//, '')), /afro-theme-fallback-toggle/);
+  }
+  const themeAsset = standaloneTheme ? standaloneTheme[1] : coreBundle[1];
   assert.ok(
-    html.indexOf('/assets/js/lib/dark-mode.js') < html.indexOf('/assets/js/lazy-analytics.js'),
+    html.indexOf(themeAsset) < html.indexOf('/assets/js/lazy-analytics.js'),
     'theme control should initialize before deferred analytics'
   );
 });
