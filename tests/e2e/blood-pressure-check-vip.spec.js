@@ -73,11 +73,19 @@ test.describe('blood pressure measurement check VIP', () => {
     await page.setViewportSize({ width: 320, height: 760 });
     await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
     await page.goto('/tools/blood-pressure/', { waitUntil: 'domcontentloaded' });
+    const themeToggle = page.getByRole('button', { name: 'Switch to light mode' });
+    await expect(themeToggle).toHaveAttribute('aria-pressed', 'true');
+    await themeToggle.click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await expect(page.getByRole('button', { name: 'Switch to dark mode' })).toHaveAttribute('aria-pressed', 'false');
+    await page.getByRole('button', { name: 'Switch to dark mode' }).click();
+    await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+    await expect.poll(() => page.evaluate(() => localStorage.getItem('aft_theme'))).toBe('dark');
     expect(await page.evaluate(() => ({
       background: getComputedStyle(document.body).backgroundColor,
       font: getComputedStyle(document.body).fontFamily
     }))).toEqual(expect.objectContaining({
-      background: 'rgb(11, 20, 18)',
+      background: 'rgb(9, 17, 31)',
       font: expect.stringContaining('DM Sans')
     }));
     await page.evaluate(() => {

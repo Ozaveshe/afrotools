@@ -97,6 +97,9 @@ const climateRuntime = read('assets/js/climate-tools.js');
 assert.doesNotMatch(climateRuntime, /capture-lead|climate-pdf-gate|cdnjs\.cloudflare\.com\/ajax\/libs\/jspdf/);
 assert.match(climateRuntime, /\/assets\/vendor\/jspdf\/jspdf\.umd\.min\.js/);
 
+const carbonCredit = read('tools/carbon-credit/index.html');
+assert.match(carbonCredit, /id="projectSize"[^>]*\bmin="0\.01"[^>]*\brequired/);
+
 for (const href of climateRoutes) {
   const html = read(`${href.replace(/^\/|\/$/g, '')}/index.html`);
   assert.equal((html.match(/climate-vip-guardrails\.css/g) || []).length, 1);
@@ -105,6 +108,18 @@ for (const href of climateRoutes) {
   assert.match(html, /role="status" aria-live="polite"/);
   assert.match(html, /Generated in this browser with the bundled PDF engine/);
 }
+
+const miningRoyalty = read('tools/mining-royalty/index.html');
+assert.match(miningRoyalty, /id="mr-gross"[^>]*\bmin="0\.01"[^>]*\brequired/);
+assert.match(miningRoyalty, /id="mr-err" role="alert"/);
+assert.match(miningRoyalty, /gEl\.setAttribute\('aria-invalid', 'true'\)/);
+assert.match(miningRoyalty, /gEl\.focus\(\)/);
+assert.match(miningRoyalty, /gEl\.addEventListener\('input', clearResultForEdit\)/);
+
+const relatedTools = read('assets/js/components/related-tools.js');
+assert.match(relatedTools, /const match = candidates\.find\(key => extMap\[key\]\);\s*return match \|\| '';/);
+const relatedToolsMin = read('assets/js/components/related-tools.min.js');
+assert.match(relatedToolsMin, /return \w+\?\w+\.find\(\w+=>\w+\[\w+\]\)\|\|"":\w+\[0\]\|\|""/);
 
 const engineeringRuntime = read('assets/js/engineering-toolkit.js');
 assert.doesNotMatch(engineeringRuntime, /capture-lead|engineering-pdf-gate/);

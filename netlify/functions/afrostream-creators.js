@@ -1,5 +1,6 @@
 // netlify/functions/afrostream-creators.js
 // Public API: GET /api/afrostream/creators?country=&category=&platform=&sort=&limit=
+var FALLBACK = require('../../data/afrostream/creators-fallback.json');
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 
@@ -11,7 +12,15 @@ function cors(event) {
 
 function readJson(res) {
   return res.text().then(function(text) {
-    return text ? JSON.parse(text) : null;
+    if (!text) return null;
+    try {
+      return JSON.parse(text);
+    } catch (error) {
+      var parseError = new Error('Upstream returned a non-JSON response');
+      parseError.code = 'UPSTREAM_NON_JSON';
+      parseError.status = res.status;
+      throw parseError;
+    }
   });
 }
 
@@ -72,11 +81,79 @@ function ilike(v) {
   return encodeURIComponent('*' + String(v || '').trim() + '*');
 }
 
+function numberValue(value) {
+  if (typeof value === 'number') return value;
+  return parseFloat(String(value || '').replace(/[^0-9.-]/g, '')) || 0;
+}
+
+function fallbackRows(qs, requestedSort, limit) {
+  var platformCols = {
+    youtube: 'youtube_url',
+    twitch: 'twitch_url',
+    tiktok: 'tiktok_url',
+    instagram: 'instagram_url',
+    kick: 'kick_url',
+    twitter: 'twitter_url',
+    x: 'twitter_url'
+  };
+  var rows = (FALLBACK.creators || []).filter(function(row) {
+    if (qs.country && String(row.country || '').toLowerCase() !== String(qs.country).trim().toLowerCase()) return false;
+    if (qs.category && String(row.categories || '').toLowerCase().indexOf(String(qs.category).trim().toLowerCase()) === -1) return false;
+    if (qs.platform) {
+      var platformCol = platformCols[String(qs.platform).toLowerCase()];
+      if (!platformCol || !row[platformCol]) return false;
+    }
+    return true;
+  }).map(function(row) {
+    return Object.assign({}, row, {
+      source_state: FALLBACK.source.state,
+      source_snapshot_label: FALLBACK.source.snapshot_label,
+      source_reviewed_at: FALLBACK.source.reviewed_at,
+      source_metrics_freshness: FALLBACK.source.metrics_freshness
+    });
+  });
+
+  rows.sort(function(a, b) {
+    if (requestedSort === 'name') return String(a.name || '').localeCompare(String(b.name || ''));
+    if (requestedSort === 'gift_revenue' || requestedSort === 'gifts') return numberValue(b.gift_revenue) - numberValue(a.gift_revenue);
+    if (requestedSort === 'growth_rate' || requestedSort === 'growth_pct' || requestedSort === 'growth') return numberValue(b.growth_pct || b.growth_rate) - numberValue(a.growth_pct || a.growth_rate);
+    if (requestedSort === 'views' || requestedSort === 'total_views') return numberValue(b.total_views || b.yt_views) - numberValue(a.total_views || a.yt_views);
+    if (requestedSort === 'newest') return String(b.created_at || '').localeCompare(String(a.created_at || '')) || String(a.name || '').localeCompare(String(b.name || ''));
+    if (requestedSort === 'subscribers' || requestedSort === 'followers' || requestedSort === 'total_followers') {
+      return numberValue(b.total_followers || b.subscribers) - numberValue(a.total_followers || a.subscribers);
+    }
+    return numberValue(b.afro_score) - numberValue(a.afro_score)
+      || numberValue(b.total_followers || b.subscribers) - numberValue(a.total_followers || a.subscribers);
+  });
+
+  var total = rows.length;
+  var offset = Math.max(0, parseInt(qs.offset, 10) || 0);
+  return { rows: rows.slice(offset, offset + limit), total: total };
+}
+
+function fallbackResponse(headers, qs, requestedSort, limit, reason) {
+  var result = fallbackRows(qs, requestedSort, limit);
+  var fallbackHeaders = Object.assign({}, headers, {
+    'Cache-Control': 'public, max-age=60, stale-if-error=86400'
+  });
+  return {
+    statusCode: 200,
+    headers: fallbackHeaders,
+    body: JSON.stringify({
+      success: true,
+      degraded: true,
+      data: result.rows,
+      count: result.total,
+      returned_count: result.rows.length,
+      source: Object.assign({}, FALLBACK.source, { reason: reason || 'upstream_unavailable' })
+    })
+  };
+}
+
 exports.handler = async function(event) {
   var h = cors(event);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: h, body: '' };
   if (event.httpMethod !== 'GET') return { statusCode: 405, headers: h, body: '{"error":"Method not allowed"}' };
-  if (!SUPABASE_KEY) return { statusCode: 500, headers: h, body: '{"error":"SUPABASE service key not configured"}' };
 
   var qs = event.queryStringParameters || {};
   var parts = ['is_published=eq.true'];
@@ -118,12 +195,23 @@ exports.handler = async function(event) {
   parts.push('limit=' + limit);
   if (qs.offset) parts.push('offset=' + (parseInt(qs.offset, 10) || 0));
 
+  if (!SUPABASE_KEY) return fallbackResponse(h, qs, requestedSort, limit, 'service_configuration_unavailable');
+
   try {
     var res = await fetch(SUPABASE_URL + '/rest/v1/as_creators?' + parts.join('&'), {
       headers: { apikey: SUPABASE_KEY, Authorization: 'Bearer ' + SUPABASE_KEY, Prefer: 'count=exact' }
     });
-    var data = await readJson(res);
+    var data;
+    try {
+      data = await readJson(res);
+    } catch (parseError) {
+      if (parseError && parseError.code === 'UPSTREAM_NON_JSON') {
+        return fallbackResponse(h, qs, requestedSort, limit, 'upstream_non_json');
+      }
+      throw parseError;
+    }
     if (!res.ok) {
+      if (res.status >= 500) return fallbackResponse(h, qs, requestedSort, limit, 'upstream_unavailable');
       return {
         statusCode: res.status >= 500 ? 502 : res.status,
         headers: h,
@@ -149,6 +237,6 @@ exports.handler = async function(event) {
       body: JSON.stringify({ success: true, data: rows, count: totalCount, returned_count: rows.length })
     };
   } catch (e) {
-    return { statusCode: 500, headers: h, body: JSON.stringify({ error: e.message }) };
+    return fallbackResponse(h, qs, requestedSort, limit, 'upstream_unavailable');
   }
 };

@@ -1,4 +1,6 @@
 const { test, expect } = require('@playwright/test');
+const fs = require('node:fs');
+const path = require('node:path');
 
 const climateRoutes = [
   '/tools/drought-risk/', '/tools/water-scarcity/', '/tools/rainfall-tracker/',
@@ -143,6 +145,15 @@ test('all 13 Climate apps run, reject invalid state, reset, and export a local P
     await expect(numeric).toHaveAttribute('aria-invalid', 'true');
     await expect(page.locator('#cl-results')).not.toHaveClass(/on/);
 
+    if (route === '/tools/carbon-credit/') {
+      const priorValue = await page.locator('#cl-result-value').innerText();
+      await page.locator('#projectSize').fill('0');
+      await form.evaluate((node) => node.requestSubmit());
+      await expect(page.locator('#projectSize')).toHaveAttribute('aria-invalid', 'true');
+      await expect(page.locator('#cl-results')).not.toHaveClass(/on/);
+      await expect(page.locator('#cl-result-value')).toHaveText(priorValue);
+    }
+
     await page.locator('#resetClimateScenario').click();
     await expect(page.locator('#cl-results')).not.toHaveClass(/on/);
     await expect(page.locator('#cl-form-status')).toContainText(/reset/i);
@@ -210,10 +221,88 @@ test('all seven Mining hub routes execute without non-finite or network-written 
     const result = page.locator(resultSelector);
     await expect(result).toBeVisible();
     expect((await result.innerText()).trim().length).toBeGreaterThan(20);
+
+    if (route === '/tools/mining-royalty/') {
+      await page.locator('#mr-gross').fill('');
+      await button.click();
+      await expect(page.locator('#mr-gross')).toHaveAttribute('aria-invalid', 'true');
+      await expect(page.locator('#mr-gross')).toBeFocused();
+      await expect(page.locator('#mr-err')).toBeVisible();
+      await expect(page.locator('#mr-err')).toContainText(/greater than zero/i);
+      await expect(page.locator('#mr-result')).not.toBeVisible();
+    }
+
     const body = await page.locator('body').innerText();
     expect(body).not.toMatch(/[₦$€£]\s*NaN|\bInfinity\b|\bundefined\b/);
     await assertReflow(page, route);
   }
 
   expect(writes).toEqual([]);
+});
+
+test('Carbon Credit and Mining Royalty reject invalid primary values without stale results', async ({ page }) => {
+  await keepRunLocal(page);
+
+  await page.goto('/tools/carbon-credit/', { waitUntil: 'domcontentloaded' });
+  const climateForm = page.locator('#climateForm');
+  await climateForm.evaluate((node) => node.requestSubmit());
+  await expect(page.locator('#cl-results')).toHaveClass(/on/);
+  const priorClimateValue = await page.locator('#cl-result-value').innerText();
+  await page.locator('#projectSize').fill('0');
+  await climateForm.evaluate((node) => node.requestSubmit());
+  await expect(page.locator('#projectSize')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#cl-results')).not.toHaveClass(/on/);
+  await expect(page.locator('#cl-result-value')).toHaveText(priorClimateValue);
+
+  await page.goto('/tools/mining-royalty/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#mr-gross').fill('1000000');
+  await page.locator('#mr-rate').fill('5');
+  await page.getByRole('button', { name: /Calculate royalty/i }).click();
+  await expect(page.locator('#mr-result')).toBeVisible();
+  await page.locator('#mr-gross').fill('');
+  await expect(page.locator('#mr-result')).not.toBeVisible();
+  await page.getByRole('button', { name: /Calculate royalty/i }).click();
+  await expect(page.locator('#mr-gross')).toHaveAttribute('aria-invalid', 'true');
+  await expect(page.locator('#mr-gross')).toBeFocused();
+  await expect(page.locator('#mr-err')).toBeVisible();
+  await expect(page.locator('#mr-err')).toContainText(/greater than zero/i);
+});
+
+test('related tools uses a monogram immediately when the loaded manifest has no artwork', async ({ page }) => {
+  const source = fs.readFileSync(
+    path.resolve(__dirname, '../../assets/js/components/related-tools.js'),
+    'utf8'
+  );
+  const missingAssetRequests = [];
+  page.on('request', (request) => {
+    if (/\/assets\/img\/tools\/missing-artwork\.(?:webp|svg)$/.test(request.url())) {
+      missingAssetRequests.push(request.url());
+    }
+  });
+
+  await page.setContent(`
+    <!doctype html>
+    <html lang="en">
+      <head><title>Related tools fallback</title></head>
+      <body>
+        <afro-related-tools category="mining" data-ssr="1">
+          <nav data-related-tools-ssr>
+            <a data-related-tool data-id="missing-artwork" data-name="Missing artwork"
+              data-icon="MR" data-desc="A related mining tool." data-category="mining"
+              href="/tools/missing-artwork/">Missing artwork</a>
+          </nav>
+        </afro-related-tools>
+      </body>
+    </html>
+  `);
+  await page.evaluate(() => {
+    window.TOOL_CARD_IMAGE_EXTENSIONS = { 'known-artwork': 'webp' };
+  });
+  await page.addScriptTag({ content: source });
+
+  const related = page.locator('afro-related-tools');
+  await expect(related).toBeVisible();
+  await expect.poll(() => related.evaluate((node) => node.shadowRoot.querySelectorAll('.card-img').length)).toBe(0);
+  await expect.poll(() => related.evaluate((node) => node.shadowRoot.querySelector('.card-emoji')?.textContent.trim())).toBe('MR');
+  expect(missingAssetRequests).toEqual([]);
 });

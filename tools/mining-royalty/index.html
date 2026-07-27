@@ -65,7 +65,7 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mining-royalty/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mining-royalty/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="mining-ui-refresh top-level-page-ui-refresh">
 <afro-navbar active="mining"></afro-navbar>
 
 <main class="tool-shell">
@@ -93,7 +93,7 @@
 
       <div class="field-group">
         <label class="field-label" for="mr-gross">Gross market / sale value <span id="mr-cur-hint" style="color:#64748b;font-weight:600"></span></label>
-        <input id="mr-gross" class="field-input" type="number" min="0" step="any" inputmode="decimal" placeholder="e.g. 1000000">
+        <input id="mr-gross" class="field-input" type="number" min="0.01" step="any" inputmode="decimal" placeholder="e.g. 1000000" required>
         <div class="mr-note">The value of the mineral sold, before deductions. Enter it in your own currency — the royalty is a percentage, so the result is in the same currency.</div>
       </div>
 
@@ -105,7 +105,7 @@
       </div>
 
       <button type="button" class="pill-btn" id="mr-calc" style="background:#92400E;color:#fff">Calculate royalty</button>
-      <div class="mr-err" id="mr-err"></div>
+      <div class="mr-err" id="mr-err" role="alert"></div>
     </div>
 
     <div class="tool-section mr-result" id="mr-result">
@@ -236,14 +236,21 @@
   }
 
   function calc(){
-    errEl.classList.remove('on'); resEl.classList.remove('on');
+    errEl.classList.remove('on');
+    errEl.textContent = '';
+    resEl.classList.remove('on');
+    gEl.removeAttribute('aria-invalid');
+    rEl.removeAttribute('aria-invalid');
     var c = currentCountry(), m = currentMineral();
     var gross = parseFloat(gEl.value);
     var rate = parseFloat(rEl.value);
 
     if(!(gross > 0)){
       errEl.textContent = 'Enter a gross market value greater than zero.';
-      errEl.classList.add('on'); return;
+      errEl.classList.add('on');
+      gEl.setAttribute('aria-invalid', 'true');
+      gEl.focus();
+      return;
     }
     // The core guard: a blank or non-positive rate is NOT treated as 0% (which
     // would make the royalty vanish). Block and ask for the statutory rate.
@@ -251,11 +258,17 @@
       errEl.textContent = m && m.variable
         ? 'This mineral uses a sliding scale — enter your effective royalty rate from the band shown above.'
         : 'Enter the royalty rate (%) for this mineral. A missing rate is not zero — confirm it with the official source.';
-      errEl.classList.add('on'); return;
+      errEl.classList.add('on');
+      rEl.setAttribute('aria-invalid', 'true');
+      rEl.focus();
+      return;
     }
     if(rate > 100){
       errEl.textContent = 'Royalty rate looks too high — enter a percentage between 0 and 100.';
-      errEl.classList.add('on'); return;
+      errEl.classList.add('on');
+      rEl.setAttribute('aria-invalid', 'true');
+      rEl.focus();
+      return;
     }
 
     var sym = c.symbol || '';
@@ -293,8 +306,18 @@
     resEl.classList.add('on');
   }
 
-  cEl.addEventListener('change', function(){ populateMinerals(); syncRate(); resEl.classList.remove('on'); });
-  mEl.addEventListener('change', function(){ syncRate(); resEl.classList.remove('on'); });
+  function clearResultForEdit(){
+    resEl.classList.remove('on');
+    errEl.classList.remove('on');
+    errEl.textContent = '';
+    gEl.removeAttribute('aria-invalid');
+    rEl.removeAttribute('aria-invalid');
+  }
+
+  cEl.addEventListener('change', function(){ populateMinerals(); syncRate(); clearResultForEdit(); });
+  mEl.addEventListener('change', function(){ syncRate(); clearResultForEdit(); });
+  gEl.addEventListener('input', clearResultForEdit);
+  rEl.addEventListener('input', clearResultForEdit);
   $('mr-calc').addEventListener('click', calc);
 
   populateMinerals();

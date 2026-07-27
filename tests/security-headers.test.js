@@ -71,6 +71,10 @@ assert(
   'Global /* must set X-Frame-Options: SAMEORIGIN'
 );
 assert(!!globalCsp, 'Global /* must define a Content-Security-Policy');
+assert(
+  /\bconnect-src\b[^;]*https:\/\/pagead2\.googlesyndication\.com/i.test(globalCsp),
+  'Global /* CSP must allow the consent-mode measurement endpoint used when ad storage stays denied'
+);
 
 // 2. Global CSP must not pin frame-ancestors (would re-block widgets on header merge).
 assert(

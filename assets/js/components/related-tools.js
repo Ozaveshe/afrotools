@@ -102,7 +102,7 @@ class AfroRelatedTools extends HTMLElement {
     const extMap = (typeof TOOL_CARD_IMAGE_EXTENSIONS !== 'undefined') ? TOOL_CARD_IMAGE_EXTENSIONS : null;
     if (extMap) {
       const match = candidates.find(key => extMap[key]);
-      if (match) return match;
+      return match || '';
     }
     return candidates[0] || '';
   }
