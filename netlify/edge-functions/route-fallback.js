@@ -105,6 +105,15 @@ export default async (request, context) => {
 
   if (isSkippablePath(path)) return context.next();
 
+  // Give real files, rewrites, and explicit `_redirects` rules first refusal.
+  // Edge Functions run before Netlify's static redirect layer. Relocating from
+  // the generated locale map before calling `context.next()` can otherwise
+  // steal deliberate aliases such as:
+  //   /fr/tools/remittance-v2 -> /fr/tools/transfert-v2/
+  // Locale recovery is only a fallback for an origin-level 404.
+  const originResponse = await context.next();
+  if (originResponse.status !== 404) return originResponse;
+
   // ── 1. Cross-locale relocation ──────────────────────────────────────────
   const relocated = resolveLocaleRoute(path);
   if (relocated && normalizeBody(relocated) !== normalizeBody(path)) {
@@ -117,11 +126,7 @@ export default async (request, context) => {
   }
 
   // ── 2. Trailing slash on directory paths ────────────────────────────────
-  if (path.endsWith('/') || path.includes('.')) return context.next();
-
-  // Let the origin try the path as-is (Pretty URLs serve foo.html for /foo).
-  const originResponse = await context.next();
-  if (originResponse.status !== 404) return originResponse;
+  if (path.endsWith('/') || path.includes('.')) return originResponse;
 
   // Only redirect when the trailing-slash form resolves to real content —
   // prevents loops where /foo/ also 404s and redirects back.
