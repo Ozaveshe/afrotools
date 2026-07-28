@@ -28,6 +28,8 @@
       var floor = parseFloat(contrib.min) || 0;
       var hasSplit = !isNaN(eePct) || !isNaN(erPct);
       var isPercent = hasSplit || (rate > 0 && rate < 100);
+      // Case 4: nothing is published because there is nothing to publish.
+      var hasScheme = hasSplit || rate > 0;
 
       // A percentage scheme needs a salary - defaulting a missing salary to 0
       // would render the contribution as a misleading "0", so force the input.
@@ -53,23 +55,48 @@
       if (floor > 0 && ee > 0 && ee < floor) ee = floor;
 
       // Self-employed / informal workers carry the contribution themselves.
+      // Note there is deliberately no fallback rate here. The old code did
+      //   if (!(ee > 0) && salary > 0) ee = Math.round(0.03 * salary);
+      // which only ever fired where `ee` was still 0 — that is, in the markets
+      // with no statutory scheme at all — and so invented a 3% contribution for
+      // self-employed Ugandans and Cameroonians precisely where none exists.
+      // Where a scheme does exist, `ee` is already set from its published rate,
+      // so the branch never applied there and nothing is lost by removing it.
       if (empType.indexOf("Self") >= 0) {
         er = 0;
         erUnknown = false;
-        if (!(ee > 0) && salary > 0) ee = Math.round(0.03 * salary);
         if (floor > 0 && ee > 0 && ee < floor) ee = floor;
       }
 
       var out = { country: C.name, currency: cur, symbol: sym };
       out.schemeName = health.scheme || "None";
       out.contributionBasis = contrib.unit || "N/A";
+      out.providers = (health.hmos || []).join(", ");
+      out.mandatory = (isPercent || rate >= 100) ? "Mandatory" : "Voluntary";
+
+      // A market with no statutory scheme has no contribution to state. Printing
+      // "USh0" reads as "your contribution is zero" when the truth is that
+      // Uganda's NHIS is still only proposed and Cameroon's is planned; South
+      // Africa's medical aid is a voluntary private premium, not a payroll
+      // percentage. This mirrors how the motor tariff renders a genuine zero as
+      // "Not applicable" rather than a fabricated premium.
+      if (!hasScheme) {
+        out.employeeContribution = "Not applicable";
+        out.employerContribution = "Not applicable";
+        out.totalContribution = "Not applicable";
+        out.monthlyTotal = "Not applicable";
+        out.annualTotal = "Not applicable";
+        out.note = "No statutory health contribution is published for " + C.name +
+          ". Cover here is " + (contrib.unit || "not a payroll deduction").toLowerCase() +
+          ", so any premium depends on the plan you choose rather than on your salary.";
+        return out;
+      }
+
       out.employeeContribution = fmt(ee);
       out.employerContribution = erUnknown ? "Not published" : fmt(er);
       out.totalContribution = erUnknown ? fmt(ee) : fmt(ee + er);
       out.monthlyTotal = erUnknown ? fmt(ee) : fmt(ee + er);
       out.annualTotal = erUnknown ? fmt(12 * ee) : fmt(12 * (ee + er));
-      out.providers = (health.hmos || []).join(", ");
-      out.mandatory = (isPercent || rate >= 100) ? "Mandatory" : "Voluntary";
       return out;
     }
   };

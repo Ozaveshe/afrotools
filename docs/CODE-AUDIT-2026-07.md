@@ -117,3 +117,13 @@ decision, not 54.
 - **37 franglais tokens** sit next to French words, where the honest fix is translating the sentence rather than swapping a word.
 - **Six controls remain unnamed** — buttons whose text is set from a locale table at runtime, where an `aria-label` risks disagreeing with the visible text.
 - **`data/calculation-quality/reviews/tva-engine-input-validation-2026-07-28.json` is agent-authored** and should be countersigned.
+
+---
+
+## Second deep pass
+
+| # | Area | Severity | Issue | Files |
+|---|------|----------|-------|-------|
+| 44 | SEO | **high** | `scripts/generate-sitemaps.js` banned any directory named `widgets` at any depth. That was aimed at the `noindex` embeds in `/widgets/iframe/`, but it also dropped 144 indexable French widget parent pages plus `/widgets/` and `/widgets/demo/` from every sitemap. The generator already filters on `noindex` **and** on `routeRecord.sitemap.included`, and the route contract records every iframe as `indexability:"noindex", included:false`, so the directory ban was redundant. Removed; sitemap URLs 9,521 → 9,663 with zero iframes admitted. | 1 |
+| 45 | correctness | **high** | `health-contribution-engine` documents four contribution shapes and names case 4 as `{ rate: 0 }` — no statutory scheme — but never handled it. Uganda (`"None (NHIS proposed)"`), Cameroon (`"None (planned)"`), South Africa (voluntary medical aid) and Benin (subsidised ARCH) each rendered an employee **and** employer contribution of currency zero, reading as "your contribution is zero" rather than "no scheme exists". Now renders "Not applicable" with a note, matching how `.claude/rules/insurance.md` requires a genuine zero motor tariff to render. | 2 |
+| 46 | correctness | **high** | The same engine's self-employed branch ran `if (!(ee > 0) && salary > 0) ee = Math.round(0.03 * salary)`. That condition can only hold in a market with no scheme, so it invented a 3%-of-salary contribution for exactly the self-employed Ugandans and Cameroonians who owe nothing — the fabrication class the insurance rule forbids. Removed. | 1 |

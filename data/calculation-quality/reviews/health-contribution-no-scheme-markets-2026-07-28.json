@@ -1,0 +1,11 @@
+{
+  "reviewedBy": "Automated code audit (July 2026). Authored by the agent that made the change — countersign before relying on it.",
+  "reviewedAt": "2026-07-28",
+  "reviewedOn": "2026-07-28",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/blob/main/.claude/rules/insurance.md",
+  "reason": "Presentation and a removed fabrication. No published contribution rate was added, changed or removed; data/insurance/country-insurance-index.js is untouched. Two defects fixed. (1) The engine's own comment documents four contribution shapes and names case 4 as '{ rate: 0 } — no statutory scheme', but that case was never handled: it fell through to fmt(0), so Uganda ('None (NHIS proposed)'), Cameroon ('None (planned)'), South Africa (voluntary medical aid) and Benin (subsidised ARCH) each rendered an employee and employer contribution of currency zero. That reads as 'your contribution is zero' where the truth is that no statutory scheme exists. These markets now render 'Not applicable' with an explanatory note, matching how .claude/rules/insurance.md requires a genuine zero motor tariff to render ('A genuine zero means \"no priced product\", not \"free\"'). (2) The self-employed branch carried `if (!(ee > 0) && salary > 0) ee = Math.round(0.03 * salary)`. That condition could only be true in the markets with no scheme, so it invented a 3%-of-salary contribution for exactly the self-employed Ugandans and Cameroonians who owe nothing — the same class of fabrication the rule forbids for employer shares. Removed; where a scheme exists ee is already set from its published rate, so nothing is lost. Verified against the rebuilt artifact at a 100,000 gross salary: ZA/UG/CM/BJ return 'Not applicable' for both sides; KE SHIF returns KSh2,750 employee with a KSh0 employer match (SHI Regs 2024, LN 49, reg 17); NG NHIA returns 1,750/3,250; TN CNAM returns 2,750/4,000; ET CBHI returns its flat Br500. Self-employed UG and CM now return 'Not applicable' instead of USh3,000/month. Note this engine is currently referenced by no page — the insurance tools were rebuilt as user-entered-rate worksheets — so the change is not user-facing today.",
+  "formulaIds": [
+    "formula-engines-health-contribution-engine"
+  ],
+  "fixtureDeltas": []
+}

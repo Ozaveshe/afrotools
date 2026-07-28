@@ -34,10 +34,19 @@ const ROUTE_BY_FILE = new Map(
 );
 
 // Directories to exclude entirely (non-content)
+// Matched against a directory's own name at any depth, so an entry here bans
+// every directory with that name anywhere in the tree.
+//
+// 'widgets' used to be listed, which was aimed at /widgets/iframe/ but also hit
+// /fr/widgets/ and dropped 144 indexable French widget parent pages, plus
+// /widgets/ and /widgets/demo/, from every sitemap. The embeddable iframes do
+// not need banning here: they are `noindex, follow`, and the route contract
+// records them as indexability:"noindex", sitemap.included:false, so both the
+// hasNoindex() check and the routeRecord check below already exclude them.
 const EXCLUDE_DIRS = new Set([
   'node_modules', '.netlify', 'scripts', 'admin', 'dashboard',
   '.git', '.github', '.claude', 'supabase', 'netlify', 'assets', 'engines',
-  'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'widgets', 'afrowork',
+  'dist', 'lang', 'pro', 'developers', 'data', 'tests', 'afrowork',
   'afrotools-sentinel', 'prompts', 'docs', 'audit-results', 'artifacts'
 ]);
 
