@@ -201,6 +201,16 @@ function pageDescription(html) {
   return findTagAttribute(html, "meta", "name", "description", "content");
 }
 
+function pageLanguage(html) {
+  const match = html.match(/<html\b[^>]*\blang=["']([^"']+)["']/i);
+  const locale = match ? match[1].trim() : "";
+  if (/^[a-z]{2}(?:-[a-z]{2})?$/i.test(locale)) {
+    const [language, region] = locale.split("-");
+    return region ? `${language.toLowerCase()}-${region.toUpperCase()}` : language.toLowerCase();
+  }
+  return "en";
+}
+
 function routeForFile(file) {
   const rel = normalizeRel(file).replace(/index\.html$/i, "");
   return `/${rel}`.replace(/\/+/g, "/");
@@ -240,7 +250,7 @@ function webApplicationSchema(file, html) {
     name,
     description,
     url: pageUrl(file, html),
-    inLanguage: "en",
+    inLanguage: pageLanguage(html),
     applicationCategory: inferCategory(normalizeRel(file)),
     operatingSystem: "Web",
     offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
@@ -561,6 +571,8 @@ module.exports = {
   collectTypes,
   extractVisibleFaq,
   normalizeJsonLd,
+  pageLanguage,
   parseJsonLd,
   plainText,
+  webApplicationSchema,
 };

@@ -27,7 +27,10 @@ const {
   fileToSourceHtmlRoute,
 } = require('./lib/canonical-aliases');
 const { createPreferredPageUrlResolver } = require('./lib/seo-preferred-url');
-const { normalizeJsonLdStringValues } = require('./lib/json-ld-preserving-normalizer');
+const {
+  normalizeJsonLdLanguageValues,
+  normalizeJsonLdStringValues,
+} = require('./lib/json-ld-preserving-normalizer');
 
 const ROOT    = path.resolve(__dirname, '..');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -185,8 +188,14 @@ function normalizeKnownSiteUrl(url) {
   return hash && !preferred.includes('#') ? `${preferred}${hash}` : preferred;
 }
 
+function documentLanguage(content) {
+  const match = content.match(/<html\b[^>]*\blang=["']([^"']+)["']/i);
+  return match ? match[1].trim() : '';
+}
+
 function normalizeJsonLdUrls(content) {
   let blocksFixed = 0;
+  const locale = documentLanguage(content);
 
   const next = content.replace(
     /<script\b([^>]*type=["']application\/ld\+json["'][^>]*)>([\s\S]*?)<\/script>/gi,
@@ -195,8 +204,15 @@ function normalizeJsonLdUrls(content) {
       if (!trimmed) return match;
 
       try {
-        const normalized = normalizeJsonLdStringValues(jsonText, normalizeKnownSiteUrl);
-        if (normalized.valuesChanged === 0) return match;
+        const languageNormalized = /^fr(?:-fr)?$/i.test(locale)
+          ? normalizeJsonLdLanguageValues(jsonText, locale)
+          : { content: jsonText, valuesChanged: 0, valuesAdded: 0 };
+        const normalized = normalizeJsonLdStringValues(languageNormalized.content, normalizeKnownSiteUrl);
+        if (
+          normalized.valuesChanged === 0 &&
+          languageNormalized.valuesChanged === 0 &&
+          languageNormalized.valuesAdded === 0
+        ) return match;
 
         blocksFixed += 1;
         return `<script${attrs}>${normalized.content}</script>`;
