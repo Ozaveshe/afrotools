@@ -6,7 +6,7 @@ const fs = require("fs");
 const path = require("path");
 const vm = require("vm");
 const { minify } = require("terser");
-const { getEngineTerserOptions } = require("../scripts/lib/engine-build");
+const { getEngineTerserOptions, engineOutputPath } = require("../scripts/lib/engine-build");
 
 const ROOT = path.resolve(__dirname, "..");
 const ENGINE_DIR = path.join(ROOT, "engines");
@@ -80,14 +80,32 @@ async function canonical(code, filename) {
 (async () => {
   const sources = filesIn(SOURCE_DIR);
   const outputs = filesIn(ENGINE_DIR);
-  assert.ok(sources.length >= 128, "expected at least 128 readable engine sources");
-  assert.deepStrictEqual(sources, outputs, "source/output engine names must match exactly");
+  // Floor against accidental mass deletion, not a target. It stepped down from
+  // 140 to 126 in July 2026 when 14 engines with no page, test or generator
+  // consumer were deliberately removed — see docs/UNUSED-ENGINE-ARTIFACTS-2026-07.md.
+  assert.ok(sources.length >= 126, `expected at least 126 readable engine sources, found ${sources.length}`);
+
+  // Every source must have a build output, but not all of them land in
+  // engines/ — solar-roi builds to assets/js/engines/, which is where the 110
+  // pages that use it load from. engineOutputPath is the same map minify.js
+  // builds with, so the two cannot disagree about where a source goes.
+  const expectedInEngineDir = sources
+    .filter((name) => engineOutputPath(name) === `engines/${name}`)
+    .sort();
+  assert.deepStrictEqual(outputs, expectedInEngineDir, "source/output engine names must match exactly");
+  for (const filename of sources) {
+    const outputRel = engineOutputPath(filename);
+    assert.ok(
+      fs.existsSync(path.join(ROOT, outputRel)),
+      `${filename}: build output ${outputRel} is missing`,
+    );
+  }
 
   for (const filename of sources) {
     const source = fs.readFileSync(path.join(SOURCE_DIR, filename), "utf8");
-    const output = fs.readFileSync(path.join(ENGINE_DIR, filename), "utf8");
+    const output = fs.readFileSync(path.join(ROOT, engineOutputPath(filename)), "utf8");
     new vm.Script(source, { filename: `engines/src/${filename}` });
-    new vm.Script(output, { filename: `engines/${filename}` });
+    new vm.Script(output, { filename: engineOutputPath(filename) });
     const [sourceCanonical, outputCanonical] = await Promise.all([
       canonical(source, filename),
       canonical(output, filename),
@@ -97,9 +115,9 @@ async function canonical(code, filename) {
 
   for (const [filename, globalPath] of Object.entries(SMOKE_GLOBALS)) {
     const source = fs.readFileSync(path.join(SOURCE_DIR, filename), "utf8");
-    const output = fs.readFileSync(path.join(ENGINE_DIR, filename), "utf8");
+    const output = fs.readFileSync(path.join(ROOT, engineOutputPath(filename)), "utf8");
     assert.deepStrictEqual(
-      execute(output, `engines/${filename}`, globalPath),
+      execute(output, engineOutputPath(filename), globalPath),
       execute(source, `engines/src/${filename}`, globalPath),
       `${filename}: rebuilt global ${globalPath} changed shape`,
     );

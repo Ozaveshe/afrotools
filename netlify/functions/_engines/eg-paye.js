@@ -12,14 +12,38 @@ const ETA_BANDS = [
   [Infinity, 0.275]
 ];
 
-const EXCLUSION_RULES = [
-  { threshold: 600000, extraTax: 0, excludedBand: 0 },
-  { threshold: 700000, extraTax: 1500, excludedBand: 1 },
-  { threshold: 800000, extraTax: 2250, excludedBand: 2 },
-  { threshold: 900000, extraTax: 26000, excludedBand: 3 },
-  { threshold: 1000000, extraTax: 45000, excludedBand: 4 },
-  { threshold: 1200000, extraTax: 274750, excludedBand: 5 }
-];
+// Bracket exclusion (tiering). Once net taxable income passes a threshold the
+// lower brackets are withdrawn and the income they covered is taxed at the
+// FIRST SURVIVING rate — it is a re-rating of income already counted, not an
+// extra charge stacked on top of the standard band tax.
+//
+//   NATI >        withdrawn            re-rated income  at     extra
+//   600,000       0%                   first 40,000     10%    +4,000
+//   700,000       0%, 10%              first 55,000     15%    +6,750
+//   800,000       0%, 10%, 15%         first 70,000     20%    +10,250
+//   900,000       0%, 10%, 15%, 20%    first 200,000    22.5%  +15,250
+//   1,200,000     …plus 22.5%          first 400,000    25%    +25,250
+//
+// Five tiers, not six: the step after 900,000 is 1,200,000 (there is no
+// 1,000,000 tier) and the 25% bracket is never withdrawn. Extras are derived
+// from ETA_BANDS so they cannot drift if a band width changes.
+const EXCLUSION_THRESHOLDS = [600000, 700000, 800000, 900000, 1200000];
+
+const EXCLUSION_RULES = EXCLUSION_THRESHOLDS.map((threshold, k) => {
+  let coveredIncome = 0;
+  let standardOnIt = 0;
+  const excludedBands = [];
+  for (let i = 0; i <= k; i++) {
+    coveredIncome += ETA_BANDS[i][0];
+    standardOnIt += ETA_BANDS[i][0] * ETA_BANDS[i][1];
+    excludedBands.push(i);
+  }
+  return {
+    threshold,
+    excludedBands,
+    extraTax: coveredIncome * ETA_BANDS[k + 1][1] - standardOnIt
+  };
+});
 
 const PERSONAL_EXEMPTION = 20000;
 const DISABLED_PERSONAL_EXEMPTION = 30000;
@@ -60,15 +84,19 @@ function calcStandardTax(nati) {
 function calcExclusion(nati) {
   let exclusionExtra = 0;
   let excludedBands = [];
+  let exclusionThreshold = null;
 
+  // Only the highest tier reached applies — each one already subsumes the tiers
+  // below it, so the band list is taken whole rather than accumulated.
   for (const rule of EXCLUSION_RULES) {
     if (nati > rule.threshold) {
       exclusionExtra = rule.extraTax;
-      excludedBands.push(rule.excludedBand);
+      excludedBands = rule.excludedBands;
+      exclusionThreshold = rule.threshold;
     }
   }
 
-  return { exclusionExtra, excludedBands };
+  return { exclusionExtra, excludedBands, exclusionThreshold };
 }
 
 function getMarginalRate(nati) {
@@ -76,7 +104,9 @@ function getMarginalRate(nati) {
 
   for (const [width, rate] of ETA_BANDS) {
     const bandWidth = width === Infinity ? remaining : width;
-    if (remaining <= bandWidth) return rate * 100;
+    // Round: 0.275 * 100 is 27.500000000000004 in binary floating point, and
+    // this value is rendered straight into the result string.
+    if (remaining <= bandWidth) return Math.round(rate * 1000) / 10;
     remaining -= bandWidth;
   }
 
@@ -127,7 +157,8 @@ module.exports = {
         reliefs: { personalExemption },
         netTax: Math.round(totalTax * 100) / 100,
         exclusionExtra: exclusion.exclusionExtra,
-        excludedBands: exclusion.excludedBands
+        excludedBands: exclusion.excludedBands,
+        exclusionThreshold: exclusion.exclusionThreshold
       },
       result: {
         netAnnual: Math.round(netAnnual * 100) / 100,

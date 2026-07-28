@@ -9,7 +9,7 @@ const path = require('path');
 const vm = require('vm');
 const { minify } = require('terser');
 const { buildNavbarData } = require('./build-navbar-data');
-const { getEngineTerserOptions } = require('./lib/engine-build');
+const { getEngineTerserOptions, engineOutputPath } = require('./lib/engine-build');
 const {
   writeFileSyncWithRetry: writeTempFileSyncWithRetry,
   renameSyncWithRetry,
@@ -44,27 +44,14 @@ const CSS_PAIRS = [
   ['assets/css/animations.css',    'assets/css/animations.min.css'],
 ];
 
-// An engine source normally minifies to engines/<name>.js. These build to a
-// different path because that is where the pages actually load them from.
-//
-// solar-roi is the only engine served out of assets/js/engines/. It used to
-// exist in both places as byte-identical copies, one generated and one
-// hand-committed, with only the generated one wired to this source — so the
-// live file had no build link and the two could silently drift apart while the
-// formula registry asserted a digest for each. The unused copy is gone and the
-// live path is now the build output.
-const ENGINE_OUTPUT_OVERRIDES = {
-  'solar-roi-engine.js': 'assets/js/engines/solar-roi-engine.js',
-};
-
+// Where each engine source builds to. Most land in engines/<name>.js; the
+// exceptions live in scripts/lib/engine-build.js so this script and
+// tests/engine-source-recovery.test.js read the same map.
 const ENGINE_SOURCE_DIR = path.join(ROOT, 'engines', 'src');
 if (fs.existsSync(ENGINE_SOURCE_DIR)) {
   for (const entry of fs.readdirSync(ENGINE_SOURCE_DIR, { withFileTypes: true })) {
     if (!entry.isFile() || !entry.name.endsWith('.js')) continue;
-    JS_PAIRS.push([
-      path.posix.join('engines/src', entry.name),
-      ENGINE_OUTPUT_OVERRIDES[entry.name] || path.posix.join('engines', entry.name),
-    ]);
+    JS_PAIRS.push([path.posix.join('engines/src', entry.name), engineOutputPath(entry.name)]);
   }
 }
 

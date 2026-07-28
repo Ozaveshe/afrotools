@@ -106,7 +106,7 @@ decision, not 54.
 
 - `_headers` CSP, HSTS, COOP/CORP and the widget-embed override — `test:security-headers` passes and the widget CSP is in sync with the global one.
 - 2,565 `<img>` elements: 43 lack explicit dimensions, most of them user-supplied previews where the size is unknown at author time.
-- 140 engine artifacts driven with empty and all-zero input: 21 return a structured error, the rest either validate by throwing or have no monetary path. `greenhouse-engine`'s apparent `GREENHOUSE_DATA is not defined` is a sandbox artifact — all 16 pages load the data file first.
+- 140 engine artifacts (pre-removal count) driven with empty and all-zero input: 21 return a structured error, the rest either validate by throwing or have no monetary path. `greenhouse-engine`'s apparent `GREENHOUSE_DATA is not defined` is a sandbox artifact — all 16 pages load the data file first.
 - `paint-calculator`, `truck-load`, `startup-runway`, `route-cost` were flagged by the zero-default scan and are correctly guarded; they are listed here so a later pass does not re-open them.
 - 125,379 internal links resolve.
 
@@ -151,10 +151,33 @@ decision, not 54.
 
 ### Also checked and found clean
 
-- All 140 engine artifacts re-minified from source and compared byte-for-byte: **zero drift**.
+- All engine artifacts re-minified from source and compared byte-for-byte: **zero drift**. (140 at the time of this pass; 126 after 14 orphans were removed — see `UNUSED-ENGINE-ARTIFACTS-2026-07.md`.)
 - All 8 `assets/js` component `.min.js` artifacts current with their sources.
 - 9,663 sitemap URLs all resolve to a file; none is `noindex`, meta-refreshing, or canonicalised elsewhere.
 - `_redirects`: 3,578 rules, no duplicate source routes.
 - 75 zero/negative dataset values reviewed — first tax bands at 0% and countries with genuinely no inheritance tax are correct explicit zeros, not missing data.
-| 56 | correctness | **high, unresolved** | Egypt's PAYE bracket-exclusion is computed **two different ways**. The page sums the extra tax for every bracket the taxpayer has lost; `assets/js/engines/eg-paye.js` and `netlify/functions/_engines/eg-paye.js` add only the last matching rule. Their own final table value is 274,750 — the cumulative total of all six brackets, not the 200,000 that bracket alone is worth — so their intended semantics is plainly "the last rule carries the running total", and only that one entry was ever converted. The five below it are per-band values read as cumulative. The engine and the API therefore under-state tax by **1,500 / 3,750 / 29,750 EGP** for taxable income above 800,000 and up to 1,200,000 (roughly 839,000–1,239,000 gross). Not fixed: `.claude/rules/salary-tax.md` forbids moving a band or relief without reading the operative instrument, and the Egyptian Income Tax Law could not be read from this environment. Pinned by `npm run test:paye-parity`, which prints the gap on every run. | 0 (recorded) |
-| 57 | tests | med | Egypt and Tanzania each compute PAYE three times — inline in the page, in a shared frontend engine, and in a serverless function — with nothing tying them together. That is the setup behind the Kenya AHL bug the salary-tax rule exists for. New `tests/paye-implementation-parity.test.js` drives all three and asserts they agree. Verified to catch drift: changing the Tanzanian 8% band rate in the engine alone fails with the exact salary and gap. | 1 |
+
+---
+
+## Third pass — Egypt PAYE
+
+Issue 56 was left unresolved by the second pass because the operative instrument had not been read. It was then researched against the Egyptian Tax Authority's published tiering table and closed, along with three defects the investigation exposed.
+
+| # | Area | Severity | Issue | Files |
+|---|---|---|---|---:|
+| 56 | correctness | **high** | Egypt's PAYE bracket-exclusion (tiering) rule was wrong in all four implementations, and wrong in two different directions. The rule WITHDRAWS the lower brackets past a threshold and taxes the income they covered at the first surviving rate — it re-rates income already counted. Every implementation instead carried a typed table of `bandWidth x that band's OWN rate` (0 / 1,500 / 2,250 / 26,000 / 45,000 / 200,000 or 274,750), which is the tax the withdrawn band had **already** collected, then disagreed about how to combine it: `egypt/eg-paye.html` and `sw/egypt/kikokotoo-kodi-mshahara/` summed every entry passed; `assets/js/engines/eg-paye.js` and `netlify/functions/_engines/eg-paye.js` took only the last. The backend's reading was provably impossible — a **43.6% effective rate at 1,300,000 gross** against a 27.5% top marginal rate. The published ETA table has **five** tiers (600,000 / 700,000 / 800,000 / 900,000 / 1,200,000), not six: the 1,000,000 tier in the code does not exist and the 25% bracket is never withdrawn. Correct extras, now **derived from `ETA_BANDS`** rather than typed, are 4,000 / 6,750 / 10,250 / 15,250 / 25,250. Sourced from the tiering table as published by Deloitte Middle East and Andersen Egypt, with brackets cross-checked against PwC; the derived model reproduces that table exactly at 25 points including every threshold boundary. The ETA portal itself was unreachable, so per `.claude/rules/salary-tax.md` no "Last verified" stamp was advanced. | 4 |
+| 58 | correctness | **high** | The Swahili Egypt PAYE page rendered a **NaN tax** for every salary above roughly 639,000 gross. The translation pass renamed the exclusion table's field `extraTax` -> `extraKodi` but not the loop that read it, so `exclusionExtra` was `0 + undefined`; the same pass returned `standardKodi` while the caller destructured `standardTax`. Both fixed. Root cause of the blind spot: `/sw/egypt/kikokotoo-kodi-mshahara/` was absent from `eg-paye`'s routes in `data/tool-verification.json`, so this full copy of the tax logic sat **outside the formula digest gate**. It is now registered. | 1 |
+| 59 | correctness | low | Egypt's `getMarginalRate` returned `rate * 100`, which is `27.500000000000004` for `0.275` in binary floating point and was rendered straight into the displayed marginal rate. Rounded to one decimal place in both the engine and the backend. | 2 |
+| 57 | tests | med | Egypt computes PAYE **four** times (page, Swahili page, frontend engine, serverless function) and Tanzania three, with nothing tying them together. That is the setup behind the Kenya AHL bug the salary-tax rule exists for. New `tests/paye-implementation-parity.test.js` drives them all and asserts they agree — and, for Egypt, that they match the published ETA tiering table transcribed independently, plus a 199-salary sweep confirming no effective rate exceeds the 27.5% top marginal rate. Verified to catch drift: changing the Tanzanian 8% band rate in the engine alone fails with the exact salary and gap. | 1 |
+
+### How it was verified
+
+- The tiering table was transcribed independently from two sources that publish it in full — Deloitte Middle East and Andersen Egypt — as six columns of surviving brackets. Bracket values cross-checked against PwC Worldwide Tax Summaries.
+- The derived model reproduces that table exactly at 25 points, including every threshold boundary and both sides of each one.
+- `npm run test:paye-parity` drives all four implementations at 14 salaries against the transcribed table, then sweeps 199 salaries from 50,000 to 5,000,000 asserting no effective rate exceeds the 27.5% top marginal rate — the invariant the old code violated.
+- The protected-formula gate was satisfied with a written change record at `data/calculation-quality/reviews/eg-paye-bracket-exclusion-2026-07-28.json`, which states that no band, rate, exemption or cap moved and gives a per-field before/after for both affected golden fixtures. **It is agent-authored and should be countersigned.**
+
+### What this leaves open
+
+- **43 of the 47 Swahili PAYE pages carrying inline tax logic are outside the formula digest gate.** Egypt's was registered because its defect was found; the rest are absent from their tools' `routes` in `data/tool-verification.json` and nothing compares them to the engine they were translated from. The Egypt NaN shows what that costs.
+- **The ETA portal could not be read from this environment.** Both sources used are professional-firm reproductions of the statutory table, not the instrument itself. Per `.claude/rules/salary-tax.md` no "Last verified" stamp was advanced, and the page's planning-grade framing is unchanged.

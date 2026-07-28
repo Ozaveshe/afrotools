@@ -122,14 +122,21 @@ at 0%, 250,000 at 8%, 240,000 at 20%, 240,000 at 25%, remainder at 30%. Social
 rates agree too (private employee 10%, private employer 10%), as does the
 secondary-employment flat 30% and the `gross − social` taxable base.
 
-**Egypt — no divergence.** Every constant matches: `PERSONAL_EXEMPTION` 20,000,
-`DISABLED_PERSONAL_EXEMPTION` 30,000, `NOSI_RATE` 0.11, `NOSI_ANNUAL_CAP`
-174,000.
+**Egypt — constants match, the bracket-exclusion rule did not.** Every constant
+agrees: `PERSONAL_EXEMPTION` 20,000, `DISABLED_PERSONAL_EXEMPTION` 30,000,
+`NOSI_RATE` 0.11, `NOSI_ANNUAL_CAP` 174,000. Comparing constants is what this
+pass did, and it was not enough — the divergence was in the *logic* that reads
+them. The page summed the exclusion extra for every bracket the taxpayer had
+lost; the engine and the backend took only the last. That was caught by the
+parity test written next, not by this hand comparison, and the follow-up found
+both readings wrong against the ETA's published tiering table. See issue 56 in
+`CODE-AUDIT-2026-07.md`.
 
-So the latent risk did not materialise in either market. It remains latent for
-as long as two implementations of the same tax exist with no test tying them
+So the latent risk **did** materialise in Egypt. It stayed invisible for exactly
+as long as two implementations of the same tax existed with no test tying them
 together — which is an argument for deleting the unused copy, not for keeping it
-as a reference.
+as a reference. Where a copy has to exist, tie it down: comparing declared
+constants proves nothing about the arithmetic between them.
 
 ## What was actually removed, and what the removal found
 
@@ -179,11 +186,23 @@ and the registry is down to one entry for one calculator instead of two.
 
 ## Still worth knowing
 
-Egypt and Tanzania now have three implementations of the same PAYE: the page's
-inline logic, `assets/js/engines/{eg,tz}-paye.js`, and
-`netlify/functions/_engines/{eg,tz}-paye.js`. The frontend engine and the page
-were compared by hand above and agree today, but nothing in the build enforces
-that. A test asserting the three agree would close it for good.
+Tanzania has three implementations of the same PAYE and Egypt four — the page's
+inline logic, `sw/egypt/kikokotoo-kodi-mshahara/` for Egypt,
+`assets/js/engines/{eg,tz}-paye.js`, and
+`netlify/functions/_engines/{eg,tz}-paye.js`.
+
+`tests/paye-implementation-parity.test.js` now drives all of them and asserts
+they agree; for Egypt it additionally asserts them against the ETA tiering table
+transcribed independently, because agreement alone would have happily pinned
+four copies of the same wrong rule.
+
+The Swahili Egypt page was the fourth copy nobody knew about. It was outside
+the formula digest gate — absent from `eg-paye`'s routes in
+`data/tool-verification.json` — which is how it shipped a `NaN` tax for every
+salary above roughly 639,000 gross after a translation pass renamed a field in
+one place and not the other. It is registered now. **43 of the 47 Swahili PAYE
+pages carrying inline tax logic are still outside that gate**; the same class of
+defect can hide in any of them, and none is covered by a parity test.
 
 ## How to re-check this
 

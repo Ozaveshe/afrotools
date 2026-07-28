@@ -176,101 +176,147 @@ check('Tanzania: page, frontend engine and backend agree on monthly PAYE', () =>
  * Annual bands on income after the personal exemption and NOSI (11% of
  * insurable pay, capped at 174,000).
  *
- * Egypt also applies bracket exclusion: past each threshold the taxpayer stops
- * benefiting from a lower bracket. All three implementations model that as a
- * table of "extra tax" per lost bracket, each entry being bandWidth x bandRate:
+ * Egypt also applies bracket exclusion ("tiering"): past each threshold the
+ * lower brackets are WITHDRAWN, and the income they covered is taxed at the
+ * first surviving rate. It re-rates income already counted; it is not a
+ * surcharge stacked on top of the standard band tax.
  *
- *     band 0   40,000 x 0%     =       0
- *     band 1   15,000 x 10%    =   1,500
- *     band 2   15,000 x 15%    =   2,250
- *     band 3  130,000 x 20%    =  26,000
- *     band 4  200,000 x 22.5%  =  45,000
- *     band 5  800,000 x 25%    = 200,000
+ * Every implementation used to model it as a table of "extra tax" per lost
+ * bracket, each entry being bandWidth x its OWN rate (0 / 1,500 / 2,250 /
+ * 26,000 / 45,000 / 200,000). That is the tax the withdrawn band already
+ * collected — the wrong quantity entirely — and the four implementations then
+ * disagreed about how to combine it. The page summed every entry passed; the
+ * engine and the backend took only the last. Neither produced the statutory
+ * figure, and the backend's reading was provably impossible: it returned a
+ * 43.6% effective rate at 1,300,000 gross against a 27.5% top marginal rate.
  *
- * The page sums every entry whose threshold is passed. The frontend engine and
- * the backend function add only the last matching entry — but their final table
- * value is 274,750, which is the cumulative total of all six, not 200,000.
- * So their intended semantics is plainly "the last rule carries the running
- * total", and only that final entry was ever converted. The five below it are
- * still per-band values being read as though cumulative.
+ * The rule is now derived from ETA_BANDS in all four, so it cannot drift from
+ * the bands, and asserted below against the published table rather than
+ * against another implementation.
  *
- * The consequence is a real under-statement, not a rounding difference:
- *
- *     bands 0..2 excluded   page   3,750   engine/backend   2,250   short  1,500
- *     bands 0..3 excluded   page  29,750   engine/backend  26,000   short  3,750
- *     bands 0..4 excluded   page  74,750   engine/backend  45,000   short 29,750
- *
- * That is taxable income above 800,000 and up to 1,200,000, or roughly
- * 839,000 to 1,239,000 gross.
- *
- * This test does not pick a winner. Which reading is correct is a question for
- * the Egyptian Income Tax Law and the ETA schedule, and .claude/rules/salary-tax.md
- * is explicit that a band or relief may only move after reading the operative
- * instrument. So parity is enforced everywhere the three already agree, and the
- * divergence is asserted to still exist — pinned, visible on every run, and
- * impossible to "fix" on one side alone without this failing.
+ * The four implementations Egypt ships:
+ *   1. egypt/eg-paye.html                          (inline)
+ *   2. sw/egypt/kikokotoo-kodi-mshahara/index.html (inline, Swahili)
+ *   3. assets/js/engines/eg-paye.js                (browser engine)
+ *   4. netlify/functions/_engines/eg-paye.js       (serverless)
  */
-const EG_AGREED_SALARIES = [60000, 120000, 240000, 600000, 700000, 800000, 1300000, 1600000];
-
-// Gross salaries whose taxable income falls in the disputed exclusion range.
-const EG_DISPUTED = [
-  { gross: 900000, excludedBands: 2 },
-  { gross: 1000000, excludedBands: 3 },
-  { gross: 1200000, excludedBands: 4 }
+const EG_SALARIES = [
+  60000, 120000, 240000, 600000, 700000, 800000,
+  900000, 1000000, 1100000, 1200000, 1300000, 1600000, 2000000, 3000000
 ];
-const EG_EXPECTED_SHORTFALL = { 2: 1500, 3: 3750, 4: 29750 };
 
-check('Egypt: page, frontend engine and backend agree outside the disputed exclusion range', () => {
+/* The ETA tiering table transcribed literally — six columns of net taxable
+ * income, each listing the brackets that survive at that level. Reproduced by
+ * Deloitte Middle East ("amendment introduced to tax brackets") and by Andersen
+ * Egypt ("Egypt's Personal Income Tax in 2026"), which carries the current
+ * 40,000 / 55,000 / 70,000 thresholds. Written out as [bracketTop, rate] so it
+ * shares no code with the implementations it checks.
+ */
+const EG_TIER_TABLE = [
+  { max: 600000,   brackets: [[40000, 0], [55000, 0.10], [70000, 0.15], [200000, 0.20], [400000, 0.225], [1200000, 0.25], [Infinity, 0.275]] },
+  { max: 700000,   brackets: [[55000, 0.10], [70000, 0.15], [200000, 0.20], [400000, 0.225], [Infinity, 0.25]] },
+  { max: 800000,   brackets: [[70000, 0.15], [200000, 0.20], [400000, 0.225], [Infinity, 0.25]] },
+  { max: 900000,   brackets: [[200000, 0.20], [400000, 0.225], [Infinity, 0.25]] },
+  { max: 1200000,  brackets: [[400000, 0.225], [Infinity, 0.25]] },
+  { max: Infinity, brackets: [[1200000, 0.25], [Infinity, 0.275]] }
+];
+
+function egTaxFromTable(nati) {
+  const tier = EG_TIER_TABLE.find((t) => nati <= t.max);
+  let tax = 0;
+  let previousTop = 0;
+  for (const [top, rate] of tier.brackets) {
+    const inBracket = Math.min(nati, top) - previousTop;
+    if (inBracket <= 0) break;
+    tax += inBracket * rate;
+    previousTop = top;
+  }
+  return tax;
+}
+
+check('Egypt: all four implementations agree, and match the published tiering table', () => {
   const engine = loadFrontendEngine('assets/js/engines/eg-paye.js', 'egPAYE');
   const backend = loadBackend('netlify/functions/_engines/eg-paye.js');
 
-  for (const gross of EG_AGREED_SALARIES) {
+  for (const gross of EG_SALARIES) {
     const page = runPage('egypt/eg-paye.html', { inputs: { grossSalary: gross }, toggles: ['nosi'] });
+    const swPage = runPage('sw/egypt/kikokotoo-kodi-mshahara/index.html', { inputs: { grossSalary: gross }, toggles: ['nosi'] });
     const fromEngine = engine.calculate(gross, { nosi: true });
     const fromBackend = backend.calculate({ grossAnnual: gross, nosi: true });
 
     agree(`EG ${gross} page vs engine (tax)`, page.tax, fromEngine.tax);
     agree(`EG ${gross} page vs backend (tax)`, page.tax, fromBackend.tax.netTax);
+    agree(`EG ${gross} page vs Swahili page (tax)`, page.tax, swPage.tax);
     agree(`EG ${gross} page vs engine (NOSI)`, page.nosi, fromEngine.nosi);
     agree(`EG ${gross} page vs engine (taxable)`, page.nati, fromEngine.nati);
+
+    // The table is the authority, not the other implementations.
+    agree(`EG ${gross} engine vs ETA tiering table`, fromEngine.tax, egTaxFromTable(fromEngine.nati));
   }
 });
 
-check('Egypt: the bracket-exclusion divergence is still exactly as recorded', () => {
+check('Egypt: the exclusion tiers are the five the ETA table publishes', () => {
   const engine = loadFrontendEngine('assets/js/engines/eg-paye.js', 'egPAYE');
-  const backend = loadBackend('netlify/functions/_engines/eg-paye.js');
 
-  for (const { gross, excludedBands } of EG_DISPUTED) {
-    const page = runPage('egypt/eg-paye.html', { inputs: { grossSalary: gross }, toggles: ['nosi'] });
-    const fromEngine = engine.calculate(gross, { nosi: true });
-    const fromBackend = backend.calculate({ grossAnnual: gross, nosi: true });
-    const expected = EG_EXPECTED_SHORTFALL[excludedBands];
+  // Five tiers, not six: the step after 900,000 is 1,200,000 — there is no
+  // 1,000,000 tier — and the 25% bracket is never withdrawn.
+  const thresholds = engine.EXCLUSION_RULES.map((r) => r.threshold);
+  assert.strictEqual(thresholds.length, 5, `expected 5 exclusion tiers, got ${thresholds.length}`);
+  [600000, 700000, 800000, 900000, 1200000].forEach((expected, i) => {
+    assert.strictEqual(thresholds[i], expected, `exclusion threshold ${i}`);
+  });
 
-    // Engine and backend must at least agree with each other.
-    agree(`EG ${gross} engine vs backend`, fromEngine.tax, fromBackend.tax.netTax);
+  // Derived, so these are the arithmetic the bands imply — not a typed table.
+  const extras = engine.EXCLUSION_RULES.map((r) => r.extraTax);
+  [4000, 6750, 10250, 15250, 25250].forEach((expected, i) => {
+    assert.strictEqual(extras[i], expected, `exclusion extra for tier ${i}`);
+  });
 
-    const shortfall = page.tax - fromEngine.tax;
-    assert.strictEqual(
-      Math.round(shortfall), expected,
-      `EG ${gross}: the page/engine gap is now ${Math.round(shortfall)}, recorded as ${expected}. ` +
-      'If this was resolved against the Egyptian Income Tax Law, delete this check and fold ' +
-      `these salaries into EG_AGREED_SALARIES. If it moved by accident, one side has drifted.`
+  // Tier k withdraws bands 0..k, taken whole rather than accumulated.
+  engine.EXCLUSION_RULES.forEach((rule, k) => {
+    assert.strictEqual(rule.excludedBands.length, k + 1, `tier ${k} withdrawn band count`);
+    rule.excludedBands.forEach((band, i) => assert.strictEqual(band, i, `tier ${k} band ${i}`));
+  });
+});
+
+check('Egypt: no salary produces an effective rate above the top marginal rate', () => {
+  const engine = loadFrontendEngine('assets/js/engines/eg-paye.js', 'egPAYE');
+
+  // The defect that exposed the bug: the shipped backend charged 43.6% at
+  // 1,300,000 gross. Tax can never exceed the top marginal rate on the whole
+  // of income, whatever the tiering does.
+  for (let gross = 50000; gross <= 5000000; gross += 25000) {
+    const { tax } = engine.calculate(gross, { nosi: true });
+    assert(
+      tax / gross <= 0.275,
+      `EG ${gross}: effective rate ${(tax / gross * 100).toFixed(1)}% exceeds the 27.5% top marginal rate`
     );
-    console.log(`     note: EG ${gross} — page ${Math.round(page.tax)}, engine/backend ` +
-      `${Math.round(fromEngine.tax)}, unresolved gap ${expected} (bands 0..${excludedBands} excluded)`);
   }
 });
 
 /* ── The constants each implementation carries ──────────────────────────── */
-check('Egypt: the three implementations share the same statutory constants', () => {
+check('Egypt: the four implementations share the same statutory constants', () => {
   const engine = loadFrontendEngine('assets/js/engines/eg-paye.js', 'egPAYE');
-  const pageHtml = fs.readFileSync(path.join(ROOT, 'egypt/eg-paye.html'), 'utf8');
   assert.strictEqual(engine.PERSONAL_EXEMPTION, 20000, 'engine personal exemption');
   assert.strictEqual(engine.DISABLED_PERSONAL_EXEMPTION, 30000, 'engine disabled exemption');
   assert.strictEqual(engine.NOSI_RATE, 0.11, 'engine NOSI rate');
   assert.strictEqual(engine.NOSI_ANNUAL_CAP, 174000, 'engine NOSI cap');
-  for (const literal of ['20000', '30000', '0.11', '174000']) {
-    assert(pageHtml.includes(literal), `page no longer contains the constant ${literal}`);
+
+  const sources = [
+    'egypt/eg-paye.html',
+    'sw/egypt/kikokotoo-kodi-mshahara/index.html',
+    'netlify/functions/_engines/eg-paye.js'
+  ];
+  for (const rel of sources) {
+    const text = fs.readFileSync(path.join(ROOT, rel), 'utf8');
+    for (const literal of ['20000', '30000', '0.11', '174000']) {
+      assert(text.includes(literal), `${rel} no longer contains the constant ${literal}`);
+    }
+    // The phantom tier. Its removal is the fix; a reappearance is a regression.
+    assert(
+      !/threshold:\s*1000000/.test(text),
+      `${rel} reintroduced a 1,000,000 exclusion tier — the ETA table steps from 900,000 to 1,200,000`
+    );
   }
 });
 

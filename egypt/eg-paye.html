@@ -670,14 +670,21 @@ function isOn(tog) { return !!document.querySelector(`[data-tog="${tog}"]`)?.cla
 //  25%   on next    EGP 800,000 (400,001–1,200,000)
 //  27.5% on rest    (above 1,200,000)
 //
-//  BRACKET EXCLUSION — income above these thresholds loses bands:
-//  > EGP 600,000  → lose 0% band   (add 40,000 × 0% = 0 tax, but shift calc)
-//  > EGP 700,000  → lose 10% band  (+1,500 extra tax)
-//  > EGP 800,000  → lose 15% band  (+2,250 extra tax)
-//  > EGP 900,000  → lose 20% band  (+26,000 extra tax)
-//  > EGP 1,000,000→ lose 22.5% band(+45,000 extra tax)
-//  > EGP 1,200,000→ lose 25% band  (+200,000 extra tax)
-//  Net effect: top earners pay as if all income were in the top 2 bands
+//  BRACKET EXCLUSION (tiering) — once net taxable income passes a threshold,
+//  the lower brackets are withdrawn and the income they covered is taxed at
+//  the FIRST SURVIVING rate. It is not an extra charge on top of the standard
+//  band tax; it is a re-rating of income already counted.
+//
+//  NATI            brackets withdrawn      re-rated income  at    extra tax
+//  > 600,000       0%                      first 40,000     10%   +4,000
+//  > 700,000       0%, 10%                 first 55,000     15%   +6,750
+//  > 800,000       0%, 10%, 15%            first 70,000     20%   +10,250
+//  > 900,000       0%, 10%, 15%, 20%       first 200,000    22.5% +15,250
+//  > 1,200,000     …plus 22.5%             first 400,000    25%   +25,250
+//
+//  There is no 1,000,000 tier — the step after 900,000 is 1,200,000, and the
+//  25% bracket is never withdrawn. Extras are derived from ETA_BANDS below so
+//  they cannot drift if a band width changes.
 // ══════════════════════════════════════════════════════════════
 
 const ETA_BANDS = [
@@ -690,16 +697,27 @@ const ETA_BANDS = [
   { limit: Infinity, rate: 0.275 },
 ];
 
-// Bracket exclusion thresholds: [net_taxable_income_threshold, band_index_to_exclude, extra_tax_if_excluded]
-// Each threshold means: if NATI > threshold, exclude that band and add the corresponding extra tax
-const EXCLUSION_RULES = [
-  { threshold: 600000,  bandIdx: 0, extraTax: 0 },       // lose 0%  — no tax impact but calc shifts
-  { threshold: 700000,  bandIdx: 1, extraTax: 1500 },     // lose 10% on 15,000 = 1,500
-  { threshold: 800000,  bandIdx: 2, extraTax: 2250 },     // lose 15% on 15,000 = 2,250
-  { threshold: 900000,  bandIdx: 3, extraTax: 26000 },    // lose 20% on 130,000 = 26,000
-  { threshold: 1000000, bandIdx: 4, extraTax: 45000 },    // lose 22.5% on 200,000 = 45,000
-  { threshold: 1200000, bandIdx: 5, extraTax: 200000 },   // lose 25% on 800,000 = 200,000
-];
+// Tier k applies when NATI exceeds EXCLUSION_THRESHOLDS[k] and withdraws
+// ETA_BANDS[0..k]. The 25% and 27.5% bands are never withdrawn, so there are
+// five tiers, not six.
+const EXCLUSION_THRESHOLDS = [600000, 700000, 800000, 900000, 1200000];
+
+// Extra tax for tier k = (income the withdrawn bands covered × the first
+// surviving rate) − (standard band tax already charged on that income).
+// Derived, not hard-coded, so it stays consistent with ETA_BANDS.
+const EXCLUSION_RULES = EXCLUSION_THRESHOLDS.map(function (threshold, k) {
+  let coveredIncome = 0, standardOnIt = 0;
+  for (let i = 0; i <= k; i++) {
+    coveredIncome += ETA_BANDS[i].limit;
+    standardOnIt  += ETA_BANDS[i].limit * ETA_BANDS[i].rate;
+  }
+  return {
+    threshold,
+    bandIdx: k,                                                    // highest band withdrawn
+    excludedBands: Array.from({ length: k + 1 }, (_, i) => i),
+    extraTax: coveredIncome * ETA_BANDS[k + 1].rate - standardOnIt, // 4,000 / 6,750 / 10,250 / 15,250 / 25,250
+  };
+});
 
 function calcTax(nati) {
   // Standard progressive computation
@@ -715,18 +733,22 @@ function calcTax(nati) {
     rem -= chunk;
   }
 
-  // Apply bracket exclusion: add back the extra tax for each excluded band
+  // Apply bracket exclusion. Only the HIGHEST tier reached applies — each tier
+  // already subsumes the ones below it, so summing them charges the withdrawn
+  // income two, three or five times over.
   let exclusionExtra = 0;
-  const excludedBands = [];
+  let excludedBands = [];
+  let exclusionThreshold = null;
   for (const rule of EXCLUSION_RULES) {
     if (nati > rule.threshold) {
-      exclusionExtra += rule.extraTax;
-      excludedBands.push(rule.bandIdx);
+      exclusionExtra = rule.extraTax;
+      excludedBands = rule.excludedBands;
+      exclusionThreshold = rule.threshold;
     }
   }
   const totalTax = tax + exclusionExtra;
 
-  return { tax: totalTax, standardTax: tax, exclusionExtra, bandBreakdown, excludedBands };
+  return { tax: totalTax, standardTax: tax, exclusionExtra, bandBreakdown, excludedBands, exclusionThreshold };
 }
 
 // ── MAIN CALCULATE ────────────────────────────────────────────
@@ -764,7 +786,7 @@ function calcTax(nati) {
   const nati = Math.max(0, gross - personalExemption - nosi);
 
   // Income tax with bracket exclusion
-  const { tax, standardTax, exclusionExtra, bandBreakdown, excludedBands } = calcTax(nati);
+  const { tax, standardTax, exclusionExtra, bandBreakdown, excludedBands, exclusionThreshold } = calcTax(nati);
 
   // Employer cost
   const employerNosiBase = Math.min(gross, 174000);
@@ -782,7 +804,7 @@ function calcTax(nati) {
 
   RESULT = {
     gross, personalExemption, nosi, health, nati,
-    tax, standardTax, exclusionExtra, bandBreakdown, excludedBands,
+    tax, standardTax, exclusionExtra, bandBreakdown, excludedBands, exclusionThreshold,
     isExempt, hasExclusion,
     totalDeductions, netAnnual, netMonthly,
     effectiveRate, employerNosi, employerHealth, totalEmployerCost
@@ -830,7 +852,7 @@ function renderRows(r, period) {
         ? `<div style="background:rgba(206,17,38,0.05);border:1px solid rgba(206,17,38,0.2);border-radius:6px;padding:10px 13px;font-size:0.78rem;color:#8b0000;line-height:1.5">✓ NATI below EGP 40,000 — in 0% band, no income tax due.</div>`
         : row('Income tax (progressive, ETA)', fmt(r.tax / d), 'c-red')
       }
-      ${r.hasExclusion && !r.isExempt ? `<div class="exclusion-box">⚠ Bracket exclusion applied: your NATI (${fmt(r.nati)}/yr) exceeds EGP ${r.nati > 1200000 ? '1,200,000' : r.nati > 1000000 ? '1,000,000' : r.nati > 900000 ? '900,000' : r.nati > 800000 ? '800,000' : r.nati > 700000 ? '700,000' : '600,000'} — ${r.excludedBands.length} lower bracket${r.excludedBands.length > 1 ? 's have' : ' has'} been removed. Extra tax vs. standard progressive: ${fmt(r.exclusionExtra)}. Most calculators miss this.</div>` : ''}
+      ${r.hasExclusion && !r.isExempt ? `<div class="exclusion-box">⚠ Bracket exclusion applied: your NATI (${fmt(r.nati)}/yr) exceeds EGP ${(r.exclusionThreshold || 0).toLocaleString()} — ${r.excludedBands.length} lower bracket${r.excludedBands.length > 1 ? 's have' : ' has'} been removed and that income is now taxed at the first surviving rate. Extra tax vs. standard progressive: ${fmt(r.exclusionExtra)}. Most calculators miss this.</div>` : ''}
     </div>
     <div class="res-section">
       ${row('Total Deductions', fmt(r.totalDeductions / d), 'c-red')}

@@ -4,8 +4,8 @@ As of: 2026-07-28
 
 ## Inventory
 
-- Total artifacts: 653
-- High risk: 513
+- Total artifacts: 654
+- High risk: 514
 - Medium risk: 73
 - Low risk: 67
 
