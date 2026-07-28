@@ -45,8 +45,8 @@ test('French validation errors are native and retain fail-closed timing checks',
 });
 
 test('French page reuses the accepted engine and removes the geographic score model', () => {
-  assert.match(html, /src="\/tools\/malaria-risk\/malaria-urgency-engine\.js/);
-  assert.match(html, /src="\.\/malaria-urgency-fr\.js"/);
+  assert.match(html, /src="\/tools\/malaria-risk\/malaria-urgency-engine\.js(?:\?v=[a-f0-9]+)?"/);
+  assert.match(html, /src="\.\/malaria-urgency-fr\.js(?:\?v=[a-f0-9]+)?"/);
   assert.match(html, /Test de paludisme le plus récent pour ces symptômes/);
   assert.match(html, /Impossible de garder des liquides/);
   assert.match(html, /id="resultPanel"[\s\S]*tabindex="-1"/);
