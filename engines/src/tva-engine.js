@@ -146,21 +146,35 @@ window.TVAEngine = {
       } ]
     }
   },
-  calculate: function(a, e, r) {
-    if ("add" === (r = r || "add")) {
-      return {
-        ht: a,
-        tva: d = a * e,
-        ttc: a + d,
-        rate: e
-      };
+  /**
+   * amount: HT when mode is "add", TTC when mode is "extract".
+   * rate:   decimal fraction, e.g. 0.18 for 18%.
+   *
+   * A missing amount or rate is not zero VAT. Called with no arguments this
+   * used to return { ht: undefined, tva: NaN, ttc: NaN } and any page
+   * rendering that showed "NaN FCFA" to the user. Both inputs are required.
+   */
+  calculate: function(amount, rate, mode) {
+    mode = mode || "add";
+
+    var value = typeof amount === "number" ? amount : parseFloat(amount);
+    if (!isFinite(value) || value <= 0) {
+      return { error: "Saisissez un montant supérieur à zéro." };
     }
-    var d, n = a / (1 + e);
-    return {
-      ht: n,
-      tva: d = a - n,
-      ttc: a,
-      rate: e
-    };
+
+    var pct = typeof rate === "number" ? rate : parseFloat(rate);
+    // 0 is a real rate (exports are zero-rated), so only reject a missing,
+    // non-numeric or out-of-range one. Rates are fractions, never percents.
+    if (!isFinite(pct) || pct < 0 || pct >= 1) {
+      return { error: "Sélectionnez un taux de TVA valide." };
+    }
+
+    if (mode === "add") {
+      var tva = value * pct;
+      return { ht: value, tva: tva, ttc: value + tva, rate: pct };
+    }
+
+    var ht = value / (1 + pct);
+    return { ht: ht, tva: value - ht, ttc: value, rate: pct };
   }
 };
