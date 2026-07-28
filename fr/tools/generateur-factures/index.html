@@ -8,11 +8,11 @@
 <meta name="tool-id" content="generateur-factures">
 <meta name="theme-color" content="var(--color-primary)">
 <title>Générateur de Factures Africain 2026 | AfroTools</title>
-<meta name="description" content="Créez et téléchargez des factures professionnelles pour le Nigeria, le Kenya, le Ghana, l'Afrique du Sud et tous les pays africains. Générateur de factures gratuit avec calcul de TVA, multi-devises, base de données clients et export PDF réel.">
+<meta name="description" content="Créez une facture en français, appliquez un taux vérifié et exportez un PDF local. Les clients, modèles et montants restent dans votre navigateur.">
 <meta name="keywords" content="générateur de factures, facture africaine, facture Nigeria, calculateur TVA, facture multi-devises, créer facture gratuit, facture PDF">
 <meta name="author" content="AfroTools">
 <meta property="og:title" content="Générateur de Factures Africain Gratuit | AfroTools">
-<meta property="og:description" content="Créez des factures professionnelles pour tout pays africain avec TVA, multi-devises, 6 modèles, base de données clients et export PDF.">
+<meta property="og:description" content="Créez une facture en français avec devise, taxe personnalisable, carnet client local et export PDF dans le navigateur.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/fr/tools/generateur-factures/">
@@ -59,7 +59,7 @@
 }
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce générateur de factures est-il gratuit ?","acceptedAnswer":{"@type":"Answer","text":"Oui, le Générateur de Factures AfroTools est totalement gratuit. Créez des factures illimitées, enregistrez des modèles, gérez vos clients et téléchargez de vrais PDF sans aucun coût."}},{"@type":"Question","name":"Quelles devises africaines sont prises en charge ?","acceptedAnswer":{"@type":"Answer","text":"Nous prenons en charge toutes les principales devises africaines, dont NGN (Nigeria), KES (Kenya), GHS (Ghana), ZAR (Afrique du Sud), et plus de 15 autres devises africaines et internationales."}},{"@type":"Question","name":"Comment calculer la TVA sur les factures ?","acceptedAnswer":{"@type":"Answer","text":"Le générateur calcule automatiquement la TVA selon la devise/le pays sélectionné. Les taux sont prédéfinis (Nigeria 7,5 %, Kenya 16 %, Ghana 15 %, etc.) mais vous pouvez les personnaliser."}},{"@type":"Question","name":"Puis-je enregistrer les coordonnées de mes clients ?","acceptedAnswer":{"@type":"Answer","text":"Oui ! La base de données clients enregistre vos clients localement dans votre navigateur. Cliquez sur 'Enregistrer le client' pour sauvegarder ses coordonnées, puis sélectionnez-le pour remplir automatiquement ses informations."}},{"@type":"Question","name":"Comment télécharger ma facture en PDF ?","acceptedAnswer":{"@type":"Answer","text":"Cliquez sur 'Télécharger PDF' pour générer un PDF professionnel avec notre moteur PDF intégré. Le PDF inclut votre logo, tous les articles, les totaux et les notes — prêt à envoyer à votre client."}},{"@type":"Question","name":"Mes données de facturation sont-elles sauvegardées en ligne ?","acceptedAnswer":{"@type":"Answer","text":"Non, toutes les données de facturation sont stockées localement dans votre navigateur via localStorage. Nous n'envoyons jamais vos données financières à un serveur. Pour une sauvegarde, téléchargez des PDF ou utilisez le lien de partage."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce générateur de factures est-il gratuit ?","acceptedAnswer":{"@type":"Answer","text":"Oui. La création de facture et l’export PDF local sont accessibles sans inscription."}},{"@type":"Question","name":"Quelles devises africaines sont prises en charge ?","acceptedAnswer":{"@type":"Answer","text":"Le sélecteur propose notamment NGN, KES, GHS, ZAR, XOF, XAF, MAD, TND et plusieurs autres devises africaines et internationales."}},{"@type":"Question","name":"Comment calculer la TVA sur les factures ?","acceptedAnswer":{"@type":"Answer","text":"Choisissez le type de taxe puis saisissez le taux que vous avez vérifié pour votre pays et votre opération. Le générateur calcule ensuite les lignes et le total."}},{"@type":"Question","name":"Puis-je enregistrer les coordonnées de mes clients ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Les clients et modèles sont enregistrés localement dans ce navigateur afin de pouvoir les réutiliser sur cet appareil."}},{"@type":"Question","name":"Comment télécharger ma facture en PDF ?","acceptedAnswer":{"@type":"Answer","text":"Cliquez sur Télécharger PDF. La facture est générée localement avec le logo, les articles, les totaux et les notes saisis."}},{"@type":"Question","name":"Le partage expose-t-il les données de ma facture ?","acceptedAnswer":{"@type":"Answer","text":"Non. L’action Partager la page transmet uniquement l’adresse du générateur, sans client, montant, adresse, identifiant fiscal ni contenu de facture."}}]}
 </script>
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,8 +67,10 @@
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,700;0,9..40,800;1,9..40,400&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/invoice-generator.css?v=f87ce708">
+<link rel="stylesheet" href="/assets/css/invoice-generator-fr-wave1.css?v=dc437584">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <script src="/assets/js/lib/save-state.global.js?v=ff7c4414"></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
 
 <style>
 :root { --color-brand: var(--color-primary); }
@@ -80,9 +82,9 @@
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Générateur de Factures Africain Gratuit | AfroTools">
-<meta name="twitter:description" content="Créez des factures professionnelles pour tout pays africain avec TVA, multi-devises, 6 modèles, base de données clients et export PDF.">
+<meta name="twitter:description" content="Créez une facture en français avec devise, taxe personnalisable, carnet client local et export PDF dans le navigateur.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/invoice-generator.webp">
-<meta property="article:modified_time" content="2026-03-28">
+<meta property="article:modified_time" content="2026-07-28">
 <link rel="canonical" href="https://afrotools.com/fr/tools/generateur-factures/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/invoice-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-factures/">
@@ -110,7 +112,7 @@
 <div class="container" style="max-width:1140px;margin:0 auto;padding:0 20px;">
   <nav class="breadcrumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Générateur de Factures</nav>
   <h1>Générateur de factures <em>africain</em></h1>
-  <p class="inv-hero-sub">Créez des factures professionnelles pour votre entreprise africaine en quelques secondes. Multi-devises, calcul de TVA, base de données clients, 6 modèles et export PDF réel.</p>
+  <p class="inv-hero-sub">Préparez une facture en français avec votre devise, votre taux vérifié et vos mentions locales. Les clients, modèles et montants restent dans ce navigateur.</p>
   <div class="hero-badges">
     <span class="badge badge-green">GRATUIT &amp; ILLIMITÉ</span>
     <span class="badge badge-blue">20+ DEVISES</span>
@@ -190,7 +192,7 @@
   <div class="card">
     <div class="card-head">
       <span class="card-title">À / Destinataire</span>
-      <span class="card-sub" id="clientCount">0 client enregistré</span>
+      <span class="card-sub" id="clientCount">0 client enregistré localement</span>
     </div>
     <div class="card-body">
       <!-- Client Database -->
@@ -214,7 +216,7 @@
         <input class="f-input" id="clientEmail" type="email" placeholder="client@société.com">
       </div>
       <div style="display:flex;gap:8px;margin-top:8px;">
-<button class="btn" id="btnSaveClient" type="button" style="font-size:1rem;padding:10px 14px;min-height:44px;" aria-label="Enregistrer le client dans la base de données">+ Enregistrer le client</button>
+<button class="btn" id="btnSaveClient" type="button" style="font-size:1rem;padding:10px 14px;min-height:44px;" aria-label="Enregistrer le client dans ce navigateur">+ Enregistrer localement</button>
 <button class="btn" id="btnClearClient" type="button" style="font-size:1rem;padding:10px 14px;min-height:44px;" aria-label="Effacer les champs client">Effacer</button>
       </div>
     </div>
@@ -293,8 +295,9 @@
           </select>
         </div>
         <div class="field" id="taxRateField">
-          <label class="f-label" for="taxRate">Taux de taxe (%)</label>
-          <input class="f-input" id="taxRate" type="number" placeholder="15" min="0" max="100" step="0.01">
+          <label class="f-label" for="taxRate">Taux vérifié (%)</label>
+          <input class="f-input" id="taxRate" type="number" value="0" placeholder="0" min="0" max="100" step="0.01" aria-describedby="taxRateHelp">
+          <span class="f-note" id="taxRateHelp">La devise ne détermine pas le taux. Confirmez le pays, l’opération et votre régime avant de saisir ce pourcentage.</span>
         </div>
       </div>
     </div>
@@ -316,7 +319,7 @@
               <th style="width:16%" scope="col">Prix unitaire</th>
               <th style="width:10%" scope="col">TVA %</th>
               <th style="width:16%" scope="col">Total</th>
-              <th style="width:8%" scope="col"><span class="sr-only">Actions</span></th>
+              <th style="width:8%" scope="col" aria-label="Actions"></th>
             </tr>
           </thead>
           <tbody id="lineItemsBody">
@@ -367,7 +370,7 @@
 
       <div class="btn-row" role="group" aria-label="Actions sur la facture">
         <button class="btn btn-primary" id="btnPDF" type="button" aria-label="Télécharger la facture en PDF">Télécharger PDF</button>
-        <button class="btn" id="btnShare" type="button" aria-label="Partager le lien de la facture">Partager le lien</button>
+        <button class="btn" id="btnShare" type="button" aria-label="Partager uniquement la page, sans les données de la facture">Partager la page</button>
         <button class="btn" id="btnSaveTemplate" type="button" aria-label="Enregistrer la facture comme modèle">Enregistrer le modèle</button>
         <button class="btn" id="btnNewInvoice" type="button" aria-label="Commencer une nouvelle facture vierge">Nouvelle facture</button>
       </div>
@@ -500,8 +503,8 @@
   <div style="padding:14px 16px;background:#fff;border:1px solid #DBEAFE;border-radius:10px;box-shadow:0 8px 24px rgba(15,23,42,.05);color:#475569;line-height:1.7;">
     <strong style="display:block;color:#0f172a;margin-bottom:6px;">Méthode, confidentialité et export</strong>
     <p style="margin:0;">Méthode : l'outil calcule sous-total, TVA, remise et total à partir des lignes que vous saisissez. Les données client et les modèles restent dans votre navigateur par défaut. Le PDF est un document de travail, pas une facture fiscale certifiée ni un dépôt officiel.</p>
-    <p style="margin:8px 0 0;"><strong>Checklist :</strong> vérifier identifiant fiscal, numéro de facture, mentions legales, taux TVA, devise, conditions de paiement, coordonnees bancaires et obligation locale de facturation électronique. Revu le 2026-06-19.</p>
-    <button type="button" class="btn" style="margin-top:10px;" onclick="navigator.clipboard&&navigator.clipboard.writeText('Verifier identifiant fiscal, numero de facture, mentions obligatoires, taux TVA, devise, conditions de paiement, coordonnees bancaires et obligation locale de facturation electronique avant envoi.')">Copier la checklist</button>
+    <p style="margin:8px 0 0;"><strong>Checklist :</strong> vérifier l’identifiant fiscal, le numéro de facture, les mentions légales, le taux, la devise, les conditions de paiement, les coordonnées bancaires et l’obligation locale de facturation électronique. Parcours revu le 27 juillet 2026.</p>
+    <button type="button" class="btn" style="margin-top:10px;" onclick="navigator.clipboard&&navigator.clipboard.writeText('Vérifier l’identifiant fiscal, le numéro de facture, les mentions obligatoires, le taux, la devise, les conditions de paiement, les coordonnées bancaires et l’obligation locale de facturation électronique avant envoi.')">Copier la checklist</button>
   </div>
 </section>
 <section class="faq-sec">
@@ -511,27 +514,27 @@
   <div class="faq-grid">
     <div class="faq-item">
       <div class="faq-q">Ce générateur de factures est-il gratuit ?</div>
-      <div class="faq-a">Oui, totalement gratuit et sans limites. Créez des factures illimitées, gérez vos clients, enregistrez des modèles et téléchargez de vrais PDF sans aucun frais.</div>
+      <div class="faq-a">Oui. La création de facture et l’export PDF local sont accessibles sans inscription. Les modèles et clients enregistrés restent sur cet appareil.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Quelles devises sont prises en charge ?</div>
-      <div class="faq-a">Nous prenons en charge 20+ devises dont NGN, KES, GHS, ZAR, RWF, TZS, ETB, UGX, XOF, EGP, MAD, USD, GBP, EUR et plus encore.</div>
+      <div class="faq-a">Le sélecteur propose notamment NGN, KES, GHS, ZAR, XOF, XAF, MAD, TND, USD, GBP et EUR.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Comment fonctionne le calcul de la TVA ?</div>
-      <div class="faq-a">Sélectionnez votre devise et le taux de TVA se remplit automatiquement selon le pays (Nigeria 7,5 %, Kenya 16 %, Ghana 15 %, etc.). Vous pouvez personnaliser le taux à tout moment.</div>
+      <div class="faq-a">Choisissez le type de taxe puis saisissez le taux que vous avez vérifié pour le pays, l’opération et votre régime. La devise ne fixe jamais automatiquement la TVA.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Puis-je enregistrer les coordonnées de mes clients ?</div>
-      <div class="faq-a">Oui. La base clients enregistre vos clients localement dans votre navigateur. Cliquez sur "Enregistrer le client", puis sélectionnez un client pour pre-remplir une nouvelle facture.</div>
+      <div class="faq-a">Oui. Le carnet client reste local à ce navigateur. Cliquez sur « Enregistrer localement », puis sélectionnez un client pour préremplir une nouvelle facture sur cet appareil.</div>
     </div>
     <div class="faq-item">
       <div class="faq-q">Comment télécharger en PDF ?</div>
-      <div class="faq-a">Cliquez sur "Télécharger le PDF" pour générer un PDF professionnel avec votre logo, les lignes, les totaux et les notes, prêt à envoyer par e-mail.</div>
+      <div class="faq-a">Cliquez sur « Télécharger PDF » pour générer localement un document avec votre logo, les lignes, les totaux et les notes.</div>
     </div>
     <div class="faq-item">
-      <div class="faq-q">Mes données sont-elles sauvegardées en ligne ?</div>
-      <div class="faq-a">Non. Toutes les données restent dans votre navigateur (localStorage). Nous ne transmettons jamais vos données financières. Pour une sauvegarde, téléchargez des PDF ou utilisez le lien de partage.</div>
+      <div class="faq-q">Le partage expose-t-il les données de ma facture ?</div>
+      <div class="faq-a">Non. « Partager la page » transmet uniquement l’adresse du générateur, sans client, montant, adresse, identifiant fiscal, note ni ligne de facture.</div>
     </div>
   </div>
 </div>
@@ -548,7 +551,6 @@
 <script src="/assets/js/favorites.js?v=163519f9" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="/assets/js/share-state.js?v=69e3615f"></script>
 <script src="/assets/js/toast.js?v=a7f31fe6"></script>
 
 <script>
@@ -560,27 +562,22 @@
 
 /* ── DATA ── */
 const CURRENCIES = {
-  NGN:{s:'\u20A6',name:'Nigerian Naira'},KES:{s:'KSh',name:'Kenyan Shilling'},GHS:{s:'GH\u20B5',name:'Ghanaian Cedi'},
-  ZAR:{s:'R',name:'South African Rand'},RWF:{s:'Frw',name:'Rwandan Franc'},TZS:{s:'Sh',name:'Tanzanian Shilling'},
-  ETB:{s:'Br',name:'Ethiopian Birr'},UGX:{s:'Ush',name:'Ugandan Shilling'},XOF:{s:'Fr',name:'West African CFA'},
-  XAF:{s:'Fr',name:'Central African CFA'},EGP:{s:'\u00A3',name:'Egyptian Pound'},MAD:{s:'\u062F.\u0645.',name:'Moroccan Dirham'},
-  TND:{s:'\u062F.\u062A',name:'Tunisian Dinar'},SDG:{s:'\u062C.\u0633.',name:'Sudanese Pound'},SOS:{s:'Sh',name:'Somali Shilling'},
-  MUR:{s:'\u20A8',name:'Mauritian Rupee'},SCR:{s:'\u20A8',name:'Seychellois Rupee'},BWP:{s:'P',name:'Botswana Pula'},
-  MZN:{s:'MT',name:'Mozambican Metical'},USD:{s:'$',name:'US Dollar'},GBP:{s:'\u00A3',name:'British Pound'},EUR:{s:'\u20AC',name:'Euro'}
-};
-
-const TAX_RATES = {
-  NGN:7.5,KES:16,GHS:15,ZAR:15,RWF:18,TZS:18,ETB:15,UGX:18,XOF:18,XAF:19.25,
-  EGP:14,MAD:20,TND:19,SDG:17,SOS:0,MUR:15,SCR:15,BWP:14,MZN:16,USD:0,GBP:20,EUR:21
+  NGN:{s:'\u20A6',name:'naira nigérian'},KES:{s:'KSh',name:'shilling kényan'},GHS:{s:'GH\u20B5',name:'cedi ghanéen'},
+  ZAR:{s:'R',name:'rand sud-africain'},RWF:{s:'Frw',name:'franc rwandais'},TZS:{s:'Sh',name:'shilling tanzanien'},
+  ETB:{s:'Br',name:'birr éthiopien'},UGX:{s:'Ush',name:'shilling ougandais'},XOF:{s:'Fr',name:'franc CFA BCEAO'},
+  XAF:{s:'Fr',name:'franc CFA BEAC'},EGP:{s:'\u00A3',name:'livre égyptienne'},MAD:{s:'\u062F.\u0645.',name:'dirham marocain'},
+  TND:{s:'\u062F.\u062A',name:'dinar tunisien'},SDG:{s:'\u062C.\u0633.',name:'livre soudanaise'},SOS:{s:'Sh',name:'shilling somalien'},
+  MUR:{s:'\u20A8',name:'roupie mauricienne'},SCR:{s:'\u20A8',name:'roupie seychelloise'},BWP:{s:'P',name:'pula botswanais'},
+  MZN:{s:'MT',name:'metical mozambicain'},USD:{s:'$',name:'dollar américain'},GBP:{s:'\u00A3',name:'livre sterling'},EUR:{s:'\u20AC',name:'euro'}
 };
 
 const TERMS_MAP = {
-    immediate: 'Paiement a reception de la facture.',
-    net7: 'Paiement sous 7 jours.',
-    net15: 'Paiement sous 15 jours.',
-    net30: 'Paiement sous 30 jours.',
-    net60: 'Paiement sous 60 jours.',
-    custom: ''
+    'due-receipt': 'Paiement à réception',
+    'net-7': 'Paiement sous 7 jours',
+    'net-15': 'Paiement sous 15 jours',
+    'net-30': 'Paiement sous 30 jours',
+    'net-45': 'Paiement sous 45 jours',
+    'net-60': 'Paiement sous 60 jours'
   };
 
 const LS_CLIENTS = 'afro_inv_clients';
@@ -594,7 +591,7 @@ const qsa = sel => document.querySelectorAll(sel);
 /* ── HELPERS ── */
 function fmtCur(amt, code) {
   const sym = (CURRENCIES[code] || {}).s || code;
-  return sym + ' ' + parseFloat(amt || 0).toLocaleString(undefined, {minimumFractionDigits:2, maximumFractionDigits:2});
+  return sym + ' ' + parseFloat(amt || 0).toLocaleString('fr-FR', {minimumFractionDigits:2, maximumFractionDigits:2});
 }
 
 let _debounceTimer;
@@ -642,7 +639,15 @@ $('logoInput').addEventListener('change', e => {
 });
 
 /* ── CLIENT DATABASE ── */
-function getClients() { return JSON.parse(localStorage.getItem(LS_CLIENTS) || '[]'); }
+function readLocalArray(key) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || '[]');
+    return Array.isArray(value) ? value : [];
+  } catch (error) {
+    return [];
+  }
+}
+function getClients() { return readLocalArray(LS_CLIENTS); }
 function saveClients(arr) { localStorage.setItem(LS_CLIENTS, JSON.stringify(arr)); }
 
 function renderClients() {
@@ -653,15 +658,35 @@ function renderClients() {
     list.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.78rem;padding:10px;">Aucun client enregistre. Remplissez les informations puis cliquez sur "Enregistrer le client".</p>';
     return;
   }
-  list.innerHTML = clients.map((c, i) => `
-    <div class="client-item" data-idx="${i}">
-      <div>
-        <span class="client-item-name">${c.name}</span>
-        ${c.company ? `<span class="client-item-co"> - ${c.company}</span>` : ''}
-      </div>
-      <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 6px;" onclick="event.stopPropagation();deleteClient(${i})">X</button>
-    </div>
-  `).join('');
+  list.replaceChildren();
+  clients.forEach((client, index) => {
+    const item = document.createElement('div');
+    item.className = 'client-item';
+    item.dataset.idx = String(index);
+    const identity = document.createElement('div');
+    const name = document.createElement('span');
+    name.className = 'client-item-name';
+    name.textContent = String(client.name || '');
+    identity.appendChild(name);
+    if (client.company) {
+      const company = document.createElement('span');
+      company.className = 'client-item-co';
+      company.textContent = ' - ' + String(client.company);
+      identity.appendChild(company);
+    }
+    const remove = document.createElement('button');
+    remove.type = 'button';
+    remove.className = 'btn-remove';
+    remove.style.cssText = 'font-size:0.6rem;padding:2px 6px;';
+    remove.setAttribute('aria-label', 'Supprimer ce client');
+    remove.textContent = 'X';
+    remove.addEventListener('click', (event) => {
+      event.stopPropagation();
+      deleteClient(index);
+    });
+    item.append(identity, remove);
+    list.appendChild(item);
+  });
   list.querySelectorAll('.client-item').forEach(el => {
     el.addEventListener('click', () => {
       const c = clients[el.dataset.idx];
@@ -670,7 +695,7 @@ function renderClients() {
       $('clientAddress').value = c.address || '';
       $('clientEmail').value = c.email || '';
       updatePreview();
-      toast('Client loaded', 'info');
+      toast('Client chargé localement', 'info');
     });
   });
 }
@@ -680,16 +705,16 @@ window.deleteClient = function(idx) {
   clients.splice(idx, 1);
   saveClients(clients);
   renderClients();
-  toast('Client removed');
+  toast('Client supprimé');
 };
 
 $('btnSaveClient').addEventListener('click', () => {
   const name = $('clientName').value.trim();
-  if (!name) { toast('Enter a client name first', 'error'); return; }
+  if (!name) { toast('Saisissez d’abord le nom du client', 'error'); return; }
   const clients = getClients();
   // Don't duplicate
   if (clients.some(c => c.name === name && c.company === $('clientCompany').value.trim())) {
-    toast('Client already saved', 'info'); return;
+    toast('Ce client est déjà enregistré', 'info'); return;
   }
   clients.push({
     name,
@@ -762,7 +787,7 @@ function applyTemplate(tpl) {
   const prev = $('invoicePreview');
   // Reset template-specific inline styles
   prev.style.cssText = '';
-  $('previewTplTitle').textContent = 'INVOICE';
+  $('previewTplTitle').textContent = 'FACTURE';
 
   switch(tpl) {
     case 'classic':
@@ -779,7 +804,7 @@ function applyTemplate(tpl) {
     case 'creative':
       prev.style.background = 'linear-gradient(135deg, #F5F9FF 0%, #f0f7ff 100%)';
       prev.style.borderColor = '#b8d4e3';
-      $('previewTplTitle').textContent = 'INVOICE';
+      $('previewTplTitle').textContent = 'FACTURE';
       break;
     case 'dark':
       prev.style.background = '#1a2420';
@@ -791,10 +816,12 @@ function applyTemplate(tpl) {
   }
 }
 
-/* ── CURRENCY CHANGE → AUTO TAX ── */
+/* ── CURRENCY CHANGE ──
+   A currency can span several countries and tax treatments. Never infer VAT
+   from the currency alone; require the user to provide a verified rate. */
 $('currency').addEventListener('change', function() {
-  const rate = TAX_RATES[this.value];
-  if (rate !== undefined) $('taxRate').value = rate;
+  $('taxRate').value = '0';
+  toast('Devise mise à jour. Confirmez puis saisissez le taux applicable.', 'info');
   updatePreview();
 });
 
@@ -813,15 +840,15 @@ $('taxType').addEventListener('change', function() {
 function updatePreview() {
   const cur = $('currency').value;
   const taxType = $('taxType').value;
-  const taxRate = parseFloat($('taxRate').value) || 0;
+  const taxRate = Math.min(100, Math.max(0, parseFloat($('taxRate').value) || 0));
   let subtotal = 0, totalItemTax = 0;
   const items = [];
 
   qsa('.line-item').forEach(row => {
     const desc = row.querySelector('.li-desc').value;
-    const qty = parseFloat(row.querySelector('.li-qty').value) || 0;
-    const price = parseFloat(row.querySelector('.li-price').value) || 0;
-    const itax = parseFloat(row.querySelector('.li-tax').value) || 0;
+    const qty = Math.max(0, parseFloat(row.querySelector('.li-qty').value) || 0);
+    const price = Math.max(0, parseFloat(row.querySelector('.li-price').value) || 0);
+    const itax = Math.min(100, Math.max(0, parseFloat(row.querySelector('.li-tax').value) || 0));
     const lineSub = qty * price;
     const lineTax = taxType === 'per-item' ? (lineSub * itax / 100) : 0;
     const lineTotal = lineSub + lineTax;
@@ -837,7 +864,7 @@ function updatePreview() {
   $('itemCountLabel').textContent = rowCount + ' item' + (rowCount !== 1 ? 's' : '');
 
   // Discount
-  const discPct = parseFloat($('discountPercent').value) || 0;
+  const discPct = Math.min(100, Math.max(0, parseFloat($('discountPercent').value) || 0));
   const discAmt = subtotal * discPct / 100;
 
   // Tax
@@ -857,11 +884,11 @@ function updatePreview() {
   const compName = $('companyName').value || 'Votre entreprise';
   $('pCompany').textContent = compName;
   const bizParts = [$('businessAddress').value, $('businessEmail').value, $('businessPhone').value, $('taxID').value ? 'Identifiant fiscal : ' + $('taxID').value : ''].filter(Boolean);
-  $('pBizDetail').innerHTML = bizParts.join('<br>');
+  renderTextLines($('pBizDetail'), bizParts);
 
   $('pClient').textContent = $('clientName').value || 'Nom du client';
   const cParts = [$('clientCompany').value, $('clientAddress').value, $('clientEmail').value].filter(Boolean);
-  $('pClientDetail').innerHTML = cParts.join('<br>');
+  renderTextLines($('pClientDetail'), cParts);
 
   // Preview — meta
   $('pInvNum').textContent = $('invoiceNumber').value || 'INV-2026-001';
@@ -902,20 +929,34 @@ function updatePreview() {
   // Paid stamp
   const paid = $('markPaid').checked;
   $('paidStamp').style.display = paid ? '' : 'none';
-  $('previewStatus').textContent = paid ? 'Paid' : 'Draft';
+  $('previewStatus').textContent = paid ? 'Payée' : 'Brouillon';
   $('previewStatus').style.color = paid ? '#0063D1' : '';
 
   // Overdue check
   const dueVal = $('dueDate').value;
   const isOverdue = !paid && dueVal && new Date(dueVal) < new Date(new Date().toISOString().slice(0,10));
   $('overdueBar').style.display = isOverdue ? '' : 'none';
-  if (isOverdue) $('previewStatus').textContent = 'Overdue';
+  if (isOverdue) $('previewStatus').textContent = 'En retard';
 }
 
 function escapeHtml(str) {
   const div = document.createElement('div');
   div.textContent = str;
   return div.innerHTML;
+}
+
+function renderTextLines(element, values) {
+  element.replaceChildren();
+  values.filter(Boolean).forEach((value, index) => {
+    if (index) element.appendChild(document.createElement('br'));
+    element.appendChild(document.createTextNode(String(value)));
+  });
+}
+
+function safeNumber(value, fallback, maximum) {
+  const number = Number(value);
+  if (!Number.isFinite(number) || number < 0) return fallback;
+  return Math.min(number, maximum);
 }
 
 const debouncedUpdate = debounce(updatePreview, 300);
@@ -931,19 +972,28 @@ qsa('.line-item').forEach(attachLineListeners);
 /* ── FORM VALIDATION ── */
 function validateForm() {
   const errors = [];
+  let firstInvalid = null;
   if (!$('companyName').value.trim()) errors.push('Le nom de votre entreprise est obligatoire.');
   if (!$('clientName').value.trim()) errors.push('Le nom du client est obligatoire.');
   if (!$('invoiceNumber').value.trim()) errors.push('Le numero de facture est obligatoire.');
   if (!$('invoiceDate').value) errors.push('La date d emission est obligatoire.');
-  if (!$('dueDate').value) errors.push('Due date is required.');
+  if (!$('dueDate').value) errors.push('La date d’échéance est obligatoire.');
 
   // Check at least one item has a description
   const hasItem = Array.from(qsa('.line-item')).some(r => r.querySelector('.li-desc').value.trim());
   if (!hasItem) errors.push('Ajoutez au moins une ligne avec une description.');
 
+  qsa('.li-qty, .li-price, .li-tax, #taxRate, #discountPercent').forEach(input => {
+    const valid = input.checkValidity() && Number.isFinite(Number(input.value));
+    input.setAttribute('aria-invalid', valid ? 'false' : 'true');
+    if (!valid) {
+      errors.push('Corrigez les quantités, prix, remises et taux avant l’export.');
+      if (!firstInvalid) firstInvalid = input;
+    }
+  });
+
   // Highlight first invalid required field
   const requiredFields = ['companyName','clientName','invoiceNumber','invoiceDate','dueDate'];
-  let firstInvalid = null;
   requiredFields.forEach(id => {
     const el = $(id);
     const field = el.closest('.field');
@@ -964,7 +1014,7 @@ function validateForm() {
 }
 
 /* ── PDF DOWNLOAD ── */
-$('btnPDF').addEventListener('click', () => {
+$('btnPDF').addEventListener('click', async () => {
   if (!validateForm()) return;
 
   const cur = $('currency').value;
@@ -994,14 +1044,14 @@ $('btnPDF').addEventListener('click', () => {
     rows: [
       {label:'N de facture', value: $('invoiceNumber').value},
       {label:'Date', value: $('invoiceDate').value},
-      {label:'Due Date', value: $('dueDate').value},
-      {label:'Payment Terms', value: TERMS_MAP[$('paymentTerms').value] || 'Net 30'},
-      {label:'Currency', value: cur + ' (' + ((CURRENCIES[cur]||{}).name||cur) + ')'},
+      {label:'Date d’échéance', value: $('dueDate').value},
+      {label:'Conditions de paiement', value: TERMS_MAP[$('paymentTerms').value] || 'Net 30'},
+      {label:'Devise', value: cur + ' (' + ((CURRENCIES[cur]||{}).name||cur) + ')'},
     ]
   });
 
   sections.push({
-    title: 'From',
+    title: 'Émetteur',
     rows: [
       {label:'Entreprise', value: $('companyName').value || '-'},
       {label:'Adresse', value: $('businessAddress').value || '-'},
@@ -1021,14 +1071,13 @@ $('btnPDF').addEventListener('click', () => {
     ]
   });
 
-  // Items as a table section
+  // Shared PDF templates render row sections. Keep every invoice line visible.
   sections.push({
     title: 'Lignes de facture',
-    table: {
-      headers: ['Description','Qte','Prix unitaire','Taxe','Total'],
-      rows: items,
-      widths: [80,20,35,20,35]
-    }
+    rows: items.map(item => ({
+      label: item[0] + ' (' + item[1] + ' × ' + item[2] + ', taxe ' + item[3] + ')',
+      value: item[4]
+    }))
   });
 
   // Totals
@@ -1039,47 +1088,56 @@ $('btnPDF').addEventListener('click', () => {
   if (discPct > 0) totalsRows.push({label:'Remise (' + discPct + '%)', value: $('sumDiscount').textContent});
   totalsRows.push({label:'Taxe', value: $('sumTax').textContent});
   totalsRows.push({label:'TOTAL', value: $('sumTotal').textContent, bold:true});
-  if ($('markPaid').checked) totalsRows.push({label:'Statut', value:'PAYEE', bold:true});
+  if ($('markPaid').checked) totalsRows.push({label:'Statut', value:'PAYÉE', bold:true});
 
-  sections.push({ title: 'Resume', rows: totalsRows });
+  sections.push({ title: 'Résumé', rows: totalsRows });
 
   if ($('notes').value) {
-    sections.push({ title: 'Notes', text: $('notes').value });
+    sections.push({ title: 'Notes', rows: [{label:'Instructions', value:$('notes').value}] });
   }
 
   // Use shared PDF library if available, otherwise fallback to print
   if (window.AfroTools && AfroTools.pdf && AfroTools.pdf.generate) {
-    AfroTools.pdf.generate({
+    const pdfResult = await AfroTools.pdf.generate({
       title: 'Facture ' + ($('invoiceNumber').value || ''),
       subtitle: ($('companyName').value || 'Facture') + ' → ' + ($('clientName').value || 'Client'),
       toolId: 'invoice-generator',
+      noGate: true,
+      filename: 'facture-' + (($('invoiceNumber').value || 'afrotools').replace(/[^a-z0-9-]+/gi, '-')) + '.pdf',
       heroStats: [
         {label:'N de facture', value: $('invoiceNumber').value},
         {label:'Total', value: $('sumTotal').textContent},
-        {label:'Status', value: $('markPaid').checked ? 'PAYEE' : 'UNPAYEE'},
+        {label:'Statut', value: $('markPaid').checked ? 'PAYÉE' : 'À PAYER'},
       ],
       sections,
-      disclaimer: 'Genere par le generateur de factures AfroTools. Ce document est produit automatiquement.'
+      disclaimer: 'Généré localement par AfroTools. Vérifiez le taux, les mentions obligatoires et les règles de facturation applicables dans votre pays.'
     });
-    ga4('pdf_download', {tool:'invoice-generator', invoice: $('invoiceNumber').value});
-    toast('PDF downloaded!');
+    if (pdfResult && !pdfResult.blocked) {
+      ga4('pdf_download', {tool:'invoice-generator'});
+      toast('PDF téléchargé localement.');
+    } else {
+      toast('Le PDF n’a pas pu être généré.', 'error');
+    }
   } else {
     window.print();
   }
 });
 
 /* ── SHARE LINK ── */
-$('btnShare').addEventListener('click', () => {
-  if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.share) {
-    const state = gatherState();
-    AfroTools.shareState.share({
-      title: 'Facture ' + $('invoiceNumber').value,
-      text: 'Facture de ' + ($('companyName').value || 'AfroTools'),
-      state
-    });
+$('btnShare').addEventListener('click', async () => {
+  const url = location.origin + location.pathname;
+  try {
+    if (navigator.share) {
+      await navigator.share({title: document.title, text: 'Générateur de factures AfroTools', url});
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(url);
+      toast('Lien de la page copié, sans données de facture.');
+    } else {
+      throw new Error('share-unavailable');
+    }
     ga4('share_click', {tool:'invoice-generator'});
-  } else {
-    toast('Partage indisponible', 'error');
+  } catch (error) {
+    if (!error || error.name !== 'AbortError') toast('Partage indisponible', 'error');
   }
 });
 
@@ -1132,13 +1190,16 @@ function restoreState(s) {
       const tbody = $('lineItemsBody');
       tbody.innerHTML = '';
       s.items.forEach(it => {
+        const quantity = safeNumber(it.q, 1, 1000000);
+        const price = safeNumber(it.p, 0, 1000000000000);
+        const tax = safeNumber(it.t, 0, 100);
         const tr = document.createElement('tr');
         tr.className = 'line-item';
         tr.innerHTML = `
           <td><input aria-label="Description de la ligne" type="text" class="li-desc" value="${escapeHtml(it.d||'')}"></td>
-          <td><input aria-label="Quantité" type="number" class="li-qty" value="${it.q||1}" min="0" step="0.01"></td>
-          <td><input aria-label="Prix unitaire" type="number" class="li-price" value="${it.p||0}" min="0" step="0.01"></td>
-          <td><input aria-label="Pourcentage de taxe" type="number" class="li-tax" value="${it.t||0}" min="0" max="100" step="0.01"></td>
+          <td><input aria-label="Quantité" type="number" class="li-qty" value="${quantity}" min="0" step="0.01"></td>
+          <td><input aria-label="Prix unitaire" type="number" class="li-price" value="${price}" min="0" step="0.01"></td>
+          <td><input aria-label="Pourcentage de taxe" type="number" class="li-tax" value="${tax}" min="0" max="100" step="0.01"></td>
           <td style="text-align:right;font-weight:600;" class="li-total">0.00</td>
           <td><button type="button" class="btn-remove js-remove-item" aria-label="Supprimer cet article">&times;</button></td>
         `;
@@ -1154,7 +1215,7 @@ function restoreState(s) {
 $('btnSaveTemplate').addEventListener('click', () => {
   const companyName = $('companyName').value.trim();
   if (!companyName) { toast('Saisissez d abord le nom de votre entreprise', 'error'); return; }
-  const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]');
+  const templates = readLocalArray(LS_TEMPLATES);
   templates.push({
     id: Date.now(),
     name: companyName + ' - ' + $('invoiceNumber').value,
@@ -1169,8 +1230,8 @@ $('btnSaveTemplate').addEventListener('click', () => {
 });
 
 function renderTemplates() {
-  const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]');
-  $('tplCountLabel').textContent = templates.length + ' saved';
+  const templates = readLocalArray(LS_TEMPLATES);
+  $('tplCountLabel').textContent = templates.length + ' enregistré' + (templates.length !== 1 ? 's' : '');
   const container = $('templatesContainer');
   if (templates.length === 0) {
     container.innerHTML = '<p style="text-align:center;color:#93A3B8;font-size:0.82rem;padding:16px 0;">Aucun modèle enregistré pour l\'instant.</p>';
@@ -1183,7 +1244,7 @@ function renderTemplates() {
         <span style="color:#93A3B8;margin-left:8px;">${new Date(t.date).toLocaleDateString()}</span>
       </div>
       <div style="display:flex;gap:6px;">
-        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Load</button>
+        <button type="button" class="btn" style="font-size:0.68rem;padding:4px 10px;" onclick="loadTemplate(${t.id})">Charger</button>
         <button type="button" class="btn-remove" style="font-size:0.6rem;padding:2px 8px;" onclick="deleteTemplate(${t.id})">X</button>
       </div>
     </div>
@@ -1191,7 +1252,7 @@ function renderTemplates() {
 }
 
 window.loadTemplate = function(id) {
-  const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]');
+  const templates = readLocalArray(LS_TEMPLATES);
   const tpl = templates.find(t => t.id === id);
   if (tpl && tpl.data) {
     // Generate new invoice number for loaded template
@@ -1207,7 +1268,7 @@ window.loadTemplate = function(id) {
 
 window.deleteTemplate = function(id) {
   if (!confirm('Supprimer ce modèle ?')) return;
-  const templates = JSON.parse(localStorage.getItem(LS_TEMPLATES) || '[]').filter(t => t.id !== id);
+  const templates = readLocalArray(LS_TEMPLATES).filter(t => t.id !== id);
   localStorage.setItem(LS_TEMPLATES, JSON.stringify(templates));
   renderTemplates();
   toast('Modèle supprimé');
@@ -1223,7 +1284,7 @@ $('btnNewInvoice').addEventListener('click', () => {
   $('discountPercent').value = '0';
   $('markPaid').checked = false;
   $('currency').value = 'NGN';
-  $('taxRate').value = '7.5';
+  $('taxRate').value = '0';
   $('taxType').value = 'vat';
   logoDataURL = null;
   $('logoPreview').innerHTML = 'Logo';
@@ -1258,8 +1319,8 @@ function init() {
   $('invAutoNum').textContent = 'Auto: ' + num;
   initDates();
 
-  // Set default tax rate
-  $('taxRate').value = TAX_RATES[$('currency').value] || 0;
+  // A currency is not a jurisdiction: start without an assumed tax rate.
+  $('taxRate').value = '0';
 
   // Per-item tax col hidden by default (VAT mode)
   $('taxType').dispatchEvent(new Event('change'));
@@ -1268,14 +1329,6 @@ function init() {
   renderClients();
   renderTemplates();
 
-  // Check for shared state in URL
-  if (window.AfroTools && AfroTools.shareState && AfroTools.shareState.decode) {
-    const shared = AfroTools.shareState.decode();
-    if (shared && restoreState(shared)) {
-      toast('Facture partagée chargée !', 'info');
-    }
-  }
-
   updatePreview();
 }
 
@@ -1283,8 +1336,6 @@ init();
 
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script>
 // Invoice Generator — saved invoices
 (function(){
