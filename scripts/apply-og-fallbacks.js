@@ -22,6 +22,12 @@ const IGNORE_DIRS = new Set([
   "node_modules",
   "afrotools-deploy",
   "dist",
+  // Not site pages. Rewriting a test fixture makes the suite assert against
+  // whatever this script last did to it; email templates and the OG-image
+  // render harness are never served to a crawler or a social scraper.
+  "tests",
+  "supabase",
+  "audit-results",
 ]);
 
 function escapeRegExp(value) {
@@ -90,7 +96,7 @@ function findHtmlFiles(dir) {
     const full = path.join(dir, entry.name);
     if (entry.isDirectory()) {
       files.push(...findHtmlFiles(full));
-    } else if (entry.isFile() && entry.name.endsWith(".html")) {
+    } else if (entry.isFile() && entry.name.endsWith(".html") && !full.endsWith("scripts/generate-og-images.html")) {
       files.push(full);
     }
   }
@@ -130,6 +136,16 @@ function getCanonicalPath(html) {
   } catch (error) {
     return normalizePathname(canonicalMatch[1]);
   }
+}
+
+/**
+ * A page excluded from the index has no social card to earn. The embeddable
+ * widgets under /widgets/iframe/ are all `noindex, follow` and are meant to be
+ * framed, never shared as a link.
+ */
+function isNoIndex(html) {
+  const robots = getMetaContent(html, "name", "robots");
+  return Boolean(robots && /noindex/i.test(robots));
 }
 
 function isRedirectLike(html, filePath) {
@@ -422,24 +438,30 @@ function syncVisibleToolImage(html, relativePath) {
 function applyFallbacks(html, filePath) {
   if (!html.includes("</head>")) return { html, changed: false, usedToolImage: false };
   if (isRedirectLike(html, filePath)) return { html, changed: false, usedToolImage: false };
+  if (isNoIndex(html)) return { html, changed: false, usedToolImage: false };
 
   let next = html;
   let changed = false;
 
   const preferredToolImage = getPreferredToolImage(filePath, html);
   const hasOgTitle = /<meta\s+(property|name)=["']og:title["']/i.test(html);
+  const pageTitle = getPageTitle(next);
 
-  if (!hasOgTitle && !preferredToolImage) {
+  // A page with no og:title and no registry image used to be skipped outright,
+  // which left indexable pages (the API docs, /fr/, /start/, the AfroPoints
+  // explainers) with no Open Graph at all, so every share of them rendered as
+  // a bare URL. A page that has a <title> can always be given a card against
+  // the default image, which beats no card.
+  if (!hasOgTitle && !preferredToolImage && !pageTitle) {
     return { html, changed: false, usedToolImage: false };
   }
 
   const targetImage = preferredToolImage ? preferredToolImage.absoluteUrl : DEFAULT_IMAGE;
   const existingOgImage = getMetaContent(next, "property", "og:image");
   const existingTwitterImage = getMetaContent(next, "name", "twitter:image");
-  const pageTitle = getPageTitle(next);
   const pageDescription = getMetaContent(next, "name", "description");
 
-  if (preferredToolImage) {
+  if (preferredToolImage || !hasOgTitle) {
     if (pageTitle && !getMetaContent(next, "property", "og:title")) {
       next = upsertMetaContent(next, "property", "og:title", pageTitle, "name", "description");
       changed = true;
