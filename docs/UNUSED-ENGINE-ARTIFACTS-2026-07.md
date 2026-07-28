@@ -90,7 +90,7 @@ registry entries, 5%, protecting formulas that reach no user.** Three
 consequences:
 
 1. **The coverage number overstates what is guarded.** A registry that reports
-   356 protected formulas is counting 14 that cannot affect anyone.
+   356 protected formulas is counting 17 that cannot affect anyone.
 2. **It spends human review on dead code.** The protected-formula gate correctly
    refuses to re-digest silently. This audit tripped it twice on engines nobody
    loads (`tva`, `health-contribution`), each time requiring a written change
@@ -101,7 +101,7 @@ consequences:
    one and not the other would leave the registry asserting two different digests
    for the same maths, and nothing in the build would object.
 
-Every one of the 14 carries `lastVerified: 2026-03-01`, so they also age into
+Every one of the 17 carries `lastVerified: 2026-03-01`, so they also age into
 freshness warnings that no amount of source-reading can usefully clear.
 
 ## The one risk worth checking, and its result
