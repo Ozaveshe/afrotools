@@ -252,6 +252,18 @@ function calcVOC() {
   var parking = parseFloat(document.getElementById('parkingCost').value) * 12 || 0;
   var tolls = parseFloat(document.getElementById('tollCost').value) || 0;
 
+  // A cleared fuel price is not free fuel, and a blank vehicle value zeroes
+  // maintenance, registration and depreciation at once — the result would be a
+  // running cost that omits most of the cost.
+  if (!(fuelPrice > 0) || !(value > 0)) {
+    document.getElementById('vocTotal').textContent = '--';
+    document.getElementById('vocPerKm').textContent =
+      'Enter the vehicle value and the fuel price to see running costs.';
+    document.getElementById('vocBreakdown').innerHTML = '';
+    document.getElementById('vocMetrics').innerHTML = '';
+    return;
+  }
+
   // Fuel cost
   var fuelCost = (km / 100) * consumption * fuelPrice;
 

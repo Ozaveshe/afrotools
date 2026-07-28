@@ -274,6 +274,20 @@ function calculate(){
   var trackerCost=parseFloat(document.getElementById('trackerCost').value)||0;
   var monthlySub=parseFloat(document.getElementById('monthlySubscription').value)||0;
   var sym=SYM[country];
+
+  // Every headline here is a ratio of benefit to setup cost. With the money
+  // fields blank the tool renders a confident dashboard of zeros -- "0/yr",
+  // "ROI: 0%", payback "N/A" -- which reads as an answer rather than as
+  // missing input. The tracker cost is what is being appraised, and at least
+  // one benefit driver is needed for the benefit side to mean anything.
+  if(!(trackerCost>0) || !(annualPremium>0 || monthlyFuel>0 || vehicleValue>0)){
+    document.getElementById('netBenefit').textContent='--';
+    document.getElementById('roiSub').textContent='Enter the tracker cost, plus your annual premium, monthly fuel spend or vehicle value.';
+    document.getElementById('paybackPeriod').textContent='--';
+    document.getElementById('metrics').innerHTML='';
+    return;
+  }
+
   var insDiscount=trackerType==='advanced'?0.22:(trackerType==='sim'?0.18:0.12);
   var fuelSavingPct=trackerType==='advanced'?0.15:(trackerType==='sim'?0.10:0.05);
   var usageFuelMult={personal:0.7,business:1.0,fleet:1.2,logistics:1.4};

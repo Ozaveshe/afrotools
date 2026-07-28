@@ -297,6 +297,16 @@ function calcBodaIncome() {
   var workDays = parseInt(document.getElementById('bodaWorkDays').value) || 26;
   var d = BODA_DEFAULTS[country];
   var currency = d ? d.currency : '';
+
+  // A blank fuel price is not free fuel. The hero result is labelled "After
+  // fuel, hire & maintenance", so costing fuel at zero overstates a rider's
+  // take-home. Same for fare and trips, without which there is no income.
+  if (!(fare > 0) || !(trips > 0) || !(fuelPrice > 0)) {
+    document.getElementById('bodaDailyNet').textContent = '--';
+    document.getElementById('bodaCurrency').textContent =
+      'Enter fare per trip, trips per day and the fuel price to see net income.';
+    return;
+  }
   var maintMonth = d ? d.maintMonth : (fare * trips * workDays * 0.07);
 
   var grossDay = fare * trips;
