@@ -1002,7 +1002,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   </div>
 </div>
 
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"><\/script>
 
 </body></html>`;
 
@@ -1010,8 +1010,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.print()}catch(e){}},1200);
   }
 }
 
@@ -1020,7 +1020,7 @@ function shareResult() {
   if (!résultat) return;
   const text = `Mon PAYE Éthiopie récapitulatif : Brut ETB ${Math.round(résultat.gross).toLocaleString()}/mo → Net ETB ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/ethiopia/et-paye`;
   if (navigator.partager) {
-    navigator.partager({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
+    navigator.share({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('etPartagerBtn');

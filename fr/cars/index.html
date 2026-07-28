@@ -879,12 +879,7 @@
         local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
         gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
         risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
-        summary.value = 'Marche: ' + selected(market).text + '
-Modele: ' + selected(model).text + '
-Cout rendu estime: ' + landed.textContent + '
-Fourchette locale: ' + local.textContent + '
-Marge budget: ' + gap.textContent + '
-Note: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+        summary.value = 'Marche: ' + selected(market).text + '\nModele: ' + selected(model).text + '\nCout rendu estime: ' + landed.textContent + '\nFourchette locale: ' + local.textContent + '\nMarge budget: ' + gap.textContent + '\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
       }
       form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
       ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });

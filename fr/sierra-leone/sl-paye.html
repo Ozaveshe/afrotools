@@ -728,7 +728,11 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
+  // This page has no PDF/email-capture modal (the English page does), so the
+  // element is optional here. Writing to it unguarded threw and aborted
+  // calculate() before any result was rendered.
+  const hiddenGross = document.getElementById('hiddenGross');
+  if (hiddenGross) hiddenGross.value = gross;
 
   const strip = document.getElementById('employerStrip');
   strip.innerHTML = `<strong>Coût total employeur : ${fmt(RESULT.totalEmployerCostMonthly)}/mois</strong><br>Brut + NASSIT employeur (10 %) ${fmt(empSocial)}/mo.`;
@@ -1007,7 +1011,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"><\/script>
 
 </body></html>`;
 
@@ -1015,8 +1019,8 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   const url  = URL.createObjectURL(blob);
   const w    = window.open(url,'_blank');
   if(w){
-    w.addEventListener('load',()=>{setTimeout(()=>{w.imprimer();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
-    setTimeout(()=>{try{w.imprimer()}catch(e){}},1200);
+    w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});
+    setTimeout(()=>{try{w.print()}catch(e){}},1200);
   }
 }
 
@@ -1025,7 +1029,7 @@ function shareResult() {
   if (!résultat) return;
   const text = `Mon PAYE Sierra Leone récapitulatif : Brut SLE ${Math.round(résultat.gross).toLocaleString()}/mo → Net SLE ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/sierra-leone/sl-paye`;
   if (navigator.partager) {
-    navigator.partager({title:'Mon PAYE Sierra Leone',text,url:'https://afrotools.com/fr/sierra-leone/sl-paye'});
+    navigator.share({title:'Mon PAYE Sierra Leone',text,url:'https://afrotools.com/fr/sierra-leone/sl-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzPartagerBtn');
