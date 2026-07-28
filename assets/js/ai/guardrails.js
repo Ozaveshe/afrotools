@@ -6,12 +6,22 @@
  */
 (function initAfroToolsAIGuardrails(root, factory) {
   if (typeof module === "object" && module.exports) {
-    module.exports = factory();
+    module.exports = factory(root);
   } else {
-    root.AfroToolsAIGuardrails = factory();
+    root.AfroToolsAIGuardrails = factory(root);
   }
-})(typeof globalThis !== "undefined" ? globalThis : this, function createAfroToolsAIGuardrails() {
+})(typeof globalThis !== "undefined" ? globalThis : this, function createAfroToolsAIGuardrails(root) {
   "use strict";
+
+  var frenchRouteMapApi = null;
+  if (typeof require === "function") {
+    try {
+      frenchRouteMapApi = require("./french-route-map.generated.js");
+    } catch (err) {
+      frenchRouteMapApi = null;
+    }
+  }
+  if (!frenchRouteMapApi && root && root.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = root.AfroToolsAIFrenchRouteMap;
 
   var DEFAULT_PROMPT_LIMIT = 12000;
   var ROUTER_PROMPT_LIMIT = 1200;
@@ -191,6 +201,12 @@
     return clean.split("#")[0].split("?")[0].replace(/\/index\.html$/i, "/");
   }
 
+  function routeKey(route) {
+    var clean = normalizeRoute(route);
+    if (!clean || clean === "/") return clean;
+    return clean.replace(/\/+$/, "") + "/";
+  }
+
   function findTool(manifest, toolId) {
     var tools = Array.isArray(manifest) ? manifest : [];
     for (var i = 0; i < tools.length; i += 1) {
@@ -212,8 +228,11 @@
 
     var selectedRoute = normalizeRoute(decision.selectedRoute);
     var allowedRoute = normalizeRoute(tool && tool.route || "/search/");
+    var frenchRoutes = frenchRouteMapApi && frenchRouteMapApi.routes || {};
+    var localizedAllowedRoute = frenchRoutes[routeKey(allowedRoute)] || "";
+    var selectedRouteIsVerifiedFrench = localizedAllowedRoute && routeKey(selectedRoute) === routeKey(localizedAllowedRoute);
     if (!selectedRoute) errors.push("selectedRoute must be a safe root-relative route");
-    if (tool && allowedRoute && selectedRoute !== allowedRoute && selectedRoute !== "/search/") {
+    if (tool && allowedRoute && selectedRoute !== allowedRoute && selectedRoute !== "/search/" && !selectedRouteIsVerifiedFrench) {
       errors.push("selectedRoute does not match the selected tool route");
     }
 

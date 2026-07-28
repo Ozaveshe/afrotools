@@ -185,6 +185,7 @@ const ALLOWED_ROOT_FILES = new Set([
   '_redirects',
   'favicon.ico',
   'index.html',
+  'llms-fr.txt',
   'llms-full.txt',
   'llms.txt',
   'manifest.json',
