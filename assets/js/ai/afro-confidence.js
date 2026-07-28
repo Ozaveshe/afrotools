@@ -723,7 +723,18 @@
         return phraseMatches(text, phrase);
       });
       if (!matched) return;
-      (entry.tools || []).forEach(function (toolId) { hits[toolId] = true; });
+      /* Position carries meaning: an entry lists its tools best-first, so the
+       * head is the author's answer and the tail is a fallback. Every tool used
+       * to receive an identical boost, which meant a four-tool entry injected
+       * four equally-weighted candidates and the tie was then broken by
+       * retrieval score — the exact signal the lexicon exists to overrule.
+       * 21 of 30 entries name more than one tool, so this was the common case,
+       * not the corner. Strength decays 1, 1/2, 1/3 … and an entry that names a
+       * tool more strongly than another entry did wins. */
+      (entry.tools || []).forEach(function (toolId, index) {
+        var strength = 1 / (1 + index);
+        if (!hits[toolId] || hits[toolId] < strength) hits[toolId] = strength;
+      });
     });
     return hits;
   }
@@ -871,7 +882,9 @@
 
       // A lexicon hit is strong evidence: a human has said this phrasing means
       // this tool. It outweighs lexical overlap, which is exactly the point.
-      if (lexHits[candidateId(candidate)]) fit += 0.6;
+      // Scaled by how strongly the lexicon named this tool, not merely whether
+      // it appeared somewhere in a matched entry.
+      if (lexHits[candidateId(candidate)]) fit += 0.6 * lexHits[candidateId(candidate)];
 
       if (queryCountry && toolCountry === queryCountry) fit += 0.15;
       // A tool scoped to a different country cannot be the best answer.

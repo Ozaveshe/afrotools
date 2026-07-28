@@ -46,24 +46,6 @@
       "phrases": [
         "clear my car",
         "clearing my car",
-        "clear goods",
-        "tincan",
-        "tin can port",
-        "apapa",
-        "clearing agent charges",
-        "customs clearing"
-      ],
-      "tools": [
-        "car-import-cost",
-        "import-duty",
-        "landed-cost"
-      ],
-      "intent": "trade",
-      "note": "'clear' is the standard West African verb for customs clearance"
-    },
-    {
-      "phrases": [
-        "landed cost",
         "duty on a car",
         "import a car",
         "tokunbo",
@@ -72,10 +54,29 @@
       ],
       "tools": [
         "car-import-cost",
-        "import-duty"
+        "import-duty",
+        "landed-cost"
       ],
       "intent": "trade",
-      "note": "'tokunbo' and 'belgium' both mean imported second-hand in Nigerian usage"
+      "note": "car-specific clearance. 'tokunbo' and 'belgium' both mean imported second-hand in Nigerian usage"
+    },
+    {
+      "phrases": [
+        "landed cost",
+        "clear goods",
+        "tincan",
+        "tin can port",
+        "apapa",
+        "clearing agent charges",
+        "customs clearing"
+      ],
+      "tools": [
+        "import-duty",
+        "landed-cost",
+        "car-import-cost"
+      ],
+      "intent": "trade",
+      "note": "generic customs clearance for any goods. 'clear' is the standard West African verb for customs clearance. Generic tools lead: a container of electronics must not be priced as a car"
     },
     {
       "phrases": [
@@ -468,8 +469,10 @@
     }
   ],
   "knownUnrouteable": {
-    "note": "These tools exist on disk but are absent from the router manifest, so the AI cannot reach them. Recorded here rather than silently dropped: the lexicon knows the phrasing, the catalogue has the tool, and only the manifest is missing.",
+    "note": "These tools exist on disk but are absent from the router manifest, so the AI cannot reach them. Recorded here rather than silently dropped: the lexicon knows the phrasing, the catalogue has the tool, and only the manifest is missing. mining-royalty and mining-license-fee were lost from this list during a merge, which left npm run test:afro red on main.",
     "tools": [
+      "mining-license-fee",
+      "mining-royalty",
       "tithe-calculator"
     ]
   }

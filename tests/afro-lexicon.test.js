@@ -77,6 +77,29 @@ function main() {
     assert.ok(hits[expected], 'lexicon should map "' + query + '" to ' + expected);
   });
 
+  // --- A generic phrase must lead with a generic tool ----------------------
+  // "landed cost" and "clear goods" sat in entries that listed car-import-cost
+  // FIRST, so "landed cost for a container of electronics from China" was
+  // priced as a car import. Entry order is now a ranking signal — the boost
+  // decays down the list — so a generic phrase sharing an entry with
+  // car-specific ones is a routing bug, not a tidiness issue.
+  {
+    const CAR_ONLY = ["tokunbo", "belgium car", "foreign used car", "import a car",
+      "duty on a car", "clear my car", "clearing my car"];
+    const GENERIC = ["landed cost", "clear goods", "customs clearing"];
+    lexicon.entries.forEach((entry) => {
+      const phrases = entry.phrases || [];
+      const hasCar = phrases.some((phrase) => CAR_ONLY.indexOf(phrase) !== -1);
+      const hasGeneric = phrases.some((phrase) => GENERIC.indexOf(phrase) !== -1);
+      assert.ok(!(hasCar && hasGeneric),
+        "an entry must not mix car-specific and generic clearance phrases: " + phrases.join(", "));
+      if (hasGeneric) {
+        assert.notStrictEqual((entry.tools || [])[0], "car-import-cost",
+          "a generic clearance entry must not lead with the car tool");
+      }
+    });
+  }
+
   console.log("afro-lexicon tests passed (" + lexicon.entries.length + " entries, " + phraseCount + " phrases, " +
     unrouteable.size + " known unrouteable)");
 }
