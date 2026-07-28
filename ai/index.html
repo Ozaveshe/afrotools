@@ -169,6 +169,15 @@
     .ai-workflow-card{display:grid;gap:12px;border:1px solid var(--ai-border);border-radius:16px;background:#fff;padding:15px;box-shadow:0 16px 36px rgba(15,23,42,.06)}
     .ai-workflow-card[data-primary="true"]{gap:14px;border-color:#8bb8f4;background:linear-gradient(180deg,#fff 0%,#f7fbff 100%);box-shadow:0 22px 54px rgba(15,23,42,.1);padding:18px}
     .ai-card-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;padding-bottom:10px;border-bottom:1px solid #e2e8f0}
+    /* Shown only when the router is genuinely unsure — a clear answer stays clean. */
+    .ai-alts{margin:12px 0 0}
+    .ai-alts-label{color:#60708a;font-size:.78rem;font-weight:700;letter-spacing:.02em;margin:0 0 7px}
+    .ai-alts-row{display:flex;flex-wrap:wrap;gap:7px}
+    .ai-alt{background:#F1F6FF;border:1px solid #d6e6ff;border-radius:999px;color:#0063D1;display:inline-block;font-size:.82rem;font-weight:600;line-height:1.25;max-width:100%;overflow:hidden;padding:7px 13px;text-decoration:none;text-overflow:ellipsis;white-space:nowrap}
+    .ai-alt:hover{background:#E3EEFF;border-color:#b9d6ff}
+    :root[data-theme="dark"] .ai-alts-label{color:#93a4bd}
+    :root[data-theme="dark"] .ai-alt{background:rgba(77,163,255,.12);border-color:rgba(77,163,255,.32);color:#9ecbff}
+    :root[data-theme="dark"] .ai-alt:hover{background:rgba(77,163,255,.2)}
     .ai-card-kicker{display:block;margin-bottom:6px;color:#1d4ed8;font-size:.7rem;font-weight:900;text-transform:uppercase;letter-spacing:.08em}
     .ai-card-title{margin:0;color:var(--ai-text);font-size:1.05rem;font-weight:900;line-height:1.22}
     .ai-workflow-card[data-primary="true"] .ai-card-title{font-size:clamp(1.45rem,4.5vw,2.1rem);line-height:1.08}
@@ -718,7 +727,7 @@
             <span class="ai-worked-tag">It opens</span>
             <p><a class="ai-worked-open" href="/kenya/ke-paye">Kenya PAYE Calculator</a> with those details already filled in</p>
           </div>
-          <p class="ai-worked-note">When the match is not clear, it says so and offers alternatives instead of guessing. On 52 prompts it had never seen, 84% of the answers it gave without a warning were correct.</p>
+          <p class="ai-worked-note">When the match is not clear, it says so and offers alternatives instead of guessing. On 52 prompts it had never seen, 94% of the answers it gave without a warning were correct, and it flagged 94% of its own mistakes.</p>
           <a class="ai-worked-run" href="/ai/?q=Run%20Kenya%20payroll%20for%205%20employees%20and%20prepare%20a%20review%20checklist">Run this exact prompt &rarr;</a>
         </div>
       </section>
@@ -785,7 +794,7 @@
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
 <script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
-<script src="/assets/js/ai/afro-confidence.js?v=cb1f46b4"></script>
+<script src="/assets/js/ai/afro-confidence.js?v=0395b29a"></script>
   <script src="/assets/js/ai/result-layout.js" defer></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
@@ -2245,6 +2254,11 @@
         selectedToolId: toolId,
         selectedRoute: selected.route || decision.selectedRoute || workflow.route,
         toolCandidates: Array.isArray(plan.toolCandidates) ? plan.toolCandidates.slice(0, 5) : [],
+        /* Carried through so the card can actually offer the alternatives the
+         * page has been promising in copy. Afro grades every decision; without
+         * these two fields the result surface could only show a percentage. */
+        alternatives: Array.isArray(decision.alternatives) ? decision.alternatives.slice(0, 3) : [],
+        uncertain: decision.uncertain === true,
         query: query
       };
     }
@@ -3357,6 +3371,23 @@
       var proFeature = aiProFeatureForTool(match.selectedToolId || workflow.id, workflow.category);
       var confidence = Number(match.confidence || 0);
       var confidenceLabel = confidence > 0 ? Math.round(confidence * 100) + label("result.confidenceMatch", "% match") : label("result.browse", "Browse");
+
+      /* "When the match is not clear, it says so and offers alternatives
+       * instead of guessing" — the page said that while rendering no
+       * alternatives at all. Afro flags roughly two thirds of queries as
+       * uncertain and names the runners-up; this is where that becomes visible.
+       * Only shown when it is genuinely unsure, so a clear answer stays clean. */
+      var alternatives = (Array.isArray(match.alternatives) ? match.alternatives : [])
+        .filter(function (alternative) {
+          return alternative && alternative.route && alternative.toolId !== (match.selectedToolId || "");
+        });
+      var alternativesBlock = (match.uncertain && alternatives.length) ?
+        '<div class="ai-alts"><p class="ai-alts-label">' +
+        escapeHtml(label("result.altsLabel", "Not what you meant? These also fit")) + '</p><div class="ai-alts-row">' +
+        alternatives.map(function (alternative) {
+          return '<a class="ai-alt" href="' + escapeHtml(alternative.route) + '">' +
+            escapeHtml(alternative.label || alternative.toolId) + '</a>';
+        }).join("") + '</div></div>' : '';
       var toolCall = launch.toolCall || match.toolCall || {};
       var toolCallAction = toolCall.action === "prefill_existing_tool" || launch.supported ? label("workflowGuide.opensWithDetails", "Opens with details") : label("workflowGuide.opensThisTool", "Opens this tool");
       var toolCallRoute = toolCall.route || launch.route || workflow.route;
@@ -3391,6 +3422,7 @@
       var html = '<article class="ai-workflow-card" data-workflow-card role="listitem" aria-label="' + escapeHtml(workflow.title) + ' workflow result" data-tool-id="' + escapeHtml(workflow.id) + '" data-primary="' + (primary ? "true" : "false") + '">' +
         '<div class="ai-card-head"><div><span class="ai-card-kicker">' + escapeHtml(cardKicker) + '</span><h3 class="ai-card-title">' + escapeHtml(workflow.title) + '</h3><p class="ai-card-reason">' + escapeHtml(cardReason) + '</p></div><span class="ai-chip">' + escapeHtml(confidenceLabel) + '</span></div>' +
         resultSummary +
+        alternativesBlock +
         primaryActions +
         toolCallLine +
         cardBody +

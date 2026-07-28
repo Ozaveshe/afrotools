@@ -256,6 +256,56 @@ function main() {
       "agreement between retrieval and rerank must outrank an upset");
   }
 
+  // --- 17. A lexicon injection must survive the zero-precision penalty ------
+  // The penalty exists to stop SYNONYM-EXPANSION matches winning. Lexicon
+  // injections have precision 0 by definition — the lexicon's whole job is to
+  // reach tools whose own words appear nowhere in the query — so the penalty
+  // was cancelling the boost on 59% of lexicon phrase/tool pairs, including
+  // every "take home pay" -> ke-paye mapping.
+  {
+    const lexicon = JSON.parse(require("fs").readFileSync(
+      require("path").join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
+    const query = "how much to send money from uk to nigeria";
+    const resolved = confidence.resolve(query, rank(query, manifest, 12), { manifest, lexicon });
+    const ids = resolved.candidates.map((c) => (c.tool && c.tool.id) || c.toolId);
+    const at = ids.indexOf("remittance-compare");
+    assert.ok(at !== -1, "the lexicon must inject remittance-compare");
+    assert.ok(at <= 2,
+      "an injected tool must not sit below country-only matches, got position " + at +
+      " in " + ids.slice(0, 5).join(", "));
+  }
+
+  // --- 18. The lexicon contradicting itself is ambiguity, not confidence -----
+  // Two different entries claiming one query means the question is genuinely
+  // ambiguous ("send money" — across a border, or not?). Both tools got the
+  // same +0.6, the boosts cancelled, retrieval broke the tie, and the answer
+  // was asserted at 0.75.
+  {
+    const lexicon = JSON.parse(require("fs").readFileSync(
+      require("path").join(ROOT, "data", "ai", "afro-lexicon.json"), "utf8"));
+    const query = "cheapest way to send money to lagos";
+    assert.ok(confidence.lexiconEntryHits(query, lexicon) >= 2,
+      "precondition: this query should hit more than one lexicon entry");
+    const graded = confidence.resolve(query, rank(query, manifest, 8), { manifest, lexicon });
+    assert.ok(graded.uncertain,
+      "a query the lexicon disagrees with itself about must not be asserted");
+    assert.ok(graded.confidence <= 0.55, "got " + graded.confidence);
+  }
+
+  // --- 19. Alternatives must be readable, not raw slugs ---------------------
+  // The router manifest field is `title`; buildAlternatives read `name`/`label`,
+  // which do not exist on it, so the one screen asking the user to choose
+  // offered "fertilizer-nigeria".
+  {
+    const query = "tax";
+    const graded = confidence.calibrate(query, rank(query, manifest), { manifest });
+    assert.ok(graded.alternatives.length >= 1, "expected alternatives for an ambiguous query");
+    graded.alternatives.forEach((alternative) => {
+      assert.notStrictEqual(alternative.label, alternative.toolId,
+        "alternative label should be the tool title, not its slug: " + alternative.label);
+    });
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 

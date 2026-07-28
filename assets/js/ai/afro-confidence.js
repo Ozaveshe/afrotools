@@ -466,6 +466,10 @@
     /* Reranking overturned the retriever: the user's own words did not pick this
      * tool, our vocabulary did. Cap below the assertion threshold. */
     if (rerankUpset(list)) confidence = Math.min(confidence, 0.55);
+    /* The lexicon contradicting itself is an ambiguity signal, not a boost. */
+    if (opts.lexicon && lexiconEntryHits(query, opts.lexicon) >= 2) {
+      confidence = Math.min(confidence, 0.55);
+    }
     if (margin.tiedWith >= 3) confidence = Math.min(confidence, 0.2);
     // A confident-looking margin means nothing if the query never mentions what
     // the tool actually does ("electrical engineer CV" -> electrical-load).
@@ -495,7 +499,7 @@
       reason: reason,
       queryCountry: queryCountry,
       toolCountry: toolCountry,
-      alternatives: buildAlternatives(list, opts.maxAlternatives || 3),
+      alternatives: buildAlternatives(query, list, opts.maxAlternatives || 3, opts.lexicon),
       signals: {
         margin: Number(margin.margin.toFixed(3)),
         coverage: Number(coverage.toFixed(3)),
@@ -506,12 +510,46 @@
     };
   }
 
-  function buildAlternatives(list, max) {
-    return list.slice(1, 1 + max).map(function (candidate) {
+  /** Country words carry no topical information for an alternatives list. */
+  function stripCountryWords(query) {
+    var text = " " + lower(query) + " ";
+    for (var code in ALL_MARKET_SLUGS) {
+      if (!Object.prototype.hasOwnProperty.call(ALL_MARKET_SLUGS, code)) continue;
+      var slug = ALL_MARKET_SLUGS[code];
+      text = text.split(" " + slug + " ").join(" ").split("-" + slug).join("");
+    }
+    return text.replace(/\s+/g, " ").trim();
+  }
+
+  /**
+   * Runners-up worth showing, with country-only matches dropped.
+   *
+   * A tool that shares nothing with the query but the country name is not an
+   * alternative, it is noise: "how much to send money from uk to nigeria"
+   * offered Nigeria Fertilizer Calculator and Nigeria Greenhouse Cost
+   * Estimator, which rank well purely because "nigeria" sits in their ids.
+   * Putting those beside a real answer makes an honest "I am not sure" read as
+   * incompetence. Coverage is therefore measured against the query with country
+   * words removed, so a candidate has to earn its place on the topic.
+   */
+  function buildAlternatives(query, list, max, lexicon) {
+    var topical = stripCountryWords(query);
+    var lexHits = lexiconMatches(query, lexicon);
+    return list.slice(1).filter(function (candidate) {
+      /* A lexicon-named tool is kept even at zero coverage — that is the whole
+       * point of the lexicon, and filtering on coverage alone dropped
+       * Remittance Comparator, the one alternative actually worth offering. */
+      if (lexHits[candidateId(candidate)]) return true;
+      return coverageSignal(topical, candidate) > 0;
+    }).slice(0, max).map(function (candidate) {
       return {
         toolId: candidateId(candidate),
         score: candidateScore(candidate),
-        label: (candidate.tool && (candidate.tool.name || candidate.tool.label)) || candidateId(candidate),
+        /* The router manifest calls it `title`; `name`/`label` do not exist on
+         * it, so every alternative was rendering as a raw slug
+         * ("fertilizer-nigeria") in the one place a user is being asked to
+         * choose. Keep the old keys as fallbacks for directory-shaped input. */
+        label: (candidate.tool && (candidate.tool.title || candidate.tool.name || candidate.tool.label)) || candidateId(candidate),
         route: (candidate.tool && candidate.tool.route) || null
       };
     }).filter(function (alternative) { return alternative.toolId; });
@@ -691,6 +729,36 @@
   }
 
   /**
+   * How many DIFFERENT lexicon entries claim this query.
+   *
+   * Two entries pointing at two different tools is the lexicon disagreeing with
+   * itself, and that is evidence of an ambiguous question — not of a confident
+   * answer. "cheapest way to send money to lagos" hits both the remittance
+   * entry ("cheapest way to send money" -> remittance-compare) and the mobile
+   * money entry ("send money charges" -> mobile-money-fees). Both got the same
+   * +0.6 boost, the boosts cancelled, retrieval broke the tie, and the result
+   * was asserted at 0.75 — a genuinely ambiguous question answered with
+   * certainty. The question is ambiguous because the query never says whether
+   * the money is crossing a border; the honest response is to ask.
+   *
+   * Tools named together by ONE entry are not ambiguity — that is an author
+   * deliberately saying "either of these fits" — so this counts entries, not
+   * tools.
+   */
+  function lexiconEntryHits(query, lexicon) {
+    if (!lexicon || !lexicon.entries) return 0;
+    var text = " " + lower(query).replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ") + " ";
+    var count = 0;
+    lexicon.entries.forEach(function (entry) {
+      var matched = (entry.phrases || []).some(function (phrase) {
+        return phraseMatches(text, phrase);
+      });
+      if (matched) count++;
+    });
+    return count;
+  }
+
+  /**
    * Add tools the lexicon named but retrieval never surfaced.
    *
    * This is the fix that defines 1.1. In 1.0 the lexicon could only reorder
@@ -819,7 +887,16 @@
        * only terms we added on their behalf — "save money for my children
        * university" reaching mobile-money-fees through the money synonyms.
        * Retrieval score alone must not carry it to first place. */
-      if (precision === 0) fit -= 0.45;
+      /* ...but NOT a candidate the lexicon named. The lexicon exists to reach
+       * tools whose own words appear nowhere in the query — "tincan" means
+       * customs, "wetin go remain" means PAYE, "send money home" means
+       * remittance-compare, whose title shares no term with "how much to send
+       * money from uk to nigeria". Those injections have precision 0 BY
+       * DEFINITION, so this penalty was cancelling the +0.6 boost and quietly
+       * defeating the 1.1 injection feature in exactly the cases it exists for.
+       * remittance-compare landed below eight Nigerian agriculture tools that
+       * matched only the word "nigeria". */
+      if (precision === 0 && !lexHits[candidateId(candidate)]) fit -= 0.45;
       // Ties in fit keep the retriever's original order.
       return { candidate: candidate, fit: fit, index: index };
     });
@@ -855,6 +932,7 @@
     retrieveAndResolve: retrieveAndResolve,
     expandQuery: expandQuery,
     lexiconMatches: lexiconMatches,
+    lexiconEntryHits: lexiconEntryHits,
     phraseMatches: phraseMatches,
     injectLexiconCandidates: injectLexiconCandidates,
     resolveCountryConflict: resolveCountryConflict,
