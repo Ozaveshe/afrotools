@@ -32,7 +32,11 @@ test('GA4 stays measurable with denied storage and supports explicit consent cha
     ad_personalization: 'denied'
   });
   expect(initialConfig).toHaveLength(1);
-  expect(initialConfig[0][2].page_location).toBe('http://127.0.0.1:4173/cookies/');
+  const sanitizedLocation = new URL(initialConfig[0][2].page_location);
+  expect(sanitizedLocation.origin).toBe(new URL(page.url()).origin);
+  expect(sanitizedLocation.pathname).toBe('/cookies/');
+  expect(sanitizedLocation.search).toBe('');
+  expect(sanitizedLocation.hash).toBe('');
   expect(JSON.stringify(initialConfig)).not.toContain('private@example.com');
 
   await page.getByRole('button', { name: 'Reject analytics' }).click();

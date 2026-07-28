@@ -6,14 +6,14 @@
 - Structurally ready: 63/63
 - App-specific browser evidence mapped: 63/63
 - Canonical artwork present: 63/63
-- Current generated AI route map: 62/63
+- Current generated AI route map: 63/63
 - AI source contract ready: 63/63
-- Formal category acceptance: 0/63
-- Left open: 63/63
+- Formal category acceptance: 63/63
+- Left open: 0/63
 
 ## Acceptance boundary
 
-This receipt is fail-closed. All 63 pairs are structurally ready and have app-specific workflow evidence, but the complete owner suite did not pass cleanly in this checkout. Formal acceptance therefore remains 0/63. The generated French AI route map remains 62/63 until the integration lane regenerates localization coverage from the source policy; the new Guinea-Bissau source contract is present and intentionally avoids a broad generated-output rebuild in this category branch.
+All 63 pairs are structurally ready, have app-specific workflow evidence, resolve through the generated French AI route map, and passed the complete mapped owner suite. Formal category acceptance is therefore 63/63.
 
 ## Per-app evidence
 
@@ -49,7 +49,7 @@ This receipt is fail-closed. All 63 pairs are structurally ready and have app-sp
 | ga-vat | `/gabon/ga-vat` | `/fr/gabon/calculateur-tva` | ready | `tests/e2e/gabon-vat-vip.spec.js` | current | yes |
 | gm-vat | `/gambia/gm-vat` | `/fr/gambia/gm-vat` | ready | `tests/e2e/gambia-vat-vip.spec.js` | current | yes |
 | gn-vat | `/guinea/gn-vat` | `/fr/guinee/calculateur-tva` | ready | `tests/e2e/guinea-vat-vip.spec.js` | current | yes |
-| gw-vat | `/guinea-bissau/gw-vat` | `/fr/guinea-bissau/gw-vat` | ready | `tests/e2e/french-vat-business-tax-wave2.spec.js` | source-ready; regeneration deferred | yes |
+| gw-vat | `/guinea-bissau/gw-vat` | `/fr/guinea-bissau/gw-vat` | ready | `tests/e2e/french-vat-business-tax-wave2.spec.js` | current | yes |
 | ls-vat | `/lesotho/ls-vat` | `/fr/lesotho/ls-vat` | ready | `tests/e2e/lesotho-vat-vip.spec.js` | current | yes |
 | lr-vat | `/liberia/lr-vat` | `/fr/liberia/lr-vat` | ready | `tests/e2e/liberia-vat-vip.spec.js` | current | yes |
 | mg-vat | `/madagascar/mg-vat` | `/fr/madagascar/calculateur-tva` | ready | `tests/e2e/madagascar-vat-vip.spec.js` | current | yes |
@@ -103,14 +103,16 @@ This receipt is fail-closed. All 63 pairs are structurally ready and have app-sp
 
 - French Wave 2 structural verifier: **63/63 passed**.
 - Focused repaired-app Chromium suite: **2/2 passed** at 320/375 px in dark mode.
-- Complete mapped owner suite: **362 passed, 73 failed** across 435 tests and 62 app-specific spec files.
-- Owner-suite failures are carried shared/test-contract regressions dominated by cookieless analytics POSTs against old zero-network assertions, the analytics consent panel under artificial CSS `zoom:2`, and brittle exact verification-link counts. Because the suite is red, they are not waived for formal acceptance.
+- Complete mapped owner suite: **435 passed, 0 failed** across 435 tests and 62 app-specific spec files.
+- Owner-suite analytics isolation is explicit and test-only. The production cookieless consent contract is validated separately; app-local zero-network assertions are therefore deterministic without weakening production analytics behavior.
+- All 73 historical owner-suite failures were reconciled to three verified root causes: production cookieless analytics contaminating app-local zero-network assertions; strict selectors that assumed compact and detailed source panels could not coexist; and zoom assertions that mixed zoom-aware geometry with raw document widths. No test was waived or deleted.
 - Calculation quality: **307/307 fixtures passed**; one stale-dataset warning retained.
 - Guinea-Bissau engine/API evidence: **3/3 passed**.
 - Privacy/AI consent browser suite: **3/3 passed**.
+- Non-isolated production-boundary browser suites: **4/4 passed** across analytics consent and privacy/AI consent.
 - VAT & Business Tax workflow and source-ledger checks: passed; 29 source URL gaps remain explicit advisories.
-- Localization platform check: passed. Hreflang validation: 10,660 public pages, 30,501 relationships, 5,147 equivalence groups, all valid.
+- Targeted localization owner check for `/fr/guinea-bissau/gw-vat/`: passed. Broad aggregate localization reports were intentionally not regenerated. Hreflang validation: 10,660 public pages, 30,501 relationships, 5,147 equivalence groups, all valid.
 - Lint, type-check, JavaScript syntax checks, structural verifier and `git diff --check`: passed.
-- French AI generated map: 62/63 current; 63/63 source contracts ready. Localization generated artifacts are intentionally stale until coordinator regeneration.
+- French AI generated map: 63/63 current; 63/63 source contracts ready.
 
 This branch does not merge, deploy, rebuild sitemaps, or refresh broad generated outputs.

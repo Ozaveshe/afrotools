@@ -131,6 +131,22 @@ function readRequestBody(request) {
 const server = http.createServer(function (request, response) {
   const pathname = request.url.split('?')[0];
 
+  if (
+    pathname === '/assets/js/lazy-analytics.js' &&
+    process.env.AFROTOOLS_TEST_DISABLE_ANALYTICS === '1'
+  ) {
+    response.writeHead(200, {
+      'Content-Type': 'application/javascript; charset=utf-8',
+      'Cache-Control': 'no-store'
+    });
+    response.end(
+      'window.dataLayer=window.dataLayer||[];'
+      + 'window.gtag=window.gtag||function(){window.dataLayer.push(arguments);};'
+      + 'window.__afroAnalyticsDisabledForOwnerTests=true;'
+    );
+    return;
+  }
+
   if (pathname === '/api/auth/session') {
     const session = parseCookies(request.headers.cookie).afrotools_test_session || '';
     const token = bearerToken(request);

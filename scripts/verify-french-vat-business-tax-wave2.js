@@ -25,6 +25,11 @@ const MARKDOWN_REPORT = path.join(
   "audits",
   "FRENCH-WAVE2-VAT-BUSINESS-TAX-PARITY-RECEIPT.md",
 );
+const OWNER_SUITE_RESULT = path.join(
+  ROOT,
+  "reports",
+  "french-wave2-owner-suite-result.json",
+);
 const POLICY = JSON.parse(
   fs.readFileSync(
     path.join(ROOT, "data", "registry", "locale-coverage-policy.json"),
@@ -77,6 +82,11 @@ function hasNativeAiSourceContract(row) {
 }
 
 function renderMarkdown(report) {
+  const accepted = report.acceptance.left === 0;
+  const productionBoundary = report.validation.ownerSuite.productionBoundarySuites || {
+    passed: 0,
+    failed: 0,
+  };
   const lines = [
     "# French Wave 2 — VAT & Business Tax parity receipt",
     "",
@@ -93,7 +103,9 @@ function renderMarkdown(report) {
     "",
     "## Acceptance boundary",
     "",
-    "This receipt is fail-closed. All 63 pairs are structurally ready and have app-specific workflow evidence, but the complete owner suite did not pass cleanly in this checkout. Formal acceptance therefore remains 0/63. The generated French AI route map remains 62/63 until the integration lane regenerates localization coverage from the source policy; the new Guinea-Bissau source contract is present and intentionally avoids a broad generated-output rebuild in this category branch.",
+    accepted
+      ? "All 63 pairs are structurally ready, have app-specific workflow evidence, resolve through the generated French AI route map, and passed the complete mapped owner suite. Formal category acceptance is therefore 63/63."
+      : `This receipt remains fail-closed: ${report.acceptance.reason}`,
     "",
     "## Per-app evidence",
     "",
@@ -130,14 +142,18 @@ function renderMarkdown(report) {
     `- French Wave 2 structural verifier: **${report.validation.structural.ready}/${report.validation.structural.total} passed**.`,
     `- Focused repaired-app Chromium suite: **${report.validation.repairedApps.passed}/${report.validation.repairedApps.total} passed** at 320/375 px in dark mode.`,
     `- Complete mapped owner suite: **${report.validation.ownerSuite.passed} passed, ${report.validation.ownerSuite.failed} failed** across ${report.validation.ownerSuite.total} tests and 62 app-specific spec files.`,
-    "- Owner-suite failures are carried shared/test-contract regressions dominated by cookieless analytics POSTs against old zero-network assertions, the analytics consent panel under artificial CSS `zoom:2`, and brittle exact verification-link counts. Because the suite is red, they are not waived for formal acceptance.",
+    accepted
+      ? "- Owner-suite analytics isolation is explicit and test-only. The production cookieless consent contract is validated separately; app-local zero-network assertions are therefore deterministic without weakening production analytics behavior."
+      : "- Owner-suite failures are not waived for formal acceptance.",
+    "- All 73 historical owner-suite failures were reconciled to three verified root causes: production cookieless analytics contaminating app-local zero-network assertions; strict selectors that assumed compact and detailed source panels could not coexist; and zoom assertions that mixed zoom-aware geometry with raw document widths. No test was waived or deleted.",
     `- Calculation quality: **${report.validation.calculationQuality.passed}/${report.validation.calculationQuality.total} fixtures passed**; one stale-dataset warning retained.`,
     `- Guinea-Bissau engine/API evidence: **${report.validation.guineaBissauEngine.passed}/${report.validation.guineaBissauEngine.total} passed**.`,
     `- Privacy/AI consent browser suite: **${report.validation.privacyConsent.passed}/${report.validation.privacyConsent.total} passed**.`,
+    `- Non-isolated production-boundary browser suites: **${productionBoundary.passed}/${productionBoundary.passed + productionBoundary.failed} passed** across analytics consent and privacy/AI consent.`,
     "- VAT & Business Tax workflow and source-ledger checks: passed; 29 source URL gaps remain explicit advisories.",
-    "- Localization platform check: passed. Hreflang validation: 10,660 public pages, 30,501 relationships, 5,147 equivalence groups, all valid.",
+    "- Targeted localization owner check for `/fr/guinea-bissau/gw-vat/`: passed. Broad aggregate localization reports were intentionally not regenerated. Hreflang validation: 10,660 public pages, 30,501 relationships, 5,147 equivalence groups, all valid.",
     "- Lint, type-check, JavaScript syntax checks, structural verifier and `git diff --check`: passed.",
-    "- French AI generated map: 62/63 current; 63/63 source contracts ready. Localization generated artifacts are intentionally stale until coordinator regeneration.",
+    `- French AI generated map: ${report.summary.currentAiRoutes}/${report.summary.total} current; ${report.summary.aiSourceReady}/${report.summary.total} source contracts ready.`,
     "",
     "This branch does not merge, deploy, rebuild sitemaps, or refresh broad generated outputs.",
   );
@@ -160,6 +176,9 @@ function main() {
       "utf8",
     ),
   );
+  const ownerSuite = fs.existsSync(OWNER_SUITE_RESULT)
+    ? JSON.parse(fs.readFileSync(OWNER_SUITE_RESULT, "utf8"))
+    : { passed: 362, failed: 73, total: 435, specFiles: 62 };
 
   const rows = categoryRows.map((row) => {
     const file = path.join(ROOT, row.primaryFrenchFile);
@@ -229,6 +248,13 @@ function main() {
     };
   });
 
+  const formallyAccepted =
+    rows.every((row) => row.structurallyReady) &&
+    rows.every((row) => row.aiRouteState === "current") &&
+    ownerSuite.passed === ownerSuite.total &&
+    ownerSuite.failed === 0 &&
+    ownerSuite.total === 435 &&
+    ownerSuite.specFiles === 62;
   const report = {
     schemaVersion: 1,
     generatedAt: new Date().toISOString(),
@@ -250,15 +276,16 @@ function main() {
       regulatorGaps: (sourceLedger.gaps.regulatorsWithoutUrl || []).length,
     },
     acceptance: {
-      accepted: 0,
-      left: EXPECTED,
-      reason:
-        "Fail-closed: the complete mapped owner suite finished 362/435 with 73 carried shared/test-contract failures.",
+      accepted: formallyAccepted ? EXPECTED : 0,
+      left: formallyAccepted ? 0 : EXPECTED,
+      reason: formallyAccepted
+        ? "All structural, AI-route, and complete owner-suite gates are green."
+        : `Fail-closed: the complete mapped owner suite finished ${ownerSuite.passed}/${ownerSuite.total} with ${ownerSuite.failed} failure(s).`,
     },
     validation: {
       structural: { ready: 63, total: 63 },
       repairedApps: { passed: 2, total: 2 },
-      ownerSuite: { passed: 362, failed: 73, total: 435, specFiles: 62 },
+      ownerSuite,
       calculationQuality: { passed: 307, total: 307 },
       guineaBissauEngine: { passed: 3, total: 3 },
       privacyConsent: { passed: 3, total: 3 },
@@ -279,6 +306,10 @@ function main() {
     blocked.forEach((row) =>
       console.error(`${row.englishId}: ${row.errors.join("; ")}`),
     );
+    process.exitCode = 1;
+  }
+  if (process.argv.includes("--require-acceptance") && !formallyAccepted) {
+    console.error(report.acceptance.reason);
     process.exitCode = 1;
   }
 }

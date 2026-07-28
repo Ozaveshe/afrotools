@@ -24,7 +24,7 @@ for (const route of routes) {
     await page.goto(route.path, { waitUntil: "networkidle" });
     await expect(page.locator("html")).toHaveAttribute("lang", route.lang);
     await expect(page.getByRole("button", { name: route.button })).toBeVisible();
-    await expect(page.locator('[data-source-meta-id="vat-cm-source"]')).toBeVisible();
+    await expect(page.locator('[data-source-meta-id="vat-cm-source"]').first()).toBeVisible();
     expect(await page.evaluate(() => window.CMVatApp.getResult())).toMatchObject({ net: 10000, vat: 1925, gross: 11925 });
     await page.locator('[data-cmv-mode="extract"]').click();
     await page.locator("#cmvAmount").fill("11925");

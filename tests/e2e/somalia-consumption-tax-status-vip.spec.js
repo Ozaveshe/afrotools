@@ -19,7 +19,9 @@ for (const [route, title, heading] of routes) test(`${route} is a fail-closed ev
   await expect(page.locator('input[type="number"]')).toHaveCount(0);
   await expect(page.locator('body')).not.toContainText('1.1700');
   await expect(page.locator('body')).not.toContainText('SRTD');
-  await expect(page.locator('[data-tool-verification-panel] a[href*="mof.gov.so"]')).toHaveCount(3);
+  expect(await page.locator('[data-tool-verification-panel] a[href*="mof.gov.so"]').evaluateAll(links =>
+    new Set(links.map(link => link.href)).size
+  )).toBe(3);
   expect(errors).toEqual([]);
 });
 
