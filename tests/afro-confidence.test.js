@@ -184,6 +184,34 @@ function main() {
     assert.strictEqual(confidence.expandQuery(query, null), query);
   }
 
+
+  // --- 13. Afro 1.2: country scoping covers all 54 markets ------------------
+  // Only 16 markets were detected, so so-vat (Somalia) and fish-farming-angola
+  // were not recognised as country-scoped and could answer a question that
+  // named no country at all.
+  {
+    assert.strictEqual(confidence.detectToolCountry("so-vat"), "SO", "prefix form, market outside the rich-signal 16");
+    assert.strictEqual(confidence.detectToolCountry("fish-farming-angola"), "AO", "suffix form");
+    assert.strictEqual(confidence.detectToolCountry("input-prices-kenya"), "KE", "suffix form");
+    assert.strictEqual(confidence.detectToolCountry("stamp-duty"), null, "generic tool");
+    // CV is Cape Verde, but cv-builder is the resume builder. Audited against
+    // the live manifest, this is the only such collision.
+    assert.strictEqual(confidence.detectToolCountry("cv-builder"), null, "cv-builder is not a Cape Verde tool");
+    assert.strictEqual(confidence.detectToolCountry("cv-vat"), "CV", "cv-vat genuinely is");
+  }
+
+  // --- 14. A country-neutral query must not get a country-scoped tool -------
+  {
+    const list = [
+      { tool: { id: "so-vat" }, score: 100 },
+      { tool: { id: "vat-calc-pan-african" }, score: 95 }
+    ];
+    const resolved = confidence.resolveCountryConflict("remove vat from 45000", list);
+    const top = resolved[0].tool.id;
+    assert.strictEqual(top, "vat-calc-pan-african",
+      "a question naming no country must get the generic tool, got " + top);
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 

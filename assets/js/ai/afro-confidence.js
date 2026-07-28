@@ -1,5 +1,5 @@
 /*
- * Afro 1.0 — routing confidence calibration.
+ * Afro 1.2 — routing confidence, ranking and country scoping.
  *
  * WHY THIS EXISTS
  *
@@ -58,6 +58,36 @@
     NA: { names: ["namibia", "namibian"], currency: ["nad"], cities: ["windhoek"] }
   };
 
+  /* ── Full 54-market scoping ───────────────────────────────────────────────
+   *
+   * COUNTRY_SIGNALS above carries rich detection (currency, cities) for the 16
+   * markets that dominate traffic. Tool SCOPING, though, has to cover all 54:
+   * carrying only 16 meant so-vat (Somalia) and fish-farming-angola were not
+   * recognised as country-scoped at all, so a country-neutral question could
+   * still be answered by one arbitrary market's tool.
+   *
+   * Audited against the live manifest: of every tool whose first two letters
+   * match an ISO code, `cv-builder` is the ONLY false positive — CV is Cape
+   * Verde, but that tool is the résumé builder. Everything else prefixed
+   * (xx-paye, xx-vat, ...) is genuinely country-scoped. */
+  var ALL_MARKET_SLUGS = {
+    AO: "angola", BF: "burkina-faso", BI: "burundi", BJ: "benin", BW: "botswana",
+    CD: "dr-congo", CF: "central-african-republic", CG: "congo", CI: "cote-divoire",
+    CM: "cameroon", CV: "cabo-verde", DJ: "djibouti", DZ: "algeria", EG: "egypt",
+    ER: "eritrea", ET: "ethiopia", GA: "gabon", GH: "ghana", GM: "gambia",
+    GN: "guinea", GQ: "equatorial-guinea", GW: "guinea-bissau", KE: "kenya",
+    KM: "comoros", LR: "liberia", LS: "lesotho", LY: "libya", MA: "morocco",
+    MG: "madagascar", ML: "mali", MR: "mauritania", MU: "mauritius", MW: "malawi",
+    MZ: "mozambique", NA: "namibia", NE: "niger", NG: "nigeria", RW: "rwanda",
+    SC: "seychelles", SD: "sudan", SL: "sierra-leone", SN: "senegal", SO: "somalia",
+    SS: "south-sudan", ST: "sao-tome-and-principe", SZ: "eswatini", TD: "chad",
+    TG: "togo", TN: "tunisia", TZ: "tanzania", UG: "uganda", ZA: "south-africa",
+    ZM: "zambia", ZW: "zimbabwe"
+  };
+
+  // Ids whose two-letter prefix collides with a country code but are generic.
+  var NOT_COUNTRY_SCOPED = { "cv-builder": 1 };
+
   // Words that carry no topical meaning; they should not count toward coverage.
   var STOPWORDS = {
     a: 1, an: 1, and: 1, are: 1, as: 1, at: 1, be: 1, but: 1, by: 1, can: 1, do: 1, does: 1,
@@ -102,11 +132,30 @@
   }
 
   /** The country a tool is scoped to, from its id prefix. Null = generic. */
+  /**
+   * The country a tool is scoped to. Null means generic (serves every market).
+   *
+   * Tools are scoped two different ways and only one was being detected:
+   *
+   *   prefix   ke-paye, za-transfer-duty, so-vat        135 tools
+   *   suffix   input-prices-kenya, fish-farming-nigeria 166 tools
+   *
+   * Missing the suffix form left 166 of the 301 country-scoped tools — more
+   * than half — invisible to every country rule, which is how a query about
+   * fish-pond profit landed on fish-farming-nigeria and a Lagos-to-Accra
+   * shipping question landed on ng-land-use.
+   */
   function detectToolCountry(toolId) {
-    var match = /^([a-z]{2})-/.exec(lower(toolId));
-    if (!match) return null;
-    var code = match[1].toUpperCase();
-    return COUNTRY_SIGNALS[code] ? code : null;
+    var id = lower(toolId);
+    if (NOT_COUNTRY_SCOPED[id]) return null;
+    var prefix = /^([a-z]{2})-/.exec(id);
+    if (prefix && ALL_MARKET_SLUGS[prefix[1].toUpperCase()]) return prefix[1].toUpperCase();
+    for (var code in ALL_MARKET_SLUGS) {
+      if (!Object.prototype.hasOwnProperty.call(ALL_MARKET_SLUGS, code)) continue;
+      var slug = ALL_MARKET_SLUGS[code];
+      if (id.length > slug.length + 1 && id.slice(-(slug.length + 1)) === "-" + slug) return code;
+    }
+    return null;
   }
 
   function candidateId(candidate) {
@@ -280,14 +329,31 @@
      * gives it, never for having a short name.
      */
     var matchedWeight = 0;
+    var matchedCount = 0;
     terms.forEach(function (term) {
       var hit = queryText.indexOf(" " + term + " ") !== -1 ||
         (term.length > 4 && queryText.indexOf(" " + term.slice(0, term.length - 2)) !== -1);
-      if (hit) matchedWeight += termWeight(term, idf);
+      if (hit) { matchedWeight += termWeight(term, idf); matchedCount += 1; }
     });
 
-    // ~3.0 is one strongly distinctive term or two moderate ones.
-    return Math.min(1, matchedWeight / 3);
+    /* Blend absolute informativeness with the share of the tool's identity that
+     * was matched, because each alone has a known failure mode.
+     *
+     * Pure ratio rewards short names — bw-vat is just ["vat"] after the country
+     * prefix, so matching one word scores a perfect 1.0 against
+     * vat-calc-pan-african's 0.25 for the same word.
+     *
+     * Pure absolute weight rewards rare-but-generic words — "remove vat from
+     * 45000 so i know the real price" promoted creator-pricing over
+     * vat-calc-pan-african, because "pricing" happens to be rarer across the
+     * catalogue than "vat" (which ~54 country VAT tools share) and therefore
+     * outscored the word that actually names the domain.
+     *
+     * Half of each keeps a distinctive match meaningful without letting either
+     * a short name or a rare stray word carry a tool on its own. */
+    var absolute = Math.min(1, matchedWeight / 3);
+    var share = matchedCount / terms.length;
+    return (absolute * 0.5) + (share * 0.5);
   }
 
   /**
@@ -420,8 +486,28 @@
     var list = (candidates || []).filter(Boolean);
     if (list.length < 2) return list;
     var queryCountry = detectQueryCountry(query);
-    if (!queryCountry) return list;
     var topCountry = detectToolCountry(candidateId(list[0]));
+
+    /* A country-NEUTRAL question must not be answered by a country-scoped tool
+     * when a generic equivalent was also retrieved.
+     *
+     * The old rule only fired when the query named a country, so it never saw
+     * the more common failure: "remove vat from 45000" naming no country at all
+     * and landing on so-vat (Somalia) ahead of vat-calc-pan-african, or "i want
+     * start fish pond" landing on fish-farming-nigeria ahead of
+     * fish-farming-roi. Answering a general question with one arbitrary
+     * market's tool is wrong for every other market. */
+    if (!queryCountry) {
+      if (!topCountry) return list;
+      for (var g = 1; g < list.length; g++) {
+        if (!detectToolCountry(candidateId(list[g]))) {
+          var pick = list[g];
+          return [pick].concat(list.filter(function (candidate) { return candidate !== pick; }));
+        }
+      }
+      return list;
+    }
+
     if (!topCountry || topCountry === queryCountry) return list;
 
     var sameCountry = null;
@@ -681,6 +767,18 @@
       if (queryCountry && toolCountry === queryCountry) fit += 0.15;
       // A tool scoped to a different country cannot be the best answer.
       if (queryCountry && toolCountry && toolCountry !== queryCountry) fit -= 0.5;
+      /* A general question deserves the general tool. Answering "remove vat
+       * from 45000" with so-vat picks one arbitrary market for a user who named
+       * none, and is wrong for the other 53. */
+      if (!queryCountry && toolCountry) fit -= 0.3;
+
+      /* Synonym expansion is allowed to widen the candidate POOL, never to win
+       * the ranking on its own. Precision is measured against the user's
+       * original words, so a precision of zero means this candidate matched
+       * only terms we added on their behalf — "save money for my children
+       * university" reaching mobile-money-fees through the money synonyms.
+       * Retrieval score alone must not carry it to first place. */
+      if (precision === 0) fit -= 0.45;
       // Ties in fit keep the retriever's original order.
       return { candidate: candidate, fit: fit, index: index };
     });
@@ -699,7 +797,7 @@
   }
 
   return {
-    VERSION: "afro-1.1",
+    VERSION: "afro-1.2",
     BANDS: BANDS,
     calibrate: calibrate,
     rerank: rerank,
