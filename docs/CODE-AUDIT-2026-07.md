@@ -135,3 +135,24 @@ decision, not 54.
 | 52 | tooling | med | The first pass's syntax sweep covered `.js` files only, so 1,092 pages with broken inline `<script>` went unseen. `scan-inline-js` now covers all 9,825 inline blocks across 10,837 pages: 1,092 → 0 (the 8 that remain are valid `type="module"` ESM the checker cannot parse). | — |
 | 53 | correctness | **high** | 73 French insurance pages called `AfroTools.CarAssuranceEngine` / `FuneralAssuranceEngine` / `LifeAssuranceEngine`. "Assurance" is French for "Insurance": the translation pass renamed the **engine reference** but not the engine. Each page loads `car-insurance-engine.js`, which defines `CarInsuranceEngine`, so every calculation threw `TypeError: Cannot read properties of undefined (reading 'calculate')`. Confirmed live in Chromium with the correctly-named engine sitting loaded in `window`. | 73 |
 | 54 | correctness | med | Four more flagship French PAYE pages (Ghana, Kenya, Nigeria, Rwanda) called `AfroTools.shareState.whatsappPartager`; the library exports `whatsappShare`, so the WhatsApp share button threw. Found by enumerating every `AfroTools.*` namespace defined across `assets/js`, `engines`, `data` and `netlify` and cross-checking every inline call site. | 4 |
+| 55 | build integrity | med | Two generators fought over `widgets/demo/index.html`. `fix-canonical-alias-links.js` rewrote a link to `/vat-business-tax/`; `build-progressive-directories.js` regenerated it back to `/business/setup/` from `canonical-registry.json`, whose `fullToolRoute` came from `widgets/WIDGET-REGISTRY.js`. That left `directories:check` and the route contract mutually unsatisfiable. Fixed at the source: 9 widget `fullToolLink` values pointing at `/business/`, `/business/setup/`, `/business/invoice/` and `/business/payroll/` — all meta-refresh stubs canonicalising to `/vat-business-tax/` — now point at the canonical route. | 3 |
+
+### Second-pass sweep results
+
+| Check | Before | After |
+|---|---|---|
+| Inline `<script>` blocks with syntax errors | 1,092 | 0 |
+| Pages calling an `AfroTools.*` namespace defined nowhere | 77 | 0 |
+| Calls to a non-existent `shareState` method | 5 | 0 |
+| Non-English method names on DOM/BOM objects | 8 | 0 |
+| French wrapper iframes whose target 404s on a static host | 606 | 0 |
+| Indexable pages absent from every sitemap | 176 | 32 |
+| Sitemap URLs total | 9,521 | 9,663 |
+
+### Also checked and found clean
+
+- All 140 engine artifacts re-minified from source and compared byte-for-byte: **zero drift**.
+- All 8 `assets/js` component `.min.js` artifacts current with their sources.
+- 9,663 sitemap URLs all resolve to a file; none is `noindex`, meta-refreshing, or canonicalised elsewhere.
+- `_redirects`: 3,578 rules, no duplicate source routes.
+- 75 zero/negative dataset values reviewed — first tax bands at 0% and countries with genuinely no inheritance tax are correct explicit zeros, not missing data.
