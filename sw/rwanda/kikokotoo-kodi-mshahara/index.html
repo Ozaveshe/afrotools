@@ -590,12 +590,18 @@ function calculate() {
   }
   const isSecondary = isOn('secondary');
   const hasRSSB = isOn('rssb');
-  const socialRate = hasRSSB ? 0.05 : 0;
-  const empSocialRate = 0.05;
-  const empMaternity = 0.003;
+  // Pensheni ya RSSB: kuanzia Januari 2025 kiwango kilipanda kutoka 6% hadi 12%,
+  // kikigawanywa sawa — 6% mfanyakazi na 6% mwajiri (RSSB, mageuzi ya pensheni).
+  // (RSSB pension rose from 6% to 12% in January 2025, split 6% employee /
+  //  6% employer, rising 2%/yr from 2027 to 20% by 2030.)
+  const socialRate = hasRSSB ? 0.06 : 0;
+  const empSocialRate = 0.06;
+  // Bima ya uzazi: 0.3% mfanyakazi + 0.3% mwajiri.
+  const maternityRate = 0.003;
   const social = gross * socialRate;
   const empSocial = gross * empSocialRate;
-  const empMat = gross * empMaternity;
+  const empMat = gross * maternityRate;        // sehemu ya mfanyakazi
+  const maternityEmployer = gross * maternityRate;  // sehemu ya mwajiri
   let monthlyPAYE = 0;
   let bandBreakdown = [];
   if (isSecondary) {
@@ -607,17 +613,17 @@ function calculate() {
     monthlyPAYE = result.tax;
     bandBreakdown = result.bandBreakdown;
   }
-  const totalEmployeeDeductions = social + monthlyPAYE;
+  const totalEmployeeDeductions = social + monthlyPAYE + empMat;
   const netMonthly = gross - totalEmployeeDeductions;
   const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
   const annual = v => v * 12;
   RESULT = {
-    gross, monthly: gross, social, socialRate, empSocial, empMat,
+    gross, monthly: gross, social, socialRate, empSocial, empMat, maternityEmployer,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
     annualTax: annual(monthlyPAYE), annualSocial: annual(social),
-    totalEmployerCostMonthly: gross + empSocial + empMat,
+    totalEmployerCostMonthly: gross + empSocial + maternityEmployer,
   };
   document.getElementById('resAmount').textContent = fmt(netMonthly);
   document.getElementById('resGross').textContent = 'Ghafi: ' + fmt(gross) + '/mwezi \u00B7 ' + fmt(annual(gross)) + '/mwaka';

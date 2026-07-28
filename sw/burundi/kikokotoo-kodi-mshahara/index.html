@@ -591,17 +591,26 @@ function calculate() {
   }
   const isSecondary = isOn('secondary');
   const hasCNSS = isOn('cnss');
+  // INSS Burundi: pensheni 4% mfanyakazi + 6% mwajiri kwa dari ya 450,000 FBU
+  // kwa mwezi; hatari za kazi 3% mwajiri pekee kwa dari ya 80,000 FBU.
+  // (INSS: pension 4% worker + 6% employer capped at 450,000 FBU/month;
+  //  occupational risks 3% employer-only capped at 80,000 FBU/month.)
+  const pensionBase = Math.min(gross, 450000);
+  const riskBase = Math.min(gross, 80000);
   const socialRate = hasCNSS ? 0.04 : 0;
-  const empSocialRate = 0.06;
-  const social = gross * socialRate;
-  const empSocial = gross * empSocialRate;
+  const employerPenRate = 0.06;
+  const employerRiskRate = 0.03;
+  const social = pensionBase * socialRate;
+  const employerPension = pensionBase * employerPenRate;
+  const employerRisk = riskBase * employerRiskRate;
+  const empSocial = employerPension + employerRisk;
   let monthlyPAYE = 0;
   let bandBreakdown = [];
+  const taxableIncome = Math.max(0, gross - social);
   if (isSecondary) {
-    monthlyPAYE = gross * 0.30;
-    bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
+    monthlyPAYE = taxableIncome * 0.30;
+    bandBreakdown = [{ rate: 0.30, income: taxableIncome, tax: monthlyPAYE, isFlat: true }];
   } else {
-    const taxableIncome = Math.max(0, gross - social);
     const result = calcMonthlyPAYE(taxableIncome);
     monthlyPAYE = result.tax;
     bandBreakdown = result.bandBreakdown;
@@ -612,6 +621,7 @@ function calculate() {
   const annual = v => v * 12;
   RESULT = {
     gross, monthly: gross, social, socialRate, empSocial,
+    pensionBase, riskBase, taxableIncome, employerPension, employerRisk,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
     totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),

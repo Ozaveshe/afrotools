@@ -66,6 +66,7 @@
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script src="/assets/js/lib/simple-chart-fallback.js?v=45721bf1"></script>
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -369,7 +370,54 @@ function setChart(type,btn){
   var ctx=document.getElementById('payChart').getContext('2d');
   myChart=new Chart(ctx,{type:type==='bar'?'bar':'doughnut',data:{labels:['Mshahara Halisi','INSS','Kodi ya DGCI'],datasets:[{data:[Math.round(net),Math.round(ss),Math.round(tax)],backgroundColor:['#0062CC','#FF9500','#FF3B30'],borderWidth:2}]},options:type==='bar'?{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}:{cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}});
 }
-function openPdfModal(){if(window.openPayePdfModal)window.openPayePdfModal();else alert('PDF inatengenezwa...');}
+// PDF halisi. Awali ilikuwa ikiita window.openPayePdfModal, ambayo haipo
+// popote katika hazina hii, kwa hivyo kitufe hakikutoa PDF yoyote na badala
+// yake kilionyesha ujumbe wa uongo. Sasa hutumia maktaba ile ile ya
+// window.AfroTools.pdf inayotumiwa na ukurasa wa Kiingereza.
+// (Was calling window.openPayePdfModal, which exists nowhere in this
+//  repository, so the button produced no PDF and showed a false message.)
+async function downloadPdfSummary() {
+  var gross = state.period === 'annual' ? state.gross / 12 : state.gross;
+  var contrib = state.togs.inss ? gross * INSS_RATE : 0;
+  var monthlyTax = calcDGCI(gross - contrib);
+  var empCost = gross * (1 + EMP_INSS);
+  var net = Math.max(0, gross - contrib - monthlyTax);
+  var effRate = gross > 0 ? (monthlyTax / gross) * 100 : 0;
+
+  if (!(window.AfroTools && window.AfroTools.pdf)) {
+    alert('PDF bado inapakia \u2014 jaribu tena baada ya muda mfupi.');
+    return;
+  }
+
+  await window.AfroTools.pdf.generate({
+    filename: 'afrotools-gw-paye-guinea-bissau-sw.pdf',
+    toolId: 'gw-paye',
+    title: 'Muhtasari wa Kodi ya Mshahara \u2014 Guinea-Bissau',
+    subtitle: 'Makadirio ya DGCI PAYE na INSS',
+    country: 'Guinea-Bissau',
+    countryCode: 'GW',
+    currency: 'XOF',
+    summary: [
+      { label: 'Mshahara halisi', value: fmt(net) },
+      { label: 'Ghafi', value: fmt(gross) },
+      { label: 'Kodi', value: fmt(monthlyTax) },
+      { label: 'Kiwango halisi', value: effRate.toFixed(1) + '%' }
+    ],
+    sections: [
+      { heading: 'Matokeo ya kila mwezi', rows: [
+        ['Mshahara ghafi', fmt(gross)],
+        ['INSS ya mfanyakazi', fmt(contrib)],
+        ['Kodi ya mshahara (PAYE)', fmt(monthlyTax)],
+        ['Mshahara halisi', fmt(net)],
+        ['Kiwango halisi cha kodi', effRate.toFixed(1) + '%'],
+        ['Gharama ya mwajiri', fmt(empCost)]
+      ] },
+      { heading: 'Chanzo', rows: [['Msingi', 'DGCI PAYE bands and INSS assumptions shown on this calculator.']] }
+    ],
+    skipGate: true
+  });
+}
+function openPdfModal() { downloadPdfSummary(); }
 function shareCalc(){var url=window.location.href+'?gross='+state.gross+'&period='+state.period;if(navigator.share){navigator.share({title:'Kikokotoo cha Kodi Guinea-Bissau',url:url});}else{navigator.clipboard.writeText(url);alert('Kiungo kimekopiwa!');}}
 function getAI(){
   var gross=state.period==='annual'?state.gross/12:state.gross;

@@ -574,6 +574,24 @@ updateSliderFill(document.getElementById('salarySlider'));
 function togItem(el) { el.classList.toggle('on'); }
 function isOn(tog) { return !!document.querySelector('[data-tog="' + tog + '"]')?.classList.contains('on'); }
 
+// Jedwali la Local Service Tax — Local Government (Amendment) No.2 Act 2008,
+// Table 1: watu walio katika ajira wanaopata mshahara wa kila mwezi.
+// (LST schedule for persons in gainful employment.)
+function calcAnnualLST(monthlyTakeHomeAfterPAYE) {
+  const income = Math.max(0, monthlyTakeHomeAfterPAYE);
+  if (income <= 100000) return 0;
+  if (income <= 200000) return 5000;
+  if (income <= 300000) return 10000;
+  if (income <= 400000) return 20000;
+  if (income <= 500000) return 30000;
+  if (income <= 600000) return 40000;
+  if (income <= 700000) return 60000;
+  if (income <= 800000) return 70000;
+  if (income <= 900000) return 80000;
+  if (income <= 1000000) return 90000;
+  return 100000;
+}
+
 function calcMonthlyPAYE(monthlyTaxableIncome) {
   const income = Math.max(0, monthlyTaxableIncome);
   const bandBreakdown = [];
@@ -615,20 +633,28 @@ function calculate() {
   const empSocialRate = 0.10;
   const social = gross * socialRate;
   const empSocial = gross * empSocialRate;
-  // LST: UGX 100,000/mwaka = UGX 8,333.33/mwezi, only if annual income > 2,820,000
-  const annualGrossForLST = gross * 12;
-  const lstMonthly = (hasLST && annualGrossForLST > 2820000) ? (100000 / 12) : 0;
+  // NSSF ya mfanyakazi (5%) HAIPUNGUZI mapato yanayotozwa kodi Uganda. URA:
+  // "The gross salary of UGX 600,000 is subjected to PAYE before deducting the
+  // 5% NSSF contribution by the employee." Kwa hivyo PAYE hukokotolewa kwa
+  // mshahara ghafi, si ghafi ukiondoa NSSF.
   let monthlyPAYE = 0;
   let bandBreakdown = [];
   if (isSecondary) {
     monthlyPAYE = gross * 0.30;
     bandBreakdown = [{ rate: 0.30, income: gross, tax: monthlyPAYE, isFlat: true }];
   } else {
-    const taxableIncome = Math.max(0, gross - social);
-    const result = calcMonthlyPAYE(taxableIncome);
+    const result = calcMonthlyPAYE(gross);
     monthlyPAYE = result.tax;
     bandBreakdown = result.bandBreakdown;
   }
+  // LST ni kiwango cha mwaka kutoka jedwali la Local Government (Amendment)
+  // No.2 Act 2008, si kiasi kimoja. Angalia calcAnnualLST hapa chini.
+  // (LST is a graduated annual charge from the Local Government (Amendment)
+  //  No.2 Act 2008 schedule, not a single flat amount.)
+  const lstBase = Math.max(0, gross - monthlyPAYE);
+  const lstAnnual = hasLST ? calcAnnualLST(lstBase) : 0;
+  const lstInstallment = lstAnnual / 4;
+  const lstMonthly = lstAnnual / 12;
   const totalEmployeeDeductions = social + monthlyPAYE + lstMonthly;
   const netMonthly = gross - totalEmployeeDeductions;
   const effectiveRate = gross > 0 ? monthlyPAYE / gross : 0;
@@ -636,7 +662,7 @@ function calculate() {
   RESULT = {
     gross, monthly: gross, social, socialRate, empSocial,
     monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
-    lstMonthly,
+    lstMonthly, lstAnnual, lstInstallment, hasLST,
     totalEmployeeDeductions, netMonthly, effectiveRate,
     annualGross: annual(gross), annualNet: annual(netMonthly),
     annualTax: annual(monthlyPAYE), annualSocial: annual(social),

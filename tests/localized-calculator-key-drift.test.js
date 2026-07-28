@@ -95,20 +95,16 @@ Chart response answer gtag error matchMedia elements fromCharCode charCodeAt
 `).trim().split(/\s+/));
 
 /**
- * Reads of globals that genuinely do not exist anywhere in the repository, but
- * are NOT this test's defect class and are recorded as their own finding.
+ * Reads of globals that genuinely do not exist anywhere in the repository.
  *
- * `openPayePdfModal` is defined in no file. sw/liberia, sw/sierra-leone and
- * sw/guinea-bissau each wire their "Pakua PDF" button to
- * `openPdfModal()`, which checks `window.openPayePdfModal` and otherwise
- * alerts "PDF inatengenezwa..." ("PDF is being generated") — so the button
- * never produces a PDF and says something untrue while not producing it.
- * Their English originals call an inline `downloadPdfSummary()` built on
- * `window.AfroTools.pdf`. Porting that needs each page's own RESULT keys
- * mapped and the output actually inspected, so it is tracked separately rather
- * than papered over here. Remove this entry when those three are wired up.
+ * Empty, and it should stay that way. It briefly held `openPayePdfModal`:
+ * sw/liberia, sw/sierra-leone and sw/guinea-bissau each wired their
+ * "Pakua PDF" button to a global defined in no file, so the button produced no
+ * PDF and alerted "PDF inatengenezwa..." ("PDF is being generated") while not
+ * generating one. All three now load /assets/js/lib/pdf-template.js and call
+ * window.AfroTools.pdf like their English originals.
  */
-const RECORDED_GAPS = new Set(['openPayePdfModal']);
+const RECORDED_GAPS = new Set([]);
 
 /** Strip comments and string/template text, keeping ${...} expression bodies. */
 function codeOnly(src) {

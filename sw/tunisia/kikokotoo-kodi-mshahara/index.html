@@ -424,15 +424,21 @@ function toggleBands(header) {
   header.querySelector('.tog-arrow').classList.toggle('open');
 }
 
+// Jedwali la IRPP la Sheria ya Fedha 2025, linatumika kuanzia 1 Januari 2025.
+// (Finance Law 2025 IRPP scale, in force from 1 January 2025.)
 var IRPP_BANDS = [
   { limit: 5000, rate: 0 },
-  { limit: 5000, rate: 0.26 },
-  { limit: 10000, rate: 0.28 },
-  { limit: 10000, rate: 0.32 },
-  { limit: 20000, rate: 0.34 },
-  { limit: Infinity, rate: 0.35 }
+  { limit: 5000, rate: 0.15 },
+  { limit: 10000, rate: 0.25 },
+  { limit: 10000, rate: 0.30 },
+  { limit: 10000, rate: 0.33 },
+  { limit: 10000, rate: 0.36 },
+  { limit: 20000, rate: 0.38 },
+  { limit: Infinity, rate: 0.40 }
 ];
-var BAND_LABELS = ['TND 0-5,000 (0%)','TND 5,001-10,000 (26%)','TND 10,001-20,000 (28%)','TND 20,001-30,000 (32%)','TND 30,001-50,000 (34%)','Zaidi ya TND 50,000 (35%)'];
+// Mchango wa Mshikamano wa Kijamii (CSS): 0.5% kwa mwaka wa fedha 2023-2026.
+var CSS_RATE = 0.005;
+var BAND_LABELS = ['TND 0-5,000 (0%)','TND 5,001-10,000 (15%)','TND 10,001-20,000 (25%)','TND 20,001-30,000 (30%)','TND 30,001-40,000 (33%)','TND 40,001-50,000 (36%)','TND 50,001-70,000 (38%)','Zaidi ya TND 70,000 (40%)'];
 
 function calcIRPP(taxableAnnual) {
   var rem = Math.max(0, taxableAnnual), tax = 0, detail = [];
@@ -461,20 +467,27 @@ function calculate() {
   var grossAnnual = parseNum(document.getElementById('salaryInput').value);
   if (!grossAnnual || grossAnnual <= 0) { document.getElementById('salaryInput').focus(); return; }
 
-  var cnssAnnual = isOn('cnss') ? grossAnnual * 0.0918 : 0;
-  var personalRelief = 1200;
-  var taxableAnnual = Math.max(0, grossAnnual - cnssAnnual - personalRelief);
+  // CNSS 9.18% + 0.5% Mfuko wa Bima ya Ukosefu wa Ajira (Sheria ya Fedha 2025).
+  var cnssAnnual = isOn('cnss') ? grossAnnual * 0.0968 : 0;
+  // Hakuna unafuu wa jumla wa TND 1,200 katika sheria ya Tunisia; ulikuwa
+  // umewekwa hapa bila chanzo, kwa hivyo umeondolewa. Punguzo halisi la gharama
+  // za kikazi (10% hadi kikomo) bado halijaigwa katika kikokotoo hiki.
+  // (There is no TND 1,200 blanket relief in Tunisian law; it was carried here
+  //  without a source and is removed. The real professional-expenses deduction
+  //  is still not modelled — a recorded gap on both this page and the English one.)
+  var taxableAnnual = Math.max(0, grossAnnual - cnssAnnual);
   var irppResult = calcIRPP(taxableAnnual);
   var irppAnnual = irppResult.tax;
+  var cssAnnual = taxableAnnual * CSS_RATE;   // Mchango wa Mshikamano wa Kijamii
 
-  var totalDeductionsAnnual = cnssAnnual + irppAnnual;
+  var totalDeductionsAnnual = cnssAnnual + irppAnnual + cssAnnual;
   var netAnnual = grossAnnual - totalDeductionsAnnual;
-  var effectiveRate = grossAnnual > 0 ? (irppAnnual / grossAnnual) * 100 : 0;
-  var employerCNSS = grossAnnual * 0.1657;
+  var effectiveRate = grossAnnual > 0 ? ((irppAnnual + cssAnnual) / grossAnnual) * 100 : 0;
+  var employerCNSS = grossAnnual * 0.1707;   // 16.57% + 0.5%
 
   RESULT = {
     gross: grossAnnual / 12, grossAnnual: grossAnnual,
-    cnss: cnssAnnual / 12, irpp: irppAnnual / 12,
+    cnss: cnssAnnual / 12, irpp: (irppAnnual + cssAnnual) / 12, css: cssAnnual / 12,
     net: netAnnual / 12, netAnnual: netAnnual,
     effectiveRate: effectiveRate,
     totalDeductions: totalDeductionsAnnual / 12,
@@ -511,7 +524,7 @@ function renderResults() {
   document.getElementById('employerStrip').innerHTML =
     '<div class="employer-strip-head">Gharama za Mwajiri</div>' +
     '<div class="res-row"><span class="res-row-lbl">Mshahara Ghafi</span><span class="res-row-val">' + fmt(r.gross * d) + '</span></div>' +
-    '<div class="res-row"><span class="res-row-lbl">CNSS ya Mwajiri (16.57%)</span><span class="res-row-val">' + fmt(r.employerCNSS * d) + '</span></div>' +
+    '<div class="res-row"><span class="res-row-lbl">CNSS ya Mwajiri (17.07%)</span><span class="res-row-val">' + fmt(r.employerCNSS * d) + '</span></div>' +
     '<div class="res-row total"><span class="res-row-lbl">Gharama Jumla</span><span class="res-row-val grn">' + fmt(empTotal * d) + '</span></div>';
   document.getElementById('resultsCard').classList.add('on');
   document.getElementById('aiBtn').disabled = false;
