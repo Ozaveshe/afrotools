@@ -77,9 +77,12 @@
     body.ai-has-result .ai-quick-panel{display:none}
     body.ai-has-result .ai-context-panel{margin-top:2px;padding:10px 12px}
     body.ai-has-result .ai-context-panel .ai-context-grid{gap:8px}
-    body.ai-details-open .ai-answer-shell{grid-template-columns:minmax(0,1fr)}
-    body.ai-details-open .ai-answer-shell > .ai-state{position:static}
-    .ai-more[open]{background:#fff;border:1px solid #e2e8f0;border-radius:16px;margin-top:14px;padding:4px 16px 16px}
+    /* The detail row sits below the columns and spans the container, so opening
+     * it adds height without moving anything that was already on screen. */
+    .ai-details-host:empty{display:none}
+    .ai-details-host{margin-top:16px}
+    .ai-more{background:#fff;border:1px solid #e2e8f0;border-radius:16px;padding:0 16px}
+    .ai-more[open]{padding:4px 16px 16px}
     .ai-more[open] > summary{border-bottom:1px solid #eef2f7;font-weight:800;margin:0 -16px 14px;padding:12px 16px}
     :root[data-theme="dark"] .ai-more[open]{background:#101c30;border-color:#1e2f4a}
     :root[data-theme="dark"] .ai-more[open] > summary{border-bottom-color:#1e2f4a}
@@ -244,16 +247,27 @@
     .ai-feedback button{min-height:36px;border:1px solid #c7d2fe;border-radius:999px;background:#fff;color:#1d4ed8;font:inherit;font-size:.76rem;font-weight:900;padding:0 12px;cursor:pointer}
     .ai-feedback button:hover,.ai-feedback button:focus-visible{border-color:#2563eb;background:#eff6ff}
     .ai-feedback-status{color:#475569;font-size:.76rem;font-weight:800}
-    .ai-clarification{border:1px solid #fed7aa;border-radius:12px;background:#fff7ed;padding:12px}
+    /* Calm, not alarming.
+     * This box asks a helpful question — "which study level?" — but wore
+     * amber-50 on amber-200 with a brown primary button, the palette this site
+     * uses for warnings. It read as something had gone wrong. It is now the
+     * same neutral card as the rest of the surface, with the brand blue
+     * carrying the one action that matters. */
+    .ai-clarification{border:1px solid #e2e8f0;border-radius:14px;background:#f8fafd;padding:14px}
     .ai-clarification h4,.ai-consent-card h3{margin:0;color:#0f172a;font-size:.9rem;font-weight:900;letter-spacing:0}
-    .ai-clarification p,.ai-consent-card p{margin:5px 0 0;color:#6b4f1d;font-size:.78rem;line-height:1.5}
-    .ai-clarification-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:9px;margin-top:11px}
+    .ai-clarification p,.ai-consent-card p{margin:5px 0 0;color:#60708a;font-size:.78rem;line-height:1.5}
+    .ai-clarification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;margin-top:12px}
+    .ai-clarification .ai-small-button.primary{background:#0062CC;border-color:#0062CC;color:#fff}
+    .ai-clarification-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:12px}
+    .ai-clarification-actions .ai-small-button.secondary{border-color:transparent;background:none;color:#60708a;text-decoration:underline}
+    :root[data-theme="dark"] .ai-clarification{background:#101c30;border-color:#1e2f4a}
+    :root[data-theme="dark"] .ai-clarification-field input,:root[data-theme="dark"] .ai-clarification-field select{background:#0b1526;border-color:#1e2f4a;color:#eef5ff}
     .ai-clarification-field{display:grid;gap:6px}
     .ai-clarification-field label{color:#334155;font-size:.73rem;font-weight:900}
-    .ai-clarification-field input,.ai-clarification-field select{width:100%;min-width:0;min-height:44px;border:1px solid #f3c079;border-radius:10px;background:#fff;color:#0f172a;font:inherit;font-size:16px;padding:8px 10px}
-    .ai-clarification-field input:focus,.ai-clarification-field select:focus{outline:3px solid rgba(245,158,11,.22);outline-offset:1px}
+    .ai-clarification-field input,.ai-clarification-field select{width:100%;min-width:0;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;font:inherit;font-size:16px;padding:8px 10px}
+    .ai-clarification-field input:focus,.ai-clarification-field select:focus{outline:3px solid rgba(0,98,204,.22);outline-offset:1px}
     .ai-clarification-chips{display:flex;flex-wrap:wrap;gap:6px}
-    .ai-answer-chip{min-height:44px;max-width:100%;border:1px solid #f3c079;border-radius:999px;background:#fff;color:#92400e;font:inherit;font-size:.76rem;font-weight:900;line-height:1.25;padding:8px 12px;cursor:pointer;white-space:normal;text-align:left}
+    .ai-answer-chip{min-height:36px;max-width:100%;border:1px solid #dbe6f4;border-radius:999px;background:#fff;color:#0057b8;font:inherit;font-size:.76rem;font-weight:900;line-height:1.25;padding:8px 12px;cursor:pointer;white-space:normal;text-align:left}
     .ai-answer-chip:hover,.ai-answer-chip:focus-visible{border-color:#d97706;background:#fffbeb}
     .ai-clarification-actions,.ai-consent-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:11px}
     .ai-small-button{display:inline-flex;align-items:center;justify-content:center;min-height:44px;max-width:100%;border:1px solid #f3c079;border-radius:10px;background:#fff;color:#92400e;font:inherit;font-size:.78rem;font-weight:900;line-height:1.25;padding:8px 12px;cursor:pointer;text-align:center;text-decoration:none;white-space:normal}
@@ -824,7 +838,7 @@
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
 <script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
 <script src="/assets/js/ai/afro-confidence.js?v=0395b29a"></script>
-  <script src="/assets/js/ai/result-layout.js?v=e446b9b9" defer></script>
+  <script src="/assets/js/ai/result-layout.js?v=4e85ace1" defer></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -2543,6 +2557,14 @@
     function renderFieldChips(descriptor) {
       descriptor = localizedDescriptor(descriptor);
       if (!descriptor.options || !descriptor.options.length) return "";
+      /* A select already lists these options, so chips beneath it were a second
+       * control for the same answer — "Study level" shipped a dropdown reading
+       * undergraduate/masters/phd/diploma with four buttons underneath saying
+       * exactly the same words. That is what made this box look broken on some
+       * tools and fine on others: it only happened for enum fields.
+       * Chips stay where they are genuinely useful — quick-fill suggestions
+       * beside a free-text or number input, which no dropdown offers. */
+      if (descriptor.type === "select") return "";
       return '<div class="ai-clarification-chips" aria-label="Quick answers for ' + escapeHtml(descriptor.label) + '">' + descriptor.options.slice(0, 5).map(function (option) {
         return '<button type="button" class="ai-answer-chip" data-answer-chip="' + escapeHtml(descriptor.name) + '" data-answer-value="' + escapeHtml(option) + '" aria-label="Use ' + escapeHtml(option) + ' for ' + escapeHtml(descriptor.label) + '">' + escapeHtml(option) + '</button>';
       }).join("") + '</div>';

@@ -61,10 +61,6 @@
 
     var details = doc.createElement("details");
     details.className = "ai-more";
-    // `toggle` does not bubble, so the MutationObserver never sees it — listen here.
-    details.addEventListener("toggle", function () {
-      doc.body.classList.toggle("ai-details-open", details.open);
-    });
     var summary = doc.createElement("summary");
     summary.textContent = "Details, checks and export options";
     details.appendChild(summary);
@@ -72,10 +68,12 @@
     body.className = "ai-more-body";
     details.appendChild(body);
 
-    // Append after all primary content: the clarification input ("answer one
-    // detail") sits late in the DOM but is a primary action, so inserting at
-    // the first secondary node would bury it below the disclosure.
-    card.appendChild(details);
+    // The disclosure lives in a full-width row below the columns, so opening it
+    // never reflows the card. Fall back to the card itself if the shell is
+    // missing, which keeps this working on any page that lacks the two-column
+    // layout rather than dropping the content entirely.
+    var host = detailsHost();
+    (host || card).appendChild(details);
     secondary.forEach(function (node) { body.appendChild(node); });
 
     hideEmptyMetrics(body);
@@ -83,17 +81,31 @@
   }
 
   /*
-   * Opening the disclosure widens the whole surface.
+   * The detail opens in its own full-width row, below the two columns.
    *
-   * The detail lived in the narrower of two columns, so expanding it produced
-   * ~1450px of content in a 456px rail while the answer column beside it sat
-   * empty. The class drives a CSS rule that collapses the split; keeping it a
-   * body class rather than a DOM move means the renderer keeps full ownership
-   * of the card and can rewrite it on the next query without losing anything.
+   * The first attempt collapsed the shell to one column when the disclosure
+   * opened. It did give the detail the full width, but measured at 1440px the
+   * card jumped 546px to the left and grew 406px wider on a single click, while
+   * the answer — which has its own max-width — stayed 540px and re-centred,
+   * leaving big margins on both sides. Expanding a section should not move the
+   * thing you were reading.
+   *
+   * Hosting the <details> in a sibling row means opening it moves nothing: the
+   * columns keep their geometry and the detail simply appears underneath at
+   * full width. The renderer still owns the card; the host is cleared and
+   * refilled on every render, so a new query cannot leave stale detail behind.
    */
-  function syncDetailsWidth(root) {
-    var open = !!root.querySelector("details.ai-more[open]");
-    doc.body.classList.toggle("ai-details-open", open);
+  function detailsHost() {
+    var shell = doc.getElementById("aiAnswerShell");
+    if (!shell || !shell.parentNode) return null;
+    var host = doc.getElementById("aiDetailsHost");
+    if (!host) {
+      host = doc.createElement("div");
+      host.id = "aiDetailsHost";
+      host.className = "ai-details-host";
+      shell.parentNode.insertBefore(host, shell.nextSibling);
+    }
+    return host;
   }
 
   function scrollToAnswer() {
@@ -124,10 +136,17 @@
        * cannot yank the page while someone is reading or scrolling. */
       if (appeared) scrollToAnswer();
       if (state && !state.hidden) {
+        // A card the renderer has just rewritten has lost its marker, which is
+        // the signal that the hosted detail belongs to the previous query.
+        var fresh = state.querySelector('.ai-workflow-card:not([data-afro-collapsed="1"])');
+        var host = doc.getElementById("aiDetailsHost");
+        if (fresh && host) host.innerHTML = "";
         [].forEach.call(state.querySelectorAll(".ai-workflow-card"), collapseCard);
       }
-      syncDetailsWidth(state || doc.body);
-      if (!hasResult) doc.body.classList.remove("ai-details-open");
+      if (!hasResult) {
+        var idleHost = doc.getElementById("aiDetailsHost");
+        if (idleHost) idleHost.innerHTML = "";
+      }
     } catch (err) { /* layout enhancement only — never block the router */ }
   }
 
