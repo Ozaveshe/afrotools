@@ -667,12 +667,26 @@ function applyPanelToFile(file, entry) {
   html = replaceGenericBadges(html);
   html = replaceRatings(html);
   const lang = rel(file).startsWith('fr/') ? 'fr' : 'en';
-  // Some bespoke French calculators already own a complete localized source
-  // panel. Do not add a second generated panel or overwrite its richer copy.
+  // Some calculators hand-author a complete, styled source panel that already
+  // owns the `#sources-verification` anchor. Do not add a second generated
+  // panel or overwrite the richer copy.
+  //
+  // `removeOldVerificationPanels` above has already stripped any panel this
+  // script injected before, so a surviving `id="sources-verification"` can only
+  // be the page's own. That anchor is the right test, because it is the thing
+  // that collides: `replaceGenericBadges` rewrites evidence badges to
+  // `href="#sources-verification"`, and two elements sharing the id send the
+  // badge to the wrong one. The check used to require `tool-verification-report`
+  // and run only for `fr/`, which let five English pages (chad/td-vat,
+  // cape-verde/cv-paye, gambia/gm-paye, sao-tome/st-paye, togo/tg-paye) carry
+  // two panels with the same id and render the source-confidence widget twice.
+  //
+  // Note the test is deliberately *not* `data-tool-verification-panel`: many
+  // pages carry a short summary aside with that attribute and no anchor, and
+  // those still need the generated panel.
   if (
-    lang === 'fr'
-    && html.includes('data-tool-verification-panel')
-    && html.includes('tool-verification-report')
+    /id="sources-verification"/.test(html)
+    || (lang === 'fr' && html.includes('data-tool-verification-panel') && html.includes('tool-verification-report'))
   ) {
     if (WRITE && html !== original) fs.writeFileSync(file, html, 'utf8');
     return html !== original;

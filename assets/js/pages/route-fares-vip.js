@@ -30,8 +30,8 @@
     output.hidden = false;
     document.getElementById('rfTotal').textContent = money(result.total);
     document.getElementById('rfBase').textContent = money(result.base);
-    document.getElementById('rfBuffer').textContent = money(result.buffer);
-    document.getElementById('rfRides').textContent = String(result.totalRides);
+    document.getElementById('rfBufferAmount').textContent = money(result.buffer);
+    document.getElementById('rfRidesTotal').textContent = String(result.totalRides);
     document.getElementById('rfDaily').textContent = money(result.daily);
     document.getElementById('rfChange').textContent = result.changePercent == null ? 'Not compared' : (result.changePercent >= 0 ? '+' : '') + result.changePercent.toFixed(1) + '%';
     status.textContent = 'Budget updated. Inputs remain on this device.';

@@ -1,42 +1,49 @@
 const fs = require('fs');
 const path = require('path');
 
+const { buildPairs, assertSafePairs, applyPairs } = require('./lib/mojibake');
+
 const ROOT = process.cwd();
 const BLOG_DIR = path.join(ROOT, 'blog');
 
-const REPLACEMENTS = [
-  ['-', '&mdash;'],
-  ['-', '&ndash;'],
-  [''', '&rsquo;'],
-  ['"', '&ldquo;'],
-  ['â€\x9d', '&rdquo;'],
-  ['â€¦', '&hellip;'],
-  ['£', '&pound;'],
-  ['-', '&euro;'],
-  ['-', '&#8358;'],
-  ['Ã‰', '&Eacute;'],
-  ['e', '&eacute;'],
-  ['e', '&egrave;'],
-  ['e', '&ecirc;'],
-  ['e', '&euml;'],
-  ['Ã€', '&Agrave;'],
-  ['Ã ', '&Agrave;'],
-  ['a', '&agrave;'],
-  ['a', '&acirc;'],
-  ['Ã‡', '&Ccedil;'],
-  ['c', '&ccedil;'],
-  ['ÃŽ', '&Icirc;'],
-  ['Ã®', '&icirc;'],
-  ['Ã-', '&Iuml;'],
-  ['i', '&iuml;'],
-  ['Ã”', '&Ocirc;'],
-  ['o', '&ocirc;'],
-  ['Ã™', '&Ugrave;'],
-  ['Ã¹', '&ugrave;'],
-  ['Ã›', '&Ucirc;'],
-  ['u', '&ucirc;'],
-  ['Â', '']
-];
+// Keyed by the character the blog HTML *should* contain. The mojibake form
+// actually present in the files is derived in ./lib/mojibake, so this table
+// cannot decay into ASCII search keys the way its hard-coded predecessor did.
+const REPLACEMENTS = assertSafePairs(buildPairs({
+  '—': '&mdash;',
+  '–': '&ndash;',
+  '’': '&rsquo;',
+  '‘': '&lsquo;',
+  '“': '&ldquo;',
+  '”': '&rdquo;',
+  '…': '&hellip;',
+  '£': '&pound;',
+  '€': '&euro;',
+  '₦': '&#8358;',
+  'É': '&Eacute;',
+  'é': '&eacute;',
+  'è': '&egrave;',
+  'ê': '&ecirc;',
+  'ë': '&euml;',
+  'À': '&Agrave;',
+  'à': '&agrave;',
+  'â': '&acirc;',
+  'Ç': '&Ccedil;',
+  'ç': '&ccedil;',
+  'Î': '&Icirc;',
+  'î': '&icirc;',
+  'Ï': '&Iuml;',
+  'ï': '&iuml;',
+  'Ô': '&Ocirc;',
+  'ô': '&ocirc;',
+  'Ù': '&Ugrave;',
+  'ù': '&ugrave;',
+  'Û': '&Ucirc;',
+  'û': '&ucirc;',
+  ' ': '&nbsp;'
+}), 'fix-blog-encoding');
+
+const WRITE = process.argv.includes('--write');
 
 function walk(dir) {
   return fs.readdirSync(dir, { withFileTypes: true }).flatMap((entry) => {
@@ -56,23 +63,18 @@ function main() {
 
   for (const filePath of files) {
     const original = fs.readFileSync(filePath, 'utf8');
-    let next = original;
-
-    for (const [from, to] of REPLACEMENTS) {
-      if (!next.includes(from)) continue;
-      const occurrences = next.split(from).length - 1;
-      next = next.split(from).join(to);
-      replacementsApplied += occurrences;
-    }
+    const [next, occurrences] = applyPairs(original, REPLACEMENTS);
+    replacementsApplied += occurrences;
 
     if (next !== original) {
-      fs.writeFileSync(filePath, next);
+      if (WRITE) fs.writeFileSync(filePath, next);
       changedFiles += 1;
     }
   }
 
-  console.log(`Updated ${changedFiles} files.`);
-  console.log(`Applied ${replacementsApplied} encoding replacements.`);
+  console.log(`${WRITE ? 'Updated' : 'Would update'} ${changedFiles} files.`);
+  console.log(`${WRITE ? 'Applied' : 'Found'} ${replacementsApplied} encoding replacements.`);
+  if (!WRITE && changedFiles) console.log('Dry run. Pass --write to apply.');
 }
 
 main();

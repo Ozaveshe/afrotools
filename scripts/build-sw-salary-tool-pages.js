@@ -476,7 +476,7 @@ function buildSwObservation(c) {
   ]);
 
   html = replaceRegex(html, [
-    [/var opts = '<option value="">[^<]*National \/ all states[^<]*<\/option>';/, "var opts = '<option value=\"\">a-" Taifa / majimbo yote a-"</option>';"],
+    [/var opts = '<option value="">[^<]*National \/ all states[^<]*<\/option>';/, "var opts = '<option value=\"\">\u2014 Taifa / majimbo yote \u2014</option>';"],
     [/dHTML \+= '<div class="mw-info-row"><span class="mw-info-label">Effective Date<\/span><span class="mw-info-val">' \+ \(sr\.effectiveDate \|\| c\.effectiveDate\) \+ '<\/span><\/div>';/, "dHTML += '<div class=\"mw-info-row\"><span class=\"mw-info-label\">Tarehe ya kuanza</span><span class=\"mw-info-val\">' + (sr.effectiveDate || c.effectiveDate) + '</span></div>';"],
     [/canvas\.setAttribute\('aria-label', c\.name \+ ' minimum wage history ' \+ c\.history\[c\.history\.length-1\]\.year \+ '[^']*' \+ c\.history\[0\]\.year\);/, "canvas.setAttribute('aria-label', 'Historia ya kima cha chini cha mshahara ya ' + c.name + ' ' + c.history[c.history.length-1].year + '-' + c.history[0].year);"],
     [/titleEl\.(?:innerHTML|textContent) = '[^']*No statutory minimum wage in ' \+ result\.flag \+ ' ' \+ result\.country;/, "titleEl.innerHTML = '- Hakuna kima cha chini cha mshahara cha kitaifa katika ' + result.flag + ' ' + swCountryName(_currentCode, result.country);"],

@@ -4,6 +4,8 @@ const path = require('path');
 
 const root = path.join(__dirname, '..');
 const swRoot = path.join(root, 'sw');
+const { buildPairsDeep, assertSafePairs } = require('./lib/mojibake');
+const WRITE = process.argv.includes('--write');
 
 const toolRouteMap = new Map([
   ['/tools/remittance-compare/', '/sw/zana/ulinganisho-uhamishaji-pesa/'],
@@ -11,100 +13,83 @@ const toolRouteMap = new Map([
   ['/tools/currency-converter/', '/sw/zana/kibadilishaji-sarafu/'],
 ]);
 
-const mojibakeReplacements = [
-  ['PrÃ­ncipe', 'Príncipe'],
-  ['FÃ­sicas', 'Físicas'],
-  ['ContribuiçÃµes', 'Contribuições'],
-  ['-', '—'],
-  ['-', '–'],
-  ['Ÿ‡¬', '🇪🇬'],
-  ['Ÿ‡­', '🇬🇭'],
-  ['Ÿ‡¦', '🇲🇦'],
-  ['Ÿ‡±', '🇸🇱'],
-  ['Ÿ‡²', '🇬🇲'],
-  ['Ÿ‡³', '🇬🇳'],
-  ['Ÿ‡·', '🇱🇷'],
-  ['Ÿ‡±', '🇲🇱'],
-  ['Ãƒ©', 'é'],
-  ['Ãƒ¨', 'è'],
-  ['Ãƒª', 'ê'],
-  ['Ãƒ«', 'ë'],
-  ['Ãƒ¡', 'á'],
-  ['Ãƒ³', 'ó'],
-  ['Ãƒº', 'ú'],
-  ['ÃƒÂš', 'Ú'],
-  ['Ãƒ±', 'ñ'],
-  ['Ãƒ-', '×'],
-  ['Ãƒ-', '÷'],
-  ['a-"', '—'],
-  ['a-"', '–'],
-  ['a-¦', '…'],
-  ['aâ€ '', '→'],
-  ['aË†'', '-'],
-  ['aoe¦', '✦'],
-  ['aoeâ€¢', '✕'],
-  ['aoeâ€¦', '✓'],
-  ['a-¾', '▾'],
-  ['Ã°Å¸'¸', '💸'],
-  ['Ã°Å¸"±', '📱'],
-  ['Ã°Å¸'±', '💱'],
-  ['Ã°Å¸"â€ž', '📄'],
-  ['Ã°Å¸â€¡¹Ã°Å¸â€¡¿', '🇹🇿'],
-  ['Ã°Å¸â€¡ºÃ°Å¸â€¡¬', '🇺🇬'],
-  ['Ã°Å¸â€¡§Ã°Å¸â€¡®', '🇧🇮'],
-  ['Ã°Å¸â€¡-Ã°Å¸â€¡¼', '🇷🇼'],
-  ['Ã°Å¸â€¡°Ã°Å¸â€¡ª', '🇰🇪'],
-  ['Ÿ‡¹', '🇪🇹'],
-  [', '💼'],
-  [', '🔢'],
-  [', '📄'],
-  [', '🔗'],
-  [', '🧮'],
-  [', '📊'],
-  [', '🤖'],
-  ['Ÿ‡¦', '🇿🇦'],
-  ['Ÿ‡¬', '🇳🇬'],
-  ['Ÿ‡»', '🇨🇻'],
-  ['Ÿ‡¼', '🇬🇼'],
-  ['Ÿ‡·', '🇲🇷'],
-  ['Ÿ‡³', '🇸🇳'],
-  ['-', '—'],
-  ['-', '–'],
-  ['â€¦', '…'],
-  ['->', '→'],
-  ['-', '↗'],
-  ['<-', '←'],
-  ['âˆ’', '-'],
-  ['-ˆ', '≈'],
-  ['-', '⬇'],
-  ['-', '➤'],
-  ['-', '✨'],
-  ['-', '▶'],
-  ['-', '▼'],
-  ['-', '₦'],
-  ['e', 'é'],
-  ['e', 'è'],
-  ['e', 'ê'],
-  ['e', 'ë'],
-  ['Ã¡', 'á'],
-  ['Ã³', 'ó'],
-  ['Ãº', 'ú'],
-  ['Ãš', 'Ú'],
-  ['Ã±', 'ñ'],
-  ['c', 'ç'],
-  ['o', 'ô'],
-  ['Ã£', 'ã'],
-  ['Ã‰', 'É'],
-  ['Ã€', 'À'],
-  ['Ã‡', 'Ç'],
-  ['Ã”', 'Ô'],
-  ['Ã—', '×'],
-  ['Ã‚-', '·'],
-  ['-', '·'],
-  ['Ã‚Â', ''],
-  ['Â ', ' '],
-  ['Â', ''],
-];
+const mojibakeReplacements = assertSafePairs(buildPairsDeep({
+  // Whole words whose mojibake form spans several characters.
+  "Pr\u00EDncipe": "Pr\u00EDncipe",
+  "F\u00EDsicas": "F\u00EDsicas",
+  "Contribui\u00E7\u00F5es": "Contribui\u00E7\u00F5es",
+  // Normalisations.
+  "\u2212": "-",   // minus sign to hyphen
+  "\u00A0": " ",   // no-break space to space
+  // Characters that must survive as themselves.
+  "\u2014": "\u2014",
+  "\u2013": "\u2013",
+  "\u2026": "\u2026",
+  "\u00D7": "\u00D7",
+  "\u00F7": "\u00F7",
+  "\u2726": "\u2726",
+  "\u2715": "\u2715",
+  "\u2713": "\u2713",
+  "\u25BE": "\u25BE",
+  "\u2192": "\u2192",
+  "\u2197": "\u2197",
+  "\u2190": "\u2190",
+  "\u2248": "\u2248",
+  "\u2B07": "\u2B07",
+  "\u27A4": "\u27A4",
+  "\u2728": "\u2728",
+  "\u25B6": "\u25B6",
+  "\u25BC": "\u25BC",
+  "\u20A6": "\u20A6",
+  "\u00B7": "\u00B7",
+  "\u00E9": "\u00E9",
+  "\u00E8": "\u00E8",
+  "\u00EA": "\u00EA",
+  "\u00EB": "\u00EB",
+  "\u00E1": "\u00E1",
+  "\u00F3": "\u00F3",
+  "\u00FA": "\u00FA",
+  "\u00DA": "\u00DA",
+  "\u00F1": "\u00F1",
+  "\u00E7": "\u00E7",
+  "\u00F4": "\u00F4",
+  "\u00E3": "\u00E3",
+  "\u00C9": "\u00C9",
+  "\u00C0": "\u00C0",
+  "\u00C7": "\u00C7",
+  "\u00D4": "\u00D4",
+  "\u{1F4F1}": "\u{1F4F1}",
+  "\u{1F4C4}": "\u{1F4C4}",
+  "\u{1F4CA}": "\u{1F4CA}",
+  "\u{1F4C8}": "\u{1F4C8}",
+  "\u{1F517}": "\u{1F517}",
+  "\u{1F9EE}": "\u{1F9EE}",
+  "\u{1F916}": "\u{1F916}",
+  "\u{1F4B8}": "\u{1F4B8}",
+  "\u{1F4B1}": "\u{1F4B1}",
+  "\u{1F4BC}": "\u{1F4BC}",
+  "\u{1F522}": "\u{1F522}",
+  "\u{1F1EA}\u{1F1EC}": "\u{1F1EA}\u{1F1EC}",
+  "\u{1F1EC}\u{1F1ED}": "\u{1F1EC}\u{1F1ED}",
+  "\u{1F1F2}\u{1F1E6}": "\u{1F1F2}\u{1F1E6}",
+  "\u{1F1F8}\u{1F1F1}": "\u{1F1F8}\u{1F1F1}",
+  "\u{1F1EC}\u{1F1F2}": "\u{1F1EC}\u{1F1F2}",
+  "\u{1F1EC}\u{1F1F3}": "\u{1F1EC}\u{1F1F3}",
+  "\u{1F1F1}\u{1F1F7}": "\u{1F1F1}\u{1F1F7}",
+  "\u{1F1F2}\u{1F1F1}": "\u{1F1F2}\u{1F1F1}",
+  "\u{1F1F9}\u{1F1FF}": "\u{1F1F9}\u{1F1FF}",
+  "\u{1F1FA}\u{1F1EC}": "\u{1F1FA}\u{1F1EC}",
+  "\u{1F1E7}\u{1F1EE}": "\u{1F1E7}\u{1F1EE}",
+  "\u{1F1F7}\u{1F1FC}": "\u{1F1F7}\u{1F1FC}",
+  "\u{1F1F0}\u{1F1EA}": "\u{1F1F0}\u{1F1EA}",
+  "\u{1F1EA}\u{1F1F9}": "\u{1F1EA}\u{1F1F9}",
+  "\u{1F1FF}\u{1F1E6}": "\u{1F1FF}\u{1F1E6}",
+  "\u{1F1F3}\u{1F1EC}": "\u{1F1F3}\u{1F1EC}",
+  "\u{1F1E8}\u{1F1FB}": "\u{1F1E8}\u{1F1FB}",
+  "\u{1F1EC}\u{1F1FC}": "\u{1F1EC}\u{1F1FC}",
+  "\u{1F1F2}\u{1F1F7}": "\u{1F1F2}\u{1F1F7}",
+  "\u{1F1F8}\u{1F1F3}": "\u{1F1F8}\u{1F1F3}"
+}), "fix-sw-paye-batch3");
 
 function walk(dir, matcher, acc = []) {
   for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -294,8 +279,14 @@ function normalizePage(filePath) {
   const frHref = enHtml ? extractHref(enHtml, 'fr') : null;
   const ogImage = enHtml ? extractMetaContent(enHtml, 'property', 'og:image') : null;
   const twitterImage = enHtml ? extractMetaContent(enHtml, 'name', 'twitter:image') : null;
-  const enLocale = enHtml ? extractMetaContent(enHtml, 'property', 'og:locale') : null;
-  const swLocale = enLocale && /^en_|^fr_/i.test(enLocale) ? enLocale.replace(/^(en|fr)_/i, 'sw_') : null;
+  // The region belongs to the page's own country, not to the English page it
+  // links to. Deriving it from the English og:locale produced "sw_US" for every
+  // market, because /algeria/dz-paye and friends all carry en_US. Keep whatever
+  // region this page already declares and only correct the language subtag.
+  const currentLocale = extractMetaContent(html, 'property', 'og:locale');
+  const swLocale = currentLocale && /^[a-z]{2}_[A-Z]{2}$/.test(currentLocale)
+    ? currentLocale.replace(/^[a-z]{2}_/, 'sw_')
+    : null;
 
   html = html.replace(/<link rel="canonical" href="[^"]+"\s*\/?>/i, `<link rel="canonical" href="${normalizeUrl(swUrl)}">`);
   html = html.replace(/<meta property="og:url" content="[^"]+"\s*\/?>/i, `<meta property="og:url" content="${normalizeUrl(swUrl)}">`);
@@ -318,7 +309,7 @@ function normalizePage(filePath) {
   }
 
   if (html !== original) {
-    fs.writeFileSync(filePath, html, 'utf8');
+    if (WRITE) fs.writeFileSync(filePath, html, 'utf8');
     return true;
   }
   return false;
@@ -330,4 +321,5 @@ for (const filePath of files) {
   if (normalizePage(filePath)) changed += 1;
 }
 
-console.log(`Batch 3 fixer updated ${changed} Swahili PAYE pages.`);
+console.log(`Batch 3 fixer ${WRITE ? 'updated' : 'would update'} ${changed} Swahili PAYE pages.`);
+if (!WRITE && changed) console.log('Dry run. Pass --write to apply.');

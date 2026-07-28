@@ -38,8 +38,8 @@
 <div class="hr-card"><div class="hr-card-head" onclick="var b=this.nextElementSibling;b.classList.toggle('collapsed');this.setAttribute('aria-expanded',b.classList.contains('collapsed')?'false':'true')" aria-expanded="true"><span>💸</span><h2>Employee Cost Calculator</h2><span class="hr-card-toggle">&#x25BE;</span></div>
 <div class="hr-card-body">
 <div class="hr-form-grid">
-<div class="hr-field"><label class="hr-f-label" for="grossSalary">Gross Monthly Salary</label><div class="hr-input-wrap"><span class="hr-prefix" id="currPrefix"></span><input class="hr-f-input" type="number" id="grossSalary" placeholder="e.g. 500000" inputmode="numeric"></div></div>
-<div class="hr-field"><label class="hr-f-label" for="basicSalary">Basic Salary (if known) (optional)</label><div class="hr-input-wrap"><span class="hr-prefix" id="currPrefix"></span><input class="hr-f-input" type="number" id="basicSalary" placeholder="Leave blank for default" inputmode="numeric"></div></div>
+<div class="hr-field"><label class="hr-f-label" for="grossSalary">Gross Monthly Salary</label><div class="hr-input-wrap"><span class="hr-prefix" data-curr-prefix></span><input class="hr-f-input" type="number" id="grossSalary" placeholder="e.g. 500000" inputmode="numeric"></div></div>
+<div class="hr-field"><label class="hr-f-label" for="basicSalary">Basic Salary (if known) (optional)</label><div class="hr-input-wrap"><span class="hr-prefix" data-curr-prefix></span><input class="hr-f-input" type="number" id="basicSalary" placeholder="Leave blank for default" inputmode="numeric"></div></div>
 </div>
 <button class="hr-calc-btn" id="calcBtn" type="button">Calculate</button>
 </div></div>
@@ -61,7 +61,7 @@ var CC='ST';
 var E=window.AfroTools.HREngine;
 function fv(id){var el=document.getElementById(id);return el?parseFloat(el.value)||0:0;}
 var rules=(typeof EMPLOYER_COST_RULES!=='undefined')?EMPLOYER_COST_RULES[CC]:null;
-if(rules){var p=document.getElementById('currPrefix');if(p)p.textContent=rules.symbol||'';}
+if(rules){var ps=document.querySelectorAll('[data-curr-prefix]');for(var pi=0;pi<ps.length;pi++)ps[pi].textContent=rules.symbol||'';}
 document.getElementById("calcBtn").addEventListener("click",function(){
 
 var r=E.calculateEmployeeCost(CC,fv('grossSalary'),{basicSalary:fv('basicSalary')||undefined,hasFivePlusEmployees:true});
