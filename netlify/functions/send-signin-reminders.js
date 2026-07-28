@@ -1,8 +1,10 @@
 /**
  * Inactivity/sign-in reminders for AfroTools accounts.
  *
- * Sends at most once every 21 days, skips users who just received the welcome
- * email, and uses Supabase Auth last_sign_in_at as the activity source.
+ * Sends one re-engagement check-in after 30 inactive days, skips users who just
+ * received the welcome email, and uses Supabase Auth last_sign_in_at as the
+ * activity source. A user must return before any future lifecycle expansion;
+ * this function does not repeatedly email an inactive address.
  */
 const { createClient } = require('@supabase/supabase-js');
 const { getMarketingSupabaseConfig } = require('./_shared/email-marketing-config');
@@ -14,8 +16,7 @@ const SUPABASE_URL = MARKETING_SUPABASE.url;
 const SUPABASE_SERVICE_KEY = MARKETING_SUPABASE.serviceKey;
 const SITE_URL = 'https://afrotools.com';
 const BATCH_SIZE = 100;
-const INACTIVE_DAYS = 14;
-const REMINDER_COOLDOWN_DAYS = 21;
+const INACTIVE_DAYS = 30;
 const WELCOME_GRACE_DAYS = 6;
 
 exports.handler = withScheduledProof('send-signin-reminders', async function () {
@@ -93,7 +94,7 @@ exports.handler = withScheduledProof('send-signin-reminders', async function () 
 
 function eligibleByProfile(profile, now) {
   if (isWithinDays(profile.email_welcome_sent_at, now, WELCOME_GRACE_DAYS)) return false;
-  if (isWithinDays(profile.email_last_signin_reminder_at, now, REMINDER_COOLDOWN_DAYS)) return false;
+  if (profile.email_last_signin_reminder_at) return false;
   return true;
 }
 
@@ -133,7 +134,7 @@ function buildSigninReminder(profile, user, unsubscribeUrl) {
   var name = firstName(profile);
   var dashboardUrl = SITE_URL + '/dashboard/?utm_source=resend&utm_medium=email&utm_campaign=signin_reminder';
   var searchUrl = SITE_URL + '/search/?utm_source=resend&utm_medium=email&utm_campaign=signin_reminder';
-  var subject = 'Your AfroTools workspace is waiting';
+  var subject = 'Still want useful AfroTools updates?';
   var lastSeen = user.last_sign_in_at ? 'It has been a little while since your last sign-in.' : 'Your account is ready whenever you want to start.';
   var html = '<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>' +
     '<body style="margin:0;background:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#152238;">' +
@@ -148,6 +149,7 @@ function buildSigninReminder(profile, user, unsubscribeUrl) {
     '<p style="margin:0 0 14px;">' + esc(lastSeen) + '</p>' +
     '<p style="margin:0 0 14px;">A good next step is simple: open the dashboard, save the tools you use most, and keep your report trails in one place instead of starting over each time.</p>' +
     '<p style="margin:0 0 14px;">You can also search the full tool directory when you need a calculator, PDF helper, scholarship route, business tool, or country-specific page.</p>' +
+    '<p style="margin:0 0 14px;color:#475569;">This is our only inactivity check-in. We will not keep repeating it if you stay away.</p>' +
     '<p style="margin:24px 0 6px;"><a href="' + esc(dashboardUrl) + '" style="display:inline-block;background:#0f6ddf;color:#ffffff;text-decoration:none;font-weight:800;padding:12px 18px;border-radius:8px;">Open your dashboard</a></p>' +
     '<p style="margin:12px 0 0;font-size:14px;">Or ' +
     '<a href="' + esc(searchUrl) + '" style="color:#0f6ddf;text-decoration:none;font-weight:700;">find a tool</a>.</p>' +
@@ -171,7 +173,18 @@ function buildSigninReminder(profile, user, unsubscribeUrl) {
   ];
   if (unsubscribeUrl) text.push('', 'Unsubscribe: ' + unsubscribeUrl);
 
-  return { to: profile.email, subject: subject, html: html, text: text.join('\n') };
+  return {
+    to: profile.email,
+    subject: subject,
+    html: html,
+    text: text.join('\n'),
+    marketing: true,
+    unsubscribeUrl: unsubscribeUrl,
+    tags: [
+      { name: 'email_type', value: 'signin_reminder' },
+      { name: 'email_stream', value: 'retention' },
+    ],
+  };
 }
 
 function wait(ms) {

@@ -29,20 +29,23 @@ function textFromHtml(html) {
 function shell(title, preview, bodyHtml, ctaLabel, ctaUrl, unsubscribeUrl) {
   return '<!doctype html><html lang="en"><head><meta charset="utf-8">' +
     '<meta name="viewport" content="width=device-width,initial-scale=1">' +
+    '<meta name="color-scheme" content="light dark"><meta name="supported-color-schemes" content="light dark">' +
+    '<style>@media only screen and (max-width:620px){.email-pad{padding-left:20px!important;padding-right:20px!important}.email-cta{display:block!important;text-align:center!important}}</style>' +
     '<title>' + esc(title) + '</title></head>' +
-    '<body style="margin:0;background:#f5f7fb;font-family:-apple-system,BlinkMacSystemFont,Segoe UI,sans-serif;color:#152238;">' +
+    '<body style="margin:0;background:#f5f7fb;font-family:\'DM Sans\',Arial,sans-serif;color:#152238;">' +
     '<div style="display:none;max-height:0;overflow:hidden;">' + esc(preview) + '</div>' +
     '<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#f5f7fb;padding:24px 12px;">' +
     '<tr><td align="center"><table role="presentation" width="600" cellpadding="0" cellspacing="0" style="width:100%;max-width:600px;background:#ffffff;border:1px solid #e3eaf4;border-radius:8px;overflow:hidden;">' +
-    '<tr><td style="padding:24px 24px 18px;background:#0f172a;color:#ffffff;">' +
-    '<div style="font-size:20px;font-weight:800;letter-spacing:0;">AfroTools</div>' +
-    '<div style="font-size:13px;color:#b6c2d6;margin-top:4px;">Tools, reports, and local work trails for Africa.</div>' +
+    '<tr><td style="height:4px;background:#0f6ddf;font-size:0;line-height:0;">&nbsp;</td></tr>' +
+    '<tr><td class="email-pad" style="padding:22px 24px 18px;background:#0f172a;color:#ffffff;">' +
+    '<div style="font-size:19px;font-weight:800;letter-spacing:-.02em;">AfroTools <span style="color:#f0b429;">&#8226;</span></div>' +
+    '<div style="font-size:13px;color:#cbd5e1;margin-top:5px;">Practical tools for work and life across Africa.</div>' +
     '</td></tr>' +
-    '<tr><td style="padding:24px;font-size:15px;line-height:1.65;color:#24324a;">' +
+    '<tr><td class="email-pad" style="padding:24px;font-size:15px;line-height:1.65;color:#24324a;">' +
     bodyHtml +
-    '<p style="margin:24px 0 6px;"><a href="' + esc(ctaUrl) + '" style="display:inline-block;background:#0f6ddf;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px;">' + esc(ctaLabel) + '</a></p>' +
+    '<p style="margin:24px 0 6px;"><a class="email-cta" href="' + esc(ctaUrl) + '" style="display:inline-block;background:#0f6ddf;color:#ffffff;text-decoration:none;font-weight:700;padding:12px 18px;border-radius:8px;">' + esc(ctaLabel) + '</a></p>' +
     '</td></tr>' +
-    '<tr><td style="padding:18px 24px;background:#f8fafc;border-top:1px solid #e3eaf4;font-size:12px;line-height:1.55;color:#64748b;">' +
+    '<tr><td class="email-pad" style="padding:18px 24px;background:#f8fafc;border-top:1px solid #e3eaf4;font-size:12px;line-height:1.55;color:#64748b;">' +
     '<div>You are receiving this because you created an AfroTools account or requested a report/download.</div>' +
     (unsubscribeUrl ? '<div style="margin-top:8px;"><a href="' + esc(unsubscribeUrl) + '" style="color:#64748b;text-decoration:underline;">Unsubscribe</a> from AfroTools digest and follow-up emails.</div>' : '') +
     '</td></tr>' +
@@ -296,10 +299,18 @@ async function sendLifecycleEmail(kind, recipient) {
   if (!isEmailConfigured()) {
     return { ok: false, provider: 'resend', providerStatus: 'provider_missing', error: 'RESEND_API_KEY not configured' };
   }
-  return sendEmail(buildLifecycleMessage(kind, recipient));
+  var message = buildLifecycleMessage(kind, recipient);
+  message.marketing = true;
+  message.unsubscribeUrl = recipient.unsubscribeUrl || '';
+  message.tags = [
+    { name: 'email_type', value: kind },
+    { name: 'email_stream', value: 'lifecycle' },
+  ];
+  return sendEmail(message);
 }
 
 module.exports = {
+  buildEmailShell: shell,
   buildLifecycleMessage: buildLifecycleMessage,
   sendLifecycleEmail: sendLifecycleEmail,
 };
