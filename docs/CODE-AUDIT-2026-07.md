@@ -177,6 +177,21 @@ Issue 56 was left unresolved by the second pass because the operative instrument
 - `npm run test:paye-parity` drives all four implementations at 14 salaries against the transcribed table, then sweeps 199 salaries from 50,000 to 5,000,000 asserting no effective rate exceeds the 27.5% top marginal rate — the invariant the old code violated.
 - The protected-formula gate was satisfied with a written change record at `data/calculation-quality/reviews/eg-paye-bracket-exclusion-2026-07-28.json`, which states that no band, rate, exemption or cap moved and gives a per-field before/after for both affected golden fixtures. **It is agent-authored and should be countersigned.**
 
+---
+
+## Fourth pass — standing test failures
+
+Five tests had been red before this audit touched them. Four were real; the fifth is not a repo defect.
+
+| # | Area | Severity | Issue | Files |
+|---|---|---|---|---:|
+| 60 | seo / discoverability | med | `/ai/` linked **none** of its six flagship tools (`scholarship-finder`, `cv-builder`, `paye-calculator`, `import-duty`, `solar-roi`, `floor-planner`) in static markup — only through JS-rendered cards, so no crawler and no no-JS visitor could follow them. Collateral from `eb54f4382`, a layout commit that cut a 2,272px browse directory to shorten the post-query page; the height was the problem, not the links. Restored as one compact chip row reusing the existing `.ai-vertical-strip` pattern, not the old block. Internal links 125,379 -> 125,385. | 1 |
+| 61 | analytics | med | Three French PAYE pages (`fr/ethiopia/et-paye`, `fr/sierra-leone/sl-paye`, `fr/uganda/ug-paye`) shipped with **no analytics loader**. A `grep` for the loader finds a hit on each, which is why this looked clean — but the only occurrence is inside a JS template literal building the print/PDF document, not the page's own `<body>`. Applied via the repo's own `scripts/inject-analytics-loader.js --write`; coverage is now 10,536/10,536. | 3 |
+| 62 | tests | med | `ai-pro-monetization` hard-coded the free AI-brief ceiling as 3 and went red when `f3d8bfa47` deliberately raised it to 99 (and made Pro a real 999/day rather than uncapped). The code was right and the test was stale. Rewritten to pin the three ceilings once, then drive every gate assertion off `usage-limits.js` so a second copy of the numbers cannot drift again. Added a missing case: `team` is `-1`/uncapped, which a naive `count >= limit` would have blocked immediately. | 1 |
+| 63 | data hygiene | low | `data/ai/afro-lexicon.json` still listed `mining-license-fee` and `mining-royalty` as `knownUnrouteable` after both were registered in the router manifest, so the AI was recorded as unable to reach tools it can reach. Removed; only `tithe-calculator` remains a live gap. Note rewritten to say an entry is a live gap rather than a historical one. | 1 |
+
+**Not fixed — `health-tool-runtime-snapshot` is environmental, not a defect.** Playwright 1.59.1 defaults to `chromium_headless_shell-1217`; this container has `-1194`. The installed binary launches fine via `/opt/pw-browsers/chromium`. Deliberately **not** softened to a skip: `scripts/automation-preflight.js` already sets this repo's convention that a missing browser is a hard fail with a remediation hint, so that browser coverage is never claimed when it was not run. Making this one test skip would contradict that. It passes wherever `npx playwright install` has run.
+
 ### What this leaves open
 
 - **43 of the 47 Swahili PAYE pages carrying inline tax logic are outside the formula digest gate.** Egypt's was registered because its defect was found; the rest are absent from their tools' `routes` in `data/tool-verification.json` and nothing compares them to the engine they were translated from. The Egypt NaN shows what that costs.

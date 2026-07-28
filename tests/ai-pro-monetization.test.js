@@ -35,23 +35,40 @@ function testPlanCapabilities() {
 }
 
 function testSharedAiBriefLimits() {
-  assert.equal(usageLimits.getAiBriefsPerDay("free"), 3);
-  assert.equal(pro.PLAN_CAPABILITIES.free.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("free"));
+  // The daily ceilings live in assets/js/ai/usage-limits.js, which is the
+  // shared browser/server source of truth. Pin the values once so an
+  // accidental change is still caught, then drive the gate assertions off the
+  // module rather than off a second copy of the numbers — this test previously
+  // hard-coded free=3 and went red when the ceiling was deliberately raised to
+  // 99 in f3d8bfa47, which also made Pro a real 999/day instead of unlimited.
+  const freeLimit = usageLimits.getAiBriefsPerDay("free");
+  assert.equal(freeLimit, 99, "free daily AI briefs");
+  assert.equal(usageLimits.getAiBriefsPerDay("pro"), 999, "pro daily AI briefs");
+  assert.equal(usageLimits.getAiBriefsPerDay("team"), -1, "team is uncapped (negotiated per account)");
+
+  assert.equal(pro.PLAN_CAPABILITIES.free.aiBriefsPerDay, freeLimit);
   assert.equal(pro.PLAN_CAPABILITIES.pro.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("pro"));
   assert.equal(pro.PLAN_CAPABILITIES.team.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("team"));
 
   const underLimit = pro.evaluateFeature("ai_brief_basic", {
     currentPlan: "free",
-    usage: { date: "2026-07-13", counts: { ai_brief_basic: 2 } }
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: freeLimit - 1 } }
   });
-  assert.equal(underLimit.allowed, true);
+  assert.equal(underLimit.allowed, true, "one below the free ceiling is still allowed");
 
   const atLimit = pro.evaluateFeature("ai_brief_basic", {
     currentPlan: "free",
-    usage: { date: "2026-07-13", counts: { ai_brief_basic: 3 } }
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: freeLimit } }
   });
-  assert.equal(atLimit.allowed, false);
+  assert.equal(atLimit.allowed, false, "at the free ceiling the gate closes");
   assert.equal(atLimit.reason, "limit_reached");
+
+  // Team is uncapped (-1); a naive `count >= limit` would block it immediately.
+  const teamWellPast = pro.evaluateFeature("ai_brief_basic", {
+    currentPlan: "team",
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: 10000 } }
+  });
+  assert.equal(teamWellPast.allowed, true, "an uncapped team plan is never limit_reached");
 
   assert.equal(pro.planFromProfile({ subscription_tier: "pro" }), "pro");
 }
