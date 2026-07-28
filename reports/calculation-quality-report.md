@@ -4,8 +4,8 @@ As of: 2026-07-28
 
 ## Inventory
 
-- Total artifacts: 668
-- High risk: 516
+- Total artifacts: 669
+- High risk: 517
 - Medium risk: 81
 - Low risk: 71
 
@@ -17,7 +17,7 @@ As of: 2026-07-28
 
 ## Review backlog
 
-- High-risk effective dates requiring review: 197
+- High-risk effective dates requiring review: 198
 - Medium-risk effective dates requiring review: 0
 - High-risk sources requiring review: 0
 - Medium-risk sources requiring review: 25
@@ -38,6 +38,6 @@ As of: 2026-07-28
 ## Findings
 
 - WARNING CURRENCY_OVERRIDE_REVIEW_REQUIRED formula-registry: 3 formula currency override remains explicitly review-required.
-- WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 197 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
+- WARNING EFFECTIVE_DATE_REVIEW_REQUIRED formula-registry: 198 high-risk and 0 medium-risk formula records have unknown statutory effective dates; they remain explicitly review-required.
 - WARNING SOURCE_REVIEW_REQUIRED formula-registry: 0 high-risk and 25 medium-risk formula records still require authoritative-source review.
 - WARNING STALE_EXTERNAL_DATA forex-live-rates: Stale exchange-rate estimate
