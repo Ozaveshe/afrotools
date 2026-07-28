@@ -37,6 +37,7 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
   var sb = createClient(SUPABASE_URL, SUPABASE_SERVICE_KEY);
 
   var now = new Date();
+  var currentMonthStart = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), 1));
   var lastMonth = new Date(now.getFullYear(), now.getMonth() - 1, 1);
   var lastMonthEnd = new Date(now.getFullYear(), now.getMonth(), 0, 23, 59, 59);
   var monthName = MONTH_NAMES[now.getMonth()];
@@ -44,17 +45,19 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
   var lastMonthName = MONTH_NAMES[lastMonth.getMonth()];
 
   var sent = 0;
+  var skipped = 0;
   var errors = 0;
   var offset = 0;
   var hasMore = true;
 
   while (hasMore) {
-    // Fetch batch of opted-in users. They do not need full onboarding to get a
-    // useful starter digest.
+    // Fetch opted-in users who have reached an activity milestone. A monthly
+    // digest is useful only when there is real prior-month activity to report.
     var { data: users, error: fetchErr } = await sb
       .from('profiles')
-      .select('id, email, name, country_code, currency, email_unsubscribe_token')
+      .select('id, email, name, country_code, currency, email_unsubscribe_token, email_last_digest_at, email_activity_milestone_sent_at')
       .eq('email_digest_enabled', true)
+      .not('email_activity_milestone_sent_at', 'is', null)
       .range(offset, offset + BATCH_SIZE - 1)
       .order('id');
 
@@ -72,6 +75,11 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
       var user = users[i];
 
       try {
+        if (user.email_last_digest_at && new Date(user.email_last_digest_at) >= currentMonthStart) {
+          skipped++;
+          continue;
+        }
+
         var email = user.email;
         if (!email) {
           var { data: authUser } = await sb.auth.admin.getUserById(user.id);
@@ -115,21 +123,26 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
 
         var displayName = (user.name || '').split(' ')[0] || 'there';
         var hasActivity = calcs && calcs.length > 0;
+        if (!hasActivity) {
+          skipped++;
+          continue;
+        }
         var unsubUrl = 'https://afrotools.com/api/email/unsubscribe?token=' + user.email_unsubscribe_token;
 
-        var html = hasActivity
-          ? buildDigestEmail(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl)
-          : buildGetStartedEmail(displayName, monthName, year, unsubUrl);
-
-        var text = hasActivity
-          ? buildDigestText(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl)
-          : buildGetStartedText(displayName, monthName, year, unsubUrl);
+        var html = buildDigestEmail(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl);
+        var text = buildDigestText(displayName, monthName, year, lastMonthName, calcs, fxData, benchmarkData, unsubUrl);
 
         var res = await sendEmail({
           to: email,
           subject: 'Your ' + monthName + ' ' + year + ' Financial Summary - AfroTools',
           html: html,
           text: text,
+          marketing: true,
+          unsubscribeUrl: unsubUrl,
+          tags: [
+            { name: 'email_type', value: 'monthly_activity_digest' },
+            { name: 'email_stream', value: 'digest' },
+          ],
         });
 
         if (res.ok) {
@@ -156,8 +169,8 @@ exports.handler = withScheduledProof('send-monthly-digest', async function (even
     }
   }
 
-  console.log('[digest] Done: ' + sent + ' sent, ' + errors + ' errors');
-  return { statusCode: 200, body: 'Sent: ' + sent + ', Errors: ' + errors };
+  console.log('[digest] Done: ' + sent + ' sent, ' + skipped + ' skipped, ' + errors + ' errors');
+  return { statusCode: 200, body: 'Sent: ' + sent + ', Skipped: ' + skipped + ', Errors: ' + errors };
 });
 
 // ─── HTML Email Builder (with activity) ───
@@ -218,22 +231,6 @@ function buildDigestEmail(name, monthName, year, lastMonthName, calcs, fxData, b
 }
 
 // ─── HTML Email Builder (no activity — "Get Started") ───
-
-function buildGetStartedEmail(name, monthName, year, unsubUrl) {
-  return emailShell(
-    'Your ' + monthName + ' ' + year + ' Summary',
-    'Hi ' + esc(name) + ',',
-    '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:14px;color:#475569;line-height:1.6;">You haven\'t used any tools yet this month. Here are some great ones to get started:</div>' +
-    '</td></tr>' +
-    '<tr><td style="padding:0 24px 24px;">' +
-      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/nigeria/ng-salary-tax.html" style="color:#0062CC;text-decoration:none;">Nigeria PAYE Calculator</a> \u2014 know your take-home</div>' +
-      '<div style="font-size:14px;color:#1e293b;margin-bottom:6px;">\u2022 <a href="https://afrotools.com/tools/savings-goal/" style="color:#0062CC;text-decoration:none;">Savings Goal Calculator</a> \u2014 set a target</div>' +
-      '<div style="font-size:14px;color:#1e293b;">\u2022 <a href="https://afrotools.com/crypto/" style="color:#0062CC;text-decoration:none;">Crypto Dashboard</a> \u2014 track your portfolio</div>' +
-    '</td></tr>',
-    unsubUrl
-  );
-}
 
 // ─── Shared email shell ───
 
@@ -307,24 +304,6 @@ function buildDigestText(name, monthName, year, lastMonthName, calcs, fxData, be
   lines.push('---');
   lines.push('Unsubscribe: ' + unsubUrl);
   return lines.join('\n');
-}
-
-function buildGetStartedText(name, monthName, year, unsubUrl) {
-  return [
-    'AFROTOOLS - Your ' + monthName + ' ' + year + ' Summary',
-    '',
-    'Hi ' + name + ',',
-    '',
-    "You haven't used any tools yet this month. Try these:",
-    '- Nigeria PAYE Calculator: https://afrotools.com/nigeria/ng-salary-tax.html',
-    '- Savings Goal Calculator: https://afrotools.com/tools/savings-goal/',
-    '- Crypto Dashboard: https://afrotools.com/crypto/',
-    '',
-    'Open your dashboard: https://afrotools.com/dashboard/',
-    '',
-    '---',
-    'Unsubscribe: ' + unsubUrl,
-  ].join('\n');
 }
 
 function esc(str) {
