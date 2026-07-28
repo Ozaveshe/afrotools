@@ -1,4 +1,4 @@
-# Why 21 engine artifacts are built, shipped, and loaded by nothing
+# Why 21 engine artifacts were built, shipped, and loaded by nothing
 
 Research note, July 2026. Written during the code audit after the sweep found
 16 engines with no consumer; the real figure is 21.
@@ -131,16 +131,59 @@ as long as two implementations of the same tax exist with no test tying them
 together — which is an argument for deleting the unused copy, not for keeping it
 as a reference.
 
-## Recommendation
+## What was actually removed, and what the removal found
 
-Remove the 21 artifacts and their sources, and drop the 17 registry entries with
-them. The evidence for each is a named, currently-loaded successor, and
-`git` retains everything.
+The recommendation above was to delete all 21. Checking each one against the
+test suite before deleting cut that to 15, and the correction matters.
 
-The one item worth a second look before deletion is `engines/staff-cost-engine.js`
-(28 KB) versus `engines/staff-cost-planner.js` (3.4 KB): the live file is an
-order of magnitude smaller, so confirm the planner covers what the page needs
-rather than assuming the size difference is dead weight.
+**Six are not dead code.** They load in no page, but a test or a generator loads
+them directly:
+
+| Kept | Consumer | Why it matters |
+|---|---|---|
+| `engines/payslip-engine.js` | `tests/payroll-backend.test.js` | Pins Kenya PAYE 19,308.35 with SHIF and AHL deducted, Ghana capped SSNIT 3,795, South Africa 11,075.58 |
+| `engines/staff-cost-engine.js` | `tests/payroll-backend.test.js` | Pins Kenya employer cost 7,500 and Ghana 8,970 |
+| `engines/visa-checker-engine.js` | `scripts/gen-visa.js` | Page generator input |
+| `assets/js/engines/eg-paye.js` | `tests/run.js` | Egypt PAYE suite, part of 218 passing assertions |
+| `assets/js/engines/tz-paye.js` | `tests/run.js` | Tanzania PAYE suite |
+| `assets/js/engines/remittance-v2.js` | `scripts/build-ai-tool-context.js` | AI tool-context input |
+
+Deleting `payslip-engine.js` and `staff-cost-engine.js` would have removed five
+assertions pinning the exact Kenya AHL and SHIF figures that
+`.claude/rules/salary-tax.md` exists because of. "No page loads it" and "nothing
+uses it" are different claims, and `scripts/audit-unused-engines.js` now reports
+them separately for that reason.
+
+**Fourteen were removed** — artifact and source both — with no consumer of any
+kind: `afroideas`, `afrorates`, `business-insurance`, `claim-tracker`,
+`creator-desk`, `creator-kit`, `crop-insurance-calc`, `health-contribution`,
+`insurance-fraud-checker`, `marine-insurance`, `microinsurance`,
+`motor-third-party`, `tva`, `workers-comp`. Their 14 protected formula-registry
+entries went with them: 356 → 345 formulas, 668 → 653 tracked artifacts.
+
+**`solar-roi` was fixed rather than deleted.** The duplicate turned out to be
+the wrong way round from what the recommendation assumed.
+`engines/src/solar-roi-engine.js` is the source of *both* copies, but
+`scripts/minify.js` only wired it to `engines/solar-roi-engine.js` — the copy
+nothing loads. The live file under `assets/js/engines/`, which 110 pages and
+four test suites use, was hand-committed with **no build link at all**. Deleting
+the orphan would simply have regenerated it, and deleting the source would have
+orphaned the live file.
+
+`minify.js` now carries an output override so that source builds directly to
+`assets/js/engines/solar-roi-engine.js`, and the unused copy is gone. Output is
+byte-identical (md5 `d159370b…` unchanged), the two copies can no longer drift,
+and the registry is down to one entry for one calculator instead of two.
+
+**Result: 0 engine artifacts with no consumer.**
+
+## Still worth knowing
+
+Egypt and Tanzania now have three implementations of the same PAYE: the page's
+inline logic, `assets/js/engines/{eg,tz}-paye.js`, and
+`netlify/functions/_engines/{eg,tz}-paye.js`. The frontend engine and the page
+were compared by hand above and agree today, but nothing in the build enforces
+that. A test asserting the three agree would close it for good.
 
 ## How to re-check this
 

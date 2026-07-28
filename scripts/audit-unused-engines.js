@@ -109,10 +109,50 @@ function loadProtectedFormulas() {
   } catch { return new Map(); }
 }
 
+
+/**
+ * Engines a test or a generator loads directly. "No page loads it" and "nothing
+ * uses it" are different claims, and conflating them is how you delete a file
+ * that pins the Kenya AHL figures. tests/payroll-backend.test.js loads
+ * payslip-engine and staff-cost-engine by path; tests/run.js drives eg-paye and
+ * tz-paye; scripts/gen-visa.js reads visa-checker-engine.
+ */
+function collectNonPageConsumers() {
+  const consumers = new Map();
+  const stack = [path.join(ROOT, 'tests'), path.join(ROOT, 'scripts')];
+  while (stack.length) {
+    const dir = stack.pop();
+    let entries;
+    try { entries = fs.readdirSync(dir, { withFileTypes: true }); } catch { continue; }
+    for (const entry of entries) {
+      if (SKIP_DIRS.has(entry.name)) continue;
+      const full = path.join(dir, entry.name);
+      if (entry.isDirectory()) { stack.push(full); continue; }
+      if (!/\.(js|mjs)$/.test(entry.name)) continue;
+      const rel = path.relative(ROOT, full).replace(/\\/g, '/');
+      if (rel === 'scripts/audit-unused-engines.js') continue;
+      const text = fs.readFileSync(full, 'utf8');
+      for (const m of text.matchAll(/(?:engines\/[A-Za-z0-9._-]+\.js)|(?:["']([a-z0-9-]+\.js)["'])/g)) {
+        const hit = m[0].replace(/["']/g, '');
+        if (!hit.endsWith('.js')) continue;
+        for (const dir2 of ENGINE_DIRS) {
+          const candidate = hit.includes('/') ? hit : `${dir2}/${hit}`;
+          if (fs.existsSync(path.join(ROOT, candidate))) {
+            if (!consumers.has(candidate)) consumers.set(candidate, new Set());
+            consumers.get(candidate).add(rel);
+          }
+        }
+      }
+    }
+  }
+  return consumers;
+}
+
 function main() {
   const { loaded, pageCount } = collectLoaded();
   for (const src of collectConfiguredEngineSrc()) loaded.add(src);
   const protectedByPath = loadProtectedFormulas();
+  const nonPage = collectNonPageConsumers();
 
   const report = { pageCount, directories: {}, unused: [], protectedUnused: [], bytes: 0 };
 
@@ -126,7 +166,8 @@ function main() {
       const size = fs.statSync(path.join(ROOT, rel)).size;
       report.bytes += size;
       const formula = protectedByPath.get(rel);
-      report.unused.push({ path: rel, bytes: size, formulaId: formula ? formula.id : null, riskLevel: formula ? formula.riskLevel : null });
+      const consumers = [...(nonPage.get(rel) || [])].sort();
+      report.unused.push({ path: rel, bytes: size, formulaId: formula ? formula.id : null, riskLevel: formula ? formula.riskLevel : null, consumers });
       if (formula) report.protectedUnused.push({ path: rel, id: formula.id, riskLevel: formula.riskLevel });
     }
   }
@@ -137,15 +178,30 @@ function main() {
   for (const [dir, counts] of Object.entries(report.directories)) {
     console.log(`  ${dir}: ${counts.total} artifact(s), ${counts.unused} loaded by no page`);
   }
-  console.log(`\nShipped but never loaded: ${report.unused.length} file(s), ${(report.bytes / 1024).toFixed(1)} KB`);
-  for (const entry of report.unused) {
-    const tag = entry.formulaId ? `  [protected formula: ${entry.riskLevel}]` : '';
-    console.log(`  ${entry.path.padEnd(46)} ${String(entry.bytes).padStart(6)} B${tag}`);
+  const orphans = report.unused.filter((e) => !e.consumers.length);
+  const testOnly = report.unused.filter((e) => e.consumers.length);
+
+  console.log(`\nLoaded by no page: ${report.unused.length} file(s), ${(report.bytes / 1024).toFixed(1)} KB`);
+
+  console.log(`\n  Test- or generator-backed (${testOnly.length}) — NOT dead code:`);
+  for (const entry of testOnly) {
+    const tag = entry.formulaId ? ` [formula: ${entry.riskLevel}]` : '';
+    console.log(`    ${entry.path.padEnd(44)} ${String(entry.bytes).padStart(6)} B${tag}`);
+    console.log(`      used by: ${entry.consumers.join(', ')}`);
   }
-  if (report.protectedUnused.length) {
-    console.log(`\n${report.protectedUnused.length} of them carry a protected formula-registry entry.`);
-    console.log('Those inflate the registry coverage count and cost a written change');
-    console.log('record on every edit, for code no user can reach.');
+
+  console.log(`\n  No consumer anywhere (${orphans.length}) — safe to remove:`);
+  if (!orphans.length) console.log('    none');
+  for (const entry of orphans) {
+    const tag = entry.formulaId ? ` [formula: ${entry.riskLevel}]` : '';
+    console.log(`    ${entry.path.padEnd(44)} ${String(entry.bytes).padStart(6)} B${tag}`);
+  }
+
+  const orphanProtected = orphans.filter((e) => e.formulaId).length;
+  if (orphanProtected) {
+    console.log(`\n${orphanProtected} orphan(s) carry a protected formula-registry entry, which`);
+    console.log('inflates the registry coverage count and costs a written change record');
+    console.log('on every edit, for code no user can reach.');
   }
 }
 
