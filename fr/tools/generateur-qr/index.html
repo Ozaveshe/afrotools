@@ -28,7 +28,7 @@
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
 <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js" defer></script>
+<script src="/assets/vendor/qrcode/qrcode.min.js"></script>
 <style>
   :root { --qr-blue:#2563eb; --qr-ink:#111827; --qr-soft:#f5f7fb; --qr-line:#dbe4f0; }
   body { background:#f8fafc; color:var(--qr-ink); font-family:"DM Sans", system-ui, sans-serif; }
@@ -203,7 +203,7 @@
           <output id="qrStatus" aria-live="polite">Résultat prêt après génération. Aucun texte privé n'est place dans l URL.</output>
           <div class="qr-actions">
             <button class="qr-btn" type="button" id="downloadPng">Télécharger PNG</button>
-            <a class="qr-btn qr-btn--ghost" href="/fr/tools/qr-generator/">Outil anglais complet</a>
+            <a class="qr-btn qr-btn--ghost" href="/tools/qr-generator/" hreflang="en">Comparer la version anglaise</a>
           </div>
           <div class="qr-mini">
             <div><strong>Contraste</strong><span>Gardez un code fonce sur fond clair.</span></div>
@@ -236,7 +236,7 @@
       </section>
 
       <section class="qr-note">
-        <h2>Batch workflow</h2>
+        <h2>Création en série</h2>
         <p>Pour plusieurs affiches, gardez une queue de liens dans un document, créez un code par page, puis nommez les fichiers avec le lieu et la date. Exemple: <strong>menu-lagos-juillet.png</strong>, <strong>wifi-salon-accra.png</strong>, <strong>contact-kigali-event.png</strong>.</p>
       </section>
 
@@ -256,8 +256,8 @@
         <p>Oui, mais gardez-le petit. Un logo trop grand peut casser le scan. Vérifiez le résultat avec plusieurs applications camera.</p>
       </details>
       <details class="qr-note">
-        <summary>Pourquoi garder une version anglaise ?</summary>
-        <p>La page anglaise reste la route principale avec les variantes et liens historiques. Cette page française donne maintenant une surface locale utile et renvoie vers l'outil complet si vous en avez besoin.</p>
+        <summary>Le QR code est-il généré localement ?</summary>
+        <p>Oui. Le code est créé dans votre navigateur et son contenu n'est envoyé à aucun serveur AfroTools.</p>
       </details>
     </div>
   </section>
@@ -336,7 +336,7 @@
     }
     host.innerHTML = '';
     if (!window.QRCode) {
-      host.innerHTML = '<p class="qr-empty">La librairie QR externe n est pas chargee. Copiez le contenu ou ouvrez l outil anglais complet.</p>';
+      host.innerHTML = '<p class="qr-empty">Le module QR local n est pas charge. Copiez le contenu et rechargez la page pour réessayer.</p>';
       status.textContent = 'Apercu QR indisponible, mais le contenu est pret a copier.';
       return;
     }
