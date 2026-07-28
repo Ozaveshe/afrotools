@@ -56,7 +56,7 @@ for (const id of APP_IDS) {
       await expect(editable).toHaveValue(value);
       await editable.press('Tab');
     } else {
-      const control = page.locator('button:not([disabled]):visible, a[href]:visible').first();
+      const control = page.getByRole('button', { name: 'Start task' });
       await expect(control).toBeVisible();
       await control.focus();
       await expect(control).toBeFocused();

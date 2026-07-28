@@ -110,6 +110,12 @@
           var previousBehavior = root.style.scrollBehavior;
           root.style.scrollBehavior = "auto";
           window.scrollTo(0, card.getBoundingClientRect().top + window.scrollY - 8);
+          var cookieConsent = document.getElementById("afro-cookie-consent");
+          var method = card.querySelector(".mining-method");
+          if (cookieConsent && method) {
+            var overlap = method.getBoundingClientRect().bottom - cookieConsent.getBoundingClientRect().top + 8;
+            if (overlap > 0) window.scrollBy(0, overlap);
+          }
           root.style.scrollBehavior = previousBehavior;
         }
         output.focus({ preventScroll:true });

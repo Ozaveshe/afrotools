@@ -68,10 +68,18 @@ test("English worksheet is deterministic, accessible and mobile-overlay safe", a
     !/^https:\/\/fonts\.googleapis\.com\/css2\?family=DM\+Sans/.test(url)
     // Shared navbar country selector renders its default Nigeria flag with Twemoji.
     && !/^https:\/\/cdn\.jsdelivr\.net\/gh\/twitter\/twemoji@14\.0\.2\/assets\/svg\/[a-f0-9-]+\.svg$/.test(url)
+    // Shared consent-aware analytics may load without receiving worksheet fields.
+    && !["www.googletagmanager.com", "www.google-analytics.com", "pagead2.googlesyndication.com"]
+      .includes(new URL(url).hostname)
   );
   expect(unexpectedExternal).toEqual([]);
   expect(external.some(url => /coingecko|chart|crypto-data/i.test(url))).toBeFalsy();
-  expect(toolInputRequests).toEqual([]);
+  const analyticsHosts = ["www.google-analytics.com", "pagead2.googlesyndication.com"];
+  expect(toolInputRequests.filter(request => !analyticsHosts.includes(new URL(request.url).hostname))).toEqual([]);
+  expect(toolInputRequests.every(request =>
+    request.body === null &&
+    !/grossCoinPerDay|coinPrice|powerWatts|electricityRate|poolFeePercent|hardwareCost|BTC/i.test(request.url)
+  )).toBe(true);
 });
 
 test("French route is native parity and unsafe inputs fail closed", async ({ page }) => {

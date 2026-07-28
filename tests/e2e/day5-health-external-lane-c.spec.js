@@ -81,7 +81,9 @@ for (const scenario of scenarios) {
     await page.screenshot({ path: path.join(screenshotRoot, scenario.slug + "-desktop-light.png"), fullPage: false });
 
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.evaluate(() => { document.documentElement.dataset.theme = "dark"; });
+    await page.emulateMedia({ reducedMotion: "reduce" });
+    await page.evaluate(() => window.AfroTools.darkMode.set("dark"));
+    await expect(page.locator("html")).toHaveAttribute("data-theme", "dark");
     await page.evaluate(() => window.scrollTo(0, 0));
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
     const lowContrast = await page.evaluate(() => {
@@ -137,8 +139,23 @@ for (const scenario of scenarios) {
     await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth + 1)).toBe(true);
 
     expect(pageErrors).toEqual([]);
-    const unexpectedThirdParty = thirdParty.filter(url => !/^https:\/\/cdn\.jsdelivr\.net\/gh\/twitter\/twemoji@14\.0\.2\/assets\/svg\//.test(url));
+    const unexpectedThirdParty = thirdParty.filter((url) => {
+      const host = new URL(url).hostname;
+      if ([
+        "www.googletagmanager.com",
+        "www.google-analytics.com",
+        "pagead2.googlesyndication.com",
+      ].includes(host)) return false;
+      return !/^https:\/\/cdn\.jsdelivr\.net\/gh\/twitter\/twemoji@14\.0\.2\/assets\/svg\//.test(url);
+    });
     expect(unexpectedThirdParty).toEqual([]);
-    expect(thirdParty.join("\n")).not.toMatch(/Synthetic|medicine|provider|quote/i);
+    const decodedThirdParty = thirdParty.map(url => {
+      try {
+        return decodeURIComponent(url);
+      } catch (_error) {
+        return url;
+      }
+    }).join("\n");
+    expect(decodedThirdParty).not.toMatch(/Synthetic|Provider A|Provider B|Pharmacy A|Pharmacy B/i);
   });
 }

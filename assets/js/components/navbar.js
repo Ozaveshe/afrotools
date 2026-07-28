@@ -1836,6 +1836,20 @@
 
       let _activeIdx = -1;
 
+      const normalizeDiscoveryHref = (value) => {
+        let href = String(value || '').trim();
+        if (!href) return '';
+        try {
+          href = new URL(href, window.location.origin).pathname;
+        } catch {
+          href = href.split(/[?#]/, 1)[0];
+        }
+        if (!href.startsWith('/')) href = '/tools/' + href.replace(/^\/+/, '');
+        href = href.replace(/\/index\.html?$/i, '/').replace(/\/{2,}/g, '/');
+        if (!/\.[a-z0-9]+$/i.test(href) && !href.endsWith('/')) href += '/';
+        return href;
+      };
+
       // Swahili discovery fallback: current pages may load an older minified registry,
       // so map English source rows to verified /sw/ pages until the registry bundle is refreshed.
 

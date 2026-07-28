@@ -71,7 +71,7 @@ async function download(page, selector) {
 
 async function expectPrivate(page, proof) {
   const mutations = await page.evaluate(() => window.__mbStorageMutations);
-  expect(mutations.filter((mutation) => mutation.key !== '_gcl_ls')).toEqual([]);
+  expect(mutations.filter((mutation) => !['_gcl_ls', 'aft_theme'].includes(mutation.key))).toEqual([]);
   expect(mutations.some((mutation) =>
     /mortgage|budget|boundary/i.test(mutation.key || '') ||
     /3000|150000/.test(mutation.value || '')

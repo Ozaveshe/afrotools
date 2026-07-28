@@ -33,12 +33,11 @@ Each app receives this checklist independently; a shared component pass does not
 
 ## Current director snapshot
 
-Snapshot date: 2026-07-27
+Snapshot date: 2026-07-28
 
-Current release branch: `codex/free-app-live-ledger`
-Current `main`: `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
-Current production commit: `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
-Current production deploy: `6a676e650955d50008251407` (`ready`, published 2026-07-27 14:51 UTC)
+Current release branch: `codex/free-app-reconciliation-days4-15`
+Verified `origin/main` baseline: `f3d8bfa4`
+Current production identity: pending exact-SHA verification after this grouped release; no live status is inferred from an older deploy
 Day 6-11 release: [PR #54](https://github.com/Ozaveshe/afrotools/pull/54), merged as `7588a36ecd70d2c283aa75c4372225b6fa14287a`
 Localized redirect-precedence correction: [PR #55](https://github.com/Ozaveshe/afrotools/pull/55), merged as current production `134271ea98b71c655fd4ee0358bd1012a52a4f0b`
 Day 3 release: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37), source-validation head `78af183e52f23cebaa4e6ee79ddce2398781c983`, merged as `d3665833ced779d3542eb19ae59ff99b29677b0f`
@@ -46,8 +45,8 @@ Day 3 release: [PR #37](https://github.com/Ozaveshe/afrotools/pull/37), source-v
 | Measure | Current evidence-backed count |
 | --- | ---: |
 | Categories at strict `LIVE PASS` | 9: all three categories on Days 1, 2 and 3 |
-| Categories with accepted app-level work through Day 11 | 32: 9 strict live; all 23 Day 4–11 categories are CI-green and deployed at the exact current production SHA, with final representative live workflow replay in progress |
-| Current English registry truth | 1,262 live/new English rows; 2,612 weighted public experiences. The 2,600+ measure is weighted expansion, not an English-app count |
+| Categories with accepted app-level work through Day 11 | 32: 9 strict live from Days 1–3; all 23 Day 4–11 categories have been independently re-proved locally on the current release candidate and passed the grouped deploy-artifact gate |
+| Current English registry truth | 1,258 canonical published English tools; 2,612 expanded live experiences. The 2,600+ measure is expansion weighting, not a count of separate English apps |
 | English canonical category rows in the nine completed categories | 278: 77 across Days 1-2 plus 132 Finance, 6 HR and 63 VAT/business-tax rows; Paystack appears in both Finance and VAT, so this category sum is one higher than the unique-app count |
 | Day 3 Finance apps accepted | 132 of 132 current free canonical hrefs; the raw 133-row Finance registry includes the already consolidated Crypto Tax alias, Paystack cross-credits from its one strict VAT acceptance without duplicate app credit, and the former Tithe & Offering Finance alias now redirects to the single Religious & Cultural canonical |
 | Day 3 VAT apps with strict accepted rows | 63 of 63 strict; Burundi VAT closed the carried gap across native English, French and Swahili routes |
@@ -71,18 +70,18 @@ Live browser verification returned HTTP 200, no document overflow and no applica
 | 1 | Diaspora; Career & Development; Security & Safety | LIVE PASS |
 | 2 | Personal Finance; Small Business & SME; Fintech & Banking | LIVE PASS |
 | 3 | Finance, Tax & Market Data; HR & Payroll; VAT & Business Tax | LIVE PASS: 3/3 categories deployed and live-verified |
-| 4 | Document & PDF; Image & Design; Developer Tools | ARTIFACT PASS: 82/82 accepted and present in production; strict green-CI/full-live replay proof remains incomplete |
-| 5 | Education; Health & Wellness; Language & Translation | ARTIFACT PASS: 95/95 accepted and present in production; exact-SHA preview and green-CI proof remain incomplete |
-| 6 | Agriculture; Transport & Logistics; Trade & Import | DEPLOYED LOCAL PASS: 487/487 physical canonical hrefs and all three hubs accepted; exact-SHA CI, preview and production gates passed; representative live app replay in progress |
-| 7 | Government & Civic; Insurance; Mortgage & Property | DEPLOYED LOCAL PASS: 59/59 hub-linked canonical apps, 60 routes including the Public Holidays adjunct, and 473/473 expanded experiences accepted; final live app replay in progress |
-| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | DEPLOYED LOCAL PASS: 45/45 category-owned apps and all 46 hub-linked routes accepted; final live app replay in progress |
-| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | DEPLOYED LOCAL PASS: 70 canonical destinations and 103/103 English surfaces accepted; final live app replay in progress |
-| 10 | Uniquely African; Religious & Cultural; Data & Productivity | DEPLOYED LOCAL PASS: 69/69 canonical apps, 84/84 expanded experiences and all three hubs accepted; final live app replay in progress |
-| 11 | Telecom & Mobile; Energy & Utilities; directory/missed-route reconciliation | DEPLOYED LOCAL PASS: 34/34 owners and 301/301 physical routes accepted; final live app replay in progress |
-| 12 | 320/360/375/768 px regression; keyboard; dark-mode closure | IN REVIEW: exact-production representative hub/app replay across all 23 Day 4–11 categories |
-| 13 | SEO; structured data; hreflang; PDF/export; function failure paths | QUEUED |
-| 14 | Build; dist; security; performance; offline; P0/P1 closure | QUEUED |
-| 15 | Final ledger; residual risks; paid-app handoff | QUEUED |
+| 4 | Document & PDF; Image & Design; Developer Tools | ARTIFACT PASS: 88/88 grouped hub/app browser checks passed across 82 canonical apps and three hubs/inventories |
+| 5 | Education; Health & Wellness; Language & Translation | ARTIFACT PASS: Language 31/31, Health 35/35 maintained browser checks, Education 263/263 effective app routes plus its hub, and Education engine/static 113/113 |
+| 6 | Agriculture; Transport & Logistics; Trade & Import | ARTIFACT PASS: 487/487 physical routes and all 16 maintained family workflows passed |
+| 7 | Government & Civic; Insurance; Mortgage & Property | ARTIFACT PASS: Government/Property 51/51 effective routes, Insurance 323/323, and visa/work-permit 108/108; carried government source-state warnings remain disclosed |
+| 8 | Engineering & Construction; Climate & Environment; Mining & Extractives | ARTIFACT PASS: all 46 hub-real routes and 3/3 Crypto Mining workflows passed; Mining registry ownership remains a recorded ledger gap |
+| 9 | Creative Economy; Sports & Entertainment; Travel & Tourism | ARTIFACT PASS: 165/165 effective browser surfaces passed; three media apps retain a real-device codec proof boundary |
+| 10 | Uniquely African; Religious & Cultural; Data & Productivity | ARTIFACT PASS: all 72 category workflows passed across 69 canonical apps and 84 expanded experiences |
+| 11 | Telecom & Mobile; Energy & Utilities; directory/missed-route reconciliation | ARTIFACT PASS: all 301 routes and all 34 owner workflows passed; dataset freshness/source gaps remain disclosed |
+| 12 | 320/360/375/768 px regression; keyboard; dark-mode closure | LOCAL PASS: scoped responsive/dark/accessibility closure tests passed; exact production replay follows the grouped deploy |
+| 13 | SEO; structured data; hreflang; PDF/export; function failure paths | LOCAL PASS: links, audit, localization/hreflang, PDF/document, category-workflow, privacy/AI consent and Pro architecture gates passed |
+| 14 | Build; dist; security; performance; offline; P0/P1 closure | ARTIFACT PASS: 884/884 tests, lint, type-check, security scan, `build:deploy` and `audit:dist` passed |
+| 15 | Final ledger; residual risks; paid-app handoff | IN REVIEW: ledger and reconciliation receipt complete; CI, grouped production deploy and representative live proof pending |
 
 ### Day 12 live-closure review receipt
 
