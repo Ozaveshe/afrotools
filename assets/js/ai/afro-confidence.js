@@ -1,5 +1,5 @@
 /*
- * Afro 1.2 — routing confidence, ranking and country scoping.
+ * Afro 1.3 — routing confidence, ranking, country scoping and tool vocabulary.
  *
  * WHY THIS EXISTS
  *
@@ -937,7 +937,7 @@
   }
 
   return {
-    VERSION: "afro-1.2",
+    VERSION: "afro-1.3",
     BANDS: BANDS,
     calibrate: calibrate,
     rerank: rerank,
