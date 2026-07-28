@@ -1,0 +1,14 @@
+{
+  "reviewedBy": "Automated code audit (July 2026). Authored by the agent that made the change — countersign before relying on it.",
+  "reviewedAt": "2026-07-28",
+  "reviewedOn": "2026-07-28",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/blob/main/assets/js/lib/share-state.js",
+  "reason": "One identifier corrected on each page. No tax band, relief, threshold, statutory rate or formula was touched, and no 'Last verified' stamp was moved. These four pages called AfroTools.shareState.whatsappPartager, which does not exist. assets/js/lib/share-state.js exports exactly encode, decode, hasState, copyLink, share, whatsappShare and clearUrl; 'partager' is French for 'share', so the same translation pass that renamed prose had renamed a shared-library method reference. The call threw TypeError, so the WhatsApp share button did nothing on fr/ghana/gh-paye, fr/kenya/ke-paye, fr/nigeria/ng-salary-tax and fr/rwanda/rw-paye. Renamed to whatsappShare. The pages' own local wrapper functions keep their French names, which is internally consistent and left alone. Verified by enumerating every AfroTools.* namespace defined across assets/js, engines, data and netlify and cross-checking every call site in inline scripts: zero calls to an undefined shareState method remain. The digests moved because one identifier in the script text changed, not because any figure did.",
+  "formulaIds": [
+    "route-gh-paye-fr",
+    "route-ke-paye-fr",
+    "route-ng-paye-fr",
+    "route-rw-paye-fr"
+  ],
+  "fixtureDeltas": []
+}
