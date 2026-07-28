@@ -4,6 +4,35 @@ Baseline date: 2026-07-28
 Baseline commit: `8483eaa65e53ad3ce7d0e95e6d119830816de7cf` (`origin/main`)  
 Programme status: **0 of 32 categories accepted**
 
+## Wave 1 pre-release progress
+
+The structural inventory deliberately keeps its machine `accepted` field at
+zero until a separate evidence registry is introduced. The integration receipt
+currently records **five app workflows accepted on the review branch**, but no
+category is complete and nothing in this section is production proof:
+
+| Accepted workflow | Evidence boundary |
+|---|---|
+| French malaria testing-urgency checklist | Same accepted English safety engine; 19 focused checks and 2 mobile/dark browser workflows |
+| Senegal salary/PAYE | Seven reviewed IRPP bands through 43%, capped IPRES, 6 engine checks and 3 browser workflows |
+| Côte d’Ivoire VAT | Treatment/rate state synchronization, fail-closed evidence wording and 8 browser checks |
+| French currency converter | USD-base/stale-state validation, French CSV/source/error behavior and 8 browser checks |
+| French invoice generator | French local-only workflow, safe preview, user-entered tax, no-gate PDF and 3 browser checks |
+
+Foundation work completed on the branch:
+
+- fail-closed 1,257-row structural inventory;
+- 32/32-category French discovery with all 1,452 French registry rows;
+- 17 real French hubs and 15 French filtered-directory fallbacks;
+- source-level French JSON-LD language repair;
+- French deterministic AI routing with 1,097 mapped records, 156 unmapped and
+  five ambiguous records omitted;
+- `llms-fr.txt` with 720 verified French destinations;
+- reviewed Senegal calculation-quality and source provenance.
+
+The next category acceptance count remains **0/32** because completing five apps
+does not complete Finance, VAT, Health or Document/PDF as whole categories.
+
 ## Goal
 
 Bring the public French product to the same acceptance standard as the English free-app product:
