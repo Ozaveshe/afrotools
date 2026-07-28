@@ -107,10 +107,10 @@
     <h1>Calculateur de TVA<br><em>Burkina Faso 2026</em></h1>
     <p class="hero-sub">Passez du HT au TTC en quelques secondes pour vos devis, factures et contr&#244;les TVA. Pens&#233; pour les PME, cabinets et ind&#233;pendants qui travaillent en FCFA.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Bar&#232;me DGI 2026</span>
+      <span class="badge b-green">Estimation au taux affiché</span>
       <span class="badge b-grey">XOF &#183; Franc CFA</span>
     </div>
-    <p class="hero-meta">Derni&#232;re v&#233;rification : mars 2026 &#183; Source : DGI Burkina Faso</p>
+    <p class="hero-meta">Source officielle à confirmer avant déclaration &#183; Taux affiché : 18%</p>
   </div>
 </section>
 <div class="amendment-bar">
@@ -146,7 +146,7 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Taux de TVA</span></div>
             <div class="f-wrap">
-              <select class="f-input" id="rate" onchange="calculate()" style="cursor:pointer" aria-label="Rate">
+              <select class="f-input" id="rate" onchange="calculate()" style="cursor:pointer" aria-label="Taux de TVA">
                 <option value="0.18">18% &#8212; Taux unique</option>
               </select>
             </div>
@@ -164,10 +164,10 @@
           <div id="resContent"></div>
         </div>
         <div class="action-row">
-          <afro-email-gate tool-name="Calculateur TVA"><button type="button" class="act-btn act-pdf" onclick="exportPdf()">
+          <button type="button" class="act-btn act-pdf" onclick="exportPdf()">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             T&#233;l&#233;charger le PDF
-          </button></afro-email-gate>
+          </button>
           <button type="button" class="act-btn act-share" onclick="if(navigator.share)navigator.share({title:document.title,url:location.href}).catch(function(){});else{navigator.clipboard.writeText(location.href);alert('Lien copi\u00e9 !');}">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>
             Partager
@@ -255,17 +255,14 @@ function calculate() {
   var input = parseFloat(document.getElementById('amount').value) || 0;
   if (input <= 0) return;
   var rate = parseFloat(document.getElementById('rate').value);
-  var ht, tva, ttc;
-
-  if (MODE === 'add') {
-    ht = input;
-    tva = ht * rate;
-    ttc = ht + tva;
-  } else {
-    ttc = input;
-    ht = ttc / (1 + rate);
-    tva = ttc - ht;
-  }
+  var result = window.TVAEngine
+    ? window.TVAEngine.calculate(input, rate, MODE)
+    : (MODE === 'add'
+      ? { ht: input, tva: input * rate, ttc: input * (1 + rate) }
+      : { ht: input / (1 + rate), tva: input - (input / (1 + rate)), ttc: input });
+  var ht = result.ht;
+  var tva = result.tva;
+  var ttc = result.ttc;
 
   var ratePct = ((rate * 100) % 1 === 0 ? (rate * 100).toFixed(0) : (rate * 100).toFixed(1)) + '%';
 
@@ -329,7 +326,6 @@ document.addEventListener('DOMContentLoaded', function() { calculate(); });
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 </body>
 </html>
