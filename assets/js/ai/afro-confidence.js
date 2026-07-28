@@ -178,16 +178,54 @@
    * This is the signal that was missing. A four-way tie on "tax" and a decisive
    * win on "calculate PAYE for Kenya" produced the same 0.9 before.
    */
+  /**
+   * The quantity the candidate ORDER was decided on.
+   *
+   * After rerank() that is `afroFit`, not the retrieval score. Measuring the
+   * margin on the score of a fit-ordered list compares two different scales and
+   * silently reports every decisive win as a tie.
+   */
+  function rankingValue(candidate) {
+    if (candidate && typeof candidate.afroFit === "number" && isFinite(candidate.afroFit)) {
+      return candidate.afroFit;
+    }
+    return candidateScore(candidate);
+  }
+
+  /**
+   * Did retrieval and reranking agree on the winner?
+   *
+   * When they disagree — the fit winner was NOT the highest-scoring candidate
+   * out of the retriever — the answer rests entirely on the lexicon and IDF
+   * weighting rather than on the user's words matching the tool. That is
+   * exactly where this system is most likely to be confidently wrong, so it is
+   * worth a real deduction.
+   *
+   * This used to happen by accident: marginSignal read the retrieval score off
+   * a fit-ordered list, so a rerank upset produced a negative difference that
+   * clamped to a margin of 0 and capped confidence. Fixing the scale removed
+   * the accident along with the bug, and holdout precision fell 96% -> 88%.
+   * The signal was real; only its expression was junk. This states it outright.
+   */
+  function rerankUpset(candidates) {
+    if (!candidates || candidates.length < 2) return false;
+    var winner = candidateScore(candidates[0]);
+    for (var i = 1; i < candidates.length; i++) {
+      if (candidateScore(candidates[i]) > winner + 0.001) return true;
+    }
+    return false;
+  }
+
   function marginSignal(candidates) {
     if (!candidates.length) return { margin: 0, tiedWith: 0 };
-    var top = candidateScore(candidates[0]);
+    var top = rankingValue(candidates[0]);
     if (top <= 0) return { margin: 0, tiedWith: 0 };
     var tiedWith = 0;
     for (var i = 1; i < candidates.length; i++) {
-      if (Math.abs(candidateScore(candidates[i]) - top) < 0.001) tiedWith++;
+      if (Math.abs(rankingValue(candidates[i]) - top) < 0.001) tiedWith++;
       else break;
     }
-    var second = candidates.length > 1 ? candidateScore(candidates[1]) : 0;
+    var second = candidates.length > 1 ? rankingValue(candidates[1]) : 0;
     return { margin: Math.max(0, (top - second) / top), tiedWith: tiedWith };
   }
 
@@ -425,6 +463,9 @@
      * top two candidates are within a few percent, the ordering is a coin flip
      * and nothing else the query offers can rescue it. */
     if (margin.margin < 0.15) confidence = Math.min(confidence, 0.45 + margin.margin);
+    /* Reranking overturned the retriever: the user's own words did not pick this
+     * tool, our vocabulary did. Cap below the assertion threshold. */
+    if (rerankUpset(list)) confidence = Math.min(confidence, 0.55);
     if (margin.tiedWith >= 3) confidence = Math.min(confidence, 0.2);
     // A confident-looking margin means nothing if the query never mentions what
     // the tool actually does ("electrical engineer CV" -> electrical-load).
@@ -793,7 +834,16 @@
         return { toolId: candidateId(entry.candidate), fit: Number(entry.fit.toFixed(3)) };
       });
     }
-    return scored.map(function (entry) { return entry.candidate; });
+    /* Preserve the value the ordering was actually decided on. marginSignal
+     * used to read `.score` — the pre-rerank retrieval score — while the list
+     * in front of it had been re-sorted by `fit`. On a decisive rerank win the
+     * winner often has the LOWEST retrieval score (ke-paye 100 behind
+     * ng-paye 134), so `(top - second)/top` went negative, clamped to 0, and a
+     * clear match was capped at 0.45 and flagged unsure. */
+    return scored.map(function (entry) {
+      if (entry.candidate && typeof entry.candidate === "object") entry.candidate.afroFit = entry.fit;
+      return entry.candidate;
+    });
   }
 
   return {

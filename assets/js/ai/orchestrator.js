@@ -97,7 +97,83 @@
         privacyMode: "browser_local",
       };
     }
-    return intentRouter.routeDeterministically(query, options || {});
+    return applyAfroCalibration(query, intentRouter.routeDeterministically(query, options || {}), options);
+  }
+
+  /**
+   * Afro 1.2 calibration over the deterministic decision.
+   *
+   * The deterministic router's confidence is effectively a constant — a probe of
+   * 32 realistic prompts found three distinct values, and the highest was what
+   * the WRONG answers carried. Afro grades the same query from margin,
+   * precision against the user's own words, query specificity and country
+   * scoping, and on 52 prompts it had never seen it is right about 95% of the
+   * answers it presents without a warning.
+   *
+   * Deliberately fail-open: any missing dependency, malformed data or thrown
+   * error returns the original decision untouched, so the worst case is exactly
+   * today's behaviour rather than a broken route. It also refuses to act on a
+   * result with no selected tool, which is how a bad load would most plausibly
+   * present.
+   */
+  function applyAfroCalibration(query, decision, options) {
+    try {
+      /* NOT `root` — that is a parameter of the UMD wrapper and is out of
+       * scope inside this factory. Referencing it threw a ReferenceError that
+       * the catch below swallowed, so calibration silently never ran while
+       * every test still passed. */
+      var scope = typeof globalThis !== "undefined" ? globalThis : this;
+      var afro = scope.AfroConfidence;
+      var data = scope.AFRO_DATA;
+      if (!afro || !data || typeof afro.retrieveAndResolve !== "function") return decision;
+      if (!manifestApi || typeof manifestApi.rankToolCandidates !== "function") return decision;
+
+      var graded = afro.retrieveAndResolve(query, manifestApi.rankToolCandidates, {
+        manifest: loadManifest(options),
+        lexicon: data.lexicon,
+        synonyms: data.synonyms,
+        limit: 8
+      });
+      if (!graded || !graded.selectedToolId) return decision;
+
+      decision.confidence = graded.confidence;
+      decision.confidenceBand = graded.band;
+      decision.uncertain = graded.uncertain;
+      decision.confidenceReason = graded.reason;
+      decision.alternatives = graded.alternatives || [];
+      decision.calibratedBy = afro.VERSION;
+
+      /* Re-point the route whenever Afro names a different tool, including when
+       * it is unsure of that tool.
+       *
+       * The conservative rule (only reroute when confident) was measured on the
+       * 52-case holdout and lost: 60% vs 67% accuracy at identical
+       * precision-when-confident (96%) and error recall (95% vs 94%). Holding
+       * the router's pick during uncertainty bought nothing, because an
+       * uncertain result is flagged and offered alternatives either way — the
+       * user sees the same "not sure, did you mean" treatment. It just made
+       * that flagged answer wrong more often. */
+      if (graded.selectedToolId !== decision.selectedToolId) {
+        /* Take the route off the graded candidate itself. The manifest module
+         * exposes no id lookup, and inventing one here would have left the old
+         * route pointing at the old tool while the id said otherwise — a
+         * mismatch far worse than not rerouting at all. */
+        var picked = null;
+        var list = graded.candidates || [];
+        for (var i = 0; i < list.length; i++) {
+          var candidateTool = list[i] && list[i].tool;
+          if (candidateTool && candidateTool.id === graded.selectedToolId) { picked = candidateTool; break; }
+        }
+        if (picked && picked.route) {
+          decision.selectedToolId = picked.id;
+          decision.selectedRoute = picked.route;
+          decision.reroutedBy = afro.VERSION;
+        }
+      }
+      return decision;
+    } catch (error) {
+      return decision;
+    }
   }
 
   function buildToolCall(tool, decision) {

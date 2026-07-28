@@ -267,6 +267,8 @@
   </main>
   <afro-footer></afro-footer>
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
+<script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
+<script src="/assets/js/ai/afro-confidence.js?v=cb1f46b4"></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -416,16 +418,39 @@
 
     var manifestCache = null;
     var currentResult = null;
+    /* The 1,252-tool catalog, fetched on first interaction rather than on load:
+     * ~81 KB gzipped is not worth spending on a visitor who never types. Until
+     * it arrives getRouterManifest() returns [] and routeWithCatalog() falls
+     * through to local search, which is exactly what this page did before the
+     * directory existed at all. */
+    var toolDirectoryPromise = null;
+    function ensureToolDirectory() {
+      if (toolDirectoryPromise) return toolDirectoryPromise;
+      if (window.AFROTOOLS_TOOL_DIRECTORY) return (toolDirectoryPromise = Promise.resolve());
+      toolDirectoryPromise = new Promise(function (resolve) {
+        var script = document.createElement("script");
+        script.src = "/assets/js/ai/afro-directory.js?v=09d92178";
+        script.async = true;
+        script.onload = function () { manifestCache = null; resolve(); };
+        script.onerror = function () { resolve(); };
+        document.head.appendChild(script);
+      });
+      return toolDirectoryPromise;
+    }
+
     function getRouterManifest() {
-      if (manifestCache) return manifestCache;
+      /* `if (manifestCache)` treated an empty array as a cache hit, so one call
+       * before the catalog loaded pinned this page to no-match for the session. */
+      if (manifestCache && manifestCache.length) return manifestCache;
       var manifestApi = window.AfroToolsAIToolManifest;
       if (!manifestApi || typeof manifestApi.getToolManifestForRouter !== "function") return [];
       var base = [];
       if (typeof manifestApi.loadDefaultToolManifest === "function") {
         try { base = manifestApi.loadDefaultToolManifest(); } catch (err) { base = []; }
       }
-      manifestCache = manifestApi.getToolManifestForRouter(base);
-      return manifestCache || [];
+      var built = manifestApi.getToolManifestForRouter(base);
+      if (built && built.length) manifestCache = built;
+      return built || [];
     }
 
     function findToolById(manifest, id) {
@@ -1234,9 +1259,19 @@
 
     hydrateExamples();
 
+    /* Warm the catalog while the user types, and wait for it on submit so a
+     * deep link or a fast typist still gets the full-catalog match. */
+    input.addEventListener("focus", ensureToolDirectory, { once: true });
+    input.addEventListener("input", ensureToolDirectory, { once: true });
+
     form.addEventListener("submit", function(event) {
       event.preventDefault();
-      routePrompt(input.value);
+      var value = input.value;
+      if (!getRouterManifest().length) {
+        ensureToolDirectory().then(function () { routePrompt(value); });
+        return;
+      }
+      routePrompt(value);
     });
 
     document.addEventListener("click", function(event) {

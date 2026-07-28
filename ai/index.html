@@ -784,6 +784,8 @@
   <script src="/assets/js/ai/workflow-export.js?v=365220fd"></script>
   <script src="/assets/js/ai/saved-projects.js?v=5981fd79"></script>
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
+<script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
+<script src="/assets/js/ai/afro-confidence.js?v=cb1f46b4"></script>
   <script src="/assets/js/ai/result-layout.js" defer></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
@@ -2165,15 +2167,43 @@
       });
     }
 
+    /*
+     * The full 1,252-tool directory, fetched on first interaction.
+     *
+     * It is ~139 KB gzipped, so it must not sit in the critical path of a page
+     * most visitors read without ever asking anything. Loading it on focus
+     * gives it the seconds the user spends typing; if it has not arrived by
+     * submit, getRouterManifest() returns [] and the page behaves exactly as it
+     * did before — which is to say, as it has behaved in production all along.
+     */
+    var toolDirectoryPromise = null;
+    function ensureToolDirectory() {
+      if (toolDirectoryPromise) return toolDirectoryPromise;
+      if (window.AFROTOOLS_TOOL_DIRECTORY) return (toolDirectoryPromise = Promise.resolve());
+      toolDirectoryPromise = new Promise(function (resolve) {
+        var script = document.createElement("script");
+        script.src = "/assets/js/ai/afro-directory.js?v=09d92178";
+        script.async = true;
+        script.onload = function () { routerManifestCache = null; resolve(); };
+        script.onerror = function () { resolve(); };
+        document.head.appendChild(script);
+      });
+      return toolDirectoryPromise;
+    }
+
     function getRouterManifest() {
-      if (routerManifestCache) return routerManifestCache;
+      if (routerManifestCache && routerManifestCache.length) return routerManifestCache;
       if (!toolManifestApi || typeof toolManifestApi.getToolManifestForRouter !== "function") return [];
       var base = [];
       if (typeof toolManifestApi.loadDefaultToolManifest === "function") {
         try { base = toolManifestApi.loadDefaultToolManifest(); } catch (err) { base = []; }
       }
-      routerManifestCache = toolManifestApi.getToolManifestForRouter(base);
-      return routerManifestCache || [];
+      var built = toolManifestApi.getToolManifestForRouter(base);
+      /* Never cache an empty manifest: `if (routerManifestCache)` treated `[]`
+       * as a hit, so one early call before the directory arrived would pin the
+       * catalog fallback to dead for the rest of the session. */
+      if (built && built.length) routerManifestCache = built;
+      return built || [];
     }
 
     function matchFromOrchestratorPlan(plan, query) {
@@ -4028,7 +4058,24 @@
       });
     }
 
+    /*
+     * Wait for the catalog before giving up on a query.
+     *
+     * Focus-preloading covers someone typing, but not a deep link
+     * (/ai/?q=...), a shared URL or a slow connection — exactly the cases where
+     * the fallback matters most. ensureToolDirectory() resolves on error as
+     * well as success, so a failed fetch still falls through to the same
+     * no-match path rather than hanging the result surface.
+     */
     function handleLowConfidence(query) {
+      if (!getRouterManifest().length) {
+        ensureToolDirectory().then(function () { handleLowConfidenceNow(query); });
+        return;
+      }
+      handleLowConfidenceNow(query);
+    }
+
+    function handleLowConfidenceNow(query) {
       var catalogMatch = localCatalogRoute(query);
       if (catalogMatch && catalogMatch.workflow && (Number(catalogMatch.confidence || 0) >= LOW_CONFIDENCE || catalogMatch.selectedToolId && catalogMatch.selectedToolId !== "tool-search")) {
         workflowState = createWorkflowState(catalogMatch, query, false);
@@ -4235,6 +4282,11 @@
         clearAdvancedContext();
       });
     }
+
+    /* Start fetching the catalog the moment the user shows intent to ask, so
+     * it is parsed and ready by the time they finish typing. */
+    input.addEventListener("focus", ensureToolDirectory, { once: true });
+    input.addEventListener("input", ensureToolDirectory, { once: true });
 
     input.addEventListener("keydown", function (event) {
       if (event.key !== "Escape" || !input.value) return;

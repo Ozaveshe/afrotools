@@ -212,6 +212,50 @@ function main() {
       "a question naming no country must get the generic tool, got " + top);
   }
 
+  // --- 15. Margin must be measured on the value that ordered the list -------
+  // rerank() sorts by `fit`; marginSignal used to read `.score`. When rerank
+  // promoted a low-scoring candidate the difference went negative, clamped to a
+  // margin of 0, and a decisive match was capped at 0.45 and flagged unsure.
+  {
+    const list = [
+      { tool: { id: "alpha-tool" }, score: 100, matchedTerms: [] },
+      { tool: { id: "beta-tool" }, score: 99, matchedTerms: [] }
+    ];
+    // Simulate what rerank() leaves behind: a decisive fit win by the candidate
+    // that retrieval ranked SECOND.
+    const reranked = [
+      Object.assign({}, list[1], { afroFit: 1.8 }),
+      Object.assign({}, list[0], { afroFit: 0.6 })
+    ];
+    const graded = confidence.calibrate("a specific query about beta widgets and gadgets", reranked, { manifest });
+    assert.ok(graded.signals.margin > 0.3,
+      "margin must reflect the fit gap (1.8 vs 0.6), got " + graded.signals.margin);
+  }
+
+  // --- 16. A rerank upset must not be asserted as confident -----------------
+  // If the fit winner was NOT the retriever's top scorer, the answer rests on
+  // our vocabulary rather than the user's words. Removing the accidental cap
+  // that used to cover this cost 8 points of holdout precision, so it is now an
+  // explicit rule and must stay one.
+  {
+    const upset = [
+      { tool: { id: "beta-tool" }, score: 40, matchedTerms: [], afroFit: 1.9 },
+      { tool: { id: "alpha-tool" }, score: 180, matchedTerms: [], afroFit: 0.5 }
+    ];
+    const graded = confidence.calibrate("a long and specific query about beta widgets and gadgets", upset, { manifest });
+    assert.ok(graded.confidence <= 0.55,
+      "a rerank upset must stay below the assertion threshold, got " + graded.confidence);
+    assert.ok(graded.uncertain, "a rerank upset must be flagged uncertain");
+
+    const agree = [
+      { tool: { id: "beta-tool" }, score: 180, matchedTerms: [], afroFit: 1.9 },
+      { tool: { id: "alpha-tool" }, score: 40, matchedTerms: [], afroFit: 0.5 }
+    ];
+    const gradedAgree = confidence.calibrate("a long and specific query about beta widgets and gadgets", agree, { manifest });
+    assert.ok(gradedAgree.confidence > graded.confidence,
+      "agreement between retrieval and rerank must outrank an upset");
+  }
+
   console.log("afro-confidence tests passed (" + confidence.VERSION + ")");
 }
 
