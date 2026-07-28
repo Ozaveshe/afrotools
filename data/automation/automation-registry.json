@@ -209,7 +209,7 @@
       "runner": "mixed",
       "production_required": true,
       "expected_schedule": "FREQ=DAILY;BYHOUR=7;BYMINUTE=15;BYSECOND=0",
-      "netlify_function": "afrostream-news-monitor",
+      "netlify_function": "afrostream-news-monitor-scheduled",
       "github_workflow": null,
       "codex_automation_id": "afrostream-newswire-agent",
       "sla_hours": 24,
@@ -226,6 +226,7 @@
       "owner_category": "AfroStream live operations",
       "severity_if_stale": "p2",
       "validation_commands": [
+        "node --check netlify/functions/afrostream-news-monitor-scheduled.js",
         "node --check netlify/functions/afrostream-news-monitor.js",
         "npm run audit:automation-registry"
       ]
@@ -236,7 +237,7 @@
       "runner": "mixed",
       "production_required": true,
       "expected_schedule": "FREQ=WEEKLY;BYDAY=WE,SA;BYHOUR=8;BYMINUTE=45;BYSECOND=0",
-      "netlify_function": "afrostream-sync",
+      "netlify_function": "afrostream-sync-scheduled",
       "github_workflow": null,
       "codex_automation_id": "afrostream-profile-integrity-agent",
       "sla_hours": 96,
@@ -254,6 +255,7 @@
       "severity_if_stale": "p2",
       "validation_commands": [
         "node scripts/audit-afrostream-creator-links.js",
+        "node --check netlify/functions/afrostream-sync-scheduled.js",
         "node --check netlify/functions/afrostream-sync.js",
         "npm run audit:automation-registry"
       ]
@@ -1151,7 +1153,7 @@
       "runner": "mixed",
       "production_required": true,
       "expected_schedule": "FREQ=WEEKLY;BYDAY=MO,TH;BYHOUR=10;BYMINUTE=15;BYSECOND=0",
-      "netlify_function": "scheduled-refresh-market-data",
+      "netlify_function": "scheduled-refresh-market-data-runner",
       "github_workflow": null,
       "codex_automation_id": "live-data-product-upgrade-agent",
       "sla_hours": 96,
@@ -1165,6 +1167,7 @@
       "severity_if_stale": "p2",
       "validation_commands": [
         "npm run audit",
+        "node --check netlify/functions/scheduled-refresh-market-data-runner.js",
         "node --check netlify/functions/scheduled-refresh-market-data.js",
         "npm run audit:automation-registry"
       ]
@@ -2015,7 +2018,7 @@
       "runner": "netlify",
       "production_required": true,
       "expected_schedule": "46 */6 * * *",
-      "netlify_function": "afrostream-news-monitor",
+      "netlify_function": "afrostream-news-monitor-scheduled",
       "github_workflow": null,
       "codex_automation_id": null,
       "sla_hours": 36,
@@ -2032,6 +2035,7 @@
       "owner_category": "AfroStream live operations",
       "severity_if_stale": "p2",
       "validation_commands": [
+        "node --check netlify/functions/afrostream-news-monitor-scheduled.js",
         "node --check netlify/functions/afrostream-news-monitor.js",
         "npm run audit:automation-registry"
       ]
@@ -2042,7 +2046,7 @@
       "runner": "netlify",
       "production_required": true,
       "expected_schedule": "16 */2 * * *",
-      "netlify_function": "afrostream-sync",
+      "netlify_function": "afrostream-sync-scheduled",
       "github_workflow": null,
       "codex_automation_id": null,
       "sla_hours": 4,
@@ -2061,6 +2065,7 @@
       "owner_category": "AfroStream live operations",
       "severity_if_stale": "p2",
       "validation_commands": [
+        "node --check netlify/functions/afrostream-sync-scheduled.js",
         "node --check netlify/functions/afrostream-sync.js",
         "npm run audit:automation-registry"
       ]
@@ -2465,7 +2470,7 @@
       "runner": "netlify",
       "production_required": true,
       "expected_schedule": "39 */6 * * *",
-      "netlify_function": "scheduled-refresh-market-data",
+      "netlify_function": "scheduled-refresh-market-data-runner",
       "github_workflow": null,
       "codex_automation_id": null,
       "sla_hours": 36,
@@ -2480,6 +2485,7 @@
       "owner_category": "Live data freshness audit",
       "severity_if_stale": "p2",
       "validation_commands": [
+        "node --check netlify/functions/scheduled-refresh-market-data-runner.js",
         "node --check netlify/functions/scheduled-refresh-market-data.js",
         "npm run audit:automation-registry"
       ]
@@ -2622,7 +2628,7 @@
       "runner": "netlify",
       "production_required": true,
       "expected_schedule": "57 */2 * * *",
-      "netlify_function": "scheduled-source-health-watchdog",
+      "netlify_function": "scheduled-source-health-watchdog-runner",
       "github_workflow": null,
       "codex_automation_id": null,
       "sla_hours": 4,
@@ -2637,6 +2643,7 @@
       "owner_category": "Release quality gates",
       "severity_if_stale": "p1",
       "validation_commands": [
+        "node --check netlify/functions/scheduled-source-health-watchdog-runner.js",
         "node --check netlify/functions/scheduled-source-health-watchdog.js",
         "npm run audit:schedules"
       ]
@@ -2677,7 +2684,7 @@
       "runner": "netlify",
       "production_required": true,
       "expected_schedule": "43 6 * * *",
-      "netlify_function": "scrape-fx-rates",
+      "netlify_function": "scrape-fx-rates-scheduled",
       "github_workflow": null,
       "codex_automation_id": null,
       "sla_hours": 36,
@@ -2693,6 +2700,7 @@
       "owner_category": "Live data freshness audit",
       "severity_if_stale": "p2",
       "validation_commands": [
+        "node --check netlify/functions/scrape-fx-rates-scheduled.js",
         "node --check netlify/functions/scrape-fx-rates.js",
         "npm run audit:automation-registry"
       ]

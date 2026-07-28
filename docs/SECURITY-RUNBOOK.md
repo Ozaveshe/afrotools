@@ -13,13 +13,19 @@ Run these before any release touching deploy, auth, API, Supabase, payments, hea
 
 ```bash
 npm run security:scan
+npm run security:dependencies
 npm test
 npm run build:i18n:validate
 npm run validate:hreflang
 npm run seo:report
-node scripts/build-dist.js
+npm run build:deploy
 npm run audit:dist
 ```
+
+`security:scan` also rejects any Netlify function that is both scheduled and
+the target of a public rewrite. Scheduled execution must use a dedicated
+schedule-only wrapper; the public/manual handler must authenticate independently
+and must never trust `x-nf-event` or `next_run` as authorization.
 
 For Supabase-backed changes, also run Supabase advisors after migrations.
 

@@ -144,4 +144,13 @@ const explicitHealth = inferHealth('scrape-fx-rates');
 assert.strictEqual(explicitHealth.type, 'table_latest');
 assert.strictEqual(explicitHealth.table, 'fx_snapshots');
 
+const scheduledFxHealth = inferHealth('scrape-fx-rates-scheduled');
+assert.strictEqual(scheduledFxHealth.type, 'table_latest');
+assert.strictEqual(scheduledFxHealth.table, 'fx_snapshots');
+
+assert.strictEqual(inferHealth('afrostream-news-monitor-scheduled').scraperId, 'afrostream-news-monitor');
+assert.strictEqual(inferHealth('afrostream-sync-scheduled').scraperId, 'afrostream-sync');
+assert.strictEqual(inferHealth('scheduled-refresh-market-data-runner').type, 'market_data_runs');
+assert.strictEqual(inferHealth('scheduled-source-health-watchdog-runner').key, 'automation-health-latest');
+
 console.log('live-automation-health-inference: ok');

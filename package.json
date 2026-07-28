@@ -139,6 +139,7 @@
     "supabase:consolidation:verify:live": "node scripts/verify-supabase-consolidation.js --netlify",
     "audit:dist": "node scripts/audit-dist.js",
     "security:scan": "node scripts/security-scan.js",
+    "security:dependencies": "npm audit --audit-level=moderate",
     "test:security-headers": "node tests/security-headers.test.js",
     "test:car-import-cost": "node tests/car-import-cost-rule-packs.test.js && node tests/car-import-cost-engine.test.js && node tests/car-import-cost-routes.test.js",
     "test:car-price-intelligence": "node scripts/car-catalog-manager.js validate && node tests/car-price-intelligence.test.js && node tests/cars-routes.test.js",
@@ -324,8 +325,8 @@
   },
   "homepage": "https://github.com/Ozaveshe/afrotools#readme",
   "dependencies": {
-    "@netlify/blobs": "^10.7.2",
-    "@supabase/supabase-js": "^2.99.2",
+    "@netlify/blobs": "^10.7.10",
+    "@supabase/supabase-js": "^2.110.9",
     "docx": "^9.6.1",
     "pdf-parse": "^1.1.4",
     "terser": "^5.46.2"
@@ -336,5 +337,10 @@
     "d3-geo": "^3.1.1",
     "topojson-client": "^3.1.0",
     "world-atlas": "^2.0.2"
+  },
+  "overrides": {
+    "@netlify/otel": {
+      "@opentelemetry/core": "2.9.0"
+    }
   }
 }

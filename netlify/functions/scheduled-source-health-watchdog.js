@@ -2,7 +2,6 @@ const { getData, setData } = require('./_shared/data-store');
 const { loadScholarshipFeed, SCHOLARSHIP_PUBLIC_MIN_COUNT } = require('./_shared/scholarship-platform');
 const { getCollector } = require('./_shared/market-data-refresh');
 const { isEmailConfigured, sendEmail } = require('./_shared/email-adapter');
-const { isScheduledEvent } = require('./_shared/scheduled-event');
 
 const WATCHDOG_KEY = 'automation-health-latest';
 const DEFAULT_SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
@@ -52,10 +51,6 @@ function getHeader(event, headerName) {
     if (key.toLowerCase() === expected) return headers[key];
   }
   return '';
-}
-
-function isScheduledInvocation(event) {
-  return isScheduledEvent(event);
 }
 
 function isAdminRequest(event) {
@@ -574,12 +569,12 @@ async function runWatchdog() {
   return summary;
 }
 
-exports.handler = async function (event) {
+async function handleWatchdog(event, options) {
   if (event.httpMethod === 'OPTIONS') {
     return json(204, {});
   }
 
-  const scheduled = isScheduledInvocation(event);
+  const scheduled = !!(options && options.scheduled);
   const admin = isAdminRequest(event);
 
   if (!scheduled && !admin) {
@@ -614,4 +609,12 @@ exports.handler = async function (event) {
     await setData(WATCHDOG_KEY, failed);
     return json(500, failed);
   }
+}
+
+exports.handler = function (event) {
+  return handleWatchdog(event, { scheduled: false });
+};
+
+exports.scheduledHandler = function (event) {
+  return handleWatchdog(event, { scheduled: true });
 };

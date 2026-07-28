@@ -152,12 +152,81 @@ function scanFile(filePath, findings) {
   });
 }
 
+function collectScheduledFunctions() {
+  const configPath = path.join(ROOT, 'netlify.toml');
+  const text = fs.readFileSync(configPath, 'utf8');
+  const scheduled = new Map();
+  const sectionRe = /\[functions\."([^"]+)"\]([\s\S]*?)(?=\n\[|$)/g;
+  let match;
+  while ((match = sectionRe.exec(text)) !== null) {
+    if (!/^\s*schedule\s*=/m.test(match[2])) continue;
+    const line = text.slice(0, match.index).split(/\r?\n/).length;
+    scheduled.set(match[1], line);
+  }
+  return { configPath, scheduled };
+}
+
+function collectPublicFunctionRewrites() {
+  const rewrites = new Map();
+  const files = [path.join(ROOT, '_redirects'), path.join(ROOT, 'netlify.toml')];
+  const targetRe = /\/\.netlify\/functions\/([A-Za-z0-9_-]+)/g;
+
+  for (const filePath of files) {
+    const text = fs.readFileSync(filePath, 'utf8');
+    let match;
+    while ((match = targetRe.exec(text)) !== null) {
+      const line = text.slice(0, match.index).split(/\r?\n/).length;
+      if (!rewrites.has(match[1])) rewrites.set(match[1], []);
+      rewrites.get(match[1]).push({ filePath, line });
+    }
+  }
+  return rewrites;
+}
+
+function scanScheduledFunctionBoundaries(findings) {
+  const { configPath, scheduled } = collectScheduledFunctions();
+  const rewrites = collectPublicFunctionRewrites();
+
+  for (const [functionName, scheduleLine] of scheduled) {
+    const publicRoutes = rewrites.get(functionName) || [];
+    for (const route of publicRoutes) {
+      addFinding(
+        findings,
+        route.filePath,
+        route.line,
+        'Scheduled function also exposed by public rewrite',
+        `${functionName} is schedule-only at netlify.toml:${scheduleLine} but is also a public rewrite target`
+      );
+    }
+  }
+
+  for (const [functionName, publicRoutes] of rewrites) {
+    const functionPath = path.join(ROOT, 'netlify', 'functions', `${functionName}.js`);
+    if (!fs.existsSync(functionPath)) continue;
+    const source = fs.readFileSync(functionPath, 'utf8');
+    if (!/(?:scheduled-event|isScheduledEvent)/.test(source)) continue;
+    const route = publicRoutes[0];
+    addFinding(
+      findings,
+      route.filePath,
+      route.line,
+      'Public function imports caller-shaped schedule detection',
+      `${functionName} must use a separate schedule-only wrapper instead of trusting headers or request JSON`
+    );
+  }
+
+  // Keep configPath referenced so a missing/invalid netlify.toml fails above,
+  // rather than silently disabling this release gate.
+  return configPath;
+}
+
 function main() {
   const findings = [];
   for (const file of walk(ROOT)) scanFile(file, findings);
+  scanScheduledFunctionBoundaries(findings);
 
   if (findings.length) {
-    console.error('Security scan failed: possible secrets found.');
+    console.error('Security scan failed: security findings detected.');
     findings.slice(0, 60).forEach((finding) => {
       console.error(`  - ${finding.name}: ${finding.file}:${finding.line}`);
       console.error(`    ${finding.evidence}`);

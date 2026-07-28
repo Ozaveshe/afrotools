@@ -21,7 +21,7 @@ Priority is based on the three scores plus current exposure.
 | R3 | P1 | High-stakes AI advisor context contains hard-coded rates and domain facts outside the source-confidence ledgers | 5 | 3 | 3 |
 | R4 | Mitigated | `/all-tools/` and related-tool navigation are generated as crawlable HTML, with JavaScript retained as progressive enhancement | 1 | 5 | 1 |
 | R5 | P3 | Canonical public counters are enforced, but specialized feature registries still need explicit collection migration before they can publish totals | 2 | 2 | 2 |
-| R6 | P1 | Consent-enabled analytics can send raw search fragments and error-message text | 4 | 3 | 2 |
+| R6 | Mitigated | Analytics sends search/error metadata only; raw text is blocked by regression coverage | 2 | 3 | 1 |
 | R7 | P2 | The build mutates committed source/output in place and spans thousands of generated files | 4 | 5 | 3 |
 | R8 | P2 | Locale support, public language claims, and AI locale hints describe different scopes | 3 | 5 | 3 |
 | R9 | P2 | Browser E2E blocks service workers and the local server mocks selected APIs, leaving production cache/function gaps | 4 | 4 | 3 |
@@ -172,29 +172,30 @@ Smallest safe mitigation: add any new public feature total to
 `data/registry/catalog-policy.json`, generate a named selector, and bind its
 initial HTML through a registry marker before publishing the claim.
 
-## R6: Analytics Payload Privacy
+## R6: Analytics Payload Privacy (Mitigated 2026-07-28)
 
 Evidence:
 
-- `assets/js/lib/analytics.js` sends the first 100 characters of search queries
-  after cookie consent.
-- `error-boundary.js` can send the first 100 characters of an exception message.
-- AI-specific analytics are more conservative and use metadata/length buckets.
+- `assets/js/lib/analytics.js` now emits only `query_length` and
+  `error_message_length`, capped at 1,000, alongside stable event metadata.
+- `assets/js/lazy-analytics.js` retains a second sanitization boundary before
+  GA4 dispatch.
+- `tests/analytics-payload-privacy.test.js` executes the browser helper with
+  synthetic PII and proves the raw query/error text is absent.
 
-User risk: users may paste names, identifiers, salary, legal, health, or career
-details into a general search field; exception messages can also contain
-unexpected values.
+Residual risk: new analytics helpers can bypass the shared contract if they
+call a provider directly. Keep the payload regression test and consent-loader
+sanitizer enrolled in the broad test gate.
 
 Reproduce/inspect:
 
 ```bash
-rg -n "trackSearch|trackError|substring\(0,100\)" assets/js/lib/analytics.js assets/js/lib/error-boundary.js
+node --test tests/analytics-payload-privacy.test.js
 npm run test:privacy-ai-consent
 ```
 
-Smallest safe mitigation: hash or classify general search terms locally and
-send category/result-count metadata; replace free-form error messages with
-stable error codes.
+Mitigation: complete for the shared general and AI analytics paths. Do not
+reintroduce raw `query`, `error_message`, prompt, document, or profile fields.
 
 ## R7: In-Place, High-Blast-Radius Build
 

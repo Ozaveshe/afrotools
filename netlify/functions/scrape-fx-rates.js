@@ -118,11 +118,50 @@ async function upsertToSupabase(rows) {
   }
 }
 
-exports.handler = async function (event) {
+function getHeader(event, headerName) {
+  const headers = event && event.headers ? event.headers : {};
+  const expected = String(headerName || '').toLowerCase();
+  for (const key of Object.keys(headers)) {
+    if (String(key).toLowerCase() === expected) return headers[key];
+  }
+  return '';
+}
+
+function isAdminRequest(event) {
+  const expected = String(process.env.ADMIN_KEY || process.env.ADMIN_SECRET || '').trim();
+  const provided = String(getHeader(event, 'x-admin-key') || '').trim();
+  return !!expected && !!provided && provided === expected;
+}
+
+async function handleScrapeFxRates(event, options) {
+  const scheduled = !!(options && options.scheduled);
   var headers = {
     'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': getAllowedOrigin(event)
+    'Access-Control-Allow-Origin': getAllowedOrigin(event),
+    'Access-Control-Allow-Headers': 'Content-Type, x-admin-key',
+    'Access-Control-Allow-Methods': 'GET, POST, OPTIONS',
+    'Cache-Control': 'no-store'
   };
+
+  if (event && event.httpMethod === 'OPTIONS') {
+    return { statusCode: 204, headers: headers, body: '' };
+  }
+
+  if (!scheduled && event && !['GET', 'POST'].includes(event.httpMethod)) {
+    return {
+      statusCode: 405,
+      headers: headers,
+      body: JSON.stringify({ error: 'Method not allowed' })
+    };
+  }
+
+  if (!scheduled && !isAdminRequest(event)) {
+    return {
+      statusCode: 401,
+      headers: headers,
+      body: JSON.stringify({ error: 'Unauthorized' })
+    };
+  }
 
   try {
     // Try primary source, fall back if it fails
@@ -153,4 +192,12 @@ exports.handler = async function (event) {
       body: JSON.stringify({ error: err.message, timestamp: new Date().toISOString() })
     };
   }
+}
+
+exports.handler = function(event) {
+  return handleScrapeFxRates(event, { scheduled: false });
+};
+
+exports.scheduledHandler = function(event) {
+  return handleScrapeFxRates(event, { scheduled: true });
 };

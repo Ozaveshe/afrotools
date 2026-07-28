@@ -15,7 +15,6 @@ var KICK_CLIENT_ID = process.env.KICK_CLIENT_ID;
 var KICK_CLIENT_SECRET = process.env.KICK_CLIENT_SECRET;
 var YOUTUBE_API_KEY = process.env.YOUTUBE_API_KEY;
 var BACKGROUND_SYNC_PATH = '/.netlify/functions/afrostream-sync-background';
-var { isScheduledEvent } = require('./_shared/scheduled-event');
 
 // ── Helpers ──────────────────────────────────────────────────────
 
@@ -1125,8 +1124,9 @@ async function runScheduledSnapshotRefresh() {
   }
 }
 
-exports.handler = async function(event) {
+async function handleSync(event, options) {
   var cors = getCorsHeaders(event);
+  var isScheduled = !!(options && options.scheduled);
 
   // Handle CORS preflight
   if (event.httpMethod === 'OPTIONS') {
@@ -1141,10 +1141,8 @@ exports.handler = async function(event) {
     };
   }
 
-  // Scheduled invocations (Netlify Scheduled Functions)
-  var isScheduled = isScheduledEvent(event);
-
-  // Manual trigger requires auth
+  // Public/manual invocation always requires auth. Scheduled execution reaches
+  // this branch only through the schedule-only wrapper's direct module call.
   if (!isScheduled && !isAuthorized(event)) {
     return {
       statusCode: 401,
@@ -1239,6 +1237,14 @@ exports.handler = async function(event) {
       })
     };
   }
+}
+
+exports.handler = function(event) {
+  return handleSync(event, { scheduled: false });
+};
+
+exports.scheduledHandler = function(event) {
+  return handleSync(event, { scheduled: true });
 };
 
 exports.runManualSync = runManualSync;

@@ -118,7 +118,14 @@ assert.ok(
   cookieConsentSource.includes('window.dispatchEvent(new CustomEvent("afrotools:cookie-consent"'),
   "Cookie consent banner dispatches the event that wakes the Clarity loader"
 );
-assertDirectiveAllows("default-src", ["https://*.clarity.ms", "https://c.bing.com"]);
+assertDirectiveAllows("script-src", ["https://*.clarity.ms"]);
+assertDirectiveAllows("img-src", ["https://*.clarity.ms", "https://c.bing.com"]);
+assertDirectiveAllows("connect-src", ["https://*.clarity.ms", "https://c.bing.com"]);
+assert.ok(
+  !getCspDirective("default-src").includes("clarity.ms") &&
+  !getCspDirective("default-src").includes("c.bing.com"),
+  "Clarity and Bing origins must be scoped to the directives that need them, not default-src"
+);
 assertDirectiveAllows("script-src", ["https://www.clarity.ms", "https://*.clarity.ms"]);
 assertDirectiveAllows("connect-src", ["https://www.clarity.ms", "https://*.clarity.ms", "https://c.bing.com"]);
 assertDirectiveAllows("img-src", ["https://*.clarity.ms", "https://c.bing.com"]);

@@ -34,6 +34,7 @@
 ### Netlify, redirects, functions, or publish-surface changes
 
 - `npm run security:scan`
+- `npm run security:dependencies`
 - `npm run build:deploy`
 - `npm run audit:dist`
 - `npm run automation:live-health:strict` when claiming live scheduled-function proof is green

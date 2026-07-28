@@ -1,7 +1,6 @@
 const { getAllowedOrigin } = require('./utils/cors');
 const { SUPABASE_URL, SUPABASE_KEY, normalizeSubtype } = require('./_shared/market-data');
 const { refreshActiveMarketData } = require('./_shared/market-data-refresh');
-const { isScheduledEvent } = require('./_shared/scheduled-event');
 
 function getHeader(event, headerName) {
   const headers = event?.headers || {};
@@ -14,10 +13,6 @@ function getHeader(event, headerName) {
 
 function getAdminSecret() {
   return String(process.env.ADMIN_KEY || process.env.ADMIN_SECRET || '').trim().replace(/^['"]|['"]$/g, '');
-}
-
-function isScheduledInvocation(event) {
-  return isScheduledEvent(event);
 }
 
 function corsHeaders(event) {
@@ -38,14 +33,14 @@ function reply(statusCode, body, headers) {
   };
 }
 
-exports.handler = async function (event) {
+async function handleMarketDataRefresh(event, options) {
   const headers = corsHeaders(event);
+  const scheduled = !!(options && options.scheduled);
 
   if (event.httpMethod === 'OPTIONS') {
     return { statusCode: 204, headers, body: '' };
   }
 
-  const scheduled = isScheduledInvocation(event);
   if (!scheduled && event.httpMethod !== 'GET' && event.httpMethod !== 'POST') {
     return reply(405, { error: 'Method not allowed' }, headers);
   }
@@ -89,4 +84,12 @@ exports.handler = async function (event) {
     source_key: requestedSourceKey || null,
     ...result
   }, headers);
+}
+
+exports.handler = function (event) {
+  return handleMarketDataRefresh(event, { scheduled: false });
+};
+
+exports.scheduledHandler = function (event) {
+  return handleMarketDataRefresh(event, { scheduled: true });
 };

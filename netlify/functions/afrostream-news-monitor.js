@@ -1,7 +1,6 @@
 // netlify/functions/afrostream-news-monitor.js
 // Scheduled AfroStream RSS mention monitor.
 // Reads configured RSS/Atom feeds, matches published AfroStream creators, and writes as_news rows.
-var { isScheduledEvent } = require('./_shared/scheduled-event');
 var SUPABASE_URL = 'https://zpclagtgczsygrgztlts.supabase.co';
 var SUPABASE_SERVICE_KEY = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_DATA_SERVICE_ROLE_KEY;
 var ADMIN_SECRET = process.env.ADMIN_SECRET;
@@ -27,12 +26,7 @@ function getHeader(event, headerName) {
   return '';
 }
 
-function isScheduled(event) {
-  return isScheduledEvent(event);
-}
-
 function isAuthorized(event) {
-  if (isScheduled(event)) return true;
   if (!ADMIN_SECRET) return false;
   var auth = getHeader(event, 'authorization');
   return auth === 'Bearer ' + ADMIN_SECRET;
@@ -80,8 +74,8 @@ async function sb(method, path, body, upsert) {
   return parsed;
 }
 
-function newsMonitorSource(event) {
-  return isScheduled(event) ? 'Netlify Scheduled Function' : 'Manual news monitor endpoint';
+function newsMonitorSource(scheduled) {
+  return scheduled ? 'Netlify Scheduled Function' : 'Manual news monitor endpoint';
 }
 
 async function recordNewsMonitorRun(status, source, recordsCount, errorMessage, durationMs, dryRun) {
@@ -471,16 +465,17 @@ async function processSource(source, creators, summary, options) {
   }
 }
 
-exports.handler = async function(event) {
+async function handleNewsMonitor(event, options) {
+  var scheduled = !!(options && options.scheduled);
   if (event.httpMethod === 'OPTIONS') return { statusCode: 204, headers: headers(), body: '' };
-  if (!isAuthorized(event)) return { statusCode: 401, headers: headers(), body: JSON.stringify({ success: false, error: 'Unauthorized' }) };
+  if (!scheduled && !isAuthorized(event)) return { statusCode: 401, headers: headers(), body: JSON.stringify({ success: false, error: 'Unauthorized' }) };
   if (!SUPABASE_SERVICE_KEY) return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: 'Supabase service key not configured' }) };
 
   var runStart = Date.now();
-  var runSource = newsMonitorSource(event);
+  var runSource = newsMonitorSource(scheduled);
   var dryRun = isDryRun(event);
-  var lookbackDays = numberParam(event, ['backfill_days', 'lookback_days'], isScheduled(event) ? DEFAULT_SCHEDULED_LOOKBACK_DAYS : DEFAULT_MANUAL_LOOKBACK_DAYS, 1, 21);
-  var insertLimit = numberParam(event, ['max_insert_news', 'limit'], isScheduled(event) ? DEFAULT_SCHEDULED_INSERT_LIMIT : DEFAULT_MANUAL_INSERT_LIMIT, 1, 60);
+  var lookbackDays = numberParam(event, ['backfill_days', 'lookback_days'], scheduled ? DEFAULT_SCHEDULED_LOOKBACK_DAYS : DEFAULT_MANUAL_LOOKBACK_DAYS, 1, 21);
+  var insertLimit = numberParam(event, ['max_insert_news', 'limit'], scheduled ? DEFAULT_SCHEDULED_INSERT_LIMIT : DEFAULT_MANUAL_INSERT_LIMIT, 1, 60);
   var cutoffMs = Date.now() - (lookbackDays * 24 * 60 * 60 * 1000);
   var insertBudget = { remaining: insertLimit };
   var summary = {
@@ -559,6 +554,16 @@ exports.handler = async function(event) {
     );
     return { statusCode: 500, headers: headers(), body: JSON.stringify({ success: false, error: e.message, data: summary }) };
   }
+}
+
+exports.handler = function(event) {
+  return handleNewsMonitor(event, { scheduled: false });
+};
+
+// Called only by the schedule-only wrapper. Netlify invokes `handler` for
+// public requests, so a caller-controlled header/body can never select this path.
+exports.scheduledHandler = function(event) {
+  return handleNewsMonitor(event, { scheduled: true });
 };
 
 exports.__test = {

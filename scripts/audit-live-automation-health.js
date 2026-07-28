@@ -88,6 +88,14 @@ const EXPLICIT_HEALTH = {
   },
 };
 
+// Scheduled wrapper names deliberately differ from their public/manual handlers.
+// Keep health receipts tied to the underlying job's existing storage contract.
+EXPLICIT_HEALTH['afrostream-news-monitor-scheduled'] = EXPLICIT_HEALTH['afrostream-news-monitor'];
+EXPLICIT_HEALTH['afrostream-sync-scheduled'] = EXPLICIT_HEALTH['afrostream-sync'];
+EXPLICIT_HEALTH['scrape-fx-rates-scheduled'] = EXPLICIT_HEALTH['scrape-fx-rates'];
+EXPLICIT_HEALTH['scheduled-refresh-market-data-runner'] = EXPLICIT_HEALTH['scheduled-refresh-market-data'];
+EXPLICIT_HEALTH['scheduled-source-health-watchdog-runner'] = EXPLICIT_HEALTH['scheduled-source-health-watchdog'];
+
 function readText(filePath) {
   return fs.existsSync(filePath) ? fs.readFileSync(filePath, 'utf8') : '';
 }

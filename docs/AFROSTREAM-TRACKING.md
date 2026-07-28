@@ -4,7 +4,7 @@ AfroStream has three scheduled data lanes.
 
 ## Creator Counts
 
-`netlify/functions/afrostream-sync.js` runs from `netlify.toml` every two hours.
+`netlify/functions/afrostream-sync-scheduled.js` is the schedule-only entry point in `netlify.toml` and delegates to the shared sync implementation every two hours. `netlify/functions/afrostream-sync.js` remains the authenticated manual handler.
 It updates creator platform counts, recomputes AfroScore, and writes daily rows to `public.as_creator_snapshots`.
 
 Scheduled invocations use the database-side `public.refresh_afrostream_creator_snapshots()` RPC so the daily snapshot set can be refreshed inside Netlify's scheduled-function execution window. Manual admin sync can still run the platform API refresh first, then call the same RPC. If the RPC is changed, keep `supabase/migrations/040-afrostream-snapshot-refresh-rpc.sql` and the public snapshot endpoint validation in sync.
@@ -35,7 +35,7 @@ Live stream thumbnails are user-facing media and must pass the same display poli
 
 ## News Mentions
 
-`netlify/functions/afrostream-news-monitor.js` runs every six hours at minute 46, as configured in `netlify.toml`.
+`netlify/functions/afrostream-news-monitor-scheduled.js` is the schedule-only entry point and runs every six hours at minute 46, as configured in `netlify.toml`. `netlify/functions/afrostream-news-monitor.js` remains the authenticated manual handler.
 It reads active rows from `public.as_news_sources`, fetches RSS or Atom feeds, matches published AfroStream creator names, writes matching stories into `public.as_news`, and links them through `public.as_news_creator_mentions`.
 
 Ops workflow:
