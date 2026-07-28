@@ -11,13 +11,13 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Native candidates (unaccepted) | 327 |
-| English iframe/transplant | 577 |
+| Native candidates (including accepted) | 329 |
+| English iframe/transplant | 575 |
 | Bridge/handoff | 314 |
 | Alias/non-indexable utility only | 3 |
 | Missing | 36 |
-| Definite product-build gaps | 930 |
-| **Accepted** | **0** |
+| Definite product-build gaps | 928 |
+| **Accepted** | **11** |
 
 ## Category reconciliation
 
@@ -41,7 +41,7 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | HR & Payroll | 6 | 0 | 0 | 6 | 0 | 0 | 0 |
 | Image & Design | 19 | 19 | 0 | 0 | 0 | 0 | 0 |
 | Insurance | 16 | 4 | 0 | 12 | 0 | 0 | 0 |
-| Language & Translation | 11 | 9 | 2 | 0 | 0 | 0 | 0 |
+| Language & Translation | 11 | 11 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 0 | 0 | 0 | 6 | 0 |
 | Mortgage & Property | 66 | 20 | 13 | 29 | 0 | 4 | 0 |
 | Personal Finance | 5 | 0 | 0 | 5 | 0 | 0 | 0 |
@@ -55,12 +55,12 @@ This inventory is fail-closed. A native candidate is only a page-shape candidate
 | Travel & Tourism | 9 | 0 | 0 | 7 | 0 | 2 | 0 |
 | Uniquely African | 34 | 14 | 14 | 5 | 0 | 1 | 0 |
 | VAT & Business Tax | 63 | 62 | 0 | 0 | 1 | 0 | 0 |
-| **Total** | **1257** | **327** | **577** | **314** | **3** | **36** | **0** |
+| **Total** | **1257** | **329** | **575** | **314** | **3** | **36** | **11** |
 
 ## Ambiguous ownership
 
 - French routes with conflicting owner evidence: 217
-- English apps with multiple live French owner candidates: 29
+- English apps with multiple live French owner candidates: 28
 - French registry source IDs not found in the free English denominator: 5
 
 Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence outranks registry metadata, which outranks hreflang and legacy-ledger hints. This prevents a stale mapping from granting parity credit.
@@ -295,7 +295,6 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | `/tools/lobola-calculator` | `/fr/tools/calculateur-de-lobola-botswana` | `/fr/tools/calculateur-de-lobola-eswatini`<br>`/fr/tools/calculateur-de-lobola-lesotho`<br>`/fr/tools/calculateur-de-lobola-zambie`<br>`/fr/tools/calculateur-lobola` |
 | `/tools/fuel-tracker` | `/fr/tools/suivi-carburant` | `/fr/tools/suivi-carburant/algeria`<br>`/fr/tools/suivi-carburant/angola`<br>`/fr/tools/suivi-carburant/benin`<br>`/fr/tools/suivi-carburant/botswana`<br>`/fr/tools/suivi-carburant/burkina-faso`<br>`/fr/tools/suivi-carburant/burundi`<br>`/fr/tools/suivi-carburant/cabo-verde`<br>`/fr/tools/suivi-carburant/cameroon`<br>`/fr/tools/suivi-carburant/central-african-republic`<br>`/fr/tools/suivi-carburant/chad`<br>`/fr/tools/suivi-carburant/comoros`<br>`/fr/tools/suivi-carburant/congo`<br>`/fr/tools/suivi-carburant/cote-divoire`<br>`/fr/tools/suivi-carburant/djibouti`<br>`/fr/tools/suivi-carburant/dr-congo`<br>`/fr/tools/suivi-carburant/egypt`<br>`/fr/tools/suivi-carburant/equatorial-guinea`<br>`/fr/tools/suivi-carburant/eritrea`<br>`/fr/tools/suivi-carburant/eswatini`<br>`/fr/tools/suivi-carburant/ethiopia`<br>`/fr/tools/suivi-carburant/gabon`<br>`/fr/tools/suivi-carburant/gambia`<br>`/fr/tools/suivi-carburant/ghana`<br>`/fr/tools/suivi-carburant/guinea`<br>`/fr/tools/suivi-carburant/guinea-bissau`<br>`/fr/tools/suivi-carburant/kenya`<br>`/fr/tools/suivi-carburant/lesotho`<br>`/fr/tools/suivi-carburant/liberia`<br>`/fr/tools/suivi-carburant/libya`<br>`/fr/tools/suivi-carburant/madagascar`<br>`/fr/tools/suivi-carburant/malawi`<br>`/fr/tools/suivi-carburant/mali`<br>`/fr/tools/suivi-carburant/mauritania`<br>`/fr/tools/suivi-carburant/mauritius`<br>`/fr/tools/suivi-carburant/morocco`<br>`/fr/tools/suivi-carburant/mozambique`<br>`/fr/tools/suivi-carburant/namibia`<br>`/fr/tools/suivi-carburant/niger`<br>`/fr/tools/suivi-carburant/nigeria`<br>`/fr/tools/suivi-carburant/rwanda`<br>`/fr/tools/suivi-carburant/sao-tome-and-principe`<br>`/fr/tools/suivi-carburant/senegal`<br>`/fr/tools/suivi-carburant/seychelles`<br>`/fr/tools/suivi-carburant/sierra-leone`<br>`/fr/tools/suivi-carburant/somalia`<br>`/fr/tools/suivi-carburant/south-africa`<br>`/fr/tools/suivi-carburant/south-sudan`<br>`/fr/tools/suivi-carburant/sudan`<br>`/fr/tools/suivi-carburant/tanzania`<br>`/fr/tools/suivi-carburant/togo`<br>`/fr/tools/suivi-carburant/tunisia`<br>`/fr/tools/suivi-carburant/uganda`<br>`/fr/tools/suivi-carburant/zambia`<br>`/fr/tools/suivi-carburant/zimbabwe` |
 | `/tools/salary-intelligence` | `/fr/salary-tax` | `/fr/jobs/salary-benchmarks` |
-| `/tools/french-african` | `/fr/tools/francais-africain` | `/fr/salary-tax/francophone` |
 | `/tools/afrokitchen` | `/fr/tools/afrocuisine` | `/fr/tools/recette-de-banku-et-tilapia-du-ghana` |
 | `/tools/image-format-convert` | `/fr/tools/outils-image` | `/fr/tools/convertir-format-image` |
 | `/tools/tenancy-agreement` | `/fr/tools/contrat-bail` | `/fr/tools/contrat-bail/algeria`<br>`/fr/tools/contrat-bail/angola`<br>`/fr/tools/contrat-bail/benin`<br>`/fr/tools/contrat-bail/botswana`<br>`/fr/tools/contrat-bail/burkina-faso`<br>`/fr/tools/contrat-bail/burundi`<br>`/fr/tools/contrat-bail/cabo-verde`<br>`/fr/tools/contrat-bail/cameroon`<br>`/fr/tools/contrat-bail/central-african-republic`<br>`/fr/tools/contrat-bail/chad`<br>`/fr/tools/contrat-bail/comoros`<br>`/fr/tools/contrat-bail/congo-brazzaville`<br>`/fr/tools/contrat-bail/cote-d-ivoire`<br>`/fr/tools/contrat-bail/djibouti`<br>`/fr/tools/contrat-bail/dr-congo`<br>`/fr/tools/contrat-bail/egypt`<br>`/fr/tools/contrat-bail/equatorial-guinea`<br>`/fr/tools/contrat-bail/eritrea`<br>`/fr/tools/contrat-bail/eswatini`<br>`/fr/tools/contrat-bail/ethiopia`<br>`/fr/tools/contrat-bail/gabon`<br>`/fr/tools/contrat-bail/gambia`<br>`/fr/tools/contrat-bail/ghana`<br>`/fr/tools/contrat-bail/guinea`<br>`/fr/tools/contrat-bail/guinea-bissau`<br>`/fr/tools/contrat-bail/kenya`<br>`/fr/tools/contrat-bail/lesotho`<br>`/fr/tools/contrat-bail/liberia`<br>`/fr/tools/contrat-bail/libya`<br>`/fr/tools/contrat-bail/madagascar`<br>`/fr/tools/contrat-bail/malawi`<br>`/fr/tools/contrat-bail/mali`<br>`/fr/tools/contrat-bail/mauritania`<br>`/fr/tools/contrat-bail/mauritius`<br>`/fr/tools/contrat-bail/morocco`<br>`/fr/tools/contrat-bail/mozambique`<br>`/fr/tools/contrat-bail/namibia`<br>`/fr/tools/contrat-bail/niger`<br>`/fr/tools/contrat-bail/nigeria`<br>`/fr/tools/contrat-bail/rwanda`<br>`/fr/tools/contrat-bail/sao-tome-and-principe`<br>`/fr/tools/contrat-bail/senegal`<br>`/fr/tools/contrat-bail/seychelles`<br>`/fr/tools/contrat-bail/sierra-leone`<br>`/fr/tools/contrat-bail/somalia`<br>`/fr/tools/contrat-bail/south-africa`<br>`/fr/tools/contrat-bail/south-sudan`<br>`/fr/tools/contrat-bail/sudan`<br>`/fr/tools/contrat-bail/tanzania`<br>`/fr/tools/contrat-bail/togo`<br>`/fr/tools/contrat-bail/tunisia`<br>`/fr/tools/contrat-bail/uganda`<br>`/fr/tools/contrat-bail/zambia`<br>`/fr/tools/contrat-bail/zimbabwe` |
@@ -944,14 +943,14 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Nigeria CAC Registration Cost | Mortgage & Property | `/tools/cac-cost` | Native candidate | `/fr/tools/cout-cac` | No |
 | SA CIPC Registration Cost | Mortgage & Property | `/tools/cipc-cost` | English iframe/transplant | `/fr/tools/cout-cipc` | No |
 | Staff Cost Planner | Finance, Tax & Market Data | `/tools/staff-cost` | Native candidate | `/fr/tools/cout-employe` | No |
-| Swahili Phrasebook & Optional Translator | Language & Translation | `/tools/swahili-translator` | Native candidate | `/fr/tools/traducteur-swahili` | No |
-| Yoruba Phrasebook & Optional Translator | Language & Translation | `/tools/yoruba-translator` | English iframe/transplant | `/fr/tools/traducteur-yoruba` | No |
-| Hausa Draft Phrasebook & Optional Translator | Language & Translation | `/tools/hausa-translator` | Native candidate | `/fr/tools/traducteur-haoussa` | No |
-| Igbo Draft Phrasebook & Optional Translator | Language & Translation | `/tools/igbo-translator` | Native candidate | `/fr/tools/traducteur-igbo` | No |
-| Amharic Draft Phrasebook & Optional Translator | Language & Translation | `/tools/amharic-translator` | Native candidate | `/fr/tools/traducteur-amharique` | No |
-| isiZulu Draft Phrasebook & Optional Translator | Language & Translation | `/tools/zulu-translator` | Native candidate | `/fr/tools/traducteur-zoulou` | No |
-| Arabic-Indic Digit Shape Converter | Language & Translation | `/tools/arabic-numerals` | Native candidate | `/fr/tools/chiffres-arabes` | No |
-| Latin-to-African Script Mapping | Language & Translation | `/tools/transliterate` | Native candidate | `/fr/tools/translitteration` | No |
+| Swahili Phrasebook & Optional Translator | Language & Translation | `/tools/swahili-translator` | Native candidate | `/fr/tools/traducteur-swahili` | Yes |
+| Yoruba Phrasebook & Optional Translator | Language & Translation | `/tools/yoruba-translator` | Native candidate | `/fr/tools/traducteur-yoruba` | Yes |
+| Hausa Draft Phrasebook & Optional Translator | Language & Translation | `/tools/hausa-translator` | Native candidate | `/fr/tools/traducteur-haoussa` | Yes |
+| Igbo Draft Phrasebook & Optional Translator | Language & Translation | `/tools/igbo-translator` | Native candidate | `/fr/tools/traducteur-igbo` | Yes |
+| Amharic Draft Phrasebook & Optional Translator | Language & Translation | `/tools/amharic-translator` | Native candidate | `/fr/tools/traducteur-amharique` | Yes |
+| isiZulu Draft Phrasebook & Optional Translator | Language & Translation | `/tools/zulu-translator` | Native candidate | `/fr/tools/traducteur-zoulou` | Yes |
+| Arabic-Indic Digit Shape Converter | Language & Translation | `/tools/arabic-numerals` | Native candidate | `/fr/tools/chiffres-arabes` | Yes |
+| Latin-to-African Script Mapping | Language & Translation | `/tools/transliterate` | Native candidate | `/fr/tools/translitteration` | Yes |
 | AfroDraft 2D CAD | Engineering & Construction | `/engineering/afrodraft` | Missing | None | No |
 | AfroPlan Floor Planner | Engineering & Construction | `/engineering/floor-planner` | Missing | None | No |
 | Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | English iframe/transplant | `/fr/tools/calculateur-solaire` | No |
@@ -1056,9 +1055,9 @@ Conflicts are preserved in the JSON report. Runtime iframe/transplant evidence o
 | Market Stall Daily Profit Planner | VAT & Business Tax | `/tools/market-stall-profit` | Native candidate | `/fr/tools/profit-stand-marche` | No |
 | SQL Formatter & Validator | Developer Tools | `/tools/sql-formatter` | Native candidate | `/fr/tools/formateur-sql` | No |
 | SEO Meta Tag Generator | Developer Tools | `/tools/meta-tag-generator` | Native candidate | `/fr/tools/generateur-meta-tags` | No |
-| Nigerian Pidgin Learning Phrasebook | Language & Translation | `/tools/pidgin-translator` | Native candidate | `/fr/tools/traducteur-pidgin` | No |
-| French for Africa Phrasebook | Language & Translation | `/tools/french-african` | English iframe/transplant | `/fr/tools/francais-africain` | No |
-| African Name Provenance Review | Language & Translation | `/tools/african-name-meaning` | Native candidate | `/fr/tools/signification-prenoms-africains` | No |
+| Nigerian Pidgin Learning Phrasebook | Language & Translation | `/tools/pidgin-translator` | Native candidate | `/fr/tools/traducteur-pidgin` | Yes |
+| French for Africa Phrasebook | Language & Translation | `/tools/french-african` | Native candidate | `/fr/tools/francais-africain` | Yes |
+| African Name Provenance Review | Language & Translation | `/tools/african-name-meaning` | Native candidate | `/fr/tools/signification-prenoms-africains` | Yes |
 | AfroAtlas — Africa Resource Explorer | Uniquely African | `/tools/afroatlas` | English iframe/transplant | `/fr/tools/afroatlas` | No |
 | AfroPoints — Earn Money Contributing Data | Uniquely African | `/tools/afropoints` | English iframe/transplant | `/fr/tools/afropoints` | No |
 | AfroKitchen — African Recipes | Uniquely African | `/tools/afrokitchen` | English iframe/transplant | `/fr/tools/afrocuisine` | No |

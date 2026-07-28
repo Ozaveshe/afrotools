@@ -8,6 +8,7 @@ const ROOT = path.resolve(__dirname, '..');
 const DIRECTORY_PATH = path.join(ROOT, 'data', 'tool-directory.json');
 const REGISTRY_PATH = path.join(ROOT, 'assets', 'js', 'components', 'tool-registry.js');
 const LEGACY_LEDGER_PATH = path.join(ROOT, 'reports', 'french-localization-ledger.json');
+const ACCEPTANCE_EVIDENCE_PATH = path.join(ROOT, 'data', 'audits', 'french-free-app-acceptance.json');
 const JSON_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.json');
 const MARKDOWN_OUTPUT_PATH = path.join(ROOT, 'reports', 'french-free-app-parity-inventory.md');
 const EXPECTED_FREE_APP_COUNT = 1257;
@@ -265,6 +266,13 @@ function roundPercent(value, total) {
 function buildReport() {
   const directory = readJson(DIRECTORY_PATH);
   const registry = loadRegistry();
+  const acceptanceEntries = fs.existsSync(ACCEPTANCE_EVIDENCE_PATH)
+    ? (readJson(ACCEPTANCE_EVIDENCE_PATH).entries || [])
+    : [];
+  const acceptanceById = new Map(acceptanceEntries.map((entry) => [entry.englishId, entry]));
+  if (acceptanceById.size !== acceptanceEntries.length) {
+    throw new Error('French acceptance evidence contains duplicate englishId values.');
+  }
   const excluded = directory.filter((row) => EXCLUDED_PAID_ROUTES.has(normalizeRoute(row.url)));
   const englishRows = directory.filter((row) => !EXCLUDED_PAID_ROUTES.has(normalizeRoute(row.url)));
   if (englishRows.length !== EXPECTED_FREE_APP_COUNT) {
@@ -276,6 +284,11 @@ function buildReport() {
 
   const englishByRoute = new Map(englishRows.map((row) => [normalizeRoute(row.url), row]));
   const englishById = new Map(englishRows.map((row) => [row.id, row]));
+  for (const entry of acceptanceEntries) {
+    if (!englishById.has(entry.englishId)) {
+      throw new Error(`French acceptance evidence references unknown English app: ${entry.englishId}.`);
+    }
+  }
   const englishRouteSet = new Set(englishByRoute.keys());
   const pages = listHtmlFiles(path.join(ROOT, 'fr')).map((file) => {
     const html = fs.readFileSync(file, 'utf8');
@@ -345,6 +358,20 @@ function buildReport() {
       .sort(primaryCandidateSort(englishRoute));
     const primary = candidates[0] || null;
     const liveOwnerCandidates = candidates.filter((candidate) => candidate.state !== 'alias-utility');
+    const acceptance = acceptanceById.get(english.id) || null;
+    const accepted = Boolean(
+      acceptance
+      && acceptance.status === 'accepted'
+      && primary
+      && primary.state === 'native-candidate'
+      && normalizeRoute(acceptance.frenchRoute) === primary.route
+    );
+    if (acceptance && acceptance.status === 'accepted' && !accepted) {
+      throw new Error(
+        `Acceptance evidence for ${english.id} does not match its native primary French owner. `
+        + `Evidence=${acceptance.frenchRoute}; primary=${primary ? `${primary.route} (${primary.state})` : 'missing'}.`
+      );
+    }
     return {
       englishId: english.id,
       englishName: english.name,
@@ -352,7 +379,8 @@ function buildReport() {
       categoryKey: english.category_key,
       category: english.category,
       state: primary ? primary.state : 'missing',
-      accepted: false,
+      accepted,
+      acceptanceEvidence: accepted ? acceptance : null,
       primaryFrenchRoute: primary ? primary.route : null,
       primaryFrenchFile: primary ? primary.file : null,
       candidates,
@@ -380,7 +408,7 @@ function buildReport() {
       categoryKey: categoryRows[0].categoryKey,
       englishFreeApps: categoryRows.length,
       ...counts,
-      accepted: 0
+      accepted: categoryRows.filter((row) => row.accepted).length
     };
   }).sort((a, b) => a.category.localeCompare(b.category));
 
@@ -421,7 +449,7 @@ function buildReport() {
       englishFreeApps: rows.length,
       ...stateCounts,
       definiteBuildGaps: rows.length - stateCounts['native-candidate'],
-      accepted: 0,
+      accepted: rows.filter((row) => row.accepted).length,
       nativeCandidatePercent: roundPercent(stateCounts['native-candidate'], rows.length)
     },
     categories,
@@ -449,7 +477,7 @@ function renderMarkdown(report) {
     `| Canonical published English rows | ${report.totals.canonicalPublishedEnglishRows} |`,
     `| Excluded paid rows | ${report.totals.excludedPaidRows} |`,
     `| **Free canonical English apps** | **${report.totals.englishFreeApps}** |`,
-    `| Native candidates (unaccepted) | ${report.totals['native-candidate']} |`,
+    `| Native candidates (including accepted) | ${report.totals['native-candidate']} |`,
     `| English iframe/transplant | ${report.totals['english-iframe']} |`,
     `| Bridge/handoff | ${report.totals['bridge-handoff']} |`,
     `| Alias/non-indexable utility only | ${report.totals['alias-utility']} |`,
@@ -532,7 +560,7 @@ function renderMarkdown(report) {
   for (const row of report.rows) {
     lines.push(
       `| ${row.englishName.replace(/\|/g, '\\|')} | ${row.category} | \`${row.englishRoute}\` | `
-      + `${STATE_LABELS[row.state]} | ${row.primaryFrenchRoute ? `\`${row.primaryFrenchRoute}\`` : 'None'} | No |`
+      + `${STATE_LABELS[row.state]} | ${row.primaryFrenchRoute ? `\`${row.primaryFrenchRoute}\`` : 'None'} | ${row.accepted ? 'Yes' : 'No'} |`
     );
   }
   lines.push('');

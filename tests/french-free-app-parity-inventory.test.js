@@ -12,6 +12,10 @@ const {
 } = require('../scripts/build-french-free-app-parity-inventory');
 
 const report = buildReport();
+const acceptanceRegistry = JSON.parse(
+  fs.readFileSync(path.join(ROOT, 'data', 'audits', 'french-free-app-acceptance.json'), 'utf8')
+);
+const acceptedEvidenceCount = acceptanceRegistry.entries.filter((entry) => entry.status === 'accepted').length;
 
 assert.strictEqual(
   report.totals.englishFreeApps,
@@ -22,8 +26,12 @@ assert.strictEqual(report.rows.length, EXPECTED_FREE_APP_COUNT, 'every free Engl
 assert.strictEqual(new Set(report.rows.map((row) => row.englishId)).size, EXPECTED_FREE_APP_COUNT, 'English IDs must be unique');
 assert.strictEqual(new Set(report.rows.map((row) => row.englishRoute)).size, EXPECTED_FREE_APP_COUNT, 'English routes must be unique');
 assert.strictEqual(report.totals.excludedPaidRows, 1, 'only /pro/ is excluded from the canonical directory');
-assert.strictEqual(report.totals.accepted, 0, 'the structural inventory must not grant acceptance');
-assert(report.rows.every((row) => row.accepted === false), 'all rows must fail closed before app-specific evidence');
+assert.strictEqual(report.totals.accepted, acceptedEvidenceCount, 'accepted total must come from the evidence registry');
+assert.strictEqual(
+  report.rows.filter((row) => row.accepted).length,
+  acceptedEvidenceCount,
+  'accepted total must equal the number of evidenced rows'
+);
 
 const stateTotal = Object.keys(STATE_LABELS)
   .reduce((total, state) => total + report.totals[state], 0);
@@ -57,6 +65,18 @@ for (const row of report.rows.filter((item) => (
   || item.state === 'missing'
 ))) {
   assert.strictEqual(row.accepted, false, `${row.englishId}: wrappers, handoffs, aliases and gaps can never be accepted`);
+}
+
+for (const row of report.rows.filter((item) => item.accepted)) {
+  assert.strictEqual(row.state, 'native-candidate', `${row.englishId}: accepted owner must be native`);
+  assert(row.acceptanceEvidence, `${row.englishId}: accepted row needs evidence`);
+  assert.strictEqual(row.acceptanceEvidence.englishId, row.englishId, `${row.englishId}: evidence ID`);
+  assert.strictEqual(
+    row.primaryFrenchRoute,
+    row.acceptanceEvidence.frenchRoute.replace(/\/$/, ''),
+    `${row.englishId}: evidence route must match primary owner`
+  );
+  assert(fs.existsSync(path.join(ROOT, row.acceptanceEvidence.receipt)), `${row.englishId}: receipt must exist`);
 }
 
 const cropAngola = report.rows.find((row) => row.englishId === 'crop-yield-angola');
