@@ -1,58 +1,957 @@
 {
   "name": "Afro-Synonyms",
-  "version": "1.0.0",
+  "version": "afro-1.3",
   "createdAt": "2026-07-26",
   "purpose": "Concept-level equivalences, expanded into the query before retrieval. The manifest names tools in institutional register — 'childbirth budget', 'crop rotation planner', 'loan comparison', 'currency converter' — while people ask in everyday words: 'deliver baby', 'what to plant after maize', 'borrow', 'change pounds to cedis'. Neither the phrase lexicon nor per-tool synonyms close that, because the gap is one word standing for another across the whole catalogue.",
   "method": "Expansion, not replacement: the original token is always kept and its synonyms appended, so a synonym can only add reach and never removes a match the retriever would otherwise have made.",
   "discipline": "Written as general language facts, deliberately covering far more concepts than any benchmark exercises. Groups are bidirectional — every term in a group expands to every other.",
   "groups": [
-    { "concept": "borrowing", "terms": ["loan", "borrow", "borrowing", "credit", "lend", "lender", "lending", "advance"] },
-    { "concept": "saving", "terms": ["save", "saving", "savings", "put away", "set aside", "nest egg"] },
-    { "concept": "earning", "terms": ["earn", "earning", "earnings", "salary", "wage", "wages", "pay", "income", "remuneration", "compensation"] },
-    { "concept": "interest-rate", "terms": ["interest", "rate", "apr", "percentage"] },
-    { "concept": "currency-exchange", "terms": ["currency", "exchange", "convert", "forex", "fx", "rate", "dollar", "dollars", "pound", "pounds", "euro", "euros", "naira", "cedi", "cedis", "shilling", "shillings", "rand", "birr", "kwacha", "dirham", "franc"] },
-    { "concept": "sending-money", "terms": ["send", "transfer", "remit", "remittance", "wire", "deposit"] },
-    { "concept": "charges", "terms": ["charge", "charges", "fee", "fees", "cost", "costs", "price", "pricing", "tariff", "levy"] },
-    { "concept": "contract", "terms": ["contract", "agreement", "deal", "terms", "memorandum", "mou"] },
-    { "concept": "employment", "terms": ["staff", "employee", "employees", "worker", "workers", "hire", "hiring", "recruit", "personnel"] },
-    { "concept": "business-registration", "terms": ["register", "registration", "incorporate", "incorporation", "cac", "company", "business name"] },
-    { "concept": "invoice", "terms": ["invoice", "bill", "billing", "receipt", "quotation", "quote"] },
-    { "concept": "food", "terms": ["eat", "eating", "food", "diet", "meal", "meals", "nutrition", "feeding"] },
-    { "concept": "pregnancy", "terms": ["pregnant", "pregnancy", "expecting", "antenatal", "prenatal"] },
-    { "concept": "childbirth", "terms": ["childbirth", "deliver", "delivery", "birth", "labour", "labor", "maternity"] },
-    { "concept": "child", "terms": ["baby", "child", "children", "kid", "kids", "infant", "toddler", "pikin"] },
-    { "concept": "planting", "terms": ["plant", "planting", "crop", "crops", "sow", "sowing", "cultivate", "farm", "farming"] },
-    { "concept": "harvest", "terms": ["harvest", "yield", "produce", "output"] },
-    { "concept": "livestock", "terms": ["livestock", "animal", "animals", "cattle", "goat", "goats", "cow", "cows", "poultry", "chicken", "chickens", "birds"] },
-    { "concept": "shipping", "terms": ["ship", "shipping", "freight", "cargo", "consignment", "container", "courier"] },
-    { "concept": "importing", "terms": ["import", "importing", "bring in", "customs", "clearing", "clearance", "duty"] },
-    { "concept": "building", "terms": ["build", "building", "construct", "construction", "erect"] },
-    { "concept": "house", "terms": ["house", "home", "bungalow", "duplex", "apartment", "flat", "residence"] },
-    { "concept": "rent", "terms": ["rent", "rental", "lease", "letting", "tenancy", "landlord"] },
-    { "concept": "school", "terms": ["school", "schooling", "tuition", "education", "academic"] },
-    { "concept": "study-abroad", "terms": ["abroad", "overseas", "foreign", "international", "japa", "relocate", "emigrate"] },
-    { "concept": "insurance", "terms": ["insurance", "cover", "coverage", "policy", "premium", "indemnity"] },
-    { "concept": "health", "terms": ["health", "medical", "clinic", "hospital", "doctor", "treatment"] },
-    { "concept": "electricity", "terms": ["electricity", "power", "light", "nepa", "grid", "current", "kwh"] },
-    { "concept": "generator", "terms": ["generator", "gen", "genset", "backup", "inverter"] },
-    { "concept": "solar", "terms": ["solar", "panel", "panels", "photovoltaic", "pv"] },
-    { "concept": "fuel", "terms": ["fuel", "petrol", "diesel", "gas", "pms", "ago", "kerosene"] },
-    { "concept": "vehicle", "terms": ["car", "vehicle", "motor", "automobile", "truck", "bus"] },
-    { "concept": "transport", "terms": ["transport", "fare", "commute", "travel", "trip", "journey", "ride"] },
-    { "concept": "land", "terms": ["land", "plot", "acre", "hectare", "property", "site"] },
-    { "concept": "internet", "terms": ["internet", "data", "bundle", "wifi", "broadband", "mb", "gb"] },
-    { "concept": "phone-credit", "terms": ["airtime", "credit", "recharge", "topup", "top up"] },
-    { "concept": "domain", "terms": ["domain", "website", "url", "web address", "site name"] },
-    { "concept": "will", "terms": ["will", "testament", "inheritance", "estate", "bequest"] },
-    { "concept": "tax", "terms": ["tax", "taxation", "paye", "levy", "duty", "revenue"] },
-    { "concept": "vat", "terms": ["vat", "value added tax", "sales tax", "gst"] },
-    { "concept": "pension", "terms": ["pension", "retirement", "gratuity", "provident", "nssf", "rsa"] },
-    { "concept": "profit", "terms": ["profit", "margin", "return", "roi", "gain", "surplus"] },
-    { "concept": "budget", "terms": ["budget", "budgeting", "plan", "planning", "forecast", "projection"] },
-    { "concept": "compare", "terms": ["compare", "comparison", "versus", "vs", "against", "which is better", "cheapest", "best"] },
-    { "concept": "cv", "terms": ["cv", "resume", "curriculum vitae", "profile"] },
-    { "concept": "job", "terms": ["job", "role", "position", "vacancy", "employment", "career"] },
-    { "concept": "visa", "terms": ["visa", "permit", "residency", "immigration"] },
-    { "concept": "passport", "terms": ["passport", "travel document"] }
+    {
+      "concept": "borrowing",
+      "terms": [
+        "loan",
+        "borrow",
+        "borrowing",
+        "credit",
+        "lend",
+        "lender",
+        "lending",
+        "advance"
+      ]
+    },
+    {
+      "concept": "saving",
+      "terms": [
+        "save",
+        "saving",
+        "savings",
+        "put away",
+        "set aside",
+        "nest egg"
+      ]
+    },
+    {
+      "concept": "earning",
+      "terms": [
+        "earn",
+        "earning",
+        "earnings",
+        "salary",
+        "wage",
+        "wages",
+        "pay",
+        "income",
+        "remuneration",
+        "compensation"
+      ]
+    },
+    {
+      "concept": "interest-rate",
+      "terms": [
+        "interest",
+        "rate",
+        "apr",
+        "percentage"
+      ]
+    },
+    {
+      "concept": "currency-exchange",
+      "terms": [
+        "currency",
+        "exchange",
+        "convert",
+        "forex",
+        "fx",
+        "rate",
+        "dollar",
+        "dollars",
+        "pound",
+        "pounds",
+        "euro",
+        "euros",
+        "naira",
+        "cedi",
+        "cedis",
+        "shilling",
+        "shillings",
+        "rand",
+        "birr",
+        "kwacha",
+        "dirham",
+        "franc"
+      ]
+    },
+    {
+      "concept": "sending-money",
+      "terms": [
+        "send",
+        "transfer",
+        "remit",
+        "remittance",
+        "wire",
+        "deposit"
+      ]
+    },
+    {
+      "concept": "charges",
+      "terms": [
+        "charge",
+        "charges",
+        "fee",
+        "fees",
+        "cost",
+        "costs",
+        "price",
+        "pricing",
+        "tariff",
+        "levy"
+      ]
+    },
+    {
+      "concept": "contract",
+      "terms": [
+        "contract",
+        "agreement",
+        "deal",
+        "terms",
+        "memorandum",
+        "mou"
+      ]
+    },
+    {
+      "concept": "employment",
+      "terms": [
+        "staff",
+        "employee",
+        "employees",
+        "worker",
+        "workers",
+        "hire",
+        "hiring",
+        "recruit",
+        "personnel"
+      ]
+    },
+    {
+      "concept": "business-registration",
+      "terms": [
+        "register",
+        "registration",
+        "incorporate",
+        "incorporation",
+        "cac",
+        "company",
+        "business name"
+      ]
+    },
+    {
+      "concept": "invoice",
+      "terms": [
+        "invoice",
+        "bill",
+        "billing",
+        "receipt",
+        "quotation",
+        "quote"
+      ]
+    },
+    {
+      "concept": "food",
+      "terms": [
+        "eat",
+        "eating",
+        "food",
+        "diet",
+        "meal",
+        "meals",
+        "nutrition",
+        "feeding"
+      ]
+    },
+    {
+      "concept": "pregnancy",
+      "terms": [
+        "pregnant",
+        "pregnancy",
+        "expecting",
+        "antenatal",
+        "prenatal"
+      ]
+    },
+    {
+      "concept": "childbirth",
+      "terms": [
+        "childbirth",
+        "deliver",
+        "delivery",
+        "birth",
+        "labour",
+        "labor",
+        "maternity"
+      ]
+    },
+    {
+      "concept": "child",
+      "terms": [
+        "baby",
+        "child",
+        "children",
+        "kid",
+        "kids",
+        "infant",
+        "toddler",
+        "pikin"
+      ]
+    },
+    {
+      "concept": "planting",
+      "terms": [
+        "plant",
+        "planting",
+        "crop",
+        "crops",
+        "sow",
+        "sowing",
+        "cultivate",
+        "farm",
+        "farming",
+        "seed",
+        "seeds",
+        "seedling",
+        "nursery",
+        "transplant"
+      ]
+    },
+    {
+      "concept": "harvest",
+      "terms": [
+        "harvest",
+        "yield",
+        "produce",
+        "output",
+        "harvesting",
+        "reap",
+        "reaping",
+        "tonnage"
+      ]
+    },
+    {
+      "concept": "livestock",
+      "terms": [
+        "livestock",
+        "animal",
+        "animals",
+        "cattle",
+        "goat",
+        "goats",
+        "cow",
+        "cows",
+        "poultry",
+        "chicken",
+        "chickens",
+        "birds",
+        "sheep",
+        "broiler",
+        "layer",
+        "pig",
+        "piggery"
+      ]
+    },
+    {
+      "concept": "shipping",
+      "terms": [
+        "ship",
+        "shipping",
+        "freight",
+        "cargo",
+        "consignment",
+        "container",
+        "courier"
+      ]
+    },
+    {
+      "concept": "importing",
+      "terms": [
+        "import",
+        "importing",
+        "bring in",
+        "customs",
+        "clearing",
+        "clearance",
+        "duty"
+      ]
+    },
+    {
+      "concept": "building",
+      "terms": [
+        "build",
+        "building",
+        "construct",
+        "construction",
+        "erect"
+      ]
+    },
+    {
+      "concept": "house",
+      "terms": [
+        "house",
+        "home",
+        "bungalow",
+        "duplex",
+        "apartment",
+        "flat",
+        "residence"
+      ]
+    },
+    {
+      "concept": "rent",
+      "terms": [
+        "rent",
+        "rental",
+        "lease",
+        "letting",
+        "tenancy",
+        "landlord"
+      ]
+    },
+    {
+      "concept": "school",
+      "terms": [
+        "school",
+        "schooling",
+        "tuition",
+        "education",
+        "academic"
+      ]
+    },
+    {
+      "concept": "study-abroad",
+      "terms": [
+        "abroad",
+        "overseas",
+        "foreign",
+        "international",
+        "japa",
+        "relocate",
+        "emigrate"
+      ]
+    },
+    {
+      "concept": "insurance",
+      "terms": [
+        "insurance",
+        "cover",
+        "coverage",
+        "policy",
+        "premium",
+        "indemnity"
+      ]
+    },
+    {
+      "concept": "health",
+      "terms": [
+        "health",
+        "medical",
+        "clinic",
+        "hospital",
+        "doctor",
+        "treatment"
+      ]
+    },
+    {
+      "concept": "electricity",
+      "terms": [
+        "electricity",
+        "power",
+        "light",
+        "nepa",
+        "grid",
+        "current",
+        "kwh"
+      ]
+    },
+    {
+      "concept": "generator",
+      "terms": [
+        "generator",
+        "gen",
+        "genset",
+        "backup",
+        "inverter"
+      ]
+    },
+    {
+      "concept": "solar",
+      "terms": [
+        "solar",
+        "panel",
+        "panels",
+        "photovoltaic",
+        "pv"
+      ]
+    },
+    {
+      "concept": "fuel",
+      "terms": [
+        "fuel",
+        "petrol",
+        "diesel",
+        "gas",
+        "pms",
+        "ago",
+        "kerosene"
+      ]
+    },
+    {
+      "concept": "vehicle",
+      "terms": [
+        "car",
+        "vehicle",
+        "motor",
+        "automobile",
+        "truck",
+        "bus"
+      ]
+    },
+    {
+      "concept": "transport",
+      "terms": [
+        "transport",
+        "fare",
+        "commute",
+        "travel",
+        "trip",
+        "journey",
+        "ride"
+      ]
+    },
+    {
+      "concept": "land",
+      "terms": [
+        "land",
+        "plot",
+        "acre",
+        "hectare",
+        "property",
+        "site"
+      ]
+    },
+    {
+      "concept": "internet",
+      "terms": [
+        "internet",
+        "data",
+        "bundle",
+        "wifi",
+        "broadband",
+        "mb",
+        "gb"
+      ]
+    },
+    {
+      "concept": "phone-credit",
+      "terms": [
+        "airtime",
+        "credit",
+        "recharge",
+        "topup",
+        "top up"
+      ]
+    },
+    {
+      "concept": "domain",
+      "terms": [
+        "domain",
+        "website",
+        "url",
+        "web address",
+        "site name"
+      ]
+    },
+    {
+      "concept": "will",
+      "terms": [
+        "will",
+        "testament",
+        "inheritance",
+        "estate",
+        "bequest"
+      ]
+    },
+    {
+      "concept": "tax",
+      "terms": [
+        "tax",
+        "taxation",
+        "paye",
+        "levy",
+        "duty",
+        "revenue"
+      ]
+    },
+    {
+      "concept": "vat",
+      "terms": [
+        "vat",
+        "value added tax",
+        "sales tax",
+        "gst"
+      ]
+    },
+    {
+      "concept": "pension",
+      "terms": [
+        "pension",
+        "retirement",
+        "gratuity",
+        "provident",
+        "nssf",
+        "rsa"
+      ]
+    },
+    {
+      "concept": "profit",
+      "terms": [
+        "profit",
+        "margin",
+        "return",
+        "roi",
+        "gain",
+        "surplus"
+      ]
+    },
+    {
+      "concept": "budget",
+      "terms": [
+        "budget",
+        "budgeting",
+        "plan",
+        "planning",
+        "forecast",
+        "projection"
+      ]
+    },
+    {
+      "concept": "compare",
+      "terms": [
+        "compare",
+        "comparison",
+        "versus",
+        "vs",
+        "against",
+        "which is better",
+        "cheapest",
+        "best"
+      ]
+    },
+    {
+      "concept": "cv",
+      "terms": [
+        "cv",
+        "resume",
+        "curriculum vitae",
+        "profile"
+      ]
+    },
+    {
+      "concept": "job",
+      "terms": [
+        "job",
+        "role",
+        "position",
+        "vacancy",
+        "employment",
+        "career"
+      ]
+    },
+    {
+      "concept": "visa",
+      "terms": [
+        "visa",
+        "permit",
+        "residency",
+        "immigration"
+      ]
+    },
+    {
+      "concept": "passport",
+      "terms": [
+        "passport",
+        "travel document"
+      ]
+    },
+    {
+      "concept": "farmland",
+      "terms": [
+        "farmer",
+        "field",
+        "acres",
+        "hectares",
+        "shamba",
+        "garden"
+      ]
+    },
+    {
+      "concept": "soil-inputs",
+      "terms": [
+        "fertilizer",
+        "fertiliser",
+        "manure",
+        "compost",
+        "npk",
+        "urea",
+        "nutrient",
+        "soil"
+      ]
+    },
+    {
+      "concept": "crop-protection",
+      "terms": [
+        "pesticide",
+        "herbicide",
+        "insecticide",
+        "fungicide",
+        "spray",
+        "spraying",
+        "pest",
+        "weed",
+        "weeds"
+      ]
+    },
+    {
+      "concept": "watering",
+      "terms": [
+        "irrigation",
+        "irrigate",
+        "watering",
+        "borehole",
+        "sprinkler",
+        "drip",
+        "water pump"
+      ]
+    },
+    {
+      "concept": "staple-crops",
+      "terms": [
+        "maize",
+        "corn",
+        "cassava",
+        "yam",
+        "rice",
+        "millet",
+        "sorghum",
+        "beans",
+        "cowpea",
+        "groundnut",
+        "plantain",
+        "banana"
+      ]
+    },
+    {
+      "concept": "cash-crops",
+      "terms": [
+        "cocoa",
+        "coffee",
+        "tea",
+        "cotton",
+        "cashew",
+        "sesame",
+        "shea",
+        "palm oil",
+        "sugarcane",
+        "tobacco"
+      ]
+    },
+    {
+      "concept": "aquaculture",
+      "terms": [
+        "fish",
+        "fishery",
+        "fish farming",
+        "catfish",
+        "tilapia",
+        "pond",
+        "aquaculture",
+        "fingerlings"
+      ]
+    },
+    {
+      "concept": "greenhouse",
+      "terms": [
+        "greenhouse",
+        "tunnel",
+        "nethouse",
+        "shade net",
+        "protected cultivation"
+      ]
+    },
+    {
+      "concept": "encode-decode",
+      "terms": [
+        "encode",
+        "decode",
+        "encoding",
+        "decoding",
+        "base64",
+        "url encode",
+        "escape",
+        "unescape"
+      ]
+    },
+    {
+      "concept": "format-validate",
+      "terms": [
+        "format",
+        "formatter",
+        "beautify",
+        "prettify",
+        "minify",
+        "validate",
+        "validator",
+        "lint",
+        "parse",
+        "parser"
+      ]
+    },
+    {
+      "concept": "developer-tokens",
+      "terms": [
+        "jwt",
+        "token",
+        "hash",
+        "uuid",
+        "checksum",
+        "md5",
+        "sha",
+        "regex",
+        "cron"
+      ]
+    },
+    {
+      "concept": "pdf-combine",
+      "terms": [
+        "merge",
+        "combine",
+        "join",
+        "split",
+        "extract pages",
+        "reorder",
+        "rotate"
+      ]
+    },
+    {
+      "concept": "pdf-shrink",
+      "terms": [
+        "compress",
+        "shrink",
+        "reduce size",
+        "smaller file",
+        "optimise",
+        "optimize"
+      ]
+    },
+    {
+      "concept": "pdf-mark",
+      "terms": [
+        "watermark",
+        "stamp",
+        "sign",
+        "signature",
+        "esign",
+        "initial",
+        "annotate",
+        "redact"
+      ]
+    },
+    {
+      "concept": "file-convert",
+      "terms": [
+        "converter",
+        "change format",
+        "export as",
+        "save as",
+        "turn into"
+      ]
+    },
+    {
+      "concept": "sales-tax",
+      "terms": [
+        "consumption tax",
+        "output tax",
+        "input tax"
+      ]
+    },
+    {
+      "concept": "online-selling",
+      "terms": [
+        "ecommerce",
+        "online store",
+        "shop",
+        "storefront",
+        "marketplace",
+        "dropshipping",
+        "jumia",
+        "checkout"
+      ]
+    },
+    {
+      "concept": "content-creator",
+      "terms": [
+        "creator",
+        "influencer",
+        "content",
+        "youtube",
+        "tiktok",
+        "instagram",
+        "podcast",
+        "streamer",
+        "subscriber",
+        "follower"
+      ]
+    },
+    {
+      "concept": "design-work",
+      "terms": [
+        "design",
+        "designer",
+        "logo",
+        "branding",
+        "brand kit",
+        "mockup",
+        "palette",
+        "typography"
+      ]
+    },
+    {
+      "concept": "photo-edit",
+      "terms": [
+        "image",
+        "photo",
+        "picture",
+        "resize",
+        "compress image",
+        "background remove",
+        "thumbnail"
+      ]
+    },
+    {
+      "concept": "writing-help",
+      "terms": [
+        "write",
+        "writing",
+        "draft",
+        "rewrite",
+        "proofread",
+        "grammar",
+        "summarise",
+        "summarize",
+        "translate"
+      ]
+    },
+    {
+      "concept": "school-admin",
+      "terms": [
+        "student",
+        "pupil",
+        "teacher",
+        "classroom",
+        "timetable",
+        "attendance",
+        "term",
+        "semester"
+      ]
+    },
+    {
+      "concept": "exam-marks",
+      "terms": [
+        "exam",
+        "test",
+        "score",
+        "grade",
+        "grading",
+        "result",
+        "cgpa",
+        "gpa",
+        "aggregate",
+        "transcript"
+      ]
+    },
+    {
+      "concept": "contracts",
+      "terms": [
+        "clause",
+        "terms and conditions",
+        "deed",
+        "affidavit"
+      ]
+    },
+    {
+      "concept": "employment-docs",
+      "terms": [
+        "offer letter",
+        "appointment",
+        "probation",
+        "termination",
+        "resignation"
+      ]
+    },
+    {
+      "concept": "measurement",
+      "terms": [
+        "convert units",
+        "square meters",
+        "square metres",
+        "sqm",
+        "plot size",
+        "feet",
+        "metres",
+        "meters",
+        "kilogram",
+        "litre",
+        "liter"
+      ]
+    },
+    {
+      "concept": "security-checks",
+      "terms": [
+        "password",
+        "breach",
+        "phishing",
+        "scam",
+        "fraud",
+        "verify",
+        "authentic",
+        "secure"
+      ]
+    },
+    {
+      "concept": "language-help",
+      "terms": [
+        "swahili",
+        "hausa",
+        "yoruba",
+        "igbo",
+        "amharic",
+        "zulu",
+        "pidgin",
+        "french",
+        "arabic",
+        "translation"
+      ]
+    },
+    {
+      "concept": "sports-figures",
+      "terms": [
+        "football",
+        "soccer",
+        "match",
+        "league",
+        "fixture",
+        "team",
+        "player",
+        "tournament",
+        "afcon"
+      ]
+    }
   ]
 }
