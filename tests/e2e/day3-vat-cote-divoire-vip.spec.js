@@ -50,6 +50,73 @@ test("special rate fails closed then calculates with evidence", async ({
   await expect(page.locator("#civMain")).toContainText(/109[\s,.]?000/);
   await expect(page.locator("#civRate")).toHaveText("9%");
 });
+test("French treatment guide controls the calculation and formats XOF without decimals", async ({
+  page,
+}) => {
+  await page.goto("/fr/cote-divoire/calculateur-tva");
+
+  await page
+    .locator("#civClassification")
+    .selectOption("ordinance-2026-reduced-confirmed");
+  await expect(
+    page.locator('[data-civ-rate="ordinance-2026-reduced-confirmed"]'),
+  ).toHaveAttribute("aria-pressed", "true");
+  await expect(page.locator("#civError")).toContainText(
+    /disposition juridique exacte/i,
+  );
+
+  await page.locator("#civEvidence").check();
+  await expect(page.locator("#civRate")).toHaveText("9%");
+  await expect(page.locator("#civMain")).toContainText(/109[\s\u202f]000/);
+  await expect(page.locator("#civMain")).not.toContainText(/[,.]00/);
+
+  await page.locator("#civClassification").selectOption("review");
+  await expect(page.locator('[data-civ-rate="standard"]')).toHaveAttribute(
+    "aria-pressed",
+    "true",
+  );
+  await expect(page.locator("#civRate")).toHaveText("18%");
+  await expect(page.locator("#civClassificationResult")).toContainText(
+    /reste au taux de droit commun de 18/i,
+  );
+
+  await expect(page.locator('meta[property="og:locale"]')).toHaveAttribute(
+    "content",
+    "fr_CI",
+  );
+  const schemas = await page
+    .locator('script[type="application/ld+json"]')
+    .evaluateAll((nodes) => nodes.map((node) => JSON.parse(node.textContent)));
+  const breadcrumb = schemas.find(
+    (schema) => schema["@type"] === "BreadcrumbList",
+  );
+  expect(breadcrumb.itemListElement).toHaveLength(3);
+  expect(schemas.some((schema) => schema["@type"] === "FAQPage")).toBe(false);
+});
+
+test("French PDF uses whole-XOF values", async ({ page }) => {
+  await page.goto("/fr/cote-divoire/calculateur-tva");
+  await page.evaluate(() => {
+    window.__civPdfText = [];
+    window.jspdf.jsPDF = function FakePdf() {
+      this.setFont = () => {};
+      this.setFontSize = () => {};
+      this.text = (value) => {
+        const values = Array.isArray(value) ? value : [value];
+        window.__civPdfText.push(...values.map(String));
+      };
+      this.splitTextToSize = (value) => [value];
+      this.save = () => {};
+    };
+  });
+
+  await page.locator("#civPdf").click();
+  const pdfText = await page.evaluate(() => window.__civPdfText);
+  expect(pdfText).toContain("XOF 100 000");
+  expect(pdfText).toContain("XOF 18 000");
+  expect(pdfText).toContain("XOF 118 000");
+  expect(pdfText.join(" ")).not.toMatch(/XOF [\d ]+[,.]00/);
+});
 
 test("dark, 200% text and privacy surfaces hold", async ({ page }) => {
   await page.emulateMedia({ colorScheme: "dark" });

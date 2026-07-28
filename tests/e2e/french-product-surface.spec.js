@@ -17,8 +17,8 @@ test.describe('French product surface', () => {
 
   test('directory renders only genuine French registry records and filters them', async ({ page }) => {
     await page.goto('/fr/all-tools/');
-    await expect(page.locator('#statLive')).toHaveText('1152');
-    await expect(page.locator('#resultsCount')).toContainText('1 152 outils');
+    await expect(page.locator('#statLive')).toHaveText('1452');
+    await expect(page.locator('#resultsCount')).toContainText('60 sur 1 452 outils');
     const hrefs = await page.locator('#toolsGrid > a').evaluateAll((nodes) => nodes.slice(0, 50).map((node) => node.getAttribute('href')));
     expect(hrefs.length).toBeGreaterThan(10);
     expect(hrefs.every((href) => href && href.startsWith('/fr/'))).toBeTruthy();
@@ -97,7 +97,7 @@ test.describe('French product surface', () => {
     await expect(noJsPage.locator('[data-registry-count="tools.live_experiences"]')).toHaveText(/2[\s\u202f]?606\+/);
     await expect(noJsPage.getByRole('link', { name: 'Parcourir tous les outils' })).toBeVisible();
     await noJsPage.goto('/fr/all-tools/');
-    expect(await noJsPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
+    expect(await noJsPage.locator('#toolsGrid [data-directory-record]').count()).toBe(1452);
     await expect(noJsPage.getByRole('link', { name: /Calculateur (?:PAYE|Salaire Net)/ }).first()).toBeVisible();
     await noJs.close();
 
@@ -105,8 +105,8 @@ test.describe('French product surface', () => {
     const blockedPage = await blocked.newPage();
     await blockedPage.route(/tool-registry|registry-counts/, (route) => route.abort());
     await blockedPage.goto('/fr/all-tools/');
-    await expect(blockedPage.locator('#statLive')).toHaveText('1152');
-    expect(await blockedPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
+    await expect(blockedPage.locator('#statLive')).toHaveText('1452');
+    expect(await blockedPage.locator('#toolsGrid [data-directory-record]').count()).toBe(1452);
     await blocked.close();
   });
 

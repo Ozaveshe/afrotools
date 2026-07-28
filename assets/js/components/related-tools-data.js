@@ -7579,7 +7579,7 @@
         "name": "Évaluateur d’offre d’emploi",
         "icon": "💼",
         "desc": "Comparez deux offres écrites localement avec vos...",
-        "href": "https://africa-tools.com/fr/tools/evaluateur-offre-emploi/",
+        "href": "/fr/tools/evaluateur-offre-emploi/",
         "category": "career",
         "lang": "fr",
         "priority": 59,
@@ -9547,6 +9547,21 @@
         "imageKey": "medical-report"
       },
       {
+        "id": "risque-paludisme-fr",
+        "name": "Checklist de dépistage du paludisme",
+        "icon": "FR",
+        "desc": "Repérez l’urgence d’un test ou de soins sans dia...",
+        "href": "/fr/tools/risque-paludisme/",
+        "category": "health",
+        "lang": "fr",
+        "priority": 68,
+        "estTraffic": 0,
+        "imageExt": "svg",
+        "sourceId": "malaria-risk",
+        "imageId": "malaria-risk",
+        "imageKey": "malaria-risk"
+      },
+      {
         "id": "risque-diabete-fr",
         "name": "Evaluation du risque de diabete",
         "icon": "FR",
@@ -9767,20 +9782,6 @@
         "sourceId": "home-workout",
         "imageId": "home-workout",
         "imageKey": "home-workout"
-      },
-      {
-        "id": "risque-paludisme-fr",
-        "name": "Evaluation du risque de paludisme",
-        "icon": "FR",
-        "desc": "Outil fran?ais d?j? en ligne avec usage indicati...",
-        "href": "/fr/tools/risque-paludisme/",
-        "category": "health",
-        "lang": "fr",
-        "priority": 60,
-        "estTraffic": 0,
-        "imageExt": "svg",
-        "imageId": "malaria-risk",
-        "imageKey": "malaria-risk"
       },
       {
         "id": "compatibilite-groupe-sanguin-fr",
