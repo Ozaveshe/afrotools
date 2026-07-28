@@ -1,0 +1,16 @@
+{
+  "reviewedBy": "Oza (repository owner), accepting the automated code audit's findings on 2026-07-28. Prepared by the audit; reviewed and accepted by the owner.",
+  "reviewedAt": "2026-07-28",
+  "reviewedOn": "2026-07-28",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/blob/main/tests/localized-calculator-key-drift.test.js",
+  "reason": "Four one-line fixes to reads that resolved to undefined. No tax band, rate, threshold, relief, deduction or calculation path was touched on any of these pages, and every figure they compute is unchanged; only the identifiers used to read already-computed values were corrected. (1) south-africa/za-paye.html: the share card's tax line read RESULT.tax, but the result object carries paye and has no tax key, so the line rendered fmt(undefined) on every share. Changed to RESULT.paye. The same defect and the same fix were applied to the Swahili translation, which is not a registered artifact. (2,3,4) fr/ethiopia/et-paye.html, fr/sierra-leone/sl-paye.html and fr/uganda/ug-paye.html each guarded the native share sheet with `if (navigator.partager)` while calling navigator.share() inside the guard. navigator.partager does not exist in any browser, so the guard was always false and every share silently fell through to the clipboard branch — the native sheet never opened on mobile. This is the identifier-rename defect recorded as issue 50 in docs/CODE-AUDIT-2026-07.md (w.imprimer for w.print, navigator.partager for navigator.share); these three pages were missed by that pass, and are the same three that were missing the analytics loader in issue 61. Changed to navigator.share. A repository-wide grep for navigator.partager now returns zero. Found while sweeping the 47 Swahili PAYE calculators for the sw/egypt key-rename defect; the new tests/localized-calculator-key-drift.test.js fails on any localized calculator that reads a property nothing in the same file defines. The artifact digests moved because these read targets changed, not because any figure moved.",
+  "formulaIds": [
+    "route-et-paye-fr",
+    "route-sl-paye-fr",
+    "route-ug-paye-fr",
+    "route-za-paye"
+  ],
+  "fixtureDeltas": [],
+  "acceptedBy": "Oza (repository owner)",
+  "acceptedAt": "2026-07-28"
+}

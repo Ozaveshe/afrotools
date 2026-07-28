@@ -1,0 +1,13 @@
+{
+  "reviewedBy": "Oza (repository owner), accepting the automated code audit's findings on 2026-07-28. Prepared by the audit; reviewed and accepted by the owner.",
+  "reviewedAt": "2026-07-28",
+  "reviewedOn": "2026-07-28",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/blob/main/botswana/bw-paye.html",
+  "reason": "One-line defect fix in the salary-benchmark wiring. No tax band, rate, threshold, deduction or calculation path was touched, and every figure the page renders is unchanged. The page's RESULT object defines monthlyNet (and monthlyGross, monthlyTax), but the benchmark widget was wired as `RESULT.netMonthly || RESULT.net` — neither key exists on this page, so the widget received the string 'undefined' as its user-net attribute on every calculation. Changed to RESULT.monthlyNet, which is the key the same file defines and which every other reader on the page already uses (renderRows line 606, setPeriod line 615). Found while sweeping the Swahili PAYE calculators: sw/botswana and sw/zambia carried the same wiring, and unlike the English page they also read RESULT.monthlyPAYE, so their save and share payloads carried undefined for both net pay and tax. The artifact digest moved because the read target changed, not because any figure moved.",
+  "formulaIds": [
+    "route-bw-paye"
+  ],
+  "fixtureDeltas": [],
+  "acceptedBy": "Oza (repository owner)",
+  "acceptedAt": "2026-07-28"
+}

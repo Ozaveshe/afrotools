@@ -322,7 +322,7 @@ function calcTax(gross) {
   const eff = gross > 0 ? tax / gross : 0;
   const employerCNaPS = coveredSalary * 0.13;
   const totalEmployerCost = gross + employerCNaPS;
-  RESULT = { gross, cnaps, tax, net, effectiveRate: eff, annualGhafi: gross * 12, annualNet: net * 12, employerCNaPS, totalEmployerCost, taxable, dependents, dependentRelief, baseTax, coveredSalary };
+  RESULT = { gross, cnaps, tax, net, effectiveRate: eff, annualGross: gross * 12, annualNet: net * 12, employerCNaPS, totalEmployerCost, taxable, dependents, dependentRelief, baseTax, coveredSalary };
   document.getElementById('resKiasi').textContent = fmt(net);
   document.getElementById('resGross').textContent = `Ghafi: ${fmt(gross)}/mwezi · ${fmt(gross * 12)}/mwaka`;
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);

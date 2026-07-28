@@ -1028,7 +1028,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 function shareResult() {
   if (!résultat) return;
   const text = `Mon PAYE Sierra Leone récapitulatif : Brut SLE ${Math.round(résultat.gross).toLocaleString()}/mo → Net SLE ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/sierra-leone/sl-paye`;
-  if (navigator.partager) {
+  if (navigator.share) {
     navigator.share({title:'Mon PAYE Sierra Leone',text,url:'https://afrotools.com/fr/sierra-leone/sl-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);

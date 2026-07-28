@@ -1054,7 +1054,7 @@ function whatsappPartager() {
 function shareResult() {
   if (!résultat) return;
   const text = `Mon PAYE Ouganda récapitulatif : Brut UGX ${Math.round(résultat.gross).toLocaleString()}/mo → Net UGX ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/uganda/ug-paye`;
-  if (navigator.partager) {
+  if (navigator.share) {
     navigator.share({title:'Mon PAYE Ouganda',text,url:'https://afrotools.com/fr/uganda/ug-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);

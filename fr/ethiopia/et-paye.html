@@ -1019,7 +1019,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 function shareResult() {
   if (!résultat) return;
   const text = `Mon PAYE Éthiopie récapitulatif : Brut ETB ${Math.round(résultat.gross).toLocaleString()}/mo → Net ETB ${Math.round(résultat.netMonthly).toLocaleString()}/mo (${pct(résultat.effectiveRate)} taux effectif). Calculé sur afrotools.com/fr/ethiopia/et-paye`;
-  if (navigator.partager) {
+  if (navigator.share) {
     navigator.share({title:'Mon PAYE Éthiopie',text,url:'https://afrotools.com/fr/ethiopia/et-paye'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);

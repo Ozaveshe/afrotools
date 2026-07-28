@@ -507,7 +507,7 @@ function calcAnnualPAYE(annualIncome) {
   const netAnnual = gross - annualPAYE;
   const effectiveRate = gross > 0 ? annualPAYE / gross : 0;
   const monthly = v => v / 12;
-  RESULT = { gross, annual: gross, annualPAYE, bandBreakdown: result.bandBreakdown, netAnnual, effectiveRate, monthlyGhafi: monthly(gross), monthlyNet: monthly(netAnnual), monthlyKodi: monthly(annualPAYE), employerCost: 0, totalEmployerCost: gross };
+  RESULT = { gross, annual: gross, annualPAYE, bandBreakdown: result.bandBreakdown, netAnnual, effectiveRate, monthlyGross: monthly(gross), monthlyNet: monthly(netAnnual), monthlyTax: monthly(annualPAYE), employerCost: 0, totalEmployerCost: gross };
   document.getElementById('resKiasi').textContent = fmt(netAnnual);
   document.getElementById('resGross').textContent = `Ghafi: ${fmt(gross)}/mwaka · ${fmt(monthly(gross))}/mwezi`;
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
@@ -520,23 +520,23 @@ function calcAnnualPAYE(annualIncome) {
   if (_saveBtn) _saveBtn.setData({
     inputs: { grossSalary: RESULT.gross },
     outputs: {
-      netPay: RESULT.netMonthly || RESULT.net,
-      tax: RESULT.monthlyPAYE || RESULT.tax || RESULT.paye,
+      netPay: RESULT.monthlyNet,
+      tax: RESULT.monthlyTax,
       effectiveRate: RESULT.effectiveRate
     }
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
-    mainValue: fmt(RESULT.netMonthly || RESULT.net) + '/mwezi',
+    headline: 'Mshahara wangu halisi',
+    mainValue: fmt(RESULT.monthlyNet) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
-      { label: 'Kodi', value: fmt(RESULT.monthlyPAYE || RESULT.tax || RESULT.paye) + '/mwezi' },
+      { label: 'Kodi', value: fmt(RESULT.monthlyTax) + '/mwezi' },
       { label: 'kiwango halisi', value: pct(RESULT.effectiveRate) }
     ]
   });
   var _bmWidget = document.querySelector('salary-benchmark');
-  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.netMonthly || RESULT.net); }
+  if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.monthlyNet); }
   renderChart(CHART_TYPE);
   document.getElementById('resultsCard').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
   document.getElementById('aiBtn').disabled = false;
