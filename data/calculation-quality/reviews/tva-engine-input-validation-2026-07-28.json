@@ -1,0 +1,11 @@
+{
+  "reviewedBy": "Automated code audit (July 2026). Authored by the agent that made the change — countersign before relying on it.",
+  "reviewedAt": "2026-07-28",
+  "reviewedOn": "2026-07-28",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/blob/main/engines/src/tva-engine.js",
+  "reason": "Input validation only. No VAT rate, reduced-rate band, country entry or calculation path was changed, and every rate in RATES is byte-identical to the previous artifact. calculate() previously read its arguments without checking them, so calling it with a blank amount returned { ht: undefined, tva: NaN, ttc: NaN } and any page rendering that showed 'NaN FCFA'. It now returns { error } for a non-positive or non-numeric amount and for a rate outside [0,1), matching the guard pattern used by the other engines in this repository. The genuine 0% export rate is still accepted and still produces tva: 0. Verified against the built artifact: calculate() -> error; calculate('', 0.18) -> error; calculate(1000, 0.18) -> { ht: 1000, tva: 180, ttc: 1180 }; calculate(1180, 0.18, 'extract') -> { ht: 1000, tva: 180, ttc: 1180 }; calculate(1000, 0) -> { ht: 1000, tva: 0, ttc: 1000 }; calculate(1000, 18) -> error. The artifact digest moved because the guard is new code, not because any figure moved.",
+  "formulaIds": [
+    "formula-engines-tva-engine"
+  ],
+  "fixtureDeltas": []
+}

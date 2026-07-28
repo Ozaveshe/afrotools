@@ -52,18 +52,33 @@ const RESTORE = {
 // translated. Deliberately excludes "a" and "an": French "a" (has) and "an"
 // (year, as in "FCFA/an") collide with them.
 const EN_NEIGHBOUR = new Set(
-  ('the this that these those for and with our your its official free use uses used to of is are was were see also per from after before ' +
-   'applies apply shows show month months year years income tax rent notice period tenancy lease bookmark salary bands deducts computes ' +
-   'computation estimate spend bill basis increase leave rate rates cost costs calculator plan budget covers starts get quick provides ' +
-   'completely export petrol diesel about or in on at by we you it as').split(' ')
+  ('the this that these those for and with our your official use uses used to of is are was were see also per from after before ' +
+   'applies apply shows show month months year years rent notice period tenancy lease bookmark bands deducts computes ' +
+   'computation spend bill increase rates costs covers starts quick provides completely petrol diesel').split(' ')
+);
+
+// Words spelled the same in both languages, or so short that they collide.
+// "budget" is French too, and "budget mensuel" was rewritten to "budget
+// monthly" because "budget" sat in the English list. "its" collided with ITS,
+// Djibouti's Impot sur les Traitements et Salaires, turning "Bareme ITS
+// mensuel en vigueur" into "... monthly en vigueur".
+const HOMOGRAPHS = new Set(
+  ('budget plan base format service transport impact estimate salary income tax cost rate free calculator ' +
+   'in on at by or as it we you a an d l').split(' ')
 );
 
 // A neighbouring French word means the phrase is genuinely French.
 const FR_NEIGHBOUR = new Set(
   ('le la les du des de d un une pour avec votre notre nos vos ce cette cet est sont dans sur par au aux et ou qui que ne pas plus ' +
+   'en vigueur assiette simple complet complete bas basse partir avant apres selon chaque ' +
    'plafond salaire salaires impot impots revenu revenus montant montants taux bareme calcul calculer estimation economie plafonds ' +
    'an ans mois annee annees jour jours semaine base cotisation net brut charge charges').split(' ')
 );
+
+/** All-caps tokens are acronyms (ITS, CNSS, PAYE), not English words. */
+function isAcronym(word) {
+  return word.length >= 2 && word === word.toUpperCase() && /[A-Z]/.test(word);
+}
 
 /** Strip accents so "économie" tests as "economie". */
 function fold(word) {
@@ -146,8 +161,12 @@ function repair(html) {
       // Any accented neighbour, or a French function word, means French prose.
       if (isAccented(prev) || isAccented(next)) return token;
       if (FR_NEIGHBOUR.has(fold(prev)) || FR_NEIGHBOUR.has(fold(next))) return token;
-      // Require positive English evidence on at least one side.
-      if (!EN_NEIGHBOUR.has(fold(prev)) && !EN_NEIGHBOUR.has(fold(next))) return token;
+      // Require positive English evidence on at least one side, from a word
+      // that is neither a shared spelling nor an acronym.
+      const evidence = [prev, next].filter(
+        (w) => w && !isAcronym(w) && !HOMOGRAPHS.has(fold(w)) && EN_NEIGHBOUR.has(fold(w))
+      );
+      if (!evidence.length) return token;
       changes += 1;
       return matchCase(token, RESTORE[token.toLowerCase()]);
     });
