@@ -12,6 +12,14 @@ async function blockExternalHttp(page) {
   });
 }
 
+async function dismissCookieConsent(page) {
+  const dismiss = page.locator('#afro-cc-close');
+  if (await dismiss.isVisible().catch(() => false)) {
+    await dismiss.click();
+    await expect(page.locator('#afro-cookie-consent')).toBeHidden();
+  }
+}
+
 function inventory() {
   const registry = fs.readFileSync(path.resolve(__dirname, '../../assets/js/components/tool-registry.js'), 'utf8');
   const sandbox = { document: undefined, window: {} };
@@ -82,14 +90,17 @@ test('Day 6 hubs expose their reconciled workflows and responsive contracts', as
     expect(audit.count, `${hub.route} reconciled count`).toBe(audit.expectedCount);
     expect(audit.h1, `${hub.route} h1`).toBe(1);
     expect(audit.main, `${hub.route} main`).toBeGreaterThan(0);
-    expect(audit.overflow, `${hub.route} 320px overflow`).toBeLessThanOrEqual(1);
+    await expect.poll(() => page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+    ), { message: `${hub.route} 320px overflow` }).toBeLessThanOrEqual(1);
     expect(audit.focused, `${hub.route} focusable workflow entry`).toBe(true);
     expect(audit.schemaErrors, `${hub.route} schema`).toEqual([]);
 
     await page.setViewportSize({ width: 640, height: 760 });
     await page.evaluate(() => { document.documentElement.style.fontSize = '200%'; });
-    expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth),
-      `${hub.route} 200% text reflow`).toBeLessThanOrEqual(1);
+    await expect.poll(() => page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth
+    ), { message: `${hub.route} 200% text reflow` }).toBeLessThanOrEqual(1);
   }
 });
 
@@ -261,6 +272,7 @@ test('repaired Agriculture family entry apps execute independent deterministic f
   ];
   for (const [route, button, result] of fixtures) {
     await page.goto(route, { waitUntil: 'domcontentloaded' });
+    await dismissCookieConsent(page);
     const form = page.locator('[data-day6-agriculture-calculator]');
     const accessibility = await form.evaluate((node) => {
       const controls = Array.from(node.querySelectorAll('input,select,textarea,button'));

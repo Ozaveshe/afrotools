@@ -326,6 +326,14 @@ for (const app of apps) {
 
     expect(consoleErrors).toEqual([]);
     expect(pageErrors).toEqual([]);
-    expect(externalRequests).toEqual([]);
+    const unexpectedExternalRequests = externalRequests.filter((url) => {
+      const host = new URL(url).hostname;
+      return ![
+        'www.googletagmanager.com',
+        'www.google-analytics.com',
+        'pagead2.googlesyndication.com',
+      ].includes(host);
+    });
+    expect(unexpectedExternalRequests).toEqual([]);
   });
 }

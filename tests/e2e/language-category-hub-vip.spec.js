@@ -24,8 +24,8 @@ test('inventory remains complete and crawlable with JavaScript disabled', async 
   await expect(page.locator('[data-inventory-group="phrasebook"] .lh-card')).toHaveCount(8);
   await expect(page.locator('[data-inventory-group="utility"] .lh-card')).toHaveCount(3);
   await expect(page.locator('.lh-card h3 a')).toHaveCount(11);
-  await expect(page.getByRole('link', { name: 'Swahili Translator', exact: true })).toHaveAttribute('href', '/tools/swahili-translator/');
-  await expect(page.getByRole('link', { name: 'African Name Meaning Finder', exact: true })).toHaveAttribute('href', '/tools/african-name-meaning/');
+  await expect(page.getByRole('link', { name: 'Swahili Phrasebook & Optional Translator', exact: true })).toHaveAttribute('href', '/tools/swahili-translator/');
+  await expect(page.getByRole('link', { name: 'African Name Provenance Review', exact: true })).toHaveAttribute('href', '/tools/african-name-meaning/');
   await context.close();
 });
 

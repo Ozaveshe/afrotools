@@ -9,7 +9,8 @@ test('turns the protected household audit into a measurable 30-day action plan',
     if (message.type() === 'error') runtimeErrors.push(message.text());
   });
 
-  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: 'http://127.0.0.1:4173' });
+  const testOrigin = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').origin;
+  await context.grantPermissions(['clipboard-read', 'clipboard-write'], { origin: testOrigin });
   await page.goto('/tools/energy-audit/');
 
   await expect(page.locator('[data-df-form="energy-audit"]')).toHaveCount(0);

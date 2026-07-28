@@ -14,7 +14,7 @@ test.describe("Education Hub app VIP", () => {
       if (/fonts\.(googleapis|gstatic)\.com/.test(request.url())) remoteFonts.push(request.url());
     });
 
-    await page.goto("/tools/education-hub/", { waitUntil: "networkidle" });
+    await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
 
     await expect(page.getByRole("heading", { name: /private education planning dashboard/i })).toBeVisible();
     await expect(page.getByRole("heading", { name: /planner, not an eligibility decision/i })).toBeVisible();
@@ -44,9 +44,10 @@ test.describe("Education Hub app VIP", () => {
   });
 
   test("saving is explicit and labels remain truthful after dynamic rendering", async ({ page }) => {
-    await page.goto("/tools/education-hub/", { waitUntil: "networkidle" });
+    await page.goto("/tools/education-hub/", { waitUntil: "domcontentloaded" });
     await page.evaluate(() => localStorage.clear());
-    await page.reload({ waitUntil: "networkidle" });
+    await page.reload({ waitUntil: "domcontentloaded" });
+    await expect(page.getByRole("heading", { name: /private education planning dashboard/i })).toBeVisible();
 
     await expect(page.locator("body")).not.toContainText(/strong match|good matches|next best action|degree readiness|destination-readiness/i);
     await expect(page.locator("#edGpaValue")).toHaveAccessibleName(/^GPA$/);

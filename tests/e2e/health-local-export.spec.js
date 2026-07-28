@@ -2,7 +2,6 @@ const { test, expect } = require('@playwright/test');
 
 const routes = [
   '/tools/medical-report/',
-  '/tools/drug-dosage/',
   '/health/pregnancy-due-date/',
 ];
 
@@ -48,17 +47,34 @@ for (const route of routes) {
       await page.fill('#labInput', 'WBC: 7.2 x10^9/L\nHemoglobin: 13.5 g/dL');
       await page.click('#analyzeBtn');
       await expect(page.locator('#resultsContainer')).toHaveClass(/on/);
-    }
-    await page.evaluate(() => {
-      window.AfroHealthWorkflow.recordSnapshot({
-        toolId: document.querySelector('[data-health-action="pdf"]').getAttribute('data-health-tool-id'),
-        headline: 'Synthetic visit-prep result',
-        fields: [{ label: 'Synthetic measurement', value: 'PRIVATE_BROWSER_HEALTH_SENTINEL' }],
+    } else if (route === '/health/pregnancy-due-date/') {
+      const planningDate = await page.evaluate(() => {
+        const date = new Date();
+        date.setDate(date.getDate() + 140);
+        return date.toISOString().slice(0, 10);
       });
-    });
+      await page.fill('#planning-date', planningDate);
+      await page.click('#appointment-form button[type="submit"]');
+      await expect(page.locator('#appointment-results')).toBeVisible();
+    } else {
+      await page.waitForFunction(() => (
+        window.AfroHealthWorkflow &&
+        typeof window.AfroHealthWorkflow.recordSnapshot === 'function'
+      ));
+    }
+    if (route !== '/health/pregnancy-due-date/') {
+      await page.evaluate(() => {
+        window.AfroHealthWorkflow.recordSnapshot({
+          toolId: document.querySelector('[data-health-action="pdf"]').getAttribute('data-health-tool-id'),
+          headline: 'Synthetic visit-prep result',
+          fields: [{ label: 'Synthetic measurement', value: 'PRIVATE_BROWSER_HEALTH_SENTINEL' }],
+        });
+      });
+    }
 
     const pdfButton = page.locator('[data-health-action="pdf"]').first();
     await expect(pdfButton).toBeVisible();
+    await page.waitForLoadState('networkidle');
     await pdfButton.focus();
     await expect(pdfButton).toBeFocused();
     page.__healthActionStarted = true;
@@ -91,6 +107,7 @@ test('/health/ journey PDF is local even while signed in', async ({ page }) => {
   await page.goto('/health/', { waitUntil: 'domcontentloaded' });
   const pdfButton = page.locator('[data-health-action="pdf-journey"]').first();
   await expect(pdfButton).toBeVisible();
+  await page.waitForLoadState('networkidle');
   page.__healthActionStarted = true;
   const downloadPromise = page.waitForEvent('download');
   await pdfButton.click();

@@ -27,6 +27,7 @@ const {
   fileToSourceHtmlRoute,
 } = require('./lib/canonical-aliases');
 const { createPreferredPageUrlResolver } = require('./lib/seo-preferred-url');
+const { normalizeJsonLdStringValues } = require('./lib/json-ld-preserving-normalizer');
 
 const ROOT    = path.resolve(__dirname, '..');
 const DRY_RUN = process.argv.includes('--dry-run');
@@ -184,25 +185,6 @@ function normalizeKnownSiteUrl(url) {
   return hash && !preferred.includes('#') ? `${preferred}${hash}` : preferred;
 }
 
-function normalizeJsonLdValue(value, key = '') {
-  if (Array.isArray(value)) {
-    return value.map((item) => normalizeJsonLdValue(item, key));
-  }
-
-  if (!value || typeof value !== 'object') {
-    if (key === 'urlTemplate' && typeof value === 'string' && value.includes('{search_term_string}')) {
-      return value;
-    }
-    return typeof value === 'string' ? normalizeKnownSiteUrl(value) : value;
-  }
-
-  for (const key of Object.keys(value)) {
-    value[key] = normalizeJsonLdValue(value[key], key);
-  }
-
-  return value;
-}
-
 function normalizeJsonLdUrls(content) {
   let blocksFixed = 0;
 
@@ -213,15 +195,11 @@ function normalizeJsonLdUrls(content) {
       if (!trimmed) return match;
 
       try {
-        const parsed = JSON.parse(trimmed);
-        const before = JSON.stringify(parsed);
-        const normalized = normalizeJsonLdValue(parsed);
-        const after = JSON.stringify(normalized);
-
-        if (before === after) return match;
+        const normalized = normalizeJsonLdStringValues(jsonText, normalizeKnownSiteUrl);
+        if (normalized.valuesChanged === 0) return match;
 
         blocksFixed += 1;
-        return `<script${attrs}>${after}</script>`;
+        return `<script${attrs}>${normalized.content}</script>`;
       } catch {
         return match;
       }

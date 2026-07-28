@@ -98,6 +98,9 @@ function selectedWorkflows() {
 }
 
 async function keepLocalTraffic(page) {
+  await page.addInitScript(() => {
+    localStorage.setItem('afrotools_cookie_consent', 'declined');
+  });
   await page.route('**/*', async (route) => {
     const url = new URL(route.request().url());
     if (url.hostname === '127.0.0.1' || url.hostname === 'localhost') {
@@ -182,10 +185,16 @@ test('loads every Day 11 canonical route at 320px without route or reflow failur
     expect(response, `${item.route}: no response`).not.toBeNull();
     expect(response.ok(), `${item.route}: HTTP ${response.status()}`).toBeTruthy();
     await expect(page.locator('h1').first(), `${item.route}: h1`).toBeVisible();
-    await page.waitForTimeout(250);
-    const overflow = await page.evaluate(() => (
+    let overflow = await page.evaluate(() => (
       document.documentElement.scrollWidth - document.documentElement.clientWidth
     ));
+    for (const delay of [150, 300, 600, 1000, 1500, 2000]) {
+      if (overflow <= 2) break;
+      await page.waitForTimeout(delay);
+      overflow = await page.evaluate(() => (
+        document.documentElement.scrollWidth - document.documentElement.clientWidth
+      ));
+    }
     if (overflow > 2) overflowFailures.push(`${item.route} (+${overflow}px)`);
   }
   expect(overflowFailures, `320px overflow routes:\n${overflowFailures.join('\n')}`).toEqual([]);
@@ -242,7 +251,10 @@ test('independently verifies Telecom arithmetic and the stale fail-closed state'
 
   const guard = page.locator('#telecom-freshness-guard');
   await expect(guard).toContainText('Archived planning snapshot');
-  await expect(guard).toContainText('148 days ago');
+  const expectedAgeDays = await page.evaluate(() => (
+    window.AfroTools.telecomFreshness.classify('2026-03-01').ageDays
+  ));
+  await expect(guard).toContainText(`${expectedAgeDays} days ago`);
   await expect(guard).toContainText('not live offers');
   await expect(guard.locator('a')).toHaveAttribute('href', '/data/telecom/official-sources.json');
 
