@@ -92,6 +92,45 @@ Controls:
 - `AFROTOOLS_AI_PROVIDER_RETRIES`
 - method max token overrides such as `AFROTOOLS_AI_CLASSIFY_INTENT_MAX_TOKENS`
 
+## OpenAI failover
+
+Anthropic is the primary provider and owns the prompt, the model tiering and the
+adaptive-thinking path. OpenAI exists **only** to answer on the day Anthropic
+cannot. It is off unless a key is present, and setting one changes nothing while
+Anthropic is healthy.
+
+Set `OPENAI_API_KEY` (or `AFROTOOLS_AI_OPENAI_API_KEY` / for routing only,
+`AFROTOOLS_AI_ROUTER_OPENAI_API_KEY`) and the failover activates.
+
+Models — configured, never inferred from the Anthropic model name, because a
+wrong model id is a 400 and would make the failover fail exactly when it is
+needed:
+
+- routing: `AFROTOOLS_AI_OPENAI_ROUTER_MODEL` (default `gpt-4o-mini`)
+- generation: `AFROTOOLS_AI_OPENAI_GENERATION_MODEL` (default `gpt-4o`)
+- both: `AFROTOOLS_AI_OPENAI_MODEL`
+
+**What fails over.** Infrastructure only — `5xx`, `429`, `401`/`403` (which is
+what a lapsed card looks like), timeouts and transport errors. A `400`, invalid
+JSON, or a schema-validation failure does **not** fail over: the request is the
+problem, so a second model would spend twice to fail twice.
+
+**What does not change.** Guardrails, schema validation and the success/failure
+envelope are shared, so an OpenAI answer never reaches a user under weaker
+checks than an Anthropic one. If the backup also fails, the **primary's** error
+is reported, so an Anthropic outage does not surface as an OpenAI error and send
+you to the wrong dashboard.
+
+`AFROTOOLS_AI_PROVIDER=disabled` still disables everything. That is an operator
+decision and a stray `OPENAI_API_KEY` must not undo it.
+
+If Anthropic has no key at all but OpenAI does, OpenAI serves as the sole
+provider rather than the page degrading to deterministic routing.
+
+Pinned by `tests/ai-provider-failover.test.js`, which drives the whole path with
+a stub fetch — no keys, no network. That matters: the day this code is
+load-bearing is the day nobody can reach the primary API to test it by hand.
+
 Smart-tier routing (AI advisor):
 
 `netlify/functions/ai-advisor.js` scores each question for complexity

@@ -53,6 +53,40 @@ function getAnthropicKey(env, purpose) {
   return env.AFROTOOLS_AI_ANTHROPIC_API_KEY || env.ANTHROPIC_API_KEY || '';
 }
 
+function getOpenAIKey(env, purpose) {
+  if (purpose === 'routing') return env.AFROTOOLS_AI_ROUTER_OPENAI_API_KEY || env.OPENAI_API_KEY || '';
+  return env.AFROTOOLS_AI_OPENAI_API_KEY || env.OPENAI_API_KEY || '';
+}
+
+/*
+ * OpenAI models are configured, never guessed from the Anthropic model name.
+ * A wrong model id is a 400, which would make the failover fail exactly when it
+ * is needed, so the defaults are deliberately long-lived ids rather than the
+ * newest thing.
+ */
+function getOpenAIModelForMethod(env, method, purpose) {
+  if (purpose === 'routing' || method === 'classifyIntent') {
+    return env.AFROTOOLS_AI_OPENAI_ROUTER_MODEL || env.AFROTOOLS_AI_OPENAI_MODEL || 'gpt-4o-mini';
+  }
+  return env.AFROTOOLS_AI_OPENAI_GENERATION_MODEL || env.AFROTOOLS_AI_OPENAI_MODEL || 'gpt-4o';
+}
+
+/*
+ * Which failures are worth a second provider.
+ *
+ * Only infrastructure problems: the far end is down, slow, rate-limiting us, or
+ * refusing the key (which is what a lapsed card looks like). A malformed or
+ * schema-invalid answer is NOT here — the request itself is the problem, so
+ * asking a second model would just spend twice to fail twice.
+ */
+const FAILOVER_REASONS = /^(provider_error_(5\d\d|429|401|403)|provider_timeout|provider_unavailable|fetch_unavailable)$/;
+
+function shouldFailover(result) {
+  // The envelope field is `errorReason`; reading `.reason` silently matched
+  // nothing and would have left the failover permanently dead.
+  return Boolean(result && !result.ok && FAILOVER_REASONS.test(text(result.errorReason)));
+}
+
 function supportsAdaptiveThinking(model) {
   return ADAPTIVE_THINKING_MODELS.test(text(model));
 }
@@ -85,12 +119,17 @@ function getProviderInfo(options) {
   const purpose = opts.purpose || '';
   const key = provider === 'anthropic' ? getAnthropicKey(env, purpose) : '';
   const disabled = providerDisabledByEnv(env);
+  const openaiKey = disabled ? '' : getOpenAIKey(env, purpose);
   return {
     provider,
     purpose,
     enabled: !disabled && provider === 'anthropic' && Boolean(key),
     disabled,
     configured: Boolean(key),
+    // Whether a backup exists. `enabled` still describes Anthropic only, so
+    // existing callers reading it keep their current meaning.
+    openaiConfigured: Boolean(openaiKey),
+    failoverAvailable: Boolean(openaiKey),
     model: getModelForMethod(env, opts.method || 'classifyIntent', purpose),
     reason: disabled ? 'provider_disabled' : provider !== 'anthropic' ? 'provider_unsupported' : key ? '' : 'provider_key_not_configured',
   };
@@ -128,8 +167,15 @@ function safeLog(method, reason, meta) {
   console.warn(parts.join(' '));
 }
 
+/* Config fields that must never ride along in a result envelope. `extra` is
+ * usually the provider config, and Object.assign was copying the live API key
+ * into every failure object. Nothing serialises that envelope to a client
+ * today, but it is one `JSON.stringify(result)` in a log or an error report
+ * away from publishing the key. */
+const NEVER_IN_ENVELOPE = ['apiKey', 'fetch'];
+
 function failure(method, reason, extra) {
-  return Object.assign({
+  const envelope = Object.assign({
     ok: false,
     method,
     provider: extra && extra.provider || '',
@@ -141,6 +187,10 @@ function failure(method, reason, extra) {
     errorReason: reason,
     validationErrors: extra && extra.validationErrors || [],
   }, extra || {});
+  NEVER_IN_ENVELOPE.forEach(function (key) { delete envelope[key]; });
+  // Object.assign(extra) can overwrite errorReason when a config carries one.
+  envelope.errorReason = reason;
+  return envelope;
 }
 
 function success(method, payload) {
@@ -228,6 +278,104 @@ function extractAnthropicText(payload) {
       return item.text;
     })
     .join('\n');
+}
+
+/*
+ * OpenAI's chat-completions shape, which differs from Anthropic's in three ways
+ * that each cause a hard failure if you get them wrong:
+ *  - the system prompt is a message with role "system", not a top-level field;
+ *  - the token cap is `max_completion_tokens` on current models and
+ *    `max_tokens` on older ones, and sending the wrong one is a 400;
+ *  - `thinking` / `output_config` do not exist and must never be forwarded.
+ */
+function buildOpenAIPayload(config, method, request, tokenField) {
+  const req = request || {};
+  const maxTokens = clamp(number(req.maxTokens, config.maxTokens || DEFAULT_MAX_TOKENS), 1, 4096);
+  const system = method === 'classifyIntent'
+    ? text(req.system || 'Return strict JSON for AfroTools routing only. Do not repeat sensitive user content beyond extracted workflow fields.')
+    : text(req.system);
+  const conversation = Array.isArray(req.messages)
+    ? sanitizeMessages(req.messages, config.inputCharLimit || 120000)
+    : [{ role: 'user', content: safeAnthropicText(text(req.prompt), 'AI provider prompt', config.inputCharLimit || 120000) }];
+
+  const messages = [];
+  const safeSystem = safeAnthropicText(system, 'AI provider system prompt', config.systemCharLimit || 180000);
+  if (safeSystem.trim()) messages.push({ role: 'system', content: safeSystem });
+  messages.push.apply(messages, conversation);
+
+  const payload = { model: config.model, messages };
+  payload[tokenField || 'max_completion_tokens'] = maxTokens;
+  return payload;
+}
+
+function extractOpenAIText(payload) {
+  const choice = payload && Array.isArray(payload.choices) ? payload.choices[0] : null;
+  const content = choice && choice.message && choice.message.content;
+  return typeof content === 'string' ? content : '';
+}
+
+/** A 400 naming the token field means this model wants the other one. */
+function isTokenFieldRejection(detail) {
+  return /max_completion_tokens|max_tokens/i.test(text(detail));
+}
+
+async function callOpenAI(method, request, config) {
+  const fetchImpl = config.fetch || global.fetch;
+  if (typeof fetchImpl !== 'function') return failure(method, 'fetch_unavailable', config);
+
+  const attempts = Math.max(1, number(config.retries, DEFAULT_RETRIES) + 1);
+  const startedAt = Date.now();
+  let tokenField = 'max_completion_tokens';
+  let lastReason = '';
+
+  for (let attempt = 1; attempt <= attempts + 1; attempt += 1) {
+    try {
+      const response = await fetchWithTimeout(fetchImpl, 'https://api.openai.com/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + config.apiKey,
+        },
+        body: JSON.stringify(buildOpenAIPayload(config, method, request, tokenField)),
+      }, config.timeoutMs);
+
+      if (!response.ok) {
+        lastReason = 'provider_error_' + response.status;
+        // One free retry with the other token field before giving up on a 400.
+        if (response.status === 400 && tokenField === 'max_completion_tokens') {
+          const detail = await response.text().catch(function () { return ''; });
+          if (isTokenFieldRejection(detail)) {
+            tokenField = 'max_tokens';
+            safeLog(method, 'openai_token_field_switch', { provider: config.provider, attempt });
+            continue;
+          }
+        }
+        safeLog(method, lastReason, { provider: config.provider, status: response.status, attempt });
+        if (response.status >= 500 && attempt < attempts) continue;
+        return failure(method, lastReason, Object.assign({}, config, { latencyMs: Date.now() - startedAt }));
+      }
+
+      const payload = await response.json();
+      const rawText = extractOpenAIText(payload);
+      if (!rawText) return failure(method, 'provider_empty_response', Object.assign({}, config, { latencyMs: Date.now() - startedAt, usage: payload && payload.usage || null }));
+
+      return success(method, {
+        provider: config.provider,
+        model: config.model,
+        text: rawText,
+        data: null,
+        usage: payload && payload.usage || null,
+        latencyMs: Date.now() - startedAt,
+      });
+    } catch (err) {
+      lastReason = err && err.name === 'AbortError' ? 'provider_timeout' : 'provider_unavailable';
+      safeLog(method, lastReason, { provider: config.provider, latencyMs: Date.now() - startedAt, attempt, name: err && err.name });
+      if (lastReason !== 'provider_timeout' && attempt < attempts) continue;
+      return failure(method, lastReason, Object.assign({}, config, { latencyMs: Date.now() - startedAt }));
+    }
+  }
+
+  return failure(method, lastReason || 'provider_unavailable', Object.assign({}, config, { latencyMs: Date.now() - startedAt }));
 }
 
 async function callAnthropic(method, request, config) {
@@ -351,13 +499,21 @@ function responseForTextMethod(raw, request) {
   });
 }
 
-function createAnthropicProvider(config) {
+/*
+ * One provider shape, two transports.
+ *
+ * Everything after the HTTP call — JSON parsing, schema validation, guardrail
+ * sanitising, the success/failure envelope — is provider-agnostic and must stay
+ * identical, or an OpenAI answer would reach users under weaker checks than an
+ * Anthropic one. Only `call` differs.
+ */
+function createTextProvider(config, call) {
   async function run(method, request, postProcess) {
     const validationErrors = validateRequest(method, request);
     if (validationErrors.length) {
       return failure(method, 'request_validation_failed', Object.assign({}, config, { validationErrors }));
     }
-    const raw = await callAnthropic(method, request, Object.assign({}, config, {
+    const raw = await call(method, request, Object.assign({}, config, {
       model: request && request.model || config.model,
       maxTokens: request && request.maxTokens || config.maxTokens,
     }));
@@ -365,7 +521,7 @@ function createAnthropicProvider(config) {
   }
 
   return {
-    provider: 'anthropic',
+    provider: config.provider,
     model: config.model,
     enabled: true,
     classifyIntent: function classifyIntent(request) {
@@ -431,25 +587,84 @@ function createAnthropicProvider(config) {
   };
 }
 
+/*
+ * Wrap a primary provider so infrastructure failures fall through to a backup.
+ *
+ * Deliberately NOT a provider switch. Anthropic stays primary and owns the
+ * prompt, the model tiering and the adaptive-thinking path; OpenAI exists to
+ * answer on the day Anthropic cannot — a 5xx, a timeout, a 429, or the 401/403
+ * that a lapsed card produces. Before this, any of those left the Direct answer
+ * panel showing "the AI service is briefly unavailable" and the user with
+ * nothing.
+ *
+ * A schema or JSON failure is not failed over: the request is the problem, so a
+ * second model would spend twice to fail twice.
+ */
+function withFailover(primary, backup) {
+  function wrap(name) {
+    return async function (request) {
+      const first = await primary[name](request);
+      if (!shouldFailover(first)) return first;
+      safeLog(name, 'provider_failover', { provider: primary.provider, to: backup.provider, from_reason: first.errorReason });
+      const second = await backup[name](request);
+      if (!second || !second.ok) return first; // Backup did no better — report the original cause.
+      return Object.assign({}, second, { failoverFrom: primary.provider, failoverReason: first.errorReason });
+    };
+  }
+  const wrapped = {
+    provider: primary.provider,
+    model: primary.model,
+    enabled: true,
+    failoverProvider: backup.provider,
+  };
+  PROVIDER_METHODS.forEach(function (name) { wrapped[name] = wrap(name); });
+  return wrapped;
+}
+
 function createModelProvider(options) {
   const opts = options || {};
   const env = opts.env || process.env;
   const method = opts.method || 'classifyIntent';
   const purpose = opts.purpose || (method === 'classifyIntent' ? 'routing' : 'generation');
   const info = getProviderInfo(Object.assign({}, opts, { env, method, purpose }));
-  if (!info.enabled) return createDisabledProvider(info);
 
-  return createAnthropicProvider({
-    provider: info.provider,
-    apiKey: getAnthropicKey(env, purpose),
-    model: opts.model || getModelForMethod(env, method, purpose),
+  const shared = {
     timeoutMs: number(defined(opts.timeoutMs, env.AFROTOOLS_AI_PROVIDER_TIMEOUT_MS), DEFAULT_TIMEOUT_MS),
     retries: number(defined(opts.retries, env.AFROTOOLS_AI_PROVIDER_RETRIES), DEFAULT_RETRIES),
     maxTokens: number(defined(opts.maxTokens, env[methodTokenEnv(method)]), DEFAULT_MAX_TOKENS),
     inputCharLimit: number(defined(opts.inputCharLimit, env.ANTHROPIC_INPUT_CHAR_LIMIT), 120000),
     systemCharLimit: number(defined(opts.systemCharLimit, env.ANTHROPIC_INPUT_CHAR_LIMIT), 180000),
     fetch: opts.fetch,
-  });
+  };
+
+  function openAIProvider() {
+    const key = getOpenAIKey(env, purpose);
+    if (!key) return null;
+    return createTextProvider(Object.assign({}, shared, {
+      provider: 'openai',
+      apiKey: key,
+      model: opts.openaiModel || getOpenAIModelForMethod(env, method, purpose),
+    }), callOpenAI);
+  }
+
+  if (!info.enabled) {
+    /* Anthropic is off. If it is off because the key is missing or the API is
+     * unusable — rather than because someone deliberately disabled the model
+     * layer — OpenAI can carry the whole load rather than the page degrading. */
+    const backup = info.disabled ? null : openAIProvider();
+    if (!backup) return createDisabledProvider(info);
+    safeLog(method, 'provider_primary_unavailable_using_openai', { reason: info.reason });
+    return backup;
+  }
+
+  const anthropic = createTextProvider(Object.assign({}, shared, {
+    provider: info.provider,
+    apiKey: getAnthropicKey(env, purpose),
+    model: opts.model || getModelForMethod(env, method, purpose),
+  }), callAnthropic);
+
+  const backup = openAIProvider();
+  return backup ? withFailover(anthropic, backup) : anthropic;
 }
 
 module.exports = {
@@ -460,4 +675,10 @@ module.exports = {
   jsonTextFromMarkdown,
   supportsAdaptiveThinking,
   getSmartGenerationModel,
+  // Failover surface, exported so the behaviour can be tested without a network.
+  shouldFailover,
+  getOpenAIKey,
+  getOpenAIModelForMethod,
+  buildOpenAIPayload,
+  extractOpenAIText,
 };
