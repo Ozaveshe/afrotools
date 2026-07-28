@@ -35,20 +35,20 @@ function testPlanCapabilities() {
 }
 
 function testSharedAiBriefLimits() {
-  assert.equal(usageLimits.getAiBriefsPerDay("free"), 3);
+  assert.equal(usageLimits.getAiBriefsPerDay("free"), 99);
   assert.equal(pro.PLAN_CAPABILITIES.free.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("free"));
   assert.equal(pro.PLAN_CAPABILITIES.pro.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("pro"));
   assert.equal(pro.PLAN_CAPABILITIES.team.aiBriefsPerDay, usageLimits.getAiBriefsPerDay("team"));
 
   const underLimit = pro.evaluateFeature("ai_brief_basic", {
     currentPlan: "free",
-    usage: { date: "2026-07-13", counts: { ai_brief_basic: 2 } }
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: 98 } }
   });
   assert.equal(underLimit.allowed, true);
 
   const atLimit = pro.evaluateFeature("ai_brief_basic", {
     currentPlan: "free",
-    usage: { date: "2026-07-13", counts: { ai_brief_basic: 3 } }
+    usage: { date: "2026-07-13", counts: { ai_brief_basic: 99 } }
   });
   assert.equal(atLimit.allowed, false);
   assert.equal(atLimit.reason, "limit_reached");
