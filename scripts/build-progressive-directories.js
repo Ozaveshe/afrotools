@@ -7,10 +7,13 @@ const { writeFileSyncWithRetry } = require('./lib/safe-write');
 const registryApi = require('./lib/canonical-registry');
 const widgets = require('../widgets/WIDGET-REGISTRY.js');
 const toolDirectory = require('../data/tool-directory.json');
+const { FRENCH_CATEGORIES } = require('./lib/french-category-directory');
 
 const ROOT = path.resolve(__dirname, '..');
 const START = '<!-- PROGRESSIVE_DIRECTORY_FALLBACK_START -->';
 const END = '<!-- PROGRESSIVE_DIRECTORY_FALLBACK_END -->';
+const FR_CATEGORY_META_START = '/* FRENCH_CATEGORY_META_START */';
+const FR_CATEGORY_META_END = '/* FRENCH_CATEGORY_META_END */';
 
 const EN_CATEGORY_ORDER = [
   'financial', 'hr-payroll', 'document-pdf', 'image-design', 'developer', 'education',
@@ -59,21 +62,6 @@ const FR_CATEGORY_LABELS = {
   'mining': 'Mines'
 };
 
-const FR_CATEGORIES = [
-  ['financial', 'salary-tax', 'Salaire & Impôts'],
-  ['document-pdf', 'document-pdf', 'Documents & PDF'],
-  ['image-design', 'image-design', 'Image & Design'],
-  ['developer', 'developer-tools', 'Outils développeur'],
-  ['education', 'education', 'Éducation'],
-  ['health', 'health', 'Santé & agriculture'],
-  ['ecommerce', 'vat-business-tax', 'TVA & fiscalité'],
-  ['legal', 'mortgage-property', 'Immobilier & hypothèque'],
-  ['data-productivity', 'business-roi', 'Business & ROI'],
-  ['language', 'language', 'Langues & traduction'],
-  ['african', 'uniquely-african', 'Spécialités africaines'],
-  ['engineering', 'engineering', 'Ingénierie & CAO']
-];
-
 function escapeHtml(value) {
   return String(value == null ? '' : value)
     .replace(/&/g, '&amp;')
@@ -83,11 +71,29 @@ function escapeHtml(value) {
     .replace(/'/g, '&#39;');
 }
 
+function escapeRegExp(value) {
+  return String(value).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
 function replaceBlock(html, file, fallback) {
   if (!html.includes(START) || !html.includes(END)) {
     throw new Error(`${file}: missing progressive directory fallback markers`);
   }
   return html.replace(new RegExp(`${START}[\\s\\S]*?${END}`), `${START}\n${fallback}\n${END}`);
+}
+
+function replaceFrenchCategoryMetadata(html, file) {
+  if (!html.includes(FR_CATEGORY_META_START) || !html.includes(FR_CATEGORY_META_END)) {
+    throw new Error(`${file}: missing French category metadata markers`);
+  }
+  const serialized = JSON.stringify(FRENCH_CATEGORIES, null, 2);
+  const pattern = new RegExp(
+    `${escapeRegExp(FR_CATEGORY_META_START)}[\\s\\S]*?${escapeRegExp(FR_CATEGORY_META_END)}`
+  );
+  return html.replace(
+    pattern,
+    `${FR_CATEGORY_META_START}\nvar CATS_META = ${serialized};\n${FR_CATEGORY_META_END}`
+  );
 }
 
 function replaceDerivedCounts(html, registry) {
@@ -129,9 +135,9 @@ function widgetFallback() {
 function categoryFallback(registry, locale) {
   const categoryById = new Map(registry.categories.map((category) => [category.id, category]));
   if (locale === 'fr') {
-    return FR_CATEGORIES.map(([id, slug, title]) => {
-      const count = registryApi.getSelector(registry, `tools.category.${id}.published`);
-      return `        <a class="cc" href="/fr/${escapeHtml(slug)}/" data-directory-record data-category="${escapeHtml(id)}"><div class="cc-n">${escapeHtml(title)}</div><div class="cc-count">${count ? count.value : 0} fiches canoniques</div></a>`;
+    return FRENCH_CATEGORIES.map((category) => {
+      const count = publishedTools(registry, 'fr', category.key).length;
+      return `        <a class="cc" href="${escapeHtml(category.href)}" data-directory-record data-category="${escapeHtml(category.key)}" data-hub-state="${category.nativeHub ? 'native' : 'filtered-directory'}"><div class="cc-n">${escapeHtml(category.title)}</div><div class="cc-count">${count} fiches françaises publiées</div><div class="cc-d">${escapeHtml(category.description)}</div></a>`;
     }).join('\n');
   }
   return EN_CATEGORY_ORDER.map((id) => categoryById.get(id)).filter(Boolean).map((category) => {
@@ -192,12 +198,31 @@ ${links}
 ${sections}
         </div>`;
   }
-  return priorityOrder(publishedTools(registry, locale)).slice(0, 36).map((tool) => {
-    const catLabel = locale === 'fr'
-      ? (FR_CATEGORY_LABELS[tool.categoryId] || tool.categoryId)
-      : tool.categoryId;
-    return `        <a href="${escapeHtml(tool.route)}" class="tool-card" data-directory-record data-id="${escapeHtml(tool.id)}"><div class="tc-body"><div class="tc-name">${escapeHtml(tool.title)}</div><div class="tc-desc">${escapeHtml(tool.description)}</div><div class="tc-meta"><span class="cat-pill">${escapeHtml(catLabel)}</span><span class="tc-badge live">${locale === 'fr' ? 'Publié' : 'Live'}</span></div></div></a>`;
+  const tools = priorityOrder(publishedTools(registry, locale));
+  const groups = new Map();
+  tools.forEach((tool) => {
+    const key = tool.categoryId || 'other';
+    if (!groups.has(key)) groups.set(key, []);
+    groups.get(key).push(tool);
+  });
+  const orderedKeys = [
+    ...EN_CATEGORY_ORDER.filter((key) => groups.has(key)),
+    ...Array.from(groups.keys()).filter((key) => !EN_CATEGORY_ORDER.includes(key)).sort()
+  ];
+  const sections = orderedKeys.map((key) => {
+    const links = groups.get(key).map((tool) => {
+      return `              <li><a href="${escapeHtml(tool.route)}" data-directory-record data-id="${escapeHtml(tool.id)}" data-category="${escapeHtml(key)}">${escapeHtml(tool.title)}</a></li>`;
+    }).join('\n');
+    return `          <section class="static-tool-category" data-static-tool-category="${escapeHtml(key)}" aria-labelledby="static-tool-category-${escapeHtml(key)}">
+            <h2 id="static-tool-category-${escapeHtml(key)}">${escapeHtml(FR_CATEGORY_LABELS[key] || key)}</h2>
+            <ul class="static-tool-links">
+${links}
+            </ul>
+          </section>`;
   }).join('\n');
+  return `        <div class="static-tool-directory" data-static-tool-directory data-static-tool-count="${tools.length}">
+${sections}
+        </div>`;
 }
 
 function targets(registry) {
@@ -221,7 +246,10 @@ function run(options) {
   targets(registry).forEach(([relative, fallback]) => {
     const absolute = path.join(ROOT, relative);
     const current = fs.readFileSync(absolute, 'utf8');
-    const expected = replaceDerivedCounts(replaceBlock(current, relative, fallback), registry);
+    let expected = replaceDerivedCounts(replaceBlock(current, relative, fallback), registry);
+    if (relative === 'fr/categories/index.html') {
+      expected = replaceFrenchCategoryMetadata(expected, relative);
+    }
     if (expected === current) return;
     stale.push(relative);
     if (write) writeFileSyncWithRetry(absolute, expected, 'utf8');
@@ -243,4 +271,12 @@ if (require.main === module) {
   }
 }
 
-module.exports = { run, replaceBlock, widgetFallback, categoryFallback, developerFallback, allToolsFallback };
+module.exports = {
+  run,
+  replaceBlock,
+  replaceFrenchCategoryMetadata,
+  widgetFallback,
+  categoryFallback,
+  developerFallback,
+  allToolsFallback
+};
