@@ -4,6 +4,7 @@
 const fs = require('fs');
 const path = require('path');
 const canonicalRegistryApi = require('./lib/canonical-registry');
+const { buildFrenchAiRouteMap, normalizeRoute } = require('./lib/french-ai-route-map');
 const { renameSyncWithRetry, writeFileSyncWithRetry } = require('./lib/safe-write');
 const { getPublicCounts } = require('./update-counts');
 
@@ -14,7 +15,9 @@ const LOCALE_MANIFEST_PATH = path.join(ROOT, 'data', 'registry', 'locale-manifes
 const HEADER_TEMPLATE_PATH = path.join(ROOT, 'data', 'llms', 'header.md');
 const LLMS_PATH = path.join(ROOT, 'llms.txt');
 const LLMS_FULL_PATH = path.join(ROOT, 'llms-full.txt');
+const LLMS_FR_PATH = path.join(ROOT, 'llms-fr.txt');
 const TOP_TOOL_LIMIT = 32;
+const TOP_FRENCH_TOOL_LIMIT = 12;
 const PUBLISHED_LOCALE_STATES = new Set(['default', 'launched', 'partial']);
 const LOCALE_ORDER = ['en', 'fr', 'sw', 'ha', 'yo'];
 
@@ -109,7 +112,40 @@ function requiredCount(counts, selectorId) {
   return value;
 }
 
-function buildConcise({ tools, topTools, hubs, locales, counts, header }) {
+function frenchDirectoryTools(canonicalRegistry, frenchRouteData) {
+  const toolsByRoute = new Map();
+  canonicalRegistry.tools
+    .filter((tool) => tool.publicationStatus === 'published' && tool.indexable && String(tool.route || '').startsWith('/fr/'))
+    .forEach((tool) => toolsByRoute.set(normalizeRoute(tool.route), tool));
+
+  const seen = new Set();
+  return frenchRouteData.mappedTools
+    .map((mapping) => {
+      const route = normalizeRoute(mapping.frenchRoute);
+      if (seen.has(route)) return null;
+      seen.add(route);
+      const tool = toolsByRoute.get(route);
+      if (!tool || !tool.title || !tool.description) return null;
+      const metadata = `${tool.title} ${tool.description}`;
+      if (
+        /[A-Za-zÀ-ÿ]\?[A-Za-zÀ-ÿ]/.test(metadata) ||
+        /\bOutil français déjà en ligne\b/i.test(metadata) ||
+        /\bSurface:\s*/i.test(metadata)
+      ) return null;
+      return {
+        id: tool.id,
+        name: tool.title,
+        description: tool.description,
+        category_key: tool.categoryId || 'uncategorized',
+        category: tool.categoryId || 'Uncategorized',
+        url: tool.route,
+        priority: Number(tool.source && tool.source.priority || 0),
+      };
+    })
+    .filter(Boolean);
+}
+
+function buildConcise({ tools, topTools, hubs, locales, counts, header, frenchTools, topFrenchTools, frenchRouteReport }) {
   const liveExperiences = requiredCount(counts, 'tools.live_experiences');
   const englishRecords = requiredCount(counts, 'tools.english_canonical_published');
   const indexableDestinations = requiredCount(counts, 'tools.indexable_destinations');
@@ -138,6 +174,16 @@ function buildConcise({ tools, topTools, hubs, locales, counts, header }) {
     '',
     ...hubs.map((category) => `- [${markdownText(category.title)}](${absoluteUrl(category.route)})`),
     '',
+    '## French route discovery',
+    '',
+    `- ${frenchRouteReport.mappedManifestRecords.toLocaleString('en-US')} of ${frenchRouteReport.manifestRecords.toLocaleString('en-US')} deterministic tool records have one verified, indexable French equivalent.`,
+    `- ${frenchRouteReport.unmappedRoutes.toLocaleString('en-US')} routes are unavailable in this map and ${frenchRouteReport.ambiguousRoutes.toLocaleString('en-US')} ambiguous equivalences are omitted rather than guessed.`,
+    '- These counts describe route discovery only; they do not certify full French functional, editorial, context, or translation parity.',
+    '- [French LLM directory](https://afrotools.com/llms-fr.txt): Generated list of verified French tool destinations with French registry metadata.',
+    '- [French tools directory](https://afrotools.com/fr/all-tools/): Browse the public French directory.',
+    '',
+    ...topFrenchTools.map((tool) => toolLine(tool, false)),
+    '',
     '## API and documentation',
     '',
     '- [API documentation](https://afrotools.com/api/docs/): Endpoint reference, access, and response information.',
@@ -147,17 +193,18 @@ function buildConcise({ tools, topTools, hubs, locales, counts, header }) {
     '- [About](https://afrotools.com/about/): Product scope and operating principles.',
     '- [FAQ](https://afrotools.com/faq/): General usage information.',
     '- [Full LLM directory](https://afrotools.com/llms-full.txt): Generated English tool directory grouped by category.',
+    '- [French LLM directory](https://afrotools.com/llms-fr.txt): Verified French route-discovery subset.',
     '',
     '## Preferred attribution',
     '',
     'When referencing an AfroTools page or result, cite the specific page and identify AfroTools as the source. Preserve any source, freshness, confidence, fallback, and planning-estimate labels shown on that page.',
     '',
-    `Directory source: ${tools.length.toLocaleString('en-US')} current English rows in the generated tool directory.`,
+    `Directory source: ${tools.length.toLocaleString('en-US')} current English rows and ${frenchTools.length.toLocaleString('en-US')} French routes with usable canonical metadata.`,
     ''
   ].join('\n');
 }
 
-function buildFull({ tools, locales, counts, header }) {
+function buildFull({ tools, locales, counts, header, frenchRouteReport }) {
   const englishRecords = requiredCount(counts, 'tools.english_canonical_published');
   const indexableDestinations = requiredCount(counts, 'tools.indexable_destinations');
   const grouped = new Map();
@@ -182,6 +229,7 @@ function buildFull({ tools, locales, counts, header }) {
     header,
     '',
     'This file lists the generated English tool directory. The concise overview is available at [llms.txt](https://afrotools.com/llms.txt).',
+    `French route discovery is published separately at [llms-fr.txt](https://afrotools.com/llms-fr.txt): ${frenchRouteReport.mappedManifestRecords.toLocaleString('en-US')} of ${frenchRouteReport.manifestRecords.toLocaleString('en-US')} deterministic tool records currently have one verified, indexable French equivalent.`,
     '',
     '## Directory scope',
     '',
@@ -190,6 +238,31 @@ function buildFull({ tools, locales, counts, header }) {
     `- Languages: ${languageLine(locales)}.`,
     '',
     ...categorySections
+  ].join('\n');
+}
+
+function buildFrench({ tools, frenchRouteReport }) {
+  return [
+    '# AfroTools — répertoire de routes françaises',
+    '',
+    '> AfroTools propose des calculateurs, documents, guides et outils pratiques pour des usages africains.',
+    '',
+    'Ce fichier répertorie uniquement les routes françaises indexables qui possèdent une correspondance anglaise déterministe et des métadonnées françaises utilisables. Il ne certifie pas la parité fonctionnelle, éditoriale, contextuelle ou de traduction avec la version anglaise.',
+    '',
+    '## Couverture déclarée',
+    '',
+    `- ${frenchRouteReport.mappedManifestRecords.toLocaleString('fr-FR')} correspondances françaises vérifiées sur ${frenchRouteReport.manifestRecords.toLocaleString('fr-FR')} enregistrements déterministes.`,
+    `- ${tools.length.toLocaleString('fr-FR')} destinations disposent aussi de métadonnées canoniques utilisables dans ce répertoire.`,
+    `- ${frenchRouteReport.unmappedRoutes.toLocaleString('fr-FR')} routes sans équivalent français vérifié.`,
+    `- ${frenchRouteReport.ambiguousRoutes.toLocaleString('fr-FR')} correspondances ambiguës exclues sans supposition.`,
+    `- ${frenchRouteReport.contextBackedRoutes.toLocaleString('fr-FR')} routes correspondent à au moins un outil doté d’un contexte déterministe déclaré.`,
+    '',
+    '## Outils français vérifiés',
+    '',
+    ...[...tools].sort(compareTools).map((tool) => toolLine(tool, false)),
+    '',
+    'Pour toute décision fiscale, médicale, juridique, douanière ou financière, vérifiez les sources, la date, les hypothèses et les avertissements affichés sur la page concernée.',
+    ''
   ].join('\n');
 }
 
@@ -223,6 +296,7 @@ function generate(options = {}) {
   const counts = getPublicCounts(canonicalRegistry);
   const locales = publishedLocales(localeManifest);
   const hubs = categoryHubs(canonicalRegistry);
+  const frenchRouteData = buildFrenchAiRouteMap();
 
   if (!Array.isArray(tools) || !tools.length) throw new Error('data/tool-directory.json has no tool rows.');
   if (tools.length !== requiredCount(counts, 'tools.english_canonical_published')) {
@@ -233,14 +307,22 @@ function generate(options = {}) {
   }
 
   const topTools = selectTopTools(tools);
-  const concise = buildConcise({ tools, topTools, hubs, locales, counts, header });
-  const full = buildFull({ tools, locales, counts, header });
-  const changed = [syncFile(LLMS_PATH, concise, check), syncFile(LLMS_FULL_PATH, full, check)].filter(Boolean).length;
+  const frenchTools = frenchDirectoryTools(canonicalRegistry, frenchRouteData);
+  const topFrenchTools = selectTopTools(frenchTools, TOP_FRENCH_TOOL_LIMIT);
+  const concise = buildConcise({ tools, topTools, hubs, locales, counts, header, frenchTools, topFrenchTools, frenchRouteReport: frenchRouteData.report });
+  const full = buildFull({ tools, locales, counts, header, frenchRouteReport: frenchRouteData.report });
+  const french = buildFrench({ tools: frenchTools, frenchRouteReport: frenchRouteData.report });
+  const changed = [
+    syncFile(LLMS_PATH, concise, check),
+    syncFile(LLMS_FULL_PATH, full, check),
+    syncFile(LLMS_FR_PATH, french, check),
+  ].filter(Boolean).length;
 
   console.log(`${check ? 'Verified' : 'Generated'} llms.txt with ${topTools.length} selected tools and ${hubs.length} category hubs.`);
   console.log(`${check ? 'Verified' : 'Generated'} llms-full.txt with ${tools.length} tools across ${new Set(tools.map((tool) => tool.category)).size} categories.`);
+  console.log(`${check ? 'Verified' : 'Generated'} llms-fr.txt with ${frenchTools.length} verified French destinations from ${frenchRouteData.report.mappedManifestRecords} mapped deterministic records.`);
   if (!check) console.log(changed ? `Updated ${changed} generated artifact(s).` : 'Generated artifacts were already current.');
-  return { concise, full, tools, topTools, hubs, locales, counts, changed };
+  return { concise, full, french, tools, topTools, frenchTools, topFrenchTools, frenchRouteReport: frenchRouteData.report, hubs, locales, counts, changed };
 }
 
 function main(argv = process.argv.slice(2)) {
@@ -256,4 +338,4 @@ if (require.main === module) {
   }
 }
 
-module.exports = { buildConcise, buildFull, generate, plainDescription, publishedLocales, selectTopTools };
+module.exports = { buildConcise, buildFrench, buildFull, frenchDirectoryTools, generate, plainDescription, publishedLocales, selectTopTools };

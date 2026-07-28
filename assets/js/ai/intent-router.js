@@ -17,6 +17,7 @@
   var manifestApi = null;
   var i18nApi = null;
   var guardrailsApi = null;
+  var frenchRouteMapApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
@@ -33,9 +34,15 @@
     } catch (err) {
       guardrailsApi = null;
     }
+    try {
+      frenchRouteMapApi = require("./french-route-map.generated.js");
+    } catch (err) {
+      frenchRouteMapApi = null;
+    }
   }
   if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
   if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
+  if (!frenchRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = globalThis.AfroToolsAIFrenchRouteMap;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -80,21 +87,22 @@
     rule("legal", "nda-generator", ["draft nda", "create nda", "client nda", "nda for", "non disclosure", "non-disclosure", "legal document generator"], ["legal"]),
     rule("study-abroad", "study-abroad-cost", ["study with", "study budget", "study cost", "study documents", "tuition budget", "nigeria to canada study"], ["education", "immigration"]),
     rule("scholarships", "scholarship-finder", ["scholarship", "scholarships", "bursary", "funding", "grant for school"], ["education"]),
-    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay", "take home", "take-home pay", "takehome", "salary", "i earn"], ["tax"]),
-    rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code"], ["finance"]),
+    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay", "take home", "take-home pay", "takehome", "salary", "i earn", "salaire net", "impot sur le revenu", "impot sur salaire", "fiche de paie"], ["tax"]),
+    rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code", "code sh", "code douanier", "classement tarifaire"], ["finance"]),
     rule("trade", "sadc-roo", ["sadc rules of origin", "rules of origin", "origin certificate"], ["none"]),
     rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
     rule("fuel-energy", "fuel-tracker", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["energy"]),
     rule("business-tax", "invoice-generator", ["vat invoice", "create a vat invoice", "invoice with vat", "invoice", "receipt", "bill client"], ["finance"]),
-    rule("business-tax", "vat-calc-pan-african", ["calculate vat", "vat calculator", "vat rate", "value added tax", "sales tax"], ["tax"]),
+    rule("business-tax", "vat-calc-pan-african", ["calculate vat", "vat calculator", "vat rate", "value added tax", "sales tax", "calculer la tva", "taux de tva", "taxe sur la valeur ajoutee"], ["tax"]),
     rule("business-planning", "business-planner", ["register a small business", "business registration", "get a tin", "tin in", "start a business", "business setup"], ["finance", "legal"]),
-    rule("documents", "pdf-workspace", ["compress and sign", "compress, sign", "compress sign", "export a pdf locally", "pdf locally", "without uploading", "merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf"], ["none"]),
+    rule("documents", "pdf-workspace", ["compress and sign", "compress, sign", "compress sign", "export a pdf locally", "pdf locally", "without uploading", "merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf", "fusionner pdf", "fusionner deux pdf", "assembler des pdf", "compresser mon pdf", "reduire mon pdf"], ["none"]),
     rule("documents", "pdf-sign", ["sign pdf", "sign", "pdf signature", "add signature"], ["none"]),
     rule("documents", "pdf-redact", ["redact pdf", "redact", "remove sensitive text"], ["none"]),
     rule("documents", "pdf-to-audio", ["pdf to audio", "read pdf aloud", "listen to pdf"], ["none"]),
     rule("documents", "pdf-watermark", ["watermark pdf", "pdf watermark"], ["none"]),
     rule("documents", "pdf-workspace", ["pdf", "document"], ["none"]),
+    rule("health", "medical-report", ["rapport medical", "resultats sanguins", "analyse sanguine", "bilan sanguin", "expliquer mes analyses"], ["health"]),
     rule("education", "gpa-calculator", ["gpa", "cgpa", "grade point"], ["education"]),
     rule("education", "ielts-calculator", ["ielts", "band score", "english test"], ["education"]),
     rule("study-abroad", "study-abroad-cost", ["study abroad", "study in", "study from", "student visa", "tuition abroad", "school abroad", "student prepare", "australia intake", "canada intake", "uk intake", "intake documents"], ["education", "immigration"]),
@@ -108,7 +116,7 @@
     rule("agriculture", "storage-loss", ["storage loss", "post harvest", "post-harvest", "grain storage", "hermetic", "silo"], ["finance"]),
     rule("agriculture", "commodity-prices", ["commodity prices", "market price", "market prices", "farm gate price", "farm-gate price", "sell maize", "sell cocoa", "seasonal price"], ["finance"]),
     rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
-    rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm"], ["none"]),
+    rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm", "rendement culture", "rendement mais", "rendement du mais", "estimer la recolte"], ["none"]),
     rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),
     rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea"], ["finance"]),
     rule("agriculture", "input-prices", ["input prices", "seed prices", "fertilizer prices", "agrochemical prices"], ["finance"]),
@@ -756,10 +764,78 @@
     };
   }
 
-  function localizeDecision(decision, options) {
-    if (!i18nApi || typeof i18nApi.localizeRouterDecision !== "function") return decision;
+  function requestedLocale(options) {
     var locale = options && (options.locale || options.lang || options.uiLocale);
-    return i18nApi.localizeRouterDecision(decision, locale || "en");
+    return String(locale || "en").toLowerCase().split(/[-_]/)[0];
+  }
+
+  function normalizeRouteKey(route) {
+    var pathname = String(route || "/").split(/[?#]/)[0].replace(/\/+/g, "/");
+    if (pathname === "/") return "/";
+    return "/" + pathname.replace(/^\/+|\/+$/g, "") + "/";
+  }
+
+  function routeQuery(route) {
+    var value = String(route || "");
+    var index = value.indexOf("?");
+    return index === -1 ? "" : value.slice(index);
+  }
+
+  function localizeSelectedRoute(decision, options) {
+    if (requestedLocale(options) !== "fr") return decision;
+    var copy = Object.assign({}, decision);
+    var routes = frenchRouteMapApi && frenchRouteMapApi.routes || {};
+    var englishRoute = normalizeRouteKey(copy.selectedRoute);
+    var frenchRoute = routes[englishRoute];
+    var meta = Object.assign({}, copy._meta || {});
+
+    if (copy.selectedToolId === SEARCH_FALLBACK.id) {
+      copy.selectedRoute = (routes["/search/"] || "/fr/search/") + (routeQuery(copy.selectedRoute) || "?source=ask");
+      meta.localeRoute = { locale: "fr", status: "search_fallback", source: frenchRouteMapApi && frenchRouteMapApi.source || "explicit_fallback" };
+      copy._meta = meta;
+      return copy;
+    }
+
+    if (frenchRoute) {
+      copy.selectedRoute = frenchRoute + routeQuery(copy.selectedRoute);
+      meta.localeRoute = { locale: "fr", status: "mapped", source: frenchRouteMapApi.source };
+      copy._meta = meta;
+      return copy;
+    }
+
+    var requestedToolId = copy.selectedToolId;
+    copy.selectedToolId = SEARCH_FALLBACK.id;
+    copy.selectedRoute = (routes["/search/"] || "/fr/search/") + "?source=ask";
+    copy.confidence = Math.min(Number(copy.confidence || 0.2), 0.2);
+    copy.reasonShort = "Aucune route française vérifiée n’est publiée pour cette correspondance.";
+    copy.extractedInputs = {};
+    copy.missingInputs = [];
+    copy.clarificationQuestion = "Précisez votre besoin dans la recherche française pour éviter une redirection vers une page anglaise.";
+    copy.safetyDomain = "none";
+    copy.highStakesNotice = "";
+    copy.privacyMode = "browser_local";
+    copy.canPrefill = false;
+    copy.handoffPlan = buildHandoffPlan(SEARCH_FALLBACK, []);
+    copy.handoffPlan.launchLabel = "Ouvrir la recherche française";
+    copy.exportPlan = buildExportPlan(SEARCH_FALLBACK, "none");
+    copy.suggestedNextActions = ["Ouvrir la recherche française", "Préciser le pays et la tâche", "Choisir uniquement une route française publiée"];
+    meta.localeRoute = {
+      locale: "fr",
+      status: "unavailable",
+      requestedToolId: requestedToolId,
+      source: frenchRouteMapApi && frenchRouteMapApi.source || "missing_route_map",
+    };
+    copy._meta = meta;
+    return copy;
+  }
+
+  function localizeDecision(decision, options) {
+    var localized = decision;
+    if (i18nApi && typeof i18nApi.localizeRouterDecision === "function") {
+      var locale = options && (options.locale || options.lang || options.uiLocale);
+      localized = i18nApi.localizeRouterDecision(decision, locale || "en");
+    }
+    return localizeSelectedRoute(localized, options);
   }
 
   function rawFallbackDecision(query) {
