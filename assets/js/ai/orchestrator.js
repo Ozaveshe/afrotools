@@ -128,6 +128,22 @@
       if (!afro || !data || typeof afro.retrieveAndResolve !== "function") return decision;
       if (!manifestApi || typeof manifestApi.rankToolCandidates !== "function") return decision;
 
+      /* These deterministic structured matches carry explicit intent that the
+       * broad full-catalog retriever can dilute into a topical calculator.
+       * Preserve only the exact known tool/source pairs; all other decisions
+       * still use the measured Afro reranker below. */
+      var structuredSource =
+        decision && decision._meta && decision._meta.retrievalSource;
+      if (
+        decision &&
+        ((decision.selectedToolId === "cv-builder" &&
+          structuredSource === "profession_role") ||
+          (decision.selectedToolId === "passport-checklist" &&
+            structuredSource === "explicit_passport"))
+      ) {
+        return decision;
+      }
+
       var graded = afro.retrieveAndResolve(query, manifestApi.rankToolCandidates, {
         manifest: loadManifest(options),
         lexicon: data.lexicon,
