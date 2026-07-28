@@ -24,25 +24,74 @@ const aiUsageLimits = require('../../assets/js/ai/usage-limits.js');
 const aiProvider = require('./_shared/ai-provider');
 const guardrails = require('../../assets/js/ai/guardrails.js');
 
-// In-memory rate limit store (per instance — Netlify Blobs for persistence)
+/*
+ * Rate limit storage, with a fallback that counts instead of surrendering.
+ *
+ * This used to `return null` when Netlify Blobs was unavailable, and
+ * checkRateLimit turned that into `{ allowed: true, remaining: 999 }` — no
+ * limit field, no counting, no ceiling. That is the site's dominant defect
+ * wearing a different hat: missing infrastructure rendering as free. In
+ * production the store WAS unavailable, so every anonymous visitor had an
+ * uncapped line to the model API and the page cheerfully reported "999 free
+ * answers left today" forever, never decrementing, because nothing was ever
+ * counted.
+ *
+ * The fallback is a per-instance Map. It is weaker than Blobs — Netlify spreads
+ * traffic across instances, so a determined caller can exceed the quota — but a
+ * soft ceiling that degrades under load is a different thing entirely from no
+ * ceiling at all, and the counter the user sees becomes true again.
+ */
+const _memoryCounts = new Map();
+const MEMORY_COUNT_CEILING = 5000;
+const memoryRateStore = {
+  degraded: true,
+  async get(key) {
+    const value = _memoryCounts.get(key);
+    return value == null ? null : String(value);
+  },
+  async set(key, value) {
+    // Keys are date-stamped and never expire on their own; bound the map rather
+    // than let a long-lived instance grow without limit.
+    if (_memoryCounts.size > MEMORY_COUNT_CEILING) _memoryCounts.clear();
+    _memoryCounts.set(key, parseInt(value, 10) || 0);
+  }
+};
+
 let _rateStore;
+let _rateStoreWarned = false;
 async function getRateStore() {
   if (_rateStore) return _rateStore;
   try {
     const { getStore } = await import("@netlify/blobs");
-    _rateStore = getStore("rate-limits");
+    /* Netlify normally injects the Blobs context into a function at runtime, but
+     * when it does not the error is "The environment has not been configured to
+     * use Netlify Blobs ... supply siteID, token". Setting NETLIFY_SITE_ID and
+     * NETLIFY_API_TOKEN in the site's environment restores persistence without
+     * touching this file; without them we fall through to the memory store
+     * below, which still counts. */
+    const siteID = process.env.NETLIFY_SITE_ID || process.env.SITE_ID;
+    const token = process.env.NETLIFY_API_TOKEN || process.env.NETLIFY_AUTH_TOKEN;
+    _rateStore = (siteID && token)
+      ? getStore({ name: "rate-limits", siteID, token })
+      : getStore("rate-limits");
     return _rateStore;
-  } catch {
-    return null; // Blobs not available, skip rate limiting
+  } catch (error) {
+    // Every other Blobs call site in this repo swallows this with a bare
+    // `catch {}`, which is how an outage stayed invisible. Say it once.
+    if (!_rateStoreWarned) {
+      _rateStoreWarned = true;
+      console.warn('[ai-advisor] Netlify Blobs unavailable, rate limiting degraded to per-instance memory:', error && error.message);
+    }
+    _rateStore = memoryRateStore;
+    return _rateStore;
   }
 }
 
 async function checkRateLimit(event, body, dependencies) {
   const runtime = dependencies || {};
   const store = Object.prototype.hasOwnProperty.call(runtime, 'store')
-    ? runtime.store
+    ? (runtime.store || memoryRateStore)
     : await getRateStore();
-  if (!store) return { allowed: true, remaining: 999 };
 
   const requestHeaders = event.headers || {};
   const ip = (requestHeaders['x-forwarded-for'] || requestHeaders['client-ip'] || 'unknown').split(',')[0].trim();
@@ -107,6 +156,7 @@ async function commitRateLimit(rateResult) {
   if (!rateResult || !rateResult._key) return;
   const store = await getRateStore();
   if (!store) return;
+  // getRateStore never returns null now, but a caller can still inject one.
   // NOTE: Netlify Blobs has no atomic increment or compare-and-set, so this
   // read-then-write is best-effort — two concurrent requests from the same client
   // can race and under-count. Acceptable for a soft daily quota. Re-read the current
@@ -326,7 +376,50 @@ function buildCoreIntelligencePrompt() {
     "If a statutory rate may have changed since your knowledge was last updated, give your best figure and name the exact authority to verify with (e.g. FIRS, KRA, SARS, GRA, PenCom, NSSF). " +
     "African context you must apply: many users combine formal salary with informal or side income, so cover both when relevant; mobile money (M-Pesa, MTN MoMo, OPay, Wave) is a mainstream payment rail; several markets run official and parallel exchange rates — say which rate you are using; inflation is high in many markets, so for any multi-year projection mention the real (inflation-adjusted) value, not just the nominal one. " +
     "When the user compares countries, give a like-for-like comparison with actual figures for each country. " +
-    "Format amounts in the user's local currency with the correct symbol and thousands separators; add a USD equivalent only when it aids comparison. ";
+    "Format amounts in the user's local currency with the correct symbol and thousands separators; add a USD equivalent only when it aids comparison. " +
+    buildFirstPartyToolRule();
+}
+
+/*
+ * Tell the model it is standing in a toolshed.
+ *
+ * Nothing in this prompt used to mention that AfroTools has tools, so the model
+ * answered as a generic assistant: asked about splitting a PDF it recommended
+ * iLovePDF and Smallpdf, while AfroTools ships 32 PDF tools of its own. The page
+ * did pass a matched-tool hint, but it read the tool name out of the DOM
+ * immediately after clearWorkflowCards() had emptied it, so the hint was always
+ * blank — and even when populated it only asked the model to "mention it as the
+ * next step if relevant", which is not a recommendation.
+ *
+ * The rule is deliberately narrow: answer the question first, put our tool
+ * first among the ways to DO the task, and stay honest when we have nothing —
+ * an invented AfroTools tool is worse than naming an outside one.
+ */
+function buildFirstPartyToolRule() {
+  return "AFROTOOLS TOOLS COME FIRST: AfroTools is a suite of 2,600+ free African calculators, generators and document tools — including a full PDF suite (merge, split, compress, convert, sign, OCR, redact, watermark, password, forms), tax and payroll calculators for all 54 countries, and trade, energy, property and business tools. " +
+    "Always answer the user's actual question first. Then, when the task is one a tool performs, name the AfroTools tool as the way to do it and give its path. " +
+    "Never send the user to an external service (iLovePDF, Smallpdf, Adobe, Wise, online-convert or similar) for something AfroTools covers, and never describe a competitor as the easier option. " +
+    "Only recommend an outside service when AfroTools genuinely has nothing for that task, and say plainly that AfroTools does not cover it. " +
+    "Never invent an AfroTools tool or a path you were not given — if you are unsure a tool exists, point to afrotools.com/tools/ instead of guessing a URL. " +
+    "END BY POINTING INTO THE PRODUCT, NOT OUT OF IT: close with one short line telling the user what to do next inside AfroTools — which tool to open and what to enter in it. " +
+    "Citing an authority (FIRS, KRA, CBN, Customs) is for verifying a rate, not a substitute for that step: name the authority to check against, then still tell the user which AfroTools tool runs the calculation. " +
+    "Do not end an answer with only an instruction to go and look something up somewhere else. ";
+}
+
+/*
+ * The tool the router actually picked, stated as an instruction rather than a
+ * hint. This is the highest-signal thing we know: Afro has already ranked 1,252
+ * tools against the query and graded its own confidence.
+ */
+function buildMatchedToolRule(matchedTool) {
+  if (!matchedTool || typeof matchedTool !== 'object') return '';
+  const name = String(matchedTool.name || '').trim().slice(0, 120);
+  const route = String(matchedTool.route || '').trim().slice(0, 200);
+  if (!name || !/^\/[\w\-/.]*$/.test(route)) return '';
+  const unsure = matchedTool.uncertain === true;
+  return unsure
+    ? `AfroTools routed this question to "${name}" (${route}) but is not confident it is the right fit. Answer the question, then offer that tool as the likely next step without overselling it. `
+    : `AfroTools routed this question to "${name}" (${route}). Answer the question, then recommend that specific tool by name and path as the way to complete the task. Do not recommend any external service for it. `;
 }
 
 // Strip lone surrogates that break JSON serialization to the Anthropic API
@@ -470,7 +563,7 @@ exports.handler = async function(event) {
   try { body = JSON.parse(event.body || '{}'); }
   catch { return { statusCode: 400, headers, body: JSON.stringify({ error: "Invalid JSON body" }) }; }
 
-  const { message, messages, tool, context, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
+  const { message, messages, tool, context, matchedTool, system: clientSystem, userContext: clientUserCtx, lang: clientLang } = body;
   const promptInspection = guardrails.inspectPrompt(
     { message, messages, context, system: clientSystem, tool },
     { maxChars: guardrails.ADVISOR_PROMPT_LIMIT }
@@ -567,6 +660,9 @@ exports.handler = async function(event) {
     }
 
     systemPrompt += buildCoreIntelligencePrompt();
+    // Router's pick, if the page sent one. Validated inside — a malformed route
+    // is dropped rather than pasted into the prompt.
+    systemPrompt += buildMatchedToolRule(matchedTool);
 
     // French tool or French page detection — ensure AI responds in French
     if (isFrench) {
@@ -706,5 +802,8 @@ exports.__test__ = {
   classifyQueryComplexity,
   buildCoreIntelligencePrompt,
   checkRateLimit,
+  // Without this the check/commit pair could not be exercised together, which is
+  // exactly how "the counter never moves" survived: check alone always looks fine.
+  commitRateLimit,
   getToolContext,
 };

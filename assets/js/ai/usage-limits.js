@@ -23,9 +23,13 @@
 
   // -1 means unlimited. This is the shared browser/server source of truth for
   // AI advisor and basic AI brief daily usage.
+  //
+  // Pro is a real 999/day ceiling rather than -1: an uncapped tier cannot be
+  // costed, and "unlimited" is a promise the API bill has to keep. Team stays
+  // uncapped because it is negotiated per account.
   var AI_BRIEFS_PER_DAY = Object.freeze({
-    free: 3,
-    pro: -1,
+    free: 99,
+    pro: 999,
     team: -1
   });
 

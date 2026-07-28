@@ -89,11 +89,41 @@
     var workflow = document.getElementById("aiContextWorkflow");
     if (country && country.value) parts.push("User's country focus: " + country.value + ".");
     if (workflow && workflow.value) parts.push("Help category: " + workflow.value + ".");
-    var primaryCard = document.querySelector('#aiResultCards [data-workflow-card][data-primary="true"] .ai-card-title');
-    if (primaryCard && primaryCard.textContent) {
-      parts.push('AfroTools has matched the tool "' + primaryCard.textContent.trim() + '" for this question; mention it as the next step if relevant.');
-    }
     return parts.join(" ");
+  }
+
+  /**
+   * Which AfroTools tool answers this, asked directly rather than scraped.
+   *
+   * The old version read the tool name out of
+   * `#aiResultCards [data-primary=true]`, but the page dispatches
+   * afrotools:ai-query immediately AFTER clearWorkflowCards() empties that
+   * container — so the lookup always found nothing and the model was never told
+   * AfroTools had a tool at all. That is why it answered PDF questions by
+   * recommending iLovePDF while we ship 32 PDF tools.
+   *
+   * Routing is synchronous and already loaded on this page, so ask it.
+   */
+  function matchedTool(query) {
+    try {
+      var orchestrator = window.AfroToolsAIOrchestrator;
+      var manifestApi = window.AfroToolsAIToolManifest;
+      if (!orchestrator || !manifestApi || typeof orchestrator.buildPlan !== "function") return null;
+      var manifest = manifestApi.getToolManifestForRouter(manifestApi.loadDefaultToolManifest());
+      if (!manifest.length) return null;
+      var plan = orchestrator.buildPlan(query, { manifest: manifest, candidateLimit: 3 });
+      var decision = (plan && plan.decision) || {};
+      var id = decision.selectedToolId || "";
+      if (!id || id === "tool-search") return null;
+      var tool = null;
+      for (var i = 0; i < manifest.length; i++) {
+        if (manifest[i].id === id) { tool = manifest[i]; break; }
+      }
+      if (!tool || !tool.route) return null;
+      return { id: tool.id, name: tool.title || tool.id, route: tool.route, uncertain: decision.uncertain === true };
+    } catch (err) {
+      return null;
+    }
   }
 
   function setBusy(nextBusy) {
@@ -139,14 +169,24 @@
     return bubble;
   }
 
+  /*
+   * "Unlimited" is now a claim about the plan, not a guess from the number.
+   *
+   * The old rule said any limit over 100 meant unlimited, which was true while
+   * Pro was -1 and free was 3. Pro is a real 999/day ceiling now, so that rule
+   * would have relabelled a counted quota as "unlimited" — and free is 99, which
+   * the same rule would have rendered as a plain countdown with no plan context.
+   * Only a genuinely uncapped limit (-1 / Infinity) may say unlimited.
+   */
   function updateQuota(remaining, limit) {
     if (!quotaLabel) return;
-    if (!isFinite(Number(limit)) || Number(limit) > 100) {
-      quotaLabel.textContent = "Pro — unlimited answers";
+    var cap = Number(limit);
+    if (!isFinite(cap) || cap < 0) {
+      quotaLabel.textContent = "Unlimited answers";
       return;
     }
     var left = Math.max(0, Number(remaining) || 0);
-    quotaLabel.textContent = left + " free answer" + (left === 1 ? "" : "s") + " left today";
+    quotaLabel.textContent = left + " of " + cap + " answers left today";
   }
 
   function showRateLimit() {
@@ -203,6 +243,10 @@
     };
     var context = buildContext();
     if (context) body.context = context;
+    // Resolve against the ORIGINAL question, not a follow-up like "and in Ghana?",
+    // so the tool stays the one the thread is actually about.
+    var match = matchedTool(messages.length ? messages[0].content : clean);
+    if (match) body.matchedTool = match;
 
     fetch(ENDPOINT, { method: "POST", headers: headers, body: JSON.stringify(body) })
       .then(function (res) {
@@ -227,7 +271,10 @@
         messages.push({ role: "assistant", content: reply });
         appendAnswer(reply);
         if (tierBadge) tierBadge.hidden = data.tier !== "smart";
-        if (data.remaining !== undefined) updateQuota(data.remaining, data.limit || 3);
+        // `data.limit || 3` printed a free-tier cap for every plan when the
+        // server omitted the field. The server always sends it now; if it ever
+        // stops, say nothing rather than invent a number.
+        if (data.remaining !== undefined && data.limit !== undefined) updateQuota(data.remaining, data.limit);
         if (followupForm) {
           followupForm.hidden = false;
           if (!isFollowup && followupInput) followupInput.value = "";

@@ -63,6 +63,26 @@
     .ai-answer-shell{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:18px;align-items:start;margin-top:14px}
     .ai-answer-shell > .ai-answer{margin-top:0}
     .ai-answer-shell > .ai-state{position:sticky;top:84px}
+    /* Deep detail gets the whole width, not the 456px rail.
+     * Measured at 1440px with the disclosure open: the answer column was
+     * 668x155 while the right column ran to 1852px tall, 1451px of it inside a
+     * 456px-wide <details>. Two thirds of the viewport sat empty next to
+     * content squeezed into a third of it. Opening the disclosure now collapses
+     * the split so the detail reads across the full container. */
+    /* Onboarding scaffolding retires once the user has actually asked.
+     * 1,037px sat between the top of the page and the answer, 427px of it the
+     * example rail and the optional country/output panel — both of which exist
+     * to help you compose a first question and have no job afterwards. The
+     * input itself stays put so a follow-up is always one click away. */
+    body.ai-has-result .ai-quick-panel{display:none}
+    body.ai-has-result .ai-context-panel{margin-top:2px;padding:10px 12px}
+    body.ai-has-result .ai-context-panel .ai-context-grid{gap:8px}
+    body.ai-details-open .ai-answer-shell{grid-template-columns:minmax(0,1fr)}
+    body.ai-details-open .ai-answer-shell > .ai-state{position:static}
+    .ai-more[open]{background:#fff;border:1px solid #e2e8f0;border-radius:16px;margin-top:14px;padding:4px 16px 16px}
+    .ai-more[open] > summary{border-bottom:1px solid #eef2f7;font-weight:800;margin:0 -16px 14px;padding:12px 16px}
+    :root[data-theme="dark"] .ai-more[open]{background:#101c30;border-color:#1e2f4a}
+    :root[data-theme="dark"] .ai-more[open] > summary{border-bottom-color:#1e2f4a}
     .ai-answer-shell .ai-result-summary{display:flex;flex-wrap:wrap;gap:8px}
     .ai-answer-shell .ai-result-summary > *{flex:1 1 150px;min-width:0}
     @media(max-width:960px){
@@ -200,7 +220,12 @@
     .ai-card-body{display:grid;grid-template-columns:1fr 1fr;gap:10px}
     .ai-mini-panel{border:1px solid #e2e8f0;border-radius:11px;background:#f8fafc;padding:10px}
     .ai-mini-panel strong{display:block;color:#334155;font-size:.76rem;font-weight:900;margin-bottom:6px}
-    .ai-job-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+    /* auto-fit, and align-items:start.
+     * Fixed 1fr 1fr wasted the extra width once the disclosure went full-bleed,
+     * and stretched rows forced every cell to its tallest sibling — so the
+     * near-empty "I need one detail" box was padded out to 346px to match the
+     * 14-chip "I can prefill" list beside it. Cells now size to their content. */
+    .ai-job-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:10px;align-items:start}
     .ai-job-panel{border:1px solid #e2e8f0;border-radius:11px;background:#fff;padding:11px}
     .ai-job-panel.is-primary{border-color:#bfdbfe;background:#f8fbff}
     .ai-job-panel.is-question{border-color:#fed7aa;background:#fff7ed}
@@ -795,7 +820,7 @@
 <script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
 <script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
 <script src="/assets/js/ai/afro-confidence.js?v=0395b29a"></script>
-  <script src="/assets/js/ai/result-layout.js" defer></script>
+  <script src="/assets/js/ai/result-layout.js?v=e446b9b9" defer></script>
   <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
@@ -803,9 +828,9 @@
   <script src="/assets/js/ai/i18n.js?v=2b001162"></script>
   <script src="/assets/js/ai/example-registry.js?v=ee83a08c"></script>
   <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4"></script>
-  <script src="/assets/js/ai/usage-limits.js?v=468e656e"></script>
+  <script src="/assets/js/ai/usage-limits.js?v=8177fe31"></script>
   <script src="/assets/js/ai/pro-monetization.js?v=754f962e"></script>
-  <script src="/assets/js/ai/direct-answer.js?v=3eadf13c"></script>
+  <script src="/assets/js/ai/direct-answer.js?v=dd671162"></script>
   <script>
   (function () {
     "use strict";

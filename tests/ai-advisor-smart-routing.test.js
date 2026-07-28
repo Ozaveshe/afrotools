@@ -69,7 +69,8 @@ async function run() {
     });
 
     assert.strictEqual(result.allowed, true);
-    assert.strictEqual(result.limit, Infinity);
+    // Pro is a counted 999/day ceiling, not -1: an uncapped tier cannot be costed.
+    assert.strictEqual(result.limit, 999);
     assert.ok(requestedUrls.some(function (url) { return url.includes("/rest/v1/profiles?"); }));
     assert.ok(requestedUrls.every(function (url) { return !url.includes("/subscriptions"); }));
   }

@@ -61,6 +61,10 @@
 
     var details = doc.createElement("details");
     details.className = "ai-more";
+    // `toggle` does not bubble, so the MutationObserver never sees it — listen here.
+    details.addEventListener("toggle", function () {
+      doc.body.classList.toggle("ai-details-open", details.open);
+    });
     var summary = doc.createElement("summary");
     summary.textContent = "Details, checks and export options";
     details.appendChild(summary);
@@ -78,15 +82,52 @@
     card.dataset.afroCollapsed = "1";
   }
 
+  /*
+   * Opening the disclosure widens the whole surface.
+   *
+   * The detail lived in the narrower of two columns, so expanding it produced
+   * ~1450px of content in a 456px rail while the answer column beside it sat
+   * empty. The class drives a CSS rule that collapses the split; keeping it a
+   * body class rather than a DOM move means the renderer keeps full ownership
+   * of the card and can rewrite it on the next query without losing anything.
+   */
+  function syncDetailsWidth(root) {
+    var open = !!root.querySelector("details.ai-more[open]");
+    doc.body.classList.toggle("ai-details-open", open);
+  }
+
+  function scrollToAnswer() {
+    var shell = doc.getElementById("aiAnswerShell");
+    if (!shell || typeof shell.scrollIntoView !== "function") return;
+    // Wait a frame so the card has laid out and the target is where we think.
+    (win.requestAnimationFrame || function (fn) { setTimeout(fn, 16); })(function () {
+      try {
+        var reduce = win.matchMedia && win.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        shell.scrollIntoView({ behavior: reduce ? "auto" : "smooth", block: "start" });
+      } catch (err) {
+        shell.scrollIntoView();
+      }
+    });
+  }
+
   function syncResultState() {
     try {
       var state = doc.getElementById("aiResultState");
       var answer = doc.getElementById("aiDirectAnswer");
       var hasResult = (state && !state.hidden) || (answer && !answer.hidden);
+      var appeared = !!hasResult && !doc.body.classList.contains("ai-has-result");
       doc.body.classList.toggle("ai-has-result", !!hasResult);
+      /* Take the user to their answer.
+       * The composer stack ran 1,037px tall, so on a laptop the result rendered
+       * entirely below the fold and the page looked like nothing had happened.
+       * Only on the transition into a result — never on a re-render — so this
+       * cannot yank the page while someone is reading or scrolling. */
+      if (appeared) scrollToAnswer();
       if (state && !state.hidden) {
         [].forEach.call(state.querySelectorAll(".ai-workflow-card"), collapseCard);
       }
+      syncDetailsWidth(state || doc.body);
+      if (!hasResult) doc.body.classList.remove("ai-details-open");
     } catch (err) { /* layout enhancement only — never block the router */ }
   }
 
