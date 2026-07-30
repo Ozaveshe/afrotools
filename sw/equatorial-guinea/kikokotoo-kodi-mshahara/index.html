@@ -34,7 +34,6 @@
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mabanda ya kodi Guinea ya Ikweta ni yapi?","acceptedAnswer":{"@type":"Answer","text":"Guinea ya Ikweta inatumia mabanda ya IRPF: 0% hadi XAF 1,000,000/mwaka; 10% kwa XAF 1,000,001-3,000,000; 15% kwa XAF 3,000,001-7,000,000; 20% kwa XAF 7,000,001-14,000,000; 25% zaidi ya XAF 14,000,000 kwa mwaka."}},{"@type":"Question","name":"INSESO ni nini?","acceptedAnswer":{"@type":"Answer","text":"INSESO (Instituto Nacional de Seguridad Social) ni shirika la mafao ya kijamii Guinea ya Ikweta. Mfanyakazi analipa 4.5% na mwajiri analipa 21.5% ya mshahara ghafi."}},{"@type":"Question","name":"Guinea ya Ikweta inatumia lugha gani?","acceptedAnswer":{"@type":"Answer","text":"Guinea ya Ikweta ni nchi pekee ya Afrika inayotumia Kihispania kama lugha rasmi. Pia inatumia Kifaransa na Kiportugali. Ni nchi ndogo kabisa inayozungumza Kihispania barani Afrika."}}]}
 </script>
@@ -49,6 +48,17 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/eq-guinea/gq-paye/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/equatorial-guinea/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/eq-guinea/gq-paye">
+<style data-sw-paye-mobile-contract>
+@media(max-width:480px){
+  .tool-main,.tool-main *,.grid,.grid *,.ng-guide-sec,.ng-guide-sec *{box-sizing:border-box!important}
+  .tool-main,.tool-main-inner,.tool-main-inner>*,.grid,.grid>*,.ng-guide-sec,.ng-guide-grid,.ng-guide-grid>*,.ng-guide-col,.sidebar,.card,.ai-card,.tool-info-card,.last-updated{width:100%!important;min-width:0!important;max-width:100%!important}
+  .tool-main-inner,.grid,.ng-guide-grid{grid-template-columns:minmax(0,1fr)!important}
+  .tool-main-inner{padding-left:12px!important;padding-right:12px!important}
+  .ng-guide-grid{display:grid!important}
+  .ng-guide-card{min-width:0!important;max-width:100%!important;overflow-x:auto}
+  canvas,table,img,svg{max-width:100%}
+}
+</style>
 </head>
 <body class="tool-page top-level-page-ui-refresh">
 <a href="#main-content" class="skip-link">Ruka hadi maudhui makuu</a>
@@ -169,7 +179,7 @@
         </div>
 
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;padding:0 22px 22px">
-          <button type="button" onclick="openPdfModal()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Pakua PDF</button>
+          <button type="button" onclick="generatePdf()" data-no-gate="true" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:rgba(255,215,0,.1);border:1.5px solid rgba(255,215,0,.35);color:#7a6200">📄 Pakua PDF</button>
           <button type="button" id="gqShareBtn" onclick="shareResult()" style="padding:10px;font-size:.72rem;font-weight:700;border-radius:6px;cursor:pointer;background:#f5f5f5;border:1.5px solid #ddd;color:#333">Shiriki Matokeo</button>
         </div>
 
@@ -269,27 +279,6 @@
         <strong>Disclaimer:</strong> Kwa madhumuni ya taarifa tu. Si ushauri rasmi wa kodi. Verify with Ministry of Finance or a qualified tax advisor.
       </div>
     </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="pdfModal" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px">
-  <div style="background:#fff;border-radius:12px;padding:32px;max-width:420px;width:100%;box-shadow:0 24px 60px rgba(0,0,0,.22);position:relative">
-    <h3 style="font-size:1.1rem;font-weight:800;color:#333;margin-bottom:6px">📄 Pakua Muhtasari wa PAYE Yako</h3>
-    <p style="font-size:.83rem;color:#555;line-height:1.6;margin-bottom:20px">Weka barua pepe yako upate PDF yenye maelezo ya kina.</p>
-    <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-      <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-      <input type="hidden" name="country" value="Equatorial Guinea">
-      <input type="hidden" name="country_code" value="GQ">
-      <input type="hidden" name="tool" value="paye">
-      <input type="hidden" name="tool_id" value="gq-paye">
-      <input type="hidden" name="currency" value="XAF">
-      <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-      <input aria-label="Jina lako (hiari)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
-      <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" required style="width:100%;padding:12px 14px;border:1.5px solid #ddd;border-radius:7px;font-size:.9rem;color:#333;margin-bottom:10px;background:#f5f5f5;box-sizing:border-box">
-      <button class="modal-submit" type="submit" style="width:100%;padding:13px;background:var(--primary);color:#fff;border:none;border-radius:7px;font-size:.88rem;font-weight:700;cursor:pointer">Pata PDF Yangu →</button>
-    </form>
-    <button type="button" class="modal-cancel" onclick="closePdfModal()" style="width:100%;padding:10px;background:transparent;border:none;font-size:.78rem;color:#666;cursor:pointer;margin-top:6px">Hapana, asante</button>
   </div>
 </div>
 
@@ -416,7 +405,7 @@ function calcAnnualIRPF(i){const n=Math.max(0,i),d=[];if(n<=1e6)return d.push({r
     calculate();
   }
 
-  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Weka mshahara sahihi');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeMakato:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resKiasi').textContent=fmt(h),document.getElementById('resGross').textContent=`Ghafi: ${fmt(e)}/mwezi · ${fmt(l)}/mwaka`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('hiddenGross').value=e,document.getElementById('employerStrip').innerHTML=`<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi + hifadhi ya jamii ${fmt(a)}/mwezi.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Pata Uchambuzi wa AI →',document.getElementById('aiStatus').textContent=`Ghafi: ${fmt(e)}/mwezi · Halisi: ${fmt(h)}/mwezi · Kodi: ${fmt(u)}/mwezi · Kiwango halisi: ${pct(b)}`;
+  function calculate(){const e=parseFloat(document.getElementById('grossSalary').value)||0;if(!e||e<=0){const _el=document.getElementById('grossSalary');_el.focus();_el.style.borderColor='#e53e3e';_el.setAttribute('placeholder','Weka mshahara sahihi');setTimeout(()=>{_el.style.borderColor='';_el.removeAttribute('placeholder')},3000);return}const n=isOn('socSec'),s=n?0.045:0,r=0.215,o=e*s,a=e*r,l=e*12,d=o*12,c=Math.max(0,l-d),t=calcAnnualIRPF(c),u=t.tax/12,i=t.bandBreakdown,m=o+u,h=e-m,b=e>0?u/e:0;RESULT={gross:e,monthly:e,socSec:o,socSecRate:s,empSocSec:a,monthlyPAYE:u,bandBreakdown:i,annualPAYE:t.tax,totalEmployeeMakato:m,netMonthly:h,effectiveRate:b,annualGross:l,annualNet:h*12,annualTax:t.tax,annualSocSec:d,totalEmployerCostMonthly:e+a},document.getElementById('resKiasi').textContent=fmt(h),document.getElementById('resGross').textContent=`Ghafi: ${fmt(e)}/mwezi · ${fmt(l)}/mwaka`,document.getElementById('resContent').innerHTML=renderRows(RESULT,PERIOD),document.getElementById('effRateDisplay').textContent=pct(b),setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(b*200,100)+'%'},80),document.getElementById('employerStrip').innerHTML=`<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi + hifadhi ya jamii ${fmt(a)}/mwezi.`,document.getElementById('employerStrip').style.display='block',document.getElementById('resultsCard').style.display='block',renderChart(CHART_TYPE),document.getElementById('resultsCard').scrollIntoView({behavior:'smooth',block:'nearest'}),document.getElementById('aiBtn').disabled=!1,document.getElementById('aiBtn').textContent='Pata Uchambuzi wa AI →',document.getElementById('aiStatus').textContent=`Ghafi: ${fmt(e)}/mwezi · Halisi: ${fmt(h)}/mwezi · Kodi: ${fmt(u)}/mwezi · Kiwango halisi: ${pct(b)}`;
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({ inputs: { grossSalary: RESULT.gross }, outputs: { netPay: RESULT.netMonthly, tax: RESULT.monthlyPAYE, effectiveRate: RESULT.effectiveRate } });
   var _shareBtn = document.querySelector('share-result-button');
@@ -428,11 +417,7 @@ function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.an
 function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&((function(){var m=PERIOD==='monthly',n=m?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12),g=m?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resKiasi').textContent=fmt(n);document.getElementById('resGross').textContent=m?'Ghafi: '+fmt(g)+'/mwezi':'Ghafi: '+fmt(g)+'/mwaka'})(),document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none';const s=e.querySelector('.tog-arrow');s.style.transform='none'===s.style.transform||'rotate(0deg)'===s.style.transform?'rotate(180deg)':'rotate(0deg)'}
 function setChart(e,n){CHART_TYPE=e,document.querySelectorAll('.chart-tab').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='var(--primary)',n.style.color='#fff',renderChart(e)}
-function renderChart(e){if(!RESULT)return;const n=RESULT,s=document.getElementById('mainChart');CHART&&(CHART.destroy(),CHART=null),'donut'===e?CHART=new Chart(s,{type:'doughnut',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii'],datasets:[{data:[n.netMonthly,n.monthlyPAYE,n.socSec],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}}):'bar'===e?n.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(s,{type:'bar',data:{labels:n.bandBreakdown.filter(e=>e.tax>0).map(e=>(100*e.rate)+'%'),datasets:[{label:'Kodi ya Mwaka (XAF)',data:n.bandBreakdown.filter(e=>e.tax>0).map(e=>e.tax),backgroundColor: AfroChartColors.series[0],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'},grid:{color:'#eee'}},x:{ticks:{font:{size:10,weight:'600'}}}}}})):'employer'===e&&(CHART=new Chart(s,{type:'bar',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii','Hifadhi ya Jamii ya Mwajiri'],datasets:[{label:'XAF',data:[n.netMonthly,n.monthlyPAYE,n.socSec,n.empSocSec],backgroundColor: AfroChartColors.doughnut.slice(0, 4),borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e3).toFixed(0)+'k'},grid:{color:'#eee'}}}}})),CHART}
-function openPdfModal(){RESULT&&(document.getElementById('pdfModal').style.display='flex',document.getElementById('leadForm').style.display='block')}
-function closePdfModal(){document.getElementById('pdfModal').style.display='none'}
-document.getElementById('pdfModal').addEventListener('click',e=>{e.target.id==='pdfModal'&&closePdfModal()});
-async function submitPdf(e){e.preventDefault();const n=document.getElementById('pdfEmail').value;n&&(await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email:n,country:'Equatorial Guinea',country_code:'GQ',tool:'paye',tool_id:'gq-paye',currency:'XAF',gross_salary:RESULT.gross}).toString()}).catch(()=>{}),generatePdf())}
+function renderChart(e){if(typeof Chart==='undefined')return;if(!RESULT)return;const n=RESULT,s=document.getElementById('mainChart');CHART&&(CHART.destroy(),CHART=null),'donut'===e?CHART=new Chart(s,{type:'doughnut',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii'],datasets:[{data:[n.netMonthly,n.monthlyPAYE,n.socSec],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}}):'bar'===e?n.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(s,{type:'bar',data:{labels:n.bandBreakdown.filter(e=>e.tax>0).map(e=>(100*e.rate)+'%'),datasets:[{label:'Kodi ya Mwaka (XAF)',data:n.bandBreakdown.filter(e=>e.tax>0).map(e=>e.tax),backgroundColor: AfroChartColors.series[0],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'},grid:{color:'#eee'}},x:{ticks:{font:{size:10,weight:'600'}}}}}})):'employer'===e&&(CHART=new Chart(s,{type:'bar',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii','Hifadhi ya Jamii ya Mwajiri'],datasets:[{label:'XAF',data:[n.netMonthly,n.monthlyPAYE,n.socSec,n.empSocSec],backgroundColor: AfroChartColors.doughnut.slice(0, 4),borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e3).toFixed(0)+'k'},grid:{color:'#eee'}}}}})),CHART}
 function generatePdf(){if(!RESULT)return;const e=RESULT,n=new Date().toLocaleDateString('en-GQ',{day:'numeric',month:'long',year:'numeric'}),s=`AFT-GQ-PAYE-${Date.now().toString(36).toUpperCase().slice(-6)}`;window.print()}
 function shareResult(){if(!RESULT)return;const e=`My Equatorial Guinea PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} effective).`,n=document.getElementById('gqShareBtn');navigator.clipboard&&(navigator.clipboard.writeText(e),n.textContent='✓ Imenakiliwa!',setTimeout(()=>n.textContent='Shiriki Matokeo',2500))}
 async function getAI(){if(!RESULT)return;const e=RESULT,n=document.getElementById('aiBtn'),s=document.getElementById('aiResp');n.disabled=!0,n.textContent='Inachambua...',s.style.display='block',s.className='ai-response',s.textContent='Generating analysis...';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax advisor for Equatorial Guinea PAYE. Concise.',messages:[{role:'user',content:'Summarize this calculation briefly in 2 sentences.'}]})});if(e.ok){const n=await e.json();s.textContent=n.text||'Analysis unavailable.',n.text&&(document.getElementById('aiChat').style.display='block')}}catch(e){s.textContent='Uchambuzi wa AI haupatikani kwa sasa.'}n.disabled=!1,n.textContent='Ask follow-up →'}

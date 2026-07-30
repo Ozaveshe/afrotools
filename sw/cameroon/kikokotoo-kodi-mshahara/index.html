@@ -95,7 +95,6 @@
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <meta name="afrotools-language-fallback" content="en">
 <meta name="afrotools-language-fallback-owner" content="sw-country-paye-reference-copy: Swahili localization">
 <link rel="canonical" href="https://afrotools.com/sw/cameroon/kikokotoo-kodi-mshahara/">
@@ -198,7 +197,7 @@
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Pakua PDF</button>
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>Pakua PDF</button>
           <button type="button" class="act-btn act-share" id="cmShareBtn" onclick="shareResult()"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg>Shiriki Matokeo</button>
         </div>
 
@@ -306,34 +305,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Pakua Muhtasari wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya &#127464;&#127474; Kameruni vikibadilika.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country" value="Cameroon">
-        <input type="hidden" name="country_code" value="CM">
-        <input type="hidden" name="tool" value="paye">
-        <input type="hidden" name="tool_id" value="cm-paye">
-        <input type="hidden" name="currency" value="XAF">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" required>
-        <button class="modal-submit" type="submit">Pata PDF →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <div class="big-check">✅</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
     </div>
   </div>
 </div>
@@ -527,7 +498,7 @@ const net=gross-totalDed;
 const eff=gross>0?annualDGI/gross:0;
 RESULT={gross,cnps,empCNPS,salaryAfterCnps,assessableIncome,annualIRPP,annualCAC,annualDGI,bandBreakdown:result.bandBreakdown,totalDed,net,effectiveRate:eff,empCost:gross+empCNPS};
 document.getElementById('resKiasi').textContent=fmt(net);document.getElementById('resGross').textContent=`Ghafi: ${fmt(gross)}/mwaka`;document.getElementById('resContent').innerHTML=`<div class="res-section"><div class="res-section-title">Ghafi</div><div class="res-row"><span class="res-row-lbl">Ghafi ya Mwaka</span><span class="res-row-val">${fmt(gross)}</span></div></div><div class="res-section"><div class="res-section-title">Makato Before IRPP</div>${hasCNPS?`<div class="res-row"><span class="res-row-lbl">CNPS employee pension (4.2%)</span><span class="res-row-val c-red">${fmt(cnps)}</span></div>`:''}
-<div class="res-row"><span class="res-row-lbl">Mshahara baada ya CNPS</span><span class="res-row-val c-mut">${fmt(salaryAfterCnps)}</span></div><div class="res-row"><span class="res-row-lbl">Posho ya kitaaluma</span><span class="res-row-val c-red">${fmt(CAMEROON_PROFESSIONAL_ALLOWANCE)}</span></div><div class="res-row"><span class="res-row-lbl">Mapato yanayokadiriwa kwa IRPP</span><span class="res-row-val c-mut">${fmt(assessableIncome)}</span></div></div><div class="res-section"><div class="res-section-title">IRPP &amp; CAC</div><div class="res-row"><span class="res-row-lbl">IRPP kabla ya CAC</span><span class="res-row-val c-red">${fmt(annualIRPP)}</span></div><div class="res-row"><span class="res-row-lbl">CAC (10% of IRPP)</span><span class="res-row-val c-red">${fmt(annualCAC)}</span></div><div class="res-row"><span class="res-row-lbl">Jumla ya kodi ya mshahara ya DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Jumla ya Makato</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Mshahara Halisi</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);document.getElementById('hiddenGross').value=gross;const strip=document.getElementById('employerStrip');strip.innerHTML=`<strong>Baseline Gharama ya Mwajiri: ${fmt(RESULT.empCost)}/mwaka</strong><br>Gross + capped CNPS baseline ${fmt(empCNPS)}/mwaka. Accident-at-work premiums vary by risk group.`;strip.classList.add('on');document.getElementById('resultsCard').classList.add('on');
+<div class="res-row"><span class="res-row-lbl">Mshahara baada ya CNPS</span><span class="res-row-val c-mut">${fmt(salaryAfterCnps)}</span></div><div class="res-row"><span class="res-row-lbl">Posho ya kitaaluma</span><span class="res-row-val c-red">${fmt(CAMEROON_PROFESSIONAL_ALLOWANCE)}</span></div><div class="res-row"><span class="res-row-lbl">Mapato yanayokadiriwa kwa IRPP</span><span class="res-row-val c-mut">${fmt(assessableIncome)}</span></div></div><div class="res-section"><div class="res-section-title">IRPP &amp; CAC</div><div class="res-row"><span class="res-row-lbl">IRPP kabla ya CAC</span><span class="res-row-val c-red">${fmt(annualIRPP)}</span></div><div class="res-row"><span class="res-row-lbl">CAC (10% of IRPP)</span><span class="res-row-val c-red">${fmt(annualCAC)}</span></div><div class="res-row"><span class="res-row-lbl">Jumla ya kodi ya mshahara ya DGI</span><span class="res-row-val c-red">${fmt(annualDGI)}</span></div></div><div class="res-section"><div class="res-row"><span class="res-row-lbl">Jumla ya Makato</span><span class="res-row-val c-red">${fmt(totalDed)}</span></div><div class="res-row total"><span class="res-row-lbl">Mshahara Halisi</span><span class="res-row-val c-grn">${fmt(net)}</span></div></div>`;document.getElementById('effRateDisplay').textContent=pct(eff);setTimeout(()=>{document.getElementById('rateFill').style.width=Math.min(eff*200,100)+'%';},80);const strip=document.getElementById('employerStrip');strip.innerHTML=`<strong>Baseline Gharama ya Mwajiri: ${fmt(RESULT.empCost)}/mwaka</strong><br>Gross + capped CNPS baseline ${fmt(empCNPS)}/mwaka. Accident-at-work premiums vary by risk group.`;strip.classList.add('on');document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
   var _saveBtn = document.querySelector('save-result-button');
   if (_saveBtn) _saveBtn.setData({
@@ -552,14 +523,9 @@ document.getElementById('resKiasi').textContent=fmt(net);document.getElementById
   if (_bmWidget) { _bmWidget.setAttribute('user-gross', RESULT.gross); _bmWidget.setAttribute('user-net', RESULT.net); }renderChart(CHART_TYPE);document.getElementById('aiBtn').disabled=false;document.getElementById('aiBtn').textContent='Pata Uchambuzi wa AI →';}
 function toggleBands(h){const b=h.nextElementSibling;b.classList.toggle('open');h.querySelector('.tog-arrow').classList.toggle('open');}
 function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forEach(x=>x.classList.remove('on'));b.classList.add('on');renderChart(t);}
-function renderChart(type){if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
+function renderChart(type){if(typeof Chart==='undefined')return;if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
 if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Halisi','IRPP + CAC','CNPS'],datasets:[{data:[R.net,R.annualDGI,R.cnps],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
 else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Kodi (XAF)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'XAF'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10,weight:'600'}}}}}});}}
-function openPdfModal(){if(!RESULT)return;document.getElementById('pdfModal').classList.add('on');document.getElementById('modalForm').style.display='block';document.getElementById('modalSuccess').style.display='none';}
-function closePdfModal(){document.getElementById('pdfModal').classList.remove('on');}
-document.getElementById('pdfModal').addEventListener('click',e=>{if(e.target===document.getElementById('pdfModal'))closePdfModal();});
-async function submitPdf(e){e.preventDefault();const email=document.getElementById('pdfEmail').value;if(!email)return;try{await fetch('/',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({'form-name':'pdf-leads',email,country:'Cameroon',country_code:'CM',tool:'paye',tool_id:'cm-paye',currency:'XAF',gross_salary:RESULT.gross}).toString()});}catch(e){}
-document.getElementById('modalForm').style.display='none';document.getElementById('modalSuccess').style.display='block';}
 function generatePdf(){if(!RESULT)return;const R=RESULT;const dateStr=new Date().toLocaleDateString('en-CM',{day:'numeric',month:'long',year:'numeric'});const refNo='AFT-CM-PAYE-'+Date.now().toString(36).toUpperCase().slice(-6);
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Rate ' + (b.rate*100) + '% on XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`

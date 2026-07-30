@@ -46,6 +46,17 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/centrafrique/calculateur-salaire-net/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/central-african-republic/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/car/cf-paye">
+<style data-sw-paye-mobile-contract>
+@media(max-width:480px){
+  .tool-main,.tool-main *,.grid,.grid *,.ng-guide-sec,.ng-guide-sec *{box-sizing:border-box!important}
+  .tool-main,.tool-main-inner,.tool-main-inner>*,.grid,.grid>*,.ng-guide-sec,.ng-guide-grid,.ng-guide-grid>*,.ng-guide-col,.sidebar,.card,.ai-card,.tool-info-card,.last-updated{width:100%!important;min-width:0!important;max-width:100%!important}
+  .tool-main-inner,.grid,.ng-guide-grid{grid-template-columns:minmax(0,1fr)!important}
+  .tool-main-inner{padding-left:12px!important;padding-right:12px!important}
+  .ng-guide-grid{display:grid!important}
+  .ng-guide-card{min-width:0!important;max-width:100%!important;overflow-x:auto}
+  canvas,table,img,svg{max-width:100%}
+}
+</style>
 </head>
 <body class="tool-page top-level-page-ui-refresh">
 <a href="#main-content" class="skip-link">Ruka hadi maudhui makuu</a>
@@ -156,7 +167,7 @@
         </div>
 
         <div class="action-row" style="grid-template-columns:1fr 1fr">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
@@ -357,35 +368,6 @@
 <afro-related-tools category="financial" current="cf-paye"></afro-related-tools>
 
 <!-- PDF MODAL -->
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Pakua Muhtasari wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya &#127464;&#127467; CAR vikibadilika.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="Central African Republic">
-        <input type="hidden" name="country_code" value="CF">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="cf-paye">
-        <input type="hidden" name="currency"     value="XAF">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">&#x2715;</button>
-      <div class="big-check">&#x2705;</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <p>Bofya <strong>Hifadhi kama PDF</strong> kwenye dirisha la kuchapisha.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
-    </div>
-  </div>
-</div>
 
 <afro-footer></afro-footer>
 
@@ -425,27 +407,11 @@ function calcAnnualDGI(i){const n=Math.max(0,i),d=[];if(n<=200000)return d.push(
 function renderRows(e,n){const s='annual'===n,r=s?e.annualGross:e.gross,o=s?e.annualCNSS:e.cnss,a=s?e.annualTax:e.monthlyPAYE,l=s?e.annualNet:e.netMonthly;return`<div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Ghafi</div><div style="display:flex;justify-content:space-between;padding:5px 0"><span>Mshahara${s?'/mwaka':'/mwezi'}</span><span style="font-weight:700">${fmt(r)}</span></div></div><div style="margin-bottom:16px"><div style="font-size:.65rem;font-weight:700;text-transform:uppercase;color:#666;margin-bottom:8px;border-bottom:1px solid #f5f5f5;padding-bottom:7px">Makato</div>${e.cnss>0?`<div style="display:flex;justify-content:space-between;padding:5px 0"><span>CNSS (3%)</span><span style="color:#c0392b;font-weight:700">${fmt(o)}</span></div>`:''}<div style="display:flex;justify-content:space-between;padding:5px 0;border-top:1px solid #f5f5f5"><span>Kodi</span><span style="color:#c0392b;font-weight:700">${fmt(a)}</span></div></div><div style="display:flex;justify-content:space-between;padding:5px 0;border-top:2px solid #ddd;margin-top:4px;padding-top:10px"><span style="font-weight:700">Halisi</span><span style="font-size:1.05rem;font-weight:800;color:var(--primary)">${fmt(l)}</span></div>`}
 function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e=>e.style.background='transparent'),n.style.background='#fff',n.style.color='var(--primary)',RESULT&&((function(){var m=PERIOD==='monthly',n=m?RESULT.netMonthly:(RESULT.annualNet||RESULT.netAnnual||RESULT.netMonthly*12),g=m?RESULT.gross:(RESULT.annualGross||RESULT.gross*12);document.getElementById('resKiasi').textContent=fmt(n);document.getElementById('resGross').textContent=m?'Ghafi: '+fmt(g)+'/mwezi':'Ghafi: '+fmt(g)+'/mwaka'})(),document.getElementById('resContent').innerHTML=renderRows(RESULT,e))}
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none'}
-function renderChart(e){return setChart(e)}
+function renderChart(e){if(typeof Chart==='undefined')return;return setChart(e)}
 function setChart(e){const n=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null}if(!RESULT)return;'donut'===e?CHART=new Chart(n,{type:'doughnut',data:{labels:['Halisi','Tax','CNSS'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss],backgroundColor:['#FFCE00','var(--primary)','#E32118'],borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom'}}}}):'bar'===e?RESULT.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(n,{type:'bar',data:{labels:RESULT.bandBreakdown.map(e=>(100*e.rate)+'%'),datasets:[{label:'Kodi (XAF)',data:RESULT.bandBreakdown.map(e=>e.tax),backgroundColor:'var(--primary)',borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'}}}}})):'employer'===e&&(CHART=new Chart(n,{type:'bar',data:{labels:['Halisi','Tax','CNSS','CNSS ya mwajiri'],datasets:[{data:[RESULT.netMonthly,RESULT.monthlyPAYE,RESULT.cnss,RESULT.empCNSS],backgroundColor:['#FFCE00','var(--primary)','#E32118','#FF9500'],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1}}))}
 function shareResult(){if(!RESULT)return;const e=`CAR PAYE: ${Math.round(RESULT.gross).toLocaleString()} XAF gross → ${Math.round(RESULT.netMonthly).toLocaleString()} halisi (${pct(RESULT.effectiveRate)})`;navigator.clipboard&&(navigator.clipboard.writeText(e),document.getElementById('cfShareBtn').textContent='✓ Imenakiliwa!')}
 
 // ── PDF MODAL ─────────────────────────────────────────────────
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', function(e){ if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Central African Republic',country_code:'CF',tool:'paye',tool_id:'cf-paye',currency:'XAF',gross_salary:RESULT.gross}).toString() });
-  } catch(err){}
-  document.getElementById('modalForm').style.display  = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
-}
-
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
@@ -595,7 +561,6 @@ async function sendChat(){
   msgs.scrollTop=msgs.scrollHeight;
 }
 </script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('cnss')?g*0.03:0;return g-(d+calcAnnualDGI(Math.max(0,(g-d)*12)).tax/12);};</script>
 <script src="/assets/js/lib/net-to-gross.js?v=d5e4522e" defer></script>

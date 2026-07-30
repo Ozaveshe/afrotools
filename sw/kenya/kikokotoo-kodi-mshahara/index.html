@@ -103,6 +103,9 @@
   .tool-info-action{font-size:.62rem;font-weight:600;color:#0062CC;text-decoration:none;padding:3px 8px;border:1px solid #DBEAFE;border-radius:4px;background:#fff;cursor:pointer;transition:all .15s;font-family:'DM Sans',sans-serif}
   .tool-info-action:hover{background:#EFF6FF;border-color:#0062CC}
 
+  .tool-main-inner > *{min-width:0;max-width:100%}
+  .chart-canvas-wrap{min-width:0;max-width:100%;overflow:hidden}
+  .chart-canvas-wrap canvas{max-width:100%!important}
   @media(max-width:768px){.tool-info-stats{grid-template-columns:1fr}}
 </style>
 <meta property="article:modified_time" content="2026-03-28">
@@ -253,7 +256,7 @@
           <div class="chart-canvas-wrap"><canvas id="mainChart"></canvas></div>
         </div>
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
@@ -392,37 +395,6 @@
     </div>
   </div>
 </section>
-
-<!-- PDF MODAL -->
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>&#128196; Pakua Muhtasari Wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili kupata PDF yenye maelezo &mdash; tutakujulisha mabadiliko ya kodi ya Kenya.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-        <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country" value="Kenya">
-        <input type="hidden" name="country_code" value="KE">
-        <input type="hidden" name="tool" value="paye">
-        <input type="hidden" name="tool_id" value="ke-paye-sw">
-        <input type="hidden" name="currency" value="KES">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text" name="name" id="pdfName" placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Anwani yako ya barua pepe" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Anwani yako ya barua pepe" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF yangu &rarr;</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">&#10005;</button>
-      <div class="big-check">&#9989;</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <p>Bonyeza <strong>Hifadhi kama PDF</strong> katika kisanduku cha kuchapisha.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Imekamilika &rarr;</button>
-    </div>
-  </div>
-</div>
 
 <!-- SEO CONTENT SECTION -->
 <section style="max-width:800px;margin:2.5rem auto;padding:2rem;background:#fff;border-radius:0.875rem;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
@@ -647,7 +619,6 @@ function calculate() {
   renderResults();
   renderChart(CHART_TYPE);
 
-  document.getElementById('hiddenGross').value = gross;
   if (window.gtag) gtag('event', 'calculation_complete', { tool_name: 'ke-paye-sw', country: 'Kenya' });
 }
 
@@ -754,27 +725,6 @@ function renderChart(type) {
       options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: function(v) { return 'KES ' + (v / 1000).toFixed(0) + 'k'; }, color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText } } } }
     });
   }
-}
-
-// PDF Modal
-function openPdfModal() { if (!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display = 'block'; document.getElementById('modalSuccess').style.display = 'none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', function(e) { if (e.target === document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  var email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
-      body: new URLSearchParams({ 'form-name': 'pdf-leads', email: email, country: 'Kenya', country_code: 'KE', tool: 'paye', tool_id: 'ke-paye-sw', currency: 'KES', gross_salary: RESULT.gross }).toString()
-    });
-  } catch(err) {}
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
 }
 
 function generatePdf() {
