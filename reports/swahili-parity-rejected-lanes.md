@@ -25,3 +25,57 @@ Required redo:
 - Preserve app-specific inputs, formulas, validation, results, sources and exports.
 - Add route-specific or family-specific deterministic oracles before browser acceptance.
 - Treat artwork, metadata, reflow and generic export proof as supporting evidence, not product-correctness proof.
+
+## PAYE report-language lane — implementation retained, acceptance blocked
+
+- Branch: `codex/sw-paye-reports-20260731`
+- Commit: `aad6a0a2`
+- Claimed workflow scope: 26 country PAYE report/export routes.
+- Coordinator credit: 0/26 full apps; the report/export improvement is retained.
+
+Reasons:
+
+1. All 26 report actions produce substantive Swahili output and real locally rendered PDFs that reopen through `pdf-parse`.
+2. Formula-function hashes remain frozen and the app workflows retain their country-specific engines.
+3. Several complete page owners still declare `afrotools-language-fallback=en` or contain explicitly marked English reference copy.
+4. Report-language correctness is therefore not evidence that the whole app has reached native Swahili parity.
+
+Required redo:
+
+- Translate and review every remaining explicitly marked English UI, reference, source and limitation string.
+- Remove the English-fallback declaration only after the full owner passes the runtime-residue test.
+- Rerun the existing 26-route calculation, AI-consent, PDF parse, mobile, theme and accessibility suite.
+
+## Finance, HR and Personal Finance lane — implementation retained, acceptance blocked
+
+- Branch: `codex/sw-finance-remainder-20260731`
+- Checkpoint: `e9da8a69`
+- Claimed scope: 112 apps.
+- Coordinator credit: 0/112 pending exact product oracles.
+
+Reasons:
+
+1. The 112 routes render as Swahili owners and the parity harness proves metadata, mobile reflow, themes, keyboard focus and a newly injected local JSON assurance export.
+2. The browser suite does not enter each original app's real valid and invalid inputs or assert its expected computed outputs.
+3. Shared-script presence and currency-token overlap are weaker than formula or data-owner parity.
+4. A generic JSON export cannot replace proof for each format advertised by the English owner.
+
+Required redo:
+
+- Partition the 112 rows by real engine/controller owner.
+- Add deterministic valid, invalid and expected-output fixtures per route or genuinely shared formula family.
+- Produce and parse/reopen every original advertised export format.
+- Keep rows blocked until their own product contract passes, even after reciprocal hreflang is repaired.
+
+## Health and Education lane — Health provisionally eligible, Education blocked
+
+- Branch: `codex/sw-health-education-parity-20260731`
+- Commit: `f8ac6e51`
+- Scope: 42 Health and 42 Education apps.
+- Coordinator credit before reciprocal metadata repair: Health 0/42; Education 0/42.
+
+Review:
+
+1. Health has route-specific fixtures for all 42 owners, verifies changed result output, invalid or medical-safety behavior, runtime-language residue, private-input non-transmission and parses every visible export. It becomes ledger-eligible only after exact reciprocal hreflang validation passes.
+2. Education currently proves that workflows render metrics and that generic local exports reopen, but exact expected product outputs are frozen for only a small subset.
+3. Education therefore remains blocked until all 42 routes are tied to their declared English engine/controller with route-specific expected-result oracles and original export proof.
