@@ -179,3 +179,22 @@ test('all 54 English country controllers use the separate renderer', () => {
     assert.doesNotMatch(html, /\bVE\.render(?:CalendarGrid|ScheduleTable|CostTable|GovInfo)\(/);
   }
 });
+
+test('English and Swahili vaccination owners declare a reciprocal locale pair', () => {
+  const english = fs.readFileSync(
+    path.join(ROOT, 'agriculture/vaccination-schedule/index.html'),
+    'utf8'
+  );
+  const swahili = fs.readFileSync(
+    path.join(ROOT, 'sw/zana/ratiba-ya-chanjo/index.html'),
+    'utf8'
+  );
+  assert.match(
+    english,
+    /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/ratiba-ya-chanjo\/"/
+  );
+  assert.match(
+    swahili,
+    /hreflang="en" href="https:\/\/afrotools\.com\/agriculture\/vaccination-schedule\/"/
+  );
+});
