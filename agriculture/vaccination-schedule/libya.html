@@ -201,6 +201,7 @@
 <link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/vaccination-schedule/libya">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/agriculture/vaccination-schedule/libya">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/agriculture/vaccination-schedule/libya">
+<link rel="stylesheet" href="/assets/css/agriculture/vaccination-responsive.css">
 </head>
 
 <body class="top-level-page-ui-refresh">
@@ -385,11 +386,13 @@
 <script src="/data/agriculture/country-index.js?v=332e9259"></script>
 <script src="/data/agriculture/vaccination-data.js?v=4d7f27c7"></script>
 <script src="/engines/vaccination-engine.js?v=3f4e9e01"></script>
+<script src="/assets/js/agriculture/vaccination-renderer.js"></script>
 <script>
 (function(){
   'use strict';
   var CC   = 'LY';
   var VE   = window.AfroTools.VaccinationEngine;
+  var VR   = window.AfroTools.VaccinationRenderer;
   var VD   = window.AfroTools.vaccinationData;
 
   function $(id){ return document.getElementById(id); }
@@ -442,16 +445,16 @@
     }
 
     /* Calendar */
-    VE.renderCalendarGrid(result, 'calendarGrid');
+    VR.renderCalendarGrid(result, 'calendarGrid');
 
     /* Schedule table */
-    VE.renderScheduleTable(result, 'scheduleTable');
+    VR.renderScheduleTable(result, 'scheduleTable');
 
     /* Cost */
-    VE.renderCostTable(result, 'costSection');
+    VR.renderCostTable(result, 'costSection');
 
     /* Gov info */
-    VE.renderGovInfo(result, 'govInfo');
+    VR.renderGovInfo(result, 'govInfo');
   }
 
   function fmtNum(n){

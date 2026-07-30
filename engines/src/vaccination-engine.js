@@ -1,369 +1,447 @@
-!function() {
-  "use strict";
-  window.AfroTools = window.AfroTools || {}, window.AfroTools.VaccinationEngine = function() {
-    function a(a) {
-      return a >= 1e6 ? (a / 1e6).toFixed(1) + "M" : a >= 1e4 ? Math.round(a).toLocaleString() : Math.round(10 * a) / 10 + "";
+(function vaccinationEngineModule(root, factory) {
+  'use strict';
+
+  var contract = factory();
+
+  if (typeof module === 'object' && module.exports) {
+    module.exports = contract;
+  }
+
+  if (root) {
+    root.AfroTools = root.AfroTools || {};
+    root.AfroTools.VaccinationEngine = contract.createBrowserAdapter(root);
+  }
+}(typeof window !== 'undefined' ? window : null, function vaccinationEngineFactory() {
+  'use strict';
+
+  var ANIMAL_TYPES = ['all', 'cattle', 'goats_sheep', 'poultry'];
+  var REGION_CODES = {
+    west_africa: ['NG', 'GH', 'CI', 'SN', 'ML', 'BF', 'NE', 'GN', 'BJ', 'TG', 'SL', 'LR', 'MR', 'GM', 'GW', 'CV'],
+    east_africa: ['KE', 'ET', 'TZ', 'UG', 'RW', 'BI', 'SO', 'DJ', 'ER', 'SS'],
+    central_africa: ['CD', 'CM', 'CG', 'GA', 'GQ', 'CF', 'TD', 'ST'],
+    southern_africa: ['ZA', 'MZ', 'ZM', 'ZW', 'MW', 'AO', 'NA', 'BW', 'LS', 'SZ'],
+    north_africa: ['EG', 'MA', 'DZ', 'TN', 'LY', 'SD']
+  };
+  var CAMPAIGN_TERMS = {
+    fmd: 'foot-and-mouth',
+    cbpp: 'contagious bovine',
+    blackquarter: 'blackleg',
+    anthrax: 'anthrax',
+    lsd: 'lumpy skin',
+    brucellosis: 'brucellosis',
+    ecf: 'east coast fever',
+    rvf: 'rift valley',
+    ppr: 'peste des',
+    goat_pox: 'pox',
+    clostridial_sr: 'clostridial',
+    ccpp: 'contagious caprine',
+    bluetongue: 'bluetongue',
+    ndv: 'newcastle',
+    gumboro: 'gumboro',
+    fowl_pox: 'fowl pox',
+    marek: 'marek',
+    fowl_typhoid: 'typhoid',
+    avian_flu: 'avian influenza'
+  };
+  var PRICE_SUFFIXES = {
+    fmd: 'fmd',
+    cbpp: 'cbpp',
+    blackquarter: 'bq',
+    anthrax: 'anthrax',
+    lsd: 'lsd',
+    brucellosis: 'bruc',
+    ecf: 'ecf',
+    rvf: 'rvf',
+    rabies_cattle: 'rabies',
+    botulism: 'botulism',
+    ppr: 'ppr',
+    goat_pox: 'pox',
+    clostridial_sr: 'cdt',
+    ccpp: 'ccpp',
+    bluetongue: 'bt',
+    ndv: 'nd',
+    gumboro: 'ibd',
+    fowl_pox: 'pox',
+    marek: 'marek',
+    fowl_typhoid: 'ft',
+    avian_flu: 'ai'
+  };
+  var FALLBACK_USD_PRICES = {
+    cattle_fmd: 0.3,
+    cattle_cbpp: 0.25,
+    cattle_bq: 0.15,
+    cattle_anthrax: 0.15,
+    cattle_lsd: 0.2,
+    cattle_bruc: 0.18,
+    cattle_ecf: 0.5,
+    cattle_rvf: 0.18,
+    cattle_rabies: 0.15,
+    cattle_botulism: 0.2,
+    gs_ppr: 0.2,
+    gs_pox: 0.15,
+    gs_cdt: 0.1,
+    gs_ccpp: 0.15,
+    gs_bt: 0.18,
+    poultry_nd: 0.05,
+    poultry_ibd: 0.05,
+    poultry_pox: 0.04,
+    poultry_marek: 0.05,
+    poultry_ft: 0.04,
+    poultry_ai: 0.06
+  };
+
+  function roundCurrency(value) {
+    return Math.round(value * 100) / 100;
+  }
+
+  function findCountry(countryIndex, countryCode) {
+    for (var index = 0; index < countryIndex.length; index += 1) {
+      if (countryIndex[index].code === countryCode) return countryIndex[index];
     }
     return {
-      calculate: function(a, e, t, n, o, r) {
-        var s = window.AfroTools.vaccinationData, i = function(a) {
-          return window.AfroTools.vaccinationData.programs[a] || null;
-        }(a), c = function(a) {
-          var e = window.AfroTools.vaccinationData.programs[a];
-          if (e && e.govService) {
-            var t = window.AfroTools.countryIndex;
-            if (t) {
-              for (var n = 0; n < t.length; n++) {
-                if (t[n].code === a) {
-                  return t[n].region;
-                }
-              }
-            }
+      code: countryCode,
+      name: countryCode,
+      flag: '🌍',
+      slug: String(countryCode || '').toLowerCase()
+    };
+  }
+
+  function findRegion(countryCode, program, countryIndex) {
+    if (program && program.govService) {
+      var country = findCountry(countryIndex, countryCode);
+      if (country && country.region) return country.region;
+    }
+
+    var regions = Object.keys(REGION_CODES);
+    for (var index = 0; index < regions.length; index += 1) {
+      if (REGION_CODES[regions[index]].indexOf(countryCode) > -1) return regions[index];
+    }
+    return 'island_nations';
+  }
+
+  function diseaseIsEndemic(disease, countryCode) {
+    return !(disease.notEndemic && disease.notEndemic.indexOf(countryCode) > -1)
+      && (
+        disease.endemicIn === 'ALL'
+        || !Array.isArray(disease.endemicIn)
+        || disease.endemicIn.indexOf(countryCode) > -1
+      );
+  }
+
+  function vaccinationMonths(disease, program) {
+    if (program && program.govMonths && program.govMonths[disease.id]) {
+      return program.govMonths[disease.id];
+    }
+
+    var months = [];
+    if (disease.intervalMonths === 6) {
+      months = [3, 9];
+    } else if (disease.intervalMonths !== 12 && disease.intervalMonths) {
+      if (disease.intervalMonths === 3) months = [1, 4, 7, 10];
+      else if (disease.intervalMonths === 36) months = [4];
+    } else {
+      months = [4];
+      if (disease.id === 'anthrax' || disease.id === 'blackquarter') months = [3];
+      if (disease.id === 'brucellosis') months = [3];
+    }
+
+    if (disease.id === 'gumboro') months = [1, 7];
+    if (disease.id === 'marek') months = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
+    if (disease.id === 'fowl_pox') months = [5];
+    return months;
+  }
+
+  function hasGovernmentCampaign(diseaseId, program) {
+    if (!program || !program.govCampaigns) return false;
+    var campaigns = program.govCampaigns.map(function lowerCaseCampaign(campaign) {
+      return campaign.toLowerCase();
+    });
+    var terms = (CAMPAIGN_TERMS[diseaseId] || diseaseId).split(' ');
+    return campaigns.some(function campaignMatches(campaign) {
+      return terms.some(function termMatches(term) {
+        return campaign.indexOf(term) > -1;
+      });
+    });
+  }
+
+  function animalPricePrefix(animalType) {
+    if (animalType === 'poultry') return 'poultry';
+    if (animalType === 'goats_sheep') return 'gs';
+    return 'cattle';
+  }
+
+  function priceFor(diseaseId, animalType, program, regionDefaults) {
+    var key = animalPricePrefix(animalType) + '_' + (PRICE_SUFFIXES[diseaseId] || diseaseId);
+    if (program && program.prices && program.prices[key] != null) {
+      return {
+        amount: program.prices[key],
+        currency: program.currency,
+        symbol: program.symbol,
+        isLocal: true
+      };
+    }
+    if (regionDefaults && regionDefaults.usdPrices && regionDefaults.usdPrices[key] != null) {
+      return {
+        amount: regionDefaults.usdPrices[key],
+        currency: 'USD',
+        symbol: '$',
+        isLocal: false
+      };
+    }
+    return {
+      amount: FALLBACK_USD_PRICES[key] != null ? FALLBACK_USD_PRICES[key] : 0.1,
+      currency: 'USD',
+      symbol: '$',
+      isLocal: false
+    };
+  }
+
+  function normalizeInput(input, fallbackMonth) {
+    var parsedHerdSize = parseInt(input.herdSize, 10);
+    var parsedMonth = parseInt(input.currentMonth, 10);
+    return {
+      countryCode: String(input.countryCode || ''),
+      animalType: ANIMAL_TYPES.indexOf(input.animalType) > -1 ? input.animalType : input.animalType,
+      herdSize: Math.max(1, parsedHerdSize || 10),
+      currentMonth: Math.min(12, Math.max(1, parsedMonth || fallbackMonth)),
+      ageGroup: input.ageGroup,
+      purpose: input.purpose
+    };
+  }
+
+  function validateInput(input) {
+    var errors = [];
+    if (!input || typeof input !== 'object') {
+      return { valid: false, errors: ['input_required'] };
+    }
+    if (!String(input.countryCode || '').trim()) errors.push('country_required');
+    if (ANIMAL_TYPES.indexOf(input.animalType) === -1) errors.push('animal_type_invalid');
+    if (!Number.isFinite(Number(input.herdSize)) || Number(input.herdSize) < 1) errors.push('herd_size_invalid');
+    if (!Number.isFinite(Number(input.currentMonth))
+      || Number(input.currentMonth) < 1
+      || Number(input.currentMonth) > 12) {
+      errors.push('current_month_invalid');
+    }
+    return { valid: errors.length === 0, errors: errors };
+  }
+
+  function createEngine(dependencies) {
+    var vaccinationData = dependencies && dependencies.vaccinationData;
+    var countryIndex = dependencies && dependencies.countryIndex || [];
+    var now = dependencies && dependencies.now || function currentDate() { return new Date(); };
+
+    if (!vaccinationData || !vaccinationData.programs || !vaccinationData.diseases) {
+      throw new Error('vaccinationData with programs and diseases is required');
+    }
+
+    function calculate(countryCode, animalType, herdSize, currentMonth, ageGroup, purpose) {
+      var input = normalizeInput({
+        countryCode: countryCode,
+        animalType: animalType,
+        herdSize: herdSize,
+        currentMonth: currentMonth,
+        ageGroup: ageGroup,
+        purpose: purpose
+      }, now().getMonth() + 1);
+      var program = vaccinationData.programs[input.countryCode] || null;
+      var region = findRegion(input.countryCode, program, countryIndex);
+      var regionDefaults = vaccinationData.regionDefaults[region]
+        || vaccinationData.regionDefaults.west_africa;
+      var country = findCountry(countryIndex, input.countryCode);
+      var diseaseRows = [];
+      var selectedAnimals = input.animalType === 'all'
+        ? ['cattle', 'goats_sheep', 'poultry']
+        : [input.animalType];
+
+      selectedAnimals.forEach(function collectAnimalDiseases(selectedAnimal) {
+        (vaccinationData.diseases[selectedAnimal] || []).forEach(function collectDisease(disease) {
+          if (!diseaseIsEndemic(disease, input.countryCode)) return;
+          if (input.ageGroup === 'young' && disease.id === 'brucellosis') return;
+          diseaseRows.push({ disease: disease, animalType: selectedAnimal });
+        });
+      });
+
+      var schedule = [];
+      var byAnimalType = {};
+      var governmentSavings = 0;
+
+      diseaseRows.forEach(function buildScheduleRow(row) {
+        var disease = row.disease;
+        var rowAnimalType = row.animalType;
+        var months = vaccinationMonths(disease, program);
+        var governmentCampaign = hasGovernmentCampaign(disease.id, program);
+        var price = priceFor(disease.id, rowAnimalType, program, regionDefaults);
+        var annualDoses = disease.dosesPerYear
+          || (disease.intervalMonths ? Math.round((12 / disease.intervalMonths) * 10) / 10 : 1);
+
+        if (disease.id === 'brucellosis') annualDoses = 0.2;
+        if (disease.id === 'marek') annualDoses = 0;
+
+        var costPerAnimalPerYear = price.amount * annualDoses;
+        var effectiveCostPerAnimal = governmentCampaign
+          ? 0.3 * costPerAnimalPerYear
+          : costPerAnimalPerYear;
+        var totalAnnualCost = effectiveCostPerAnimal * input.herdSize;
+        var nextDueMonth = null;
+
+        for (var monthOffset = 0; monthOffset < 12; monthOffset += 1) {
+          var candidateMonth = (input.currentMonth - 1 + monthOffset) % 12 + 1;
+          if (months.indexOf(candidateMonth) > -1) {
+            nextDueMonth = candidateMonth;
+            break;
           }
-          return [ "NG", "GH", "CI", "SN", "ML", "BF", "NE", "GN", "BJ", "TG", "SL", "LR", "MR", "GM", "GW", "CV" ].indexOf(a) > -1 ? "west_africa" : [ "KE", "ET", "TZ", "UG", "RW", "BI", "SO", "DJ", "ER", "SS" ].indexOf(a) > -1 ? "east_africa" : [ "CD", "CM", "CG", "GA", "GQ", "CF", "TD", "ST" ].indexOf(a) > -1 ? "central_africa" : [ "ZA", "MZ", "ZM", "ZW", "MW", "AO", "NA", "BW", "LS", "SZ" ].indexOf(a) > -1 ? "southern_africa" : [ "EG", "MA", "DZ", "TN", "LY", "SD" ].indexOf(a) > -1 ? "north_africa" : "island_nations";
-        }(a), l = s.regionDefaults[c] || s.regionDefaults.west_africa, d = function(a) {
-          var e = window.AfroTools.countryIndex;
-          if (e) {
-            for (var t = 0; t < e.length; t++) {
-              if (e[t].code === a) {
-                return e[t];
-              }
-            }
-          }
-          return {
-            code: a,
-            name: a,
-            flag: "🌍",
-            slug: a.toLowerCase()
-          };
-        }(a);
-        t = Math.max(1, parseInt(t) || 10), n = Math.min(12, Math.max(1, parseInt(n) || (new Date).getMonth() + 1));
-        var u = [];
-        ("all" === e ? [ "cattle", "goats_sheep", "poultry" ] : [ e ]).forEach(function(e) {
-          (s.diseases[e] || []).forEach(function(t) {
-            if (function(a, e) {
-              return !(a.notEndemic && a.notEndemic.indexOf(e) > -1) && ("ALL" === a.endemicIn || !Array.isArray(a.endemicIn) || a.endemicIn.indexOf(e) > -1);
-            }(t, a)) {
-              if ("young" === o && "brucellosis" === t.id) {
-                return;
-              }
-              u.push({
-                disease: t,
-                animalType: e
-              });
-            }
+        }
+        if (!nextDueMonth) nextDueMonth = months[0] || input.currentMonth;
+
+        var daysUntilNext = ((nextDueMonth - input.currentMonth + 12) % 12) * 30;
+        if (!byAnimalType[rowAnimalType]) byAnimalType[rowAnimalType] = 0;
+        byAnimalType[rowAnimalType] += totalAnnualCost;
+        if (governmentCampaign) {
+          governmentSavings += (costPerAnimalPerYear - effectiveCostPerAnimal) * input.herdSize;
+        }
+
+        schedule.push({
+          id: disease.id,
+          name: disease.name,
+          short: disease.short,
+          animalType: rowAnimalType,
+          animalLabel: rowAnimalType === 'goats_sheep'
+            ? 'Goats / Sheep'
+            : rowAnimalType === 'poultry' ? 'Poultry' : 'Cattle',
+          severity: disease.severity,
+          severityLabel: disease.severityLabel,
+          core: disease.core !== false,
+          desc: disease.desc || '',
+          notes: disease.notes || '',
+          vaccineType: disease.vaccineType || '',
+          route: disease.route || 'SC',
+          vaccinationMonths: months,
+          nextDueMonth: nextDueMonth,
+          nextDueLabel: vaccinationData.monthsFull[nextDueMonth - 1],
+          daysUntilNext: daysUntilNext,
+          urgency: daysUntilNext <= 30 ? 'urgent' : daysUntilNext <= 60 ? 'soon' : 'planned',
+          govCampaign: governmentCampaign,
+          pricePerAnimal: price.amount,
+          currency: price.currency,
+          currencySymbol: price.symbol,
+          isLocalPrice: price.isLocal,
+          annualDoses: annualDoses,
+          costPerAnimalPerYear: roundCurrency(costPerAnimalPerYear),
+          effectiveCostPerAnimal: roundCurrency(effectiveCostPerAnimal),
+          totalAnnualCost: roundCurrency(totalAnnualCost)
+        });
+      });
+
+      var severityOrder = { critical: 0, high: 1, medium: 2 };
+      schedule.sort(function compareSchedule(left, right) {
+        if (left.animalType !== right.animalType) {
+          var animalOrder = ['cattle', 'goats_sheep', 'poultry'];
+          return animalOrder.indexOf(left.animalType) - animalOrder.indexOf(right.animalType);
+        }
+        // Keep the legacy ordering exactly, including its fallback behavior for rank zero.
+        var severityDifference = (severityOrder[left.severity] || 2) - (severityOrder[right.severity] || 2);
+        return severityDifference !== 0
+          ? severityDifference
+          : left.daysUntilNext - right.daysUntilNext;
+      });
+
+      var calendar = {};
+      for (var calendarMonth = 1; calendarMonth <= 12; calendarMonth += 1) {
+        calendar[calendarMonth] = [];
+      }
+      schedule.forEach(function addToCalendar(row) {
+        row.vaccinationMonths.forEach(function addMonth(month) {
+          if (month < 1 || month > 12) return;
+          calendar[month].push({
+            id: row.id,
+            short: row.short,
+            severity: row.severity,
+            animalType: row.animalType
           });
         });
-        var v = [], f = {}, p = 0;
-        u.forEach(function(a) {
-          var e = a.disease, o = a.animalType, r = function(a, e) {
-            if (e && e.govMonths && e.govMonths[a.id]) {
-              return e.govMonths[a.id];
-            }
-            var t = [];
-            return 6 === a.intervalMonths ? t = [ 3, 9 ] : 12 !== a.intervalMonths && a.intervalMonths ? 3 === a.intervalMonths ? t = [ 1, 4, 7, 10 ] : 36 === a.intervalMonths && (t = [ 4 ]) : (t = [ 4 ],
-            "anthrax" !== a.id && "blackquarter" !== a.id || (t = [ 3 ]), "brucellosis" === a.id && (t = [ 3 ])),
-            "gumboro" === a.id && (t = [ 1, 7 ]), "marek" === a.id && (t = [ 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12 ]),
-            "fowl_pox" === a.id && (t = [ 5 ]), t;
-          }(e, i), c = function(a, e) {
-            if (!e || !e.govCampaigns) {
-              return !1;
-            }
-            var t = e.govCampaigns.map(function(a) {
-              return a.toLowerCase();
-            }), n = ({
-              fmd: "foot-and-mouth",
-              cbpp: "contagious bovine",
-              blackquarter: "blackleg",
-              anthrax: "anthrax",
-              lsd: "lumpy skin",
-              brucellosis: "brucellosis",
-              ecf: "east coast fever",
-              rvf: "rift valley",
-              ppr: "peste des",
-              goat_pox: "pox",
-              clostridial_sr: "clostridial",
-              ccpp: "contagious caprine",
-              bluetongue: "bluetongue",
-              ndv: "newcastle",
-              gumboro: "gumboro",
-              fowl_pox: "fowl pox",
-              marek: "marek",
-              fowl_typhoid: "typhoid",
-              avian_flu: "avian influenza"
-            }[a] || a).split(" ");
-            return t.some(function(a) {
-              return n.some(function(e) {
-                return a.indexOf(e) > -1;
-              });
-            });
-          }(e.id, i), d = function(a, e, t, n) {
-            var o = ("poultry" === e ? "poultry" : "goats_sheep" === e ? "gs" : "cattle") + "_" + ({
-              fmd: "fmd",
-              cbpp: "cbpp",
-              blackquarter: "bq",
-              anthrax: "anthrax",
-              lsd: "lsd",
-              brucellosis: "bruc",
-              ecf: "ecf",
-              rvf: "rvf",
-              rabies_cattle: "rabies",
-              botulism: "botulism",
-              ppr: "ppr",
-              goat_pox: "pox",
-              clostridial_sr: "cdt",
-              ccpp: "ccpp",
-              bluetongue: "bt",
-              ndv: "nd",
-              gumboro: "ibd",
-              fowl_pox: "pox",
-              marek: "marek",
-              fowl_typhoid: "ft",
-              avian_flu: "ai"
-            }[a] || a);
-            if (t && t.prices && null != t.prices[o]) {
-              return {
-                amount: t.prices[o],
-                currency: t.currency,
-                symbol: t.symbol,
-                isLocal: !0
-              };
-            }
-            if (n && n.usdPrices && null != n.usdPrices[o]) {
-              return {
-                amount: n.usdPrices[o],
-                currency: "USD",
-                symbol: "$",
-                isLocal: !1
-              };
-            }
-            var r = {
-              cattle_fmd: .3,
-              cattle_cbpp: .25,
-              cattle_bq: .15,
-              cattle_anthrax: .15,
-              cattle_lsd: .2,
-              cattle_bruc: .18,
-              cattle_ecf: .5,
-              cattle_rvf: .18,
-              cattle_rabies: .15,
-              cattle_botulism: .2,
-              gs_ppr: .2,
-              gs_pox: .15,
-              gs_cdt: .1,
-              gs_ccpp: .15,
-              gs_bt: .18,
-              poultry_nd: .05,
-              poultry_ibd: .05,
-              poultry_pox: .04,
-              poultry_marek: .05,
-              poultry_ft: .04,
-              poultry_ai: .06
-            };
-            return null != r[o] ? {
-              amount: r[o],
-              currency: "USD",
-              symbol: "$",
-              isLocal: !1
-            } : {
-              amount: .1,
-              currency: "USD",
-              symbol: "$",
-              isLocal: !1
-            };
-          }(e.id, o, i, l), u = e.dosesPerYear || (e.intervalMonths ? Math.round(12 / e.intervalMonths * 10) / 10 : 1);
-          "brucellosis" === e.id && (u = .2), "marek" === e.id && (u = 0);
-          for (var h = d.amount * u, m = c ? .3 * h : h, g = m * t, y = null, b = 0; b < 12; b++) {
-            var x = (n - 1 + b) % 12 + 1;
-            if (r.indexOf(x) > -1) {
-              y = x;
-              break;
-            }
-          }
-          y || (y = r[0] || n);
-          var M = (y - n + 12) % 12 * 30;
-          f[o] || (f[o] = 0), f[o] += g, c && (p += (h - m) * t), v.push({
-            id: e.id,
-            name: e.name,
-            short: e.short,
-            animalType: o,
-            animalLabel: "goats_sheep" === o ? "Goats / Sheep" : "poultry" === o ? "Poultry" : "Cattle",
-            severity: e.severity,
-            severityLabel: e.severityLabel,
-            core: !1 !== e.core,
-            desc: e.desc || "",
-            notes: e.notes || "",
-            vaccineType: e.vaccineType || "",
-            route: e.route || "SC",
-            vaccinationMonths: r,
-            nextDueMonth: y,
-            nextDueLabel: s.monthsFull[y - 1],
-            daysUntilNext: M,
-            urgency: M <= 30 ? "urgent" : M <= 60 ? "soon" : "planned",
-            govCampaign: c,
-            pricePerAnimal: d.amount,
-            currency: d.currency,
-            currencySymbol: d.symbol,
-            isLocalPrice: d.isLocal,
-            annualDoses: u,
-            costPerAnimalPerYear: Math.round(100 * h) / 100,
-            effectiveCostPerAnimal: Math.round(100 * m) / 100,
-            totalAnnualCost: Math.round(100 * g) / 100
+      });
+
+      var totalAnnual = Object.keys(byAnimalType).reduce(function addAnimalCost(total, key) {
+        return total + byAnimalType[key];
+      }, 0);
+      var currency = program && program.currency ? program.currency : 'USD';
+      var symbol = program && program.currency ? program.symbol : '$';
+      var upcoming = [];
+      for (var upcomingOffset = 0; upcomingOffset < 3; upcomingOffset += 1) {
+        var upcomingMonth = (input.currentMonth - 1 + upcomingOffset) % 12 + 1;
+        if (calendar[upcomingMonth].length) {
+          upcoming.push({
+            month: vaccinationData.monthsFull[upcomingMonth - 1],
+            vaccines: calendar[upcomingMonth]
           });
-        });
-        var h = {
-          critical: 0,
-          high: 1,
-          medium: 2
-        };
-        v.sort(function(a, e) {
-          if (a.animalType !== e.animalType) {
-            var t = [ "cattle", "goats_sheep", "poultry" ];
-            return t.indexOf(a.animalType) - t.indexOf(e.animalType);
-          }
-          var n = (h[a.severity] || 2) - (h[e.severity] || 2);
-          return 0 !== n ? n : a.daysUntilNext - e.daysUntilNext;
-        });
-        for (var m = {}, g = 1; g <= 12; g++) {
-          m[g] = [];
-        }
-        v.forEach(function(a) {
-          a.vaccinationMonths.forEach(function(e) {
-            e >= 1 && e <= 12 && m[e].push({
-              id: a.id,
-              short: a.short,
-              severity: a.severity,
-              animalType: a.animalType
-            });
-          });
-        });
-        var y = 0;
-        Object.keys(f).forEach(function(a) {
-          y += f[a];
-        });
-        var b = "USD", x = "$";
-        i && i.currency && (b = i.currency, x = i.symbol);
-        for (var M = [], _ = 0; _ < 3; _++) {
-          var T = (n - 1 + _) % 12 + 1;
-          m[T].length > 0 && M.push({
-            month: s.monthsFull[T - 1],
-            vaccines: m[T]
-          });
-        }
-        return {
-          country: {
-            code: a,
-            name: d.name,
-            flag: d.flag
-          },
-          animalType: e,
-          herdSize: t,
-          currentMonth: n,
-          currentMonthLabel: s.monthsFull[n - 1],
-          ageGroup: o,
-          purpose: r,
-          schedule: v,
-          calendar: m,
-          upcoming: M,
-          costs: {
-            totalAnnual: Math.round(100 * y) / 100,
-            perAnimal: Math.round(y / t * 100) / 100,
-            govSavings: Math.round(100 * p) / 100,
-            byAnimalType: f,
-            currency: b,
-            symbol: x
-          },
-          govInfo: {
-            service: i ? i.govService : "Contact your national Ministry of Agriculture — Veterinary Department",
-            campaigns: i ? i.govCampaigns : l.govCampaigns || [],
-            note: i && i.note || ""
-          },
-          vaccineCount: v.filter(function(a) {
-            return a.core;
-          }).length,
-          criticalCount: v.filter(function(a) {
-            return "critical" === a.severity;
-          }).length
-        };
-      },
-      renderCalendarGrid: function(a, e) {
-        var t = window.AfroTools.vaccinationData, n = document.getElementById(e);
-        if (n) {
-          var o = '<div class="cal-wrap">';
-          o += '<div class="cal-header">', o += '<div class="cal-label-col">Vaccine</div>',
-          t.months.forEach(function(e, t) {
-            var n = t + 1 === a.currentMonth;
-            o += '<div class="cal-month' + (n ? " cal-now" : "") + '">' + e + "</div>";
-          }), o += "</div>";
-          var r = "";
-          a.schedule.forEach(function(e) {
-            if (e.animalType !== r) {
-              var t = "goats_sheep" === e.animalType ? "GOATS / SHEEP" : "poultry" === e.animalType ? "POULTRY" : "CATTLE";
-              o += '<div class="cal-animal-header">' + t + "</div>", r = e.animalType;
-            }
-            o += '<div class="cal-row cal-sev-' + e.severity + (e.core ? "" : " cal-optional") + '">',
-            o += '<div class="cal-label-col"><span class="cal-name">' + e.short + '</span><span class="cal-sev-dot"></span></div>';
-            for (var n = 1; n <= 12; n++) {
-              var s = e.vaccinationMonths.indexOf(n) > -1, i = n === a.currentMonth;
-              o += '<div class="cal-cell' + (i ? " cal-now-col" : "") + '">' + (s ? '<span class="cal-dot"></span>' : "") + "</div>";
-            }
-            o += "</div>";
-          }), o += "</div>", n.innerHTML = o;
-        }
-      },
-      renderScheduleTable: function(a, e) {
-        var t = document.getElementById(e);
-        if (t) {
-          var n = '<table class="vax-table">';
-          n += "<thead><tr><th>Vaccine</th><th>For</th><th>Priority</th><th>Schedule</th><th>Next Due</th><th>Gov Program</th></tr></thead><tbody>",
-          a.schedule.forEach(function(a) {
-            var e = "urgent" === a.urgency ? " vax-urgent" : "soon" === a.urgency ? " vax-soon" : "";
-            n += '<tr class="vax-row-' + a.severity + '">', n += "<td><strong>" + a.name + '</strong><br><span class="vax-route">' + a.route + "</span></td>",
-            n += "<td>" + a.animalLabel + "</td>", n += '<td><span class="sev-badge sev-' + a.severity + '">' + a.severity.toUpperCase() + "</span></td>";
-            var t = a.annualDoses >= 2 ? "Every " + Math.round(12 / a.annualDoses) + " months" : "brucellosis" === a.id ? "Once (heifers)" : a.annualDoses < 1 ? "Every " + Math.round(1 / a.annualDoses) + " yrs" : "Annual";
-            n += "<td>" + t + "</td>", n += '<td class="' + e + '">' + a.nextDueLabel + ("urgent" === a.urgency ? ' <span class="due-badge">DUE</span>' : "soon" === a.urgency ? ' <span class="due-badge due-soon">SOON</span>' : "") + "</td>",
-            n += "<td>" + (a.govCampaign ? '<span class="gov-badge">✓ Gov</span>' : '<span class="priv-badge">Private vet</span>') + "</td>",
-            n += "</tr>";
-          }), n += "</tbody></table>", t.innerHTML = n;
-        }
-      },
-      renderCostTable: function(e, t) {
-        var n = document.getElementById(t);
-        if (n) {
-          var o = "USD" === e.costs.currency, r = e.costs.symbol, s = '<div class="cost-summary">';
-          s += '<div class="cost-hero"><div class="cost-total">' + r + " " + a(e.costs.totalAnnual) + '</div><div class="cost-sub">Estimated annual vaccination cost — ' + e.herdSize.toLocaleString() + " animals</div></div>",
-          s += o ? '<div class="cost-note">⚠ Approximate USD estimates — contact your local vet for exact prices</div>' : '<div class="cost-note">Local prices from government/private vet services</div>',
-          s += '<div class="cost-cards">', s += '<div class="cost-card"><div class="cost-val">' + r + " " + a(e.costs.perAnimal) + '</div><div class="cost-lbl">Per Animal/Year</div></div>',
-          e.costs.govSavings > 0 && (s += '<div class="cost-card cost-card-green"><div class="cost-val">' + r + " " + a(e.costs.govSavings) + '</div><div class="cost-lbl">Gov. Savings</div></div>'),
-          s += '<div class="cost-card"><div class="cost-val">' + e.schedule.filter(function(a) {
-            return a.core;
-          }).length + '</div><div class="cost-lbl">Core Vaccines</div></div>', s += "</div>",
-          s += '<table class="cost-breakdown"><thead><tr><th>Vaccine</th><th>For</th><th>Per Animal</th><th>Annual Doses</th><th>Total</th><th>Gov?</th></tr></thead><tbody>',
-          e.schedule.forEach(function(e) {
-            if ("marek" !== e.id) {
-              s += "<tr>", s += "<td>" + e.short + "</td>", s += "<td>" + e.animalLabel + "</td>",
-              s += "<td>" + e.currencySymbol + e.pricePerAnimal.toFixed(2) + "/dose</td>";
-              var t = e.annualDoses >= 1 ? e.annualDoses.toFixed(0) + "x/yr" : "brucellosis" === e.id ? "Once" : "1x/3yr";
-              s += "<td>" + t + "</td>", s += "<td><strong>" + r + " " + a(e.totalAnnualCost) + "</strong></td>",
-              s += "<td>" + (e.govCampaign ? '<span class="gov-badge">Free/Subsidised</span>' : "-") + "</td>",
-              s += "</tr>";
-            }
-          }), s += "</tbody></table></div>", n.innerHTML = s;
-        }
-      },
-      renderGovInfo: function(a, e) {
-        var t = document.getElementById(e);
-        if (t) {
-          var n = '<div class="gov-info-box">';
-          n += '<h3 class="gov-info-title">&#127963; Government Veterinary Service</h3>',
-          n += '<p class="gov-service-name">' + a.govInfo.service + "</p>", a.govInfo.campaigns && a.govInfo.campaigns.length && (n += "<h4>Annual Government Vaccination Campaigns</h4>",
-          n += '<ul class="gov-campaign-list">', a.govInfo.campaigns.forEach(function(a) {
-            n += "<li>&#9989; " + a + "</li>";
-          }), n += "</ul>", n += '<p class="gov-tip">&#128161; Contact your local veterinary office to register your herd for these free or subsidised campaigns.</p>'),
-          a.govInfo.note && (n += '<div class="gov-note">ℹ ' + a.govInfo.note + "</div>"),
-          n += "</div>", t.innerHTML = n;
         }
       }
+
+      return {
+        country: { code: input.countryCode, name: country.name, flag: country.flag },
+        animalType: input.animalType,
+        herdSize: input.herdSize,
+        currentMonth: input.currentMonth,
+        currentMonthLabel: vaccinationData.monthsFull[input.currentMonth - 1],
+        ageGroup: input.ageGroup,
+        purpose: input.purpose,
+        schedule: schedule,
+        calendar: calendar,
+        upcoming: upcoming,
+        costs: {
+          totalAnnual: roundCurrency(totalAnnual),
+          perAnimal: roundCurrency(totalAnnual / input.herdSize),
+          govSavings: roundCurrency(governmentSavings),
+          byAnimalType: byAnimalType,
+          currency: currency,
+          symbol: symbol
+        },
+        govInfo: {
+          service: program
+            ? program.govService
+            : 'Contact your national Ministry of Agriculture — Veterinary Department',
+          campaigns: program ? program.govCampaigns : regionDefaults.govCampaigns || [],
+          note: program && program.note || ''
+        },
+        vaccineCount: schedule.filter(function countCore(row) { return row.core; }).length,
+        criticalCount: schedule.filter(function countCritical(row) {
+          return row.severity === 'critical';
+        }).length
+      };
+    }
+
+    return {
+      calculate: calculate,
+      validateInput: validateInput,
+      normalizeInput: function normalizeForEngine(input) {
+        return normalizeInput(input, now().getMonth() + 1);
+      }
     };
-  }();
-}();
+  }
+
+  function createBrowserAdapter(browserRoot) {
+    function engine() {
+      return createEngine({
+        vaccinationData: browserRoot.AfroTools.vaccinationData,
+        countryIndex: browserRoot.AfroTools.countryIndex || []
+      });
+    }
+    return {
+      calculate: function browserCalculate(countryCode, animalType, herdSize, currentMonth, ageGroup, purpose) {
+        return engine().calculate(countryCode, animalType, herdSize, currentMonth, ageGroup, purpose);
+      },
+      validateInput: validateInput,
+      normalizeInput: function browserNormalize(input) {
+        return engine().normalizeInput(input);
+      },
+      createEngine: createEngine
+    };
+  }
+
+  return {
+    ANIMAL_TYPES: ANIMAL_TYPES,
+    createEngine: createEngine,
+    createBrowserAdapter: createBrowserAdapter,
+    validateInput: validateInput
+  };
+}));
