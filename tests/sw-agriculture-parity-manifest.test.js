@@ -14,10 +14,18 @@ test('Swahili Agriculture manifest owns the exact 447-row English scope', () => 
   assert.equal(new Set(manifest.rows.map(row => row.english.routeKey)).size, 447);
   assert.equal(new Set(manifest.rows.map(row => row.swahili.routeKey)).size, 447);
   assert.equal(manifest.rows.filter(row => row.artwork.state === 'present').length, 447);
-  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'accepted').length, 1);
+  assert.equal(
+    manifest.rows.find(row => row.english.id === 'crop-yield-kenya').country.swahiliName,
+    'Kenya'
+  );
+  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'accepted').length, 56);
   assert.equal(
     manifest.rows.find(row => row.english.id === 'vaccination-schedule').acceptance.state,
     'accepted'
+  );
+  assert.equal(
+    manifest.rows.filter(row => row.family === 'crop-yield' && row.acceptance.state === 'accepted').length,
+    55
   );
 });
 
@@ -26,7 +34,7 @@ test('existing Swahili Agriculture routes remain canonical owners', () => {
   const routes = new Map(manifest.rows.map(row => [row.english.id, row.swahili.route]));
   assert.equal(routes.get('crop-yield-estimator'), '/sw/zana/makisio-ya-mavuno/');
   assert.equal(routes.get('crop-yield-kenya'), '/sw/kilimo/mavuno/kenya/');
-  assert.equal(routes.get('vaccination-schedule'), '/sw/zana/ratiba-ya-chanjo/');
+  assert.equal(routes.get('vaccination-schedule'), '/sw/zana/ratiba-ya-chanjo-za-mifugo/');
   assert.equal(routes.get('farm-loans-hub'), '/sw/zana/ustahiki-wa-mkopo-wa-shamba/');
 });
 

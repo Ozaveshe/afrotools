@@ -9,6 +9,10 @@ const MANIFEST = path.join(ROOT, 'data/localization/sw-agriculture-parity-manife
 const CONTRACTS = Object.freeze({
   'vaccination-schedule': require('./lib/sw-agriculture-singleton-contracts/vaccination-schedule')
 });
+const {
+  synchronizeEnglish,
+  synchronizeFrench
+} = require('./build-sw-agriculture-family');
 
 function parseArgs(argv) {
   const options = { id: null, check: false };
@@ -42,6 +46,20 @@ function run(options) {
   if (!options.check && current !== content) {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, content, 'utf8');
+  }
+  for (const [locale, target, synchronize] of [
+    ['English', row.english, synchronizeEnglish],
+    ['French', row.french, synchronizeFrench]
+  ]) {
+    const targetFile = path.join(ROOT, target.file);
+    const targetCurrent = fs.readFileSync(targetFile, 'utf8');
+    const targetNext = synchronize(targetCurrent, row);
+    if (options.check && targetCurrent !== targetNext) {
+      throw new Error(`${target.file} has stale ${locale}-Swahili reciprocal metadata.`);
+    }
+    if (!options.check && targetCurrent !== targetNext) {
+      fs.writeFileSync(targetFile, targetNext, 'utf8');
+    }
   }
   console.log(JSON.stringify({
     id: options.id,

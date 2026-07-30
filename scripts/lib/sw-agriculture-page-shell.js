@@ -3,11 +3,16 @@
 const { renderFrenchAgriculturePage } = require('./fr-agriculture-page-shell');
 
 function hreflangBlock(row) {
-  return [
+  const alternates = [
     ['en', row.english.route],
-    ['sw', row.swahili.route],
-    ['x-default', row.english.route]
-  ].map(([hreflang, route]) => (
+    ['fr', row.french.route],
+    ['sw', row.swahili.route]
+  ];
+  if (row.english.id === 'crop-yield-nigeria') {
+    alternates.push(['ha', '/ha/noma/amfanin-gona-najeriya/']);
+  }
+  alternates.push(['x-default', row.english.route]);
+  return alternates.map(([hreflang, route]) => (
     `<link rel="alternate" hreflang="${hreflang}" href="https://afrotools.com${route}">`
   )).join('\n');
 }
@@ -70,6 +75,10 @@ function renderSwahiliAgriculturePage(options) {
     ['Illustration de lâ€™outil agricole', 'Mchoro wa zana ya kilimo'],
     ['Illustration de l’outil agricole', 'Mchoro wa zana ya kilimo']
   ]);
+  html = html.replace(
+    /(?:<link rel="alternate" hreflang="[^"]+" href="[^"]+">\r?\n?)+/,
+    `${hreflangBlock(row)}\n`
+  );
   return html;
 }
 

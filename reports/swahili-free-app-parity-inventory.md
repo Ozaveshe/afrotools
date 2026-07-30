@@ -11,23 +11,23 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 977 |
-| Swahili coverage records | 974 |
-| Native candidates | 24 |
+| Swahili physical HTML pages | 1027 |
+| Swahili coverage records | 1024 |
+| Native candidates | 74 |
 | Localized shell candidates | 649 |
 | English fallbacks | 22 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 562 |
-| **Accepted** | **58** |
+| Missing | 512 |
+| **Accepted** | **114** |
 
 ## Category reconciliation
 
 | Category | Apps | Native | Shell | English fallback | Iframe | Bridge | Alias | Unclassified | Missing | Accepted |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Agriculture | 447 | 15 | 18 | 0 | 0 | 0 | 0 | 0 | 414 | 0 |
+| Agriculture | 447 | 65 | 18 | 0 | 0 | 0 | 0 | 0 | 364 | 56 |
 | Business & ROI | 12 | 0 | 10 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Career & Development | 4 | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Climate & Environment | 13 | 0 | 12 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -316,7 +316,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Daily Food Calorie Diary | Health & Wellness | `/health/calorie-counter` | Localized shell candidate | `/sw/zana/kalori-za-vyakula-vya-afrika` | No |
 | Crop Planting Calendar | Agriculture | `/tools/planting-calendar` | Localized shell candidate | `/sw/zana/kalenda-ya-kupanda-mazao` | No |
 | Fertilizer & Yield Calculator | Agriculture | `/tools/fertilizer-calc` | Missing | None | No |
-| Crop Yield Estimator | Agriculture | `/agriculture/crop-yield` | Localized shell candidate | `/sw/zana/makisio-ya-mavuno` | No |
+| Crop Yield Estimator | Agriculture | `/agriculture/crop-yield` | Native candidate | `/sw/zana/makisio-ya-mavuno` | Yes |
 | Fertilizer Calculator (NPK) | Agriculture | `/agriculture/fertilizer` | Localized shell candidate | `/sw/zana/kikokotoo-mbolea` | No |
 | Irrigation Water Calculator | Agriculture | `/agriculture/irrigation` | Localized shell candidate | `/sw/zana/kikokotoo-umwagiliaji` | No |
 | Farm Profit/Loss Calculator | Agriculture | `/agriculture/farm-profit` | Localized shell candidate | `/sw/zana/faida-na-hasara-ya-shamba` | No |
@@ -378,60 +378,60 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Guinea Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/guinea` | Missing | None | No |
 | Togo Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/togo` | Missing | None | No |
 | Grain Storage Loss Calculator | Agriculture | `/agriculture/storage-loss` | Missing | None | No |
-| Algeria Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/algeria` | Missing | None | No |
-| Angola Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/angola` | Missing | None | No |
-| Benin Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/benin` | Missing | None | No |
-| Botswana Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/botswana` | Missing | None | No |
-| Burkina Faso Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/burkina-faso` | Missing | None | No |
-| Burundi Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/burundi` | Native candidate | `/sw/kilimo/mavuno/burundi` | No |
-| Cabo Verde Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cabo-verde` | Missing | None | No |
-| Cameroon Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cameroon` | Missing | None | No |
-| Central African Republic Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/central-african-republic` | Missing | None | No |
-| Chad Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/chad` | Missing | None | No |
-| Comoros Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/comoros` | Missing | None | No |
-| Congo-Brazzaville Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/congo-brazzaville` | Missing | None | No |
-| Côte d'Ivoire Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cote-d-ivoire` | Missing | None | No |
-| Djibouti Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/djibouti` | Missing | None | No |
-| DR Congo Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/dr-congo` | Missing | None | No |
-| Egypt Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/egypt` | Missing | None | No |
-| Equatorial Guinea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/equatorial-guinea` | Missing | None | No |
-| Eritrea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/eritrea` | Missing | None | No |
-| Eswatini Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/eswatini` | Missing | None | No |
-| Ethiopia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/ethiopia` | Missing | None | No |
-| Gabon Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/gabon` | Missing | None | No |
-| Gambia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/gambia` | Missing | None | No |
-| Ghana Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/ghana` | Missing | None | No |
-| Guinea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/guinea` | Missing | None | No |
-| Guinea-Bissau Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/guinea-bissau` | Missing | None | No |
-| Kenya Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/kenya` | Native candidate | `/sw/kilimo/mavuno/kenya` | No |
-| Lesotho Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/lesotho` | Missing | None | No |
-| Liberia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/liberia` | Missing | None | No |
-| Libya Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/libya` | Missing | None | No |
-| Madagascar Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/madagascar` | Missing | None | No |
-| Malawi Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/malawi` | Missing | None | No |
-| Mali Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mali` | Missing | None | No |
-| Mauritania Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mauritania` | Missing | None | No |
-| Mauritius Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mauritius` | Missing | None | No |
-| Morocco Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/morocco` | Missing | None | No |
-| Mozambique Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mozambique` | Missing | None | No |
-| Namibia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/namibia` | Missing | None | No |
-| Niger Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/niger` | Missing | None | No |
-| Nigeria Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/nigeria` | Missing | None | No |
-| Rwanda Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/rwanda` | Native candidate | `/sw/kilimo/mavuno/rwanda` | No |
-| São Tomé & Príncipe Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sao-tome-and-principe` | Missing | None | No |
-| Senegal Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/senegal` | Missing | None | No |
-| Seychelles Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/seychelles` | Missing | None | No |
-| Sierra Leone Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sierra-leone` | Missing | None | No |
-| Somalia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/somalia` | Missing | None | No |
-| South Africa Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/south-africa` | Missing | None | No |
-| South Sudan Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/south-sudan` | Missing | None | No |
-| Sudan Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sudan` | Missing | None | No |
-| Tanzania Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/tanzania` | Native candidate | `/sw/kilimo/mavuno/tanzania` | No |
-| Togo Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/togo` | Missing | None | No |
-| Tunisia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/tunisia` | Missing | None | No |
-| Uganda Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/uganda` | Native candidate | `/sw/kilimo/mavuno/uganda` | No |
-| Zambia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zambia` | Missing | None | No |
-| Zimbabwe Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zimbabwe` | Missing | None | No |
+| Algeria Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/algeria` | Native candidate | `/sw/kilimo/mavuno/algeria` | Yes |
+| Angola Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/angola` | Native candidate | `/sw/kilimo/mavuno/angola` | Yes |
+| Benin Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/benin` | Native candidate | `/sw/kilimo/mavuno/benin` | Yes |
+| Botswana Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/botswana` | Native candidate | `/sw/kilimo/mavuno/botswana` | Yes |
+| Burkina Faso Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/burkina-faso` | Native candidate | `/sw/kilimo/mavuno/burkina-faso` | Yes |
+| Burundi Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/burundi` | Native candidate | `/sw/kilimo/mavuno/burundi` | Yes |
+| Cabo Verde Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cabo-verde` | Native candidate | `/sw/kilimo/mavuno/cape-verde` | Yes |
+| Cameroon Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cameroon` | Native candidate | `/sw/kilimo/mavuno/cameroon` | Yes |
+| Central African Republic Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/central-african-republic` | Native candidate | `/sw/kilimo/mavuno/central-african-republic` | Yes |
+| Chad Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/chad` | Native candidate | `/sw/kilimo/mavuno/chad` | Yes |
+| Comoros Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/comoros` | Native candidate | `/sw/kilimo/mavuno/comoros` | Yes |
+| Congo-Brazzaville Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/congo-brazzaville` | Native candidate | `/sw/kilimo/mavuno/congo` | Yes |
+| Côte d'Ivoire Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/cote-d-ivoire` | Native candidate | `/sw/kilimo/mavuno/cote-divoire` | Yes |
+| Djibouti Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/djibouti` | Native candidate | `/sw/kilimo/mavuno/djibouti` | Yes |
+| DR Congo Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/dr-congo` | Native candidate | `/sw/kilimo/mavuno/dr-congo` | Yes |
+| Egypt Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/egypt` | Native candidate | `/sw/kilimo/mavuno/egypt` | Yes |
+| Equatorial Guinea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/equatorial-guinea` | Native candidate | `/sw/kilimo/mavuno/equatorial-guinea` | Yes |
+| Eritrea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/eritrea` | Native candidate | `/sw/kilimo/mavuno/eritrea` | Yes |
+| Eswatini Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/eswatini` | Native candidate | `/sw/kilimo/mavuno/eswatini` | Yes |
+| Ethiopia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/ethiopia` | Native candidate | `/sw/kilimo/mavuno/ethiopia` | Yes |
+| Gabon Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/gabon` | Native candidate | `/sw/kilimo/mavuno/gabon` | Yes |
+| Gambia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/gambia` | Native candidate | `/sw/kilimo/mavuno/gambia` | Yes |
+| Ghana Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/ghana` | Native candidate | `/sw/kilimo/mavuno/ghana` | Yes |
+| Guinea Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/guinea` | Native candidate | `/sw/kilimo/mavuno/guinea` | Yes |
+| Guinea-Bissau Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/guinea-bissau` | Native candidate | `/sw/kilimo/mavuno/guinea-bissau` | Yes |
+| Kenya Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/kenya` | Native candidate | `/sw/kilimo/mavuno/kenya` | Yes |
+| Lesotho Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/lesotho` | Native candidate | `/sw/kilimo/mavuno/lesotho` | Yes |
+| Liberia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/liberia` | Native candidate | `/sw/kilimo/mavuno/liberia` | Yes |
+| Libya Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/libya` | Native candidate | `/sw/kilimo/mavuno/libya` | Yes |
+| Madagascar Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/madagascar` | Native candidate | `/sw/kilimo/mavuno/madagascar` | Yes |
+| Malawi Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/malawi` | Native candidate | `/sw/kilimo/mavuno/malawi` | Yes |
+| Mali Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mali` | Native candidate | `/sw/kilimo/mavuno/mali` | Yes |
+| Mauritania Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mauritania` | Native candidate | `/sw/kilimo/mavuno/mauritania` | Yes |
+| Mauritius Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mauritius` | Native candidate | `/sw/kilimo/mavuno/mauritius` | Yes |
+| Morocco Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/morocco` | Native candidate | `/sw/kilimo/mavuno/morocco` | Yes |
+| Mozambique Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/mozambique` | Native candidate | `/sw/kilimo/mavuno/mozambique` | Yes |
+| Namibia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/namibia` | Native candidate | `/sw/kilimo/mavuno/namibia` | Yes |
+| Niger Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/niger` | Native candidate | `/sw/kilimo/mavuno/niger` | Yes |
+| Nigeria Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/nigeria` | Native candidate | `/sw/kilimo/mavuno/nigeria` | Yes |
+| Rwanda Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/rwanda` | Native candidate | `/sw/kilimo/mavuno/rwanda` | Yes |
+| São Tomé & Príncipe Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sao-tome-and-principe` | Native candidate | `/sw/kilimo/mavuno/sao-tome` | Yes |
+| Senegal Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/senegal` | Native candidate | `/sw/kilimo/mavuno/senegal` | Yes |
+| Seychelles Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/seychelles` | Native candidate | `/sw/kilimo/mavuno/seychelles` | Yes |
+| Sierra Leone Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sierra-leone` | Native candidate | `/sw/kilimo/mavuno/sierra-leone` | Yes |
+| Somalia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/somalia` | Native candidate | `/sw/kilimo/mavuno/somalia` | Yes |
+| South Africa Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/south-africa` | Native candidate | `/sw/kilimo/mavuno/south-africa` | Yes |
+| South Sudan Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/south-sudan` | Native candidate | `/sw/kilimo/mavuno/south-sudan` | Yes |
+| Sudan Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/sudan` | Native candidate | `/sw/kilimo/mavuno/sudan` | Yes |
+| Tanzania Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/tanzania` | Native candidate | `/sw/kilimo/mavuno/tanzania` | Yes |
+| Togo Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/togo` | Native candidate | `/sw/kilimo/mavuno/togo` | Yes |
+| Tunisia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/tunisia` | Native candidate | `/sw/kilimo/mavuno/tunisia` | Yes |
+| Uganda Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/uganda` | Native candidate | `/sw/kilimo/mavuno/uganda` | Yes |
+| Zambia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zambia` | Native candidate | `/sw/kilimo/mavuno/zambia` | Yes |
+| Zimbabwe Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zimbabwe` | Native candidate | `/sw/kilimo/mavuno/zimbabwe` | Yes |
 | Algeria Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/algeria` | Missing | None | No |
 | Angola Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/angola` | Missing | None | No |
 | Benin Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/benin` | Missing | None | No |
@@ -649,7 +649,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Seychelles Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/seychelles` | Missing | None | No |
 | Comoros Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/comoros` | Missing | None | No |
 | Crop Rotation Planner | Agriculture | `/agriculture/crop-rotation` | Missing | None | No |
-| Livestock Vaccination Schedule | Agriculture | `/agriculture/vaccination-schedule` | Missing | None | No |
+| Livestock Vaccination Schedule | Agriculture | `/agriculture/vaccination-schedule` | Localized shell candidate | `/sw/zana/ratiba-ya-chanjo-za-mifugo` | Yes |
 | Livestock Feed Calculator | Agriculture | `/agriculture/livestock-feed` | Localized shell candidate | `/sw/zana/kikokotoo-chakula-cha-mifugo` | No |
 | Nigeria Livestock Feed Calculator | Agriculture | `/agriculture/livestock-feed/nigeria` | Missing | None | No |
 | Kenya Livestock Feed Calculator | Agriculture | `/agriculture/livestock-feed/kenya` | Missing | None | No |

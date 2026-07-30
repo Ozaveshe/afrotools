@@ -186,12 +186,12 @@ test('English and Swahili vaccination owners declare a reciprocal locale pair', 
     'utf8'
   );
   const swahili = fs.readFileSync(
-    path.join(ROOT, 'sw/zana/ratiba-ya-chanjo/index.html'),
+    path.join(ROOT, 'sw/zana/ratiba-ya-chanjo-za-mifugo/index.html'),
     'utf8'
   );
   assert.match(
     english,
-    /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/ratiba-ya-chanjo\/"/
+    /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/ratiba-ya-chanjo-za-mifugo\/"/
   );
   assert.match(
     swahili,

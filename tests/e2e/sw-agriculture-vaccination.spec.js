@@ -2,7 +2,7 @@ const fs = require('node:fs');
 const pdfParse = require('pdf-parse');
 const { test, expect } = require('@playwright/test');
 
-const ROUTE = '/sw/zana/ratiba-ya-chanjo/';
+const ROUTE = '/sw/zana/ratiba-ya-chanjo-za-mifugo/';
 
 function watchRuntime(page) {
   const errors = [];

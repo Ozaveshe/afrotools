@@ -8,6 +8,7 @@ const ROOT = path.resolve(__dirname, '..');
 const FRENCH_MANIFEST = path.join(ROOT, 'data/localization/fr-agriculture-parity-manifest.json');
 const STOP_RECEIPT = path.join(ROOT, 'reports/sw-agriculture-parity-stop-receipt-2026-07-31.json');
 const ACCEPTANCE = path.join(ROOT, 'data/audits/swahili-free-app-acceptance.json');
+const COUNTRIES = path.join(ROOT, 'data/registry/countries.json');
 const OUTPUT = path.join(ROOT, 'data/localization/sw-agriculture-parity-manifest.json');
 
 const FAMILY_SLUGS = Object.freeze({
@@ -35,7 +36,7 @@ const SINGLETON_SLUGS = Object.freeze({
   'cocoa-tracker': 'kifuatiliaji-kakao',
   'storage-loss': 'hasara-za-uhifadhi',
   'crop-rotation-planner': 'mpangilio-wa-mzunguko-wa-mazao',
-  'vaccination-schedule': 'ratiba-ya-chanjo',
+  'vaccination-schedule': 'ratiba-ya-chanjo-za-mifugo',
   'commodity-prices': 'bei-za-mazao',
   'cooperative-calculator': 'kikokotoo-cha-ushirika',
   'warehouse-receipt': 'stakabadhi-ghalani',
@@ -57,6 +58,12 @@ function buildManifest() {
   const french = JSON.parse(fs.readFileSync(FRENCH_MANIFEST, 'utf8'));
   const stop = JSON.parse(fs.readFileSync(STOP_RECEIPT, 'utf8'));
   const acceptanceLedger = JSON.parse(fs.readFileSync(ACCEPTANCE, 'utf8'));
+  const countryNames = new Map(JSON.parse(fs.readFileSync(COUNTRIES, 'utf8')).map(country => [
+    country.id,
+    country.displayNames && country.displayNames.sw
+      ? country.displayNames.sw
+      : country.title
+  ]));
   const acceptedByEnglishId = new Map(acceptanceLedger.entries
     .filter(entry => entry.categoryKey === 'agriculture' && entry.status === 'accepted')
     .map(entry => [entry.englishId, entry]));
@@ -67,7 +74,9 @@ function buildManifest() {
 
   const rows = french.rows.map(row => {
     const englishRoute = normalizeRoute(row.english.route);
-    const existingRoute = baselines.get(englishRoute);
+    const existingRoute = row.english.id === 'vaccination-schedule'
+      ? null
+      : baselines.get(englishRoute);
     let swahiliRoute = existingRoute;
     if (!swahiliRoute && row.family === 'singleton') {
       const slug = SINGLETON_SLUGS[row.english.id];
@@ -88,6 +97,10 @@ function buildManifest() {
 
     return {
       english: row.english,
+      french: {
+        route: row.french.route,
+        file: row.french.file
+      },
       swahili: {
         route: swahiliRoute,
         routeKey: swahiliRoute,
@@ -97,7 +110,10 @@ function buildManifest() {
         currentRuntimeState: accepted ? 'native-accepted' : 'pending-generation'
       },
       family: row.family,
-      country: row.country,
+      country: row.country ? {
+        ...row.country,
+        swahiliName: countryNames.get(row.country.code) || row.country.frenchName
+      } : null,
       owners: {
         englishPage: row.owners.englishPage,
         englishEngine: row.owners.englishEngine,

@@ -9,16 +9,18 @@ const FAMILY_DIR = path.join(ROOT, 'agriculture', 'vaccination-schedule');
 const ENGINE_TAG = '<script src="/engines/vaccination-engine.js';
 const RENDERER_TAG = '<script src="/assets/js/agriculture/vaccination-renderer.js"></script>';
 const RESPONSIVE_STYLESHEET = '<link rel="stylesheet" href="/assets/css/agriculture/vaccination-responsive.css">';
-const SWAHILI_ALTERNATE = '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-chanjo/">';
+const LEGACY_SW_HUMAN_ALTERNATE = '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-chanjo/">';
+const SWAHILI_ALTERNATE = '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-chanjo-za-mifugo/">';
 
 function transform(content, relativeFile) {
   if (path.basename(relativeFile) === 'index.html') {
-    if (content.includes(SWAHILI_ALTERNATE)) return content;
+    let next = content.replace(`${LEGACY_SW_HUMAN_ALTERNATE}\n`, '');
+    if (next.includes(SWAHILI_ALTERNATE)) return next;
     const englishAlternate = '<link rel="alternate" hreflang="en" href="https://afrotools.com/agriculture/vaccination-schedule/">';
-    if (!content.includes(englishAlternate)) {
+    if (!next.includes(englishAlternate)) {
       throw new Error(`${relativeFile} lacks the expected English alternate.`);
     }
-    return content.replace(englishAlternate, `${englishAlternate}\n${SWAHILI_ALTERNATE}`);
+    return next.replace(englishAlternate, `${englishAlternate}\n${SWAHILI_ALTERNATE}`);
   }
   if (!content.includes(ENGINE_TAG)) {
     throw new Error(`${relativeFile} does not load the vaccination engine.`);
