@@ -1,18 +1,20 @@
 'use strict';
 
 const { renderFrenchAgriculturePage } = require('./fr-agriculture-page-shell');
+const { alternateEntries } = require('./fr-agriculture-hreflang');
+
+function escapeHtml(value) {
+  return String(value == null ? '' : value).replace(/[&<>"']/g, character => ({
+    '&': '&amp;',
+    '<': '&lt;',
+    '>': '&gt;',
+    '"': '&quot;',
+    "'": '&#39;'
+  }[character]));
+}
 
 function hreflangBlock(row) {
-  const alternates = [
-    ['en', row.english.route],
-    ['fr', row.french.route],
-    ['sw', row.swahili.route]
-  ];
-  if (row.english.id === 'crop-yield-nigeria') {
-    alternates.push(['ha', '/ha/noma/amfanin-gona-najeriya/']);
-  }
-  alternates.push(['x-default', row.english.route]);
-  return alternates.map(([hreflang, route]) => (
+  return alternateEntries(row).map(({ hreflang, route }) => (
     `<link rel="alternate" hreflang="${hreflang}" href="https://afrotools.com${route}">`
   )).join('\n');
 }
@@ -79,6 +81,12 @@ function renderSwahiliAgriculturePage(options) {
     /(?:<link rel="alternate" hreflang="[^"]+" href="[^"]+">\r?\n?)+/,
     `${hreflangBlock(row)}\n`
   );
+  if (!row.country && options.currentLabel) {
+    html = html.replace(
+      '<span aria-current="page"></span>',
+      `<span aria-current="page">${escapeHtml(options.currentLabel)}</span>`
+    );
+  }
   return html;
 }
 

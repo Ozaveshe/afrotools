@@ -49,12 +49,19 @@ const VERIFIED_EXISTING_ALTERNATES = Object.freeze({
 });
 
 function alternateEntries(row) {
-  return [
+  const entries = [
     { hreflang: 'en', route: row.english.route },
     { hreflang: 'fr', route: row.french.route },
+    ...(row.swahili && row.swahili.route ? [{ hreflang: 'sw', route: row.swahili.route }] : []),
     ...(VERIFIED_EXISTING_ALTERNATES[row.english.id] || []),
     { hreflang: 'x-default', route: row.english.route },
   ];
+  const seen = new Set();
+  return entries.filter(entry => {
+    if (seen.has(entry.hreflang)) return false;
+    seen.add(entry.hreflang);
+    return true;
+  });
 }
 
 function desiredBlock(row) {

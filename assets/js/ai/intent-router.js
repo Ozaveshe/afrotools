@@ -18,6 +18,7 @@
   var i18nApi = null;
   var guardrailsApi = null;
   var frenchRouteMapApi = null;
+  var swahiliAgricultureRouteMapApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
@@ -39,10 +40,16 @@
     } catch (err) {
       frenchRouteMapApi = null;
     }
+    try {
+      swahiliAgricultureRouteMapApi = require("./swahili-agriculture-route-map.generated.js");
+    } catch (err) {
+      swahiliAgricultureRouteMapApi = null;
+    }
   }
   if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
   if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
   if (!frenchRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = globalThis.AfroToolsAIFrenchRouteMap;
+  if (!swahiliAgricultureRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAISwahiliAgricultureRouteMap) swahiliAgricultureRouteMapApi = globalThis.AfroToolsAISwahiliAgricultureRouteMap;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -226,7 +233,7 @@
     rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
     rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm", "rendement culture", "rendement mais", "rendement du mais", "estimer la recolte"], ["none"]),
     rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),
-    rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea"], ["finance"]),
+    rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea", "mbolea"], ["finance"]),
     rule("agriculture", "input-prices", ["input prices", "seed prices", "fertilizer prices", "agrochemical prices"], ["finance"]),
     rule("agriculture", "seed-rate-calculator", ["seed rate", "seeding rate", "how much seed"], ["finance"]),
     rule("agriculture", "irrigation-calculator", ["irrigation", "water pump", "drip irrigation"], ["none"]),
@@ -891,7 +898,25 @@
   }
 
   function localizeSelectedRoute(decision, options) {
-    if (requestedLocale(options) !== "fr") return decision;
+    var locale = requestedLocale(options);
+    if (locale === "sw") {
+      var swahiliCopy = Object.assign({}, decision);
+      var swahiliRoutes = swahiliAgricultureRouteMapApi && swahiliAgricultureRouteMapApi.routes || {};
+      var swahiliEnglishRoute = normalizeRouteKey(swahiliCopy.selectedRoute);
+      var swahiliRoute = swahiliRoutes[swahiliEnglishRoute];
+      if (!swahiliRoute) return decision;
+      var swahiliMeta = Object.assign({}, swahiliCopy._meta || {});
+      swahiliCopy.selectedRoute = swahiliRoute + routeQuery(swahiliCopy.selectedRoute);
+      swahiliMeta.localeRoute = {
+        locale: "sw",
+        status: "mapped",
+        family: "fertilizer",
+        source: swahiliAgricultureRouteMapApi.source || "swahili_agriculture_manifest"
+      };
+      swahiliCopy._meta = swahiliMeta;
+      return swahiliCopy;
+    }
+    if (locale !== "fr") return decision;
     var copy = Object.assign({}, decision);
     var routes = Object.assign({}, frenchRouteMapApi && frenchRouteMapApi.routes || {}, {
       "/tools/stock-portfolio/": "/fr/tools/suivi-portefeuille-actions/",

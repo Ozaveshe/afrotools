@@ -6,12 +6,14 @@ const path = require('node:path');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(ROOT, 'data/localization/sw-agriculture-parity-manifest.json');
+const { alternateEntries } = require('./lib/fr-agriculture-hreflang');
 const HAUSA_NIGERIA_CROP_YIELD = Object.freeze({
   route: '/ha/noma/amfanin-gona-najeriya/',
   file: 'ha/noma/amfanin-gona-najeriya/index.html'
 });
 const CONTRACTS = Object.freeze({
-  'crop-yield': require('./lib/sw-agriculture-family-contracts/crop-yield')
+  'crop-yield': require('./lib/sw-agriculture-family-contracts/crop-yield'),
+  fertilizer: require('./lib/sw-agriculture-family-contracts/fertilizer')
 });
 
 function parseArgs(argv) {
@@ -26,16 +28,11 @@ function parseArgs(argv) {
 }
 
 function alternateBlock(row) {
-  const alternates = [
-    `<link rel="alternate" hreflang="en" href="https://afrotools.com${row.english.route}">`,
-    `<link rel="alternate" hreflang="fr" href="https://afrotools.com${row.french.route}">`,
-    `<link rel="alternate" hreflang="sw" href="https://afrotools.com${row.swahili.routeKey}">`,
-  ];
-  if (row.english.id === 'crop-yield-nigeria') {
-    alternates.push('<link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/noma/amfanin-gona-najeriya/">');
-  }
-  alternates.push(`<link rel="alternate" hreflang="x-default" href="https://afrotools.com${row.english.route}">`);
-  return alternates.join('\n');
+  return alternateEntries(row)
+    .map(({ hreflang, route }) => (
+      `<link rel="alternate" hreflang="${hreflang}" href="https://afrotools.com${route}">`
+    ))
+    .join('\n');
 }
 
 function synchronizeAlternates(content, row, relativeFile) {
@@ -80,9 +77,15 @@ function run(options) {
   if (options.family === 'crop-yield' && (rows.length !== 55 || countryRows.length !== 54)) {
     throw new Error(`Crop Yield requires 55 rows and 54 countries; found ${rows.length}/${countryRows.length}.`);
   }
+  if (options.family === 'fertilizer' && (rows.length !== 55 || countryRows.length !== 54)) {
+    throw new Error(`Fertilizer requires 55 rows and 54 countries; found ${rows.length}/${countryRows.length}.`);
+  }
+  const countries = JSON.parse(
+    fs.readFileSync(path.join(ROOT, 'data/registry/countries.json'), 'utf8')
+  );
 
   for (const row of rows) {
-    const content = contract.render(row, { manifest, familyRows: rows });
+    const content = contract.render(row, { manifest, familyRows: rows, countries });
     if (/<iframe\b/i.test(content) || /\bfetch\s*\(/i.test(content)) {
       throw new Error(`${row.swahili.route} attempted an iframe or network-owned calculator.`);
     }
