@@ -394,13 +394,13 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Hifadhi ya jamii inasimamiwa na <strong>Caisse Nationale de Sécurité Sociale (CNSS)</strong>. Msingi rasmi wa michango una kikomo, ukiwa na kiwango cha chini cha <strong>GNF 550,000</strong> na kikomo cha <strong>GNF 2,500,000</strong> kwa mshahara unaostahili kuchangiwa. Kikokotoo hiki kinatumia mgawanyo wa sasa wa kawaida wa mishahara wa <strong>5%</strong> kwa mfanyakazi na <strong>18%</strong> kwa mwajiri kwenye mshahara huo unaostahili, na hukata sehemu ya mfanyakazi kabla ya kukokotoa kodi, sambamba na Kifungu cha 58 cha CGI.</p>
         </div>
         <div class="ng-guide-card">
-<p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">The official kila mwezi RTS table applies <strong>5%</strong> on GNF 1M-3M, <strong>8%</strong> on GNF 3M-5M, <strong>10%</strong> on GNF 5M-10M, <strong>15%</strong> on GNF 10M-20M, and <strong>20%</strong> above GNF 20M after deduction of mandatory social-security contributions. This page follows that current CGI structure.</p>
+<p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Jedwali rasmi la RTS la kila mwezi hutumia <strong>5%</strong> on GNF 1M-3M, <strong>8%</strong> on GNF 3M-5M, <strong>10%</strong> on GNF 5M-10M, <strong>15%</strong> on GNF 10M-20M, and <strong>20%</strong> juu ya GNF milioni 20 baada ya makato ya lazima ya hifadhi ya jamii. Ukurasa huu unafuata muundo wa sasa wa CGI.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Guinea is rich in bauxite, iron ore, and gold. The government has been reforming the tax administration as part of economic diversification efforts. Employers should verify current DNI bands and CNSS mchango wa mwajiri rates with the DNI, as rates may be updated through kila mwaka Finance Laws.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Guinea ina utajiri wa bauxite, madini ya chuma, na dhahabu. Serikali imekuwa ikiboresha usimamizi wa kodi kama sehemu ya juhudi za kupanua uchumi. Waajiri wanapaswa kuthibitisha mabanda ya sasa ya DNI na viwango vya michango ya mwajiri ya CNSS na DNI, kwa kuwa viwango vinaweza kubadilishwa kupitia Sheria za Fedha za kila mwaka.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">CNSS employee: 5% and employer: 18% on salary subject to cotisation. Currency: GNF. Employer cost on this page intentionally excludes the separate 6% versement forfaitaire sur les salaires because its exact base can vary with family-benefit treatment.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">CNSS ya mfanyakazi ni 5% na ya mwajiri ni 18% ya mshahara unaotozwa michango. Sarafu ni GNF. Gharama ya mwajiri kwenye ukurasa huu haijumuishi versement forfaitaire sur les salaires ya 6% kwa sababu msingi wake halisi unaweza kutofautiana kulingana na mafao ya familia.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -799,14 +799,14 @@ function renderChart(type){if(typeof Chart==='undefined')return;
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr= new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-GN-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">Kiwango ${((b.rate*100))}% kwa GNF ${Math.round(b.income).toLocaleString()}</td><td class="num red">(GNF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>Guinea Kikokotoo cha PAYE 2026 | AfroTools</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
@@ -835,11 +835,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Guinea PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/guinea/gn-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/guinea/kikokotoo-kodi-mshahara</div>
   <div class="badge">DNI 2025/26</div>
 </div>
 <div class="body">
@@ -884,7 +884,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Sehemu ya 5 — Msingi wa Kisheria na Vyanzo</div>
   <table>
-    <tr><td style="width:30%"><span class="src">CGI 2021</span>DGI Guinea</td><td style="color:#6b7280;font-size:8pt">Article 63 sets the monthly 0%-20% salary-tax table and Article 58 allows deduction of mandatory social insurance from taxable salary.</td></tr>
+    <tr><td style="width:30%"><span class="src">CGI 2021</span>DGI Guinea</td><td style="color:#6b7280;font-size:8pt">Article 63 sets the monthly 0%-20% salary-tax table na Article 58 allows deduction of mandatory social insurance from taxable salary.</td></tr>
     <tr><td><span class="src">CNSS</span>Hifadhi ya Jamii</td><td style="color:#6b7280;font-size:8pt">CNSS ya mfanyakazi ni 5% na CNSS ya mwajiri ni 18% kwenye mshahara unaostahili kuchangiwa, ikiwa na kiwango cha chini rasmi cha GNF 550,000 na kikomo cha GNF 2,500,000.</td></tr>
   </table>
 </div>
@@ -895,7 +895,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DNI Guinea or CNSS au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -917,9 +917,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Guinea: Gross GNF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi GNF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/guinea/gn-paye`;
+  const text = `Muhtasari wa PAYE wa Guinea: Ghafi GNF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi GNF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/guinea/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Guinea PAYE',text,url:'https://afrotools.com/guinea/gn-paye'});
+    navigator.share({title:'PAYE Yangu ya Guinea',text,url:'https://afrotools.com/sw/guinea/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzShareBtn');
@@ -929,7 +929,16 @@ function shareResult() {
 }
 
 // ── AI ADVISOR ────────────────────────────────────────────────
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -939,27 +948,27 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Guinea PAYE analysis (2025/26, DNI):
+  const prompt = `Uchambuzi wa PAYE wa Guinea (2025/26, DNI):
 - Ghafi ya mwezi: GNF ${Math.round(R.gross).toLocaleString()}
-- CNSS employee (${pct(R.socialRate)}): GNF ${Math.round(R.social).toLocaleString()}/mwezi
-- Mapato yanayotozwa kodi after CNSS: GNF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
+- CNSS ya mfanyakazi (${pct(R.socialRate)}): GNF ${Math.round(R.social).toLocaleString()}/mwezi
+- Mapato yanayotozwa kodi baada ya CNSS: GNF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - PAYE ya mwezi: GNF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: GNF ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
 - CNSS ya Mwajiri (18%): GNF ${Math.round(R.empSocial).toLocaleString()}/mwezi
-- jumla employer cost shown: GNF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi (CNSS only; excludes the separate 6% payroll levy)
+- Jumla ya gharama ya mwajiri inayoonyeshwa: GNF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi (CNSS pekee; haijumuishi tozo tofauti ya mishahara ya 6%)
 
-Toa: 1) Muhtasari wa wazi kwa Kiswahili of DNI tax position 2) Two practical payroll planning points 3) Jambo moja muhimu la uzingatiaji to know 4) One thing most Guinean employees get wrong about CNSS. Chini ya maneno 200. No markdown, no asterisks, no bullet symbols.`;
+Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya kodi ya DNI 2) Hoja mbili za vitendo za kupanga mishahara 3) Jambo moja muhimu la uzingatiaji la kujua 4) Jambo moja ambalo wafanyakazi wengi wa Guinea hukosea kuhusu CNSS. Chini ya maneno 200. Bila markdown, nyota, au alama za orodha.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Guinean salary tax under the CGI and CNSS payroll rules. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika kodi ya mshahara ya Guinea chini ya kanuni za mishahara za CGI na CNSS. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -977,6 +986,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of DNI tax position 2) Two practical pay
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if(!msg||!RESULT) return;
@@ -992,7 +1002,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Guinea. User: ${R.sector} sector, gross GNF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi GNF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Guinea. Mtumiaji: sekta ya ${R.sector}, ghafi GNF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi GNF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });

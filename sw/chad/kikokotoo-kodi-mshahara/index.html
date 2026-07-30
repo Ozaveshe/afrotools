@@ -823,14 +823,14 @@ function renderChart(type){if(typeof Chart==='undefined')return;
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('fr-TD',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr= new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-TD-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Rate ' + (b.rate*100) + '% on XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Kiwango ' + (b.rate*100) + '% kwa XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Chad PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
@@ -859,11 +859,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Chad PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/chad/td-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/chad/kikokotoo-kodi-mshahara</div>
   <div class="badge">DGI 2025/26 · Loi de Finances 2024/25</div>
 </div>
 <div class="body">
@@ -886,7 +886,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Sehemu ya 2 — Hesabu ya IRPP (DGI 2025/26)</div>
   <table>
-    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross XAF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
+    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Ajira ya pili — 30% tambarare imetumika kwenye ghafi XAF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato katika bendi ya 0% — hakuna PAYE inayodaiwa</td></tr>'}
     <tr class="total"><td>IRPP ya Mwezi (PAYE)</td><td class="num red">XAF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
@@ -910,7 +910,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 5 — Msingi wa Kisheria na Vyanzo</div>
   <table>
     <tr><td style="width:30%"><span class="src">CGI Chad</span>Code Général des Impôts</td><td style="color:#6b7280;font-size:8pt">IRPP ya hatua kwenye mapato ya ajira. Mabanda sita ya mwaka kutoka 0% hadi 40%. Mchango wa CNPS wa mfanyakazi (3.5%) unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi. Inasimamiwa na DGI.</td></tr>
-    <tr><td><span class="src">CNPS</span>Hifadhi ya Jamii</td><td style="color:#6b7280;font-size:8pt">3.5% ya mfanyakazi + 16.5% ya mwajiri kwenye mshahara ghafi. Caisse Nationale de Prévoyance Sociale inahudumia wafanyakazi wote wa sekta rasmi. Hakuna skills levy wala workers compensation fund nchini Chad.</td></tr>
+    <tr><td><span class="src">CNPS</span>Hifadhi ya Jamii</td><td style="color:#6b7280;font-size:8pt">3.5% ya mfanyakazi + 16.5% ya mwajiri kwenye mshahara ghafi. Caisse Nationale de Prévoyance Sociale inahudumia wafanyakazi wote wa sekta rasmi. Hakuna tozo ya ujuzi wala mfuko tofauti wa fidia kwa wafanyakazi nchini Chad.</td></tr>
     <tr><td><span class="src">DGI</span>Mamlaka ya Kodi</td><td style="color:#6b7280;font-size:8pt">IRPP lazima iwasilishwe na kulipwa kwa DGI ifikapo tarehe 15 ya mwezi unaofuata. Loi de Finances 2024/25 inathibitisha viwango vya sasa.</td></tr>
   </table>
 </div>
@@ -921,7 +921,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DGI Chad au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -943,9 +943,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Chad: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/chad/td-paye`;
+  const text = `Muhtasari wa PAYE wa Chad: Ghafi XAF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/chad/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Chad PAYE',text,url:'https://afrotools.com/chad/td-paye'});
+    navigator.share({title:'PAYE Yangu ya Chad',text,url:'https://afrotools.com/sw/chad/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzShareBtn');
@@ -955,7 +955,16 @@ function shareResult() {
 }
 
 // ── AI ADVISOR ────────────────────────────────────────────────
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -969,21 +978,21 @@ async function getAI() {
 - Ghafi ya mwezi: XAF ${Math.round(R.gross).toLocaleString()}
 - Sector: ${R.sector === 'private' ? 'Binafsi (CNPS)' : 'Umma (CNPS)'}
 - CNPS employee (${pct(R.socialRate)}): XAF ${Math.round(R.social).toLocaleString()}/mwezi
-- Mapato yanayotozwa kodi after CNPS: XAF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
+- Mapato yanayotozwa kodi baada ya CNPS: XAF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - IRPP ya Mwezi (PAYE): XAF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: XAF ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
-- Employer CNPS (16.5%): XAF ${Math.round(R.empSocial).toLocaleString()}/mwezi
-- jumla employer cost: XAF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
+- Ajira ya pili: ${R.isSecondary ? 'YES — 30% tambarare imetumika' : 'Hapana'}
+- Mwajiri CNPS (16.5%): XAF ${Math.round(R.empSocial).toLocaleString()}/mwezi
+- jumla gharama ya mwajiri: XAF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
-Toa: 1) Muhtasari wa wazi kwa Kiswahili of IRPP position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. No markdown, no asterisks, no bullet symbols.`;
+Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya IRPP 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Bila markdown, nyota, au alama za orodha.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Chad PAYE — DGI IRPP progressive tax, CNPS (3.5% ya mfanyakazi / 16.5% employer), Code Général des Impôts. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Chad PAYE — DGI IRPP progressive tax, CNPS (3.5% ya mfanyakazi / 16.5% employer), Code Général des Impôts. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -1005,6 +1014,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of IRPP position 2) Njia mbili maalum za
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if(!msg||!RESULT) return;
@@ -1020,7 +1030,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Chad. User: ${R.sector} sector, gross XAF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XAF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Chad. Mtumiaji: ${R.sector} sector, ghafi XAF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XAF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });

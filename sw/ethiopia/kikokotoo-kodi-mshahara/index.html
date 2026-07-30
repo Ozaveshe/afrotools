@@ -735,14 +735,14 @@ function renderChart(type){if(typeof Chart==='undefined')return;
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-ET',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr= new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-ET-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">Kiwango ${((b.rate*100).toFixed(0))}% kwa ETB ${Math.round(b.income).toLocaleString()}</td><td class="num red">(ETB ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Ethiopia PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#041a0d 0%,#0d2813 100%);padding:28px 36px 22px;color:#fff}
@@ -771,11 +771,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Ethiopia PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/ethiopia/et-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/ethiopia/kikokotoo-kodi-mshahara</div>
   <div class="badge">ERCA 2025/26 · Tangazo la Kodi ya Mapato 1395/2025</div>
 </div>
 <div class="body">
@@ -792,7 +792,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 1 — Mapato ya Mwezi na Makato</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwezi</td><td class="num">ETB ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.pension > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Pension Fund mchango wa mfanyakazi (${pct(R.pensionRate)})</td><td class="num red">(ETB ${Math.round(R.pension).toLocaleString()})</td></tr>` : ''}
+    ${R.pension > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Mchango wa Mfuko wa Pensheni wa mfanyakazi (${pct(R.pensionRate)})</td><td class="num red">(ETB ${Math.round(R.pension).toLocaleString()})</td></tr>` : ''}
     <tr><td style="font-weight:600">Mapato ya Mwezi Yanayotozwa Kodi</td><td class="num muted">ETB ${Math.round(R.gross - R.pension).toLocaleString()}</td></tr>
   </table>
 
@@ -804,7 +804,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwezi wa Mshahara Halisi</div>
   <table>
-    ${R.pension > 0 ? `<tr><td>Pension Fund (employee)</td><td class="num red">(ETB ${Math.round(R.pension).toLocaleString()})</td></tr>` : ''}
+    ${R.pension > 0 ? `<tr><td>Mfuko wa Pensheni (mfanyakazi)</td><td class="num red">(ETB ${Math.round(R.pension).toLocaleString()})</td></tr>` : ''}
     <tr><td>Kodi ya Mapato ya PAYE</td><td class="num red">(ETB ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Jumla ya Makato ya Mwezi</td><td class="num red">(ETB ${Math.round(R.totalEmployeeMakato).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#0063D1;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">ETB ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
@@ -814,14 +814,14 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri (Mwezi)</div>
   <table>
     <tr><td>Mshahara ghafi wa mfanyakazi</td><td class="num">ETB ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer Pension Fund (11%)</td><td class="num red">ETB ${Math.round(R.empPension).toLocaleString()}</td></tr>
+    <tr><td>Mfuko wa Pensheni wa Mwajiri (11%)</td><td class="num red">ETB ${Math.round(R.empPension).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Jumla ya Gharama ya Mwajiri kwa Mwezi</td><td class="num red">ETB ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 5 — Msingi wa Kisheria na Vyanzo</div>
   <table>
-    <tr><td style="width:30%"><span class="src">ITP 1395/2025</span>Tangazo la Kodi ya Mapato</td><td style="color:#6b7280;font-size:8pt">PAYE ya hatua kwa mapato ya ajira. Mabanda sita ya kila mwezi (0%–35%). Kizingiti kisichotozwa kodi ETB 2,000/mwezi. Pension contribution fully unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi.</td></tr>
-    <tr><td><span class="src">Kanuni za Pensheni</span>Employee Pension Fund</td><td style="color:#6b7280;font-size:8pt">Total 18% of salary: 7% employee + 11% employer. Wasilisha ifikapo tarehe 10 ya mwezi unaofuata.</td></tr>
+    <tr><td style="width:30%"><span class="src">ITP 1395/2025</span>Tangazo la Kodi ya Mapato</td><td style="color:#6b7280;font-size:8pt">PAYE ya hatua kwa mapato ya ajira. Mabanda sita ya kila mwezi (0%–35%). Kizingiti kisichotozwa kodi ETB 2,000/mwezi. Pension mchango fully unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi.</td></tr>
+    <tr><td><span class="src">Kanuni za Pensheni</span>Mfuko wa Pensheni wa Mfanyakazi</td><td style="color:#6b7280;font-size:8pt">Jumla 18% of salary: 7% employee + 11% employer. Wasilisha ifikapo tarehe 10 ya mwezi unaofuata.</td></tr>
     <tr><td><span class="src">Proc. 1395/2025</span>Inasubiri 2025/26</td><td style="color:#6b7280;font-size:8pt">Mei introduce ETB 2,000/mwezi minimum taxable threshold starting Julai 2025. Status under implementation review.</td></tr>
   </table>
 </div>
@@ -832,7 +832,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na ERCA (erca.gov.et) au mshauri wa kodi aliyesajiliwa. Proclamation 1395/2025 status pending.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -853,9 +853,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 // ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Ethiopia: Gross ETB ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi ETB ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/ethiopia/et-paye`;
+  const text = `Muhtasari wa PAYE wa Ethiopia: Ghafi ETB ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi ETB ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/ethiopia/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Ethiopia PAYE',text,url:'https://afrotools.com/ethiopia/et-paye'});
+    navigator.share({title:'PAYE Yangu ya Ethiopia',text,url:'https://afrotools.com/sw/ethiopia/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('etShareBtn');
@@ -865,7 +865,16 @@ function shareResult() {
 }
 
 // ── AI ADVISOR ────────────────────────────────────────────────
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -877,22 +886,22 @@ async function getAI() {
 
   const prompt = `Ethiopia PAYE analysis (2025/26, ERCA):
 - Ghafi ya mwezi: ETB ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Private' : 'Public'}
+- Sector: ${R.sector === 'private' ? 'Binafsi' : 'Umma'}
 - Pension Fund employee (${pct(R.pensionRate)}): ETB ${Math.round(R.pension).toLocaleString()}/mwezi
-- Mapato yanayotozwa kodi after pension deduction: ETB ${Math.round(R.gross - R.pension).toLocaleString()}/mwezi
+- Mapato yanayotozwa kodi baada ya pensheni deduction: ETB ${Math.round(R.gross - R.pension).toLocaleString()}/mwezi
 - PAYE ya mwezi: ETB ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: ETB ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Employer Pension (11%): ETB ${Math.round(R.empPension).toLocaleString()}/mwezi
-- jumla employer cost: ETB ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
+- Mwajiri Pension (11%): ETB ${Math.round(R.empPension).toLocaleString()}/mwezi
+- jumla gharama ya mwajiri: ETB ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
-Toa: 1) Muhtasari wa wazi kwa Kiswahili of PAYE position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. No markdown, no asterisks, no bullet symbols.`;
+Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya PAYE 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Bila markdown, nyota, au alama za orodha.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Ethiopian PAYE — ERCA progressive tax (Proclamation 1395/2025, 6 bands 0%–35%, Kizingiti kisichotozwa kodi ETB 2000/mwezi), Pension Fund 7%. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Ethiopian PAYE — ERCA progressive tax (Proclamation 1395/2025, 6 bands 0%–35%, Kizingiti kisichotozwa kodi ETB 2000/mwezi), Pension Fund 7%. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -914,6 +923,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of PAYE position 2) Njia mbili maalum za
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if(!msg||!RESULT) return;
@@ -929,7 +939,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Ethiopia. User: ${R.sector} sector, gross ETB ${Math.round(R.gross).toLocaleString()}/mwezi, halisi ETB ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Ethiopia. Mtumiaji: ${R.sector} sector, ghafi ETB ${Math.round(R.gross).toLocaleString()}/mwezi, halisi ETB ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });

@@ -792,7 +792,16 @@ function shareResult() {
   }
 }
 
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R = RESULT;
   const cnssName = R.sector === 'private' ? 'CNSS' : 'INSS';
@@ -824,6 +833,7 @@ async function getAI() {
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg = input.value.trim();
   if(!msg||!RESULT) return;

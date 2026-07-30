@@ -1501,14 +1501,54 @@ function fixFile(filePath) {
 }
 
 function main() {
-  const files = collectSwPayeFiles();
+  const countriesArg = process.argv.find((arg) => arg.startsWith('--countries='));
+  const requestedCountries = countriesArg
+    ? new Set(countriesArg.slice('--countries='.length).split(',').map((value) => value.trim()).filter(Boolean))
+    : null;
+  const checkOnly = process.argv.includes('--check');
+  const files = collectSwPayeFiles().filter((filePath) => {
+    if (!requestedCountries) return true;
+    const relative = path.relative(path.join(ROOT, 'sw'), filePath);
+    const [country] = relative.split(path.sep);
+    return requestedCountries.has(country);
+  });
+
+  if (requestedCountries) {
+    const foundCountries = new Set(files.map((filePath) => (
+      path.relative(path.join(ROOT, 'sw'), filePath).split(path.sep)[0]
+    )));
+    const missingCountries = [...requestedCountries].filter((country) => !foundCountries.has(country));
+    if (missingCountries.length) {
+      throw new Error(`Missing requested SW PAYE pages: ${missingCountries.join(', ')}`);
+    }
+  }
+
   let updated = 0;
 
   for (const filePath of files) {
+    if (checkOnly) {
+      const before = read(filePath);
+      const spec = fileSpecificFixes.get(filePath) || { exact: [], regex: [] };
+      let after = applyExactMap(before, globalExact);
+      after = applyRegexMap(after, globalRegex);
+      after = applyExactMap(after, spec.exact);
+      after = applyRegexMap(after, spec.regex);
+      after = normalizeHeadMeta(after);
+      if (after !== before) {
+        updated += 1;
+        console.log(`STALE ${path.relative(ROOT, filePath).replace(/\\/g, '/')}`);
+      } else {
+        console.log(`CURRENT ${path.relative(ROOT, filePath).replace(/\\/g, '/')}`);
+      }
+      continue;
+    }
     updated += fixFile(filePath);
   }
 
-  console.log(`\nDone. Updated ${updated} SW PAYE pages.`);
+  if (checkOnly && updated) {
+    throw new Error(`${updated}/${files.length} selected SW PAYE pages are stale`);
+  }
+  console.log(`\nDone. ${checkOnly ? 'Verified' : 'Updated'} ${files.length} SW PAYE pages${checkOnly ? '' : ` (${updated} changed)`}.`);
 }
 
 main();

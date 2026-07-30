@@ -472,7 +472,7 @@
 //  EGYPT SALARY TAX CALCULATOR 2025
 //  ETA Progressive Tax · NOSI Social Insurance · Bima ya Afya
 //  Personal Exemption EGP 20,000 · Bracket Exclusion Rule
-//  Chanzo: Income Tax Law No. 91 of 2005 as amended by Law No. 7 of 2024
+//  Chanzo: Income Tax Law No. 91 of 2005 as amended by Sheria Na. 7 ya 2024
 //          ETA (eta.gov.eg) · NOSI (nosi.gov.eg)
 // ══════════════════════════════════════════════════════════════════
 
@@ -676,7 +676,7 @@ function renderRows(r, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Makato &amp; Exemptions</div>
-      ${row('Msamaha wa binafsi' + (r.personalExemption > 20000 ? ' (disability — 1.5×)' : ''), fmt(r.personalExemption / d), 'c-grn')}
+      ${row('Msamaha wa binafsi' + (r.personalExemption > 20000 ? ' (ulemavu — mara 1.5)' : ''), fmt(r.personalExemption / d), 'c-grn')}
       ${r.nosi > 0    ? row('NOSI ya bima ya jamii (11%, kikomo EGP 14,500/mwezi)', fmt(r.nosi / d), 'c-red') : ''}
       ${r.health > 0  ? row('Bima ya afya (1%, no cap)', fmt(r.health / d), 'c-red') : ''}
       ${row('Net Taxable Income (NATI)', fmt(r.nati / d), 'c-mut')}
@@ -684,7 +684,7 @@ function renderRows(r, period) {
     <div class="res-section">
       <div class="res-section-title">Income Tax (ETA)</div>
       ${r.isExempt
-        ? `<div style="background:rgba(206,17,38,0.05);border:1px solid rgba(206,17,38,0.2);border-radius:6px;padding:10px 13px;font-size:0.78rem;color:#8b0000;line-height:1.5">✓ NATI below EGP 40,000 — in 0% band, no income tax due.</div>`
+        ? `<div style="background:rgba(206,17,38,0.05);border:1px solid rgba(206,17,38,0.2);border-radius:6px;padding:10px 13px;font-size:0.78rem;color:#8b0000;line-height:1.5">✓ NATI chini ya EGP 40,000 — katika bendi ya 0%, no income tax due.</div>`
         : row('Kodi ya mapato (progressive, ETA)', fmt(r.tax / d), 'c-red')
       }
       ${r.hasExclusion && !r.isExempt ? `<div class="exclusion-box">⚠ Bracket exclusion applied: your NATI (${fmt(r.nati)}/mwaka) exceeds EGP ${r.nati > 1200000 ? '1,200,000' : r.nati > 1000000 ? '1,000,000' : r.nati > 900000 ? '900,000' : r.nati > 800000 ? '800,000' : r.nati > 700000 ? '700,000' : '600,000'} — ${r.excludedBands.length} lower bracket${r.excludedBands.length > 1 ? 's have' : ' has'} been removed. Extra tax vs. standard progressive: ${fmt(r.exclusionExtra)}. Most calculators miss this.</div>` : ''}
@@ -771,15 +771,15 @@ function renderChart(type){if(typeof Chart==='undefined')return;
 function generatePdf() {
   if (!RESULT) return;
   const R       = RESULT;
-  const dateStr = new Date().toLocaleDateString('en-EG', { day:'numeric', month:'long', year:'numeric' });
+  const dateStr = new Date().toLocaleDateString('sw-TZ', { day:'numeric', month:'long', year:'numeric' });
   const refNo   = 'AFT-EG-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">@ ${(b.rate*100)}% on EGP ${Math.round(b.income).toLocaleString()}</td><td class="num red">(EGP ${Math.round(b.tax).toLocaleString()})</td></tr>`
+    `<tr><td style="padding-left:14px;color:#4b5563">@ ${(b.rate*100)}% kwa EGP ${Math.round(b.income).toLocaleString()}</td><td class="num red">(EGP ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
-<title>AfroTools Egypt Salary Tax — ${refNo}</title>
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
+<title>AfroTools Kodi ya Mshahara ya Misri — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#1a0505 0%,#2e0a0a 100%);padding:28px 36px 22px;color:#fff}
 .cover-top{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px}
@@ -808,12 +808,12 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
-  <div class="doc-title">Egypt Salary Tax<br><span>Summary 2025</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/egypt/eg-paye</div>
-  <div class="eta-badge">ETA 2025 · Law No. 7 of 2024</div>
+  <div class="doc-title">Kodi ya Mshahara ya Misri<br><span>Muhtasari 2025</span></div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/egypt/kikokotoo-kodi-mshahara</div>
+  <div class="eta-badge">ETA 2025 · Sheria Na. 7 ya 2024</div>
 </div>
 <div class="body">
   <div class="sh">
@@ -821,27 +821,27 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">Ghafi ya Mwaka</div><div class="sh-val">EGP ${Math.round(R.gross).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Income Tax</div><div class="sh-val red">EGP ${Math.round(R.tax).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">Mapato Kodi</div><div class="sh-val red">EGP ${Math.round(R.tax).toLocaleString()}</div></div>
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">kiwango halisi</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Sehemu ya 1 — Income &amp; Allowable Makato</div>
+  <div class="sec-head">Sehemu ya 1 — Mapato na Makato Yanayokubalika</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwaka</td><td class="num">EGP ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td style="padding-left:14px;color:#4b5563">Msamaha wa binafsi${R.personalExemption > 20000 ? ' (disability — 1.5×)' : ''}</td><td class="num green">(EGP ${R.personalExemption.toLocaleString()})</td></tr>
-    ${R.nosi > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">NOSI ya bima ya jamii (11%, insurable cap EGP 14,500/mwezi)</td><td class="num red">(EGP ${Math.round(R.nosi).toLocaleString()})</td></tr>` : ''}
-    ${R.health > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Bima ya afya (1%, no cap)</td><td class="num red">(EGP ${Math.round(R.health).toLocaleString()})</td></tr>` : ''}
+    <tr><td style="padding-left:14px;color:#4b5563">Msamaha wa binafsi${R.personalExemption > 20000 ? ' (ulemavu — mara 1.5)' : ''}</td><td class="num green">(EGP ${R.personalExemption.toLocaleString()})</td></tr>
+    ${R.nosi > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">NOSI ya bima ya jamii (11%, kikomo cha mapato yanayokatiwa bima EGP 14,500 kwa mwezi)</td><td class="num red">(EGP ${Math.round(R.nosi).toLocaleString()})</td></tr>` : ''}
+    ${R.health > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Bima ya afya (1%, hakuna kikomo)</td><td class="num red">(EGP ${Math.round(R.health).toLocaleString()})</td></tr>` : ''}
     <tr><td style="font-weight:600">Mapato Halisi ya Mwaka Yanayotozwa Kodi (NATI)</td><td class="num muted">EGP ${Math.round(R.nati).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 2 — Hesabu ya Kodi ya Mapato (ETA 2025)</div>
   <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">NATI below EGP 40,000 — in 0% band</td></tr>'}
-    ${R.exclusionExtra > 0 ? `<tr><td style="color:#7f1d1d;padding-left:14px">Marekebisho ya kuondoa bendi (${R.excludedBands.length} band${R.excludedBands.length>1?'s':''} removed)</td><td class="num red">EGP ${Math.round(R.exclusionExtra).toLocaleString()}</td></tr>` : ''}
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">NATI chini ya EGP 40,000 — katika bendi ya 0%</td></tr>'}
+    ${R.exclusionExtra > 0 ? `<tr><td style="color:#7f1d1d;padding-left:14px">Marekebisho ya kuondoa bendi (${R.excludedBands.length} bendi zimeondolewa)</td><td class="num red">EGP ${Math.round(R.exclusionExtra).toLocaleString()}</td></tr>` : ''}
     <tr class="total"><td>Jumla ya Kodi ya Mapato</td><td class="num red">${R.isExempt ? 'Nil' : '(EGP ' + Math.round(R.tax).toLocaleString() + ')'}</td></tr>
   </table>
-  ${R.hasExclusion ? `<div class="notice">⚠ <strong>Bracket exclusion applied:</strong> NATI of EGP ${Math.round(R.nati).toLocaleString()} triggers Egypt's tiering rule — ${R.excludedBands.length} lower tax bracket${R.excludedBands.length>1?'s':''} removed. Extra tax vs. standard progressive calculation: EGP ${Math.round(R.exclusionExtra).toLocaleString()}. Most salary calculators miss this, understating actual tax liability.</div>` : ''}
+  ${R.hasExclusion ? `<div class="notice">⚠ <strong>Utaratibu wa kuondoa bendi umetumika:</strong> NATI ya EGP ${Math.round(R.nati).toLocaleString()} inatumia kanuni ya mabanda ya Misri — ${R.excludedBands.length} bendi za chini za kodi zimeondolewa. Extra tax vs. hesabu ya kawaida ya hatua: EGP ${Math.round(R.exclusionExtra).toLocaleString()}. Vikokotoo vingi vya mshahara hukosa kanuni hii na kupunguza kiasi halisi cha wajibu wa kodi.</div>` : ''}
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mshahara Halisi</div>
   <table>
@@ -851,7 +851,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <tr><td style="font-weight:700">Jumla ya Makato</td><td class="num red">(EGP ${Math.round(R.totalMakato).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#CE1126;font-weight:800">Mshahara Halisi kwa Mwaka</td><td class="num green">EGP ${Math.round(R.netAnnual).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#CE1126;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">EGP ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
-    <tr><td style="color:#9ca3af">Daily equivalent (÷ 365)</td><td class="num muted">EGP ${Math.round(R.netAnnual/365).toLocaleString()}</td></tr>
+    <tr><td style="color:#9ca3af">Kiasi sawa kwa siku (÷ 365)</td><td class="num muted">EGP ${Math.round(R.netAnnual/365).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri</div>
@@ -859,14 +859,14 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <tr><td style="color:#374151">Mshahara ghafi wa mfanyakazi</td><td class="num">EGP ${Math.round(R.gross).toLocaleString()}</td></tr>
     <tr><td style="color:#374151">NOSI ya mwajiri (18.75%, kikomo EGP 14,500/mwezi)</td><td class="num red">EGP ${Math.round(R.employerNosi).toLocaleString()}</td></tr>
     <tr><td style="color:#374151">Bima ya afya ya mwajiri (3.25%, hakuna kikomo)</td><td class="num red">EGP ${Math.round(R.employerHealth).toLocaleString()}</td></tr>
-    <tr class="total"><td style="font-weight:800">Total Gharama ya Mwajiri</td><td class="num red">EGP ${Math.round(R.totalEmployerCost).toLocaleString()}</td></tr>
+    <tr class="total"><td style="font-weight:800">Jumla ya Gharama ya Mwajiri</td><td class="num red">EGP ${Math.round(R.totalEmployerCost).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 5 — Msingi wa Kisheria na Vyanzo</div>
   <table>
-    <tr><td style="width:28%"><span class="src">Law 91/2005</span>Income Tax Law</td><td style="color:#6b7280;font-size:8pt">Progressive 0%–27.5% on salary income. Amended by Law No. 7 of 2024 — 0% threshold raised to EGP 40,000, personal msamahaion to EGP 20,000.</td></tr>
-    <tr><td><span class="src">Law 148/2019</span>NOSI Pension Law</td><td style="color:#6b7280;font-size:8pt">Employee: 11% (social ins.) + 1% (health) = 12%. Employer: 18.75% + 3.25% = 22%. 2025 insurable cap: EGP 14,500/mwezi. Caps rise 15%/mwaka until 2027.</td></tr>
-    <tr><td><span class="src">ETA</span>Egyptian Mamlaka ya Kodi</td><td style="color:#6b7280;font-size:8pt">Monthly withheld tax due by 15th of following month. Annual reconciliation by Januari 31. New employee registration within 15 days of hiring.</td></tr>
+    <tr><td style="width:28%"><span class="src">Sheria 91/2005</span>Sheria ya Kodi ya Mapato</td><td style="color:#6b7280;font-size:8pt">Viwango vya hatua vya 0%–27.5% kwa mapato ya mshahara. Sheria Na. 7 ya 2024 iliongeza kizingiti cha 0% hadi EGP 40,000 na msamaha binafsi hadi EGP 20,000.</td></tr>
+    <tr><td><span class="src">Sheria 148/2019</span>Sheria ya Pensheni ya NOSI</td><td style="color:#6b7280;font-size:8pt">Mfanyakazi: 11% (bima ya jamii) + 1% (afya) = 12%. Mwajiri: 18.75% + 3.25% = 22%. Kikomo cha mapato yanayokatiwa bima mwaka 2025 ni EGP 14,500 kwa mwezi. Kikomo huongezeka 15% kwa mwaka hadi 2027.</td></tr>
+    <tr><td><span class="src">ETA</span>Egyptian Mamlaka ya Kodi</td><td style="color:#6b7280;font-size:8pt">Kodi iliyokatwa kwa mwezi inawasilishwa ifikapo tarehe 15 ya mwezi unaofuata. Usawazishaji wa mwaka unafanywa ifikapo Januari 31. Mfanyakazi mpya anasajiliwa ndani ya siku 15 baada ya kuajiriwa.</td></tr>
   </table>
 </div>
 <div class="footer" style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
@@ -876,7 +876,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Informational purposes only. Si ushauri rasmi wa kodi. Bracket exclusion thresholds are approximate — verify with ETA (eta.gov.eg) or a qualified Egyptian tax professional.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -912,9 +912,9 @@ function whatsappShare() {
 // ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa mshahara wa Egypt: Gross EGP ${Math.round(RESULT.gross).toLocaleString()}/mwaka → Halisi EGP ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/egypt/eg-paye`;
+  const text = `Muhtasari wa mshahara wa Egypt: Ghafi EGP ${Math.round(RESULT.gross).toLocaleString()}/mwaka → Halisi EGP ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/egypt/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({ title: 'My Egypt Salary Tax', text, url: 'https://afrotools.com/egypt/eg-paye' });
+    navigator.share({ title: 'My Kodi ya Mshahara ya Misri', text, url: 'https://afrotools.com/sw/egypt/kikokotoo-kodi-mshahara/' });
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('egShareBtn');
@@ -924,7 +924,16 @@ function shareResult() {
 }
 
 // ── AI ADVISOR ────────────────────────────────────────────────
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -934,32 +943,32 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Egypt salary tax analysis (2025, Law No. 7 of 2024):
+  const prompt = `Uchambuzi wa kodi ya mshahara ya Misri (2025, Sheria Na. 7 ya 2024):
 - Ghafi ya mwaka: EGP ${Math.round(R.gross).toLocaleString()}
-- Msamaha wa binafsi: EGP ${R.personalExemption.toLocaleString()}${R.personalExemption > 20000 ? ' (disability)' : ''}
+- Msamaha wa binafsi: EGP ${R.personalExemption.toLocaleString()}${R.personalExemption > 20000 ? ' (ulemavu)' : ''}
 - NOSI ya bima ya jamii (11%): EGP ${Math.round(R.nosi).toLocaleString()}
 - Bima ya afya (1%): EGP ${Math.round(R.health).toLocaleString()}
 - Mapato Halisi ya Mwaka Yanayotozwa Kodi (NATI): EGP ${Math.round(R.nati).toLocaleString()}
-- Kodi ya mapato (standard): EGP ${Math.round(R.standardTax).toLocaleString()}
-- Bracket exclusion extra tax: EGP ${Math.round(R.exclusionExtra).toLocaleString()}
-- jumla income tax: EGP ${Math.round(R.tax).toLocaleString()}
-- Excluded brackets: ${R.excludedBands.length} (${R.hasExclusion ? 'bracket exclusion rule triggered' : 'not triggered'})
+- Kodi ya mapato (kawaida): EGP ${Math.round(R.standardTax).toLocaleString()}
+- Kodi ya ziada ya kuondoa bendi: EGP ${Math.round(R.exclusionExtra).toLocaleString()}
+- Jumla ya kodi ya mapato: EGP ${Math.round(R.tax).toLocaleString()}
+- Mabanda yaliyoondolewa: ${R.excludedBands.length} (${R.hasExclusion ? 'utaratibu wa kuondoa bendi umetumika' : 'haujatumika'})
 - Halisi ya mwezi: EGP ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Employer extra cost (NOSI 18.75% + health 3.25%): EGP ${Math.round(R.employerNosi + R.employerHealth).toLocaleString()}/mwaka
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
+- Gharama ya ziada ya mwajiri (NOSI 18.75% + health 3.25%): EGP ${Math.round(R.employerNosi + R.employerHealth).toLocaleString()}/mwaka
 
-Toa: 1) muhtasari wa wazi kwa Kiswahili of their tax position including bracket exclusion impact if applicable 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown, alama za orodha, wala nyota.`;
+Toa: 1) muhtasari wa wazi kwa Kiswahili wa hali ya kodi, ukijumuisha athari ya kuondoa bendi inapohusika 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown, alama za orodha, wala nyota.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: 'You are AfroTools Mshauri wa Kodi wa AI specialising in Egyptian personal income tax — ETA progressive tax, NOSI ya bima ya jamii, Law No. 91 of 2005 as amended by Law No. 7 of 2024. Be concise, specific, and practical. Jibu kwa Kiswahili. Bila markdown, nyota, au vistari vya orodha.',
+        system: 'Wewe ni Mshauri wa Kodi wa AI anayebobea katika kodi ya mapato ya watu binafsi ya Misri — kodi ya hatua ya ETA, bima ya jamii ya NOSI, na Sheria Na. 91 ya 2005 iliyorekebishwa na Sheria Na. 7 ya 2024. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown, nyota, au vistari vya orodha.',
         messages: [{ role: 'user', content: prompt }]
       })
     });
-    if (!res.ok) throw new hitilafu('HTTP ' + res.status);
+    if (!res.ok) throw new Error('HTTP ' + res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi. Matokeo yako ya hesabu hapo juu ni sahihi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -981,6 +990,7 @@ Toa: 1) muhtasari wa wazi kwa Kiswahili of their tax position including bracket 
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if (!msg || !RESULT) return;
@@ -998,7 +1008,7 @@ async function sendChat() {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        system: `AfroTools Mshauri wa Kodi wa AI, Egypt. User: Gross EGP ${Math.round(R.gross).toLocaleString()}/mwaka, halisi EGP ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}${R.hasExclusion ? ', bracket exclusion rule triggered' : ''}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system: `AfroTools Mshauri wa Kodi wa AI wa Misri. Mtumiaji: Ghafi EGP ${Math.round(R.gross).toLocaleString()}/mwaka, halisi EGP ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}${R.hasExclusion ? ', utaratibu wa kuondoa bendi umetumika' : ''}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages: CHAT_HISTORY
       })
     });

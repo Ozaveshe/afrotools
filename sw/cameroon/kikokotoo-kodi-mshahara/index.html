@@ -166,7 +166,7 @@
                 <div><div class="tog-label">CNPS ya Hifadhi ya Jamii</div><div class="tog-rate">4.2% ya mfanyakazi — inapunguzwa kwenye kodi</div></div>
               </div>
             </div>
-            <p class="f-note" lang="en" data-explicit-language-fallback="true">CNPS employee pension contribution is 4.2% of pensionable salary, capped at XAF 750,000/mwezi. The kikokotoo also applies the kila mwaka XAF 500,000 professional allowance before IRPP.</p>
+            <p class="f-note" lang="en" data-explicit-language-fallback="true">Mchango wa pensheni wa CNPS wa mfanyakazi ni 4.2% ya mshahara unaostahili pensheni, ukiwa na kikomo cha XAF 750,000 kwa mwezi. Kikokotoo pia kinatumia posho ya kitaaluma ya XAF 500,000 kwa mwaka kabla ya IRPP.</p>
           </div>
           <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button>
         </div>
@@ -259,9 +259,9 @@
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">Pensheni ya CNPS ya Mfanyakazi</span><span class="band-rate">4.2% of capped salary base</span></div>
-          <div class="band-row"><span class="band-range">Employer baseline CNPS</span><span class="band-rate">11.2% of capped salary base</span></div>
-          <p class="band-note" lang="en" data-explicit-language-fallback="true">CNPS uses a capped salary base of XAF 750,000/mwezi for pensions and family benefits. Employer accident-at-work premiums vary by risk group and are not included in this baseline estimate.</p>
+          <div class="band-row"><span class="band-range">Pensheni ya CNPS ya Mfanyakazi</span><span class="band-rate">4.2% ya msingi wa mshahara wenye kikomo</span></div>
+          <div class="band-row"><span class="band-range">Employer baseline CNPS</span><span class="band-rate">11.2% ya msingi wa mshahara wenye kikomo</span></div>
+          <p class="band-note" lang="en" data-explicit-language-fallback="true">CNPS hutumia msingi wa mshahara wenye kikomo cha XAF 750,000 kwa mwezi kwa pensheni na mafao ya familia. Malipo ya mwajiri ya ajali kazini hutofautiana kwa kundi la hatari na hayajajumuishwa katika makadirio haya ya msingi.</p>
         </div>
       </div>
             <div class="disclaimer">
@@ -526,11 +526,11 @@ function setChart(t,b){CHART_TYPE=t;document.querySelectorAll('.chart-tab').forE
 function renderChart(type){if(typeof Chart==='undefined')return;if(!RESULT)return;const R=RESULT;const canvas=document.getElementById('mainChart');if(CHART){CHART.destroy();CHART=null;}
 if(type==='donut'){CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Halisi','IRPP + CAC','CNPS'],datasets:[{data:[R.net,R.annualDGI,R.cnps],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}});}
 else if(type==='bar'){const bands=R.bandBreakdown.filter(b=>b.tax>0);if(!bands.length)return;CHART=new Chart(canvas,{type:'bar',data:{labels:bands.map(b=>(b.rate*100)+'%'),datasets:[{label:'Kodi (XAF)',data:bands.map(b=>b.tax),backgroundColor: AfroChartColors.series.slice(0, bands.length),borderRadius:5}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{y:{ticks:{callback:v=>'XAF'+(v/1000000).toFixed(1)+'M',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid}},x:{ticks:{font:{size:10,weight:'600'}}}}}});}}
-function generatePdf(){if(!RESULT)return;const R=RESULT;const dateStr=new Date().toLocaleDateString('en-CM',{day:'numeric',month:'long',year:'numeric'});const refNo='AFT-CM-PAYE-'+Date.now().toString(36).toUpperCase().slice(-6);
+function generatePdf(){if(!RESULT)return;const R=RESULT;const dateStr=new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});const refNo='AFT-CM-PAYE-'+Date.now().toString(36).toUpperCase().slice(-6);
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Rate ' + (b.rate*100) + '% on XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Kiwango ' + (b.rate*100) + '% kwa XAF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Cameroon PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#007A5E 0%,#00563B 100%);padding:28px 36px 22px;color:#fff}
@@ -559,11 +559,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Cameroon PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/cameroon/cm-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/cameroon/kikokotoo-kodi-mshahara</div>
   <div class="badge">IRPP 2025/26 · CAC · CNPS</div>
 </div>
 <div class="body">
@@ -572,7 +572,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">Ghafi ya Mwaka</div><div class="sh-val">XAF ${Math.round(R.gross).toLocaleString()}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Annual IRPP + CAC</div><div class="sh-val red">XAF ${Math.round(R.annualDGI).toLocaleString()}</div></div>
+    <div class="shi"><div class="sh-lbl">IRPP ya Mwaka + CAC</div><div class="sh-val red">XAF ${Math.round(R.annualDGI).toLocaleString()}</div></div>
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">kiwango halisi</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
@@ -580,7 +580,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 1 — Mapato ya Mwaka na Makato</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwaka</td><td class="num">XAF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.cnps > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNPS employee pension (4.2%)</td><td class="num red">(XAF ${Math.round(R.cnps).toLocaleString()})</td></tr>` : ''}
+    ${R.cnps > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNPS pensheni ya mfanyakazi (4.2%)</td><td class="num red">(XAF ${Math.round(R.cnps).toLocaleString()})</td></tr>` : ''}
     <tr><td style="padding-left:14px;color:#4b5563">Mshahara baada ya CNPS</td><td class="num muted">XAF ${Math.round(R.salaryAfterCnps).toLocaleString()}</td></tr>
     <tr><td style="padding-left:14px;color:#4b5563">Posho ya kitaaluma</td><td class="num red">(XAF ${Math.round(CAMEROON_PROFESSIONAL_ALLOWANCE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:600">Mapato yanayokadiriwa kwa IRPP</td><td class="num muted">XAF ${Math.round(R.assessableIncome).toLocaleString()}</td></tr>
@@ -591,7 +591,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato katika bendi ya 0% — hakuna PAYE inayodaiwa</td></tr>'}
     <tr><td style="padding-left:14px;color:#4b5563">IRPP kabla ya CAC</td><td class="num red">XAF ${Math.round(R.annualIRPP).toLocaleString()}</td></tr>
     <tr><td style="padding-left:14px;color:#4b5563">CAC (10% of IRPP)</td><td class="num red">XAF ${Math.round(R.annualCAC).toLocaleString()}</td></tr>
-    <tr class="total"><td>Annual IRPP + CAC</td><td class="num red">XAF ${Math.round(R.annualDGI).toLocaleString()}</td></tr>
+    <tr class="total"><td>IRPP ya Mwaka + CAC</td><td class="num red">XAF ${Math.round(R.annualDGI).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwaka wa Mshahara Halisi</div>
@@ -603,10 +603,10 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <tr class="total"><td style="color:#2563EB;font-weight:800">Mshahara Halisi kwa Mwezi (est.)</td><td class="num green">XAF ${Math.round(R.net/12).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri (Annual)</div>
+  <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri (Mwaka)</div>
   <table>
     <tr><td>Mshahara ghafi wa mfanyakazi</td><td class="num">XAF ${Math.round(R.gross).toLocaleString()}</td></tr>
-    <tr><td>Employer baseline CNPS (11.2%)</td><td class="num red">XAF ${Math.round(R.empCNPS).toLocaleString()}</td></tr>
+    <tr><td>Msingi wa mwajiri CNPS (11.2%)</td><td class="num red">XAF ${Math.round(R.empCNPS).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Jumla ya Gharama ya Mwajiri kwa Mwaka</td><td class="num red">XAF ${Math.round(R.empCost).toLocaleString()}</td></tr>
   </table>
 
@@ -624,7 +624,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DGI Cameroon au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -643,9 +643,21 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   }
 }
 
-function shareResult(){if (!RESULT)return;const text=`Cameroon PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/mwaka -> Halisi XAF ${Math.round(RESULT.net).toLocaleString()}/mwaka after IRPP, CAC and CNPS (${pct(RESULT.effectiveRate)} kiwango halisi). afrotools.com/cameroon/cm-paye`;if(navigator.share){navigator.share({title:'My Cameroon PAYE',text,url:'https://afrotools.com/cameroon/cm-paye'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('cmShareBtn');btn.textContent='✓ Imenakiliwa!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Shiriki Matokeo`,2500);}}
-async function getAI(){if (!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');const respEl=document.getElementById('aiResp');btn.disabled=true;btn.textContent='Inachambua...';respEl.style.display='block';respEl.className='ai-response typing';respEl.textContent='';document.getElementById('aiStatus').style.display='none';const prompt=`Cameroon PAYE 2025: Gross XAF ${Math.round(R.gross).toLocaleString()}/mwaka, CNPS XAF ${Math.round(R.cnps).toLocaleString()}, assessable income XAF ${Math.round(R.assessableIncome).toLocaleString()}, IRPP XAF ${Math.round(R.annualIRPP).toLocaleString()}, CAC XAF ${Math.round(R.annualCAC).toLocaleString()}, halisi XAF ${Math.round(R.net).toLocaleString()}, kiwango halisi ${pct(R.effectiveRate)}. Summarize position in 150 words.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'AfroTools Tax Advisor - Cameroon payroll tax. Concise, practical, no markdown.',messages:[{role:'user',content:prompt}]})});if(!res.ok)throw new hitilafu('HTTP');const data=await res.json();const text=data.text||'Imeshindikana kutengeneza uchambuzi.';respEl.className='ai-response';respEl.textContent='';let i=0;const type=()=>{if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Uliza hapa chini ↓';}};type();}catch(err){respEl.textContent='AI haipatikani kwa sasa.';btn.disabled=false;btn.textContent='Jaribu Tena';}}
-async function sendChat(){const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Cameroon tax advisor. Concise.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'hitilafu';CHAT_HISTORY.push({role:'assistant',content:data.text||'hitilafu'});msgs.scrollTop=msgs.scrollHeight;}catch(e){aiEl.textContent='Network hitilafu.';}}
+function shareResult(){if (!RESULT)return;const text=`Cameroon PAYE: Ghafi XAF ${Math.round(RESULT.gross).toLocaleString()}/mwaka -> Halisi XAF ${Math.round(RESULT.net).toLocaleString()}/mwaka baada ya IRPP, CAC na CNPS (${pct(RESULT.effectiveRate)} kiwango halisi). afrotools.com/sw/cameroon/kikokotoo-kodi-mshahara`;if(navigator.share){navigator.share({title:'PAYE Yangu ya Cameroon',text,url:'https://afrotools.com/sw/cameroon/kikokotoo-kodi-mshahara/'});}else if(navigator.clipboard){navigator.clipboard.writeText(text);const btn=document.getElementById('cmShareBtn');btn.textContent='✓ Imenakiliwa!';setTimeout(()=>btn.innerHTML=`<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/><line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/><line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/></svg> Shiriki Matokeo`,2500);}}
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
+async function getAI(){
+  if (!ensureSwAiConsent()) return;
+  if (!RESULT)return;const R=RESULT;const btn=document.getElementById('aiBtn');const respEl=document.getElementById('aiResp');btn.disabled=true;btn.textContent='Inachambua...';respEl.style.display='block';respEl.className='ai-response typing';respEl.textContent='';document.getElementById('aiStatus').style.display='none';const prompt=`Cameroon PAYE 2025: Ghafi XAF ${Math.round(R.gross).toLocaleString()}/mwaka, CNPS XAF ${Math.round(R.cnps).toLocaleString()}, mapato yanayokokotolewa XAF ${Math.round(R.assessableIncome).toLocaleString()}, IRPP XAF ${Math.round(R.annualIRPP).toLocaleString()}, CAC XAF ${Math.round(R.annualCAC).toLocaleString()}, halisi XAF ${Math.round(R.net).toLocaleString()}, kiwango halisi ${pct(R.effectiveRate)}. Fupisha hali hii kwa maneno yasiyozidi 150.`;try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Wewe ni mshauri wa kodi wa AfroTools wa mishahara ya Kameruni. Jibu kwa Kiswahili, kwa ufupi na kwa vitendo, bila markdown.',messages:[{role:'user',content:prompt}]})});if(!res.ok)throw new Error('HTTP');const data=await res.json();const text=data.text||'Imeshindikana kutengeneza uchambuzi.';respEl.className='ai-response';respEl.textContent='';let i=0;const type=()=>{if(i<text.length){respEl.textContent+=text[i++];setTimeout(type,12);}else{document.getElementById('aiChat').classList.add('on');CHAT_HISTORY=[{role:'user',content:prompt},{role:'assistant',content:text}];btn.textContent='Uliza hapa chini ↓';}};type();}catch(err){respEl.textContent='AI haipatikani kwa sasa.';btn.disabled=false;btn.textContent='Jaribu Tena';}}
+async function sendChat(){
+  if (!ensureSwAiConsent()) return;
+  const input=document.getElementById('chatIn');const msg=input.value.trim();if(!msg||!RESULT)return;input.value='';const msgs=document.getElementById('chatMsgs');msgs.innerHTML+=`<div class="msg u">${msg.replace(/</g,'&lt;').replace(/>/g,'&gt;')}</div>`;const aiEl=document.createElement('div');aiEl.className='msg a';aiEl.textContent='…';msgs.appendChild(aiEl);msgs.scrollTop=msgs.scrollHeight;CHAT_HISTORY.push({role:'user',content:msg});try{const res=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Wewe ni mshauri wa kodi wa Kameruni. Jibu kwa Kiswahili na kwa ufupi.',messages:CHAT_HISTORY})});const data=await res.json();aiEl.textContent=data.text||'hitilafu';CHAT_HISTORY.push({role:'assistant',content:data.text||'hitilafu'});msgs.scrollTop=msgs.scrollHeight;}catch(e){aiEl.textContent='Network hitilafu.';}}
 document.getElementById('grossSalary').addEventListener('keydown',e=>{if(e.key==='Enter')calculate();});
 
 // Net-to-Ghafi: register forward function

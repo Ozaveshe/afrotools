@@ -198,7 +198,7 @@
                 <div><div class="tog-label">CNPS ya Hifadhi ya Jamii</div><div class="tog-rate">6.3% ya mfanyakazi — inapunguzwa kwenye kodi</div></div>
               </div>
             </div>
-            <p class="f-note" lang="en" data-explicit-language-fallback="true">Pensheni ya CNPS ya Mfanyakazi contribution (6.3%) is deducted before the ITS bands are applied. Employer-side payroll costs vary by sector because the accident-at-work rate ranges from 2% to 5%.</p>
+            <p class="f-note" lang="en" data-explicit-language-fallback="true">Mchango wa pensheni wa CNPS wa mfanyakazi (6.3%) hukatwa kabla ya mabanda ya ITS kutumika. Gharama za mishahara za mwajiri hutofautiana kwa sekta kwa sababu kiwango cha ajali kazini ni kati ya 2% na 5%.</p>
           </div>
 
           <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Mshahara Halisi &rarr;</button>
@@ -310,8 +310,8 @@
           <span class="tog-arrow">▾</span>
         </div>
         <div class="bands-body">
-          <div class="band-row"><span class="band-range">Pensheni ya CNPS ya Mfanyakazi</span><span class="band-rate">6.3% of gross</span></div>
-          <div class="band-row"><span class="band-range">Employer baseline social cost</span><span class="band-rate">15.45% of gross</span></div>
+          <div class="band-row"><span class="band-range">Pensheni ya CNPS ya Mfanyakazi</span><span class="band-rate">6.3% ya ghafi</span></div>
+          <div class="band-row"><span class="band-range">Employer baseline social cost</span><span class="band-rate">15.45% ya ghafi</span></div>
           <p class="band-note">Makadirio ya mwajiri yanayoonyeshwa hapa yanatumia 7.7% ya pensheni, 5% ya mafao ya familia, 0.75% ya uzazi, na kiwango cha msingi cha 2% cha ajali kazini. Sekta zenye hatari kubwa zinaweza kulipa zaidi.</p>
         </div>
       </div>
@@ -410,7 +410,7 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Mabanda rasmi ya kila mwezi ya impôt brut huanza na msamaha wa kwanza wa <strong>XOF 75,000</strong> kisha hupanda kupitia <strong>16%, 21%, 24%, 28%</strong> na <strong>32%</strong>. ITS ya mwisho inayolipwa inaweza kupunguzwa kwa kiasi kikubwa na ratiba ya RICF, ambayo hutegemea idadi ya sehemu za familia za mlipakodi.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Côte d'Ivoire uses the XOF (West African CFA franc), fixed to the euro at 655.957. This kikokotoo shows a <strong>baseline employer social-cost estimate</strong> using 7.7% retirement, 5% family benefits, 0.75% maternity and a default 2% accident-at-work rate. Verify specialized employer classifications directly with <a href="https://www.dgi.gouv.ci">dgi.gouv.ci</a> and <a href="https://www.cnps.ci">cnps.ci</a>.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">Côte d'Ivoire uses the XOF (West African CFA franc), fixed to the euro at 655.957. This kikokotoo shows a <strong>makadirio ya msingi ya gharama za kijamii za mwajiri</strong> kwa kutumia pensheni 7.7%, mafao ya familia 5%, uzazi 0.75%, na kiwango cha kawaida cha ajali kazini cha 2%. Thibitisha uainishaji maalum wa mwajiri moja kwa moja na <a href="https://www.dgi.gouv.ci">dgi.gouv.ci</a> and <a href="https://www.cnps.ci">cnps.ci</a>.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -436,7 +436,7 @@
       </div>
     </div>
     <div class="ng-guide-footer-note">
-      <p lang="en" data-explicit-language-fallback="true">CNPS employee retirement: 6.3% of gross and deductible before ITS. RICF is applied by family parts. Employer cost shown on this page is a baseline estimate using the default 2% accident-at-work rate.</p>
+      <p lang="en" data-explicit-language-fallback="true">CNPS employee retirement: 6.3% ya ghafi and deductible before ITS. RICF is applied by family parts. Employer cost shown on this page is a baseline estimate using the default 2% accident-at-work rate.</p>
     </div>
   </div>
 </section>
@@ -700,9 +700,9 @@ function renderRows(R) {
     </div>
     <div class="res-section">
       <div class="res-section-title">ITS (Income Tax)</div>
-      ${row('Impôt brut kabla ya RICF', fmt(R.monthlyIB), 'c-red')}
-      ${row('RICF family reduction', fmt(R.monthlyRICF), 'c-mut')}
-      ${row('ITS payable', fmt(R.monthlyITS), 'c-red')}
+      ${row('Kodi ghafi kabla ya RICF', fmt(R.monthlyIB), 'c-red')}
+      ${row('Punguzo la familia la RICF', fmt(R.monthlyRICF), 'c-mut')}
+      ${row('ITS inayolipwa', fmt(R.monthlyITS), 'c-red')}
     </div>
     <div class="res-section">
       ${row('Jumla ya Makato', fmt(R.totalEmployeeMakato), 'c-red')}
@@ -756,14 +756,14 @@ function renderChart(type){if(typeof Chart==='undefined')return;
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('fr-CI',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr= new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-CI-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">Kiwango ${((b.rate*100))}% kwa XOF ${Math.round(b.income).toLocaleString('fr-CI')}</td><td class="num red">(XOF ${Math.round(b.tax).toLocaleString('fr-CI')})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Côte d'Ivoire PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
@@ -792,11 +792,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
-  <div class="doc-title">Côte d'Ivoire PAYE<br><span>Summary 2025</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/cote-divoire/ci-paye</div>
+  <div class="doc-title">Côte d'Ivoire PAYE<br><span>Muhtasari 2025</span></div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/cote-divoire/kikokotoo-kodi-mshahara</div>
   <div class="badge">ITS 2025 · RICF · CNPS</div>
 </div>
 <div class="body">
@@ -805,30 +805,30 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">Ghafi ya Mwezi</div><div class="sh-val">XOF ${Math.round(R.gross).toLocaleString('fr-CI')}</div></div>
     <div class="sh-div"></div>
-    <div class="shi"><div class="sh-lbl">Monthly ITS</div><div class="sh-val red">XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}</div></div>
+    <div class="shi"><div class="sh-lbl">ITS ya Mwezi</div><div class="sh-val red">XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}</div></div>
     <div class="sh-div"></div>
     <div class="shi"><div class="sh-lbl">kiwango halisi</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Sehemu ya 1 — Monthly Income & Makato</div>
+  <div class="sec-head">Sehemu ya 1 — Mapato na Makato ya Mwezi</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwezi</td><td class="num">XOF ${Math.round(R.gross).toLocaleString('fr-CI')}</td></tr>
-    ${R.cnps > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNPS employee retirement (6.3%)</td><td class="num red">(XOF ${Math.round(R.cnps).toLocaleString('fr-CI')})</td></tr>` : ''}
+    ${R.cnps > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNPS pensheni ya mfanyakazi (6.3%)</td><td class="num red">(XOF ${Math.round(R.cnps).toLocaleString('fr-CI')})</td></tr>` : ''}
     <tr><td style="font-weight:600">Mapato ya Mwezi Yanayotozwa Kodi</td><td class="num muted">XOF ${Math.round(R.gross - R.cnps).toLocaleString('fr-CI')}</td></tr>
   </table>
 
-  <div class="sec-head">Sehemu ya 2 — ITS Computation (2025)</div>
+  <div class="sec-head">Sehemu ya 2 — Hesabu ya ITS (2025)</div>
   <table>
-    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Income in 0% band — no ITS due</td></tr>'}
-    <tr><td style="padding-left:14px;color:#4b5563">Impôt brut kabla ya RICF</td><td class="num red">XOF ${Math.round(R.monthlyIB).toLocaleString('fr-CI')}</td></tr>
-    <tr><td style="padding-left:14px;color:#4b5563">RICF family reduction (${R.familyParts.toLocaleString('fr-CI')} part${R.familyParts > 1 ? 's' : ''})</td><td class="num muted">XOF ${Math.round(R.monthlyRICF).toLocaleString('fr-CI')}</td></tr>
-    <tr class="total"><td>Monthly ITS payable</td><td class="num red">XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}</td></tr>
+    ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato katika bendi ya 0% — hakuna ITS inayodaiwa</td></tr>'}
+    <tr><td style="padding-left:14px;color:#4b5563">Kodi ghafi kabla ya RICF</td><td class="num red">XOF ${Math.round(R.monthlyIB).toLocaleString('fr-CI')}</td></tr>
+    <tr><td style="padding-left:14px;color:#4b5563">RICF punguzo la familia (${R.familyParts.toLocaleString('fr-CI')} sehemu${R.familyParts > 1 ? '' : ''})</td><td class="num muted">XOF ${Math.round(R.monthlyRICF).toLocaleString('fr-CI')}</td></tr>
+    <tr class="total"><td>ITS ya Mwezi Inayolipwa</td><td class="num red">XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwezi wa Mshahara Halisi</div>
   <table>
     ${R.cnps > 0 ? `<tr><td>CNPS ya mfanyakazi</td><td class="num red">(XOF ${Math.round(R.cnps).toLocaleString('fr-CI')})</td></tr>` : ''}
-    <tr><td>ITS payable</td><td class="num red">(XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')})</td></tr>
+    <tr><td>ITS inayolipwa</td><td class="num red">(XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')})</td></tr>
     <tr><td style="font-weight:700">Jumla ya Makato ya Mwezi</td><td class="num red">(XOF ${Math.round(R.totalEmployeeMakato).toLocaleString('fr-CI')})</td></tr>
     <tr class="total"><td style="color:#0062CC;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}</td></tr>
     <tr class="total"><td style="color:#0062CC;font-weight:800">Mshahara Halisi kwa Mwaka</td><td class="num green">XOF ${Math.round(R.annualNet).toLocaleString('fr-CI')}</td></tr>
@@ -837,7 +837,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri (Mwezi)</div>
   <table>
     <tr><td>Mshahara ghafi wa mfanyakazi</td><td class="num">XOF ${Math.round(R.gross).toLocaleString('fr-CI')}</td></tr>
-    <tr><td>Baseline employer social cost (15.45%)</td><td class="num red">XOF ${Math.round(R.empCNPS).toLocaleString('fr-CI')}</td></tr>
+    <tr><td>Makadirio ya msingi ya gharama za kijamii za mwajiri (15.45%)</td><td class="num red">XOF ${Math.round(R.empCNPS).toLocaleString('fr-CI')}</td></tr>
     <tr class="total"><td style="font-weight:800">Jumla ya Gharama ya Mwajiri kwa Mwezi</td><td class="num red">XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString('fr-CI')}</td></tr>
   </table>
 </div>
@@ -845,10 +845,10 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div style="display:flex;justify-content:space-between;align-items:flex-start">
     <div>
       <div style="font-size:7pt;font-weight:700;color:#111827">AFRO<b style="color:#0062CC">TOOLS</b>.COM — Jukwaa la Vikokotoo vya Fedha Afrika</div>
-      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DGI and CNPS Côte d'Ivoire. Employer accident-at-work rates vary by sector.</div>
+      <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DGI na CNPS Côte d'Ivoire. Mwajiri viwango vya ajali kazini hutofautiana kwa sekta.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -869,9 +869,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Côte d'Ivoire: Gross XOF ${Math.round(RESULT.gross).toLocaleString('fr-CI')}/mwezi -> Halisi XOF ${Math.round(RESULT.netMonthly).toLocaleString('fr-CI')}/mwezi after CNPS, ITS and RICF (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/cote-divoire/ci-paye`;
+  const text = `Muhtasari wa PAYE wa Côte d'Ivoire: Ghafi XOF ${Math.round(RESULT.gross).toLocaleString('fr-CI')}/mwezi -> Halisi XOF ${Math.round(RESULT.netMonthly).toLocaleString('fr-CI')}/mwezi baada ya CNPS, ITS na RICF (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/cote-divoire/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Côte d\'Ivoire PAYE',text,url:'https://afrotools.com/cote-divoire/ci-paye'});
+    navigator.share({title:'PAYE Yangu ya Côte d\'Ivoire',text,url:'https://afrotools.com/sw/cote-divoire/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('ciShareBtn');
@@ -880,7 +880,16 @@ function shareResult() {
   }
 }
 
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -892,16 +901,16 @@ async function getAI() {
 
   const prompt = `Côte d'Ivoire PAYE analysis (2025, ITS):
 - Ghafi ya mwezi: XOF ${Math.round(R.gross).toLocaleString('fr-CI')}
-- CNPS employee (6.3%, deductible): XOF ${Math.round(R.cnps).toLocaleString('fr-CI')}/mwezi
-- Mapato yanayotozwa kodi after CNPS: XOF ${Math.round(R.gross - R.cnps).toLocaleString('fr-CI')}/mwezi
+- CNPS employee (6.3%, inayopunguzwa kwenye kodi): XOF ${Math.round(R.cnps).toLocaleString('fr-CI')}/mwezi
+- Mapato yanayotozwa kodi baada ya CNPS: XOF ${Math.round(R.gross - R.cnps).toLocaleString('fr-CI')}/mwezi
 - Family parts: ${R.familyParts.toLocaleString('fr-CI')}
 - kila mwezi impôt brut: XOF ${Math.round(R.monthlyIB).toLocaleString('fr-CI')}
 - kila mwezi RICF: XOF ${Math.round(R.monthlyRICF).toLocaleString('fr-CI')}
 - kila mwezi ITS: XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}
 - Halisi ya mwezi: XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Baseline employer social cost (15.45%): XOF ${Math.round(R.empCNPS).toLocaleString('fr-CI')}/mwezi
-- jumla employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString('fr-CI')}/mwezi
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
+- Makadirio ya msingi ya gharama za kijamii za mwajiri (15.45%): XOF ${Math.round(R.empCNPS).toLocaleString('fr-CI')}/mwezi
+- jumla gharama ya mwajiri: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString('fr-CI')}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Jibu kwa Kiswahili. Bila markdown.`;
 
@@ -909,7 +918,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za 
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Côte d\'Ivoire payroll tax, ITS, RICF and CNPS contributions. Be concise, practical. Jibu kwa Kiswahili. Bila markdown.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Côte d\'Ivoire payroll tax, ITS, RICF na CNPS contributions. Jibu kwa ufupi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown.',
         messages:[{role:'user',content:prompt}]
       })
     });
@@ -931,6 +940,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of ITS position 2) Njia mbili maalum za 
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if(!msg||!RESULT) return;
@@ -946,7 +956,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Côte d'Ivoire. User: kila mwezi gross XOF ${Math.round(R.gross).toLocaleString('fr-CI')}, halisi XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}, ITS XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Côte d'Ivoire. Mtumiaji: kila mwezi ghafi XOF ${Math.round(R.gross).toLocaleString('fr-CI')}, halisi XOF ${Math.round(R.netMonthly).toLocaleString('fr-CI')}, ITS XOF ${Math.round(R.monthlyITS).toLocaleString('fr-CI')}, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });

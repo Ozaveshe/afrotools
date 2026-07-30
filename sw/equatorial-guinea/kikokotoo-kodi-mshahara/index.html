@@ -276,7 +276,7 @@
       </div>
 
       <div class="disclaimer" style="font-size:.71rem;color:#666;line-height:1.6;padding:13px 16px;background:#f9f9f9;border:1px solid #ddd;border-radius:8px">
-        <strong>Disclaimer:</strong> Kwa madhumuni ya taarifa tu. Si ushauri rasmi wa kodi. Verify with Ministry of Finance or a qualified tax advisor.
+        <strong>Disclaimer:</strong> Kwa madhumuni ya taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na Wizara ya Fedha au mshauri wa kodi mwenye sifa.
       </div>
     </div>
   </div>
@@ -324,7 +324,7 @@
           <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;">Michango ya hifadhi ya jamii inasimamiwa na Instituto Nacional de Seguridad Social (INSESO). Wafanyakazi huchangia 4.5% ya mshahara ghafi, huku waajiri wakichangia 21.5% — mojawapo ya viwango vya juu vya mwajiri barani Afrika. Mchango wa mwajiri unahusisha pensheni za uzeeni, ulemavu, huduma za afya, na mafao ya uzazi. Michango ya kijamii haipunguzwi kutoka msingi wa kodi ya IRPF.</p>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">The IRPF applies seven progressive kila mwaka bands. kila mwaka income up to XAF 1,000,000 is fully msamaha from income tax. From XAF 1,000,001 to 3,000,000 a 10% rate applies, rising through 15%, 20%, 25%, and 30% bands before reaching 35% on income above XAF 25,000,000 per year. Oil-sector workers earning above the threshold face the full band structure, while many lower-paid workers in the formal sector pay minimal income tax.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.65;margin-bottom:0;" lang="en" data-explicit-language-fallback="true">IRPF hutumia mabanda saba ya hatua kwa mwaka. Mapato ya mwaka hadi XAF 1,000,000 yamesamehewa kodi ya mapato. Kiwango cha 10% hutumika kwa XAF 1,000,001 hadi 3,000,000, kisha 15%, 20%, 25%, na 30% kabla ya kufikia 35% kwa mapato zaidi ya XAF 25,000,000 kwa mwaka. Wafanyakazi wa sekta ya mafuta wenye mapato juu ya kizingiti hutumia muundo kamili wa mabanda, huku wafanyakazi wengi wa kipato cha chini katika sekta rasmi wakilipa kodi ndogo ya mapato.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -418,10 +418,44 @@ function setPeriod(e,n){PERIOD=e,document.querySelectorAll('.per-btn').forEach(e
 function toggleBands(e){const n=e.nextElementSibling;n.style.display='none'===n.style.display?'block':'none';const s=e.querySelector('.tog-arrow');s.style.transform='none'===s.style.transform||'rotate(0deg)'===s.style.transform?'rotate(180deg)':'rotate(0deg)'}
 function setChart(e,n){CHART_TYPE=e,document.querySelectorAll('.chart-tab').forEach(e=>e.classList.remove('on')),n.classList.add('on'),n.style.background='var(--primary)',n.style.color='#fff',renderChart(e)}
 function renderChart(e){if(typeof Chart==='undefined')return;if(!RESULT)return;const n=RESULT,s=document.getElementById('mainChart');CHART&&(CHART.destroy(),CHART=null),'donut'===e?CHART=new Chart(s,{type:'doughnut',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii'],datasets:[{data:[n.netMonthly,n.monthlyPAYE,n.socSec],backgroundColor: AfroChartColors.doughnut.slice(0, 3),borderWidth:2,borderColor:'#fff'}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{position:'bottom',labels:{font:{size:11,weight:'600'},padding:12}}}}}):'bar'===e?n.bandBreakdown.filter(e=>e.tax>0).length>0&&(CHART=new Chart(s,{type:'bar',data:{labels:n.bandBreakdown.filter(e=>e.tax>0).map(e=>(100*e.rate)+'%'),datasets:[{label:'Kodi ya Mwaka (XAF)',data:n.bandBreakdown.filter(e=>e.tax>0).map(e=>e.tax),backgroundColor: AfroChartColors.series[0],borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e6).toFixed(1)+'M'},grid:{color:'#eee'}},x:{ticks:{font:{size:10,weight:'600'}}}}}})):'employer'===e&&(CHART=new Chart(s,{type:'bar',data:{labels:['Halisi','Kodi ya IRPF','Hifadhi ya Jamii','Hifadhi ya Jamii ya Mwajiri'],datasets:[{label:'XAF',data:[n.netMonthly,n.monthlyPAYE,n.socSec,n.empSocSec],backgroundColor: AfroChartColors.doughnut.slice(0, 4),borderRadius:5}]},options:{responsive:!0,maintainAspectRatio:!1,plugins:{legend:{display:!1}},scales:{y:{ticks:{callback:e=>'XAF'+(e/1e3).toFixed(0)+'k'},grid:{color:'#eee'}}}}})),CHART}
-function generatePdf(){if(!RESULT)return;const e=RESULT,n=new Date().toLocaleDateString('en-GQ',{day:'numeric',month:'long',year:'numeric'}),s=`AFT-GQ-PAYE-${Date.now().toString(36).toUpperCase().slice(-6)}`;window.print()}
-function shareResult(){if(!RESULT)return;const e=`My Equatorial Guinea PAYE: Gross XAF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} effective).`,n=document.getElementById('gqShareBtn');navigator.clipboard&&(navigator.clipboard.writeText(e),n.textContent='✓ Imenakiliwa!',setTimeout(()=>n.textContent='Shiriki Matokeo',2500))}
-async function getAI(){if(!RESULT)return;const e=RESULT,n=document.getElementById('aiBtn'),s=document.getElementById('aiResp');n.disabled=!0,n.textContent='Inachambua...',s.style.display='block',s.className='ai-response',s.textContent='Generating analysis...';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Brief tax advisor for Equatorial Guinea PAYE. Concise.',messages:[{role:'user',content:'Summarize this calculation briefly in 2 sentences.'}]})});if(e.ok){const n=await e.json();s.textContent=n.text||'Analysis unavailable.',n.text&&(document.getElementById('aiChat').style.display='block')}}catch(e){s.textContent='Uchambuzi wa AI haupatikani kwa sasa.'}n.disabled=!1,n.textContent='Ask follow-up →'}
-async function sendChat(){const e=document.getElementById('chatIn'),n=e.value.trim();if(n&&RESULT){e.value='';const s=document.getElementById('chatMsgs');s.innerHTML+=`<div style="font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(37,99,235,.22);color:#fff;align-self:flex-end;max-width:85%">${n}</div>`;const r=document.createElement('div');r.style.cssText='font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);align-self:flex-start;max-width:95%',r.textContent='…',s.appendChild(r),s.scrollTop=s.scrollHeight}}
+function generatePdf(){
+  if(!RESULT)return;
+  const R=RESULT;
+  const dateStr=new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
+  const refNo='AFT-GQ-PAYE-SW-'+Date.now().toString(36).toUpperCase().slice(-6);
+  const bandRows=(R.bandBreakdown||[]).filter(b=>b.tax>0).map(b=>`<tr><td>Kiwango ${Math.round(b.rate*100)}% kwa XAF ${Math.round(b.income).toLocaleString()}</td><td class="num red">(XAF ${Math.round(b.tax).toLocaleString()})</td></tr>`).join('');
+  const annualGross=R.annualGross||R.gross*12;
+  const annualTax=R.annualTax||R.monthlyPAYE*12;
+  const annualNet=R.annualNet||R.netMonthly*12;
+  const html=`<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8"><title>Muhtasari wa IRPF wa Guinea ya Ikweta — ${refNo}</title>
+<style>*{box-sizing:border-box}body{font-family:Arial,sans-serif;color:#111827;line-height:1.5;margin:0}.cover{background:#183153;color:#fff;padding:28px 36px}.body{padding:24px 36px}.summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.metric{background:#f3f4f6;border-radius:8px;padding:12px}.metric small{display:block;color:#64748b}.metric strong{font-size:18px}h2{font-size:13px;text-transform:uppercase;color:#475569;border-bottom:1px solid #dbe3eb;padding-bottom:5px;margin-top:22px}table{width:100%;border-collapse:collapse}td{padding:7px 4px;border-bottom:1px solid #eef2f7}.num{text-align:right;font-weight:700}.red{color:#b42318}.notice{margin-top:22px;padding:12px;background:#f8fafc;color:#475569;font-size:12px}@media(max-width:520px){.summary{grid-template-columns:1fr}.cover,.body{padding-left:18px;padding-right:18px}}</style>
+</head><body><div class="cover"><strong>AFROTOOLS — Jukwaa la Zana za Afrika</strong><h1>Muhtasari wa IRPF wa Guinea ya Ikweta 2025/26</h1><small>Imetengenezwa ${dateStr} · Kumbukumbu ${refNo}</small></div><main class="body">
+<div class="summary"><div class="metric"><small>Mshahara ghafi wa mwezi</small><strong>XAF ${Math.round(R.gross).toLocaleString()}</strong></div><div class="metric"><small>IRPF ya mwezi</small><strong class="red">XAF ${Math.round(R.monthlyPAYE).toLocaleString()}</strong></div><div class="metric"><small>Mshahara halisi wa mwezi</small><strong>XAF ${Math.round(R.netMonthly).toLocaleString()}</strong></div></div>
+<h2>Sehemu ya 1 — Mapato na makato ya mwezi</h2><table><tr><td>Mshahara ghafi wa mwezi</td><td class="num">XAF ${Math.round(R.gross).toLocaleString()}</td></tr><tr><td>Hifadhi ya jamii ya mfanyakazi</td><td class="num red">(XAF ${Math.round(R.socSec||0).toLocaleString()})</td></tr><tr><td>IRPF ya mwezi</td><td class="num red">(XAF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr><tr><td>Mshahara halisi wa mwezi</td><td class="num">XAF ${Math.round(R.netMonthly).toLocaleString()}</td></tr></table>
+<h2>Sehemu ya 2 — Hesabu ya IRPF ya mwaka</h2><table>${bandRows||'<tr><td>Mapato katika bendi ya 0% — hakuna IRPF inayodaiwa</td><td class="num">XAF 0</td></tr>'}<tr><td>Mshahara ghafi wa mwaka</td><td class="num">XAF ${Math.round(annualGross).toLocaleString()}</td></tr><tr><td>IRPF ya mwaka</td><td class="num red">XAF ${Math.round(annualTax).toLocaleString()}</td></tr><tr><td>Mshahara halisi wa mwaka</td><td class="num">XAF ${Math.round(annualNet).toLocaleString()}</td></tr></table>
+<h2>Sehemu ya 3 — Msingi wa kisheria na vyanzo</h2><p>Wizara ya Fedha ya Guinea ya Ikweta · IRPF ya 2025/26 · INSESO. Viwango na misamaha vinaweza kubadilika kupitia sheria ya fedha.</p>
+<div class="notice">Makadirio ya kupanga tu. Huu si waraka rasmi wa kodi wala ushauri wa kitaalamu. Thibitisha viwango, misamaha, na wajibu wa uwasilishaji na Wizara ya Fedha au mshauri wa kodi mwenye sifa.</div>
+</main></body></html>`;
+  const blob=new Blob([html],{type:'text/html;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const w=window.open(url,'_blank');
+  if(w){w.addEventListener('load',()=>{setTimeout(()=>{w.print();setTimeout(()=>URL.revokeObjectURL(url),3000)},600)});setTimeout(()=>{try{w.print()}catch(e){}},1200);}
+}
+function shareResult(){if(!RESULT)return;const e=`My Equatorial Guinea PAYE: Ghafi XAF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XAF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} effective).`,n=document.getElementById('gqShareBtn');navigator.clipboard&&(navigator.clipboard.writeText(e),n.textContent='✓ Imenakiliwa!',setTimeout(()=>n.textContent='Shiriki Matokeo',2500))}
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
+async function getAI(){
+  if (!ensureSwAiConsent()) return;
+  if(!RESULT)return;const e=RESULT,n=document.getElementById('aiBtn'),s=document.getElementById('aiResp');n.disabled=!0,n.textContent='Inachambua...',s.style.display='block',s.className='ai-response',s.textContent='Inatengeneza uchambuzi...';try{const e=await fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({system:'Mshauri mfupi wa kodi wa PAYE ya Guinea ya Ikweta. Jibu kwa Kiswahili. Jibu kwa ufupi.',messages:[{role:'user',content:'Fupisha hesabu hii kwa Kiswahili katika sentensi mbili.'}]})});if(e.ok){const n=await e.json();s.textContent=n.text||'Uchambuzi haupatikani.',n.text&&(document.getElementById('aiChat').style.display='block')}}catch(e){s.textContent='Uchambuzi wa AI haupatikani kwa sasa.'}n.disabled=!1,n.textContent='Uliza swali la kufuatilia →'}
+async function sendChat(){
+  if (!ensureSwAiConsent()) return;
+  const e=document.getElementById('chatIn'),n=e.value.trim();if(n&&RESULT){e.value='';const s=document.getElementById('chatMsgs');s.innerHTML+=`<div style="font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(37,99,235,.22);color:#fff;align-self:flex-end;max-width:85%">${n}</div>`;const r=document.createElement('div');r.style.cssText='font-size:.78rem;padding:8px 11px;border-radius:6px;background:rgba(255,255,255,.06);color:rgba(255,255,255,.7);align-self:flex-start;max-width:95%',r.textContent='…',s.appendChild(r),s.scrollTop=s.scrollHeight}}
 </script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script><script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
 <script>window._grossToNet=function(g){var d=isOn('socSec')?g*0.045:0;return g-(d+calcAnnualIRPF(Math.max(0,(g-d)*12)).tax/12);};</script>
