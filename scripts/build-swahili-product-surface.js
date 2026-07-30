@@ -44,6 +44,11 @@ function filePath(rel) { return path.join(ROOT, rel); }
 function read(rel) { return fs.readFileSync(filePath(rel), 'utf8'); }
 function readJson(rel) { return JSON.parse(read(rel)); }
 function normalize(value) { return String(value).normalize('NFC').replace(/\r\n/g, '\n'); }
+function ownedByScopedParity(rel) {
+  return rel.startsWith('sw/')
+    && fs.existsSync(filePath(rel))
+    && read(rel).includes('scripts/build-sw-legal-government-insurance-parity.js');
+}
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
   return html.replace(/<\/body>(\s*<\/html>\s*)$/i, '<script defer src="/assets/js/lazy-analytics.js"></script>\n</body>$1');
@@ -580,7 +585,7 @@ const languageAccessibilityRepairs = [
 ];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
   repairScriptBoundaries(rel);
 }
@@ -629,7 +634,7 @@ output('sw/vault/index.html', bridgePage('vault'));
 // Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   repairVisibleLanguage(rel, visibleLanguageTransforms);
   repairScriptLanguage(rel, scriptLanguageRepairs);
 }
@@ -685,7 +690,7 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   ensureAccessibilityRuntime(rel);
 }
 

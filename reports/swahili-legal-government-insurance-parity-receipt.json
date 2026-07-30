@@ -1,0 +1,541 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-07-31",
+  "scope": "Swahili Mortgage & Property, Government and Insurance free-app parity",
+  "baseSha": "99898076a0329200e8f47c2e80a41a079b0df8b3",
+  "counts": {
+    "denominator": 97,
+    "accepted": 23,
+    "blocked": 74,
+    "byCategory": {
+      "legal": {
+        "denominator": 66,
+        "accepted": 0,
+        "blocked": 66
+      },
+      "government": {
+        "denominator": 15,
+        "accepted": 9,
+        "blocked": 6
+      },
+      "insurance": {
+        "denominator": 16,
+        "accepted": 14,
+        "blocked": 2
+      }
+    }
+  },
+  "proof": {
+    "static": {
+      "command": "node --test tests/swahili-legal-government-insurance-parity.test.js",
+      "result": "7 passed"
+    },
+    "browser": {
+      "command": "playwright test tests/e2e/swahili-legal-government-insurance-parity.spec.js --project=chromium --workers=4",
+      "result": "43 passed"
+    },
+    "generator": {
+      "command": "node scripts/build-sw-legal-government-insurance-parity.js",
+      "result": "42/42 maintained owners, 0 drift"
+    },
+    "hreflang": {
+      "command": "node scripts/validate-hreflang.js",
+      "result": "The accepted 23-row subset has no route error. Nineteen browser-proved new owners remain blocked because reciprocity needs an out-of-scope edit to another locale."
+    }
+  },
+  "acceptedRows": [
+    {
+      "englishId": "passport-checklist",
+      "categoryKey": "government",
+      "route": "/sw/zana/mwongozo-pasipoti/"
+    },
+    {
+      "englishId": "visa-checker",
+      "categoryKey": "government",
+      "route": "/sw/zana/ukaguzi-wa-visa/"
+    },
+    {
+      "englishId": "national-id-guide",
+      "categoryKey": "government",
+      "route": "/sw/zana/mwongozo-kitambulisho-taifa/"
+    },
+    {
+      "englishId": "voter-registration",
+      "categoryKey": "government",
+      "route": "/sw/zana/usajili-wa-mpiga-kura/"
+    },
+    {
+      "englishId": "africa-election-tracker",
+      "categoryKey": "government",
+      "route": "/sw/zana/ufuatiliaji-uchaguzi-afrika/"
+    },
+    {
+      "englishId": "land-registry-fees",
+      "categoryKey": "government",
+      "route": "/sw/zana/ada-usajili-wa-ardhi/"
+    },
+    {
+      "englishId": "birth-death-cert",
+      "categoryKey": "government",
+      "route": "/sw/zana/vyeti-vya-kuzaliwa-na-kifo/"
+    },
+    {
+      "englishId": "budget-comparator",
+      "categoryKey": "government",
+      "route": "/sw/zana/kilinganisha-bajeti/"
+    },
+    {
+      "englishId": "car-insurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-gari/"
+    },
+    {
+      "englishId": "health-insurance-compare",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kilinganisha-bima-ya-afya/"
+    },
+    {
+      "englishId": "life-insurance-calc",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-maisha/"
+    },
+    {
+      "englishId": "funeral-insurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-mazishi/"
+    },
+    {
+      "englishId": "motor-third-party",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/bima-ya-lazima-ya-gari/"
+    },
+    {
+      "englishId": "business-insurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-biashara/"
+    },
+    {
+      "englishId": "travel-insurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-safari/"
+    },
+    {
+      "englishId": "workers-comp",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/fidia-ya-wafanyakazi/"
+    },
+    {
+      "englishId": "health-contribution",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-mchango-wa-afya/"
+    },
+    {
+      "englishId": "kenya-dpa",
+      "categoryKey": "government",
+      "route": "/sw/zana/ukaguzi-wa-dpa-kenya/"
+    },
+    {
+      "englishId": "claim-tracker",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/ufuatiliaji-wa-dai/"
+    },
+    {
+      "englishId": "crop-insurance-calc",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-mazao/"
+    },
+    {
+      "englishId": "fire-insurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-moto/"
+    },
+    {
+      "englishId": "microinsurance",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/bima-ndogo/"
+    },
+    {
+      "englishId": "professional-indemnity",
+      "categoryKey": "insurance",
+      "route": "/sw/zana/bima-ya-dhima-ya-kitaalamu/"
+    }
+  ],
+  "blockedRows": [
+    {
+      "englishId": "cac-cost",
+      "route": "/sw/zana/gharama-za-cac-nigeria",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "cipc-cost",
+      "route": "/sw/zana/gharama-za-cipc-afrika-kusini",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "data-compliance",
+      "route": "/sw/zana/ukaguzi-wa-ulinzi-wa-data",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "contract-gen",
+      "route": "/sw/zana/kizalishaji-mkataba",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "tenancy-deposit",
+      "route": "/sw/zana/amana-ya-upangaji",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "leave-days",
+      "route": "/sw/zana/siku-za-likizo-za-kisheria",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "visa-cost",
+      "route": "/sw/zana/gharama-za-visa",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "stamp-duty",
+      "route": "/sw/zana/kikokotoo-ushuru-wa-stampu",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "property-tax",
+      "route": "/sw/zana/kodi-mali",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "rental-yield",
+      "route": "/sw/zana/faida-kupangisha",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "land-title-check",
+      "route": "/sw/zana/ukaguzi-wa-hati-ya-ardhi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "property-valuation",
+      "route": "/sw/zana/thamani-ya-mali-isiyohamishika",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "rent-affordability",
+      "route": "/sw/zana/uwezo-wa-kulipa-pango",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "tenant-screening",
+      "route": "/sw/zana/uchunguzi-wa-mpangaji",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "rent-intelligence",
+      "route": "/sw/zana/taarifa-za-soko-la-pango",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "lease-risk-check",
+      "route": "/sw/zana/ukaguzi-wa-hatari-za-mkataba-wa-pango",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "rental-agreement",
+      "route": "/sw/zana/kizalishaji-mkataba-wa-kupangisha",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "property-mgmt-fees",
+      "route": "/sw/zana/ada-usimamizi-wa-mali",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "building-materials",
+      "route": "/sw/zana/gharama-vifaa-vya-ujenzi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "construction-budget",
+      "route": "/sw/zana/bajeti-ya-ujenzi-wa-nyumba",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "dev-feasibility",
+      "route": "/sw/zana/uwezekano-wa-ujenzi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "survey-cost",
+      "route": "/sw/zana/gharama-za-upimaji-ardhi",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "property-cgt",
+      "route": "/sw/zana/kodi-ya-faida-ya-mali",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "service-charge",
+      "route": "/sw/zana/ada-za-huduma-za-mali",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "short-let-calc",
+      "route": "/sw/zana/mapato-ya-kupangisha-kwa-muda-mfupi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "agent-commission",
+      "route": "/sw/zana/kamisheni-ya-wakala",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "plot-converter",
+      "route": "/sw/zana/kigeuzi-cha-eneo-la-kiwanja",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "building-permit",
+      "route": "/sw/zana/kibali-cha-ujenzi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "diaspora-property",
+      "route": "/sw/zana/uwekezaji-wa-diaspora-kwenye-mali",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "offplan-vs-ready",
+      "route": "/sw/zana/mradi-wa-ramani-dhidi-ya-nyumba-tayari",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "ng-nhf",
+      "route": "/sw/zana/kikokotoo-nhf-nigeria",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "tenancy-agreement",
+      "route": "/sw/zana/mkataba-wa-upangaji",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "employment-contract",
+      "route": "/sw/zana/mkataba-wa-ajira",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "cac-checker",
+      "route": "/sw/zana/ukaguzi-wa-jina-cac-nigeria",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "ip-rights-africa",
+      "route": "/sw/zana/haki-miliki-afrika",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "national-pension",
+      "route": "/sw/zana/makisio-ya-pensheni-ya-taifa",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "marriage-cert",
+      "route": "/sw/zana/cheti-cha-ndoa",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "foi-template",
+      "route": "/sw/zana/rasimu-ya-ombi-la-taarifa",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "gov-scholarship",
+      "route": "/sw/zana/ufadhili-wa-serikali",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "social-welfare",
+      "route": "/sw/zana/msaada-wa-kijamii",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "business-registration",
+      "route": "/sw/zana/usajili-biashara",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "company-type-selector",
+      "route": "/sw/zana/kichagua-aina-ya-kampuni",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "nda-generator",
+      "route": "/sw/zana/kizalishaji-nda",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "privacy-policy-gen",
+      "route": "/sw/zana/kizalishaji-sera-ya-faragha",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "will-generator",
+      "route": "/sw/zana/kizalishaji-wosia",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "ndpa-checker",
+      "route": "/sw/zana/ukaguzi-wa-ndpa-nigeria",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "popia-checker",
+      "route": "/sw/zana/ukaguzi-wa-popia-afrika-kusini",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "child-support",
+      "route": "/sw/zana/matunzo-ya-mtoto",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "court-fees",
+      "route": "/sw/zana/ada-za-mahakama",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "work-permit-cost",
+      "route": "/sw/zana/gharama-za-kibali-cha-kazi",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "insurance-fraud-checker",
+      "route": "/sw/zana/ukaguzi-wa-ishara-za-udanganyifu-wa-bima",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "marine-insurance",
+      "route": "/sw/zana/kikokotoo-bima-ya-bahari",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "affidavit-generator",
+      "route": "/sw/zana/kizalishaji-kiapo",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "annual-returns",
+      "route": "/sw/zana/marejesho-ya-mwaka-ya-kampuni",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "bail-calculator",
+      "route": "/sw/zana/kikokotoo-dhamana",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "board-resolution",
+      "route": "/sw/zana/azimio-la-bodi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "breach-notification",
+      "route": "/sw/zana/taarifa-ya-uvujaji-wa-data",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "business-license",
+      "route": "/sw/zana/leseni-ya-biashara",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "cookie-consent",
+      "route": "/sw/zana/kibali-cha-vidakuzi",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "divorce-settlement",
+      "route": "/sw/zana/mgawanyo-wa-talaka",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "dpa-generator",
+      "route": "/sw/zana/mkataba-wa-uchakataji-data",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "dpia-tool",
+      "route": "/sw/zana/tathmini-ya-athari-za-ulinzi-wa-data",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "foreign-company-reg",
+      "route": "/sw/zana/usajili-wa-kampuni-ya-kigeni",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "gdpr-vs-africa",
+      "route": "/sw/zana/gdpr-dhidi-ya-sheria-za-afrika",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "inheritance-tax",
+      "route": "/sw/zana/kikokotoo-kodi-ya-urithi",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "ip-protection",
+      "route": "/sw/zana/mpango-wa-ulinzi-wa-mali-bunifu",
+      "reason": "The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane."
+    },
+    {
+      "englishId": "legal-aid",
+      "route": "/sw/zana/ustahiki-wa-msaada-wa-kisheria",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "partnership-agreement",
+      "route": "/sw/zana/mkataba-wa-ubia",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "power-of-attorney",
+      "route": "/sw/zana/nguvu-ya-wakili",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "shareholder-agreement",
+      "route": "/sw/zana/mkataba-wa-wanahisa",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "statutory-declaration",
+      "route": "/sw/zana/tamko-la-kisheria",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "tin-guide",
+      "route": "/sw/zana/mwongozo-tin",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "trademark-registration",
+      "route": "/sw/zana/usajili-wa-alama-ya-biashara",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    },
+    {
+      "englishId": "winding-up",
+      "route": "/sw/zana/kufunga-kampuni",
+      "reason": "No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner."
+    }
+  ],
+  "sourceRisks": [
+    "Government source check reports 67 sources, 8 changed and 28 blocked/manual, with 0 broken. The Swahili runtime therefore fails closed whenever freshness or integrity evidence is unavailable.",
+    "Insurance source data is dated 2026-03-29 and is 123 days old against a 60-day high-risk cadence; 29 regulator gaps and 8 unsourced claim classes remain. Accepted insurance tools use user-entered planning assumptions and do not present live premiums.",
+    "All 66 legal rows remain unaccepted: 55 lack the full route-specific browser/export receipt and 11 browser-proved gap apps still require out-of-scope cross-locale hreflang reciprocity."
+  ],
+  "boundary": "Local repository and browser proof only; no deploy, production, live government verification, legal advice, official eligibility, quote, coverage or claim decision."
+}
