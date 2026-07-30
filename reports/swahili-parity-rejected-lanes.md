@@ -67,15 +67,17 @@ Required redo:
 - Produce and parse/reopen every original advertised export format.
 - Keep rows blocked until their own product contract passes, even after reciprocal hreflang is repaired.
 
-## Health and Education lane — Health provisionally eligible, Education blocked
+## Health and Education lane — both categories blocked
 
 - Branch: `codex/sw-health-education-parity-20260731`
 - Commit: `f8ac6e51`
 - Scope: 42 Health and 42 Education apps.
-- Coordinator credit before reciprocal metadata repair: Health 0/42; Education 0/42.
+- Coordinator credit: Health 0/42; Education 0/42.
 
 Review:
 
-1. Health has route-specific fixtures for all 42 owners, verifies changed result output, invalid or medical-safety behavior, runtime-language residue, private-input non-transmission and parses every visible export. It becomes ledger-eligible only after exact reciprocal hreflang validation passes.
-2. Education currently proves that workflows render metrics and that generic local exports reopen, but exact expected product outputs are frozen for only a small subset.
-3. Education therefore remains blocked until all 42 routes are tied to their declared English engine/controller with route-specific expected-result oracles and original export proof.
+1. Health preserves the real English engines, but its owner-spec paths are labels rather than executed comparison suites. The browser proof accepts any non-empty changed result instead of an exact expected value.
+2. Health invalid proof falls back to native HTML validity or a blanket medical warning. PDF proof checks only the signature and byte length, the private marker is actually entered on one of 42 routes, and optional AI consent is not exercised.
+3. Independent samples expose English runtime residue in BMI, water-quality, water-intake, sickle-cell, diabetes-risk and blood-group outputs. Only 20/42 owners visibly disclose an explicit review date; a generic WHO panel is not per-app freshness proof.
+4. Education currently proves that workflows render metrics and that generic local exports reopen, but exact expected product outputs are frozen for only a small subset.
+5. Both categories remain blocked until every route has exact expected-result and invalid-state oracles, every original export is parsed or reopened, sensitive-route privacy markers and AI consent are exercised, runtime English is eliminated, and source/freshness plus reciprocal hreflang pass per app.
