@@ -59,6 +59,10 @@ Reasons:
 2. The browser suite does not enter each original app's real valid and invalid inputs or assert its expected computed outputs.
 3. Shared-script presence and currency-token overlap are weaker than formula or data-owner parity.
 4. A generic JSON export cannot replace proof for each format advertised by the English owner.
+5. A conservative visible-text scan found substantial English residue on 66/112 owners; the generator uses a short lexical replacement dictionary rather than reviewed native translations.
+6. `fuel-tracker` is a product replacement: the English app uses `fuel-tracker-engine.js` and `fuel-tracker-vip.js`, while the Swahili route executes a generic `swtCalc('fuelTracker')` branch.
+7. Ten calculation-bearing pages duplicate inline English logic instead of sharing a DOM-free engine. Seventeen PAYE rows also lack an exact shared page or engine owner.
+8. `payslip-generator` is the nearest candidate, but its dedicated Swahili test is red because the current page loads `lazy-analytics.js` despite the privacy contract.
 
 Required redo:
 
