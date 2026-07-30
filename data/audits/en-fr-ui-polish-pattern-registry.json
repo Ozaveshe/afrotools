@@ -1,0 +1,179 @@
+{
+  "schemaVersion": 1,
+  "programme": "english-french-final-design-polish",
+  "status": "prepared-implementation-gated",
+  "implementationGate": "swahili-parity-accepted",
+  "locales": [
+    "en",
+    "fr"
+  ],
+  "baseline": {
+    "commit": "4d006564a72e6af25c93338841f54907e8af575c",
+    "kind": "french-integration-candidate",
+    "note": "Detection totals are candidates, not confirmed violations.",
+    "auditCommand": "npm run ui:polish:inventory",
+    "existingAccentGuard": "npm run ui:accent-check",
+    "counts": {
+      "en": {
+        "physicalFilesScanned": 1400,
+        "accentRailOccurrences": 899,
+        "accentRailFiles": 499,
+        "gradientOccurrences": 2266,
+        "gradientFiles": 942,
+        "glowShadowOccurrences": 2319,
+        "glowShadowFiles": 873,
+        "uppercaseOccurrences": 4208,
+        "uppercaseFiles": 965,
+        "cardClassOccurrences": 29435,
+        "cardClassFiles": 1297,
+        "badgeClassOccurrences": 6761,
+        "badgeClassFiles": 1121,
+        "genericCopyOccurrences": 206,
+        "genericCopyFiles": 133,
+        "decorativeEmojiOccurrences": 2256,
+        "decorativeEmojiFiles": 295
+      },
+      "fr": {
+        "physicalFilesScanned": 1610,
+        "accentRailOccurrences": 810,
+        "accentRailFiles": 798,
+        "gradientOccurrences": 1030,
+        "gradientFiles": 717,
+        "glowShadowOccurrences": 2084,
+        "glowShadowFiles": 910,
+        "uppercaseOccurrences": 1604,
+        "uppercaseFiles": 839,
+        "cardClassOccurrences": 9219,
+        "cardClassFiles": 1165,
+        "badgeClassOccurrences": 1853,
+        "badgeClassFiles": 477,
+        "genericCopyOccurrences": 34,
+        "genericCopyFiles": 15,
+        "decorativeEmojiOccurrences": 1496,
+        "decorativeEmojiFiles": 504
+      }
+    }
+  },
+  "principles": [
+    "trust-first",
+    "task-focused",
+    "source-owned",
+    "mobile-first",
+    "dark-mode-first-class",
+    "native-french-not-transplanted",
+    "no-fake-affordances",
+    "no-required-content-loss"
+  ],
+  "patterns": [
+    {
+      "id": "decorative-accent-rail",
+      "defaultAction": "remove",
+      "allowedContexts": [
+        "error",
+        "warning",
+        "success",
+        "selected-state",
+        "progress",
+        "comparison-diff"
+      ],
+      "proofRequired": "A text or icon cue conveys the same state without colour."
+    },
+    {
+      "id": "nested-or-section-per-card",
+      "defaultAction": "flatten",
+      "allowedContexts": [
+        "interactive-module",
+        "bounded-result",
+        "plan-comparison",
+        "modal",
+        "separately-actionable-object"
+      ],
+      "proofRequired": "The boundary changes interaction or comprehension, not decoration alone."
+    },
+    {
+      "id": "gradient-or-glow-decoration",
+      "defaultAction": "replace-with-solid-token-surface",
+      "allowedContexts": [
+        "data-visualization",
+        "media-artwork",
+        "single-brand-moment"
+      ],
+      "proofRequired": "Contrast, reduced-motion, and theme behavior pass."
+    },
+    {
+      "id": "badge-or-pill-overuse",
+      "defaultAction": "convert-to-plain-metadata",
+      "allowedContexts": [
+        "status",
+        "tier",
+        "availability",
+        "confidence",
+        "freshness",
+        "category-state"
+      ],
+      "proofRequired": "The badge communicates a real state."
+    },
+    {
+      "id": "uppercase-eyebrow-repetition",
+      "defaultAction": "use-sentence-case-or-remove",
+      "allowedContexts": [
+        "short-code",
+        "statutory-abbreviation",
+        "operational-status"
+      ],
+      "proofRequired": "The uppercase form is conventional or materially improves scanning."
+    },
+    {
+      "id": "generic-campaign-copy",
+      "defaultAction": "rewrite-for-task-output-constraint-source-and-next-action",
+      "allowedContexts": [
+        "verified-registry-backed-public-claim"
+      ],
+      "proofRequired": "The claim is measurable and registered."
+    },
+    {
+      "id": "decorative-emoji-flag-or-icon",
+      "defaultAction": "remove-or-use-shared-svg",
+      "allowedContexts": [
+        "country-identity",
+        "input-meaning",
+        "state"
+      ],
+      "proofRequired": "Accessible text remains available."
+    },
+    {
+      "id": "oversized-radius-or-heavy-shadow",
+      "defaultAction": "return-to-design-tokens",
+      "allowedContexts": [
+        "modal",
+        "dialog",
+        "elevated-interactive-surface"
+      ],
+      "proofRequired": "Elevation represents real interaction layering."
+    },
+    {
+      "id": "duplicate-trust-disclosure-panels",
+      "defaultAction": "consolidate-without-content-loss",
+      "allowedContexts": [
+        "legally-distinct-disclosure",
+        "materially-distinct-data-boundary"
+      ],
+      "proofRequired": "All required source, privacy, safety, and confidence information remains readable."
+    },
+    {
+      "id": "fake-affordance",
+      "defaultAction": "remove-or-hide-until-wired",
+      "allowedContexts": [],
+      "proofRequired": "Every visible control completes its advertised action."
+    }
+  ],
+  "highPriorityOwnerReconciliation": [
+    "assets/css/ke-stamp-duty-vip.css",
+    "fr-country-brief",
+    "fr-finance-output",
+    "data-fr-proof-output",
+    "french-prepaid-meter-privacy-and-basis-notices",
+    "french-security-tool-notices",
+    "religious-and-cultural-category-presentation"
+  ]
+}
