@@ -85,3 +85,26 @@ Review:
 3. Independent samples expose English runtime residue in BMI, water-quality, water-intake, sickle-cell, diabetes-risk and blood-group outputs. Only 20/42 owners visibly disclose an explicit review date; a generic WHO panel is not per-app freshness proof.
 4. Education currently proves that workflows render metrics and that generic local exports reopen, but exact expected product outputs are frozen for only a small subset.
 5. Both categories remain blocked until every route has exact expected-result and invalid-state oracles, every original export is parsed or reopened, sensitive-route privacy markers and AI consent are exercised, runtime English is eliminated, and source/freshness plus reciprocal hreflang pass per app.
+
+## Creative, Image Design and Developer Tools lane — rejected
+
+- Branch: `codex/sw-creative-image-developer-parity-20260731`
+- Reviewed checkpoint: `5726f202`
+- Scope: 97 apps.
+- Coordinator credit: 0/97.
+
+Reasons:
+
+1. The browser suite primarily checks an injected generic JSON receipt. Existing owners are not driven through representative inputs, exact expected outputs, invalid-state clearing or their original export actions.
+2. Twenty-eight newly generated owners are semantic replacements. Background removal, favicon generation, certificates, creator workflows and royalty tools lose material inputs, processing behavior and output formats from their English products.
+3. The Markdown editor translates the executable `input` event name to `ingizo`, breaking live preview.
+4. Data Converter, Hash Generator, Base64 and Markdown Editor send user-entered or derived context to `ai-advisor` without the required explicit content-preview consent.
+5. Image to Text lacks proof for its original TXT, Markdown, JSON and CSV outputs; Creator Invoice lacks parsed PDF proof; three capture/recording apps remain correctly codec-blocked.
+6. Forty-three of 97 owners still need artwork, including 41 rows previously labelled accepted. Residual English runtime states and provider-freshness gaps also remain.
+
+Required redo:
+
+- Quarantine the generic replacement runtime and keep all 97 rows blocked.
+- Split Developer utilities, Image workflows and deterministic Creator tools by their real English engine/controller owners.
+- Require exact valid, invalid and expected-output oracles plus every original advertised export per app.
+- Treat real-device capture/codec apps as a separate hardware proof lane.
