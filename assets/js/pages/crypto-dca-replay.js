@@ -322,7 +322,11 @@
       latest = null;
       results.hidden = true;
       empty.hidden = false;
-      setStatus((error && error.message) || copy.error, 'error');
+      setStatus(
+        copy.sourceUnavailable + ' ' + input.asset.toUpperCase() + ' · '
+          + input.startDate + ' → ' + input.endDate + '.',
+        'error'
+      );
     } finally {
       submit.disabled = false;
       submit.removeAttribute('aria-busy');

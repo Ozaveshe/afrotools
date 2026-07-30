@@ -1,0 +1,18 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+const context = {console, Date, Math, JSON, localStorage: {getItem: () => null, setItem: () => {}, removeItem: () => {}}};
+context.window = context;
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "engines", "src", "creator-hooks-engine.js"), "utf8"), context);
+const engine = context.AfroTools.engines.creatorHooks;
+const result = engine.generateLocalHooks("mode durable", "tiktok", "fr");
+assert.equal(result.hooks.length, 6);
+assert.equal(result.language, "fr");
+assert.equal(new Set(result.hooks.map(hook => hook.category)).size, 6);
+assert.ok(result.hooks.every(hook => hook.wordCount > 0));
+assert.ok(result.hooks.every(hook => hook.readTimeSeconds > 0));
+assert.ok(result.hooks.every(hook => /mode durable/i.test(hook.text)));
+assert.match(result.hooks.find(hook => hook.category === "statistic").text, /vérifiez sa source/);
+assert.throws(() => engine.generateLocalHooks("", "tiktok", "fr"), /topic/);
+console.log("creator-hooks native engine: 8 assertions passed");

@@ -1,80 +1,92 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="sickle-cell">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
-<title>Conseiller génotype drépanocytose | AfroTools</title>
-<meta name="description" content="Lisez des combinaisons de génotypes liées à la drépanocytose comme information éducative. Confirmez par test sanguin et conseil médical.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Explorateur de transmission de la drépanocytose | AfroTools</title>
+<meta name="description" content="Explorez les probabilités de transmission de l'hémoglobine par grossesse à partir de deux résultats AA, AS, AC, SS, SC ou CC confirmés en laboratoire. L'éducation…">
+<meta name="content-language" content="en">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Conseiller génotype drépanocytose | AfroTools">
-<meta property="og:description" content="Information éducative sur les génotypes, à confirmer par test sanguin et conseil médical.">
+<meta property="og:title" content="Explorateur de transmission de la drépanocytose | AfroTools">
+<meta property="og:description" content="Explorez les probabilités de transmission de l'hémoglobine par grossesse à partir de deux résultats AA, AS, AC, SS, SC ou CC confirmés en laboratoire. L'éducation…">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/sickle-cell.webp">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/fr/tools/drepanocytose/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Conseiller génotype drépanocytose | AfroTools">
-<meta name="twitter:description" content="Lisez des combinaisons de génotypes liées à la drépanocytose comme information éducative. Confirmez par test sanguin et conseil médical."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;color:#7c2d12;font-size:.88rem;line-height:1.65;margin-bottom:24px}
-.fr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-.fr-link{display:block;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-decoration:none;background:#fff;color:#0f172a}.fr-link span{display:block;color:#64748b;font-size:.82rem;line-height:1.5;margin-top:4px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Conseiller génotype drépanocytose",
-  "description": "Information éducative sur les génotypes liés à la drépanocytose, à confirmer par test sanguin et conseil médical.",
-  "url": "https://afrotools.com/fr/tools/drepanocytose/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/sickle-cell.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Cet outil remplace-t-il un test de laboratoire ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il aide à comprendre des combinaisons possibles, mais seul un test sanguin permet de confirmer un génotype."}},{"@type":"Question","name":"Dois-je consulter avant une décision familiale ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Un conseil génétique ou médical est recommandé pour interpréter les résultats et discuter des options."}},{"@type":"Question","name":"Pourquoi les probabilités sont-elles indicatives ?","acceptedAnswer":{"@type":"Answer","text":"Elles reposent sur les génotypes saisis. Une erreur de saisie, un résultat ancien ou non confirmé peut changer l’interprétation."}}]}
-</script>
+<meta name="twitter:title" content="Explorateur de transmission de la drépanocytose | AfroTools">
+<meta name="twitter:description" content="Explorez les probabilités de transmission de l'hémoglobine par grossesse à partir de deux résultats AA, AS, AC, SS, SC ou CC confirmés en laboratoire. L'éducation…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/sickle-cell.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+<meta property="article:modified_time" content="2026-07-26">
+<meta name="tool-id" content="sickle-cell">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/tools/sickle-cell/sickle-cell-vip.css?v=73d002be">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Explorateur de transmission de la drépanocytose",
+    "description": "Explorez les probabilités de transmission de l'hémoglobine par grossesse à partir de deux résultats AA, AS, AC, SS, SC ou CC confirmés en laboratoire. L'éducation…",
+    "url": "https://afrotools.com/fr/tools/drepanocytose/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/sickle-cell.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
   }
-}
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Sickle Cell Inheritance Explorer | AfroTools":"Explorateur d'héritage drépanocytaire | AfroTools","Skip to inheritance explorer":"Passer à l'explorateur d'héritage","Home":"Accueil","Health":"Santé","Sickle cell inheritance":"Héritage drépanocytaire","Haemoglobin inheritance education":"Éducation sur l'héritage de l'hémoglobine","See how two confirmed results can combine":"Découvrez comment deux résultats confirmés peuvent se combiner","Build a Punnett square for AA, AS, AC, SS, SC, or CC laboratory results. The percentages describe each pregnancy independently—they do not diagnose anyone, predict one child, or direct relationship or reproductive decisions.":"Construisez un carré Punnett pour les résultats de laboratoire AA, AS, AC, SS, SC ou CC. Les pourcentages décrivent chaque grossesse indépendamment : ils ne diagnostiquent personne, ne prédisent pas un seul enfant, ni une relation directe ou des décisions en matière de procréation.","Lab results required":"Résultats de laboratoire requis","Per-pregnancy probabilities":"Probabilités par grossesse","Runs locally":"Fonctionne localement","A screening label or remembered result may be incomplete":"Une étiquette de dépistage ou un résultat mémorisé peut être incomplet","Use results confirmed by a qualified laboratory or clinician. This simplified explorer covers only A, S, and C allele combinations; it does not cover beta-thalassaemia or other haemoglobin variants, resolve unclear notation, or replace confirmatory testing and genetic counselling.":"Utilisez les résultats confirmés par un laboratoire ou un clinicien qualifié. Cet explorateur simplifié couvre uniquement les combinaisons d'allèles A, S et C ; il ne couvre pas la bêta-thalassémie ou d’autres variantes de l’hémoglobine, ne résout pas les notations peu claires et ne remplace pas les tests de confirmation et le conseil génétique.","Step 1":"Étape 1","Confirm the source, then enter both results":"Confirmez la source, puis saisissez les deux résultats","No names, dates of birth, medical-record numbers, pregnancy details, or contact information are needed.":"Aucun nom, date de naissance, numéro de dossier médical, détails de grossesse ou coordonnées ne sont nécessaires.","Check the selected results":"Vérifier les résultats sélectionnés","Both entries come from laboratory results confirmed or interpreted by a qualified clinician or laboratory professional.":"Les deux entrées proviennent de résultats de laboratoire confirmés ou interprétés par un clinicien qualifié ou un professionnel de laboratoire.","First confirmed result":"Premier résultat confirmé","Select a confirmed result":"Sélectionnez un résultat confirmé","AA — HbAA pattern":"AA — Modèle HbAA","AS — sickle cell trait":"AS – trait drépanocytaire","AC — haemoglobin C trait":"AC - trait d'hémoglobine C","SS — sickle cell anaemia (HbSS disease)":"SS — drépanocytose (maladie HbSS)","SC — HbSC disease":"SC — Maladie HbSC","CC — HbCC disease":"CC — Maladie HbCC","Second confirmed result":"Deuxième résultat confirmé","The labels above distinguish trait from disease for education. They do not interpret a person’s symptoms, severity, prognosis, or care needs.":"Les étiquettes ci-dessus distinguent les traits des maladies pour l'éducation. Ils n’interprètent pas les symptômes, la gravité, le pronostic ou les besoins en soins d’une personne.","Show inheritance probabilities":"Afficher les probabilités d'héritage","Clear":"Effacer","Per-pregnancy model":"Modèle par grossesse","Possible inherited combinations":"Combinaisons héritées possibles","Read every percentage as “for each pregnancy”":"Lisez chaque pourcentage comme « pour chaque grossesse »","Each pregnancy is a separate event. Four previous outcomes do not make the fifth outcome certain, and a percentage cannot predict or guarantee an individual child’s result.":"Chaque grossesse est un événement distinct. Quatre résultats précédents ne garantissent pas le cinquième résultat, et un pourcentage ne peut pas prédire ou garantir le résultat d’un enfant individuel.","Print / Save PDF":"Imprimer / Enregistrer le PDF","Download text summary":"Télécharger le résumé textuel","Both exports are created locally in this browser without an account, email, or upload.":"Les deux exportations sont créées localement dans ce navigateur sans compte, e-mail ou téléchargement.","Trait and disease are different":"Le trait et la maladie sont différents","Read the letters carefully":"Lisez attentivement les lettres","Sickle cell trait: one haemoglobin A allele and one S allele. Trait does not become sickle cell disease.":"Trait drépanocytaire : un allèle A de l’hémoglobine et un allèle S. Le trait ne devient pas une drépanocytose.","HbSS (sickle cell anaemia), a form of sickle cell disease.":"HbSS (drépanocytose), une forme de drépanocytose.","Haemoglobin C trait: one A allele and one C allele.":"Trait d'hémoglobine C : un allèle A et un allèle C.","HbSC, a form of sickle cell disease involving S and C alleles.":"HbSC, une forme de drépanocytose impliquant les allèles S et C.","HbCC disease, which is not sickle cell disease; clinical interpretation still belongs with a professional.":"la maladie HbCC, qui n’est pas une drépanocytose ; l’interprétation clinique appartient toujours à un professionnel.","Questions for a clinician or counsellor":"Questions pour un clinicien ou un conseiller","Use the result to prepare—not decide":"Utilisez le résultat pour vous préparer, pas pour décider","Were both results confirmed by the right laboratory method?":"Les deux résultats ont-ils été confirmés par la bonne méthode de laboratoire ?","Could another haemoglobin variant or thalassaemia change the interpretation?":"Une autre variante de l’hémoglobine ou une thalassémie pourrait-elle changer l’interprétation ?","What testing and counselling options are locally available?":"Quelles options de dépistage et de conseil sont disponibles localement ?","What newborn screening and confirmatory follow-up are offered locally?":"Quels dépistages néonatals et suivi de confirmation sont proposés localement ?","Newborn screening":"Dépistage néonatal","A screen is not the end of the process":"Un écran n'est pas la fin du processus","Screening programmes and timing vary by country. A screen can identify a baby who may have a haemoglobin condition, but positive or unclear screens need timely confirmatory testing and clinical follow-up under the local programme.":"Les programmes de dépistage et le calendrier varient selon les pays. Un dépistage peut identifier un bébé susceptible d'avoir un problème d'hémoglobine, mais les dépistages positifs ou peu clairs nécessitent des tests de confirmation et un suivi clinique en temps opportun dans le cadre du programme local.","Privacy":"Confidentialité","Entries stay in this browser":"Les entrées restent dans ce navigateur","This page does not store the selected genotypes, put them in a URL, or send them to AfroTools, AI, email, analytics, a profile, or a server. Printing and text download are local browser actions.":"Cette page ne stocke pas les génotypes sélectionnés, ne les met pas dans une URL et ne les envoie pas à AfroTools, à l'IA, à la messagerie électronique, aux analyses, à un profil ou à un serveur. L'impression et le téléchargement de texte sont des actions du navigateur local.","Official context and freshness":"Contexte officiel et fraîcheur","Sources checked 26 July 2026":"Sources vérifiées le 26 juillet 2026","These sources support the inheritance, trait/disease, screening, and counselling boundaries. They do not validate any user-selected result.":"Ces sources soutiennent les limites en matière d’héritage, de trait/maladie, de dépistage et de conseil. Ils ne valident aucun résultat sélectionné par l'utilisateur.","CDC: About sickle cell disease":"CDC : À propos de la drépanocytose","Sickle cell disease is inherited; HbSS and HbSC are among its forms, and newborn screening can identify SCD.":"La drépanocytose est héréditaire ; L'HbSS et l'HbSC font partie de ses formes, et le dépistage néonatal peut identifier la SCD.","CDC: Sickle cell trait":"CDC : Trait drépanocytaire","Trait differs from disease; the AS × AS example is 25% AA, 50% AS, and 25% SS for each pregnancy.":"Le trait diffère de la maladie ; l'exemple AS × AS est 25 % AA, 50 % AS et 25 % SS pour chaque grossesse.","NIH/NHLBI: Sickle cell trait":"NIH/NHLBI : trait drépanocytaire","Trait has one S and one A allele, does not turn into SCD, and can be identified by testing.":"Le trait a un allèle S et un allèle A, ne se transforme pas en SCD et peut être identifié par des tests.","NIH/NHLBI: Pregnancy and reproduction":"NIH/NHLBI : Grossesse et reproduction","Genetic counselling can help people understand inheritance and available testing questions.":"Le conseil génétique peut aider les gens à comprendre l’héritage et les questions de tests disponibles.","Method and limits":"Méthode et limites","How the Punnett model works":"Comment fonctionne le modèle Punnett","Each selected result contains two letters. The model crosses each letter from the first result with each letter from the second result, producing four equally weighted cells. Matching cells are grouped, so each unique genotype receives 25%, 50%, or 100% in this simplified Mendelian model.":"Chaque résultat sélectionné contient deux lettres. Le modèle croise chaque lettre du premier résultat avec chaque lettre du deuxième résultat, produisant quatre cellules de pondération égale. Les cellules correspondantes sont regroupées, de sorte que chaque génotype unique reçoit 25 %, 50 % ou 100 % dans ce modèle mendélien simplifié.","The order of the two selections does not change the distribution. The model deliberately does not estimate clinical severity, symptoms, treatment, life expectancy, population burden, testing prices, or the outcome of an individual pregnancy.":"L'ordre des deux sélections ne change pas la répartition. Le modèle n’estime délibérément pas la gravité clinique, les symptômes, le traitement, l’espérance de vie, le fardeau de la population, les prix des tests ou l’issue d’une grossesse individuelle.","Does “AA” mean a person has no health condition?":"Est-ce que « AA » signifie qu’une personne n’a aucun problème de santé ?","No. In this page it means only that the simplified haemoglobin selection is AA. It does not assess any other gene, blood disorder, symptom, or health condition.":"Non. Sur cette page, cela signifie uniquement que la sélection simplifiée de l’hémoglobine est AA. Il n’évalue aucun autre gène, trouble sanguin, symptôme ou état de santé.","What if a report uses different notation?":"Que se passe-t-il si un rapport utilise une notation différente ?","Do not translate or guess the result yourself. Ask the laboratory, clinician, or genetic counsellor to explain it. This page supports only AA, AS, AC, SS, SC, and CC.":"Ne traduisez pas et ne devinez pas le résultat vous-même. Demandez au laboratoire, au clinicien ou au conseiller en génétique de vous l’expliquer. Cette page prend en charge uniquement AA, AS, AC, SS, SC et CC.","Can this tool recommend a reproductive option?":"Cet outil peut-il recommander une option de reproduction ?","No. It supplies neutral inheritance education only. A qualified clinician or genetic counsellor can explain testing options, limitations, timing, access, and personal implications without the calculator making the decision.":"Non. Il propose uniquement une formation neutre en matière d’héritage. Un clinicien qualifié ou un conseiller en génétique peut expliquer les options de test, les limites, le calendrier, l'accès et les implications personnelles sans que la calculatrice prenne la décision.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","same-origin":"même origine","Explore per-pregnancy haemoglobin inheritance probabilities from two lab-confirmed AA, AS, AC, SS, SC or CC results. Education, not diagnosis.":"Explorez les probabilités de transmission de l'hémoglobine par grossesse à partir de deux résultats AA, AS, AC, SS, SC ou CC confirmés en laboratoire. L'éducation, pas le diagnostic.","en":"fr","A neutral Punnett-square explainer for lab-confirmed haemoglobin results and independent per-pregnancy probabilities.":"Un explicateur neutre du carré de Punnett pour les résultats d'hémoglobine confirmés en laboratoire et les probabilités indépendantes par grossesse.","Per-pregnancy haemoglobin inheritance education from lab-confirmed results.":"Éducation sur l'héritage de l'hémoglobine par grossesse à partir de résultats confirmés en laboratoire.","sickle-cell":"drépanocytose","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Testing and counselling guidance":"Conseils en matière de tests et de conseils","use strict":"utiliser strict",", AS:":", COMME :",", AC:":", CA :",", SS:":", SS :",", SC:":", SC :",", CC:":", CC :",", message:":", message :","+ result.allelesSecond[0] +":"+ résultat.allelesSecond[0] +","+ result.allelesSecond[1] +":"+ résultat.allelesSecond[1] +","+ result.second +":"+ résultat.seconde +","+ result.outcomes.length +":"+ résultat.résultats.longueur +","+ current.first,":"+ actuel.premier,","+ current.second,":"+ courant.seconde,","+ outcome.genotype +":"+ résultat.génotype +","+ outcome.probability +":"+ résultat.probabilité +","+ outcome.label +":"+ result.label +","+ outcome.category +":"+ resultat.category +","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Download PDF":"Télécharger le PDF","Download TXT":"Télécharger le TXT","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Reset":"Réinitialiser","Calculate":"Calculer","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/drepanocytose/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/sickle-cell/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/drepanocytose/">
@@ -82,54 +94,171 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/sickle-cell/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/sickle-cell/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Conseiller génotype drépanocytose</h1>
-<p>Lisez des combinaisons de génotypes comme information éducative, puis confirmez par test et conseil médical.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Conseiller génotype drépanocytose. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/sickle-cell/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/sickle-cell/" title="Conseiller génotype drépanocytose" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Conseiller génotype drépanocytose";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-note"><strong>Information éducative.</strong> Cet outil ne pose pas de diagnostic et ne remplace pas un test d’électrophorèse, un conseil génétique ou un avis médical. Vérifiez les génotypes auprès d’un laboratoire qualifié.</div>
-<div class="fr-seo">
-<h2>Drépanocytose et génotypes</h2>
-<p>Les combinaisons de génotypes peuvent aider à comprendre certains risques de transmission. Cette lecture reste éducative et dépend de la fiabilité des résultats saisis.</p>
-<p>Avant une décision familiale ou médicale, confirmez les génotypes par un test sanguin et discutez les résultats avec un professionnel de santé ou un service de conseil génétique.</p>
-</div>
-<div class="fr-seo">
-<h2>Outils liés en français</h2>
-<div class="fr-grid"><a class="fr-link" href="/fr/tools/dosage-medicament/"><strong>Dosage médicament</strong><span>Calcul indicatif à vérifier médicalement.</span></a><a class="fr-link" href="/fr/tools/cout-hospitalier/"><strong>Coût hospitalier</strong><span>Préparer un budget de soins avec prudence.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lire une mesure sans diagnostic.</span></a></div>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Cet outil remplace-t-il un test de laboratoire ?</summary><p>Non. Il aide à comprendre des combinaisons possibles, mais seul un test sanguin permet de confirmer un génotype.</p></details>
-<details><summary>Dois-je consulter avant une décision familiale ?</summary><p>Oui. Un conseil génétique ou médical est recommandé pour interpréter les résultats et discuter des options.</p></details>
-<details><summary>Pourquoi les probabilités sont-elles indicatives ?</summary><p>Elles reposent sur les génotypes saisis. Une erreur de saisie, un résultat ancien ou non confirmé peut changer l’interprétation.</p></details>
-</div>
-</div>
+<body class="sickle-page">
+<a class="sc-skip" href="#main-content">Passer à l'explorateur d'héritage</a>
+<afro-navbar></afro-navbar>
+<main id="main-content">
+  <header class="sc-hero">
+    <div class="sc-shell">
+      <nav class="sc-breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/health/">Santé</a><span aria-hidden="true">/</span><span>Héritage drépanocytaire</span></nav>
+      <p class="sc-eyebrow">Éducation sur l'héritage de l'hémoglobine</p>
+      <h1>Explorateur de transmission de la drépanocytose</h1>
+      <p class="sc-lede">Construisez un carré Punnett pour les résultats de laboratoire AA, AS, AC, SS, SC ou CC. Les pourcentages décrivent chaque grossesse indépendamment : ils ne diagnostiquent personne, ne prédisent pas un seul enfant, ni une relation directe ou des décisions en matière de procréation.</p>
+      <ul class="sc-badges" aria-label="Limites des outils"><li>Résultats de laboratoire requis</li><li>Probabilités par grossesse</li><li>Fonctionne localement</li></ul>
+    </div>
+  </header>
+
+  <section class="sc-boundary" aria-labelledby="boundary-title">
+    <div class="sc-shell">
+      <h2 id="boundary-title">Une étiquette de dépistage ou un résultat mémorisé peut être incomplet</h2>
+      <p>Utilisez les résultats confirmés par un laboratoire ou un clinicien qualifié. Cet explorateur simplifié couvre uniquement les combinaisons d'allèles A, S et C ; il ne couvre pas la bêta-thalassémie ou d’autres variantes de l’hémoglobine, ne résout pas les notations peu claires et ne remplace pas les tests de confirmation et le conseil génétique.</p>
+    </div>
+  </section>
+
+  <div class="sc-shell sc-layout">
+    <section class="sc-workspace" aria-labelledby="explorer-title">
+      <div class="sc-card sc-intro">
+        <p class="sc-kicker">Étape 1</p>
+        <h2 id="explorer-title">Confirmez la source, puis saisissez les deux résultats</h2>
+        <p>Aucun nom, date de naissance, numéro de dossier médical, détails de grossesse ou coordonnées ne sont nécessaires.</p>
+      </div>
+
+      <form id="inheritance-form" class="sc-card" novalidate>
+        <div id="error-summary" class="sc-errors" role="alert" tabindex="-1" hidden>
+          <h2>Vérifier les résultats sélectionnés</h2>
+          <ul id="error-list"></ul>
+        </div>
+        <div class="sc-check">
+          <input id="lab-confirmed" name="labConfirmed" type="checkbox" required>
+          <label for="lab-confirmed">Les deux entrées proviennent de résultats de laboratoire confirmés ou interprétés par un clinicien qualifié ou un professionnel de laboratoire.</label>
+        </div>
+        <div class="sc-fields">
+          <div class="sc-field">
+            <label for="result-one">Premier résultat confirmé</label>
+            <select id="result-one" name="parent1">
+              <option value="">Sélectionnez un résultat confirmé</option>
+              <option value="AA">AA — Modèle HbAA</option>
+              <option value="AS">AS – trait drépanocytaire</option>
+              <option value="AC">AC - trait d'hémoglobine C</option>
+              <option value="SS">SS — drépanocytose (maladie HbSS)</option>
+              <option value="SC">SC — Maladie HbSC</option>
+              <option value="CC">CC — Maladie HbCC</option>
+            </select>
+          </div>
+          <div class="sc-field">
+            <label for="result-two">Deuxième résultat confirmé</label>
+            <select id="result-two" name="parent2">
+              <option value="">Sélectionnez un résultat confirmé</option>
+              <option value="AA">AA — Modèle HbAA</option>
+              <option value="AS">AS – trait drépanocytaire</option>
+              <option value="AC">AC - trait d'hémoglobine C</option>
+              <option value="SS">SS — drépanocytose (maladie HbSS)</option>
+              <option value="SC">SC — Maladie HbSC</option>
+              <option value="CC">CC — Maladie HbCC</option>
+            </select>
+          </div>
+        </div>
+        <p class="sc-note">Les étiquettes ci-dessus distinguent les traits des maladies pour l'éducation. Ils n’interprètent pas les symptômes, la gravité, le pronostic ou les besoins en soins d’une personne.</p>
+        <div class="sc-actions">
+          <button class="sc-primary" type="submit">Afficher les probabilités d'héritage</button>
+          <button class="sc-secondary" type="reset">Effacer</button>
+        </div>
+      </form>
+
+      <section id="results" class="sc-card sc-results" aria-labelledby="results-title" aria-live="polite" tabindex="-1" hidden>
+        <p class="sc-kicker">Modèle par grossesse</p>
+        <h2 id="results-title">Combinaisons héritées possibles</h2>
+        <p id="result-summary" class="sc-result-summary"></p>
+        <div id="punnett-square" class="sc-punnett-wrap"></div>
+        <div id="outcomes" class="sc-outcomes"></div>
+        <div class="sc-independent">
+          <h3>Lisez chaque pourcentage comme « pour chaque grossesse »</h3>
+          <p>Chaque grossesse est un événement distinct. Quatre résultats précédents ne garantissent pas le cinquième résultat, et un pourcentage ne peut pas prédire ou garantir le résultat d’un enfant individuel.</p>
+        </div>
+        <div class="sc-actions">
+          <button id="print-button" class="sc-primary" type="button">Imprimer / Enregistrer le PDF</button>
+          <button id="download-button" class="sc-secondary" type="button">Télécharger le résumé textuel</button>
+        </div>
+        <p class="sc-hint">Les deux exportations sont créées localement dans ce navigateur sans compte, e-mail ou téléchargement.</p>
+      </section>
+    </section>
+
+    <aside class="sc-aside" aria-label="Conseils en matière de tests et de conseils">
+      <section class="sc-card">
+        <p class="sc-kicker">Le trait et la maladie sont différents</p>
+        <h2>Lisez attentivement les lettres</h2>
+        <dl class="sc-definitions">
+          <dt>AS</dt><dd>Trait drépanocytaire : un allèle A de l’hémoglobine et un allèle S. Le trait ne devient pas une drépanocytose.</dd>
+          <dt>SS</dt><dd>HbSS (drépanocytose), une forme de drépanocytose.</dd>
+          <dt>AC</dt><dd>Trait d'hémoglobine C : un allèle A et un allèle C.</dd>
+          <dt>SC</dt><dd>HbSC, une forme de drépanocytose impliquant les allèles S et C.</dd>
+          <dt>CC</dt><dd>la maladie HbCC, qui n’est pas une drépanocytose ; l’interprétation clinique appartient toujours à un professionnel.</dd>
+        </dl>
+      </section>
+      <section class="sc-card">
+        <p class="sc-kicker">Questions pour un clinicien ou un conseiller</p>
+        <h2>Utilisez le résultat pour vous préparer, pas pour décider</h2>
+        <ul class="sc-list">
+          <li>Les deux résultats ont-ils été confirmés par la bonne méthode de laboratoire ?</li>
+          <li>Une autre variante de l’hémoglobine ou une thalassémie pourrait-elle changer l’interprétation ?</li>
+          <li>Quelles options de dépistage et de conseil sont disponibles localement ?</li>
+          <li>Quels dépistages néonatals et suivi de confirmation sont proposés localement ?</li>
+        </ul>
+      </section>
+      <section class="sc-card">
+        <p class="sc-kicker">Dépistage néonatal</p>
+        <h2>Un écran n'est pas la fin du processus</h2>
+        <p>Les programmes de dépistage et le calendrier varient selon les pays. Un dépistage peut identifier un bébé susceptible d'avoir un problème d'hémoglobine, mais les dépistages positifs ou peu clairs nécessitent des tests de confirmation et un suivi clinique en temps opportun dans le cadre du programme local.</p>
+      </section>
+      <section class="sc-card">
+        <p class="sc-kicker">Confidentialité</p>
+        <h2>Les entrées restent dans ce navigateur</h2>
+        <p>Cette page ne stocke pas les génotypes sélectionnés, ne les met pas dans une URL et ne les envoie pas à AfroTools, à l'IA, à la messagerie électronique, aux analyses, à un profil ou à un serveur. L'impression et le téléchargement de texte sont des actions du navigateur local.</p>
+      </section>
+    </aside>
+  </div>
+
+  <section class="sc-sources">
+    <div class="sc-shell">
+      <p class="sc-kicker">Contexte officiel et fraîcheur</p>
+      <h2>Sources vérifiées le 26 juillet 2026</h2>
+      <p>Ces sources soutiennent les limites en matière d’héritage, de trait/maladie, de dépistage et de conseil. Ils ne valident aucun résultat sélectionné par l'utilisateur.</p>
+      <div class="sc-source-grid">
+        <a href="https://www.cdc.gov/sickle-cell/about/index.html" target="_blank" rel="noopener"><strong>CDC : À propos de la drépanocytose</strong><span>La drépanocytose est héréditaire ; L'HbSS et l'HbSC font partie de ses formes, et le dépistage néonatal peut identifier la SCD.</span></a>
+        <a href="https://www.cdc.gov/sickle-cell/sickle-cell-trait/" target="_blank" rel="noopener"><strong>CDC : Trait drépanocytaire</strong><span>Le trait diffère de la maladie ; l'exemple AS × AS est 25 % AA, 50 % AS et 25 % SS pour chaque grossesse.</span></a>
+        <a href="https://www.nhlbi.nih.gov/health/sickle-cell-disease/sickle-cell-trait" target="_blank" rel="noopener"><strong>NIH/NHLBI : trait drépanocytaire</strong><span>Le trait a un allèle S et un allèle A, ne se transforme pas en SCD et peut être identifié par des tests.</span></a>
+        <a href="https://www.nhlbi.nih.gov/health/sickle-cell-disease/pregnancy" target="_blank" rel="noopener"><strong>NIH/NHLBI : Grossesse et reproduction</strong><span>Le conseil génétique peut aider les gens à comprendre l’héritage et les questions de tests disponibles.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="sc-explainer sc-shell" aria-labelledby="method-title">
+    <p class="sc-kicker">Méthode et limites</p>
+    <h2 id="method-title">Comment fonctionne le modèle Punnett</h2>
+    <p>Chaque résultat sélectionné contient deux lettres. Le modèle croise chaque lettre du premier résultat avec chaque lettre du deuxième résultat, produisant quatre cellules de pondération égale. Les cellules correspondantes sont regroupées, de sorte que chaque génotype unique reçoit 25 %, 50 % ou 100 % dans ce modèle mendélien simplifié.</p>
+    <p>L'ordre des deux sélections ne change pas la répartition. Le modèle n’estime délibérément pas la gravité clinique, les symptômes, le traitement, l’espérance de vie, le fardeau de la population, les prix des tests ou l’issue d’une grossesse individuelle.</p>
+    <div class="sc-faq">
+      <details><summary>Est-ce que « AA » signifie qu’une personne n’a aucun problème de santé ?</summary><p>Non. Sur cette page, cela signifie uniquement que la sélection simplifiée de l’hémoglobine est AA. Il n’évalue aucun autre gène, trouble sanguin, symptôme ou état de santé.</p></details>
+      <details><summary>Que se passe-t-il si un rapport utilise une notation différente ?</summary><p>Ne traduisez pas et ne devinez pas le résultat vous-même. Demandez au laboratoire, au clinicien ou au conseiller en génétique de vous l’expliquer. Cette page prend en charge uniquement AA, AS, AC, SS, SC et CC.</p></details>
+      <details><summary>Cet outil peut-il recommander une option de reproduction ?</summary><p>Non. Il propose uniquement une formation neutre en matière d’héritage. Un clinicien qualifié ou un conseiller en génétique peut expliquer les options de test, les limites, le calendrier, l'accès et les implications personnelles sans que la calculatrice prenne la décision.</p></details>
+    </div>
+  </section>
+
+  <div class="sc-related">
+    <afro-related-tools data-ssr="1" category="health" current="sickle-cell">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+  </div>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Explorateur de transmission de la drépanocytose reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/sickle-cell/" hreflang="en">/tools/sickle-cell/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
 <afro-footer></afro-footer>
-<script>
-(function(){
-  const map={"Sickle Cell Genotype Advisor":"Conseiller génotype drépanocytose","Sickle Cell":"Drépanocytose","Genotype":"Génotype","Partner":"Partenaire","Mother":"Mère","Father":"Père","Child":"Enfant","Risk":"Risque","Probability":"Probabilité","Calculate":"Calculer","Calculator":"Calculateur","Result":"Résultat","Results":"Résultats","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter"};
-  const frame=document.querySelector('.fr-tool-frame iframe');
-  function translate(root){if(!root)return;const walker=root.createTreeWalker(root.body||root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){let text=node.nodeValue;Object.keys(map).forEach(k=>{text=text.replace(new RegExp(k,'g'),map[k]);});node.nodeValue=text;}root.querySelectorAll('input,textarea,button,select,[placeholder],[title],[aria-label]').forEach(el=>{['placeholder','title','aria-label','value'].forEach(attr=>{const value=el.getAttribute&&el.getAttribute(attr);if(!value)return;let out=value;Object.keys(map).forEach(k=>{out=out.replace(new RegExp(k,'g'),map[k]);});if(out!==value)el.setAttribute(attr,out);});});}
-  if(frame)frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;translate(doc);new MutationObserver(()=>translate(doc)).observe(doc.body,{childList:true,subtree:true});}catch(e){}});
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/tools/sickle-cell/sickle-cell-engine.js?v=e8b70044"></script>
+<script src="/tools/sickle-cell/sickle-cell-vip.js?v=e1aed6ef" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

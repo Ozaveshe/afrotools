@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,8 +50,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/legal.css?v=a2330ea1">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -384,6 +384,7 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
 
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
+<script src="/assets/js/engines/mortgage-property-english-owner.js?v=9017302d"></script>
 <script>
 var COUNTRY_INFO = {
   NG:{name:'Nigeria',currency:'₦',rate:0.15,law:'Child Rights Act 2003',basis:'Nigerian courts award maintenance based on the non-custodial parent\'s means and the child\'s needs. No fixed formula — judicial discretion applies.'},
@@ -439,21 +440,15 @@ function calcChildSupport() {
   var d = COUNTRY_INFO[cc];
   var sym = d.currency;
 
-  // Calculate child rate based on number of children
-  var rates = [0, 0.15, 0.25, 0.32, 0.38, 0.42];
-  var baseRate = rates[Math.min(n, 5)];
-
-  // Adjust for custody type
-  if (custody === 'joint') baseRate *= 0.7;
-  else if (custody === 'shared') baseRate *= 0.4;
-
-  // Adjust for special needs
-  if (special === 'medical') baseRate *= 1.2;
-  else if (special === 'educational') baseRate *= 1.15;
-
-  var monthly = ncpInc * baseRate;
-  var annual = monthly * 12;
-  var perChild = monthly / n;
+  var semantic = window.AfroTools.MortgagePropertyEnglishOwnerEngine.calculate(
+    'child-support',
+    {country:cc,nonCustodialIncome:ncpInc,custodialIncome:cpInc,children:n,custody:custody,special:special},
+    d
+  );
+  var baseRate = semantic.rate;
+  var monthly = semantic.monthly;
+  var annual = semantic.annual;
+  var perChild = semantic.perChild;
 
   document.getElementById('resMonthly').textContent = sym + monthly.toLocaleString('en-US', {maximumFractionDigits:0});
   document.getElementById('resSub').textContent = 'Based on ' + (baseRate * 100).toFixed(1) + '% of non-custodial parent income | ' + d.law;
@@ -489,6 +484,6 @@ function calcChildSupport() {
 </script>
 <script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

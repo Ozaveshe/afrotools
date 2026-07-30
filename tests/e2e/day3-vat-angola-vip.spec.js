@@ -21,7 +21,7 @@ for (const route of routes) test(`${route.name} Angola VAT VIP parity`, async ({
   await page.goto(route.path, { waitUntil: "networkidle" });
   await expect(page.locator("html")).toHaveAttribute("lang", route.name);
   await expect(page.getByRole("button", { name: route.calc })).toBeVisible();
-  await expect(page.locator(".source-confidence-card")).toBeVisible();
+  await expect(page.locator(".source-confidence-card").first()).toBeVisible();
   expect(await page.evaluate(() => window.AOVatApp.getResult())).toMatchObject({ net: 100000, vat: 14000, gross: 114000 });
   await page.locator('[data-mode="extract"]').click(); await page.locator("#aovAmount").fill("114000");
   expect(await page.evaluate(() => window.AOVatApp.getResult())).toMatchObject({ net: 100000, vat: 14000, gross: 114000 });

@@ -1,0 +1,58 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/schemas/fr-fintech-banking-parity-manifest.schema.json",
+  "title": "French Fintech & Banking parity manifest",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schemaVersion", "lane", "foundation", "category", "categoryKey", "locale", "expectedEnglishFreeApps", "baseline", "hub", "routes"],
+  "properties": {
+    "schemaVersion": {"const": 1},
+    "lane": {"const": "fr-fintech-banking-parity"},
+    "foundation": {"const": "8ce5cac175e42201968b1f7540752d6acf92d4ca"},
+    "category": {"const": "Fintech & Banking"},
+    "categoryKey": {"const": "fintech"},
+    "locale": {"const": "fr"},
+    "expectedEnglishFreeApps": {"const": 31},
+    "baseline": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["nativeCandidate", "englishIframe", "bridgeHandoff", "missing"],
+      "properties": {
+        "nativeCandidate": {"const": 0},
+        "englishIframe": {"const": 9},
+        "bridgeHandoff": {"const": 19},
+        "missing": {"const": 3}
+      }
+    },
+    "hub": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["englishRoute", "frenchRoute", "frenchFile"],
+      "properties": {
+        "englishRoute": {"const": "/fintech/"},
+        "frenchRoute": {"const": "/fr/fintech/"},
+        "frenchFile": {"const": "fr/fintech/index.html"}
+      }
+    },
+    "routes": {
+      "type": "array",
+      "minItems": 31,
+      "maxItems": 31,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["englishId", "englishRoute", "frenchId", "frenchRoute", "baselineState", "controller", "artwork", "acceptance"],
+        "properties": {
+          "englishId": {"type": "string", "minLength": 1},
+          "englishRoute": {"type": "string", "pattern": "^/tools/[a-z0-9-]+/$"},
+          "frenchId": {"type": "string", "pattern": "^[a-z0-9-]+-fr$"},
+          "frenchRoute": {"type": "string", "pattern": "^/fr/tools/[a-z0-9-]+/$"},
+          "baselineState": {"enum": ["bridge-handoff", "english-iframe", "missing"]},
+          "controller": {"type": "string", "pattern": "^assets/js/pages/fintech-shared-controllers/[a-z0-9-]+\\.js$"},
+          "artwork": {"type": "string", "pattern": "^assets/img/tools/[a-z0-9-]+\\.(webp|png|jpg|jpeg|svg)$"},
+          "acceptance": {"enum": ["pending", "accepted", "blocked"]}
+        }
+      }
+    }
+  }
+}

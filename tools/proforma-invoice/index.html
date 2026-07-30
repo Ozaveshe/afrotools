@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="../../assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="../../assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=09fede9d">
-  <script src="../../assets/js/components/navbar.min.js?v=65f906d7" defer></script>
+  <script src="../../assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<script src="../../assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="../../assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;line-height:1.6}
@@ -431,6 +431,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 
+<script src="/engines/trade-utility-engine.js?v=2e42429d"></script>
 <script>
 const AFRICAN_COUNTRIES = ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo (Brazzaville)","Congo (DRC)","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Ivory Coast","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","São Tomé & Príncipe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"];
 
@@ -506,28 +507,21 @@ function calcItemTotal(id){
 function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2})}
 
 function calcTotals(){
-  let subtotal=0;
+  const totals=sharedProformaTotals();
   document.querySelectorAll('#itemsBody tr').forEach(tr=>{
     const nums = tr.querySelectorAll('input[type="number"]');
     if(nums.length>=2){
       const qty=parseFloat(nums[0].value)||0;
       const price=parseFloat(nums[1].value)||0;
-      subtotal+=qty*price;
       const idStr=tr.id.replace('item-row-','');
       const el=document.getElementById(`item-total-${idStr}`);
       if(el) el.textContent=fmt(qty*price);
     }
   });
-  const freight=parseFloat(document.getElementById('piFreight').value)||0;
-  const insurance=parseFloat(document.getElementById('piInsurance').value)||0;
-  // FOB excludes international freight; goods + freight is CFR, + insurance is CIF.
-  const fob=subtotal;
-  const cfr=subtotal+freight;
-  const cif=cfr+insurance;
-  document.getElementById('tSubtotal').textContent=fmt(subtotal);
-  document.getElementById('tFOB').textContent=fmt(fob);
-  document.getElementById('tCFR').textContent=fmt(cfr);
-  document.getElementById('tCIF').textContent=fmt(cif);
+  document.getElementById('tSubtotal').textContent=fmt(totals.subtotal);
+  document.getElementById('tFOB').textContent=fmt(totals.fob);
+  document.getElementById('tCFR').textContent=fmt(totals.cfr);
+  document.getElementById('tCIF').textContent=fmt(totals.cif);
   renderDoc();
 }
 
@@ -537,7 +531,6 @@ function sv(id){const el=document.getElementById(id);return el?el.options[el.sel
 function renderDoc(){
   const cur = v('piCurrency').split(' ')[0]||'USD';
   const curLabel = v('piCurrency');
-  let subtotal=0;
   const rowData=[];
   document.querySelectorAll('#itemsBody tr').forEach(tr=>{
     const inputs=tr.querySelectorAll('input');
@@ -548,15 +541,15 @@ function renderDoc(){
     const unit=selects[0]?selects[0].value:'pcs';
     const price=parseFloat(inputs[3]?inputs[3].value:0)||0;
     const total=qty*price;
-    subtotal+=total;
     rowData.push({desc,hs,qty,unit,price,total});
   });
-  const freight=parseFloat(v('piFreight'))||0;
-  const insurance=parseFloat(v('piInsurance'))||0;
-  // FOB excludes international freight; goods + freight is CFR, + insurance is CIF.
-  const fob=subtotal;
-  const cfr=subtotal+freight;
-  const cif=cfr+insurance;
+  const totals=sharedProformaTotals();
+  const subtotal=totals.subtotal;
+  const freight=totals.freight;
+  const insurance=totals.insurance;
+  const fob=totals.fob;
+  const cfr=totals.cfr;
+  const cif=totals.cif;
 
   const tableRows=rowData.map((r,i)=>`
     <tr>
@@ -723,25 +716,6 @@ function setPiStatus(message){
   if(status) status.textContent=message||'';
 }
 
-function proformaTotals(){
-  let subtotal=0;
-  let itemCount=0;
-  document.querySelectorAll('#itemsBody tr').forEach(tr=>{
-    const nums=tr.querySelectorAll('input[type="number"]');
-    if(nums.length>=2){
-      const qty=parseFloat(nums[0].value)||0;
-      const price=parseFloat(nums[1].value)||0;
-      if(qty||price) itemCount++;
-      subtotal+=qty*price;
-    }
-  });
-  const freight=parseFloat(v('piFreight'))||0;
-  const insurance=parseFloat(v('piInsurance'))||0;
-  // FOB is the goods value on board at the loading port — it must NOT include
-  // international freight. Freight added to FOB is CFR; CFR + insurance is CIF.
-  return {subtotal,freight,insurance,fob:subtotal,cfr:subtotal+freight,cif:subtotal+freight+insurance,itemCount};
-}
-
 function proformaItems(){
   const items=[];
   document.querySelectorAll('#itemsBody tr').forEach(tr=>{
@@ -756,6 +730,26 @@ function proformaItems(){
     });
   });
   return items;
+}
+
+function proformaTotals(){
+  const totals=window.TradeUtilityEngine.proformaTotals({
+    items:proformaItems().map(item=>({
+      description:item.description || 'item',
+      quantity:item.quantity,
+      unitPrice:item.unitPrice
+    })),
+    freight:parseFloat(v('piFreight'))||0,
+    insurance:parseFloat(v('piInsurance'))||0
+  });
+  return {
+    subtotal:totals.subtotal,freight:totals.freight,insurance:totals.insurance,
+    fob:totals.fob,cfr:totals.cfr,cif:totals.cif,itemCount:totals.itemCount
+  };
+}
+
+function sharedProformaTotals(){
+  return proformaTotals();
 }
 
 function proformaDraftData(){
@@ -849,7 +843,7 @@ document.getElementById('piCsvBtn').addEventListener('click',downloadProformaCsv
 document.getElementById('piJsonBtn').addEventListener('click',downloadProformaJson);
 window.addEventListener('load',initDefaults);
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/trade-focus.js?v=50a063e9" defer></script>

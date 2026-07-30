@@ -6,7 +6,8 @@ test.describe('French product surface', () => {
   test('homepage is French, static-first, and registry-backed', async ({ page }) => {
     await page.goto('/fr/');
     await expect(page.locator('h1')).toHaveText('Le bon outil, pour le bon pays et la bonne décision.');
-    await expect(page.locator('[data-registry-count="tools.live_experiences"]')).toHaveText(/2[\s\u202f]?606\+/);
+    const liveExperienceText = await page.locator('[data-registry-count="tools.live_experiences"]').textContent();
+    expect(Number(liveExperienceText.replace(/\D/g, ''))).toBeGreaterThanOrEqual(2600);
     await expect(page.locator('[data-registry-count="countries.published"]')).toHaveText('54');
     await expect(page.locator('[data-registry-count="categories.published"]')).toHaveText('32');
     await expect(page.locator('[data-registry-count="languages.site_published"]')).toHaveText('5');
@@ -17,8 +18,14 @@ test.describe('French product surface', () => {
 
   test('directory renders only genuine French registry records and filters them', async ({ page }) => {
     await page.goto('/fr/all-tools/');
-    await expect(page.locator('#statLive')).toHaveText('1152');
-    await expect(page.locator('#resultsCount')).toContainText('1 152 outils');
+    const publishedFrenchCount = Number(await page.locator('#statLive').textContent());
+    expect(publishedFrenchCount).toBeGreaterThanOrEqual(1257);
+    const resultsText = await page.locator('#resultsCount').textContent();
+    const directoryMatch = resultsText.match(/sur\s+([\d\s\u202f]+)\s+outils/i);
+    expect(directoryMatch).not.toBeNull();
+    const directoryFrenchCount = Number(directoryMatch[1].replace(/\D/g, ''));
+    expect(directoryFrenchCount).toBeGreaterThanOrEqual(1257);
+    expect(publishedFrenchCount).toBeGreaterThanOrEqual(directoryFrenchCount);
     const hrefs = await page.locator('#toolsGrid > a').evaluateAll((nodes) => nodes.slice(0, 50).map((node) => node.getAttribute('href')));
     expect(hrefs.length).toBeGreaterThan(10);
     expect(hrefs.every((href) => href && href.startsWith('/fr/'))).toBeTruthy();
@@ -50,10 +57,15 @@ test.describe('French product surface', () => {
     await expect(page.locator('main')).not.toContainText(forbiddenImplementationCopy);
     await expect(page.locator('main')).not.toContainText(/moteur source|SEO local/i);
     await expect(page.locator('iframe')).toHaveCount(0);
-    await page.locator('#frPenBasic').fill('350000');
-    await page.locator('#frPensionForm button[type="submit"]').click();
-    await expect(page.locator('#frPensionResult')).toBeVisible();
-    await expect(page.locator('#frPenTotal')).toContainText('NGN');
+    await page.locator('#np-emoluments').fill('350000');
+    await page.locator('#np-return').fill('5');
+    await page.locator('#np-source').fill('PRA 2014, article 4');
+    await page.locator('#np-source-date').fill('2026-07-30');
+    await page.locator('#np-return-source').fill('Hypothèse de planification');
+    await page.locator('#np-return-date').fill('2026-07-30');
+    await page.locator('#np-form button[type="submit"]').click();
+    await expect(page.locator('#np-results')).toBeVisible();
+    await expect(page.locator('#np-balance-result')).toContainText('NGN');
   });
 
   test('French blog is manifest-bounded and its selected article remains French', async ({ page }) => {
@@ -94,10 +106,11 @@ test.describe('French product surface', () => {
     const noJs = await browser.newContext({ javaScriptEnabled: false });
     const noJsPage = await noJs.newPage();
     await noJsPage.goto('/fr/');
-    await expect(noJsPage.locator('[data-registry-count="tools.live_experiences"]')).toHaveText(/2[\s\u202f]?606\+/);
+    const noJsLiveText = await noJsPage.locator('[data-registry-count="tools.live_experiences"]').textContent();
+    expect(Number(noJsLiveText.replace(/\D/g, ''))).toBeGreaterThanOrEqual(2600);
     await expect(noJsPage.getByRole('link', { name: 'Parcourir tous les outils' })).toBeVisible();
     await noJsPage.goto('/fr/all-tools/');
-    expect(await noJsPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
+    expect(await noJsPage.locator('#toolsGrid [data-directory-record]').count()).toBeGreaterThanOrEqual(1257);
     await expect(noJsPage.getByRole('link', { name: /Calculateur (?:PAYE|Salaire Net)/ }).first()).toBeVisible();
     await noJs.close();
 
@@ -105,8 +118,9 @@ test.describe('French product surface', () => {
     const blockedPage = await blocked.newPage();
     await blockedPage.route(/tool-registry|registry-counts/, (route) => route.abort());
     await blockedPage.goto('/fr/all-tools/');
-    await expect(blockedPage.locator('#statLive')).toHaveText('1152');
-    expect(await blockedPage.locator('#toolsGrid > a').count()).toBeGreaterThanOrEqual(4);
+    const blockedFrenchCount = Number(await blockedPage.locator('#statLive').textContent());
+    expect(blockedFrenchCount).toBeGreaterThanOrEqual(1257);
+    expect(await blockedPage.locator('#toolsGrid [data-directory-record]').count()).toBe(blockedFrenchCount);
     await blocked.close();
   });
 

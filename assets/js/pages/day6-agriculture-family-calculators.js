@@ -76,10 +76,10 @@
         + '. This is not an eligibility or approval result; stress-test seasonal low months and confirm APR, fees, security and penalties with the lender.';
     },
     'crop-insurance': function (values) {
-      var premium = values.farmValue * values.premiumRate / 100;
-      var retained = values.farmValue * values.excess / 100;
-      return 'Estimate: premium ' + money(values.currency, premium) + '; policyholder excess at the entered rate '
-        + money(values.currency, retained) + '. Confirm covered perils, trigger, insured value, exclusions, waiting period and claim evidence with the insurer.';
+      var engine = typeof window !== 'undefined' && window.AfroTools && window.AfroTools.CropInsuranceHubEngine
+        ? window.AfroTools.CropInsuranceHubEngine
+        : (typeof require === 'function' ? require('../../../engines/src/crop-insurance-hub-engine') : null);
+      return engine.formatEnglish(engine.calculate(values));
     },
     'farm-payroll-calculator': function (values) {
       var total = values.workers * values.dailyWage * values.days;
@@ -111,12 +111,14 @@
         + '. This does not set a vaccination schedule. Confirm vaccine, timing, dose, cold chain and official campaigns with a veterinarian.';
     },
     'harvest-date-estimator': function (values) {
-      var planting = new Date(values.plantingDate + 'T00:00:00');
-      var harvest = new Date(planting.getTime());
-      harvest.setDate(harvest.getDate() + values.maturityDays);
-      return 'Planning date: ' + values.crop + ' reaches the entered ' + number(values.maturityDays, 0)
+      var engine = typeof window !== 'undefined' && window.AfroTools && window.AfroTools.HarvestDateEngine
+        ? window.AfroTools.HarvestDateEngine
+        : (typeof require === 'function' ? require('../../../engines/src/harvest-date-engine') : null);
+      var model = engine.calculate(values);
+      var harvest = new Date(model.harvestDate + 'T00:00:00');
+      return 'Planning date: ' + model.input.crop + ' reaches the entered ' + number(model.input.maturityDays, 0)
         + '-day maturity on ' + harvest.toLocaleDateString('en', { year: 'numeric', month: 'long', day: 'numeric' })
-        + '. Weather risk marked ' + values.weatherRisk
+        + '. Weather risk marked ' + model.input.weatherRisk
         + '. Confirm field maturity, variety, planting establishment, rainfall and buyer readiness before scheduling harvest.';
     },
     'input-prices': function (values) {

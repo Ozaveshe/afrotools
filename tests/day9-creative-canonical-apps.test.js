@@ -59,14 +59,26 @@ for (const id of IDS) {
       html,
       new RegExp(`<link rel="canonical" href="https://afrotools\\.com/tools/${id}/">`)
     );
-    assert.ok(schemas.some((schema) => schema['@type'] === 'WebApplication'));
+    assert.ok(
+      schemas.some((schema) =>
+        ['WebApplication', 'SoftwareApplication'].includes(schema['@type'])
+      )
+    );
     assert.doesNotMatch(html, /<form\b[^>]*\baction=["'][^"']+["']/i);
 
     if (LAUNCHERS.has(id)) {
-      assert.match(html, /href="app\.html(?:\?[^"]*)?"/);
+      assert.match(
+        html,
+        new RegExp(`href="(?:app\\.html(?:\\?[^"]*)?|/tools/${id}/app)"`)
+      );
       assert.ok(fs.existsSync(path.join(ROOT, 'tools', id, 'app.html')));
       const ctas = Array.from(
-        html.matchAll(/<a\b[^>]*href="app\.html[^"]*"[^>]*>([\s\S]*?)<\/a>/gi),
+        html.matchAll(
+          new RegExp(
+            `<a\\b[^>]*href="(?:app\\.html[^"]*|/tools/${id}/app)"[^>]*>([\\s\\S]*?)<\\/a>`,
+            'gi'
+          )
+        ),
         (match) => match[1].replace(/<[^>]+>/g, '').trim()
       );
       assert.ok(ctas.some(Boolean));
@@ -84,6 +96,18 @@ test('Creative estimate copy does not present a fixed currency conversion as liv
     path.join(ROOT, 'tools', 'book-publishing-cost', 'index.html'),
     'utf8'
   );
-  assert.match(html, /using the built-in planning rate/);
-  assert.doesNotMatch(html, /at current exchange rate/i);
+  const controller = fs.readFileSync(
+    path.join(
+      ROOT,
+      'assets',
+      'js',
+      'pages',
+      'creative',
+      'book-publishing-cost-controller.js'
+    ),
+    'utf8'
+  );
+  const publicOwner = `${html}\n${controller}`;
+  assert.match(publicOwner, /using the built-in planning rate/);
+  assert.doesNotMatch(publicOwner, /at current exchange rate/i);
 });

@@ -87,6 +87,7 @@ const html = `<!doctype html>
   <link rel="stylesheet" href="/assets/css/property-assumption-workflow.css">
   <script src="/assets/js/components/navbar.min.js" defer></script>
   <script src="/assets/js/components/footer.min.js" defer></script>
+  <script src="/assets/js/engines/property-assumption.js" defer></script>
   <script src="/assets/js/pages/property-assumption-workflow.js" defer></script>
 </head>
 <body class="property-assumption-page">

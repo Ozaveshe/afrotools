@@ -128,9 +128,12 @@ assert.doesNotMatch(engineeringRuntime, /capture-lead|engineering-pdf-gate/);
 assert.match(engineeringRuntime, /function C\(e\)\{e\(\)\}/);
 
 const windowDoor = read('tools/window-door-sizing/index.html');
-assert.match(windowDoor, /aluminium:\s*'alum'/);
-assert.match(windowDoor, /steel_security:\s*'steel'/);
-assert.match(windowDoor, /if \(!Number\.isFinite\(r\[extKey\]\) \|\| !Number\.isFinite\(r\[intKey\]\) \|\| !Number\.isFinite\(winRate\)\)/);
+assert.match(windowDoor, /\/engines\/window-door-sizing-engine\.js/);
+assert.match(windowDoor, /WindowDoorSizingEngine\.calculate/);
+const windowDoorEngine = read('engines/src/window-door-sizing-engine.js');
+assert.match(windowDoorEngine, /aluminium:'alum'/);
+assert.match(windowDoorEngine, /steel_security:'steel'/);
+assert.match(windowDoorEngine, /unsupported-rate/);
 assert.doesNotMatch(windowDoor, />PASS<|>FAIL<|Building Code Compliance Notes/);
 
 console.log('Day 8 category runtime VIP contracts passed.');

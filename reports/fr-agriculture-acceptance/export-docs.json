@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:export-docs",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-export-docs-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 54 Export Documents directory owner rows and rendered hub invariants",
+    "engine": "node tests/export-docs-directory-engine.test.js",
+    "engineResult": "PASS 54 Export Documents country owners with search, selection, grouping and fail-closed validation",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-export-docs-oracles.json node tests/fr-agriculture-export-docs.test.js",
+    "oracleResult": "PASS 54 French Export Documents country directory profiles",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id export-docs --check",
+    "browser": "PORT=42979 CI=1 npx playwright test tests/e2e/fr-agriculture-export-docs.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (14.9s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "export-docs",
+    "englishRoute": "/agriculture/export-docs/",
+    "frenchRoute": "/fr/agriculture/export-docs/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-export-docs-oracles.json",
+      "englishOwnerRows": 54,
+      "englishRenderedCards": 108,
+      "frenchProfiles": 54,
+      "preserves": ["country code and identity", "registry order", "six region owners", "region membership", "top-crop identifiers", "accepted English duplicate rendering behavior"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-export-docs.spec.js",
+      "result": "2 passed (14.9s)",
+      "isolatedPort": 42979,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/export-docs/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/export-docs-directory-engine.js"],
+      "data": ["data/agriculture/country-index.js"],
+      "freshness": "undated static country, region and crop-association registry; not live",
+      "confidence": "planning directory only; no document requirement is asserted or verified"
+    },
+    "artwork": {"imageId": "export-docs", "file": "assets/img/tools/export-docs.webp", "state": "present"},
+    "limitations": [
+      "The accepted manifest row is the hub only; 54 existing English and French country checklist subroutes remain untouched, uncounted and outside this acceptance.",
+      "The French hub does not claim an official, current or exhaustive document checklist.",
+      "Authorities, requirements, costs, deadlines and validity periods must be verified before shipment."
+    ]
+  }]
+}

@@ -40,10 +40,11 @@ for (const route of routes)
     await page.goto(route.path, { waitUntil: "networkidle" });
     await expect(page.locator("html")).toHaveAttribute("lang", route.name);
     await expect(page.getByRole("button", { name: route.calc })).toBeVisible();
-    await expect(page.locator(".source-confidence-card")).toBeVisible();
+    await expect(page.locator(".source-confidence-card").first()).toBeVisible();
     expect(
       await page
         .locator(".source-confidence-card")
+        .first()
         .evaluate((element) => getComputedStyle(element).backgroundColor),
     ).not.toBe("rgb(248, 251, 255)");
     expect(

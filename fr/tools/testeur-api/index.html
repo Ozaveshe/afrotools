@@ -1,43 +1,198 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Testeur API | AfroTools</title>
-  <meta name="description" content="Envoyez des requetes API simples et inspectez les réponses sans quitter le navigateur.">
-  <meta property="og:title" content="Testeur API | AfroTools">
-  <meta property="og:description" content="Envoyez des requetes API simples et inspectez les réponses sans quitter le navigateur.">
+<meta name="afrotools-content-id" content="fr-developer:api-tester">
+<meta name="afrotools-source-owner" content="scripts/build-french-developer-api-tester.js">
+<meta name="afrotools-source-hash" content="b4da16ef66ba61a7">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Testeur API REST en ligne pour développeurs africains | AfroTools</title>
+<meta name="description" content="Testez des API REST dans votre navigateur avec import cURL, environnements locaux, contrôle avant envoi, assertions, en-têtes de réponse, export JSON et modèles africains.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Testeur API REST en ligne pour développeurs africains | AfroTools">
+<meta property="og:description" content="Un atelier API respectueux de la confidentialité avec environnements, contrôle avant envoi, requêtes enregistrées, import cURL, assertions, réponses et modèles africains.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/api-tester.webp">
-  <meta property="og:url" content="https://afrotools.com/fr/tools/testeur-api/">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <style>
-    .fr-tool-shell{max-width:1120px;margin:0 auto;padding:96px 20px 56px}
-    .breadcrumb{font-size:.92rem;color:#64748b;margin-bottom:18px}
-    .breadcrumb a{color:#2563eb;text-decoration:none}
-    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f766e;margin-bottom:10px}
-    .fr-tool-shell h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;margin:0 0 16px;color:#0f172a}
-    .lead{max-width:760px;color:#475569;font-size:1.08rem;line-height:1.7;margin:0 0 28px}
-    .tool-frame-wrap{border:1px solid #dbe4ef;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.08)}
-    .tool-frame{display:block;width:100%;min-height:820px;border:0;background:#fff}
-    .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}
-    .support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}
-    .support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}
-    .support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
-    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid{grid-template-columns:1fr}.tool-frame{min-height:760px}}
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Testeur API","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/testeur-api/","description":"Envoyez des requetes API simples et inspectez les réponses sans quitter le navigateur.","image":"https://afrotools.com/assets/img/tools/api-tester.webp"}</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/api-tester.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/testeur-api/">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Testeur API | AfroTools">
-<meta name="twitter:description" content="Envoyez des requetes API simples et inspectez les réponses sans quitter le navigateur.">
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
+<meta name="twitter:title" content="Testeur API REST en ligne pour développeurs africains | AfroTools">
+<meta name="twitter:description" content="Testez des API avec environnements, contrôle avant envoi, requêtes enregistrées, import cURL, assertions et modèles africains.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/api-tester.webp">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Online REST Testeur API for African Developers",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "url": "https://afrotools.com/fr/tools/testeur-api/",
+  "description": "Testeur API REST dans le navigateur avec environnements, import cURL, contrôle avant envoi, requêtes enregistrées, assertions, en-têtes, export de code et modèles africains.",
+  "featureList": [
+    "Browser REST API requests",
+    "cURL import",
+    "Local environment variables",
+    "Contrôle avant envoi checks",
+    "Réponse assertions",
+    "African API presets",
+    "cURL and fetch export",
+    "Redacted request JSON export"
+  ],
+  "browserRequirements": "Nécessite un navigateur moderne prenant en charge Fetch API. Les requêtes sont envoyées directement du navigateur au point de terminaison choisi.",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/api-tester.webp"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "Comment tester une requête API REST dans AfroTools",
+  "description": "Construisez une requête API dans le navigateur, effectuez les contrôles locaux, envoyez-la lorsque CORS l’autorise, puis copiez un résumé de répétition expurgé.",
+  "step": [
+    {
+      "@type": "HowToStep",
+      "name": "Choose a method and endpoint",
+      "text": "Sélectionnez GET, POST, PUT, PATCH ou DELETE, puis saisissez l’URL du point de terminaison ou une variable d’environnement telle que {{baseUrl}}."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Add headers, body and auth",
+      "text": "Ajoutez dans le navigateur les paramètres de requête, les en-têtes, le contenu du corps et les valeurs d’autorisation facultatives."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Vérifier le contrôle préalable de la requête",
+      "text": "Vérifiez avant l’envoi les variables non résolues, le risque de contenu mixte, la validité JSON, le traitement des secrets et les assertions de réponse."
+    },
+    {
+      "@type": "HowToStep",
+      "name": "Inspecter et exporter le résultat",
+      "text": "Vérifiez le statut, les en-têtes, le corps et les assertions de la réponse, puis copiez le cURL, fetch ou un résumé de diagnostic expurgé pour la répétition."
+    }
+  ]
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils développeur","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"Testeur API","item":"https://afrotools.com/fr/tools/testeur-api/"}]}
+</script>
+<style>
+  body{font-family:'DM Sans',sans-serif;background:#f8fafc;color:#0f172a;margin:0;-webkit-font-smoothing:antialiased}
+  a{text-decoration:none;color:inherit}
+  .hero{background:#061522;color:#fff;padding:46px 0 34px;border-bottom:4px solid #0ea5e9}
+  .hero-inner{max-width:1240px;margin:0 auto;padding:0 24px}
+  .crumb{font-size:.7rem;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:12px}
+  .crumb a{color:rgba(255,255,255,.45)}.crumb span{color:#bae6fd}
+  h1{font-size:clamp(2rem,4vw,3.35rem);line-height:1;letter-spacing:-.04em;margin:0 0 12px;font-weight:900}
+  h1 em{font-style:normal;color:#7dd3fc}
+  .hero-sub{max-width:760px;color:rgba(255,255,255,.72);font-size:1rem;line-height:1.65;margin:0 0 18px}
+  .badges{display:flex;flex-wrap:wrap;gap:8px}.badge{font-size:.69rem;font-weight:900;letter-spacing:.06em;text-transform:uppercase;color:#bae6fd;background:rgba(14,165,233,.14);border:1px solid rgba(125,211,252,.28);border-radius:999px;padding:6px 10px}
+  .main{max-width:1240px;margin:0 auto;padding:28px 24px 76px}
+  .workspace{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:18px;align-items:start}
+  .stack{display:grid;gap:16px}
+  .card{background:#fff;border:1px solid #e2e8f0;border-radius:12px;box-shadow:0 10px 30px rgba(15,23,42,.05);overflow:hidden}
+  .card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 18px;border-bottom:1px solid #e2e8f0;background:#f8fafc}
+  .head-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+  .card-title{font-size:.74rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#334155}
+  .card-body{padding:18px}
+  .grid-2{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:12px}
+  label{display:block;font-size:.72rem;font-weight:800;color:#64748b;letter-spacing:.04em;margin-bottom:5px}
+  input,select,textarea{width:100%;box-sizing:border-box;border:1.5px solid #cbd5e1;border-radius:8px;background:#fff;color:#0f172a;padding:10px 11px;font:inherit;font-size:.84rem;outline:none}
+  textarea{font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.55;resize:vertical}
+  input:focus,select:focus,textarea:focus{border-color:#0ea5e9;box-shadow:0 0 0 3px rgba(14,165,233,.13)}
+  .request-line{display:grid;grid-template-columns:126px minmax(0,1fr) auto;gap:10px;align-items:start}
+  .method{font-weight:900}.send{background:#0284c7;color:#fff;border:0;border-radius:8px;padding:11px 22px;font-weight:900;font-size:.84rem;cursor:pointer;min-width:110px;min-height:44px}.send:hover{background:#0369a1}
+  .tabs{display:flex;gap:2px;border-bottom:1px solid #e2e8f0;margin:16px -18px 16px;padding:0 18px;overflow:auto}
+  .tab{border:0;background:transparent;color:#64748b;padding:10px 12px;border-bottom:2px solid transparent;font-weight:900;font-size:.77rem;cursor:pointer;min-height:44px;white-space:nowrap}
+  .tab.active{color:#0284c7;border-bottom-color:#0284c7}
+  .tab-panel{display:none}.tab-panel.active{display:block}
+  .kv{display:grid;grid-template-columns:minmax(110px,.8fr) minmax(0,1.3fr) 34px;gap:8px;margin-bottom:8px}
+  .kv .remove{border:0;background:#fee2e2;color:#991b1b;border-radius:8px;font-weight:900;cursor:pointer;min-height:44px}
+  .link-btn{border:0;background:transparent;color:#0284c7;font-weight:900;font-size:.78rem;cursor:pointer;min-height:44px;padding:4px 0}
+  .actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+  .mini{border:1px solid #cbd5e1;background:#fff;color:#334155;border-radius:8px;padding:8px 11px;font-weight:900;font-size:.76rem;cursor:pointer;min-height:44px}
+  .mini.primary{background:#0f172a;color:#fff;border-color:#0f172a}.mini.good{background:#dcfce7;color:#166534;border-color:#bbf7d0}
+  .mini.warn{background:#fef3c7;color:#92400e;border-color:#fde68a}
+  .request-inspector{border:1px solid #dbeafe;background:#f8fbff;border-radius:12px;margin-top:16px;overflow:hidden}
+  .inspect-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px 14px;border-bottom:1px solid #dbeafe}
+  .inspect-title{font-size:.74rem;font-weight:900;letter-spacing:.09em;text-transform:uppercase;color:#1e3a8a}
+  .inspect-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:14px}
+  .inspect-item{border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:10px;min-width:0}
+  .inspect-item strong{display:flex;align-items:center;gap:7px;font-size:.78rem;color:#0f172a;margin-bottom:4px}
+  .inspect-item strong::before{content:'';width:8px;height:8px;border-radius:999px;background:#64748b;flex:0 0 auto}
+  .inspect-item p{font-size:.74rem;line-height:1.45;color:#475569;margin:0;overflow-wrap:anywhere}
+  .inspect-item.ok strong::before{background:#16a34a}.inspect-item.warn strong::before{background:#d97706}.inspect-item.fail strong::before{background:#dc2626}
+  .response-meta{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+  .meta{border-radius:999px;padding:5px 9px;font-size:.72rem;font-weight:900;background:#f1f5f9;color:#475569}
+  .meta.ok{background:#dcfce7;color:#166534}.meta.err{background:#fee2e2;color:#991b1b}.meta.info{background:#e0f2fe;color:#075985}
+  .response-grid{display:grid;grid-template-columns:minmax(0,1fr) 260px;gap:12px}
+  .codebox{background:#0f172a;color:#e2e8f0;border-radius:10px;padding:14px;min-height:280px;max-height:560px;overflow:auto;font-family:'Consolas','Courier New',monospace;font-size:.78rem;line-height:1.55;white-space:pre-wrap}
+  .headers-box{background:#f8fafc;border:1px solid #e2e8f0;border-radius:10px;padding:12px;max-height:280px;overflow:auto;font-family:'Consolas','Courier New',monospace;font-size:.72rem;color:#334155;white-space:pre-wrap}
+  .test-list{display:grid;gap:8px}.test{border:1px solid #e2e8f0;border-radius:9px;padding:9px;font-size:.78rem;font-weight:800}.test.pass{background:#f0fdf4;color:#166534;border-color:#bbf7d0}.test.fail{background:#fef2f2;color:#991b1b;border-color:#fecaca}.test.skip{background:#f8fafc;color:#64748b}
+  .side{position:sticky;top:80px;display:grid;gap:16px}
+  .preset{display:block;width:100%;text-align:left;border:1px solid #e2e8f0;background:#fff;border-radius:10px;padding:11px;cursor:pointer;margin-bottom:8px;min-height:44px}
+  .preset:hover{border-color:#0ea5e9;background:#f8fcff}.preset strong{display:block;font-size:.84rem;color:#0f172a;margin-bottom:3px}.preset span{font-size:.74rem;color:#64748b;line-height:1.45;display:block}
+  .list{display:grid;gap:7px}.item{border:1px solid #e2e8f0;background:#fff;border-radius:9px;padding:9px;cursor:pointer;min-height:44px}.item:hover{border-color:#0ea5e9}.item strong{display:block;font-size:.78rem}.item span{display:block;color:#64748b;font-size:.7rem;margin-top:2px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .note{background:#f0f9ff;border:1px solid #bae6fd;color:#075985;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
+  .warnbox{background:#fff7ed;border:1px solid #fed7aa;color:#9a3412;border-radius:10px;padding:12px;font-size:.78rem;line-height:1.55}
+  .seo-section{max-width:900px;margin:0 auto;padding:42px 24px 72px}.seo-section h2{font-size:1.35rem;font-weight:900;margin:0 0 12px;color:#0f172a}.seo-section p{font-size:.9rem;color:#475569;line-height:1.75;margin:0 0 14px}
+  details.faq-item{border:1px solid #e2e8f0;border-radius:10px;margin-bottom:8px;background:#fff}details.faq-item summary{padding:14px 16px;font-weight:900;cursor:pointer;list-style:none}details.faq-item summary::-webkit-details-marker{display:none}details.faq-item p{padding:0 16px 14px;margin:0;font-size:.84rem;color:#475569;line-height:1.7}
+  @media(max-width:980px){.workspace{grid-template-columns:1fr}.side{position:static}.response-grid{grid-template-columns:1fr}.request-line{grid-template-columns:1fr}.send{width:100%}.grid-2,.grid-3,.inspect-grid{grid-template-columns:1fr}}
+  @media(max-width:520px){.main,.hero-inner,.seo-section{padding-left:16px;padding-right:16px}.card-head,.inspect-head{align-items:stretch;flex-direction:column}.head-actions{justify-content:stretch}.head-actions .mini{flex:1}.card-head input{max-width:none!important}.actions .mini,.inspect-head .mini{width:100%}}
 </style>
-<style data-at-trust-panel-style>
-.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
-</style>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Pourquoi ma requête échoue-t-elle avec CORS ?","acceptedAnswer":{"@type":"Answer","text":"Les navigateurs bloquent les réponses des API qui n’autorisent pas l’origine de cette page. Copiez le cURL expurgé et exécutez-le depuis un terminal ou backend autorisé."}},{"@type":"Question","name":"Mes clés API sont-elles envoyées à AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Non. Une requête authentifiée part uniquement après confirmation du point exact. AfroTools bloque ses propres domaines et les routes de télémétrie, ne relaie pas la requête et ne stocke jamais les secrets. Les requêtes enregistrées et aperçus de code gardent uniquement des marqueurs expurgés."}},{"@type":"Question","name":"Puis-je remplacer Postman par cet outil ?","acceptedAnswer":{"@type":"Answer","text":"Utilisez-le pour des contrôles rapides, modèles sandbox, génération cURL, démonstrations et diagnostics légers. Pour le travail d’équipe, les coffres de secrets et les collections CI, préférez un client API complet."}}]}
+</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Online REST Testeur API for African Developers",
+  "description": "Testez des API REST dans votre navigateur avec import cURL, environnements locaux, contrôle avant envoi, assertions, en-têtes de réponse, export JSON et modèles africains.",
+  "url": "https://afrotools.com/fr/tools/testeur-api/",
+  "inLanguage": "en",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Web",
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/api-tester.webp"
+}
+</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/testeur-api/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/api-tester/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/testeur-api/">
@@ -45,94 +200,1005 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/api-tester/">
 </head>
 <body class="top-level-page-ui-refresh">
-  <div id="navbar"></div>
-  <main class="fr-tool-shell">
-<section class="at-trust-panel" data-tool-verification-panel aria-label="Méthodologie, sources et limites">
-<h2>Méthodologie, sources et limites</h2>
-<div class="at-trust-grid"><div><strong>Méthodologie</strong>La page aide à préparer un calcul, une comparaison ou une vérification avec vos données avant de passer a l'outil principal.</div><div><strong>Sources</strong>Pour tout taux, barème, examen, assurance, santé, éducation ou regle pays, confirmez la source officielle ou le fournisseur avant décision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypothèses sont à valider et ne remplacent pas un avis fiscal, juridique, médical, éducatif ou professionnel.</div></div>
-<p>Dernière vérification editoriale: 2026. Utilisez le résultat comme repere de travail, puis conservez la source, la date et le contexte de votre vérification.</p>
+<afro-navbar></afro-navbar>
+<section class="hero">
+  <div class="hero-inner">
+    <nav class="crumb"><a href="/">AfroTools</a> / <a href="/developer-tools/">Outils développeur</a> / <span>Testeur API</span></nav>
+    <h1>API <em>Testeur</em></h1>
+    <p class="hero-sub">Un atelier API dans le navigateur pour les contrôles rapides, appels sandbox, webhooks et API africaines. Construisez la requête, changez d’environnement, importez un cURL, lancez les assertions et exportez un code sûr.</p>
+    <div class="badges"><span class="badge">Environnements</span><span class="badge">cURL import</span><span class="badge">Requêtes enregistrées</span><span class="badge">Assertions</span><span class="badge">Modèles Afrique</span></div>
+  </div>
 </section>
-<section class="fr-action-planner" data-tool-verification-panel data-fr-action-planner data-tool-name="Testeur API">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
-</div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/api-tester/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthodologie:</strong> utilisez ce brief comme aide de planification. Limites 2026: contenu non officiel; hypothèses à valider avec la source, le fournisseur ou l'autorite competente avant décision financière, juridique, santé, énergie, éducation ou business.</div>
+
+<main class="main">
+  <div class="workspace">
+    <div class="stack">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Environnement</span><div class="head-actions"><button type="button" class="mini" id="save-env">Enregistrer les variables non sensibles</button><button type="button" class="mini" id="clear-env">Effacer les variables</button></div></div>
+        <div class="card-body">
+          <div class="grid-3">
+            <div><label for="env-name">Environnement</label><select id="env-name"><option value="none">Aucun environnement</option><option value="local">API locale</option><option value="sandbox">Sandbox</option><option value="staging">Staging</option><option value="production">Production</option></select></div>
+            <div><label for="var-baseUrl">baseUrl</label><input id="var-baseUrl" placeholder="https://api.example.com"></div>
+            <div><label for="var-token">token</label><input id="var-token" type="password" placeholder="Optional bearer token"></div>
+          </div>
+          <div class="grid-3" style="margin-top:12px">
+            <div><label for="var-paystackSecret">paystackSecret</label><input id="var-paystackSecret" type="password" placeholder="sk_test_..."></div>
+            <div><label for="var-flutterwaveSecret">flutterwaveSecret</label><input id="var-flutterwaveSecret" type="password" placeholder="FLWSECK_TEST..."></div>
+            <div><label for="var-mpesaBasic">mpesaBasic</label><input id="var-mpesaBasic" type="password" placeholder="Base64 consumer:key"></div>
+          </div>
+          <div class="grid-3" style="margin-top:12px">
+            <div><label for="var-mtnSubscriptionKey">mtnSubscriptionKey</label><input id="var-mtnSubscriptionKey" type="password" placeholder="MTN MoMo key"></div>
+            <div><label for="var-africasTalkingUsername">atUsername</label><input id="var-africasTalkingUsername" placeholder="sandbox"></div>
+            <div><label for="var-africasTalkingApiKey">atApiKey</label><input id="var-africasTalkingApiKey" type="password" placeholder="Africa's Talking key"></div>
+          </div>
+          <p class="warnbox" style="margin:12px 0 0">Les variables sont remplacées dans les URL, en-têtes et corps avec the <strong>baseUrl</strong> and <strong>token</strong> variable names, les secrets fournisseur et les clés d’API africaines. Seules les valeurs non sensibles peuvent être enregistrées. Les identifiants restent en mémoire et sont effacés après envoi, annulation ou fermeture de la page.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Requête</span><input aria-label="Requête name" id="request-name" style="max-width:260px" placeholder="Requête name"></div>
+        <div class="card-body">
+          <div class="request-line">
+            <select id="method" class="method" aria-label="Method"><option>GET</option><option>POST</option><option>PUT</option><option>PATCH</option><option>DELETE</option><option>HEAD</option><option>OPTIONS</option></select>
+            <input aria-label="BaseUrl /v1/endpoint" type="url" id="url" value="" data-default-path="/api/status" placeholder="{{baseUrl}}/v1/endpoint">
+            <button type="button" class="send" id="send-request">Envoyer</button>
+          </div>
+
+          <div class="tabs" role="tablist">
+            <button class="tab active" data-tab="params" type="button">Paramètres</button>
+            <button class="tab" data-tab="headers" type="button">En-têtes</button>
+            <button class="tab" data-tab="body" type="button">Corps</button>
+            <button class="tab" data-tab="auth" type="button">Authentification</button>
+            <button class="tab" data-tab="tests" type="button">Tests</button>
+          </div>
+
+          <div class="tab-panel active" id="tab-params">
+            <div id="params-rows"></div>
+            <button class="link-btn" id="add-param" type="button">+ Ajouter un paramètre</button>
+          </div>
+
+          <div class="tab-panel" id="tab-headers">
+            <div id="header-rows"></div>
+            <button class="link-btn" id="add-header" type="button">+ Ajouter un en-tête</button>
+          </div>
+
+          <div class="tab-panel" id="tab-body">
+            <div class="grid-2">
+              <div><label for="body-mode">Type de corps</label><select id="body-mode"><option value="json">JSON</option><option value="text">Texte brut</option><option value="form">Formulaire encodé URL</option></select></div>
+              <div><label for="body-note">Raccourci</label><button class="mini" id="format-body" type="button">Formater le JSON</button></div>
+            </div>
+            <label for="req-body" style="margin-top:12px">Corps de la requête</label>
+            <textarea id="req-body" rows="10">{"title":"Test Post","body":"Hello from AfroTools Testeur API","userId":1}</textarea>
+          </div>
+
+          <div class="tab-panel" id="tab-auth">
+            <div class="grid-2">
+              <div><label for="auth-type">Type d’autorisation</label><select id="auth-type"><option value="none">None</option><option value="bearer">Jeton Bearer</option><option value="basic">Authentificationentification Basic</option><option value="api-key">En-tête de clé API</option></select></div>
+              <div><label for="auth-token">Jeton, mot de passe ou clé</label><input id="auth-token" type="password" placeholder="{{token}}"></div>
+            </div>
+            <div class="grid-2" style="margin-top:12px">
+              <div><label for="auth-user">Nom utilisateur ou en-tête de clé API</label><input id="auth-user" placeholder="X-API-Key or username"></div>
+              <div><label for="auth-prefix">Préfixe d’en-tête</label><input id="auth-prefix" value="Bearer" placeholder="Bearer"></div>
+            </div>
+          </div>
+
+          <div class="tab-panel" id="tab-tests">
+            <div class="grid-2">
+              <div><label for="test-status">Statut attendu</label><input id="test-status" type="number" value="200" placeholder="200"></div>
+              <div><label for="test-time">Temps de réponse maximal (ms)</label><input id="test-time" type="number" value="3000" placeholder="1000"></div>
+            </div>
+            <div class="grid-2" style="margin-top:12px">
+              <div><label for="test-contains">La réponse contient</label><input id="test-contains" value="operational" placeholder="success"></div>
+              <div><label for="test-jsonpath">Le chemin JSON existe</label><input id="test-jsonpath" value="$.status" placeholder="$.data.id"></div>
+            </div>
+          </div>
+
+          <div class="request-inspector" aria-live="polite">
+            <div class="inspect-head">
+              <span class="inspect-title">Contrôle avant envoi</span>
+              <button class="mini" id="copy-safe-brief" type="button">Copier le résumé de diagnostic expurgé</button>
+            </div>
+            <div class="inspect-grid" id="preflight-list"></div>
+          </div>
+
+          <div class="actions">
+            <button class="mini primary" id="save-request" type="button">Enregistrer la requête</button>
+            <button class="mini" id="copy-curl" type="button">Copier le cURL expurgé</button>
+            <button class="mini" id="copy-fetch" type="button">Copier fetch() expurgé</button>
+            <button class="mini" id="download-request" type="button">Télécharger le JSON expurgé</button>
+            <button class="mini" id="clear-request" type="button">Effacer</button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card" id="response-card">
+        <div class="card-head"><span class="card-title">Réponse</span><div class="actions" style="margin:0"><button class="mini" id="copy-response" type="button">Copier la réponse</button></div></div>
+        <div class="card-body">
+          <div class="response-meta" id="response-meta"><span class="meta">Aucune requête envoyée</span></div>
+          <div class="response-grid">
+            <pre class="codebox" id="response-body">Envoyez une requête pour afficher ici le corps de la réponse.</pre>
+            <div>
+              <label>Assertions</label>
+              <div class="test-list" id="test-results"><div class="test skip">Aucun test exécuté.</div></div>
+              <label style="margin-top:14px">En-têtes de réponse</label>
+              <div class="headers-box" id="response-headers">Aucun en-tête pour le moment.</div>
+            </div>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <aside class="side">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Modèles d’API africaines</span></div>
+        <div class="card-body" id="preset-list"></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Importerer un cURL</span><button class="mini" id="import-curl" type="button">Importer</button></div>
+        <div class="card-body">
+          <textarea id="curl-input" rows="5" placeholder="curl -X POST https://api.example.com -H 'Content-Type: application/json' -d '{...}'" aria-label="curl -X POST https://api.example.com -H"></textarea>
+          <p class="note" style="margin:10px 0 0">L’import gère les formes courantes `curl -X`, `-H`, `-d` et les URL. Vérifiez les scripts shell complexes avant tout envoi.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Requêtes enregistrées</span><button class="mini" id="clear-saved" type="button">Effacer</button></div>
+        <div class="card-body"><div class="list" id="saved-list"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Historique</span><button class="mini" id="clear-history" type="button">Effacer</button></div>
+        <div class="card-body"><div class="list" id="history-list"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-body">
+          <p class="note"><strong>Modèle de confidentialité :</strong> AfroTools ne relaie pas ces requêtes. Le navigateur envoie directement vers le point de terminaison confirmé ; les règles CORS s’appliquent. Si une API bloque le navigateur, utilisez le cURL expurgé et ajoutez les identifiants uniquement dans votre terminal ou backend de confiance.</p>
+        </div>
+      </section>
+    </aside>
+  </div>
+
+</main>
+
+<section class="seo-section">
+  <h2>Tests API adaptés aux flux de travail africains</h2>
+  <p>Les développeurs africains passent souvent entre services locaux, sandboxes fintech, callbacks USSD, authentification mobile money, fournisseurs d’identité et contraintes de déploiement. Cet outil conserve un flux rapide dans le navigateur avec environnements, modèles, export cURL expurgé et requêtes réutilisables.</p>
+  <p>Commencez par le point de statut AfroTools sans authentification, puis utilisez les modèles Paystack, Flutterwave, M-Pesa Daraja, MTN MoMo et Africa's Talking. Certaines API refusent volontairement les appels depuis un navigateur. Le cURL expurgé fournit alors une base plus sûre à compléter dans votre terminal.</p>
+  <h2>Questions fréquentes</h2>
+  <details class="faq-item"><summary>Pourquoi ma requête échoue-t-elle avec CORS ?</summary><p>Les navigateurs bloquent les réponses des API qui n’autorisent pas l’origine de cette page. Copiez le cURL expurgé et exécutez-le depuis un terminal ou backend autorisé.</p></details>
+  <details class="faq-item"><summary>Mes clés API sont-elles envoyées à AfroTools ?</summary><p>Non. Une requête authentifiée part uniquement après confirmation du point exact. AfroTools bloque ses propres domaines et les routes de télémétrie, ne relaie pas la requête et ne stocke jamais les secrets. Les requêtes enregistrées et aperçus de code gardent uniquement des marqueurs expurgés.</p></details>
+  <details class="faq-item"><summary>Puis-je remplacer Postman par cet outil ?</summary><p>Utilisez-le pour des contrôles rapides, modèles sandbox, génération cURL, démonstrations et diagnostics légers. Pour le travail d’équipe, les coffres de secrets et les collections CI, préférez un client API complet.</p></details>
 </section>
-    <nav class="breadcrumb"><a href="/fr/">Accueil</a> › <a href="/fr/all-tools/">Outils</a> › Testeur API</nav>
-    <p class="eyebrow">Développeur</p>
-    <h1>Testeur API</h1>
-    <p class="lead">Vérifiez rapidement une URL, une méthode, des en-tetes et une charge utile pendant le développement.</p>
-    <div class="tool-frame-wrap">
-      <iframe id="undefined" class="tool-frame" src="/tools/api-tester/" title="Testeur API" loading="eager"></iframe>
-    </div>
-    <div class="support-grid">
-      <section><h2>Développement</h2><p>Pratique pour vérifier une route avant de l'appeler depuis une application.</p></section>
-      <section><h2>Données sensibles</h2><p>N'envoyez pas de secrets ou jetons privés dans un outil public si vous n'en maitrisez pas le contexte.</p></section>
-      <section><h2>Lecture claire</h2><p>Les statuts, en-tetes et réponses facilitent le diagnostic rapide.</p></section>
-    </div>
-  </main>
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7"></script>
-  <script>
-(function () {
-  var terms = [["API Tester","Testeur API"],["Request","Requete"],["Response","Reponse"],["Headers","En-tetes"],["Body","Corps"],["Method","Methode"],["Send Request","Envoyer la requete"],["Status","Statut"],["URL","URL"],["JSON Body","Corps JSON"],["Developer Tools","Outils développeur"],["Business & ROI","Business et rentabilité"],["All Tools","Tous les outils"],["Tools","Outils"],["Create","Créer"],["Generate","Générer"],["Download","Télécharger"],["Copy","Copier"],["Copied","Copié"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["Output","Sortie"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Coming Soon","Bientôt disponible"],["Available now","Disponible"]];
-  terms.sort(function (a, b) { return b[0].length - a[0].length; });
-  function swapText(value) {
-    if (!value) return value;
-    var next = value;
-    terms.forEach(function (pair) {
-      next = next.split(pair[0]).join(pair[1]);
-    });
-    return next;
+
+<div style="padding:0 20px;max-width:760px;margin:0 auto"></div>
+<afro-related-tools category="developer" current="api-tester" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and Testeur API snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Data Format Converter</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Code Simulator</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encoder/Decoder</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Hash Generator</a></li><li><a href="/tools/markdown-editor/" data-related-tool data-id="markdown-editor" data-name="Markdown Editor" data-category="developer" data-icon="ME" data-desc="Live preview, GFM tables, toolbar, scroll sync, fullscreen, word count, export to HTML/MD. AI assist.">Markdown Editor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  var STORAGE = {
+    env: 'afrotools.apiTester.env.v1',
+    saved: 'afrotools.apiTester.saved.v1',
+    history: 'afrotools.apiTester.history.v1'
+  };
+  var DEFAULT_STATUS_URL = location.origin + '/api/status';
+
+  var PRESETS = [
+    {
+      id: 'afrotools-status',
+      name: 'AfroTools status sample',
+      desc: 'GET the same-origin AfroTools API status. Good first browser smoke test.',
+      method: 'GET',
+      url: DEFAULT_STATUS_URL,
+      headers: [{key:'Accept', value:'application/json'}],
+      body: '',
+      tests: {status:'200', contains:'operational', time:'1500', jsonpath:'$.status'}
+    },
+    {
+      id: 'paystack-init',
+      name: 'Paystack transaction init',
+      desc: 'Template for Nigerian card, bank transfer and USSD payment initialization.',
+      method: 'POST',
+      url: 'https://api.paystack.co/transaction/initialize',
+      headers: [{key:'Authorization', value:'Bearer {{paystackSecret}}'}, {key:'Content-Type', value:'application/json'}],
+      body: '{"email":"customer@example.com","amount":500000,"currency":"NGN","callback_url":"https://example.com/paystack/callback"}',
+      tests: {status:'200', contains:'authorization_url', time:'3000', jsonpath:'$.data.authorization_url'}
+    },
+    {
+      id: 'flutterwave-banks',
+      name: 'Flutterwave banks NG',
+      desc: 'Template for listing Nigerian banks through Flutterwave.',
+      method: 'GET',
+      url: 'https://api.flutterwave.com/v3/banks/NG',
+      headers: [{key:'Authorization', value:'Bearer {{flutterwaveSecret}}'}, {key:'Content-Type', value:'application/json'}],
+      body: '',
+      tests: {status:'200', contains:'banks', time:'3000', jsonpath:'$.data'}
+    },
+    {
+      id: 'mpesa-token',
+      name: 'M-Pesa Daraja token',
+      desc: 'Sandbox OAuth token request. Use cURL export if browser CORS blocks it.',
+      method: 'GET',
+      url: 'https://sandbox.safaricom.co.ke/oauth/v1/generate?grant_type=client_credentials',
+      headers: [{key:'Authorization', value:'Basic {{mpesaBasic}}'}],
+      body: '',
+      tests: {status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}
+    },
+    {
+      id: 'mtn-momo-token',
+      name: 'MTN MoMo collection token',
+      desc: 'Collection token template with subscription key header.',
+      method: 'POST',
+      url: 'https://sandbox.momodeveloper.mtn.com/collection/token/',
+      headers: [{key:'Authorization', value:'Basic {{token}}'}, {key:'Ocp-Apim-Subscription-Key', value:'{{mtnSubscriptionKey}}'}],
+      body: '',
+      tests: {status:'200', contains:'access_token', time:'3000', jsonpath:'$.access_token'}
+    },
+    {
+      id: 'at-ussd-callback',
+      name: "Africa's Talking USSD callback",
+      desc: 'Local callback simulation payload for a USSD handler.',
+      method: 'POST',
+      url: '{{baseUrl}}/ussd',
+      headers: [{key:'Content-Type', value:'application/x-www-form-urlencoded'}],
+      body: 'sessionId=ATUid_demo&serviceCode=*384*123%23&phoneNumber=%2B254700000000&text=',
+      tests: {status:'200', contains:'CON', time:'1000', jsonpath:''}
+    }
+  ];
+
+  function $(id){ return document.getElementById(id); }
+  function read(key, fallback){
+    try { return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback)); }
+    catch(e){ return fallback; }
   }
-  function localize(root) {
-    if (!root) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (node) {
-        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        var parent = node.parentElement;
-        if (parent && /^(script|style|code|pre)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
+  function write(key, value){
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e) {}
+  }
+  function esc(s){
+    return String(s || '').replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
     });
-    var nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { node.nodeValue = swapText(node.nodeValue); });
-    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"],button').forEach(function (el) {
-      ['placeholder', 'aria-label', 'title', 'alt', 'value'].forEach(function (attr) {
-        if (el.hasAttribute && el.hasAttribute(attr)) el.setAttribute(attr, swapText(el.getAttribute(attr)));
+  }
+  function toast(msg){
+    var el = document.createElement('div');
+    el.textContent = msg;
+    el.style.cssText = 'position:fixed;right:20px;bottom:20px;background:#0f172a;color:#fff;padding:10px 14px;border-radius:8px;font-size:.82rem;font-weight:800;z-index:9999;box-shadow:0 10px 30px rgba(0,0,0,.18)';
+    document.body.appendChild(el);
+    setTimeout(function(){ el.remove(); }, 2200);
+  }
+
+  function variables(){
+    var saved = read(STORAGE.env, {});
+    var current = {
+      baseUrl: $('var-baseUrl').value || '',
+      token: $('var-token').value || '',
+      paystackSecret: $('var-paystackSecret').value || '',
+      flutterwaveSecret: $('var-flutterwaveSecret').value || '',
+      mpesaBasic: $('var-mpesaBasic').value || '',
+      mtnSubscriptionKey: $('var-mtnSubscriptionKey').value || '',
+      africasTalkingUsername: $('var-africasTalkingUsername').value || '',
+      africasTalkingApiKey: $('var-africasTalkingApiKey').value || ''
+    };
+    ['baseUrl','africasTalkingUsername'].forEach(function(k){ if (!current[k] && saved[k]) current[k] = saved[k]; });
+    return current;
+  }
+
+  function secretValues(req){
+    var vars = variables();
+    var values = [
+      req && req.auth && req.auth.token,
+      vars.token,
+      vars.paystackSecret,
+      vars.flutterwaveSecret,
+      vars.mpesaBasic,
+      vars.mtnSubscriptionKey,
+      vars.africasTalkingApiKey
+    ];
+    (req && req.headers || []).forEach(function(header){
+      if (isSensitiveKey(header.key)) values.push(interpolate(header.value));
+    });
+    return values.map(function(value){ return String(value || ''); }).filter(function(value){
+      return value && !hasUnresolvedVariables(value) && value !== '<REDACTED>' && value !== '[redacted]';
+    }).filter(function(value, index, all){ return all.indexOf(value) === index; });
+  }
+
+  function clearSecretFields(){
+    ['var-token','var-paystackSecret','var-flutterwaveSecret','var-mpesaBasic','var-mtnSubscriptionKey','var-africasTalkingApiKey','auth-token'].forEach(function(id){
+      var el = $(id);
+      if (el) el.value = '';
+    });
+    document.querySelectorAll('#header-rows .kv').forEach(function(row){
+      var key = row.querySelector('.kv-key');
+      var value = row.querySelector('.kv-value');
+      if (key && value && isSensitiveKey(key.value)) value.value = '';
+    });
+    if ($('curl-input')) $('curl-input').value = '';
+  }
+
+  function redactSecrets(text, values){
+    var result = String(text == null ? '' : text);
+    (values || []).sort(function(a, b){ return b.length - a.length; }).forEach(function(value){
+      if (!value) return;
+      result = result.split(value).join('<REDACTED>');
+    });
+    return result.replace(/(https?:\/\/)[^@\s/]+@/gi, '$1<REDACTED>@');
+  }
+
+  function interpolate(str){
+    var vars = variables();
+    return String(str || '').replace(/\{\{([a-zA-Z0-9_]+)\}\}/g, function(_, key){
+      return vars[key] != null ? vars[key] : '';
+    });
+  }
+
+  function rowHtml(key, value){
+    return '<div class="kv"><input aria-label="Key" class="kv-key" placeholder="Key" value="'+esc(key || '')+'"><input aria-label="Value" class="kv-value" placeholder="Value" value="'+esc(value || '')+'"><button class="remove" type="button" aria-label="Remove row">x</button></div>';
+  }
+
+  function addRow(target, key, value){
+    var wrap = document.createElement('div');
+    wrap.innerHTML = rowHtml(key, value);
+    var row = wrap.firstElementChild;
+    row.querySelector('.remove').addEventListener('click', function(){ row.remove(); });
+    $(target).appendChild(row);
+  }
+
+  function collectRows(target){
+    var out = [];
+    document.querySelectorAll('#' + target + ' .kv').forEach(function(row){
+      var key = row.querySelector('.kv-key').value.trim();
+      var value = row.querySelector('.kv-value').value;
+      if (key) out.push({key:key, value:value});
+    });
+    return out;
+  }
+
+  function applyRows(target, rows){
+    $(target).innerHTML = '';
+    (rows || []).forEach(function(r){ addRow(target, r.key, r.value); });
+  }
+
+  function requestState(){
+    return {
+      name: $('request-name').value.trim() || ($('method').value + ' ' + $('url').value),
+      method: $('method').value,
+      url: $('url').value,
+      params: collectRows('params-rows'),
+      headers: collectRows('header-rows'),
+      bodyMode: $('body-mode').value,
+      body: $('req-body').value,
+      auth: {
+        type: $('auth-type').value,
+        token: $('auth-token').value,
+        user: $('auth-user').value,
+        prefix: $('auth-prefix').value
+      },
+      tests: {
+        status: $('test-status').value,
+        time: $('test-time').value,
+        contains: $('test-contains').value,
+        jsonpath: $('test-jsonpath').value
+      }
+    };
+  }
+
+  function loadRequest(req){
+    $('request-name').value = req.name || '';
+    $('method').value = req.method || 'GET';
+    $('url').value = req.url || '';
+    applyRows('params-rows', req.params || []);
+    applyRows('header-rows', req.headers || []);
+    $('body-mode').value = req.bodyMode || 'json';
+    $('req-body').value = req.body || '';
+    $('auth-type').value = (req.auth && req.auth.type) || 'none';
+    $('auth-token').value = (req.auth && req.auth.token) || '';
+    $('auth-user').value = (req.auth && req.auth.user) || '';
+    $('auth-prefix').value = (req.auth && req.auth.prefix) || 'Bearer';
+    $('test-status').value = (req.tests && req.tests.status) || '';
+    $('test-time').value = (req.tests && req.tests.time) || '';
+    $('test-contains').value = (req.tests && req.tests.contains) || '';
+    $('test-jsonpath').value = (req.tests && req.tests.jsonpath) || '';
+  }
+
+  function buildUrl(req){
+    var url = interpolate(req.url);
+    var params = req.params.map(function(p){ return {key: interpolate(p.key), value: interpolate(p.value)}; }).filter(function(p){ return p.key; });
+    if (!params.length) return url;
+    var joiner = url.indexOf('?') === -1 ? '?' : '&';
+    return url + joiner + params.map(function(p){ return encodeURIComponent(p.key) + '=' + encodeURIComponent(p.value); }).join('&');
+  }
+
+  function buildHeaders(req){
+    var headers = {};
+    req.headers.forEach(function(h){ if (h.key) headers[interpolate(h.key)] = interpolate(h.value); });
+    if (req.auth.type === 'bearer') {
+      var prefix = req.auth.prefix || 'Bearer';
+      var token = interpolate(req.auth.token || '{{token}}');
+      if (token) headers.Authorization = prefix + ' ' + token;
+    } else if (req.auth.type === 'basic') {
+      headers.Authorization = 'Basic ' + btoa((req.auth.user || '') + ':' + interpolate(req.auth.token || ''));
+    } else if (req.auth.type === 'api-key') {
+      var name = req.auth.user || 'X-API-Key';
+      var value = interpolate(req.auth.token || '');
+      if (value) headers[name] = value;
+    }
+    return headers;
+  }
+
+  function buildOptions(req){
+    var options = { method: req.method, headers: buildHeaders(req), redirect: 'manual' };
+    if (['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1 && req.body) {
+      options.body = interpolate(req.body);
+    }
+    return options;
+  }
+
+  function hasUnresolvedVariables(text){
+    return /\{\{[^}]+\}\}/.test(String(text || ''));
+  }
+
+  function isSensitiveKey(key){
+    return /authorization|api[-_]?key|secret|token|password|subscription[-_]?key/i.test(String(key || ''));
+  }
+
+  function redactValue(key, value){
+    if (!value) return '';
+    if (isSensitiveKey(key)) return '[redacted]';
+    var text = String(value);
+    if (/^(Bearer|Basic)\s+\S+/i.test(text)) return text.replace(/\s+\S+$/, ' [redacted]');
+    if (text.length > 16 && /(?:sk_|pk_|FLW|key|token|secret|Bearer)/i.test(text)) return '[redacted]';
+    return text;
+  }
+
+  function sanitizedRequest(req){
+    var safe = JSON.parse(JSON.stringify(req || {}));
+    if (safe.auth) safe.auth.token = '';
+    safe.headers = (safe.headers || []).map(function(header){
+      return {
+        key: header.key,
+        value: isSensitiveKey(header.key) ? '<REDACTED>' : redactSecrets(header.value, secretValues(req))
+      };
+    });
+    return safe;
+  }
+
+  function credentialHeaderNames(req){
+    var headers = buildHeaders(req);
+    return Object.keys(headers).filter(function(key){
+      return isSensitiveKey(key) || /^(authorization|proxy-authorization)$/i.test(key);
+    });
+  }
+
+  function normalizedTarget(req){
+    var raw = buildUrl(req);
+    var parsed;
+    try { parsed = new URL(raw); }
+    catch(e){ return {ok:false, reason:'Enter a valid absolute HTTP or HTTPS URL.'}; }
+    if (!/^https?:$/.test(parsed.protocol)) return {ok:false, reason:'Only HTTP and HTTPS endpoints are supported.'};
+    if (parsed.username || parsed.password) return {ok:false, reason:'URL user information is not allowed. Use the authorization controls.'};
+    var host = parsed.hostname.toLowerCase().replace(/\.$/, '');
+    if (host === 'afrotools.com' || host.endsWith('.afrotools.com')) {
+      return {ok:false, reason:'Credentialed requests to AfroTools domains are blocked.'};
+    }
+    if (/(^|[.-])(analytics|telemetry)([.-]|$)/i.test(host) || /\/(?:analytics|telemetry|collect|events?|track|beacon)(?:\/|$)/i.test(parsed.pathname)) {
+      return {ok:false, reason:'Credentialed requests to analytics or telemetry endpoints are blocked.'};
+    }
+    var secrets = secretValues(req);
+    var urlParts = parsed.search + parsed.hash;
+    if (secrets.some(function(secret){ return urlParts.indexOf(secret) !== -1; })) {
+      return {ok:false, reason:'Credentials cannot be inserted into a URL query or fragment.'};
+    }
+    parsed.hash = '';
+    return {
+      ok:true,
+      url:parsed.href,
+      origin:parsed.origin,
+      scheme:parsed.protocol.replace(':',''),
+      host:parsed.hostname,
+      port:parsed.port || (parsed.protocol === 'https:' ? '443' : '80'),
+      path:parsed.pathname || '/',
+      privateTarget:/^(localhost|127(?:\.\d{1,3}){3}|::1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2})$/i.test(parsed.hostname)
+    };
+  }
+
+  function auditConsent(target, authType, outcome){
+    var bucket = new Date();
+    bucket.setMinutes(0, 0, 0);
+    window.__AFROTOOLS_API_CONSENT_AUDIT__ = window.__AFROTOOLS_API_CONSENT_AUDIT__ || [];
+    window.__AFROTOOLS_API_CONSENT_AUDIT__.push({
+      endpointOrigin: target && target.origin || '',
+      authType: authType || 'none',
+      outcome: outcome,
+      timestampBucket: bucket.toISOString()
+    });
+  }
+
+  function confirmCredentialSend(req, target){
+    var names = credentialHeaderNames(req);
+    if (!names.length && !req.auth.token) return true;
+    var destination = target.scheme + '://' + target.host + ':' + target.port + target.path;
+    var warning = [
+      'Envoyer les identifiants vers ce point exact ?',
+      '',
+      'Destination: ' + destination,
+      'Credential header names: ' + (names.join(', ') || 'Authorization'),
+      '',
+      'Les identifiants quitteront ce navigateur uniquement vers ce point de terminaison. AfroTools ne les enregistre pas.'
+    ];
+    if (target.privateTarget) warning.push('', 'Avertissement supplémentaire : il s’agit d’une cible locale ou privée. Confirmez que vous la contrôlez.');
+    var accepted = window.confirm(warning.join('\n'));
+    auditConsent(target, req.auth.type, accepted ? 'confirmed' : 'cancelled');
+    return accepted;
+  }
+
+  function bodyIsJson(req){
+    if (!req.body || req.bodyMode !== 'json' || ['POST','PUT','PATCH','DELETE'].indexOf(req.method) === -1) return null;
+    try { JSON.parse(interpolate(req.body)); return true; }
+    catch(e){ return false; }
+  }
+
+  function preflightItems(req){
+    var finalUrl = buildUrl(req);
+    var headers = buildHeaders(req);
+    var assertions = [req.tests.status, req.tests.time, req.tests.contains, req.tests.jsonpath].filter(Boolean).length;
+    var jsonOk = bodyIsJson(req);
+    var authSecret = Boolean(req.auth.token || Object.keys(headers).some(isSensitiveKey));
+    var urlState = !finalUrl ? 'fail' : hasUnresolvedVariables(finalUrl) ? 'fail' : 'ok';
+    var mixedContent = finalUrl.indexOf('http://') === 0 && location.protocol === 'https:' && !/^http:\/\/(localhost|127\.0\.0\.1)/.test(finalUrl);
+    var corsLikely = finalUrl && !/^https?:\/\/(localhost|127\.0\.0\.1)/.test(finalUrl) && finalUrl.indexOf(location.origin) !== 0;
+    return [
+      {
+        state: urlState,
+        title: 'Endpoint',
+        text: !finalUrl ? 'Ajoutez une URL avant l’envoi.' : hasUnresolvedVariables(finalUrl) ? 'Résolvez les {{variables}} avant l’envoi.' : 'L’URL est prête pour une requête depuis le navigateur.'
+      },
+      {
+        state: mixedContent ? 'fail' : corsLikely ? 'warn' : 'ok',
+        title: 'Browser reachability',
+        text: mixedContent ? 'Une page HTTPS ne peut pas appeler un point HTTP non sécurisé.' : corsLikely ? 'Les API externes peuvent bloquer les appels du navigateur via CORS. Gardez le cURL prêt.' : 'Le point de terminaison devrait être accessible depuis ce navigateur.'
+      },
+      {
+        state: jsonOk === false ? 'fail' : jsonOk === true ? 'ok' : 'warn',
+        title: 'Body format',
+        text: jsonOk === false ? 'Le corps JSON n’est pas encore valide.' : jsonOk === true ? 'Le corps JSON est analysé correctement.' : 'Aucune validation du corps JSON n’est nécessaire pour cette requête.'
+      },
+      {
+        state: authSecret ? 'warn' : 'ok',
+        title: 'Secret handling',
+        text: authSecret ? 'Auth or secret-like headers will be sent directly by your browser.' : 'No auth secret is configured.'
+      },
+      {
+        state: assertions ? 'ok' : 'warn',
+        title: 'Assertions',
+        text: assertions ? assertions + ' response check' + (assertions > 1 ? 's' : '') + ' configured.' : 'Add expected status, timing, text or JSON-path checks for repeatable debugging.'
+      }
+    ];
+  }
+
+  function renderPreflight(){
+    var el = $('preflight-list');
+    if (!el) return;
+    var req = requestState();
+    el.innerHTML = preflightItems(req).map(function(item){
+      return '<div class="inspect-item '+item.state+'"><strong>'+esc(item.title)+'</strong><p>'+esc(item.text)+'</p></div>';
+    }).join('');
+  }
+
+  function safeDebugBrief(req){
+    var headers = buildHeaders(req);
+    var redactedHeaders = Object.keys(headers).map(function(key){
+      return key + ': ' + redactValue(key, headers[key]);
+    });
+    var jsonOk = bodyIsJson(req);
+    var checks = preflightItems(req).map(function(item){ return '- ' + item.title + ': ' + item.text; }).join('\n');
+    var responseSummary = Array.from($('response-meta').querySelectorAll('.meta')).map(function(item){
+      return item.textContent.trim();
+    }).filter(Boolean).join(' | ') || 'No response yet';
+    return [
+      'AfroTools API Tester debug brief',
+      'Method: ' + req.method,
+      'URL: ' + buildUrl(req),
+      'Auth mode: ' + req.auth.type,
+      'Headers:',
+      redactedHeaders.length ? redactedHeaders.join('\n') : '- none',
+      'Body mode: ' + req.bodyMode,
+      'Body JSON valid: ' + (jsonOk === null ? 'not applicable' : jsonOk ? 'yes' : 'no'),
+      'Assertions: ' + [req.tests.status && ('status ' + req.tests.status), req.tests.time && ('under ' + req.tests.time + 'ms'), req.tests.contains && ('contains "' + req.tests.contains + '"'), req.tests.jsonpath && ('JSON path ' + req.tests.jsonpath)].filter(Boolean).join(', '),
+      'Preflight:',
+      checks,
+      'Response summary: ' + responseSummary,
+      'Note: secrets are redacted in this brief. Replay from a trusted terminal or backend when CORS blocks browser calls.'
+    ].join('\n');
+  }
+
+  function curlFor(req){
+    var secrets = secretValues(req);
+    var url = redactSecrets(buildUrl(req), secrets);
+    var headers = buildHeaders(req);
+    var parts = ['curl', '-X', req.method, quote(url)];
+    Object.keys(headers).forEach(function(k){ parts.push('-H', quote(k + ': ' + (isSensitiveKey(k) ? '<REDACTED>' : redactSecrets(headers[k], secrets)))); });
+    if (req.body && ['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1) parts.push('-d', quote(interpolate(req.body)));
+    return parts.join(' ');
+  }
+
+  function fetchFor(req){
+    var safe = sanitizedRequest(req);
+    var preview = 'fetch(' + JSON.stringify(buildUrl(safe)) + ', ' + JSON.stringify(buildOptions(safe), null, 2) + ')\n  .then(function(res){ return res.text(); })\n  .then(function(text){ /* inspect text in your debugger */ return text; });';
+    return redactSecrets(preview, secretValues(req));
+  }
+
+  function quote(s){
+    return "'" + String(s || '').replace(/'/g, "'\\''") + "'";
+  }
+
+  function setResponseMeta(items){
+    $('response-meta').innerHTML = items.map(function(i){
+      return '<span class="meta '+(i.kind || '')+'">'+esc(i.text)+'</span>';
+    }).join('');
+  }
+
+  function headersText(headers){
+    var lines = [];
+    headers.forEach(function(value, key){ lines.push(key + ': ' + value); });
+    return lines.join('\n') || 'No response headers exposed by the browser.';
+  }
+
+  function jsonPathExists(obj, path){
+    if (!path) return null;
+    var clean = path.replace(/^\$\./, '').replace(/^\$/, '');
+    if (!clean) return true;
+    var parts = clean.replace(/\[(\d+)\]/g, '.$1').split('.').filter(Boolean);
+    var cur = obj;
+    for (var i = 0; i < parts.length; i++) {
+      if (cur == null || !(parts[i] in Object(cur))) return false;
+      cur = cur[parts[i]];
+    }
+    return true;
+  }
+
+  function runTests(req, result){
+    var tests = [];
+    if (req.tests.status) tests.push({name:'Status is ' + req.tests.status, pass:String(result.status) === String(req.tests.status)});
+    if (req.tests.time) tests.push({name:'Response time under ' + req.tests.time + 'ms', pass:result.elapsed <= Number(req.tests.time)});
+    if (req.tests.contains) tests.push({name:'Response contains "' + req.tests.contains + '"', pass:result.body.indexOf(req.tests.contains) !== -1});
+    if (req.tests.jsonpath) {
+      var pass = false;
+      try { pass = jsonPathExists(JSON.parse(result.body), req.tests.jsonpath); }
+      catch(e){ pass = false; }
+      tests.push({name:'JSON path exists: ' + req.tests.jsonpath, pass:pass});
+    }
+    if (!tests.length) {
+      $('test-results').innerHTML = '<div class="test skip">No assertions configured.</div>';
+      return;
+    }
+    $('test-results').innerHTML = tests.map(function(t){ return '<div class="test '+(t.pass ? 'pass' : 'fail')+'">'+(t.pass ? 'PASS ' : 'FAIL ')+esc(t.name)+'</div>'; }).join('');
+  }
+
+  async function sendRequest(){
+    var req = requestState();
+    var finalUrl = buildUrl(req);
+    if (!finalUrl) { toast('Saisissez une URL de requête'); return; }
+    var secrets = secretValues(req);
+    var hasCredentials = credentialHeaderNames(req).length > 0 || Boolean(req.auth.token);
+    var target = hasCredentials ? normalizedTarget(req) : null;
+    if (hasCredentials && !target.ok) {
+      auditConsent(null, req.auth.type, 'blocked');
+      clearSecretFields();
+      toast(target.reason);
+      renderPreflight();
+      return;
+    }
+    if (hasCredentials && !confirmCredentialSend(req, target)) {
+      clearSecretFields();
+      toast('Requête authentifiée annulée');
+      renderPreflight();
+      return;
+    }
+    if (target) finalUrl = target.url;
+    $('response-body').textContent = 'Envoi de la requête…';
+    $('response-headers').textContent = '';
+    $('test-results').innerHTML = '<div class="test skip">Waiting for response...</div>';
+    setResponseMeta([{text:req.method + ' ' + redactSecrets(finalUrl, secrets), kind:'info'}]);
+
+    var start = performance.now();
+    try {
+      var res = await fetch(finalUrl, buildOptions(req));
+      if (res.type === 'opaqueredirect' || (res.status >= 300 && res.status < 400)) {
+        throw new Error('Redirection bloquée. Saisissez et confirmez explicitement le point final.');
+      }
+      var elapsed = Math.round(performance.now() - start);
+      var text = await res.text();
+      var contentType = res.headers.get('content-type') || '';
+      var body = text;
+      if (contentType.indexOf('json') !== -1 && text) {
+        try { body = JSON.stringify(JSON.parse(text), null, 2); }
+        catch(e){ body = text; }
+      }
+      var size = new Blob([body]).size;
+      $('response-body').textContent = redactSecrets(body || '(empty response)', secrets);
+      $('response-headers').textContent = redactSecrets(headersText(res.headers), secrets);
+      setResponseMeta([
+        {text:'Status ' + res.status + ' ' + res.statusText, kind:res.ok ? 'ok' : 'err'},
+        {text:elapsed + 'ms', kind:'info'},
+        {text:size + ' bytes', kind:'info'},
+        {text:contentType || 'unknown type', kind:'info'}
+      ]);
+      runTests(req, {status:res.status, elapsed:elapsed, body:redactSecrets(body, secrets)});
+      renderPreflight();
+      pushHistory(req, res.status, elapsed);
+    } catch(err) {
+      var failedElapsed = Math.round(performance.now() - start);
+      $('response-body').textContent = 'Error: ' + redactSecrets(err.message, secrets) + '\n\nThis is commonly caused by CORS. If the API blocks browser requests, use a redacted code preview and add credentials only in your trusted terminal or backend.';
+      $('response-headers').textContent = 'No headers available.';
+      setResponseMeta([{text:'Request failed', kind:'err'}, {text:failedElapsed + 'ms', kind:'info'}]);
+      $('test-results').innerHTML = '<div class="test fail">Request failed before assertions could run.</div>';
+      renderPreflight();
+    } finally {
+      clearSecretFields();
+    }
+  }
+
+  function pushHistory(req, status, elapsed){
+    var history = read(STORAGE.history, []);
+    history.unshift({req:sanitizedRequest(req), status:status, elapsed:elapsed, at:new Date().toISOString()});
+    history = history.slice(0, 12);
+    write(STORAGE.history, history);
+    renderHistory();
+  }
+
+  function renderList(id, list, emptyText, onClick){
+    var el = $(id);
+    if (!list.length) { el.innerHTML = '<div class="item"><span>'+esc(emptyText)+'</span></div>'; return; }
+    el.innerHTML = '';
+    list.forEach(function(entry, idx){
+      var item = document.createElement('button');
+      item.type = 'button';
+      item.className = 'item';
+      item.innerHTML = '<strong>'+esc(entry.title)+'</strong><span>'+esc(entry.detail)+'</span>';
+      item.addEventListener('click', function(){ onClick(idx); });
+      el.appendChild(item);
+    });
+  }
+
+  function renderSaved(){
+    var saved = read(STORAGE.saved, []);
+    renderList('saved-list', saved.map(function(r){ return {title:r.name || r.method, detail:r.method + ' ' + r.url}; }), 'Aucune requête enregistrée.', function(idx){
+      loadRequest(saved[idx]);
+      toast('Saved request loaded');
+    });
+  }
+
+  function renderHistory(){
+    var history = read(STORAGE.history, []);
+    renderList('history-list', history.map(function(h){ return {title:h.req.method + ' - ' + (h.status || 'ERR'), detail:h.req.url + ' - ' + (h.elapsed || 0) + 'ms'}; }), 'Aucun historique de requête.', function(idx){
+      loadRequest(history[idx].req);
+      toast('History request loaded');
+    });
+  }
+
+  function renderPresets(){
+    $('preset-list').innerHTML = '';
+    PRESETS.forEach(function(preset){
+      var btn = document.createElement('button');
+      btn.className = 'preset';
+      btn.type = 'button';
+      btn.innerHTML = '<strong>'+esc(preset.name)+'</strong><span>'+esc(preset.desc)+'</span>';
+      btn.addEventListener('click', function(){
+        loadRequest({
+          name: preset.name,
+          method: preset.method,
+          url: preset.url,
+          params: [],
+          headers: preset.headers,
+          bodyMode: preset.body && preset.body.charAt(0) === '{' ? 'json' : 'form',
+          body: preset.body,
+          auth: {type:'none', token:'', user:'', prefix:'Bearer'},
+          tests: preset.tests
+        });
+        renderPreflight();
+        toast('Preset loaded');
+      });
+      $('preset-list').appendChild(btn);
+    });
+  }
+
+  function saveRequest(){
+    var req = requestState();
+    if (!req.url) { toast('Add a URL before saving'); return; }
+    var saved = read(STORAGE.saved, []);
+    saved = saved.filter(function(item){ return item.name !== req.name; });
+    saved.unshift(sanitizedRequest(req));
+    write(STORAGE.saved, saved.slice(0, 20));
+    renderSaved();
+    toast('Requête enregistrée');
+  }
+
+  function saveEnv(){
+    var current = {
+      envName: $('env-name').value,
+      baseUrl: $('var-baseUrl').value || '',
+      africasTalkingUsername: $('var-africasTalkingUsername').value || ''
+    };
+    write(STORAGE.env, current);
+    toast('Seules les variables non sensibles ont été enregistrées');
+  }
+
+  function clearEnv(){
+    write(STORAGE.env, {});
+    ['env-name','var-baseUrl','var-token','var-paystackSecret','var-flutterwaveSecret','var-mpesaBasic','var-mtnSubscriptionKey','var-africasTalkingUsername','var-africasTalkingApiKey'].forEach(function(id){
+      var el = $(id);
+      if (!el) return;
+      el.value = id === 'env-name' ? 'none' : '';
+    });
+    renderPreflight();
+    toast('Variables enregistrées effacées');
+  }
+
+  function loadEnv(){
+    var env = read(STORAGE.env, {});
+    if (env.envName) $('env-name').value = env.envName;
+    $('var-baseUrl').value = env.baseUrl || '';
+    $('var-token').value = '';
+    $('var-paystackSecret').value = '';
+    $('var-flutterwaveSecret').value = '';
+    $('var-mpesaBasic').value = '';
+    $('var-mtnSubscriptionKey').value = '';
+    $('var-africasTalkingUsername').value = env.africasTalkingUsername || '';
+    $('var-africasTalkingApiKey').value = '';
+  }
+
+  function importCurl(){
+    var curl = $('curl-input').value.trim();
+    if (!curl) { toast('Paste a cURL command first'); return; }
+    var req = parseCurl(curl);
+    loadRequest(req);
+    toast('cURL imported');
+  }
+
+  function parseCurl(curl){
+    var method = (curl.match(/\s-X\s+['"]?([A-Z]+)['"]?/i) || [])[1] || '';
+    var headers = [];
+    var headerRe = /\s-H\s+(['"])(.*?)\1/g;
+    var hm;
+    while ((hm = headerRe.exec(curl))) {
+      var split = hm[2].indexOf(':');
+      if (split !== -1) headers.push({key:hm[2].slice(0, split).trim(), value:hm[2].slice(split + 1).trim()});
+    }
+    var data = (curl.match(/\s--data(?:-raw|-binary)?\s+(['"])([\s\S]*?)\1/) || curl.match(/\s-d\s+(['"])([\s\S]*?)\1/) || [])[2] || '';
+    if (!method) method = data ? 'POST' : 'GET';
+    var withoutFlags = curl.replace(/\s-X\s+['"]?[A-Z]+['"]?/ig,'').replace(/\s-H\s+(['"]).*?\1/g,'').replace(/\s--data(?:-raw|-binary)?\s+(['"])[\s\S]*?\1/g,'').replace(/\s-d\s+(['"])[\s\S]*?\1/g,'');
+    var url = (withoutFlags.match(/https?:\/\/[^\s'"]+/) || withoutFlags.match(/['"](https?:\/\/.*?)['"]/) || [])[1] || (withoutFlags.match(/(https?:\/\/[^\s]+)/) || [])[1] || '';
+    return {name:'Imported cURL', method:method.toUpperCase(), url:url, params:[], headers:headers, bodyMode:data.trim().charAt(0)==='{'?'json':'text', body:data, auth:{type:'none',token:'',user:'',prefix:'Bearer'}, tests:{}};
+  }
+
+  function copyText(text, label){
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ toast(label + ' copied'); }).catch(function(){ fallbackCopyText(text, label); });
+      return;
+    }
+    fallbackCopyText(text, label);
+  }
+
+  function fallbackCopyText(text, label){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      toast(label + ' copied');
+    } catch(e) {
+      toast('Copy failed');
+    }
+    textarea.remove();
+  }
+
+  function downloadRequestJson(){
+    var req = requestState();
+    var safeReq = sanitizedRequest(req);
+    safeReq.exportedAt = new Date().toISOString();
+    safeReq.note = 'AfroTools API Tester export. Verify secrets, environment variables, CORS behavior and endpoint permissions before replaying.';
+    var blob = new Blob([JSON.stringify(safeReq, null, 2)], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = (safeReq.name || 'api-request').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') + '.json';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    toast('Request JSON downloaded');
+  }
+
+  function bind(){
+    document.querySelectorAll('.tab').forEach(function(tab){
+      tab.addEventListener('click', function(){
+        document.querySelectorAll('.tab').forEach(function(t){ t.classList.remove('active'); });
+        document.querySelectorAll('.tab-panel').forEach(function(p){ p.classList.remove('active'); });
+        tab.classList.add('active');
+        $('tab-' + tab.getAttribute('data-tab')).classList.add('active');
       });
     });
-  }
-  function watch(root) {
-    localize(root);
-    if (!root || !root.body) return;
-    new MutationObserver(function () { localize(root); }).observe(root.body, { childList: true, subtree: true, characterData: true });
-  }
-  window.apiFrLocalizer = {
-    localizeDocument: watch,
-    localizeElement: localize
-  };
-})();
-</script>
-  <script>
-    document.getElementById('undefined').addEventListener('load', function () {
-      try {
-        var doc = this.contentDocument || this.contentWindow.document;
-        window.apiFrLocalizer.localizeDocument(doc);
-      } catch (error) {
-        console.warn('Localisation de l\'outil embarqué indisponible', error);
+    $('add-header').addEventListener('click', function(){ addRow('header-rows'); });
+    $('add-param').addEventListener('click', function(){ addRow('params-rows'); });
+    $('send-request').addEventListener('click', sendRequest);
+    $('save-request').addEventListener('click', saveRequest);
+    $('save-env').addEventListener('click', saveEnv);
+    $('clear-env').addEventListener('click', clearEnv);
+    $('import-curl').addEventListener('click', importCurl);
+    $('copy-curl').addEventListener('click', function(){ copyText(curlFor(requestState()), 'cURL'); });
+    $('copy-fetch').addEventListener('click', function(){ copyText(fetchFor(requestState()), 'fetch snippet'); });
+    $('download-request').addEventListener('click', downloadRequestJson);
+    $('copy-response').addEventListener('click', function(){ copyText($('response-body').textContent, 'Réponse'); });
+    $('format-body').addEventListener('click', function(){
+      try { $('req-body').value = JSON.stringify(JSON.parse($('req-body').value), null, 2); toast('JSON formatted'); }
+      catch(e){ toast('Body is not valid JSON'); }
+      renderPreflight();
+    });
+    $('clear-request').addEventListener('click', function(){
+      loadRequest({method:'GET', url:'', params:[], headers:[], body:'', bodyMode:'json', auth:{type:'none',token:'',user:'',prefix:'Bearer'}, tests:{}});
+      $('request-name').value = '';
+      renderPreflight();
+    });
+    $('copy-safe-brief').addEventListener('click', function(){ copyText(safeDebugBrief(requestState()), 'Safe debug brief'); });
+    document.addEventListener('input', function(e){
+      if (e.target.closest('.workspace')) renderPreflight();
+    });
+    document.addEventListener('change', function(e){
+      if (e.target.closest('.workspace')) renderPreflight();
+    });
+    $('clear-saved').addEventListener('click', function(){ write(STORAGE.saved, []); renderSaved(); });
+    $('clear-history').addEventListener('click', function(){ write(STORAGE.history, []); renderHistory(); });
+    document.addEventListener('keydown', function(e){
+      if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+        e.preventDefault();
+        sendRequest();
       }
     });
-  </script>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
+    window.addEventListener('pagehide', clearSecretFields);
+  }
+
+  function init(){
+    $('url').value = DEFAULT_STATUS_URL;
+    addRow('header-rows', 'Accept', 'application/json');
+    addRow('header-rows', 'Content-Type', 'application/json');
+    loadEnv();
+    bind();
+    renderPresets();
+    renderSaved();
+    renderHistory();
+    renderPreflight();
+  }
+
+  init();
+})();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<script>
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Testeur API" tool-slug="api-tester"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body>
 </html>

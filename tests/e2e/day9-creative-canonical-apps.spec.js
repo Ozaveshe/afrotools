@@ -82,8 +82,23 @@ for (const [index, id] of IDS.entries()) {
       };
       const controls = Array.from(document.querySelectorAll('button, input, select, textarea'))
         .filter(visible);
+      const viewportWidth = document.documentElement.clientWidth;
       return {
         overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+        overflowOwners: Array.from(document.querySelectorAll('body *'))
+          .filter(visible)
+          .map((element) => {
+            const rect = element.getBoundingClientRect();
+            return {
+              selector: `${element.tagName.toLowerCase()}${element.id ? `#${element.id}` : ''}${element.classList.length ? `.${Array.from(element.classList).join('.')}` : ''}`,
+              left: Math.round(rect.left),
+              right: Math.round(rect.right),
+              scrollWidth: element.scrollWidth,
+              clientWidth: element.clientWidth,
+            };
+          })
+          .filter((item) => item.left < -1 || item.right > viewportWidth + 1 || item.scrollWidth > item.clientWidth + 1)
+          .slice(0, 10),
         unnamed: controls.filter((control) => !(
           (control.textContent || '').trim()
           || control.getAttribute('aria-label')
@@ -93,7 +108,7 @@ for (const [index, id] of IDS.entries()) {
         )).length,
       };
     });
-    expect(audit.overflow).toBeLessThanOrEqual(1);
+    expect(audit.overflow, JSON.stringify(audit.overflowOwners)).toBeLessThanOrEqual(1);
     expect(audit.unnamed).toBe(0);
     expect(unsafeRequests).toEqual([]);
     expect(errors).toEqual([]);
@@ -108,7 +123,9 @@ for (const id of LAUNCHERS) {
       return route.fulfill({ status: 204, body: '' });
     });
     await page.goto(`/tools/${id}/`, { waitUntil: 'domcontentloaded' });
-    const cta = page.locator('a[href^="app.html"]').first();
+    const cta = page.locator(
+      `a[href^="app.html"], a[href="/tools/${id}/app"], a[href="/tools/${id}/app.html"]`
+    ).first();
     await expect(cta).toBeVisible();
     await Promise.all([
       page.waitForURL(new RegExp(`/tools/${id}/app(?:\\.html)?(?:\\?.*)?$`)),

@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:soil-ph-calculator",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-soil-ph-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 74 Soil pH English invariants",
+    "engine": "node tests/soil-ph-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-soil-ph-oracles.json node tests/fr-agriculture-soil-ph.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id soil-ph-calculator --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42951 npx playwright test tests/e2e/fr-agriculture-soil-ph.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (14.9s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "soil-ph-calculator",
+    "countryCode": null,
+    "englishRoute": "/agriculture/soil-ph/",
+    "frenchRoute": "/fr/agriculture/soil-ph/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-soil-ph-oracles.json",
+      "englishBrowserInvariants": 74,
+      "engineScenarios": 1530,
+      "frenchProfiles": 850,
+      "crops": 16,
+      "preserves": [
+        "crop optimal pH ranges and displayed order",
+        "five soil-texture multipliers",
+        "three treatment depths and four lime qualities",
+        "piecewise base lime ranges",
+        "crop suitability and target pH",
+        "lime scenario, crop-specific and alkaline branches",
+        "farm totals and optional costs",
+        "compatible and marginal crop sets"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-soil-ph.spec.js",
+      "result": "2 passed (14.9s)",
+      "isolatedPort": 42951,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport":640,"baselineCssViewport":1280,"documentOverflow":false},
+      "themes": ["light","manual-dark","system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical","og","schema-inLanguage-fr","reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/soil-ph/"
+    },
+    "exports": ["pdf","csv","json","txt","copy","share","local-save","reset"],
+    "source": {
+      "engine": ["engines/src/soil-ph-engine.js"],
+      "data": ["data/agriculture/soil-ph-data.json","data/agriculture/soil-ph-data.js"],
+      "freshness": "static agronomic reference extracted from the accepted English application; not live",
+      "confidence": "planning range requiring soil-test confirmation"
+    },
+    "artwork": {"imageId":"soil-ph-calculator","file":"assets/img/tools/soil-ph-calculator.webp","state":"present"},
+    "limitations": [
+      "A buffer-pH laboratory test, exchangeable acidity, CEC and product neutralizing value can materially change the lime requirement.",
+      "Confirm the amendment, rate, timing and incorporation method with local agronomic guidance."
+    ]
+  }]
+}

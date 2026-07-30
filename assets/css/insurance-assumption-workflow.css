@@ -3,25 +3,41 @@
 .insurance-workflow *{box-sizing:border-box}
 .insurance-workflow__hero,.insurance-workflow__panel,.insurance-workflow__source{min-width:0;max-width:100%;background:var(--surface,#fff);border:1px solid var(--border,#dbe3ee);border-radius:18px;padding:clamp(1rem,4vw,2rem);margin:1rem 0}
 .insurance-workflow__hero h1{font-size:clamp(1.8rem,7vw,3.2rem);line-height:1.05;margin:.6rem 0}
+.insurance-workflow__hero--with-art{display:grid;grid-template-columns:minmax(0,1fr) minmax(180px,320px);gap:clamp(1rem,4vw,2rem);align-items:center}
+.insurance-workflow__hero--with-art img{display:block;width:100%;height:auto;max-height:240px;object-fit:cover;border-radius:14px;border:1px solid var(--border,#dbe3ee)}
 .insurance-workflow__hero p,.insurance-workflow__source p{max-width:72ch}
 .insurance-workflow__eyebrow{font-weight:800;color:#075985;letter-spacing:.04em;text-transform:uppercase;font-size:.78rem}
 .insurance-workflow__notice{border-left:4px solid #d97706;background:#fffbeb;color:#713f12;padding:.85rem 1rem;border-radius:8px}
 .insurance-workflow__grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:1rem}
 .insurance-workflow label,.insurance-workflow legend{font-weight:700;display:block}
 .insurance-workflow input,.insurance-workflow select,.insurance-workflow textarea{width:100%;min-height:48px;margin-top:.35rem;padding:.72rem;border:1px solid #94a3b8;border-radius:9px;background:var(--surface,#fff);color:inherit;font:inherit}
+.insurance-workflow small{display:block;margin-top:.35rem;font-weight:500;line-height:1.45}
 .insurance-workflow fieldset{border:1px solid #cbd5e1;border-radius:12px;padding:1rem}
 .insurance-workflow fieldset label{font-weight:500;margin:.7rem 0}
 .insurance-workflow fieldset input[type=checkbox]{width:auto;min-height:auto;margin:0 .55rem 0 0}
 .insurance-workflow__actions{display:flex;flex-wrap:wrap;gap:.75rem;margin-top:1rem}
 .insurance-workflow button{min-height:48px;padding:.7rem 1rem;border:2px solid #075985;border-radius:9px;background:#075985;color:#fff;font:inherit;font-weight:800;cursor:pointer}
 .insurance-workflow button[data-action=reset]{background:transparent;color:#075985}
+.insurance-workflow button[data-export]{background:transparent;color:#075985}
+.insurance-workflow button:disabled{opacity:.55;cursor:not-allowed}
 .insurance-workflow button:focus-visible,.insurance-workflow a:focus-visible,.insurance-workflow input:focus-visible,.insurance-workflow select:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
 .insurance-workflow__result{display:block;margin-top:1rem;padding:1rem;border-radius:12px;background:#e0f2fe;color:#0c4a6e;font-weight:700;overflow-wrap:anywhere}
 .insurance-workflow__result:empty{display:none}
 .insurance-workflow__countries{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:.65rem;list-style:none;padding:0}
 .insurance-workflow__countries a{display:block;border:1px solid #cbd5e1;border-radius:10px;padding:.75rem;background:var(--surface,#fff)}
 .insurance-workflow__small{font-size:.9rem;color:var(--muted,#475569)}
+.insurance-list{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1rem}
+.insurance-link{display:flex;min-width:0;flex-direction:column;gap:.55rem;padding:1rem;border:1px solid var(--border,#dbe3ee);border-radius:14px;background:var(--surface,#fff);color:inherit;text-decoration:none}
+.insurance-link img{display:block;width:100%;aspect-ratio:16/9;object-fit:cover;border-radius:9px}
+.insurance-link strong{font-size:1.05rem}
+.insurance-link span{color:var(--muted,#475569);line-height:1.5}
+html[data-theme=light] .insurance-workflow__hero,html[data-theme=light] .insurance-workflow__panel,html[data-theme=light] .insurance-workflow__source,html[data-theme=light] .insurance-link{background:#fff;color:#0f172a}
+html[data-theme=dark] .insurance-workflow__hero,html[data-theme=dark] .insurance-workflow__panel,html[data-theme=dark] .insurance-workflow__source,html[data-theme=dark] .insurance-link{background:#101d2e;color:#e5edf7;border-color:#334155}
+html[data-theme=dark] .insurance-workflow input,html[data-theme=dark] .insurance-workflow select{background:#0f172a;color:#f8fafc;border-color:#64748b}
+html[data-theme=dark] .insurance-workflow button[data-action=reset],html[data-theme=dark] .insurance-workflow button[data-export]{color:#7dd3fc}
+@media(max-width:760px){.insurance-list{grid-template-columns:1fr}.insurance-workflow__hero--with-art{grid-template-columns:1fr}.insurance-workflow__hero--with-art img{max-width:360px}}
 @media(max-width:600px){.insurance-workflow__grid{grid-template-columns:1fr}.insurance-workflow{padding:.65rem}.insurance-workflow__hero,.insurance-workflow__panel,.insurance-workflow__source{border-radius:12px;padding:1rem}}
+@media print{afro-navbar,afro-footer,.insurance-workflow__actions,.insurance-workflow__countries,.insurance-workflow__panel[aria-labelledby=ai-heading]{display:none!important}.insurance-workflow{max-width:none;padding:0}.insurance-workflow__hero,.insurance-workflow__panel,.insurance-workflow__source{break-inside:avoid;border-color:#94a3b8;box-shadow:none}}
 @media(prefers-color-scheme:dark){html:not([data-theme=light]) .insurance-workflow__notice{background:#422006;color:#fef3c7}html:not([data-theme=light]) .insurance-workflow__result{background:#082f49;color:#e0f2fe}}
 html[data-theme=dark] .insurance-workflow__notice{background:#422006;color:#fef3c7}
 html[data-theme=dark] .insurance-workflow__result{background:#082f49;color:#e0f2fe}

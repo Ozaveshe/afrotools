@@ -1,0 +1,5 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),engine=require('../engines/src/storage-loss-engine');
+const context={};vm.createContext(context);vm.runInContext(fs.readFileSync(path.resolve(__dirname,'../data/agriculture/storage-data.js'),'utf8'),context);const data=context.STORAGE_DATA;let count=0;
+for(const crop of Object.keys(data.lossRates))for(const methodKey of Object.keys(data.lossRates[crop].methods))for(const countryCode of Object.keys(data.countries).filter(code=>data.countries[code]))for(const quantityTonnes of[.1,1,25,1000])for(const durationMonths of[1,6,12,18]){const prices=data.harvestPrices[countryCode]||data.harvestPrices.ALL,pricePerTonne=(prices[crop]||data.harvestPrices.ALL[crop])*1.37,result=engine.calculate({crop,countryCode,methodKey,quantityTonnes,durationMonths,pricePerTonne},data);assert.equal(result.ok,true);assert.equal(result.input.crop,crop);count+=1}
+assert.equal(engine.calculate({crop:'',countryCode:'ALL',methodKey:'',quantityTonnes:0,durationMonths:6,pricePerTonne:0},data).ok,false);console.log(`PASS ${count} Storage Loss engine scenarios`);

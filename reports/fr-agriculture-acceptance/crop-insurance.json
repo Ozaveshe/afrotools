@@ -1,0 +1,61 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:crop-insurance",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-crop-insurance-hub-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 320 Crop Insurance calculations, 4 validations and 15 country-directory invariants",
+    "sharedWorkflow": "node tests/day6-agriculture-family-calculators.test.js",
+    "sharedWorkflowResult": "Day 6 Agriculture family calculator fixtures passed for all 16 maintained entry workflows",
+    "engine": "node tests/crop-insurance-hub-engine.test.js",
+    "engineResult": "PASS 320 Crop Insurance calculations and 15 country-directory owners",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-crop-insurance-oracles.json node tests/fr-agriculture-crop-insurance.test.js",
+    "oracleResult": "PASS 320 French Crop Insurance profiles and 15 country contexts",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id crop-insurance --check",
+    "browser": "PORT=42983 CI=1 npx playwright test tests/e2e/fr-agriculture-crop-insurance.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (9.9s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "crop-insurance",
+    "englishRoute": "/agriculture/crop-insurance/",
+    "frenchRoute": "/fr/agriculture/crop-insurance/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-crop-insurance-oracles.json",
+      "englishCalculationProfiles": 320,
+      "englishValidationProfiles": 4,
+      "englishCountryDirectoryRows": 15,
+      "frenchProfiles": 320,
+      "preserves": ["generic insured-value formula", "premium rate", "entered policyholder excess rate", "four display currencies", "negative and over-100 validation", "15 country identities", "five region groups", "static programme counts"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-crop-insurance.spec.js",
+      "result": "2 passed (9.9s)",
+      "isolatedPort": 42983,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/crop-insurance/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/crop-insurance-hub-engine.js", "assets/js/pages/day6-agriculture-family-calculators.js"],
+      "data": ["data/agriculture/crop-insurance-data.js"],
+      "freshness": "generic formula is arithmetic; 15-country programme context is undated static data and not live",
+      "confidence": "planning worksheet only; insurer terms and all country programme details require current direct verification"
+    },
+    "artwork": {"imageId": "crop-insurance", "file": "assets/img/tools/crop-insurance.webp", "state": "present"},
+    "limitations": [
+      "Country programme data is static context and does not set the generic calculator rate or result.",
+      "The result is not a quote, eligibility decision, recommendation, subsidy calculation or payout estimate.",
+      "The accepted manifest row is the hub only; 15 existing English and French country subroutes remain untouched and uncounted."
+    ]
+  }]
+}

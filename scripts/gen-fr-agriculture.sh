@@ -1,4 +1,9 @@
 #!/usr/bin/env bash
+# RETIRED: this historical iframe generator is intentionally fail-closed.
+# French Agriculture parity is now owned by the manifest-driven Node suite.
+echo "ERROR: scripts/gen-fr-agriculture.sh is retired. Use scripts/build-fr-agriculture-family.js with the 447-row parity manifest." >&2
+exit 1
+
 # Generate French versions of ALL agriculture pages (637 total)
 # Uses English directory structure: /fr/agriculture/[english-subdir]/
 # Each page embeds the English tool via iframe

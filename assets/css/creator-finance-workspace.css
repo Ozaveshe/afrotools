@@ -1,0 +1,239 @@
+.cf-shell {
+  --cf-ink: #10213b;
+  --cf-muted: #53647c;
+  --cf-line: #d8e2ee;
+  --cf-surface: #ffffff;
+  --cf-soft: #f3f7fb;
+  --cf-accent: #1164d8;
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 92px 20px 64px;
+  color: var(--cf-ink);
+}
+.cf-hero {
+  padding: clamp(22px, 5vw, 48px);
+  border-radius: 24px;
+  color: #fff;
+  background: #09223e;
+}
+.cf-eyebrow {
+  margin: 0 0 10px;
+  color: #7cc4ff;
+  font-size: .78rem;
+  font-weight: 800;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+}
+.cf-hero h1 {
+  max-width: 780px;
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2rem, 7vw, 4rem);
+  line-height: 1.02;
+}
+.cf-hero p:last-child {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: #d8e9fa;
+  font-size: 1.05rem;
+  line-height: 1.65;
+}
+.cf-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1.4fr) minmax(270px, .8fr);
+  gap: 22px;
+  margin-top: 22px;
+}
+.cf-card {
+  min-width: 0;
+  padding: clamp(18px, 4vw, 30px);
+  border: 1px solid var(--cf-line);
+  border-radius: 20px;
+  background: var(--cf-surface);
+  box-shadow: 0 14px 38px rgba(16, 33, 59, .08);
+}
+.cf-card h2,
+.cf-card h3 {
+  margin: 0 0 16px;
+  color: var(--cf-ink);
+}
+.cf-form-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 16px;
+}
+.cf-field {
+  display: grid;
+  min-width: 0;
+  gap: 7px;
+}
+.cf-field label,
+.cf-field > span:first-child {
+  color: var(--cf-ink);
+  font-size: .9rem;
+  font-weight: 750;
+}
+.cf-field input,
+.cf-field select {
+  width: 100%;
+  min-height: 48px;
+  padding: 10px 12px;
+  border: 1px solid #b9c8d9;
+  border-radius: 10px;
+  background: #fff;
+  color: #132640;
+  font: inherit;
+}
+.cf-field input:focus,
+.cf-field select:focus,
+.cf-button:focus-visible {
+  outline: 3px solid rgba(17, 100, 216, .28);
+  outline-offset: 2px;
+}
+.cf-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.cf-button {
+  min-height: 46px;
+  padding: 10px 16px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  background: var(--cf-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+.cf-button-secondary {
+  border-color: #afc1d5;
+  background: #fff;
+  color: #12355d;
+}
+.cf-status {
+  min-height: 24px;
+  margin: 12px 0 0;
+  color: #475569;
+  font-size: .9rem;
+}
+.cf-error {
+  color: #a41919;
+  font-weight: 700;
+}
+.cf-results[hidden] {
+  display: none;
+}
+.cf-metrics {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+}
+.cf-metric {
+  min-width: 0;
+  padding: 14px;
+  border-radius: 14px;
+  background: var(--cf-soft);
+}
+.cf-metric span {
+  display: block;
+  color: var(--cf-muted);
+  font-size: .78rem;
+  line-height: 1.35;
+}
+.cf-metric strong {
+  display: block;
+  margin-top: 5px;
+  overflow-wrap: anywhere;
+  color: var(--cf-ink);
+  font-size: clamp(1rem, 3vw, 1.28rem);
+}
+.cf-list {
+  margin: 16px 0 0;
+  padding-left: 20px;
+  color: var(--cf-muted);
+  line-height: 1.6;
+}
+.cf-note {
+  margin: 0 0 16px;
+  padding: 14px;
+  border-left: 4px solid #17a36b;
+  border-radius: 8px;
+  background: #edf9f4;
+  color: #24493c;
+  line-height: 1.55;
+}
+.cf-side-list {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.cf-side-list li {
+  padding: 14px;
+  border-radius: 12px;
+  background: var(--cf-soft);
+  color: var(--cf-muted);
+  line-height: 1.5;
+}
+.cf-side-list strong {
+  display: block;
+  margin-bottom: 3px;
+  color: var(--cf-ink);
+}
+@media (max-width: 760px) {
+  .cf-shell { padding: 76px 14px 48px; }
+  .cf-grid { grid-template-columns: 1fr; }
+  .cf-form-grid { grid-template-columns: 1fr; }
+  .cf-metrics { grid-template-columns: 1fr; }
+}
+@media (prefers-color-scheme: dark) {
+  html:not([data-theme="light"]) .cf-shell {
+    --cf-ink: #edf5ff;
+    --cf-muted: #b8c6d8;
+    --cf-line: #354b65;
+    --cf-surface: #10243a;
+    --cf-soft: #172f49;
+    --cf-accent: #4b98ff;
+  }
+  html:not([data-theme="light"]) .cf-card { box-shadow: none; }
+  html:not([data-theme="light"]) .cf-field input,
+  html:not([data-theme="light"]) .cf-field select,
+  html:not([data-theme="light"]) .cf-button-secondary {
+    border-color: #55708e;
+    background: #0b1b2c;
+    color: #eef6ff;
+  }
+  html:not([data-theme="light"]) .cf-note {
+    background: #15372f;
+    color: #d6f4e8;
+  }
+}
+html[data-theme="dark"] .cf-shell {
+  --cf-ink: #edf5ff;
+  --cf-muted: #b8c6d8;
+  --cf-line: #354b65;
+  --cf-surface: #10243a;
+  --cf-soft: #172f49;
+  --cf-accent: #4b98ff;
+}
+html[data-theme="dark"] .cf-card { box-shadow: none; }
+html[data-theme="dark"] .cf-field input,
+html[data-theme="dark"] .cf-field select,
+html[data-theme="dark"] .cf-button-secondary {
+  border-color: #55708e;
+  background: #0b1b2c;
+  color: #eef6ff;
+}
+html[data-theme="dark"] .cf-note {
+  background: #15372f;
+  color: #d6f4e8;
+}
+@media (forced-colors: active) {
+  .cf-button,
+  .cf-card,
+  .cf-field input,
+  .cf-field select { border: 1px solid ButtonText; }
+}

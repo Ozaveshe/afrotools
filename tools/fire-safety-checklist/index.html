@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -257,14 +257,8 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/security-fire-safety.js?v=16d47545"></script>
 <script>
-var SYM={NG:'NGN ',ZA:'ZAR ',KE:'KES ',GH:'GHS '};
-var ITEM_COSTS={
-  NG:{c1:15000,c2:500000,c3:120000,c4:200000,c5:8000,c6:80000,c7:20000,c8:5000,c9:3000,c10:5000,c11:15000,c12:30000,c13:50000,c14:5000,c15:40000,c16:0,c17:5000},
-  ZA:{c1:800,c2:30000,c3:8000,c4:12000,c5:500,c6:5000,c7:1200,c8:300,c9:200,c10:300,c11:800,c12:2000,c13:3000,c14:300,c15:2500,c16:0,c17:300},
-  KE:{c1:2000,c2:80000,c3:20000,c4:35000,c5:1200,c6:15000,c7:3000,c8:800,c9:500,c10:800,c11:2000,c12:5000,c13:8000,c14:800,c15:6000,c16:0,c17:800},
-  GH:{c1:1200,c2:50000,c3:12000,c4:20000,c5:700,c6:9000,c7:1800,c8:500,c9:300,c10:500,c11:1200,c12:3000,c13:5000,c14:500,c15:3500,c16:0,c17:500}
-};
 var REGS={
   NG:{law:'Federal and state fire-safety requirements',note:'The Federal Fire Service lists public-building risk assessment, inspection, enforcement, and fire-certificate functions. Verify the competent federal, state, or local authority for this property.',url:'https://fedfire.gov.ng/about-us/'},
   ZA:{law:'Occupational Health and Safety Act plus municipal and applicable technical requirements',note:'Verify the current municipal fire-safety process, applicable incorporated standards, inspection scope, and competent service provider.',url:'https://www.gov.za/documents/occupational-health-and-safety-act'},
@@ -278,29 +272,15 @@ function calculate(){
   var area=Math.max(10,Math.min(1000000,parseInt(document.getElementById('area').value,10)||500));
   var floors=Math.max(1,Math.min(300,parseInt(document.getElementById('floors').value,10)||1));
   var occupants=Math.max(1,Math.min(1000000,parseInt(document.getElementById('occupants').value,10)||10));
-  var sym=SYM[country];
-  var costs=ITEM_COSTS[country]||ITEM_COSTS['NG'];
   var reg=REGS[country];
-  var propMult={office:1.0,warehouse:1.3,retail:1.0,restaurant:1.5,hospital:2.0,school:1.4};
-  var mult=propMult[propType]||1;
-  var totalPts=0, checkedPts=0;
-  var failedItems=[];
-  var remedCost=0;
-  for(var i=1;i<=17;i++){
-    var el=document.getElementById('c'+i);
-    var pts=parseInt(el.getAttribute('data-pts'))||0;
-    totalPts+=pts;
-    if(el.checked){
-      checkedPts+=pts;
-    } else {
-      failedItems.push({id:'c'+i,pts:pts,label:el.nextElementSibling.textContent,cost:(costs['c'+i]||0)*mult});
-      remedCost+=(costs['c'+i]||0)*mult;
-    }
-  }
-  var areaMult=Math.ceil(area/200);
-  remedCost*=areaMult*0.5+0.5;
-  var annualMaint=remedCost*0.05;
-  var score=Math.round(checkedPts/totalPts*100);
+  var selected=[];
+  for(var i=1;i<=17;i++) if(document.getElementById('c'+i).checked) selected.push('c'+i);
+  var result=window.AfroToolsSecurityFire.calculate({country:country,propType:propType,area:area,floors:floors,occupants:occupants,checks:selected});
+  var sym=result.currency;
+  var failedItems=result.failed.map(function(item){var el=document.getElementById(item.id);return {id:item.id,pts:item.points,label:el.nextElementSibling.textContent,cost:item.cost};});
+  var remedCost=result.remediation;
+  var annualMaint=result.maintenance;
+  var score=result.score;
   var grade, gradeColor;
   if(score>=85){grade='Strong readiness — verify on site';gradeColor='#16a34a';}
   else if(score>=70){grade='Good readiness — review gaps';gradeColor='#2563eb';}
@@ -314,23 +294,12 @@ function calculate(){
     '<div class="en-metric"><div class="en-metric-label">Checklist Gaps</div><div class="en-metric-value">'+failedItems.length+'</div><div class="en-metric-unit">'+(17-failedItems.length)+'/17 prompts marked ready</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Remediation Scenario</div><div class="en-metric-value">'+sym+fmt(remedCost/1000)+'k</div><div class="en-metric-unit">illustrative, not a quote</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Maintenance Allowance</div><div class="en-metric-value">'+sym+fmt(annualMaint/1000)+'k</div><div class="en-metric-unit">5% of remediation scenario</div></div>';
-  var categories=[
-    {name:'Fire Suppression',max:30,ids:[1,2,3,4]},
-    {name:'Detection & Alarm',max:20,ids:[5,6,7]},
-    {name:'Evacuation & Emergency',max:25,ids:[8,9,10,11]},
-    {name:'Documentation',max:15,ids:[12,13,14]},
-    {name:'Electrical & Structural',max:10,ids:[15,16,17]}
-  ];
+  var categories=['Fire Suppression','Detection & Alarm','Evacuation & Emergency','Documentation','Electrical & Structural'];
   var breakHtml='<div style="display:flex;flex-direction:column;gap:12px">';
-  categories.forEach(function(cat){
-    var catScore=0;
-    cat.ids.forEach(function(id){
-      var el=document.getElementById('c'+id);
-      if(el&&el.checked) catScore+=parseInt(el.getAttribute('data-pts'))||0;
-    });
-    var pct=Math.round(catScore/cat.max*100);
+  result.domains.forEach(function(domain,index){
+    var pct=Math.round(domain.score/domain.max*100);
     var barColor=pct>=80?'#16a34a':pct>=60?'#2563eb':pct>=40?'#d97706':'#dc2626';
-    breakHtml+='<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:.87rem"><span style="font-weight:600">'+cat.name+'</span><span style="color:#475569">'+catScore+'/'+cat.max+' pts ('+pct+'%)</span></div>'+
+    breakHtml+='<div><div style="display:flex;justify-content:space-between;margin-bottom:4px;font-size:.87rem"><span style="font-weight:600">'+categories[index]+'</span><span style="color:#475569">'+domain.score+'/'+domain.max+' pts ('+pct+'%)</span></div>'+
       '<div class="compliance-bar"><div class="compliance-fill" style="width:'+pct+'%;background:'+barColor+'"></div></div></div>';
   });
   breakHtml+='</div>';
@@ -362,6 +331,6 @@ function printFireSummary(){var status=document.getElementById('fireStatus');if(
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/security-focus.js?v=571d331e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

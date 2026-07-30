@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:commodity-prices",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-commodity-prices-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 240 Commodity Prices English invariants",
+    "engine": "node tests/commodity-price-engine.test.js",
+    "engineResult": "PASS 240 Commodity Price engine scenarios",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-commodity-prices-oracles.json node tests/fr-agriculture-commodity-prices.test.js",
+    "oracleResult": "PASS 192 French profiles",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id commodity-prices --check",
+    "browser": "PORT=42968 CI=1 npx playwright test tests/e2e/fr-agriculture-commodity-prices.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (10.5s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "commodity-prices",
+    "englishRoute": "/agriculture/commodity-prices/",
+    "frenchRoute": "/fr/agriculture/commodity-prices/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-commodity-prices-oracles.json",
+      "englishInvariants": 240,
+      "frenchProfiles": 192,
+      "preserves": ["10 commodity identities and country availability", "country market, currency and local price", "month and year changes", "fixed FX conversion", "benchmark comparison", "USD ranking", "seasonal index selection", "volume revenue"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-commodity-prices.spec.js",
+      "result": "2 passed (10.5s)",
+      "isolatedPort": 42968,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/commodity-prices/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/commodity-price-engine.js"],
+      "data": ["data/agriculture/commodity-prices.js"],
+      "freshness": "static snapshot dated 2026-03-01; not live",
+      "confidence": "planning reference requiring current market, grade, unit, currency and buyer confirmation"
+    },
+    "artwork": {"imageId": "commodity-prices", "file": "assets/img/tools/commodity-prices.webp", "state": "present"},
+    "limitations": ["FX rates are fixed approximations from the accepted English page.", "No displayed value is a live quote, buyer offer or sale recommendation."]
+  }]
+}

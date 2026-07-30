@@ -218,6 +218,37 @@ var CreatorCalendarEngine = function() {
       localStorage.setItem(i, JSON.stringify(t));
     } catch (t) {}
   }
+  function buildLocalPlan(input) {
+    var source = input || {};
+    var topic = String(source.topic || "").trim();
+    var start = String(source.startDate || "");
+    var days = Number(source.days);
+    var country = String(source.country || "NG").toUpperCase();
+    var platforms = Array.isArray(source.platforms) ? source.platforms.filter(Boolean) : [];
+    if (!topic) throw new Error("A content topic is required.");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(start)) throw new Error("A valid start date is required.");
+    if (!Number.isInteger(days) || days < 1 || days > 31) throw new Error("Days must be between 1 and 31.");
+    if (!platforms.length) throw new Error("Choose at least one platform.");
+    var parts = start.split("-").map(Number);
+    var firstDate = new Date(parts[0], parts[1] - 1, parts[2]);
+    if (Number.isNaN(firstDate.getTime())) throw new Error("A valid start date is required.");
+    var posts = [];
+    for (var day = 0; day < days; day++) {
+      var date = new Date(firstDate);
+      date.setDate(firstDate.getDate() + day);
+      var platform = platforms[day % platforms.length];
+      var times = (e[country] || e.NG)[platform] || [ "12:00" ];
+      posts.push({
+        day: day + 1,
+        date: r(date),
+        platform: platform,
+        time: times[day % times.length],
+        topic: topic,
+        angle: day % 3 === 0 ? "educate" : day % 3 === 1 ? "engage" : "showcase"
+      });
+    }
+    return {topic: topic, country: country, startDate: start, days: days, platforms: platforms, posts: posts};
+  }
   return {
     PLATFORMS: {
       instagram: {
@@ -274,6 +305,7 @@ var CreatorCalendarEngine = function() {
     DEFAULT_PILLARS: t,
     OPTIMAL_TIMES: e,
     AFRICAN_EVENTS: a,
+    buildLocalPlan: buildLocalPlan,
     DAY_NAMES: [ "Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun" ],
     DAY_NAMES_FULL: [ "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" ],
     MONTH_NAMES: [ "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" ],

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -207,57 +207,9 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-function calcCreditScore(){
-  var payment=parseInt(document.getElementById('cs-payment').value);
-  var utilization=parseInt(document.getElementById('cs-utilization').value);
-  var age=parseInt(document.getElementById('cs-age').value);
-  var mix=parseInt(document.getElementById('cs-mix').value);
-  var inquiries=parseInt(document.getElementById('cs-inquiries').value);
-  var values=[payment,utilization,age,mix,inquiries];
-  if(values.some(function(value){return !Number.isFinite(value)||value<0||value>100;}))return;
-  var score=Math.round(values.reduce(function(sum,value){return sum+value;},0)/values.length);
-  var grade,gradeColor;
-  if(score>=80){grade='Strong self-check profile';gradeColor='#8b5cf6';}
-  else if(score>=60){grade='Mixed self-check profile';gradeColor='#f59e0b';}
-  else{grade='Factors need review';gradeColor='#dc2626';}
-  document.getElementById('cs-score').textContent=score;
-  var gradeEl=document.getElementById('cs-grade');
-  gradeEl.textContent=grade;
-  gradeEl.style.color=gradeColor;
-  document.getElementById('cs-marker').style.left=score+'%';
-  var factors=[
-    {name:'Payment History',weight:'20%',score:payment},
-    {name:'Credit Utilization',weight:'20%',score:utilization},
-    {name:'Credit History Age',weight:'20%',score:age},
-    {name:'Credit Mix',weight:'20%',score:mix},
-    {name:'New Inquiries',weight:'20%',score:inquiries}
-  ];
-  var factorList=document.getElementById('cs-factor-list');
-  factorList.innerHTML='';
-  factors.forEach(function(f){
-    var cls=f.score>=80?'good':f.score>=60?'medium':'bad';
-    var label=f.score>=80?'Strong':f.score>=60?'Mixed':'Review';
-    factorList.innerHTML+='<div class="factor-item"><span class="factor-name">'+f.name+'</span><span class="factor-weight">'+f.weight+'</span><span class="factor-score '+cls+'">'+label+'</span></div>';
-  });
-  var tips=[];
-  if(payment<80)tips.push({icon:'&#x23F0;','tip':'Review due dates, payment records and any arrears shown on your official report.'});
-  if(utilization<80)tips.push({icon:'&#x1F4B3;','tip':'Check balances and limits on the current report, then compare them with your own records.'});
-  if(age<80)tips.push({icon:'&#x1F4C5;','tip':'A short history is not an error by itself; verify that older eligible accounts have not been omitted.'});
-  if(mix<80)tips.push({icon:'&#x1F4CB;','tip':'Do not open credit only to change this checklist. Review whether existing account types are reported correctly.'});
-  if(inquiries<80)tips.push({icon:'&#x1F50D;','tip':'Review recent applications and query any enquiry you do not recognise.'});
-  if(tips.length===0)tips.push({icon:'&#x2705;','tip':'The self-check selections are strong. An official report can still contain errors or use different factors.'});
-  var tipsEl=document.getElementById('cs-tips');
-  tipsEl.innerHTML='';
-  tips.forEach(function(t){
-    tipsEl.innerHTML+='<div class="tip-item"><span class="tip-icon">'+t.icon+'</span><span>'+t.tip+'</span></div>';
-  });
-  document.getElementById('cs-results').classList.add('on');
-  document.getElementById('cs-results').focus();
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/credit-score.js?v=bdc576ae"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

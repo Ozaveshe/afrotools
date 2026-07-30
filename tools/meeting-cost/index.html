@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -17,8 +17,8 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -101,7 +101,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is meeting cost calculated?","acceptedAnswer":{"@type":"Answer","text":"Cost = (sum of hourly rates) x duration. Hourly rate = annual salary / working hours per year, multiplied by overhead."}},{"@type":"Question","name":"Does it include overhead costs?","acceptedAnswer":{"@type":"Answer","text":"Yes, you can choose an overhead multiplier (1x-2x) to account for benefits, office space, and equipment."}},{"@type":"Question","name":"How can I reduce meeting costs?","acceptedAnswer":{"@type":"Answer","text":"Reduce duration, invite fewer people, have clear agendas, use async communication, and eliminate recurring meetings that lost their purpose."}},{"@type":"Question","name":"How do I use the Meeting Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"Enter your data in the fields above. The Meeting Cost Calculator then gives you an organised, ready-to-use result you can use straight away."}},{"@type":"Question","name":"How accurate is the Meeting Cost Calculator?","acceptedAnswer":{"@type":"Answer","text":"It is as accurate as the values you enter and shows the assumptions behind the result. Always confirm the figures before you share them before you rely on it."}},{"@type":"Question","name":"Is the Meeting Cost Calculator free, and does it cover my country?","acceptedAnswer":{"@type":"Answer","text":"Yes — it is completely free, works on any phone or computer with no signup, and is built for all 54 African countries."}}]}
 </script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -145,6 +145,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 <script src="/assets/js/pages/data-productivity-tool-focus.js?v=539704c2" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/meeting-cost/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/meeting-cost/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-reunion/">
@@ -255,12 +256,16 @@ function calculate(){
   const cur=document.getElementById('currency').value;
 
   if(workHours<=0) return;
-  const hourlyRate=(salary/workHours)*overhead;
-  const totalHourlyRate=hourlyRate*attendees;
-  const meetingCost=totalHourlyRate*(duration/60);
-  const perMinute=totalHourlyRate/60;
-  const annualCost=meetingCost*frequency;
-  const hoursLost=(duration/60)*attendees*frequency;
+  const ownerResult=window.BusinessRoiEngine.meetingCost({
+    attendees:attendees,annualSalary:salary,durationMinutes:duration,
+    overhead:overhead,annualFrequency:frequency,workHoursPerYear:workHours
+  });
+  const hourlyRate=ownerResult.hourlyRate;
+  const totalHourlyRate=ownerResult.totalHourlyRate;
+  const meetingCost=ownerResult.meetingCost;
+  const perMinute=ownerResult.perMinute;
+  const annualCost=ownerResult.annualCost;
+  const hoursLost=ownerResult.personHours;
 
   const fmt=n=>cur+n.toLocaleString(undefined,{maximumFractionDigits:0});
   document.getElementById('meetingCost').textContent=fmt(meetingCost);
@@ -372,7 +377,7 @@ calculate();
   target.appendChild(div);
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>

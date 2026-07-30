@@ -529,6 +529,10 @@ function assignEquivalenceGroups(graph, policy) {
       if (lang === "x-default" || !VALID_LOCALES.has(lang)) continue;
       const target = finalPage(targetRoute);
       if (!target || target.locale !== lang) continue;
+      if (lang === page.locale) {
+        const resolvedSelf = finalPage(page.route) || page;
+        assertSelfLocaleHreflang(page, target, resolvedSelf);
+      }
       union(page.route, target.route);
     }
   }
@@ -549,8 +553,13 @@ function assignEquivalenceGroups(graph, policy) {
 
   const groups = [];
   for (const component of components.values()) {
+    assertUnambiguousLocaleComponent(component);
     const routes = {};
-    for (const page of component.sort((a, b) => a.route.localeCompare(b.route))) {
+    for (const page of component.slice().sort((a, b) => {
+      if (a.locale !== b.locale) return a.locale.localeCompare(b.locale);
+      const ownerDelta = Number(isCanonicalOwner(b)) - Number(isCanonicalOwner(a));
+      return ownerDelta || a.route.localeCompare(b.route);
+    })) {
       if (!routes[page.locale]) routes[page.locale] = page.route;
     }
     const explicit = component.map((page) => explicitByRoute.get(page.route)).find(Boolean);
@@ -576,6 +585,35 @@ function assignEquivalenceGroups(graph, policy) {
   }
 
   graph.equivalenceGroups = groups.sort((a, b) => a.id.localeCompare(b.id));
+}
+
+function assertSelfLocaleHreflang(page, target, resolvedSelf = page) {
+  if (normalizeRoute(target.route) === normalizeRoute(resolvedSelf.route)) return;
+  throw new Error(
+    `[HREFLANG_SELF_LOCALE_MISMATCH] ${page.route} declares ${page.locale} as ${target.route}; an indexable locale owner must point its own locale to itself.`
+  );
+}
+
+function isCanonicalOwner(page) {
+  if (!page || !page.route) return false;
+  return normalizeRoute(page.canonicalRoute || page.route) === normalizeRoute(page.route);
+}
+
+function assertUnambiguousLocaleComponent(component) {
+  const routesByLocale = new Map();
+  for (const page of component || []) {
+    if (!isCanonicalOwner(page)) continue;
+    const routes = routesByLocale.get(page.locale) || [];
+    routes.push(page.route);
+    routesByLocale.set(page.locale, routes);
+  }
+  const ambiguous = [...routesByLocale.entries()]
+    .filter(([, routes]) => routes.length > 1)
+    .map(([locale, routes]) => `${locale}: ${routes.slice().sort().join(", ")}`);
+  if (!ambiguous.length) return;
+  throw new Error(
+    `[HREFLANG_EQUIVALENCE_AMBIGUOUS] Refusing to choose one route from a multilingual component with duplicate locales. ${ambiguous.join("; ")}`
+  );
 }
 
 function assignFallbacks(graph, policy) {
@@ -1212,6 +1250,8 @@ module.exports = {
   ROOT,
   SITE_ORIGIN,
   absoluteRoute,
+  assertSelfLocaleHreflang,
+  assertUnambiguousLocaleComponent,
   buildRouteGraph,
   buildRouteReport,
   cleanPath,

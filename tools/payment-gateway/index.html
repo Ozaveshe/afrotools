@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <link rel="stylesheet" href="/assets/css/fintech-payment-focus.css?v=ec3defef">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -204,64 +204,10 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-function calcGateway(){
-  var currency=document.getElementById('pg-currency').value;
-  var avgTxn=parseFloat(document.getElementById('pg-avg-txn').value);
-  var monthlyTxns=Number(document.getElementById('pg-monthly-txns').value);
-  var monthlyVol=avgTxn*monthlyTxns;
-  var error=document.getElementById('pg-error');
-  var output=document.getElementById('pg-results');
-  error.textContent='';
-  output.classList.remove('on');
-  if(!Number.isFinite(avgTxn)||avgTxn<=0||!Number.isInteger(monthlyTxns)||monthlyTxns<1){
-    error.textContent='Enter a positive transaction value and a whole monthly transaction count of at least 1.';
-    return;
-  }
-  var results=[];
-  for(var i=1;i<=3;i++){
-    var name=document.getElementById('pg-name-'+i).value.trim();
-    var rate=parseFloat(document.getElementById('pg-rate-'+i).value);
-    var flat=parseFloat(document.getElementById('pg-flat-'+i).value);
-    var cap=parseFloat(document.getElementById('pg-cap-'+i).value);
-    if(!name||!Number.isFinite(rate)||rate<0||rate>100||!Number.isFinite(flat)||flat<0||!Number.isFinite(cap)||cap<0){
-      error.textContent='Give each quote a name, a percentage from 0% to 100%, and non-negative flat fee and cap values.';
-      return;
-    }
-    var txnFee=avgTxn*(rate/100)+flat;
-    if(cap>0) txnFee=Math.min(txnFee,cap);
-    var monthlyFee=txnFee*monthlyTxns;
-    var effectiveRate=(monthlyFee/monthlyVol)*100;
-    results.push({name:name,txnFee:txnFee,monthlyFee:monthlyFee,effectiveRate:effectiveRate,order:i});
-  }
-  results.sort(function(a,b){return a.monthlyFee-b.monthlyFee||a.order-b.order;});
-  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  document.getElementById('pg-monthly-vol').textContent=fmt(monthlyVol);
-  document.getElementById('pg-cheapest-fee').textContent=fmt(results[0].monthlyFee);
-  document.getElementById('pg-most-exp').textContent=fmt(results[results.length-1].monthlyFee);
-  document.getElementById('pg-annual-saving').textContent=fmt((results[results.length-1].monthlyFee-results[0].monthlyFee)*12);
-  document.getElementById('pg-winner-name').textContent=results[0].name+' — lowest entered quote';
-  document.getElementById('pg-winner-detail').textContent='Monthly fees: '+fmt(results[0].monthlyFee)+' | Effective rate: '+results[0].effectiveRate.toFixed(2)+'%';
-  var tbody=document.getElementById('pg-table-body');
-  tbody.replaceChildren();
-  for(var j=0;j<results.length;j++){
-    var r=results[j];
-    var row=document.createElement('tr');
-    if(j===0) row.className='best';
-    [String(j+1),r.name,fmt(r.txnFee),fmt(r.monthlyFee),r.effectiveRate.toFixed(2)+'%'].forEach(function(value){
-      var cell=document.createElement('td');
-      cell.textContent=value;
-      row.appendChild(cell);
-    });
-    tbody.appendChild(row);
-  }
-  output.classList.add('on');
-  output.focus();
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/payment-gateway.js?v=79f274b0"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/fintech-payment-focus.js?v=087a828f" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

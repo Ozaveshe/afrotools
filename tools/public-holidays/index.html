@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
   <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Official Holiday Calendar Entry Builder | AfroTools</title>
@@ -22,12 +22,13 @@
 }
 </script>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/government-verification-planner.css?v=00ccbc51">
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
   <style>.holiday-preview{white-space:pre-wrap;overflow-wrap:anywhere;padding:16px;border:1px solid #94a3b8;border-radius:10px;line-height:1.7}.holiday-actions{margin-top:14px}</style>
 <!-- tool-structured-data:auto -->
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"All Tools","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Official Holiday Calendar Entry Builder","item":"https://afrotools.com/tools/public-holidays/"}]}
 </script>
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/public-holidays/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/public-holidays/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-feries/">
@@ -77,13 +78,14 @@
       if(!name){result.classList.remove('gv-on');status.textContent='Enter the holiday name from the official notice.';document.getElementById('holiday-name').focus();return;}
       if(!date){result.classList.remove('gv-on');status.textContent='Enter the confirmed local date.';document.getElementById('holiday-date').focus();return;}
       if(!confirmed.checked){result.classList.remove('gv-on');status.textContent='Confirm that you checked the current official notice.';confirmed.focus();return;}
-      var uid=compactDate(date)+'-'+country.value.toLowerCase()+'@afrotools.local',description='User-confirmed from '+source[2]+'. '+(note||'Recheck the official notice before relying on this entry.');
-      ics=['BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//AfroTools//User Confirmed Holiday Entry//EN','CALSCALE:GREGORIAN','BEGIN:VEVENT','UID:'+uid,'DTSTART;VALUE=DATE:'+compactDate(date),'DTEND;VALUE=DATE:'+nextDate(date),'SUMMARY:'+escapeIcs(name),'DESCRIPTION:'+escapeIcs(description),'X-AFROTOOLS-SOURCE-URL:'+source[3],'X-AFROTOOLS-BOUNDARY:User-confirmed entry; not an official calendar','END:VEVENT','END:VCALENDAR',''].join('\r\n');
+      var ownerEntry=window.BusinessRoiEngine.holidayEntry({country:country.value,name:name,date:date,note:note,confirmed:true,locale:'en'});
+      var description=ownerEntry.description;
+      ics=ownerEntry.ics;
       document.getElementById('holiday-preview').textContent=name+'\\n'+date+'\\n'+source[1]+'\\n'+description;document.getElementById('holiday-official').textContent='Open '+source[2];document.getElementById('holiday-official').href=source[3];result.classList.add('gv-on');status.textContent='User-confirmed calendar entry prepared locally.';
     });
     form.addEventListener('reset',function(){setTimeout(function(){country.value='ZA';result.classList.remove('gv-on');ics='';status.textContent='Entry reset.';country.focus();},0);});
     document.getElementById('holiday-download').addEventListener('click',function(){if(!ics)return;var blob=new Blob([ics],{type:'text/calendar;charset=utf-8'}),url=URL.createObjectURL(blob),link=document.createElement('a');link.href=url;link.download='user-confirmed-public-holiday.ics';link.click();setTimeout(function(){URL.revokeObjectURL(url);},0);status.textContent='ICS entry downloaded.';});
   }());
-  </script><script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+  </script><script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body></html>

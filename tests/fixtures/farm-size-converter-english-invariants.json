@@ -1,0 +1,5704 @@
+{
+  "schemaVersion": 1,
+  "source": "agriculture/farm-size-converter/index.html#inline-controller",
+  "worktreeSentinel": "7e83",
+  "catalog": {
+    "unitKeys": [
+      "hectare",
+      "acre",
+      "sqm",
+      "sqkm",
+      "sqft",
+      "plot_ng_standard",
+      "plot_ng_450",
+      "plot_ng_460",
+      "plot_ng_930",
+      "feddan",
+      "kirat",
+      "sahm",
+      "qasaba",
+      "morgen",
+      "timad",
+      "tseri",
+      "gasha",
+      "kert",
+      "arpent",
+      "perche_sq",
+      "rope_gh",
+      "polo_gh",
+      "are",
+      "corde_sn",
+      "football_pitch",
+      "tennis_court",
+      "basketball_court"
+    ],
+    "units": {
+      "hectare": {
+        "name": "Hectare (ha)",
+        "sqm": 10000,
+        "category": "international",
+        "abbr": "ha"
+      },
+      "acre": {
+        "name": "Acre",
+        "sqm": 4046.86,
+        "category": "international",
+        "abbr": "ac"
+      },
+      "sqm": {
+        "name": "Square Meter (m²)",
+        "sqm": 1,
+        "category": "international",
+        "abbr": "m²"
+      },
+      "sqkm": {
+        "name": "Square Kilometer (km²)",
+        "sqm": 1000000,
+        "category": "international",
+        "abbr": "km²"
+      },
+      "sqft": {
+        "name": "Square Foot (ft²)",
+        "sqm": 0.092903,
+        "category": "international",
+        "abbr": "ft²"
+      },
+      "plot_ng_standard": {
+        "name": "Plot — Nigeria Standard (648 m²)",
+        "sqm": 648,
+        "category": "nigeria",
+        "abbr": "plot",
+        "notes": "60ft × 120ft = 18m × 36m. Most common in Lagos, Ogun, Oyo."
+      },
+      "plot_ng_450": {
+        "name": "Plot — Nigeria 450 m²",
+        "sqm": 450,
+        "category": "nigeria",
+        "abbr": "plot",
+        "notes": "15m × 30m. Common in Abuja (some areas), Kaduna, Enugu."
+      },
+      "plot_ng_460": {
+        "name": "Plot — Nigeria FCT/Abuja (460 m²)",
+        "sqm": 460,
+        "category": "nigeria",
+        "abbr": "plot",
+        "notes": "AGIS standard plot in FCT Abuja."
+      },
+      "plot_ng_930": {
+        "name": "Plot — Nigeria 930 m² (half acre)",
+        "sqm": 930,
+        "category": "nigeria",
+        "abbr": "plot",
+        "notes": "Half acre. Used in some northern states."
+      },
+      "feddan": {
+        "name": "Feddan (Egypt / Sudan)",
+        "sqm": 4200,
+        "category": "egypt_sudan",
+        "abbr": "feddan",
+        "notes": "1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit."
+      },
+      "kirat": {
+        "name": "Kirat (Egypt)",
+        "sqm": 175,
+        "category": "egypt_sudan",
+        "abbr": "kirat",
+        "notes": "1/24 of a feddan. Traditional sub-unit."
+      },
+      "sahm": {
+        "name": "Sahm (Egypt)",
+        "sqm": 350,
+        "category": "egypt_sudan",
+        "abbr": "sahm",
+        "notes": "2 kirat = 1 sahm."
+      },
+      "qasaba": {
+        "name": "Qasaba sq. (Egypt)",
+        "sqm": 7.29,
+        "category": "egypt_sudan",
+        "abbr": "qasaba",
+        "notes": "1 qasaba ≈ 2.7m linear. 7.29 m² when squared."
+      },
+      "morgen": {
+        "name": "Morgen (South Africa / Namibia)",
+        "sqm": 8567,
+        "category": "southern_africa",
+        "abbr": "morgen",
+        "notes": "Cape morgen. Used in SA, Namibia, Zimbabwe. ~2.1 acres. Historical Dutch unit."
+      },
+      "timad": {
+        "name": "Timad (Ethiopia)",
+        "sqm": 2500,
+        "category": "ethiopia",
+        "abbr": "timad",
+        "notes": "~0.25 ha. Common in Amhara & Tigray. 'Area plowed by a pair of oxen in one day.'"
+      },
+      "tseri": {
+        "name": "Tseri (Ethiopia / Eritrea)",
+        "sqm": 2500,
+        "category": "ethiopia",
+        "abbr": "tseri",
+        "notes": "~0.25 ha. Used in Tigray and Eritrea. Similar to timad."
+      },
+      "gasha": {
+        "name": "Gasha / Gasga (Ethiopia)",
+        "sqm": 400000,
+        "category": "ethiopia",
+        "abbr": "gasha",
+        "notes": "~40 ha. Traditional large land grant unit."
+      },
+      "kert": {
+        "name": "Kert (Ethiopia)",
+        "sqm": 625,
+        "category": "ethiopia",
+        "abbr": "kert",
+        "notes": "~1/16 of a hectare. Used in some Ethiopian regions."
+      },
+      "arpent": {
+        "name": "Arpent (Mauritius / Seychelles)",
+        "sqm": 3403,
+        "category": "islands",
+        "abbr": "arpent",
+        "notes": "French colonial unit. 100 toises × 100 toises. Still used for sugar cane land."
+      },
+      "perche_sq": {
+        "name": "Perche carrée (Mauritius)",
+        "sqm": 34.03,
+        "category": "islands",
+        "abbr": "perche",
+        "notes": "1/100th of an arpent. Sub-unit."
+      },
+      "rope_gh": {
+        "name": "Rope (Ghana — 100ft)",
+        "sqm": 929,
+        "category": "ghana",
+        "abbr": "rope",
+        "notes": "100ft × 100ft. Informal unit used in land transactions."
+      },
+      "polo_gh": {
+        "name": "Polo (Ghana)",
+        "sqm": 625,
+        "category": "ghana",
+        "abbr": "polo",
+        "notes": "25m × 25m. Used in cocoa farming regions."
+      },
+      "are": {
+        "name": "Are",
+        "sqm": 100,
+        "category": "francophone",
+        "abbr": "are",
+        "notes": "100 m². Used in francophone Africa (Morocco, Tunisia, Algeria, Senegal, etc.)."
+      },
+      "corde_sn": {
+        "name": "Corde (Senegal)",
+        "sqm": 2500,
+        "category": "francophone",
+        "abbr": "corde",
+        "notes": "Traditional Senegalese unit. ~0.25 ha. Varies by region."
+      },
+      "football_pitch": {
+        "name": "Football Pitch (FIFA)",
+        "sqm": 7140,
+        "category": "reference",
+        "abbr": "pitch",
+        "notes": "105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference."
+      },
+      "tennis_court": {
+        "name": "Tennis Court",
+        "sqm": 260,
+        "category": "reference",
+        "abbr": "court",
+        "notes": "23.77m × 10.97m ≈ 261 m²."
+      },
+      "basketball_court": {
+        "name": "Basketball Court",
+        "sqm": 420,
+        "category": "reference",
+        "abbr": "court",
+        "notes": "28m × 15m = 420 m²."
+      }
+    },
+    "categoryLabels": {
+      "international": "International Standard",
+      "nigeria": "Nigeria",
+      "egypt_sudan": "Egypt & Sudan",
+      "southern_africa": "Southern Africa",
+      "ethiopia": "Ethiopia & Eritrea",
+      "islands": "Mauritius & Islands",
+      "ghana": "Ghana",
+      "francophone": "Francophone Africa",
+      "reference": "Reference (Visual)"
+    },
+    "keyRefs": [
+      "sqm",
+      "hectare",
+      "acre",
+      "sqkm",
+      "feddan",
+      "plot_ng_standard",
+      "morgen",
+      "timad",
+      "arpent",
+      "football_pitch"
+    ],
+    "fromGroups": [
+      {
+        "label": "International Standard",
+        "options": [
+          {
+            "value": "hectare",
+            "text": "Hectare (ha)"
+          },
+          {
+            "value": "acre",
+            "text": "Acre"
+          },
+          {
+            "value": "sqm",
+            "text": "Square Meter (m²)"
+          },
+          {
+            "value": "sqkm",
+            "text": "Square Kilometer (km²)"
+          },
+          {
+            "value": "sqft",
+            "text": "Square Foot (ft²)"
+          }
+        ]
+      },
+      {
+        "label": "Nigeria",
+        "options": [
+          {
+            "value": "plot_ng_standard",
+            "text": "Plot — Nigeria Standard (648 m²)"
+          },
+          {
+            "value": "plot_ng_450",
+            "text": "Plot — Nigeria 450 m²"
+          },
+          {
+            "value": "plot_ng_460",
+            "text": "Plot — Nigeria FCT/Abuja (460 m²)"
+          },
+          {
+            "value": "plot_ng_930",
+            "text": "Plot — Nigeria 930 m² (half acre)"
+          }
+        ]
+      },
+      {
+        "label": "Egypt & Sudan",
+        "options": [
+          {
+            "value": "feddan",
+            "text": "Feddan (Egypt / Sudan)"
+          },
+          {
+            "value": "kirat",
+            "text": "Kirat (Egypt)"
+          },
+          {
+            "value": "sahm",
+            "text": "Sahm (Egypt)"
+          },
+          {
+            "value": "qasaba",
+            "text": "Qasaba sq. (Egypt)"
+          }
+        ]
+      },
+      {
+        "label": "Southern Africa",
+        "options": [
+          {
+            "value": "morgen",
+            "text": "Morgen (South Africa / Namibia)"
+          }
+        ]
+      },
+      {
+        "label": "Ethiopia & Eritrea",
+        "options": [
+          {
+            "value": "timad",
+            "text": "Timad (Ethiopia)"
+          },
+          {
+            "value": "tseri",
+            "text": "Tseri (Ethiopia / Eritrea)"
+          },
+          {
+            "value": "gasha",
+            "text": "Gasha / Gasga (Ethiopia)"
+          },
+          {
+            "value": "kert",
+            "text": "Kert (Ethiopia)"
+          }
+        ]
+      },
+      {
+        "label": "Mauritius & Islands",
+        "options": [
+          {
+            "value": "arpent",
+            "text": "Arpent (Mauritius / Seychelles)"
+          },
+          {
+            "value": "perche_sq",
+            "text": "Perche carrée (Mauritius)"
+          }
+        ]
+      },
+      {
+        "label": "Ghana",
+        "options": [
+          {
+            "value": "rope_gh",
+            "text": "Rope (Ghana — 100ft)"
+          },
+          {
+            "value": "polo_gh",
+            "text": "Polo (Ghana)"
+          }
+        ]
+      },
+      {
+        "label": "Francophone Africa",
+        "options": [
+          {
+            "value": "are",
+            "text": "Are"
+          },
+          {
+            "value": "corde_sn",
+            "text": "Corde (Senegal)"
+          }
+        ]
+      },
+      {
+        "label": "Reference (Visual)",
+        "options": [
+          {
+            "value": "football_pitch",
+            "text": "Football Pitch (FIFA)"
+          },
+          {
+            "value": "tennis_court",
+            "text": "Tennis Court"
+          },
+          {
+            "value": "basketball_court",
+            "text": "Basketball Court"
+          }
+        ]
+      }
+    ]
+  },
+  "scenarios": [
+    {
+      "input": {
+        "amount": 0,
+        "from": "hectare",
+        "to": "acre"
+      },
+      "output": {
+        "eqFrom": "0 Hectare (ha)",
+        "eqVal": "0",
+        "eqUnit": "Acre",
+        "eqContext": "≈ About 0 m² — smaller than a tennis court",
+        "countryContext": "",
+        "countryContextDisplay": "none",
+        "fromNote": "",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n0 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n0 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n0 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n0 pitch\n≈ 0 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "0 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.000001,
+        "from": "acre",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "1.0000e-6 Acre",
+        "eqVal": "4.0469e-7",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ About 4.0469e-3 m² — smaller than a tennis court",
+        "countryContext": "",
+        "countryContextDisplay": "none",
+        "fromNote": "",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n4.0469e-3 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n4.0469e-7 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n1.0000e-6 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n4.0469e-9 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n9.6354e-7 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n6.2452e-6 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n4.7238e-7 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n1.6187e-6 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n1.1892e-6 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n5.6679e-7 pitch\n≈ 5.6679e-7 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "4.0469e-7 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "1.0000e-6 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "4.0469e-3 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "4.0469e-9 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0.04356 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "6.2452e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "8.9930e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "8.7975e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "4.3515e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "9.6354e-7 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "2.3125e-5 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "1.1562e-5 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "5.5512e-4 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "4.7238e-7 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "1.6187e-6 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "1.6187e-6 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "1.0117e-8 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "6.4750e-6 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "1.1892e-6 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "1.1892e-4 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "4.3561e-6 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "6.4750e-6 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "4.0469e-5 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "1.6187e-6 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "5.6679e-7 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "1.5565e-5 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "9.6354e-6 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.25,
+        "from": "sqm",
+        "to": "sqkm"
+      },
+      "output": {
+        "eqFrom": "0.25 Square Meter (m²)",
+        "eqVal": "2.5000e-7",
+        "eqUnit": "Square Kilometer (km²)",
+        "eqContext": "≈ About 0.25 m² — smaller than a tennis court",
+        "countryContext": "",
+        "countryContextDisplay": "none",
+        "fromNote": "",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n0.25 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n2.5000e-5 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n6.1776e-5 ac"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE KILOMETER (KM²)\n2.5000e-7 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n5.9524e-5 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n3.8580e-4 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n2.9182e-5 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n1.0000e-4 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n7.3465e-5 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n3.5014e-5 pitch\n≈ 3.5014e-5 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "2.5000e-5 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "6.1776e-5 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0.25 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "2.5000e-7 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "2.691 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "3.8580e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "5.5556e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "5.4348e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "2.6882e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "5.9524e-5 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "1.4286e-3 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "7.1429e-4 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0.03429 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "2.9182e-5 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "1.0000e-4 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "1.0000e-4 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "6.2500e-7 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "4.0000e-4 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "7.3465e-5 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "7.3465e-3 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "2.6911e-4 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "4.0000e-4 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "2.5000e-3 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "1.0000e-4 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "3.5014e-5 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "9.6154e-4 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "5.9524e-4 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1,
+        "from": "sqkm",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "1 Square Kilometer (km²)",
+        "eqVal": "1,000,000",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ 140.056 football pitches",
+        "countryContext": "",
+        "countryContextDisplay": "none",
+        "fromNote": "",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n1,000,000 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n100 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n247.1052 ac"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE KILOMETER (KM²)\n1 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n238.0952 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n1,543.21 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n116.727 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n400 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n293.8584 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n140.056 pitch\n≈ 140.056 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "100 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "247.1052 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "1,000,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "1 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "10,763,915.05 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "1,543.21 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "2,222.222 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "2,173.913 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "1,075.269 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "238.0952 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "5,714.286 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "2,857.143 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "137,174.211 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "116.727 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "400 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "400 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "2.5 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "1,600 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "293.8584 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "29,385.836 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "1,076.426 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "1,600 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "10,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "400 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "140.056 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "3,846.154 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "2,380.952 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2.5,
+        "from": "sqft",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "2.5 Square Foot (ft²)",
+        "eqVal": "0.23226",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ About 0.23226 m² — smaller than a tennis court",
+        "countryContext": "",
+        "countryContextDisplay": "none",
+        "fromNote": "",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n0.23226 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n2.3226e-5 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n5.7392e-5 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n2.3226e-7 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n5.5299e-5 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n3.5842e-4 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n2.7111e-5 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n9.2903e-5 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n6.8251e-5 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n3.2529e-5 pitch\n≈ 3.2529e-5 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "2.3226e-5 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "5.7392e-5 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0.23226 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "2.3226e-7 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "2.5 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "3.5842e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "5.1613e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "5.0491e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "2.4974e-4 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "5.5299e-5 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "1.3272e-3 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "6.6359e-4 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0.03186 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "2.7111e-5 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "9.2903e-5 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "9.2903e-5 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "5.8064e-7 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "3.7161e-4 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "6.8251e-5 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "6.8251e-3 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "2.5001e-4 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "3.7161e-4 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "2.3226e-3 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "9.2903e-5 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "3.2529e-5 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "8.9330e-4 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "5.5299e-4 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 17,
+        "from": "plot_ng_standard",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "17 Plot — Nigeria Standard (648 m²)",
+        "eqVal": "1.1016",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ 1.5429 football pitches",
+        "countryContext": "About this unit: 60ft × 120ft = 18m × 36m. Most common in Lagos, Ogun, Oyo.",
+        "countryContextDisplay": "block",
+        "fromNote": "60ft × 120ft = 18m × 36m. Most common in Lagos, Ogun, Oyo.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n11,016 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n1.1016 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n2.7221 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0.01102 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n2.6229 feddan"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n17 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n1.2859 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n4.4064 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n3.2371 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n1.5429 pitch\n≈ 1.5429 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "1.1016 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "2.7221 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "11,016 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0.01102 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "118,575.288 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "17 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "24.48 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "23.9478 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "11.8452 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "2.6229 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "62.9486 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "31.4743 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "1,511.111 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "1.2859 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "4.4064 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "4.4064 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0.02754 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "17.6256 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "3.2371 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "323.7144 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "11.8579 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "17.6256 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "110.16 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "4.4064 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "1.5429 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "42.3692 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "26.2286 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1000,
+        "from": "plot_ng_450",
+        "to": "acre"
+      },
+      "output": {
+        "eqFrom": "1,000 Plot — Nigeria 450 m²",
+        "eqVal": "111.1973",
+        "eqUnit": "Acre",
+        "eqContext": "≈ 63.0252 football pitches",
+        "countryContext": "About this unit: 15m × 30m. Common in Abuja (some areas), Kaduna, Enugu.",
+        "countryContextDisplay": "block",
+        "fromNote": "15m × 30m. Common in Abuja (some areas), Kaduna, Enugu.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n450,000 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n45 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n111.1973 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0.45 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n107.1429 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n694.4444 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n52.5271 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n180 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n132.2363 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n63.0252 pitch\n≈ 63.0252 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "45 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "111.1973 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "450,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0.45 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "4,843,761.77 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "694.4444 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "1,000 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "978.2609 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "483.871 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "107.1429 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "2,571.429 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "1,285.714 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "61,728.395 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "52.5271 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "180 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "180 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "1.125 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "720 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "132.2363 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "13,223.626 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "484.3918 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "720 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "4,500 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "180 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "63.0252 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "1,730.769 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "1,071.429 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2500000,
+        "from": "plot_ng_460",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "2,500,000 Plot — Nigeria FCT/Abuja (460 m²)",
+        "eqVal": "1,150,000,000",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ 161,064.426 football pitches (1,150 km²)",
+        "countryContext": "About this unit: AGIS standard plot in FCT Abuja.",
+        "countryContextDisplay": "block",
+        "fromNote": "AGIS standard plot in FCT Abuja.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n1,150,000,000 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n115,000 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n284,170.937 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n1,150 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n273,809.524 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n1,774,691.36 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n134,236.022 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n460,000 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n337,937.114 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n161,064.426 pitch\n≈ 161,064.426 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "115,000 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "284,170.937 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "1,150,000,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "1,150 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "12,378,502,308.86 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "1,774,691.36 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "2,555,555.56 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "2,500,000 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "1,236,559.14 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "273,809.524 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "6,571,428.57 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "3,285,714.29 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "157,750,342.94 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "134,236.022 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "460,000 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "460,000 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "2,875 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "1,840,000 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "337,937.114 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "33,793,711.43 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "1,237,890.2 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "1,840,000 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "11,500,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "460,000 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "161,064.426 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "4,423,076.92 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "2,738,095.24 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0,
+        "from": "plot_ng_930",
+        "to": "football_pitch"
+      },
+      "output": {
+        "eqFrom": "0 Plot — Nigeria 930 m² (half acre)",
+        "eqVal": "0",
+        "eqUnit": "Football Pitch (FIFA)",
+        "eqContext": "≈ About 0 m² — smaller than a tennis court",
+        "countryContext": "About this unit: Half acre. Used in some northern states.",
+        "countryContextDisplay": "block",
+        "fromNote": "Half acre. Used in some northern states.",
+        "toNote": "105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference.",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n0 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n0 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0 arpent"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "FOOTBALL PITCH (FIFA)\n0 pitch\n≈ 0 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "0 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.000001,
+        "from": "feddan",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "1.0000e-6 Feddan (Egypt / Sudan)",
+        "eqVal": "4.2000e-7",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ About 4.2000e-3 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit.",
+        "countryContextDisplay": "block",
+        "fromNote": "1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n4.2000e-3 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n4.2000e-7 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n1.0378e-6 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n4.2000e-9 km²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "FEDDAN (EGYPT / SUDAN)\n1.0000e-6 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n6.4815e-6 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n4.9025e-7 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n1.6800e-6 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n1.2342e-6 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n5.8824e-7 pitch\n≈ 5.8824e-7 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "4.2000e-7 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "1.0378e-6 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "4.2000e-3 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "4.2000e-9 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0.04521 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "6.4815e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "9.3333e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "9.1304e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "4.5161e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "1.0000e-6 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "2.4000e-5 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "1.2000e-5 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "5.7613e-4 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "4.9025e-7 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "1.6800e-6 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "1.6800e-6 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "1.0500e-8 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "6.7200e-6 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "1.2342e-6 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "1.2342e-4 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "4.5210e-6 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "6.7200e-6 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "4.2000e-5 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "1.6800e-6 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "5.8824e-7 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "1.6154e-5 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "1.0000e-5 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.25,
+        "from": "kirat",
+        "to": "feddan"
+      },
+      "output": {
+        "eqFrom": "0.25 Kirat (Egypt)",
+        "eqVal": "0.01042",
+        "eqUnit": "Feddan (Egypt / Sudan)",
+        "eqContext": "≈ About 43.75 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 1/24 of a feddan. Traditional sub-unit.",
+        "countryContextDisplay": "block",
+        "fromNote": "1/24 of a feddan. Traditional sub-unit.",
+        "toNote": "1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit.",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n43.75 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n4.3750e-3 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0.01081 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n4.3750e-5 km²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0.01042 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0.06752 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n5.1068e-3 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.0175 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.01286 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n6.1275e-3 pitch\n≈ 6.1275e-3 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "4.3750e-3 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0.01081 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "43.75 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "4.3750e-5 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "470.9213 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0.06752 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0.09722 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0.09511 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.04704 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0.01042 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0.25 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0.125 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "6.0014 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "5.1068e-3 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.0175 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.0175 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "1.0938e-4 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0.07 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.01286 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "1.2856 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.04709 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0.07 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0.4375 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.0175 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "6.1275e-3 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0.16827 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0.10417 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1,
+        "from": "sahm",
+        "to": "kirat"
+      },
+      "output": {
+        "eqFrom": "1 Sahm (Egypt)",
+        "eqVal": "2",
+        "eqUnit": "Kirat (Egypt)",
+        "eqContext": "≈ About 4.902% of a football pitch",
+        "countryContext": "About this unit: 2 kirat = 1 sahm.",
+        "countryContextDisplay": "block",
+        "fromNote": "2 kirat = 1 sahm.",
+        "toNote": "1/24 of a feddan. Traditional sub-unit.",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n350 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n0.035 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0.08649 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n3.5000e-4 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0.08333 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0.54012 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0.04085 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.14 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.10285 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n0.04902 pitch\n≈ 0.04902 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0.035 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0.08649 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "350 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "3.5000e-4 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "3,767.37 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0.54012 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0.77778 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0.76087 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.37634 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0.08333 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "2 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "1 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "48.011 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0.04085 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.14 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.14 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "8.7500e-4 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0.56 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.10285 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "10.285 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.37675 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0.56 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "3.5 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.14 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0.04902 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "1.3462 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0.83333 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2.5,
+        "from": "qasaba",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "2.5 Qasaba sq. (Egypt)",
+        "eqVal": "18.225",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ About 18.225 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 1 qasaba ≈ 2.7m linear. 7.29 m² when squared.",
+        "countryContextDisplay": "block",
+        "fromNote": "1 qasaba ≈ 2.7m linear. 7.29 m² when squared.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n18.225 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n1.8225e-3 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n4.5035e-3 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n1.8225e-5 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n4.3393e-3 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0.02813 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n2.1273e-3 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n7.2900e-3 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n5.3556e-3 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n2.5525e-3 pitch\n≈ 2.5525e-3 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "1.8225e-3 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "4.5035e-3 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "18.225 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "1.8225e-5 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "196.1724 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0.02813 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0.0405 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0.03962 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.0196 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "4.3393e-3 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0.10414 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0.05207 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "2.5 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "2.1273e-3 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "7.2900e-3 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "7.2900e-3 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "4.5563e-5 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0.02916 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "5.3556e-3 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "0.53556 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.01962 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0.02916 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0.18225 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "7.2900e-3 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "2.5525e-3 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0.0701 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0.04339 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 17,
+        "from": "morgen",
+        "to": "acre"
+      },
+      "output": {
+        "eqFrom": "17 Morgen (South Africa / Namibia)",
+        "eqVal": "35.9881",
+        "eqUnit": "Acre",
+        "eqContext": "≈ 20.3976 football pitches",
+        "countryContext": "About this unit: Cape morgen. Used in SA, Namibia, Zimbabwe. ~2.1 acres. Historical Dutch unit.",
+        "countryContextDisplay": "block",
+        "fromNote": "Cape morgen. Used in SA, Namibia, Zimbabwe. ~2.1 acres. Historical Dutch unit.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n145,639 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n14.5639 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n35.9881 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0.14564 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n34.676 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n224.7515 plot"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n17 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n58.2556 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n42.7972 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n20.3976 pitch\n≈ 20.3976 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "14.5639 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "35.9881 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "145,639 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0.14564 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "1,567,645.82 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "224.7515 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "323.6422 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "316.6065 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "156.6011 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "34.676 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "832.2229 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "416.1114 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "19,977.915 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "17 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "58.2556 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "58.2556 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0.3641 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "233.0224 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "42.7972 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "4,279.724 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "156.7696 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "233.0224 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "1,456.39 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "58.2556 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "20.3976 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "560.15 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "346.7595 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1000,
+        "from": "timad",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "1,000 Timad (Ethiopia)",
+        "eqVal": "250",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ 350.1401 football pitches",
+        "countryContext": "About this unit: ~0.25 ha. Common in Amhara & Tigray. 'Area plowed by a pair of oxen in one day.'",
+        "countryContextDisplay": "block",
+        "fromNote": "~0.25 ha. Common in Amhara & Tigray. 'Area plowed by a pair of oxen in one day.'",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n2,500,000 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n250 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n617.7629 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n2.5 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n595.2381 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n3,858.025 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n291.8174 morgen"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "TIMAD (ETHIOPIA)\n1,000 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n734.6459 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n350.1401 pitch\n≈ 350.1401 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "250 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "617.7629 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "2,500,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "2.5 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "26,909,787.63 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "3,858.025 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "5,555.556 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "5,434.783 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "2,688.172 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "595.2381 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "14,285.714 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "7,142.857 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "342,935.528 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "291.8174 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "1,000 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "1,000 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "6.25 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "4,000 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "734.6459 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "73,464.59 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "2,691.066 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "4,000 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "25,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "1,000 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "350.1401 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "9,615.385 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "5,952.381 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2500000,
+        "from": "tseri",
+        "to": "acre"
+      },
+      "output": {
+        "eqFrom": "2,500,000 Tseri (Ethiopia / Eritrea)",
+        "eqVal": "1,544,407.27",
+        "eqUnit": "Acre",
+        "eqContext": "≈ 875,350.14 football pitches (6,250 km²)",
+        "countryContext": "About this unit: ~0.25 ha. Used in Tigray and Eritrea. Similar to timad.",
+        "countryContextDisplay": "block",
+        "fromNote": "~0.25 ha. Used in Tigray and Eritrea. Similar to timad.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n6,250,000,000 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n625,000 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n1,544,407.27 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n6,250 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n1,488,095.24 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n9,645,061.73 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n729,543.598 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n2,500,000 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n1,836,614.75 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n875,350.14 pitch\n≈ 875,350.14 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "625,000 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "1,544,407.27 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "6,250,000,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "6,250 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "67,274,469,069.89 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "9,645,061.73 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "13,888,888.89 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "13,586,956.52 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "6,720,430.11 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "1,488,095.24 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "35,714,285.71 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "17,857,142.86 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "857,338,820.3 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "729,543.598 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "2,500,000 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "2,500,000 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "15,625 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "10,000,000 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "1,836,614.75 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "183,661,475.17 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "6,727,664.16 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "10,000,000 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "62,500,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "2,500,000 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "875,350.14 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "24,038,461.54 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "14,880,952.38 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0,
+        "from": "gasha",
+        "to": "sqkm"
+      },
+      "output": {
+        "eqFrom": "0 Gasha / Gasga (Ethiopia)",
+        "eqVal": "0",
+        "eqUnit": "Square Kilometer (km²)",
+        "eqContext": "≈ About 0 m² — smaller than a tennis court",
+        "countryContext": "About this unit: ~40 ha. Traditional large land grant unit.",
+        "countryContextDisplay": "block",
+        "fromNote": "~40 ha. Traditional large land grant unit.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n0 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n0 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0 ac"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE KILOMETER (KM²)\n0 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n0 pitch\n≈ 0 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "0 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.000001,
+        "from": "kert",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "1.0000e-6 Kert (Ethiopia)",
+        "eqVal": "6.2500e-4",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ About 6.2500e-4 m² — smaller than a tennis court",
+        "countryContext": "About this unit: ~1/16 of a hectare. Used in some Ethiopian regions.",
+        "countryContextDisplay": "block",
+        "fromNote": "~1/16 of a hectare. Used in some Ethiopian regions.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n6.2500e-4 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n6.2500e-8 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n1.5444e-7 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n6.2500e-10 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n1.4881e-7 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n9.6451e-7 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n7.2954e-8 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n2.5000e-7 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n1.8366e-7 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n8.7535e-8 pitch\n≈ 8.7535e-8 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "6.2500e-8 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "1.5444e-7 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "6.2500e-4 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "6.2500e-10 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "6.7274e-3 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "9.6451e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "1.3889e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "1.3587e-6 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "6.7204e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "1.4881e-7 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "3.5714e-6 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "1.7857e-6 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "8.5734e-5 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "7.2954e-8 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "2.5000e-7 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "2.5000e-7 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "1.5625e-9 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "1.0000e-6 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "1.8366e-7 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "1.8366e-5 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "6.7277e-7 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "1.0000e-6 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "6.2500e-6 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "2.5000e-7 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "8.7535e-8 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "2.4038e-6 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "1.4881e-6 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.25,
+        "from": "arpent",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "0.25 Arpent (Mauritius / Seychelles)",
+        "eqVal": "0.08508",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ About 0.11915 football pitches",
+        "countryContext": "About this unit: French colonial unit. 100 toises × 100 toises. Still used for sugar cane land.",
+        "countryContextDisplay": "block",
+        "fromNote": "French colonial unit. 100 toises × 100 toises. Still used for sugar cane land.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n850.75 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n0.08508 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0.21022 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n8.5075e-4 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0.20256 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n1.3129 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0.09931 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.3403 timad"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.25 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n0.11915 pitch\n≈ 0.11915 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0.08508 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0.21022 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "850.75 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "8.5075e-4 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "9,157.401 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "1.3129 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "1.8906 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "1.8495 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.91478 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0.20256 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "4.8614 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "2.4307 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "116.701 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0.09931 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.3403 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.3403 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "2.1269e-3 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "1.3612 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.25 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "25 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.91577 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "1.3612 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "8.5075 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.3403 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0.11915 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "3.2721 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "2.0256 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1,
+        "from": "perche_sq",
+        "to": "arpent"
+      },
+      "output": {
+        "eqFrom": "1 Perche carrée (Mauritius)",
+        "eqVal": "0.01",
+        "eqUnit": "Arpent (Mauritius / Seychelles)",
+        "eqContext": "≈ About 34.03 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 1/100th of an arpent. Sub-unit.",
+        "countryContextDisplay": "block",
+        "fromNote": "1/100th of an arpent. Sub-unit.",
+        "toNote": "French colonial unit. 100 toises × 100 toises. Still used for sugar cane land.",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n34.03 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n3.4030e-3 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n8.4090e-3 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n3.4030e-5 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n8.1024e-3 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0.05252 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n3.9722e-3 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.01361 timad"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.01 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n4.7661e-3 pitch\n≈ 4.7661e-3 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "3.4030e-3 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "8.4090e-3 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "34.03 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "3.4030e-5 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "366.296 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0.05252 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0.07562 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0.07398 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.03659 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "8.1024e-3 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0.19446 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0.09723 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "4.668 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "3.9722e-3 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.01361 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.01361 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "8.5075e-5 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0.05445 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.01 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "1 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.03663 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0.05445 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0.3403 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.01361 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "4.7661e-3 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0.13088 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0.08102 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2.5,
+        "from": "rope_gh",
+        "to": "acre"
+      },
+      "output": {
+        "eqFrom": "2.5 Rope (Ghana — 100ft)",
+        "eqVal": "0.5739",
+        "eqUnit": "Acre",
+        "eqContext": "≈ About 0.32528 football pitches",
+        "countryContext": "About this unit: 100ft × 100ft. Informal unit used in land transactions.",
+        "countryContextDisplay": "block",
+        "fromNote": "100ft × 100ft. Informal unit used in land transactions.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n2,322.5 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n0.23225 ha"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "ACRE\n0.5739 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n2.3225e-3 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0.55298 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n3.5841 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0.2711 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.929 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.68249 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n0.32528 pitch\n≈ 0.32528 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0.23225 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0.5739 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "2,322.5 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "2.3225e-3 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "24,999.193 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "3.5841 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "5.1611 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "5.0489 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "2.4973 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0.55298 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "13.2714 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "6.6357 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "318.5871 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0.2711 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.929 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.929 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "5.8062e-3 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "3.716 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.68249 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "68.2486 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "2.5 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "3.716 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "23.225 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.929 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0.32528 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "8.9327 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "5.5298 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 17,
+        "from": "polo_gh",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "17 Polo (Ghana)",
+        "eqVal": "1.0625",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ 1.4881 football pitches",
+        "countryContext": "About this unit: 25m × 25m. Used in cocoa farming regions.",
+        "countryContextDisplay": "block",
+        "fromNote": "25m × 25m. Used in cocoa farming regions.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n10,625 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n1.0625 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n2.6255 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0.01063 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n2.5298 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n16.3966 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n1.2402 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n4.25 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n3.1222 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n1.4881 pitch\n≈ 1.4881 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "1.0625 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "2.6255 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "10,625 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0.01063 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "114,366.597 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "16.3966 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "23.6111 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "23.0978 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "11.4247 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "2.5298 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "60.7143 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "30.3571 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "1,457.476 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "1.2402 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "4.25 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "4.25 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0.02656 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "17 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "3.1222 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "312.2245 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "11.437 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "17 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "106.25 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "4.25 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "1.4881 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "40.8654 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "25.2976 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 1000,
+        "from": "are",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "1,000 Are",
+        "eqVal": "100,000",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ 14.0056 football pitches",
+        "countryContext": "About this unit: 100 m². Used in francophone Africa (Morocco, Tunisia, Algeria, Senegal, etc.).",
+        "countryContextDisplay": "block",
+        "fromNote": "100 m². Used in francophone Africa (Morocco, Tunisia, Algeria, Senegal, etc.).",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n100,000 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n10 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n24.7105 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0.1 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n23.8095 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n154.321 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n11.6727 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n40 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n29.3858 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n14.0056 pitch\n≈ 14.0056 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "10 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "24.7105 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "100,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0.1 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "1,076,391.51 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "154.321 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "222.2222 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "217.3913 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "107.5269 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "23.8095 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "571.4286 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "285.7143 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "13,717.421 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "11.6727 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "40 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "40 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0.25 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "160 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "29.3858 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "2,938.584 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "107.6426 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "160 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "1,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "40 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "14.0056 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "384.6154 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "238.0952 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 2500000,
+        "from": "corde_sn",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "2,500,000 Corde (Senegal)",
+        "eqVal": "625,000",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ 875,350.14 football pitches (6,250 km²)",
+        "countryContext": "About this unit: Traditional Senegalese unit. ~0.25 ha. Varies by region.",
+        "countryContextDisplay": "block",
+        "fromNote": "Traditional Senegalese unit. ~0.25 ha. Varies by region.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n6,250,000,000 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n625,000 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n1,544,407.27 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n6,250 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n1,488,095.24 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n9,645,061.73 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n729,543.598 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n2,500,000 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n1,836,614.75 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n875,350.14 pitch\n≈ 875,350.14 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "625,000 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "1,544,407.27 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "6,250,000,000 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "6,250 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "67,274,469,069.89 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "9,645,061.73 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "13,888,888.89 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "13,586,956.52 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "6,720,430.11 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "1,488,095.24 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "35,714,285.71 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "17,857,142.86 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "857,338,820.3 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "729,543.598 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "2,500,000 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "2,500,000 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "15,625 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "10,000,000 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "1,836,614.75 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "183,661,475.17 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "6,727,664.16 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "10,000,000 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "62,500,000 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "2,500,000 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "875,350.14 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "24,038,461.54 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "14,880,952.38 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0,
+        "from": "football_pitch",
+        "to": "hectare"
+      },
+      "output": {
+        "eqFrom": "0 Football Pitch (FIFA)",
+        "eqVal": "0",
+        "eqUnit": "Hectare (ha)",
+        "eqContext": "≈ About 0 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference.",
+        "countryContextDisplay": "block",
+        "fromNote": "105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference.",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n0 m²"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "HECTARE (HA)\n0 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n0 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0 arpent"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "FOOTBALL PITCH (FIFA)\n0 pitch\n≈ 0 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "0 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "0 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "0 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "0 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "0 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "0 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "0 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.000001,
+        "from": "tennis_court",
+        "to": "sqm"
+      },
+      "output": {
+        "eqFrom": "1.0000e-6 Tennis Court",
+        "eqVal": "2.6000e-4",
+        "eqUnit": "Square Meter (m²)",
+        "eqContext": "≈ About 2.6000e-4 m² — smaller than a tennis court",
+        "countryContext": "About this unit: 23.77m × 10.97m ≈ 261 m².",
+        "countryContextDisplay": "block",
+        "fromNote": "23.77m × 10.97m ≈ 261 m².",
+        "toNote": "",
+        "tiles": [
+          {
+            "className": "result-tile highlight",
+            "text": "SQUARE METER (M²)\n2.6000e-4 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n2.6000e-8 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n6.4247e-8 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n2.6000e-10 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n6.1905e-8 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n4.0123e-7 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n3.0349e-8 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n1.0400e-7 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n7.6403e-8 arpent"
+          },
+          {
+            "className": "result-tile",
+            "text": "FOOTBALL PITCH (FIFA)\n3.6415e-8 pitch\n≈ 3.6415e-8 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "2.6000e-8 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "6.4247e-8 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "2.6000e-4 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "2.6000e-10 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "2.7986e-3 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "4.0123e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "5.7778e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "5.6522e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "2.7957e-7 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "6.1905e-8 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "1.4857e-6 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "7.4286e-7 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "3.5665e-5 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "3.0349e-8 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "1.0400e-7 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "1.0400e-7 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "6.5000e-10 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "4.1600e-7 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "7.6403e-8 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "7.6403e-6 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "2.7987e-7 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "4.1600e-7 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "2.6000e-6 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "1.0400e-7 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "3.6415e-8 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "1.0000e-6 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "6.1905e-7 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    },
+    {
+      "input": {
+        "amount": 0.25,
+        "from": "basketball_court",
+        "to": "football_pitch"
+      },
+      "output": {
+        "eqFrom": "0.25 Basketball Court",
+        "eqVal": "0.01471",
+        "eqUnit": "Football Pitch (FIFA)",
+        "eqContext": "≈ About 1.4706% of a football pitch",
+        "countryContext": "About this unit: 28m × 15m = 420 m².",
+        "countryContextDisplay": "block",
+        "fromNote": "28m × 15m = 420 m².",
+        "toNote": "105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference.",
+        "tiles": [
+          {
+            "className": "result-tile",
+            "text": "SQUARE METER (M²)\n105 m²"
+          },
+          {
+            "className": "result-tile",
+            "text": "HECTARE (HA)\n0.0105 ha"
+          },
+          {
+            "className": "result-tile",
+            "text": "ACRE\n0.02595 ac"
+          },
+          {
+            "className": "result-tile",
+            "text": "SQUARE KILOMETER (KM²)\n1.0500e-4 km²"
+          },
+          {
+            "className": "result-tile",
+            "text": "FEDDAN (EGYPT / SUDAN)\n0.025 feddan"
+          },
+          {
+            "className": "result-tile",
+            "text": "PLOT — NIGERIA STANDARD (648 M²)\n0.16204 plot"
+          },
+          {
+            "className": "result-tile",
+            "text": "MORGEN (SOUTH AFRICA / NAMIBIA)\n0.01226 morgen"
+          },
+          {
+            "className": "result-tile",
+            "text": "TIMAD (ETHIOPIA)\n0.042 timad"
+          },
+          {
+            "className": "result-tile",
+            "text": "ARPENT (MAURITIUS / SEYCHELLES)\n0.03086 arpent"
+          },
+          {
+            "className": "result-tile highlight",
+            "text": "FOOTBALL PITCH (FIFA)\n0.01471 pitch\n≈ 0.01471 pitches"
+          }
+        ],
+        "table": [
+          [
+            "Hectare (ha)",
+            "0.0105 ha",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Acre",
+            "0.02595 ac",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Meter (m²)",
+            "105 m²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Kilometer (km²)",
+            "1.0500e-4 km²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Square Foot (ft²)",
+            "1,130.211 ft²",
+            "INTERNATIONAL STANDARD"
+          ],
+          [
+            "Plot — Nigeria Standard (648 m²)",
+            "0.16204 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 450 m²",
+            "0.23333 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria FCT/Abuja (460 m²)",
+            "0.22826 plot",
+            "NIGERIA"
+          ],
+          [
+            "Plot — Nigeria 930 m² (half acre)",
+            "0.1129 plot",
+            "NIGERIA"
+          ],
+          [
+            "Feddan (Egypt / Sudan)",
+            "0.025 feddan",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Kirat (Egypt)",
+            "0.6 kirat",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Sahm (Egypt)",
+            "0.3 sahm",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Qasaba sq. (Egypt)",
+            "14.4033 qasaba",
+            "EGYPT & SUDAN"
+          ],
+          [
+            "Morgen (South Africa / Namibia)",
+            "0.01226 morgen",
+            "SOUTHERN AFRICA"
+          ],
+          [
+            "Timad (Ethiopia)",
+            "0.042 timad",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Tseri (Ethiopia / Eritrea)",
+            "0.042 tseri",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Gasha / Gasga (Ethiopia)",
+            "2.6250e-4 gasha",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Kert (Ethiopia)",
+            "0.168 kert",
+            "ETHIOPIA & ERITREA"
+          ],
+          [
+            "Arpent (Mauritius / Seychelles)",
+            "0.03086 arpent",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Perche carrée (Mauritius)",
+            "3.0855 perche",
+            "MAURITIUS & ISLANDS"
+          ],
+          [
+            "Rope (Ghana — 100ft)",
+            "0.11302 rope",
+            "GHANA"
+          ],
+          [
+            "Polo (Ghana)",
+            "0.168 polo",
+            "GHANA"
+          ],
+          [
+            "Are",
+            "1.05 are",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Corde (Senegal)",
+            "0.042 corde",
+            "FRANCOPHONE AFRICA"
+          ],
+          [
+            "Football Pitch (FIFA)",
+            "0.01471 pitch",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Tennis Court",
+            "0.40385 court",
+            "REFERENCE (VISUAL)"
+          ],
+          [
+            "Basketball Court",
+            "0.25 court",
+            "REFERENCE (VISUAL)"
+          ]
+        ]
+      }
+    }
+  ],
+  "swap": {
+    "from": "acre",
+    "to": "feddan",
+    "fromNote": "",
+    "toNote": "1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit."
+  },
+  "invalid": {
+    "focusedId": "inputVal",
+    "eqVal": "0.01471"
+  }
+}

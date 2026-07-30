@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
     <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -22,8 +22,8 @@
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
     <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-    <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+    <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
     <style>
         *, *::before, *::after { box-sizing: border-box; }
@@ -512,6 +512,7 @@
 <script src="/assets/js/pages/data-productivity-tool-focus.js?v=539704c2" defer></script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/pomodoro/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pomodoro/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/minuteur-pomodoro/">
@@ -771,10 +772,16 @@
         }
 
         function updateSettings() {
-            config.work = parseInt(document.getElementById('workDuration').value) * 60;
-            config.break = parseInt(document.getElementById('breakDuration').value) * 60;
-            config.long = parseInt(document.getElementById('longDuration').value) * 60;
-            config.sessionsUntilLong = parseInt(document.getElementById('sessionsUntilLong').value);
+            const ownerPlan = window.BusinessRoiEngine.pomodoro({
+                focusMinutes: document.getElementById('workDuration').value,
+                shortBreakMinutes: document.getElementById('breakDuration').value,
+                longBreakMinutes: document.getElementById('longDuration').value,
+                sessions: document.getElementById('sessionsUntilLong').value
+            });
+            config.work = ownerPlan.focusSeconds;
+            config.break = ownerPlan.shortBreakSeconds;
+            config.long = ownerPlan.longBreakSeconds;
+            config.sessionsUntilLong = ownerPlan.sessions;
             resetTimer();
         }
 
@@ -893,7 +900,7 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body>

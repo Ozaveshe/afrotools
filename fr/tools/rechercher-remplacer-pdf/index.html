@@ -1,135 +1,1833 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>Rechercher et remplacer dans un PDF | AfroTools</title>
-<meta name="description" content="Recherchez et remplacez du texte dans vos PDF gratuitement. Modification en lot rapide.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Rechercher et remplacer du texte dans un PDF | AfroTools</title>
+<meta name="description" content="Repérez du texte, confirmez chaque remplacement et exportez un PDF à contrôler dans un autre lecteur.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Rechercher et remplacer dans un PDF | AfroTools">
-<meta property="og:description" content="Recherchez et remplacez du texte dans vos PDF gratuitement. Modification en lot rapide.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/">
+<meta property="og:title" content="Rechercher et remplacer dans un PDF">
+<meta property="og:description" content="Repérez du texte, confirmez chaque remplacement et exportez un PDF à contrôler dans un autre lecteur.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-compare.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Rechercher et remplacer dans un PDF | AfroTools">
-<meta name="twitter:description" content="Recherchez et remplacez du texte dans vos PDF gratuitement. Modification en lot rapide.">
+<meta name="twitter:title" content="PDF Find & Replace | AfroTools">
+<meta name="twitter:description" content="Find and visually replace text in PDF documents with page ranges, preview, undo, and audit export.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script type="application/ld+json">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  /* Main layout */
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 20px;
+    align-items: start;
+  }
+
+  /* Cards */
+  .tool-card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+    margin-bottom: 20px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #0f172a;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .card-body {
+    padding: 20px 22px;
+  }
+
+  /* Upload zone */
+  .upload-zone {
+    border: 2px dashed #BFDBFE;
+    border-radius: 8px;
+    padding: 40px 24px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s;
+    background: #F8FAFF;
+  }
+
+  .upload-zone:hover, .upload-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.03);
+  }
+
+  .upload-zone svg {
+    margin-bottom: 12px;
+    color: #94a3af;
+  }
+
+  .upload-zone p {
+    font-size: 0.88rem;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
+  .upload-zone .hint {
+    font-size: 0.72rem;
+    color: #94a3af;
+  }
+
+  .upload-zone.has-file {
+    border-style: solid;
+    border-color: var(--afro-green);
+    background: rgba(0, 113, 227, 0.04);
+    padding: 16px 24px;
+  }
+
+  .file-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+  }
+
+  .file-info .icon {
+    width: 40px;
+    height: 40px;
+    background: rgba(0, 113, 227, 0.1);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .file-info .name {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #0f172a;
+    word-break: break-all;
+  }
+
+  .file-info .meta {
+    font-size: 0.72rem;
+    color: #64748b;
+  }
+
+  .file-info .remove-btn {
+    margin-left: auto;
+    background: none;
+    border: none;
+    color: #ef4444;
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-weight: 600;
+    min-height: 44px;
+    padding: 8px 10px;
+  }
+
+  /* Find / Replace inputs */
+  .fr-inputs {
+    margin-top: 18px;
+  }
+
+  .fr-row {
+    margin-bottom: 12px;
+  }
+
+  .fr-row label {
+    display: block;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    color: #64748b;
+    margin-bottom: 6px;
+  }
+
+  .fr-row input,
+  .fr-row select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    background: #EFF6FF;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: #0f172a;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+    box-sizing: border-box;
+    min-height: 44px;
+  }
+
+  .fr-row input[type="color"] {
+    height: 44px;
+    padding: 5px;
+    cursor: pointer;
+  }
+
+  .fr-row input[type="range"] {
+    padding: 0;
+    accent-color: var(--afro-green);
+  }
+
+  .fr-row input:focus,
+  .fr-row select:focus {
+    border-color: var(--afro-green);
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .control-grid,
+  .style-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    margin: 14px 0;
+  }
+
+  .field-note {
+    display: block;
+    margin-top: 5px;
+    font-size: 0.68rem;
+    line-height: 1.4;
+    color: #64748b;
+  }
+
+  .range-readout {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: #64748b;
+  }
+
+  .section-label {
+    margin: 18px 0 8px;
+    font-size: 0.68rem;
+    font-weight: 800;
+    text-transform: uppercase;
+    color: #475569;
+  }
+
+  /* Options toggles */
+  .toggle-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-bottom: 16px;
+  }
+
+  .toggle-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: #0f172a;
+    min-height: 44px;
+  }
+
+  .toggle-item input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    accent-color: var(--afro-green);
+    cursor: pointer;
+  }
+
+  /* Action buttons */
+  .action-btn {
+    width: 100%;
+    padding: 12px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    min-height: 44px;
+    font-size: 0.88rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+
+  .action-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .action-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .action-btn.replace-btn {
+    background: #dc2626;
+  }
+
+  .action-btn.replace-btn:hover {
+    background: #b91c1c;
+    box-shadow: 0 6px 20px rgba(220, 38, 38, 0.3);
+  }
+
+  .action-btn.dl-btn {
+    background: #EFF6FF;
+    color: var(--afro-green);
+    border: 1.5px solid #BFDBFE;
+  }
+
+  .action-btn.dl-btn:hover {
+    background: #DBEAFE;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .action-btn.secondary-btn {
+    background: #0f172a;
+  }
+
+  .action-btn.secondary-btn:hover {
+    background: #111827;
+    box-shadow: 0 6px 20px rgba(15, 23, 42, 0.24);
+  }
+
+  .action-btn.light-btn {
+    background: #fff;
+    color: #0f172a;
+    border: 1.5px solid #CBD5E1;
+  }
+
+  .action-btn.light-btn:hover {
+    background: #F8FAFC;
+    box-shadow: none;
+    transform: none;
+  }
+
+  .action-btn .spinner {
+    width: 16px;
+    height: 16px;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-top-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    display: none;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .btn-row {
+    display: flex;
+    gap: 8px;
+  }
+
+  .btn-row .action-btn {
+    flex: 1;
+  }
+
+  .mini-actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+    margin: 10px 0 4px;
+  }
+
+  .mini-btn {
+    border: 1.5px solid #BFDBFE;
+    background: #EFF6FF;
+    color: #0f172a;
+    border-radius: 7px;
+    padding: 9px 10px;
+    font-size: 0.76rem;
+    font-weight: 800;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+  }
+
+  .mini-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+  }
+
+  .mini-btn:disabled {
+    opacity: 0.45;
+    cursor: not-allowed;
+  }
+
+  /* Preview area */
+  .preview-canvas-wrap {
+    position: relative;
+    background: #f1f5f9;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    min-height: 500px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    margin-top: 16px;
+  }
+
+  .preview-canvas-wrap canvas {
+    max-width: 100%;
+    display: block;
+  }
+
+  .preview-placeholder {
+    text-align: center;
+    color: #94a3af;
+    font-size: 0.85rem;
+    padding: 40px;
+  }
+
+  .preview-placeholder svg {
+    margin-bottom: 10px;
+    opacity: 0.4;
+  }
+
+  .page-nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin-top: 12px;
+  }
+
+  .page-nav button {
+    padding: 6px 14px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #0f172a;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    min-height: 44px;
+  }
+
+  .page-nav button:hover {
+    border-color: var(--afro-green);
+  }
+
+  .page-nav button:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+  }
+
+  .page-nav span {
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #64748b;
+  }
+
+  /* Highlight overlay */
+  .highlight-overlay {
+    position: absolute;
+    background: rgba(255, 220, 50, 0.35);
+    border: 2px solid rgba(255, 180, 0, 0.6);
+    border-radius: 2px;
+    pointer-events: none;
+    transition: opacity 0.2s;
+  }
+
+  .highlight-overlay.active {
+    background: rgba(255, 150, 0, 0.45);
+    border-color: rgba(255, 120, 0, 0.8);
+  }
+
+  /* Sidebar */
+  .sidebar {
+    position: sticky;
+    top: 80px;
+  }
+
+  /* Match list */
+  .match-count {
+    display: inline-flex;
+    padding: 3px 10px;
+    background: rgba(0, 113, 227, 0.1);
+    color: var(--afro-green);
+    border-radius: 20px;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .match-list {
+    max-height: 400px;
+    overflow-y: auto;
+    padding: 12px 0;
+  }
+
+  .match-item {
+    padding: 10px 16px;
+    border-bottom: 1px solid #EFF6FF;
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+
+  .match-item:hover {
+    background: #F5F9FF;
+  }
+
+  .match-item.active {
+    background: rgba(0, 113, 227, 0.06);
+    border-left: 3px solid var(--afro-green);
+  }
+
+  .match-item .page-label {
+    font-size: 0.68rem;
+    font-weight: 700;
+    color: var(--afro-green);
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+
+  .match-item .context {
+    font-size: 0.78rem;
+    color: #4b5563;
+    line-height: 1.5;
+    word-break: break-word;
+  }
+
+  .match-item .context mark {
+    background: rgba(255, 220, 50, 0.4);
+    padding: 1px 2px;
+    border-radius: 2px;
+  }
+
+  .match-item .meta-line {
+    margin-top: 4px;
+    font-size: 0.68rem;
+    color: #94a3af;
+  }
+
+  .no-matches {
+    padding: 24px 16px;
+    text-align: center;
+    color: #94a3af;
+    font-size: 0.82rem;
+  }
+
+  /* Warning banner */
+  .warning-banner {
+    background: #FEF3CD;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 0.78rem;
+    color: #92400E;
+    line-height: 1.6;
+    margin-bottom: 16px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .warning-banner svg {
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  /* Info card */
+  .info-card {
+    padding: 16px;
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    color: #4b5563;
+    line-height: 1.6;
+  }
+
+  .info-card h4 {
+    font-size: 0.78rem;
+    font-weight: 700;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .info-card ul {
+    padding-left: 16px;
+    margin: 0;
+  }
+
+  .info-card li {
+    margin-bottom: 4px;
+  }
+
+  /* Status */
+  .status-msg {
+    padding: 12px 16px;
+    border-radius: 8px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    margin-bottom: 16px;
+    display: none;
+  }
+
+  .status-msg.error {
+    display: block;
+    background: rgba(239, 68, 68, 0.08);
+    color: #dc2626;
+    border: 1px solid rgba(239, 68, 68, 0.2);
+  }
+
+  .status-msg.success {
+    display: block;
+    background: rgba(0, 113, 227, 0.06);
+    color: var(--afro-green);
+    border: 1px solid rgba(0, 113, 227, 0.2);
+  }
+
+  .result-box {
+    margin-top: 14px;
+    padding: 14px 16px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: #334155;
+    display: none;
+  }
+
+  .result-box.on {
+    display: block;
+  }
+
+  .summary-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .summary-stat {
+    background: #fff;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    padding: 10px;
+  }
+
+  .summary-stat strong {
+    display: block;
+    font-size: 1rem;
+    color: #0f172a;
+  }
+
+  .summary-stat span {
+    display: block;
+    margin-top: 2px;
+    font-size: 0.66rem;
+    color: #64748b;
+    text-transform: uppercase;
+    font-weight: 800;
+  }
+
+  .review-check {
+    display: none;
+    gap: 10px;
+    align-items: flex-start;
+    min-height: 44px;
+    margin: 8px 0 12px;
+    padding: 10px 12px;
+    background: #F8FAFC;
+    border: 1px solid #E2E8F0;
+    border-radius: 8px;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: #334155;
+  }
+
+  .review-check input {
+    width: 20px;
+    height: 20px;
+    margin-top: 1px;
+    accent-color: var(--afro-green);
+    flex: 0 0 auto;
+  }
+
+  .upload-zone:focus-visible,
+  .file-info .remove-btn:focus-visible,
+  .toggle-item input:focus-visible,
+  .action-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .page-nav button:focus-visible,
+  details summary:focus-visible,
+  .fr-row input:focus-visible,
+  .fr-row select:focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.32);
+    outline-offset: 3px;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .upload-zone,
+    .action-btn,
+    .mini-btn,
+    .page-nav button,
+    .highlight-overlay,
+    details summary svg {
+      transition: none !important;
+      animation: none !important;
+    }
+
+    .action-btn:hover {
+      transform: none;
+    }
+  }
+
+  /* SEO + FAQ */
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #4b5563;
+    line-height: 1.7;
+    margin-bottom: 12px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .faq-section {
+    max-width: 1200px;
+    margin: 0 auto 48px;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #111;
+    margin-bottom: 20px;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  details {
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    margin-bottom: 8px;
+    background: #fff;
+  }
+
+  details summary {
+    padding: 14px 18px;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #111;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  details summary::-webkit-details-marker { display: none; }
+  details[open] summary svg { transform: rotate(180deg); }
+
+  details .faq-body {
+    padding: 0 18px 14px;
+    font-size: 0.84rem;
+    color: #4b5563;
+    line-height: 1.7;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  @media (max-width: 900px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+    .sidebar {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .control-grid,
+    .style-grid,
+    .mini-actions,
+    .summary-grid,
+    .btn-row {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+    .tool-main-inner,
+    .seo-section,
+    .faq-section {
+      padding-inline: 16px;
+    }
+    .card-body {
+      padding: 16px;
+    }
+  }
+
+  :root[data-theme="dark"] .tool-card,
+  :root[data-theme="dark"] details,
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .match-item,
+  :root[data-theme="dark"] .result-box {
+    background: #101a2b;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .review-check,
+  :root[data-theme="dark"] .summary-stat,
+  :root[data-theme="dark"] .page-nav {
+    background: #152238;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] .fr-row input,
+  :root[data-theme="dark"] .fr-row select,
+  :root[data-theme="dark"] .page-nav button,
+  :root[data-theme="dark"] .mini-btn,
+  :root[data-theme="dark"] .light-btn {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .fr-row select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .upload-zone {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #bcd6f6;
+  }
+
+  :root[data-theme="dark"] .warning-banner {
+    background: #34250d;
+    border-color: #7c5a18;
+    color: #fde7a8;
+  }
+
+  :root[data-theme="dark"] .warning-banner a {
+    color: #ffd56a !important;
+  }
+
+  :root[data-theme="dark"] .fr-row label,
+  :root[data-theme="dark"] .toggle-item,
+  :root[data-theme="dark"] .section-label,
+  :root[data-theme="dark"] .summary-stat strong,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] details summary {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-note,
+  :root[data-theme="dark"] .summary-stat span,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] details .faq-body,
+  :root[data-theme="dark"] .match-item .meta-line,
+  :root[data-theme="dark"] .no-matches {
+    color: #b7c5d8;
+  }
+</style> <script type="application/ld+json">{"@context":"https://schema.org","@type":"Application Web","name":"PDF Rechercher et remplacer","description":"Recherchez et remplacez visuellement le texte dans les documents PDF avec des plages de pages, la recherche d'expressions régulières, le remplacement des correspondances sélectionnées, l'annulation, les contrôles de style et l'exportation d'audit CSV.","url":"https://afrotools.com/fr/tools/rechercher-remplacer-pdf/","inLanguage":"fr","applicationCategory":"Application Web","operatingSystem":"Web","browserRequirements":"Nécessite JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-find-replace.webp"}</script> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
+  "@type": "WebPage",
   "name": "Rechercher et remplacer dans un PDF",
-  "description": "Recherchez et remplacez du texte dans vos PDF gratuitement. Modification en lot rapide.",
   "url": "https://afrotools.com/fr/tools/rechercher-remplacer-pdf/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "BrowserApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
+  "description": "Repérez du texte, confirmez chaque remplacement et exportez un PDF à contrôler dans un autre lecteur.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@type": "WebSite",
     "name": "AfroTools",
     "url": "https://afrotools.com/"
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-compare.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Rechercher et remplacer dans un PDF","item":"https://afrotools.com/fr/tools/rechercher-remplacer-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
+</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mon PDF est-il téléchargé sur un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. Tout le traitement s’effectue entièrement dans votre navigateur. Votre fichier PDF ne quitte jamais votre appareil. L'outil utilise pdf.js pour le rendu et pdf-lib pour les modifications, tous deux exécutés côté client."}},{"@type":"Question","name":"Comment fonctionne le remplacement visuel ?","acceptedAnswer":{"@type":"Answer","text":"L'outil dessine un rectangle de couverture configurable sur le texte d'origine, puis dessine le texte de remplacement par-dessus. Il s'agit d'une superposition visuelle, pas d'une véritable modification de texte. Le texte original peut toujours être extractible de la couche de données PDF."}},{"@type":"Question","name":"Puis-je l’utiliser pour expurger des informations sensibles ?","acceptedAnswer":{"@type":"Answer","text":"Cet outil effectue uniquement un remplacement visuel. Le texte original peut toujours être présent dans la couche de données PDF. Pour une véritable rédaction où le texte original est définitivement supprimé, utilisez plutôt un outil de rédaction PDF dédié."}},{"@type":"Question","name":"La recherche et le remplacement prennent-ils en charge les plages de pages et les expressions régulières ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Par défaut, la recherche ne respecte pas la casse sur toutes les pages. Vous pouvez activer la correspondance sensible à la casse, la correspondance de mots entiers, la recherche d'expressions régulières et les plages de pages personnalisées telles que 1-3, 5, 8."}},{"@type":"Question","name":"Quelle police est utilisée pour le texte de remplacement ?","acceptedAnswer":{"@type":"Answer","text":"Le texte de remplacement est rendu dans Helvetica, une police PDF standard. L'outil peut ajuster automatiquement la taille de la police à la zone de texte couverte ou utiliser une taille de points personnalisée, avec une couleur de texte, une couleur de couverture, un remplissage et une opacité configurables."}}],"inLanguage":"fr"}</script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-compare.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Rechercher et remplacer dans un PDF","item":"https://afrotools.com/fr/tools/rechercher-remplacer-pdf/"}],"inLanguage":"fr"}</script>
+<meta property="article:modified_time" content="2026-05-01">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="Rechercher et remplacer dans un PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-find-replace","locale":"fr","englishOwner":"tools/pdf-find-replace/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"\" data-idx=\"":"\" data-idx=\"","\" stroke-width=\"2\">\u003cpath d=\"M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z\"/>\u003cpolyline points=\"14 2 14 8 20 8\"/>\u003c/svg>\u003c/div>":"\" Stroke-width=\"2\">\u003cpath d=\"M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z\"/>\u003cpolyline points=\"14 2 14 8 20 8\"/>\u003c/svg>\u003c/div>","&larr; Prev":"← Précédent","\u003c/div>":"\u003c/div>","\u003c/div>\u003c/div>":"\u003c/div>\u003c/div>","\u003c/div>\u003cdiv class=\"meta\">":"\u003c/div>\u003cdiv class=\"méta\">","\u003c/mark>":"\u003c/marque>","\u003cbutton type=\"button\" class=\"remove-btn\" id=\"removeFile\">Remove\u003c/button>":"\u003cbutton type=\"button\" class=\"remove-btn\" id=\"removeFile\">Supprimer\u003c/button>","\u003cdiv class=\"context\">":"\u003cdiv class=\"context\">","\u003cdiv class=\"file-info\">":"\u003cdiv class=\"fichier-info\">","\u003cdiv class=\"icon\">\u003csvg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"":"\u003cdiv class=\"icon\">\u003csvg width=\"20\" height=\"20\" viewBox=\"0 0 24 24\" fill=\"none\" Stroke=\"","\u003cdiv class=\"match-item":"\u003cdiv class=\"match-item","\u003cdiv class=\"no-matches\">No matches found\u003c/div>":"\u003cdiv class=\"no-matches\">Aucune correspondance trouvée\u003c/div>","\u003cdiv class=\"page-label\">Page":"\u003cdiv class=\"page-label\">Page","\u003cdiv>\u003cdiv class=\"name\">":"\u003cdiv>\u003cdiv class=\"nom\">","\u003cmark>":"\u003cmarque>","\u003cp>Drop a PDF here or click to browse\u003c/p>":"\u003cp>Déposez un PDF ici ou cliquez pour parcourir\u003c/p>","\u003cspan class=\"hint\">Supports any PDF file\u003c/span>":"\u003cspan class=\"hint\">Prend en charge n'importe quel fichier PDF\u003c/span>","\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\">\u003cpath d=\"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4\"/>\u003cpolyline points=\"17 8 12 3 7 8\"/>\u003cline x1=\"12\" y1=\"3\" x2=\"12\" y2=\"15\"/>\u003c/svg>":"\u003csvg width=\"40\" height=\"40\" viewBox=\"0 0 24 24\" fill=\"none\" Stroke=\"currentColor\" Stroke-width=\"1.5\">\u003cpath d=\"M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4\"/>\u003cpolyline points=\"17 8 12 3 7 8\"/>\u003cline x1=\"12\" y1=\"3\" x2=\"12\" y2=\"15\"/>\u003c/svg>","0 matches":"0 correspondances","active":"actif","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","All pages":"Toutes les pages","All processing is client-side. Your PDF never leaves your browser. The tool uses local pdf.js assets for text extraction and rendering, and a local pdf-lib runtime for applying visual overlay modifications.":"Tout le traitement est côté client. Votre PDF ne quitte jamais votre navigateur. L'outil utilise des ressources pdf.js locales pour l'extraction et le rendu du texte, ainsi qu'un environnement d'exécution pdf-lib local pour appliquer des modifications de superposition visuelle.","application/pdf":"candidature/pdf","Audit CSV":"CSV d'audit","Auto fit":"Ajustement automatique","B":"B","block":"bloc","Can I use this for redacting sensitive information?":"Puis-je l’utiliser pour expurger des informations sensibles ?","Case sensitive":"Respecter la casse","change":"changement","Choose a PDF file or drop it here":"Choisissez un fichier PDF ou déposez-le ici","Choose case, whole-word, regex, and page range options":"Choisissez les options de casse, de mot entier, d'expression régulière et de plage de pages","Choose PDF file":"Choisissez le fichier PDF","class":"classe","click":"cliquez","Client-side":"Côté client","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Cover color":"Couleur de la couverture","Cover opacity":"Opacité de la couverture","Cover padding":"Rembourrage de la couverture","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","Custom points":"Points personnalisés","Custom range":"Gamme personnalisée","Custom size":"Taille personnalisée","CV / Resume Builder":"Générateur de CV","document":"document","Does find and replace support page ranges and regex?":"La recherche et le remplacement prennent-ils en charge les plages de pages et les expressions régulières ?","Download CSV":"Télécharger le CSV","Download PDF":"Télécharger le PDF","dragleave":"glisser","dragover":"drague","drop":"baisse","Drop a PDF here or click to browse":"Déposez un PDF ici ou cliquez pour parcourir","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","Enter":"Entrer","error":"erreur","Extra points around the original text.":"Points supplémentaires autour du texte original.","Failed to load PDF:":"Échec du chargement du PDF :","Find":"Rechercher","Find & Replace":"Rechercher et remplacer","Find and Replace Text in PDF Documents":"Rechercher et remplacer du texte dans des documents PDF","Find and visually replace text in PDF documents with page ranges, regex search, selected-match replacement, undo, style controls, and CSV audit export.":"Recherchez et remplacez visuellement le texte dans les documents PDF avec des plages de pages, la recherche d'expressions régulières, le remplacement des correspondances sélectionnées, l'annulation, les contrôles de style et l'exportation d'audit CSV.","Find Matches":"Rechercher les correspondances","Find text, review matches, apply a visual replacement, and export the edited PDF or CSV audit. Everything runs in your browser.":"Recherchez du texte, examinez les correspondances, appliquez un remplacement visuel et exportez l'audit PDF ou CSV modifié. Tout fonctionne dans votre navigateur.","Fit replacement":"Remplacement adapté","flex":"fléchir","Font size":"Taille du texte","found.":"trouvé.","Frequently Asked Questions":"Questions fréquentes","has-file":"a un fichier","highlight-overlay":"superposition de surbrillance","How does the visual replacement work?":"Comment fonctionne le remplacement visuel ?","How it works":"Fonctionnement","I reviewed the preview and understand this is visual replacement, not redaction.":"J'ai examiné l'aperçu et compris qu'il s'agit d'un remplacement visuel et non d'une rédaction.","inline-block":"bloc en ligne","input":"saisir","Invoice Generator":"Générateur de facture","Is my PDF uploaded to a server?":"Mon PDF est-il téléchargé sur un serveur ?","KB":"Ko","keydown":"touche enfoncée","match":"correspondre","Matches":"Matchs","MB":"Mo","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Next &rarr;":"Suivant →","Next match":"Prochain match","No matches found for \"":"Aucune correspondance trouvée pour \"","No. All processing happens entirely in your browser. Your PDF file never leaves your device. The tool uses pdf.js for rendering and pdf-lib for modifications, both running client-side.":"Non. Tout le traitement s’effectue entièrement dans votre navigateur. Votre fichier PDF ne quitte jamais votre appareil. L'outil utilise pdf.js pour le rendu et pdf-lib pour les modifications, tous deux exécutés côté client.","none":"aucun","page":"page","Page":"Page","Page 1 of 1":"Page 1 sur 1","Page range":"Plage de pages","Page Ranges":"Plages de pages","Pages":"Pages","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF Find &":"PDF Rechercher et","PDF Find & Replace":"PDF Rechercher et remplacer","PDF Find & Replace - Visual Text Replacement | AfroTools":"PDF Rechercher et remplacer - Remplacement du texte visuel | AfroOutils","PDF library failed to load. Please refresh the page.":"La bibliothèque PDF n'a pas pu être chargée. Veuillez actualiser la page.","PDF Merge & Split":"Fusionner et diviser des PDF","PDF Redact":"Caviardage PDF","PDF Workspace":"Espace de travail PDF","Preview":"Aperçu","Previous match":"Match précédent","Regex":"Expression régulière","Related tools":"Outils associés","Replace":"Remplacer","Replace All":"Tout remplacer","Replace failed:":"Échec du remplacement :","Replace one selected match or every scoped match":"Remplacer une correspondance sélectionnée ou chaque correspondance étendue","Replace Selected":"Remplacer la sélection","Replace with":"Remplacer par","Replaced successfully. Download the modified PDF.":"Remplacé avec succès. Téléchargez le PDF modifié.","Replacement style":"Style de remplacement","Replacement text is rendered in Helvetica, a standard PDF font. The tool can auto-fit the font size to the covered text box or use a custom point size, with configurable text color, cover color, padding, and opacity.":"Le texte de remplacement est rendu dans Helvetica, une police PDF standard. L'outil peut ajuster automatiquement la taille de la police à la zone de texte couverte ou utiliser une taille de points personnalisée, avec une couleur de texte, une couleur de couverture, un remplissage et une opacité configurables.","Replacement text...":"Texte de remplacement...","Requires JavaScript":"Nécessite JavaScript","Review highlighted matches in the preview and sidebar":"Examinez les correspondances en surbrillance dans l'aperçu et la barre latérale","Review the preview and confirm this is visual replacement before downloading.":"Vérifiez l'aperçu et confirmez qu'il s'agit d'un remplacement visuel avant de télécharger.","Run a search to see matches here":"Lancez une recherche pour voir les correspondances ici","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","status-msg":"message d'état","status-msg error":"erreur de message d'état","style":"style","success":"succès","Supports any PDF file":"Prend en charge tout fichier PDF","Text color":"Couleur du texte","Text to find...":"Texte à retrouver...","The AfroTools PDF Find & Replace tool lets you search for text within a PDF and visually replace it with new text. It supports case-sensitive search, whole-word matching, regex patterns, page ranges, selected-match replacement, style controls, preview navigation, undo, and CSV audit export.":"L'outil AfroTools PDF Find & Replace vous permet de rechercher du texte dans un PDF et de le remplacer visuellement par un nouveau texte. Il prend en charge la recherche sensible à la casse, la correspondance de mots entiers, les modèles d'expression régulière, les plages de pages, le remplacement des correspondances sélectionnées, les contrôles de style, la navigation dans l'aperçu, l'annulation et l'exportation d'audit CSV.","The tool draws a configurable cover rectangle over the original text and then draws the replacement text on top. This is a visual overlay, not a true text edit. The original text may still be extractable from the PDF data layer.":"L'outil dessine un rectangle de couverture configurable sur le texte d'origine, puis dessine le texte de remplacement par-dessus. Il s'agit d'une superposition visuelle, pas d'une véritable modification de texte. Le texte original peut toujours être extractible de la couche de données PDF.","This tool performs visual replacement only. The original text may still be present in the PDF data layer. For true redaction where the original text is permanently removed, use a dedicated PDF redaction tool instead.":"Cet outil effectue uniquement un remplacement visuel. Le texte original peut toujours être présent dans la couche de données PDF. Pour une véritable rédaction où le texte original est définitivement supprimé, utilisez plutôt un outil de rédaction PDF dédié.","Tools":"Outils","Transparent":"Transparent","Undo Output":"Annuler la sortie","Undo, download the PDF, or export a CSV audit":"Annuler, télécharger le PDF ou exporter un audit CSV","Upload a PDF and run a search to see replacement details.":"Téléchargez un PDF et lancez une recherche pour voir les détails du remplacement.","Upload any text-based PDF file":"Téléchargez n’importe quel fichier PDF texte","Upload PDF":"Choisir un PDF","Use commas and ranges. Example: 1-2, 5.":"Utilisez des virgules et des plages. Exemple : 1-2, 5.","use strict":"utiliser strict","Visual replacement draws over original text. The original text may still be extractable from the PDF data layer. For sensitive content, use":"Le remplacement visuel s'appuie sur le texte original. Le texte original peut toujours être extractible de la couche de données PDF. Pour le contenu sensible, utilisez","Web":"Web","WebApplication":"Application Web","What font is used for the replacement text?":"Quelle police est utilisée pour le texte de remplacement ?","Whole word":"Mot entier","Yes. By default the search is case-insensitive across all pages. You can enable case-sensitive matching, whole-word matching, regex search, and custom page ranges such as 1-3, 5, 8.":"Oui. Par défaut, la recherche ne respecte pas la casse sur toutes les pages. Vous pouvez activer la correspondance sensible à la casse, la correspondance de mots entiers, la recherche d'expressions régulières et les plages de pages personnalisées telles que 1-3, 5, 8."}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-find-replace/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rechercher-remplacer-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/tafuta-na-badilisha-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-find-replace/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Rechercher / Remplacer</nav>
-<div class="fr-hero">
-<h1><em>Rechercher et remplacer dans un PDF</em></h1>
-<p>Trouvez et remplacez du texte dans vos documents PDF facilement.</p>
-</div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparez votre fichier ou votre scénario</h2>
-  <p>Ajoutez trois notes utiles avant de lancer Rechercher et remplacer dans un PDF. Ce brouillon reste dans votre navigateur et sert seulement à garder le contexte clair.</p>
-  <div class="fr-prep-fields">
-    <label>Fichier local<input name="localFile" type="file" accept="application/pdf,.html,.txt,.doc,.docx,image/*" aria-label="Choisir un fichier local"></label>
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
-  </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-find-replace/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
-  </div>
 
-  <!-- fr-pdf-proof-note:start -->
-  <p class="fr-pdf-proof-note"><strong>Méthodologie :</strong> la page prépare le contexte, puis l'outil source traite le fichier dans le navigateur selon le mode choisi. <strong>Limites :</strong> vérifiez toujours le rendu export? avant un dépôt officiel, juridique ou client. <strong>Privacy locale :</strong> les fichiers restent dans votre navigateur; no upload automatique depuis ce panneau.</p>
-  <!-- fr-pdf-proof-note:end -->
+<main id="main-content">
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/tools/">Outils</a> / <span>PDF Rechercher et remplacer</span>
+    </div>
+    <h1>Rechercher et remplacer dans un PDF</h1>
+    <p class="hero-sub">Repérez du texte, confirmez chaque remplacement et exportez un PDF à contrôler dans un autre lecteur.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Côté client</span>
+      <span class="badge b-green">Plages de pages</span>
+      <span class="badge b-green">CSV d'audit</span>
+    </div>
+  </div>
+</div>
+
+<div class="tool-main">
+  <div class="tool-main-inner">
+    <div id="statusMsg" class="status-msg" role="status" aria-live="polite"></div>
+
+    <div class="two-col">
+      <!-- Left Column -->
+      <div class="left-col">
+
+        <!-- Upload -->
+        <div class="tool-card">
+          <div class="card-head">Choisir un PDF</div>
+          <div class="card-body">
+            <div class="upload-zone" id="uploadZone" role="button" tabindex="0" aria-controls="fileInput" aria-label="Choisissez un fichier PDF ou déposez-le ici">
+              <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+              <p>Déposez un PDF ici ou cliquez pour parcourir</p>
+              <span class="hint">Prend en charge tout fichier PDF</span>
+            </div>
+            <input aria-label="Choisissez le fichier PDF" type="file" id="fileInput" accept=".pdf,application/pdf" hidden>
+          </div>
+        </div>
+
+        <!-- Find & Replace Inputs -->
+        <div class="tool-card" id="frCard" style="display:none">
+          <div class="card-head">Rechercher et remplacer</div>
+          <div class="card-body">
+            <div class="warning-banner">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              <div>Le remplacement visuel s'appuie sur le texte original. Le texte original peut toujours être extractible de la couche de données PDF. Pour le contenu sensible, utilisez <a href="/fr/tools/caviarder-pdf/" style="color:#92400E;font-weight:800">Caviardage PDF</a>.</div>
+            </div>
+
+            <div class="fr-inputs">
+              <div class="fr-row">
+                <label for="findInput">Rechercher</label>
+                <input type="text" id="findInput" placeholder="Texte à retrouver...">
+              </div>
+              <div class="fr-row">
+                <label for="replaceInput">Remplacer par</label>
+                <input type="text" id="replaceInput" placeholder="Texte de remplacement...">
+              </div>
+            </div>
+
+            <div class="toggle-row">
+              <label class="toggle-item">
+                <input type="checkbox" id="caseSensitive">
+                Respecter la casse
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="wholeWord">
+                Mot entier
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="regexMode">
+                Expression régulière
+              </label>
+              <label class="toggle-item">
+                <input type="checkbox" id="fitToBox" checked>
+                Remplacement adapté
+              </label>
+            </div>
+
+            <div class="control-grid">
+              <div class="fr-row">
+                <label for="pageScope">Pages</label>
+                <select id="pageScope">
+                  <option value="all">Toutes les pages</option>
+                  <option value="custom">Gamme personnalisée</option>
+                </select>
+              </div>
+              <div class="fr-row">
+                <label for="pageRanges">Plage de pages</label>
+                <input type="text" id="pageRanges" placeholder="1-3, 5, 8" disabled>
+                <span class="field-note">Utilisez des virgules et des plages. Exemple : 1-2, 5.</span>
+              </div>
+            </div>
+
+            <div class="section-label">Style de remplacement</div>
+            <div class="style-grid">
+              <div class="fr-row">
+                <label for="textColor">Couleur du texte</label>
+                <input type="color" id="textColor" value="#111827">
+              </div>
+              <div class="fr-row">
+                <label for="backgroundColor">Couleur de la couverture</label>
+                <input type="color" id="backgroundColor" value="#ffffff">
+              </div>
+              <div class="fr-row">
+                <label for="fontSizeMode">Taille du texte</label>
+                <select id="fontSizeMode">
+                  <option value="auto">Ajustement automatique</option>
+                  <option value="custom">Points personnalisés</option>
+                </select>
+              </div>
+              <div class="fr-row">
+                <label for="customFontSize">Taille personnalisée</label>
+                <input type="number" id="customFontSize" min="6" max="72" step="1" value="10" disabled>
+              </div>
+              <div class="fr-row">
+                <label for="paddingPt">Rembourrage de la couverture</label>
+                <input type="number" id="paddingPt" min="0" max="18" step="1" value="2">
+                <span class="field-note">Points supplémentaires autour du texte original.</span>
+              </div>
+              <div class="fr-row">
+                <label for="backgroundOpacity">Opacité de la couverture</label>
+                <input type="range" id="backgroundOpacity" min="0" max="100" value="100">
+                <span class="range-readout"><span>Transparent</span><span id="backgroundOpacityValue">100%</span></span>
+              </div>
+            </div>
+
+            <button type="button" class="action-btn" id="findBtn" disabled>
+              <span class="spinner" id="findSpinner"></span>
+              Rechercher les correspondances
+            </button>
+
+            <div id="replaceActions" style="display:none">
+              <div class="mini-actions">
+                <button class="mini-btn" id="prevMatchBtn" type="button" disabled>Match précédent</button>
+                <button class="mini-btn" id="nextMatchBtn" type="button" disabled>Prochain match</button>
+              </div>
+              <div class="btn-row">
+                <button type="button" class="action-btn secondary-btn" id="replaceSelectedBtn">Remplacer la sélection</button>
+                <button type="button" class="action-btn replace-btn" id="replaceAllBtn">Tout remplacer</button>
+              </div>
+              <label class="review-check" for="reviewConfirm">
+                <input type="checkbox" id="reviewConfirm">
+                <span>J'ai examiné l'aperçu et compris qu'il s'agit d'un remplacement visuel et non d'une rédaction.</span>
+              </label>
+              <div class="btn-row">
+                <button type="button" class="action-btn light-btn" id="undoBtn" style="display:none">Annuler la sortie</button>
+                <button type="button" class="action-btn dl-btn" id="downloadBtn" style="display:none">Télécharger le PDF</button>
+                <button type="button" class="action-btn dl-btn" id="downloadReportBtn" style="display:none">Télécharger le CSV</button>
+              </div>
+            </div>
+            <div class="result-box" id="replacementSummary">Téléchargez un PDF et lancez une recherche pour voir les détails du remplacement.</div>
+          </div>
+        </div>
+
+        <!-- Preview -->
+        <div id="previewCard" class="tool-card" style="display:none">
+          <div class="card-head">
+            Aperçu
+            <span id="pageInfo" style="font-weight:600;font-size:0.72rem;color:#64748b;text-transform:none;letter-spacing:0"></span>
+          </div>
+          <div class="card-body" style="padding:12px">
+            <div class="preview-canvas-wrap" id="canvasWrap">
+              <canvas id="pdfCanvas"></canvas>
+            </div>
+            <div class="page-nav" id="pageNav">
+              <button type="button" id="prevPage" disabled>← Précédent</button>
+              <span id="pageLabel">Page 1 sur 1</span>
+              <button type="button" id="nextPage" disabled>Suivant →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right Column (sidebar) -->
+      <div class="sidebar">
+        <!-- Match Results -->
+        <div class="tool-card" id="matchCard" style="display:none">
+          <div class="card-head">
+            Matchs
+            <span class="match-count" id="matchCount">0 correspondances</span>
+          </div>
+          <div class="match-list" id="matchList">
+            <div class="no-matches">Lancez une recherche pour voir les correspondances ici</div>
+          </div>
+        </div>
+
+        <!-- Info card -->
+        <div class="tool-card">
+          <div class="card-body">
+            <div class="info-card">
+              <h4>Fonctionnement</h4>
+              <ul>
+                <li>Téléchargez n’importe quel fichier PDF texte</li>
+                <li>Choisissez les options de casse, de mot entier, d'expression régulière et de plage de pages</li>
+                <li>Examinez les correspondances en surbrillance dans l'aperçu et la barre latérale</li>
+                <li>Remplacer une correspondance sélectionnée ou chaque correspondance étendue</li>
+                <li>Annuler, télécharger le PDF ou exporter un audit CSV</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- SEO Section -->
+<section class="seo-section">
+  <h2>Rechercher et remplacer du texte dans des documents PDF</h2>
+  <p>L'outil AfroTools PDF Find & Replace vous permet de rechercher du texte dans un PDF et de le remplacer visuellement par un nouveau texte. Il prend en charge la recherche sensible à la casse, la correspondance de mots entiers, les modèles d'expression régulière, les plages de pages, le remplacement des correspondances sélectionnées, les contrôles de style, la navigation dans l'aperçu, l'annulation et l'exportation d'audit CSV.</p>
+  <p>Tout le traitement est côté client. Votre PDF ne quitte jamais votre navigateur. L'outil utilise des ressources pdf.js locales pour l'extraction et le rendu du texte, ainsi qu'un environnement d'exécution pdf-lib local pour appliquer des modifications de superposition visuelle.</p>
 </section>
-<iframe src="/tools/pdf-find-replace/" class="fr-tool-frame" title="Rechercher et remplacer dans un PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Rechercher et remplacer dans un PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Fichier/donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.';}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-})();
-</script>
-<section class="fr-seo">
-<h2>Rechercher et remplacer dans un PDF</h2>
-<p>Trouvez et remplacez du texte dans vos documents PDF. Corrigez des fautes, mettez à jour des noms ou des dates.</p>
-<p>Traitez les modifications en lot. La mise en forme originale est préservée lors des remplacements.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Le remplacement préserve-t-il la mise en forme ?</summary><p>Oui, la police, la taille et le style du texte original sont conservés.</p></details>
-<details><summary>La recherche est-elle sensible à la casse ?</summary><p>Vous pouvez choisir entre une recherche sensible ou insensible à la casse.</p></details>
-<details><summary>Le remplacement est-il réversible ?</summary><p>Le fichier original n’est pas modifié. Un nouveau PDF est généré avec les remplacements.</p></details>
+
+<!-- FAQ Section -->
+
+
+<section class="faq-section">
+  <h2>Questions fréquentes</h2>
+  <div class="faq-list">
+    <details>
+      <summary>
+        Mon PDF est-il téléchargé sur un serveur ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Non. Tout le traitement s’effectue entièrement dans votre navigateur. Votre fichier PDF ne quitte jamais votre appareil. L'outil utilise pdf.js pour le rendu et pdf-lib pour les modifications, tous deux exécutés côté client.</div>
+    </details>
+    <details>
+      <summary>
+        Comment fonctionne le remplacement visuel ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">L'outil dessine un rectangle de couverture configurable sur le texte d'origine, puis dessine le texte de remplacement par-dessus. Il s'agit d'une superposition visuelle, pas d'une véritable modification de texte. Le texte original peut toujours être extractible de la couche de données PDF.</div>
+    </details>
+    <details>
+      <summary>
+        Puis-je l’utiliser pour expurger des informations sensibles ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Cet outil effectue uniquement un remplacement visuel. Le texte original peut toujours être présent dans la couche de données PDF. Pour une véritable rédaction où le texte original est définitivement supprimé, utilisez plutôt un outil de rédaction PDF dédié.</div>
+    </details>
+    <details>
+      <summary>
+        La recherche et le remplacement prennent-ils en charge les plages de pages et les expressions régulières ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Oui. Par défaut, la recherche ne respecte pas la casse sur toutes les pages. Vous pouvez activer la correspondance sensible à la casse, la correspondance de mots entiers, la recherche d'expressions régulières et les plages de pages personnalisées telles que 1-3, 5, 8.</div>
+    </details>
+    <details>
+      <summary>
+        Quelle police est utilisée pour le texte de remplacement ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div class="faq-body">Le texte de remplacement est rendu dans Helvetica, une police PDF standard. L'outil peut ajuster automatiquement la taille de la police à la zone de texte couverte ou utiliser une taille de points personnalisée, avec une couleur de texte, une couleur de couverture, un remplissage et une opacité configurables.</div>
+    </details>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-find-replace"></afro-related-tools>
+</main>
+
+<afro-related-tools category="document-pdf" current="pdf-find-replace" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-find-replace">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-find-replace">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : PDF, CSV</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-find-replace/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
+</section>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<script>
+(function() {
+  var downloadBtn = document.getElementById('downloadBtn');
+  var reviewConfirm = document.getElementById('reviewConfirm');
+  var statusMsg = document.getElementById('statusMsg');
+  if (!downloadBtn || !reviewConfirm) return;
+  var reviewWrap = reviewConfirm.closest('.review-check');
+  function outputReady() {
+    return downloadBtn.style.display && downloadBtn.style.display !== 'none';
+  }
+  function syncReviewState() {
+    var ready = outputReady();
+    if (reviewWrap) reviewWrap.style.display = ready ? 'flex' : 'none';
+    if (!ready) reviewConfirm.checked = false;
+  }
+  ['fileInput', 'findBtn', 'replaceSelectedBtn', 'replaceAllBtn', 'undoBtn'].forEach(function(id) {
+    var control = document.getElementById(id);
+    if (control) control.addEventListener('click', syncReviewState);
+  });
+  if (window.MutationObserver) {
+    new MutationObserver(syncReviewState).observe(downloadBtn, { attributes: true, attributeFilter: ['style', 'class'] });
+  }
+  syncReviewState();
+  downloadBtn.addEventListener('click', function(event) {
+    if (reviewConfirm.checked) return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if (statusMsg) {
+      statusMsg.textContent = 'Review the preview and confirm this is visual replacement before downloading.';
+      statusMsg.className = 'status-msg error';
+    }
+    reviewConfirm.focus();
+  }, true);
+})();
+</script> <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script> <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script> <script src="/assets/js/pages/pdf-find-replace.js?v=b5d0ee5d"></script> <script type="application/x-afrotools-legacy-disabled">
+(function() {
+  'use strict';
+
+  /* ── State ── */
+  var state = {
+    file: null,
+    arrayBuffer: null,
+    pdfDoc: null,         // pdf.js doc
+    pageCount: 0,
+    currentPage: 1,
+    matches: [],          // { page, text, x, y, width, height, itemIndex, charIndex }
+    activeMatchIdx: -1,
+    textData: null,       // extracted text data
+    replaced: false
+  };
+
+  /* ── Elements ── */
+  var uploadZone = document.getElementById('uploadZone');
+  var fileInput = document.getElementById('fileInput');
+  var frCard = document.getElementById('frCard');
+  var findInput = document.getElementById('findInput');
+  var replaceInput = document.getElementById('replaceInput');
+  var caseSensitive = document.getElementById('caseSensitive');
+  var wholeWord = document.getElementById('wholeWord');
+  var findBtn = document.getElementById('findBtn');
+  var findSpinner = document.getElementById('findSpinner');
+  var replaceActions = document.getElementById('replaceActions');
+  var replaceAllBtn = document.getElementById('replaceAllBtn');
+  var downloadBtn = document.getElementById('downloadBtn');
+  var previewCard = document.getElementById('previewCard');
+  var pdfCanvas = document.getElementById('pdfCanvas');
+  var canvasWrap = document.getElementById('canvasWrap');
+  var prevPage = document.getElementById('prevPage');
+  var nextPage = document.getElementById('nextPage');
+  var pageLabel = document.getElementById('pageLabel');
+  var pageInfo = document.getElementById('pageInfo');
+  var matchCard = document.getElementById('matchCard');
+  var matchCount = document.getElementById('matchCount');
+  var matchList = document.getElementById('matchList');
+  var statusMsg = document.getElementById('statusMsg');
+
+  /* ── Helpers ── */
+  function showStatus(msg, type) {
+    statusMsg.textContent = msg;
+    statusMsg.className = 'status-msg ' + type;
+  }
+
+  function isPdfFile(file) {
+    return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
+  }
+
+  function hideStatus() {
+    statusMsg.className = 'status-msg';
+  }
+
+  function formatSize(bytes) {
+    if (bytes < 1024) return bytes + ' B';
+    if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+    return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+  }
+
+  /* ── Upload ── */
+  uploadZone.addEventListener('click', function() {
+    if (!state.file) fileInput.click();
+  });
+
+  uploadZone.addEventListener('dragover', function(e) {
+    e.preventDefault();
+    uploadZone.classList.add('dragover');
+  });
+
+  uploadZone.addEventListener('dragleave', function() {
+    uploadZone.classList.remove('dragover');
+  });
+
+  uploadZone.addEventListener('drop', function(e) {
+    e.preventDefault();
+    uploadZone.classList.remove('dragover');
+    var file = e.dataTransfer.files[0];
+    if (isPdfFile(file)) handleFile(file);
+  });
+
+  fileInput.addEventListener('change', function() {
+    if (isPdfFile(fileInput.files[0])) handleFile(fileInput.files[0]);
+  });
+
+  async function handleFile(file) {
+    if (!isPdfFile(file)) return;
+    hideStatus();
+    state.file = file;
+    state.replaced = false;
+    state.matches = [];
+    state.activeMatchIdx = -1;
+
+    // Update upload zone
+    uploadZone.classList.add('has-file');
+    uploadZone.innerHTML = '<div class="file-info">' +
+      '<div class="icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="' + 'var(--afro-green)' + '" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></div>' +
+      '<div><div class="name">' + file.name + '</div><div class="meta">' + formatSize(file.size) + '</div></div>' +
+      '<button type="button" class="remove-btn" id="removeFile">Remove</button>' +
+      '</div>';
+
+    document.getElementById('removeFile').addEventListener('click', function(e) {
+      e.stopPropagation();
+      resetAll();
+    });
+
+    try {
+      var result = await PdfUtils.loadPdf(file);
+      state.arrayBuffer = result.arrayBuffer;
+      state.pdfDoc = result.pdfDoc;
+      state.pageCount = result.pageCount;
+      state.currentPage = 1;
+
+      // Extract text
+      state.textData = await PdfUtils.extractText(state.pdfDoc);
+
+      // Show controls
+      frCard.style.display = 'block';
+      previewCard.style.display = 'block';
+      matchCard.style.display = 'block';
+      findBtn.disabled = false;
+
+      renderPage(1);
+      updatePageNav();
+    } catch (err) {
+      showStatus('Failed to load PDF: ' + err.message, 'error');
+    }
+  }
+
+  function resetAll() {
+    state.file = null;
+    state.arrayBuffer = null;
+    state.pdfDoc = null;
+    state.pageCount = 0;
+    state.currentPage = 1;
+    state.matches = [];
+    state.activeMatchIdx = -1;
+    state.textData = null;
+    state.replaced = false;
+
+    uploadZone.classList.remove('has-file');
+    uploadZone.innerHTML = '<svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>' +
+      '<p>Drop a PDF here or click to browse</p>' +
+      '<span class="hint">Supports any PDF file</span>';
+
+    frCard.style.display = 'none';
+    previewCard.style.display = 'none';
+    matchCard.style.display = 'none';
+    replaceActions.style.display = 'none';
+    downloadBtn.style.display = 'none';
+    findInput.value = '';
+    replaceInput.value = '';
+    fileInput.value = '';
+    hideStatus();
+    clearHighlights();
+  }
+
+  /* ── Render page ── */
+  var renderScale = 1.5;
+
+  async function renderPage(num) {
+    var page = await state.pdfDoc.getPage(num);
+    var viewport = page.getViewport({ scale: renderScale });
+    pdfCanvas.width = viewport.width;
+    pdfCanvas.height = viewport.height;
+    var ctx = pdfCanvas.getContext('2d');
+
+    await page.render({ canvasContext: ctx, viewport: viewport }).promise;
+
+    state.currentPage = num;
+    updatePageNav();
+    drawHighlights();
+  }
+
+  function updatePageNav() {
+    pageLabel.textContent = 'Page ' + state.currentPage + ' of ' + state.pageCount;
+    pageInfo.textContent = state.pageCount + ' page' + (state.pageCount !== 1 ? 's' : '');
+    prevPage.disabled = state.currentPage <= 1;
+    nextPage.disabled = state.currentPage >= state.pageCount;
+  }
+
+  prevPage.addEventListener('click', function() {
+    if (state.currentPage > 1) renderPage(state.currentPage - 1);
+  });
+
+  nextPage.addEventListener('click', function() {
+    if (state.currentPage < state.pageCount) renderPage(state.currentPage + 1);
+  });
+
+  /* ── Find ── */
+  findInput.addEventListener('input', function() {
+    findBtn.disabled = !findInput.value.trim();
+  });
+
+  findBtn.addEventListener('click', function() {
+    performFind();
+  });
+
+  findInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && findInput.value.trim()) performFind();
+  });
+
+  async function performFind() {
+    var findText = findInput.value.trim();
+    if (!findText || !state.textData) return;
+
+    hideStatus();
+    findBtn.disabled = true;
+    findSpinner.style.display = 'inline-block';
+    state.matches = [];
+    state.activeMatchIdx = -1;
+    state.replaced = false;
+    downloadBtn.style.display = 'none';
+
+    var isCaseSensitive = caseSensitive.checked;
+    var isWholeWord = wholeWord.checked;
+    var searchText = isCaseSensitive ? findText : findText.toLowerCase();
+
+    state.textData.forEach(function(pageData) {
+      pageData.items.forEach(function(item, itemIdx) {
+        var str = item.str;
+        var compareStr = isCaseSensitive ? str : str.toLowerCase();
+        var startIdx = 0;
+
+        while (true) {
+          var idx = compareStr.indexOf(searchText, startIdx);
+          if (idx === -1) break;
+
+          // Whole word check
+          if (isWholeWord) {
+            var before = idx > 0 ? compareStr[idx - 1] : ' ';
+            var after = idx + searchText.length < compareStr.length ? compareStr[idx + searchText.length] : ' ';
+            if (/\w/.test(before) || /\w/.test(after)) {
+              startIdx = idx + 1;
+              continue;
+            }
+          }
+
+          // Estimate position of the match within the text item
+          var charRatio = str.length > 0 ? item.width / str.length : 0;
+          var matchX = item.x + (idx * charRatio);
+          var matchW = searchText.length * charRatio;
+
+          state.matches.push({
+            page: pageData.page,
+            text: str,
+            matchedText: str.substring(idx, idx + findText.length),
+            x: matchX,
+            y: item.y,
+            width: matchW || item.width,
+            height: item.height || 12,
+            itemIndex: itemIdx,
+            charIndex: idx
+          });
+
+          startIdx = idx + searchText.length;
+        }
+      });
+    });
+
+    renderMatchList();
+    matchCard.style.display = 'block';
+    matchCount.textContent = state.matches.length + ' match' + (state.matches.length !== 1 ? 'es' : '');
+
+    if (state.matches.length > 0) {
+      replaceActions.style.display = 'block';
+      state.activeMatchIdx = 0;
+      var firstPage = state.matches[0].page;
+      if (state.currentPage !== firstPage) {
+        await renderPage(firstPage);
+      } else {
+        drawHighlights();
+      }
+      showStatus(state.matches.length + ' match' + (state.matches.length !== 1 ? 'es' : '') + ' found.', 'success');
+    } else {
+      replaceActions.style.display = 'none';
+      clearHighlights();
+      showStatus('No matches found for "' + findText + '".', 'error');
+    }
+
+    findBtn.disabled = false;
+    findSpinner.style.display = 'none';
+  }
+
+  /* ── Highlights ── */
+  function clearHighlights() {
+    var existing = canvasWrap.querySelectorAll('.highlight-overlay');
+    existing.forEach(function(el) { el.remove(); });
+  }
+
+  function drawHighlights() {
+    clearHighlights();
+
+    var pageMatches = state.matches.filter(function(m) { return m.page === state.currentPage; });
+    if (!pageMatches.length) return;
+
+    // We need the viewport to convert PDF coords to canvas coords
+    state.pdfDoc.getPage(state.currentPage).then(function(page) {
+      var viewport = page.getViewport({ scale: renderScale });
+      var canvasRect = pdfCanvas.getBoundingClientRect();
+      var wrapRect = canvasWrap.getBoundingClientRect();
+      var offsetX = canvasRect.left - wrapRect.left;
+      var offsetY = canvasRect.top - wrapRect.top;
+      var scaleX = canvasRect.width / viewport.width;
+      var scaleY = canvasRect.height / viewport.height;
+
+      pageMatches.forEach(function(match, i) {
+        // Transform from PDF coordinates to viewport coordinates
+        var tx = viewport.convertToViewportPoint(match.x, match.y);
+        var txEnd = viewport.convertToViewportPoint(match.x + match.width, match.y - (match.height || 12));
+
+        var el = document.createElement('div');
+        el.className = 'highlight-overlay';
+
+        var left = Math.min(tx[0], txEnd[0]) * scaleX + offsetX;
+        var top = Math.min(tx[1], txEnd[1]) * scaleY + offsetY;
+        var width = Math.abs(txEnd[0] - tx[0]) * scaleX;
+        var height = Math.abs(txEnd[1] - tx[1]) * scaleY;
+
+        el.style.left = left + 'px';
+        el.style.top = top + 'px';
+        el.style.width = Math.max(width, 20) + 'px';
+        el.style.height = Math.max(height, 12) + 'px';
+
+        // Check if this is the active match
+        var globalIdx = state.matches.indexOf(match);
+        if (globalIdx === state.activeMatchIdx) {
+          el.classList.add('active');
+        }
+
+        canvasWrap.appendChild(el);
+      });
+    });
+  }
+
+  /* ── Match list ── */
+  function renderMatchList() {
+    if (!state.matches.length) {
+      matchList.innerHTML = '<div class="no-matches">No matches found</div>';
+      return;
+    }
+
+    var html = '';
+    // Group by page
+    var byPage = {};
+    state.matches.forEach(function(m, i) {
+      if (!byPage[m.page]) byPage[m.page] = [];
+      byPage[m.page].push({ match: m, index: i });
+    });
+
+    Object.keys(byPage).sort(function(a, b) { return a - b; }).forEach(function(pageNum) {
+      byPage[pageNum].forEach(function(entry) {
+        var m = entry.match;
+        var context = m.text;
+        var findText = findInput.value.trim();
+
+        // Create context with highlight
+        var idx = caseSensitive.checked ? context.indexOf(findText) : context.toLowerCase().indexOf(findText.toLowerCase());
+        var displayCtx = '';
+        if (idx !== -1) {
+          var before = context.substring(Math.max(0, idx - 20), idx);
+          var matched = context.substring(idx, idx + findText.length);
+          var after = context.substring(idx + findText.length, idx + findText.length + 20);
+          if (idx > 20) before = '...' + before;
+          if (idx + findText.length + 20 < context.length) after = after + '...';
+          displayCtx = escapeHtml(before) + '<mark>' + escapeHtml(matched) + '</mark>' + escapeHtml(after);
+        } else {
+          displayCtx = escapeHtml(context.substring(0, 50));
+        }
+
+        var isActive = entry.index === state.activeMatchIdx ? ' active' : '';
+        html += '<div class="match-item' + isActive + '" data-idx="' + entry.index + '">' +
+          '<div class="page-label">Page ' + m.page + '</div>' +
+          '<div class="context">' + displayCtx + '</div>' +
+          '</div>';
+      });
+    });
+
+    matchList.innerHTML = html;
+
+    // Click handlers
+    matchList.querySelectorAll('.match-item').forEach(function(el) {
+      el.addEventListener('click', function() {
+        var idx = parseInt(el.dataset.idx);
+        state.activeMatchIdx = idx;
+        var match = state.matches[idx];
+
+        // Update active state in list
+        matchList.querySelectorAll('.match-item').forEach(function(item) { item.classList.remove('active'); });
+        el.classList.add('active');
+
+        // Navigate to page
+        if (state.currentPage !== match.page) {
+          renderPage(match.page);
+        } else {
+          drawHighlights();
+        }
+      });
+    });
+  }
+
+  function escapeHtml(str) {
+    var div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  }
+
+  /* ── Replace All ── */
+  replaceAllBtn.addEventListener('click', async function() {
+    if (!state.matches.length || !state.arrayBuffer) return;
+
+    var replaceText = replaceInput.value;
+    replaceAllBtn.disabled = true;
+
+    try {
+      if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
+      var pdfLibDoc = await window.PDFLib.PDFDocument.load(state.arrayBuffer);
+      var font = await pdfLibDoc.embedFont(window.PDFLib.StandardFonts.Helvetica);
+
+      // Group matches by page for background sampling
+      var matchesByPage = {};
+      state.matches.forEach(function(match) {
+        if (!matchesByPage[match.page]) matchesByPage[match.page] = [];
+        matchesByPage[match.page].push(match);
+      });
+
+      // Process each page — sample background color from rendered canvas
+      for (var pageNum in matchesByPage) {
+        var page = pdfLibDoc.getPage(parseInt(pageNum) - 1);
+        var pageSize = page.getSize();
+
+        // Render page to sample background color
+        var bgColor = { r: 1, g: 1, b: 1 }; // default white
+        try {
+          var sampleCanvas = await PdfUtils.renderPage(state.pdfDoc, parseInt(pageNum), 1);
+          var sctx = sampleCanvas.getContext('2d');
+          // Sample a few pixels near the center to detect background color
+          var px = sctx.getImageData(Math.floor(sampleCanvas.width / 2), 10, 1, 1).data;
+          bgColor = { r: px[0] / 255, g: px[1] / 255, b: px[2] / 255 };
+        } catch (e) { /* use white fallback */ }
+
+        matchesByPage[pageNum].forEach(function(match) {
+          var h = match.height || 12;
+          // Cover original text with background-matched rectangle
+          // match.y is PDF baseline (bottom-up coords from pdf.js transform[5])
+          page.drawRectangle({
+            x: match.x - 1,
+            y: match.y - 2,
+            width: match.width + 2,
+            height: h + 4,
+            color: window.PDFLib.rgb(bgColor.r, bgColor.g, bgColor.b),
+            opacity: 1
+          });
+
+          // Draw replacement text at baseline position
+          var fontSize = Math.max(h * 0.85, 8);
+          page.drawText(replaceText, {
+            x: match.x,
+            y: match.y,
+            size: fontSize,
+            font: font,
+            color: window.PDFLib.rgb(0, 0, 0)
+          });
+        });
+      }
+
+      var modifiedBytes = await pdfLibDoc.save();
+      state.arrayBuffer = modifiedBytes.buffer;
+      state.replaced = true;
+
+      // Reload in pdf.js for preview
+      var pdfjs = PdfUtils.getPdfJs();
+      state.pdfDoc = await pdfjs.getDocument({ data: modifiedBytes.slice(0) }).promise;
+      state.textData = await PdfUtils.extractText(state.pdfDoc);
+      state.matches = [];
+      state.activeMatchIdx = -1;
+
+      clearHighlights();
+      renderMatchList();
+      matchCount.textContent = '0 matches';
+      await renderPage(state.currentPage);
+
+      downloadBtn.style.display = 'flex';
+      showStatus('Replaced successfully. Download the modified PDF.', 'success');
+    } catch (err) {
+      showStatus('Replace failed: ' + err.message, 'error');
+    } finally {
+      replaceAllBtn.disabled = false;
+    }
+  });
+
+  /* ── Download ── */
+  function doActualDownload() {
+    if (!state.arrayBuffer) return;
+    var blob = new Blob([state.arrayBuffer], { type: 'application/pdf' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    var baseName = state.file ? state.file.name.replace(/\.pdf$/i, '') : 'document';
+    a.download = baseName + '-modified.pdf';
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    doActualDownload();
+  });
+
+})();
+</script> <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

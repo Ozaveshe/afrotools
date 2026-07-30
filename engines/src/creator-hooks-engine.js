@@ -129,6 +129,36 @@
     isFavorite: function(e) {
       return -1 !== this.getFavorites().indexOf(e);
     },
+    generateLocalHooks: function(topic, platform, language) {
+      var clean = String(topic || "").trim();
+      if (!clean) throw new Error("A topic is required.");
+      var lang = language === "fr" ? "fr" : "en";
+      var entries = lang === "fr" ? [
+        ["pattern_interrupt", "Arrêtez de compliquer " + clean + "."],
+        ["question", "Et si votre approche de " + clean + " était à revoir ?"],
+        ["bold_statement", clean + " peut être plus simple que vous ne le pensez."],
+        ["story_opener", "La première fois que j’ai essayé " + clean + ", j’ai appris ceci."],
+        ["statistic", "Avant de citer un chiffre sur " + clean + ", vérifiez sa source."],
+        ["direct_address", "Si vous travaillez sur " + clean + ", commencez ici."]
+      ] : [
+        ["pattern_interrupt", "Stop overcomplicating " + clean + "."],
+        ["question", "What if your approach to " + clean + " needs a rethink?"],
+        ["bold_statement", clean + " can be simpler than you think."],
+        ["story_opener", "The first time I tried " + clean + ", I learned this."],
+        ["statistic", "Before quoting a number about " + clean + ", verify the source."],
+        ["direct_address", "If you are working on " + clean + ", start here."]
+      ];
+      var self = this;
+      return {
+        topic: clean,
+        platform: platform || "tiktok",
+        language: lang,
+        hooks: entries.map(function(entry) {
+          var time = self.calcReadTime(entry[1]);
+          return {category: entry[0], text: entry[1], wordCount: self.countWords(entry[1]), readTimeSeconds: time, fitsPlatform: self.fitsplatform(time, platform || "tiktok")};
+        })
+      };
+    },
     buildSystemPrompt: function(e, t) {
       var o = this.PLATFORMS[e] || this.PLATFORMS.tiktok;
       return "You are HookFactory, a video hook expert for African content creators.\n\nRULES:\n- Generate exactly 6 hooks, one per category: Pattern Interrupt, Question, Bold Statement, Story Opener, Statistic, Direct Address\n- Each hook must be 2-5 seconds of spoken word (roughly 8-25 words)\n- Calculate estimated read time (average speaking pace: 150 words per minute)\n- Hooks must feel NATURAL when spoken aloud — no written-language phrases\n- Use African context when relevant — cities, cultural references, local expressions\n- Platform: " + o.label + " — " + o.style + " (max " + o.maxSeconds + "s)\n- Content type: " + t + '\n- NEVER start with "Hey guys" or "What\'s up everyone" — those are weak hooks\n- Every hook should create a REASON to keep watching\n\nOUTPUT FORMAT (JSON only, no other text):\n{"hooks":[{"category":"pattern_interrupt","categoryLabel":"⚡ THE PATTERN INTERRUPT","text":"...","wordCount":17,"readTimeSeconds":3.2,"whyItWorks":"...","deliveryTip":"..."},...]}\n';

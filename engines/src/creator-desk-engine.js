@@ -182,6 +182,23 @@
         updatedAt: Date.now()
       };
     },
+    buildProjectRecord: function(input) {
+      var source = input || {}, name = String(source.name || "").trim(), client = String(source.client || "").trim(), value = Number(source.value);
+      if (!name) throw new Error("A project name is required.");
+      if (!client) throw new Error("A client label is required.");
+      if (!Number.isFinite(value) || value < 0) throw new Error("Project value must be non-negative.");
+      var allowed = this.STATUSES.map(function(status) { return status.id; });
+      var status = allowed.indexOf(source.status) >= 0 ? source.status : "lead";
+      return {
+        name: name,
+        client: client,
+        status: status,
+        value: value,
+        currency: String(source.currency || "USD").toUpperCase(),
+        due: String(source.due || ""),
+        notes: String(source.notes || "").trim()
+      };
+    },
     createClient: function(e) {
       return {
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),

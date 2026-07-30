@@ -240,7 +240,7 @@ function auditHtml(html, context = {}) {
   const locale = context.locale || htmlLocale(html);
   const state = context.state || null;
   const routeState = context.routeState || null;
-  const generated = isGeneratedHtml(html);
+  const generated = isGeneratedHtml(html) && !context.sourceTemplate;
   const editableSource = context.editableSource || inferGeneratedOwner(html, file) || file;
   const declaredContentId = readMeta(html, 'afrotools-content-id') || null;
   const findings = [];
@@ -309,7 +309,9 @@ function auditHtml(html, context = {}) {
     else if (!/^[a-z0-9][a-z0-9:._/-]+$/.test(declaredContentId)) add('GENERATED_CONTENT_ID_INVALID', { content: declaredContentId, message: 'Generated content ID is not stable or machine-safe.' });
     if (!sourceOwner) add('GENERATED_SOURCE_OWNER_MISSING', { content: route, message: 'Generated page is missing afrotools-source-owner.' });
     else if (!fs.existsSync(path.join(ROOT, sourceOwner))) add('GENERATED_SOURCE_OWNER_MISSING', { content: sourceOwner, message: `Generated source owner does not exist: ${sourceOwner}.` });
-    else if (/\.html$/i.test(sourceOwner)) add('GENERATED_SOURCE_IS_OUTPUT', { content: sourceOwner, message: 'Generated output cannot be its own editable source.' });
+    else if (/\.html$/i.test(sourceOwner) && !sourceOwner.replace(/\\/g, '/').startsWith('data/localization/')) {
+      add('GENERATED_SOURCE_IS_OUTPUT', { content: sourceOwner, message: 'Generated output cannot be its own editable source.' });
+    }
   }
 
   return findings;
@@ -441,7 +443,8 @@ function runRepositoryAudit(options = {}) {
   for (const absolute of htmlFiles) {
     const file = path.relative(ROOT, absolute).replace(/\\/g, '/');
     const html = fs.readFileSync(absolute, 'utf8');
-    if (isGeneratedHtml(html)) {
+    const sourceTemplate = file.startsWith('data/localization/');
+    if (!sourceTemplate && isGeneratedHtml(html)) {
       generatedPages += 1;
       const owner = inferGeneratedOwner(html, file);
       if (owner) generatedOwners.add(owner);
@@ -450,10 +453,18 @@ function runRepositoryAudit(options = {}) {
     const locale = htmlLocale(html);
     const routeMeta = routeMetaFor(coverage, route, file);
     if (!catalogCache.has(locale)) catalogCache.set(locale, loadCatalogValues(locale));
-    const rows = auditHtml(html, { file, route, locale, state: routeMeta.coverageState || null, routeState: routeMeta.routeState || null, catalogValues: catalogCache.get(locale) });
+    const rows = auditHtml(html, {
+      file,
+      route,
+      locale,
+      state: routeMeta.coverageState || null,
+      routeState: routeMeta.routeState || null,
+      catalogValues: catalogCache.get(locale),
+      sourceTemplate
+    });
     findings.push(...rows);
     const id = readMeta(html, 'afrotools-content-id');
-    if (id) {
+    if (id && !sourceTemplate) {
       if (contentIds.has(id)) findings.push(makeFinding({ ruleId: 'GENERATED_CONTENT_ID_DUPLICATE', file, route, locale, contentId: id, editableSource: inferGeneratedOwner(html, file) || file, content: id, message: `Content ID ${id} is also used by ${contentIds.get(id)}.` }));
       else contentIds.set(id, file);
     }

@@ -78,20 +78,21 @@
   });
   id("etvPdf").addEventListener("click", function () {
     if (!state.result) calculate();
-    if (!state.result || !window.jspdf || !window.jspdf.jsPDF) {
+    if (!state.result || !window.AfroTools || !window.AfroTools.localVatPdf) {
       id("etvStatus").textContent = t("pdfFailed", "PDF export is unavailable.");
       return;
     }
-    var doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" });
-    doc.setFontSize(18);
-    doc.text(t("pdfTitle", "Ethiopia VAT estimate"), 48, 60);
-    doc.setFontSize(11);
-    doc.text(t("net", "Amount before tax") + ": " + money(state.result.net), 48, 105);
-    doc.text("VAT: " + money(state.result.vat), 48, 130);
-    doc.text(t("gross", "Total including tax") + ": " + money(state.result.gross), 48, 155);
-    doc.text(t("rate", "Applied rate") + ": " + state.result.rate + "%", 48, 180);
-    doc.text(doc.splitTextToSize(t("pdfDisclaimer", "Planning estimate only. Confirm classification, evidence, invoice treatment, registration, filing and payment with the Ministry of Revenue or a qualified adviser."), 500), 48, 225);
-    doc.save("ethiopia-vat-estimate.pdf");
+    window.AfroTools.localVatPdf({
+      title: t("pdfTitle", "Ethiopia VAT estimate"),
+      rows: [
+        { label: t("net", "Amount before tax"), value: money(state.result.net) },
+        { label: "VAT", value: money(state.result.vat) },
+        { label: t("gross", "Total including tax"), value: money(state.result.gross) },
+        { label: t("rate", "Applied rate"), value: state.result.rate + "%" },
+      ],
+      disclaimer: t("pdfDisclaimer", "Planning estimate only. Confirm classification, evidence, invoice treatment, registration, filing and payment with the Ministry of Revenue or a qualified adviser."),
+      fileName: "ethiopia-vat-estimate.pdf",
+    });
     id("etvStatus").textContent = t("pdfReady", "PDF downloaded locally.");
   });
   window.ETVatApp = { calculate: calculate, getResult: function () { return state.result; } };

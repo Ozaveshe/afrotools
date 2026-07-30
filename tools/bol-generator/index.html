@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -25,8 +25,8 @@
 <link rel="stylesheet" href="../../assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="../../assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="../../assets/css/tool-landing.css?v=09fede9d">
-<script src="../../assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="../../assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="../../assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="../../assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <style>
@@ -571,6 +571,7 @@ body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a
 </afro-related-tools>
 <afro-footer></afro-footer>
 
+<script src="/engines/trade-utility-engine.js?v=2e42429d"></script>
 <script>
 const AFRICAN_COUNTRIES = ["Algeria","Angola","Benin","Botswana","Burkina Faso","Burundi","Cabo Verde","Cameroon","Central African Republic","Chad","Comoros","Congo (Brazzaville)","Congo (DRC)","Djibouti","Egypt","Equatorial Guinea","Eritrea","Eswatini","Ethiopia","Gabon","Gambia","Ghana","Guinea","Guinea-Bissau","Ivory Coast","Kenya","Lesotho","Liberia","Libya","Madagascar","Malawi","Mali","Mauritania","Mauritius","Morocco","Mozambique","Namibia","Niger","Nigeria","Rwanda","São Tomé & Príncipe","Senegal","Seychelles","Sierra Leone","Somalia","South Africa","South Sudan","Sudan","Tanzania","Togo","Tunisia","Uganda","Zambia","Zimbabwe"];
 
@@ -829,12 +830,25 @@ function resetBLForm(){
 
 function blDraftText(){
   var doc = document.getElementById('blDocPreview');
+  var firstCargo = document.querySelector('#blCargoBody tr');
+  var cargoInputs = firstCargo ? firstCargo.querySelectorAll('input') : [];
+  var draft = window.TradeUtilityEngine.billOfLadingDraft({
+    shipper:v('blShipperName'),
+    consignee:v('blConsigneeName'),
+    cargo:cargoInputs[4] ? cargoInputs[4].value : '',
+    loadPort:v('blPOL'),
+    dischargePort:v('blPOD'),
+    grossWeight:cargoInputs[5] ? cargoInputs[5].value : 0,
+    volume:cargoInputs[6] ? cargoInputs[6].value : 0,
+    freight:v('blFreightAmt')
+  });
   return [
     'Bill of Lading draft template',
     'DRAFT ONLY - NOT A VALID TRANSPORT DOCUMENT',
     '',
     doc ? doc.innerText.trim() : '',
     '',
+    'Shared validation: '+(draft.valid?'minimum draft fields present':'missing '+draft.missing.join(', '))+'. Route: '+(draft.route||'not set')+'.',
     'Verify the real B/L with the carrier, shipping line, authorized agent, freight forwarder, bank, and letter-of-credit requirements before shipment or cargo release.'
   ].join('\n');
 }
@@ -878,7 +892,7 @@ function downloadBLDraft(){
 
 window.addEventListener('load', initBL);
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/trade-toolkit.js?v=748d8913" defer></script>
 </body>
 </html>

@@ -8,12 +8,32 @@ const {
   analyticsVersion,
   canonicalLoaderTag
 } = require('./inject-analytics-loader');
+const {
+  VISIBLE_LANGUAGE_TRANSFORMS,
+  localizeVisibleLanguage
+} = require('./lib/french-visible-language');
+const {
+  FRENCH_ENERGY_APPS
+} = require('./lib/french-energy-parity-contract');
+const { FRENCH_CATEGORIES } = require('./lib/french-category-directory');
+const {
+  normalizeBuildManagedHtml,
+  normalizeBuildManagedFingerprint
+} = require('./lib/shared-asset-references');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
 const CHECK = process.argv.includes('--check') || !WRITE;
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
+const ONLY = onlyArg
+  ? new Set(onlyArg.slice('--only='.length).split(',').map((value) => value.trim()).filter(Boolean))
+  : null;
 const changed = [];
 const failures = [];
+const FRENCH_ENERGY_PARITY_FILES = new Set([
+  'fr/energy/index.html',
+  ...FRENCH_ENERGY_APPS.map((app) => `fr/tools/${app.frSlug}/index.html`)
+]);
 const POST_PROCESSED_HTML = new Set([
   'fr/index.html',
   'fr/privacy/index.html',
@@ -21,12 +41,24 @@ const POST_PROCESSED_HTML = new Set([
   'fr/terms/index.html',
   'fr/blog/index.html'
 ]);
+const DEDICATED_PRODUCT_OWNERS = new Set([
+  'fr/tools/contractant-vs-salarie/index.html',
+  'fr/tools/salaire-employe-maison/index.html',
+  'fr/tools/cout-total-employe/index.html',
+  'fr/tools/calculateur-indemnite-depart/index.html',
+  'fr/tools/conge-maternite-paternite/index.html',
+  'fr/tools/calculateur-d-indemnite-de-licenciement/index.html'
+]);
 const PRODUCT_ALTERNATES = {
   'fr/privacy/index.html': '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/faragha/">',
   'fr/terms-of-use/index.html': '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/masharti/">'
 };
 
 function read(rel) { return fs.readFileSync(path.join(ROOT, rel), 'utf8'); }
+function isSpecializedFrenchOwner(rel) {
+  return DEDICATED_PRODUCT_OWNERS.has(rel)
+    || read(rel).includes('French Health parity owner: scripts/build-french-health-parity.js');
+}
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
   const tag = canonicalLoaderTag(analyticsVersion());
@@ -41,14 +73,19 @@ function alignOgUrlWithCanonical(html) {
   );
 }
 function output(rel, value) {
+  if (ONLY && !ONLY.has(rel)) return;
   const file = path.join(ROOT, rel);
+  const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n') : '';
+  if (
+    FRENCH_ENERGY_PARITY_FILES.has(rel)
+    && current.includes('name="afrotools-source-owner" content="scripts/build-french-energy-parity.js"')
+  ) return;
   let normalized = alignOgUrlWithCanonical(value.normalize('NFC').replace(/\r\n/g, '\n'));
   const alternate = PRODUCT_ALTERNATES[rel];
   if (alternate && !normalized.includes(alternate)) normalized = normalized.replace('</head>', `${alternate}</head>`);
   if (rel === 'fr/blog/index.html' && !/name="content-language"/i.test(normalized)) {
     normalized = normalized.replace('<meta charset="utf-8">', '<meta charset="utf-8"><meta name="content-language" content="fr">');
   }
-  const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8').replace(/\r\n/g, '\n') : '';
   if (!WRITE && rel === 'fr/tools/ng-pension/index.html') {
     const validNativePension = /id="frPensionForm"/.test(current)
       && /NgPensionEngine\.calculateCPS/.test(current)
@@ -57,12 +94,18 @@ function output(rel, value) {
     if (validNativePension) return;
   }
   if (POST_PROCESSED_HTML.has(rel)) {
-    const sourceHash = crypto.createHash('sha256').update(normalized).digest('hex').slice(0, 16);
+    const sourceHash = crypto.createHash('sha256')
+      .update(normalizeBuildManagedFingerprint(normalized))
+      .digest('hex')
+      .slice(0, 16);
     const contentId = `fr-surface:${rel.replace(/\/index\.html$|\.html$/g, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
     normalized = normalized.replace('<head>', `<head><meta name="afrotools-source-hash" content="${sourceHash}"><meta name="afrotools-content-id" content="${contentId}"><meta name="afrotools-source-owner" content="scripts/build-french-product-surface.js">`);
     if (!WRITE && current.includes(`name="afrotools-source-hash" content="${sourceHash}"`)) return;
   }
-  if (current === normalized) return;
+  if (
+    normalizeBuildManagedHtml(current)
+    === normalizeBuildManagedHtml(normalized)
+  ) return;
   if (WRITE) {
     fs.mkdirSync(path.dirname(file), { recursive: true });
     fs.writeFileSync(file, normalized, 'utf8');
@@ -78,26 +121,7 @@ function repair(rel, transforms) {
 
 function repairVisibleLanguage(rel, transforms) {
   const source = read(rel);
-  let cursor = 0;
-  let html = '';
-  const protectedBlock = /<(script|style|noscript|textarea|pre|code)\b[\s\S]*?<\/\1\s*>/gi;
-  const applyTransforms = (text) => transforms.reduce(
-    (current, [pattern, replacement]) => current.replace(pattern, replacement),
-    text
-  );
-  const translate = (fragment) => fragment
-    .replace(/(^|>)([^<]+)(?=<|$)/g, (whole, boundary, text) => `${boundary}${applyTransforms(text)}`)
-    .replace(/\b(placeholder|aria-label|title|alt|value)=(['"])(.*?)\2/gi, (whole, attribute, quote, text) => (
-      `${attribute}=${quote}${applyTransforms(text)}${quote}`
-    ));
-
-  for (const match of source.matchAll(protectedBlock)) {
-    html += translate(source.slice(cursor, match.index));
-    html += match[0];
-    cursor = match.index + match[0].length;
-  }
-  html += translate(source.slice(cursor));
-  output(rel, html);
+  output(rel, localizeVisibleLanguage(source, transforms));
 }
 
 function repairNativePensionPage() {
@@ -191,6 +215,7 @@ function allFrenchHtml(dir) {
 for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   if (POST_PROCESSED_HTML.has(rel)) continue;
+  if (isSpecializedFrenchOwner(rel)) continue;
   repair(rel, shared);
 }
 repairNativePensionPage();
@@ -282,6 +307,33 @@ for (const rel of ['fr/all-tools/index.html', 'fr/nigeria/ng-salary-tax.html']) 
 }
 repair('fr/all-tools/index.html', [
   [
+    `function applyInitialCategoryFilter(){
+  if(initialFilterApplied) return;
+  initialFilterApplied = true;
+  const requested = new URLSearchParams(window.location.search).get('category');
+  if(!requested) return;
+  const matchingButton = Array.from(document.querySelectorAll('.filter-tab'))
+    .find(button => button.dataset.filter === requested);
+  if(matchingButton) activeFilter = requested;
+}`,
+    `function applyInitialCategoryFilter(){
+  if(initialFilterApplied) return;
+  initialFilterApplied = true;
+  const params = new URLSearchParams(window.location.search);
+  const requested = params.get('category');
+  const matchingButton = requested && Array.from(document.querySelectorAll('.filter-tab'))
+    .find(button => button.dataset.filter === requested);
+  if(matchingButton) activeFilter = requested;
+  const initialQuery = (params.get('q') || '').trim().slice(0, 200);
+  const input = document.getElementById('searchInput');
+  if(initialQuery && input){
+    input.value = initialQuery;
+    activeFilter = 'all';
+    updateSearchClear();
+  }
+}`
+  ],
+  [
     "let tools = AFRO_TOOLS.filter(t => (t.lang || 'en') === PAGE_LANG);",
     "let tools = AFRO_TOOLS.filter(t => t.lang === 'fr' && String(t.href || '').startsWith('/fr/'));"
   ],
@@ -329,28 +381,93 @@ repair('fr/all-tools/index.html', [
 ]);
 
 function homePage() {
+  const categoryCards = FRENCH_CATEGORIES.map((category) => `
+<a class="fr-home-category" href="${category.href}" data-category="${category.key}">
+  <span class="fr-home-category-mark" aria-hidden="true">${category.icon}</span>
+  <span><strong>${category.title}</strong><small>${category.description}</small></span>
+</a>`).join('');
+
   return `<!doctype html>
-<html lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="fr">
-<title>AfroTools en français — outils pratiques pour les marchés africains</title><meta name="description" content="Trouvez un calculateur, un outil PDF, un guide ou un parcours adapté à votre pays, avec sources, hypothèses et limites visibles.">
-<link rel="canonical" href="https://afrotools.com/fr/"><link rel="alternate" hreflang="en" href="https://afrotools.com/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/"><link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/"><link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/">
-<link rel="stylesheet" href="/assets/css/design-system.css"><script src="/assets/js/data/registry-counts.js" defer></script><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script>
-<style>:root{--fr-blue:#0057b8;--fr-ink:#10233d;--fr-muted:#52647a;--fr-line:#dce5ef;--fr-soft:#f4f8fc}.fr-home{color:var(--fr-ink)}.fr-wrap{width:min(1120px,calc(100% - 32px));margin:auto}.fr-hero{padding:72px 0 56px;background:linear-gradient(145deg,#eef6ff,#fff 62%,#f3faf7)}.fr-eyebrow{font-size:.76rem;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--fr-blue)}.fr-hero h1{max-width:850px;margin:12px 0 18px;font-size:clamp(2.35rem,7vw,5rem);line-height:1.02;letter-spacing:-.045em}.fr-lead{max-width:760px;font-size:clamp(1rem,2vw,1.22rem);line-height:1.72;color:var(--fr-muted)}.fr-search{display:flex;gap:10px;max-width:720px;margin-top:28px}.fr-search label{position:absolute;clip:rect(0 0 0 0)}.fr-search input{flex:1;min-width:0;padding:15px 16px;border:1px solid #b9c9da;border-radius:12px;font:inherit}.fr-search button,.fr-btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 18px;border:0;border-radius:12px;background:var(--fr-blue);color:#fff;font-weight:800;text-decoration:none;cursor:pointer}.fr-actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:18px}.fr-btn.alt{background:#fff;color:var(--fr-blue);border:1px solid #a9c5e6}.fr-counts{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:36px}.fr-count{padding:18px;border:1px solid var(--fr-line);border-radius:16px;background:#fff}.fr-count strong{display:block;font-size:1.65rem}.fr-count span{color:var(--fr-muted)}.fr-section{padding:64px 0}.fr-section.soft{background:var(--fr-soft)}.fr-section h2{margin:8px 0 12px;font-size:clamp(1.65rem,4vw,2.6rem)}.fr-intro{max-width:730px;color:var(--fr-muted);line-height:1.7}.fr-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:28px}.fr-card{display:block;padding:22px;border:1px solid var(--fr-line);border-radius:18px;background:#fff;color:inherit;text-decoration:none}.fr-card:hover{border-color:#8bb2db}.fr-card strong{display:block;font-size:1.08rem;margin-bottom:8px}.fr-card p{margin:0;color:var(--fr-muted);line-height:1.62}.fr-card em{display:block;margin-top:16px;color:var(--fr-blue);font-style:normal;font-weight:800}.fr-context{display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-top:26px}.fr-panel{padding:24px;border:1px solid var(--fr-line);border-radius:18px;background:#fff}.fr-panel h3{margin-top:0}.fr-links{display:flex;flex-wrap:wrap;gap:9px}.fr-links a{padding:9px 12px;border-radius:999px;background:#edf4fb;color:#174d82;text-decoration:none;font-weight:700}.fr-notice{margin-top:20px;padding:16px 18px;border-left:4px solid #d88b00;background:#fff8e7;line-height:1.65}.fr-trust{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-top:26px}.fr-trust article{padding:20px;border-top:3px solid var(--fr-blue);background:#fff}.fr-trust p{color:var(--fr-muted);line-height:1.65}.fr-noscript{padding:14px 16px;background:#fff8e7;border:1px solid #ebcf91}.skip-link{position:absolute;left:-9999px}.skip-link:focus{left:12px;top:12px;z-index:9999;background:#fff;padding:10px}@media(max-width:760px){.fr-hero{padding-top:48px}.fr-search{flex-direction:column}.fr-counts{grid-template-columns:repeat(2,1fr)}.fr-grid,.fr-context,.fr-trust{grid-template-columns:1fr}.fr-card{min-height:0}}</style></head>
-<body><a class="skip-link" href="#contenu">Aller au contenu</a><afro-navbar></afro-navbar><main id="contenu" class="fr-home">
-<section class="fr-hero"><div class="fr-wrap"><p class="fr-eyebrow">AfroTools en français</p><h1>Le bon outil, pour le bon pays et la bonne décision.</h1><p class="fr-lead">Trouvez un calculateur, préparez un document ou vérifiez une hypothèse avec le contexte local utile. Les sources, la date des données et les limites sont indiquées lorsque le résultat dépend de règles qui évoluent.</p>
-<form class="fr-search" action="/fr/all-tools/" method="get"><label for="frHomeSearch">Rechercher un outil</label><input id="frHomeSearch" name="q" type="search" placeholder="Ex. salaire net Sénégal, TVA Maroc, fusion PDF"><button type="submit">Rechercher</button></form>
-<div class="fr-actions"><a class="fr-btn" href="/fr/all-tools/">Parcourir tous les outils</a><a class="fr-btn alt" href="/fr/countries/">Choisir un pays</a><a class="fr-btn alt" href="/fr/ai/">Utiliser l’assistant de recherche</a></div>
-<div class="fr-counts" aria-label="Couverture AfroTools"><div class="fr-count"><strong data-registry-count="tools.live_experiences" data-count-format="plus">2 606+</strong><span>expériences d’outils en ligne</span></div><div class="fr-count"><strong data-registry-count="countries.published">54</strong><span>pays publiés</span></div><div class="fr-count"><strong data-registry-count="categories.published">32</strong><span>catégories publiées</span></div><div class="fr-count"><strong data-registry-count="languages.site_published">5</strong><span>langues lancées</span></div></div></div></section>
-<noscript><div class="fr-wrap fr-noscript">JavaScript est désactivé. La recherche, les liens et les pages de calcul restent accessibles ; certaines fonctions de filtrage, de sauvegarde ou d’aperçu interactif ne seront pas disponibles.</div></noscript>
-<section class="fr-section"><div class="fr-wrap"><p class="fr-eyebrow">Commencer par un besoin</p><h2>Des parcours directs, sans passer par l’IA</h2><p class="fr-intro">L’assistant peut accélérer la recherche, mais chaque famille reste accessible par une navigation classique.</p><div class="fr-grid">
-<a class="fr-card" href="/fr/salary-tax/"><strong>Salaire, PAYE et retenues</strong><p>Choisissez le pays, vérifiez la période et estimez le salaire net à partir des règles affichées.</p><em>Ouvrir les outils salaire →</em></a>
-<a class="fr-card" href="/fr/document-pdf/"><strong>PDF et documents</strong><p>Fusionnez, compressez, protégez ou préparez des documents avec les outils disponibles en français.</p><em>Ouvrir l’espace PDF →</em></a>
-<a class="fr-card" href="/fr/vat-business-tax/"><strong>TVA et gestion d’entreprise</strong><p>Estimez TVA, marge, seuil de rentabilité et autres repères de gestion.</p><em>Explorer les outils entreprise →</em></a>
-<a class="fr-card" href="/fr/energy/"><strong>Énergie et services</strong><p>Comparez recharge prépayée, consommation, carburant et projet solaire avec les hypothèses locales.</p><em>Explorer les outils énergie →</em></a>
-<a class="fr-card" href="/fr/tools/generateur-factures/"><strong>Factures et exports</strong><p>Préparez une facture avec la devise et la TVA pertinentes, puis exportez-la.</p><em>Créer une facture →</em></a>
-<a class="fr-card" href="/fr/blog/"><strong>Guides pratiques en français</strong><p>Lisez uniquement les articles dont la version française a été relue et reliée à un outil utile.</p><em>Lire les guides →</em></a></div></div></section>
-<section class="fr-section soft"><div class="fr-wrap"><p class="fr-eyebrow">Pays et langue</p><h2>Deux choix distincts</h2><p class="fr-intro">Le pays change la juridiction, la devise, les unités ou les sources. La langue change l’interface et le contenu disponible. L’un ne modifie pas silencieusement l’autre.</p><div class="fr-context"><div class="fr-panel"><h3>Choisir un contexte pays</h3><div class="fr-links"><a href="/fr/senegal/">Sénégal</a><a href="/fr/cote-divoire/">Côte d’Ivoire</a><a href="/fr/cameroun/">Cameroun</a><a href="/fr/maroc/">Maroc</a><a href="/fr/rdc/">RDC</a><a href="/fr/countries/">Tous les pays</a></div></div><div class="fr-panel"><h3>Changer la langue de l’interface</h3><div class="fr-links"><a href="/">English</a><a href="/fr/" lang="fr" aria-current="page">Français</a><a href="/sw/" lang="sw">Kiswahili</a><a href="/yo/" lang="yo">Yorùbá</a><a href="/ha/" lang="ha">Hausa</a></div><p class="fr-notice">La couverture varie selon la page. Quand une version française n’existe pas, AfroTools doit annoncer le passage vers l’anglais avant la navigation.</p></div></div></div></section>
-<section class="fr-section"><div class="fr-wrap"><p class="fr-eyebrow">Confiance</p><h2>Ce que le produit promet réellement</h2><div class="fr-trust"><article><h3>Calculs traçables</h3><p>Les résultats à enjeu reposent sur un moteur déterministe. La juridiction, la version de la formule, les hypothèses et les sources doivent pouvoir être vérifiées.</p></article><article><h3>Données prudentes</h3><p>Une donnée externe n’est qualifiée de « en direct » que si sa source, son horodatage et son état d’échec sont mesurables. Une donnée ancienne doit être signalée comme telle.</p></article><article><h3>Transfert de données annoncé</h3><p>Les calculs locaux restent dans le navigateur. Une fonction de compte, de paiement, d’analyse ou d’IA doit indiquer quand des données quittent l’appareil.</p></article></div><div class="fr-actions"><a class="fr-btn alt" href="/fr/privacy/">Lire la politique de confidentialité</a><a class="fr-btn alt" href="/fr/terms-of-use/">Lire les conditions d’utilisation</a><a class="fr-btn alt" href="/fr/contact/">Contacter AfroTools</a></div></div></section>
-<section class="fr-section soft"><div class="fr-wrap"><p class="fr-eyebrow">Compte et fonctions Pro</p><h2>Utilisez d’abord l’outil dont vous avez besoin</h2><p class="fr-intro">Les fonctions essentielles sont accessibles sans abonnement payant. Un compte sert aux fonctions signalées de sauvegarde ou de synchronisation ; certaines capacités avancées peuvent relever d’une offre Pro.</p><p class="fr-notice"><strong>Langue du parcours :</strong> certaines étapes de compte, de tableau de bord ou de paiement peuvent encore s’ouvrir en anglais. Le lien conserve la destination prévue, mais vérifiez l’avertissement affiché avant de continuer.</p><div class="fr-actions"><a class="fr-btn" href="/fr/auth/?mode=login&amp;next=%2Ffr%2Fdashboard%2F">Se connecter</a><a class="fr-btn alt" href="/fr/pro/">Voir les offres Pro</a></div></div></section>
+<html lang="fr"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="content-language" content="fr">
+<title>Outils et calculateurs pour l’Afrique en français | AfroTools</title>
+<meta name="description" content="Calculateurs, documents, données et guides pour 54 pays africains : salaire, TVA, entreprise, agriculture, énergie et démarches, avec sources et limites visibles.">
+<meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="AfroTools">
+<meta property="og:title" content="AfroTools en français — des outils pratiques pour l’Afrique">
+<meta property="og:description" content="Trouvez un outil adapté à votre pays, comprenez les hypothèses et terminez votre tâche avec un résultat exportable.">
+<meta property="og:url" content="https://afrotools.com/fr/"><meta property="og:image" content="https://afrotools.com/assets/img/og/og-home-v2.webp">
+<meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="AfroTools en français">
+<meta name="twitter:description" content="Des outils pratiques, locaux et vérifiables pour les marchés africains."><meta name="twitter:image" content="https://afrotools.com/assets/img/og/og-home-v2.webp">
+<link rel="canonical" href="https://afrotools.com/fr/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/"><link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/"><link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/"><link rel="alternate" hreflang="yo" href="https://afrotools.com/yo/"><link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/">
+<link rel="stylesheet" href="/assets/css/design-system.css"><link rel="stylesheet" href="/assets/css/fr-homepage.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@graph":[{"@type":"WebSite","@id":"https://afrotools.com/fr/#website","url":"https://afrotools.com/fr/","name":"AfroTools en français","inLanguage":"fr","description":"Outils pratiques, calculateurs, documents et données pour les marchés africains.","potentialAction":{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://afrotools.com/fr/all-tools/?q={search_term_string}"},"query-input":"required name=search_term_string"}},{"@type":"Organization","@id":"https://afrotools.com/#organization","name":"AfroTools","url":"https://afrotools.com/","logo":{"@type":"ImageObject","url":"https://afrotools.com/assets/img/logo-mark.svg","width":512,"height":512},"areaServed":{"@type":"Continent","name":"Afrique"},"availableLanguage":["fr","en","sw","yo","ha"]},{"@type":"CollectionPage","@id":"https://afrotools.com/fr/#page","url":"https://afrotools.com/fr/","name":"Outils et calculateurs pour l’Afrique en français","isPartOf":{"@id":"https://afrotools.com/fr/#website"},"about":[{"@type":"Thing","name":"Calculateurs africains"},{"@type":"Thing","name":"Outils d’entreprise"},{"@type":"Thing","name":"Documents et PDF"}],"inLanguage":"fr"}]}</script>
+<script src="/assets/js/data/registry-counts.js" defer></script><script src="/assets/js/components/navbar.js" defer></script><script src="/assets/js/components/footer.js" defer></script>
+</head>
+<body class="fr-home-page"><a class="skip-link" href="#contenu">Aller au contenu</a><afro-navbar></afro-navbar><main id="contenu" class="fr-home">
+<header class="fr-home-hero"><div class="fr-home-wrap fr-home-hero-grid"><div>
+<p class="fr-home-eyebrow">AfroTools en français</p><h1>Le bon outil, pour le bon pays et la bonne décision.</h1>
+<p class="fr-home-lead">Calculez, comparez, préparez un document ou vérifiez une hypothèse avec le contexte local utile. Les règles, sources, dates et limites sont indiquées quand elles influencent le résultat.</p>
+<form class="fr-home-search fr-search" action="/fr/all-tools/" method="get"><label for="frHomeSearch">Rechercher un outil en français</label><input id="frHomeSearch" name="q" type="search" autocomplete="off" placeholder="Ex. salaire net Sénégal, TVA Maroc, fusion PDF"><button class="btn btn-primary" type="submit">Rechercher</button></form>
+<div class="fr-home-actions"><a class="btn btn-secondary" href="/fr/all-tools/">Parcourir tous les outils</a><a class="btn btn-ghost" href="/fr/countries/">Choisir un pays</a><a class="btn btn-ghost" href="/fr/ai/">Décrire ma tâche à AfroTools AI</a></div>
+</div><dl class="fr-home-proof" aria-label="Couverture AfroTools"><div><dt>Expériences d’outils</dt><dd data-registry-count="tools.live_experiences" data-count-format="plus">2 612+</dd></div><div><dt>Pays publiés</dt><dd data-registry-count="countries.published">54</dd></div><div><dt>Catégories</dt><dd data-registry-count="categories.published">32</dd></div><div><dt>Langues lancées</dt><dd data-registry-count="languages.site_published">5</dd></div></dl></div></header>
+<noscript><div class="fr-home-noscript"><div class="fr-home-wrap">JavaScript est désactivé. La recherche, les catégories, les pays et les outils restent accessibles ; seules certaines fonctions interactives de sauvegarde ou d’aperçu seront indisponibles.</div></div></noscript>
+
+<section class="fr-home-section" aria-labelledby="frTasksTitle"><div class="fr-home-wrap">
+<div class="fr-home-heading"><div><p class="fr-home-eyebrow">Commencer par une tâche</p><h2 id="frTasksTitle">Allez directement au résultat utile.</h2></div><p>Chaque parcours mène à une vraie application française. L’assistant peut aider à choisir, mais les calculateurs et documents restent accessibles sans IA.</p></div>
+<div class="fr-home-task-grid">
+<a class="fr-home-task" href="/fr/salary-tax/"><strong>Calculer un salaire net</strong><p>Choisissez le pays, la période, les retenues et les cotisations applicables.</p><span>Ouvrir salaire et fiscalité →</span></a>
+<a class="fr-home-task" href="/fr/vat-business-tax/"><strong>Estimer la TVA ou un coût d’entreprise</strong><p>Travaillez avec la juridiction, le taux, la marge et les hypothèses affichées.</p><span>Ouvrir TVA et entreprise →</span></a>
+<a class="fr-home-task" href="/fr/document-pdf/"><strong>Préparer un PDF ou un document</strong><p>Fusionnez, compressez, convertissez, signez ou créez un fichier dans le navigateur.</p><span>Ouvrir les outils documentaires →</span></a>
+<a class="fr-home-task" href="/fr/agriculture/"><strong>Planifier une exploitation</strong><p>Estimez rendement, intrants, irrigation, élevage et rentabilité par pays.</p><span>Ouvrir les outils agricoles →</span></a>
+<a class="fr-home-task" href="/fr/mortgage-property/"><strong>Étudier un logement ou un bien</strong><p>Comparez budget, prêt, achat, location, transfert et travaux.</p><span>Ouvrir immobilier et logement →</span></a>
+<a class="fr-home-task" href="/fr/energy/"><strong>Comparer énergie, carburant et solaire</strong><p>Utilisez des hypothèses locales avec date, confiance et limites visibles.</p><span>Ouvrir énergie et services →</span></a>
+<a class="fr-home-task" href="/fr/trade/"><strong>Préparer une importation</strong><p>Structurez coût rendu, douane, transport, origine et vérifications officielles.</p><span>Ouvrir commerce et importation →</span></a>
+<a class="fr-home-task" href="/fr/developer-tools/"><strong>Transformer des données ou du code</strong><p>Travaillez avec JSON, API, texte, formats web et utilitaires techniques.</p><span>Ouvrir les outils développeur →</span></a>
+</div></div></section>
+
+<section class="fr-home-section fr-home-section--muted" aria-labelledby="frCategoriesTitle"><div class="fr-home-wrap">
+<div class="fr-home-heading"><div><p class="fr-home-eyebrow">Catalogue complet</p><h2 id="frCategoriesTitle">32 catégories, organisées comme votre travail.</h2></div><p>Les catégories avec un hub français ouvrent leur espace dédié. Les autres appliquent un filtre français précis dans l’annuaire, sans basculer silencieusement vers une page anglaise.</p></div>
+<div class="fr-home-category-grid">${categoryCards}</div>
+<div class="fr-home-actions"><a class="btn btn-primary" href="/fr/categories/">Voir l’annuaire des catégories</a><a class="btn btn-secondary" href="/fr/all-tools/">Voir toutes les applications françaises</a></div>
+</div></section>
+
+<section class="fr-home-section" aria-labelledby="frCountryTitle"><div class="fr-home-wrap fr-home-country-layout"><div>
+<p class="fr-home-eyebrow">Le contexte avant le calcul</p><h2 id="frCountryTitle">Choisissez le pays qui définit la règle, la devise ou la source.</h2>
+<p class="fr-home-lead">La langue change l’interface. Le pays change la juridiction, la devise ou la source qui encadre la décision. AfroTools garde ces deux choix distincts pour éviter d’appliquer une règle au mauvais marché.</p>
+<div class="fr-home-country-list" aria-label="Pays francophones et marchés populaires">
+<a href="/fr/senegal/">Sénégal</a><a href="/fr/cote-divoire/">Côte d’Ivoire</a><a href="/fr/cameroun/">Cameroun</a><a href="/fr/rdc/">RDC</a><a href="/fr/maroc/">Maroc</a><a href="/fr/algerie/">Algérie</a><a href="/fr/tunisie/">Tunisie</a><a href="/fr/benin/">Bénin</a><a href="/fr/burkina-faso/">Burkina Faso</a><a href="/fr/mali/">Mali</a><a href="/fr/guinee/">Guinée</a><a href="/fr/madagascar/">Madagascar</a>
+</div><div class="fr-home-actions"><a class="btn btn-secondary" href="/fr/countries/">Voir les 54 pays</a></div>
+</div><aside class="fr-home-boundary"><h3>Une estimation n’est pas une décision officielle</h3><p>Pour la fiscalité, la douane, la santé, le droit, l’immigration, l’assurance ou une donnée de marché, vérifiez la source, la date et l’autorité indiquées avant d’agir.</p></aside></div></section>
+
+<section class="fr-home-section fr-home-section--muted" aria-labelledby="frAiTitle"><div class="fr-home-wrap fr-home-ai-layout"><div>
+<p class="fr-home-eyebrow">AfroTools AI, sans détour</p><h2 id="frAiTitle">Décrivez la tâche. Gardez le calcul dans l’outil.</h2>
+<p class="fr-home-lead">Le routage déterministe fonctionne sans envoyer votre texte à un modèle. Une aide IA optionnelle doit demander votre accord avant tout transfert.</p>
+<div class="fr-home-actions"><a class="btn btn-primary" href="/fr/ai/">Essayer AfroTools AI en français</a><a class="btn btn-secondary" href="/fr/privacy/">Comprendre la confidentialité</a></div>
+</div><ol class="fr-home-steps"><li><strong>Décrivez le résultat recherché</strong><p>Indiquez le pays, la tâche et les informations déjà connues.</p></li><li><strong>Ouvrez l’application canonique</strong><p>AfroTools propose un outil existant et demande uniquement les précisions utiles.</p></li><li><strong>Vérifiez, exportez ou continuez</strong><p>Le moteur de l’application calcule ; l’IA peut expliquer uniquement après consentement.</p></li></ol></div></section>
+
+<section class="fr-home-section" aria-labelledby="frDataTitle"><div class="fr-home-wrap">
+<div class="fr-home-heading"><div><p class="fr-home-eyebrow">Données et références</p><h2 id="frDataTitle">Regardez l’état de la donnée avant le chiffre.</h2></div><p>Les taux, prix et règles peuvent changer. Les pages suivantes distinguent source consultée, date de contrôle, donnée en cache, saisie manuelle et indisponibilité.</p></div>
+<div class="fr-home-data-grid">
+<a class="fr-home-data-card" href="/fr/tools/afrotaux/"><strong>Taux directeurs africains</strong><p>Consultez des références de taux avec leur provenance et leur état de vérification.</p><span>Voir AfroTaux →</span></a>
+<a class="fr-home-data-card" href="/fr/tools/convertisseur-devises/"><strong>Conversion de devises</strong><p>Comparez des montants sans confondre taux indicatif et taux réellement exécuté.</p><span>Ouvrir le convertisseur →</span></a>
+<a class="fr-home-data-card" href="/fr/tools/suivi-carburant/"><strong>Prix du carburant</strong><p>Vérifiez la fraîcheur et le mode de collecte avant d’utiliser une valeur.</p><span>Voir le suivi carburant →</span></a>
+</div></div></section>
+
+<section class="fr-home-section fr-home-section--muted" aria-labelledby="frTrustTitle"><div class="fr-home-wrap">
+<div class="fr-home-heading"><div><p class="fr-home-eyebrow">Contrat de confiance</p><h2 id="frTrustTitle">Comprendre ce qui se passe avant de cliquer.</h2></div><p>Un produit utile doit montrer son calcul, ses limites et ses transferts de données, pas seulement afficher un résultat.</p></div>
+<div class="fr-home-trust-grid"><article><h3>Calculs traçables</h3><p>Les résultats à enjeu utilisent des moteurs déterministes, des hypothèses visibles et des tests de comportement.</p></article><article><h3>Données prudentes</h3><p>Une valeur n’est décrite comme « en direct » ou « officielle » que lorsque la source et la fraîcheur le prouvent.</p></article><article><h3>Vie privée annoncée</h3><p>Les calculs locaux restent dans le navigateur. Tout compte, paiement, formulaire ou envoi IA est présenté comme un flux distinct.</p></article></div>
+<div class="fr-home-actions"><a class="btn btn-secondary" href="/fr/privacy/">Politique de confidentialité</a><a class="btn btn-secondary" href="/fr/terms-of-use/">Lire les conditions d’utilisation</a><a class="btn btn-secondary" href="/fr/contact/">Contacter AfroTools</a></div>
+</div></section>
+
+<section class="fr-home-section" aria-labelledby="frFaqTitle"><div class="fr-home-wrap fr-home-faq">
+<p class="fr-home-eyebrow">Questions fréquentes</p><h2 id="frFaqTitle">Ce qu’il faut savoir avant de commencer.</h2>
+<details><summary>Les outils AfroTools sont-ils gratuits ?</summary><p>Les calculateurs, annuaires et parcours essentiels restent accessibles sans abonnement payant. Les fonctions Pro, API, synchronisation ou exports avancés sont signalés séparément.</p></details>
+<details><summary>Les calculs fonctionnent-ils pour tous les pays africains ?</summary><p>La couverture dépend de l’application. Choisissez le pays et vérifiez la juridiction, la devise, la date et les sources affichées ; une page ne doit pas inventer une règle absente.</p></details>
+<details><summary>AfroTools AI remplace-t-il le calculateur ?</summary><p>Non. Il aide à trouver, clarifier et préremplir une application existante. Le calcul reste dans le moteur déterministe de l’outil lorsque ce moteur existe.</p></details>
+<details><summary>Mes données sont-elles envoyées à un serveur ?</summary><p>De nombreux outils fonctionnent localement. Les fonctions de compte, paiement, formulaire, synchronisation ou IA doivent annoncer le transfert et demander le consentement approprié.</p></details>
+<div class="fr-home-actions"><a class="btn btn-primary" href="/fr/all-tools/">Choisir un outil gratuit</a><a class="btn btn-secondary" href="/fr/pro/">Voir les fonctions Pro</a></div>
+</div></section>
 </main><afro-footer></afro-footer></body></html>\n`;
 }
 
@@ -418,38 +535,11 @@ const blog = JSON.parse(read('data/localization/fr-blog-manifest.json'));
 output('fr/blog/index.html', withAnalyticsLoader(blogPage(blog)));
 output('fr/blog/feed.xml', blogFeed(blog));
 
-const visibleLanguageTransforms = [
-  [/\bprivacy policy\b/gi, 'politique de confidentialité'],
-  [/\bterms of use\b/gi, 'conditions d’utilisation'],
-  [/\bcontact us\b/gi, 'nous contacter'],
-  [/\bcalculators\b/gi, 'calculateurs'],
-  [/\bcalculator\b/gi, 'calculateur'],
-  [/\bcalculate\b/gi, 'calculer'],
-  [/\benter\b/gi, 'saisissez'],
-  [/\bresults\b/gi, 'résultats'],
-  [/\bresult\b/gi, 'résultat'],
-  [/\breset\b/gi, 'réinitialiser'],
-  [/\bsave\b/gi, 'enregistrer'],
-  [/\bdownload\b/gi, 'télécharger'],
-  [/\bsearch\b/gi, 'rechercher'],
-  [/\bselect\b/gi, 'sélectionner'],
-  [/\bamount\b/gi, 'montant'],
-  [/\bmonthly\b/gi, 'mensuel'],
-  [/\bannual\b/gi, 'annuel'],
-  [/\bsubmit\b/gi, 'envoyer'],
-  [/\bloading\b/gi, 'chargement'],
-  [/\berror\b/gi, 'erreur'],
-  [/\brequired\b/gi, 'obligatoire'],
-  [/\bnext\b/gi, 'suivant'],
-  [/\bprevious\b/gi, 'précédent'],
-  [/\bprint\b/gi, 'imprimer'],
-  [/\bshare\b/gi, 'partager'],
-  [/\bcopy\b/gi, 'copier']
-];
 for (const file of allFrenchHtml(path.join(ROOT, 'fr'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
   if (POST_PROCESSED_HTML.has(rel)) continue;
-  repairVisibleLanguage(rel, visibleLanguageTransforms);
+  if (isSpecializedFrenchOwner(rel)) continue;
+  repairVisibleLanguage(rel, VISIBLE_LANGUAGE_TRANSFORMS);
 }
 
 const prohibited = [

@@ -37,10 +37,11 @@ for (const route of routes)
     await page.goto(route.path, { waitUntil: "networkidle" });
     await expect(page.locator("html")).toHaveAttribute("lang", route.name);
     await expect(page.getByRole("button", { name: route.calc })).toBeVisible();
-    await expect(page.locator(".source-confidence-card")).toBeVisible();
+    await expect(page.locator(".source-confidence-card").first()).toBeVisible();
     expect(
       await page
         .locator(".source-confidence-card")
+        .first()
         .evaluate((e) => getComputedStyle(e).backgroundColor),
     ).not.toBe("rgb(248, 251, 255)");
     expect(
@@ -167,7 +168,7 @@ test("Tanzania VAT English 375 light", async ({ page }) => {
   await page.setViewportSize({ width: 375, height: 812 });
   await page.goto("/tanzania/tz-vat", { waitUntil: "networkidle" });
   await expect(page.getByRole("button", { name: "Calculate Tanzania VAT" })).toBeVisible();
-  await expect(page.locator(".source-confidence-card")).toBeVisible();
+  await expect(page.locator(".source-confidence-card").first()).toBeVisible();
   expect(await page.evaluate(() => document.documentElement.scrollWidth - document.documentElement.clientWidth)).toBeLessThanOrEqual(0);
   expect(errors).toEqual([]);
   await page.locator("afro-navbar").evaluate((element) => element.style.setProperty("display", "none", "important"));

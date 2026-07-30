@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,8 +18,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   :root {
     --md-ink: #101828;
@@ -197,18 +197,28 @@
 }
 </script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"L'outil connait-il tous les marches locaux ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il calcule un calendrier à partir d'une date locale que vous connaissez. Vérifiez toujours avec les commercants, autorites locales ou organisateurs."}},{"@type":"Question","name":"Quels cycles sont supportes ?","acceptedAnswer":{"@type":"Answer","text":"Vous pouvez choisir un cycle hebdomadaire ou un cycle periodique de 4 à 10 jours, courant dans plusieurs zones de marches rotatifs."}},{"@type":"Question","name":"Puis-je exporter le planning ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Vous pouvez copier, télécharger en TXT ou sauvegarder un instantane local dans ce navigateur."}}]}</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "inLanguage": "fr",
+  "url": "https://afrotools.com/fr/tools/jours-marche/",
+  "isBasedOn": "https://afrotools.com/tools/market-days/",
+  "image": "https://afrotools.com/assets/img/tools/market-days.webp"
+}
+</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/jours-marche/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/market-days/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/jours-marche/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/market-days/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-fr-ua-app="market-days">
 <afro-navbar></afro-navbar>
 <main class="md-wrap">
   <section class="md-hero">
     <div class="md-panel">
       <p class="md-eyebrow">Commerce local</p>
-      <h1>Calendrier jours de marche</h1>
+      <h1>Calendrier jours de marche</h1><figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/market-days.webp" width="320" height="180" alt="" loading="eager"></figure>
       <p class="md-lead">Planifiez les prochaines dates d'un marche hebdomadaire ou rotatif à partir d'une date connue. L'outil ne pretend pas posseder une base officielle de tous les marches; il vous aide à transformer une information locale en planning exploitable.</p>
       <div class="md-pills" aria-label="Fonctions">
         <span class="md-pill">Cycles 4 à 10 jours</span>
@@ -238,12 +248,7 @@
           <div class="md-field">
             <label for="cycle">Cycle</label>
             <select id="cycle">
-              <option value="7">Hebdomadaire - tous les 7 jours</option>
-              <option value="4">Cycle rotatif de 4 jours</option>
-              <option value="5">Cycle rotatif de 5 jours</option>
-              <option value="6">Cycle rotatif de 6 jours</option>
-              <option value="8">Cycle rotatif de 8 jours</option>
-              <option value="10">Cycle rotatif de 10 jours</option>
+              <option value="4" selected>Cycle igbo Eke-Orie-Afor-Nkwo de 4 jours</option>
             </select>
           </div>
         </div>
@@ -339,6 +344,7 @@
   </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/igbo-market-days.js?v=af37aef5"></script>
 <script>
 (function () {
   'use strict';
@@ -360,21 +366,12 @@
   const countOutput = document.getElementById('count-output');
   const summaryOutput = document.getElementById('summary-output');
 
-  function parseLocalDate(value) {
-    if (!value) return null;
-    const parts = value.split('-').map(Number);
-    if (parts.length !== 3) return null;
-    return new Date(parts[0], parts[1] - 1, parts[2], 12, 0, 0);
-  }
-
-  function addDays(date, days) {
-    const copy = new Date(date.getTime());
-    copy.setDate(copy.getDate() + days);
-    return copy;
+  function engine() {
+    return window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.igboMarketDays;
   }
 
   function fmt(date) {
-    return new Intl.DateTimeFormat('fr-FR', { weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(date);
+    return new Intl.DateTimeFormat('fr-FR', { timeZone: 'UTC', weekday: 'short', day: '2-digit', month: 'short', year: 'numeric' }).format(date);
   }
 
   function roleChecklist(role) {
@@ -386,29 +383,39 @@
   function build() {
     warning.classList.remove('show');
     warning.textContent = '';
-    const base = parseLocalDate(fields.knownDate.value);
-    const cycle = Number(fields.cycle.value);
-    const count = Math.min(Math.max(Number(fields.count.value) || 8, 3), 20);
+    const api = engine();
+    const dateKey = fields.knownDate.value;
+    const requestedCount = Number(fields.count.value);
+    if (!Number.isFinite(requestedCount) || requestedCount < 1) {
+      warning.textContent = 'Saisissez un nombre positif de dates de marché.';
+      warning.classList.add('show');
+      status.textContent = 'Correction requise.';
+      nextOutput.textContent = '—';
+      cycleOutput.textContent = '—';
+      countOutput.textContent = '—';
+      summaryOutput.textContent = '';
+      return null;
+    }
+    const count = Math.min(Math.max(requestedCount, 3), 20);
     fields.count.value = count;
-    if (!base || !cycle) {
-      warning.textContent = 'Ajoutez une date connue et un cycle valide.';
+    if (!api || !api.isValidDateKey(dateKey)) {
+      warning.textContent = 'Ajoutez une date valide pour le cycle Eke-Orie-Afor-Nkwo.';
       warning.classList.add('show');
       status.textContent = 'Correction requise.';
       return null;
     }
-    const today = new Date();
-    today.setHours(12, 0, 0, 0);
-    let first = new Date(base.getTime());
-    while (first < today) first = addDays(first, cycle);
-    const dates = [];
-    for (let i = 0; i < count; i += 1) dates.push(addDays(first, i * cycle));
+    const cycle = 4;
+    const base = api.parseDateKey(dateKey);
+    const marketDay = api.getMarketDay(dateKey);
+    const dates = api.getUpcomingDates(dateKey, marketDay.index, count);
     const checklist = roleChecklist(fields.role.value);
     const lines = [
+      'Cycle de marche igbo: ' + marketDay.name + ' (' + marketDay.alias + ')',
       'Marche: ' + fields.marketName.value,
-      'Pays/region: ' + fields.country.value,
+      'Pays/region: Nigeria, calendrier igbo',
       'Date de reference: ' + fmt(base),
       'Cycle: tous les ' + cycle + ' jours',
-      'Prochain marche: ' + fmt(dates[0]),
+      'Jour de marche: ' + marketDay.name,
       '',
       'Prochaines dates:',
       ...dates.map(function (date, index) { return (index + 1) + '. ' + fmt(date); }),
@@ -418,27 +425,48 @@
     ];
     if (fields.route.value.trim()) lines.push('', 'Note logistique: ' + fields.route.value.trim());
     lines.push('', 'Avertissement: planning indicatif; verifier les changements locaux, annonces, securite, meteo et autorites avant de voyager.');
-    nextOutput.textContent = fmt(dates[0]).replace(/\s+/g, ' ');
+    nextOutput.textContent = marketDay.name + ' - ' + fmt(dates[0]).replace(/\s+/g, ' ');
     cycleOutput.textContent = cycle + 'j';
     countOutput.textContent = String(count);
     summaryOutput.textContent = lines.join('\n');
-    if (cycle !== 7) {
-      warning.textContent = 'Cycle rotatif choisi: confirmez la sequence locale, car les cycles traditionnels peuvent changer selon la zone.';
-      warning.classList.add('show');
-    }
+    warning.textContent = 'Le moteur utilise le cycle igbo Eke-Orie-Afor-Nkwo. Confirmez toujours les annonces et variations locales.';
+    warning.classList.add('show');
     status.textContent = 'Planning prepare.';
+    window.AfroToolsFrenchMarketDaysPayload = {
+      date: dateKey,
+      marketDayId: marketDay.id,
+      marketDayName: marketDay.name,
+      upcomingDates: dates.map(api.toDateKey)
+    };
     return { base, cycle, count, dates, summary: lines.join('\n') };
   }
 
   function copyText(text) {
-    if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).then(function () {
+        return true;
+      }).catch(function () {
+        return fallbackCopy(text);
+      });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function fallbackCopy(text) {
     const temp = document.createElement('textarea');
     temp.value = text;
+    temp.setAttribute('readonly', '');
+    temp.style.position = 'fixed';
+    temp.style.left = '-9999px';
     document.body.appendChild(temp);
     temp.select();
-    document.execCommand('copy');
-    temp.remove();
-    return Promise.resolve();
+    try {
+      return document.execCommand('copy');
+    } catch (error) {
+      return false;
+    } finally {
+      temp.remove();
+    }
   }
 
   document.getElementById('market-form').addEventListener('submit', function (event) {
@@ -449,8 +477,8 @@
   document.getElementById('copy-result').addEventListener('click', function () {
     const result = build();
     if (!result) return;
-    copyText(result.summary).then(function () {
-      status.textContent = 'Planning copie.';
+    copyText(result.summary).then(function (copied) {
+      status.textContent = copied ? 'Planning copie.' : 'Copie indisponible. Utilisez le fichier TXT.';
     });
   });
 
@@ -498,6 +526,9 @@
   build();
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js?v=d703e731"></script>
+  <script src="/assets/js/pages/fr-uniquely-african-native-exports.js?v=afa89491"></script>
+  <aside class="ua-native-ai-route" aria-label="Continuer avec AfroTools AI"><a href="/fr/ai/?tool=market-days&route=%2Ffr%2Ftools%2Fjours-marche%2F">Préparer ce workflow dans AfroTools AI</a></aside>
 </body>
 </html>

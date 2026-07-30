@@ -1,1 +1,86 @@
-!function(t){"use strict";var a="14.0.2",r="https://cdn.jsdelivr.net/gh/twitter/twemoji@"+a+"/assets/svg/",e=127462;function n(t){return String(null==t?"":t).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;").replace(/'/g,"&#39;")}function o(t){var a=String(t||"").trim().toUpperCase();return/^[A-Z]{2}$/.test(a)?a:""}function l(t){var a=function(t){var a=o(t);if(!a)return"";var r=e+a.charCodeAt(0)-65,n=e+a.charCodeAt(1)-65;return r.toString(16)+"-"+n.toString(16)}(t);return a?r+a+".svg":""}function i(t){var a=Array.from(String(t||"").trim());if(a.length<2)return"";var r=a[0].codePointAt(0),n=a[1].codePointAt(0);return r<e||r>127487||n<e||n>127487?"":String.fromCharCode(r-e+65)+String.fromCharCode(n-e+65)}function g(a){if(!a||!t.AfroAtlas)return"";for(var r=[t.AfroAtlas.COUNTRIES||{},t.AfroAtlas.WORLD_REF||{}],e=0;e<r.length;e++)for(var n=Object.keys(r[e]),o=0;o<n.length;o++)if(r[e][n[o]]===a)return n[o];return i(a.flag)}function f(t,a,r){var e=o(t),i=l(e),g=r?"aa-twemoji-flag "+r:"aa-twemoji-flag",f=(a?a+" flag":e+" flag").trim();return i?'<img class="'+n(g)+'" src="'+n(i)+'" alt="'+n(f)+'" width="36" height="36" loading="lazy" decoding="async" data-aa-flag-code="'+n(e)+'">':function(t,a,r){var e=o(t)||n(a).slice(0,2).toUpperCase()||"??";return'<span class="'+n(r||"aa-twemoji-flag")+' aa-twemoji-flag--fallback" role="img" aria-label="'+n(a||e)+' flag">'+n(e)+"</span>"}(e,f,g)}var c={version:a,flagUrl:l,flagHtml:f,countryFlagHtml:function(t,a,r){var e=r||g(t);return f(e,t&&t.name?t.name:e,a)},optionLabel:function(t,a){var r=a&&a.name?a.name:String(t||""),e=o(t);return e?r+" ("+e+")":r},codeFromEmoji:i,codeForCountry:g,hydrate:function(t){for(var a=(t&&t.querySelectorAll?t:document).querySelectorAll("[data-aa-flag-emoji]:not([data-aa-flag-ready])"),r=0;r<a.length;r++){var e=a[r],n=e.getAttribute("data-aa-flag-code")||i(e.textContent),o=e.getAttribute("data-aa-flag-label")||e.getAttribute("aria-label")||n;e.innerHTML=f(n,o,e.getAttribute("data-aa-flag-class")||""),e.setAttribute("data-aa-flag-ready","true")}}};t.AfroAtlasFlags=c,t.AfroTools=t.AfroTools||{},t.AfroTools.AfroAtlasFlags=c}(window);
+(function (window) {
+  'use strict';
+
+  var regionalA = 127462;
+
+  function escapeHtml(value) {
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function (character) {
+      return {
+        '&': '&amp;',
+        '<': '&lt;',
+        '>': '&gt;',
+        '"': '&quot;',
+        "'": '&#39;',
+      }[character];
+    });
+  }
+
+  function normalizeCode(value) {
+    var code = String(value || '').trim().toUpperCase();
+    return /^[A-Z]{2}$/.test(code) ? code : '';
+  }
+
+  function codeFromEmoji(value) {
+    var characters = Array.from(String(value || '').trim());
+    if (characters.length < 2) return '';
+    var first = characters[0].codePointAt(0);
+    var second = characters[1].codePointAt(0);
+    if (
+      first < regionalA || first > 127487
+      || second < regionalA || second > 127487
+    ) return '';
+    return String.fromCharCode(first - regionalA + 65)
+      + String.fromCharCode(second - regionalA + 65);
+  }
+
+  function codeForCountry(country) {
+    if (!country || !window.AfroAtlas) return '';
+    var registries = [window.AfroAtlas.COUNTRIES || {}, window.AfroAtlas.WORLD_REF || {}];
+    for (var registryIndex = 0; registryIndex < registries.length; registryIndex += 1) {
+      var keys = Object.keys(registries[registryIndex]);
+      for (var keyIndex = 0; keyIndex < keys.length; keyIndex += 1) {
+        if (registries[registryIndex][keys[keyIndex]] === country) return keys[keyIndex];
+      }
+    }
+    return codeFromEmoji(country.flag);
+  }
+
+  function flagHtml(code, label, className) {
+    var normalized = normalizeCode(code) || '??';
+    var name = (label ? label + ' flag' : normalized + ' flag').trim();
+    var classes = className ? 'aa-twemoji-flag ' + className : 'aa-twemoji-flag';
+    return '<span class="' + escapeHtml(classes)
+      + ' aa-twemoji-flag--fallback" role="img" aria-label="' + escapeHtml(name)
+      + '">' + escapeHtml(normalized) + '</span>';
+  }
+
+  var api = {
+    version: 'native-fallback',
+    flagUrl: function () { return ''; },
+    flagHtml: flagHtml,
+    countryFlagHtml: function (country, className, code) {
+      var resolvedCode = code || codeForCountry(country);
+      return flagHtml(resolvedCode, country && country.name ? country.name : resolvedCode, className);
+    },
+    optionLabel: function (code, country) {
+      var label = country && country.name ? country.name : String(code || '');
+      var normalized = normalizeCode(code);
+      return normalized ? label + ' (' + normalized + ')' : label;
+    },
+    codeFromEmoji: codeFromEmoji,
+    codeForCountry: codeForCountry,
+    hydrate: function (root) {
+      var scope = root && root.querySelectorAll ? root : document;
+      scope.querySelectorAll('[data-aa-flag-emoji]:not([data-aa-flag-ready])').forEach(function (element) {
+        var code = element.getAttribute('data-aa-flag-code') || codeFromEmoji(element.textContent);
+        var label = element.getAttribute('data-aa-flag-label') || element.getAttribute('aria-label') || code;
+        element.innerHTML = flagHtml(code, label, element.getAttribute('data-aa-flag-class') || '');
+        element.setAttribute('data-aa-flag-ready', 'true');
+      });
+    },
+  };
+
+  window.AfroAtlasFlags = api;
+  window.AfroTools = window.AfroTools || {};
+  window.AfroTools.AfroAtlasFlags = api;
+}(window));

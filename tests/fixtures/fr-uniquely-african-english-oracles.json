@@ -1,0 +1,180 @@
+{
+  "schemaVersion": 1,
+  "foundation": "8ce5cac175e42201968b1f7540752d6acf92d4ca",
+  "capture": {
+    "kind": "english-owner-same-fixture",
+    "sourceNormalization": "remove alternate link elements before sha256",
+    "note": "Expected values capture the deterministic English owner formula or the canonical DOM-free owner data contract before French rendering."
+  },
+  "routes": [
+    {
+      "id": "fintech-fee-watch",
+      "sourceOwner": "tools/fintech-fee-watch/index.html",
+      "sourceSha256": "5f4df6da2df479d8005dfbe26dba5d70fba873b41d15e453a9e0f4b084dc2264",
+      "input": {"amount": 10000, "flatFee": 100, "feePct": 1, "fxMarginPct": 2},
+      "expected": {"fee": 200, "fxCost": 200, "totalCost": 400, "recipientValue": 9600, "totalPct": 4}
+    },
+    {
+      "id": "ajo-chama",
+      "sourceOwner": "tools/ajo-tracker/index.html",
+      "sourceSha256": "f177fa2f3d87cbb40a673c1ad2289b18713f53d8977f96bb5c2262cb3fe7a7fc",
+      "input": {"members": 5, "contribution": 1000, "rounds": 5, "missedPayments": 2, "latePenalty": 100},
+      "expected": {"pool": 5000, "totalContributions": 25000, "arrears": 2200},
+      "expectedRows": 5
+    },
+    {
+      "id": "electricity-estimator",
+      "sourceOwner": "tools/electricity-estimator/index.html",
+      "sourceSha256": "610134f402f5cd5c4382f4ba5642e431285d7bfe5f7082717aa8d134aca5c937",
+      "input": {"watts": 100, "hoursPerDay": 5, "quantity": 2, "tariff": 50, "days": 30},
+      "expected": {"dailyKwh": 1, "monthlyKwh": 30, "monthlyCost": 1500}
+    },
+    {
+      "id": "fuel-cost",
+      "sourceOwner": "tools/fuel-cost/index.html",
+      "sourceSha256": "bdc76d195f20c839939f20513d9f4fe36588c45a2518d2de04a18cf4f7dfff70",
+      "input": {"mode": "trip", "distance": 100, "distanceUnit": "km", "efficiency": 10, "efficiencyUnit": "kml", "price": 1500, "condition": "mixed", "roundTrip": "yes", "reservePct": 10, "passengers": 2},
+      "expected": {"distanceKm": 200, "baseLitres": 20, "reserveLitres": 2.3, "totalLitres": 25.3, "totalCost": 37950, "perPerson": 18975}
+    },
+    {
+      "id": "hawala-tracker",
+      "sourceOwner": "tools/hawala-tracker/index.html",
+      "sourceSha256": "c06950a8dc61984fd9120bb2fa58cc4d2990ee89ca9ba72bb067333b9ebb3c73",
+      "input": {"from": "us", "to": "ng", "amount": 1000},
+      "expected": {"cheapestCost": 11.7, "highestCost": 72, "savings": 60.3},
+      "expectedRows": 6
+    },
+    {
+      "id": "staple-basket",
+      "sourceOwner": "tools/staple-basket/index.html",
+      "sourceSha256": "e59800d968dbb0d3128c9d097fc8c3aa30f47cae439edd18a8317e8c8a8d7041",
+      "input": {"weeklyCost": 100, "householdSize": 3, "weeks": 4, "changePct": 10},
+      "expected": {"baseCost": 400, "householdFactor": 2.4, "adjustedCost": 1056, "weeklyPerPerson": 88}
+    },
+    {
+      "id": "wholesale-retail-spread",
+      "sourceOwner": "tools/wholesale-retail-spread/index.html",
+      "sourceSha256": "90690bd308917035ab7c5c4e6ddf683a763d5463b31894b3ee27e824583cbbb2",
+      "input": {"wholesale": 80, "retail": 100, "quantity": 10},
+      "expected": {"unitSpread": 20, "spreadPct": 25, "cost": 800, "revenue": 1000, "grossProfit": 200, "marginPct": 20}
+    },
+    {
+      "id": "land-size",
+      "sourceOwner": "tools/land-size/index.html",
+      "sourceSha256": "2ddb5952eeb5b33ba3c48ffac7f03734255a3b81299310840743b7dfe1ddc431",
+      "input": {"mode": "area", "area": 1, "unit": "acre", "pricePerSqm": 2},
+      "expected": {"sqm": 4046.8564224, "sqft": 43560.01875504559, "hectares": 0.40468564224, "acres": 1, "estimatedPrice": 8093.7128448},
+      "expectedRows": 11
+    },
+    {
+      "id": "informal-fx-watch",
+      "sourceOwner": "tools/informal-fx-watch/index.html",
+      "sourceSha256": "75858094337c85d05b11d9bda4f856c31ff8d2568fc86cd040318226367caef9",
+      "input": {"officialRate": 1500, "observedRate": 1600, "amount": 100},
+      "expected": {"officialValue": 150000, "observedValue": 160000, "spread": 100, "spreadPct": 6.666666666666667, "difference": 10000}
+    },
+    {
+      "id": "cost-of-living",
+      "sourceOwner": "tools/cost-of-living/index.html",
+      "sourceSha256": "eaf5ea915f36c7f669e81b76dd2c32bf58cee6a1103d82c5bd786ee3a4414409",
+      "input": {"city1": "lagos", "city2": "joburg", "householdSize": 1, "housing": "rent1bed", "lifestyle": "balanced"},
+      "expected": {"city1TotalUsd": 752, "city2TotalUsd": 1093, "cheaperCity": "Lagos, Nigeria", "monthlyDifferenceUsd": 341, "annualDifferenceUsd": 4092},
+      "expectedRows": 2
+    },
+    {
+      "id": "afroatlas",
+      "sourceOwner": "engines/src/afroatlas-engine.js",
+      "sourceSha256": "049b1dd96373fab78301e6e5dba0e7a70bdca82bb3c4e8dd2f8cec37bea9485b",
+      "input": {
+        "countries": [
+          {"id": "nigeria", "name": "Nigeria", "gdp": 363000000000, "population": 223800000, "resources": ["oil"]},
+          {"id": "ghana", "name": "Ghana", "gdp": 76000000000, "population": 33500000, "resources": ["gold"]}
+        ],
+        "countryA": "nigeria",
+        "countryB": "ghana"
+      },
+      "expected": {"largerEconomy": "Nigeria", "gdpDifferenceUsd": 287000000000},
+      "expectedRows": 2
+    },
+    {
+      "id": "afropoints",
+      "sourceOwner": "engines/src/afropoints-engine.js",
+      "sourceSha256": "197423dd4071c89654d20f6d62977518f6c1fc12a43396701db5926f2e1665a7",
+      "input": {"records": 10, "pointsPerRecord": 8, "acceptedRate": 80},
+      "expected": {"acceptedRecords": 8, "pendingRecords": 2, "estimatedPoints": 64}
+    },
+    {
+      "id": "afrokitchen",
+      "sourceOwner": "engines/src/afrokitchen-engine.js",
+      "sourceSha256": "cf9e8a0b24680b15a3c024f488d51f7cdbfa8e463b7e8d6da9482ef6dfc35edc",
+      "input": {
+        "ingredients": [
+          {"name": "long-grain parboiled rice", "amount": 3, "unit": "cups"},
+          {"name": "fresh Roma tomatoes", "amount": 6, "unit": "pieces"}
+        ],
+        "originalServings": 6,
+        "targetServings": 12
+      },
+      "expected": {"scaleFactor": 2, "ingredientCount": 2, "targetServings": 12},
+      "expectedRows": 2
+    },
+    {
+      "id": "africa-conflict",
+      "sourceOwner": "engines/src/africa-conflict-engine.js",
+      "sourceSha256": "ec5bc5c7633085be3d3380ae8ca44f3a4366c50f26324e9651b49da9fd6e8af8",
+      "input": {
+        "records": [
+          {"slug": "a", "name": "A", "status": "critical", "idps_count": 100, "refugees_count": 50},
+          {"slug": "b", "name": "B", "status": "critical", "idps_count": 200},
+          {"slug": "c", "name": "C", "status": "high"}
+        ],
+        "status": "all"
+      },
+      "expected": {"records": 3, "displaced": 350, "weightedSeverity": 2.6666666666666665, "empty": false},
+      "expectedRows": 3
+    },
+    {
+      "id": "diaspora-guide",
+      "sourceOwner": "tools/diaspora-guide/index.html",
+      "sourceSha256": "340654802a8970fe519fe3099e9a2be7c5121437c221f58b2f0a33fcbc157a52",
+      "input": {"daysPresent": 120, "residencyThreshold": 183, "annualRemittance": 5000},
+      "expected": {"daysToThreshold": 63, "thresholdReached": false, "annualRemittance": 5000}
+    },
+    {
+      "id": "nollywood-pitch",
+      "sourceOwner": "tools/nollywood-pitch/index.html",
+      "sourceSha256": "c738748ccbef305b00350222b1cbe688d721ec7bbb99057fb20236b6f7795c3b",
+      "input": {"preProduction": 1000000, "production": 4000000, "postProduction": 1000000, "distribution": 500000, "contingencyPct": 10, "shootDays": 10, "fundedPct": 50},
+      "expected": {"subtotal": 6500000, "contingency": 650000, "total": 7150000, "costPerShootDay": 715000, "secured": 3575000, "fundingGap": 3575000}
+    },
+    {
+      "id": "okada-income",
+      "sourceOwner": "tools/okada-income/index.html",
+      "sourceSha256": "e720668bff561f294bd7720dcc4b0dbd9b3b1def20668ad8d9b4071c1ea85562",
+      "input": {"country": "ng", "trips": 10, "fare": 500, "daysPerWeek": 6, "slowDays": 0, "fuel": 1000, "ownerPay": 0, "maintenance": 500, "insurance": 0, "phone": 2000, "commissionPct": 10, "loan": 0, "parking": 0, "savePct": 20, "bikeGoal": 700000, "reserveGoal": 100000},
+      "expected": {"daysPerMonth": 25.98, "dailyGross": 5000, "monthlyGross": 129900, "expenses": 43135, "monthlyProfit": 86765, "weeklyProfit": 20038.10623556582, "dailyProfit": 3339.6843725943035, "profitMarginPct": 66.79368745188607, "breakEvenTrips": 3, "monthlySavings": 17353, "bikeMonths": 40.338846308995564, "reserveMonths": 5.762692329856509}
+    },
+    {
+      "id": "afroprices",
+      "sourceOwner": "engines/src/afroprices-engine.js",
+      "sourceSha256": "502455877d96fed561ef2084c8297af8d092d37d6dd435b3d0b797967336e878",
+      "input": {"records": [{"country": "A", "price": 100, "currency": "X"}, {"country": "B", "price": 150, "currency": "X"}], "quantity": 2},
+      "expected": {"records": 2, "quantity": 2, "cheapestCountry": "A", "cheapestTotal": 200, "highestTotal": 300, "savings": 100},
+      "expectedRows": 2
+    },
+    {
+      "id": "ankara-kente-cost",
+      "sourceOwner": "tools/ankara-kente-cost/index.html",
+      "sourceSha256": "9500362565b3ad91a81c9756f085a30c9d61a1d3fbed95fe9714fcce1a00821c",
+      "input": {"pricePerYard": 1000, "yards": 10, "units": 2, "fxRate": 100, "labourPerPiece": 2000, "packagingPerPiece": 500, "shippingOrder": 1000, "marginPct": 25},
+      "expected": {"material": 10000, "materialUsd": 100, "costPerPiece": 8000, "quotePerPiece": 10000, "orderTotal": 20000, "grossProfitPerPiece": 2000}
+    },
+    {
+      "id": "fabric-cost",
+      "sourceOwner": "tools/fabric-cost/index.html",
+      "sourceSha256": "2261045618963bd496e0d9f8708ac33b8becf02ad9058d86feace251c286540c",
+      "input": {"pricePerYard": 1000, "yards": 4, "fxRate": 100, "wastePct": 10, "notions": 600, "labour": 2000, "marginPct": 20},
+      "expected": {"yardsWithWaste": 4.4, "fabricCost": 4400, "notions": 600, "materialCost": 5000, "productionCost": 7000, "quote": 8400, "grossProfit": 1400, "quoteUsd": 84}
+    }
+  ]
+}

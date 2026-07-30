@@ -1,114 +1,170 @@
-!function() {
+(function (root) {
   "use strict";
-  var i = {
-    instagram: {
-      icon: "&#128247;",
-      label: "Instagram",
-      limit: 150,
-      field: "Bio"
+
+  var PLATFORMS = Object.freeze({
+    instagram: { label: "Instagram", labelFr: "Instagram", limit: 150 },
+    tiktok: { label: "TikTok", labelFr: "TikTok", limit: 80 },
+    x: { label: "X / Twitter", labelFr: "X / Twitter", limit: 160 },
+    linkedin_headline: { label: "LinkedIn headline", labelFr: "Titre LinkedIn", limit: 220 },
+    linkedin_about: { label: "LinkedIn about", labelFr: "À propos LinkedIn", limit: 2600 },
+    youtube: { label: "YouTube", labelFr: "YouTube", limit: 1000 },
+    threads: { label: "Threads", labelFr: "Threads", limit: 150 }
+  });
+  var PLATFORM_ORDER = Object.freeze(Object.keys(PLATFORMS));
+
+  var COPY = {
+    en: {
+      connector: "creating",
+      based: "based in",
+      achievement: "Known for",
+      invitation: "Follow for practical ideas, honest process and work made for African audiences.",
+      tip: "Use the same clear promise everywhere, then adapt the opening line to each platform."
     },
-    tiktok: {
-      icon: "&#127925;",
-      label: "TikTok",
-      limit: 80,
-      field: "Bio"
-    },
-    x: {
-      icon: "&#128038;",
-      label: "X / Twitter",
-      limit: 160,
-      field: "Bio"
-    },
-    linkedin_headline: {
-      icon: "&#128188;",
-      label: "LinkedIn Headline",
-      limit: 220,
-      field: "Headline"
-    },
-    linkedin_about: {
-      icon: "&#128188;",
-      label: "LinkedIn About",
-      limit: 2600,
-      field: "About"
-    },
-    youtube: {
-      icon: "&#9654;&#65039;",
-      label: "YouTube",
-      limit: 1e3,
-      field: "About"
-    },
-    threads: {
-      icon: "&#128172;",
-      label: "Threads",
-      limit: 150,
-      field: "Bio"
+    fr: {
+      connector: "crée",
+      based: "basé·e à",
+      achievement: "Reconnu·e pour",
+      invitation: "Suivez le compte pour des idées utiles, une démarche transparente et des créations pensées pour les publics africains.",
+      tip: "Gardez la même promesse claire partout, puis adaptez la première phrase à chaque plateforme."
     }
   };
-  window.AfroTools || (window.AfroTools = {}), window.AfroTools.BioForgeEngine = {
-    PLATFORMS: i,
-    PLATFORM_ORDER: [ "instagram", "tiktok", "x", "linkedin_headline", "linkedin_about", "youtube", "threads" ],
-    buildPrompt: function(t, e, r, a) {
-      var o = [];
-      if (o.push("You are BioForge, a bio writing expert for African content creators."),
-      o.push(""), o.push("CREATOR INFO:"), o.push("- Who: " + t), o.push("- What they do: " + e),
-      o.push("- Tone/Vibe: " + r), o.push(""), a) {
-        var n = i[a];
-        o.push("Generate ONLY a bio for " + n.label + " (" + n.field + ", " + n.limit + " char limit)."),
-        o.push(""), o.push("OUTPUT FORMAT (JSON):"), o.push("{"), o.push('  "bios": ['),
-        o.push('    { "platform": "' + a + '", "text": "...", "charCount": N, "charLimit": ' + n.limit + ', "withinLimit": true }'),
-        o.push("  ]"), o.push("}");
-      } else {
-        o.push("RULES:"), o.push("- Generate bios for ALL platforms simultaneously"), o.push("- Each bio MUST respect the platform character limit EXACTLY"),
-        o.push("- Each bio should feel NATIVE to that platform:"), o.push("  - Instagram (150 chars): visual, emoji structure, line breaks, link reference"),
-        o.push("  - TikTok (80 chars): ultra-short, trendy, Gen-Z energy if appropriate"),
-        o.push("  - X/Twitter (160 chars): witty, personality-first, no filler words"),
-        o.push("  - LinkedIn headline (220 chars): professional keywords, searchable"),
-        o.push("  - LinkedIn about (2600 chars): storytelling, credibility, paragraphs"),
-        o.push("  - YouTube (1000 chars): discovery-focused, upload schedule mention, keywords"),
-        o.push("  - Threads (150 chars): casual, conversational, personality"), o.push("- Use the specified tone consistently across all bios"),
-        o.push("- African context natural — location, cultural references, local achievements"),
-        o.push("- Emoji usage should match platform norms (heavy on IG/TikTok, minimal on LinkedIn)"),
-        o.push('- NEVER use generic filler like "Passionate about..." or "Lover of..."'),
-        o.push("- Include ONE unique element that makes the creator memorable"), o.push(""),
-        o.push("OUTPUT FORMAT (JSON only, no markdown fences):"), o.push("{"), o.push('  "bios": ['),
-        o.push('    { "platform": "instagram", "text": "...", "charCount": N, "charLimit": 150, "withinLimit": true },'),
-        o.push('    { "platform": "tiktok", "text": "...", "charCount": N, "charLimit": 80, "withinLimit": true },'),
-        o.push('    { "platform": "x", "text": "...", "charCount": N, "charLimit": 160, "withinLimit": true },'),
-        o.push('    { "platform": "linkedin_headline", "text": "...", "charCount": N, "charLimit": 220, "withinLimit": true },'),
-        o.push('    { "platform": "linkedin_about", "text": "...", "charCount": N, "charLimit": 2600, "withinLimit": true },'),
-        o.push('    { "platform": "youtube", "text": "...", "charCount": N, "charLimit": 1000, "withinLimit": true },'),
-        o.push('    { "platform": "threads", "text": "...", "charCount": N, "charLimit": 150, "withinLimit": true }'),
-        o.push("  ],"), o.push('  "personalBrandTip": "One sentence of unique branding advice for this creator."'),
-        o.push("}");
-      }
-      return o.push(""), o.push("Return ONLY valid JSON. No markdown code fences. No extra text."),
-      o.join("\n");
-    },
-    parseResponse: function(i) {
-      try {
-        return JSON.parse(i);
-      } catch (i) {}
-      var t = i.match(/```(?:json)?\s*([\s\S]*?)```/);
-      if (t) {
-        try {
-          return JSON.parse(t[1].trim());
-        } catch (i) {}
-      }
-      var e = i.match(/\{[\s\S]*\}/);
-      if (e) {
-        try {
-          return JSON.parse(e[0]);
-        } catch (i) {}
-      }
-      return {
-        bios: [ {
-          platform: "instagram",
-          text: i,
-          charCount: i.length,
-          charLimit: 150,
-          withinLimit: i.length <= 150
-        } ]
-      };
+
+  function clean(value) {
+    return String(value == null ? "" : value).replace(/\s+/g, " ").trim();
+  }
+
+  function truncate(value, limit) {
+    var text = clean(value);
+    if (text.length <= limit) return text;
+    return text.slice(0, Math.max(1, limit - 1)).trimEnd() + "…";
+  }
+
+  function validateInput(input) {
+    input = input || {};
+    var who = clean(input.who);
+    var what = clean(input.what);
+    var errors = [];
+    if (!who) errors.push("who");
+    if (!what) errors.push("what");
+    if (who.length > 120) errors.push("who_too_long");
+    if (what.length > 300) errors.push("what_too_long");
+    return { valid: errors.length === 0, errors: errors };
+  }
+
+  function generate(input, locale) {
+    input = input || {};
+    locale = locale === "fr" ? "fr" : "en";
+    var validation = validateInput(input);
+    if (!validation.valid) {
+      return { ok: false, errors: validation.errors, bios: [], personalBrandTip: "" };
     }
+
+    var c = COPY[locale];
+    var who = clean(input.who);
+    var what = clean(input.what);
+    var tone = clean(input.tone) || (locale === "fr" ? "professionnel" : "professional");
+    var location = clean(input.location);
+    var achievement = clean(input.achievement);
+    var locationLine = location ? " · " + c.based + " " + location : "";
+    var achievementLine = achievement ? c.achievement + " " + achievement + "." : "";
+    var core = who + " · " + what + locationLine;
+    var lines = {
+      instagram: core + "\n" + (achievementLine || c.invitation),
+      tiktok: who + " · " + what,
+      x: core + ". " + (achievementLine || c.invitation),
+      linkedin_headline: who + " | " + what + locationLine + " | " + tone,
+      linkedin_about: who + " " + c.connector + " " + what + locationLine + ".\n\n" +
+        (achievementLine ? achievementLine + "\n\n" : "") + c.invitation,
+      youtube: core + ".\n\n" + (achievementLine ? achievementLine + "\n\n" : "") + c.invitation,
+      threads: who + " · " + what + locationLine
+    };
+
+    return {
+      ok: true,
+      locale: locale,
+      generatedAt: new Date().toISOString(),
+      input: {
+        who: who,
+        what: what,
+        tone: tone,
+        location: location,
+        achievement: achievement
+      },
+      bios: PLATFORM_ORDER.map(function (platform) {
+        var limit = PLATFORMS[platform].limit;
+        var text = truncate(lines[platform], limit);
+        return {
+          platform: platform,
+          label: locale === "fr" ? PLATFORMS[platform].labelFr : PLATFORMS[platform].label,
+          text: text,
+          charCount: text.length,
+          charLimit: limit,
+          withinLimit: text.length <= limit
+        };
+      }),
+      personalBrandTip: c.tip
+    };
+  }
+
+  function buildPrompt(who, what, tone, singlePlatform) {
+    var platform = singlePlatform && PLATFORMS[singlePlatform];
+    return [
+      "You are BioForge, a bio writing expert for African content creators.",
+      "CREATOR INFO:",
+      "- Who: " + clean(who),
+      "- What they do: " + clean(what),
+      "- Tone/Vibe: " + clean(tone),
+      platform
+        ? "Generate ONLY a bio for " + platform.label + " (" + platform.limit + " char limit)."
+        : "Generate bios for all supported platforms and respect every character limit.",
+      "Return ONLY valid JSON. No markdown code fences. No extra text."
+    ].join("\n");
+  }
+
+  function parseResponse(value) {
+    var text = String(value == null ? "" : value);
+    try { return JSON.parse(text); } catch (_) {}
+    var fenced = text.match(/```(?:json)?\s*([\s\S]*?)```/);
+    if (fenced) {
+      try { return JSON.parse(fenced[1].trim()); } catch (_) {}
+    }
+    var object = text.match(/\{[\s\S]*\}/);
+    if (object) {
+      try { return JSON.parse(object[0]); } catch (_) {}
+    }
+    return {
+      bios: [{
+        platform: "instagram",
+        text: text,
+        charCount: text.length,
+        charLimit: 150,
+        withinLimit: text.length <= 150
+      }]
+    };
+  }
+
+  function serialize(result, format) {
+    if (!result || !result.ok) throw new Error("A valid BioForge result is required.");
+    if (format === "json") return JSON.stringify(result, null, 2);
+    if (format === "txt") {
+      return result.bios.map(function (bio) {
+        return bio.label + " (" + bio.charCount + "/" + bio.charLimit + ")\n" + bio.text;
+      }).join("\n\n") + "\n\n" + result.personalBrandTip;
+    }
+    throw new Error("Unsupported export format: " + format);
+  }
+
+  var engine = {
+    PLATFORMS: PLATFORMS,
+    PLATFORM_ORDER: PLATFORM_ORDER,
+    validateInput: validateInput,
+    generate: generate,
+    serialize: serialize,
+    buildPrompt: buildPrompt,
+    parseResponse: parseResponse
   };
-}();
+
+  root.AfroTools = root.AfroTools || {};
+  root.AfroTools.BioForgeEngine = engine;
+  if (typeof module !== "undefined" && module.exports) module.exports = engine;
+})(typeof window !== "undefined" ? window : globalThis);

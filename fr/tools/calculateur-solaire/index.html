@@ -1,75 +1,250 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-
-<meta name="content-language" content="fr"><link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Calculateur solaire Afrique | Estimation système | AfroTools</title>
-<meta name="description" content="Dimensionnez un système solaire comme estimation de départ: panneaux, batteries, onduleur et hypothèses à vérifier avec un installateur.">
-<meta name="robots" content="index, follow">
-<meta property="og:title" content="Calculateur solaire Afrique | Estimation système | AfroTools">
-<meta property="og:description" content="Dimensionnez un système solaire comme estimation de départ: panneaux, batteries, onduleur et hypothèses à vérifier avec un installateur.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-solaire/">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Calculateur solaire | AfroTools</title>
+<meta name="description" content="Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/solar-calculator.webp">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur solaire Afrique | Estimation système | AfroTools">
-<meta name="twitter:description" content="Dimensionnez un système solaire comme estimation de départ: panneaux, batteries, onduleur et hypothèses à vérifier avec un installateur.">
+<link rel="icon" href="/assets/img/favicon.ico">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,700;12..96,800&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calculateur solaire",
-  "description": "Dimensionnez votre système solaire en Afrique.",
-  "url": "https://afrotools.com/fr/tools/calculateur-solaire/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "UtilityApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "Requires JavaScript",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/solar-calculator.webp"
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
+<style>
+/* ── PAGE SHELL ── */
+.solar-wrap{max-width:1100px;margin:0 auto;padding:24px 20px 60px;}
+.solar-hero{background:linear-gradient(135deg,#0d1117 0%,#1a2332 50%,#0f1f0f 100%);border-radius:20px;padding:48px 40px 40px;margin-bottom:32px;position:relative;overflow:hidden;}
+.solar-hero::before{content:'';position:absolute;top:-40%;right:-10%;width:500px;height:500px;background:radial-gradient(circle,rgba(255,200,0,.08) 0%,transparent 70%);pointer-events:none;}
+.solar-hero::after{content:'';position:absolute;bottom:-30%;left:-5%;width:400px;height:400px;background:radial-gradient(circle,rgba(0,98,204,.06) 0%,transparent 70%);pointer-events:none;}
+.solar-hero-badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,200,0,.1);border:1px solid rgba(255,200,0,.2);color:#ffc800;border-radius:20px;padding:5px 12px;font-size:11px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;margin-bottom:16px;}
+.solar-hero h1{font-size:clamp(1.35rem,5.5vw,2.4rem);color:#fff;font-weight:900;letter-spacing:-.02em;margin-bottom:10px;line-height:1.1;}
+.solar-hero p{color:rgba(255,255,255,.75);font-size:.95rem;max-width:500px;line-height:1.6;}
+.solar-hero-tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:20px;}
+.solar-hero-tags span{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);color:rgba(255,255,255,.75);padding:5px 12px;border-radius:16px;font-size:12px;font-weight:600;}
+
+/* ── LAYOUT ── */
+.solar-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+@media(max-width:760px){.solar-grid{grid-template-columns:1fr;}}
+.solar-panel{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;}
+.solar-panel h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.solar-panel h2 span{font-size:1.1rem;}
+
+/* ── FORM ELEMENTS ── */
+.field-group{margin-bottom:18px;}
+.field-label{font-size:.75rem;font-weight:700;color:#374151;margin-bottom:6px;display:flex;justify-content:space-between;align-items:center;text-transform:uppercase;letter-spacing:.04em;}
+.field-label .hint{font-size:.7rem;color:#9ca3af;text-transform:none;letter-spacing:0;font-weight:500;}
+.field-input{width:100%;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:10px;font-size:.9rem;color:#111;background:#fafafa;transition:border-color .2s,box-shadow .2s;}
+.field-input:focus{outline:none;border-color:#ffc800;box-shadow:0 0 0 3px rgba(255,200,0,.1);background:#fff;}
+select.field-input{cursor:pointer;}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+
+/* ── COUNTRY PICKER ── */
+.country-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-height:220px;overflow-y:auto;padding-right:4px;}
+.country-btn{padding:8px 6px;border:1.5px solid #e5e7eb;border-radius:8px;background:#fafafa;cursor:pointer;text-align:center;font-size:.68rem;font-weight:700;color:#374151;transition:all .15s;line-height:1.3;}
+.country-btn:hover{border-color:#ffc800;background:#fffbeb;}
+.country-btn.active{border-color:#ffc800;background:#ffc800;color:#000;}
+.country-btn .flag{font-size:1.2rem;display:block;margin-bottom:2px;}
+
+/* ── APPLIANCE TABLE ── */
+.appliance-table{width:100%;border-collapse:collapse;}
+.appliance-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:6px 8px;text-align:left;border-bottom:1px solid #f3f4f6;}
+.appliance-table td{padding:7px 8px;border-bottom:1px solid #f3f4f6;font-size:.82rem;color:#374151;}
+.appliance-table input{width:100%;padding:5px 8px;border:1.5px solid #e5e7eb;border-radius:6px;font-size:.82rem;text-align:right;background:#fafafa;}
+.appliance-table input:focus{outline:none;border-color:#ffc800;background:#fff;}
+.appliance-qty{width:48px;}
+.appliance-del{background:none;border:none;color:#d1d5db;cursor:pointer;font-size:1rem;padding:2px 4px;}
+.appliance-del:hover{color:#ef4444;}
+.add-appliance-btn{margin-top:10px;width:100%;padding:9px;border:1.5px dashed #d1d5db;border-radius:8px;background:none;cursor:pointer;font-size:.8rem;color:#6b7280;font-weight:600;transition:all .15s;}
+.add-appliance-btn:hover{border-color:#ffc800;color:#92400e;background:#fffbeb;}
+
+/* ── RESULT CARDS ── */
+.result-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:28px;margin-top:24px;}
+.result-section h2{font-size:.75rem;font-weight:800;text-transform:uppercase;letter-spacing:.1em;color:#6b7280;margin-bottom:20px;display:flex;align-items:center;gap:8px;}
+.result-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+@media(max-width:600px){.result-grid{grid-template-columns:1fr 1fr;}}
+.result-card{background:linear-gradient(135deg,#f9fafb,#f3f4f6);border:1px solid #e5e7eb;border-radius:12px;padding:16px;text-align:center;}
+.result-card.highlight{background:linear-gradient(135deg,#fffbeb,#fef3c7);border-color:#fbbf24;}
+.result-card.green{background:linear-gradient(135deg,#EFF6FF,#DBEAFE);border-color:#93C5FD;}
+.result-card.blue{background:linear-gradient(135deg,#eff6ff,#dbeafe);border-color:#93c5fd;}
+.result-card .val{font-size:1.7rem;font-weight:900;color:#111;line-height:1;margin-bottom:4px;font-family:'Inter',system-ui,sans-serif;}
+.result-card .val span{font-size:1rem;color:#6b7280;font-weight:600;}
+.result-card .lbl{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;}
+
+/* ── ROI CHART ── */
+.roi-chart{margin-top:20px;}
+.roi-bar-wrap{display:flex;align-items:center;gap:10px;margin-bottom:10px;}
+.roi-bar-label{font-size:.75rem;font-weight:700;color:#374151;width:120px;flex-shrink:0;}
+.roi-bar-outer{flex:1;height:22px;background:#f3f4f6;border-radius:6px;overflow:hidden;}
+.roi-bar-inner{height:100%;border-radius:6px;transition:width .6s cubic-bezier(.22,1,.36,1);display:flex;align-items:center;justify-content:flex-end;padding-right:8px;}
+.roi-bar-inner .roi-val{font-size:.7rem;font-weight:700;color:#fff;}
+.roi-table{width:100%;border-collapse:collapse;font-size:.82rem;margin-top:16px;}
+.roi-table th{font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#9ca3af;padding:8px 10px;text-align:left;border-bottom:2px solid #f3f4f6;}
+.roi-table td{padding:8px 10px;border-bottom:1px solid #f9fafb;color:#374151;}
+.roi-table tr:hover td{background:#fafafa;}
+.roi-table .positive{color:#2563EB;font-weight:700;}
+.roi-table .neutral{color:#6b7280;}
+
+/* ── SYSTEM DIAGRAM ── */
+.system-diagram{background:#0d1117;border-radius:12px;padding:20px;margin-top:16px;display:flex;justify-content:center;align-items:center;gap:0;}
+.sys-block{text-align:center;padding:12px 16px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);border-radius:10px;min-width:80px;}
+.sys-block .sys-icon{font-size:1.8rem;margin-bottom:4px;}
+.sys-block .sys-label{font-size:.65rem;font-weight:700;color:rgba(255,255,255,.6);text-transform:uppercase;letter-spacing:.05em;white-space:nowrap;}
+.sys-block .sys-spec{font-size:.78rem;font-weight:800;color:#ffc800;margin-top:2px;}
+.sys-arrow{color:rgba(255,255,255,.25);font-size:1.2rem;padding:0 6px;flex-shrink:0;}
+
+/* ── CALC BTN ── */
+.calc-btn{width:100%;padding:14px;background:linear-gradient(135deg,#ffc800,#f59e0b);border:none;border-radius:12px;font-size:.95rem;font-weight:800;color:#000;cursor:pointer;text-transform:uppercase;letter-spacing:.06em;margin-top:8px;transition:transform .15s,box-shadow .15s;}
+.calc-btn:hover{transform:translateY(-1px);box-shadow:0 4px 16px rgba(255,200,0,.35);}
+.calc-btn:active{transform:translateY(0);}
+
+/* ── IRRADIANCE BADGE ── */
+.irr-badge{display:inline-flex;align-items:center;gap:5px;background:#fffbeb;border:1px solid #fbbf24;border-radius:8px;padding:5px 10px;font-size:.75rem;font-weight:700;color:#92400e;margin-bottom:16px;}
+
+/* ── TABS ── */
+.result-tabs{display:flex;gap:4px;background:#f3f4f6;border-radius:10px;padding:4px;margin-bottom:20px;}
+.result-tab{flex:1;padding:8px;text-align:center;font-size:.75rem;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:#6b7280;border-radius:7px;cursor:pointer;border:none;background:none;transition:all .15s;}
+.result-tab.active{background:#fff;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1);}
+.tab-pane{display:none;}
+.tab-pane.active{display:block;overflow-x:auto;}
+
+/* ── INFO BOX ── */
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:10px;padding:14px 16px;font-size:.8rem;color:#1e40af;line-height:1.6;margin-top:16px;}
+.info-box strong{font-weight:700;}
+.solar-source-card{background:#f8fafc;border:1px solid #dbe4f0;border-radius:8px;padding:16px;margin-top:20px;color:#334155;font-size:.86rem;line-height:1.6;}
+.solar-source-card strong{display:block;color:#0f172a;font-size:.78rem;letter-spacing:.06em;text-transform:uppercase;margin-bottom:8px;}
+.solar-source-links{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+.solar-source-links a{border:1px solid #cbd5e1;border-radius:999px;color:#0f5cc0;font-size:.78rem;font-weight:800;padding:7px 10px;text-decoration:none;}
+.solar-source-links a:hover{background:#eef5ff;border-color:#9ec5ff;}
+.solar-export-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:16px}
+.solar-export-actions button{border:1px solid #cbd5e1;background:#fff;border-radius:8px;color:#0f172a;font-family:inherit;font-size:.78rem;font-weight:800;padding:9px 12px;cursor:pointer}
+.solar-export-actions button:hover{border-color:#2563EB;color:#2563EB;background:#eff6ff}
+.solar-export-status{margin-top:8px;color:#64748b;font-size:.76rem;min-height:1.2em}
+.solar-export-note{margin-top:12px;border:1px solid #fde68a;background:#fffbeb;border-radius:8px;padding:12px 14px;color:#78350f;font-size:.78rem;line-height:1.6}
+.site-qa-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;}
+@media(max-width:680px){.site-qa-grid{grid-template-columns:1fr;}}
+.site-qa-card{background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:13px;}
+.site-qa-card strong{display:block;color:#0f172a;font-size:.82rem;margin-bottom:5px;}
+.site-qa-card span{color:#475569;font-size:.8rem;line-height:1.5;}
+
+/* AI Advisor sidebar */
+.ai-advisor-card{background:#fff;border-radius:16px;border:1px solid #DBEAFE;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,.05);margin-bottom:16px}
+.ai-advisor-head{padding:14px 18px;border-bottom:1px solid #EFF6FF;display:flex;align-items:center;gap:9px}
+.ai-dot{width:8px;height:8px;border-radius:50%;background:#0062CC;animation:aiPulse 2s infinite;flex-shrink:0}
+@keyframes aiPulse{0%,100%{opacity:1}50%{opacity:.3}}
+.ai-title{font-size:.72rem;font-weight:700;letter-spacing:.06em;color:#0f172a}
+.ai-by{font-size:.62rem;color:#6B8CAE;margin-left:auto}
+.ai-advisor-body{padding:14px 18px}
+.ai-status{font-size:.78rem;color:#0f172a;line-height:1.6;margin-bottom:10px}
+.ai-consent{display:flex;gap:8px;align-items:flex-start;font-size:.72rem;color:#475569;line-height:1.45;margin:8px 0 10px}
+.ai-consent input{width:auto;margin-top:2px;flex:0 0 auto}
+.ai-msgs{max-height:280px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;margin-bottom:10px}
+.ai-msg-u{font-size:.76rem;padding:7px 10px;background:#0062CC;color:#fff;border-radius:6px;align-self:flex-end;max-width:90%;word-wrap:break-word}
+.ai-msg-a{font-size:.76rem;padding:7px 10px;background:#EFF6FF;color:#0f172a;border-radius:6px;align-self:flex-start;max-width:90%;line-height:1.55;word-wrap:break-word}
+.ai-thinking{font-size:.72rem;color:#9ca3af;font-style:italic;padding:4px 0}
+.ai-input-row{display:flex;gap:6px}
+.ai-input{flex:1;padding:9px 12px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:inherit;font-size:.8rem;outline:none;background:#fafafa}
+.ai-input:focus{border-color:#0062CC;background:#fff}
+.ai-send{padding:9px 14px;background:#0062CC;color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:.8rem;font-weight:700;cursor:pointer}
+.ai-send:disabled{opacity:.5;cursor:not-allowed}
+
+/* AI Advisor floating section */
+.ai-advisor-section{max-width:480px;margin:24px auto 32px;padding:0 20px}
+@media(max-width:680px){
+  .system-diagram{justify-content:flex-start;overflow-x:auto;max-width:100%;padding-bottom:14px}
+  .result-tabs{overflow-x:auto;align-items:stretch}
+  .result-tab{min-width:108px;flex:0 0 auto}
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
-{"@type":"Question","name":"Combien coûte une installation solaire ?","acceptedAnswer":{"@type":"Answer","text":"Un système domestique complet coûte de 3000 à 15000 USD. Le retour sur investissement est de 3-7 ans comparé au générateur."}},
-{"@type":"Question","name":"Le solaire remplace-t-il le générateur ?","acceptedAnswer":{"@type":"Answer","text":"Pour la plupart des ménages, oui. Un système de 5-10 kWp avec batteries couvre les besoins courants."}},
-{"@type":"Question","name":"Quelle durée de vie pour les panneaux ?","acceptedAnswer":{"@type":"Answer","text":"25-30 ans avec 0,5-0,8% de dégradation par an. Les batteries lithium durent 10-15 ans, le plomb 3-5 ans."}}
-]}
-</script>
-<style>:root { --color-brand: var(--color-primary); }</style>
+@media(max-width:420px){
+  .solar-grid>*{min-width:0}
+  .solar-panel{max-width:100%;overflow-wrap:anywhere;padding:20px}
+  .field-row>*{min-width:0}
+  .field-input{max-width:100%}
+}
+</style>
+
+
+
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
+<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur solaire | AfroTools">
+<meta name="twitter:description" content="Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/solar-calculator.webp">
 
-<style data-fr-utility-wave>
-.fr-utility-note{max-width:920px;margin:1.5rem auto 2.5rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:12px;background:#eff6ff;color:#172554;line-height:1.65}
-.fr-utility-note strong{display:block;margin-bottom:.25rem}
-.fr-utility-note p{margin:.2rem 0 .8rem;color:#1e3a8a}
-.fr-utility-links{display:flex;flex-wrap:wrap;gap:.5rem}
-.fr-utility-links a{display:inline-flex;padding:.42rem .68rem;border:1px solid #bfdbfe;border-radius:999px;background:#fff;color:#1d4ed8;text-decoration:none;font-size:.86rem;font-weight:700}
-</style>
+<meta property="og:title" content="Calculateur solaire | AfroTools">
+<meta property="og:description" content="Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.">
+<meta property="article:modified_time" content="2026-03-28">
+<script src="https://cdn.jsdelivr.net/npm/chart.js" defer></script>
+<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-solaire/">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<meta name="afrotools-content-id" content="fr-engineering:solar-calculator">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/tools/solar-calculator/">
+<meta name="afrotools-ai-tool-id" content="solar-calculator">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur solaire",
+    "description": "Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.",
+    "url": "https://afrotools.com/fr/tools/calculateur-solaire/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ],
+    "image": "https://afrotools.com/assets/img/tools/solar-calculator.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser Calculateur solaire ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]
+</script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-solaire/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/solar-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-solaire/">
@@ -77,134 +252,437 @@
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar></afro-navbar>
-<section style="background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:3.5rem 1.5rem 2.5rem;text-align:center">
-<nav class="crumb" style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:1rem"><a href="/" style="color:rgba(255,255,255,.55);text-decoration:none">AfroTools</a><span style="margin:0 .4rem">/</span><a href="/fr/all-tools/" style="color:rgba(255,255,255,.55);text-decoration:none">Énergie</a><span style="margin:0 .4rem">/</span>Calculateur solaire</nav>
-<h1 style="font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;margin-bottom:.5rem;font-family:'Instrument Serif','DM Sans',serif;color:#fff">Calculateur solaire</h1>
-<p style="font-size:1.05rem;opacity:.85;max-width:620px;margin:0 auto;color:rgba(255,255,255,.8)">Dimensionnez votre système solaire en Afrique.</p>
-</section>
-<div id="tool-mount" style="min-height:400px"></div>
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Dimensionner votre installation solaire en Afrique</h2>
-<p style="color:#475569;margin-bottom:1rem">L’énergie solaire est idéale en Afrique avec un ensoleillement moyen de 5-7 kWh/m²/jour. Face aux coupures fréquentes, le solaire offre une alternative fiable et économique au générateur.</p>
-<p style="color:#475569;margin-bottom:1rem">Notre calculateur dimensionne votre installation selon votre consommation et l’ensoleillement de votre zone. Obtenez le nombre de panneaux, la capacité de batteries et le ROI.</p>
-</section>
-<section style="max-width:800px;margin:2rem auto;padding:0 1.5rem">
-<h2 style="font-size:1.4rem;font-weight:800;color:#0A1628;margin-bottom:1rem">Questions fréquemment posées</h2>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Combien coûte une installation solaire ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Un système domestique complet coûte de 3000 à 15000 USD. Le retour sur investissement est de 3-7 ans comparé au générateur.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Le solaire remplace-t-il le générateur ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">Pour la plupart des ménages, oui. Un système de 5-10 kWp avec batteries couvre les besoins courants.</p></details>
-<details style="border:1px solid #e2e8f0;border-radius:8px;margin-bottom:.75rem;background:#fff"><summary style="padding:1rem 1.25rem;font-weight:600;cursor:pointer;color:#334155;list-style:none;display:flex;justify-content:space-between;align-items:center">Quelle durée de vie pour les panneaux ?<span style="font-size:1.3rem;color:#94a3b8;font-weight:300">+</span></summary><p style="padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem">25-30 ans avec 0,5-0,8% de dégradation par an. Les batteries lithium durent 10-15 ans, le plomb 3-5 ans.</p></details>
-</section>
-<afro-related-tools></afro-related-tools>
 
-<section class="fr-utility-note" data-fr-utility-wave>
-  <div>
-    <strong>Repère uniquement.</strong>
-    <p>Les résultats servent à cadrer une décision. Confirmez toujours les tarifs, visas, taxes, carburants, devises, données électriques, eau ou transport auprès d'une source officielle, d'un prestataire local ou d'un professionnel qualifié.</p>
-  </div>
-  <div class="fr-utility-links">
-    <a href="/fr/travel/">Voyage</a>
-    <a href="/fr/tools/cout-visa/">Coût visa</a>
-    <a href="/fr/tools/cout-de-la-vie/">Coût de la vie</a>
-    <a href="/fr/tools/droits-douane/">Droits de douane</a>
-    <a href="/fr/tools/cout-rendu/">Coût rendu</a>
-    <a href="/fr/tools/calculateur-solaire/">Solaire</a>
-    <a href="/fr/tools/estimateur-electricite/">Électricité</a>
-    <a href="/fr/tools/qualite-eau/">Eau</a>
-  </div>
-</section>
-<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
-  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
-    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Préparation rapide</h2>
-    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Méthodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrées en résumé de vérification avant d'utiliser l'outil principal. Sources: calculateur de référence AfroTools, liens et hypothèses visibles sur cette page. Mise à jour 2026.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scénarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+<div class="solar-wrap">
+  <!-- HERO -->
+  <div class="solar-hero">
+    <div class="solar-hero-badge">☀️ Solaire Calculateur</div>
+    <h1>Solaire System Sizer<br>Informations et hypothèses du calcul</h1>
+    <p>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</p>
+    <div class="solar-hero-tags">
+      <span>Informations et hypothèses du calcul</span>
+      <span>🔋 Dimensionnement du parc de batteries</span>
+      <span>💰 Générateur ROI Comparison</span>
+      <span>⚡ Hors réseau et hybride</span>
+      <span>📊 10-Year Savings Projection</span>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Créer le résumé</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
-    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour préparer votre vérification.</output>
-    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation générale ne remplace pas un avis juridique, fiscal, médical, financier ou professionnel. Vérifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou déclarer.</p>
+  </div>
+
+  <!-- MAIN GRID -->
+  <div class="solar-grid">
+    <!-- LEFT: INPUTS -->
+    <div>
+      <!-- Country -->
+      <div class="solar-panel">
+        <h2><span>🌍</span>Sélectionnez une option.</h2>
+        <div class="country-grid" id="countryGrid"></div>
+        <div id="irrBadge" class="irr-badge" style="margin-top:14px;display:none;">
+          ☀️ <span id="irrVal"></span>
+        </div>
+      </div>
+
+      <!-- System Setup -->
+      <div class="solar-panel" style="margin-top:16px;">
+        <h2><span>⚙️</span>Informations et hypothèses du calcul</h2>
+        <div class="field-group">
+          <div class="field-label">System Type</div>
+          <select class="field-input" id="systemType" aria-label="System Type">
+            <option value="offgrid">Hors réseau (sans raccordement au réseau public)</option>
+            <option value="hybrid" selected>Hybrid (Solaire + Grid Backup)</option>
+            <option value="ongrid">On-Grid (Grid-Tied)</option>
+          </select>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Puissance du panneau <span class="hint">par panneau</span></div>
+            <select class="field-input" id="panelWatts" aria-label="Panel Puissance (W)">
+              <option value="250">250W (Poly)</option>
+              <option value="300">300W (Mono)</option>
+              <option value="400" selected>400W (Mono PERC)</option>
+              <option value="450">450W (Half-Cut)</option>
+              <option value="550">550W (Bifacial)</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Type de batterie</div>
+            <select class="field-input" id="battType" aria-label="Batt Type">
+              <option value="lead">Lead-Acid (FLA)</option>
+              <option value="gel">Gel VRLA</option>
+              <option value="lifepo4" selected>LiFePO4 (Lithium)</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Jours d’autonomie <span class="hint">jours nuageux</span></div>
+            <select class="field-input" id="backupDays" aria-label="Jours d’autonomie">
+              <option value="1">1 Day</option>
+              <option value="2" selected>2 jours</option>
+              <option value="3">3 jours</option>
+              <option value="5">5 jours</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Perte de rendement des panneaux <span class="hint">%/year</span></div>
+            <input aria-label="Degradation" type="number" class="field-input" id="degradation" value="0.5" min="0.3" max="1" step="0.1">
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Orientation des panneaux <span class="hint">Toiture Mise en page</span></div>
+            <select class="field-input" id="orientationFactor" aria-label="Orientation Factor">
+              <option value="1" selected>Best facing Toiture</option>
+              <option value="0.93">Flat Toiture or mixed tilt</option>
+              <option value="0.9">East-west split Toiture</option>
+              <option value="0.78">Poor direction</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Perte due à l’ombrage <span class="hint">trees, Murs, tanks</span></div>
+            <select class="field-input" id="shadeLoss" aria-label="Perte due à l’ombrage">
+              <option value="0" selected>Non shade</option>
+              <option value="5">Light shade, 5%</option>
+              <option value="10">Some shade, 10%</option>
+              <option value="20">Heavy shade, 20%</option>
+              <option value="35">Very heavy shade, 35%</option>
+            </select>
+          </div>
+        </div>
+        <div class="field-row">
+          <div class="field-group">
+            <div class="field-label">Dust / Soiling <span class="hint">mensuel cleaning</span></div>
+            <select class="field-input" id="soilingLoss" aria-label="Soiling Loss">
+              <option value="3">Clean coastal or rainy Surface, 3%</option>
+              <option value="7" selected>Informations et hypothèses du calcul</option>
+              <option value="12">Dusty dry season, 12%</option>
+              <option value="18">Construction or Harmattan dust, 18%</option>
+            </select>
+          </div>
+          <div class="field-group">
+            <div class="field-label">Usable Toiture Surface <span class="hint">Informations et hypothèses du calcul</span></div>
+            <input aria-label="E.g. 45" type="number" class="field-input" id="roofArea" placeholder="e.g. 45" min="0" step="1">
+          </div>
+        </div>
+        <div class="field-group">
+          <div class="field-label">Générateur (Comparison) <span class="hint">mensuel fuel Coût</span></div>
+          <div style="display:flex;gap:10px;align-items:center;">
+            <input aria-label="E.g. 50000" type="number" class="field-input" id="genCost" placeholder="e.g. 50000" style="flex:1;">
+            <select class="field-input" id="currency" style="width:90px;" aria-label="Devise">
+              <option value="NGN">NGN ₦</option>
+              <option value="KES">KES KSh</option>
+              <option value="GHS">GHS ₵</option>
+              <option value="ZAR">ZAR R</option>
+              <option value="UGX">UGX USh</option>
+              <option value="TZS">TZS TSh</option>
+              <option value="USD">USD $</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RIGHT: APPLIANCES -->
+    <div class="solar-panel">
+      <h2><span>🔌</span>Informations et hypothèses du calcul</h2>
+      <div style="margin-bottom:12px;">
+        <div style="font-size:.68rem;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:6px;">Charger</div>
+        <div id="presetBtns" style="display:flex;flex-wrap:wrap;gap:6px;"></div>
+      </div>
+      <table class="appliance-table">
+        <thead>
+          <tr>
+            <th>Appareil</th>
+            <th style="text-align:right;">Puissance (W)</th>
+            <th style="text-align:right;">Qté</th>
+            <th style="text-align:right;">h/jour</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody id="applianceBody"></tbody>
+      </table>
+      <button type="button" class="add-appliance-btn" onclick="addAppliance()">Ajouter</button>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid #f3f4f6;">
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Charger</span>
+          <span style="font-size:1rem;font-weight:900;color:#111;" id="totalWh">0 Wh</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;margin-bottom:6px;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Peak Power Demand</span>
+          <span style="font-size:1rem;font-weight:900;color:#111;" id="peakW">0 W</span>
+        </div>
+        <div style="display:flex;justify-content:space-between;">
+          <span style="font-size:.82rem;color:#6b7280;font-weight:600;">Informations et hypothèses du calcul</span>
+          <span style="font-size:1rem;font-weight:800;color:#f59e0b;" id="totalWhBuffer">0 Wh</span>
+        </div>
+      </div>
+
+      <button type="button" class="calc-btn" onclick="calculate()">☀️ Calculer My Solaire System</button>
+    </div>
+  </div>
+
+  <!-- RESULTS -->
+  <div class="result-section" id="resultsSection" style="display:none;">
+    <h2><span>📊</span>Informations et hypothèses du calcul</h2>
+
+    <!-- Result Cards -->
+    <div class="result-grid">
+      <div class="result-card highlight">
+        <div class="val" id="rPanels">-</div>
+        <div class="lbl">Panneaux solaires</div>
+      </div>
+      <div class="result-card highlight">
+        <div class="val" id="rBatteries">-</div>
+        <div class="lbl">Batteries</div>
+      </div>
+      <div class="result-card highlight">
+        <div class="val" id="rInverter">-</div>
+        <div class="lbl">Inverter Diamètre</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rPanelKW">- <span>kWp</span></div>
+        <div class="lbl">Champ de panneaux</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rBattKWh">- <span>kWh</span></div>
+        <div class="lbl">Parc de batteries</div>
+      </div>
+      <div class="result-card green" id="rSavingsCard">
+        <div class="val" id="rMonthlySave">-</div>
+        <div class="lbl">mensuel Savings vs Gen</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rEffSun">-- <span>h</span></div>
+        <div class="lbl">Ensoleillement effectif</div>
+      </div>
+      <div class="result-card blue">
+        <div class="val" id="rRoofArea">-- <span>m2</span></div>
+        <div class="lbl">Toiture Surface nécessaires</div>
+      </div>
+    </div>
+
+    <!-- System Diagram -->
+    <div class="system-diagram" id="sysDiagram">
+      <div class="sys-block">
+        <div class="sys-icon">☀️</div>
+        <div class="sys-label">Panels</div>
+        <div class="sys-spec" id="diagPanels">- × -W</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🔄</div>
+        <div class="sys-label">Régulateur de charge</div>
+        <div class="sys-spec" id="diagMPPT">- MPPT</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🔋</div>
+        <div class="sys-label">Parc de batteries</div>
+        <div class="sys-spec" id="diagBatt">- kWh</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">⚡</div>
+        <div class="sys-label">Inverter</div>
+        <div class="sys-spec" id="diagInv">- kVA</div>
+      </div>
+      <div class="sys-arrow">→</div>
+      <div class="sys-block">
+        <div class="sys-icon">🏠</div>
+        <div class="sys-label">Loads</div>
+        <div class="sys-spec" id="diagLoad">- kWh/d</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div style="margin-top:24px;">
+      <div class="result-tabs">
+        <button type="button" class="result-tab active" onclick="showTab('roi')">💰 ROI vs Générateur</button>
+        <button type="button" class="result-tab" onclick="showTab('specs')">🔧 Specifications</button>
+        <button type="button" class="result-tab" onclick="showTab('tips')">💡 Tips</button>
+        <button type="button" class="result-tab" onclick="showTab('site')">Chantier QA</button>
+      </div>
+
+      <!-- ROI Tab -->
+      <div class="tab-pane active" id="tab-roi">
+        <div class="roi-chart" id="roiChart"></div>
+        <table class="roi-table" id="roiTable">
+          <thead>
+            <tr>
+              <th>Year</th>
+              <th>Solaire Cumulative Coût</th>
+              <th>Générateur Cumulative Coût</th>
+              <th>Savings / (Loss)</th>
+            </tr>
+          </thead>
+          <tbody id="roiTableBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Specs Tab -->
+      <div class="tab-pane" id="tab-specs">
+        <table class="roi-table" id="specsTable">
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Specification</th>
+              <th>Recommendation</th>
+            </tr>
+          </thead>
+          <tbody id="specsBody"></tbody>
+        </table>
+      </div>
+
+      <!-- Tips Tab -->
+      <div class="tab-pane" id="tab-tips">
+        <div id="tipsContent"></div>
+      </div>
+
+      <!-- Site QA Tab -->
+      <div class="tab-pane" id="tab-site">
+        <div id="siteQaContent" class="site-qa-grid"></div>
+      </div>
+    </div>
+
+    <div class="solar-source-card">
+      <strong>Method notes</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.<div class="solar-source-links">
+        <a href="https://developer.nrel.gov/docs/solar/pvwatts/v8/" target="_blank" rel="noopener">PVWatts V8 Entrées</a>
+        <a href="https://pvwatts.nrel.gov/" target="_blank" rel="noopener">PVWatts Calculateur</a>
+        <a href="https://www.energy.gov/energysaver/planning-home-solar-electric-system" target="_blank" rel="noopener">DOE Solaire planning</a>
+      </div>
+    </div>
+    <div class="solar-export-actions" aria-label="Solaire Résultat actions">
+      <button type="button" onclick="copySolarPlan()">Copier Solaire plan</button>
+      <button type="button" onclick="downloadSolarCsv()">Télécharger le CSV</button>
+      <button type="button" onclick="window.print()">Imprimer</button>
+    </div>
+    <p class="solar-export-status" id="solarExportStatus" aria-live="polite"></p>
+    <p class="solar-export-note"><strong>Estimation indicative.</strong>Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</p>
+  </div>
+</div>
+
+<div class="ai-advisor-section">
+  <div class="ai-advisor-card" id="aiCard">
+    <div class="ai-advisor-head">
+      <span class="ai-dot"></span>
+      <span class="ai-title">AI Solaire Calculateur Advisor</span>
+      <span class="ai-by">Informations et hypothèses du calcul</span>
+    </div>
+    <div class="ai-advisor-body">
+      <div class="ai-status" id="aiStatus">Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</div>
+      <div class="ai-chat" id="aiChat">
+        <div class="ai-msgs" id="aiMsgs"></div>
+        <label class="ai-consent"><input type="checkbox" id="aiConsent">Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</label>
+        <div class="ai-input-row">
+          <input aria-label="Ask a question" type="text" class="ai-input" id="aiInput" placeholder="Ask a question..." maxlength="300" onkeydown="if(event.key==='Enter')sendAI()">
+          <button type="button" class="ai-send" id="aiSend" onclick="sendAI()">&#x2192;</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="tool-verification-sec" data-tool-verification-panel="solar-calculator">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Informations et hypothèses du calcul</span>
+          <h2 class="tool-verification-title">Informations et hypothèses du calcul</h2>
+          <p class="tool-verification-lead">Charger</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Révisé en 2026</span>
+          <p class="tool-verification-note">Estimer</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Informations et hypothèses du calcul</h3>
+          <ul class="tool-verification-list">
+            <li>Calculer</li>
+            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
+            <li>Copier le résumé</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limites</h3>
+          <ul class="tool-verification-list">
+            <li>Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.</li>
+            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
+            <li>Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#resultsSection">Examiner le panneau de résultats</a>
+
+      </div>
+    </div>
   </div>
 </section>
+<section class="fr-engineering-business-cta" aria-labelledby="solar-calculator-business-title">
+  <h2 id="solar-calculator-business-title">Besoin d’un accompagnement professionnel ?</h2>
+  <p>Enregistrez d’abord votre estimation Calculateur solaire, puis comparez des devis détaillés auprès de professionnels qualifiés.</p>
+  <p><strong>La sélection d’un prestataire reste indépendante du calcul.</strong> Aucun renseignement de projet n’est transmis sans votre action explicite.</p>
+</section>
+<nav class="fr-engineering-related-tools" aria-labelledby="solar-calculator-related-title">
+  <h2 id="solar-calculator-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/tools/plan-etage/">Estimateur de coût de construction</a></li>
+      <li><a href="/fr/tools/devis-quantitatif/">Constructeur de devis quantitatif</a></li>
+      <li><a href="/fr/tools/calcul-structure/">Calculateur de structure</a></li>
+  </ul>
+</nav>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
-<script>
-(function(){var m=document.getElementById('tool-mount');fetch('/tools/solar-calculator/').then(r=>r.text()).then(h=>{var d=document.createElement('div');d.innerHTML=h;var s=d.querySelectorAll('style');s.forEach(function(el){document.head.appendChild(el.cloneNode(true))});var main=d.querySelector('.tool-main');if(main){m.innerHTML=main.outerHTML}else{var b=d.querySelector('.card, main, [class*=tool], [class*=wrap]');if(b)m.innerHTML=b.outerHTML}var scripts=d.querySelectorAll('script:not([src])');scripts.forEach(function(sc){if(sc.textContent.indexOf('gtag')>-1||sc.textContent.indexOf('schema.org')>-1)return;var ns=document.createElement('script');ns.textContent=sc.textContent;document.body.appendChild(ns)})}).catch(function(){m.innerHTML='<p style="text-align:center;padding:2rem;color:#64748b">Chargement de l\'outil... <a href="/fr/tools/solar-calculator/">Ouvrir en anglais</a></p>'})})();
-</script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
 
-<script data-fr-utility-localizer>
-(function(){
-  var map=[
-    ['Calculate','Calculer'],['Calculator','Calculateur'],['Compare','Comparer'],['Estimate','Estimer'],['Result','Résultat'],['Results','Résultats'],
-    ['Save','Enregistrer'],['Saved','Enregistré'],['Download','Télécharger'],['Share','Partager'],['Copy','Copier'],['Print','Imprimer'],
-    ['Country','Pays'],['City','Ville'],['Currency','Devise'],['Amount','Montant'],['Cost','Coût'],['Total cost','Coût total'],
-    ['Visa','Visa'],['Flight','Vol'],['Flights','Vols'],['Travel','Voyage'],['Time zone','Fuseau horaire'],['Timezone','Fuseau horaire'],
-    ['Import','Importation'],['Shipping','Fret'],['Freight','Fret'],['Duty','Droit'],['Duties','Droits'],['Customs','Douane'],['Insurance','Assurance'],
-    ['Fuel','Carburant'],['Generator','Générateur'],['Solar','Solaire'],['Electricity','Électricité'],['Power','Puissance'],['Water','Eau'],
-    ['Updated','Mis à jour'],['Search','Rechercher'],['Filter','Filtrer'],['Reset','Réinitialiser'],['Open in English','Ouvrir la source anglaise'],
-    ['This is an estimate','Ceci est une estimation'],['Estimated','Estimé'],['Official','Officiel'],['Required','Obligatoire']
-  ];
-  map.sort(function(a,b){return b[0].length-a[0].length});
-  function swap(value){
-    if(!value) return value;
-    var next=value;
-    map.forEach(function(pair){
-      next=next.replace(new RegExp('\\b'+pair[0].replace(/ /g,'\\s+')+'\\b','g'),pair[1]);
-    });
-    return next;
-  }
-  function localize(root){
-    if(!root) return;
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){
-      var p=node.parentElement;
-      if(!p || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/i.test(p.tagName)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }});
-    var nodes=[], n;
-    while((n=walker.nextNode())) nodes.push(n);
-    nodes.forEach(function(node){var next=swap(node.nodeValue); if(next!==node.nodeValue) node.nodeValue=next;});
-    root.querySelectorAll('input,button,textarea,select,option,[title],[aria-label]').forEach(function(el){
-      ['placeholder','value','title','aria-label'].forEach(function(attr){
-        if(el.hasAttribute && el.hasAttribute(attr)){var next=swap(el.getAttribute(attr)); if(next!==el.getAttribute(attr)) el.setAttribute(attr,next);}
-      });
-    });
-  }
-  function localizeFrames(){
-    document.querySelectorAll('iframe').forEach(function(frame){
-      try{ if(frame.contentDocument) localize(frame.contentDocument.body); }catch(e){}
-      frame.addEventListener('load',function(){try{ localize(frame.contentDocument.body); }catch(e){}});
-    });
-  }
-  window.addEventListener('load',function(){
-    localize(document.body); localizeFrames();
-    var obs=new MutationObserver(function(){localize(document.body); localizeFrames();});
-    obs.observe(document.body,{childList:true,subtree:true});
-  });
-})();
-</script>
-<script>
-(function(){
-  const root = document.querySelector('[data-fr-decision-planner]');
-  if (!root) return;
-  const country = root.querySelector('[data-fr-decision-country]');
-  const amount = root.querySelector('[data-fr-decision-amount]');
-  const goal = root.querySelector('[data-fr-decision-goal]');
-  const output = root.querySelector('[data-fr-decision-output]');
-  const status = root.querySelector('[data-fr-decision-status]');
-  function render(){
-    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
-    const parts = [];
-    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
-    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
-    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
-    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
-    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
-  }
-  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
-  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
-})();
-</script>
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-1.js?v=4ced2881"></script>
+
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-2.js?v=d8f5edfc"></script>
+
+<script src="/assets/js/pages/engineering-parity/fr/solar-calculator-3.js?v=31502e04"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="solar-calculator" aria-labelledby="solar-calculator-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="solar-calculator-fr-guide-title">Calculateur solaire : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/solar-calculator.webp" alt="Illustration du parcours Calculateur solaire" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours Calculateur solaire.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Dimensionnez les panneaux, la batterie et l’onduleur à partir de vos usages électriques.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Additionnez les appareils, leurs puissances et leurs durées d’utilisation, puis appliquez les heures solaires et la marge de sécurité.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Confirmez l’irradiation, les pertes, la tension et les prix avec un installateur avant achat.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/tools/solar-calculator/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/tools/solar-calculator/">https://afrotools.com/tools/solar-calculateur/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="solar-calculator">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"solar-calculator","name":"Calculateur solaire","source":"/tools/solar-calculator/","privacy":"local-first","aiConsent":"explicit"};</script>
 </body>
 </html>

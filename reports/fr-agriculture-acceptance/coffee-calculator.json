@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:coffee-calculator",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-coffee-english-fixtures.js --check",
+    "englishFixtureResult": "PASS Coffee English invariants: 8 countries / 4 modes",
+    "engine": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-coffee-oracles.json node tests/fr-agriculture-coffee.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id coffee-calculator --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42957 CI=1 npx playwright test tests/e2e/fr-agriculture-coffee.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (1.8m)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "coffee-calculator",
+    "countryCode": null,
+    "englishRoute": "/agriculture/coffee-calculator/",
+    "frenchRoute": "/fr/agriculture/coffee-calculator/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-coffee-oracles.json",
+      "englishCountries": 8,
+      "englishModes": ["grade lookup","yield and revenue","quality improvement","processing cost"],
+      "frenchProfiles": 895,
+      "preserves": [
+        "eight country grading systems and their order",
+        "all country grade, species and region identities",
+        "arabica and robusta agronomy",
+        "yield level and tree-density assumptions",
+        "washed, natural and honey processing",
+        "grade and region price premiums",
+        "quality-grade comparisons",
+        "processing stages, revenue and margin"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-coffee.spec.js",
+      "result": "2 passed (1.8m)",
+      "isolatedPort": 42957,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport":640,"baselineCssViewport":1280,"documentOverflow":false},
+      "themes": ["light","manual-dark","system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical","og","schema-inLanguage-fr","reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/coffee-calculator/"
+    },
+    "exports": ["pdf","csv","json","txt","copy","share","local-save","reset"],
+    "source": {
+      "engine": ["engines/src/coffee-engine.js"],
+      "data": ["data/agriculture/coffee-data.js"],
+      "freshness": "static reference dataset marked 2026; not a live exchange, auction, farm-gate or FX feed",
+      "confidence": "planning scenarios in USD; grade, price, yield and cost confirmation required"
+    },
+    "artwork": {"imageId":"coffee-calculator","file":"assets/img/tools/coffee-calculator.webp","state":"present"},
+    "limitations": [
+      "Reference prices, premiums and processing costs are static and do not constitute a quote or buyer offer.",
+      "Confirm grading by the country system and replace every price, yield and cost assumption with current local evidence."
+    ]
+  }]
+}

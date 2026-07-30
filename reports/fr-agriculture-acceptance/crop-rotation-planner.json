@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:crop-rotation-planner",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-crop-rotation-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 216 Crop Rotation English invariants across 54 countries",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-crop-rotation-oracles.json node tests/fr-agriculture-crop-rotation.test.js",
+    "oracleResult": "PASS 432 French profiles across 54 countries and 36 engine crops",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id crop-rotation-planner --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42964 CI=1 npx playwright test tests/e2e/fr-agriculture-crop-rotation.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (12.5s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "crop-rotation-planner",
+    "countryCode": null,
+    "englishRoute": "/agriculture/crop-rotation/",
+    "frenchRoute": "/fr/agriculture/crop-rotation/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-crop-rotation-oracles.json",
+      "englishInvariants": 216,
+      "countries": 54,
+      "crops": 36,
+      "frenchProfiles": 432,
+      "preserves": [
+        "country-specific top-crop ordering and complete engine fallback list",
+        "2, 3, 4, 6 and 8 season plans",
+        "yield, soil-restoration, pest and profit goals",
+        "depleted, average, good and excellent soil states",
+        "crop scoring, alternatives, groups, nitrogen fixation and diversity",
+        "proven-rotation selection, yield-boost estimate and soil trajectory"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-crop-rotation.spec.js",
+      "result": "2 passed (12.5s)",
+      "isolatedPort": 42964,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/crop-rotation/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/crop-rotation-engine.js"],
+      "data": ["data/agriculture/country-index.js"],
+      "freshness": "static agronomic and country-crop reference; not live",
+      "confidence": "planning sequence requiring plot history and local agronomic validation"
+    },
+    "artwork": {"imageId": "crop-rotation-planner", "file": "assets/img/tools/crop-rotation-planner.webp", "state": "present"},
+    "limitations": [
+      "No live weather, soil test, pest pressure or market data is consumed.",
+      "The rotation does not guarantee yield and must be checked for calendar, water, variety, residual herbicides, pests and market access."
+    ]
+  }]
+}

@@ -1,0 +1,104 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:fertilizer-calc",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/bootstrap-fertilizer-calc-data.js --check",
+    "engine": "node tests/fertilizer-calc-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-fertilizer-calc-oracles.json node tests/fr-agriculture-fertilizer-calc.test.js",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42930 npx playwright test tests/e2e/fr-agriculture-fertilizer-calc.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (47.8s)"
+  },
+  "rows": [
+    {
+      "englishId": "fertilizer-calc",
+      "countryCode": null,
+      "englishRoute": "/tools/fertilizer-calc/",
+      "frenchRoute": "/fr/tools/calculateur-engrais/",
+      "status": "accepted",
+      "oracle": {
+        "report": "reports/fr-agriculture-fertilizer-calc-oracles.json",
+        "crops": 22,
+        "soilTypes": 5,
+        "yieldTargets": 3,
+        "currencies": 7,
+        "farmSizes": 3,
+        "exhaustiveScenarios": 6930,
+        "preserves": [
+          "per-hectare N-P2O5-K2O rounding",
+          "farm-size totals",
+          "urea, DAP, MOP and NPK 15-15-15 bag counts",
+          "urea, NPK and total costs",
+          "yield estimates",
+          "displayed schedule order",
+          "organic-equivalent rounding",
+          "crop micronutrient note"
+        ]
+      },
+      "browser": {
+        "suite": "tests/e2e/fr-agriculture-fertilizer-calc.spec.js",
+        "result": "2 passed (47.8s)",
+        "isolatedPort": 42930,
+        "viewports": [
+          320,
+          375
+        ],
+        "reflow200Percent": {
+          "equivalentCssViewport": 640,
+          "baselineCssViewport": 1280,
+          "documentOverflow": false
+        },
+        "themes": [
+          "light",
+          "manual-dark",
+          "system-dark"
+        ],
+        "keyboardFocusA11y": true,
+        "consoleAndFirstPartyNetworkClean": true,
+        "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+        "seo": [
+          "self-canonical",
+          "og",
+          "schema-inLanguage-fr",
+          "reciprocal-semantic-hreflang"
+        ],
+        "aiRoute": "/fr/tools/calculateur-engrais/"
+      },
+      "exports": [
+        "pdf",
+        "csv",
+        "json",
+        "txt",
+        "copy",
+        "share",
+        "local-save",
+        "reset"
+      ],
+      "source": {
+        "engine": [
+          "engines/src/fertilizer-calc-engine.js"
+        ],
+        "data": [
+          "data/agriculture/fertilizer-calc-data.json",
+          "data/agriculture/fertilizer-calc-data.js"
+        ],
+        "freshness": "static canonical reference and static price assumptions; not live",
+        "confidence": "planning estimate"
+      },
+      "artwork": {
+        "imageId": "fertilizer-calc",
+        "file": "assets/img/tools/fertilizer-calc.svg",
+        "state": "present"
+      },
+      "limitations": [
+        "Confirm nutrient recommendations with a soil test, product label and local agronomist.",
+        "Price and subsidy notes are static assumptions and must be checked locally before purchase."
+      ]
+    }
+  ]
+}

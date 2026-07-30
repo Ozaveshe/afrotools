@@ -1,41 +1,714 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>Ajouter un filigrane PDF | AfroTools</title>
-<meta name="description" content="Ajoutez un filigrane à vos PDF gratuitement. Texte ou image personnalisable.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajouter un filigrane à un PDF | AfroTools</title>
+<meta name="description" content="Ajoutez un texte de filigrane, réglez son angle, sa taille et son opacité, puis vérifiez le PDF exporté.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Ajouter un filigrane PDF | AfroTools">
-<meta property="og:description" content="Ajoutez un filigrane à vos PDF gratuitement. Texte ou image personnalisable.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/filigrane-pdf/">
+<meta property="og:title" content="Filigrane PDF">
+<meta property="og:description" content="Ajoutez un texte de filigrane, réglez son angle, sa taille et son opacité, puis vérifiez le PDF exporté.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/filigrane-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-watermark.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ajouter un filigrane PDF | AfroTools">
-<meta name="twitter:description" content="Ajoutez un filigrane à vos PDF gratuitement. Texte ou image personnalisable.">
+<meta name="twitter:title" content="Add Watermark to PDF Online | AfroTools">
+<meta name="twitter:description" content="Watermark PDFs locally with text, image, presets, page range, opacity, rotation, preview, and batch ZIP controls.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-watermark.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script type="application/ld+json">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="article:modified_time" content="2026-04-27">
+<style>
+  :root {
+    --wm-blue: var(--color-primary);
+    --wm-dark: #0f1419;
+    --wm-soft: #EFF6FF;
+  }
+
+  .tool-hero {
+    background: #f7fbff;
+    border-bottom: 1px solid #dbeafe;
+    padding: 34px 0 22px;
+    overflow: hidden;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--wm-blue);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #0f172a;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--wm-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: #334155;
+    line-height: 1.6;
+    max-width: 660px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    background: #fff;
+    color: #075985;
+    border: 1px solid #bae6fd;
+  }
+
+  .tool-main {
+    padding: 24px 0 56px;
+  }
+
+  .workflow-strip {
+    max-width: 1220px;
+    margin: 0 auto 14px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .workflow-step {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: 0 0 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    background: #e0f2fe;
+    color: #075985;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .step-copy {
+    display: block;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .tool-main-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #374151;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .drop-zone {
+    border: 2px dashed #dbeafe;
+    border-radius: 8px;
+    padding: 28px 18px;
+    text-align: center;
+    cursor: pointer;
+    background: var(--wm-soft);
+    transition: border-color 0.18s, background 0.18s, box-shadow 0.18s;
+    min-height: 120px;
+    touch-action: manipulation;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    border-color: var(--wm-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .drop-title {
+    font-size: 0.9rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .file-list {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    padding: 10px 12px;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+  }
+
+  .file-name {
+    min-width: 0;
+    font-size: 0.82rem;
+    font-weight: 700;
+    color: #1e293b;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .file-meta {
+    font-size: 0.68rem;
+    color: #64748b;
+    margin-top: 2px;
+  }
+
+  .mini-btn {
+    background: #EFF6FF;
+    border: 1px solid #dbeafe;
+    color: #1e40af;
+    min-height: 40px;
+    padding: 8px 11px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.68rem;
+    font-weight: 800;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+
+  .mini-btn:hover {
+    background: #dbeafe;
+  }
+
+  .grid-2,
+  .grid-3 {
+    display: grid;
+    gap: 12px;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .label-text {
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+    color: #1e293b;
+  }
+
+  .label-value,
+  .field-hint {
+    font-size: 0.68rem;
+    color: #64748b;
+  }
+
+  .input,
+  .select,
+  .textarea {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    color: #1e293b;
+    font-size: 0.86rem;
+    font-weight: 650;
+    font-family: 'DM Sans', sans-serif;
+    outline: none;
+  }
+
+  .textarea {
+    min-height: 72px;
+    resize: vertical;
+    line-height: 1.4;
+  }
+
+  .input:focus,
+  .select:focus,
+  .textarea:focus {
+    border-color: var(--wm-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .segmented,
+  .preset-row,
+  .position-grid {
+    display: grid;
+    gap: 8px;
+  }
+
+  .segmented {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .preset-row {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .position-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .choice-btn {
+    min-height: 44px;
+    padding: 11px 10px;
+    background: #EFF6FF;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: border-color 0.15s, background 0.15s, color 0.15s;
+    user-select: none;
+    font-size: 0.7rem;
+    font-weight: 800;
+    color: #334155;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+
+  .preset-btn {
+    min-height: 44px;
+    padding: 11px 10px;
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: #fff;
+    color: #1e40af;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 800;
+    font-family: 'DM Sans', sans-serif;
+    transition: background 0.15s, border-color 0.15s;
+    touch-action: manipulation;
+  }
+
+  .preset-btn:hover {
+    background: #EFF6FF;
+    border-color: var(--wm-blue);
+  }
+
+  .drop-zone:focus-visible,
+  .choice-btn:focus-visible,
+  .preset-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
+    outline: 3px solid rgba(0,113,227,0.25);
+    outline-offset: 2px;
+  }
+
+  .choice-btn:hover {
+    border-color: var(--wm-blue);
+  }
+
+  .choice-btn.on {
+    border-color: var(--wm-blue);
+    background: var(--color-primary);
+    color: #fff;
+  }
+
+  .slider {
+    width: 100%;
+    height: 6px;
+    border-radius: 3px;
+    background: #e5e7eb;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--wm-blue);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,113,227,0.3);
+  }
+
+  .slider::-moz-range-thumb {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: var(--wm-blue);
+    cursor: pointer;
+    border: 2px solid #fff;
+    box-shadow: 0 2px 6px rgba(0,113,227,0.3);
+  }
+
+  .color-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .color-input {
+    width: 52px;
+    height: 38px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    background: #fff;
+  }
+
+  .result-card {
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    font-size: 0.84rem;
+    color: #1e293b;
+    line-height: 1.55;
+  }
+
+  .result-rows {
+    margin-top: 12px;
+    display: grid;
+    gap: 8px;
+  }
+
+  .result-row {
+    padding: 9px 10px;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    font-size: 0.72rem;
+    color: #475569;
+  }
+
+  .result-note {
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    background: #EFF6FF;
+    color: #334155;
+    border-radius: 6px;
+    font-size: 0.76rem;
+    line-height: 1.55;
+  }
+
+  .progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-top: 12px;
+    display: none;
+  }
+
+  .progress-fill {
+    height: 100%;
+    width: 0%;
+    background: linear-gradient(90deg, var(--color-primary), #60a5fa);
+    transition: width 0.25s;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .calc-btn,
+  .act-btn {
+    width: 100%;
+    min-height: 46px;
+    border: none;
+    border-radius: 7px;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    touch-action: manipulation;
+  }
+
+  .calc-btn {
+    padding: 14px;
+    background: var(--color-primary);
+    color: #fff;
+    font-size: 0.9rem;
+    letter-spacing: 0.03em;
+    transition: background 0.18s, box-shadow 0.18s;
+  }
+
+  .calc-btn:hover:not(:disabled) {
+    background: #0059B3;
+    box-shadow: 0 6px 20px rgba(0,113,227,0.22);
+  }
+
+  .calc-btn:disabled {
+    background: #93c5fd;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .act-btn {
+    padding: 11px;
+    font-size: 0.74rem;
+    background: rgba(0,113,227,0.1);
+    border: 1.5px solid rgba(0,113,227,0.35);
+    color: #1e40af;
+  }
+
+  .preview-card {
+    position: sticky;
+    top: 16px;
+  }
+
+  .preview-wrap {
+    background: #111827;
+    border-radius: 8px;
+    padding: 12px;
+    min-height: 330px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  #previewCanvas {
+    max-width: 100%;
+    height: auto;
+    border-radius: 5px;
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.28);
+  }
+
+  .preview-status {
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .info-card {
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    padding: 16px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #374151;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.65;
+  }
+
+  .hidden {
+    display: none !important;
+  }
+
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .b-green { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .label-text,:root[data-theme="dark"] .info-title,:root[data-theme="dark"] .info-text { color:#eef5ff; }
+  :root[data-theme="dark"] .label-value,:root[data-theme="dark"] .field-hint,:root[data-theme="dark"] .preview-status { color:#b8c7dc; }
+  :root[data-theme="dark"] .info-card,:root[data-theme="dark"] .result-row,:root[data-theme="dark"] .result-note { background:#121f33; border-color:#3a4c68; color:#eef5ff; }
+  :root[data-theme="dark"] .result-text { color:#eef5ff; }
+  :root[data-theme="dark"] .act-btn { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+
+  @media (max-width: 920px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+
+    .preview-card {
+      position: static;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .grid-2,
+    .grid-3,
+    .segmented,
+    .workflow-strip,
+    .preset-row {
+      grid-template-columns: 1fr;
+    }
+
+    .position-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .tool-main-inner,
+    .tool-hero-inner,
+    .workflow-strip {
+      padding-left: 18px;
+      padding-right: 18px;
+    }
+  }
+</style> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Filigrane PDF",
-  "description": "Ajoutez un filigrane à vos PDF gratuitement. Texte ou image personnalisable.",
+  "description": "Ajoutez un texte de filigrane, réglez son angle, sa taille et son opacité, puis vérifiez le PDF exporté.",
   "url": "https://afrotools.com/fr/tools/filigrane-pdf/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "BrowserApplication",
+  "inLanguage": "fr",
+  "applicationCategory": "DocumentApplication",
   "operatingSystem": "Web",
+  "browserRequirements": "Nécessite JavaScript",
+  "featureList": [
+    "Filigranes texte PDF",
+    "Filigranes PDF d’image et de logo",
+    "Préréglages de filigrane",
+    "Aperçu PDF en direct",
+    "Contrôles de plage de pages, de position, d'opacité, de rotation, de calque et de vignette",
+    "Exportation ZIP par lots"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -48,91 +721,362 @@
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-watermark.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Filigrane PDF","item":"https://afrotools.com/fr/tools/filigrane-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input,.fr-prep-fields select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px;white-space:pre-line}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}.fr-privacy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:12px}.fr-privacy-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}.fr-privacy-grid strong{display:block;color:#0f172a;margin-bottom:3px}
-</style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-watermark.webp">
+</script> <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Filigrane PDF",
+  "url": "https://afrotools.com/fr/tools/filigrane-pdf/",
+  "description": "Ajoutez un texte de filigrane, réglez son angle, sa taille et son opacité, puis vérifiez le PDF exporté.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-watermark.webp"
+}
+</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Filigrane PDF","item":"https://afrotools.com/fr/tools/filigrane-pdf/"}],"inLanguage":"fr"}</script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="Filigrane PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-watermark","locale":"fr","englishOwner":"tools/pdf-watermark/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"-45 deg":"-45 degrés",". Final output uses the selected layer and page range.":". La sortie finale utilise le calque et la plage de pages sélectionnés.",".choice-btn, .mini-btn":".choice-btn, .mini-btn","\" is outside this PDF.":"\" se trouve en dehors de ce PDF.","[data-position]":"[position des données]","[data-type]":"[type de données]","[data-wm-preset]":"[données-wm-preset]","0 B":"0B","0 mm":"0 mm","110 pt":"110 points","60 pt":"60 points","Add a watermark to PDF":"Ajouter un filigrane au PDF","Add one file or a batch.":"Ajoutez un fichier ou un lot.","Add text or image watermarks to PDF files with presets, opacity, rotation, page ranges, tiling, position, layer, live preview, and batch ZIP export. Processing runs in the browser.":"Ajoutez des filigranes de texte ou d'image aux fichiers PDF avec des préréglages, l'opacité, la rotation, les plages de pages, la mosaïque, la position, le calque, l'aperçu en direct et l'exportation ZIP par lots. Le traitement s'exécute dans le navigateur.","Add Watermark to PDF":"Ajouter un filigrane au PDF","Add Watermark to PDF Online | Text, Logo, Batch | AfroTools":"Ajouter un filigrane au PDF en ligne | Texte, logo, lot | AfroOutils","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","All or 1-3, 5":"Tous ou 1-3, 5","application/pdf":"candidature/pdf","application/zip":"application/zip","Applies text or image overlays to selected pages using local PDF generation routines.":"Applique des superpositions de texte ou d'images aux pages sélectionnées à l'aide de routines de génération PDF locales.","Apply Watermark":"Appliquer un filigrane","Applying Watermark...":"Application d'un filigrane...","Approved":"Approuvé","B":"B","Batch ZIP export":"Exportation ZIP par lots","Before sharing":"Avant de partager","Behind content":"Derrière le contenu","Behind-content output rebuilds the visual pages so the watermark sits below the original page artwork.":"La sortie derrière le contenu reconstruit les pages visuelles afin que le filigrane se trouve sous l'illustration de la page d'origine.","block":"bloc","bottom":"bas","Bottom":"Bas","Bottom left":"En bas à gauche","Bottom right":"En bas à droite","bottom-center":"en bas au centre","button":"bouton","canvas":"toile","center":"centre","Center":"Centre","change":"changement","Check placement, then download PDF or ZIP.":"Vérifiez l'emplacement, puis téléchargez le PDF ou le ZIP.","Choose a PNG, JPG, JPEG, or WebP image.":"Choisissez une image PNG, JPG, JPEG ou WebP.","Choose an image watermark":"Choisissez un filigrane d'image","Choose logo or image watermark":"Choisissez un logo ou un filigrane d'image","Choose PDF files to watermark":"Choisissez les fichiers PDF à filigraner","Choose PDFs or drag them here":"Choisissez des PDF ou faites-les glisser ici","click":"cliquez","Color":"Couleur","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Confidential":"Confidentiel","Could not convert WebP image for PDF output.":"Impossible de convertir l'image WebP pour la sortie PDF.","Could not create image conversion canvas.":"Impossible de créer un canevas de conversion d'image.","Could not decode watermark image.":"Impossible de décoder l'image en filigrane.","Could not read watermark image.":"Impossible de lire l'image en filigrane.","Courier Bold":"Courrier gras","CourierBold":"CourrierBold","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","CV / Resume Builder":"Générateur de CV","Do not rely on watermarks for confidential redaction or document access control.":"Ne comptez pas sur les filigranes pour la rédaction confidentielle ou le contrôle d’accès aux documents.","document":"document","DocumentApplication":"DocumentApplication","DOMContentLoaded":"DOMContentLoaded","Done. Applied":"Fait. Appliqué","Download":"Télécharger","Download PDF":"Télécharger le PDF","Download ZIP":"Télécharger le ZIP","Draft":"Brouillon","dragleave":"glisser","dragover":"drague","drop":"baisse","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","email-gate-modal":"email-gate-modal","Enter":"Entrer","Enter a page range such as 1-3, 5 or leave it blank.":"Entrez une plage de pages telle que 1-3, 5 ou laissez-la vide.","Error:":"Erreur:","file-meta":"fichier-méta","file-name":"nom de fichier","file-row":"ligne de fichier","Font":"Fonte","For signatures, page order, or visual covers, continue in":"Pour les signatures, l'ordre des pages ou les couvertures visuelles, continuez dans","GB":"FR","Helvetica":"Helvétique","Helvetica Bold":"Helvetica gras","HelveticaBold":"HelveticaGras","hidden":"caché","Horizontal Offset":"Décalage horizontal","image":"image","Image":"Image","Image and logo PDF watermarks":"Filigranes PDF d’image et de logo","Image error:":"Erreur d'image :","Image Opacity":"Opacité de l'image","Image watermark file":"Fichier de filigrane d'image","Image watermarks work best with transparent PNG files prepared before upload.":"Les filigranes d’images fonctionnent mieux avec les fichiers PNG transparents préparés avant le téléchargement.","Image Width":"Largeur de l'image","image/jpeg":"image/jpeg","image/jpg":"image/jpg","image/png":"image/png","image/webp":"image/site Web","input":"saisir","Invoice Generator":"Générateur de facture","KB":"Ko","Keep your original PDF if you need a clean version later.":"Conservez votre PDF original si vous avez besoin d’une version propre plus tard.","keydown":"touche enfoncée","Layer":"Couche","Leave blank for every page.":"Laissez vide pour chaque page.","left":"gauche","Left":"Gauche","Line breaks are supported.":"Les sauts de ligne sont pris en charge.","Live PDF preview":"Aperçu PDF en direct","Live preview":"Aperçu en direct","Live Preview":"Aperçu en direct","loading":"chargement","Local browser-first PDF watermark tool for adding text or image watermarks with presets, preview, page range, placement, rotation, opacity, layer, and batch output controls.":"Outil de filigrane PDF disponible dans un navigateur local pour ajouter des filigranes de texte ou d'image avec des préréglages, un aperçu, une plage de pages, un placement, une rotation, une opacité, un calque et des contrôles de sortie par lots.","Local-first PDF workflow":"Flux de travail PDF local d'abord","Logo/image":"Logo/image","Mark one PDF or a batch with text, a logo, page ranges, opacity, rotation, and live preview. Source files stay in this browser while the output is created.":"Marquez un PDF ou un lot avec du texte, un logo, des plages de pages, l'opacité, la rotation et un aperçu en direct. Les fichiers source restent dans ce navigateur pendant la création de la sortie.","MB":"Mo","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Methodology":"Méthode","middle":"milieu","middle-left":"milieu-gauche","middle-right":"milieu-droite","mini-btn":"mini-btn","non-PDF file":"fichier non PDF","none":"aucun","Opacity":"Opacité","Opacity, rotation, placement, and repeat settings affect readability and file size.":"Les paramètres d'opacité, de rotation, de placement et de répétition affectent la lisibilité et la taille du fichier.","Open the output in another reader and confirm page coverage, contrast, placement, file size, and print appearance.":"Ouvrez la sortie dans un autre lecteur et confirmez la couverture de la page, le contraste, l'emplacement, la taille du fichier et l'apparence de l'impression.","Over content":"Sur le contenu","page":"page","Page \"":"Page \"","Page range \"":"Plage de pages \"","Page range, position, opacity, rotation, layer, and tile controls":"Contrôles de plage de pages, de position, d'opacité, de rotation, de calque et de vignette","Pages":"Pages","pages watermarked -":"pages filigranées -","Pattern":"Modèle","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF files":"Fichiers PDF","PDF library failed to load. Please refresh the page.":"La bibliothèque PDF n'a pas pu être chargée. Veuillez actualiser la page.","PDF Merge & Split":"Fusionner et diviser des PDF","PDF preview renderer failed to load. Please refresh the page.":"Le moteur de rendu d'aperçu PDF n'a pas pu se charger. Veuillez actualiser la page.","PDF Watermark":"Filigrane PDF","PDF Workspace":"Espace de travail PDF","Placement and Pages":"Emplacement et pages","Please choose a PNG, JPG, JPEG, or WebP watermark image.":"Veuillez choisir une image de filigrane PNG, JPG, JPEG ou WebP.","Please select a watermark image.":"Veuillez sélectionner une image en filigrane.","PNG, JPG, JPEG, or WebP":"PNG, JPG, JPEG ou WebP","Position":"Position","Preparing watermark...":"Préparation du filigrane...","Preview and save":"Prévisualiser et enregistrer","Preview failed.":"L'aperçu a échoué.","Previewing page":"Page de prévisualisation","px DM Sans, Arial, sans-serif":"px DM Sans, Arial, sans empattement","Quick Preset":"Préréglage rapide","Related tools":"Outils associés","Remove":"Supprimer","Requires JavaScript":"Nécessite JavaScript","Result":"Résultat","result-row":"ligne de résultat","Review watermark visibility before sending the file":"Vérifiez la visibilité du filigrane avant d’envoyer le fichier","Reviewed 2026. Disclaimer: verify with the recipient before relying on watermarked output. Direct local downloads do not upload your files.":"Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier à une sortie filigranée. Les téléchargements locaux directs ne téléchargent pas vos fichiers.","right":"droite","Right":"Droite","rotation":"rotation","Rotation":"Rotation","s.":"s.","Sample":"Échantillon","Set mark":"Définir la marque","Sets text, opacity, rotation, and pattern.":"Définit le texte, l'opacité, la rotation et le motif.","single":"célibataire","Single mark":"Marque unique","Size":"Taille","Skipped":"Sauté","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","Supports one file or batch watermarking. Files stay in your browser.":"Prend en charge le filigrane d'un fichier ou d'un lot. Les fichiers restent dans votre navigateur.","text":"texte","Text":"Texte","Text PDF watermarks":"Filigranes texte PDF","Text presets":"Préréglages de texte","tile":"tuile","Tile Gap":"Écart de tuile","Tiled marks":"Marques carrelées","Tiled mode repeats the watermark across each selected page.":"Le mode Mosaïque répète le filigrane sur chaque page sélectionnée.","Times":"Fois","TimesRoman":"TempsRoman","Tools":"Outils","Top":"Haut","Top left":"En haut à gauche","Top right":"En haut à droite","top-center":"en haut au centre","Transparent PNG works best.":"Le PNG transparent fonctionne mieux.","under":"sous","Upload a PDF to preview the first selected page.":"Téléchargez un PDF pour prévisualiser la première page sélectionnée.","Upload PDF":"Choisir un PDF","Upload PDFs":"Télécharger des PDF","Use 10-25% opacity for readable documents, 30-50% for draft or confidential marks, and tiled mode when you need a repeated security pattern across each page.":"Utilisez une opacité de 10 à 25 % pour les documents lisibles, de 30 à 50 % pour les brouillons ou les marques confidentielles, et le mode mosaïque lorsque vous avez besoin d'un motif de sécurité répété sur chaque page.","use strict":"utiliser strict","Use text presets, a logo, or custom settings.":"Utilisez des préréglages de texte, un logo ou des paramètres personnalisés.","Used for single mark mode.":"Utilisé pour le mode de marque unique.","Vertical Offset":"Décalage vertical","Watermark color hex":"Hex de couleur de filigrane","Watermark color picker":"Sélecteur de couleur de filigrane","Watermark Content":"Contenu du filigrane","Watermark Image":"Image en filigrane","Watermark limits":"Limites du filigrane","Watermark presets":"Préréglages de filigrane","Watermark steps":"Étapes du filigrane","Watermark Tips":"Conseils sur le filigrane","watermark to":"filigrane à","Watermark Type":"Type de filigrane","Watermarking":"Filigrane","Watermarking failed.":"Le filigrane a échoué.","Watermarking runs locally and creates a browser-generated PDF copy. Watermarks are visual deterrents, not access control, copyright enforcement, or redaction.":"Le filigrane s'exécute localement et crée une copie PDF générée par le navigateur. Les filigranes sont des moyens de dissuasion visuels, et non un contrôle d'accès, une application des droits d'auteur ou une rédaction.","Web":"Web","white":"blanc"}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/filigrane-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-watermark/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/filigrane-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/watermark-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-watermark/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Filigrane PDF</nav>
-<div class="fr-hero">
-<h1><em>Filigrane PDF</em></h1>
-<p>Ajoutez un filigrane texte ou image à vos documents PDF pour les protéger.</p>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <a href="/tools/">Outils</a> / <span>Filigrane PDF</span></div>
+    <h1>Filigrane PDF</h1>
+    <p class="hero-sub">Ajoutez un texte de filigrane, réglez son angle, sa taille et son opacité, puis vérifiez le PDF exporté.</p>
+    <div class="hero-badges">
+      <span class="badge">Préréglages de texte</span>
+      <span class="badge">Logo/image</span>
+      <span class="badge">Aperçu en direct</span>
+    </div>
+  </div>
 </div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparer votre PDF localement</h2>
-  <p>Ajoutez votre fichier et le résultat attendu avant d'ouvrir l'outil complet. Les noms de fichiers servent seulement au brief local; aucun PDF n'est envoy? par ce panneau.</p>
-  <div class="fr-prep-fields">
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
-    <label>PDF local<input name="pdfFiles" type="file" accept="application/pdf" multiple data-fr-pdf-files></label>
+
+<main class="tool-main">
+  <div class="workflow-strip" aria-label="Étapes du filigrane">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Choisir un PDF</span><span class="step-copy">Ajoutez un fichier ou un lot.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Définir la marque</span><span class="step-copy">Utilisez des préréglages de texte, un logo ou des paramètres personnalisés.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Prévisualiser et enregistrer</span><span class="step-copy">Vérifiez l'emplacement, puis téléchargez le PDF ou le ZIP.</span></span></div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-privacy-grid"><div><strong>Fichier local</strong>Le panneau lit seulement le nom du PDF pour préparer votre checklist.</div><div><strong>Téléchargement</strong>L'outil source génère un nouveau PDF ? récupérer sur votre appareil.</div><div><strong>Confidentialit?</strong>Ne téléversez pas de document sensible sans vérifier l'outil ouvert.</div></div>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-watermark/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <button type="button" data-fr-prep-download>Télécharger TXT</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+  <div class="tool-main-inner">
+    <section>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Télécharger des PDF</span></div>
+        <div class="card-body">
+          <div class="drop-zone" id="pdfDropZone" role="button" tabindex="0" aria-label="Choisissez les fichiers PDF à filigraner">
+            <div class="drop-title">Choisissez des PDF ou faites-les glisser ici</div>
+            <div class="drop-hint">Prend en charge le filigrane d'un fichier ou d'un lot. Les fichiers restent dans votre navigateur.</div>
+            <input aria-label="Fichiers PDF" class="hidden-input" type="file" id="pdfFileInput" accept=".pdf,application/pdf" multiple>
+          </div>
+          <div class="file-list" id="fileList"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Contenu du filigrane</span></div>
+        <div class="card-body">
+          <div class="field">
+            <div class="label-row"><span class="label-text">Type de filigrane</span></div>
+            <div class="segmented">
+              <button class="choice-btn on" type="button" data-type="text">Texte</button>
+              <button class="choice-btn" type="button" data-type="image">Image</button>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Préréglage rapide</span><span class="field-hint">Définit le texte, l'opacité, la rotation et le motif.</span></div>
+            <div class="preset-row" aria-label="Préréglages de filigrane">
+              <button class="preset-btn" type="button" data-wm-preset="confidential">Confidentiel</button>
+              <button class="preset-btn" type="button" data-wm-preset="draft">Brouillon</button>
+              <button class="preset-btn" type="button" data-wm-preset="sample">Échantillon</button>
+              <button class="preset-btn" type="button" data-wm-preset="approved">Approuvé</button>
+            </div>
+          </div>
+
+          <div id="textPanel">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="watermarkText">Texte</label><span class="field-hint">Les sauts de ligne sont pris en charge.</span></div>
+              <textarea class="textarea" id="watermarkText" placeholder="CONFIDENTIAL">CONFIDENTIAL</textarea>
+            </div>
+            <div class="grid-3">
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="fontSelect">Fonte</label></div>
+                <select class="select" id="fontSelect">
+                  <option value="HelveticaBold">Helvetica gras</option>
+                  <option value="Helvetica">Helvétique</option>
+                  <option value="TimesRoman">Fois</option>
+                  <option value="CourierBold">Courrier gras</option>
+                </select>
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="textColor">Couleur</label><span class="label-value" id="textColorHex">#000000</span></div>
+                <div class="color-row">
+                  <input class="color-input" id="textColor" type="color" value="#000000" aria-label="Sélecteur de couleur de filigrane">
+                  <input aria-label="Hex de couleur de filigrane" class="input" id="customColor" type="text" value="#000000" maxlength="7">
+                </div>
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="fontSize">Taille</label><span class="label-value" id="fontSizeValue">60 points</span></div>
+                <input class="slider" id="fontSize" type="range" min="10" max="160" step="1" value="60">
+              </div>
+            </div>
+          </div>
+
+          <div id="imagePanel" class="hidden">
+            <div class="field">
+              <div class="label-row"><span class="label-text">Image en filigrane</span><span class="field-hint">PNG, JPG, JPEG ou WebP</span></div>
+              <div class="drop-zone" id="imageDropZone" role="button" tabindex="0" aria-label="Choisissez un filigrane d'image">
+                <div class="drop-title">Choisissez un logo ou un filigrane d'image</div>
+                <div class="drop-hint" id="imageFileName">Le PNG transparent fonctionne mieux.</div>
+                <input aria-label="Fichier de filigrane d'image" class="hidden-input" type="file" id="imageFileInput" accept="image/png,image/jpeg,image/webp">
+              </div>
+            </div>
+            <div class="grid-2">
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="imageScale">Largeur de l'image</label><span class="label-value" id="imageScaleValue">30%</span></div>
+                <input class="slider" id="imageScale" type="range" min="5" max="95" step="1" value="30">
+              </div>
+              <div class="field">
+                <div class="label-row"><label class="label-text" for="imageOpacity">Opacité de l'image</label><span class="label-value" id="imageOpacityValue">30%</span></div>
+                <input class="slider" id="imageOpacity" type="range" min="5" max="100" step="1" value="30">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head"><span class="card-title">Emplacement et pages</span></div>
+        <div class="card-body">
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="pageRange">Pages</label></div>
+              <input class="input" id="pageRange" type="text" inputmode="text" placeholder="Tous ou 1-3, 5">
+              <div class="field-hint">Laissez vide pour chaque page.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="layerSelect">Couche</label></div>
+              <select class="select" id="layerSelect">
+                <option value="over">Sur le contenu</option>
+                <option value="under">Derrière le contenu</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="patternSelect">Modèle</label></div>
+              <select class="select" id="patternSelect">
+                <option value="single">Marque unique</option>
+                <option value="tile">Marques carrelées</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Position</span><span class="field-hint">Utilisé pour le mode de marque unique.</span></div>
+            <div class="position-grid" id="positionGrid">
+              <button class="choice-btn" type="button" data-position="top-left">En haut à gauche</button>
+              <button class="choice-btn" type="button" data-position="top-center">Haut</button>
+              <button class="choice-btn" type="button" data-position="top-right">En haut à droite</button>
+              <button class="choice-btn" type="button" data-position="middle-left">Gauche</button>
+              <button class="choice-btn on" type="button" data-position="center">Centre</button>
+              <button class="choice-btn" type="button" data-position="middle-right">Droite</button>
+              <button class="choice-btn" type="button" data-position="bottom-left">En bas à gauche</button>
+              <button class="choice-btn" type="button" data-position="bottom-center">Bas</button>
+              <button class="choice-btn" type="button" data-position="bottom-right">En bas à droite</button>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="textOpacity">Opacité</label><span class="label-value" id="textOpacityValue">30%</span></div>
+              <input class="slider" id="textOpacity" type="range" min="1" max="100" step="1" value="30">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="rotation">Rotation</label><span class="label-value" id="rotationValue">-45 degrés</span></div>
+              <input class="slider" id="rotation" type="range" min="-90" max="90" step="1" value="-45">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="tileGap">Écart de tuile</label><span class="label-value" id="tileGapValue">110 points</span></div>
+              <input class="slider" id="tileGap" type="range" min="20" max="260" step="5" value="110">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="offsetX">Décalage horizontal</label><span class="label-value" id="offsetXValue">0 mm</span></div>
+              <input class="slider" id="offsetX" type="range" min="-100" max="100" step="1" value="0">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="offsetY">Décalage vertical</label><span class="label-value" id="offsetYValue">0 mm</span></div>
+              <input class="slider" id="offsetY" type="range" min="-100" max="100" step="1" value="0">
+            </div>
+          </div>
+
+          <button class="calc-btn" id="watermarkBtn" type="button" disabled>Appliquer un filigrane</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card preview-card">
+        <div class="card-head"><span class="card-title">Aperçu en direct</span></div>
+        <div class="card-body">
+          <div class="preview-wrap">
+            <canvas id="previewCanvas" width="320" height="420"></canvas>
+          </div>
+          <div class="preview-status" id="previewStatus" role="status" aria-live="polite">Téléchargez un PDF pour prévisualiser la première page sélectionnée.</div>
+        </div>
+      </div>
+
+      <div class="card result-card" id="resultCard">
+        <div class="card-head"><span class="card-title">Résultat</span></div>
+        <div class="card-body">
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote" role="status" aria-live="polite"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Télécharger</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Conseils sur le filigrane</div>
+        <div class="info-text">
+          Utilisez une opacité de 10 à 25 % pour les documents lisibles, de 30 à 50 % pour les brouillons ou les marques confidentielles, et le mode mosaïque lorsque vous avez besoin d'un motif de sécurité répété sur chaque page.
+        </div>
+      </div>
+    </aside>
+  </div>
+
+</main>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-watermark-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Limites du filigrane</span>
+        <h2 class="tool-verification-title" id="pdf-watermark-verification-title">Vérifiez la visibilité du filigrane avant d’envoyer le fichier</h2>
+        <p class="tool-verification-lead">Le filigrane s'exécute localement et crée une copie PDF générée par le navigateur. Les filigranes sont des moyens de dissuasion visuels, et non un contrôle d'accès, une application des droits d'auteur ou une rédaction.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Flux de travail PDF local d'abord</span>
+        <p class="tool-verification-note">Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier à une sortie filigranée. Les téléchargements locaux directs ne téléchargent pas vos fichiers.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Méthode</h3>
+        <ul class="tool-verification-list">
+          <li>Applique des superpositions de texte ou d'images aux pages sélectionnées à l'aide de routines de génération PDF locales.</li>
+          <li>Les paramètres d'opacité, de rotation, de placement et de répétition affectent la lisibilité et la taille du fichier.</li>
+          <li>Les filigranes d’images fonctionnent mieux avec les fichiers PNG transparents préparés avant le téléchargement.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Avant de partager</h3>
+        <ul class="tool-verification-list">
+          <li>Ouvrez la sortie dans un autre lecteur et confirmez la couverture de la page, le contraste, l'emplacement, la taille du fichier et l'apparence de l'impression.</li>
+          <li>Ne comptez pas sur les filigranes pour la rédaction confidentielle ou le contrôle d’accès aux documents.</li>
+          <li>Pour les signatures, l'ordre des pages ou les couvertures visuelles, continuez dans <a href="/fr/tools/espace-pdf/">Espace de travail PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
-<iframe src="/tools/pdf-watermark/" class="fr-tool-frame" title="Filigrane PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Filigrane PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function files(){var el=panel.querySelector('[data-fr-pdf-files]');return el&&el.files&&el.files.length?Array.from(el.files).map(function(f){return f.name;}).join(', '):'aucun PDF selectionne';}
-  function summary(){return [title,'Contexte: '+(value('context')||'a preciser'),'Fichier/donnees: '+(value('data')||'a preciser'),'PDF local: '+files(),'Resultat voulu: '+(value('goal')||'a preciser'),'Checklist: verifier pages, qualite du rendu, nom du fichier de sortie et conservation locale avant partage.'].join('\n');}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  panel.addEventListener('change',render);
-  render();
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-  var download=panel.querySelector('[data-fr-prep-download]');
-  if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="checklist-filigrane-pdf.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});
-})();
-</script>
-<section class="fr-seo">
-<h2>Filigrane PDF</h2>
-<p>L’outil de filigrane PDF d’AfroTools ajoute des filigranes personnalisés. Choisissez entre un filigrane texte ou importez votre logo.</p>
-<p>Personnalisez la position, la taille, l’opacité et l’angle de rotation. Appliquez sur toutes les pages ou certaines seulement.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Puis-je utiliser mon logo comme filigrane ?</summary><p>Oui, importez une image PNG ou JPG de votre logo pour l’utiliser comme filigrane.</p></details>
-<details><summary>Le filigrane peut-il être personnalisé ?</summary><p>Oui, ajustez le texte, la police, la couleur, la taille, l’opacité, l’angle et la position.</p></details>
-<details><summary>Puis-je appliquer le filigrane sur des pages spécifiques ?</summary><p>Oui, choisissez toutes les pages, les pages paires, impaires ou une sélection personnalisée.</p></details>
+<afro-related-tools category="document-pdf" current="pdf-watermark" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-watermark">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-watermark">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : PDF, ZIP</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-watermark/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-watermark"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script> <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script> <script src="/tools/pdf-watermark/app.js?v=a079d992"></script> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var presets = {
+      confidential: { text: 'CONFIDENTIAL', color: '#B91C1C', opacity: '32', rotation: '-45', pattern: 'tile' },
+      draft: { text: 'DRAFT', color: '#1D4ED8', opacity: '24', rotation: '-35', pattern: 'single' },
+      sample: { text: 'SAMPLE', color: '#6D28D9', opacity: '28', rotation: '-45', pattern: 'tile' },
+      approved: { text: 'APPROVED', color: '#047857', opacity: '30', rotation: '0', pattern: 'single' }
+    };
+    function setValue(id, value) {
+      var field = document.getElementById(id);
+      if (!field) return;
+      field.value = value;
+      field.dispatchEvent(new Event('input', { bubbles: true }));
+      field.dispatchEvent(new Event('change', { bubbles: true }));
+    }
+    document.querySelectorAll('[data-wm-preset]').forEach(function (button) {
+      button.addEventListener('click', function () {
+        var preset = presets[button.dataset.wmPreset];
+        if (!preset) return;
+        setValue('watermarkText', preset.text);
+        setValue('textColor', preset.color);
+        setValue('customColor', preset.color);
+        setValue('textOpacity', preset.opacity);
+        setValue('rotation', preset.rotation);
+        setValue('patternSelect', preset.pattern);
+      });
+    });
+    [
+      ['pdfDropZone', 'pdfFileInput'],
+      ['imageDropZone', 'imageFileInput']
+    ].forEach(function (pair) {
+      var zone = document.getElementById(pair[0]);
+      var input = document.getElementById(pair[1]);
+      if (!zone || !input) return;
+      zone.addEventListener('keydown', function (event) {
+        if (event.key !== 'Enter' && event.key !== ' ') return;
+        event.preventDefault();
+        input.click();
+      });
+    });
+  });
+</script> <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

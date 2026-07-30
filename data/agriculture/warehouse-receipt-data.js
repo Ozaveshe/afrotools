@@ -1,0 +1,206 @@
+(function(root,factory){'use strict';var data=factory();if(typeof module==='object'&&module.exports)module.exports=data;if(root)root.WAREHOUSE_RECEIPT_DATA=data;}(typeof window!=='undefined'?window:globalThis,function(){return {
+  "schemaVersion": 1,
+  "countries": {
+    "NG": {
+      "name": "Nigeria",
+      "currency": "NGN",
+      "symbol": "&#8358;",
+      "ltv": 70,
+      "rate": 24,
+      "storage": 2000,
+      "insurance": 1.5,
+      "handling": 1200,
+      "wrs": "AFEX (Africa Exchange)",
+      "info": "<strong>AFEX (Africa Exchange)</strong> is Nigeria's leading electronic WRS. Over 100 silos across 19 states. Electronic receipts accepted by Sterling Bank, GTBank, and Zenith Bank. Loan disbursement in 24 hrs. NIRSAL Microfinance Bank offers concessionary rates under the CBN Anchor Borrowers' Programme."
+    },
+    "KE": {
+      "name": "Kenya",
+      "currency": "KES",
+      "symbol": "KSh",
+      "ltv": 70,
+      "rate": 16,
+      "storage": 200,
+      "insurance": 1.5,
+      "handling": 150,
+      "wrs": "EAGC WRS / KWRA",
+      "info": "<strong>EAGC (Eastern Africa Grain Council) WRS</strong> operates certified warehouses across Kenya. The Kenya Warehouse Receipt Authority (KWRA) licenses and regulates facilities. KCB, Equity Bank, and Co-operative Bank accept EAGC receipts as collateral at preferential rates."
+    },
+    "ET": {
+      "name": "Ethiopia",
+      "currency": "ETB",
+      "symbol": "Br",
+      "ltv": 65,
+      "rate": 15,
+      "storage": 120,
+      "insurance": 1.5,
+      "handling": 80,
+      "wrs": "ECX (Ethiopian Commodity Exchange)",
+      "info": "<strong>ECX (Ethiopian Commodity Exchange)</strong> is mandatory for all coffee and sesame exports. Storage in ECX-certified warehouses is required before grading. The government provides subsidised WRS financing through the Development Bank of Ethiopia for smallholders."
+    },
+    "GH": {
+      "name": "Ghana",
+      "currency": "GHS",
+      "symbol": "GH&#8373;",
+      "ltv": 65,
+      "rate": 28,
+      "storage": 18,
+      "insurance": 1.5,
+      "handling": 12,
+      "wrs": "GCX (Ghana Commodity Exchange)",
+      "info": "<strong>GCX (Ghana Commodity Exchange)</strong> launched in 2018 with government support. Accredited warehouses in Tamale, Techiman, and Kumasi. Agricultural Development Bank (ADB) offers WRS-linked loans. Main commodities: maize, soybeans, groundnuts."
+    },
+    "TZ": {
+      "name": "Tanzania",
+      "currency": "TZS",
+      "symbol": "TSh",
+      "ltv": 65,
+      "rate": 18,
+      "storage": 6000,
+      "insurance": 1.5,
+      "handling": 5000,
+      "wrs": "TWLB (Tanzania Warehouse Licensing Board)",
+      "info": "<strong>TWLB (Tanzania Warehouse Licensing Board)</strong> under the Ministry of Industry and Trade licenses and inspects all certified warehouses. CRDB Bank and NBC offer WRS-linked financing. The Warehouse Receipts Act 2005 governs the system."
+    },
+    "ZM": {
+      "name": "Zambia",
+      "currency": "ZMW",
+      "symbol": "K",
+      "ltv": 65,
+      "rate": 25,
+      "storage": 55,
+      "insurance": 1.5,
+      "handling": 35,
+      "wrs": "ZAMACE (Zambia Agricultural Commodity Exchange)",
+      "info": "<strong>ZAMACE</strong> operates Zambia's WRS with certified warehouses in Lusaka, Kabwe, Chipata, and Mongu. Zanaco and Indo Zambia Bank offer WRS-linked financing. Focus commodities: maize, soybeans, groundnuts. Minimum deposit: 5 tonnes."
+    },
+    "ZA": {
+      "name": "South Africa",
+      "currency": "ZAR",
+      "symbol": "R",
+      "ltv": 75,
+      "rate": 12,
+      "storage": 160,
+      "insurance": 1,
+      "handling": 90,
+      "wrs": "SAFEX / JSE Agri",
+      "info": "<strong>SAFEX (now JSE Agri)</strong> operates Africa's most sophisticated agricultural commodity exchange. Silo certificates (the South African equivalent of warehouse receipts) are exchange-traded instruments. ABSA AgriBusiness, Nedbank, and Standard Bank accept JSE Agri silo certificates. Main crops: white/yellow maize, wheat, sunflower, soybeans."
+    },
+    "EG": {
+      "name": "Egypt",
+      "currency": "EGP",
+      "symbol": "E&#163;",
+      "ltv": 70,
+      "rate": 18,
+      "storage": 90,
+      "insurance": 1.5,
+      "handling": 60,
+      "wrs": "Egyptian Commodity Exchange",
+      "info": "<strong>Egyptian Commodity Exchange</strong> covers wheat, rice, and cotton. The government's silo system stores millions of tonnes annually. The Agricultural Bank of Egypt (ABE) offers WRS-linked loans. Cotton WRS is particularly active through the Egyptian Cotton Exchange."
+    },
+    "UG": {
+      "name": "Uganda",
+      "currency": "UGX",
+      "symbol": "USh",
+      "ltv": 60,
+      "rate": 20,
+      "storage": 18000,
+      "insurance": 1.5,
+      "handling": 12000,
+      "wrs": "EAGC WRS (Uganda)",
+      "info": "<strong>EAGC WRS</strong> also covers Uganda through certified facilities in Kampala, Gulu, and Mbarara. DFCU Bank and Stanbic Uganda accept EAGC receipts. The WRS is developing rapidly supported by government and USAID."
+    },
+    "RW": {
+      "name": "Rwanda",
+      "currency": "RWF",
+      "symbol": "RF",
+      "ltv": 60,
+      "rate": 18,
+      "storage": 3500,
+      "insurance": 1.5,
+      "handling": 2500,
+      "wrs": "RBA / EAGC WRS",
+      "info": "<strong>Rwanda BRD (Business Development Fund)</strong> and EAGC WRS cover Rwanda. The National Warehouse Receipt System is under the Ministry of Agriculture. Main commodities: maize, beans, rice, sorghum. Bank of Kigali and Equity Bank Rwanda offer WRS financing."
+    },
+    "MW": {
+      "name": "Malawi",
+      "currency": "MWK",
+      "symbol": "MK",
+      "ltv": 60,
+      "rate": 22,
+      "storage": 5500,
+      "insurance": 1.5,
+      "handling": 4000,
+      "wrs": "ACE (Agricultural Commodity Exchange)",
+      "info": "<strong>ACE (Agricultural Commodity Exchange)</strong> operates Malawi's WRS with facilities in Lilongwe, Blantyre, and Mzuzu. NBS Bank and National Bank of Malawi offer WRS-linked financing. Main commodities: maize, soybeans, groundnuts, tobacco (separate system)."
+    },
+    "ZW": {
+      "name": "Zimbabwe",
+      "currency": "USD",
+      "symbol": "$",
+      "ltv": 65,
+      "rate": 18,
+      "storage": 8,
+      "insurance": 1.5,
+      "handling": 5,
+      "wrs": "Grain Marketing Board / CBZ WRS",
+      "info": "<strong>Grain Marketing Board (GMB)</strong> and CBZ Holdings operate Zimbabwe's WRS in USD. Main facilities in Harare, Bulawayo, and Gweru. CBZ Bank offers WRS-linked financing. Main commodities: white maize, soya, wheat, tobacco."
+    }
+  },
+  "commodities": {
+    "maize": {
+      "name": "Maize",
+      "increase": 30,
+      "pattern": "Consistent 25–40% lean-season premium. Peak scarcity: March–May (East Africa), Aug–Oct (West Africa). Most reliable WRS commodity."
+    },
+    "rice": {
+      "name": "Rice",
+      "increase": 25,
+      "pattern": "Moderate 20–30% seasonal increase. Two seasons in many countries reduce volatility. Best for WRS in single-season areas."
+    },
+    "sorghum": {
+      "name": "Sorghum",
+      "increase": 28,
+      "pattern": "Reliable 20–35% seasonal price increase. Drought-resistant storage makes quality maintenance easier. Strong WRS candidate."
+    },
+    "millet": {
+      "name": "Millet",
+      "increase": 25,
+      "pattern": "Similar to sorghum — 20–30% seasonal premium. Very long shelf life makes extended storage possible."
+    },
+    "soybeans": {
+      "name": "Soybeans",
+      "increase": 20,
+      "pattern": "Moderate 15–25% seasonal increase. Export demand from crushing industry supports lean-season prices. Popular on ZAMACE/SAFEX."
+    },
+    "sesame": {
+      "name": "Sesame",
+      "increase": 18,
+      "pattern": "Lower but stable 15–22% seasonal increase. High value per tonne makes even small increases profitable. ECX mandatory crop."
+    },
+    "groundnuts": {
+      "name": "Groundnuts",
+      "increase": 25,
+      "pattern": "Good 20–30% lean-season premium. High oil content means storage quality is critical — ensure aflatoxin control."
+    },
+    "cowpeas": {
+      "name": "Cowpeas",
+      "increase": 28,
+      "pattern": "High seasonal variation — 22–35% increase. Very popular in West Africa (Nigeria, Ghana, Burkina Faso). Short shelf life requires good storage."
+    },
+    "wheat": {
+      "name": "Wheat",
+      "increase": 15,
+      "pattern": "Moderate 12–20% seasonal increase in domestic markets. Import parity pricing limits upside in countries with high imports (Egypt, Nigeria)."
+    },
+    "coffee": {
+      "name": "Coffee",
+      "increase": 15,
+      "pattern": "Lower seasonal variation but high absolute value per tonne. ECX mandatory. International prices (NYMEX) matter more than domestic seasonality."
+    },
+    "cocoa": {
+      "name": "Cocoa",
+      "increase": 12,
+      "pattern": "Limited domestic seasonality — prices driven more by international markets (ICE). Best for WRS through GCX (Ghana) or AFEX cocoa product."
+    }
+  }
+};}));

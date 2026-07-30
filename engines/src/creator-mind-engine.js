@@ -1,6 +1,44 @@
 !function() {
   "use strict";
   window.AfroTools = window.AfroTools || {}, window.AfroTools.CreatorMindEngine = {
+    generateLocalIdeas: function(input, language) {
+      var source = input || {}, topic = String(source.topic || "").trim(), audience = String(source.audience || "").trim();
+      if (!topic) throw new Error("A topic is required.");
+      if (!audience) throw new Error("An audience is required.");
+      var fr = language === "fr";
+      var templates = fr ? [
+        "Guide débutant : {topic} pour {audience}",
+        "3 erreurs fréquentes sur {topic}",
+        "Liste de contrôle avant de commencer {topic}",
+        "Question-réponse : ce que {audience} demande sur {topic}",
+        "Étude de cas à documenter sur {topic}",
+        "Comparaison de deux approches de {topic}",
+        "Coulisses : comment préparer {topic}",
+        "Mythe ou réalité autour de {topic}",
+        "Glossaire essentiel de {topic}",
+        "Sources fiables à consulter avant de parler de {topic}"
+      ] : [
+        "Beginner guide: {topic} for {audience}",
+        "3 common mistakes with {topic}",
+        "Checklist before starting {topic}",
+        "Q&A: what {audience} asks about {topic}",
+        "A case study to document about {topic}",
+        "Compare two approaches to {topic}",
+        "Behind the scenes: preparing {topic}",
+        "Myth or fact about {topic}",
+        "Essential {topic} glossary",
+        "Reliable sources to check before discussing {topic}"
+      ];
+      return {
+        topic: topic,
+        audience: audience,
+        platform: String(source.platform || "instagram"),
+        language: fr ? "fr" : "en",
+        ideas: templates.map(function(template, index) {
+          return {id: index + 1, title: template.replace(/\{topic\}/g, topic).replace(/\{audience\}/g, audience)};
+        })
+      };
+    },
     GENERATION_TYPES: {
       caption: {
         label: "Caption Writer",

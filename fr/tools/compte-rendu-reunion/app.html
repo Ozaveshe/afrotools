@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compte rendu de réunion — espace de travail | AfroTools</title>
+<meta name="description" content="Structurez décisions, actions, responsables et échéances, puis exportez le compte rendu sans envoyer les notes.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<meta property="og:title" content="Compte rendu de réunion">
+<meta property="og:description" content="Structurez décisions, actions, responsables et échéances, puis exportez le compte rendu sans envoyer les notes.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/meeting-minutes.webp">
+<meta property="og:image:width" content="800">
+<meta property="og:image:height" content="450">
+<meta property="og:url" content="https://afrotools.com/fr/tools/compte-rendu-reunion/app">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Meeting Minutes Generator App | AfroTools">
+<meta name="twitter:description" content="Create structured meeting minutes with PDF, Word, TXT, CSV, ICS, JSON, copy, and print export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/meeting-minutes.webp">
+<meta property="article:modified_time" content="2026-05-01">
+<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script> <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script> <style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
+.topbar a{color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:44px}
+.btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
+.btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
+.btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
+.btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
+.btn-danger{color:#b91c1c;border-color:#fecaca}
+.app-shell{width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;text-transform:uppercase}
+.hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
+.hero-strip p{margin:8px 0 0;color:#4b5563;max-width:820px;line-height:1.55}
+.status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
+.workspace{display:grid;grid-template-columns:minmax(330px,430px) minmax(460px,1fr) minmax(300px,350px);gap:16px;align-items:start}
+.panel,.preview-card,.insights-card{background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{padding:18px;max-height:calc(100vh - 112px);overflow:auto}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;color:#374151}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field span{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
+.field textarea{min-height:84px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.field.full{grid-column:1/-1}
+.helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.row-builder{border:1px solid #e5e7eb;background:#fbfcff;border-radius:8px;padding:12px;margin:10px 0}
+.row-builder .form-grid{grid-template-columns:1fr 1fr}
+.list{display:grid;gap:8px;margin:8px 0 12px}
+.list-item{border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:10px;display:grid;gap:7px}
+.list-title{font-size:.86rem;font-weight:900;color:#111827}
+.list-meta{font-size:.76rem;color:#6b7280;line-height:1.4}
+.list-actions{display:flex;gap:6px;flex-wrap:wrap}
+.agenda-card{border:1px solid #e5e7eb;border-radius:8px;padding:12px;background:#fff;margin-bottom:10px}
+.agenda-top{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.agenda-index{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;background:#eef5ff;color:#0b63ce;font-size:.78rem;font-weight:900;flex:0 0 auto}
+.action-status{display:inline-flex;border-radius:999px;padding:3px 7px;font-size:.68rem;font-weight:900;text-transform:uppercase}
+.status-open{background:#eff6ff;color:#1d4ed8}
+.status-progress{background:#fffbeb;color:#92400e}
+.status-done{background:#f0fdf4;color:#166534}
+.priority-high{color:#991b1b}.priority-medium{color:#92400e}.priority-low{color:#166534}
+.preview-card{overflow:hidden}
+.preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
+.preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.export-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:12px 16px 0;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0b63ce}
+.export-review-status{grid-column:1/-1;margin:0;color:#475569;font-size:.76rem;font-weight:700}
+.minutes-editor{display:grid;grid-template-columns:minmax(0,1fr) minmax(300px,430px);gap:0;min-height:760px}
+.minutes-text-wrap{padding:16px;border-right:1px solid #e5e7eb;background:#f9fafb}
+#minutesText{width:100%;min-height:700px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.58;font-family:Consolas,'JetBrains Mono',monospace;font-size:13px}
+#minutesText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
+.paper-wrap{padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:650px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:12.5px;line-height:1.58}
+.paper h3{font-family:'DM Sans',system-ui,sans-serif;margin:18px 0 8px;font-size:12px;text-transform:uppercase;color:#0b63ce}
+.paper p{margin:0 0 10px;white-space:pre-wrap}
+.paper .paper-title{font-size:19px;font-weight:700;margin-bottom:4px}
+.paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
+.insights-card{padding:18px;position:sticky;top:82px}
+.score-ring{display:grid;grid-template-columns:92px 1fr;gap:14px;align-items:center;margin:14px 0}
+.score-number{display:grid;place-items:center;width:92px;height:92px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:9px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.45rem}
+.score-copy{font-size:.84rem;color:#4b5563;line-height:1.45}
+.metric-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}
+.metric{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
+.metric strong{display:block;font-size:1.22rem;color:#111827}
+.metric span{font-size:.72rem;color:#6b7280;font-weight:800;text-transform:uppercase}
+.checks{display:grid;gap:8px;margin:14px 0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:9px 10px;font-size:.8rem;line-height:1.35;color:#374151}
+.check.good{border-color:#bbf7d0;background:#f0fdf4}
+.check.warn{border-color:#fde68a;background:#fffbeb}
+.saved-list{display:grid;gap:8px;max-height:240px;overflow:auto;margin-top:10px}
+.saved-item{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
+.saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
+.saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
+.toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.import-input{display:none}
+@media print{body{background:#fff}.topbar,.hero-strip,.panel,.insights-card,.preview-top,.export-review,.minutes-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.minutes-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+:root[data-theme=dark] body{background:#0b1120;color:#e5edf8}
+:root[data-theme=dark] .topbar,:root[data-theme=dark] .panel,:root[data-theme=dark] .preview-card,:root[data-theme=dark] .insights-card,:root[data-theme=dark] .list-item,:root[data-theme=dark] .agenda-card,:root[data-theme=dark] .saved-item{background:#101a2b;border-color:#294164;color:#e5edf8}
+:root[data-theme=dark] .preview-top,:root[data-theme=dark] .minutes-text-wrap,:root[data-theme=dark] .row-builder,:root[data-theme=dark] .metric{background:#152238;border-color:#294164}
+:root[data-theme=dark] .field input,:root[data-theme=dark] .field select,:root[data-theme=dark] .field textarea,:root[data-theme=dark] #minutesText{background:#0b1423;border-color:#35527b;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme=dark] .field span,:root[data-theme=dark] .panel h2,:root[data-theme=dark] .panel h3,:root[data-theme=dark] .preview-card h2,:root[data-theme=dark] .insights-card h2,:root[data-theme=dark] .list-title,:root[data-theme=dark] .metric strong,:root[data-theme=dark] .topbar-title{color:#f1f5f9}
+:root[data-theme=dark] .helper,:root[data-theme=dark] .list-meta,:root[data-theme=dark] .score-copy,:root[data-theme=dark] .metric span,:root[data-theme=dark] .hero-strip p{color:#b7c5d8}
+:root[data-theme=dark] .export-review{background:#101d31;border-color:#35527b;color:#dbeafe}
+:root[data-theme=dark] .export-review-status{color:#b7c5d8}
+:root[data-theme=dark] .check{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme=dark] .check strong{color:#f1f5f9}
+:root[data-theme=dark] .check.good{background:#10271f;border-color:#2f6f50}
+:root[data-theme=dark] .check.warn{background:#2b2515;border-color:#7c6723}
+:root[data-theme=dark] .paper{background:#fff;color:#1f2937;border-color:#cbd5e1}
+:root[data-theme=dark] .paper p,:root[data-theme=dark] .paper .paper-title{color:#1f2937!important}
+:root[data-theme=dark] .paper h3{color:#0b63ce!important}
+:root[data-theme=dark] .paper .paper-muted{color:#64748b!important;border-color:#e2e8f0!important}
+@media(max-width:1220px){.workspace{grid-template-columns:minmax(310px,430px) minmax(440px,1fr)}.insights-card{grid-column:1/-1;position:static}.minutes-editor{grid-template-columns:1fr}}
+@media(max-width:780px){.topbar{align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workspace{grid-template-columns:1fr}.panel{max-height:none}.form-grid,.row-builder .form-grid{grid-template-columns:1fr}.minutes-editor{min-height:auto}.minutes-text-wrap{border-right:0;border-bottom:1px solid #e5e7eb}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}}
+</style> <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+<meta name="content-language" content="fr">
+
+<meta property="og:image:alt" content="Compte rendu de réunion">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"meeting-minutes","locale":"fr","englishOwner":"tools/meeting-minutes/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"(prefers-color-scheme: dark)":"(préfère la palette de couleurs : foncé)","[data-action]":"[données-action]","[data-action=\"rebuild\"],[data-action^=\"add-\"],[data-remove-attendee],[data-remove-agenda],[data-remove-decision],[data-remove-action],[data-toggle-action],[data-load],[data-delete]":"[data-action=\"rebuild\"],[data-action^=\"add-\"],[data-remove-attendee],[data-remove-agenda],[data-remove-decision],[data-remove-action],[data-toggle-action],[data-load],[data-delete]","#actionList .list-item":"#actionList .list-item","Absent":"Absent","Action":"Action","Action export":"Exportation d'actions","Action items":"Éléments d'action","ActionDue":"ActionÉdue","Actions":"Actes","Actions CSV":"Actions CSV","Actions: Njeri to send procurement schedule by Friday. Kofi to circulate updated risk log before the next meeting.":"Actions : Njeri enverra le calendrier de passation des marchés d'ici vendredi. Kofi diffusera un journal des risques mis à jour avant la prochaine réunion.","Add a named meeting, date, chair, and complete minutes before this export.":"Ajoutez une réunion nommée, une date, un président et des minutes complètes avant cette exportation.","Add action":"Ajouter une action","Add agenda item":"Ajouter un point à l'ordre du jour","Add at least one action item before exporting the actions CSV.":"Ajoutez au moins un élément d'action avant d'exporter les actions au format CSV.","Add attendee":"Ajouter un participant","Add attendees, decisions, and action owners to start scoring.":"Ajoutez des participants, des décisions et des propriétaires d'actions pour commencer à noter.","Add decision":"Ajouter une décision","Add the next meeting date before exporting the calendar file.":"Ajoutez la date de la prochaine réunion avant d'exporter le fichier de calendrier.","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","Afro Foods Ltd":"Afro Foods Ltd","aft_theme":"aft_theme","AG":"AG","Agenda":"Ordre du jour","Agenda and discussion":"Ordre du jour et discussion","Agenda item or decision":"Point ou décision de l’ordre du jour","Agenda templates":"Modèles d'ordre du jour","Agenda title":"Titre de l'ordre du jour","Aisha Bello":"Aïcha Bello","Apology":"Excuses","app.html":"application.html","Approved":"Approuvé","Approved hiring two regional coordinators.":"Approuvé l'embauche de deux coordonnateurs régionaux.","Assign owners, due dates, priority, status, and source for each follow-up item.":"Attribuez des propriétaires, des dates d'échéance, une priorité, un statut et une source à chaque élément de suivi.","Assign the work":"Attribuer le travail","AT":"À","Attendance status":"Statut de présence","Attendees":"Participants","auto":"auto","Back":"Retour","Back to meeting minutes landing page":"Retour à la page d'accueil du compte rendu de la réunion","breadcrumb":"fil d'Ariane","Budget approval":"Approbation du budget","Budget approved with revised supplier cap.":"Budget approuvé avec plafond de fournisseurs révisé.","Build and review the minutes before downloading, copying, or printing.":"Créez et révisez le procès-verbal avant de le télécharger, de le copier ou de l'imprimer.","Build minutes before, during, or after the meeting. Capture agenda discussion, decisions, action owners, due dates, risks, and next steps without sending private notes to a server.":"Créez des minutes avant, pendant ou après la réunion. Capturez les discussions de l'ordre du jour, les décisions, les responsables des actions, les dates d'échéance, les risques et les prochaines étapes sans envoyer de notes privées à un serveur.","Builder":"Constructeur","BusinessApplication":"Application métier","Can I save multiple meetings?":"Puis-je enregistrer plusieurs réunions ?","Can I track action status?":"Puis-je suivre le statut de l'action ?","Capture the discussion":"Capturez la discussion","chair":"chaise","Chair":"Chaise","change":"changement","Checker":"Vérificateur","Checks basics, attendees, agenda evidence, decisions, owners, due dates, and next meeting readiness.":"Vérifie les bases, les participants, les preuves de l'ordre du jour, les décisions, les propriétaires, les dates d'échéance et la préparation à la prochaine réunion.","Choose a template and add meeting basics before the session starts.":"Choisissez un modèle et ajoutez les bases de la réunion avant le début de la session.","click":"cliquez","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","copy":"copie","Copy recap":"Copier le récapitulatif","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","Create Minutes":"Créer un procès-verbal","Create private meeting minutes with agenda notes, decisions, action owners, due dates, saved drafts, and PDF, Word, TXT, CSV, ICS, or JSON export.":"Créez des procès-verbaux de réunions privées avec des notes d'ordre du jour, des décisions, des propriétaires d'actions, des dates d'échéance, des brouillons enregistrés et une exportation PDF, Word, TXT, CSV, ICS ou JSON.","Create structured minutes that drive follow-through. Capture agenda notes, attendance, decisions, action owners, deadlines, risks, parking-lot items, and next meetings, then export in the format your team needs.":"Créez des minutes structurées qui assurent le suivi. Capturez les notes de l'ordre du jour, les présences, les décisions, les responsables des actions, les délais, les risques, les points de stationnement et les prochaines réunions, puis exportez-les dans le format dont votre équipe a besoin.","CV / Resume Builder":"Générateur de CV","dark":"sombre","data-action":"action de données","data-theme":"thème de données","data-theme-choice":"choix du thème des données","Date":"Date","DC":"CC","Decision":"Décision","Decision capture":"Capture de décision","Decision or outcome":"Décision ou résultat","Decisions":"Décisions","Decisions: approve two regional coordinators; defer supplier cap review.":"Décisions : approuver deux coordinateurs régionaux ; reporter l'examen du plafond des fournisseurs.","Deferred":"Différé","Discussion notes":"Notes de discussion","Does it record audio?":"Est-ce qu'il enregistre de l'audio ?","Done":"Terminé","Download action items as CSV for Excel, Sheets, trackers, or team follow-up lists.":"Téléchargez des éléments d'action au format CSV pour Excel, Sheets, trackers ou listes de suivi d'équipe.","Download PDF":"Télécharger le PDF","Download PDF, Word, TXT, CSV, ICS, or JSON, or copy a recap for email and chat.":"Téléchargez des PDF, Word, TXT, CSV, ICS ou JSON, ou copiez un récapitulatif pour l'envoyer par e-mail et par chat.","Draft minutes":"Projet de procès-verbal","Due date":"Date d'échéance","Edit freely. Click Rebuild to regenerate from the structured form.":"Modifiez librement. Cliquez sur Reconstruire pour régénérer à partir du formulaire structuré.","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","Editable recap":"Récapitulatif modifiable","Email optional":"E-mail facultatif","End time":"Heure de fin","EndTime":"Heure de fin","Export an ICS calendar file for the next meeting using the minutes context.":"Exportez un fichier de calendrier ICS pour la prochaine réunion à l'aide du contexte des minutes.","Export and share":"Exporter et partager","Exports":"Exportations","Feature summary":"Résumé des fonctionnalités","Features":"Caractéristiques","Finance lead":"Responsable financier","Follow-through preview":"Aperçu du suivi","Follow-through readiness":"Préparation au suivi","Follow-up context":"Contexte de suivi","Free":"Gratuit","Free Meeting Minutes Generator":"Générateur de procès-verbaux de réunion gratuit","Free Meeting Minutes Generator for Africa":"Générateur de procès-verbaux de réunion gratuit pour l'Afrique","Free Meeting Minutes Generator for Africa | AfroTools":"Générateur de procès-verbaux de réunion gratuit pour l'Afrique | AfroOutils","Frequently Asked Questions":"Questions fréquentes","From meeting to follow-up in 4 steps":"De la réunion au suivi en 4 étapes","Generated from the structured form. You can edit the text directly before exporting.":"Généré à partir du formulaire structuré. Vous pouvez modifier directement le texte avant l’exportation.","Generator":"Générateur","Good meeting minutes do more than summarize a conversation. They preserve decisions, assign owners, clarify due dates, and give every participant the same record of what happens next. AfroTools helps teams create minutes that can move from discussion to follow-up without a complicated workspace or recording bot.":"Un bon compte rendu de réunion fait plus que résumer une conversation. Ils préservent les décisions, attribuent les propriétaires, clarifient les dates d'échéance et donnent à chaque participant le même enregistrement de ce qui se passe ensuite. AfroTools aide les équipes à créer des minutes qui peuvent passer de la discussion au suivi sans espace de travail compliqué ni robot d'enregistrement.","High":"Élevée","I reviewed the attendees, agenda, decisions, action owners, deadlines, risks, next meeting, and final minutes preview.":"J'ai examiné les participants, l'ordre du jour, les décisions, les responsables des actions, les délais, les risques, la prochaine réunion et l'aperçu du procès-verbal final.","Import":"Importer","ImportInput":"ImporterEntrée","In progress":"En cours","input":"saisir","Invoice Generator":"Générateur de facture","Is my meeting data private?":"Les données de ma réunion sont-elles privées ?","Is this free to use?":"Est-ce gratuit ?","Key points, objections, updates, or context.":"Points clés, objections, mises à jour ou contexte.","Kofi Mensah":"Kofi Mensah","light":"lumière","Location or platform":"Emplacement ou plateforme","Low":"Faible","Managing Director":"Directeur général","Many AI meeting tools work by recording or joining meetings. AfroTools is different: it is a private local builder for typed notes. You stay in control of what is captured and what leaves your device.":"De nombreux outils de réunion IA fonctionnent en enregistrant ou en rejoignant des réunions. AfroTools est différent : il s’agit d’un constructeur local privé de notes dactylographiées. Vous gardez le contrôle de ce qui est capturé et de ce qui quitte votre appareil.","Medium":"Moyenne","Meeting details":"Détails de la réunion","Meeting Minutes":"Procès-verbal de la réunion","Meeting Minutes Generator":"Générateur de procès-verbaux de réunion","Meeting Minutes Generator App | AfroTools":"Application Générateur de procès-verbaux de réunion | AfroOutils","Meeting Minutes Generator for professional meeting follow-up":"Générateur de procès-verbaux de réunion pour le suivi de réunions professionnelles","Meeting operating system":"Système d'exploitation de réunion","Meeting quality":"Qualité des réunions","Meeting title":"Titre de la réunion","meeting-minutes":"procès-verbal de réunion","MeetingDate":"Date de la réunion","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Minute taker":"Preneur de minutes","minutes":"minutes","Minutes changed. Review the final preview again before export.":"Les minutes ont changé. Vérifiez à nouveau l'aperçu final avant l'exportation.","Minutes style":"Style de procès-verbal","Minutes text":"Texte du procès-verbal","Minutes that become accountable work":"Des minutes qui deviennent un travail responsable","Name":"Nom","name@example.com":"nom@exemple.com","Name@example.com":"Nom@exemple.com","Needs more structure before this can drive follow-through.":"Une structure plus précise est nécessaire pour assurer le suivi.","New Minutes":"Nouveau procès-verbal","Next agenda":"Ordre du jour suivant","Next date":"Prochain rendez-vous","Next meeting":"Prochaine réunion","Next meeting file":"Dossier de la prochaine réunion","Next time":"La prochaine fois","NextDate":"Date suivante","NextTime":"La prochaine fois","Njeri":"Njeri","No agenda items yet. Choose a template or add one below.":"Aucun point à l’ordre du jour. Choisissez un modèle ou ajoutez-en un ci-dessous.","No recording, no transcription bot, no upload. Typed notes stay in your browser unless you export or share.":"Pas d'enregistrement, pas de robot de transcription, pas de téléchargement. Les notes saisies restent dans votre navigateur sauf si vous les exportez ou les partagez.","No. This is a structured text tool for typed or pasted notes. It does not record, transcribe, or join meetings.":"Non. Il s’agit d’un outil de texte structuré pour les notes tapées ou collées. Il n’enregistre pas, ne transcrit pas et ne rejoint pas les réunions.","Noted":"Noté","Open":"Ouvrir","Organization":"Organisation","Owner":"Propriétaire","Parking lot":"Parking","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF Merge & Split":"Fusionner et diviser des PDF","PDF Workspace":"Espace de travail PDF","PDF, Word-compatible DOC, TXT, action-items CSV, next-meeting ICS, JSON backup, print, and copy.":"PDF, DOC compatible Word, TXT, éléments d'action CSV, ICS de la prochaine réunion, sauvegarde JSON, impression et copie.","Prepare the agenda":"Préparer l'ordre du jour","Present":"Présent","Price":"Prix","print":"imprimer","Print":"Imprimer","Print preview":"Aperçu avant impression","Priority":"Priorité","Private by default":"Privé par défaut","Private local workflow":"Flux de travail local privé","Q2 Expansion Review":"Examen de l'expansion du deuxième trimestre","QA":"Assurance qualité","Readiness score":"Score de préparation","Rebuild":"Reconstruire","Record agenda outcomes and standalone decisions with status and owner.":"Enregistrez les résultats de l’agenda et les décisions autonomes avec le statut et le propriétaire.","Rejected":"Rejeté","Related tools":"Outils associés","Remote":"Télécommande","Requires JavaScript":"Nécessite JavaScript","Review the final minutes preview and confirm it before export.":"Consultez l’aperçu des dernières minutes et confirmez-le avant l’exportation.","Risks or blockers":"Risques ou bloqueurs","Risks, blockers, dependencies, compliance concerns.":"Risques, bloqueurs, dépendances, problèmes de conformité.","Role":"Rôle","Save":"Enregistrer","Saved minutes":"Minutes économisées","saved-minutes":"minutes économisées","See Features":"Voir les fonctionnalités","Send revised procurement schedule.":"Envoyer le calendrier d’approvisionnement révisé.","Setup":"Installation","Source":"Source","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","Start from board, team sync, project review, sales review, NGO, school committee, or blank minutes.":"Commencez par le conseil d'administration, la synchronisation d'équipe, l'examen de projet, l'examen des ventes, l'ONG, le comité d'école ou les minutes vierges.","Start time":"Heure de début","StartTime":"Heure de début","Status":"Statut","Structured for accountability":"Structuré pour la responsabilité","Template":"Modèle","Templates":"Modèles","The generator separates attendees, agenda items, discussion notes, decisions, action items, risks, parking-lot topics, and next meeting details. The readiness score highlights missing owners, missing due dates, and incomplete decision capture before the minutes are shared.":"Le générateur sépare les participants, les points de l'ordre du jour, les notes de discussion, les décisions, les actions à entreprendre, les risques, les sujets de stationnement et les détails de la prochaine réunion. Le score de préparation met en évidence les propriétaires manquants, les dates d'échéance manquantes et la capture incomplète des décisions avant le partage des procès-verbaux.","Tools":"Outils","Topics proposed for the next meeting.":"Thèmes proposés pour la prochaine réunion.","Track present, remote, apology, and absent attendees with roles and optional emails.":"Suivez les participants présents, distants, présentant des excuses et absents avec des rôles et des e-mails facultatifs.","Turn follow-ups into action items with owners, priorities, due dates, and status.":"Transformez les suivis en actions avec les propriétaires, les priorités, les dates d'échéance et le statut.","Turn notes into decisions, owners, and follow-through.":"Transformez vos notes en décisions, en propriétaires et en suivi.","Useful for African teams":"Utile pour les équipes africaines","Useful topics that were not resolved in this meeting.":"Sujets utiles qui n'ont pas été résolus lors de cette réunion.","Web":"Web","What formats can I export?":"Quels formats puis-je exporter ?","Whether you are recording SME management meetings in Lagos, school committee minutes in Accra, project reviews in Nairobi, NGO donor updates in Kigali, or board minutes in Johannesburg, the workflow keeps the output practical and professional.":"Que vous enregistriez des réunions de gestion de PME à Lagos, des procès-verbaux de comités d'école à Accra, des revues de projets à Nairobi, des mises à jour des donateurs d'ONG à Kigali ou des procès-verbaux de conseils d'administration à Johannesburg, le flux de travail garantit un résultat pratique et professionnel.","word":"mot","Word":"Mot","Workflow":"Flux de travail","WORKFLOW DOCUMENTS":"DOCUMENTS DE FLUX DE TRAVAIL","Write notes, outcomes, decisions, risks, and parking-lot topics as the meeting moves.":"Rédigez des notes, des résultats, des décisions, des risques et des sujets de stationnement au fur et à mesure que la réunion avance.","Yes. Each action can be open, in progress, or done, with owner, priority, due date, and source.":"Oui. Chaque action peut être ouverte, en cours ou terminée, avec propriétaire, priorité, date d'échéance et source.","Yes. Saved minutes are stored locally in your browser and can be reopened from this page.":"Oui. Les minutes enregistrées sont stockées localement dans votre navigateur et peuvent être rouvertes à partir de cette page.","Yes. The app runs locally in your browser. Data is not uploaded unless you choose to share it outside AfroTools.":"Oui. L'application s'exécute localement dans votre navigateur. Les données ne sont pas téléchargées, sauf si vous choisissez de les partager en dehors d'AfroTools.","Yes. There is no registration, watermark, or paid export step.":"Oui. Il n’y a pas d’étape d’enregistrement, de filigrane ou d’exportation payante.","Your Saved Minutes":"Vos minutes économisées"}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/compte-rendu-reunion/app">
+</head>
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
+<h1 class="sr-only">Générateur de procès-verbaux de réunion pour le suivi de réunions professionnelles</h1>
+<div class="topbar">
+  <a href="index.html" aria-label="Retour à la page d'accueil du compte rendu de la réunion">Retour</a>
+  <div class="topbar-title">Générateur de procès-verbaux de réunion</div>
+  <div class="topbar-actions">
+    <button class="btn" type="button" data-action="copy">Copier le récapitulatif</button>
+    <button class="btn" type="button" data-action="save">Enregistrer</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Télécharger le PDF</button>
+  </div>
+</div>
+
+<main class="app-shell">
+  <section class="hero-strip" aria-labelledby="app-title">
+    <div>
+      <p class="eyebrow">Système d'exploitation de réunion</p>
+      <h2 id="app-title">Transformez vos notes en décisions, en propriétaires et en suivi.</h2>
+      <p>Créez des minutes avant, pendant ou après la réunion. Capturez les discussions de l'ordre du jour, les décisions, les responsables des actions, les dates d'échéance, les risques et les prochaines étapes sans envoyer de notes privées à un serveur.</p>
+    </div>
+    <div class="status-line" aria-label="Résumé des fonctionnalités">
+      <span class="pill">Ordre du jour</span>
+      <span class="pill">Décisions</span>
+      <span class="pill">Actions CSV</span>
+      <span class="pill">PDF, Word, TXT</span>
+    </div>
+  </section>
+
+  <div class="workspace">
+    <section class="panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Constructeur</p>
+          <h2 id="builder-title">Détails de la réunion</h2>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Reconstruire</button>
+      </div>
+
+      <h3>Installation</h3>
+      <div class="form-grid">
+        <label class="field"><span>Modèle</span><select id="templateId"></select></label>
+        <label class="field"><span>Style de procès-verbal</span><select id="styleId"></select></label>
+        <label class="field"><span>Titre de la réunion</span><input aria-label="Examen de l'expansion du deuxième trimestre" id="meetingTitle" placeholder="Examen de l'expansion du deuxième trimestre"></label>
+        <label class="field"><span>Organisation</span><input aria-label="Afro Foods Ltd" id="organization" placeholder="Afro Foods Ltd"></label>
+        <label class="field"><span>Date</span><input aria-label="Date de la réunion" id="meetingDate" type="date"></label>
+        <label class="field"><span>Heure de début</span><input aria-label="Heure de début" id="startTime" type="time"></label>
+        <label class="field"><span>Heure de fin</span><input aria-label="Heure de fin" id="endTime" type="time"></label>
+        <label class="field"><span>Emplacement ou plateforme</span><input aria-label="Boardroom, Zoom, Teams" id="location" placeholder="Boardroom, Zoom, Teams"></label>
+        <label class="field"><span>Chaise</span><input aria-label="Aïcha Bello" id="chair" placeholder="Aïcha Bello"></label>
+        <label class="field"><span>Preneur de minutes</span><input aria-label="Kofi Mensah" id="minuteTaker" placeholder="Kofi Mensah"></label>
+      </div>
+
+      <h3>Participants</h3>
+      <div class="list" id="attendeeList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field"><span>Nom</span><input aria-label="Nom" id="attendeeName" placeholder="Nom"></label>
+          <label class="field"><span>Rôle</span><input aria-label="Responsable financier" id="attendeeRole" placeholder="Responsable financier"></label>
+          <label class="field"><span>Statut</span><select id="attendeeStatus"><option value="present">Présent</option><option value="remote">Télécommande</option><option value="apology">Excuses</option><option value="absent">Absent</option></select></label>
+          <label class="field"><span>E-mail facultatif</span><input aria-label="Nom@exemple.com" id="attendeeEmail" type="email" placeholder="nom@exemple.com"></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-attendee">Ajouter un participant</button>
+      </div>
+
+      <h3>Ordre du jour et discussion</h3>
+      <div id="agendaList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Titre de l'ordre du jour</span><input aria-label="Approbation du budget" id="agendaTitle" placeholder="Approbation du budget"></label>
+          <label class="field full"><span>Notes de discussion</span><textarea id="agendaDiscussion" placeholder="Points clés, objections, mises à jour ou contexte."></textarea></label>
+          <label class="field full"><span>Décision ou résultat</span><input aria-label="Budget approuvé avec plafond de fournisseurs révisé." id="agendaDecision" placeholder="Budget approuvé avec plafond de fournisseurs révisé."></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-agenda">Ajouter un point à l'ordre du jour</button>
+      </div>
+
+      <h3>Décisions</h3>
+      <div class="list" id="decisionList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Décision</span><input aria-label="Approuvé l'embauche de deux coordonnateurs régionaux." id="decisionText" placeholder="Approuvé l'embauche de deux coordonnateurs régionaux."></label>
+          <label class="field"><span>Propriétaire</span><input aria-label="Directeur général" id="decisionOwner" placeholder="Directeur général"></label>
+          <label class="field"><span>Statut</span><select id="decisionStatus"><option value="approved">Approuvé</option><option value="deferred">Différé</option><option value="rejected">Rejeté</option><option value="noted">Noté</option></select></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-decision">Ajouter une décision</button>
+      </div>
+
+      <h3>Éléments d'action</h3>
+      <div class="list" id="actionList"></div>
+      <div class="row-builder">
+        <div class="form-grid">
+          <label class="field full"><span>Action</span><input aria-label="Envoyer le calendrier d’approvisionnement révisé." id="actionText" placeholder="Envoyer le calendrier d’approvisionnement révisé."></label>
+          <label class="field"><span>Propriétaire</span><input aria-label="Njeri" id="actionOwner" placeholder="Njeri"></label>
+          <label class="field"><span>Date d'échéance</span><input aria-label="ActionÉdue" id="actionDue" type="date"></label>
+          <label class="field"><span>Priorité</span><select id="actionPriority"><option value="medium">Moyenne</option><option value="high">Élevée</option><option value="low">Faible</option></select></label>
+          <label class="field"><span>Statut</span><select id="actionStatus"><option value="open">Ouvrir</option><option value="progress">En cours</option><option value="done">Terminé</option></select></label>
+          <label class="field"><span>Source</span><input aria-label="Point ou décision de l’ordre du jour" id="actionSource" placeholder="Point ou décision de l’ordre du jour"></label>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="add-action">Ajouter une action</button>
+      </div>
+
+      <h3>Contexte de suivi</h3>
+      <div class="form-grid">
+        <label class="field full"><span>Risques ou bloqueurs</span><textarea id="risks" placeholder="Risques, bloqueurs, dépendances, problèmes de conformité."></textarea></label>
+        <label class="field full"><span>Parking</span><textarea id="parkingLot" placeholder="Sujets utiles qui n'ont pas été résolus lors de cette réunion."></textarea></label>
+        <label class="field"><span>Prochain rendez-vous</span><input aria-label="Date suivante" id="nextDate" type="date"></label>
+        <label class="field"><span>La prochaine fois</span><input aria-label="La prochaine fois" id="nextTime" type="time"></label>
+        <label class="field full"><span>Ordre du jour suivant</span><textarea id="nextAgenda" placeholder="Thèmes proposés pour la prochaine réunion."></textarea></label>
+      </div>
+    </section>
+
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-top">
+        <div>
+          <p class="eyebrow">Projet de procès-verbal</p>
+          <h2 id="preview-title">Récapitulatif modifiable</h2>
+        </div>
+        <div class="preview-tools">
+          <button class="btn" type="button" data-action="word">Mot</button>
+          <button class="btn" type="button" data-action="txt">TXT</button>
+          <button class="btn" type="button" data-action="csv">Actions CSV</button>
+          <button class="btn" type="button" data-action="ics">ICS</button>
+          <button class="btn" type="button" data-action="json">JSON</button>
+          <button class="btn" type="button" data-action="import">Importer</button>
+          <button class="btn" type="button" data-action="print">Imprimer</button>
+          <input aria-label="ImporterEntrée" class="import-input" id="importInput" type="file" accept="application/json,.json">
+        </div>
+      </div>
+      <label class="export-review" for="exportReviewConfirm">
+        <input id="exportReviewConfirm" type="checkbox">
+        <span>J'ai examiné les participants, l'ordre du jour, les décisions, les responsables des actions, les délais, les risques, la prochaine réunion et l'aperçu du procès-verbal final.</span>
+        <span class="export-review-status" id="exportReviewStatus" role="status" aria-live="polite">Créez et révisez le procès-verbal avant de le télécharger, de le copier ou de l'imprimer.</span>
+      </label>
+      <div class="minutes-editor">
+        <div class="minutes-text-wrap">
+          <label class="field full" style="margin:0">
+            <span>Texte du procès-verbal</span>
+            <textarea id="minutesText" spellcheck="true" data-testid="minutes-text"></textarea>
+          </label>
+          <p class="helper" id="editState">Modifiez librement. Cliquez sur Reconstruire pour régénérer à partir du formulaire structuré.</p>
+        </div>
+        <div class="paper-wrap" aria-label="Aperçu avant impression">
+          <article class="paper" id="minutesPreview"></article>
+        </div>
+      </div>
+    </section>
+
+    <aside class="insights-card" aria-labelledby="insights-title">
+      <p class="eyebrow">Qualité des réunions</p>
+      <h2 id="insights-title">Préparation au suivi</h2>
+      <div class="score-ring">
+        <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+        <div class="score-copy" id="scoreCopy">Ajoutez des participants, des décisions et des propriétaires d'actions pour commencer à noter.</div>
+      </div>
+      <div class="metric-grid">
+        <div class="metric"><strong id="metricAttendees">0</strong><span>Participants</span></div>
+        <div class="metric"><strong id="metricAgenda">0</strong><span>Ordre du jour</span></div>
+        <div class="metric"><strong id="metricDecisions">0</strong><span>Décisions</span></div>
+        <div class="metric"><strong id="metricActions">0</strong><span>Actes</span></div>
+      </div>
+      <div class="checks" id="checksList"></div>
+
+      <h2 style="margin-top:18px">Minutes économisées</h2>
+      <div class="saved-list" id="savedList"></div>
+    </aside>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/pages/meeting-minutes.js?v=e9e0856d" defer></script> <script>
+(function(){
+  var review=document.getElementById('exportReviewConfirm');
+  var status=document.getElementById('exportReviewStatus');
+  var exportActions=['pdf','word','txt','csv','ics','json','print','copy'];
+  function actionProblem(action){
+    if(action==='json')return '';
+    if(action==='csv'&&!document.querySelector('#actionList .list-item'))return 'Add at least one action item before exporting the actions CSV.';
+    if(action==='ics'&&!String((document.getElementById('nextDate')||{}).value||''))return 'Add the next meeting date before exporting the calendar file.';
+    var text=String((document.getElementById('minutesText')||{}).value||'').trim();
+    var title=String((document.getElementById('meetingTitle')||{}).value||'').trim();
+    var date=String((document.getElementById('meetingDate')||{}).value||'').trim();
+    var chair=String((document.getElementById('chair')||{}).value||'').trim();
+    if(!title||!date||!chair||text.length<120||/^MEETING MINUTES\b/i.test(text))return 'Add a named meeting, date, chair, and complete minutes before this export.';
+    return '';
+  }
+  function requireReview(event){
+    var button=event.target&&event.target.closest&&event.target.closest('[data-action]');
+    if(!button)return;
+    var action=button.getAttribute('data-action');
+    if(exportActions.indexOf(action)===-1)return;
+    var problem=actionProblem(action);
+    if(problem){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent=problem;
+      var target=action==='ics'?document.getElementById('nextDate'):action==='csv'?document.getElementById('actionText'):document.getElementById('meetingTitle');
+      if(target)target.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final minutes preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.app-shell')){
+      review.checked=false;
+      if(status)status.textContent='Minutes changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var mutation=event.target.closest('[data-action="rebuild"],[data-action^="add-"],[data-remove-attendee],[data-remove-agenda],[data-remove-decision],[data-remove-action],[data-toggle-action],[data-load],[data-delete]');
+    if(!mutation)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Minutes changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script> <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

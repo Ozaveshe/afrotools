@@ -25,7 +25,8 @@ for (const [html, locale, canonical] of [
 }
 assert.doesNotMatch(fr, /traduction à venir|Contenu disponible en anglais/i);
 assert.match(page, /\/api\/crypto\/prices\?currency=/);
-assert.doesNotMatch(page, /api\/crypto-portfolio|api\/crypto-advisor|api\.coingecko|tether|AfroAuth|innerHTML/);
+assert.doesNotMatch(page, /api\/crypto-portfolio|api\/crypto-advisor|api\.coingecko|AfroAuth|innerHTML/);
+assert.match(page, /id: 'tether', name: 'Tether', symbol: 'USDT'/);
 assert.match(netlify, /from = "\/api\/crypto\/prices"[\s\S]*?to = "\/\.netlify\/functions\/crypto-prices"/);
 assert.match(redirects, /\/api\/crypto-portfolio\s+\/\.netlify\/functions\/crypto-portfolio\s+200/);
 assert.match(redirects, /\/api\/crypto-advisor\s+\/\.netlify\/functions\/crypto-portfolio-advisor\s+200/);

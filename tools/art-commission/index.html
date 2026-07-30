@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -233,57 +233,10 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var BASE_PRICES={
-  NG:{digital_portrait:[15000,50000],digital_illustration:[20000,100000],oil_portrait:[40000,500000],oil_landscape:[30000,300000],acrylic:[25000,200000],watercolour:[15000,80000],pencil:[10000,50000],abstract:[20000,200000],logo:[20000,80000]},
-  KE:{digital_portrait:[1500,6000],digital_illustration:[2000,12000],oil_portrait:[4000,60000],oil_landscape:[3000,35000],acrylic:[2500,25000],watercolour:[1500,10000],pencil:[1000,6000],abstract:[2000,25000],logo:[2000,10000]},
-  ZA:{digital_portrait:[500,2000],digital_illustration:[600,3500],oil_portrait:[1200,18000],oil_landscape:[1000,12000],acrylic:[800,8000],watercolour:[500,3500],pencil:[350,1800],abstract:[700,8000],logo:[600,3000]},
-  GH:{digital_portrait:[200,800],digital_illustration:[250,1200],oil_portrait:[500,6000],oil_landscape:[400,4000],acrylic:[350,3000],watercolour:[200,1200],pencil:[150,600],abstract:[300,3000],logo:[300,1200]},
-  EG:{digital_portrait:[700,2500],digital_illustration:[900,4500],oil_portrait:[2000,20000],oil_landscape:[1500,15000],acrylic:[1200,10000],watercolour:[700,4000],pencil:[500,2000],abstract:[1000,10000],logo:[1000,4000]}
-};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
-function updateBaseRates(){}
-function calculate(){
-  var country=document.getElementById('country').value;
-  var artType=document.getElementById('artType').value;
-  var size=document.getElementById('size').value;
-  var complexity=document.getElementById('complexity').value;
-  var rights=document.getElementById('rights').value;
-  var revisions=document.getElementById('revisions').value;
-  var timeline=document.getElementById('timeline').value;
-  var hours=parseFloat(document.getElementById('hours').value)||8;
-  var sym=SYM[country];
-  var baseRange=BASE_PRICES[country]&&BASE_PRICES[country][artType]?BASE_PRICES[country][artType]:[10000,50000];
-  var sizeMultiplier={A4:0.7,A3:1.0,A2:1.4,custom:1.8}[size];
-  var complexMultiplier={simple:0.7,detailed:1.0,very_detailed:1.5}[complexity];
-  var base=baseRange[0]+(baseRange[1]-baseRange[0])*0.4;
-  var price=base*sizeMultiplier*complexMultiplier;
-  if(rights==='commercial') price*=1.5;
-  if(revisions==='unlimited') price*=1.2;
-  if(timeline==='rush') price*=1.3;
-  var minPrice=baseRange[0]*sizeMultiplier*complexMultiplier;
-  var maxPrice=baseRange[1]*sizeMultiplier*complexMultiplier;
-  var hourlyRate=price/hours;
-  document.getElementById('recPrice').textContent=sym+fmt(price);
-  document.getElementById('priceRange').textContent='Market range: '+sym+fmt(minPrice)+' — '+sym+fmt(maxPrice)+(rights==='commercial'?' (commercial premium applied)':'');
-  document.getElementById('hourlyRate').textContent=sym+fmt(hourlyRate)+'/hr';
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Base Price</div><div class="en-metric-value">'+sym+fmt(base)+'</div><div class="en-metric-unit">Before adjustments</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Size Factor</div><div class="en-metric-value">'+sizeMultiplier+'x</div><div class="en-metric-unit">'+size+' size</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Complexity</div><div class="en-metric-value">'+complexMultiplier+'x</div><div class="en-metric-unit">'+complexity.replace('_',' ')+'</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Rights Premium</div><div class="en-metric-value">'+(rights==='commercial'?'+50%':'None')+'</div><div class="en-metric-unit">'+rights+' use</div></div>';
-  document.getElementById('platformTable').innerHTML=
-    '<tr><td>Instagram / Direct</td><td class="en-td-highlight">'+sym+fmt(price)+'</td><td>0%</td><td class="en-td-value">'+sym+fmt(price)+'</td></tr>'+
-    '<tr><td>Fiverr</td><td>'+sym+fmt(price*1.25)+'</td><td>20%</td><td class="en-td-value">'+sym+fmt(price)+'</td></tr>'+
-    '<tr><td>Upwork</td><td>'+sym+fmt(price*1.20)+'</td><td>10–20%</td><td class="en-td-value">'+sym+fmt(price*0.85)+'</td></tr>'+
-    '<tr><td>Etsy</td><td>'+sym+fmt(price*1.10)+'</td><td>6.5%</td><td class="en-td-value">'+sym+fmt(price*0.935)+'</td></tr>';
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="/engines/art-commission-engine.js?v=216b9e44"></script>
+<script src="/assets/js/pages/creative/art-commission-controller.js?v=23f05a1b"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

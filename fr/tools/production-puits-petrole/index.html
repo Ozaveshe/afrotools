@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planificateur de production d’un puits pétrolier | Calcul local gratuit | AfroTools</title>
+<meta name="description" content="Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.">
+<meta property="og:title" content="Planificateur de production d’un puits pétrolier | AfroTools">
+<meta property="og:description" content="Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/oil-well-production.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/production-puits-petrole/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Planificateur de production d’un puits pétrolier | Calcul local gratuit | AfroTools">
+<meta name="twitter:description" content="Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/oil-well-production.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/fr-mining-parity.css?v=a407ad3d">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Planificateur de production d’un puits pétrolier",
+  "description": "Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.",
+  "url": "https://afrotools.com/fr/tools/production-puits-petrole/",
+  "inLanguage": "fr",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/oil-well-production.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools en français","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Mines et industries extractives","item":"https://afrotools.com/fr/mining/"},{"@type":"ListItem","position":3,"name":"Production d’un puits","item":"https://afrotools.com/fr/tools/production-puits-petrole/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Quel modèle est utilisé ?","acceptedAnswer":{"@type":"Answer","text":"Le calcul reprend la formule radiale de Darcy en régime permanent et en unités pétrolières. Il sert au dépistage d’un scénario, pas à la simulation dynamique d’un réservoir."}},{"@type":"Question","name":"Le résultat est-il une prévision de terrain ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les essais de puits, contraintes de surface, déclin, eau, gaz, skin variable et conditions contractuelles doivent être analysés par un ingénieur pétrolier."}},{"@type":"Question","name":"Pourquoi le prix doit-il être saisi ?","acceptedAnswer":{"@type":"Answer","text":"AfroTools ne présente aucun prix du brut comme temps réel. Utilisez un prix daté provenant de votre contrat, d’un indice ou d’un scénario interne et conservez la référence dans le rapport."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/production-puits-petrole/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/oil-well-production/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/production-puits-petrole/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oil-well-production/">
+</head>
+<body class="fr-mining-page" data-mining-tool="oil-well-production">
+<afro-navbar active="mining"></afro-navbar>
+<main class="fr-mining-shell">
+  <header class="fr-mining-hero">
+    <div>
+      <p class="fr-mining-eyebrow">Mines et industries extractives · Calcul local</p>
+      <h1>Planificateur de production d’un puits pétrolier</h1>
+      <p>Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.</p>
+    </div>
+    <img class="fr-mining-art" src="/assets/img/tools/oil-well-production.webp" alt="" width="640" height="640">
+  </header>
+
+  <div class="fr-mining-layout">
+    <div>
+      <form id="mining-form" class="fr-mining-card" novalidate>
+        <h2>Hypothèses</h2>
+        <p>Saisissez des valeurs documentées. Le calcul refuse les données essentielles absentes au lieu de les remplacer par zéro.</p>
+        <div class="fr-mining-grid">
+      <div class="fr-mining-field">
+        <label for="k">Perméabilité k (mD)</label>
+        <input id="k" name="k" type="number" value="50" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="h">Épaisseur nette h (ft)</label>
+        <input id="h" name="h" type="number" value="30" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="pe">Pression du réservoir Pe (psi)</label>
+        <input id="pe" name="pe" type="number" value="3000" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="pwf">Pression en écoulement Pwf (psi)</label>
+        <input id="pwf" name="pwf" type="number" value="2000" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="mu">Viscosité du pétrole μ (cp)</label>
+        <input id="mu" name="mu" type="number" value="1.2" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="bo">Facteur de volume B (rb/stb)</label>
+        <input id="bo" name="bo" type="number" value="1.2" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="re">Rayon de drainage re (ft)</label>
+        <input id="re" name="re" type="number" value="1000" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="rw">Rayon du puits rw (ft)</label>
+        <input id="rw" name="rw" type="number" value="0.35" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="skin">Facteur de skin s</label>
+        <input id="skin" name="skin" type="number" value="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="uptime">Disponibilité (%)</label>
+        <input id="uptime" name="uptime" type="number" value="90" min="0" max="100" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="price">Prix du pétrole (US$/bbl)</label>
+        <input id="price" name="price" type="number" value="75" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="opex">Coût d’exploitation (US$/bbl)</label>
+        <input id="opex" name="opex" type="number" value="15" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="roy">Taux de redevance (%)</label>
+        <input id="roy" name="roy" type="number" value="10" min="0" max="100" step="any">
+      </div>
+    </div>
+        <div class="fr-mining-actions">
+          <button class="fr-mining-action primary" type="submit">Calculer l’estimation</button>
+          <button class="fr-mining-action" id="reset" type="button">Réinitialiser</button>
+          <button class="fr-mining-action" id="pdf" type="button" disabled>Télécharger le rapport PDF</button>
+        </div>
+        <div class="fr-mining-error" id="error" role="alert" hidden></div>
+        <p class="fr-mining-status" id="status" role="status" aria-live="polite">Prêt. Aucune donnée n’a été enregistrée.</p>
+      </form>
+
+      <section class="fr-mining-card fr-mining-result" id="result" tabindex="-1" aria-labelledby="result-title" hidden>
+        <h2 id="result-title">Résultat de planification</h2>
+        <div class="fr-mining-result-grid">
+          <div class="fr-mining-stat"><strong data-output="q">—</strong><span>Débit quotidien</span></div><div class="fr-mining-stat"><strong data-output="annual">—</strong><span>Production annuelle</span></div><div class="fr-mining-stat"><strong data-output="net">—</strong><span>Revenu net indicatif</span></div>
+        </div>
+        <table class="fr-mining-table"><tbody id="breakdown"></tbody></table>
+        <div class="fr-mining-source" id="source-summary"></div>
+      </section>
+
+      <section class="fr-mining-card" aria-labelledby="evidence-title">
+          <h2 id="evidence-title">Preuve du scénario</h2>
+          <p>Ces trois champs sont obligatoires. Le calcul et le PDF restent bloqués tant que la source, sa date de vérification et votre niveau de confiance ne sont pas renseignés.</p>
+          <div class="fr-mining-grid">
+            <div class="fr-mining-field">
+        <label for="sourceName">Nom de la source ou du document</label>
+        <input id="sourceName" name="sourceName" type="text" value="" autocomplete="off" form="mining-form" required aria-describedby="sourceName-help">
+        <p class="fr-mining-help" id="sourceName-help">Exemple : devis du négociant, modèle PSC ou barème du cadastre.</p>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceDate">Date de vérification</label>
+        <input id="sourceDate" name="sourceDate" type="date" value="" form="mining-form" required>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceConfidence">Confiance déclarée</label>
+        <select id="sourceConfidence" name="sourceConfidence" form="mining-form" required>
+          <option value="">Choisir un niveau de confiance</option>
+          <option value="élevée">Élevée — document primaire récent</option>
+          <option value="moyenne">Moyenne — source secondaire ou hypothèse</option>
+          <option value="faible">Faible — valeur à confirmer</option>
+        </select>
+      </div>
+          </div>
+          <div class="fr-mining-privacy">Confidentialité locale : aucune saisie n’est envoyée, enregistrée ou ajoutée à l’URL. Le PDF est créé uniquement dans votre navigateur.</div>
+        </section>
+    </div>
+
+    <aside>
+      <section class="fr-mining-card">
+        <h2>Formule et limites</h2>
+        <p>Débit q = 0,00708 × k × h × (Pe − Pwf) ÷ [μ × B × (ln(re ÷ rw) + skin)]. La production annuelle applique votre taux de disponibilité; le revenu net retranche redevance et coût par baril.</p>
+        <p><strong>Limite :</strong> estimation de planification uniquement; ce résultat n’est ni un avis juridique, fiscal, technique ou financier, ni un permis, une cotation ou une garantie.</p>
+      </section>
+      <section class="fr-mining-card">
+        <h2>Autres outils miniers en français</h2>
+        <ul class="fr-mining-related">
+          <li><a href="/fr/mining/">Voir les six applications minières</a></li>
+          <li><a href="/fr/tools/evaluation-diamant/">Évaluation de diamant</a></li><li><a href="/fr/tools/partage-revenus-petrole-gaz/">Partage pétrole et gaz</a></li><li><a href="/fr/tools/cout-licence-miniere/">Coût de licence minière</a></li><li><a href="/fr/tools/redevance-miniere/">Redevance minière</a></li><li><a href="/fr/tools/revenu-minier-artisanal/">Revenu minier artisanal</a></li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <section class="fr-mining-card" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details><summary>Quel modèle est utilisé ?</summary><p>Le calcul reprend la formule radiale de Darcy en régime permanent et en unités pétrolières. Il sert au dépistage d’un scénario, pas à la simulation dynamique d’un réservoir.</p></details><details><summary>Le résultat est-il une prévision de terrain ?</summary><p>Non. Les essais de puits, contraintes de surface, déclin, eau, gaz, skin variable et conditions contractuelles doivent être analysés par un ingénieur pétrolier.</p></details><details><summary>Pourquoi le prix doit-il être saisi ?</summary><p>AfroTools ne présente aucun prix du brut comme temps réel. Utilisez un prix daté provenant de votre contrat, d’un indice ou d’un scénario interne et conservez la référence dans le rapport.</p></details>
+  </section>
+</main>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/engines/fr-mining-parity.js?v=20b99cd1"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/pages/fr-mining-parity.js?v=3c1f0531"></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

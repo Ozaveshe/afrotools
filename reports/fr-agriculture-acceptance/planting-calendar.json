@@ -1,0 +1,100 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:planting-calendar",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/bootstrap-planting-calendar-data.js --check",
+    "engine": "node tests/planting-calendar-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-planting-calendar-oracles.json node tests/fr-agriculture-planting-calendar.test.js",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42921 npx playwright test tests/e2e/fr-agriculture-planting-calendar.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (29.0s)"
+  },
+  "rows": [
+    {
+      "englishId": "planting-calendar",
+      "countryCode": null,
+      "englishRoute": "/tools/planting-calendar/",
+      "frenchRoute": "/fr/tools/calendrier-semis/",
+      "status": "accepted",
+      "oracle": {
+        "report": "reports/fr-agriculture-planting-calendar-oracles.json",
+        "zones": 7,
+        "rainfallModes": [
+          "unimodal",
+          "bimodal"
+        ],
+        "scenarios": 14,
+        "preserves": [
+          "displayed crop order",
+          "12 exact monthly status codes per crop",
+          "country-to-zone selection",
+          "bimodal and forest-unimodal notices"
+        ]
+      },
+      "browser": {
+        "suite": "tests/e2e/fr-agriculture-planting-calendar.spec.js",
+        "result": "2 passed (29.0s)",
+        "isolatedPort": 42921,
+        "viewports": [
+          320,
+          375
+        ],
+        "reflow200Percent": {
+          "equivalentCssViewport": 640,
+          "baselineCssViewport": 1280,
+          "documentOverflow": false
+        },
+        "themes": [
+          "light",
+          "manual-dark",
+          "system-dark"
+        ],
+        "keyboardFocusA11y": true,
+        "consoleAndFirstPartyNetworkClean": true,
+        "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+        "seo": [
+          "self-canonical",
+          "og",
+          "schema-inLanguage-fr",
+          "reciprocal-semantic-hreflang"
+        ],
+        "aiRoute": "/fr/tools/calendrier-semis/"
+      },
+      "exports": [
+        "pdf",
+        "csv",
+        "json",
+        "txt",
+        "copy",
+        "share",
+        "local-save",
+        "reset"
+      ],
+      "source": {
+        "engine": [
+          "engines/src/planting-calendar-engine.js"
+        ],
+        "data": [
+          "data/agriculture/planting-calendar-data.json",
+          "data/agriculture/planting-calendar-data.js"
+        ],
+        "freshness": "static seasonal reference extracted exactly from the accepted English application; not live",
+        "confidence": "planning reference by broad agro-climatic zone"
+      },
+      "artwork": {
+        "imageId": "planting-calendar",
+        "file": "assets/img/tools/planting-calendar.svg",
+        "state": "present"
+      },
+      "limitations": [
+        "Broad seasonal guidance only; confirm rainfall onset, local weather, crop variety, soil, irrigation and extension advice before planting.",
+        "The source is static and does not claim live or official forecast data."
+      ]
+    }
+  ]
+}

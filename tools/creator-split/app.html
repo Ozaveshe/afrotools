@@ -1,127 +1,50 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Splits Dashboard — CreatorSplit | AfroTools</title>
-  <meta name="description" content="Manage your collaboration splits. Track earnings, payouts, and agreements for all your creative projects.">
+  <title>Creator Revenue Split Calculator | AfroTools</title>
+  <meta name="description" content="Calculate and document creator collaboration revenue shares locally. Export a JSON record or plain-text agreement without an account.">
   <meta name="robots" content="noindex, follow">
+  <meta property="og:title" content="Creator Revenue Split Calculator | AfroTools">
+  <meta property="og:description" content="Calculate transparent creator collaboration shares and export the result locally.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/creator-split.webp">
+  <meta property="og:url" content="https://afrotools.com/tools/creator-split/app">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-  <link rel="stylesheet" href="style.css?v=6be58c61">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-  <script src="/engines/creator-split-engine.js?v=37c4a0c3"></script>
-  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
-  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
-<meta property="og:url" content="https://afrotools.com/tools/creator-split/app">
+  <link rel="stylesheet" href="/tools/creator-split/style.css?v=6be58c61">
+  <link rel="stylesheet" href="/assets/css/creator-split-calculator.css?v=4d185e3e">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="canonical" href="https://afrotools.com/tools/creator-split/app">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="cs-app">
   <afro-navbar></afro-navbar>
-
-  <div class="cs-app">
-    <div class="cs-app-inner">
-      <div class="cs-app-header">
-        <a href="index.html" style="font-size:.78rem;color:rgba(255,255,255,.4);text-decoration:none">&larr; CreatorSplit</a>
-        <div class="cs-app-title">My Splits</div>
-      </div>
-
-      <!-- STATS ROW -->
-      <div class="cs-stats" id="stats-row"></div>
-
-      <!-- NEW SPLIT BUTTON -->
-      <a href="create.html" class="cs-new-btn">+ New Split</a>
-
-      <!-- SPLITS LIST -->
-      <div id="splits-list"></div>
-    </div>
-
-    <!-- BOTTOM NAV -->
-    <div class="cs-bottom-nav">
-      <a href="app.html" class="cs-nav-item active"><span class="cs-nav-icon">🤝</span>Splits</a>
-      <a href="create.html" class="cs-nav-item"><span class="cs-nav-icon">➕</span>Create</a>
-    </div>
-  </div>
-
-  <script>
-  (function() {
-    'use strict';
-    var CS = CreatorSplitEngine;
-    var currency = 'NGN';
-
-    CS.loadDemoData(currency);
-
-    function render() {
-      renderStats();
-      renderSplits();
-    }
-
-    function renderStats() {
-      var stats = CS.getStats();
-      var el = document.getElementById('stats-row');
-      el.innerHTML =
-        '<div class="cs-stat-card"><div class="cs-stat-val">' + stats.activeSplits + '</div><div class="cs-stat-label">Active Splits</div></div>' +
-        '<div class="cs-stat-card"><div class="cs-stat-val" style="color:#22C55E">' + CS.formatMoney(stats.totalEarned, currency) + '</div><div class="cs-stat-label">Total Earned</div></div>' +
-        '<div class="cs-stat-card"><div class="cs-stat-val" style="color:#F5A623">' + CS.formatMoney(stats.pendingPayouts, currency) + '</div><div class="cs-stat-label">Pending Payouts</div></div>' +
-        '<div class="cs-stat-card"><div class="cs-stat-val">' + stats.collaborators + '</div><div class="cs-stat-label">Collaborators</div></div>';
-    }
-
-    function renderSplits() {
-      var splits = CS.getSplits();
-      var el = document.getElementById('splits-list');
-
-      if (splits.length === 0) {
-        el.innerHTML =
-          '<div class="cs-empty">' +
-            '<div class="cs-empty-icon">🤝</div>' +
-            '<div class="cs-empty-title">No splits yet</div>' +
-            '<div class="cs-empty-desc">Create your first collaboration split to start tracking earnings and agreements.</div>' +
-            '<a href="create.html" class="cs-btn cs-btn-primary" style="max-width:280px;margin:0 auto;display:block;text-align:center;text-decoration:none">Create First Split</a>' +
-          '</div>';
-        return;
-      }
-
-      var html = '<div class="cs-split-list">';
-      splits.forEach(function(split) {
-        var members = CS.getMembers(split.id);
-        var totalEarned = CS.getTotalEarnings(split.id);
-        var selfMember = members.find(function(m) { return m.is_self; });
-        var myPct = selfMember ? selfMember.percentage : 0;
-        var myShare = Math.round(totalEarned * (myPct / 100));
-
-        // Avatars
-        var avatarsHTML = '<div class="cs-split-avatars">';
-        members.forEach(function(m) {
-          var initials = m.name.split(' ').map(function(w) { return w.charAt(0); }).join('').slice(0, 2);
-          avatarsHTML += '<div class="cs-avatar" style="background:' + m.color + '">' + initials + '</div>';
-        });
-        avatarsHTML += '</div>';
-
-        var typeObj = CS.PROJECT_TYPES.find(function(t) { return t.id === split.project_type; }) || {};
-
-        html += '<a href="split.html?id=' + split.id + '" class="cs-split-card">' +
-          '<div class="cs-split-card-head">' +
-            '<div class="cs-split-name">' + typeObj.icon + ' ' + split.name + '</div>' +
-            '<span class="cs-split-badge ' + split.status + '">' + split.status + '</span>' +
-          '</div>' +
-          avatarsHTML +
-          '<div class="cs-split-meta">' +
-            '<span>Your cut: <span class="cs-split-cut">' + myPct + '%</span></span>' +
-            '<span>Earned: <strong>' + CS.formatMoney(totalEarned, split.currency) + '</strong></span>' +
-            (myShare > 0 ? '<span>Your share: <strong style="color:#22C55E">' + CS.formatMoney(myShare, split.currency) + '</strong></span>' : '') +
-          '</div>' +
-        '</a>';
-      });
-      html += '</div>';
-      el.innerHTML = html;
-    }
-
-    render();
-  })();
-  </script>
-<script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+  <main class="cs-calc-shell" data-creator-split data-lang="en">
+    <a href="/tools/creator-split/" style="color:#a5b4fc">← CreatorSplit</a>
+    <h1>Split collaboration revenue clearly</h1>
+    <p class="cs-calc-lead">Enter the revenue and each collaborator’s agreed percentage. The calculation stays in this browser and must total exactly 100%.</p>
+    <section class="cs-calc-card">
+      <form>
+        <div class="cs-calc-grid">
+          <label>Project name<input name="project" required value="New creative project"></label>
+          <label>Project type<select name="projectType"><option value="music">Music</option><option value="video">Video or film</option><option value="photography">Photography</option><option value="design">Design</option><option value="content">Content</option><option value="live_event">Live event</option><option value="other">Other</option></select></label>
+          <label>Currency<select name="currency"><option>USD</option><option>NGN</option><option>KES</option><option>ZAR</option><option>GHS</option><option>XOF</option><option>XAF</option><option>MAD</option></select></label>
+          <label>Revenue to split<input name="revenue" type="number" min="0" step="0.01" required value="1000"></label>
+        </div>
+        <div class="cs-calc-members" data-members></div>
+        <div class="cs-calc-buttons"><button type="button" class="secondary" data-add-member>Add collaborator</button><button type="submit">Calculate split</button></div>
+      </form>
+      <section class="cs-calc-output" data-output hidden aria-live="polite"></section>
+      <div class="cs-calc-buttons" data-actions hidden><button type="button" data-copy>Copy agreement</button><button type="button" data-json>Download JSON</button><button type="button" data-txt>Download TXT</button></div>
+      <p class="cs-calc-status" data-status role="status"></p>
+      <p class="cs-calc-note"><strong>Local and ungated:</strong> no project names, revenue figures, or collaborator details are sent to a server or AI. This is a planning record, not legal or tax advice.</p>
+    </section>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/engines/creator-split-engine.js?v=2f2ed56c"></script>
+  <script src="/assets/js/pages/creative/creator-split-calculator.js?v=81665d25"></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

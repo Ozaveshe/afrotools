@@ -1,0 +1,125 @@
+.fr-document-pdf-native {
+  overflow-x: hidden;
+}
+
+.fr-document-pdf-native :where(button, a, input, select, textarea, [role="button"]):focus-visible {
+  outline: 3px solid var(--color-primary, #0062cc);
+  outline-offset: 3px;
+}
+
+.fr-document-pdf-native :where(button, a, [role="button"]) {
+  min-height: 44px;
+}
+
+.fr-document-pdf-native .fr-parity-proof {
+  max-width: 980px;
+  margin: 24px auto 40px;
+  padding: 0 24px;
+}
+
+.fr-document-pdf-native .fr-parity-proof__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(240px, 0.7fr);
+  gap: 20px;
+  padding: 22px;
+  border: 1px solid var(--color-border, #dbe4ef);
+  border-radius: var(--radius-lg, 14px);
+  background: var(--color-surface, #fff);
+  box-shadow: var(--shadow-sm, 0 1px 4px rgba(15, 23, 42, 0.06));
+}
+
+.fr-document-pdf-native .fr-parity-proof h2,
+.fr-document-pdf-native .fr-parity-proof h3 {
+  margin: 0 0 10px;
+  color: var(--color-text, #0f172a);
+}
+
+.fr-document-pdf-native .fr-parity-proof h2 {
+  font-size: 1.2rem;
+}
+
+.fr-document-pdf-native .fr-parity-proof h3 {
+  font-size: 0.96rem;
+}
+
+.fr-document-pdf-native .fr-parity-proof p,
+.fr-document-pdf-native .fr-parity-proof li {
+  color: var(--color-text-muted, #475569);
+  font-size: 0.9rem;
+  line-height: 1.65;
+}
+
+.fr-document-pdf-native .fr-parity-proof ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.fr-document-pdf-native .fr-parity-proof__badge {
+  display: inline-flex;
+  align-items: center;
+  min-height: 30px;
+  margin-bottom: 10px;
+  padding: 4px 10px;
+  border: 1px solid rgba(0, 98, 204, 0.3);
+  border-radius: 999px;
+  background: rgba(0, 98, 204, 0.08);
+  color: var(--color-primary, #0062cc);
+  font-size: 0.78rem;
+  font-weight: 700;
+}
+
+:root[data-theme="dark"] .fr-document-pdf-native .fr-parity-proof__inner {
+  border-color: var(--color-border, #334155);
+  background: var(--color-surface, #111d30);
+}
+
+:root[data-theme="dark"] .fr-document-pdf-native .fr-parity-proof__badge {
+  border-color: #60a5fa;
+  background: #17263d;
+  color: #bfdbfe;
+}
+
+/* Keep the actionable French repair report visible while suppressing the
+   low-level qpdf worker transcript, which is developer diagnostics. */
+.fr-document-pdf-native .repair-log {
+  display: none !important;
+}
+
+@media (max-width: 640px) {
+  .fr-document-pdf-native .fr-parity-proof {
+    padding: 0 16px;
+  }
+
+  .fr-document-pdf-native .fr-parity-proof__inner {
+    grid-template-columns: 1fr;
+    padding: 18px;
+  }
+
+  .fr-document-pdf-native .cv-flow-head.cv-flow-hero,
+  .fr-document-pdf-native .cv-flow-hero-copy,
+  .fr-document-pdf-native .cv-flow-hero-title {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .fr-document-pdf-native .cv-flow-head.cv-flow-hero {
+    overflow: hidden;
+  }
+
+  .fr-document-pdf-native .cv-select,
+  .fr-document-pdf-native .cv-landing-lang {
+    max-width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fr-document-pdf-native *,
+  .fr-document-pdf-native *::before,
+  .fr-document-pdf-native *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

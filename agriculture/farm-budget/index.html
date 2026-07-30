@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -92,8 +92,8 @@
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
 <link rel="stylesheet" href="/assets/css/agriculture-tool-focus.css?v=03b51d0b">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/pages/agriculture-tool-focus.js?v=d66cf842" defer></script>
 
 <style>
@@ -611,6 +611,8 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <script src="/data/agriculture/seed-data.js?v=defcdc00"></script>
 <script src="/data/agriculture/crop-database.js?v=a4b4280f"></script>
 <script src="/data/agriculture/commodity-prices.js?v=3e308ad4"></script>
+<script src="/data/agriculture/farm-budget-data.js?v=666f8cc1"></script>
+<script src="/engines/farm-budget-engine.js?v=ceab7205"></script>
 
 <script>
 (function(){
@@ -696,70 +698,6 @@ function fmtFull(n, sym){
 
 var MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 
-// ── SEED PRICE TABLE (fallback per kg) — local currency indicative ────
-var SEED_PRICE_PER_KG = {
-  NG:{maize:2500,rice:4000,sorghum:1800,millet:1500,cassava:500,yam:3000,sweet_potato:800,cowpea:3500,groundnut:4000,soybean:3500,common_bean:4000,wheat:2500,tomato:15000,onion:20000,cotton:3000,sunflower:2500,sesame:3500},
-  GH:{maize:12,rice:20,sorghum:9,millet:8,cassava:3,yam:15,sweet_potato:5,cowpea:18,groundnut:22,soybean:18,common_bean:20,wheat:14,tomato:80,onion:100,cotton:15,sunflower:12,sesame:18},
-  KE:{maize:180,rice:300,sorghum:120,millet:100,cassava:40,yam:200,sweet_potato:60,cowpea:250,groundnut:300,soybean:250,common_bean:300,wheat:200,tomato:1200,onion:1500,cotton:250,sunflower:180,sesame:280},
-  ET:{maize:50,rice:80,sorghum:35,millet:30,cassava:20,yam:60,sweet_potato:25,cowpea:70,groundnut:90,soybean:70,common_bean:80,wheat:55,tomato:350,onion:450,cotton:70,sunflower:55,sesame:80},
-  TZ:{maize:1500,rice:3000,sorghum:1000,millet:800,cassava:400,yam:2000,sweet_potato:600,cowpea:2500,groundnut:3000,soybean:2500,common_bean:3000,wheat:2000,tomato:12000,onion:15000,cotton:2500,sunflower:1800,sesame:2800},
-  ZA:{maize:25,rice:45,sorghum:18,millet:15,cassava:8,yam:30,sweet_potato:12,cowpea:35,groundnut:45,soybean:30,common_bean:40,wheat:20,tomato:150,onion:200,cotton:40,sunflower:22,sesame:38},
-  default:{maize:200,rice:350,sorghum:150,millet:120,cassava:60,yam:250,sweet_potato:80,cowpea:280,groundnut:350,soybean:280,common_bean:300,wheat:220,tomato:1500,onion:2000,cotton:300,sunflower:200,sesame:280}
-};
-
-// Seed rates kg/ha
-var SEED_RATE = {maize:22,rice:60,sorghum:8,millet:5,cassava:0,yam:0,sweet_potato:0,cowpea:25,groundnut:80,soybean:80,common_bean:60,wheat:120,tomato:0.3,onion:8,cotton:15,sunflower:5,sesame:5};
-// For vegetative (cassava, yam, sweet potato) we use planting material cost multiplied by area
-var PLANTING_MATERIAL_COST_PER_HA = {cassava:1.5,yam:5,sweet_potato:0.8}; // × country wage as proxy
-
-// Fertilizer kg/ha (N total split into basal + topdress)
-var FERT_RATE_KG_HA = {maize:150,rice:150,sorghum:80,millet:60,cassava:80,yam:100,sweet_potato:80,cowpea:40,groundnut:40,soybean:40,common_bean:60,wheat:150,tomato:200,onion:200,cotton:150,sunflower:100,sesame:60};
-// Fertilizer price per kg (in country currency — indicative)
-var FERT_PRICE_MULT = {NG:1200,GH:5,KE:80,ET:25,TZ:700,ZM:15,MW:500,ZA:8,default:60};
-
-// Expected yield t/ha
-var YIELD_THA = {maize:2.2,rice:2.5,sorghum:1.1,millet:0.8,cassava:9,yam:8,sweet_potato:5,cowpea:0.6,groundnut:0.9,soybean:1.1,common_bean:0.8,wheat:2.5,tomato:15,onion:12,cotton:0.35,sunflower:1.1,sesame:0.5};
-
-// Market price per tonne (local currency)
-var MARKET_PRICE_T = {
-  NG:{maize:250000,rice:500000,sorghum:200000,millet:180000,cassava:80000,yam:300000,sweet_potato:120000,cowpea:450000,groundnut:500000,soybean:450000,common_bean:480000,wheat:350000,tomato:200000,onion:350000,cotton:400000,sunflower:300000,sesame:450000},
-  GH:{maize:1200,rice:3500,sorghum:900,millet:800,cassava:400,yam:2000,sweet_potato:700,cowpea:3000,groundnut:3500,soybean:3000,common_bean:3200,wheat:2500,tomato:2000,onion:3000,cotton:3500,sunflower:2500,sesame:3500},
-  KE:{maize:40000,rice:120000,sorghum:30000,millet:25000,cassava:12000,yam:60000,sweet_potato:20000,cowpea:90000,groundnut:120000,soybean:90000,common_bean:120000,wheat:70000,tomato:60000,onion:80000,cotton:100000,sunflower:70000,sesame:100000},
-  ET:{maize:12000,rice:28000,sorghum:9000,millet:7000,cassava:4000,yam:18000,sweet_potato:6000,cowpea:22000,groundnut:28000,soybean:22000,common_bean:25000,wheat:18000,tomato:15000,onion:20000,cotton:25000,sunflower:18000,sesame:25000},
-  TZ:{maize:600000,rice:1800000,sorghum:500000,millet:400000,cassava:200000,yam:1200000,sweet_potato:400000,cowpea:1500000,groundnut:2000000,soybean:1600000,common_bean:2000000,wheat:1200000,tomato:1000000,onion:1400000,cotton:2000000,sunflower:1400000,sesame:2000000},
-  ZA:{maize:4500,rice:15000,sorghum:3500,millet:3000,cassava:1500,yam:8000,sweet_potato:2500,cowpea:12000,groundnut:15000,soybean:12000,common_bean:14000,wheat:6000,tomato:8000,onion:10000,cotton:15000,sunflower:8000,sesame:14000},
-  default:{maize:800,rice:2000,sorghum:600,millet:500,cassava:200,yam:1200,sweet_potato:400,cowpea:1800,groundnut:2200,soybean:1800,common_bean:2000,wheat:1400,tomato:1000,onion:1500,cotton:2000,sunflower:1200,sesame:1800}
-};
-
-function getCountryCosts(cc){
-  var fc = window.AfroTools && window.AfroTools.farmCosts;
-  if(fc && fc[cc]) return fc[cc];
-  // fallback generic
-  return {
-    currency:'USD',currencySymbol:'$',
-    labor:{dailyWageRate:5,manDaysPerHa_simplified:90,familyLaborDiscount:0.5},
-    mechanization:{tractorPloughing_perHa:80},
-    agrochemicals:{herbicide_perHa:30,pesticide_perHa:20,fungicide_perHa:15},
-    landCost:{rental_perHa_perSeason:80},
-    transport:{farmToMarket_perTonne_perKm:0.5},
-    finance:{averageInterestRate_percent:15}
-  };
-}
-
-function getSeedPrice(cc, crop){
-  var tbl = SEED_PRICE_PER_KG[cc] || SEED_PRICE_PER_KG.default;
-  return tbl[crop] || (SEED_PRICE_PER_KG.default[crop] || 200);
-}
-
-function getFertPrice(cc){
-  return FERT_PRICE_MULT[cc] || FERT_PRICE_MULT.default;
-}
-
-function getMarketPrice(cc, crop){
-  var tbl = MARKET_PRICE_T[cc] || MARKET_PRICE_T.default;
-  return tbl[crop] || (MARKET_PRICE_T.default[crop] || 1000);
-}
-
 // ── MAIN CALCULATION ──────────────────────────────────────────────────
 window.calculate = function(){
   var cc = document.getElementById('country-sel').value;
@@ -785,99 +723,29 @@ window.calculate = function(){
   var finMode   = document.querySelector('input[name="finance"]:checked').value;
   var startMonth = parseInt(document.getElementById('start-month').value, 10);
 
-  var cd = getCountryCosts(cc);
-  var sym = cd.currencySymbol;
-  var fertPx = getFertPrice(cc);
-
-  // Labor multiplier
-  var laborMult = laborMode === 'family' ? cd.labor.familyLaborDiscount :
-                  laborMode === 'mixed'  ? ((1 + cd.labor.familyLaborDiscount)/2) : 1;
-
-  // Totals per category across all crops
-  var totSeed=0, totFert=0, totChemicals=0, totLabor=0, totMech=0, totLand=0,
-      totTransport=0, totRevenue=0, totalArea=0;
-  var cropLines = [];
-
-  crops.forEach(function(c){
-    var crop = c.crop;
-    var area = c.area;
-    totalArea += area;
-
-    // Seeds / planting material
-    var seedCost = 0;
-    if(PLANTING_MATERIAL_COST_PER_HA[crop]){
-      seedCost = PLANTING_MATERIAL_COST_PER_HA[crop] * cd.labor.dailyWageRate * area * 10;
-    } else {
-      var sr = SEED_RATE[crop] || 20;
-      var sp = getSeedPrice(cc, crop);
-      seedCost = sr * sp * area;
-    }
-
-    // Fertilizer
-    var fkgHa = FERT_RATE_KG_HA[crop] || 100;
-    var fertCost = fkgHa * fertPx * area;
-
-    // Chemicals
-    var chemCost = (cd.agrochemicals.herbicide_perHa + cd.agrochemicals.pesticide_perHa + cd.agrochemicals.fungicide_perHa) * area;
-    // Vegetative crops need fewer chemicals
-    if(PLANTING_MATERIAL_COST_PER_HA[crop]) chemCost *= 0.6;
-
-    // Labor
-    var laborCost = cd.labor.dailyWageRate * cd.labor.manDaysPerHa_simplified * area * laborMult;
-
-    // Mechanization
-    var mechCost = 0;
-    if(mechMode === 'tractor'){
-      mechCost = (cd.mechanization.tractorPloughing_perHa || cd.labor.dailyWageRate * 5) * area;
-    } else if(mechMode === 'ox'){
-      mechCost = (cd.mechanization.tractorPloughing_perHa || cd.labor.dailyWageRate * 5) * 0.45 * area;
-    }
-    // manual = 0 extra (included in labor)
-
-    // Land
-    var landCost = 0;
-    if(landMode === 'rent'){
-      var rentOvr = parseFloat(document.getElementById('rent-override').value);
-      landCost = (rentOvr > 0 ? rentOvr : (cd.landCost.rental_perHa_perSeason || cd.labor.dailyWageRate * 8)) * area;
-    } else if(landMode === 'own'){
-      landCost = 0; // own land — opportunity cost but not cash
-    }
-    // communal = 0
-
-    // Transport (estimated per ha based on yield × distance proxy)
-    var yieldT = (YIELD_THA[crop] || 1.5) * area;
-    var transportCost = cd.transport.farmToMarket_perTonne_perKm * 20 * yieldT; // 20km typical
-
-    // Revenue
-    var px = getMarketPrice(cc, crop);
-    var revenue = yieldT * px;
-
-    cropLines.push({crop:crop, area:area, seedCost:seedCost, fertCost:fertCost, chemCost:chemCost, laborCost:laborCost, mechCost:mechCost, landCost:landCost, transportCost:transportCost, revenue:revenue, yieldT:yieldT});
-
-    totSeed      += seedCost;
-    totFert      += fertCost;
-    totChemicals += chemCost;
-    totLabor     += laborCost;
-    totMech      += mechCost;
-    totLand      += landCost;
-    totTransport += transportCost;
-    totRevenue   += revenue;
-  });
-
-  var subTotal = totSeed + totFert + totChemicals + totLabor + totMech + totLand + totTransport;
-  var contingency = subTotal * 0.1;
-
-  // Loan interest
-  var loanInterest = 0;
-  if(finMode === 'loan'){
-    var rate = parseFloat(document.getElementById('loan-rate').value) || cd.finance.averageInterestRate_percent;
-    var term = parseFloat(document.getElementById('loan-term').value) || 6;
-    loanInterest = subTotal * (rate/100) * (term/12);
-  }
-
-  var totalBudget = subTotal + contingency + loanInterest;
-  var profit = totRevenue - totalBudget;
-  var roi = totalBudget > 0 ? (profit / totalBudget * 100) : 0;
+  var engine = window.AfroTools && window.AfroTools.FarmBudgetEngine;
+  var budgetData = window.AfroTools && window.AfroTools.FarmBudgetData;
+  var farmCosts = window.AfroTools && window.AfroTools.farmCosts;
+  var result = engine.calculate({
+    countryCode:cc,
+    crops:crops,
+    landMode:landMode,
+    laborMode:laborMode,
+    mechanizationMode:mechMode,
+    financeMode:finMode,
+    startMonth:startMonth,
+    rentOverride:document.getElementById('rent-override').value,
+    loanRate:document.getElementById('loan-rate').value,
+    loanTerm:document.getElementById('loan-term').value
+  }, {data:budgetData,farmCosts:farmCosts});
+  if(!result.ok){errEl.classList.add('show');return result;}
+  var sym = result.currency.symbol;
+  var totSeed=result.totals.seed,totFert=result.totals.fertilizer,totChemicals=result.totals.chemicals,
+      totLabor=result.totals.labor,totMech=result.totals.mechanization,totLand=result.totals.land,
+      totTransport=result.totals.transport,totRevenue=result.totals.revenue,totalArea=result.totals.area;
+  var subTotal=result.subtotal,contingency=result.contingency,loanInterest=result.loanInterest,
+      totalBudget=result.totalBudget,profit=result.profit,roi=result.roi;
+  window.FARM_BUDGET_LAST_RESULT = result;
 
   // ── RENDER RESULTS ──────────────────────────────────────────────────
   document.getElementById('results').style.display = 'block';
@@ -937,16 +805,7 @@ window.calculate = function(){
   for(var m=0; m<6; m++){
     monthLabels.push(MONTHS[((startMonth - 1 + m) % 12)]);
   }
-  var cfWeights = [
-    totLand + totMech + totSeed * 0.5,       // M1: land prep, mech, half seed
-    totSeed * 0.5 + totLabor * 0.2,          // M2: planting labor + seed
-    totFert * 0.4 + totChemicals * 0.4 + totLabor * 0.2, // M3: basal fert + weeding
-    totFert * 0.4 + totChemicals * 0.3 + totLabor * 0.2, // M4: topdress + 2nd weeding
-    totChemicals * 0.3 + totLabor * 0.15,   // M5: pest management
-    totLabor * 0.25 + totTransport + contingency * 0.5 + loanInterest // M6: harvest
-  ];
-  // contingency remainder
-  cfWeights[0] += contingency * 0.5;
+  var cfWeights = result.cashflow.map(function(month){return month.value;});
 
   var maxCF = Math.max.apply(null, cfWeights);
   var cfGrid = document.getElementById('cashflow-grid');
@@ -983,8 +842,8 @@ window.calculate = function(){
   });
 
   // BREAK-EVEN
-  var avgPricePerT = crops.reduce(function(acc, c){ return acc + getMarketPrice(cc, c.crop); }, 0) / crops.length;
-  var bePlant = avgPricePerT > 0 ? totalBudget / (avgPricePerT * totalArea) : 0;
+  var avgPricePerT = result.averageMarketPricePerTonne;
+  var bePlant = result.breakEvenYieldTonnesHa;
   document.getElementById('breakeven-text').innerHTML =
     'You need at least <strong>' + bePlant.toFixed(2) + ' t/ha</strong> to cover all costs. '
     + 'Average break-even at <strong>' + fmtFull(bePlant * avgPricePerT, sym) + '/ha</strong> revenue.';
@@ -1019,6 +878,6 @@ window.calculate = function(){
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

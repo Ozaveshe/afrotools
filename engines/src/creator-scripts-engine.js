@@ -48,6 +48,32 @@
     },
     DURATION_OPTIONS: [ "3-5 min", "5-8 min", "8-12 min", "12-20 min" ],
     PLATFORM_OPTIONS: [ "YouTube", "TikTok", "Instagram Reels", "Podcast", "Course / LMS" ],
+    generateLocalScript: function(input, language) {
+      var source = input || {};
+      var topic = String(source.topic || "").trim();
+      var points = String(source.keyPoints || "").split(/\r?\n|,/).map(function(point) {
+        return point.trim();
+      }).filter(Boolean).slice(0, 5);
+      if (!topic) throw new Error("A topic is required.");
+      if (!points.length) throw new Error("Add at least one key point.");
+      var fr = language === "fr";
+      var sections = [
+        {type: "hook", label: fr ? "ACCROCHE" : "HOOK", timestamp: "0:00–0:15", text: fr ? "Voici ce qu’il faut comprendre sur " + topic + "." : "Here is what you need to understand about " + topic + "."},
+        {type: "context", label: fr ? "CONTEXTE" : "CONTEXT", timestamp: "0:15–0:40", text: fr ? "Commençons par le contexte, les hypothèses et les limites." : "Start with the context, assumptions, and limits."},
+        {type: "main", label: fr ? "POINTS CLÉS" : "KEY POINTS", timestamp: "0:40–2:30", text: points.map(function(point, index) { return (index + 1) + ". " + point; }).join("\n")},
+        {type: "cta", label: fr ? "CONCLUSION" : "CLOSE", timestamp: "2:30–2:45", text: fr ? "Vérifiez les faits, ajoutez vos sources et adaptez ce brouillon à votre public." : "Verify the facts, add your sources, and adapt this draft for your audience."}
+      ];
+      var full = sections.map(function(section) { return section.text; }).join("\n\n");
+      return {
+        title: topic,
+        format: source.format || "youtube",
+        language: fr ? "fr" : "en",
+        sections: sections,
+        fullScript: full,
+        wordCount: this.countWords(full),
+        estimatedDuration: this.estimateDuration(this.countWords(full))
+      };
+    },
     DURATION_WORD_MAP: t,
     buildGeneratePrompt: function(e) {
       var n = [];

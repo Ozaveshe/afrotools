@@ -42,7 +42,8 @@ const expectedMigrations = {
   '/all-tools/': '/tools/',
   '/terms-of-use': '/terms/',
   '/terms-of-use.html': '/terms/',
-  '/fr/tools/': '/fr/all-tools/'
+  '/fr/tools/': '/fr/all-tools/',
+  '/fr/transport/car-import-cost/': '/fr/tools/cout-importation-voiture/'
 };
 for (const [source, target] of Object.entries(expectedMigrations)) {
   const resolved = routeApi.resolveFinalRoute(graph, source);
@@ -120,6 +121,35 @@ fixture = routeApi.validateEquivalenceGroups([
   { id: 'page:fr-a', route: '/fr/a/', state: 'page', indexability: 'indexable', canonicalRoute: '/fr/a/', locale: 'fr', hreflangs: { fr: '/fr/a/', 'x-default': '/a/' } }
 ]);
 assert.ok(issueCodes(fixture).has('HREFLANG_RECIPROCAL_MISSING'), 'AC-9: missing reciprocal fixture must fail');
+
+assert.throws(
+  () => routeApi.assertUnambiguousLocaleComponent([
+    { locale: 'en', route: '/agriculture/crop-yield/algeria' },
+    { locale: 'en', route: '/agriculture/crop-yield/angola' },
+    { locale: 'fr', route: '/fr/agriculture/crop-yield/algeria' }
+  ]),
+  /HREFLANG_EQUIVALENCE_AMBIGUOUS/,
+  'AC-9: an equivalence component with two routes for one locale must fail closed before metadata sync'
+);
+
+assert.doesNotThrow(
+  () => routeApi.assertUnambiguousLocaleComponent([
+    { locale: 'en', route: '/tools/', canonicalRoute: '/tools/' },
+    { locale: 'en', route: '/all-tools/', canonicalRoute: '/tools/' },
+    { locale: 'fr', route: '/fr/all-tools/', canonicalRoute: '/fr/all-tools/' }
+  ]),
+  'AC-9: a canonical alias must not be mistaken for a second locale owner'
+);
+
+assert.throws(
+  () => routeApi.assertSelfLocaleHreflang(
+    { locale: 'fr', route: '/fr/health/' },
+    { locale: 'fr', route: '/fr/health-insurance/' },
+    { locale: 'fr', route: '/fr/health/' }
+  ),
+  /HREFLANG_SELF_LOCALE_MISMATCH/,
+  'AC-9: an indexable page must not declare a different route as its own-locale equivalent'
+);
 
 fixture = routeApi.validateSitemapEntries([
   { sitemapId: 'sitemap-tools', route: '/old/' }

@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="/assets/js/pages/creative/fr-creative-privacy-bootstrap.js?v=7dff2baf"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResizeKit — Redimensionneur privé d’images sociales | AfroTools</title>
+  <meta name="description" content="Redimensionnez localement une image PNG, JPEG ou WebP en 12 formats sociaux, vérifiez chaque cadrage et exportez les PNG ou un ZIP.">
+  <meta name="robots" content="noindex, follow">
+  <meta property="og:title" content="ResizeKit — Redimensionneur privé d’images sociales | AfroTools">
+  <meta property="og:description" content="Redimensionnez localement une image PNG, JPEG ou WebP en 12 formats sociaux, vérifiez chaque cadrage et exportez les PNG ou un ZIP.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/creator-resize.webp">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/redimensionnement-pour-createur/app">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/tools/creator-resize/style.css?v=d148ead3">
+  <link rel="stylesheet" href="/assets/css/creator-resize-parity.css?v=b09b50ce">
+  <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+  <script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f" defer></script>
+  <script src="/engines/creator-resize-engine.js?v=652e278c" defer></script>
+  <link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css?v=dad14e8f">
+  <script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js?v=c86f0290" defer></script>
+  <script src="/assets/js/pages/creative/fr-creative-consent-analytics.js?v=9c65a0d9" defer></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="canonical" href="https://afrotools.com/fr/tools/redimensionnement-pour-createur/app">
+</head>
+<body>
+  <main class="crz-app" id="crzApp">
+    <header class="crz-app-header">
+      <a href="/fr/tools/redimensionnement-pour-createur/" class="crz-app-logo"><span aria-hidden="true">✂</span> ResizeKit</a>
+      <div class="crz-header-actions">
+        <label class="crz-sr-only" for="crzFillSelect">Mode de remplissage</label>
+        <select id="crzFillSelect" class="crz-btn crz-btn-secondary crz-btn-sm" title="Mode de remplissage" aria-label="Mode de remplissage"><option value="blur">Fond flouté</option><option value="solid">Couleur échantillonnée</option><option value="gradient">Dégradé échantillonné</option><option value="extend">Étirement des bords</option><option value="crop">Recadrage seul</option></select>
+        <button type="button" id="crzDownloadAll" class="crz-btn crz-btn-primary crz-btn-sm" disabled>↓ Tout télécharger (ZIP)</button>
+      </div>
+    </header>
+
+    <section class="crz-upload-state" id="crzUploadState" aria-labelledby="crzDropTitle">
+      <div class="crz-upload-card">
+        <div class="crz-drop-zone" id="crzDropZone" role="button" tabindex="0" aria-describedby="crzDropHelp">
+          <div class="crz-drop-icon" aria-hidden="true">📷</div>
+          <div class="crz-drop-title" id="crzDropTitle">Déposez votre image ici</div>
+          <div class="crz-drop-sub" id="crzDropHelp">ou choisissez un fichier · PNG, JPEG, WebP · 10 Mo maximum</div>
+          <input type="file" id="crzFileInput" accept="image/png,image/jpeg,image/webp" aria-label="Choisir une image locale" hidden>
+        </div>
+        <p class="crz-privacy">Votre image est décodée, redimensionnée et placée dans le ZIP uniquement dans ce navigateur. Cet espace n’envoie pas le fichier à AfroTools ou à une IA et ne stocke pas ses pixels sur un serveur.</p>
+      </div>
+    </section>
+
+    <section class="crz-editor" id="crzEditor" style="display:none" aria-label="Formats">
+      <div class="crz-editor-left">
+        <div class="crz-original-wrap" id="crzOriginalWrap">
+          <img id="crzOriginalImg" class="crz-original-img" alt="Image originale sélectionnée pour le redimensionnement local">
+          <div class="crz-focal-marker" id="crzFocalMarker" aria-hidden="true"><div class="crz-focal-ring"></div></div>
+        </div>
+        <div class="crz-focal-info">
+          <span id="crzFocalLabel" aria-live="polite">Point focal : centre</span>
+          <button type="button" id="crzFocalReset">Recentrer le point focal</button>
+          <button type="button" id="crzNewImage">Nouvelle image</button>
+        </div>
+      </div>
+      <aside class="crz-sidebar">
+        <div class="crz-sidebar-header">
+          <div class="crz-sidebar-title">Formats</div>
+          <div class="crz-sidebar-count" id="crzSizeCount" aria-live="polite">12 formats</div>
+        </div>
+        <div class="crz-presets" aria-label="Formats rapides">
+          <div class="crz-preset-label">Formats rapides</div>
+          <button type="button" class="crz-preset-btn active" data-preset="all" aria-pressed="true">Tous les réseaux</button><button type="button" class="crz-preset-btn" data-preset="instagram" aria-pressed="false">Instagram seulement</button><button type="button" class="crz-preset-btn" data-preset="youtube" aria-pressed="false">YouTube seulement</button><button type="button" class="crz-preset-btn" data-preset="x" aria-pressed="false">X seulement</button><button type="button" class="crz-preset-btn" data-preset="custom" aria-pressed="false">Sélection personnalisée</button>
+        </div>
+        <div class="crz-fill-bar" aria-label="Mode de remplissage">
+          <button type="button" class="crz-fill-btn active" data-fill="blur" aria-pressed="true">Flou</button><button type="button" class="crz-fill-btn" data-fill="solid" aria-pressed="false">Couleur</button><button type="button" class="crz-fill-btn" data-fill="gradient" aria-pressed="false">Dégradé</button><button type="button" class="crz-fill-btn" data-fill="extend" aria-pressed="false">Étirement</button><button type="button" class="crz-fill-btn" data-fill="crop" aria-pressed="false">Recadrage</button>
+        </div>
+        <div class="crz-size-grid" id="crzSizeGrid"></div>
+      </aside>
+    </section>
+
+    <div class="crz-bottom-bar" id="crzBottomBar" style="display:none">
+      <div class="crz-bottom-info" id="crzBottomInfo" aria-live="polite">12 formats prêts</div>
+      <div class="crz-bottom-actions">
+        <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzDownloadAllBottom">↓ Tout télécharger (ZIP)</button>
+      </div>
+    </div>
+
+    <div class="crz-modal-backdrop" id="crzModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="crzModalLabel">
+      <div class="crz-modal-content">
+        <button type="button" class="crz-modal-close" id="crzModalClose" aria-label="Fermer l’aperçu">×</button>
+        <canvas id="crzModalCanvas"></canvas>
+        <div class="crz-modal-info">
+          <div><div class="crz-modal-label" id="crzModalLabel"></div><div class="crz-modal-dims" id="crzModalDims"></div></div>
+          <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzModalDownload">↓ Télécharger le PNG</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="crz-toast" id="crzToast" role="status" aria-live="polite"></div>
+  </main>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

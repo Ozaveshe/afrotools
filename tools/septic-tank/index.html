@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -28,9 +28,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Septic Tank Calculator","item":"https://afrotools.com/tools/septic-tank/"}]}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/septic-tank.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/septic-tank.webp">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
@@ -202,73 +202,40 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/engines/septic-tank-engine.js?v=2d675519"></script>
 <script>
-var ST_RATES = {
-  NG:{ sym:'₦', conc_per_m3:85000, plastic_per_m3:60000, soak_per_m:12000, labour_pct:0.40 },
-  KE:{ sym:'KES', conc_per_m3:35000, plastic_per_m3:25000, soak_per_m:5000, labour_pct:0.40 },
-  ZA:{ sym:'ZAR', conc_per_m3:8000, plastic_per_m3:6000, soak_per_m:1500, labour_pct:0.45 },
-  GH:{ sym:'GHS', conc_per_m3:6000, plastic_per_m3:4500, soak_per_m:800, labour_pct:0.40 },
-  EG:{ sym:'EGP', conc_per_m3:7000, plastic_per_m3:5000, soak_per_m:1000, labour_pct:0.35 },
-  ET:{ sym:'ETB', conc_per_m3:18000, plastic_per_m3:13000, soak_per_m:2500, labour_pct:0.40 },
-  TZ:{ sym:'TZS', conc_per_m3:700000, plastic_per_m3:500000, soak_per_m:100000, labour_pct:0.40 },
-  UG:{ sym:'UGX', conc_per_m3:900000, plastic_per_m3:650000, soak_per_m:130000, labour_pct:0.40 },
-  RW:{ sym:'RWF', conc_per_m3:150000, plastic_per_m3:110000, soak_per_m:20000, labour_pct:0.40 },
-  MA:{ sym:'MAD', conc_per_m3:4000, plastic_per_m3:3000, soak_per_m:600, labour_pct:0.40 }
-};
-// Daily water use litres per person per building type
-var DAILY_USE = { residential:150, office:60, school:50, clinic:200 };
-// Soil percolation multiplier for soakaway length
-var SOIL_SOAK = { sandy:1.0, loam:1.5, clay:2.5, laterite:1.8 };
 
 function calcSeptic(){
-  var country = document.getElementById('st-country').value;
-  var people = +document.getElementById('st-people').value;
-  var btype = document.getElementById('st-btype').value;
-  var toilets = +document.getElementById('st-toilets').value;
-  var soil = document.getElementById('st-soil').value;
-  var matType = document.getElementById('st-material').value;
-  var inclSoak = document.getElementById('st-soak').value === 'yes';
-  var r = ST_RATES[country], sym = r.sym;
+  var result = window.AfroTools.SepticTankEngine.calculate({
+    country:document.getElementById('st-country').value,
+    people:document.getElementById('st-people').value,
+    buildingType:document.getElementById('st-btype').value,
+    toilets:document.getElementById('st-toilets').value,
+    soil:document.getElementById('st-soil').value,
+    material:document.getElementById('st-material').value,
+    includeSoakaway:document.getElementById('st-soak').value === 'yes'
+  });
+  if (!result.ok) {
+    document.getElementById('st-results').classList.remove('on');
+    return;
+  }
 
-  // Volume calculation: 2-day retention + sludge accumulation
-  var dailyWaste = people * DAILY_USE[btype] * 0.8; // 80% becomes wastewater
-  var retentionVol = dailyWaste * 2 / 1000; // m3, 2-day HRT
-  var sludgeVol = people * 0.04; // 40L sludge per person per year × 1yr
-  var totalVol = Math.ceil((retentionVol + sludgeVol) * 10) / 10;
-  totalVol = Math.max(totalVol, 2.0); // minimum 2m3
-
-  // Dimensions (rectangular)
-  var length = +(Math.ceil(totalVol * 0.4 * 10) / 10).toFixed(1);
-  var width = +(Math.max(1.2, length * 0.5)).toFixed(1);
-  var depth = +(totalVol / (length * width)).toFixed(1);
-  depth = Math.min(depth, 2.5);
-  var chambers = people <= 10 ? 2 : 3;
-
-  // Construction cost
-  var matRate = matType === 'plastic' ? r.plastic_per_m3 : r.conc_per_m3;
-  var constrCost = totalVol * matRate * (1 + r.labour_pct);
-
-  // Soakaway
-  var soakLength = people * DAILY_USE[btype] * 0.8 / 1000 * 10 * SOIL_SOAK[soil]; // metres
-  var soakCost = inclSoak ? soakLength * r.soak_per_m : 0;
-  var totalCost = constrCost + soakCost;
-
-  document.getElementById('st-headline').textContent = 'Specification for ' + people + ' people (' + btype + ')';
-  document.getElementById('st-vol').textContent = totalVol.toFixed(1) + ' m³';
-  document.getElementById('st-cost').textContent = sym + Math.round(constrCost).toLocaleString();
-  document.getElementById('st-soak-cost').textContent = inclSoak ? sym + Math.round(soakCost).toLocaleString() : 'Not included';
-  document.getElementById('st-total').textContent = sym + Math.round(totalCost).toLocaleString();
-  document.getElementById('st-length').textContent = length + 'm';
-  document.getElementById('st-width').textContent = width + 'm';
-  document.getElementById('st-depth').textContent = depth + 'm';
-  document.getElementById('st-chambers').textContent = chambers;
+  document.getElementById('st-headline').textContent = 'Specification for ' + result.people + ' people (' + result.buildingType + ')';
+  document.getElementById('st-vol').textContent = result.volume.toFixed(1) + ' m³';
+  document.getElementById('st-cost').textContent = result.symbol + Math.round(result.constructionCost).toLocaleString();
+  document.getElementById('st-soak-cost').textContent = result.includeSoakaway ? result.symbol + Math.round(result.soakCost).toLocaleString() : 'Not included';
+  document.getElementById('st-total').textContent = result.symbol + Math.round(result.total).toLocaleString();
+  document.getElementById('st-length').textContent = result.length + 'm';
+  document.getElementById('st-width').textContent = result.width + 'm';
+  document.getElementById('st-depth').textContent = result.depth + 'm';
+  document.getElementById('st-chambers').textContent = result.chambers;
 
   var notes = [
     'Minimum setback: 3m from any building foundation, 6m from water wells.',
-    soil === 'clay' ? 'Clay soil has low percolation — consider a larger soakaway or lined leach field.' : 'Soil type affects drainage speed; percolation test recommended before construction.',
-    matType === 'plastic' ? 'Precast plastic tanks are quick to install but ensure anchoring in high water table areas.' : 'Concrete tanks must be properly waterproofed internally with bitumen or render.',
+    result.soil === 'clay' ? 'Clay soil has low percolation — consider a larger soakaway or lined leach field.' : 'Soil type affects drainage speed; percolation test recommended before construction.',
+    result.material === 'plastic' ? 'Precast plastic tanks are quick to install but ensure anchoring in high water table areas.' : 'Concrete tanks must be properly waterproofed internally with bitumen or render.',
     'De-sludge every 2–3 years. Access cover should be at ground level for easy pump-out.',
-    'Pumping cost: budget ' + sym + Math.round(totalVol * matRate * 0.05).toLocaleString() + ' annually for de-sludging.',
+    'Pumping cost: budget ' + result.symbol + Math.round(result.annualDesludgingEstimate).toLocaleString() + ' annually for de-sludging.',
     'Vent pipes (75mm dia, min 2m above tank) are mandatory to prevent odour and gas build-up.'
   ];
   document.getElementById('st-notes').innerHTML = notes.map(function(n){ return '<li>' + n + '</li>'; }).join('');

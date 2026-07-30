@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -16,9 +16,9 @@
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
   <link rel="stylesheet" href="/assets/css/ai-page-ui-refresh.css?v=a1ad9cea">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-  <script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
   <style>
     :root{--ask-bg:#f8fafc;--ask-surface:#fff;--ask-text:#0f172a;--ask-muted:#52637a;--ask-soft:#eef6ff;--ask-border:#dbe6f4;--ask-primary:#0062cc;--ask-primary-dark:#004c9f;--ask-focus:rgba(0,98,204,.2);--ask-warn:#92400e;--ask-warn-bg:#fffbeb;--ask-success:#065f46;--ask-success-bg:#ecfdf5}
     body{margin:0;background:var(--ask-bg);color:var(--ask-text);font-family:"DM Sans",system-ui,sans-serif;overflow-x:hidden}
@@ -266,10 +266,12 @@
     </div>
   </main>
   <afro-footer></afro-footer>
-<script src="/assets/js/ai/tool-manifest.js?v=55a3e4bd"></script>
-<script src="/assets/js/ai/afro-data.js?v=6c1c5860"></script>
-<script src="/assets/js/ai/afro-confidence.js?v=0395b29a"></script>
-  <script src="/assets/js/ai/intent-router.js?v=165ae16e"></script>
+<script src="/assets/js/ai/tool-manifest.js?v=248a919a"></script>
+<script src="/assets/js/ai/afro-data.js?v=e3b5ce2d"></script>
+<script src="/assets/js/ai/afro-confidence.js?v=10634864"></script>
+  <script src="/assets/js/ai/french-route-map.generated.js?v=ae82216b"></script>
+  <script src="/assets/js/ai/french-transport-route-map.js?v=3a183e5b"></script>
+  <script src="/assets/js/ai/intent-router.js?v=2969759e"></script>
   <script src="/assets/js/ai/prefill-adapters.js?v=f5742764"></script>
   <script src="/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad"></script>
   <script src="/assets/js/ai/orchestrator.js?v=275e0f53"></script>
@@ -416,6 +418,14 @@
       return true;
     }
 
+    function routingLocale() {
+      var params = new URLSearchParams(window.location.search);
+      var requested = String(params.get("locale") || params.get("lang") || document.documentElement.lang || "en")
+        .toLowerCase()
+        .split(/[-_]/)[0];
+      return requested === "fr" ? "fr" : "en";
+    }
+
     var manifestCache = null;
     var currentResult = null;
     /* The 1,252-tool catalog, fetched on first interaction rather than on load:
@@ -429,7 +439,7 @@
       if (window.AFROTOOLS_TOOL_DIRECTORY) return (toolDirectoryPromise = Promise.resolve());
       toolDirectoryPromise = new Promise(function (resolve) {
         var script = document.createElement("script");
-        script.src = "/assets/js/ai/afro-directory.js?v=09d92178";
+        script.src = "/assets/js/ai/afro-directory.js?v=b4570a70";
         script.async = true;
         script.onload = function () { manifestCache = null; resolve(); };
         script.onerror = function () { resolve(); };
@@ -562,7 +572,7 @@
       if (orchestrator && typeof orchestrator.buildPlan === "function") {
         var plan = orchestrator.buildPlan(prompt, {
           manifest: manifest,
-          locale: "en",
+          locale: routingLocale(),
           consentToModel: false,
           candidateLimit: 3
         });
@@ -584,7 +594,7 @@
           source: "orchestrated tool match"
         };
       }
-      var decision = router.routeDeterministically(prompt, { manifest: manifest, locale: "en" });
+      var decision = router.routeDeterministically(prompt, { manifest: manifest, locale: routingLocale() });
       var tool = findToolById(manifest, decision && decision.selectedToolId);
       if (!decision || !tool || decision.selectedToolId === "tool-search" || Number(decision.confidence || 0) <= 0) {
         return { type: "no-match" };
@@ -1307,6 +1317,6 @@
     hydratePrompt();
   })();
   </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

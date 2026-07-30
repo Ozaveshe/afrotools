@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -71,6 +71,7 @@ a{text-decoration:none;color:inherit}
 <script src="/assets/js/pages/day9-creative-canonical-reflow.js?v=c9ea053b"></script>
 <link rel="canonical" href="https://afrotools.com/tools/wedding-photo-package/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/wedding-photo-package/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/forfait-photo-mariage/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/wedding-photo-package/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -212,89 +213,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var BASE_PRICES={
-  NG:{base_4h:100000,base_6h:150000,base_8h:200000,base_10h:270000,base_12h:350000,second_shooter:80000,drone:60000,sde:150000,album_40:120000,album_60:180000,pre_wedding:100000,prints:50000,online_gallery:0,extra_day:80000},
-  KE:{base_4h:10000,base_6h:15000,base_8h:20000,base_10h:27000,base_12h:35000,second_shooter:8000,drone:6000,sde:15000,album_40:12000,album_60:18000,pre_wedding:10000,prints:5000,online_gallery:0,extra_day:8000},
-  ZA:{base_4h:3000,base_6h:4500,base_8h:6000,base_10h:8000,base_12h:10500,second_shooter:2500,drone:1800,sde:4500,album_40:3500,album_60:5500,pre_wedding:3000,prints:1500,online_gallery:0,extra_day:2500},
-  GH:{base_4h:1800,base_6h:2700,base_8h:3600,base_10h:4800,base_12h:6300,second_shooter:1500,drone:1100,sde:2700,album_40:2100,album_60:3300,pre_wedding:1800,prints:900,online_gallery:0,extra_day:1500},
-  EG:{base_4h:5000,base_6h:7500,base_8h:10000,base_10h:13500,base_12h:17500,second_shooter:4000,drone:3000,sde:8000,album_40:6000,album_60:9000,pre_wedding:5000,prints:2500,online_gallery:0,extra_day:4000}
-};
-var EXP_MULT={new:0.6,mid:1.0,senior:1.6,established:2.5};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
-var ADDONS=[
-  {id:'second_shooter',label:'2nd Photographer',desc:'Covers different angles, candids'},
-  {id:'drone',label:'Drone Coverage',desc:'Aerial shots and video'},
-  {id:'sde',label:'Same-Day Edit (SDE)',desc:'Highlight reel played at reception'},
-  {id:'album_40',label:'40-Page Wedding Album',desc:'Lay-flat premium print album'},
-  {id:'album_60',label:'60-Page Wedding Album',desc:'Premium lay-flat, coffee table size'},
-  {id:'pre_wedding',label:'Pre-Wedding Shoot',desc:'Engagement / pre-wedding session'},
-  {id:'prints',label:'Print Package (40 prints)',desc:'Fine art prints, various sizes'},
-  {id:'extra_day',label:'Additional Coverage Day',desc:'Traditional ceremony or after-party'}
-];
-function updatePrices(){
-  var country=document.getElementById('country').value;
-  var hours=document.getElementById('hours').value;
-  var exp=document.getElementById('experience').value;
-  var prices=BASE_PRICES[country]||BASE_PRICES['NG'];
-  var mult=EXP_MULT[exp]||1;
-  var sym=SYM[country];
-  var addonHtml='';
-  ADDONS.forEach(function(a){
-    var price=Math.round((prices[a.id]||0)*mult);
-    addonHtml+='<div class="addon-item"><input aria-label="Cb '+a.id+'" type="checkbox" id="cb_'+a.id+'"><div class="addon-label">'+a.label+'<div style="font-size:.78rem;color:#94a3b8;font-weight:400">'+a.desc+'</div></div><span class="addon-price">+'+sym+fmt(price)+'</span></div>';
-  });
-  document.getElementById('addonList').innerHTML=addonHtml;
-}
-function calculate(){
-  var country=document.getElementById('country').value;
-  var hours=document.getElementById('hours').value;
-  var exp=document.getElementById('experience').value;
-  var prices=BASE_PRICES[country]||BASE_PRICES['NG'];
-  var mult=EXP_MULT[exp]||1;
-  var sym=SYM[country];var rate=FX[country];
-  var baseKey='base_'+hours+'h';
-  var base=Math.round((prices[baseKey]||prices['base_8h'])*mult);
-  var items=[{label:'Base Coverage ('+hours+' hours)',price:base,included:true}];
-  var total=base;
-  ADDONS.forEach(function(a){
-    if(document.getElementById('cb_'+a.id)&&document.getElementById('cb_'+a.id).checked){
-      var price=Math.round((prices[a.id]||0)*mult);
-      items.push({label:a.label,price:price,included:true});
-      total+=price;
-    }
-  });
-  var deposit=total*0.5;
-  document.getElementById('totalPrice').textContent=sym+fmt(total);
-  document.getElementById('depositInfo').textContent='Balance due: '+sym+fmt(deposit)+' on the wedding day';
-  document.getElementById('depositAmount').textContent=sym+fmt(deposit);
-  var quoteHtml=items.map(function(item){
-    return '<div class="addon-item"><span style="font-size:1.1rem;color:#16a34a">&#x2713;</span><div class="addon-label">'+item.label+'</div><span class="addon-price">'+sym+fmt(item.price)+'</span></div>';
-  }).join('');
-  quoteHtml+='<div style="background:var(--en-accent-pale);padding:14px 16px;border-top:2px solid var(--en-accent-light);display:flex;justify-content:space-between;font-weight:800;font-size:1rem"><span>TOTAL PACKAGE</span><span style="color:var(--en-accent-dark)">'+sym+fmt(total)+'</span></div>';
-  document.getElementById('quoteItems').innerHTML=quoteHtml;
-  var levels=['new','mid','senior','established'];
-  var labels={new:'New Photographer',mid:'Experienced',senior:'Senior',established:'Top-Tier'};
-  document.getElementById('compareTable').innerHTML=levels.map(function(lvl){
-    var p=Math.round((prices['base_8h']||0)*EXP_MULT[lvl]);
-    return '<tr'+(lvl===exp?' style="background:var(--en-accent-pale)"':'')+'>'+
-      '<td class="en-td-value">'+labels[lvl]+(lvl===exp?' ← You':'')+'</td>'+
-      '<td class="en-td-highlight">'+sym+fmt(p)+' – '+sym+fmt(p*2)+'</td>'+
-      '<td style="font-size:.82rem;color:#64748b">'+(lvl==='new'?'Basic package, digital only':lvl==='mid'?'Full day, 2nd shooter option':lvl==='senior'?'Album, drone, pre-wedding':'Full premium package')+'</td></tr>';
-  }).join('');
-  document.getElementById('contractChecklist').innerHTML=
-    '<ul style="list-style:none;display:flex;flex-direction:column;gap:8px;font-size:.88rem">'+
-    ['Client names and wedding date / venue','Exact hours of coverage (start and end time)','Package details: all inclusions listed explicitly','Payment schedule: deposit + balance due date','Cancellation / postponement policy (non-refundable deposit)','Photo delivery timeline and format (online gallery, USB, etc.)','Rights and usage — who owns the images','Copyright notice: photographer retains copyright, client gets licence to print/share','What happens if photographer is ill (backup plan)','Travel / accommodation costs if applicable'].map(function(item){return '<li style="display:flex;gap:8px;align-items:flex-start"><span style="color:var(--en-accent);flex-shrink:0">&#x25a1;</span>'+item+'</li>';}).join('')+
-    '</ul>';
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-updatePrices();
-</script>
+<script src="/engines/wedding-photo-package-engine.js?v=c0c8f7f0"></script>
+<script src="/assets/js/pages/creative/creative-result-actions.js?v=a6db9431"></script>
+<script src="/assets/js/pages/creative/wedding-photo-package-controller.js?v=3488aef7"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

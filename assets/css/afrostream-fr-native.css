@@ -1,0 +1,239 @@
+.afs-page,
+.afs-page * {
+  box-sizing: border-box;
+}
+
+.afs-page {
+  min-height: 100vh;
+  background: var(--color-bg, #f5f7fb);
+  color: var(--color-text, #172033);
+}
+
+.afs-shell {
+  width: min(1180px, calc(100% - 32px));
+  margin: 0 auto;
+  padding: 96px 0 64px;
+}
+
+.afs-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.2fr) minmax(240px, .8fr);
+  gap: 30px;
+  align-items: center;
+  padding: clamp(28px, 5vw, 54px);
+  border-radius: 24px;
+  background: #071f2b;
+  color: #fff;
+}
+
+.afs-eyebrow {
+  margin: 0 0 10px;
+  color: #5eead4;
+  font-size: .78rem;
+  font-weight: 900;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.afs-hero h1 {
+  margin: 0;
+  color: #fff;
+  font-size: clamp(2.2rem, 6vw, 4.6rem);
+  line-height: 1;
+}
+
+.afs-hero p {
+  max-width: 740px;
+  color: #d1fae5;
+  line-height: 1.7;
+}
+
+.afs-art {
+  width: 100%;
+  border-radius: 18px;
+  background: #fff;
+}
+
+.afs-card {
+  min-width: 0;
+  margin-top: 20px;
+  padding: 22px;
+  border: 1px solid var(--color-border, #d8e1ec);
+  border-radius: 18px;
+  background: var(--color-surface, #fff);
+}
+
+.afs-card h2,
+.afs-card h3 {
+  margin-top: 0;
+}
+
+.afs-controls {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(180px, .4fr) auto;
+  gap: 12px;
+  align-items: end;
+}
+
+.afs-field label {
+  display: block;
+  margin-bottom: 6px;
+  font-weight: 800;
+}
+
+.afs-field input,
+.afs-field select {
+  width: 100%;
+  min-width: 0;
+  min-height: 46px;
+  padding: 11px 12px;
+  border: 1px solid var(--color-border, #b8c4d3);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #172033);
+  font: inherit;
+}
+
+.afs-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+}
+
+.afs-btn {
+  min-height: 46px;
+  padding: 11px 15px;
+  border: 2px solid var(--color-border, #b8c4d3);
+  border-radius: 10px;
+  background: var(--color-surface, #fff);
+  color: var(--color-text, #172033);
+  font: inherit;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.afs-btn:disabled {
+  cursor: not-allowed;
+  opacity: .55;
+}
+
+.afs-status,
+.afs-freshness,
+.afs-source-note {
+  color: var(--color-text-secondary, #526078);
+  line-height: 1.6;
+}
+
+.afs-creators {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 13px;
+  margin-top: 16px;
+}
+
+.afs-creator {
+  display: grid;
+  grid-template-columns: 72px minmax(0, 1fr);
+  gap: 12px;
+  min-width: 0;
+  padding: 15px;
+  border: 1px solid var(--color-border, #d8e1ec);
+  border-radius: 14px;
+  background: var(--color-bg-subtle, #f8fafc);
+}
+
+.afs-creator img {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.afs-creator h3 {
+  margin: 0;
+  overflow-wrap: anywhere;
+}
+
+.afs-creator p {
+  margin: 6px 0 0;
+  color: var(--color-text-secondary, #526078);
+  overflow-wrap: anywhere;
+}
+
+.afs-news {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.afs-news-item {
+  min-width: 0;
+  padding: 16px;
+  border: 1px solid var(--color-border, #d8e1ec);
+  border-radius: 13px;
+}
+
+.afs-news-item p {
+  color: var(--color-text-secondary, #526078);
+  overflow-wrap: anywhere;
+}
+
+.afs-page :focus-visible {
+  outline: 3px solid #f59e0b;
+  outline-offset: 3px;
+}
+
+[data-theme="dark"] .afs-page {
+  --color-bg: #07111f;
+  --color-surface: #101d2d;
+  --color-bg-subtle: #142337;
+  --color-border: #30445d;
+  --color-text: #f3f7fc;
+  --color-text-secondary: #b8c5d6;
+}
+
+@media (max-width: 850px) {
+  .afs-hero,
+  .afs-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .afs-creators {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .afs-art {
+    max-width: 520px;
+  }
+}
+
+@media (max-width: 560px) {
+  .afs-shell {
+    width: min(100% - 20px, 1180px);
+    padding-top: 76px;
+  }
+
+  .afs-hero,
+  .afs-card {
+    padding: 20px;
+    border-radius: 15px;
+  }
+
+  .afs-creators,
+  .afs-news {
+    grid-template-columns: 1fr;
+  }
+
+  .afs-actions,
+  .afs-actions .afs-btn {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .afs-page * {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

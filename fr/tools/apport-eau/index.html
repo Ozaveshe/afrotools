@@ -1,215 +1,118 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
-<head>
-<meta charset="UTF-8">
-
-<meta name="content-language" content="fr"><meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Apport en eau | Repère quotidien | AfroTools</title>
-<meta name="description" content="Estimez un besoin indicatif en eau selon le profil, l'activité et le climat, sans remplacer un avis médical.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Apport en eau | Repère quotidien | AfroTools">
-<meta property="og:description" content="Estimez un besoin indicatif en eau selon le profil, l'activité et le climat, sans remplacer un avis médical.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/apport-eau/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Apport en eau | Repère quotidien | AfroTools">
-<meta name="twitter:description" content="Estimez un besoin indicatif en eau selon le profil, l'activité et le climat, sans remplacer un avis médical."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="water-intake"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){try{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light'}catch(_){}})();</script>
+<title>Journal privé des apports hydriques | AfroTools</title><meta name="description" content="Totalisez les boissons d'une journée localement et comparez éventuellement avec un objectif fourni par le clinicien. Cet outil ne prescrit pas la quantité d’eau que…">
+<meta property="og:title" content="Journal privé des apports hydriques | AfroTools"><meta property="og:description" content="Totalisez les boissons d'une journée localement et comparez éventuellement avec un objectif fourni par le clinicien. Cet outil ne prescrit pas la quantité d’eau que…"><meta property="og:url" content="https://afrotools.com/fr/tools/apport-eau/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;color:#7c2d12;font-size:.88rem;line-height:1.65;margin-bottom:24px}
-.fr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-.fr-link{display:block;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-decoration:none;background:#fff;color:#0f172a}.fr-link span{display:block;color:#64748b;font-size:.82rem;line-height:1.5;margin-top:4px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calculateur d’apport en eau",
-  "description": "Estimez un besoin quotidien en eau comme repère général à adapter à votre situation.",
-  "url": "https://afrotools.com/fr/tools/apport-eau/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/water-intake.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Combien d’eau dois-je boire par jour ?","acceptedAnswer":{"@type":"Answer","text":"Le besoin varie selon le poids, l’activité, la chaleur, l’alimentation, la grossesse, l’allaitement et certaines maladies. L’outil donne un repère à adapter."}},{"@type":"Question","name":"La chaleur change-t-elle les besoins ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Les climats chauds, l’exercice et la transpiration peuvent augmenter les besoins, mais il faut aussi éviter les excès d’eau dans certaines situations médicales."}},{"@type":"Question","name":"Quand demander un avis médical ?","acceptedAnswer":{"@type":"Answer","text":"Demandez de l’aide en cas de confusion, malaise, vomissements persistants, signes de déshydratation sévère, maladie rénale ou cardiaque, grossesse à risque ou nourrisson malade."}}]}
-</script>
+:root{color-scheme:light dark;--bg:#f3f8fc;--p:#fff;--t:#142230;--m:#526777;--l:#d4e1ea;--b:#0369a1;--s:#e0f2fe;--w:#fff7ed;--f:#f59e0b}[data-theme=dark]{--bg:#07131c;--p:#102330;--t:#f2f8fb;--m:#bdd1dc;--l:#345061;--b:#7dd3fc;--s:#123247;--w:#352417;--f:#fbbf24}*{box-sizing:border-box}html{font:100%/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}body{margin:0}a{color:var(--b)}button,input,select{font:inherit}button{min-height:44px;border:0;border-radius:.65rem;padding:.7rem 1rem;font-weight:800;cursor:pointer}.pri{background:var(--b);color:#fff}.sec{background:var(--p);color:var(--t);border:1px solid var(--l)}:focus-visible{outline:3px solid var(--f);outline-offset:3px}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--p);padding:.7rem;z-index:3}header{background:var(--p);border-bottom:1px solid var(--l)}nav{max-width:70rem;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem}.brand{font-weight:900;color:var(--t);text-decoration:none}main{max-width:70rem;margin:auto;padding:clamp(1rem,4vw,3rem)}.hero{max-width:53rem}.tag{display:inline-block;background:var(--s);padding:.4rem .7rem;border-radius:2rem;font-weight:800;color:var(--b)}h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:.6rem 0}.notice{background:var(--w);border-left:5px solid #c2410c;padding:1rem;margin:1.2rem 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start}.card{background:var(--p);border:1px solid var(--l);border-radius:1rem;padding:clamp(1rem,3vw,1.5rem)}label{display:block;font-weight:750;margin:.8rem 0 .3rem}input,select{width:100%;min-height:46px;border:1px solid var(--l);border-radius:.55rem;padding:.65rem;background:var(--p);color:var(--t)}.hint,.source{color:var(--m);font-size:.9rem}.entry{display:grid;grid-template-columns:.8fr 1.2fr .9fr auto;gap:.55rem;align-items:end;border-bottom:1px solid var(--l);padding-bottom:.8rem}.entry label{margin-top:.35rem}.remove{padding:.65rem}.confirm{display:flex;gap:.6rem;align-items:center;min-height:44px;font-weight:700}.confirm input{width:1.2rem;min-height:1.2rem}.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}.value{font-size:3rem;line-height:1;font-weight:900;color:var(--b)}footer{max-width:70rem;margin:auto;padding:1rem;color:var(--m);border-top:1px solid var(--l)}@media(max-width:900px){.entry{grid-template-columns:1fr 1fr}.remove{grid-column:1/-1}}@media(max-width:720px){.grid{grid-template-columns:1fr}.actions>*{flex:1 1 100%}}@media(max-width:400px){.entry{grid-template-columns:1fr}.remove{grid-column:auto}}@media(max-width:340px){main{padding:.7rem}h1{font-size:1.8rem}.card{padding:.85rem}}@media print{header,.actions,.tag,.remove,#addDrink{display:none}.grid{display:block}.card{margin-bottom:1rem;border-color:#777}}
+.entry-title{grid-column:1/-1;margin:.4rem 0 0}.card,.grid>*{min-width:0}body{overflow-wrap:anywhere}[data-theme=dark] .pri{background:#0369a1}
+</style><!-- tool-structured-data:auto -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Journal privé des apports hydriques | AfroTools">
+<meta name="twitter:description" content="Totalisez les boissons d'une journée localement et comparez éventuellement avec un objectif fourni par le clinicien. Cet outil ne prescrit pas la quantité d’eau que…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/water-intake.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Journal privé des apports hydriques",
+    "description": "Totalisez les boissons d'une journée localement et comparez éventuellement avec un objectif fourni par le clinicien. Cet outil ne prescrit pas la quantité d’eau que…",
+    "url": "https://afrotools.com/fr/tools/apport-eau/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/water-intake.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
   }
-}
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
-
-<style data-fr-utility-wave>
-.fr-utility-note{max-width:920px;margin:1.5rem auto 2.5rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:12px;background:#eff6ff;color:#172554;line-height:1.65}
-.fr-utility-note strong{display:block;margin-bottom:.25rem}
-.fr-utility-note p{margin:.2rem 0 .8rem;color:#1e3a8a}
-.fr-utility-links{display:flex;flex-wrap:wrap;gap:.5rem}
-.fr-utility-links a{display:inline-flex;padding:.42rem .68rem;border:1px solid #bfdbfe;border-radius:999px;background:#fff;color:#1d4ed8;text-decoration:none;font-size:.86rem;font-weight:700}
-</style>
-<style data-localized-verification-style>
-.localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
-</style>
+<script type="application/json" id="fr-health-translations">{"Private Fluid Intake Log | AfroTools":"Journal privé de prise de liquide | AfroTools","Skip to log":"Passer au journal","Dark mode":"Mode sombre","Local daily total":"Total quotidien local","Fluid intake log":"Journal d'apport hydrique","Add drinks consumed during one day. The tool totals millilitres and does not invent a personal target.":"Ajoutez les boissons consommées pendant une journée. L'outil totalise des millilitres et n'invente pas d'objectif personnel.","No clinical prescription.":"Aucune prescription clinique.","Fluid needs and restrictions can change with kidney or heart conditions, pregnancy, breastfeeding, medicines, fever, vomiting, diarrhoea, heat and activity. Follow advice from your own qualified care team. Seek urgent help for confusion, fainting, inability to keep fluids down, severe weakness, breathing difficulty or very little urine.":"Les besoins en liquides et les restrictions peuvent changer en fonction des problèmes rénaux ou cardiaques, de la grossesse, de l'allaitement, des médicaments, de la fièvre, des vomissements, de la diarrhée, de la chaleur et de l'activité. Suivez les conseils de votre propre équipe de soins qualifiée. Demandez de l’aide d’urgence en cas de confusion, d’évanouissement, d’incapacité à retenir les liquides, de faiblesse grave, de difficultés respiratoires ou de très peu d’urine.","Today's drinks":"Les boissons du jour","Add another drink":"Ajouter une autre boisson","Log drinks only. Food moisture is not estimated, and this app does not rate drink choices.":"Boissons en rondins uniquement. L'humidité des aliments n'est pas estimée et cette application n'évalue pas les choix de boissons.","Target supplied by your clinician (mL, optional)":"Cible fournie par votre clinicien (mL, facultatif)","Leave blank unless a qualified professional gave you a specific daily fluid target.":"Laissez vide, sauf si un professionnel qualifié vous a donné un objectif de liquide quotidien spécifique.","I confirm this optional target came from a qualified clinician":"Je confirme que cette cible facultative provient d'un clinicien qualifié","Total logged fluids":"Total des fluides enregistrés","Daily log summary":"Résumé du journal quotidien","Add drink entries to total the day.":"Ajoutez des entrées de boissons pour totaliser la journée.","Download TXT":"Télécharger le TXT","Print / save PDF":"Imprimer / enregistrer en PDF","Clear":"Effacer","What this tool does":"Ce que fait cet outil","It adds the quantities you enter. If—and only if—you enter a target already provided by your clinician, it shows the arithmetic difference. It does not estimate a need from body weight, prescribe extra water, or tell you to ignore thirst, symptoms or fluid restrictions.":"Il ajoute les quantités que vous entrez. Si – et seulement si – vous saisissez un objectif déjà fourni par votre clinicien, la différence arithmétique s'affiche. Il n’estime pas un besoin en fonction du poids corporel, ne prescrit pas d’eau supplémentaire et ne vous dit pas d’ignorer la soif, les symptômes ou les restrictions hydriques.","Official source, reviewed 26 July 2026:":"Source officielle, consultée le 26 juillet 2026 :","CDC: About Water and Healthier Drinks (5 March 2026)":"CDC : À propos de l'eau et des boissons plus saines (5 mars 2026)",", which notes that intake needs vary with age, sex, pregnancy, activity and breastfeeding and that food and other beverages contribute.":", qui note que les besoins en apports varient selon l'âge, le sexe, la grossesse, l'activité et l'allaitement, et que les aliments et autres boissons y contribuent.","Private and local: entries are not stored, sent, placed in URLs or included in analytics.":"Privé et local : les entrées ne sont pas stockées, envoyées, placées dans des URL ou incluses dans les analyses.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Total a day's drinks locally and optionally compare with a clinician-provided target. This tool does not prescribe how much water you should drink.":"Totalisez les boissons d'une journée localement et comparez éventuellement avec un objectif fourni par le clinicien. Cet outil ne prescrit pas la quantité d’eau que vous devez boire.","Private Fluid Intake Log":"Journal d'apport de liquide privé","A local daily fluid total—not a clinical water prescription.":"Un total quotidien local de liquides, et non une prescription clinique d'eau.","Total a day":"Total par jour","use strict":"utiliser strict","Plain water":"Eau claire","Tea or coffee":"Thé ou café","Milk or milk drink":"Lait ou boisson lactée","Soup or broth":"Soupe ou bouillon","Other drink":"Autre boisson","Add at least one drink entry.":"Ajoutez au moins une entrée de boisson.","A single-day log can contain at most 50 drink entries.":"Un journal d'une seule journée peut contenir au maximum 50 entrées de boissons.","This log does not prescribe fluid intake or replace clinical guidance for kidney, heart, pregnancy, breastfeeding, medicine-related, acute-illness or other conditions.":"Ce journal ne prescrit pas d'apport hydrique et ne remplace pas les conseils cliniques en matière de reins, de cœur, de grossesse, d'allaitement, d'origine médicamenteuse, de maladie aiguë ou d'autres affections.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health":"Santé","Health tools":"Outils santé","Download PDF":"Télécharger le PDF","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/apport-eau/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/water-intake/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/apport-eau/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-maji-ya-kunywa/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/water-intake/">
-</head>
-<body class="top-level-page-ui-refresh">
-<section class="localized-verification-panel" data-tool-verification-panel aria-label="Méthode, sources et limites">
-<h2>Méthode, sources et prochaine action</h2>
-<div class="localized-verification-grid"><div><strong>Méthode</strong>Le résultat utilise les données saisies dans cet outil pour produire une estimation de travail, une comparaison ou une checklist.</div><div><strong>Sources à vérifier</strong>Confirmez les taux, frais, licences, documents, prix ou exigences avec l'autorite officielle, le prestataire, la banque, l'assureur, le médecin ou le conseiller concerne.</div><div><strong>Action utile</strong>Gardez la date, le pays, la devise, les hypothèses et le résultat avant de payer, signer, déclarer, voyager ou deposer un dossier.</div></div>
-<p>Ce contenu n'est pas un devis officiel, un conseil professionnel ni une validation finale. Utilisez-le comme premier repere, puis vérifiez aupres de la source responsable.</p>
-</section>
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Apport en eau</h1>
-<p>Estimez un besoin quotidien en eau selon votre profil, votre activité et le climat, sans remplacer un avis médical.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Calculateur d'apport en eau. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/water-intake/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/water-intake/" title="Calculateur d'apport en eau" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Calculateur d'apport en eau";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-note"><strong>Repère uniquement.</strong> Les besoins en eau varient selon la santé, la chaleur, l’activité, la grossesse, l’allaitement et certains traitements. En cas de malaise, confusion, vomissements ou déshydratation sévère, demandez rapidement une aide médicale.</div>
-<div class="fr-seo">
-<h2>Hydratation et climat africain</h2>
-<p>Une estimation d’hydratation peut aider à préparer une journée chaude, un travail physique ou une séance de sport. Elle reste générale et doit être adaptée à votre état de santé.</p>
-<p>L’outil tient compte du poids, de l’activité et du climat pour donner un ordre de grandeur. Pour un enfant, une personne âgée, une grossesse, une maladie rénale ou cardiaque, demandez un avis qualifié.</p>
-</div>
-<div class="fr-seo">
-<h2>Outils liés en français</h2>
-<div class="fr-grid"><a class="fr-link" href="/fr/tools/compteur-calories/"><strong>Compteur de calories</strong><span>Repère nutritionnel général.</span></a><a class="fr-link" href="/fr/tools/calculateur-imc/"><strong>Calculateur IMC</strong><span>Indice corporel à interpréter avec prudence.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lire une mesure sans diagnostic.</span></a></div>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Combien d’eau dois-je boire par jour ?</summary><p>Le besoin varie selon le poids, l’activité, la chaleur, l’alimentation, la grossesse, l’allaitement et certaines maladies. L’outil donne un repère à adapter.</p></details>
-<details><summary>La chaleur change-t-elle les besoins ?</summary><p>Oui. Les climats chauds, l’exercice et la transpiration peuvent augmenter les besoins, mais il faut aussi éviter les excès d’eau dans certaines situations médicales.</p></details>
-<details><summary>Quand demander un avis médical ?</summary><p>Demandez de l’aide en cas de confusion, malaise, vomissements persistants, signes de déshydratation sévère, maladie rénale ou cardiaque, grossesse à risque ou nourrisson malade.</p></details>
-</div>
-</div>
-
-<section class="fr-utility-note" data-fr-utility-wave>
-  <div>
-    <strong>Repère uniquement.</strong>
-    <p>Les résultats servent uniquement à estimer un besoin général. Confirmez avec un professionnel de santé en cas de grossesse, allaitement, nourrisson malade, personne âgée fragile, maladie rénale ou cardiaque, traitement diurétique, confusion, malaise ou signes de déshydratation sévère.</p>
-  </div>
-  <div class="fr-utility-links">
-    <a href="/fr/tools/compteur-calories/">Calories</a>
-    <a href="/fr/tools/calculateur-imc/">IMC</a>
-    <a href="/fr/tools/tension-arterielle/">Tension</a>
-    <a href="/fr/tools/qualite-eau/">Qualité de l’eau</a>
-  </div>
-</section>
-<afro-footer></afro-footer>
-<script>
-(function(){
-  const map={"Water Intake Calculator":"Calculateur d’apport en eau","Daily Water Intake":"Apport quotidien en eau","Calculate":"Calculer","Calculator":"Calculateur","Weight":"Poids","Activity Level":"Niveau d’activité","Climate":"Climat","Temperature":"Température","Result":"Résultat","Results":"Résultats","Recommended":"Recommandé","Water":"Eau","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter"};
-  const frame=document.querySelector('.fr-tool-frame iframe');
-  function translate(root){if(!root)return;const walker=root.createTreeWalker(root.body||root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){let text=node.nodeValue;Object.keys(map).forEach(k=>{text=text.replace(new RegExp(k,'g'),map[k]);});node.nodeValue=text;}root.querySelectorAll('input,textarea,button,select,[placeholder],[title],[aria-label]').forEach(el=>{['placeholder','title','aria-label','value'].forEach(attr=>{const value=el.getAttribute&&el.getAttribute(attr);if(!value)return;let out=value;Object.keys(map).forEach(k=>{out=out.replace(new RegExp(k,'g'),map[k]);});if(out!==value)el.setAttribute(attr,out);});});}
-  if(frame)frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;translate(doc);new MutationObserver(()=>translate(doc)).observe(doc.body,{childList:true,subtree:true});}catch(e){}});
+</head><body>
+<a class="skip" href="#main">Passer au journal</a><header><nav><a class="brand" href="/">AfroTools</a><button id="theme" class="sec" type="button" aria-pressed="false">Mode sombre</button></nav></header>
+<main id="main"><section class="hero"><span class="tag">Total quotidien local</span><h1>Journal privé des apports hydriques</h1><p>Ajoutez les boissons consommées pendant une journée. L'outil totalise des millilitres et n'invente pas d'objectif personnel.</p><div class="notice"><strong>Aucune prescription clinique.</strong> Les besoins en liquides et les restrictions peuvent changer en fonction des problèmes rénaux ou cardiaques, de la grossesse, de l'allaitement, des médicaments, de la fièvre, des vomissements, de la diarrhée, de la chaleur et de l'activité. Suivez les conseils de votre propre équipe de soins qualifiée. Demandez de l’aide d’urgence en cas de confusion, d’évanouissement, d’incapacité à retenir les liquides, de faiblesse grave, de difficultés respiratoires ou de très peu d’urine.</div></section>
+<div class="grid"><form id="form" class="card" novalidate><h2>Les boissons du jour</h2>
+<div id="entries"></div>
+<button id="addDrink" class="sec" type="button">Ajouter une autre boisson</button><p class="hint">Boissons en rondins uniquement. L'humidité des aliments n'est pas estimée et cette application n'évalue pas les choix de boissons.</p>
+<label for="clinicalTarget">Cible fournie par votre clinicien (mL, facultatif)</label><input id="clinicalTarget" name="clinicalTarget" type="number" min="100" max="20000" step="10" inputmode="numeric"><p class="hint">Laissez vide, sauf si un professionnel qualifié vous a donné un objectif de liquide quotidien spécifique.</p>
+<label class="confirm"><input id="targetConfirmed" name="targetConfirmed" type="checkbox"> Je confirme que cette cible facultative provient d'un clinicien qualifié</label>
+<div id="error" role="alert"></div><button class="pri" type="submit">Total des fluides enregistrés</button></form>
+<section id="resultPanel" class="card" aria-live="polite" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle">Résumé du journal quotidien</h2><div id="result"><p>Ajoutez des entrées de boissons pour totaliser la journée.</p></div><div class="actions"><button id="txt" class="sec" type="button" disabled>Télécharger le TXT</button><button id="print" class="sec" type="button" disabled>Imprimer / enregistrer en PDF</button><button id="clear" class="sec" type="button">Effacer</button></div></section></div>
+<section class="card"><h2>Ce que fait cet outil</h2><p>Il ajoute les quantités que vous entrez. Si – et seulement si – vous saisissez un objectif déjà fourni par votre clinicien, la différence arithmétique s'affiche. Il n’estime pas un besoin en fonction du poids corporel, ne prescrit pas d’eau supplémentaire et ne vous dit pas d’ignorer la soif, les symptômes ou les restrictions hydriques.</p><p class="source"><strong>Source officielle, consultée le 26 juillet 2026 :</strong> <a href="https://www.cdc.gov/healthy-weight-growth/water-healthy-drinks/index.html" rel="noopener">CDC : À propos de l'eau et des boissons plus saines (5 mars 2026)</a>, qui note que les besoins en apports varient selon l'âge, le sexe, la grossesse, l'activité et l'allaitement, et que les aliments et autres boissons y contribuent.</p></section>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Journal privé des apports hydriques reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/water-intake/" hreflang="en">/tools/water-intake/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main><footer>Privé et local : les entrées ne sont pas stockées, envoyées, placées dans des URL ou incluses dans les analyses.</footer>
+<script src="/tools/water-intake/fluid-log-engine.js?v=8dd200e4"></script><script>
+(()=>{
+  const f=document.getElementById('form'),entriesNode=document.getElementById('entries'),panel=document.getElementById('resultPanel'),r=document.getElementById('result'),e=document.getElementById('error'),t=document.getElementById('txt'),p=document.getElementById('print'),theme=document.getElementById('theme');
+  let last=null,nextId=1;
+  const typeOptions=Object.entries(FluidLogEngine.TYPES).map(([value,label])=>`<option value="${value}">${label}</option>`).join('');
+  const renumber=()=>{[...entriesNode.children].forEach((row,index)=>{const number=index+1;row.dataset.number=number;row.querySelector('.entry-title').textContent=`Drink ${number}`;row.querySelector('.time-label').textContent=`Drink ${number} time (optional)`;row.querySelector('.type-label').textContent=`Drink ${number} type`;row.querySelector('.volume-label').textContent=`Drink ${number} volume (mL)`;row.querySelector('.remove').setAttribute('aria-label',`Remove drink ${number}`)});};
+  const addEntry=(values={})=>{const id=nextId++,row=document.createElement('section');row.className='entry';row.innerHTML=`<h3 class="entry-title">Drink</h3><div><label class="time-label" for="time-${id}">Time (optional)</label><input id="time-${id}" class="drink-time" type="time"></div><div><label class="type-label" for="type-${id}">Type</label><select id="type-${id}" class="drink-type">${typeOptions}</select></div><div><label class="volume-label" for="volume-${id}">Volume (mL)</label><input id="volume-${id}" class="drink-volume" type="number" min="1" max="5000" step="10" inputmode="numeric" required></div><button class="remove sec" type="button">Remove</button>`;entriesNode.append(row);row.querySelector('.drink-time').value=values.time||'';row.querySelector('.drink-type').value=values.type||'water';row.querySelector('.drink-volume').value=values.volumeMl||'';row.querySelector('.remove').addEventListener('click',()=>{row.remove();renumber();if(!entriesNode.children.length)addEntry()});renumber();};
+  const readEntries=()=>[...entriesNode.querySelectorAll('.entry')].map(row=>({time:row.querySelector('.drink-time').value,type:row.querySelector('.drink-type').value,volumeMl:row.querySelector('.drink-volume').value}));
+  document.getElementById('addDrink').addEventListener('click',()=>{addEntry();entriesNode.lastElementChild.querySelector('.drink-time').focus()});
+  f.addEventListener('submit',event=>{event.preventDefault();try{last=FluidLogEngine.total({entries:readEntries(),clinicalTargetMl:f.clinicalTarget.value,targetConfirmed:f.targetConfirmed.checked});e.textContent='';const categories=last.byType.map(item=>`<li>${item.label}: ${item.volumeMl.toLocaleString()} mL</li>`).join('');r.innerHTML=`<p class="value">${last.totalMl.toLocaleString()} mL</p><p><strong>${last.entryCount} drink ${last.entryCount===1?'entry':'entries'}</strong></p><ul>${categories}</ul><p>${last.targetContext}</p><p><strong>Warning:</strong> ${last.warning}</p>`;t.disabled=p.disabled=false;panel.focus()}catch(error){last=null;e.textContent=error.message;t.disabled=p.disabled=true}});
+  const report=()=>`AfroTools private fluid intake log\nReview date: 26 July 2026\n\nInputs — drink entries\n${last.entries.map((entry,index)=>`${index+1}. ${entry.time||'time not entered'} — ${entry.typeLabel}: ${entry.volumeMl} mL`).join('\n')}\n\nResult\nTotal logged fluid: ${last.totalMl} mL\nCategory totals:\n${last.byType.map(item=>`- ${item.label}: ${item.volumeMl} mL`).join('\n')}\nClinician-provided target: ${last.targetMl===null?'not entered':last.targetMl+' mL'}\n${last.targetContext}\n\nAssumption\nSimple addition of user-entered drinks only. Food moisture was not estimated. No personal fluid need was calculated.\n\nWarning\n${last.warning}`;
+  t.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='fluid-intake-log.txt';a.click();URL.revokeObjectURL(a.href)});
+  p.addEventListener('click',()=>last&&window.print());
+  document.getElementById('clear').addEventListener('click',()=>{f.reset();entriesNode.replaceChildren();addEntry({type:'water'});addEntry({type:'tea-coffee'});last=null;r.innerHTML='<p>Add drink entries to total the day.</p>';e.textContent='';t.disabled=p.disabled=true;entriesNode.querySelector('.drink-time').focus()});
+  const syncTheme=()=>{const dark=document.documentElement.getAttribute('data-theme')==='dark';theme.setAttribute('aria-pressed',String(dark));theme.textContent=dark?'Light mode':'Dark mode'};
+  theme.addEventListener('click',()=>{const root=document.documentElement,dark=root.getAttribute('data-theme')!=='dark';root.setAttribute('data-theme',dark?'dark':'light');root.style.colorScheme=dark?'dark':'light';syncTheme()});
+  addEntry({type:'water'});addEntry({type:'tea-coffee'});syncTheme();
 })();
 </script>
-
-<script data-fr-utility-localizer>
-(function(){
-  var map=[
-    ['Calculate','Calculer'],['Calculator','Calculateur'],['Compare','Comparer'],['Estimate','Estimer'],['Result','Résultat'],['Results','Résultats'],
-    ['Save','Enregistrer'],['Saved','Enregistré'],['Download','Télécharger'],['Share','Partager'],['Copy','Copier'],['Print','Imprimer'],
-    ['Country','Pays'],['City','Ville'],['Currency','Devise'],['Amount','Montant'],['Cost','Coût'],['Total cost','Coût total'],
-    ['Visa','Visa'],['Flight','Vol'],['Flights','Vols'],['Travel','Voyage'],['Time zone','Fuseau horaire'],['Timezone','Fuseau horaire'],
-    ['Import','Importation'],['Shipping','Fret'],['Freight','Fret'],['Duty','Droit'],['Duties','Droits'],['Customs','Douane'],['Insurance','Assurance'],
-    ['Fuel','Carburant'],['Generator','Générateur'],['Solar','Solaire'],['Electricity','Électricité'],['Power','Puissance'],['Water','Eau'],
-    ['Updated','Mis à jour'],['Search','Rechercher'],['Filter','Filtrer'],['Reset','Réinitialiser'],['Open in English','Ouvrir la source anglaise'],
-    ['This is an estimate','Ceci est une estimation'],['Estimated','Estimé'],['Official','Officiel'],['Required','Obligatoire']
-  ];
-  map.sort(function(a,b){return b[0].length-a[0].length});
-  function swap(value){
-    if(!value) return value;
-    var next=value;
-    map.forEach(function(pair){
-      next=next.replace(new RegExp('\\b'+pair[0].replace(/ /g,'\\s+')+'\\b','g'),pair[1]);
-    });
-    return next;
-  }
-  function localize(root){
-    if(!root) return;
-    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){
-      var p=node.parentElement;
-      if(!p || /^(SCRIPT|STYLE|NOSCRIPT|TEXTAREA|CODE|PRE)$/i.test(p.tagName)) return NodeFilter.FILTER_REJECT;
-      return NodeFilter.FILTER_ACCEPT;
-    }});
-    var nodes=[], n;
-    while((n=walker.nextNode())) nodes.push(n);
-    nodes.forEach(function(node){var next=swap(node.nodeValue); if(next!==node.nodeValue) node.nodeValue=next;});
-    root.querySelectorAll('input,button,textarea,select,option,[title],[aria-label]').forEach(function(el){
-      ['placeholder','value','title','aria-label'].forEach(function(attr){
-        if(el.hasAttribute && el.hasAttribute(attr)){var next=swap(el.getAttribute(attr)); if(next!==el.getAttribute(attr)) el.setAttribute(attr,next);}
-      });
-    });
-  }
-  function localizeFrames(){
-    document.querySelectorAll('iframe').forEach(function(frame){
-      try{ if(frame.contentDocument) localize(frame.contentDocument.body); }catch(e){}
-      frame.addEventListener('load',function(){try{ localize(frame.contentDocument.body); }catch(e){}});
-    });
-  }
-  window.addEventListener('load',function(){
-    localize(document.body); localizeFrames();
-    var obs=new MutationObserver(function(){localize(document.body); localizeFrames();});
-    obs.observe(document.body,{childList:true,subtree:true});
-  });
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
-</body>
-</html>
+<afro-related-tools data-ssr="1" category="health" current="water-intake">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body></html>

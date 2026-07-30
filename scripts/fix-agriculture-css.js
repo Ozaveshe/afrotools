@@ -17,7 +17,7 @@ const path = require('path');
 const AGRI_DIR = path.join(__dirname, '..', 'agriculture');
 let filesFixed = 0;
 let totalFiles = 0;
-let changes = { opacity: 0, zindex: 0, badge: 0, twemoji: 0 };
+let changes = { opacity: 0, zindex: 0, badge: 0 };
 
 function getAllHtmlFiles(dir) {
   let results = [];
@@ -110,12 +110,6 @@ function fixFile(filePath) {
 
   // ═══ FIX 4: Twemoji for cross-platform flag rendering ═══
   // Add Twemoji script before </body> if not already present
-  if (!content.includes('twemoji') && content.includes('class="flag"')) {
-    const twemojiSnippet = `\n<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>\n<script>if(typeof twemoji!=='undefined')twemoji.parse(document.body,{folder:'svg',ext:'.svg'});</script>\n`;
-    content = content.replace('</body>', twemojiSnippet + '</body>');
-    changes.twemoji++;
-  }
-
   // Write if changed
   if (content !== original) {
     fs.writeFileSync(filePath, content, 'utf8');
@@ -136,4 +130,3 @@ console.log('  Files modified: ' + filesFixed);
 console.log('  Opacity fixes: ' + changes.opacity);
 console.log('  Z-index fixes: ' + changes.zindex);
 console.log('  Badge fixes: ' + changes.badge);
-console.log('  Twemoji added: ' + changes.twemoji);

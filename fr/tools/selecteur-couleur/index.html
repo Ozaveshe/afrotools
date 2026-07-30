@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -26,8 +26,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   :root { --cp-purple:#7c3aed; --cp-ink:#111827; --cp-line:#ddd6fe; --cp-soft:#f5f3ff; }
   body { background:#f8fafc; color:var(--cp-ink); font-family:"DM Sans", system-ui, sans-serif; }
@@ -78,6 +78,18 @@
   .cp-note a { color:#6d28d9; font-weight:900; }
   details.cp-note summary { cursor:pointer; color:#111827; font-weight:900; }
   .cp-faq { margin-top:18px; display:grid; gap:10px; }
+  html[data-theme="dark"] .cp-card, html[data-theme="dark"] .cp-note { background:#0f2133; border-color:#4b426c; color:#f4efff; }
+  html[data-theme="dark"] .cp-card__head, html[data-theme="dark"] .cp-preview { background:#1c1830; border-color:#4b426c; }
+  html[data-theme="dark"] label, html[data-theme="dark"] details.cp-note summary { color:#f4efff; }
+  html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] .cp-result output { background:#0d1422; border-color:#635b7d; color:#f4efff; }
+  html[data-theme="dark"] .cp-note p, html[data-theme="dark"] .cp-note li, html[data-theme="dark"] .cp-hint { color:#c5bdd8; }
+  @media (prefers-color-scheme:dark) {
+    html:not([data-theme="light"]) .cp-card, html:not([data-theme="light"]) .cp-note { background:#0f2133; border-color:#4b426c; color:#f4efff; }
+    html:not([data-theme="light"]) .cp-card__head, html:not([data-theme="light"]) .cp-preview { background:#1c1830; border-color:#4b426c; }
+    html:not([data-theme="light"]) label, html:not([data-theme="light"]) details.cp-note summary { color:#f4efff; }
+    html:not([data-theme="light"]) input, html:not([data-theme="light"]) select, html:not([data-theme="light"]) .cp-result output { background:#0d1422; border-color:#635b7d; color:#f4efff; }
+    html:not([data-theme="light"]) .cp-note p, html:not([data-theme="light"]) .cp-note li, html:not([data-theme="light"]) .cp-hint { color:#c5bdd8; }
+  }
   @media (max-width:900px) {
     .cp-grid, .cp-info { grid-template-columns:1fr; }
   }
@@ -98,7 +110,7 @@
 <main>
   <section class="cp-hero">
     <div class="cp-wrap">
-      <nav class="cp-crumb"><a href="/fr/">Accueil</a> / <a href="/fr/tools/outils-image/">Image et design</a> / Selecteur couleur</nav>
+      <nav class="cp-crumb"><a href="/fr/">Accueil</a> / <a href="/fr/image-design/">Image et design</a> / Selecteur couleur</nav>
       <div class="cp-kicker">Palette, contraste, export</div>
       <h1>Selecteur de couleur pour design, UI, logo et contenu</h1>
       <p class="cp-lede">Choisissez une couleur, copiez ses valeurs, vérifiez le contraste, créez une palette et samplez une image. Tout fonctionne localement dans le navigateur.</p>
@@ -170,7 +182,7 @@
           <div class="cp-actions">
             <button class="cp-btn" type="button" id="downloadCss">Télécharger CSS</button>
             <button class="cp-btn cp-btn--ghost" type="button" id="downloadPng">Télécharger swatch PNG</button>
-            <a class="cp-btn cp-btn--soft" href="/fr/tools/color-picker/">Outil anglais complet</a>
+            <a class="cp-btn cp-btn--soft" href="/tools/color-picker/" hreflang="en">Comparer la version anglaise</a>
           </div>
         </div>
       </aside>
@@ -198,7 +210,7 @@
       </section>
 
       <section class="cp-note">
-        <h2>Batch workflow</h2>
+        <h2>Préparation de plusieurs palettes</h2>
         <p>Pour un design system, créez une queue de couleurs: primaire, secondaire, accent, fond, texte et alerte. Exportez le CSS puis vérifiez contraste et usage dans vos composants.</p>
       </section>
 
@@ -319,6 +331,7 @@
       chip.className = 'cp-chip';
       chip.style.background = hex;
       chip.title = hex;
+      chip.setAttribute('aria-label', `Utiliser la couleur ${hex}`);
       chip.addEventListener('click', () => update(hex));
       grid.appendChild(chip);
     });
@@ -453,6 +466,6 @@
   update('#7C3AED');
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

@@ -53,7 +53,7 @@ for (const route of routes)
     await page.goto(route.path, { waitUntil: "networkidle" });
     await expect(page.locator("html")).toHaveAttribute("lang", route.name);
     await expect(page.getByRole("button", { name: route.calc })).toBeVisible();
-    await expect(page.locator(".source-confidence-card")).toBeVisible();
+    await expect(page.locator(".source-confidence-card").first()).toBeVisible();
     expect(
       await page.evaluate(() => window.DZVatApp.getResult()),
     ).toMatchObject({ net: 1000, vat: 190, gross: 1190 });

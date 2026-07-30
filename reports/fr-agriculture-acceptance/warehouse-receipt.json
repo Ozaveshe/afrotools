@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:warehouse-receipt",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-warehouse-receipt-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 27 Warehouse Receipt English invariants",
+    "engine": "node tests/warehouse-receipt-engine.test.js",
+    "engineResult": "PASS 528 Warehouse Receipt engine scenarios",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-warehouse-receipt-oracles.json node tests/fr-agriculture-warehouse-receipt.test.js",
+    "oracleResult": "PASS 396 French profiles",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id warehouse-receipt --check",
+    "browser": "PORT=42972 CI=1 npx playwright test tests/e2e/fr-agriculture-warehouse-receipt.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (16.0s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "warehouse-receipt",
+    "englishRoute": "/agriculture/warehouse-receipt/",
+    "frenchRoute": "/fr/agriculture/warehouse-receipt/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-warehouse-receipt-oracles.json",
+      "englishInvariants": 27,
+      "frenchProfiles": 396,
+      "preserves": ["12 country parameter identities", "11 commodity seasonal assumptions", "loan-to-value and cash advance", "pro-rata interest and insurance", "storage and handling costs", "delayed sale proceeds", "harvest comparison", "break-even price increase"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-warehouse-receipt.spec.js",
+      "result": "2 passed (16.0s)",
+      "isolatedPort": 42972,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/warehouse-receipt/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/warehouse-receipt-engine.js"],
+      "data": ["data/agriculture/warehouse-receipt-data.json", "data/agriculture/warehouse-receipt-data.js"],
+      "freshness": "undated static assumptions extracted exactly from the accepted English page; not live",
+      "confidence": "planning projection requiring current warehouse, lender, insurance and market confirmation"
+    },
+    "artwork": {"imageId": "warehouse-receipt", "file": "assets/img/tools/warehouse-receipt.webp", "state": "present"},
+    "limitations": ["Country selection does not prove current platform, warehouse or loan availability.", "The model omits quality loss, taxes, margin calls and any charges not entered in the accepted formula."]
+  }]
+}

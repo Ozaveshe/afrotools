@@ -1,42 +1,790 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
-  <meta charset="UTF-8">
+<meta name="afrotools-content-id" content="fr-developer:data-converter">
+<meta name="afrotools-source-owner" content="scripts/build-french-developer-native-clones.js">
+<meta name="afrotools-source-input" content="tools/data-converter/index.html">
+<meta name="afrotools-source-hash" content="d2b7fdfff87b0c71">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Convertisseur de données | AfroTools</title>
-  <meta name="description" content="Convertissez des données entre CSV, JSON et formats pratiques pour le travail quotidien.">
-  <meta property="og:title" content="Convertisseur de données | AfroTools">
-  <meta property="og:description" content="Convertissez des données entre CSV, JSON et formats pratiques pour le travail quotidien.">
+<title>Convertisseur de données | AfroTools</title>
+<meta name="description" content="Convertissez des données entre CSV, JSON et formats pratiques pour le travail quotidien.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Data Converter — JSON, CSV, XML, YAML, TOML | AfroTools">
+<meta property="og:description" content="Convert between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT. Auto-detect, validate, preview tables, and download.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/convertisseur-donnees/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/data-converter.webp">
-  <meta property="og:url" content="https://afrotools.com/fr/tools/convertisseur-donnees/">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <style>
-    .fr-tool-shell{max-width:1120px;margin:0 auto;padding:96px 20px 56px}
-    .breadcrumb{font-size:.92rem;color:#64748b;margin-bottom:18px}
-    .breadcrumb a{color:#2563eb;text-decoration:none}
-    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f766e;margin-bottom:10px}
-    .fr-tool-shell h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;margin:0 0 16px;color:#0f172a}
-    .lead{max-width:760px;color:#475569;font-size:1.08rem;line-height:1.7;margin:0 0 28px}
-    .tool-frame-wrap{border:1px solid #dbe4ef;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.08)}
-    .tool-frame{display:block;width:100%;min-height:820px;border:0;background:#fff}
-    .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}
-    .support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}
-    .support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}
-    .support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
-    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid{grid-template-columns:1fr}.tool-frame{min-height:760px}}
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Convertisseur de données","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/convertisseur-donnees/","description":"Convertissez des données entre CSV, JSON et formats pratiques pour le travail quotidien.","image":"https://afrotools.com/assets/img/tools/data-converter.webp"}</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/data-converter.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Convertisseur de données | AfroTools">
-<meta name="twitter:description" content="Convertissez des données entre CSV, JSON et formats pratiques pour le travail quotidien.">
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
+<meta name="twitter:title" content="Data Converter — JSON, CSV, XML, YAML, TOML | AfroTools">
+<meta name="twitter:description" content="Free data format converter with auto-detect, validation, and SQL INSERT generation.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/js-yaml@4/dist/js-yaml.min.js" defer></script>
+<style>
+:root {
+  --afro-green: var(--color-primary);
+  --afro-dark: #0f1419;
+  --afro-light: #f5f7fa;
+}
+
+.tool-hero {
+  background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+  padding: 44px 0 36px;
+  position: relative;
+  overflow: hidden;
+}
+
+.tool-hero::after {
+  display: none;
+}
+
+.tool-hero-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  position: relative;
+}
+
+.breadcrumb {
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: rgba(255,255,255,0.3);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 14px;
+}
+
+.breadcrumb a {
+  color: rgba(255,255,255,0.3);
+  text-decoration: none;
+}
+
+.breadcrumb span {
+  color: var(--afro-green);
+}
+
+h1 {
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  font-weight: 800;
+  color: #fff;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+  margin-bottom: 10px;
+}
+
+h1 em {
+  color: var(--afro-green);
+  font-style: normal;
+}
+
+.hero-sub {
+  font-size: 0.88rem;
+  color: rgba(255,255,255,0.45);
+  line-height: 1.6;
+  max-width: 560px;
+  margin-bottom: 14px;
+}
+
+.hero-badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-bottom: 6px;
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 11px;
+  border-radius: 4px;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+}
+
+.b-green {
+  background: rgba(0,113,227,0.18);
+  color: var(--color-primary);
+  border: 1px solid rgba(0,113,227,0.38);
+}
+
+.tool-main {
+  padding: 28px 0 72px;
+}
+
+.tool-main-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 24px;
+  display: grid;
+  grid-template-columns: 1fr 300px;
+  gap: 22px;
+  align-items: start;
+}
+
+.card {
+  background: #fff;
+  border: 1px solid #DBEAFE;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+}
+
+.card + .card {
+  margin-top: 18px;
+}
+
+.card-head {
+  padding: 15px 22px;
+  border-bottom: 1px solid #EFF6FF;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #F5F9FF;
+}
+
+.card-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #0a4018;
+}
+
+.card-body {
+  padding: 22px;
+}
+
+.field {
+  margin-bottom: 18px;
+}
+
+.field:last-child {
+  margin-bottom: 0;
+}
+
+.f-label {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+}
+
+.f-label-text {
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: #0d2813;
+}
+
+.f-input, .f-select {
+  width: 100%;
+  padding: 11px 13px;
+  min-height: 44px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 7px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #0d2813;
+  outline: none;
+  transition: border-color 0.18s, box-shadow 0.18s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.f-input:focus, .f-select:focus {
+  border-color: var(--afro-green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
+
+.f-textarea {
+  width: 100%;
+  padding: 12px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 7px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  color: #0d2813;
+  outline: none;
+  resize: vertical;
+  min-height: 200px;
+  font-family: 'Courier New', monospace;
+  line-height: 1.5;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+
+.f-textarea:focus {
+  border-color: var(--afro-green);
+  background: #fff;
+  box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+}
+
+/* CONVERSION MATRIX */
+.conversion-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.conversion-row .f-select {
+  flex: 1;
+}
+
+.conv-arrow {
+  font-size: 1.4rem;
+  color: var(--afro-green);
+  font-weight: 800;
+  flex-shrink: 0;
+}
+
+/* BUTTONS */
+.calc-btn {
+  width: 100%;
+  padding: 13px 20px;
+  min-height: 44px;
+  background: var(--afro-green);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  letter-spacing: 0.02em;
+}
+
+.calc-btn:hover {
+  filter: brightness(1.1);
+  transform: translateY(-1px);
+}
+
+.btn-row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.btn-sm {
+  padding: 8px 14px;
+  min-height: 44px;
+  min-width: 44px;
+  background: #EFF6FF;
+  border: 1.5px solid #BFDBFE;
+  border-radius: 6px;
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #244d2c;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.btn-sm:hover {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.08);
+}
+
+.btn-sm.active {
+  background: var(--afro-green);
+  color: #fff;
+  border-color: var(--afro-green);
+}
+
+/* FILE UPLOAD */
+.file-drop {
+  border: 2px dashed #BFDBFE;
+  border-radius: 8px;
+  padding: 18px;
+  min-height: 72px;
+  text-align: center;
+  cursor: pointer;
+  background: #F5F9FF;
+  transition: all 0.2s;
+  margin-bottom: 14px;
+}
+
+.file-drop:hover, .file-drop.drag-over {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.05);
+}
+
+.file-drop-text {
+  font-size: 0.78rem;
+  font-weight: 600;
+  color: #6B8CAE;
+}
+
+.file-drop-text span {
+  color: var(--afro-green);
+  font-weight: 700;
+}
+
+/* VALIDATION */
+.validation-msg {
+  padding: 10px 14px;
+  border-radius: 7px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  margin-top: 10px;
+  display: none;
+}
+
+.validation-msg.show {
+  display: block;
+}
+
+.validation-msg.valid {
+  background: rgba(0,113,227,0.08);
+  color: #1a5c3a;
+  border: 1px solid rgba(0,113,227,0.25);
+}
+
+.validation-msg.invalid {
+  background: rgba(220,53,69,0.08);
+  color: #800000;
+  border: 1px solid rgba(220,53,69,0.25);
+}
+
+/* SQL TABLE NAME */
+.sql-table-row {
+  display: none;
+  margin-top: 12px;
+}
+
+.sql-table-row.show {
+  display: block;
+}
+
+/* PREVIEW TABLE */
+.preview-wrap {
+  margin-top: 14px;
+  display: none;
+  overflow-x: auto;
+  border: 1px solid #DBEAFE;
+  border-radius: 8px;
+}
+
+.preview-wrap.show {
+  display: block;
+}
+
+.preview-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.75rem;
+}
+
+.preview-wrap th {
+  background: #F5F9FF;
+  padding: 8px 12px;
+  text-align: left;
+  font-weight: 700;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: #0a4018;
+  border-bottom: 2px solid #DBEAFE;
+  white-space: nowrap;
+}
+
+.preview-wrap td {
+  padding: 6px 12px;
+  border-bottom: 1px solid #f1f5f9;
+  color: #334155;
+  font-weight: 500;
+  white-space: nowrap;
+  max-width: 200px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.preview-wrap tr:nth-child(even) {
+  background: rgba(248,250,252,0.6);
+}
+
+.preview-label {
+  font-size: 0.7rem;
+  color: #94a3b8;
+  margin-bottom: 6px;
+  font-weight: 600;
+}
+
+/* SIDEBAR */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.info-card {
+  background: #F5F9FF;
+  border: 1px solid #DBEAFE;
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.info-title {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: #0a4018;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 10px;
+}
+
+.info-text {
+  font-size: 0.8rem;
+  color: #244d2c;
+  line-height: 1.6;
+}
+
+.info-text li {
+  margin-bottom: 8px;
+}
+
+.fmt-item {
+  padding: 8px 0;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.fmt-item:last-child {
+  border-bottom: none;
+}
+
+.fmt-name {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: #0d2813;
+}
+
+.fmt-desc {
+  font-size: 0.72rem;
+  color: #6B8CAE;
+  line-height: 1.5;
+  margin-top: 2px;
+}
+
+.tip-card {
+  background: linear-gradient(135deg, rgba(0,113,227,0.06), rgba(0,113,227,0.02));
+  border: 1px solid rgba(0,113,227,0.2);
+  border-radius: 10px;
+  padding: 16px;
+}
+
+.tip-card .info-title {
+  color: var(--afro-green);
+}
+
+.tip-item {
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.5;
+  padding: 4px 0;
+  padding-left: 16px;
+  position: relative;
+}
+
+.tip-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 11px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--afro-green);
+}
+.safety-list {
+  display: grid;
+  gap: 8px;
+}
+.safety-item {
+  border: 1px solid #DBEAFE;
+  border-radius: 8px;
+  background: #fff;
+  padding: 11px;
+  font-size: 0.78rem;
+  color: #475569;
+  line-height: 1.5;
+}
+.safety-item strong {
+  display: block;
+  color: #0d2813;
+  margin-bottom: 3px;
+}
+.redaction-status {
+  margin-top: 10px;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  color: #7c2d12;
+  font-size: 0.76rem;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+/* AI PANEL */
+.ai-toggle {
+  width: 100%;
+  padding: 12px 18px;
+  background: linear-gradient(135deg, #1a1f2e, #0f1419);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: all 0.18s;
+  font-family: 'DM Sans', sans-serif;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  justify-content: center;
+}
+
+.ai-toggle:hover {
+  border-color: var(--afro-green);
+}
+
+.ai-panel {
+  display: none;
+  margin-top: 14px;
+}
+
+.ai-panel.open {
+  display: block;
+}
+
+.ai-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.ai-suggest-btn {
+  padding: 6px 12px;
+  background: #EFF6FF;
+  border: 1px solid #BFDBFE;
+  border-radius: 20px;
+  font-size: 0.68rem;
+  font-weight: 600;
+  color: #244d2c;
+  cursor: pointer;
+  transition: all 0.15s;
+  font-family: 'DM Sans', sans-serif;
+}
+
+.ai-suggest-btn:hover {
+  border-color: var(--afro-green);
+  background: rgba(0,113,227,0.08);
+}
+
+.ai-messages {
+  max-height: 280px;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.ai-msg {
+  padding: 10px 14px;
+  border-radius: 8px;
+  margin-bottom: 8px;
+  font-size: 0.82rem;
+  line-height: 1.6;
+  max-width: 90%;
+}
+
+.ai-msg.user {
+  background: var(--afro-green);
+  color: #fff;
+  margin-left: auto;
+  border-bottom-right-radius: 2px;
+}
+
+.ai-msg.bot {
+  background: #f1f5f9;
+  color: #334155;
+  border-bottom-left-radius: 2px;
+  white-space: pre-wrap;
+}
+
+.ai-msg.err {
+  background: #fef2f2;
+  color: #dc2626;
+}
+
+.ai-input-row {
+  display: flex;
+  gap: 8px;
+}
+
+.ai-input-row input {
+  flex: 1;
+}
+
+.ai-input-row button {
+  width: auto;
+  padding: 11px 20px;
+  flex-shrink: 0;
+}
+
+.ai-footer {
+  font-size: 0.68rem;
+  color: #94a3b8;
+  margin-top: 6px;
+}
+
+/* FAQ */
+.faq-section {
+  max-width: 1200px;
+  margin: 0 auto 40px;
+  padding: 0 24px;
+}
+
+.faq-section h2 {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #111;
+  margin-bottom: 14px;
+}
+
+.faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  background: #fff;
+}
+
+.faq-item summary {
+  padding: 14px 18px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  color: #111;
+  cursor: pointer;
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary svg {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+}
+
+.faq-item[open] summary svg {
+  transform: rotate(180deg);
+}
+
+.faq-item .faq-answer {
+  padding: 0 18px 14px;
+  font-size: 0.84rem;
+  color: #4b5563;
+  line-height: 1.7;
+}
+
+/* TOAST */
+.toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: #1e293b;
+  color: #fff;
+  padding: 14px 22px;
+  border-radius: 8px;
+  font-size: 0.82rem;
+  font-weight: 600;
+  box-shadow: 0 4px 16px rgba(0,0,0,0.2);
+  z-index: 1000;
+  animation: toastIn 0.3s ease;
+  font-family: 'DM Sans', sans-serif;
+}
+
+@keyframes toastIn {
+  from { transform: translateX(120%); opacity: 0; }
+  to { transform: translateX(0); opacity: 1; }
+}
+
+@media (max-width: 768px) {
+  .tool-main-inner {
+    grid-template-columns: 1fr;
+  }
+  .conversion-row {
+    flex-direction: column;
+    gap: 8px;
+  }
+  .conv-arrow {
+    transform: rotate(90deg);
+  }
+  .f-textarea {
+    min-height: 160px;
+  }
+  .btn-row {
+    flex-direction: column;
+  }
+  .btn-row .btn-sm {
+    width: 100%;
+    text-align: center;
+  }
+}
 </style>
-<style data-at-trust-panel-style>
-.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Convertisseur de données - JSON, CSV, XML, YAML, TOML","description":"Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT localement dans le navigateur avec détection automatique, validation, prévisualisation, copie et téléchargement.","url":"https://afrotools.com/fr/tools/convertisseur-donnees/","inLanguage":"en","applicationCategory":"Application Web","operatingSystem":"Web","browserRequirements":"Nécessite JavaScript. La conversion s'exécute localement dans le navigateur.","featureList":["Conversion de JSON, CSV, XML, YAML, TSV et TOML","SQL INSERT génération","détection automatique du format","aperçu du tableau","téléchargement local direct","copie de sortie rédigée"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/data-converter.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Convertisseur de données - JSON, CSV, XML, YAML, TOML","url":"https://afrotools.com/fr/tools/convertisseur-donnees/","description":"Convertissez les données structurées entre les formats de développement courants localement dans le navigateur.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/data-converter.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Comment convertir des données structurées en toute sécurité","description":"Collez ou téléchargez des données structurées, détectez le format, choisissez un format de sortie, prévisualisez le résultat et copiez ou téléchargez uniquement la sortie nettoyée.","step":[{"@type":"HowToStep","name":"Coller ou télécharger des données","text":"Ajoutez les données JSON, CSV, XML, YAML, TSV ou TOML dans l'éditeur d'entrée."},{"@type":"HowToStep","name":"Choisissez les formats","text":"Utilisez la détection automatique ou sélectionnez le format d'entrée, puis choisissez le format de sortie, y compris SQL INSERT si nécessaire."},{"@type":"HowToStep","name":"Valider et prévisualiser","text":"Vérifiez l'état de validation, la sortie convertie et l'aperçu du tableau avant d'utiliser le résultat."},{"@type":"HowToStep","name":"Désinfecter avant de partager","text":"Utilisez une copie expurgée ou supprimez manuellement les mots de passe, les jetons, les enregistrements clients et les identifiants de production avant de les partager."}],"url":"https://afrotools.com/fr/tools/convertisseur-donnees/"}</script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/data-converter.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Convertisseur de données","item":"https://afrotools.com/fr/tools/convertisseur-donnees/"}]}</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quels formats de données ce convertisseur prend-il en charge ?","acceptedAnswer":{"@type":"Answer","text":"Ce convertisseur prend en charge JSON, CSV, XML, YAML, TSV et TOML comme formats d'entrée et de sortie. Vous pouvez également générer des instructions SQL INSERT à partir de n'importe quelle donnée tabulaire. L'outil détecte automatiquement votre format d'entrée lorsque vous collez ou téléchargez des données."}},{"@type":"Question","name":"Comment fonctionne la détection automatique ?","acceptedAnswer":{"@type":"Answer","text":"Lorsque vous collez ou téléchargez des données, le convertisseur examine les 100 premiers caractères pour les signatures de format : accolades ou crochets pour JSON, crochets angulaires pour XML, caractères de tabulation pour TSV, en-têtes de crochets TOML, en-têtes séparés par des virgules pour CSV ou paires clé-valeur basées sur deux points pour YAML."}},{"@type":"Question","name":"Puis-je générer des instructions SQL INSERT à partir de mes données ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Sélectionnez \"SQL INSERT\" comme format de sortie, entrez un nom de table et le convertisseur génère des instructions INSERT valides pour chaque ligne. Les valeurs sont correctement échappées. Cela fonctionne à partir de n'importe quel format d'entrée, y compris CSV, JSON, XML, YAML, TSV et TOML."}},{"@type":"Question","name":"Mes données sont-elles sécurisées ?","acceptedAnswer":{"@type":"Answer","text":"Toutes les conversions s'effectuent entièrement dans votre navigateur. Vos données ne quittent jamais votre appareil, sauf si vous copiez, téléchargez ou partagez séparément le résultat vous-même."}},{"@type":"Question","name":"Qu'est-ce que TOML et quand dois-je l'utiliser ?","acceptedAnswer":{"@type":"Answer","text":"TOML (Tom's Obvious Minimal Language) est un format de configuration lisible par l'homme utilisé dans Rust (Cargo.toml), l'empaquetage Python (pyproject.toml) et les générateurs de sites statiques. Il est moins ambigu que YAML et plus facile à lire que JSON pour les fichiers de configuration."}}]}</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+.top-level-page-ui-refresh .tool-main,
+.top-level-page-ui-refresh .tool-main *,
+.top-level-page-ui-refresh .tool-main *::before,
+.top-level-page-ui-refresh .tool-main *::after{box-sizing:border-box}
+.top-level-page-ui-refresh .tool-main-inner{width:100%;box-sizing:border-box}
+.top-level-page-ui-refresh .tool-main-inner > *{min-width:0}
+.top-level-page-ui-refresh .btn-sm,
+.top-level-page-ui-refresh .calc-btn,
+.top-level-page-ui-refresh .f-input,
+.top-level-page-ui-refresh .f-select,
+.top-level-page-ui-refresh .file-drop,
+.top-level-page-ui-refresh .faq-item summary,
+.top-level-page-ui-refresh .tool-verification-report{min-height:44px}
+.top-level-page-ui-refresh .btn-sm{min-width:44px;display:inline-flex;align-items:center;justify-content:center}
+@media (max-width: 768px){
+  .top-level-page-ui-refresh .tool-main-inner{max-width:100vw;padding-left:16px;padding-right:16px;grid-template-columns:minmax(0,1fr)}
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .faq-section,
+  .top-level-page-ui-refresh .tool-main section{max-width:100%;min-width:0}
+}
 </style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/convertisseur-donnees/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/data-converter/">
@@ -45,94 +793,1426 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/data-converter/">
 </head>
 <body class="top-level-page-ui-refresh">
-  <div id="navbar"></div>
-  <main class="fr-tool-shell">
-<section class="at-trust-panel" data-tool-verification-panel aria-label="Méthodologie, sources et limites">
-<h2>Méthodologie, sources et limites</h2>
-<div class="at-trust-grid"><div><strong>Méthodologie</strong>La page aide à préparer un calcul, une comparaison ou une vérification avec vos données avant de passer a l'outil principal.</div><div><strong>Sources</strong>Pour tout taux, barème, examen, assurance, santé, éducation ou regle pays, confirmez la source officielle ou le fournisseur avant décision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypothèses sont à valider et ne remplacent pas un avis fiscal, juridique, médical, éducatif ou professionnel.</div></div>
-<p>Dernière vérification editoriale: 2026. Utilisez le résultat comme repere de travail, puis conservez la source, la date et le contexte de votre vérification.</p>
-</section>
-<section class="fr-action-planner" data-tool-verification-panel data-fr-action-planner data-tool-name="Convertisseur de donnees">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
-</div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/data-converter/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthodologie:</strong> utilisez ce brief comme aide de planification. Limites 2026: contenu non officiel; hypothèses à valider avec la source, le fournisseur ou l'autorite competente avant décision financière, juridique, santé, énergie, éducation ou business.</div>
-</section>
-    <nav class="breadcrumb"><a href="/fr/">Accueil</a> › <a href="/fr/all-tools/">Outils</a> › Convertisseur de données</nav>
-    <p class="eyebrow">Productivité data</p>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/developer-tools/">Outils développeur</a> / <span>Convertisseur de données</span>
+    </div>
     <h1>Convertisseur de données</h1>
-    <p class="lead">Transformez rapidement un tableau, un extrait CSV ou un JSON pour le partager, l'importer ou le nettoyer.</p>
-    <div class="tool-frame-wrap">
-      <iframe id="undefined" class="tool-frame" src="/tools/data-converter/" title="Convertisseur de données" loading="eager"></iframe>
+    <p class="hero-sub">Convertissez entre JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT. Détectez automatiquement les formats, validez les données et prévisualisez les tableaux dans votre navigateur.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Détection automatique</span>
+      <span class="badge b-green">7 formats</span>
+      <span class="badge b-green">SQL INSERT</span>
+      <span class="badge b-green">100 % côté client</span>
     </div>
-    <div class="support-grid">
-      <section><h2>Avant import</h2><p>Vérifiez les colonnes et separateurs avant de charger le fichier dans un outil métier.</p></section>
-      <section><h2>Formats courants</h2><p>CSV et JSON couvrent la plupart des imports simples pour les equipes.</p></section>
-      <section><h2>Confidentialité</h2><p>Evitez les données clients sensibles si vous n'avez pas besoin de les traiter ici.</p></section>
+  </div>
+</div>
+
+<div class="tool-main" role="main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- CONVERSION MATRIX -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Sélection du format</span>
+          <span style="font-size:0.68rem;color:#6B8CAE;font-weight:600">Détecté automatiquement sur la pâte</span>
+        </div>
+        <div class="card-body">
+          <div class="conversion-row">
+            <select id="inputFormat" class="f-select" aria-label="Format d’entrée">
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="xml">XML</option>
+              <option value="yaml">YAML</option>
+              <option value="tsv">TSV</option>
+              <option value="toml">TOML</option>
+            </select>
+            <span class="conv-arrow">&rarr;</span>
+            <select id="outputFormat" class="f-select" aria-label="Format de sortie">
+              <option value="json">JSON</option>
+              <option value="csv">CSV</option>
+              <option value="xml">XML</option>
+              <option value="yaml">YAML</option>
+              <option value="tsv">TSV</option>
+              <option value="toml">TOML</option>
+              <option value="sql">SQL INSERT</option>
+            </select>
+          </div>
+          <div class="sql-table-row" id="sqlTableRow">
+            <div class="field" style="margin-top:14px;margin-bottom:0">
+              <label class="f-label"><span class="f-label-text">Nom du tableau</span></label>
+              <input aria-label="Mon tableau" type="text" id="sqlTableName" class="f-input" placeholder="my_table" value="my_table">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- INPUT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Données source</span>
+          <div class="btn-row">
+            <button type="button" class="btn-sm" id="sampleBtn">Charger un exemple</button>
+            <button type="button" class="btn-sm" id="clearBtn">Effacer</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <div class="file-drop" id="fileDrop">
+            <div class="file-drop-text"><span>Cliquez pour télécharger</span> ou faites glisser un fichier ici</div>
+          </div>
+          <input aria-label="Entrée de fichier" type="file" id="fileInput" style="display:none">
+          <textarea class="f-textarea" id="inputData" placeholder="Paste your data here or upload a file..." aria-label="Paste your data here or upload a file..."></textarea>
+          <div class="validation-msg" id="validationMsg"></div>
+        </div>
+      </div>
+
+      <!-- OUTPUT -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Sortie</span>
+          <div class="btn-row">
+            <button type="button" class="btn-sm active" id="prettyBtn">Jolie</button>
+            <button type="button" class="btn-sm" id="minifyBtn">Réduire</button>
+          </div>
+        </div>
+        <div class="card-body">
+          <textarea class="f-textarea" id="outputData" readonly placeholder="Converted data will appear here..." style="min-height:180px" aria-label="Converted data will appear here..."></textarea>
+          <div style="display:flex;gap:8px;margin-top:12px;flex-wrap:wrap">
+            <button type="button" class="calc-btn" id="convertBtn" style="flex:1;min-width:140px">Convertir</button>
+            <button type="button" class="btn-sm" id="copyBtn" style="flex:0">Copier</button>
+            <button type="button" class="btn-sm" id="redactCopyBtn" style="flex:0">Copie expurgée</button>
+            <button type="button" class="btn-sm" id="downloadBtn" style="flex:0">Télécharger</button>
+          </div>
+          <!-- PREVIEW TABLE -->
+          <div class="preview-wrap" id="previewWrap">
+            <div class="preview-label" style="padding:8px 12px 0">Aperçu (10 premières lignes)</div>
+            <table id="previewTable"></table>
+          </div>
+        </div>
+      </div>
+
+      <!-- LOCAL SAFETY CHECKS -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Contrôles de sécurité locaux</span>
+        </div>
+        <div class="card-body">
+          <div class="safety-list">
+            <div class="safety-item"><strong>Conversion côté client</strong>Les entrées et sorties restent dans ce navigateur, sauf si vous copiez, téléchargez ou partagez le résultat vous-même.</div>
+            <div class="safety-item"><strong>Copie expurgée</strong>Utilisez Copier expurgé avant de coller des exemples dans des tickets, des documents, des discussions ou des rapports de bugs publics.</div>
+            <div class="safety-item"><strong>Vérification de l’importation</strong>Vérifiez les en-têtes, les valeurs nulles, les dates, l'encodage, les noms de table SQL et les contraintes de production avant de charger les données converties.</div>
+          </div>
+          <div class="redaction-status" id="redactionStatus" aria-live="polite">Collez les données pour rechercher les noms de champs sensibles courants.</div>
+        </div>
+      </div>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px;">
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Ce convertisseur de format de données transforme les données structurées entre les instructions JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT en un seul clic. Collez vos données ou téléchargez un fichier et l'outil détecte automatiquement le format d'entrée, puis le convertit instantanément au format de sortie choisi. Il gère les objets imbriqués, les tableaux et les caractères spéciaux avec élégance, ce qui le rend idéal pour les développeurs migrant des données entre les systèmes, les analystes reformatant les exportations ou toute personne qui traite régulièrement des données sur différentes plates-formes. Tout le traitement s'effectue localement dans votre navigateur, les données sensibles restent donc privées. Arrêtez de reformater manuellement les fichiers et laissez ce convertisseur faire le gros du travail.</p>
+  </div>
+</section>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+      <!-- FAQ -->
+      <section class="faq-section" style="padding:0;margin-top:18px">
+        <h2>Questions fréquentes</h2>
+        <details class="faq-item">
+          <summary>Quels formats de données ce convertisseur prend-il en charge ?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Ce convertisseur prend en charge JSON, CSV, XML, YAML, TSV et TOML comme formats d'entrée et de sortie. Vous pouvez également générer des instructions SQL INSERT à partir de n'importe quelle donnée tabulaire. L'outil détecte automatiquement votre format d'entrée lorsque vous collez ou téléchargez des données.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Comment fonctionne la détection automatique ?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Lorsque vous collez ou téléchargez des données, le convertisseur examine les 100 premiers caractères pour les signatures de format : accolades ou crochets pour JSON, crochets angulaires pour XML, caractères de tabulation pour TSV, en-têtes de crochets TOML, en-têtes séparés par des virgules pour CSV ou paires clé-valeur basées sur deux points pour YAML.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Puis-je générer des instructions SQL INSERT à partir de mes données ?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Oui. Sélectionnez "SQL INSERT" comme format de sortie, entrez un nom de table et le convertisseur génère des instructions INSERT valides pour chaque ligne. Les valeurs sont correctement échappées. Cela fonctionne à partir de n'importe quel format d'entrée, y compris CSV, JSON, XML, YAML, TSV et TOML.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Mes données sont-elles sécurisées ?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">Toutes les conversions s'effectuent entièrement dans votre navigateur. Vos données ne quittent jamais votre appareil, sauf si vous copiez, téléchargez ou partagez séparément le résultat vous-même.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Qu'est-ce que TOML et quand dois-je l'utiliser ?<svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg></summary>
+          <div class="faq-answer">TOML (Tom's Obvious Minimal Language) est un format de configuration lisible par l'homme utilisé dans Rust (Cargo.toml), l'empaquetage Python (pyproject.toml) et les générateurs de sites statiques. Il est moins ambigu que YAML et plus facile à lire que JSON pour les fichiers de configuration.</div>
+        </details>
+      </section>
     </div>
-  </main>
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7"></script>
-  <script>
-(function () {
-  var terms = [["Data Converter","Convertisseur de donnees"],["CSV to JSON","CSV vers JSON"],["JSON to CSV","JSON vers CSV"],["Input Data","Donnees source"],["Converted Output","Sortie convertie"],["Delimiter","Separateur"],["Convert Data","Convertir les donnees"],["Upload File","Importer un fichier"],["Download Result","Telecharger le resultat"],["Developer Tools","Outils développeur"],["Business & ROI","Business et rentabilité"],["All Tools","Tous les outils"],["Tools","Outils"],["Create","Créer"],["Generate","Générer"],["Download","Télécharger"],["Copy","Copier"],["Copied","Copié"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["Output","Sortie"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Coming Soon","Bientôt disponible"],["Available now","Disponible"]];
-  terms.sort(function (a, b) { return b[0].length - a[0].length; });
-  function swapText(value) {
-    if (!value) return value;
-    var next = value;
-    terms.forEach(function (pair) {
-      next = next.split(pair[0]).join(pair[1]);
-    });
-    return next;
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Référence des formats</div>
+        <div class="fmt-item">
+          <div class="fmt-name">JSON</div>
+          <div class="fmt-desc">JavaScript Notation d'objet. Paires clé-valeur avec des objets et des tableaux imbriqués.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">CSV</div>
+          <div class="fmt-desc">Valeurs séparées par des virgules. La première ligne correspond aux en-têtes. Bon pour les feuilles de calcul.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">XML</div>
+          <div class="fmt-desc">Langage de balisage extensible. Format hiérarchique basé sur des balises pour les données structurées.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">YAML</div>
+          <div class="fmt-desc">Format lisible par l'homme utilisant l'indentation. Populaire pour les fichiers de configuration.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">TSV</div>
+          <div class="fmt-desc">Valeurs séparées par des tabulations. Comme CSV mais utilise des onglets. Idéal pour copier-coller à partir de feuilles de calcul.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">TOML</div>
+          <div class="fmt-desc">Format de configuration minimal. Utilisé dans Rust, les emballages Python et les générateurs de sites statiques.</div>
+        </div>
+        <div class="fmt-item">
+          <div class="fmt-name">SQL INSERT</div>
+          <div class="fmt-desc">Sortie uniquement. Génère des instructions INSERT pour l'importation de base de données.</div>
+        </div>
+      </div>
+
+      <div class="tip-card">
+        <div class="info-title">Conseils de conversion</div>
+        <div class="tip-item">Collez les données pour détecter automatiquement le format</div>
+        <div class="tip-item">Utilisez le mode Pretty pour plus de lisibilité, Minify pour une sortie compacte</div>
+        <div class="tip-item">Les conversions CSV/TSV nécessitent des données plates (non imbriquées).</div>
+        <div class="tip-item">SQL INSERT échappe aux valeurs pour empêcher l'injection</div>
+        <div class="tip-item">TOML prend en charge les tableaux imbriqués avec des en-têtes [section]</div>
+        <div class="tip-item">Glissez et déposez des fichiers jusqu'à 5 Mo pour une conversion instantanée</div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Raccourcis clavier</div>
+        <div class="info-text">
+          <ul style="margin:0;padding-left:16px">
+            <li><strong>Ctrl+Entrée</strong> &mdash; Convert</li>
+            <li><strong>Ctrl+Maj+C</strong> &mdash; copier output</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="tool-verification-sec" data-tool-verification-panel="data-converter">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Vérification de la conversion des données</span>
+          <h2 class="tool-verification-title">Validez les données converties avant de les importer</h2>
+          <p class="tool-verification-lead">Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL localement, puis prévisualisez, copiez ou téléchargez la sortie transformée.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Conversion locale</span>
+          <p class="tool-verification-note">Les entrées et sorties restent dans le navigateur, sauf si vous les partagez ou les téléchargez séparément.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Que vérifier</h3>
+          <ul class="tool-verification-list">
+            <li>Méthodologie : analysez le format d'entrée détecté, mappez les lignes ou les objets dans la structure cible, puis sérialisez avec les paramètres de sortie sélectionnés.</li>
+            <li>Vérifiez les en-têtes, les valeurs nulles, la précision numérique, les guillemets échappés, les tableaux imbriqués, les dates, le codage des caractères et les noms de table SQL avant l'importation.</li>
+            <li>Supprimez les mots de passe, les jetons, les enregistrements clients privés et les identifiants de production avant de copier ou de télécharger des exemples.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limites</h3>
+          <ul class="tool-verification-list">
+            <li>Avertissement : assistant de conversion uniquement, et non un validateur de schéma officiel, un outil de migration de base de données ou une garantie de qualité des données.</li>
+            <li>Certaines données imbriquées ou irrégulières peuvent nécessiter un nettoyage manuel après la conversion.</li>
+            <li>Comparez la sortie avec votre schéma actuel, votre contrat API ou votre outil d'importation avant de la charger en production.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#outputData">Examiner la sortie convertie</a>
+        <p class="tool-verification-disclaimer">Note source/référence : vérifiez avec les documents de schéma actuels, les contraintes de base de données, les exemples API et testez les importations avant d'utiliser les données converties.</p>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="developer" current="data-converter" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Simulateur de codes</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Testeur (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encodeur/Décodeur</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Générateur de hachage</a></li><li><a href="/tools/markdown-editor/" data-related-tool data-id="markdown-editor" data-name="Markdown Editor" data-category="developer" data-icon="ME" data-desc="Live preview, GFM tables, toolbar, scroll sync, fullscreen, word count, export to HTML/MD. AI assist.">Éditeur de démarques</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+/* ═══════════════════════════════════════════════════════
+   DATA CONVERTER ENGINE
+   ═══════════════════════════════════════════════════════ */
+(function() {
+  'use strict';
+
+  /* ── DOM refs ─────────────────────────────────────── */
+  var inputFmt   = document.getElementById('inputFormat');
+  var outputFmt  = document.getElementById('outputFormat');
+  var inputData  = document.getElementById('inputData');
+  var outputData = document.getElementById('outputData');
+  var validMsg   = document.getElementById('validationMsg');
+  var prettyBtn  = document.getElementById('prettyBtn');
+  var minifyBtn  = document.getElementById('minifyBtn');
+  var convertBtn = document.getElementById('convertBtn');
+  var copyBtn    = document.getElementById('copyBtn');
+  var redactCopyBtn = document.getElementById('redactCopyBtn');
+  var downloadBtn= document.getElementById('downloadBtn');
+  var sampleBtn  = document.getElementById('sampleBtn');
+  var clearBtn   = document.getElementById('clearBtn');
+  var fileDrop   = document.getElementById('fileDrop');
+  var fileInput  = document.getElementById('fileInput');
+  var sqlRow     = document.getElementById('sqlTableRow');
+  var sqlName    = document.getElementById('sqlTableName');
+  var previewWrap= document.getElementById('previewWrap');
+  var previewTbl = document.getElementById('previewTable');
+  var redactionStatus = document.getElementById('redactionStatus');
+
+  var isPretty = true;
+
+  /* ── SAMPLES ──────────────────────────────────────── */
+  var samples = {
+    json: '[\n  {"name": "Adaeze", "age": 28, "city": "Lagos"},\n  {"name": "Kamau", "age": 32, "city": "Nairobi"},\n  {"name": "Thabo", "age": 25, "city": "Cape Town"}\n]',
+    csv: 'name,age,city\nAdaeze,28,Lagos\nKamau,32,Nairobi\nThabo,25,Cape Town',
+    xml: '<?xml version="1.0"?>\n<root>\n  <person>\n    <name>Adaeze</name>\n    <age>28</age>\n    <city>Lagos</city>\n  </person>\n  <person>\n    <name>Kamau</name>\n    <age>32</age>\n    <city>Nairobi</city>\n  </person>\n</root>',
+    yaml: 'people:\n  - name: Adaeze\n    age: 28\n    city: Lagos\n  - name: Kamau\n    age: 32\n    city: Nairobi\n  - name: Thabo\n    age: 25\n    city: Cape Town',
+    tsv: 'name\tage\tcity\nAdaeze\t28\tLagos\nKamau\t32\tNairobi\nThabo\t25\tCape Town',
+    toml: '[people]\n\n[[people.person]]\nname = "Adaeze"\nage = 28\ncity = "Lagos"\n\n[[people.person]]\nname = "Kamau"\nage = 32\ncity = "Nairobi"\n\n[[people.person]]\nname = "Thabo"\nage = 25\ncity = "Cape Town"'
+  };
+
+  /* ── AUTO-DETECT FORMAT ───────────────────────────── */
+  function detectFormat(text) {
+    var t = text.trim();
+    if (!t) return null;
+    var head = t.substring(0, 100);
+
+    // JSON: starts with { or [
+    if (/^\s*[\[{]/.test(head)) {
+      try { JSON.parse(t); return 'json'; } catch(e) { return 'json'; }
+    }
+    // XML: starts with < (not counting whitespace)
+    if (/^\s*</.test(head)) return 'xml';
+    // TSV: has tabs in first line
+    var firstLine = head.split('\n')[0];
+    if (firstLine.indexOf('\t') !== -1) return 'tsv';
+    // TOML: has [section] headers or key = "value" patterns
+    if (/^\s*\[[\w.-]+\]/.test(head) || /^\s*\w+\s*=\s*/.test(head)) {
+      // Distinguish from YAML — TOML uses = not :
+      if (head.indexOf('=') !== -1 && head.indexOf(':') === -1) return 'toml';
+      if (/^\s*\[[\w.-]+\]/.test(head)) return 'toml';
+    }
+    // CSV: first line has commas
+    if (firstLine.indexOf(',') !== -1) return 'csv';
+    // YAML: has key: value pattern
+    if (/^\s*\w[\w\s]*:/.test(head)) return 'yaml';
+
+    return null;
   }
-  function localize(root) {
-    if (!root) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (node) {
-        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        var parent = node.parentElement;
-        if (parent && /^(script|style|code|pre)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
+
+  /* ── PARSERS ──────────────────────────────────────── */
+
+  function parseCSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (lines.length < 1) throw new Error('CSV: No data found');
+    var headers = parseCSVLine(lines[0]);
+    var result = [];
+    for (var i = 1; i < lines.length; i++) {
+      var values = parseCSVLine(lines[i]);
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = values[j] || '';
       }
+      result.push(obj);
+    }
+    return result;
+  }
+
+  // RFC 4180 compliant CSV line parser (handles quoted fields)
+  function parseCSVLine(line) {
+    var result = [];
+    var current = '';
+    var inQuotes = false;
+    for (var i = 0; i < line.length; i++) {
+      var ch = line[i];
+      if (inQuotes) {
+        if (ch === '"') {
+          if (i + 1 < line.length && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else {
+            inQuotes = false;
+          }
+        } else {
+          current += ch;
+        }
+      } else {
+        if (ch === '"') {
+          inQuotes = true;
+        } else if (ch === ',') {
+          result.push(current.trim());
+          current = '';
+        } else {
+          current += ch;
+        }
+      }
+    }
+    result.push(current.trim());
+    return result;
+  }
+
+  function parseTSV(text) {
+    var lines = text.split('\n').filter(function(l) { return l.trim(); });
+    if (lines.length < 1) throw new Error('TSV: No data found');
+    var headers = lines[0].split('\t').map(function(h) { return h.trim(); });
+    var result = [];
+    for (var i = 1; i < lines.length; i++) {
+      var values = lines[i].split('\t').map(function(v) { return v.trim(); });
+      var obj = {};
+      for (var j = 0; j < headers.length; j++) {
+        obj[headers[j]] = values[j] || '';
+      }
+      result.push(obj);
+    }
+    return result;
+  }
+
+  function parseXML(text) {
+    var parser = new DOMParser();
+    var doc = parser.parseFromString(text, 'text/xml');
+    var errors = doc.getElementsByTagName('parsererror');
+    if (errors.length > 0) {
+      var errText = errors[0].textContent || 'Invalid XML';
+      // Try to extract line/column info
+      var lineMatch = errText.match(/line\s*(\d+)/i);
+      var colMatch = errText.match(/column\s*(\d+)/i);
+      var detail = '';
+      if (lineMatch) detail += ' at line ' + lineMatch[1];
+      if (colMatch) detail += ', column ' + colMatch[1];
+      throw new Error('Invalid XML' + detail + ': ' + errText.substring(0, 120));
+    }
+    function xmlToObj(node) {
+      if (node.nodeType === 3) return node.textContent.trim();
+      var obj = {};
+      for (var c = 0; c < node.childNodes.length; c++) {
+        var child = node.childNodes[c];
+        if (child.nodeType === 1) {
+          var name = child.nodeName;
+          var value = (child.childNodes.length === 1 && child.firstChild.nodeType === 3)
+            ? child.firstChild.textContent.trim()
+            : xmlToObj(child);
+          if (obj[name]) {
+            if (!Array.isArray(obj[name])) obj[name] = [obj[name]];
+            obj[name].push(value);
+          } else {
+            obj[name] = value;
+          }
+        }
+      }
+      return obj;
+    }
+    return xmlToObj(doc.documentElement);
+  }
+
+  function parseYAML(text) {
+    // Use js-yaml CDN if available, else basic fallback
+    if (typeof jsyaml !== 'undefined') {
+      try {
+        return jsyaml.load(text);
+      } catch(e) {
+        var mark = e.mark;
+        if (mark) {
+          throw new Error('YAML error at line ' + (mark.line + 1) + ', column ' + (mark.column + 1) + ': ' + e.reason);
+        }
+        throw e;
+      }
+    }
+    // Basic fallback parser
+    return parseYAMLBasic(text);
+  }
+
+  function parseYAMLBasic(text) {
+    var result = {};
+    var lines = text.split('\n');
+    var stack = [{ obj: result, indent: -1 }];
+    var currentArray = null;
+    var currentArrayKey = null;
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i];
+      var trimmed = line.replace(/^\s+/, '');
+      if (!trimmed || trimmed.charAt(0) === '#') continue;
+
+      var indent = line.length - trimmed.length;
+
+      // Pop stack to correct level
+      while (stack.length > 1 && stack[stack.length - 1].indent >= indent) {
+        stack.pop();
+      }
+      var current = stack[stack.length - 1].obj;
+
+      if (trimmed.charAt(0) === '-' && trimmed.charAt(1) === ' ') {
+        var val = trimmed.substring(2).trim();
+        if (currentArrayKey && current[currentArrayKey] && Array.isArray(current[currentArrayKey])) {
+          if (val.indexOf(':') !== -1) {
+            var parts = val.split(':');
+            var itemObj = {};
+            itemObj[parts[0].trim()] = coerceValue(parts.slice(1).join(':').trim());
+            current[currentArrayKey].push(itemObj);
+          } else {
+            current[currentArrayKey].push(coerceValue(val));
+          }
+        }
+      } else if (trimmed.indexOf(':') !== -1) {
+        var colonIdx = trimmed.indexOf(':');
+        var key = trimmed.substring(0, colonIdx).trim();
+        var rawVal = trimmed.substring(colonIdx + 1).trim();
+
+        if (!rawVal) {
+          // Check if next line is array
+          var nextLine = (i + 1 < lines.length) ? lines[i + 1] : '';
+          var nextTrimmed = nextLine.replace(/^\s+/, '');
+          if (nextTrimmed.charAt(0) === '-') {
+            current[key] = [];
+            currentArrayKey = key;
+          } else {
+            current[key] = {};
+            stack.push({ obj: current[key], indent: indent });
+          }
+        } else {
+          current[key] = coerceValue(rawVal);
+          currentArrayKey = null;
+        }
+      }
+    }
+    return result;
+  }
+
+  function coerceValue(val) {
+    if (val === 'true') return true;
+    if (val === 'false') return false;
+    if (val === 'null' || val === '~') return null;
+    if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+    if (/^-?\d+\.\d+$/.test(val)) return parseFloat(val);
+    // Strip surrounding quotes
+    if ((val.charAt(0) === '"' && val.charAt(val.length - 1) === '"') ||
+        (val.charAt(0) === "'" && val.charAt(val.length - 1) === "'")) {
+      return val.substring(1, val.length - 1);
+    }
+    return val;
+  }
+
+  /* ── TOML PARSER (basic) ──────────────────────────── */
+  function parseTOML(text) {
+    var result = {};
+    var lines = text.split('\n');
+    var currentSection = result;
+    var currentPath = [];
+    var arrayOfTables = {}; // track [[table]] arrays
+
+    for (var i = 0; i < lines.length; i++) {
+      var line = lines[i].trim();
+      if (!line || line.charAt(0) === '#') continue;
+
+      // Array of tables [[name]]
+      var arrMatch = line.match(/^\[\[([^\]]+)\]\]$/);
+      if (arrMatch) {
+        var arrPath = arrMatch[1].split('.').map(function(s) { return s.trim(); });
+        var arrParent = result;
+        for (var a = 0; a < arrPath.length - 1; a++) {
+          if (!arrParent[arrPath[a]]) arrParent[arrPath[a]] = {};
+          arrParent = arrParent[arrPath[a]];
+        }
+        var arrKey = arrPath[arrPath.length - 1];
+        if (!arrParent[arrKey]) arrParent[arrKey] = [];
+        if (!Array.isArray(arrParent[arrKey])) arrParent[arrKey] = [arrParent[arrKey]];
+        var newObj = {};
+        arrParent[arrKey].push(newObj);
+        currentSection = newObj;
+        currentPath = arrPath;
+        continue;
+      }
+
+      // Table [name]
+      var tblMatch = line.match(/^\[([^\]]+)\]$/);
+      if (tblMatch) {
+        var tblPath = tblMatch[1].split('.').map(function(s) { return s.trim(); });
+        currentSection = result;
+        for (var t = 0; t < tblPath.length; t++) {
+          if (!currentSection[tblPath[t]]) currentSection[tblPath[t]] = {};
+          var next = currentSection[tblPath[t]];
+          if (Array.isArray(next)) {
+            currentSection = next[next.length - 1];
+          } else {
+            currentSection = next;
+          }
+        }
+        currentPath = tblPath;
+        continue;
+      }
+
+      // Key = value
+      var eqIdx = line.indexOf('=');
+      if (eqIdx !== -1) {
+        var key = line.substring(0, eqIdx).trim();
+        var rawVal = line.substring(eqIdx + 1).trim();
+        currentSection[key] = parseTOMLValue(rawVal, lines, i);
+      }
+    }
+    return result;
+  }
+
+  function parseTOMLValue(val, lines, lineIdx) {
+    // String
+    if (val.charAt(0) === '"' && val.charAt(val.length - 1) === '"') {
+      return val.substring(1, val.length - 1).replace(/\\n/g, '\n').replace(/\\t/g, '\t').replace(/\\\\/g, '\\').replace(/\\"/g, '"');
+    }
+    if (val.charAt(0) === "'" && val.charAt(val.length - 1) === "'") {
+      return val.substring(1, val.length - 1);
+    }
+    // Boolean
+    if (val === 'true') return true;
+    if (val === 'false') return false;
+    // Integer
+    if (/^-?\d+$/.test(val)) return parseInt(val, 10);
+    // Float
+    if (/^-?\d+\.\d+$/.test(val) || val === 'inf' || val === '-inf' || val === 'nan') {
+      return parseFloat(val);
+    }
+    // Inline array
+    if (val.charAt(0) === '[') {
+      try {
+        return JSON.parse(val.replace(/'/g, '"'));
+      } catch(e) {
+        return val;
+      }
+    }
+    // Inline table
+    if (val.charAt(0) === '{' && val.charAt(val.length - 1) === '}') {
+      var inner = val.substring(1, val.length - 1);
+      var obj = {};
+      var pairs = inner.split(',');
+      for (var p = 0; p < pairs.length; p++) {
+        var eq = pairs[p].indexOf('=');
+        if (eq !== -1) {
+          var k = pairs[p].substring(0, eq).trim();
+          var v = pairs[p].substring(eq + 1).trim();
+          obj[k] = parseTOMLValue(v, lines, lineIdx);
+        }
+      }
+      return obj;
+    }
+    // Date/time (return as string)
+    if (/^\d{4}-\d{2}-\d{2}/.test(val)) return val;
+    return val;
+  }
+
+  /* ── SERIALIZERS ──────────────────────────────────── */
+
+  function toCSV(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '';
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
+    var csv = headers.join(',') + '\n';
+    arr.forEach(function(row) {
+      csv += headers.map(function(h) {
+        var val = row[h];
+        if (val === undefined || val === null) val = '';
+        val = String(val);
+        if (val.indexOf(',') !== -1 || val.indexOf('"') !== -1 || val.indexOf('\n') !== -1) {
+          val = '"' + val.replace(/"/g, '""') + '"';
+        }
+        return val;
+      }).join(',') + '\n';
     });
-    var nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { node.nodeValue = swapText(node.nodeValue); });
-    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"],button').forEach(function (el) {
-      ['placeholder', 'aria-label', 'title', 'alt', 'value'].forEach(function (attr) {
-        if (el.hasAttribute && el.hasAttribute(attr)) el.setAttribute(attr, swapText(el.getAttribute(attr)));
+    return csv;
+  }
+
+  function toTSV(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '';
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
+    var tsv = headers.join('\t') + '\n';
+    arr.forEach(function(row) {
+      tsv += headers.map(function(h) {
+        var val = row[h];
+        return (val === undefined || val === null) ? '' : String(val);
+      }).join('\t') + '\n';
+    });
+    return tsv;
+  }
+
+  function escapeXML(str) {
+    return str.replace(/[<>&"']/g, function(c) {
+      var entities = { '<': '&lt;', '>': '&gt;', '&': '&amp;', '"': '&quot;', "'": '&apos;' };
+      return entities[c];
+    });
+  }
+
+  function toXML(data, rootName) {
+    rootName = rootName || 'root';
+    var xml = '<?xml version="1.0" encoding="UTF-8"?>\n<' + rootName + '>\n';
+
+    function serialize(obj, indent) {
+      var sp = '  '.repeat(indent);
+      if (Array.isArray(obj)) {
+        var out = '';
+        for (var i = 0; i < obj.length; i++) {
+          out += sp + '<item>\n';
+          if (typeof obj[i] === 'object' && obj[i] !== null) {
+            out += serialize(obj[i], indent + 1);
+          } else {
+            out += sp + '  ' + escapeXML(String(obj[i])) + '\n';
+          }
+          out += sp + '</item>\n';
+        }
+        return out;
+      }
+      if (typeof obj === 'object' && obj !== null) {
+        var out = '';
+        var keys = Object.keys(obj);
+        for (var k = 0; k < keys.length; k++) {
+          var key = keys[k];
+          var val = obj[key];
+          // Sanitize tag name
+          var tag = key.replace(/[^a-zA-Z0-9_-]/g, '_');
+          if (Array.isArray(val)) {
+            for (var a = 0; a < val.length; a++) {
+              out += sp + '<' + tag + '>\n';
+              if (typeof val[a] === 'object' && val[a] !== null) {
+                out += serialize(val[a], indent + 1);
+              } else {
+                out += sp + '  ' + escapeXML(String(val[a])) + '\n';
+              }
+              out += sp + '</' + tag + '>\n';
+            }
+          } else if (typeof val === 'object' && val !== null) {
+            out += sp + '<' + tag + '>\n' + serialize(val, indent + 1) + sp + '</' + tag + '>\n';
+          } else {
+            out += sp + '<' + tag + '>' + escapeXML(String(val)) + '</' + tag + '>\n';
+          }
+        }
+        return out;
+      }
+      return sp + escapeXML(String(obj)) + '\n';
+    }
+
+    if (Array.isArray(data)) {
+      for (var i = 0; i < data.length; i++) {
+        xml += '  <item>\n';
+        if (typeof data[i] === 'object' && data[i] !== null) {
+          xml += serialize(data[i], 2);
+        } else {
+          xml += '    ' + escapeXML(String(data[i])) + '\n';
+        }
+        xml += '  </item>\n';
+      }
+    } else {
+      xml += serialize(data, 1);
+    }
+
+    xml += '</' + rootName + '>';
+    return xml;
+  }
+
+  function toYAML(data) {
+    if (typeof jsyaml !== 'undefined') {
+      return jsyaml.dump(data, { indent: 2, lineWidth: -1 });
+    }
+    return toYAMLBasic(data);
+  }
+
+  function toYAMLBasic(data, indent) {
+    indent = indent || 0;
+    var sp = '  '.repeat(indent);
+    if (data === null || data === undefined) return sp + 'null\n';
+    if (typeof data === 'boolean') return sp + String(data) + '\n';
+    if (typeof data === 'number') return sp + String(data) + '\n';
+    if (typeof data === 'string') {
+      if (data.indexOf('\n') !== -1 || data.indexOf(':') !== -1 || data.indexOf('#') !== -1) {
+        return sp + '"' + data.replace(/"/g, '\\"') + '"\n';
+      }
+      return sp + data + '\n';
+    }
+    if (Array.isArray(data)) {
+      if (data.length === 0) return sp + '[]\n';
+      var out = '';
+      for (var i = 0; i < data.length; i++) {
+        if (typeof data[i] === 'object' && data[i] !== null && !Array.isArray(data[i])) {
+          var keys = Object.keys(data[i]);
+          out += sp + '- ' + keys[0] + ': ' + formatYAMLValue(data[i][keys[0]]) + '\n';
+          for (var k = 1; k < keys.length; k++) {
+            out += sp + '  ' + keys[k] + ': ' + formatYAMLValue(data[i][keys[k]]) + '\n';
+          }
+        } else {
+          out += sp + '- ' + formatYAMLValue(data[i]) + '\n';
+        }
+      }
+      return out;
+    }
+    if (typeof data === 'object') {
+      var keys = Object.keys(data);
+      if (keys.length === 0) return sp + '{}\n';
+      var out = '';
+      for (var k = 0; k < keys.length; k++) {
+        var val = data[keys[k]];
+        if (typeof val === 'object' && val !== null) {
+          out += sp + keys[k] + ':\n' + toYAMLBasic(val, indent + 1);
+        } else {
+          out += sp + keys[k] + ': ' + formatYAMLValue(val) + '\n';
+        }
+      }
+      return out;
+    }
+    return sp + String(data) + '\n';
+  }
+
+  function formatYAMLValue(val) {
+    if (val === null || val === undefined) return 'null';
+    if (typeof val === 'boolean') return String(val);
+    if (typeof val === 'number') return String(val);
+    if (typeof val === 'string') {
+      if (val.indexOf(':') !== -1 || val.indexOf('#') !== -1 || val.indexOf('"') !== -1 || val === '') {
+        return '"' + val.replace(/"/g, '\\"') + '"';
+      }
+      return val;
+    }
+    return String(val);
+  }
+
+  /* ── TOML SERIALIZER ──────────────────────────────── */
+  function toTOML(data) {
+    if (typeof data !== 'object' || data === null || Array.isArray(data)) {
+      // Wrap arrays in a root key
+      if (Array.isArray(data)) {
+        return toTOMLSection({ items: data }, '');
+      }
+      return '# Unable to serialize this value as TOML\nvalue = ' + JSON.stringify(data) + '\n';
+    }
+    return toTOMLSection(data, '');
+  }
+
+  function toTOMLSection(obj, prefix) {
+    var out = '';
+    var tables = [];
+    var keys = Object.keys(obj);
+
+    // First pass: simple key-value pairs
+    for (var k = 0; k < keys.length; k++) {
+      var key = keys[k];
+      var val = obj[key];
+      if (val === null || val === undefined) {
+        continue;
+      } else if (Array.isArray(val)) {
+        if (val.length > 0 && typeof val[0] === 'object' && val[0] !== null) {
+          tables.push(key);
+        } else {
+          out += key + ' = ' + toTOMLValueInline(val) + '\n';
+        }
+      } else if (typeof val === 'object') {
+        tables.push(key);
+      } else {
+        out += key + ' = ' + toTOMLValue(val) + '\n';
+      }
+    }
+
+    // Second pass: tables and arrays of tables
+    for (var t = 0; t < tables.length; t++) {
+      var tKey = tables[t];
+      var tVal = obj[tKey];
+      var fullKey = prefix ? prefix + '.' + tKey : tKey;
+
+      if (Array.isArray(tVal)) {
+        for (var a = 0; a < tVal.length; a++) {
+          out += '\n[[' + fullKey + ']]\n';
+          if (typeof tVal[a] === 'object' && tVal[a] !== null) {
+            out += toTOMLSection(tVal[a], fullKey);
+          } else {
+            out += 'value = ' + toTOMLValue(tVal[a]) + '\n';
+          }
+        }
+      } else {
+        out += '\n[' + fullKey + ']\n';
+        out += toTOMLSection(tVal, fullKey);
+      }
+    }
+
+    return out;
+  }
+
+  function toTOMLValue(val) {
+    if (typeof val === 'string') return '"' + val.replace(/\\/g, '\\\\').replace(/"/g, '\\"') + '"';
+    if (typeof val === 'boolean') return String(val);
+    if (typeof val === 'number') return String(val);
+    return '"' + String(val) + '"';
+  }
+
+  function toTOMLValueInline(val) {
+    if (Array.isArray(val)) {
+      return '[' + val.map(function(v) { return toTOMLValue(v); }).join(', ') + ']';
+    }
+    return toTOMLValue(val);
+  }
+
+  /* ── SQL INSERT GENERATOR ─────────────────────────── */
+  function toSQL(data, tableName) {
+    tableName = tableName || 'my_table';
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0) return '-- No data to convert';
+    arr = arr.map(function(row) { return flattenObj(row); });
+    var headers = collectHeaders(arr);
+    var statements = [];
+
+    arr.forEach(function(row) {
+      var vals = headers.map(function(h) {
+        var v = row[h];
+        if (v === null || v === undefined) return 'NULL';
+        if (typeof v === 'number') return String(v);
+        if (typeof v === 'boolean') return v ? '1' : '0';
+        // Escape single quotes
+        return "'" + String(v).replace(/'/g, "''") + "'";
+      });
+      statements.push('INSERT INTO ' + tableName + ' (' + headers.join(', ') + ') VALUES (' + vals.join(', ') + ');');
+    });
+    return statements.join('\n');
+  }
+
+  /* ── HELPERS ──────────────────────────────────────── */
+  function flattenObj(obj, prefix) {
+    if (typeof obj !== 'object' || obj === null || Array.isArray(obj)) return obj;
+    var flat = {};
+    var keys = Object.keys(obj);
+    for (var k = 0; k < keys.length; k++) {
+      var key = prefix ? prefix + '.' + keys[k] : keys[k];
+      var val = obj[keys[k]];
+      if (typeof val === 'object' && val !== null && !Array.isArray(val)) {
+        var nested = flattenObj(val, key);
+        var nKeys = Object.keys(nested);
+        for (var n = 0; n < nKeys.length; n++) {
+          flat[nKeys[n]] = nested[nKeys[n]];
+        }
+      } else {
+        flat[key] = val;
+      }
+    }
+    return flat;
+  }
+
+  function collectHeaders(rows) {
+    var seen = {};
+    var headers = [];
+    rows.forEach(function(row) {
+      if (!row || typeof row !== 'object') return;
+      Object.keys(row).forEach(function(key) {
+        if (!seen[key]) {
+          seen[key] = true;
+          headers.push(key);
+        }
       });
     });
+    return headers;
   }
-  function watch(root) {
-    localize(root);
-    if (!root || !root.body) return;
-    new MutationObserver(function () { localize(root); }).observe(root.body, { childList: true, subtree: true, characterData: true });
+
+  function showToast(msg) {
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.textContent = msg;
+    document.body.appendChild(toast);
+    setTimeout(function() { toast.remove(); }, 2000);
   }
-  window.dataFrLocalizer = {
-    localizeDocument: watch,
-    localizeElement: localize
-  };
+
+  function safeCopy(text) {
+    function fallbackCopy() {
+      var area = document.createElement('textarea');
+      area.value = text;
+      area.setAttribute('readonly', '');
+      area.style.position = 'fixed';
+      area.style.left = '-9999px';
+      document.body.appendChild(area);
+      area.focus();
+      area.select();
+      try {
+        document.execCommand('copy');
+        return Promise.resolve();
+      } catch (error) {
+        return Promise.reject(error);
+      } finally {
+        document.body.removeChild(area);
+      }
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      return navigator.clipboard.writeText(text).catch(fallbackCopy);
+    }
+    return fallbackCopy();
+  }
+
+  function sensitiveKey(key) {
+    return /(password|passwd|pwd|token|secret|api[_-]?key|apikey|authorization|auth|bearer|private[_-]?key|client[_-]?secret|access[_-]?token|refresh[_-]?token|session|cookie|email|phone|msisdn)/i.test(String(key || ''));
+  }
+
+  function scanSensitive(value) {
+    var found = [];
+    function walk(node, path) {
+      if (!node || typeof node !== 'object') return;
+      Object.keys(node).forEach(function(key) {
+        var nextPath = path ? path + '.' + key : key;
+        if (sensitiveKey(key)) found.push(nextPath);
+        walk(node[key], nextPath);
+      });
+    }
+    walk(value, '');
+    return found.slice(0, 8);
+  }
+
+  function redactValue(value) {
+    if (Array.isArray(value)) return value.map(redactValue);
+    if (value && typeof value === 'object') {
+      return Object.keys(value).reduce(function(acc, key) {
+        acc[key] = sensitiveKey(key) ? '[REDACTED]' : redactValue(value[key]);
+        return acc;
+      }, {});
+    }
+    return value;
+  }
+
+  function escapeHtml(s) {
+    var d = document.createElement('div');
+    d.textContent = s;
+    return d.innerHTML;
+  }
+
+  /* ── VALIDATION ───────────────────────────────────── */
+  function validateInput() {
+    var data = inputData.value.trim();
+    var fmt = inputFmt.value;
+    if (!data) {
+      validMsg.classList.remove('show');
+      updateRedactionStatus(null);
+      return;
+    }
+
+    var isValid = true;
+    var msg = '';
+
+    try {
+      if (fmt === 'json') {
+        JSON.parse(data);
+        msg = 'Valid JSON';
+      } else if (fmt === 'csv') {
+        var csvLines = data.split('\n').filter(function(l) { return l.trim(); });
+        if (csvLines.length < 2) throw new Error('CSV needs at least a header row and one data row');
+        msg = 'Valid CSV (' + (csvLines.length - 1) + ' rows)';
+      } else if (fmt === 'tsv') {
+        var tsvLines = data.split('\n').filter(function(l) { return l.trim(); });
+        if (tsvLines.length < 2) throw new Error('TSV needs at least a header row and one data row');
+        msg = 'Valid TSV (' + (tsvLines.length - 1) + ' rows)';
+      } else if (fmt === 'xml') {
+        parseXML(data);
+        msg = 'Valid XML';
+      } else if (fmt === 'yaml') {
+        parseYAML(data);
+        msg = 'Valid YAML';
+      } else if (fmt === 'toml') {
+        parseTOML(data);
+        msg = 'Valid TOML';
+      }
+      var parsedForScan = parseInputData(data, fmt);
+      var sensitive = scanSensitive(parsedForScan);
+      updateRedactionStatus(sensitive);
+      if (sensitive.length) msg += ' | Sensitive fields: ' + sensitive.join(', ');
+    } catch(e) {
+      isValid = false;
+      msg = e.message;
+      updateRedactionStatus(null);
+    }
+
+    validMsg.textContent = (isValid ? '\u2713 ' : '\u2717 ') + msg;
+    validMsg.classList.add('show');
+    validMsg.classList.toggle('valid', isValid);
+    validMsg.classList.toggle('invalid', !isValid);
+  }
+
+  function parseInputData(data, fmt) {
+    if (fmt === 'json') return JSON.parse(data);
+    if (fmt === 'csv') return parseCSV(data);
+    if (fmt === 'tsv') return parseTSV(data);
+    if (fmt === 'xml') return parseXML(data);
+    if (fmt === 'yaml') return parseYAML(data);
+    if (fmt === 'toml') return parseTOML(data);
+    return data;
+  }
+
+  function updateRedactionStatus(sensitive) {
+    if (!redactionStatus) return;
+    if (!inputData.value.trim()) {
+      redactionStatus.textContent = 'Paste data to scan for common sensitive field names.';
+      return;
+    }
+    if (!sensitive) {
+      redactionStatus.textContent = 'Could not scan sensitive fields until the input parses successfully.';
+      return;
+    }
+    redactionStatus.textContent = sensitive.length
+      ? 'Possible sensitive fields found: ' + sensitive.join(', ') + '. Use Copy Redacted before sharing examples.'
+      : 'No common sensitive field names detected. Still review output before sharing.';
+  }
+
+  function serializeOutput(parsed, outFmt) {
+    if (outFmt === 'json') {
+      return isPretty ? JSON.stringify(parsed, null, 2) : JSON.stringify(parsed);
+    }
+    if (outFmt === 'csv') return toCSV(parsed);
+    if (outFmt === 'tsv') return toTSV(parsed);
+    if (outFmt === 'xml') {
+      var xmlRaw = toXML(parsed);
+      return isPretty ? xmlRaw : xmlRaw.replace(/>\s+</g, '><').replace(/\n\s*/g, '');
+    }
+    if (outFmt === 'yaml') {
+      var yamlRaw = toYAML(parsed);
+      return isPretty ? yamlRaw : (typeof jsyaml !== 'undefined' ? jsyaml.dump(parsed, { flowLevel: 0, lineWidth: -1 }) : yamlRaw);
+    }
+    if (outFmt === 'toml') return toTOML(parsed);
+    if (outFmt === 'sql') {
+      var sqlRaw = toSQL(parsed, sqlName.value || 'my_table');
+      return isPretty ? sqlRaw : sqlRaw.replace(/\n/g, ' ');
+    }
+    return String(parsed == null ? '' : parsed);
+  }
+
+  /* ── CONVERT ──────────────────────────────────────── */
+  function convert() {
+    var data = inputData.value.trim();
+    var inFmt = inputFmt.value;
+    var outFmt = outputFmt.value;
+
+    if (!data) {
+      outputData.value = '';
+      hidePreview();
+      return;
+    }
+
+    try {
+      var parsed;
+      try {
+        parsed = parseInputData(data, inFmt);
+      } catch(e) {
+        if (inFmt === 'json') {
+          var match = e.message.match(/position\s*(\d+)/i);
+          if (match) {
+            var pos = parseInt(match[1], 10);
+            var upToError = data.substring(0, pos);
+            var line = upToError.split('\n').length;
+            var col = pos - upToError.lastIndexOf('\n');
+            throw new Error('JSON parse error at line ' + line + ', column ' + col + ': ' + e.message);
+          }
+        }
+        throw e;
+      }
+
+      var output = serializeOutput(parsed, outFmt);
+
+      outputData.value = output;
+
+      // Show preview for tabular output
+      if (outFmt === 'csv' || outFmt === 'tsv') {
+        showPreview(parsed);
+      } else {
+        hidePreview();
+      }
+    } catch(e) {
+      outputData.value = 'Error: ' + e.message;
+      hidePreview();
+    }
+  }
+
+  /* ── PREVIEW TABLE ────────────────────────────────── */
+  function showPreview(data) {
+    var arr = Array.isArray(data) ? data : [data];
+    if (arr.length === 0 || typeof arr[0] !== 'object') { hidePreview(); return; }
+
+    arr = arr.map(flattenObj);
+    var headers = Object.keys(arr[0]);
+    var rows = arr.slice(0, 10);
+
+    var html = '<thead><tr>';
+    for (var h = 0; h < headers.length; h++) {
+      html += '<th>' + escapeHtml(headers[h]) + '</th>';
+    }
+    html += '</tr></thead><tbody>';
+    for (var r = 0; r < rows.length; r++) {
+      html += '<tr>';
+      for (var c = 0; c < headers.length; c++) {
+        var val = rows[r][headers[c]];
+        html += '<td>' + escapeHtml(val === undefined || val === null ? '' : String(val)) + '</td>';
+      }
+      html += '</tr>';
+    }
+    html += '</tbody>';
+    if (arr.length > 10) {
+      html += '<tfoot><tr><td colspan="' + headers.length + '" style="text-align:center;color:#94a3b8;font-size:0.7rem;padding:8px">Showing 10 of ' + arr.length + ' rows</td></tr></tfoot>';
+    }
+
+    previewTbl.innerHTML = html;
+    previewWrap.classList.add('show');
+  }
+
+  function hidePreview() {
+    previewWrap.classList.remove('show');
+    previewTbl.innerHTML = '';
+  }
+
+  /* ── EVENT LISTENERS ──────────────────────────────── */
+
+  // Auto-detect on input
+  inputData.addEventListener('input', function() {
+    var detected = detectFormat(inputData.value);
+    if (detected && detected !== inputFmt.value) {
+      inputFmt.value = detected;
+    }
+    validateInput();
+  });
+
+  inputFmt.addEventListener('change', validateInput);
+
+  // Show/hide SQL table name
+  outputFmt.addEventListener('change', function() {
+    sqlRow.classList.toggle('show', outputFmt.value === 'sql');
+  });
+
+  sqlName.addEventListener('input', function() {
+    if (outputData.value && outputFmt.value === 'sql') convert();
+  });
+
+  // Convert button
+  convertBtn.addEventListener('click', convert);
+
+  // Pretty / Minify
+  prettyBtn.addEventListener('click', function() {
+    isPretty = true;
+    prettyBtn.classList.add('active');
+    minifyBtn.classList.remove('active');
+    if (outputData.value) convert();
+  });
+
+  minifyBtn.addEventListener('click', function() {
+    isPretty = false;
+    minifyBtn.classList.add('active');
+    prettyBtn.classList.remove('active');
+    if (outputData.value) convert();
+  });
+
+  // Sample data
+  sampleBtn.addEventListener('click', function() {
+    var fmt = inputFmt.value;
+    inputData.value = samples[fmt] || samples.json;
+    validateInput();
+    convert();
+  });
+
+  // Clear
+  clearBtn.addEventListener('click', function() {
+    inputData.value = '';
+    outputData.value = '';
+    validMsg.classList.remove('show');
+    hidePreview();
+  });
+
+  // Copy
+  copyBtn.addEventListener('click', function() {
+    var text = outputData.value;
+    if (!text) { showToast('Nothing to copy'); return; }
+    safeCopy(text).then(function() {
+      showToast('Copied to clipboard');
+    }).catch(function() {
+      showToast('Copy failed');
+    });
+  });
+
+  redactCopyBtn.addEventListener('click', function() {
+    var data = inputData.value.trim();
+    if (!data) { showToast('Nothing to redact'); return; }
+    try {
+      var parsed = parseInputData(data, inputFmt.value);
+      var redacted = redactValue(parsed);
+      var text = serializeOutput(redacted, outputFmt.value);
+      safeCopy(text).then(function() {
+        showToast('Redacted output copied');
+      }).catch(function() {
+        showToast('Copy failed');
+      });
+    } catch(e) {
+      showToast('Fix input before redacting');
+    }
+  });
+
+  // Download
+  function doDownload() {
+    var data = outputData.value;
+    if (!data) { showToast('Nothing to download'); return; }
+    var fmt = outputFmt.value;
+    var ext = { json:'json', csv:'csv', tsv:'tsv', xml:'xml', yaml:'yml', toml:'toml', sql:'sql' }[fmt] || 'txt';
+    var mime = { json:'application/json', csv:'text/csv', tsv:'text/tab-separated-values', xml:'application/xml', yaml:'text/yaml', toml:'text/toml', sql:'application/sql' }[fmt] || 'text/plain';
+    var blob = new Blob([data], { type: mime });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = 'converted.' + ext;
+    a.click();
+    URL.revokeObjectURL(url);
+    showToast('Downloaded converted.' + ext);
+  }
+
+  downloadBtn.addEventListener('click', function() {
+    if (!outputData.value) { showToast('Nothing to download'); return; }
+    doDownload();
+  });
+
+  // File upload
+  fileDrop.addEventListener('click', function() { fileInput.click(); });
+
+  ['dragenter', 'dragover'].forEach(function(evt) {
+    fileDrop.addEventListener(evt, function(e) {
+      e.preventDefault();
+      fileDrop.classList.add('drag-over');
+    });
+  });
+
+  ['dragleave', 'drop'].forEach(function(evt) {
+    fileDrop.addEventListener(evt, function(e) {
+      e.preventDefault();
+      fileDrop.classList.remove('drag-over');
+    });
+  });
+
+  fileDrop.addEventListener('drop', function(e) {
+    e.preventDefault();
+    if (e.dataTransfer.files.length) readFile(e.dataTransfer.files[0]);
+  });
+
+  fileInput.addEventListener('change', function(e) {
+    if (e.target.files.length) readFile(e.target.files[0]);
+  });
+
+  function readFile(file) {
+    if (file.size > 5 * 1024 * 1024) {
+      showToast('File too large (max 5 MB)');
+      return;
+    }
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      inputData.value = e.target.result;
+      var detected = detectFormat(e.target.result);
+      if (detected) inputFmt.value = detected;
+      validateInput();
+      convert();
+      showToast('File loaded: ' + file.name);
+    };
+    reader.readAsText(file);
+  }
+
+  // Keyboard shortcuts
+  document.addEventListener('keydown', function(e) {
+    if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') {
+      e.preventDefault();
+      convert();
+    }
+    if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === 'c') {
+      e.preventDefault();
+      copyBtn.click();
+    }
+  });
+
+  /* ═══════════════════════════════════════════════════════
+     ═══════════════════════════════════════════════════════ */
 })();
 </script>
-  <script>
-    document.getElementById('undefined').addEventListener('load', function () {
-      try {
-        var doc = this.contentDocument || this.contentWindow.document;
-        window.dataFrLocalizer.localizeDocument(doc);
-      } catch (error) {
-        console.warn('Localisation de l\'outil embarqué indisponible', error);
-      }
-    });
-  </script>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
+<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Data Converter" tool-slug="data-converter"></share-result-button>';
+  target.appendChild(div);
+})();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script data-fr-native-localizer>
+(function(){
+  var terms=new Map([["This data format converter transforms structured data between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT statements with a single click. Paste your data or upload a file and the tool auto-detects the input format, then converts it to your chosen output format instantly. It handles nested objects, arrays, and special characters gracefully, making it ideal for developers migrating data between systems, analysts reformatting exports, or anyone who regularly wrangles data across different platforms. All processing happens locally in your browser, so sensitive data stays private. Stop manually reformatting files and let this converter do the heavy lifting.","Ce convertisseur de format de données transforme les données structurées entre les instructions JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT en un seul clic. Collez vos données ou téléchargez un fichier et l'outil détecte automatiquement le format d'entrée, puis le convertit instantanément au format de sortie choisi. Il gère les objets imbriqués, les tableaux et les caractères spéciaux avec élégance, ce qui le rend idéal pour les développeurs migrant des données entre les systèmes, les analystes reformatant les exportations ou toute personne qui traite régulièrement des données sur différentes plates-formes. Tout le traitement s'effectue localement dans votre navigateur, les données sensibles restent donc privées. Arrêtez de reformater manuellement les fichiers et laissez ce convertisseur faire le gros du travail."],["When you paste or upload data, the converter examines the first 100 characters for format signatures: curly braces or square brackets for JSON, angle brackets for XML, tab characters for TSV, TOML bracket headers, comma-separated headers for CSV, or colon-based key-value pairs for YAML.","Lorsque vous collez ou téléchargez des données, le convertisseur examine les 100 premiers caractères pour les signatures de format : accolades ou crochets pour JSON, crochets angulaires pour XML, caractères de tabulation pour TSV, en-têtes de crochets TOML, en-têtes séparés par des virgules pour CSV ou paires clé-valeur basées sur deux points pour YAML."],["TOML (Tom's Obvious Minimal Language) is a human-readable configuration format used in Rust (Cargo.toml), Python packaging (pyproject.toml), and static site generators. It is less ambiguous than YAML and easier to read than JSON for configuration files.","TOML (Tom's Obvious Minimal Language) est un format de configuration lisible par l'homme utilisé dans Rust (Cargo.toml), l'empaquetage Python (pyproject.toml) et les générateurs de sites statiques. Il est moins ambigu que YAML et plus facile à lire que JSON pour les fichiers de configuration."],["Yes. Select \"SQL INSERT\" as the output format, enter a table name, and the converter generates valid INSERT statements for every row. Values are properly escaped. This works from any input format including CSV, JSON, XML, YAML, TSV, and TOML.","Oui. Sélectionnez \"SQL INSERT\" comme format de sortie, entrez un nom de table et le convertisseur génère des instructions INSERT valides pour chaque ligne. Les valeurs sont correctement échappées. Cela fonctionne à partir de n'importe quel format d'entrée, y compris CSV, JSON, XML, YAML, TSV et TOML."],["This converter supports JSON, CSV, XML, YAML, TSV, and TOML as both input and output formats. You can also generate SQL INSERT statements from any tabular data. The tool auto-detects your input format when you paste or upload data.","Ce convertisseur prend en charge JSON, CSV, XML, YAML, TSV et TOML comme formats d'entrée et de sortie. Vous pouvez également générer des instructions SQL INSERT à partir de n'importe quelle donnée tabulaire. L'outil détecte automatiquement votre format d'entrée lorsque vous collez ou téléchargez des données."],["All conversions happen entirely in your browser. Your data never leaves your device unless you separately copy, download, or share the result yourself.","Toutes les conversions s'effectuent entièrement dans votre navigateur. Vos données ne quittent jamais votre appareil, sauf si vous copiez, téléchargez ou partagez séparément le résultat vous-même."],["Methodology: parse the detected input format, map rows or objects into the target structure, then serialize with the selected output settings.","Méthodologie : analysez le format d'entrée détecté, mappez les lignes ou les objets dans la structure cible, puis sérialisez avec les paramètres de sortie sélectionnés."],["Paste or upload structured data, detect the format, choose an output format, preview the result, and copy or download only sanitized output.","Collez ou téléchargez des données structurées, détectez le format, choisissez un format de sortie, prévisualisez le résultat et copiez ou téléchargez uniquement la sortie nettoyée."],["Verify headers, null values, numeric precision, escaped quotes, nested arrays, dates, character encoding, and SQL table names before import.","Vérifiez les en-têtes, les valeurs nulles, la précision numérique, les guillemets échappés, les tableaux imbriqués, les dates, le codage des caractères et les noms de table SQL avant l'importation."],["Convert JSON, CSV, XML, YAML, TSV, TOML and SQL INSERT locally in the browser with auto-detection, validation, preview, copy and download.","Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT localement dans le navigateur avec détection automatique, validation, prévisualisation, copie et téléchargement."],["Source/reference note: verify with current schema docs, database constraints, API examples, and test imports before using converted data.","Note source/référence : vérifiez avec les documents de schéma actuels, les contraintes de base de données, les exemples API et testez les importations avant d'utiliser les données converties."],["Convert between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT. Auto-detect formats, validate data, and preview tables in your browser.","Convertissez entre JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT. Détectez automatiquement les formats, validez les données et prévisualisez les tableaux dans votre navigateur."],["Disclaimer: conversion helper only, not an official schema validator, database migration tool, or data-quality guarantee.","Avertissement : assistant de conversion uniquement, et non un validateur de schéma officiel, un outil de migration de base de données ou une garantie de qualité des données."],["Check headers, null values, dates, encoding, SQL table names, and production constraints before loading converted data.","Vérifiez les en-têtes, les valeurs nulles, les dates, l'encodage, les noms de table SQL et les contraintes de production avant de charger les données converties."],["Remove passwords, tokens, private customer records, and production identifiers before copying or downloading examples.","Supprimez les mots de passe, les jetons, les enregistrements clients privés et les identifiants de production avant de copier ou de télécharger des exemples."],["Use redacted copy or manually remove passwords, tokens, customer records and production identifiers before sharing.","Utilisez une copie expurgée ou supprimez manuellement les mots de passe, les jetons, les enregistrements clients et les identifiants de production avant de les partager."],["Convert JSON, CSV, XML, YAML, TSV, TOML, and SQL locally, then preview, copy, or download the transformed output.","Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL localement, puis prévisualisez, copiez ou téléchargez la sortie transformée."],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["Compare output against your current schema, API contract, or import tool before loading it into production.","Comparez la sortie avec votre schéma actuel, votre contrat API ou votre outil d'importation avant de la charger en production."],["Use auto-detect or select the input format, then choose the output format including SQL INSERT when needed.","Utilisez la détection automatique ou sélectionnez le format d'entrée, puis choisissez le format de sortie, y compris SQL INSERT si nécessaire."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["Input and output stay in this browser unless you copy, download, or share the result yourself.","Les entrées et sorties restent dans ce navigateur, sauf si vous copiez, téléchargez ou partagez le résultat vous-même."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."],["Review validation status, converted output, and the table preview before using the result.","Vérifiez l'état de validation, la sortie convertie et l'aperçu du tableau avant d'utiliser le résultat."],["Use Copy Redacted before pasting examples into tickets, docs, chat, or public bug reports.","Utilisez Copier expurgé avant de coller des exemples dans des tickets, des documents, des discussions ou des rapports de bugs publics."],["Tab-separated values. Like CSV but uses tabs. Good for copy-paste from spreadsheets.","Valeurs séparées par des tabulations. Comme CSV mais utilise des onglets. Idéal pour copier-coller à partir de feuilles de calcul."],["Input and output stay in the browser unless you separately share or download them.","Les entrées et sorties restent dans le navigateur, sauf si vous les partagez ou les téléchargez séparément."],["Minimal config format. Used in Rust, Python packaging, and static site generators.","Format de configuration minimal. Utilisé dans Rust, les emballages Python et les générateurs de sites statiques."],["Convert structured data between common developer formats locally in the browser.","Convertissez les données structurées entre les formats de développement courants localement dans le navigateur."],["Extensible Markup Language. Tag-based hierarchical format for structured data.","Langage de balisage extensible. Format hiérarchique basé sur des balises pour les données structurées."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],["JavaScript Object Notation. Key-value pairs with nested objects and arrays.","JavaScript Notation d'objet. Paires clé-valeur avec des objets et des tableaux imbriqués."],["Some nested or irregular data can need manual cleanup after conversion.","Certaines données imbriquées ou irrégulières peuvent nécessiter un nettoyage manuel après la conversion."],["Comma-separated values. First row is headers. Good for spreadsheets.","Valeurs séparées par des virgules. La première ligne correspond aux en-têtes. Bon pour les feuilles de calcul."],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["Human-readable format using indentation. Popular for config files.","Format lisible par l'homme utilisant l'indentation. Populaire pour les fichiers de configuration."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Add JSON, CSV, XML, YAML, TSV or TOML data in the input editor.","Ajoutez les données JSON, CSV, XML, YAML, TSV ou TOML dans l'éditeur d'entrée."],["Output only. Generates INSERT statements for database import.","Sortie uniquement. Génère des instructions INSERT pour l'importation de base de données."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["Requires JavaScript. Conversion runs locally in the browser.","Nécessite JavaScript. La conversion s'exécute localement dans le navigateur."],["Use Pretty mode for readability, Minify for compact output","Utilisez le mode Pretty pour plus de lisibilité, Minify pour une sortie compacte"],["+ ext; a.click(); URL.revokeObjectURL(url); showToast(","+ poste; a.cliquez(); URL.revokeObjectURL(url); showToast("],["Drag and drop files up to 5 MB for instant conversion","Glissez et déposez des fichiers jusqu'à 5 Mo pour une conversion instantanée"],["Paste data to scan for common sensitive field names.","Collez les données pour rechercher les noms de champs sensibles courants."],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Can I generate SQL INSERT statements from my data?","Puis-je générer des instructions SQL INSERT à partir de mes données ?"],["CSV/TSV conversions require flat (non-nested) data","Les conversions CSV/TSV nécessitent des données plates (non imbriquées)."],["TOML supports nested tables with [section] headers","TOML prend en charge les tableaux imbriqués avec des en-têtes [section]"],["SQL INSERT escapes values to prevent injection","SQL INSERT échappe aux valeurs pour empêcher l'injection"],["What data formats does this converter support?","Quels formats de données ce convertisseur prend-il en charge ?"],["JSON, CSV, XML, YAML, TSV and TOML conversion","Conversion de JSON, CSV, XML, YAML, TSV et TOML"],["Data Converter - JSON, CSV, XML, YAML, TOML","Convertisseur de données - JSON, CSV, XML, YAML, TOML"],["Validate converted data before importing it","Validez les données converties avant de les importer"],[") { result.push(current.trim()); current =",") { résultat.push(current.trim()); courant ="],["Paste your data here or upload a file...","Collez vos données ici ou téléchargez un fichier..."],["What is TOML and when should I use it?","Qu'est-ce que TOML et quand dois-je l'utiliser ?"],["How to convert structured data safely","Comment convertir des données structurées en toute sécurité"],["Paste data to auto-detect the format","Collez les données pour détecter automatiquement le format"],["Converted data will appear here...","Les données converties apparaîtront ici..."],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],["Return plain text beginning with","Renvoyez du texte brut commençant par"],["+ colMatch[1]; throw new Error(","+ colMatch[1]; lancer une nouvelle erreur ("],["+ escapeXML(String(val[a])) +","+ évasionXML(String(val[a])) +"],["Frequently Asked Questions","Foire aux questions"],["How does auto-detect work?","Comment fonctionne la détection automatique ?"],["JSON Formatter & Validator","JSON Formateur et validateur"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["+ toTOMLValue(tVal[a]) +","+ àTOMLValue(tVal[a]) +"],["Preview (first 10 rows)","Aperçu (10 premières lignes)"],["Review converted output","Examiner la sortie convertie"],["Sanitize before sharing","Désinfecter avant de partager"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],["Auto-detected on paste","Détecté automatiquement sur la pâte"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],["Client-side conversion","Conversion côté client"],["Data conversion check","Vérification de la conversion des données"],["direct local download","téléchargement local direct"],["format auto-detection","détection automatique du format"],["SQL INSERT generation","SQL INSERT génération"],["Paste or upload data","Coller ou télécharger des données"],["redacted output copy","copie de sortie rédigée"],["Validate and preview","Valider et prévisualiser"],["); throw new Error(","); lancer une nouvelle erreur ("],["Local Safety Checks","Contrôles de sécurité locaux"],["or drag a file here","ou faites glisser un fichier ici"],["USSD Code Simulator","USSD Simulateur de codes"],["Export or save path","Chemin d’exportation ou d’enregistrement"],["Is my data secure?","Mes données sont-elles sécurisées ?"],["Keyboard Shortcuts","Raccourcis clavier"],["YAML error at line","Erreur YAML à la ligne"],["100% Client-Side","100 % côté client"],["Accept analytics","Accepter les analyses"],["Format Reference","Référence des formats"],["Format Selection","Sélection du format"],["Local conversion","Conversion locale"],["Reject analytics","Rejeter les analyses"],["Converted Output","Sortie convertie"],["Click to upload","Cliquez pour télécharger"],["Conversion Tips","Conseils de conversion"],["Developer Tools","Outils de développement"],["Markdown Editor","Éditeur de démarques"],["Privacy details","Détails de confidentialité"],["Download Result","Télécharger le résultat"],["Select All TLDs","Sélectionner tous les TLD"],["Data Converter","Convertisseur de données"],["Choose formats","Choisissez les formats"],["Cookie consent","Consentement aux cookies"],["Hash Generator","Générateur de hachage"],["— Copy output","— Copier la sortie"],["Copy Redacted","Copie expurgée"],["Output Format","Format de sortie"],["Redacted copy","Copie expurgée"],["Related tools","Outils associés"],["table preview","aperçu du tableau"],["What to check","Que vérifier"],["Import review","Vérification de l’importation"],["Input Format","Format d'entrée"],["Load Sample","Charger un échantillon"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Copy Result","Copier le résultat"],["Input Data","Données d'entrée"],["Table Name","Nom du tableau"],["No results","Aucun résultat"],["— Convert","— Convertir"],["7 Formats","7 formats"],["All Tools","Tous les outils"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["My table","Mon tableau"],["Generate","Générer"],["Download","Télécharger"],["Settings","Paramètres"],["Preview","Aperçu"],["Options","Options"],["Results","Résultats"],["Example","Exemple"],["Copied","Copié"],["Export","Exporter"],["Import","Importer"],["Result","Résultat"],["Search","Rechercher"],["Output","Sortie"],["Format","Format"],["Where:","Où :"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Saved","Enregistré"],["Share","Partager"],["Error","Erreur"],["Input","Entrée"],["Ready","Prêt"],["What:","Quoi :"],["Copy","Copier"],["Save","Enregistrer"],["File","Fichier"],["and","et"]]);
+  var exportTerms=new Map([["Data Converter","Convertisseur de données"],["— Convert","— Convertir"],["— Copy output","— Copier la sortie"],[") { result.push(current.trim()); current =",") { résultat.push(current.trim()); courant ="],["); throw new Error(","); lancer une nouvelle erreur ("],["+ colMatch[1]; throw new Error(","+ colMatch[1]; lancer une nouvelle erreur ("],["+ escapeXML(String(val[a])) +","+ évasionXML(String(val[a])) +"],["+ ext; a.click(); URL.revokeObjectURL(url); showToast(","+ poste; a.cliquez(); URL.revokeObjectURL(url); showToast("],["+ toTOMLValue(tVal[a]) +","+ àTOMLValue(tVal[a]) +"],["100% Client-Side","100 % côté client"],["7 Formats","7 formats"],["Accept analytics","Accepter les analyses"],["Add JSON, CSV, XML, YAML, TSV or TOML data in the input editor.","Ajoutez les données JSON, CSV, XML, YAML, TSV ou TOML dans l'éditeur d'entrée."],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["All conversions happen entirely in your browser. Your data never leaves your device unless you separately copy, download, or share the result yourself.","Toutes les conversions s'effectuent entièrement dans votre navigateur. Vos données ne quittent jamais votre appareil, sauf si vous copiez, téléchargez ou partagez séparément le résultat vous-même."],["Answer","Réponse"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["Auto-Detect","Détection automatique"],["Auto-detected on paste","Détecté automatiquement sur la pâte"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],["BreadcrumbList","Fil d'ArianeListe"],["Can I generate SQL INSERT statements from my data?","Puis-je générer des instructions SQL INSERT à partir de mes données ?"],["Check headers, null values, dates, encoding, SQL table names, and production constraints before loading converted data.","Vérifiez les en-têtes, les valeurs nulles, les dates, l'encodage, les noms de table SQL et les contraintes de production avant de charger les données converties."],["Choose formats","Choisissez les formats"],["Clear","Effacer"],["Click to upload","Cliquez pour télécharger"],["Client-side conversion","Conversion côté client"],["Comma-separated values. First row is headers. Good for spreadsheets.","Valeurs séparées par des virgules. La première ligne correspond aux en-têtes. Bon pour les feuilles de calcul."],["Compare output against your current schema, API contract, or import tool before loading it into production.","Comparez la sortie avec votre schéma actuel, votre contrat API ou votre outil d'importation avant de la charger en production."],["Conversion Tips","Conseils de conversion"],["Convert","Convertir"],["Convert between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT. Auto-detect formats, validate data, and preview tables in your browser.","Convertissez entre JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT. Détectez automatiquement les formats, validez les données et prévisualisez les tableaux dans votre navigateur."],["Convert JSON, CSV, XML, YAML, TSV, TOML and SQL INSERT locally in the browser with auto-detection, validation, preview, copy and download.","Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT localement dans le navigateur avec détection automatique, validation, prévisualisation, copie et téléchargement."],["Convert JSON, CSV, XML, YAML, TSV, TOML, and SQL locally, then preview, copy, or download the transformed output.","Convertissez JSON, CSV, XML, YAML, TSV, TOML et SQL localement, puis prévisualisez, copiez ou téléchargez la sortie transformée."],["Convert structured data between common developer formats locally in the browser.","Convertissez les données structurées entre les formats de développement courants localement dans le navigateur."],["Converted data will appear here...","Les données converties apparaîtront ici..."],["Converter","Convertisseur"],["Cookie consent","Consentement aux cookies"],["Copy","Copier"],["Copy Redacted","Copie expurgée"],["CSV/TSV conversions require flat (non-nested) data","Les conversions CSV/TSV nécessitent des données plates (non imbriquées)."],["Ctrl+Enter","Ctrl+Entrée"],["Ctrl+Shift+C","Ctrl+Maj+C"],["Data","Données"],["Data conversion check","Vérification de la conversion des données"],["Data Converter - JSON, CSV, XML, YAML, TOML","Convertisseur de données - JSON, CSV, XML, YAML, TOML"],["Developer Tools","Outils développeur"],["direct local download","téléchargement local direct"],["Disclaimer: conversion helper only, not an official schema validator, database migration tool, or data-quality guarantee.","Avertissement : assistant de conversion uniquement, et non un validateur de schéma officiel, un outil de migration de base de données ou une garantie de qualité des données."],["Download","Télécharger"],["Drag and drop files up to 5 MB for instant conversion","Glissez et déposez des fichiers jusqu'à 5 Mo pour une conversion instantanée"],["Extensible Markup Language. Tag-based hierarchical format for structured data.","Langage de balisage extensible. Format hiérarchique basé sur des balises pour les données structurées."],["FAQPage","Page FAQ"],["FileInput","Entrée de fichier"],["format auto-detection","détection automatique du format"],["Format Reference","Référence des formats"],["Format Selection","Sélection du format"],["Frequently Asked Questions","Questions fréquentes"],["Hash Generator","Générateur de hachage"],["How does auto-detect work?","Comment fonctionne la détection automatique ?"],["How to convert structured data safely","Comment convertir des données structurées en toute sécurité"],["HowTo","Comment faire"],["HowToStep","CommentÉtape"],["Human-readable format using indentation. Popular for config files.","Format lisible par l'homme utilisant l'indentation. Populaire pour les fichiers de configuration."],["Input and output stay in the browser unless you separately share or download them.","Les entrées et sorties restent dans le navigateur, sauf si vous les partagez ou les téléchargez séparément."],["Input and output stay in this browser unless you copy, download, or share the result yourself.","Les entrées et sorties restent dans ce navigateur, sauf si vous copiez, téléchargez ou partagez le résultat vous-même."],["Input Data","Données source"],["Input Format","Format d’entrée"],["Is my data secure?","Mes données sont-elles sécurisées ?"],["JavaScript Object Notation. Key-value pairs with nested objects and arrays.","JavaScript Notation d'objet. Paires clé-valeur avec des objets et des tableaux imbriqués."],["JSON Formatter & Validator","JSON Formateur et validateur"],["JSON, CSV, XML, YAML, TSV and TOML conversion","Conversion de JSON, CSV, XML, YAML, TSV et TOML"],["Keyboard Shortcuts","Raccourcis clavier"],["Limitations","Limites"],["ListItem","Élément de liste"],["Load Sample","Charger un exemple"],["Local conversion","Conversion locale"],["Local Safety Checks","Contrôles de sécurité locaux"],["Markdown Editor","Éditeur de démarques"],["Methodology: parse the detected input format, map rows or objects into the target structure, then serialize with the selected output settings.","Méthodologie : analysez le format d'entrée détecté, mappez les lignes ou les objets dans la structure cible, puis sérialisez avec les paramètres de sortie sélectionnés."],["Minify","Réduire"],["Minimal config format. Used in Rust, Python packaging, and static site generators.","Format de configuration minimal. Utilisé dans Rust, les emballages Python et les générateurs de sites statiques."],["My table","Mon tableau"],["Offer","Offre"],["or drag a file here","ou faites glisser un fichier ici"],["Organization","Organisation"],["Output","Sortie"],["Output Format","Format de sortie"],["Output only. Generates INSERT statements for database import.","Sortie uniquement. Génère des instructions INSERT pour l'importation de base de données."],["Paste data to auto-detect the format","Collez les données pour détecter automatiquement le format"],["Paste data to scan for common sensitive field names.","Collez les données pour rechercher les noms de champs sensibles courants."],["Paste or upload data","Coller ou télécharger des données"],["Paste or upload structured data, detect the format, choose an output format, preview the result, and copy or download only sanitized output.","Collez ou téléchargez des données structurées, détectez le format, choisissez un format de sortie, prévisualisez le résultat et copiez ou téléchargez uniquement la sortie nettoyée."],["Paste your data here or upload a file...","Collez vos données ici ou téléchargez un fichier..."],["Pretty","Jolie"],["Preview (first 10 rows)","Aperçu (10 premières lignes)"],["Privacy details","Détails de confidentialité"],["Redacted copy","Copie expurgée"],["redacted output copy","copie de sortie rédigée"],["Reject analytics","Rejeter les analyses"],["Related tools","Outils associés"],["Remove passwords, tokens, private customer records, and production identifiers before copying or downloading examples.","Supprimez les mots de passe, les jetons, les enregistrements clients privés et les identifiants de production avant de copier ou de télécharger des exemples."],["Requires JavaScript. Conversion runs locally in the browser.","Nécessite JavaScript. La conversion s'exécute localement dans le navigateur."],["Review converted output","Examiner la sortie convertie"],["Review validation status, converted output, and the table preview before using the result.","Vérifiez l'état de validation, la sortie convertie et l'aperçu du tableau avant d'utiliser le résultat."],["Sanitize before sharing","Désinfecter avant de partager"],["Some nested or irregular data can need manual cleanup after conversion.","Certaines données imbriquées ou irrégulières peuvent nécessiter un nettoyage manuel après la conversion."],["Source/reference note: verify with current schema docs, database constraints, API examples, and test imports before using converted data.","Note source/référence : vérifiez avec les documents de schéma actuels, les contraintes de base de données, les exemples API et testez les importations avant d'utiliser les données converties."],["SQL INSERT escapes values to prevent injection","SQL INSERT échappe aux valeurs pour empêcher l'injection"],["SQL INSERT generation","SQL INSERT génération"],["Tab-separated values. Like CSV but uses tabs. Good for copy-paste from spreadsheets.","Valeurs séparées par des tabulations. Comme CSV mais utilise des onglets. Idéal pour copier-coller à partir de feuilles de calcul."],["Table Name","Nom du tableau"],["table preview","aperçu du tableau"],["This converter supports JSON, CSV, XML, YAML, TSV, and TOML as both input and output formats. You can also generate SQL INSERT statements from any tabular data. The tool auto-detects your input format when you paste or upload data.","Ce convertisseur prend en charge JSON, CSV, XML, YAML, TSV et TOML comme formats d'entrée et de sortie. Vous pouvez également générer des instructions SQL INSERT à partir de n'importe quelle donnée tabulaire. L'outil détecte automatiquement votre format d'entrée lorsque vous collez ou téléchargez des données."],["This data format converter transforms structured data between JSON, CSV, XML, YAML, TSV, TOML, and SQL INSERT statements with a single click. Paste your data or upload a file and the tool auto-detects the input format, then converts it to your chosen output format instantly. It handles nested objects, arrays, and special characters gracefully, making it ideal for developers migrating data between systems, analysts reformatting exports, or anyone who regularly wrangles data across different platforms. All processing happens locally in your browser, so sensitive data stays private. Stop manually reformatting files and let this converter do the heavy lifting.","Ce convertisseur de format de données transforme les données structurées entre les instructions JSON, CSV, XML, YAML, TSV, TOML et SQL INSERT en un seul clic. Collez vos données ou téléchargez un fichier et l'outil détecte automatiquement le format d'entrée, puis le convertit instantanément au format de sortie choisi. Il gère les objets imbriqués, les tableaux et les caractères spéciaux avec élégance, ce qui le rend idéal pour les développeurs migrant des données entre les systèmes, les analystes reformatant les exportations ou toute personne qui traite régulièrement des données sur différentes plates-formes. Tout le traitement s'effectue localement dans votre navigateur, les données sensibles restent donc privées. Arrêtez de reformater manuellement les fichiers et laissez ce convertisseur faire le gros du travail."],["TOML (Tom's Obvious Minimal Language) is a human-readable configuration format used in Rust (Cargo.toml), Python packaging (pyproject.toml), and static site generators. It is less ambiguous than YAML and easier to read than JSON for configuration files.","TOML (Tom's Obvious Minimal Language) est un format de configuration lisible par l'homme utilisé dans Rust (Cargo.toml), l'empaquetage Python (pyproject.toml) et les générateurs de sites statiques. Il est moins ambigu que YAML et plus facile à lire que JSON pour les fichiers de configuration."],["TOML supports nested tables with [section] headers","TOML prend en charge les tableaux imbriqués avec des en-têtes [section]"],["Tools","Outils"],["Use auto-detect or select the input format, then choose the output format including SQL INSERT when needed.","Utilisez la détection automatique ou sélectionnez le format d'entrée, puis choisissez le format de sortie, y compris SQL INSERT si nécessaire."],["Use Copy Redacted before pasting examples into tickets, docs, chat, or public bug reports.","Utilisez Copier expurgé avant de coller des exemples dans des tickets, des documents, des discussions ou des rapports de bugs publics."],["Use Pretty mode for readability, Minify for compact output","Utilisez le mode Pretty pour plus de lisibilité, Minify pour une sortie compacte"],["Use redacted copy or manually remove passwords, tokens, customer records and production identifiers before sharing.","Utilisez une copie expurgée ou supprimez manuellement les mots de passe, les jetons, les enregistrements clients et les identifiants de production avant de les partager."],["USSD Code Simulator","USSD Simulateur de codes"],["Validate and preview","Valider et prévisualiser"],["Validate converted data before importing it","Validez les données converties avant de les importer"],["Verify headers, null values, numeric precision, escaped quotes, nested arrays, dates, character encoding, and SQL table names before import.","Vérifiez les en-têtes, les valeurs nulles, la précision numérique, les guillemets échappés, les tableaux imbriqués, les dates, le codage des caractères et les noms de table SQL avant l'importation."],["WebApplication","Application Web"],["WebPage","Page Web"],["WebSite","Site Web"],["What data formats does this converter support?","Quels formats de données ce convertisseur prend-il en charge ?"],["What is TOML and when should I use it?","Qu'est-ce que TOML et quand dois-je l'utiliser ?"],["What to check","Que vérifier"],["When you paste or upload data, the converter examines the first 100 characters for format signatures: curly braces or square brackets for JSON, angle brackets for XML, tab characters for TSV, TOML bracket headers, comma-separated headers for CSV, or colon-based key-value pairs for YAML.","Lorsque vous collez ou téléchargez des données, le convertisseur examine les 100 premiers caractères pour les signatures de format : accolades ou crochets pour JSON, crochets angulaires pour XML, caractères de tabulation pour TSV, en-têtes de crochets TOML, en-têtes séparés par des virgules pour CSV ou paires clé-valeur basées sur deux points pour YAML."],["YAML error at line","Erreur YAML à la ligne"],["Yes. Select \"SQL INSERT\" as the output format, enter a table name, and the converter generates valid INSERT statements for every row. Values are properly escaped. This works from any input format including CSV, JSON, XML, YAML, TSV, and TOML.","Oui. Sélectionnez \"SQL INSERT\" comme format de sortie, entrez un nom de table et le convertisseur génère des instructions INSERT valides pour chaque ligne. Les valeurs sont correctement échappées. Cela fonctionne à partir de n'importe quel format d'entrée, y compris CSV, JSON, XML, YAML, TSV et TOML."],["All Tools","Tous les outils"],["Converted Output","Sortie convertie"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Download Result","Télécharger le résultat"],["Copy Result","Copier le résultat"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["Generate","Générer"],["Copied","Copié"],["Paste","Coller"],["Reset","Réinitialiser"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Import review","Vérification de l’importation"],["Export or save path","Chemin d’exportation ou d’enregistrement"],["Select All TLDs","Sélectionner tous les TLD"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],["Return plain text beginning with","Renvoyez du texte brut commençant par"],["Ready","Prêt"],["What:","Quoi :"],["Where:","Où :"],["and","et"],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."]]);
+  var linePrefixes=[
+    ['Checked:','Vérifié :'],['Project type:','Type de projet :'],['Market:','Marché :'],['Ops comfort:','Aisance opérationnelle :'],
+    ['Budget:','Budget :'],['Estimated transfer:','Transfert estimé :'],['Recommended provider:','Fournisseur recommandé :'],
+    ['Entry price:','Prix d’entrée :'],['Why:','Pourquoi :'],['Risk note:','Note de risque :'],['Official source:','Source officielle :'],
+    ['Risk flags:','Indicateurs de risque :'],['Shortlist alternatives:','Autres options présélectionnées :'],['Before buying:','Avant l’achat :']
+  ];
+  function translateLine(value){
+    var leading=(value.match(/^\s*/)||[''])[0],trailing=(value.match(/\s*$/)||[''])[0],text=value.trim(),bullet='';
+    if(text.startsWith('- ')){bullet='- ';text=text.slice(2);}
+    if(terms.has(text))return leading+bullet+terms.get(text)+trailing;
+    if(bullet&&text.includes(': ')){var colon=text.indexOf(': '),label=text.slice(0,colon+1),detail=text.slice(colon+2);return leading+bullet+label+' '+(terms.get(detail)||detail)+trailing;}
+    for(var i=0;i<linePrefixes.length;i++){var pair=linePrefixes[i];if(text.startsWith(pair[0])){var remainder=text.slice(pair[0].length).trim();return leading+bullet+pair[1]+' '+(terms.get(remainder)||remainder)+trailing;}}
+    return value;
+  }
+  function swap(value){
+    var original=String(value||''), leading=(original.match(/^\s*/)||[''])[0], trailing=(original.match(/\s*$/)||[''])[0], key=original.trim().replace(/\s+/g,' ');
+    if(terms.has(key))return leading+terms.get(key)+trailing;
+    var preview=key.match(/^Previewing (.+) across (\d+) selected TLDs\. This is not a live availability check\.$/);
+    if(preview)return leading+'Aperçu de '+preview[1]+' sur '+preview[2]+' TLD sélectionnés. Il ne s’agit pas d’un contrôle de disponibilité en direct.'+trailing;
+    var sitemap=key.match(/^(\d+) same-host URLs generated\. Add lastmod only when you have actual page modified dates\.$/);
+    if(sitemap)return leading+sitemap[1]+' URL du même hôte générées. Ajoutez lastmod uniquement si vous disposez des dates réelles de modification des pages.'+trailing;
+    if(original.includes('\n'))return original.split('\n').map(translateLine).join('\n');
+    return original;
+  }
+  function localize(root){
+    if(!root)return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){var parent=node.parentElement;if(!node.nodeValue||!node.nodeValue.trim()||(parent&&(/^(script|style|code|pre|textarea)$/i.test(parent.tagName)||parent.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+    var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(function(node){node.nodeValue=swap(node.nodeValue);});
+    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"]').forEach(function(el){['placeholder','aria-label','title','alt','value'].forEach(function(attr){if(el.hasAttribute(attr))el.setAttribute(attr,swap(el.getAttribute(attr)));});});
+  }
+  localize(document);
+  (function localizeJsonDownloads(){
+    var NativeBlob=window.Blob;
+    var preservedKeys=new Set(['id','type','provider','country','ops','risk','supports','tags','source','url','serviceCode','home','next','variable','key','project','localPay','countries']);
+    function visit(value,key){
+      if(Array.isArray(value))return value.map(function(item){return visit(item,key);});
+      if(value&&typeof value==='object'){Object.keys(value).forEach(function(childKey){value[childKey]=visit(value[childKey],childKey);});return value;}
+      if(typeof value!=='string'||preservedKeys.has(key)||/^(?:https?:\/\/|\/)/i.test(value))return value;
+      var normalized=value.replace(/\s+/g,' ').trim();
+      return exportTerms.has(normalized)?exportTerms.get(normalized):value;
+    }
+    function FrenchBlob(parts,options){
+      var nextParts=parts;
+      if(options&&/application\/json/i.test(options.type||'')&&Array.isArray(parts)&&parts.length===1&&typeof parts[0]==='string'){
+        try{nextParts=[JSON.stringify(visit(JSON.parse(parts[0]),''),null,parts[0].includes('\n')?2:0)];}catch(_){}
+      }
+      return new NativeBlob(nextParts,options);
+    }
+    FrenchBlob.prototype=NativeBlob.prototype;
+    Object.setPrototypeOf(FrenchBlob,NativeBlob);
+    window.Blob=FrenchBlob;
+  })();
+  new MutationObserver(function(records){records.forEach(function(record){record.addedNodes.forEach(function(node){if(node.nodeType===1)localize(node);else if(node.nodeType===3&&node.parentElement&&!/^(script|style|code|pre|textarea)$/i.test(node.parentElement.tagName)&&!node.parentElement.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))node.nodeValue=swap(node.nodeValue);});});}).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
 </body>
 </html>

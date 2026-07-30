@@ -104,7 +104,7 @@
       <polygon points="34,20 48,34 34,48 20,34" fill="#0062CC"/>
       <polygon points="34,2  44,14 34,20 24,14" fill="#F5A623"/>
       <polygon points="34,48 44,60 34,68 24,60" fill="#0047AB"/>
-      <polygon points="2,24  14,34 2,44  -10,34" fill="#0062CC" opacity="0.6"/>
+      <polygon points="16,24  28,34 16,44  4,34" fill="#0062CC" opacity="0.6"/>
       <polygon points="52,24 64,34 52,44 40,34"  fill="#0062CC" opacity="0.48"/>
     </svg>`;
 
@@ -126,7 +126,7 @@
       border-top: 2px solid #1f2937;
       color: #d1d5db;
     }
-    .wrap { max-width: 1200px; margin: 0 auto; padding: 0 32px; }
+    .wrap { width: 100%; max-width: 1200px; min-width: 0; margin: 0 auto; padding: 0 32px; }
 
     /* ─────────────────────────────────────────────
        TOP — logo + newsletter
@@ -173,7 +173,7 @@
     .nl-title {
       font-size: 1.25rem; font-weight: 800;
       color: #f9fafb; line-height: 1.25; margin-bottom: 18px;
-      letter-spacing: -0.02em;
+      letter-spacing: -0.02em; overflow-wrap: anywhere;
     }
     .nl-form { display: flex; gap: 8px; max-width: 400px; width: 100%; min-width: 0; }
     .nl-input {
@@ -190,7 +190,7 @@
     .nl-input:focus { border-color: var(--color-primary); background: rgba(255,255,255,0.09); }
     .nl-btn {
       padding: 11px 18px; flex-shrink: 0;
-      background: var(--color-primary); color: white; border: none;
+      background: #0062CC; color: #ffffff; border: none;
       border-radius: 6px;
       font-family: 'DM Sans', sans-serif;
       font-size: 0.82rem; font-weight: 700;
@@ -208,14 +208,14 @@
        Links: #9ca3af — comfortably readable.
     ───────────────────────────────────────────── */
     .links {
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 32px; padding: 44px 0;
       border-bottom: 1px solid #1f2937;
     }
     .col-title {
       font-size: 0.6rem; font-weight: 700;
       letter-spacing: 0.16em; text-transform: uppercase;
-      color: #3B8AE5; margin-bottom: 14px;
+      color: #3B8AE5; margin-bottom: 14px; overflow-wrap: anywhere;
     }
     .col-link {
       display: block; padding: 4px 0;
@@ -223,6 +223,8 @@
       color: #9ca3af;
       text-decoration: none;
       transition: color 0.13s; line-height: 1.5;
+      min-width: 0; max-width: 100%;
+      overflow-wrap: anywhere; word-break: break-word;
     }
     .col-link:hover { color: #ffffff; }
 
@@ -230,11 +232,12 @@
        STATS — numbers that pop
     ───────────────────────────────────────────── */
     .stats {
-      display: grid; grid-template-columns: repeat(4, 1fr);
+      display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 16px; padding: 32px 0;
       border-bottom: 1px solid #1f2937;
       text-align: center;
     }
+    .stats > div { min-width: 0; }
     .stat-n {
       font-size: 1.8rem; font-weight: 800;
       color: var(--color-primary); line-height: 1;
@@ -245,6 +248,7 @@
       font-size: 0.72rem; font-weight: 500;
       color: #8B95A3; margin-top: 5px;
     }
+    .stat-n, .stat-l { overflow-wrap: anywhere; word-break: break-word; }
 
     /* ─────────────────────────────────────────────
        BOTTOM BAR
@@ -256,13 +260,13 @@
     }
     .copy {
       font-size: 0.75rem; font-weight: 500;
-      color: #8B95A3;
+      color: #8B95A3; overflow-wrap: anywhere;
     }
     .legal { display: flex; gap: 20px; flex-wrap: wrap; }
     .legal a {
       font-size: 0.75rem; font-weight: 500;
       color: #8B95A3; text-decoration: none;
-      transition: color 0.13s;
+      transition: color 0.13s; overflow-wrap: anywhere;
     }
     .legal a:hover { color: #9ca3af; }
 
@@ -295,15 +299,69 @@
 
     @media (max-width: 900px) {
       .top   { grid-template-columns: 1fr; gap: 36px; padding: 40px 0 36px; }
-      .links { grid-template-columns: 1fr 1fr; }
-      .stats { grid-template-columns: repeat(2, 1fr); }
+      .links { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .stats { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     }
     @media (max-width: 560px) {
-      .wrap  { padding: 0 20px; }
-      .links { grid-template-columns: 1fr 1fr; gap: 24px; }
+      .wrap  { padding: 0 16px; }
+      .links { grid-template-columns: 1fr; gap: 24px; }
       .nl-form { flex-direction: column; }
       .bottom { flex-direction: column; align-items: flex-start; }
-      .stats  { grid-template-columns: repeat(2, 1fr); }
+      .stats  { grid-template-columns: 1fr; text-align: left; }
+    }
+    @media (max-width: 400px) {
+      .wrap { padding: 0 12px; }
+      .top { gap: 24px; padding: 32px 0 28px; }
+      .links,
+      .stats { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      .links { padding: 32px 0; }
+      .stats { padding: 24px 0; }
+      .top > *,
+      .links > *,
+      .stats > *,
+      .bottom > *,
+      .nl-form,
+      .nl-form > *,
+      .legal,
+      .legal > * {
+        min-width: 0;
+        max-width: 100%;
+      }
+      .logo-name,
+      .tagline,
+      .nl-eyebrow,
+      .nl-title,
+      .nl-note,
+      .col-title,
+      .col-link,
+      .stat-n,
+      .stat-l,
+      .copy,
+      .legal a,
+      .disc,
+      .built-with {
+        white-space: normal;
+        overflow-wrap: anywhere;
+      }
+      .nl-btn { white-space: normal; }
+      .legal { gap: 12px; }
+    }
+    @media (max-width: 380px) {
+      .wrap { padding: 0 14px; min-width: 0; }
+      .links { min-width: 0; }
+      .links > div, .col-link, .col-title { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+      .stats { min-width: 0; }
+      .stats > div, .stat-n, .stat-l { min-width: 0; max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+      .legal { width: 100%; min-width: 0; flex-direction: column; align-items: flex-start; }
+      .legal a { max-width: 100%; overflow-wrap: anywhere; word-break: break-word; }
+    }
+    @media (max-width: 220px) {
+      .wrap { padding: 0 12px; }
+      .links { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+      .stats { grid-template-columns: minmax(0, 1fr); }
+      .links > *, .stats > * { min-width: 0; }
+      .col-title, .col-link, .stat-l, .legal a { overflow-wrap: anywhere; }
+      .legal { gap: 12px; }
     }
   `;
 

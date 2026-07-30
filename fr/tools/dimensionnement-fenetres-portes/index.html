@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dimensionnement des fenêtres et portes | AfroTools</title>
+<meta name="description" content="Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+<meta property="og:title" content="Dimensionnement des fenêtres et portes | AfroTools">
+<meta property="og:description" content="Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/dimensionnement-fenetres-portes/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Dimensionnement des fenêtres et portes | AfroTools">
+<meta name="twitter:description" content="Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.wd-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.wd-table th { background:var(--en-accent-pale); padding:.5rem .75rem; text-align:left; }
+.wd-table td { padding:.5rem .75rem; border-bottom:1px solid #e2e8f0; }
+.wd-table tr:nth-child(even) td { background:#fafafa; }
+
+.qe-workflow { margin: 1.5rem 0; }
+.qe-card { background:#fff; border:1px solid #d6d3d1; border-radius:8px; padding:1.2rem; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+.qe-card h2 { margin:0 0 .45rem; color:#292524; font-size:1.25rem; }
+.qe-card p { color:#57534e; line-height:1.6; margin:.35rem 0; }
+.qe-actions { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
+.qe-actions button { border:1px solid #a8a29e; background:#fff; color:#292524; border-radius:8px; padding:.7rem 1rem; font-weight:800; cursor:pointer; font-family:inherit; }
+.qe-actions button:first-child { background:#44403c; color:#fff; border-color:#44403c; }
+.qe-actions button:focus-visible { outline:2px solid #78716c; outline-offset:2px; }
+.qe-status { min-height:1.25rem; color:#57534e; font-size:.84rem; margin:.7rem 0 0; }
+.qe-verification { margin-top:1rem; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; }
+.qe-verification div { background:#fafaf9; border:1px solid #e7e5e4; border-radius:8px; padding:.85rem; }
+.qe-verification strong { display:block; color:#292524; margin-bottom:.35rem; }
+.qe-verification span { color:#57534e; font-size:.86rem; line-height:1.5; }
+@media (max-width: 760px) { .qe-verification { grid-template-columns:1fr; } .qe-actions button { width:100%; } }
+
+</style>
+
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/window-door-sizing.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/window-door-sizing.webp">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<meta name="afrotools-content-id" content="fr-engineering:window-door-sizing">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/tools/window-door-sizing/">
+<meta name="afrotools-ai-tool-id" content="window-door-sizing">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Dimensionnement des fenêtres et portes",
+    "description": "Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.",
+    "url": "https://afrotools.com/fr/tools/dimensionnement-fenetres-portes/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Le moteur partagé combine pièces, surface, matériaux, types, quincaillerie et tarifs du pays.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser Dimensionnement des fenêtres et portes ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le moteur partagé combine pièces, surface, matériaux, types, quincaillerie et tarifs du pays."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Vérifiez ventilation, lumière, sécurité, évacuation, linteaux et règles locales."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/dimensionnement-fenetres-portes/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/window-door-sizing/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/dimensionnement-fenetres-portes/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/window-door-sizing/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Accueil</a></li><li><a href="/engineering/">Ingénierie</a></li>
+    <li aria-current="page">Fenêtre & Porte Sizing Guide</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Fenêtre &amp; Porte Sizing Guide</h1>
+    <p>Estimer</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Bâtiment Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label" for="wd-country">Pays</label>
+          <select class="en-select" id="wd-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">Afrique du Sud (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Égypte (EGP)</option><option value="ET">Éthiopie (ETB)</option><option value="TZ">Tanzanie (TZS)</option><option value="UG">Ouganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Maroc (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Type de bâtiment</label>
+          <select class="en-select" id="wd-btype" aria-label="Wd Btype">
+            <option value="residential">Residential</option>
+            <option value="office">Bureau</option>
+            <option value="retail">Boutique</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Pièces Needing Fenêtres</label>
+          <input aria-label="Wd Pièces" type="number" class="en-input" id="wd-rooms" value="4" min="1" max="50">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Average Pièce Surface au sol (m²)</label>
+          <input aria-label="Wd Surface des pièces" type="number" class="en-input" id="wd-room-area" value="16" min="4">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of External Portes</label>
+          <input aria-label="Wd ext Portes" type="number" class="en-input" id="wd-ext-doors" value="2" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Internal Portes</label>
+          <input aria-label="Wd int Portes" type="number" class="en-input" id="wd-int-doors" value="5" min="0">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Fenêtre Frame Matériau</label>
+          <select class="en-select" id="wd-win-mat" aria-label="Wd Win Mat">
+            <option value="aluminium" selected>Informations et hypothèses du calcul</option>
+            <option value="upvc">uPVC</option>
+            <option value="timber">Bois / Hardwood</option>
+            <option value="steel">Acier (security)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Fenêtre Type</label>
+          <select class="en-select" id="wd-win-type" aria-label="Wd Win Type">
+            <option value="casement">Casement (side-opening)</option>
+            <option value="louvre" selected>Informations et hypothèses du calcul</option>
+            <option value="sliding">Sliding</option>
+            <option value="fixed">Fixed / Picture</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">porte extérieure Matériau</label>
+          <select class="en-select" id="wd-door-mat" aria-label="Wd Porte Mat">
+            <option value="steel_security">Acier Security Porte</option>
+            <option value="aluminium_glass">Aluminium & Glass</option>
+            <option value="timber_solid" selected>Solid Bois</option>
+            <option value="fibreglass">Fibreglass / Composite</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">porte intérieure Matériau</label>
+          <select class="en-select" id="wd-int-mat" aria-label="Wd Int Mat">
+            <option value="flush_hdf">Flush HDF / Hollow Core</option>
+            <option value="panel_timber" selected>Panel Bois</option>
+            <option value="flush_solid">Flush Solid Core</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="en-btn" onclick="calcWindowDoor()">Calculer Sizes & Coûts</button>
+    </div>
+
+    <div class="en-results" id="wd-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="wd-headline">Fenêtre & Porte Schedule</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Fenêtres nécessaires</div><div class="en-stat-value" id="wd-win-count">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Glazing Surface</div><div class="en-stat-value" id="wd-glaze-area">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Ventilation Planning Check</div><div class="en-stat-value" id="wd-vent">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Total Fenêtres Coût</div><div class="en-stat-value" id="wd-win-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">External Portes Coût</div><div class="en-stat-value" id="wd-ext-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Internal Portes Coût</div><div class="en-stat-value" id="wd-int-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Hardware & Fitting</div><div class="en-stat-value" id="wd-hardware">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">TOTAL GÉNÉRAL</div><div class="en-stat-value" id="wd-total">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Standard Diamètre Schedule</h3>
+        <div style="overflow-x:auto">
+          <table class="wd-table">
+            <thead><tr><th>Poste</th><th>Qté</th><th>Standard Diamètre</th><th>Coût unitaire</th><th>Total</th></tr></thead>
+            <tbody id="wd-schedule"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Design Review Notes</h3>
+        <ul id="wd-compliance" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+
+    <section class="qe-workflow" data-queued-engineering-upgrade="window-door-sizing" data-tool-verification-panel data-tool-id="window-door-sizing" aria-labelledby="window-door-sizing-workflow-title">
+      <div class="qe-card">
+        <h2 id="window-door-sizing-workflow-title">Exportable planning brief</h2>
+        <p>Charger</p>
+        <div class="qe-actions">
+          <button type="button" data-qe-copy="window-door-sizing">Copier brief</button>
+          <button type="button" data-qe-download="window-door-sizing" data-no-gate="true">Télécharger le TXT</button>
+        </div>
+        <p class="qe-status" id="window-door-sizing-qe-status" role="status" aria-live="polite"></p>
+        <div class="qe-verification" aria-label="Fenêtre &amp; Porte Sizing Guide verification notes">
+          <div><strong>Source</strong><span>Le moteur partagé combine pièces, surface, matériaux, types, quincaillerie et tarifs du pays.</span></div>
+          <div><strong>Actualité</strong><span>Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.</span></div>
+          <div><strong>Méthodologie</strong><span>Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.</span></div>
+          <div><strong>Limites</strong><span>Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.</span></div>
+        </div>
+      </div>
+    </section>
+</main>
+<nav class="fr-engineering-related-tools" aria-labelledby="window-door-sizing-related-title">
+  <h2 id="window-door-sizing-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/tools/materiaux-plomberie/">Calculateur de matériaux de plomberie</a></li>
+      <li><a href="/fr/ingenierie/afrodraft/">AfroDraft CAO 2D</a></li>
+      <li><a href="/fr/ingenierie/planificateur-etage/">Planificateur de plan d’étage</a></li>
+  </ul>
+</nav>
+<afro-footer></afro-footer>
+<script src="/engines/window-door-sizing-engine.js?v=2eda43c6"></script>
+<script>
+// Cost per unit by material type
+function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcWindowDoor(){
+  var result = window.AfroTools.WindowDoorSizingEngine.calculate({
+    country:document.getElementById('wd-country').value,
+    buildingType:document.getElementById('wd-btype').value,
+    rooms:document.getElementById('wd-rooms').value,
+    roomArea:document.getElementById('wd-room-area').value,
+    externalDoors:document.getElementById('wd-ext-doors').value,
+    internalDoors:document.getElementById('wd-int-doors').value,
+    windowMaterial:document.getElementById('wd-win-mat').value,
+    windowType:document.getElementById('wd-win-type').value,
+    externalMaterial:document.getElementById('wd-door-mat').value,
+    internalMaterial:document.getElementById('wd-int-mat').value
+  });
+  if (!result.ok) {
+    document.getElementById('wd-results').classList.remove('on');
+    return;
+  }
+  document.getElementById('wd-headline').textContent = 'Fenêtre & Porte Schedule — ' + result.rooms + '-Pièce ' + result.buildingType;
+  document.getElementById('wd-win-count').textContent = result.totalWindows + ' Fenêtres (' + result.windowsPerRoom + '/pièce)';
+  document.getElementById('wd-glaze-area').textContent = result.totalGlazingArea.toFixed(1) + ' m²';
+  var ventEl = document.getElementById('wd-vent');
+  ventEl.textContent = result.ventilationMeetsTarget ? 'MEETS 5% TARGET' : 'BELOW 5% TARGET';
+  ventEl.style.color = result.ventilationMeetsTarget ? '#16a34a' : '#dc2626';
+  document.getElementById('wd-win-cost').textContent = fmtCur(result.symbol, result.windowCost);
+  document.getElementById('wd-ext-cost').textContent = fmtCur(result.symbol, result.externalDoorCost);
+  document.getElementById('wd-int-cost').textContent = fmtCur(result.symbol, result.internalDoorCost);
+  document.getElementById('wd-hardware').textContent = fmtCur(result.symbol, result.hardwareCost);
+  document.getElementById('wd-total').textContent = fmtCur(result.symbol, result.total);
+
+  var schedule = result.schedule.map(function(row){
+    if (row.kind === 'window') return {item:row.material.charAt(0).toUpperCase()+row.material.slice(1)+' '+row.type+' Fenêtre',qty:row.qty,size:row.size,unitCost:row.unitCost,total:row.total};
+    if (row.kind === 'external-door') return {item:({panel_timber:"panneau de bois",timber:"bois",steel:"acier",aluminium:"aluminium",upvc:"PVC-U"}[row.material]||row.material.replace(/_/g," "))+' porte extérieure',qty:row.qty,size:row.size,unitCost:row.unitCost,total:row.total};
+    if (row.kind === 'internal-door') return {item:({panel_timber:"panneau de bois",timber:"bois",steel:"acier",aluminium:"aluminium",upvc:"PVC-U"}[row.material]||row.material.replace(/_/g," "))+' porte intérieure',qty:row.qty,size:row.size,unitCost:row.unitCost,total:row.total};
+    return {item:'Hardware (hinges, locks, handles)',qty:row.qty,size:row.size,unitCost:row.unitCost,total:row.total};
+  });
+  document.getElementById('wd-schedule').innerHTML = schedule.map(function(s){
+    return '<tr><td>'+s.item+'</td><td>'+s.qty+'</td><td>'+s.size+'</td><td>'+fmtCur(result.symbol,s.unitCost)+'</td><td>'+fmtCur(result.symbol,s.total)+'</td></tr>';
+  }).join('');
+
+  var compliance = [
+    "La surface vitrée atteint l’objectif indicatif de 10 %. Faites vérifier l’éclairage naturel, la ventilation, la sécurité incendie et les autorisations locales par le professionnel du projet.",
+    result.ventilationMeetsTarget ? 'La surface ouvrante atteint l’objectif indicatif de 5 % ; vérifiez localement la ventilation requise.' : 'Openable Surface is below this Calculateur’s 5% planning target. Discuss Fenêtre type and local ventilation requirements with the project professional.',
+    document.getElementById('wd-win-type').value === 'louvre' ? 'Les fenêtres à jalousies ventilent bien sous climat tropical mais offrent une sécurité moindre ; ajoutez des grilles de protection.' : '',
+    'Vérifiez les passages libres accessibles et la quincaillerie des portes selon le programme et les exigences locales en vigueur.',
+    'Faites vérifier les dimensions et le fonctionnement des ouvertures d’évacuation des chambres par le professionnel et l’autorité compétente.',
+    'Faites contrôler l’ancrage du cadre, le linteau et le mur périphérique selon l’ouverture et le mode constructif choisis.'
+  ].filter(Boolean);
+  document.getElementById('wd-compliance').innerHTML = compliance.map(function(c){ return '<li>' + c + '</li>'; }).join('');
+  document.getElementById('wd-results').classList.add('on');
+  document.getElementById('wd-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+<script>
+(function(){
+  var config = {
+    title: "Fenêtre & Porte Sizing Guide",
+    slug: "window-door-sizing",
+    resultSelector: "#wd-results",
+    primary: "#wd-total"
+  };
+  function clean(text){ return String(text || '').replace(/\s+/g, ' ').trim(); }
+  function labelFor(field){
+    if (!field) return '';
+    if (field.id) {
+      var direct = document.querySelector('label[for="' + field.id + '"]');
+      if (direct) return clean(direct.textContent);
+    }
+    var wrap = field.closest && field.closest('.en-field');
+    var label = wrap && wrap.querySelector('label, .en-label');
+    return clean(label ? label.textContent : (field.getAttribute('aria-label') || field.id || field.name || 'Input'));
+  }
+  function valueFor(field){
+    if (!field) return '';
+    if (field.tagName && field.tagName.toLowerCase() === 'select') {
+      return clean(field.options[field.selectedIndex] ? field.options[field.selectedIndex].text : field.value);
+    }
+    return clean(field.value);
+  }
+  function captureInputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('.en-field input, .en-field select')).map(function(field){
+      return '- ' + labelFor(field) + ': ' + valueFor(field);
+    }).filter(function(line){ return line.indexOf(':') !== line.length - 1; }).slice(0, 18);
+  }
+  function captureResults(){
+    var result = document.querySelector(config.resultSelector);
+    if (!result || !result.classList.contains('on')) {
+      var button = document.querySelector('button[onclick*="calc"], .en-btn');
+      if (button) button.click();
+      result = document.querySelector(config.resultSelector);
+    }
+    var primary = clean(document.querySelector(config.primary) && document.querySelector(config.primary).textContent);
+    var stats = Array.prototype.slice.call(document.querySelectorAll(config.resultSelector + ' .en-stat-card')).map(function(card){
+      var label = clean(card.querySelector('.en-stat-label') && card.querySelector('.en-stat-label').textContent);
+      var value = clean(card.querySelector('.en-stat-value') && card.querySelector('.en-stat-value').textContent);
+      return label && value ? '- ' + label + ': ' + value : '';
+    }).filter(Boolean).slice(0, 12);
+    return { primary: primary, stats: stats };
+  }
+  function buildBrief(){
+    var result = captureResults();
+    var lines = [
+      config.title + ' - AfroTools planning brief',
+      'Generated locally in this browser.',
+      '',
+      'Headline Résultat: ' + (result.primary || 'Run the Calculateur to Actualiser the Résultat.'),
+      '',
+      'Inputs:',
+      captureInputs().join('\n') || '- Non Entrées captured.',
+      '',
+      'Results:',
+      result.stats.join('\n') || '- Non Résultat values captured.',
+      '',
+      'Hypothèses and checks:',
+      '- Estimation indicative only; confirm current supplier, contractor, professional, permit, safety, and Chantier conditions before acting.',
+      '- The Calculateur does not send Paramètres du projet to a server when copying or downloading.',
+      '- Keep a quote pack with drawings, photos, measurements, and supplier terms beside this Estimer.'
+    ];
+    return lines.join('\n');
+  }
+  function status(message){
+    var el = document.getElementById(config.slug + '-qe-status');
+    if (el) el.textContent = message;
+  }
+  function copyBrief(){
+    var text = buildBrief();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ status('Brief copied.'); }).catch(function(){ fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text){
+    var area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand('copy'); status('Brief selected and copied.'); }
+    catch (err) { status('Brief selected. Press Ctrl+C to Copier.'); }
+    document.body.removeChild(area);
+  }
+  function downloadBrief(){
+    var text = buildBrief();
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = config.slug + '-planning-brief.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    status('TXT brief downloaded.');
+  }
+  document.addEventListener('click', function(event){
+    if (event.target.closest('[data-qe-copy="' + config.slug + '"]')) copyBrief();
+    if (event.target.closest('[data-qe-download="' + config.slug + '"]')) downloadBrief();
+  });
+}());
+</script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="window-door-sizing" aria-labelledby="window-door-sizing-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="window-door-sizing-fr-guide-title">Dimensionnement des fenêtres et portes : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/window-door-sizing.webp" alt="Illustration du parcours Dimensionnement des fenêtres et portes" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours Dimensionnement des fenêtres et portes.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Préparez un tableau de fenêtres et portes avec ventilation, dimensions et coûts.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Le moteur partagé combine pièces, surface, matériaux, types, quincaillerie et tarifs du pays.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Vérifiez ventilation, lumière, sécurité, évacuation, linteaux et règles locales.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/tools/window-door-sizing/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/tools/window-door-sizing/">https://afrotools.com/tools/window-door-sizing/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="window-door-sizing">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"window-door-sizing","name":"Dimensionnement des fenêtres et portes","source":"/tools/window-door-sizing/","privacy":"local-first","aiConsent":"explicit"};</script>
+</body>
+</html>

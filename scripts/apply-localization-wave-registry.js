@@ -67,20 +67,25 @@ function registryRow(entry, locale, tools) {
   const fields = [
     `id: ${js(id)}`,
     `name: ${js(entry.name)}`,
-    `icon: ${js(source.icon || "AT")}`,
+    `icon: ${js(entry.icon || source.icon || "AT")}`,
     `desc: ${js(entry.description)}`,
     `href: ${js(href)}`,
     `category: ${js(category)}`,
-    `tier: ${js(source.tier || "T3")}`,
+    `tier: ${js(entry.tier || source.tier || "T3")}`,
     `status: "live"`,
     `phase: "LIVE"`,
-    `countries: ${js(source.countries || ["ALL"])}`,
+    `countries: ${js(entry.countries || source.countries || ["ALL"])}`,
     `revenue: ${js(entry.revenue || "Discovery")}`,
     ...(Number.isFinite(entry.estRevenue) ? [`estRevenue: ${Number(entry.estRevenue)}`] : []),
     `priority: ${Number(entry.priority || source.priority || 0)}`,
     `lang: ${js(locale)}`,
-    `sourceId: ${js(source.id)}`,
-    ...(entry.image === false ? ["image: false"] : [`imageId: ${js(source.imageId || source.id)}`]),
+    ...(entry.parentSourceId
+      ? [`parentSourceId: ${js(entry.parentSourceId)}`]
+      : [`sourceId: ${js(entry.sourceId || source.id)}`]),
+    ...(entry.image === false
+      ? ["image: false"]
+      : [`imageId: ${js(entry.imageId || source.imageId || source.id)}`]),
+    ...(entry.version ? [`version: ${js(entry.version)}`] : []),
   ];
   return `  { ${fields.join(", ")} },`;
 }
@@ -89,10 +94,13 @@ function build() {
   const original = fs.readFileSync(REGISTRY, "utf8");
   const source = stripBlock(original);
   const tools = loadTools(source);
+  const frenchEntries = [...WAVE.french, ...(WAVE.nativeFrench || [])];
   const rows = [
     START,
     "  // Generated from data/localization/coverage-wave-2026-07.json. Re-run this script after changing the manifest.",
-    ...WAVE.french.map((entry) => registryRow(entry, "fr", tools)),
+    ...frenchEntries
+      .filter((entry) => entry.registryManaged !== false)
+      .map((entry) => registryRow(entry, "fr", tools)),
     ...WAVE.swahili
       .filter((entry) => !tools.some((tool) => tool.lang === "sw" && tool.href === `/sw/zana/${entry.swSlug}/`))
       .map((entry) => registryRow(entry, "sw", tools)),
@@ -111,7 +119,7 @@ function build() {
 const outcome = build();
 if (WRITE) {
   atomicWrite(REGISTRY, outcome.next);
-  console.log(`Applied ${WAVE.french.length + WAVE.swahili.length} localization wave registry rows.`);
+  console.log(`Applied ${WAVE.french.length + (WAVE.nativeFrench || []).length + WAVE.swahili.length} localization wave registry rows.`);
 } else if (outcome.original !== outcome.next) {
   console.error("Localization wave registry is out of date. Run: node scripts/apply-localization-wave-registry.js --write");
   process.exitCode = 1;

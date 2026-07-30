@@ -1,0 +1,133 @@
+{
+  "schemaVersion": 1,
+  "scope": "French Diaspora parity for exactly two canonical English apps",
+  "reviewedOn": "2026-07-29",
+  "baseCommit": "8ce5cac175e42201968b1f7540752d6acf92d4ca",
+  "branch": "codex/fr-diaspora-parity-2-apps",
+  "denominator": {
+    "expected": 2,
+    "accepted": 2,
+    "routes": [
+      "/fr/tools/calculateur-de-points-d-immigration/",
+      "/fr/tools/suivi-de-demande-de-visa/"
+    ]
+  },
+  "englishBehaviorFreeze": [
+    {
+      "route": "/tools/immigration-points/",
+      "baselineSha256": "e9500f5594dea43826e1f55cb8015de5c8fbc3bb4df32f307ea8c515aa8ee142",
+      "proof": "Full owner-file hash remains unchanged."
+    },
+    {
+      "route": "/tools/visa-tracker/",
+      "baselineSha256": "6fa5fbe360d19c9b694c977f76dba9caf54d30e681aa44c5dbd0e3c5d5d3fa03",
+      "proof": "Hash matches after removing only the new reciprocal French hreflang line; behavior is unchanged."
+    }
+  ],
+  "apps": [
+    {
+      "sourceId": "immigration-points",
+      "frenchRoute": "/fr/tools/calculateur-de-points-d-immigration/",
+      "jurisdictions": ["Canada", "Australia", "United Kingdom"],
+      "officialSources": [
+        "https://www.canada.ca/en/immigration-refugees-citizenship/services/immigrate-canada/express-entry/check-score.html",
+        "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skilled-independent-189/points-table",
+        "https://www.gov.uk/guidance/immigration-rules/immigration-rules-appendix-skilled-worker"
+      ],
+      "exportsVerified": ["TXT", "JSON", "print/PDF handoff"],
+      "persistence": "none",
+      "accepted": true
+    },
+    {
+      "sourceId": "visa-tracker",
+      "frenchRoute": "/fr/tools/suivi-de-demande-de-visa/",
+      "jurisdictions": ["United Kingdom", "Canada", "Australia", "United States", "United Arab Emirates", "Schengen"],
+      "officialSources": [
+        "https://www.gov.uk/check-visa-processing-time",
+        "https://www.canada.ca/en/immigration-refugees-citizenship/services/application/check-processing-times.html",
+        "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-processing-times",
+        "https://travel.state.gov/content/travel/en/us-visas/visa-information-resources/wait-times.html",
+        "https://icp.gov.ae/en/",
+        "https://home-affairs.ec.europa.eu/policies/schengen/visa-policy/applying-schengen-visa_en"
+      ],
+      "exportsVerified": ["TXT", "JSON", "JSON reopen", "print/PDF handoff"],
+      "persistence": "browser localStorage only after explicit Save; explicit delete verified",
+      "accepted": true
+    }
+  ],
+  "sourceConfidence": {
+    "officialOrigin": "high",
+    "individualEligibilityOrOutcome": "not inferred",
+    "individualProcessingTime": "low by design; the user supplies the current official range and the app labels dates as planning only",
+    "freshnessNotice": "Links reviewed 2026-07-29; users are instructed to confirm the authority page, route and update date."
+  },
+  "privacyAndAi": {
+    "rawSensitivePiiRequested": false,
+    "runtimeNetworkRequests": 0,
+    "automaticStorage": false,
+    "frenchRouterMode": "native_local_only",
+    "prefill": false,
+    "rawSensitiveDataInUrl": false,
+    "localFallback": true,
+    "networkModelConsentRequired": true
+  },
+  "validation": [
+    {
+      "command": "node --test tests/fr-diaspora-parity.test.js",
+      "result": "PASS",
+      "proof": "7/7"
+    },
+    {
+      "command": "Playwright tests/e2e/fr-diaspora-parity.spec.js on isolated worktree server",
+      "result": "PASS",
+      "proof": "11/11 app tests plus 1/1 hub test; 320px, 375px, 200% zoom, light, dark, keyboard, labels, invalid states, exports/reopen, console and network"
+    },
+    {
+      "command": "node --test tests/ai-french-discovery.test.js",
+      "result": "PASS",
+      "proof": "5/5 existing French AI discovery controls"
+    },
+    {
+      "command": "npm run check-links",
+      "result": "PASS",
+      "proof": "126178 internal links across 10839 HTML files; no broken internal links"
+    },
+    {
+      "command": "npm run audit",
+      "result": "PASS",
+      "proof": "Registry audit completed; two pre-existing external-host missing-page rows remain reported outside this scope"
+    },
+    {
+      "command": "npm run validate:hreflang",
+      "result": "PASS",
+      "proof": "30503 relationships; all native equivalents indexable, self-canonical, locale-correct and reciprocal"
+    }
+  ],
+  "browserGateRelease": [
+    {
+      "port": 48123,
+      "pid": 45300,
+      "released": true
+    },
+    {
+      "port": 48124,
+      "pid": 66384,
+      "released": true
+    },
+    {
+      "port": 48125,
+      "pid": 37752,
+      "released": true
+    }
+  ],
+  "excluded": [
+    "master localization ledger",
+    "sitemaps",
+    "other locales",
+    "broad generated localization outputs",
+    "push",
+    "pull request",
+    "merge",
+    "deploy"
+  ]
+}

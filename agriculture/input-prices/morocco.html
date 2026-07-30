@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="afrotools-currency" content="MAD">
@@ -55,8 +55,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/data/agriculture/input-prices-data.js?v=4d804f76"></script>
 
 <style>
@@ -126,7 +126,7 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#0f172a;margin:0}
 .sources{font-size:.75rem;color:#94A3B8;text-align:center;padding:1.5rem 0;line-height:1.7}
 </style>
 <meta property="article:modified_time" content="2026-03-28">
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/input-prices-morocco.webp">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 
@@ -272,113 +272,18 @@ body{font-family:'DM Sans',sans-serif;background:#F8F9FA;color:#0f172a;margin:0}
 </afro-related-tools>
 <afro-footer></afro-footer>
 
+<script src="/engines/input-prices-engine.js?v=233d9d05"></script>
 <script>
 var COUNTRY = "MA";
 var fmt = function(n){ return "MAD " + n.toLocaleString(); };
-
-function onTypeChange(){
-  var t = document.getElementById('inputType').value;
-  document.getElementById('cropField').style.display = (t === 'seeds' || t === 'all') ? '' : 'none';
-}
-
-function runComparison(){
-  var data = INPUT_PRICES[COUNTRY];
-  var type = document.getElementById('inputType').value;
-  var crop = document.getElementById('cropSel').value;
-  var ha = parseFloat(document.getElementById('farmSize').value) || 1;
-  var useSub = document.getElementById('priceType').value === 'subsidized';
-
-  document.getElementById('results').classList.add('visible');
-
-  var fertTotal = 0, seedTotal = 0, chemTotal = 0;
-  var cheapFert = '', cheapSeed = '', cheapChem = '';
-
-  if(type === 'all' || type === 'fertilizers'){
-    document.getElementById('fertCard').style.display = '';
-    var rows = '';
-    var sorted = data.fertilizers.slice().sort(function(a,b){
-      var pa = (useSub && a.subsidizedPrice) ? a.subsidizedPrice : a.marketPrice;
-      var pb = (useSub && b.subsidizedPrice) ? b.subsidizedPrice : b.marketPrice;
-      return pa - pb;
-    });
-    var minFertPrice = Infinity;
-    sorted.forEach(function(f, i){
-      var price = (useSub && f.subsidizedPrice) ? f.subsidizedPrice : f.marketPrice;
-      var perKg = (price / f.bag_kg).toFixed(0);
-      var rateKey = f.brand.split(' ')[0];
-      var bagsPerHa = (INPUT_PRICES.appRates.fertilizer[rateKey] || 3);
-      var perHa = price * bagsPerHa;
-      var cls = (i === 0) ? 'cheapest' : '';
-      if(i === 0){ minFertPrice = price; cheapFert = f.brand; fertTotal = perHa * ha; }
-      var subTag = (f.subsidizedPrice && !useSub) ? ' <small style="color:#16A34A;font-weight:700">(sub: '+fmt(f.subsidizedPrice)+')</small>' : '';
-      rows += '<tr class="'+cls+'"><td>'+f.brand+subTag+'<br><small style="color:#64748B">'+f.supplier+'</small></td><td>'+f.bag_kg+'kg</td><td>'+fmt(price)+'</td><td>'+fmt(+perKg)+'/kg</td><td>'+fmt(Math.round(perHa))+'</td></tr>';
-    });
-    document.getElementById('fertTable').innerHTML = '<thead><tr><th>Product / Supplier</th><th>Bag size</th><th>Price/bag</th><th>Per kg</th><th>Per ha*</th></tr></thead><tbody>'+rows+'</tbody><tfoot><tr><td colspan="5" style="font-size:.7rem;color:#94a3b8;padding-top:.5rem">* At recommended application rate (3–4 bags/ha). ★ = cheapest option.</td></tr></tfoot>';
-  } else {
-    document.getElementById('fertCard').style.display = 'none';
-  }
-
-  if(type === 'all' || type === 'seeds'){
-    document.getElementById('seedCard').style.display = '';
-    var seeds = data.seeds.filter(function(s){ return !crop || s.crop === crop; });
-    if(seeds.length === 0) seeds = data.seeds;
-    seeds = seeds.slice().sort(function(a,b){ return (a.price/a.bag_kg||a.price) - (b.price/b.bag_kg||b.price); });
-    var rows = '';
-    seeds.forEach(function(s, i){
-      var cls = (i === 0) ? 'cheapest' : '';
-      if(i === 0){ cheapSeed = s.brand; seedTotal = s.price * Math.ceil((INPUT_PRICES.appRates.seeds[s.crop]||30)*ha/(s.bag_kg||25)); }
-      var typeTag = s.type ? ' <small style="color:#0062CC">['+s.type+']</small>' : '';
-      rows += '<tr class="'+cls+'"><td>'+s.crop+' — '+s.brand+typeTag+'<br><small style="color:#64748B">'+s.supplier+'</small></td><td>'+(s.bag_kg ? s.bag_kg+'kg' : (s.unit||'—'))+'</td><td>'+fmt(s.price)+'</td><td>'+(s.notes ? s.notes : '—')+'</td></tr>';
-    });
-    document.getElementById('seedTable').innerHTML = '<thead><tr><th>Crop / Brand</th><th>Pack size</th><th>Price</th><th>Notes</th></tr></thead><tbody>'+rows+'</tbody>';
-  } else {
-    document.getElementById('seedCard').style.display = 'none';
-  }
-
-  if(type === 'all' || type === 'agrochemicals'){
-    document.getElementById('chemCard').style.display = '';
-    var chems = data.agrochemicals.slice().sort(function(a,b){ return a.price - b.price; });
-    var rows = '';
-    var byType = {};
-    chems.forEach(function(c){
-      if(!byType[c.type]) byType[c.type] = [];
-      byType[c.type].push(c);
-    });
-    var first = true;
-    Object.keys(byType).forEach(function(t){
-      byType[t].forEach(function(c, i){
-        var cls = (i === 0) ? 'cheapest' : '';
-        if(first && i === 0){ cheapChem = c.brand; chemTotal = c.price * ha; first = false; }
-        rows += '<tr class="'+cls+'"><td>'+c.type+' — '+c.brand+'</td><td>'+c.size+'</td><td>'+fmt(c.price)+'</td></tr>';
-      });
-    });
-    document.getElementById('chemTable').innerHTML = '<thead><tr><th>Type / Product</th><th>Size</th><th>Price</th></tr></thead><tbody>'+rows+'</tbody>';
-  } else {
-    document.getElementById('chemCard').style.display = 'none';
-  }
-
-  var total = fertTotal + seedTotal + chemTotal;
-  var premium = total * 1.35;
-  var saving = premium - total;
-  document.getElementById('budgetSummary').innerHTML =
-    '<p style="font-size:.85rem;color:#64748B;margin:0 0 .75rem">For your <strong>'+ha+' hectare</strong> farm (cheapest available options):</p>' +
-    '<div class="budget-grid">' +
-    (fertTotal ? '<div class="budget-item"><div class="bv">'+fmt(Math.round(fertTotal))+'</div><div class="bl">Fertilizer</div></div>' : '') +
-    (seedTotal ? '<div class="budget-item"><div class="bv">'+fmt(Math.round(seedTotal))+'</div><div class="bl">Seeds</div></div>' : '') +
-    (chemTotal ? '<div class="budget-item"><div class="bv">'+fmt(Math.round(chemTotal))+'</div><div class="bl">Chemicals</div></div>' : '') +
-    (total ? '<div class="budget-item total"><div class="bv">'+fmt(Math.round(total))+'</div><div class="bl">Total (cheapest)</div></div>' : '') +
-    '</div>' +
-    (saving > 0 ? '<span class="saving-pill">💡 vs premium brands: '+fmt(Math.round(premium))+' — you save '+fmt(Math.round(saving))+' (35%)</span>' : '');
-
-  var sp = data.subsidyProgram;
-  document.getElementById('subsidyAlert').innerHTML = sp.name ?
-    '<div class="alert-box subsidy" style="margin-top:1rem"><span class="alert-icon">🏛️</span><div><strong>'+sp.name+'</strong><br>'+
-    (sp.subsidyPercent ? sp.subsidyPercent+'% discount on qualifying inputs. ' : '')+sp.eligibility+'<br><small>'+sp.notes+'</small></div></div>' : '';
-
-  document.getElementById('qualityTip').innerHTML =
-    '<div class="alert-box tip" style="margin-top:.75rem"><span class="alert-icon">💡</span><div><strong>Quality Note:</strong> Morocco\'s OCP Group is the world\'s largest phosphate exporter, making DAP and MAP locally very competitive. Investing in phosphate fertilizer is particularly cost-effective compared to importing countries. See <a href="/agriculture/farm-profit/morocco" style="color:var(--acc)">Farm Profit Calculator</a>.</div></div>';
-}
+window.INPUT_PRICES_PAGE_CONFIG = {
+  countryCode: COUNTRY,
+  formatAmount: fmt,
+  engineBehavior: {"fertilizerPerKgDecimals":0,"seedSortStrategy":"legacy-post-division-fallback"},
+  qualityHtml: "<div class=\"alert-box tip\" style=\"margin-top:.75rem\"><span class=\"alert-icon\">💡</span><div><strong>Quality Note:</strong> Morocco's OCP Group is the world's largest phosphate exporter, making DAP and MAP locally very competitive. Investing in phosphate fertilizer is particularly cost-effective compared to importing countries. See <a href=\"/agriculture/farm-profit/morocco\" style=\"color:var(--acc)\">Farm Profit Calculator</a>.</div></div>"
+};
 </script>
+<script src="/assets/js/pages/input-prices-controller.js?v=4f6eef2c"></script>
 
 <script src="/assets/js/lib/cross-tool-nav.js?v=27275fef" defer></script>
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>

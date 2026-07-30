@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Planificateur du coût d’une licence minière | Calcul local gratuit | AfroTools</title>
+<meta name="description" content="Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.">
+<meta property="og:title" content="Planificateur du coût d’une licence minière | AfroTools">
+<meta property="og:description" content="Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/mining-license-fee.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/cout-licence-miniere/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Planificateur du coût d’une licence minière | Calcul local gratuit | AfroTools">
+<meta name="twitter:description" content="Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/mining-license-fee.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/fr-mining-parity.css?v=a407ad3d">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Planificateur du coût d’une licence minière",
+  "description": "Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.",
+  "url": "https://afrotools.com/fr/tools/cout-licence-miniere/",
+  "inLanguage": "fr",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/mining-license-fee.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools en français","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Mines et industries extractives","item":"https://afrotools.com/fr/mining/"},{"@type":"ListItem","position":3,"name":"Coût de licence minière","item":"https://afrotools.com/fr/tools/cout-licence-miniere/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Quels pays sont couverts ?","acceptedAnswer":{"@type":"Answer","text":"Le jeu intégré actuel couvre huit juridictions africaines. La liste et les types de licence proviennent du même fichier de données que l’outil anglais."}},{"@type":"Question","name":"Une valeur absente vaut-elle zéro ?","acceptedAnswer":{"@type":"Answer","text":"Non. Lorsqu’un frais n’est pas vérifié dans le jeu de données, le champ reste vide et le calcul exige une valeur saisie par l’utilisateur."}},{"@type":"Question","name":"Puis-je payer sur la base de ce résultat ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les barèmes peuvent changer par règlement ou instrument statutaire. Confirmez toujours l’échéancier, la superficie facturable et les frais actuels auprès du cadastre ou du ministère compétent."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/cout-licence-miniere/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/mining-license-fee/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-licence-miniere/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/mining-license-fee/">
+</head>
+<body class="fr-mining-page" data-mining-tool="mining-license-fee">
+<afro-navbar active="mining"></afro-navbar>
+<main class="fr-mining-shell">
+  <header class="fr-mining-hero">
+    <div>
+      <p class="fr-mining-eyebrow">Mines et industries extractives · Calcul local</p>
+      <h1>Planificateur du coût d’une licence minière</h1>
+      <p>Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.</p>
+    </div>
+    <img class="fr-mining-art" src="/assets/img/tools/mining-license-fee.webp" alt="" width="640" height="640">
+  </header>
+
+  <div class="fr-mining-layout">
+    <div>
+      <form id="mining-form" class="fr-mining-card" novalidate>
+        <h2>Hypothèses</h2>
+        <p>Saisissez des valeurs documentées. Le calcul refuse les données essentielles absentes au lieu de les remplacer par zéro.</p>
+        <div class="fr-mining-grid">
+      <div class="fr-mining-field">
+        <label for="country">Pays</label>
+        <select id="country" name="country">
+        </select>
+      </div>
+      <div class="fr-mining-field">
+        <label for="licence">Type de licence</label>
+        <select id="licence" name="licence">
+        </select>
+      </div>
+      <div class="fr-mining-field" id="area-wrap">
+        <label for="area">Superficie (<span id="area-unit"></span>)</label>
+        <input id="area" name="area" type="number" min="0" step="any" inputmode="decimal" value="2">
+      </div>
+      <div class="fr-mining-field">
+        <label for="years">Durée de détention (années)</label>
+        <input id="years" name="years" type="number" value="5" min="1" step="1">
+      </div>
+      <div class="fr-mining-field">
+        <label for="oneOff">Frais de demande / initiaux</label>
+        <input id="oneOff" name="oneOff" type="number" value="" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="annual">Frais annuels</label>
+        <input id="annual" name="annual" type="number" value="" min="0" step="any">
+      </div>
+    </div>
+        <div class="fr-mining-actions">
+          <button class="fr-mining-action primary" type="submit">Calculer l’estimation</button>
+          <button class="fr-mining-action" id="reset" type="button">Réinitialiser</button>
+          <button class="fr-mining-action" id="pdf" type="button" disabled>Télécharger le rapport PDF</button>
+        </div>
+        <div class="fr-mining-error" id="error" role="alert" hidden></div>
+        <p class="fr-mining-status" id="status" role="status" aria-live="polite">Prêt. Aucune donnée n’a été enregistrée.</p>
+      </form>
+
+      <section class="fr-mining-card fr-mining-result" id="result" tabindex="-1" aria-labelledby="result-title" hidden>
+        <h2 id="result-title">Résultat de planification</h2>
+        <div class="fr-mining-result-grid">
+          <div class="fr-mining-stat"><strong data-output="oneOffTotal">—</strong><span>Frais initiaux</span></div><div class="fr-mining-stat"><strong data-output="annualComputed">—</strong><span>Frais annuels calculés</span></div><div class="fr-mining-stat"><strong data-output="total">—</strong><span>Total indicatif</span></div>
+        </div>
+        <table class="fr-mining-table"><tbody id="breakdown"></tbody></table>
+        <div class="fr-mining-source" id="source-summary"></div>
+      </section>
+
+      <section class="fr-mining-card" aria-labelledby="evidence-title">
+          <h2 id="evidence-title">Preuve du scénario</h2>
+          <p>Ces trois champs sont obligatoires. Le calcul et le PDF restent bloqués tant que la source, sa date de vérification et votre niveau de confiance ne sont pas renseignés.</p>
+          <div class="fr-mining-grid">
+            <div class="fr-mining-field">
+        <label for="sourceName">Nom de la source ou du document</label>
+        <input id="sourceName" name="sourceName" type="text" value="" autocomplete="off" form="mining-form" required aria-describedby="sourceName-help">
+        <p class="fr-mining-help" id="sourceName-help">Exemple : devis du négociant, modèle PSC ou barème du cadastre.</p>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceDate">Date de vérification</label>
+        <input id="sourceDate" name="sourceDate" type="date" value="" form="mining-form" required>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceConfidence">Confiance déclarée</label>
+        <select id="sourceConfidence" name="sourceConfidence" form="mining-form" required>
+          <option value="">Choisir un niveau de confiance</option>
+          <option value="élevée">Élevée — document primaire récent</option>
+          <option value="moyenne">Moyenne — source secondaire ou hypothèse</option>
+          <option value="faible">Faible — valeur à confirmer</option>
+        </select>
+      </div>
+          </div>
+          <div class="fr-mining-privacy">Confidentialité locale : aucune saisie n’est envoyée, enregistrée ou ajoutée à l’URL. Le PDF est créé uniquement dans votre navigateur.</div>
+        </section>
+    </div>
+
+    <aside>
+      <section class="fr-mining-card">
+        <h2>Formule et limites</h2>
+        <p>Total = frais initiaux + frais annuels calculés × durée. Pour un barème à la superficie, les frais annuels sont multipliés par la superficie; un minimum légal est ensuite appliqué lorsqu’il existe.</p>
+        <p><strong>Limite :</strong> estimation de planification uniquement; ce résultat n’est ni un avis juridique, fiscal, technique ou financier, ni un permis, une cotation ou une garantie.</p>
+      </section>
+      <section class="fr-mining-card">
+        <h2>Autres outils miniers en français</h2>
+        <ul class="fr-mining-related">
+          <li><a href="/fr/mining/">Voir les six applications minières</a></li>
+          <li><a href="/fr/tools/evaluation-diamant/">Évaluation de diamant</a></li><li><a href="/fr/tools/production-puits-petrole/">Production d’un puits</a></li><li><a href="/fr/tools/partage-revenus-petrole-gaz/">Partage pétrole et gaz</a></li><li><a href="/fr/tools/redevance-miniere/">Redevance minière</a></li><li><a href="/fr/tools/revenu-minier-artisanal/">Revenu minier artisanal</a></li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <section class="fr-mining-card" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details><summary>Quels pays sont couverts ?</summary><p>Le jeu intégré actuel couvre huit juridictions africaines. La liste et les types de licence proviennent du même fichier de données que l’outil anglais.</p></details><details><summary>Une valeur absente vaut-elle zéro ?</summary><p>Non. Lorsqu’un frais n’est pas vérifié dans le jeu de données, le champ reste vide et le calcul exige une valeur saisie par l’utilisateur.</p></details><details><summary>Puis-je payer sur la base de ce résultat ?</summary><p>Non. Les barèmes peuvent changer par règlement ou instrument statutaire. Confirmez toujours l’échéancier, la superficie facturable et les frais actuels auprès du cadastre ou du ministère compétent.</p></details>
+  </section>
+</main>
+<afro-footer></afro-footer>
+<script src="/data/mining/mining-fees.js?v=a459b2f7"></script>
+<script src="/assets/js/engines/fr-mining-parity.js?v=20b99cd1"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/pages/fr-mining-parity.js?v=3c1f0531"></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

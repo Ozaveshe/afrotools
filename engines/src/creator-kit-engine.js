@@ -240,6 +240,21 @@
       required: !1
     } ],
     CURRENCIES: n,
+    buildLocalRateCard: function(input) {
+      var source = input || {}, name = String(source.name || "").trim(), service = String(source.service || "").trim(), price = Number(source.price);
+      if (!name) throw new Error("A creator or studio name is required.");
+      if (!service) throw new Error("A service name is required.");
+      if (!Number.isFinite(price) || price < 0) throw new Error("Price must be non-negative.");
+      return {
+        name: name,
+        tagline: String(source.tagline || "").trim(),
+        currency: String(source.currency || "USD").toUpperCase(),
+        showPrices: true,
+        services: [{name: service, price: price, description: String(source.description || "").trim()}],
+        contactEmail: String(source.contactEmail || "").trim(),
+        contactWhatsapp: String(source.contactWhatsapp || "").trim()
+      };
+    },
     formatRate: a,
     formatNumber: function(e) {
       var n = "string" == typeof e ? parseInt(e.replace(/[^0-9]/g, ""), 10) : e;

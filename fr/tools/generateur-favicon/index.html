@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -26,8 +26,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   :root { --fav-teal:#0f766e; --fav-ink:#102033; --fav-line:#d7e3ef; --fav-soft:#f4faf9; }
   body { margin:0; background:#f7fafc; color:var(--fav-ink); font-family:"DM Sans", system-ui, sans-serif; }
@@ -80,6 +80,18 @@
   .fav-note a { color:#0f766e; font-weight:900; }
   details.fav-note summary { cursor:pointer; color:#111827; font-weight:900; }
   .fav-faq { margin-top:18px; display:grid; gap:10px; }
+  html[data-theme="dark"] .fav-card, html[data-theme="dark"] .fav-note { background:#0f2133; border-color:#35576a; color:#ecf8f6; }
+  html[data-theme="dark"] .fav-card__head, html[data-theme="dark"] .fav-preview { background:#102b33; border-color:#35576a; }
+  html[data-theme="dark"] label, html[data-theme="dark"] details.fav-note summary { color:#ecf8f6; }
+  html[data-theme="dark"] input, html[data-theme="dark"] select, html[data-theme="dark"] .fav-tab { background:#091827; border-color:#4c6a79; color:#ecf8f6; }
+  html[data-theme="dark"] .fav-note p, html[data-theme="dark"] .fav-note li, html[data-theme="dark"] .fav-hint { color:#b9ccc8; }
+  @media (prefers-color-scheme:dark) {
+    html:not([data-theme="light"]) .fav-card, html:not([data-theme="light"]) .fav-note { background:#0f2133; border-color:#35576a; color:#ecf8f6; }
+    html:not([data-theme="light"]) .fav-card__head, html:not([data-theme="light"]) .fav-preview { background:#102b33; border-color:#35576a; }
+    html:not([data-theme="light"]) label, html:not([data-theme="light"]) details.fav-note summary { color:#ecf8f6; }
+    html:not([data-theme="light"]) input, html:not([data-theme="light"]) select, html:not([data-theme="light"]) .fav-tab { background:#091827; border-color:#4c6a79; color:#ecf8f6; }
+    html:not([data-theme="light"]) .fav-note p, html:not([data-theme="light"]) .fav-note li, html:not([data-theme="light"]) .fav-hint { color:#b9ccc8; }
+  }
   @media (max-width:860px) {
     .fav-grid, .fav-info { grid-template-columns:1fr; }
   }
@@ -100,7 +112,7 @@
 <main>
   <section class="fav-hero">
     <div class="fav-wrap">
-      <nav class="fav-breadcrumb"><a href="/fr/">Accueil</a> / <a href="/fr/tools/outils-image/">Image et design</a> / Générateur favicon</nav>
+      <nav class="fav-breadcrumb"><a href="/fr/">Accueil</a> / <a href="/fr/image-design/">Image et design</a> / Générateur favicon</nav>
       <div class="fav-kicker">Identité web locale</div>
       <h1>Générateur de favicon pour sites, blogs et petites marques</h1>
       <p class="fav-lede">Créez rapidement une icone de navigateur depuis votre logo, des initiales ou un emoji. Vérifiez les tailles, copiez le snippet HTML et téléchargez les PNG sans compte.</p>
@@ -189,7 +201,7 @@
           <div class="fav-actions">
             <button type="button" class="fav-btn" id="download32">Télécharger 32 PNG</button>
             <button type="button" class="fav-btn fav-btn--ghost" id="downloadAll">Télécharger le lot PNG</button>
-            <a class="fav-btn fav-btn--soft" href="/fr/tools/favicon-generator/">Outil anglais complet</a>
+            <a class="fav-btn fav-btn--soft" href="/tools/favicon-generator/" hreflang="en">Comparer la version anglaise</a>
           </div>
         </div>
       </aside>
@@ -217,7 +229,7 @@
       </section>
 
       <section class="fav-note">
-        <h2>Batch workflow</h2>
+        <h2>Lot de favicons</h2>
         <p>Pour plusieurs sites, créez une queue par marque: nom du site, source image, couleur de fond, droits verifes et date. Exportez les tailles PNG puis stockez le snippet avec le projet afin de ne pas melanger les favicons.</p>
       </section>
 
@@ -234,7 +246,7 @@
       </details>
       <details class="fav-note">
         <summary>Dois-je utiliser ICO ou PNG ?</summary>
-        <p>PNG couvre les navigateurs modernes. Si vous avez besoin d'un fichier ICO traditionnel, ouvrez l'outil anglais complet ou utilisez votre chaine de build habituelle.</p>
+        <p>PNG couvre les navigateurs modernes. Pour un ancien système qui exige ICO, convertissez le PNG exporté avec votre chaîne de build habituelle.</p>
       </details>
       <details class="fav-note">
         <summary>Comment savoir si l'icone est bonne ?</summary>
@@ -388,6 +400,6 @@
   render();
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

@@ -22,6 +22,19 @@
   outline-offset: -3px;
 }
 @media (max-width: 480px) {
+  /* Search and theme remain available in the mobile drawer. Keeping only the
+     menu trigger in the fixed header lets 200% text reflow without clipping. */
+  .right > .search-btn,
+  .right > .theme-toggle {
+    display: none !important;
+  }
+  .mega:not(.open) {
+    display: none;
+  }
+  .inner,
+  .right {
+    min-width: 0;
+  }
   .mob,
   .mob-lang-section,
   .mob-lang-row {
@@ -51,10 +64,42 @@
     white-space: normal;
   }
 }
+
+@media (max-width: 330px) {
+  /* Preserve the search and menu controls when browser text is zoomed to 200%. */
+  .theme-toggle {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .lang-btn-label,
   .lang-opt,
   .mob-lang-opt {
     transition: none;
+  }
+}
+
+@media (max-width: 940px) {
+  .inner {
+    gap: 6px;
+    max-width: 100%;
+    min-width: 0;
+  }
+  .logo {
+    flex: 1 1 auto;
+    min-width: 0;
+    overflow: hidden;
+  }
+  .right {
+    flex: 0 0 120px;
+    gap: 0;
+    min-width: 120px;
+  }
+  .logo-name {
+    display: none;
+  }
+  .mega {
+    display: none;
   }
 }

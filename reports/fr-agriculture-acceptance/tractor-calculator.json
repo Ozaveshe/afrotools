@@ -1,0 +1,58 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:tractor-calculator",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-tractor-calculator-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 476 Tractor Calculator English arithmetic/default/display invariants",
+    "engine": "node tests/tractor-calculator-engine.test.js",
+    "engineResult": "PASS 420 Tractor Calculator engine profiles and 35 default profiles",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-tractor-calculator-oracles.json node tests/fr-agriculture-tractor-calculator.test.js",
+    "oracleResult": "PASS 420 French Tractor Calculator profiles",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id tractor-calculator --check",
+    "browser": "PORT=42981 CI=1 npx playwright test tests/e2e/fr-agriculture-tractor-calculator.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (12.7s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "tractor-calculator",
+    "englishRoute": "/agriculture/tractor-calculator/",
+    "frenchRoute": "/fr/agriculture/tractor-calculator/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-tractor-calculator-oracles.json",
+      "englishInvariants": 476,
+      "engineProfiles": 420,
+      "frenchProfiles": 420,
+      "preserves": ["7 country identities and currencies", "5 equipment identities and specifications", "35 price/hire/finance defaults", "fuel and maintenance", "depreciation and residual value", "hire costs with missing-rate fallbacks", "amortizing finance", "buy/hire/finance winner", "surface break-even", "contract income"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-tractor-calculator.spec.js",
+      "result": "2 passed (12.7s)",
+      "isolatedPort": 42981,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/tractor-calculator/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/tractor-calculator-engine.js"],
+      "data": ["data/agriculture/equipment-data.js"],
+      "freshness": "undated static equipment, fuel, hire, exchange-rate and finance assumptions; not live",
+      "confidence": "planning comparison requiring current dealer, lender, lessor, fuel, maintenance and contractor quotes"
+    },
+    "artwork": {"imageId": "tractor-calculator", "file": "assets/img/tools/tractor-calculator.webp", "state": "present"},
+    "limitations": [
+      "Finance total models down payment and scheduled repayments but excludes operating costs, insurance, taxes, fees, renewal beyond term and residual value.",
+      "Contract-work income is gross and does not include incremental fuel, maintenance, operator, transport, downtime or collection costs.",
+      "Static finance options, hire availability, wait times, rates and exchange assumptions are not verified in real time."
+    ]
+  }]
+}

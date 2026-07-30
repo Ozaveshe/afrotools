@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Partage des revenus pétroliers et gaziers | Calcul local gratuit | AfroTools</title>
+<meta name="description" content="Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.">
+<meta property="og:title" content="Partage des revenus pétroliers et gaziers | AfroTools">
+<meta property="og:description" content="Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/oil-gas-revenue.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/partage-revenus-petrole-gaz/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Partage des revenus pétroliers et gaziers | Calcul local gratuit | AfroTools">
+<meta name="twitter:description" content="Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/oil-gas-revenue.webp">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/fr-mining-parity.css?v=a407ad3d">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "Partage des revenus pétroliers et gaziers",
+  "description": "Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.",
+  "url": "https://afrotools.com/fr/tools/partage-revenus-petrole-gaz/",
+  "inLanguage": "fr",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "Web",
+  "isAccessibleForFree": true,
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "author": {
+    "@type": "Organization",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/oil-gas-revenue.webp"
+}
+</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools en français","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Mines et industries extractives","item":"https://afrotools.com/fr/mining/"},{"@type":"ListItem","position":3,"name":"Partage pétrole et gaz","item":"https://afrotools.com/fr/tools/partage-revenus-petrole-gaz/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Qu’est-ce que le cost oil ?","acceptedAnswer":{"@type":"Answer","text":"Il s’agit de la part de revenu utilisée pour récupérer les coûts admissibles, dans la limite du plafond contractuel saisi. Le solde non récupéré reste visible dans le calcul."}},{"@type":"Question","name":"Ces clauses correspondent-elles à un pays précis ?","acceptedAnswer":{"@type":"Answer","text":"Non. Chaque taux provient de vos propres clauses ou hypothèses. Les PSC varient par pays, bloc, appel d’offres et contrat, et peuvent être confidentiels."}},{"@type":"Question","name":"Le modèle couvre-t-il toutes les clauses ?","acceptedAnswer":{"@type":"Answer","text":"Non. Ring-fencing, uplift, tranches, carry, plafonds cumulés et mécanismes fiscaux particuliers ne sont pas modélisés. Utilisez le résultat comme scénario de planification uniquement."}}]}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/partage-revenus-petrole-gaz/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/oil-gas-revenue/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/partage-revenus-petrole-gaz/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/oil-gas-revenue/">
+</head>
+<body class="fr-mining-page" data-mining-tool="oil-gas-revenue">
+<afro-navbar active="mining"></afro-navbar>
+<main class="fr-mining-shell">
+  <header class="fr-mining-hero">
+    <div>
+      <p class="fr-mining-eyebrow">Mines et industries extractives · Calcul local</p>
+      <h1>Partage des revenus pétroliers et gaziers</h1>
+      <p>Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.</p>
+    </div>
+    <img class="fr-mining-art" src="/assets/img/tools/oil-gas-revenue.webp" alt="" width="640" height="640">
+  </header>
+
+  <div class="fr-mining-layout">
+    <div>
+      <form id="mining-form" class="fr-mining-card" novalidate>
+        <h2>Hypothèses</h2>
+        <p>Saisissez des valeurs documentées. Le calcul refuse les données essentielles absentes au lieu de les remplacer par zéro.</p>
+        <div class="fr-mining-grid">
+      <div class="fr-mining-field">
+        <label for="vol">Volume de production (bbl ou Mcf)</label>
+        <input id="vol" name="vol" type="number" value="1000000" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="price">Prix unitaire (US$)</label>
+        <input id="price" name="price" type="number" value="75" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="gross">Ou revenu brut direct (US$)</label>
+        <input id="gross" name="gross" type="number" value="" min="0" step="any" aria-describedby="gross-help">
+        <p class="fr-mining-help" id="gross-help">Laissez vide pour utiliser volume × prix.</p>
+      </div>
+      <div class="fr-mining-field">
+        <label for="roy">Redevance (%)</label>
+        <input id="roy" name="roy" type="number" value="10" min="0" max="100" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="costs">Coûts récupérables (US$)</label>
+        <input id="costs" name="costs" type="number" value="10000000" min="0" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="ceiling">Plafond de récupération (% après redevance)</label>
+        <input id="ceiling" name="ceiling" type="number" value="60" min="0" max="100" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="conshare">Part du contractant dans le profit oil (%)</label>
+        <input id="conshare" name="conshare" type="number" value="40" min="0" max="100" step="any">
+      </div>
+      <div class="fr-mining-field">
+        <label for="tax">Impôt sur le profit du contractant (%)</label>
+        <input id="tax" name="tax" type="number" value="30" min="0" max="100" step="any">
+      </div>
+    </div>
+        <div class="fr-mining-actions">
+          <button class="fr-mining-action primary" type="submit">Calculer l’estimation</button>
+          <button class="fr-mining-action" id="reset" type="button">Réinitialiser</button>
+          <button class="fr-mining-action" id="pdf" type="button" disabled>Télécharger le rapport PDF</button>
+        </div>
+        <div class="fr-mining-error" id="error" role="alert" hidden></div>
+        <p class="fr-mining-status" id="status" role="status" aria-live="polite">Prêt. Aucune donnée n’a été enregistrée.</p>
+      </form>
+
+      <section class="fr-mining-card fr-mining-result" id="result" tabindex="-1" aria-labelledby="result-title" hidden>
+        <h2 id="result-title">Résultat de planification</h2>
+        <div class="fr-mining-result-grid">
+          <div class="fr-mining-stat"><strong data-output="contractorNet">—</strong><span>Net du contractant</span></div><div class="fr-mining-stat"><strong data-output="governmentTake">—</strong><span>Part totale de l’État</span></div><div class="fr-mining-stat"><strong data-output="governmentPct">—</strong><span>Part de l’État dans le revenu</span></div>
+        </div>
+        <table class="fr-mining-table"><tbody id="breakdown"></tbody></table>
+        <div class="fr-mining-source" id="source-summary"></div>
+      </section>
+
+      <section class="fr-mining-card" aria-labelledby="evidence-title">
+          <h2 id="evidence-title">Preuve du scénario</h2>
+          <p>Ces trois champs sont obligatoires. Le calcul et le PDF restent bloqués tant que la source, sa date de vérification et votre niveau de confiance ne sont pas renseignés.</p>
+          <div class="fr-mining-grid">
+            <div class="fr-mining-field">
+        <label for="sourceName">Nom de la source ou du document</label>
+        <input id="sourceName" name="sourceName" type="text" value="" autocomplete="off" form="mining-form" required aria-describedby="sourceName-help">
+        <p class="fr-mining-help" id="sourceName-help">Exemple : devis du négociant, modèle PSC ou barème du cadastre.</p>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceDate">Date de vérification</label>
+        <input id="sourceDate" name="sourceDate" type="date" value="" form="mining-form" required>
+      </div>
+            <div class="fr-mining-field">
+        <label for="sourceConfidence">Confiance déclarée</label>
+        <select id="sourceConfidence" name="sourceConfidence" form="mining-form" required>
+          <option value="">Choisir un niveau de confiance</option>
+          <option value="élevée">Élevée — document primaire récent</option>
+          <option value="moyenne">Moyenne — source secondaire ou hypothèse</option>
+          <option value="faible">Faible — valeur à confirmer</option>
+        </select>
+      </div>
+          </div>
+          <div class="fr-mining-privacy">Confidentialité locale : aucune saisie n’est envoyée, enregistrée ou ajoutée à l’URL. Le PDF est créé uniquement dans votre navigateur.</div>
+        </section>
+    </div>
+
+    <aside>
+      <section class="fr-mining-card">
+        <h2>Formule et limites</h2>
+        <p>La redevance est retranchée du revenu brut. Le cost oil est le minimum entre coûts récupérables et plafond de récupération. Le profit oil restant est partagé, puis l’impôt est appliqué à la part de profit du contractant.</p>
+        <p><strong>Limite :</strong> estimation de planification uniquement; ce résultat n’est ni un avis juridique, fiscal, technique ou financier, ni un permis, une cotation ou une garantie.</p>
+      </section>
+      <section class="fr-mining-card">
+        <h2>Autres outils miniers en français</h2>
+        <ul class="fr-mining-related">
+          <li><a href="/fr/mining/">Voir les six applications minières</a></li>
+          <li><a href="/fr/tools/evaluation-diamant/">Évaluation de diamant</a></li><li><a href="/fr/tools/production-puits-petrole/">Production d’un puits</a></li><li><a href="/fr/tools/cout-licence-miniere/">Coût de licence minière</a></li><li><a href="/fr/tools/redevance-miniere/">Redevance minière</a></li><li><a href="/fr/tools/revenu-minier-artisanal/">Revenu minier artisanal</a></li>
+        </ul>
+      </section>
+    </aside>
+  </div>
+
+  <section class="fr-mining-card" aria-labelledby="faq-title">
+    <h2 id="faq-title">Questions fréquentes</h2>
+    <details><summary>Qu’est-ce que le cost oil ?</summary><p>Il s’agit de la part de revenu utilisée pour récupérer les coûts admissibles, dans la limite du plafond contractuel saisi. Le solde non récupéré reste visible dans le calcul.</p></details><details><summary>Ces clauses correspondent-elles à un pays précis ?</summary><p>Non. Chaque taux provient de vos propres clauses ou hypothèses. Les PSC varient par pays, bloc, appel d’offres et contrat, et peuvent être confidentiels.</p></details><details><summary>Le modèle couvre-t-il toutes les clauses ?</summary><p>Non. Ring-fencing, uplift, tranches, carry, plafonds cumulés et mécanismes fiscaux particuliers ne sont pas modélisés. Utilisez le résultat comme scénario de planification uniquement.</p></details>
+  </section>
+</main>
+<afro-footer></afro-footer>
+
+<script src="/assets/js/engines/fr-mining-parity.js?v=20b99cd1"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/pages/fr-mining-parity.js?v=3c1f0531"></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

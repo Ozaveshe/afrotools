@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -105,6 +105,7 @@ details[open] summary::after{content:'\2212'}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/stock-portfolio/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/stock-portfolio/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-portefeuille-actions/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/stock-portfolio/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -171,73 +172,9 @@ details[open] summary::after{content:'\2212'}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var currentCurrency='NGN';
-function setExchange(cur,sym,btn){
-  currentCurrency=cur;
-  document.querySelectorAll('.etab').forEach(function(b){b.classList.remove('active');b.setAttribute('aria-pressed','false');});
-  btn.classList.add('active');
-  btn.setAttribute('aria-pressed','true');
-}
-function addRow(){
-  var tbody=document.getElementById('holdings-tbody');
-  var tr=document.createElement('tr');
-  var n=tbody.children.length+1;
-  tr.innerHTML='<td><input aria-label="Holding '+n+' ticker" type="text" placeholder="Ticker"></td><td><input type="number" placeholder="100" min="0" step="any" aria-label="Holding '+n+' shares"></td><td><input type="number" placeholder="0" min="0" step="any" aria-label="Holding '+n+' buy price per share"></td><td><input type="number" placeholder="0" min="0" step="any" aria-label="Holding '+n+' current price per share"></td><td><button type="button" class="btn-del" onclick="delRow(this)" aria-label="Delete holding '+n+'">&#x2715;</button></td>';
-  tbody.appendChild(tr);
-}
-function delRow(btn){btn.closest('tr').remove();}
-function calcPortfolio(){
-  var rows=document.querySelectorAll('#holdings-tbody tr');
-  var totalValue=0,totalCost=0;
-  var items=[];
-  var invalid=false;
-  rows.forEach(function(row,index){
-    var inputs=row.querySelectorAll('input');
-    var name=inputs[0].value.trim()||('Holding '+(index+1));
-    var raw=[inputs[1].value,inputs[2].value,inputs[3].value];
-    if(raw.every(function(value){return value==='';})&&!inputs[0].value.trim())return;
-    var shares=Number(raw[0]);
-    var buyPrice=Number(raw[1]);
-    var curPrice=Number(raw[2]);
-    if(!Number.isFinite(shares)||!Number.isFinite(buyPrice)||!Number.isFinite(curPrice)||shares<=0||buyPrice<=0||curPrice<0){invalid=true;return;}
-      var cost=shares*buyPrice;
-      var value=shares*curPrice;
-      var gain=value-cost;
-      var returnPct=gain/cost*100;
-      totalValue+=value;
-      totalCost+=cost;
-      items.push({name,shares,buyPrice,curPrice,cost,value,gain,returnPct});
-  });
-  var error=document.getElementById('sp-error');
-  var results=document.getElementById('sp-results');
-  if(invalid||!items.length){error.textContent=invalid?'Each used row needs positive shares and buy price, plus a non-negative current price.':'Enter at least one complete holding.';error.classList.add('on');results.classList.remove('on');return;}
-  error.classList.remove('on');
-  var totalGain=totalValue-totalCost;
-  var totalReturn=totalGain/totalCost*100;
-  var money=new Intl.NumberFormat(undefined,{style:'currency',currency:currentCurrency,maximumFractionDigits:2});
-  function fmt(n){return money.format(n);}
-  document.getElementById('sp-total-value').textContent=fmt(totalValue);
-  document.getElementById('sp-total-cost').textContent=fmt(totalCost);
-  var gainEl=document.getElementById('sp-total-gain');
-  gainEl.textContent=(totalGain>=0?'+':'')+fmt(totalGain);
-  gainEl.className='metric-val '+(totalGain>=0?'green':'red');
-  var retEl=document.getElementById('sp-return-pct');
-  retEl.textContent=(totalReturn>=0?'+':'')+totalReturn.toFixed(1)+'%';
-  retEl.className='metric-val '+(totalReturn>=0?'green':'red');
-  var tbody=document.getElementById('sp-table-body');
-  tbody.innerHTML='';
-  items.forEach(function(item){
-    var alloc=totalValue>0?((item.value/totalValue)*100).toFixed(1):'0';
-    var tr=document.createElement('tr');
-    [item.name,item.shares.toLocaleString(),fmt(item.buyPrice),fmt(item.curPrice),fmt(item.value),(item.gain>=0?'+':'')+fmt(item.gain),(item.returnPct>=0?'+':'')+item.returnPct.toFixed(1)+'%',alloc+'%'].forEach(function(value,i){var td=document.createElement('td');td.textContent=value;if(i===0)td.style.fontWeight='700';if(i===5||i===6)td.className=(item.gain>=0?'gain':'loss');tr.appendChild(td);});
-    tbody.appendChild(tr);
-  });
-  results.classList.add('on');
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/stock-portfolio.js?v=340f62fd"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

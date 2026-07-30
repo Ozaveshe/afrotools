@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur du coût d’utilisation d’un véhicule | AfroTools</title>
+<meta name="description" content="Additionnez carburant, entretien, assurance, stationnement, péages et dépréciation dans une estimation annuelle.">
+<meta name="robots" content="index, follow">
+<meta property="og:title" content="Calculateur du coût d’utilisation d’un véhicule | AfroTools">
+<meta property="og:description" content="Additionnez carburant, entretien, assurance, stationnement, péages et dépréciation dans une estimation annuelle.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/vehicle-operating-cost.webp">
+<meta property="og:url" content="https://afrotools.com/fr/tools/cout-utilisation-vehicule/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur du coût d’utilisation d’un véhicule | AfroTools">
+<meta name="twitter:description" content="Additionnez carburant, entretien, assurance, stationnement, péages et dépréciation dans une estimation annuelle.">
+<meta name="tool-id" content="vehicle-operating-cost">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
+a{text-decoration:none;color:inherit}
+.tool-hero{background:linear-gradient(135deg,#0f1419 0%,#1a1f2e 100%);color:#fff;padding:44px 0 52px}
+.tool-hero .container{max-width:900px;margin:0 auto;padding:0 1.5rem}
+.breadcrumb{font-size:.8rem;color:rgba(255,255,255,.65);margin-bottom:1rem}
+.breadcrumb a{color:rgba(255,255,255,.65)}
+.breadcrumb a:hover{color:#fff}
+.breadcrumb span{margin:0 6px;opacity:.5}
+.tool-hero h1{font-family:'Inter',sans-serif;font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;line-height:1.2;margin:.5rem 0 .75rem}
+.tool-hero h1 em{font-style:normal;color:#f59e0b}
+.tool-hero-sub{font-size:.95rem;color:rgba(255,255,255,.82);max-width:580px;line-height:1.6}
+.tool-pills{display:flex;gap:.5rem;flex-wrap:wrap;margin-top:1rem}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;background:rgba(255,255,255,.12);border-radius:100px;font-size:.75rem;font-weight:600;color:rgba(255,255,255,.85)}
+.container{max-width:900px;margin:0 auto;padding:1.5rem}
+.card{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:1.5rem;margin-bottom:1.5rem;box-shadow:0 2px 8px rgba(0,0,0,.06)}
+.card h2{font-size:1.1rem;font-weight:700;margin:0 0 1.25rem;display:flex;align-items:center;gap:.5rem}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.field{display:flex;flex-direction:column;gap:4px}
+.field.full{grid-column:1/-1}
+label{font-size:.8rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#374151}
+.hint{font-size:.72rem;color:#9ca3af;margin-top:-2px}
+input[type=number],input[type=text],select{width:100%;padding:10px 12px;border:1.5px solid #d1d5db;border-radius:10px;font-size:.9rem;font-family:inherit;background:#fff;color:#1a1a2e;transition:border-color .2s}
+input:focus,select:focus{outline:none;border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.12)}
+select{appearance:none;background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%239ca3af' fill='none' stroke-width='1.5'/%3E%3C/svg%3E");background-repeat:no-repeat;background-position:right 12px center;padding-right:32px}
+.btn-calc{display:block;width:100%;padding:14px;border:none;border-radius:12px;background:var(--color-primary);color:#fff;font-size:.95rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;cursor:pointer;transition:background .2s,transform .1s;margin-top:.5rem}
+.btn-calc:hover{background:#0059B3}
+.btn-calc:active{transform:scale(.98)}
+.results{display:none;margin-top:1.25rem}
+.results.on{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+.res-hero{text-align:center;padding:2rem 1.5rem;border-radius:14px;background:linear-gradient(135deg,#0f1419,#1a1f2e);margin-bottom:1.25rem}
+.res-hero-label{font-size:.78rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:rgba(255,255,255,.75)}
+.res-hero-amount{font-size:clamp(1.75rem,5vw,2.75rem);font-weight:800;color:#fff;margin:.25rem 0}
+.res-hero-sub{font-size:.85rem;color:rgba(255,255,255,.65)}
+.breakdown-table{width:100%;border-collapse:collapse;font-size:.88rem}
+.breakdown-table th,.breakdown-table td{padding:10px 12px;text-align:left;border-bottom:1px solid #f1f5f9}
+.breakdown-table th{font-weight:700;color:#374151;background:#f8fafc;font-size:.78rem;text-transform:uppercase;letter-spacing:.04em}
+.breakdown-table td:last-child{text-align:right;font-weight:600}
+.breakdown-table tr.total td{font-weight:800;color:var(--color-primary);font-size:1rem}
+.metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:1rem;margin-top:1rem}
+.metric{background:#f8fafc;border:1.5px solid #e5e7eb;border-radius:12px;padding:1rem;text-align:center}
+.metric-val{font-size:1.25rem;font-weight:800;color:var(--color-primary)}
+.metric-label{font-size:.75rem;color:#6b7280;margin-top:4px}
+.info-box{background:#eff6ff;border:1px solid #bfdbfe;border-radius:12px;padding:1rem 1.25rem;font-size:.85rem;color:#1e40af;line-height:1.6;margin-top:1rem}
+.faq-section{margin-top:2.5rem}
+.faq-section h2{font-size:1.25rem;font-weight:700;margin-bottom:1rem}
+details{border:1px solid #e5e7eb;border-radius:12px;margin-bottom:.75rem;overflow:hidden}
+summary{padding:1rem 1.25rem;font-weight:600;font-size:.9rem;cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center}
+summary::-webkit-details-marker{display:none}
+summary::after{content:'+';font-size:1.2rem;color:#9ca3af}
+details[open] summary::after{content:'\2212'}
+.faq-body{padding:0 1.25rem 1rem;font-size:.85rem;color:#4b5563;line-height:1.65}
+@media(max-width:600px){.form-grid{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}}
+</style>
+<link rel="stylesheet" href="/assets/css/transport-focus.css?v=5319feaa">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/vehicle-operating-cost.webp">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+
+<meta property="og:locale" content="fr_FR">
+<script type="application/ld+json" data-fr-transport-schema>{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur du coût d’utilisation d’un véhicule","url":"https://afrotools.com/fr/tools/cout-utilisation-vehicule/","inLanguage":"fr","applicationCategory":"BusinessApplication","operatingSystem":"Web","image":"https://afrotools.com/assets/img/tools/vehicle-operating-cost.webp","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<link rel="stylesheet" href="/assets/css/french-transport-parity.css?v=0792f20c">
+<link rel="canonical" href="https://afrotools.com/fr/tools/cout-utilisation-vehicule/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/vehicle-operating-cost/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-utilisation-vehicule/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/gharama-uendeshaji-gari/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/vehicle-operating-cost/">
+</head>
+<body class="top-level-page-ui-refresh" data-fr-transport-parity="vehicle-operating-cost" data-fr-transport-name="Calculateur du coût d’utilisation d’un véhicule" data-fr-transport-route="/fr/tools/cout-utilisation-vehicule/" data-fr-transport-review-date="2026-07-29">
+<afro-navbar theme="dark" active="transport"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="container">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>›</span>
+      <a href="/transport/">Transport &amp; Logistics</a><span>›</span>
+      Calculateur du coût d’utilisation d’un véhicule
+    </nav>
+    <h1>Calculateur du coût d’utilisation d’un véhicule</h1>
+    <p class="tool-hero-sub">Additionnez carburant, entretien, assurance, stationnement, péages et dépréciation dans une estimation annuelle.</p>
+    <div class="tool-pills">
+      <span class="pill">&#x1f528; Panafricain</span>
+      <span class="pill">&#x1f4b0; Free</span>
+      <span class="pill">&#x1f4f1; Adapté au mobile</span>
+    </div>
+  </div>
+</div>
+
+<div class="container" role="main">
+  <div class="card">
+    <h2>&#x1f697; Véhicule et utilisation annuelle</h2>
+    <div class="form-grid">
+      <div class="field">
+        <label>Valeur du véhicule (USD)</label>
+        <input aria-label="E.g. 15000" type="number" id="vehicleValue" placeholder="e.g. 15000" min="0">
+      </div>
+      <div class="field">
+        <label>Type de véhicule</label>
+        <select id="vehicleType" aria-label="Type de véhicule">
+          <option value="sedan">Berline</option>
+          <option value="suv">SUV / 4x4</option>
+          <option value="pickup">Pick-up</option>
+          <option value="van">Fourgonnette / minibus</option>
+          <option value="motorcycle">Moto</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Distance annuelle (km)</label>
+        <input aria-label="E.g. 20000" type="number" id="annualKm" placeholder="e.g. 20000" value="20000" min="0">
+      </div>
+      <div class="field">
+        <label>Consommation (L/100 km)</label>
+        <input aria-label="E.g. 8.5" type="number" id="fuelConsumption" placeholder="e.g. 8.5" value="8.5" min="0" step="0.1">
+      </div>
+      <div class="field">
+        <label>Prix du carburant saisi (USD/litre)</label>
+        <input aria-label="E.g. 1.20" type="number" id="fuelPrice" placeholder="e.g. 1.20" value="1.20" min="0" step="0.01">
+        <span class="hint">Besoin d’une hypothèse actuelle ? Comparez <a href="/tools/fuel-tracker/">les prix africains de l’essence et du diesel dans AfroFuel</a>.</span>
+      </div>
+      <div class="field">
+        <label>Assurance annuelle (USD)</label>
+        <input aria-label="E.g. 600" type="number" id="insuranceCost" placeholder="e.g. 600" value="600" min="0">
+        <span class="hint">Hypothèse modifiable du modèle ; confirmez le devis d’assurance</span>
+      </div>
+      <div class="field">
+        <label>Stationnement mensuel (USD)</label>
+        <input aria-label="E.g. 50" type="number" id="parkingCost" placeholder="e.g. 50" value="50" min="0">
+      </div>
+      <div class="field">
+        <label>Péages annuels (USD)</label>
+        <input aria-label="E.g. 200" type="number" id="tollCost" placeholder="e.g. 200" value="0" min="0">
+      </div>
+    </div>
+    <button type="button" class="btn-calc" onclick="calcVOC()">Calculer le coût annuel</button>
+
+    <div class="results" id="vocResults">
+      <div class="res-hero">
+        <div class="res-hero-label">Coût annuel total</div>
+        <div class="res-hero-amount" id="vocTotal">$0</div>
+        <div class="res-hero-sub" id="vocPerKm">$0 par km | $0 par mois</div>
+      </div>
+      <table class="breakdown-table">
+        <thead><tr><th>Composante du coût</th><th>Annuel (USD)</th><th>% du total</th></tr></thead>
+        <tbody id="vocBreakdown"></tbody>
+      </table>
+      <div class="metrics" id="vocMetrics"></div>
+      <div class="info-box" id="vocInfo"></div>
+    </div>
+  </div>
+
+
+</div>
+<nav class="fr-transport-proof" aria-label="Outils Transport associés">
+  <h2>Outils Transport associés</h2>
+  <ul><li><a href="/fr/tools/cout-importation-voiture/">Calculateur du coût d’importation d’un véhicule</a></li><li><a href="/fr/cars/">Annuaire africain des prix automobiles</a></li><li><a href="/fr/tools/tarif-vtc-taxi/">Estimateur de tarif VTC et taxi</a></li><li><a href="/fr/tools/revenu-boda/">Calculateur de revenu boda-boda et okada</a></li><li><a href="/fr/tools/tarif-matatu-danfo/">Estimateur de tarif matatu, danfo et trotro</a></li><li><a href="/fr/tools/cout-livraison/">Estimateur du coût de livraison</a></li></ul>
+</nav>
+<!-- FR_TRANSPORT_PARITY_START -->
+<script type="application/json" data-fr-transport-ui-translations>{"AfroTools":"AfroTools","Home":"Accueil","Transport":"Transport","Transport & Logistics":"Transport et logistique","Transport Logistics":"Transport et logistique","Car Import Cost":"Coût d’importation d’un véhicule","Ride-Hailing Fare Estimator":"Estimateur de tarif VTC et taxi","Boda-Boda / Okada Income Calculator":"Calculateur de revenu boda-boda et okada","Matatu / Danfo Fare Calculator":"Estimateur de tarif matatu, danfo et trotro","Delivery Cost Estimator":"Estimateur du coût de livraison","Car Loan vs Cash Comparator":"Comparateur voiture à crédit ou au comptant","Vehicle Registration Renewal Checker":"Checklist d’immatriculation d’un véhicule","Vehicle Depreciation Calculator":"Calculateur de dépréciation d’un véhicule","Fleet Fuel Budget Calculator":"Calculateur de budget carburant d’une flotte","Last-Mile Delivery Cost Optimizer":"Optimiseur du coût du dernier kilomètre","Parking Fee Calculator":"Calculateur de frais de stationnement","Logistics Route Cost Comparator":"Comparateur du coût d’un trajet logistique","Toll Fee Calculator":"Calculateur de frais de péage","Truck Load Optimizer":"Optimiseur de chargement d’un camion","Vehicle Operating Cost Calculator":"Calculateur du coût d’utilisation d’un véhicule","Vehicle Tracker ROI Calculator":"Calculateur du ROI d’un traceur de véhicule","All Tools":"Tous les outils","Country":"Pays","City":"Ville","Route":"Trajet","Free":"Gratuit","Pan-African":"Panafricain","Instant Results":"Résultats immédiats","Mobile Friendly":"Adapté au mobile","Real Data":"Hypothèses affichées","Vehicle Type":"Type de véhicule","Vehicle Details":"Détails du véhicule","Vehicle &amp; Financing Details":"Détails du véhicule et du financement","Vehicle &amp; Tracker Details":"Détails du véhicule et du traceur","Vehicle Usage":"Utilisation du véhicule","Trip Type":"Type de trajet","One-Way":"Aller simple","Return":"Aller-retour","Monthly":"Mensuel","Annual":"Annuel","Annual (USD)":"Annuel (USD)","Daily":"Quotidien","Weekly":"Hebdomadaire","Distance (km)":"Distance (km)","Route Distance (km)":"Distance du trajet (km)","Trip Distance (km)":"Distance du trajet (km)","Country or route scope":"Pays ou périmètre du trajet","Currency":"Devise","Amount or count":"Montant ou nombre","Priority":"Priorité","Buffer percent":"Marge de sécurité (%)","Create summary":"Créer le résumé","Copy summary":"Copier le résumé","Frequently Asked Questions":"Questions fréquentes","Related tools":"Outils associés","Sources verification":"Sources et vérification","Methodology":"Méthode","Before acting":"Avant d’agir","What to check":"Points à vérifier","Limitations":"Limites","Planning estimate only.":"Estimation de planification uniquement.","Reviewed 2026.":"Revue des hypothèses en 2026.","Input mode":"Mode de saisie","Output mode":"Mode de résultat","Make":"Marque","Model":"Modèle","Year":"Année","Fuel type":"Carburant","Body type":"Carrosserie","Transmission":"Transmission","Condition":"État","Mileage":"Kilométrage","Port":"Port","Destination city":"Ville de destination","Delay days":"Jours de retard","Storage days":"Jours de stockage","Payment Method":"Mode de paiement","Cash":"Comptant","Truck":"Camion","Truck / Commercial Vehicle":"Camion ou véhicule commercial","Truck / Heavy Vehicle":"Camion ou poids lourd","Pickup Truck":"Pick-up","Pickup Truck (10–13 L/100km)":"Pick-up (10 à 13 L/100 km)","Heavy Truck (25–35 L/100km)":"Poids lourd (25 à 35 L/100 km)","Motorcycle":"Moto","Car":"Voiture","Private Car":"Voiture particulière","Required Documents":"Documents à vérifier","Current pump price":"Prix de carburant saisi","Multi-Vehicle":"Plusieurs véhicules","Per Vehicle":"Par véhicule","Per Vehicle/Year":"Par véhicule et par an","Per Trip":"Par trajet","Route Trip Details":"Détails du trajet","Route &amp; Trip Details":"Détails du trajet","Route &amp; Cargo Details":"Détails du fret et du trajet","Load &amp; Route Details":"Chargement et trajet","Delivery Configuration":"Configuration de la livraison","Select Your Vehicle":"Choisissez votre véhicule","Other African Country":"Autre pays africain","Reset":"Réinitialiser","Monthly Net":"Revenu net mensuel","Annual Net":"Revenu net annuel","Monthly (est.)":"Mensuel (estimation)","Both ways (×2 for round trip)":"Aller-retour (×2)","2 trips/day × 22 working days = 44":"2 courses par jour × 22 jours travaillés = 44","If you hire, enter daily cost":"En cas de location, saisissez le coût quotidien","Usually 20-30% of vehicle price":"Souvent 20 à 30 % du prix du véhicule","Pre-filled for selected country":"Valeur préremplie pour le pays choisi","T-bill / savings rate if you kept the cash":"Rendement supposé si le capital reste placé","Planning estimate only. Pre-filled rate ranges are indicative and can change by bank, vehicle age, credit profile, insurance, fees, and country rules. Confirm a current written quote before buying or financing.":"Estimation de planification uniquement. Les taux préremplis sont indicatifs et varient selon banque, âge du véhicule, dossier, assurance, frais et règles nationales. Confirmez une offre écrite actuelle avant tout achat ou financement.","Purchase Price (any currency)":"Prix d’achat (devise au choix)","Vehicle Brand Tier":"Catégorie de marque","Vehicle Age Now (years)":"Âge actuel du véhicule (années)","0 = brand new, enter current age to see present value":"0 = neuf ; saisissez l’âge actuel pour estimer la valeur","Total depreciation: 0 (0%)":"Dépréciation totale : 0 (0 %)","Electric Vehicle":"Véhicule électrique","Avg Daily km per Vehicle":"Kilomètres quotidiens moyens par véhicule","Fuel Price (per litre)":"Prix saisi par litre","In your local currency per litre":"Dans la devise locale, par litre","Operating Days per Month":"Jours d’activité par mois","6 days":"6 jours","26 days":"26 jours","Average Distance per Delivery (km)":"Distance moyenne par livraison (km)","Fuel Price (USD per litre)":"Prix du carburant saisi (USD par litre)","Optimize Last-Mile Cost":"Optimiser le coût du dernier kilomètre","These figures are an estimate — actual rates vary by courier, surge/time of day, waiting time and local charges. Confirm the live quote with the provider before booking. Source: published Lalamove, Sendy, Max.ng, Kobo360 and local courier base + per-km rate cards (indicative).":"Ces chiffres sont des estimations fondées sur le modèle et vos saisies. Confirmez le devis actuel, les suppléments, l’attente et les frais locaux directement auprès du transporteur avant de réserver.","Yes — use monthly permit rate":"Oui — appliquer l’abonnement mensuel","Parking vs Ride-Hailing Comparison (monthly)":"Stationnement ou VTC (comparaison mensuelle)","Used to calculate time value of cargo in transit":"Sert à estimer la valeur du temps pendant le transit","0 days transit":"0 jour de transit","E-tag Savings":"Économie avec badge","Enter 0 if not a regular commute":"Saisissez 0 si le trajet n’est pas régulier","Small Truck (3-5 tonnes)":"Petit camion (3 à 5 tonnes)","Medium Truck (8-10 tonnes)":"Camion moyen (8 à 10 tonnes)","Large Truck (20-30 tonnes)":"Grand camion (20 à 30 tonnes)","In your local currency for this specific trip":"Dans la devise locale pour ce trajet","Loaded truck — empty may be 15-25% less":"Camion chargé — renseignez votre propre hypothèse pour un trajet à vide","Vehicle Details Annual Usage":"Véhicule et utilisation annuelle","Typical: 3-6% of vehicle value for comprehensive":"Hypothèse modifiable du modèle ; confirmez le devis d’assurance","Calculate the return on investment for a GPS vehicle tracker in Africa — insurance discounts, fuel savings from driver behaviour monitoring, theft prevention value, and payback period.":"Modelez le retour sur investissement d’un traceur GPS à partir de vos propres coûts et bénéfices supposés. Le résultat ne garantit ni remise d’assurance, ni économie de carburant, ni récupération après vol.","Vehicle Tracker":"Traceur de véhicule","Fuel Savings":"Économies de carburant supposées","Business / staff vehicle":"Véhicule d’entreprise ou de service","Logistics / delivery":"Logistique ou livraison","Basic GPS tracker (no subscription)":"Traceur GPS simple (sans abonnement)","SIM-based GPS (monthly subscription)":"Traceur GPS avec SIM (abonnement mensuel)","Recommended Tracker Brands in Africa":"Hypothèses du modèle à remplacer par des devis actuels","For fleets of 5+ vehicles, advanced telematics can reduce fuel costs by 15–20% (eliminating detours, idling), reduce accidents by 30% (driver behaviour scoring), and cut maintenance costs through predictive service alerts. The ROI compounds significantly with fleet size.":"Les bénéfices du modèle sont des hypothèses modifiables, pas des performances garanties. Demandez des devis actuels et mesurez vos propres économies avant tout déploiement de flotte.","Estimate Fares":"Estimer les tarifs","Calculate Net Income":"Calculer le revenu net","Calculate Fare":"Calculer le tarif estimé","Estimate Delivery Cost":"Estimer le coût de livraison","Compare Loan vs Cash":"Comparer crédit et comptant","Check Registration":"Vérifier la préparation","Check Roadworthiness":"Vérifier la préparation","Calculate Depreciation":"Calculer la dépréciation","Calculate Fleet Fuel Budget":"Calculer le budget carburant","Optimize Delivery Cost":"Optimiser le coût de livraison","Calculate Parking Cost":"Calculer le stationnement","Compare Routes":"Comparer les scénarios","Calculate Toll Costs":"Calculer le budget péage","Optimize Load":"Optimiser le chargement","Calculate Annual Operating Cost":"Calculer le coût annuel","Calculate Tracker ROI":"Calculer le ROI du traceur","Normal (Off-peak)":"Normal (heures creuses)","Busy (Evening rush)":"Chargé (pointe du soir)","Peak (Morning rush)":"Pointe (matin)","Very Busy (Rain/events)":"Très chargé (pluie ou événement)","Normal (next day)":"Normal (lendemain)","Express (same day)":"Express (même jour)","Urgent (2-3 hours)":"Urgent (2 à 3 heures)","Yes":"Oui","No":"Non","Cost Component":"Composante du coût","% of Total":"% du total","Total Annual Operating Cost":"Coût annuel total","Load Efficiency":"Taux de chargement","Annual Net Benefit":"Bénéfice net annuel","Payback Period":"Délai de retour","Source":"Source","Local estimate":"Estimation locale","Rule-pack estimate":"Estimation par jeu de règles","Operations estimate":"Estimation opérationnelle","Vehicle Details & Annual Usage":"Véhicule et utilisation annuelle","Vehicle Details &amp; Annual Usage":"Véhicule et utilisation annuelle","Sedan / Saloon":"Berline","Van / Minibus":"Fourgonnette / minibus","Vehicle Value (USD)":"Valeur du véhicule (USD)","Annual Distance (km)":"Distance annuelle (km)","Fuel Consumption (L/100km)":"Consommation (L/100 km)","Fuel Price (USD/litre)":"Prix du carburant saisi (USD/litre)","Need a current planning input? Compare":"Besoin d’une hypothèse actuelle ? Comparez","African petrol and diesel prices in AfroFuel":"les prix africains de l’essence et du diesel dans AfroFuel","Annual Insurance Premium (USD)":"Assurance annuelle (USD)","Monthly Parking Cost (USD)":"Stationnement mensuel (USD)","Annual Toll Costs (USD)":"Péages annuels (USD)","per km":"par km","per month":"par mois","Fuel":"Carburant","Depreciation":"Dépréciation","Maintenance & Tyres":"Entretien et pneus","Insurance":"Assurance","Parking":"Stationnement","Registration & Road Tax":"Immatriculation et taxe routière","Tolls":"Péages","Total Annual Cost":"Coût annuel total","Monthly Cost":"Coût mensuel","Cost per km":"Coût par km","Annual Fuel":"Carburant annuel","Depreciation Loss":"Perte de valeur","Your vehicle costs approximately":"Votre véhicule coûte environ","/month to own and operate. Fuel represents":"par mois à posséder et utiliser. Le carburant représente","of your total cost. Consider carpooling, optimising routes, or switching to a more fuel-efficient vehicle to reduce costs.":"du coût total. Envisagez le covoiturage, l’optimisation des trajets ou un véhicule plus économe."}</script>
+<section class="fr-transport-proof" aria-labelledby="fr-transport-proof-title">
+  <h2 id="fr-transport-proof-title">Sources, fraîcheur et confidentialité</h2>
+  <figure class="fr-transport-proof__artwork">
+    <img data-fr-transport-artwork src="/assets/img/tools/vehicle-operating-cost.webp" alt="Illustration de Calculateur du coût d’utilisation d’un véhicule" loading="eager" decoding="async">
+    <figcaption>Illustration associée à Calculateur du coût d’utilisation d’un véhicule</figcaption>
+  </figure>
+  <div class="fr-transport-proof__grid">
+    <div class="fr-transport-proof__item"><strong>2026-07-29</strong><span>Dernière revue enregistrée</span></div>
+    <div class="fr-transport-proof__item"><strong>30 jours</strong><span>Cadence prévue, revue effectuée dans le délai</span></div>
+    <div class="fr-transport-proof__item"><strong>Confiance prudente</strong><span>5 sources modifiées et 12 bloquées ou manuelles restent à examiner ; aucune donnée tarifaire en direct</span></div>
+  </div>
+  <p class="fr-transport-proof__warning"><strong>Limite non négociable :</strong> Estimations de planification fondées sur les saisies et hypothèses affichées. Aucun tarif, horaire, trajet, disponibilité, règlement ou statut officiel n&#39;est actualisé en direct.</p>
+  <p>Les champs et le résultat restent dans ce navigateur. Aucun document, identifiant, trajet, devis, numéro de châssis ou détail client n’est envoyé par cette couche française. L’assistant central reste déterministe sans consentement ; tout appel à un modèle exige un choix explicite et conserve un parcours local.</p>
+  <details>
+    <summary>Sources de vérification associées</summary>
+    <ul><li><a href="https://nmdpra.gov.ng/" rel="noopener">Nigerian Midstream and Downstream Petroleum Regulatory Authority</a> — régulateur des carburants</li><li><a href="https://www.epra.go.ke/pump-prices" rel="noopener">Energy and Petroleum Regulatory Authority</a> — régulateur des carburants</li><li><a href="https://npa.gov.gh/indicative-prices/" rel="noopener">National Petroleum Authority</a> — régulateur des carburants</li><li><a href="https://www.dmpr.gov.za/Services/Petroleum-Resources/Fuel-Prices" rel="noopener">Department of Mineral and Petroleum Resources</a> — government-department</li><li><a href="https://frsc.gov.ng/" rel="noopener">Federal Road Safety Corps</a> — road-safety-authority</li><li><a href="https://www.ntsa.go.ke/" rel="noopener">National Transport and Safety Authority</a> — transport-authority</li><li><a href="https://www.nra.co.za/" rel="noopener">South African National Roads Agency</a> — road-agency</li></ul>
+  </details>
+  <div class="fr-transport-proof__actions">
+    <button type="button" data-fr-transport-download-text>Télécharger le résumé TXT</button>
+    <button type="button" class="secondary" data-fr-transport-download-pdf>Télécharger le PDF local</button>
+    <a class="secondary" href="/fr/ai/?outil=vehicle-operating-cost">Assistant AfroTools (optionnel)</a>
+  </div>
+  <p class="fr-transport-proof__status" data-fr-transport-status aria-live="polite">Lancez le calcul, puis exportez le résultat local.</p>
+  <p class="fr-transport-proof__error" data-fr-transport-error role="alert"></p>
+</section>
+<!-- FR_TRANSPORT_PARITY_END -->
+<afro-footer></afro-footer>
+<script>
+function calcVOC() {
+  var value = parseFloat(document.getElementById('vehicleValue').value) || 0;
+  var type = document.getElementById('vehicleType').value;
+  var km = parseFloat(document.getElementById('annualKm').value) || 0;
+  var consumption = parseFloat(document.getElementById('fuelConsumption').value) || 0;
+  var fuelPrice = parseFloat(document.getElementById('fuelPrice').value) || 0;
+  var insurance = parseFloat(document.getElementById('insuranceCost').value) || 0;
+  var parking = parseFloat(document.getElementById('parkingCost').value) * 12 || 0;
+  var tolls = parseFloat(document.getElementById('tollCost').value) || 0;
+
+  // Fuel cost
+  var fuelCost = (km / 100) * consumption * fuelPrice;
+
+  // Maintenance: 6% of value for Africa, 5% for motorcycle
+  var maintRate = type === 'motorcycle' ? 0.04 : 0.06;
+  var maintenance = value * maintRate;
+
+  // Registration: approx 1-2% of value
+  var registration = value * 0.015;
+
+  // Depreciation: Year 1 = 25%, subsequent year average ~12% used
+  var depRate = type === 'suv' ? 0.20 : (type === 'motorcycle' ? 0.22 : 0.22);
+  var depreciation = value * depRate;
+
+  var total = fuelCost + insurance + maintenance + registration + parking + tolls + depreciation;
+
+  if (value === 0 && km === 0) { alert('Please enter vehicle value and annual distance.'); return; }
+
+  var components = [
+    ['Fuel', fuelCost],
+    ['Depreciation', depreciation],
+    ['Maintenance &amp; Tyres', maintenance],
+    ['Insurance', insurance],
+    ['Parking', parking],
+    ['Registration &amp; Road Tax', registration],
+    ['Tolls', tolls]
+  ];
+
+  var tbody = document.getElementById('vocBreakdown');
+  tbody.innerHTML = components.map(function(c) {
+    var pct = total > 0 ? ((c[1]/total)*100).toFixed(1) : '0.0';
+    return '<tr><td>' + c[0] + '</td><td>$' + c[1].toFixed(0) + '</td><td>' + pct + '%</td></tr>';
+  }).join('') + '<tr class="total"><td>Total Annual Cost</td><td>$' + total.toFixed(0) + '</td><td>100%</td></tr>';
+
+  document.getElementById('vocTotal').textContent = '$' + total.toFixed(0);
+  document.getElementById('vocPerKm').textContent = (km > 0 ? '$' + (total/km).toFixed(3) : '$0') + ' per km | $' + (total/12).toFixed(0) + ' per month';
+
+  var metrics = document.getElementById('vocMetrics');
+  metrics.innerHTML = [
+    ['$' + (total/12).toFixed(0), 'Monthly Cost'],
+    ['$' + (km > 0 ? (total/km).toFixed(3) : '0'), 'Cost per km'],
+    ['$' + fuelCost.toFixed(0), 'Annual Fuel'],
+    ['$' + depreciation.toFixed(0), 'Depreciation Loss']
+  ].map(function(m) {
+    return '<div class="metric"><div class="metric-val">' + m[0] + '</div><div class="metric-label">' + m[1] + '</div></div>';
+  }).join('');
+
+  document.getElementById('vocInfo').textContent = 'Your vehicle costs approximately $' + (total/12).toFixed(0) + '/month to own and operate. Fuel represents ' + (total > 0 ? ((fuelCost/total)*100).toFixed(0) : 0) + '% of your total cost. Consider carpooling, optimising routes, or switching to a more fuel-efficient vehicle to reduce costs.';
+
+  document.getElementById('vocResults').classList.add('on');
+}
+</script>
+
+
+
+  <!-- AfroTools source confidence -->
+  <div class="container afro-source-meta" data-source-meta-id="ledger-tool-vehicle-operating-cost" data-source-meta-compact="true"></div>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
+<script src="/assets/js/pages/french-transport-parity.js?v=95a7229b" defer></script>
+
+</body>
+</html>

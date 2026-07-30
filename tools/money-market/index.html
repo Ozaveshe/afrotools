@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -41,8 +41,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -241,52 +241,8 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
   </div>
 </div>
 <afro-footer></afro-footer>
-<script>
-function calcMMF(){
-  var currency=document.getElementById('mmf-currency').value;
-  var amount=parseFloat(document.getElementById('mmf-amount').value);
-  var mmfPercent=parseFloat(document.getElementById('mmf-rate').value);
-  var fdPercent=parseFloat(document.getElementById('mmf-fd-rate').value);
-  var days=parseInt(document.getElementById('mmf-days').value);
-  var error=document.getElementById('mmf-error'),output=document.getElementById('mmf-results');error.textContent='';output.classList.remove('on');
-  if(!Number.isFinite(amount)||amount<=0||!Number.isFinite(mmfPercent)||mmfPercent<=-100||mmfPercent>1000||!Number.isFinite(fdPercent)||fdPercent<=-100||fdPercent>1000||!Number.isFinite(days)||days<1){error.textContent='Enter an amount above zero and annual rates above -100% and no more than 1,000%.';return false;}
-  var mmfRate=mmfPercent/100,fdRate=fdPercent/100;
-  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  var mmfPeriodRate=Math.pow(1+mmfRate,days/365)-1;
-  var mmfTotal=amount*(1+mmfPeriodRate);
-  var mmfReturn=mmfTotal-amount;
-  var dailyAccrual=amount*(Math.pow(1+mmfRate,1/365)-1);
-  var weeklyYield=amount*(Math.pow(1+mmfRate,7/365)-1);
-  var fdReturn=amount*fdRate*(days/365);
-  var diff=mmfReturn-fdReturn;
-  document.getElementById('mmf-total').textContent=fmt(mmfReturn);
-  document.getElementById('mmf-sub').textContent='Total value: '+fmt(mmfTotal)+' | Period: '+days+' days';
-  document.getElementById('mmf-daily').textContent=fmt(dailyAccrual);
-  document.getElementById('mmf-weekly').textContent=fmt(weeklyYield);
-  document.getElementById('mmf-vs-fd').textContent=(diff>=0?'+':'-')+fmt(Math.abs(diff));
-  document.getElementById('mmf-liquidity').textContent=(mmfPeriodRate*100).toFixed(4)+'%';
-  var tbody=document.getElementById('mmf-compare');
-  tbody.innerHTML='<tr class="highlight"><td>Money Market Fund</td><td>'+mmfPercent.toFixed(2)+'% annual effective</td><td>'+fmt(mmfReturn)+'</td></tr><tr><td>Fixed Deposit ('+days+' days)</td><td>'+fdPercent.toFixed(2)+'% simple annual</td><td>'+fmt(fdReturn)+'</td></tr>';
-  output.classList.add('on');output.focus({preventScroll:true});return true;
-}
-function moneyMarketSummary(){
-  if(!calcMMF())return '';
-  return 'Money market comparison: '+document.getElementById('mmf-total').textContent+' estimated MMF return for '+document.getElementById('mmf-days').value+' days; daily accrual '+document.getElementById('mmf-daily').textContent+'; 7-day yield '+document.getElementById('mmf-weekly').textContent+'; difference vs fixed deposit '+document.getElementById('mmf-vs-fd').textContent+'. Verify the live fund factsheet, fees, liquidity, tax, and regulator status before investing.';
-}
-var mmfCopy=document.getElementById('mmf-copy');
-if(mmfCopy){
-  mmfCopy.addEventListener('click',function(){
-    var text=moneyMarketSummary();
-    if(!text)return;
-    if(navigator.clipboard&&navigator.clipboard.writeText){
-      navigator.clipboard.writeText(text);
-      mmfCopy.textContent='Copied';
-      setTimeout(function(){mmfCopy.textContent='Copy comparison brief';},1600);
-    }
-  });
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/money-market.js?v=21082282"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -25,11 +25,11 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/tool-registry.min.js?v=2bbcd15c" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=76f9859f" defer></script>
 <script src="/assets/js/components/category-cards.js?v=c011c712" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   body{font-family:'DM Sans',sans-serif;background:var(--color-bg);color:var(--color-text);margin:0;-webkit-font-smoothing:antialiased}
   a{text-decoration:none;color:inherit}
@@ -239,30 +239,20 @@ function _initBusinessBrief(){
 }
 document.addEventListener('DOMContentLoaded',_initBusinessBrief);
 function _initBusinessRoi(){
-  var operatorCategories = {
-    'data-productivity': true,
-    'ecommerce': true,
-    'small-business': true,
-    'document-pdf': true,
-    'trade': true
-  };
-  var operatorToolIds = {
-    'generateur-business-plan-fr': true,
-    'plan-affaires-fr': true,
-    'planificateur-entreprise-fr': true,
-    'generateur-factures-fr': true,
-    'facture-proforma-fr': true,
-    'gestion-stocks-fr': true,
-    'marge-beneficiaire-fr': true,
-    'calculateur-marge-fr': true,
-    'etude-faisabilite-fr': true,
-    'generateur-nom-entreprise-fr': true
-  };
-  var allTools=AFRO_TOOLS.filter(function(t){
-    if (t.id === 'business-roi-fr') return false;
-    if (!(t.lang === 'fr' || /^\/fr\//.test(t.href || ''))) return false;
-    return operatorToolIds[t.id] || operatorCategories[t.category];
-  });
+  var allTools=[
+    {id:'minuteur-pomodoro-fr',name:'Minuteur Pomodoro',icon:'🍅',desc:'Sessions de concentration, pauses et cycle local.',href:'/fr/tools/minuteur-pomodoro/',status:'live',imageId:'pomodoro'},
+    {id:'convertisseur-unites-fr',name:'Convertisseur d’unités',icon:'📏',desc:'Longueur, masse, surface, température et données.',href:'/fr/tools/convertisseur-unites/',status:'live',imageId:'unit-converter'},
+    {id:'planificateur-budget-fr',name:'Planificateur de budget',icon:'📋',desc:'Revenus, dépenses, solde et répartition indicative.',href:'/fr/tools/planificateur-budget/',status:'live',imageId:'budget-planner'},
+    {id:'compte-a-rebours-fr',name:'Compte à rebours',icon:'⏱️',desc:'Jours, heures, minutes et secondes vers une échéance.',href:'/fr/tools/compte-a-rebours/',status:'live',imageId:'countdown-timer'},
+    {id:'fuseaux-horaires-fr',name:'Fuseaux horaires africains',icon:'🕐',desc:'Conversion entre huit fuseaux IANA africains.',href:'/fr/tools/fuseaux-horaires/',status:'live',imageId:'time-zone'},
+    {id:'jours-feries-fr',name:'Entrée de jour férié',icon:'📅',desc:'Date vérifiée et export de calendrier ICS local.',href:'/fr/tools/jours-feries/',status:'live',imageId:'public-holidays'},
+    {id:'jours-ouvrables-fr',name:'Jours ouvrables',icon:'📆',desc:'Période, fins de semaine et dates fériées confirmées.',href:'/fr/tools/jours-ouvrables/',status:'live',imageId:'working-days'},
+    {id:'calculateur-age-fr',name:'Calculateur d’âge',icon:'🎂',desc:'Âge exact, totaux et prochain anniversaire.',href:'/fr/tools/calculateur-age/',status:'live',imageId:'age-calculator'},
+    {id:'suivi-notes-fr',name:'Suivi de notes et GPA',icon:'📊',desc:'GPA, CGPA, crédits et objectif futur requis.',href:'/fr/tools/suivi-notes/',status:'live',imageId:'grade-tracker'},
+    {id:'selecteur-aleatoire-fr',name:'Sélecteur aléatoire',icon:'🎲',desc:'Tirage local et répartition en équipes.',href:'/fr/tools/selecteur-aleatoire/',status:'live',imageId:'random-picker'},
+    {id:'cout-reunion-fr',name:'Coût de réunion',icon:'👥',desc:'Coût par réunion, minute et année.',href:'/fr/tools/cout-reunion/',status:'live',imageId:'meeting-cost'},
+    {id:'calculateur-pourboire-fr',name:'Pourboire et partage',icon:'🍽️',desc:'Taxe, pourboire, arrondi et part par personne.',href:'/fr/tools/calculateur-pourboire/',status:'live',imageId:'tip-calculator'}
+  ];
   var live=allTools.filter(function(t){return t.status==='live'||t.status==='new';});
   var pipe=allTools.filter(function(t){return t.status==='queued'||t.status==='planned';});
   var plannedCount=pipe.length;
@@ -326,6 +316,6 @@ function _initBusinessRoi(){
 if (typeof onRegistryReady === 'function') { onRegistryReady(_initBusinessRoi); }
 else { document.addEventListener('DOMContentLoaded', function(){ if(typeof AFRO_TOOLS!=='undefined') _initBusinessRoi(); else document.addEventListener('afrotools:registry-ready', _initBusinessRoi); }); }
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

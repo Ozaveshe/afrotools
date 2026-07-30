@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -44,9 +44,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Plumbing Material Calculator","item":"https://afrotools.com/tools/plumbing-material/"}]}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/plumbing-material.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/plumbing-material.webp">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
@@ -78,6 +78,7 @@
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/plumbing-material/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/plumbing-material/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/materiaux-plomberie/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/plumbing-material/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -210,67 +211,46 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/engines/plumbing-material-engine.js?v=eb800d7f"></script>
 <script>
-var PM_RATES = {
-  NG:{ sym:'₦', upvc:450, ppr:850, copper:2200, galv:700, fitting_mult:0.35, tank_1000:45000, labour_day:15000 },
-  KE:{ sym:'KES', upvc:180, ppr:320, copper:900, galv:280, fitting_mult:0.35, tank_1000:18000, labour_day:3000 },
-  ZA:{ sym:'ZAR', upvc:55, ppr:110, copper:350, galv:95, fitting_mult:0.40, tank_1000:5500, labour_day:800 },
-  GH:{ sym:'GHS', upvc:35, ppr:65, copper:200, galv:55, fitting_mult:0.35, tank_1000:3500, labour_day:600 },
-  EG:{ sym:'EGP', upvc:40, ppr:75, copper:250, galv:65, fitting_mult:0.35, tank_1000:4000, labour_day:700 },
-  ET:{ sym:'ETB', upvc:90, ppr:160, copper:500, galv:130, fitting_mult:0.35, tank_1000:9000, labour_day:1500 },
-  TZ:{ sym:'TZS', upvc:3500, ppr:6500, copper:20000, galv:5500, fitting_mult:0.35, tank_1000:350000, labour_day:60000 },
-  UG:{ sym:'UGX', upvc:5000, ppr:9000, copper:28000, galv:7500, fitting_mult:0.35, tank_1000:480000, labour_day:80000 },
-  RW:{ sym:'RWF', upvc:800, ppr:1500, copper:4800, galv:1200, fitting_mult:0.35, tank_1000:80000, labour_day:15000 },
-  MA:{ sym:'MAD', upvc:20, ppr:38, copper:120, galv:32, fitting_mult:0.40, tank_1000:2200, labour_day:400 }
-};
-var BUILDING_SIZES = { '1bed':{ pipeM:80, joints:40 }, '2bed':{ pipeM:130, joints:65 }, '3bed':{ pipeM:180, joints:90 }, '4bed':{ pipeM:240, joints:120 }, duplex:{ pipeM:350, joints:175 }, commercial:{ pipeM:200, joints:100 } };
 var PIPE_NAMES = { upvc:'uPVC Pipe', ppr:'PPR Pipe', copper:'Copper Pipe', galv:'Galvanised Pipe' };
 
 function fmtCur(sym, n){ return sym + Math.round(n).toLocaleString(); }
 
 function calcPlumbing(){
-  var country = document.getElementById('pm-country').value;
-  var btype = document.getElementById('pm-type').value;
-  var pipeType = document.getElementById('pm-pipe').value;
-  var baths = +document.getElementById('pm-baths').value;
-  var tankYes = document.getElementById('pm-tank').value === 'yes';
-  var tankSize = +document.getElementById('pm-tank-size').value;
-  var inclLabour = document.getElementById('pm-labour').value === 'yes';
-  var r = PM_RATES[country], sym = r.sym;
-  var bs = BUILDING_SIZES[btype];
-  var pipeM = bs.pipeM + baths * 20;
-  var joints = bs.joints + baths * 10;
-  var pipeRate = r[pipeType];
-  var pipeCost = pipeM * pipeRate;
-  var fittingCost = pipeCost * r.fitting_mult;
-  var sanitaryware = baths * pipeRate * 80; // approx per bathroom
-  var tankCost = tankYes ? r.tank_1000 * (tankSize / 1000) : 0;
-  var borehole_connect = pipeRate * 30; // short run to pump
-  var matTotal = pipeCost + fittingCost + sanitaryware + tankCost + borehole_connect;
-  var labourDays = baths * 3 + (btype === 'duplex' ? 8 : btype === 'commercial' ? 10 : 4);
-  var labourCost = inclLabour ? labourDays * r.labour_day : 0;
-  var grandTotal = matTotal + labourCost;
+  var result = window.AfroTools.PlumbingMaterialEngine.calculate({
+    country:document.getElementById('pm-country').value,
+    buildingType:document.getElementById('pm-type').value,
+    pipeType:document.getElementById('pm-pipe').value,
+    bathrooms:document.getElementById('pm-baths').value,
+    includeTank:document.getElementById('pm-tank').value === 'yes',
+    tankSize:document.getElementById('pm-tank-size').value,
+    includeLabour:document.getElementById('pm-labour').value === 'yes'
+  });
+  if (!result.ok) {
+    document.getElementById('pm-results').classList.remove('on');
+    return;
+  }
+  document.getElementById('pm-mat-total').textContent = fmtCur(result.symbol, result.materialTotal);
+  document.getElementById('pm-lab-total').textContent = result.includeLabour ? fmtCur(result.symbol, result.labourCost) : 'Not included';
+  document.getElementById('pm-grand').textContent = fmtCur(result.symbol, result.total);
+  document.getElementById('pm-per-bath').textContent = fmtCur(result.symbol, result.perBathroom);
 
-  document.getElementById('pm-mat-total').textContent = fmtCur(sym, matTotal);
-  document.getElementById('pm-lab-total').textContent = inclLabour ? fmtCur(sym, labourCost) : 'Not included';
-  document.getElementById('pm-grand').textContent = fmtCur(sym, grandTotal);
-  document.getElementById('pm-per-bath').textContent = fmtCur(sym, grandTotal / baths);
-
-  var bom = [
-    { item: PIPE_NAMES[pipeType] + ' (15–32mm)', qty: pipeM, unit: 'metres', unit_cost: pipeRate, total: pipeCost },
-    { item: 'Fittings (elbows, tees, valves)', qty: joints, unit: 'pcs', unit_cost: Math.round(fittingCost/joints), total: fittingCost },
-    { item: 'Sanitary ware (per bathroom)', qty: baths, unit: 'sets', unit_cost: Math.round(sanitaryware/baths), total: sanitaryware },
-    { item: 'Pump/borehole connection pipe', qty: 30, unit: 'metres', unit_cost: pipeRate, total: borehole_connect }
-  ];
-  if (tankYes) bom.push({ item: 'Overhead Poly Tank (' + tankSize + 'L)', qty: 1, unit: 'unit', unit_cost: tankCost, total: tankCost });
-  if (inclLabour) bom.push({ item: 'Plumber Labour (' + labourDays + ' days)', qty: labourDays, unit: 'days', unit_cost: r.labour_day, total: labourCost });
+  var bom = result.bom.map(function(row) {
+    if (row.kind === 'pipe') return {item:PIPE_NAMES[row.pipeType]+' (15–32mm)',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'fittings') return {item:'Fittings (elbows, tees, valves)',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'sanitaryware') return {item:'Sanitary ware (per bathroom)',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'connection') return {item:'Pump/borehole connection pipe',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'tank') return {item:'Overhead Poly Tank ('+row.tankSize+'L)',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+    return {item:'Plumber Labour ('+row.labourDays+' days)',qty:row.qty,unit:row.unit,unit_cost:row.unitCost,total:row.total};
+  });
 
   var tbody = document.getElementById('pm-bom');
-  tbody.innerHTML = bom.map(function(b){ return '<tr><td>'+b.item+'</td><td>'+b.qty+'</td><td>'+b.unit+'</td><td>'+fmtCur(sym,b.unit_cost)+'</td><td>'+fmtCur(sym,b.total)+'</td></tr>'; }).join('') + '<tr class="bom-total"><td colspan="4">TOTAL</td><td>' + fmtCur(sym, grandTotal) + '</td></tr>';
+  tbody.innerHTML = bom.map(function(b){ return '<tr><td>'+b.item+'</td><td>'+b.qty+'</td><td>'+b.unit+'</td><td>'+fmtCur(result.symbol,b.unit_cost)+'</td><td>'+fmtCur(result.symbol,b.total)+'</td></tr>'; }).join('') + '<tr class="bom-total"><td colspan="4">TOTAL</td><td>' + fmtCur(result.symbol, result.total) + '</td></tr>';
 
   document.getElementById('pm-tips').innerHTML = [
     'Buy 10–15% extra pipe for offcuts and future repairs.',
-    pipeType === 'galv' ? 'Galvanised pipes rust over time — PPR or uPVC recommended for water supply.' : pipeType === 'copper' ? 'Copper is premium but highly resistant to corrosion and long-lasting.' : 'uPVC is the most cost-effective for hot and cold water systems.',
+    result.pipeType === 'galv' ? 'Galvanised pipes rust over time — PPR or uPVC recommended for water supply.' : result.pipeType === 'copper' ? 'Copper is premium but highly resistant to corrosion and long-lasting.' : 'uPVC is the most cost-effective for hot and cold water systems.',
     'Pressure test all connections before plastering walls.',
     'Install gate valves at each bathroom to isolate faults without cutting supply to the whole building.'
   ].map(function(t){ return '<li>' + t + '</li>'; }).join('');

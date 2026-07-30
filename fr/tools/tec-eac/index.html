@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -18,8 +18,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   :root {
     --eac-ink: #102033;
@@ -223,9 +223,6 @@
               <option>Ouganda</option>
               <option>Rwanda</option>
               <option>Burundi</option>
-              <option>Soudan du Sud</option>
-              <option>RDC</option>
-              <option>Somalie</option>
             </select>
           </div>
           <div class="eac-field">
@@ -365,6 +362,7 @@
   </section>
 </main>
 <afro-footer></afro-footer>
+<script src="/engines/eac-cet-engine.js?v=3f4c52fa"></script>
 <script>
 (function () {
   'use strict';
@@ -387,6 +385,10 @@
   const dutyOutput = document.getElementById('duty-output');
   const landedOutput = document.getElementById('landed-output');
   const summaryOutput = document.getElementById('summary-output');
+  const COUNTRY_CODES = {
+    Kenya:'KE', Tanzanie:'TZ', Ouganda:'UG', Rwanda:'RW',
+    Burundi:'BI'
+  };
 
   function parseMoney(value, label) {
     const cleaned = String(value || '').trim().replace(/\s+/g, '').replace(/,/g, '');
@@ -425,10 +427,9 @@
     }
 
     let rate = rateParsed.value;
-    let duty = cifParsed.value * rate / 100;
     let originNote = 'Origine hors EAC: la bande CET choisie est appliquee a la valeur CIF.';
     if (origin.value === 'eac') {
-      duty = 0;
+      rate = 0;
       originNote = "Origine EAC avec preuve: scenario preferentiel a confirmer avec les regles d'origine et les documents requis.";
     } else if (origin.value === 'unknown') {
       originNote = "Origine a confirmer: utilisez ce resultat comme scenario de risque jusqu'a verification.";
@@ -436,13 +437,21 @@
       warning.classList.add('show');
     }
 
-    const landed = cifParsed.value + duty + feesParsed.value;
+    const engineResult = window.EacCetEngine.calculate({
+      cifValue: cifParsed.value,
+      cetRate: rate,
+      countryCode: COUNTRY_CODES[country.value] || 'KE'
+    });
+    const duty = engineResult.cetDuty;
+    const landed = engineResult.totalLanded + feesParsed.value;
     const lines = [
       'Pays: ' + country.value,
       'Devise: ' + currency.value,
       'Valeur CIF: ' + money(cifParsed.value),
       'Bande / taux: ' + rate.toFixed(rate % 1 ? 2 : 0) + '%',
       'Droit estime: ' + money(duty),
+      'Prélèvements nationaux estimés: ' + money(engineResult.totalLevies),
+      'TVA estimée: ' + money(engineResult.vatAmount),
       'Autres frais saisis: ' + money(feesParsed.value),
       'Landed estimate: ' + money(landed),
       originNote
@@ -457,7 +466,10 @@
     landedOutput.textContent = money(landed);
     summaryOutput.textContent = lines.join('\n');
     status.textContent = 'Estimation prete.';
-    return { summary: lines.join('\n'), cif: cifParsed.value, fees: feesParsed.value, rate, duty, landed };
+    return {
+      summary: lines.join('\n'), cif: cifParsed.value, fees: feesParsed.value,
+      rate, duty, landed, engineResult
+    };
   }
 
   function copyText(text) {
@@ -535,6 +547,6 @@
   buildResult();
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

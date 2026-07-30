@@ -76,7 +76,12 @@ function createCountryLookup(countries) {
 }
 
 function namesFor(country) {
-  const abbreviations = { CF: ['CAR'], CD: ['DRC', 'RD Congo'], ZA: ['RSA'], CI: ['Ivory Coast', 'Ivorian'] };
+  const abbreviations = {
+    CF: ['CAR'],
+    CD: ['DRC', 'RDC', 'RD Congo', 'République démocratique du Congo'],
+    ZA: ['RSA'],
+    CI: ['Ivory Coast', 'Ivorian'],
+  };
   return [...new Set([country.title, ...(abbreviations[country.id] || []), ...Object.values(country.displayNames || {})].filter(Boolean))];
 }
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <link rel="stylesheet" href="/assets/css/fintech-payment-focus.css?v=ec3defef">
 <style>
 *,*::before,*::after{box-sizing:border-box}
@@ -222,81 +222,10 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var MB_DATA={KE:'KES',NG:'NGN',GH:'GHS',UG:'UGX',TZ:'TZS',ZA:'ZAR',RW:'RWF',ZM:'ZMW',ET:'ETB',CM:'XAF',CI:'XOF',SN:'XOF',MW:'MWK',MZ:'MZN',BW:'BWP'};
-function fillMB(){
-  document.getElementById('mb-results').classList.remove('on');
-}
-function calcMB(){
-  var country=document.getElementById('mb-country').value;
-  var amount=parseFloat(document.getElementById('mb-amount').value);
-  var mmFlat=parseFloat(document.getElementById('mb-mm-fee').value);
-  var mmPct=parseFloat(document.getElementById('mb-mm-pct').value)/100;
-  var bankFlat=parseFloat(document.getElementById('mb-bank-fee').value);
-  var bankPct=parseFloat(document.getElementById('mb-bank-pct').value)/100;
-  var error=document.getElementById('mb-error');
-  var values=[amount,mmFlat,mmPct,bankFlat,bankPct];
-  if(values.some(function(value){return !Number.isFinite(value)||value<0;})||amount<=0||mmPct>1||bankPct>1){
-    error.textContent='Enter an amount above zero and fee values from 0% to 100%.';
-    error.classList.add('on');
-    document.getElementById('mb-results').classList.remove('on');
-    return;
-  }
-  error.textContent='';
-  error.classList.remove('on');
-  var currency=MB_DATA[country]||'Amount';
-  var d={mmName:'Mobile money quote',bankName:'Bank transfer quote'};
-  var mmFee=mmFlat+amount*mmPct;
-  var bankFee=bankFlat+amount*bankPct;
-  var mmEffective=(mmFee/amount)*100;
-  var bankEffective=(bankFee/amount)*100;
-  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  document.querySelectorAll('.winner-badge').forEach(function(node){node.remove();});
-  document.getElementById('mb-mm-total-fee').textContent=fmt(mmFee);
-  document.getElementById('mb-mm-name').textContent=d.mmName;
-  document.getElementById('mb-mm-detail').textContent='Flat: '+fmt(mmFlat)+' + '+(mmPct*100).toFixed(2)+'% | Effective fee: '+mmEffective.toFixed(2)+'%';
-  document.getElementById('mb-bank-total-fee').textContent=fmt(bankFee);
-  document.getElementById('mb-bank-name').textContent=d.bankName;
-  document.getElementById('mb-bank-detail').textContent='Flat: '+fmt(bankFlat)+' + '+(bankPct*100).toFixed(2)+'% | Effective fee: '+bankEffective.toFixed(2)+'%';
-  if(Math.abs(mmFee-bankFee)<0.005){
-    document.getElementById('mb-mm-card').className='compare-card winner';
-    document.getElementById('mb-bank-card').className='compare-card winner';
-    document.getElementById('mb-mm-name').insertAdjacentHTML('beforebegin','<div class="winner-badge">SAME ENTERED COST</div>');
-    document.getElementById('mb-bank-name').insertAdjacentHTML('beforebegin','<div class="winner-badge">SAME ENTERED COST</div>');
-  } else if(mmFee<bankFee){
-    document.getElementById('mb-mm-card').className='compare-card winner';
-    document.getElementById('mb-bank-card').className='compare-card loser';
-    document.getElementById('mb-mm-name').insertAdjacentHTML('beforebegin','<div class="winner-badge">CHEAPEST</div>');
-  } else {
-    document.getElementById('mb-bank-card').className='compare-card winner';
-    document.getElementById('mb-mm-card').className='compare-card loser';
-    document.getElementById('mb-bank-name').insertAdjacentHTML('beforebegin','<div class="winner-badge">CHEAPEST</div>');
-  }
-  // Build comparison table for different amounts
-  var amounts=[amount*0.1,amount*0.5,amount,amount*2,amount*5];
-  var headers='<tr><th>Amount</th><th>'+d.mmName+'</th><th>'+d.bankName+'</th><th>Cheaper</th></tr>';
-  var rows='';
-  for(var i=0;i<amounts.length;i++){
-    var a=amounts[i];
-    var mf=mmFlat+a*mmPct;
-    var bf=bankFlat+a*bankPct;
-    var cheaper=Math.abs(mf-bf)<0.005?'Same cost':(mf<bf?d.mmName:d.bankName);
-    var isCurrent=Math.abs(a-amount)<1;
-    rows+='<tr'+(isCurrent?' class="best"':'')+'>'
-      +'<td>'+fmt(a)+'</td>'
-      +'<td>'+fmt(mf)+'</td>'
-      +'<td>'+fmt(bf)+'</td>'
-      +'<td>'+cheaper+'</td>'
-      +'</tr>';
-  }
-  document.getElementById('mb-table').innerHTML=headers+rows;
-  document.getElementById('mb-results').classList.add('on');
-  document.getElementById('mb-results').focus();
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/mobile-vs-bank.js?v=1ca1ab9a"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/fintech-payment-focus.js?v=087a828f" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

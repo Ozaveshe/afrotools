@@ -59,6 +59,7 @@ const iframe = fs.readFileSync(path.join(root, "widgets", "iframe", "ai-mini-rou
 assert.ok(iframe.includes("/widgets/ai/mini-router.js"));
 assert.ok(iframe.includes("/assets/js/ai/orchestrator.js"));
 assert.ok(iframe.includes("/assets/js/ai/tool-manifest.js"));
+assert.ok(iframe.includes("/assets/js/ai/french-route-map.generated.js"));
 assert.ok(iframe.includes("/assets/js/ai/intent-analytics.js"));
 assert.ok(iframe.includes("noindex, follow"));
 assert.ok(iframe.includes("aw-ai-link--secondary"));
@@ -67,6 +68,7 @@ assert.match(iframe, /target="_blank" rel="noopener(?: noreferrer)?"/, "iframe c
 const miniRouter = fs.readFileSync(path.join(root, "widgets", "ai", "mini-router.js"), "utf8");
 assert.ok(miniRouter.includes("function externalLink"), "widget links should use a single external-link helper");
 assert.ok(miniRouter.includes("recordWidgetIntent"), "widget should record metadata-only AI funnel analytics when available");
+assert.match(miniRouter, /locale:\s*o\.locale/, "widget router should pass its normalized locale to the shared orchestrator");
 assert.ok(miniRouter.includes('target="_blank" rel="noopener"'), "widget handoff links should escape iframes safely");
 
 const embed = fs.readFileSync(path.join(root, "widgets", "embed.js"), "utf8");

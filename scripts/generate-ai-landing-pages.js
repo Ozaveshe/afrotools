@@ -243,7 +243,7 @@ function renderPage(page, data) {
     `<a href="${escapeHtml(item.path)}">${escapeHtml(item.kicker)}</a>`
   ).join("");
 
-  return `<!DOCTYPE html>
+  const html = `<!DOCTYPE html>
 <html data-chat-bundle="${escapeHtml(bundles.chat)}" lang="en">
 <head>
   <meta charset="UTF-8">
@@ -485,6 +485,7 @@ function renderPage(page, data) {
 </body>
 </html>
 `;
+  return html.replace(/[ \t]+$/gm, "");
 }
 
 function writePage(page, data) {

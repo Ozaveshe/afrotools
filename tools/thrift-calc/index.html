@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'Inter',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -96,6 +96,7 @@ details[open] summary::after{content:'\2212'}
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/thrift-calc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/thrift-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-tontine-cooperative/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/thrift-calc/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -178,48 +179,9 @@ details[open] summary::after{content:'\2212'}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-function calcThrift(){
-  var type=document.getElementById('tc-type').value;
-  var members=Number(document.getElementById('tc-members').value);
-  var monthly=Number(document.getElementById('tc-monthly').value);
-  var yourPos=Number(document.getElementById('tc-your-pos').value);
-  var rate=Number(document.getElementById('tc-rate').value);
-  var bankRate=Number(document.getElementById('tc-bank-rate').value);
-  var error=document.getElementById('tc-error');
-  var results=document.getElementById('tc-results');
-  if(!Number.isInteger(members)||members<2||members>100||!Number.isInteger(yourPos)||yourPos<1||yourPos>members||!Number.isFinite(monthly)||monthly<=0||!Number.isFinite(rate)||rate<0||!Number.isFinite(bankRate)||bankRate<0){
-    error.textContent='Enter 2–100 members, a position within the group, a positive contribution, and non-negative annual rates.';error.classList.add('on');results.classList.remove('on');return;
-  }
-  error.classList.remove('on');
-  var totalContributed=monthly*members;
-  var cyclePot=monthly*members;
-  function contributionFV(annualRate){var r=Math.pow(1+annualRate/100,1/12)-1;return r===0?monthly*members:monthly*(Math.pow(1+r,members)-1)/r;}
-  var bankEquiv=contributionFV(bankRate);
-  var rotating=type==='rotating';
-  var lumpSum=rotating?cyclePot:contributionFV(rate);
-  var monthsWait=rotating?yourPos:members;
-  var modeledYield=rotating?0:rate;
-  var currency=document.getElementById('tc-currency').value;
-  var money=new Intl.NumberFormat(undefined,{style:'currency',currency:currency,maximumFractionDigits:2});
-  function fmt(n){return money.format(n);}
-  document.getElementById('tc-lump').textContent=fmt(lumpSum);
-  document.getElementById('tc-sub').textContent='At month '+monthsWait+' of '+members+' | Group total: '+fmt(cyclePot);
-  document.getElementById('tc-contributed').textContent=fmt(totalContributed);
-  document.getElementById('tc-receive').textContent=fmt(lumpSum);
-  document.getElementById('tc-months-wait').textContent=monthsWait+' months';
-  document.getElementById('tc-implicit-return').textContent=modeledYield.toFixed(2)+'%';
-  document.getElementById('tc-bank-equiv').textContent=fmt(bankEquiv);
-  document.getElementById('tc-cycle-total').textContent=fmt(cyclePot);
-  var verdict=rotating
-    ?'Zero-fee rotation: you contribute '+fmt(totalContributed)+' over the full cycle and receive the same nominal pot at month '+yourPos+'. Position changes timing, not nominal return.'
-    :'At the entered '+rate.toFixed(2)+'% annual effective rate, the contribution plan ends at '+fmt(lumpSum)+'. The same month-end contributions at the entered bank rate end at '+fmt(bankEquiv)+'.';
-  document.getElementById('tc-verdict').textContent=verdict;
-  results.classList.add('on');
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/thrift-calc.js?v=a912cc78"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

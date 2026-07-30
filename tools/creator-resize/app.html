@@ -1,127 +1,97 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>ResizeKit — Social Post Resizer | AfroTools</title>
+  <title>ResizeKit — Private Social Image Resizer | AfroTools</title>
+  <meta name="description" content="Resize one local PNG, JPEG, or WebP into 12 social-media dimensions, review each crop, and export PNG files or a ZIP.">
   <meta name="robots" content="noindex, follow">
-  <link rel="preconnect" href="https://fonts.googleapis.com" crossorigin>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <meta property="og:title" content="ResizeKit — Private Social Image Resizer | AfroTools">
+  <meta property="og:description" content="Resize one local PNG, JPEG, or WebP into 12 social-media dimensions, review each crop, and export PNG files or a ZIP.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/creator-resize.webp">
+  <meta property="og:url" content="https://afrotools.com/tools/creator-resize/app">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="en_US">
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-  <link rel="stylesheet" href="style.css?v=d148ead3">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js" defer></script>
-  <script src="/engines/creator-resize-engine.js?v=0b933fd8" defer></script>
-  <script src="/assets/js/supabase-auth.js?v=0c644f2e" defer></script>
-  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
-<meta property="og:url" content="https://afrotools.com/tools/creator-resize/app">
-<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
-<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
+  <link rel="stylesheet" href="/tools/creator-resize/style.css?v=d148ead3">
+  <link rel="stylesheet" href="/assets/css/creator-resize-parity.css?v=b09b50ce">
+  <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+  <script src="/assets/vendor/jszip/jszip.min.js?v=b5d02b3f" defer></script>
+  <script src="/engines/creator-resize-engine.js?v=652e278c" defer></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="canonical" href="https://afrotools.com/tools/creator-resize/app">
 </head>
-<body class="top-level-page-ui-refresh">
-  <div class="crz-app" id="crzApp">
-    <!-- HEADER -->
+<body>
+  <main class="crz-app" id="crzApp">
     <header class="crz-app-header">
-      <a href="index.html" class="crz-app-logo"><span>&#9986;</span> ResizeKit</a>
+      <a href="/tools/creator-resize/" class="crz-app-logo"><span aria-hidden="true">✂</span> ResizeKit</a>
       <div class="crz-header-actions">
-        <select id="crzFillSelect" class="crz-btn crz-btn-secondary crz-btn-sm" style="appearance:auto;padding-right:24px" title="Fill mode" aria-label="Fill mode">
-          <option value="blur">Blur Fill</option>
-          <option value="solid">Solid Color</option>
-          <option value="gradient">Gradient</option>
-          <option value="extend">Extend Edges</option>
-          <option value="crop">Crop Only</option>
-        </select>
-        <button type="button" id="crzDownloadAll" class="crz-btn crz-btn-primary crz-btn-sm" disabled>&#8595; Download All (ZIP)</button>
+        <label class="crz-sr-only" for="crzFillSelect">Fill mode</label>
+        <select id="crzFillSelect" class="crz-btn crz-btn-secondary crz-btn-sm" title="Fill mode" aria-label="Fill mode"><option value="blur">Blur fill</option><option value="solid">Sampled colour</option><option value="gradient">Sampled gradient</option><option value="extend">Edge stretch</option><option value="crop">Crop only</option></select>
+        <button type="button" id="crzDownloadAll" class="crz-btn crz-btn-primary crz-btn-sm" disabled>↓ Download all (ZIP)</button>
       </div>
     </header>
 
-    <!-- UPLOAD STATE -->
-    <div class="crz-upload-state" id="crzUploadState">
+    <section class="crz-upload-state" id="crzUploadState" aria-labelledby="crzDropTitle">
       <div class="crz-upload-card">
-        <div class="crz-drop-zone" id="crzDropZone">
-          <div class="crz-drop-icon">&#128247;</div>
-          <div class="crz-drop-title">Drop your image here</div>
-          <div class="crz-drop-sub">or click to upload &middot; PNG, JPG, WebP &middot; Max 10MB</div>
-          <input aria-label="CrzFileInput" type="file" id="crzFileInput" accept="image/png,image/jpeg,image/webp" hidden>
+        <div class="crz-drop-zone" id="crzDropZone" role="button" tabindex="0" aria-describedby="crzDropHelp">
+          <div class="crz-drop-icon" aria-hidden="true">📷</div>
+          <div class="crz-drop-title" id="crzDropTitle">Drop your image here</div>
+          <div class="crz-drop-sub" id="crzDropHelp">or choose a file · PNG, JPEG, WebP · maximum 10MB</div>
+          <input type="file" id="crzFileInput" accept="image/png,image/jpeg,image/webp" aria-label="Choose a local image" hidden>
         </div>
-        <div class="crz-presets">
-          <div class="crz-preset-label">Quick sizes</div>
-          <button type="button" class="crz-preset-btn active" data-preset="all">All Social</button>
-          <button type="button" class="crz-preset-btn" data-preset="instagram">Instagram Only</button>
-          <button type="button" class="crz-preset-btn" data-preset="youtube">YouTube Only</button>
-          <button type="button" class="crz-preset-btn" data-preset="x">X Only</button>
-          <button type="button" class="crz-preset-btn" data-preset="custom">Custom</button>
-        </div>
+        <p class="crz-privacy">Your image is decoded, resized, and packaged only in this browser. The workspace does not upload the file, send pixels to AI, or store the image on AfroTools servers.</p>
       </div>
-    </div>
+    </section>
 
-    <!-- EDITOR STATE (hidden until upload) -->
-    <div class="crz-editor" id="crzEditor" style="display:none">
-      <!-- LEFT: Original image + focal point -->
+    <section class="crz-editor" id="crzEditor" style="display:none" aria-label="Sizes">
       <div class="crz-editor-left">
         <div class="crz-original-wrap" id="crzOriginalWrap">
-          <img id="crzOriginalImg" class="crz-original-img" alt="Original image">
-          <div class="crz-focal-marker" id="crzFocalMarker">
-            <div class="crz-focal-ring"></div>
-          </div>
+          <img id="crzOriginalImg" class="crz-original-img" alt="Original image selected for local resizing">
+          <div class="crz-focal-marker" id="crzFocalMarker" aria-hidden="true"><div class="crz-focal-ring"></div></div>
         </div>
         <div class="crz-focal-info">
-          <span id="crzFocalLabel">Focal point: center</span>
-          <button type="button" id="crzFocalReset">Reset</button>
-          <button type="button" id="crzNewImage">New Image</button>
+          <span id="crzFocalLabel" aria-live="polite">Focal point: centre</span>
+          <button type="button" id="crzFocalReset">Reset focal point</button>
+          <button type="button" id="crzNewImage">New image</button>
         </div>
       </div>
-
-      <!-- RIGHT: Size previews -->
-      <div class="crz-sidebar">
+      <aside class="crz-sidebar">
         <div class="crz-sidebar-header">
           <div class="crz-sidebar-title">Sizes</div>
-          <div class="crz-sidebar-count" id="crzSizeCount">12 sizes</div>
+          <div class="crz-sidebar-count" id="crzSizeCount" aria-live="polite">12 sizes</div>
         </div>
-        <div class="crz-fill-bar">
-          <button type="button" class="crz-fill-btn active" data-fill="blur">Blur</button>
-          <button type="button" class="crz-fill-btn" data-fill="solid">Solid</button>
-          <button type="button" class="crz-fill-btn" data-fill="gradient">Gradient</button>
-          <button type="button" class="crz-fill-btn" data-fill="extend">Extend</button>
-          <button type="button" class="crz-fill-btn" data-fill="crop">Crop</button>
+        <div class="crz-presets" aria-label="Quick sizes">
+          <div class="crz-preset-label">Quick sizes</div>
+          <button type="button" class="crz-preset-btn active" data-preset="all" aria-pressed="true">All social</button><button type="button" class="crz-preset-btn" data-preset="instagram" aria-pressed="false">Instagram only</button><button type="button" class="crz-preset-btn" data-preset="youtube" aria-pressed="false">YouTube only</button><button type="button" class="crz-preset-btn" data-preset="x" aria-pressed="false">X only</button><button type="button" class="crz-preset-btn" data-preset="custom" aria-pressed="false">Custom selection</button>
         </div>
-        <div class="crz-size-grid" id="crzSizeGrid">
-          <!-- Size cards rendered by engine -->
+        <div class="crz-fill-bar" aria-label="Fill mode">
+          <button type="button" class="crz-fill-btn active" data-fill="blur" aria-pressed="true">Blur</button><button type="button" class="crz-fill-btn" data-fill="solid" aria-pressed="false">Colour</button><button type="button" class="crz-fill-btn" data-fill="gradient" aria-pressed="false">Gradient</button><button type="button" class="crz-fill-btn" data-fill="extend" aria-pressed="false">Stretch</button><button type="button" class="crz-fill-btn" data-fill="crop" aria-pressed="false">Crop</button>
         </div>
-      </div>
-    </div>
+        <div class="crz-size-grid" id="crzSizeGrid"></div>
+      </aside>
+    </section>
 
-    <!-- BOTTOM BAR (editor state) -->
     <div class="crz-bottom-bar" id="crzBottomBar" style="display:none">
-      <div class="crz-bottom-info" id="crzBottomInfo">12 sizes ready</div>
+      <div class="crz-bottom-info" id="crzBottomInfo" aria-live="polite">12 sizes ready</div>
       <div class="crz-bottom-actions">
-        <button type="button" class="crz-btn crz-btn-secondary crz-btn-sm" id="crzPresetToggle">Sizes &#9660;</button>
-        <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzDownloadAllBottom">&#8595; Download All (ZIP)</button>
+        <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzDownloadAllBottom">↓ Download all (ZIP)</button>
       </div>
     </div>
 
-    <!-- EXPAND MODAL -->
-    <div class="crz-modal-backdrop" id="crzModal">
+    <div class="crz-modal-backdrop" id="crzModal" role="dialog" aria-modal="true" aria-hidden="true" aria-labelledby="crzModalLabel">
       <div class="crz-modal-content">
-        <button type="button" class="crz-modal-close" id="crzModalClose">&times;</button>
+        <button type="button" class="crz-modal-close" id="crzModalClose" aria-label="Close preview">×</button>
         <canvas id="crzModalCanvas"></canvas>
         <div class="crz-modal-info">
-          <div>
-            <div class="crz-modal-label" id="crzModalLabel"></div>
-            <div class="crz-modal-dims" id="crzModalDims"></div>
-          </div>
-          <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzModalDownload">&#8595; Download</button>
+          <div><div class="crz-modal-label" id="crzModalLabel"></div><div class="crz-modal-dims" id="crzModalDims"></div></div>
+          <button type="button" class="crz-btn crz-btn-primary crz-btn-sm" id="crzModalDownload">↓ Download PNG</button>
         </div>
       </div>
     </div>
 
-    <!-- TOAST -->
-    <div class="crz-toast" id="crzToast"></div>
-  </div>
-<script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+    <div class="crz-toast" id="crzToast" role="status" aria-live="polite"></div>
+  </main>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -41,9 +41,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Site Clearing Cost Estimator","item":"https://afrotools.com/tools/site-clearing/"}]}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/site-clearance.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/site-clearance.webp">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
@@ -205,63 +205,42 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/engines/site-clearing-engine.js?v=83d8409e"></script>
 <script>
-var SC_RATES = {
-  NG:{ sym:'₦', veg_light:500, veg_medium:1200, veg_dense:2800, tree_each:8000, topsoil_m3:3500, demo_m2:8000, waste_haul_m3:2500, waste_chip_m3:800 },
-  KE:{ sym:'KES', veg_light:200, veg_medium:500, veg_dense:1100, tree_each:3200, topsoil_m3:1400, demo_m2:3200, waste_haul_m3:1000, waste_chip_m3:320 },
-  ZA:{ sym:'ZAR', veg_light:55, veg_medium:140, veg_dense:320, tree_each:950, topsoil_m3:420, demo_m2:950, waste_haul_m3:280, waste_chip_m3:90 },
-  GH:{ sym:'GHS', veg_light:45, veg_medium:110, veg_dense:260, tree_each:750, topsoil_m3:320, demo_m2:750, waste_haul_m3:220, waste_chip_m3:70 },
-  EG:{ sym:'EGP', veg_light:50, veg_medium:120, veg_dense:280, tree_each:800, topsoil_m3:350, demo_m2:800, waste_haul_m3:240, waste_chip_m3:75 },
-  ET:{ sym:'ETB', veg_light:120, veg_medium:290, veg_dense:670, tree_each:2000, topsoil_m3:850, demo_m2:2000, waste_haul_m3:580, waste_chip_m3:185 },
-  TZ:{ sym:'TZS', veg_light:4500, veg_medium:11000, veg_dense:25000, tree_each:75000, topsoil_m3:32000, demo_m2:75000, waste_haul_m3:22000, waste_chip_m3:7000 },
-  UG:{ sym:'UGX', veg_light:5800, veg_medium:14000, veg_dense:32000, tree_each:95000, topsoil_m3:42000, demo_m2:95000, waste_haul_m3:28000, waste_chip_m3:9000 },
-  RW:{ sym:'RWF', veg_light:950, veg_medium:2300, veg_dense:5400, tree_each:16000, topsoil_m3:6800, demo_m2:16000, waste_haul_m3:4700, waste_chip_m3:1500 },
-  MA:{ sym:'MAD', veg_light:22, veg_medium:55, veg_dense:125, tree_each:380, topsoil_m3:165, demo_m2:380, waste_haul_m3:110, waste_chip_m3:35 }
-};
-var TERRAIN_MULT = { flat:1.0, gentle:1.25, steep:1.65 };
-var DEMO_M2 = { none:0, small:30, medium:150, large:350 };
 
 function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
 
 function calcSiteClearing(){
-  var country = document.getElementById('sc-country').value;
-  var area = +document.getElementById('sc-area').value;
-  var veg = document.getElementById('sc-veg').value;
-  var terrain = document.getElementById('sc-terrain').value;
-  var topsoil = document.getElementById('sc-topsoil').value;
-  var trees = +document.getElementById('sc-trees').value;
-  var demo = document.getElementById('sc-demo').value;
-  var waste = document.getElementById('sc-waste').value;
-  var r = SC_RATES[country], sym = r.sym;
-  var terrFactor = TERRAIN_MULT[terrain];
+  var result = window.AfroTools.SiteClearingEngine.calculate({
+    country:document.getElementById('sc-country').value,
+    area:document.getElementById('sc-area').value,
+    vegetation:document.getElementById('sc-veg').value,
+    terrain:document.getElementById('sc-terrain').value,
+    removeTopsoil:document.getElementById('sc-topsoil').value === 'yes',
+    trees:document.getElementById('sc-trees').value,
+    demolition:document.getElementById('sc-demo').value,
+    waste:document.getElementById('sc-waste').value
+  });
+  if (!result.ok) {
+    document.getElementById('sc-results').classList.remove('on');
+    return;
+  }
 
-  var vegCost = veg === 'cleared' ? 0 : area * r['veg_' + veg] * terrFactor;
-  var treeCost = trees * r.tree_each;
-  var topDepth = 0.225; // 225mm average
-  var topVol = area * topDepth;
-  var topCost = topsoil === 'yes' ? topVol * r.topsoil_m3 : 0;
-  var demoArea = DEMO_M2[demo];
-  var demoCost = demoArea * r.demo_m2;
-  var wasteVol = veg === 'cleared' ? 0 : area * 0.05; // 5% vol estimate
-  var wasteCost = waste === 'burn' ? 0 : waste === 'haul' ? wasteVol * r.waste_haul_m3 : wasteVol * r.waste_chip_m3;
-  var total = vegCost + treeCost + topCost + demoCost + wasteCost;
-  var daysEst = Math.ceil(area / 500) + Math.ceil(trees / 5) + (demo !== 'none' ? 3 : 0);
-
-  document.getElementById('sc-headline').textContent = 'Site Clearing — ' + (area/10000).toFixed(2) + ' ha (' + area.toLocaleString() + ' m²)';
-  document.getElementById('sc-veg-cost').textContent = veg === 'cleared' ? 'N/A' : fmtCur(sym, vegCost);
-  document.getElementById('sc-tree-cost').textContent = trees > 0 ? fmtCur(sym, treeCost) : 'N/A';
-  document.getElementById('sc-top-cost').textContent = topsoil === 'yes' ? fmtCur(sym, topCost) : 'N/A';
-  document.getElementById('sc-demo-cost').textContent = demo !== 'none' ? fmtCur(sym, demoCost) : 'N/A';
-  document.getElementById('sc-waste-cost').textContent = waste === 'burn' ? 'Nil (burn on site)' : fmtCur(sym, wasteCost);
-  document.getElementById('sc-total').textContent = fmtCur(sym, total);
-  document.getElementById('sc-per-m2').textContent = fmtCur(sym, total / area) + '/m²';
-  document.getElementById('sc-duration').textContent = daysEst + ' working days';
+  document.getElementById('sc-headline').textContent = 'Site Clearing — ' + (result.area/10000).toFixed(2) + ' ha (' + result.area.toLocaleString() + ' m²)';
+  document.getElementById('sc-veg-cost').textContent = result.vegetation === 'cleared' ? 'N/A' : fmtCur(result.symbol, result.vegetationCost);
+  document.getElementById('sc-tree-cost').textContent = result.trees > 0 ? fmtCur(result.symbol, result.treeCost) : 'N/A';
+  document.getElementById('sc-top-cost').textContent = result.removeTopsoil ? fmtCur(result.symbol, result.topsoilCost) : 'N/A';
+  document.getElementById('sc-demo-cost').textContent = result.demolition !== 'none' ? fmtCur(result.symbol, result.demolitionCost) : 'N/A';
+  document.getElementById('sc-waste-cost').textContent = result.waste === 'burn' ? 'Nil (burn on site)' : fmtCur(result.symbol, result.wasteCost);
+  document.getElementById('sc-total').textContent = fmtCur(result.symbol, result.total);
+  document.getElementById('sc-per-m2').textContent = fmtCur(result.symbol, result.costPerM2) + '/m²';
+  document.getElementById('sc-duration').textContent = result.days + ' working days';
 
   var notes = [
     'Get 3 equipment quotes (excavator, bulldozer). Daily hire rates vary by 40–60% between operators.',
-    veg === 'dense' ? 'Dense forest clearing may require environmental impact assessment (EIA) approval in your country.' : '',
-    terrain === 'steep' ? 'Steep sites may require cut-and-fill earthworks beyond basic clearing — budget extra 20–40%.' : '',
-    waste === 'burn' ? 'Check local bylaws before burning on site — prohibited in many urban areas. Violations attract fines.' : waste === 'haul' ? 'Confirm the dumping site is legal. Illegal dumping can result in contractor prosecution.' : '',
+    result.vegetation === 'dense' ? 'Dense forest clearing may require environmental impact assessment (EIA) approval in your country.' : '',
+    result.terrain === 'steep' ? 'Steep sites may require cut-and-fill earthworks beyond basic clearing — budget extra 20–40%.' : '',
+    result.waste === 'burn' ? 'Check local bylaws before burning on site — prohibited in many urban areas. Violations attract fines.' : result.waste === 'haul' ? 'Confirm the dumping site is legal. Illegal dumping can result in contractor prosecution.' : '',
     'Survey and peg the site before clearing to avoid clearing beyond plot boundaries.',
     'Topsoil removed can be sold or stockpiled — quality topsoil for landscaping may offset clearing costs by 10–20%.'
   ].filter(Boolean);

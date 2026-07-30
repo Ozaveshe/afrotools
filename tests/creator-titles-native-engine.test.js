@@ -1,0 +1,17 @@
+const assert = require("node:assert/strict");
+const fs = require("node:fs");
+const path = require("node:path");
+const vm = require("node:vm");
+const context = {console, Date, Math, JSON};
+context.window = context;
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, "..", "engines", "src", "creator-titles-engine.js"), "utf8"), context);
+const engine = context.AfroTools.engines.creatorTitles;
+const result = engine.generateLocalTitles("mode durable", "youtube", "fr");
+assert.equal(result.titles.length, 8);
+assert.equal(result.language, "fr");
+assert.equal(result.platform, "youtube");
+assert.equal(new Set(result.titles.map(item => item.style)).size, 8);
+assert.ok(result.titles.every(item => item.charCount === item.title.length));
+assert.ok(result.titles.every(item => /mode durable/i.test(item.title)));
+assert.throws(() => engine.generateLocalTitles("", "youtube", "fr"), /topic/);
+console.log("creator-titles native engine: 7 assertions passed");

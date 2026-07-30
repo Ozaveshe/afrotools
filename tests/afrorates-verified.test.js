@@ -8,7 +8,7 @@ const engine = require('../assets/js/engines/afrorates-verified');
 
 const root = path.resolve(__dirname, '..');
 const snapshot = JSON.parse(fs.readFileSync(path.join(root, 'data', 'rates', 'latest.json'), 'utf8'));
-const now = '2026-07-24T12:00:00.000Z';
+const now = snapshot.timestamp;
 
 test('AfroRates exposes only the six rows with complete official evidence', () => {
   const rows = engine.selectVerified(snapshot, { maxAgeDays: 45, now });
@@ -31,18 +31,22 @@ test('future verification, decision and dataset dates fail closed', () => {
   const base = structuredClone(snapshot);
   const verifiedCode = base._verification.verified_codes[0];
   const row = base.countries.find((candidate) => candidate.code === verifiedCode);
+  const nowMs = new Date(now).getTime();
+  const future = new Date(nowMs + 24 * 60 * 60 * 1000);
+  const boundedSkew = new Date(nowMs + 4 * 60 * 1000);
+  const futureDate = future.toISOString().slice(0, 10);
 
-  row.policy_rate_verified_at = '2026-07-25T12:00:00.000Z';
+  row.policy_rate_verified_at = future.toISOString();
   assert.equal(engine.isVerifiedPolicyRow(row, base, { now }), false);
 
-  row.policy_rate_verified_at = '2026-07-24T12:04:00.000Z';
+  row.policy_rate_verified_at = boundedSkew.toISOString();
   assert.equal(engine.isVerifiedPolicyRow(row, base, { now }), true, 'bounded five-minute clock skew is accepted');
 
-  row.policy_rate_source_date = '2026-07-25';
+  row.policy_rate_source_date = futureDate;
   assert.equal(engine.isVerifiedPolicyRow(row, base, { now }), false);
 
   const futureDataset = structuredClone(snapshot);
-  futureDataset.timestamp = '2026-07-25T12:00:00.000Z';
+  futureDataset.timestamp = future.toISOString();
   assert.deepEqual(engine.selectVerified(futureDataset, { now }), []);
 });
 

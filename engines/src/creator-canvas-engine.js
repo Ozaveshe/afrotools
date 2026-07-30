@@ -360,6 +360,87 @@
           safeZone: "10mm bleed zone on all edges"
         }
       }[e] || {}) : null;
+    },
+    normalizeHex: function(value, fallback) {
+      var candidate = String(value || "").trim().toUpperCase();
+      if (/^#[0-9A-F]{6}$/.test(candidate)) return candidate;
+      if (/^#[0-9A-F]{3}$/.test(candidate)) {
+        return "#" + candidate.slice(1).split("").map(function(char) {
+          return char + char;
+        }).join("");
+      }
+      return fallback || "#000000";
+    },
+    buildDesign: function(input) {
+      input = input || {};
+      var formatKey = this.FORMATS[input.format] ? input.format : "ig-post";
+      var format = this.FORMATS[formatKey];
+      var exportInfo = this.getExportInfo(formatKey) || {};
+      var title = String(input.title || "").replace(/\s+/g, " ").trim().slice(0, 90);
+      if (!title) title = "YOUR STORY STARTS HERE";
+      var subtitle = String(input.subtitle || "").replace(/\s+/g, " ").trim().slice(0, 160);
+      var cta = String(input.cta || "").replace(/\s+/g, " ").trim().slice(0, 40);
+      var colors = [
+        this.normalizeHex(input.primaryColor, "#0F766E"),
+        this.normalizeHex(input.secondaryColor, "#F59E0B"),
+        this.normalizeHex(input.textColor, "#FFFFFF")
+      ];
+      var align = [ "left", "center", "right" ].indexOf(input.align) >= 0 ? input.align : "center";
+      return {
+        schemaVersion: 1,
+        tool: "creator-canvas",
+        format: formatKey,
+        width: format.w,
+        height: format.h,
+        formatLabel: format.label,
+        platform: exportInfo.platform || "General",
+        safeZone: exportInfo.safeZone || "Keep text 5% from edges",
+        title: title,
+        subtitle: subtitle,
+        cta: cta,
+        align: align,
+        colors: colors,
+        canvas_data: {
+          background: { type: "gradient", colors: colors.slice(0, 2), angle: 135 },
+          elements: [
+            {
+              id: "title",
+              type: "text",
+              content: title,
+              x: Math.round(format.w * 0.08),
+              y: Math.round(format.h * 0.28),
+              width: Math.round(format.w * 0.84),
+              height: Math.round(format.h * 0.28),
+              style: {
+                fontFamily: "DM Sans",
+                fontSize: Math.max(34, Math.round(Math.min(format.w, format.h) * 0.085)),
+                fontWeight: 900,
+                color: colors[2],
+                textAlign: align
+              }
+            }
+          ]
+        },
+        assumptions: [
+          "The exported PNG uses the exact platform dimensions shown.",
+          "Safe-zone guidance is informational and may change when platforms update their interfaces.",
+          "Text and colors are rendered locally in this browser."
+        ]
+      };
+    },
+    toText: function(design, locale) {
+      var fr = locale === "fr";
+      return [
+        fr ? "BRIEF VISUEL" : "VISUAL BRIEF",
+        design.title,
+        design.subtitle,
+        design.cta,
+        "",
+        (fr ? "Format : " : "Format: ") + design.formatLabel + " — " + design.width + "×" + design.height,
+        (fr ? "Plateforme : " : "Platform: ") + design.platform,
+        (fr ? "Zone sûre : " : "Safe zone: ") + design.safeZone,
+        (fr ? "Couleurs : " : "Colors: ") + design.colors.join(", ")
+      ].filter(Boolean).join("\n");
     }
   };
   window.AfroTools || (window.AfroTools = {}), window.AfroTools.engines || (window.AfroTools.engines = {}),

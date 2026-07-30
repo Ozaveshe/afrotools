@@ -3,6 +3,7 @@
   var e = [ {
     id: "ig-square",
     name: "IG Square",
+    nameFr: "Carré Instagram",
     w: 1080,
     h: 1080,
     group: "instagram",
@@ -10,6 +11,7 @@
   }, {
     id: "ig-portrait",
     name: "IG Portrait",
+    nameFr: "Portrait Instagram",
     w: 1080,
     h: 1350,
     group: "instagram",
@@ -17,6 +19,7 @@
   }, {
     id: "ig-story",
     name: "IG Story",
+    nameFr: "Story Instagram",
     w: 1080,
     h: 1920,
     group: "instagram",
@@ -24,6 +27,7 @@
   }, {
     id: "x-post",
     name: "X Post",
+    nameFr: "Publication X",
     w: 1200,
     h: 675,
     group: "x",
@@ -31,6 +35,7 @@
   }, {
     id: "x-header",
     name: "X Header",
+    nameFr: "Bannière X",
     w: 1500,
     h: 500,
     group: "x",
@@ -38,6 +43,7 @@
   }, {
     id: "yt-thumb",
     name: "YT Thumbnail",
+    nameFr: "Miniature YouTube",
     w: 1280,
     h: 720,
     group: "youtube",
@@ -45,6 +51,7 @@
   }, {
     id: "yt-banner",
     name: "YT Banner",
+    nameFr: "Bannière YouTube",
     w: 2560,
     h: 1440,
     group: "youtube",
@@ -52,6 +59,7 @@
   }, {
     id: "li-post",
     name: "LinkedIn Post",
+    nameFr: "Publication LinkedIn",
     w: 1200,
     h: 627,
     group: "linkedin",
@@ -59,6 +67,7 @@
   }, {
     id: "fb-cover",
     name: "FB Cover",
+    nameFr: "Couverture Facebook",
     w: 820,
     h: 312,
     group: "facebook",
@@ -66,6 +75,7 @@
   }, {
     id: "fb-post",
     name: "FB Post",
+    nameFr: "Publication Facebook",
     w: 1200,
     h: 630,
     group: "facebook",
@@ -73,6 +83,7 @@
   }, {
     id: "pin",
     name: "Pinterest Pin",
+    nameFr: "Épingle Pinterest",
     w: 1e3,
     h: 1500,
     group: "pinterest",
@@ -80,6 +91,7 @@
   }, {
     id: "wa-status",
     name: "WA Status",
+    nameFr: "Statut WhatsApp",
     w: 1080,
     h: 1920,
     group: "whatsapp",
@@ -92,6 +104,43 @@
     youtube: [ "yt-thumb", "yt-banner" ],
     x: [ "x-post", "x-header" ],
     custom: []
+  }, a = {
+    en: {
+      imageTooLarge: "Image too large. Max 10MB.",
+      unsupportedImage: "Choose a PNG, JPEG, or WebP image.",
+      unreadableImage: "This image could not be opened.",
+      focalPoint: "Focal point: {x}%, {y}%",
+      download: "Download {name}",
+      downloaded: "Downloaded {name}",
+      sizeCount: "{count} size",
+      sizesCount: "{count} sizes",
+      ready: "{count} ready",
+      generatingZip: "Generating ZIP...",
+      downloadedZip: "Downloaded {count} sizes as ZIP",
+      noSizes: "Choose at least one size to download.",
+      zipLoading: "ZIP library unavailable. Reload and try again.",
+      resized: "resized",
+      chooseSize: "Include {name}",
+      removeSize: "Remove {name}"
+    },
+    fr: {
+      imageTooLarge: "Image trop volumineuse. Maximum : 10 Mo.",
+      unsupportedImage: "Choisissez une image PNG, JPEG ou WebP.",
+      unreadableImage: "Impossible d’ouvrir cette image.",
+      focalPoint: "Point focal : {x} %, {y} %",
+      download: "Télécharger {name}",
+      downloaded: "{name} téléchargé",
+      sizeCount: "{count} format",
+      sizesCount: "{count} formats",
+      ready: "{count} prêts",
+      generatingZip: "Création du ZIP…",
+      downloadedZip: "{count} formats téléchargés dans le ZIP",
+      noSizes: "Choisissez au moins un format à télécharger.",
+      zipLoading: "Bibliothèque ZIP indisponible. Rechargez puis réessayez.",
+      resized: "redimensionne",
+      chooseSize: "Inclure {name}",
+      removeSize: "Retirer {name}"
+    }
   }, n = {
     sourceImage: null,
     sourceFile: null,
@@ -104,6 +153,18 @@
     activeSizeIds: t.all.slice(),
     canvases: {},
     blobs: {},
+    sizes: e,
+    presets: t,
+    locale: /^fr\b/i.test(document.documentElement.lang || "") ? "fr" : "en",
+    text: function(e, t) {
+      var n = (a[this.locale] && a[this.locale][e]) || a.en[e] || e;
+      return Object.keys(t || {}).reduce(function(e, a) {
+        return e.split("{" + a + "}").join(String(t[a]));
+      }, n);
+    },
+    sizeName: function(e) {
+      return "fr" === this.locale ? e.nameFr : e.name;
+    },
     init: function() {
       var e = this, n = localStorage.getItem("crz-fill-mode");
       n && (e.fillMode = n);
@@ -116,8 +177,14 @@
       var e = this, t = document.getElementById("crzDropZone"), n = document.getElementById("crzFileInput"), a = document.getElementById("crzNewImage");
       t.addEventListener("click", function() {
         n.click();
+      }), t.addEventListener("keydown", function(e) {
+        ("Enter" === e.key || " " === e.key) && (e.preventDefault(), n.click());
       }), n.addEventListener("change", function() {
-        n.files && n.files[0] && e.loadImage(n.files[0]);
+        if (n.files && n.files[0]) {
+          var a = n.files[0];
+          e.loadImage(a);
+          (!/^image\/(?:png|jpeg|webp)$/i.test(a.type || "") || a.size > 10485760) && (n.value = "");
+        }
       }), t.addEventListener("dragover", function(e) {
         e.preventDefault(), t.classList.add("dragover");
       }), t.addEventListener("dragleave", function() {
@@ -125,15 +192,17 @@
       }), t.addEventListener("drop", function(n) {
         n.preventDefault(), t.classList.remove("dragover");
         var a = n.dataTransfer.files;
-        a && a[0] && a[0].type.startsWith("image/") && e.loadImage(a[0]);
+        a && a[0] && e.loadImage(a[0]);
       }), a.addEventListener("click", function() {
         e.resetToUpload();
       });
     },
     loadImage: function(e) {
       var t = this;
-      if (e.size > 10485760) {
-        t.toast("Image too large. Max 10MB.", "error");
+      if (!e || !/^image\/(?:png|jpeg|webp)$/i.test(e.type || "")) {
+        t.toast(t.text("unsupportedImage"), "error");
+      } else if (e.size > 10485760) {
+        t.toast(t.text("imageTooLarge"), "error");
       } else {
         t.sourceFile = e;
         var n = new FileReader;
@@ -149,7 +218,11 @@
             t.renderAllSizes(), t.updateSizeCount();
             var a = parseInt(localStorage.getItem("crz-upload-count") || "0", 10);
             localStorage.setItem("crz-upload-count", String(a + 1));
+          }, n.onerror = function() {
+            t.toast(t.text("unreadableImage"), "error");
           }, n.src = e.target.result;
+        }, n.onerror = function() {
+          t.toast(t.text("unreadableImage"), "error");
         }, n.readAsDataURL(e);
       }
     },
@@ -168,8 +241,8 @@
         a.addEventListener("click", function() {
           var i = a.dataset.preset;
           n.forEach(function(e) {
-            e.classList.remove("active");
-          }), a.classList.add("active"), e.activePreset = i, "custom" !== i && (e.activeSizeIds = t[i].slice()),
+            e.classList.remove("active"), e.setAttribute("aria-pressed", "false");
+          }), a.classList.add("active"), a.setAttribute("aria-pressed", "true"), e.activePreset = i, "custom" !== i && (e.activeSizeIds = t[i].slice()),
           localStorage.setItem("crz-preset", i), e.sourceImage && (e.renderAllSizes(), e.updateSizeCount());
         });
       });
@@ -190,7 +263,7 @@
     },
     setFillMode: function(e) {
       this.fillMode = e, localStorage.setItem("crz-fill-mode", e), document.querySelectorAll(".crz-fill-btn").forEach(function(t) {
-        t.classList.toggle("active", t.dataset.fill === e);
+        t.classList.toggle("active", t.dataset.fill === e), t.setAttribute("aria-pressed", t.dataset.fill === e ? "true" : "false");
       }), this.sourceImage && this.renderAllSizes();
     },
     bindFocalPoint: function() {
@@ -210,7 +283,10 @@
       var e = document.getElementById("crzFocalMarker");
       e.style.left = 100 * this.focalPoint.x + "%", e.style.top = 100 * this.focalPoint.y + "%";
       var t = document.getElementById("crzFocalLabel"), n = Math.round(100 * this.focalPoint.x), a = Math.round(100 * this.focalPoint.y);
-      t.textContent = "Focal point: " + n + "%, " + a + "%";
+      t.textContent = this.text("focalPoint", {
+        x: n,
+        y: a
+      });
     },
     renderAllSizes: function() {
       var t = this, n = document.getElementById("crzSizeGrid");
@@ -235,17 +311,31 @@
         var u = document.createElement("div");
         u.className = "crz-size-meta";
         var m = document.createElement("div");
-        m.innerHTML = '<div class="crz-size-name">' + e.name + '</div><div class="crz-size-dims">' + e.w + "×" + e.h + "</div>";
+        var p = t.sizeName(e);
+        m.innerHTML = '<div class="crz-size-name">' + p + '</div><div class="crz-size-dims">' + e.w + "×" + e.h + "</div>";
         var g = document.createElement("button");
-        g.className = "crz-size-dl", g.innerHTML = "&#8595;", g.title = "Download " + e.name,
+        g.className = "crz-size-dl", g.innerHTML = "&#8595;", g.title = t.text("download", {
+          name: p
+        }), g.setAttribute("aria-label", g.title),
         g.addEventListener("click", function(n) {
           n.stopPropagation(), t.downloadSingle(e.id);
-        }), u.appendChild(m), i && u.appendChild(g), o.appendChild(l), o.appendChild(u),
-        i && o.addEventListener("click", function() {
+        }), u.appendChild(m);
+        if ("custom" === t.activePreset) {
+          var f = document.createElement("button");
+          f.className = "crz-size-dl crz-size-toggle", f.textContent = i ? "✓" : "+", f.title = t.text(i ? "removeSize" : "chooseSize", {
+            name: p
+          }), f.setAttribute("aria-label", f.title), f.addEventListener("click", function(n) {
+            n.stopPropagation(), t.toggleSize(e.id);
+          }), u.appendChild(f), o.className = "crz-size-card" + (i ? " active" : ""), o.style.opacity = i ? "" : ".55";
+        } else {
+          i && u.appendChild(g);
+        }
+        o.appendChild(l), o.appendChild(u),
+        i && "custom" !== t.activePreset && o.addEventListener("click", function() {
           t.openModal(e.id);
-        }), "custom" !== t.activePreset || i || (o.className = "crz-size-card", o.style.opacity = ".5",
-        o.addEventListener("click", function() {
-          t.toggleSize(e.id);
+        }), i && "custom" !== t.activePreset && (o.tabIndex = 0, o.setAttribute("role", "button"), o.setAttribute("aria-label", t.sizeName(e) + " " + e.w + "×" + e.h),
+        o.addEventListener("keydown", function(n) {
+          ("Enter" === n.key || " " === n.key) && (n.preventDefault(), t.openModal(e.id));
         })), n.appendChild(o);
       });
     },
@@ -305,8 +395,13 @@
     },
     updateSizeCount: function() {
       var e = this.activeSizeIds.length;
-      document.getElementById("crzSizeCount").textContent = e + " size" + (1 !== e ? "s" : ""),
-      document.getElementById("crzBottomInfo").textContent = e + " size" + (1 !== e ? "s" : "") + " ready";
+      var t = this.text(1 === e ? "sizeCount" : "sizesCount", {
+        count: e
+      });
+      document.getElementById("crzSizeCount").textContent = t,
+      document.getElementById("crzBottomInfo").textContent = this.text("ready", {
+        count: t
+      });
     },
     bindDownload: function() {
       var e = this;
@@ -325,7 +420,9 @@
         i && a.toBlob(function(e) {
           var t = URL.createObjectURL(e), a = document.createElement("a");
           a.href = t, a.download = i.slug + ".png", document.body.appendChild(a), a.click(),
-          document.body.removeChild(a), URL.revokeObjectURL(t), n.toast("Downloaded " + i.name, "success");
+          document.body.removeChild(a), URL.revokeObjectURL(t), n.toast(n.text("downloaded", {
+            name: n.sizeName(i)
+          }), "success");
         }, "image/png");
       }
     },
@@ -342,8 +439,8 @@
             size: o
           });
         }), 0 !== n.length) {
-          t.toast("Generating ZIP...", "success");
-          var a = new JSZip, i = t.sourceFile ? t.sourceFile.name.replace(/\.[^.]+$/, "") : "resized", o = n.length;
+          t.toast(t.text("generatingZip"), "success");
+          var a = new JSZip, i = t.sourceFile ? t.sourceFile.name.replace(/\.[^.]+$/, "") : t.text("resized"), o = n.length;
           n.forEach(function(e) {
             e.canvas.toBlob(function(l) {
               a.file(i + "/" + e.size.slug + ".png", l), 0 === --o && a.generateAsync({
@@ -351,27 +448,29 @@
               }).then(function(e) {
                 var a = URL.createObjectURL(e), o = document.createElement("a");
                 o.href = a, o.download = i + "-all-sizes.zip", document.body.appendChild(o), o.click(),
-                document.body.removeChild(o), URL.revokeObjectURL(a), t.toast("Downloaded " + n.length + " sizes as ZIP", "success");
+                document.body.removeChild(o), URL.revokeObjectURL(a), t.toast(t.text("downloadedZip", {
+                  count: n.length
+                }), "success");
               });
             }, "image/png");
           });
         } else {
-          t.toast("No sizes to download", "error");
+          t.toast(t.text("noSizes"), "error");
         }
       } else {
-        t.toast("ZIP library loading... try again", "error");
+        t.toast(t.text("zipLoading"), "error");
       }
     },
     bindModal: function() {
       var e = this, t = document.getElementById("crzModal");
       document.getElementById("crzModalClose").addEventListener("click", function() {
-        t.classList.remove("open");
-      }), t.addEventListener("click", function(e) {
-        e.target === t && t.classList.remove("open");
+        e.closeModal();
+      }), t.addEventListener("click", function(t) {
+        t.target === document.getElementById("crzModal") && e.closeModal();
       }), document.getElementById("crzModalDownload").addEventListener("click", function() {
         e._modalSizeId && e.downloadSingle(e._modalSizeId);
-      }), document.addEventListener("keydown", function(e) {
-        "Escape" === e.key && t.classList.remove("open");
+      }), document.addEventListener("keydown", function(t) {
+        "Escape" === t.key && e.closeModal();
       });
     },
     openModal: function(t) {
@@ -381,16 +480,23 @@
       if (n && a) {
         this._modalSizeId = t;
         var i = document.getElementById("crzModalCanvas");
-        i.width = n.width, i.height = n.height, i.getContext("2d").drawImage(n, 0, 0), document.getElementById("crzModalLabel").textContent = a.name,
-        document.getElementById("crzModalDims").textContent = a.w + "×" + a.h + "px", document.getElementById("crzModal").classList.add("open");
+        i.width = n.width, i.height = n.height, i.getContext("2d").drawImage(n, 0, 0), document.getElementById("crzModalLabel").textContent = this.sizeName(a),
+        document.getElementById("crzModalDims").textContent = a.w + "×" + a.h + " px", this._modalReturnFocus = document.activeElement;
+        var o = document.getElementById("crzModal");
+        o.classList.add("open"), o.setAttribute("aria-hidden", "false"), document.getElementById("crzModalClose").focus();
       }
+    },
+    closeModal: function() {
+      var e = document.getElementById("crzModal");
+      e && (e.classList.remove("open"), e.setAttribute("aria-hidden", "true")), this._modalReturnFocus && "function" == typeof this._modalReturnFocus.focus && this._modalReturnFocus.focus(),
+      this._modalReturnFocus = null;
     },
     syncUI: function() {
       var e = this;
       document.querySelectorAll(".crz-preset-btn").forEach(function(t) {
-        t.classList.toggle("active", t.dataset.preset === e.activePreset);
+        t.classList.toggle("active", t.dataset.preset === e.activePreset), t.setAttribute("aria-pressed", t.dataset.preset === e.activePreset ? "true" : "false");
       }), document.querySelectorAll(".crz-fill-btn").forEach(function(t) {
-        t.classList.toggle("active", t.dataset.fill === e.fillMode);
+        t.classList.toggle("active", t.dataset.fill === e.fillMode), t.setAttribute("aria-pressed", t.dataset.fill === e.fillMode ? "true" : "false");
       });
       var t = document.getElementById("crzFillSelect");
       t && (t.value = e.fillMode);

@@ -155,6 +155,98 @@
         platformTip: ""
       };
     },
+    generateLocal: function(a, t, i, s, r, n) {
+      var o = e[a] || e.instagram, l = String(t || "").trim();
+      if (!l) {
+        return {
+          ok: !1,
+          error: n === "french" ? "Décrivez d’abord votre publication." : "Describe your post first.",
+          captions: []
+        };
+      }
+      var c = n === "french", d = String(i || "casual"), u = s || {},
+      p = l.replace(/\s+/g, " "), h = p.split(" ").filter(function(e) {
+        return e.length > 3;
+      }).slice(0, a === "x" ? 2 : 5).map(function(e) {
+        return "#" + e.replace(/[^\p{L}\p{N}]/gu, "");
+      }).filter(function(e) {
+        return e.length > 1;
+      }), f = c ? {
+        labels: [ "La version claire", "La version audacieuse", "La version narrative" ],
+        hooks: [ "Voici l’essentiel :", "Une idée à ne pas ignorer :", "Tout commence par une question simple :" ],
+        bodies: [ "Découvrez " + p + ".", p + " mérite toute votre attention.", "Aujourd’hui, nous explorons " + p + "." ],
+        ctas: [ "Enregistrez cette publication pour plus tard.", "Partagez-la avec une personne concernée.", "Dites-nous ce que vous en pensez." ],
+        question: "Quelle est votre expérience ?",
+        tip: "Gardez la première ligne autonome : elle doit rester claire avant le bouton « voir plus »."
+      } : {
+        labels: [ "The Clear One", "The Bold One", "The Story One" ],
+        hooks: [ "Here is what matters:", "One idea worth your attention:", "It starts with a simple question:" ],
+        bodies: [ "A practical look at " + p + ".", p + " deserves a closer look.", "Today, we are exploring " + p + "." ],
+        ctas: [ "Save this post for later.", "Share this with someone who needs it.", "Tell us what you think." ],
+        question: "What has your experience been?",
+        tip: "Make the first line useful on its own so it still works before the platform truncates it."
+      }, g = r === "short" ? 0 : r === "long" ? 2 : 1,
+      m = [ 0, 1, 2 ].map(function(e) {
+        var t = f.hooks[e] + "\n\n" + f.bodies[e];
+        return 2 === g && (t += "\n\n" + (c ? "Ajoutez un exemple concret, un résultat ou une leçon afin que le lecteur puisse agir." : "Add a concrete example, result, or lesson so the reader can act.")),
+        u.question && (t += "\n\n" + f.question), u.cta && (t += "\n\n" + f.ctas[e]),
+        u.emoji && (t = [ "✨ ", "📌 ", "💡 " ][e] + t),
+        a === "x" && t.length > o.maxChars && (t = t.slice(0, o.maxChars - 1).trimEnd() + "…"),
+        {
+          variation: e + 1,
+          label: f.labels[e],
+          text: t,
+          charCount: t.length,
+          withinLimit: t.length <= o.maxChars,
+          hashtags: u.hashtags ? h : [],
+          cta: u.cta ? f.ctas[e] : "",
+          firstLinePreview: t.substring(0, o.previewChars)
+        };
+      });
+      return {
+        ok: !0,
+        mode: "local",
+        tone: d,
+        language: c ? "french" : n || "english",
+        captions: m,
+        platformTip: f.tip
+      };
+    },
+    rewriteLocal: function(a, t, i) {
+      var s = String(t || "").trim(), r = i === "french";
+      if (!s) {
+        return {
+          ok: !1,
+          error: r ? "Collez d’abord une légende à améliorer." : "Paste a caption to rewrite.",
+          captions: []
+        };
+      }
+      var n = s.replace(/\s+/g, " "), o = e[a] || e.instagram,
+      l = r ? [ "À retenir :", "Regard neuf :", "Question du jour :" ] : [ "Key takeaway:", "A fresh angle:", "Question for today:" ],
+      c = r ? [ "Enregistrez cette publication.", "Partagez-la si elle peut aider.", "Qu’en pensez-vous ?" ] : [ "Save this post.", "Share it if it helps.", "What do you think?" ],
+      d = r ? [ "La version structurée", "La version directe", "La version conversationnelle" ] : [ "The Structured One", "The Direct One", "The Conversational One" ],
+      u = [ 0, 1, 2 ].map(function(e) {
+        var t = l[e] + "\n\n" + n + "\n\n" + c[e];
+        return a === "x" && t.length > o.maxChars && (t = t.slice(0, o.maxChars - 1).trimEnd() + "…"),
+        {
+          variation: e + 1,
+          label: d[e],
+          text: t,
+          charCount: t.length,
+          withinLimit: t.length <= o.maxChars,
+          hashtags: [],
+          cta: c[e],
+          firstLinePreview: t.substring(0, o.previewChars)
+        };
+      });
+      return {
+        ok: !0,
+        mode: "local",
+        language: r ? "french" : "english",
+        captions: u,
+        platformTip: r ? "Relisez chaque proposition et conservez uniquement les faits que vous pouvez vérifier." : "Review each option and keep only claims you can verify."
+      };
+    },
     createHistoryEntry: function(e, a, t, i) {
       return {
         id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6),

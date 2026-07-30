@@ -17,6 +17,7 @@
   var manifestApi = null;
   var i18nApi = null;
   var guardrailsApi = null;
+  var frenchRouteMapApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
@@ -33,9 +34,15 @@
     } catch (err) {
       guardrailsApi = null;
     }
+    try {
+      frenchRouteMapApi = require("./french-route-map.generated.js");
+    } catch (err) {
+      frenchRouteMapApi = null;
+    }
   }
   if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
   if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
+  if (!frenchRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = globalThis.AfroToolsAIFrenchRouteMap;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -72,29 +79,138 @@
     aiCapabilities: ["route_only"],
   };
 
-  var ROUTING_RULES = [
+  var FRENCH_FINTECH_ROUTING_RULES = [
+    rule("fintech", "mobile-vs-bank", ["comparer mobile money et banque", "mobile money ou virement bancaire"], ["finance"]),
+    rule("fintech", "fixed-deposit", ["calculer un depot a terme", "rendement depot a terme"], ["finance"]),
+    rule("fintech", "tbill-calc", ["rendement d un bon du tresor", "rendement bon du tresor", "calculer un bon du tresor"], ["finance"]),
+    rule("fintech", "real-return", ["rendement reel apres inflation", "rendement corrige de l inflation"], ["finance"]),
+    rule("fintech", "loan-shark-compare", ["comparer pret informel et banque", "cout pret usurier"], ["finance"]),
+    rule("fintech", "microfinance-loan", ["cout d un pret de microfinance", "cout pret microfinance", "calculer pret de microfinance"], ["finance"]),
+    rule("fintech", "digital-lending", ["comparer des credits numeriques", "comparer credits numeriques", "taux credit digital"], ["finance"]),
+    rule("fintech", "sacco-calc", ["epargne sacco cooperative", "calculateur sacco"], ["finance"]),
+    rule("fintech", "payment-gateway", ["comparer des passerelles de paiement", "comparer passerelles de paiement", "frais passerelle paiement"], ["finance"]),
+    rule("fintech", "bnpl-calc", ["cout d un paiement fractionne", "cout paiement fractionne", "calculer achat maintenant payer plus tard"], ["finance"]),
+    rule("fintech", "emergency-fund", ["planifier un fonds d urgence", "planifier fonds d urgence", "objectif fonds urgence"], ["finance"]),
+    rule("fintech", "asset-finance", ["financement d actif avec paiement final", "calculer financement actif"], ["finance"]),
+    rule("fintech", "b2b-payment", ["paiement professionnel transfrontalier", "comparer paiement b2b"], ["finance"]),
+    rule("fintech", "bill-split", ["partager une addition", "repartir une addition"], ["finance"]),
+    rule("fintech", "bond-yield", ["rendement d une obligation a echeance", "rendement obligation a echeance", "calculer rendement obligataire"], ["finance"]),
+    rule("fintech", "credit-score", ["facteurs de mon profil de credit", "facteurs profil de credit", "verifier mon profil de credit"], ["finance"]),
+    rule("fintech", "dca-calc", ["investissements mensuels reguliers", "projection dca investissement"], ["finance"]),
+    rule("fintech", "debt-snowball", ["boule de neige et avalanche des dettes", "boule de neige et avalanche dettes", "comparer remboursement de dettes"], ["finance"]),
+    rule("fintech", "dividend-yield", ["rendement d une action a dividende", "rendement action a dividende", "calculer rendement dividendes"], ["finance"]),
+    rule("fintech", "fire-calc", ["projeter mon objectif fire", "projeter objectif fire", "independance financiere fire"], ["finance"]),
+    rule("fintech", "invoice-factoring", ["decomposer une offre d affacturage", "decomposer offre affacturage", "cout de l affacturage"], ["finance"]),
+    rule("fintech", "loan-consolidation", ["comparer une consolidation de prets", "comparer consolidation de prets", "regrouper mes prets"], ["finance"]),
+    rule("fintech", "merchant-fees", ["estimer les frais marchand", "frais par moyen de paiement", "estimer frais marchand"], ["finance"]),
+    rule("fintech", "money-market", ["comparer fonds monetaire et depot", "rendement fonds monetaire"], ["finance"]),
+    rule("fintech", "net-worth", ["calculer ma valeur nette", "suivre valeur nette"], ["finance"]),
+    rule("fintech", "pos-fees", ["frais d un terminal de paiement", "frais terminal de paiement", "estimer frais pos"], ["finance"]),
+    rule("fintech", "property-vs-stocks", ["comparer immobilier et actions", "immobilier ou bourse"], ["finance"]),
+    rule("fintech", "qr-payment", ["cout des paiements par qr", "cout paiements par qr", "frais paiement qr"], ["finance"]),
+    rule("fintech", "stock-portfolio", ["suivre un portefeuille d actions", "suivre portefeuille d actions", "calculer rendement portefeuille actions"], ["finance"]),
+    rule("fintech", "thrift-calc", ["modeliser une tontine", "rendement tontine cooperative"], ["finance"]),
+    rule("fintech", "trade-credit", ["comparer escompte et credit fournisseur", "cout credit commercial"], ["finance"]),
+  ];
+
+  var FRENCH_TELECOM_ROUTING_RULES = [
+    rule("telecom", "telecom-data-plan", ["comparateur de forfaits data", "comparateur forfaits data", "data plan comparator", "compare data plans"], ["none"]),
+    rule("telecom", "telecom-ussd", ["annuaire prudent des codes ussd", "annuaire codes ussd", "ussd code directory", "codes ussd"], ["none"]),
+    rule("telecom", "telecom-roaming", ["calculateur roaming ou sim locale", "calculateur roaming", "roaming cost calculator", "roaming ou sim locale"], ["finance"]),
+    rule("telecom", "telecom-starlink", ["comparateur starlink et isp locaux", "starlink vs local isp", "starlink compare"], ["finance"]),
+    rule("telecom", "telecom-tv", ["comparateur tv et streaming", "tv and streaming comparator", "tv package compare"], ["finance"]),
+    rule("telecom", "telecom-data-usage", ["calculateur de consommation data", "consommation data", "data usage calculator", "estimate data usage"], ["none"]),
+    rule("telecom", "telecom-airtime", ["valeur estimee du credit telephonique", "valeur du credit telephonique", "airtime value", "airtime conversion estimate"], ["finance"]),
+    rule("telecom", "telecom-portability", ["preparer une portabilite de numero", "portabilite de numero", "number portability", "keep my mobile number"], ["none"]),
+    rule("telecom", "telecom-sim-reg", ["verifier les exigences d enregistrement sim", "enregistrement sim", "sim registration", "register my sim"], ["legal"]),
+    rule("telecom", "telecom-internet", ["comparateur internet fixe et sans fil", "comparateur internet", "internet provider compare", "internet compare"], ["finance"]),
+    rule("telecom", "telecom-fiber-lte-5g", ["choisir entre fibre lte et 5g", "fibre lte ou 5g", "fiber lte or 5g", "fiber lte 5g"], ["none"]),
+    rule("telecom", "telecom-business-internet", ["dimensionner internet pour une entreprise", "internet pour une entreprise", "business internet", "office internet sizing"], ["finance"]),
+    rule("telecom", "telecom-bulk-sms", ["estimer un budget sms professionnel", "budget sms professionnel", "bulk sms pricing", "bulk sms budget"], ["finance"]),
+    rule("telecom", "telecom-whatsapp-vs-sms", ["comparer whatsapp business et sms", "whatsapp business vs sms", "whatsapp vs sms"], ["finance"]),
+  ];
+
+  var ROUTING_RULES = FRENCH_FINTECH_ROUTING_RULES.concat(FRENCH_TELECOM_ROUTING_RULES, [
     rule("career-documents", "cover-letter", ["cover letter", "application letter", "motivation letter"], ["employment"]),
     rule("cv-jobs", "cv-builder", ["cv", "resume", "curriculum vitae", "ats", "linkedin profile", "job application pack", "application pack", "graduate trainee role"], ["employment", "career"]),
     rule("government", "passport-checklist", ["passport checklist", "passport application", "passport documents", "passport fees", "ghana passport", "passport next steps"], ["none"]),
     rule("african", "mobile-money-fees", ["mobile money fees", "m-pesa fees", "mpesa fees", "mtn momo fees", "send cash", "cheapest send option"], ["finance"]),
+    rule("insurance", "car-insurance", ["estimer assurance auto", "preparer un devis assurance auto"], ["finance"]),
+    rule("insurance", "health-insurance-compare", ["comparer deux assurances sante", "comparer des assurances sante"], ["finance"]),
+    rule("insurance", "life-insurance-calc", ["calculer besoin assurance vie", "besoin de couverture assurance vie"], ["finance"]),
+    rule("insurance", "funeral-insurance", ["preparer assurance obseques", "assurance obseques"], ["finance"]),
+    rule("insurance", "motor-third-party", ["responsabilite civile automobile", "responsabilite civile auto"], ["finance"]),
+    rule("insurance", "business-insurance", ["planifier assurance entreprise", "preparer assurance entreprise"], ["finance"]),
+    rule("insurance", "travel-insurance", ["planifier assurance voyage", "preparer assurance voyage"], ["finance"]),
+    rule("insurance", "workers-comp", ["cotisation accident du travail", "cotisation accidents du travail"], ["finance"]),
+    rule("insurance", "health-contribution", ["contribution assurance sante", "cotisation sante"], ["finance"]),
+    rule("insurance", "claim-tracker", ["suivre un sinistre assurance", "preparer declaration sinistre assurance"], ["finance"]),
+    rule("insurance", "crop-insurance-calc", ["planifier assurance recolte", "assurance recolte"], ["finance"]),
+    rule("insurance", "fire-insurance", ["planifier assurance incendie", "assurance incendie"], ["finance"]),
+    rule("insurance", "insurance-fraud-checker", ["verifier signaux fraude assurance", "signaux fraude assurance"], ["finance"]),
+    rule("insurance", "marine-insurance", ["assurance transport maritime cargo", "planifier assurance maritime"], ["finance"]),
+    rule("insurance", "microinsurance", ["planifier microassurance", "comparer une microassurance"], ["finance"]),
+    rule("insurance", "professional-indemnity", ["responsabilite civile professionnelle", "assurance responsabilite professionnelle"], ["finance"]),
     rule("legal", "nda-generator", ["draft nda", "create nda", "client nda", "nda for", "non disclosure", "non-disclosure", "legal document generator"], ["legal"]),
     rule("study-abroad", "study-abroad-cost", ["study with", "study budget", "study cost", "study documents", "tuition budget", "nigeria to canada study"], ["education", "immigration"]),
     rule("scholarships", "scholarship-finder", ["scholarship", "scholarships", "bursary", "funding", "grant for school"], ["education"]),
-    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay", "take home", "take-home pay", "takehome", "salary", "i earn"], ["tax"]),
-    rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code"], ["finance"]),
+    rule("hr-payroll", "contractor-vs-employee", ["prestataire ou salarie", "prestataire et salarie", "cout prestataire salarie", "prestataire", "salarie", "contractor vs employee"], ["employment"]),
+    rule("hr-payroll", "domestic-worker", ["employee de maison", "employeee de maison", "emploi a domicile", "domestic worker"], ["employment"]),
+    rule("hr-payroll", "employee-cost", ["cout total d un salarie", "cout total salarie", "cout employeur", "employee cost"], ["employment"]),
+    rule("hr-payroll", "gratuity-calculator", ["indemnite de depart", "prime de depart", "gratuity calculator"], ["employment"]),
+    rule("hr-payroll", "maternity-leave", ["conge maternite", "conge parental", "conge paternite", "maternity leave"], ["employment"]),
+    rule("hr-payroll", "retrenchment-calculator", ["indemnite de licenciement economique", "licenciement economique", "retrenchment calculator"], ["employment"]),
+    rule("salary-tax", "paye-calculator", ["paye", "payroll", "salary tax", "income tax", "net pay", "gross pay", "take home", "take-home pay", "takehome", "salary", "i earn", "salaire net", "impot sur le revenu", "impot sur salaire", "fiche de paie"], ["tax"]),
+    rule("trade", "hs-code-lookup", ["hs code", "tariff code", "customs code", "code sh", "code douanier", "classement tarifaire"], ["finance"]),
     rule("trade", "sadc-roo", ["sadc rules of origin", "rules of origin", "origin certificate"], ["none"]),
+    rule("mining", "diamond-valuation", ["evaluation diamant", "evaluer un diamant", "valeur diamant", "prix diamant 4c", "estimer un diamant"], ["finance"]),
+    rule("mining", "oil-well-production", ["production puits petrole", "production d un puits de petrole", "puits de petrole", "debit puits petrole", "darcy puits", "production petroliere"], ["none"]),
+    rule("mining", "oil-gas-revenue", ["partage revenus petrole gaz", "partage des revenus petrole et gaz", "partage psc", "cost oil", "profit oil"], ["finance"]),
+    rule("mining", "mining-license-fee", ["cout licence miniere", "frais permis minier", "frais licence exploitation miniere"], ["finance", "legal"]),
+    rule("mining", "mining-royalty", ["redevance miniere", "royalty miniere", "redevance sur or", "taux redevance minerai"], ["finance", "legal"]),
+    rule("mining", "artisanal-mining-income", ["revenu minier artisanal", "revenu orpaillage", "revenu mineur artisanal", "prix acheteur agree minerai"], ["finance"]),
     rule("import-duty", "import-duty", ["import duty", "customs duty", "import", "car import", "vehicle import", "landed cost", "cif", "port charges", "duty and port", "machinery into", "toyota", "honda", "mazda", "nissan"], ["finance"]),
     rule("solar-energy", "solar-roi", ["solar", "inverter", "battery", "backup power", "payback"], ["energy"]),
     rule("fuel-energy", "fuel-tracker", ["generator", "fuel", "petrol", "diesel", "kerosene"], ["energy"]),
+    rule("career-documents", "cover-letter", ["lettre de motivation", "créer lettre motivation", "rédiger lettre motivation"], ["employment"]),
+    rule("documents", "meeting-minutes", ["compte rendu de réunion", "procès verbal réunion", "notes de réunion"], ["none"]),
+    rule("documents", "receipt-generator", ["générateur de reçus", "créer un reçu", "reçu de vente"], ["finance"]),
+    rule("documents", "freelance-invoice", ["facture freelance", "facture pour freelance"], ["finance"]),
+    rule("documents", "invoice-generator", ["générateur de factures", "créer une facture"], ["finance"]),
+    rule("documents", "business-plan", ["plan d’affaires document", "créer plan affaires"], ["finance"]),
     rule("business-tax", "invoice-generator", ["vat invoice", "create a vat invoice", "invoice with vat", "invoice", "receipt", "bill client"], ["finance"]),
-    rule("business-tax", "vat-calc-pan-african", ["calculate vat", "vat calculator", "vat rate", "value added tax", "sales tax"], ["tax"]),
+    rule("business-tax", "vat-calc-pan-african", ["calculate vat", "vat calculator", "vat rate", "value added tax", "sales tax", "calculer la tva", "taux de tva", "taxe sur la valeur ajoutee"], ["tax"]),
     rule("business-planning", "business-planner", ["register a small business", "business registration", "get a tin", "tin in", "start a business", "business setup"], ["finance", "legal"]),
-    rule("documents", "pdf-workspace", ["compress and sign", "compress, sign", "compress sign", "export a pdf locally", "pdf locally", "without uploading", "merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf"], ["none"]),
+    rule("documents", "pdf-merge-split", ["fusionner des pdf", "diviser un pdf", "fusionner diviser pdf", "fusionner et diviser des pdf"], ["none"]),
+    rule("documents", "pdf-compress", ["compresser un pdf", "réduire la taille pdf"], ["none"]),
+    rule("documents", "pdf-image-convert", ["pdf en image", "image en pdf", "convertir pdf image", "pdf images"], ["none"]),
+    rule("documents", "pdf-watermark", ["filigrane pdf", "ajouter un filigrane pdf"], ["none"]),
+    rule("documents", "pdf-password", ["protéger pdf mot de passe", "protéger un pdf", "déverrouiller pdf"], ["none"]),
+    rule("documents", "pdf-page-numbers", ["numérotation pdf", "numéroter les pages pdf"], ["none"]),
+    rule("documents", "pdf-sign", ["signer un pdf", "signature pdf"], ["none"]),
+    rule("documents", "pdf-ocr", ["ocr pdf", "extraire texte pdf numérisé"], ["none"]),
+    rule("documents", "pdf-form-filler", ["remplir formulaire pdf", "remplir un formulaire pdf", "compléter formulaire pdf"], ["none"]),
+    rule("documents", "pdf-redact", ["caviarder un pdf", "masquer données pdf"], ["none"]),
+    rule("documents", "pdf-header-footer", ["en-tête pied de page pdf", "en-tête et pied de page pdf", "ajouter en-tête pdf"], ["none"]),
+    rule("documents", "pdf-editor", ["éditeur pdf", "annoter un pdf"], ["none"]),
+    rule("documents", "pdf-convert", ["convertir des documents", "convertir pdf word excel"], ["none"]),
+    rule("documents", "pdf-reorder", ["réorganiser pages pdf", "organiser les pages pdf", "tourner supprimer pages pdf"], ["none"]),
+    rule("documents", "pdf-chat", ["questions sur un pdf", "interroger un pdf"], ["none"]),
+    rule("documents", "pdf-translate", ["traduire un pdf", "traduction pdf"], ["none"]),
+    rule("documents", "pdf-compare", ["comparer des pdf", "différences entre deux pdf"], ["none"]),
+    rule("documents", "pdf-to-audio", ["pdf en audio", "lire un pdf à voix haute"], ["none"]),
+    rule("documents", "pdf-bates", ["numérotation bates pdf", "tampon bates pdf"], ["none"]),
+    rule("documents", "html-to-pdf", ["html en pdf", "convertir html pdf"], ["none"]),
+    rule("documents", "pdf-find-replace", ["rechercher remplacer pdf", "rechercher et remplacer dans un pdf", "remplacer texte pdf"], ["none"]),
+    rule("documents", "pdf-repair", ["réparer un pdf", "pdf endommagé"], ["none"]),
+    rule("documents", "pdf-workflow", ["flux de travail pdf", "enchaîner opérations pdf"], ["none"]),
+    rule("documents", "pdf-workspace", ["compress and sign", "compress, sign", "compress sign", "export a pdf locally", "pdf locally", "without uploading", "merge pdf", "merge pdfs", "merge two pdfs", "combine pdf", "combine pdfs", "split pdf", "split pdfs", "extract pdf pages", "compress pdf", "compress my pdf", "reduce pdf", "shrink pdf", "add page numbers", "page numbers", "number pages", "protect pdf", "protect a pdf", "password protect pdf", "lock pdf", "fusionner pdf", "fusionner deux pdf", "assembler des pdf", "compresser mon pdf", "reduire mon pdf"], ["none"]),
     rule("documents", "pdf-sign", ["sign pdf", "sign", "pdf signature", "add signature"], ["none"]),
     rule("documents", "pdf-redact", ["redact pdf", "redact", "remove sensitive text"], ["none"]),
     rule("documents", "pdf-to-audio", ["pdf to audio", "read pdf aloud", "listen to pdf"], ["none"]),
     rule("documents", "pdf-watermark", ["watermark pdf", "pdf watermark"], ["none"]),
     rule("documents", "pdf-workspace", ["pdf", "document"], ["none"]),
+    rule("health", "medical-report", ["rapport medical", "resultats sanguins", "analyse sanguine", "bilan sanguin", "expliquer mes analyses"], ["health"]),
     rule("education", "gpa-calculator", ["gpa", "cgpa", "grade point"], ["education"]),
     rule("education", "ielts-calculator", ["ielts", "band score", "english test"], ["education"]),
     rule("study-abroad", "study-abroad-cost", ["study abroad", "study in", "study from", "student visa", "tuition abroad", "school abroad", "student prepare", "australia intake", "canada intake", "uk intake", "intake documents"], ["education", "immigration"]),
@@ -108,7 +224,7 @@
     rule("agriculture", "storage-loss", ["storage loss", "post harvest", "post-harvest", "grain storage", "hermetic", "silo"], ["finance"]),
     rule("agriculture", "commodity-prices", ["commodity prices", "market price", "market prices", "farm gate price", "farm-gate price", "sell maize", "sell cocoa", "seasonal price"], ["finance"]),
     rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
-    rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm"], ["none"]),
+    rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm", "rendement culture", "rendement mais", "rendement du mais", "estimer la recolte"], ["none"]),
     rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),
     rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea"], ["finance"]),
     rule("agriculture", "input-prices", ["input prices", "seed prices", "fertilizer prices", "agrochemical prices"], ["finance"]),
@@ -124,7 +240,7 @@
     rule("construction", "home-renovation-cost", ["renovation cost", "home renovation", "building cost", "construction cost"], ["finance"]),
     rule("construction", "afroplan-floor-planner", ["floor planner", "floor plan", "floor layout", "house plan", "room layout", "construction layout", "two-bedroom", "two bedroom", "2-bedroom", "2 bedroom", "bedroom floor plan", "simple floor plan", "design a simple", "plot in"], ["none"]),
     rule("country-intelligence", "afroatlas", ["country intelligence", "country profile", "compare countries", "compare", "which country", "market entry", "market data", "africa data", "afroatlas", "starting a business", "start a business", "doing business", "remote worker", "remote work", "digital nomad", "costs of moving", "main costs of moving"], ["none"]),
-  ];
+  ]);
 
   var COUNTRY_ALIASES = {
     nigeria: "Nigeria",
@@ -185,7 +301,7 @@
     return {
       intentCategory: intentCategory,
       toolId: toolId,
-      keywords: keywords,
+      keywords: array(keywords).map(normalizeText),
       safetyHints: safetyHints || [],
     };
   }
@@ -241,7 +357,8 @@
   function keywordScore(text, keywords) {
     var score = 0;
     array(keywords).forEach(function countKeyword(keyword) {
-      if (text.indexOf(keyword) !== -1) score += keyword.split(/\s+/).length > 1 ? 3 : 2;
+      var normalizedKeyword = normalizeText(keyword);
+      if (text.indexOf(normalizedKeyword) !== -1) score += normalizedKeyword.split(/\s+/).length > 1 ? 3 : 2;
     });
     return score;
   }
@@ -756,10 +873,83 @@
     };
   }
 
-  function localizeDecision(decision, options) {
-    if (!i18nApi || typeof i18nApi.localizeRouterDecision !== "function") return decision;
+  function requestedLocale(options) {
     var locale = options && (options.locale || options.lang || options.uiLocale);
-    return i18nApi.localizeRouterDecision(decision, locale || "en");
+    return String(locale || "en").toLowerCase().split(/[-_]/)[0];
+  }
+
+  function normalizeRouteKey(route) {
+    var pathname = String(route || "/").split(/[?#]/)[0].replace(/\/+/g, "/");
+    if (pathname === "/") return "/";
+    return "/" + pathname.replace(/^\/+|\/+$/g, "") + "/";
+  }
+
+  function routeQuery(route) {
+    var value = String(route || "");
+    var index = value.indexOf("?");
+    return index === -1 ? "" : value.slice(index);
+  }
+
+  function localizeSelectedRoute(decision, options) {
+    if (requestedLocale(options) !== "fr") return decision;
+    var copy = Object.assign({}, decision);
+    var routes = Object.assign({}, frenchRouteMapApi && frenchRouteMapApi.routes || {}, {
+      "/tools/stock-portfolio/": "/fr/tools/suivi-portefeuille-actions/",
+      "/tools/thrift-calc/": "/fr/tools/rendement-tontine-cooperative/",
+      "/tools/trade-credit/": "/fr/tools/credit-commercial/",
+    });
+    var englishRoute = normalizeRouteKey(copy.selectedRoute);
+    var frenchRoute = routes[englishRoute];
+    var meta = Object.assign({}, copy._meta || {});
+    var routeSource = frenchRouteMapApi && frenchRouteMapApi.source;
+
+    if (copy.selectedToolId === SEARCH_FALLBACK.id) {
+      copy.selectedRoute = (routes["/search/"] || "/fr/search/") + (routeQuery(copy.selectedRoute) || "?source=ask");
+      meta.localeRoute = { locale: "fr", status: "search_fallback", source: frenchRouteMapApi && frenchRouteMapApi.source || "explicit_fallback" };
+      copy._meta = meta;
+      return copy;
+    }
+
+    if (frenchRoute) {
+      copy.selectedRoute = frenchRoute + routeQuery(copy.selectedRoute);
+      meta.localeRoute = { locale: "fr", status: "mapped", source: routeSource || "verified_route_map" };
+      copy._meta = meta;
+      return copy;
+    }
+
+    var requestedToolId = copy.selectedToolId;
+    copy.selectedToolId = SEARCH_FALLBACK.id;
+    copy.selectedRoute = (routes["/search/"] || "/fr/search/") + "?source=ask";
+    copy.confidence = Math.min(Number(copy.confidence || 0.2), 0.2);
+    copy.reasonShort = "Aucune route française vérifiée n’est publiée pour cette correspondance.";
+    copy.extractedInputs = {};
+    copy.missingInputs = [];
+    copy.clarificationQuestion = "Précisez votre besoin dans la recherche française pour éviter une redirection vers une page anglaise.";
+    copy.safetyDomain = "none";
+    copy.highStakesNotice = "";
+    copy.privacyMode = "browser_local";
+    copy.canPrefill = false;
+    copy.handoffPlan = buildHandoffPlan(SEARCH_FALLBACK, []);
+    copy.handoffPlan.launchLabel = "Ouvrir la recherche française";
+    copy.exportPlan = buildExportPlan(SEARCH_FALLBACK, "none");
+    copy.suggestedNextActions = ["Ouvrir la recherche française", "Préciser le pays et la tâche", "Choisir uniquement une route française publiée"];
+    meta.localeRoute = {
+      locale: "fr",
+      status: "unavailable",
+      requestedToolId: requestedToolId,
+      source: frenchRouteMapApi && frenchRouteMapApi.source || "missing_route_map",
+    };
+    copy._meta = meta;
+    return copy;
+  }
+
+  function localizeDecision(decision, options) {
+    var localized = decision;
+    if (i18nApi && typeof i18nApi.localizeRouterDecision === "function") {
+      var locale = options && (options.locale || options.lang || options.uiLocale);
+      localized = i18nApi.localizeRouterDecision(decision, locale || "en");
+    }
+    return localizeSelectedRoute(localized, options);
   }
 
   function rawFallbackDecision(query) {

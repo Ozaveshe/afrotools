@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
   <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -23,8 +23,8 @@
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
   <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" async></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" async></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" async></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" async></script>
   <script src="/assets/js/ai/intent-analytics.js?v=30b7ff81"></script>
 
   <style>
@@ -1005,12 +1005,13 @@ var aiSearchRouteAnalytics = Object.create(null);
 var privateSearchHandoffQuery = '';
 var PRIVATE_SEARCH_HANDOFF_KEY = 'afrotools.privateSearchHandoff.v1';
 var AI_ROUTE_SCRIPTS = [
-  '/assets/js/ai/tool-manifest.js?v=55a3e4bd',
-  '/assets/js/ai/intent-router.js?v=165ae16e',
+  '/assets/js/ai/tool-manifest.js?v=248a919a',
+  '/assets/js/ai/french-route-map.generated.js?v=ae82216b',
+  '/assets/js/ai/intent-router.js?v=2969759e',
   '/assets/js/ai/tool-invocation-runtime.js?v=26bd3cad',
-  '/assets/js/ai/afro-data.js?v=6c1c5860',
-  '/assets/js/ai/afro-directory.js?v=09d92178',
-  '/assets/js/ai/afro-confidence.js?v=0395b29a',
+  '/assets/js/ai/afro-data.js?v=e3b5ce2d',
+  '/assets/js/ai/afro-directory.js?v=b4570a70',
+  '/assets/js/ai/afro-confidence.js?v=10634864',
   '/assets/js/ai/orchestrator.js?v=275e0f53'
 ];
 
@@ -1231,6 +1232,14 @@ function loadAISearchRouter() {
   return aiRouteScriptPromise;
 }
 
+function aiSearchLocale() {
+  var params = new URLSearchParams(window.location.search);
+  var requested = String(params.get('locale') || params.get('lang') || document.documentElement.lang || 'en')
+    .toLowerCase()
+    .split(/[-_]/)[0];
+  return requested === 'fr' ? 'fr' : 'en';
+}
+
 function shouldUseAIRouter(query, filter, resultCount) {
   if (filter !== 'all') return false;
   var tokens = tokenise(query);
@@ -1280,7 +1289,7 @@ function buildAISearchResult(query, filter) {
   if (!plan) {
     try {
       plan = window.AfroToolsAIOrchestrator.buildPlan(query, {
-        locale: 'en',
+        locale: aiSearchLocale(),
         candidateLimit: 0,
         obviousConfidence: 0.78
       });
@@ -1938,6 +1947,6 @@ document.addEventListener('keydown', function(e) {
 })();
 </script>
 
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

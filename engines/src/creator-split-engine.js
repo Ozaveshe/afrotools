@@ -291,6 +291,62 @@ var CreatorSplitEngine = function() {
     }
     return e;
   }
+  function calculateShares(input) {
+    var source = input || {};
+    var revenue = Number(source.revenue);
+    var members = Array.isArray(source.members) ? source.members : [];
+    if (!Number.isFinite(revenue) || revenue < 0) {
+      throw new Error("Revenue must be a non-negative number.");
+    }
+    if (members.length < 2) {
+      throw new Error("Add at least two collaborators.");
+    }
+    var normalized = members.map(function(member, index) {
+      var percentage = Number(member && member.percentage);
+      var name = String(member && member.name || "").trim();
+      var role = String(member && member.role || "").trim();
+      if (!name) {
+        throw new Error("Every collaborator needs a name.");
+      }
+      if (!Number.isFinite(percentage) || percentage < 0 || percentage > 100) {
+        throw new Error("Every percentage must be between 0 and 100.");
+      }
+      return {
+        id: index + 1,
+        name: name,
+        role: role,
+        percentage: percentage
+      };
+    });
+    var totalPercentage = normalized.reduce(function(total, member) {
+      return total + member.percentage;
+    }, 0);
+    if (Math.abs(totalPercentage - 100) > 0.0001) {
+      throw new Error("Collaborator percentages must total exactly 100.");
+    }
+    var allocated = 0;
+    var shares = normalized.map(function(member, index) {
+      var amount = index === normalized.length - 1
+        ? Math.round((revenue - allocated) * 100) / 100
+        : Math.round(revenue * member.percentage) / 100;
+      allocated += amount;
+      return {
+        id: member.id,
+        name: member.name,
+        role: member.role,
+        percentage: member.percentage,
+        amount: amount
+      };
+    });
+    return {
+      project: String(source.project || "").trim(),
+      projectType: String(source.projectType || "other"),
+      currency: String(source.currency || "USD").toUpperCase(),
+      revenue: revenue,
+      totalPercentage: totalPercentage,
+      shares: shares
+    };
+  }
   return {
     COLLAB_COLORS: e,
     PROJECT_TYPES: t,
@@ -346,6 +402,7 @@ var CreatorSplitEngine = function() {
     } ],
     CURRENCIES: r,
     DEFAULT_SPLITS: n,
+    calculateShares: calculateShares,
     createSplit: d,
     updateSplit: u,
     deleteSplit: function(e) {

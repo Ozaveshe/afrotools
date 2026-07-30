@@ -1,61 +1,161 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-theme="light" data-fr-health-source="calorie-counter">
 <head>
-<meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Compteur de calories - Aliments africains | AfroTools</title>
-<meta name="description" content="Compteur de calories avec base de données de plus de 200 aliments africains locaux.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Compteur de calories - Aliments africains | AfroTools">
-<meta property="og:description" content="Compteur de calories avec base de données de plus de 200 aliments africains locaux.">
-<meta property="og:type" content="website">
-<meta property="og:url" content="https://afrotools.com/fr/health/calorie-counter/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Journal alimentaire quotidien | AfroTools</title>
+  <meta name="description" content="Tenez un journal quotidien privé des calories alimentaires en utilisant les valeurs des étiquettes alimentaires ou des fournisseurs. Totalisez les entrées localement…">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Journal alimentaire quotidien | AfroTools">
+  <meta property="og:description" content="Tenez un journal quotidien privé des calories alimentaires en utilisant les valeurs des étiquettes alimentaires ou des fournisseurs. Totalisez les entrées localement…">
+  <meta property="og:url" content="https://afrotools.com/fr/health/calorie-counter/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
+  <link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+  <link rel="stylesheet" href="/health/calorie-counter/calorie-diary-vip.css?v=6a685ce3">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
+  <script src="/health/calorie-counter/calorie-diary-engine.js?v=54a9f4ba" defer></script>
+  <script src="/health/calorie-counter/calorie-diary-vip.js?v=9d7a7872" defer></script>
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Compteur de calories - Aliments africains | AfroTools">
-<meta name="twitter:description" content="Compteur de calories avec base de données de plus de 200 aliments africains locaux.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta name="robots" content="index, follow">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="article:modified_time" content="2026-03-29">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Compteur de calories - Aliments africains | AfroTools","description":"Compteur de calories avec base de données de plus de 200 aliments africains locaux.","url":"https://afrotools.com/fr/health/calorie-counter/","inLanguage":"https://afrotools.com/fr/","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"provider":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<style>
-html,body{margin:0;padding:0;height:100%}
-.fr-frame-wrap{width:100%;min-height:calc(100vh - 62px);position:relative}
-.fr-frame-wrap iframe{width:100%;height:calc(100vh - 62px);border:none;display:block}
+<meta name="twitter:title" content="Journal alimentaire quotidien | AfroTools">
+<meta name="twitter:description" content="Tenez un journal quotidien privé des calories alimentaires en utilisant les valeurs des étiquettes alimentaires ou des fournisseurs. Totalisez les entrées localement…">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Journal alimentaire quotidien",
+    "description": "Tenez un journal quotidien privé des calories alimentaires en utilisant les valeurs des étiquettes alimentaires ou des fournisseurs. Totalisez les entrées localement…",
+    "url": "https://afrotools.com/fr/health/calorie-counter/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/calorie-counter.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Daily Food Calorie Diary — Local & Private | AfroTools":"Journal quotidien des calories alimentaires — local et privé | AfroTools","Skip to diary":"Passer au journal","Home":"Accueil","Health":"Santé","Daily calorie diary":"Journal quotidien des calories","Private daily record":"Enregistrement quotidien privé","Daily food calorie diary":"Journal quotidien des calories alimentaires","Log foods using calorie values from a package label, restaurant, caterer or another source you trust. This diary only totals what you enter; it does not set a target or recommend a diet.":"Enregistrez les aliments en utilisant les valeurs caloriques provenant d'une étiquette d'emballage, d'un restaurant, d'un traiteur ou d'une autre source de confiance. Ce journal ne totalise que ce que vous entrez ; il ne fixe pas d’objectif et ne recommande pas de régime.","Runs in this browser":"Fonctionne dans ce navigateur","No account":"Aucun compte requis","No food data sent":"Aucune donnée alimentaire envoyée","Add a food entry":"Ajouter une entrée de nourriture","Food or dish name":"Nom de l'aliment ou du plat","Use a name you will recognize later.":"Utilisez un nom que vous reconnaîtrez plus tard.","Amount eaten":"Quantité consommée","Amount unit":"Unité de montant","grams":"grammes","servings":"portions","Label reference amount":"Montant de référence de l'étiquette","Calories for that amount":"Calories pour ce montant","Source note":"Note source","Record the source and date when the value may change.":"Enregistrez la source et la date à laquelle la valeur peut changer.","Add to diary":"Ajouter au journal","Today’s total":"Le total d'aujourd'hui","No entries yet.":"Aucune entrée pour l'instant.","A calorie value can vary by recipe, portion and provider. Use this total as a record of the values entered, not as nutrition or medical advice.":"Une valeur calorique peut varier selon la recette, la portion et le fournisseur. Utilisez ce total comme un enregistrement des valeurs saisies, et non comme un conseil nutritionnel ou médical.","Download TXT":"Télécharger le TXT","Download PDF":"Télécharger le PDF","Clear diary":"Effacer le journal","Diary entries":"Entrées du journal","Stored only in this browser until you clear them.":"Stockés uniquement dans ce navigateur jusqu'à ce que vous les effaciez.","Add your first food entry above.":"Ajoutez votre première entrée de nourriture ci-dessus.","Food":"Nourriture","Amount":"Montant","Source":"Origine","What this result means":"Ce que signifie ce résultat","The total is the sum of each entry: amount eaten ÷ label reference amount × label calories. It does not estimate nutrients, diagnose a condition, set an energy requirement or prescribe weight change.":"Le total est la somme de chaque entrée : quantité consommée ÷ quantité de référence sur l'étiquette × calories sur l'étiquette. Il n’estime pas les nutriments, ne diagnostique pas une maladie, ne fixe pas de besoins énergétiques et ne prescrit pas de changement de poids.","If you have a medical condition, are pregnant, are under 18, have concerns about eating or need an individualized plan, speak with an appropriately qualified health professional.":"Si vous souffrez d'un problème de santé, êtes enceinte, avez moins de 18 ans, avez des inquiétudes concernant l'alimentation ou avez besoin d'un plan personnalisé, parlez-en à un professionnel de la santé dûment qualifié.","Related quick job:":"Travail rapide associé :","use the":"utiliser le","single-food calorie estimator":"estimateur de calories pour un seul aliment","when you need one calculation without saving a diary.":"lorsque vous avez besoin d'un calcul sans enregistrer de journal.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Keep a private daily food calorie diary using values from food labels or providers. Total entries locally and export an ungated TXT or PDF record.":"Tenez un journal quotidien privé des calories alimentaires en utilisant les valeurs des étiquettes alimentaires ou des fournisseurs. Totalisez les entrées localement et exportez un enregistrement TXT ou PDF non sécurisé.","Daily Food Calorie Diary — AfroTools":"Journal quotidien des calories alimentaires — AfroTools","A local daily diary that totals calorie values you enter from labels or providers.":"Un journal quotidien local qui totalise les valeurs caloriques que vous saisissez auprès des étiquettes ou des fournisseurs.","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Package label, café menu, provider confirmation…":"Étiquette du colis, menu du café, confirmation du prestataire…","use strict":"utiliser strict","must be between":"doit être entre","remove-btn\" type=\"button\" data-remove=\"":"supprimer-btn\" type=\"bouton\" data-remove=\"","\" aria-label=\"Remove":"\" aria-label=\"Supprimer","Created locally:":"Créé localement :","+ entry.foodName +":"+ entrée.foodName +","+ entry.unit +":"+ entrée.unité +","Total entered:":"Total saisi :","Meaning: Sum of user-entered label/provider calorie values. This is a private record, not a calorie target, diet prescription, diagnosis or medical advice.":"Signification : Somme des valeurs caloriques saisies par l'utilisateur par l'étiquette/le fournisseur. Il s'agit d'un dossier privé et non d'un objectif calorique, d'une prescription de régime, d'un diagnostic ou d'un avis médical.",", format:":", format :","PDF downloaded locally.":"PDF téléchargé localement.","Clear every diary entry stored on this device?":"Effacer toutes les entrées du journal stockées sur cet appareil ?","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/health/calorie-counter/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/health/calorie-counter/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/health/calorie-counter/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kalori-za-vyakula-vya-afrika/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/health/calorie-counter/">
 </head>
-<body class="tool-page top-level-page-ui-refresh">
-  <h1 class="sr-only">Compteur de calories - Aliments africains</h1>
-<afro-navbar></afro-navbar>
-<div class="fr-frame-wrap">
-<iframe src="/health/calorie-counter/" title="Compteur de calories - Aliments africains | AfroTools" loading="eager"></iframe>
-</div>
-<script>
-var f=document.querySelector('.fr-frame-wrap iframe');
-function resizeFrame(){try{f.style.height=Math.max(f.contentDocument.body.scrollHeight,window.innerHeight-62)+'px'}catch(e){}}
-f.addEventListener('load',function(){resizeFrame();try{new MutationObserver(resizeFrame).observe(f.contentDocument.body,{childList:true,subtree:true,attributes:true})}catch(e){}});
-window.addEventListener('resize',resizeFrame);
-</script>
+<body>
+  <a class="skip-link" href="#main">Passer au journal</a>
+  <afro-navbar></afro-navbar>
+  <main id="main" class="page-shell vip-shell">
+    <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/health/">Santé</a><span aria-hidden="true">/</span><span>Journal quotidien des calories</span></nav>
+    <header class="page-header">
+      <p class="eyebrow">Enregistrement quotidien privé</p>
+      <h1 class="page-title">Journal alimentaire quotidien</h1>
+      <p class="page-description">Enregistrez les aliments en utilisant les valeurs caloriques provenant d'une étiquette d'emballage, d'un restaurant, d'un traiteur ou d'une autre source de confiance. Ce journal ne totalise que ce que vous entrez ; il ne fixe pas d’objectif et ne recommande pas de régime.</p>
+      <div class="trust-row" aria-label="Limites des outils"><span>Fonctionne dans ce navigateur</span><span>Aucun compte requis</span><span>Aucune donnée alimentaire envoyée</span></div>
+    </header>
+
+    <section class="vip-grid" aria-labelledby="entry-title">
+      <div class="card">
+        <h2 id="entry-title">Ajouter une entrée de nourriture</h2>
+        <form id="diary-form" novalidate>
+          <div class="form-field"><label class="form-label" for="food-name">Nom de l'aliment ou du plat</label><input class="form-input" id="food-name" name="foodName" maxlength="80" autocomplete="off" required><p class="form-help">Utilisez un nom que vous reconnaîtrez plus tard.</p></div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label" for="amount">Quantité consommée</label><input class="form-input" id="amount" name="amount" type="number" min="0.1" max="100000" step="0.1" inputmode="decimal" required></div>
+            <div class="form-field"><label class="form-label" for="unit">Unité de montant</label><select class="form-select" id="unit" name="unit"><option value="g">grammes</option><option value="ml">millilitres</option><option value="serving">portions</option></select></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label class="form-label" for="reference-amount">Montant de référence de l'étiquette</label><input class="form-input" id="reference-amount" name="referenceAmount" type="number" min="0.1" max="100000" step="0.1" value="100" inputmode="decimal" required></div>
+            <div class="form-field"><label class="form-label" for="reference-calories">Calories pour ce montant</label><input class="form-input" id="reference-calories" name="referenceCalories" type="number" min="0" max="100000" step="0.1" inputmode="decimal" required></div>
+          </div>
+          <div class="form-field"><label class="form-label" for="source-note">Note source</label><input class="form-input" id="source-note" name="sourceNote" maxlength="120" placeholder="Étiquette du colis, menu du café, confirmation du prestataire…"><p class="form-help">Enregistrez la source et la date à laquelle la valeur peut changer.</p></div>
+          <p class="form-error" id="form-error" role="alert" tabindex="-1" hidden></p>
+          <button class="btn btn-primary" type="submit">Ajouter au journal</button>
+        </form>
+      </div>
+
+      <aside class="card result-card" aria-labelledby="summary-title">
+        <h2 id="summary-title">Le total d'aujourd'hui</h2>
+        <output id="total-calories" class="big-result" aria-live="polite">0 kcal</output>
+        <p id="entry-count">Aucune entrée pour l'instant.</p>
+        <p class="boundary">Une valeur calorique peut varier selon la recette, la portion et le fournisseur. Utilisez ce total comme un enregistrement des valeurs saisies, et non comme un conseil nutritionnel ou médical.</p>
+        <div class="actions">
+          <button class="btn btn-secondary" id="download-txt" type="button" disabled>Télécharger le TXT</button>
+          <button class="btn btn-secondary" id="download-pdf" type="button" disabled>Télécharger le PDF</button>
+          <button class="btn btn-ghost" id="clear-diary" type="button" disabled>Effacer le journal</button>
+        </div>
+        <p class="status" id="export-status" role="status" aria-live="polite"></p>
+      </aside>
+    </section>
+
+    <section class="section" aria-labelledby="entries-title">
+      <div class="section-heading"><h2 id="entries-title">Entrées du journal</h2><p>Stockés uniquement dans ce navigateur jusqu'à ce que vous les effaciez.</p></div>
+      <div id="empty-state" class="empty-state">Ajoutez votre première entrée de nourriture ci-dessus.</div>
+      <div class="table-wrap" id="entries-wrap" hidden>
+        <table><thead><tr><th scope="col">Nourriture</th><th scope="col">Montant</th><th scope="col">Origine</th><th scope="col">Calories</th><th scope="col">Action</th></tr></thead><tbody id="entries-body"></tbody></table>
+      </div>
+    </section>
+
+    <section class="section safety" aria-labelledby="meaning-title">
+      <h2 id="meaning-title">Ce que signifie ce résultat</h2>
+      <p>Le total est la somme de chaque entrée : quantité consommée ÷ quantité de référence sur l'étiquette × calories sur l'étiquette. Il n’estime pas les nutriments, ne diagnostique pas une maladie, ne fixe pas de besoins énergétiques et ne prescrit pas de changement de poids.</p>
+      <p>Si vous souffrez d'un problème de santé, êtes enceinte, avez moins de 18 ans, avez des inquiétudes concernant l'alimentation ou avez besoin d'un plan personnalisé, parlez-en à un professionnel de la santé dûment qualifié.</p>
+      <p><strong>Travail rapide associé :</strong> utiliser le <a href="/fr/tools/compteur-calories/">estimateur de calories pour un seul aliment</a> lorsque vous avez besoin d'un calcul sans enregistrer de journal.</p>
+    </section>
+  <section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Journal alimentaire quotidien reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/health/calorie-counter/" hreflang="en">/health/calorie-counter/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+<afro-related-tools data-ssr="1" category="health" current="calorie-counter">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -490,6 +490,7 @@ function genericPayeFacts(filePath, engine) {
       period: 'annual',
       bands: normalizeBands(
         parameters.bands.map(function (band) {
+          if (Array.isArray(band)) return [band[0], band[1]];
           return [band.width, band.rate];
         }),
         'width',

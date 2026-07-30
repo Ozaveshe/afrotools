@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -50,8 +50,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/legal.css?v=a2330ea1">
 <link rel="stylesheet" href="/assets/css/legal-enhancements.css?v=faefe7bf">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>*{margin:0;padding:0;box-sizing:border-box}body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}a{text-decoration:none;color:inherit}</style>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -388,6 +388,7 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
 
 <script src="/data/legal/country-legal-index.js?v=02e28276"></script>
 <script src="/engines/legal-engine.js?v=cade292f"></script>
+<script src="/assets/js/engines/mortgage-property-english-owner.js?v=9017302d"></script>
 <script>
 var COUNTRY_DATA = {
   NG:{name:'Nigeria',currency:'₦',system:'Equitable Distribution',law:'Matrimonial Causes Act 1970',note:'Nigerian courts consider contributions of each spouse, marriage duration, children\'s welfare, and earning capacity. There is no automatic 50/50 split.'},
@@ -451,44 +452,16 @@ function calcDivorce() {
 
   var d = COUNTRY_DATA[cc];
 
-  // Base split calculation
-  var splitA = 50, splitB = 50;
-  var factors = [];
-
-  // System-based adjustment
-  if (d.system.indexOf('Community') !== -1 || d.system.indexOf('Equal') !== -1) {
-    splitA = 50; splitB = 50;
-    factors.push('Community of property system: base 50/50 split applies.');
-  } else if (d.system.indexOf('Equitable') !== -1) {
-    // Income-based adjustment (max ±15%)
-    var totalIncome = incomeA + incomeB;
-    if (totalIncome > 0) {
-      var incomeRatioA = incomeA / totalIncome;
-      if (incomeRatioA < 0.35) { splitA += 5; splitB -= 5; factors.push(nameA + ' earns significantly less — small upward adjustment applied.'); }
-      else if (incomeRatioA > 0.65) { splitA -= 5; splitB += 5; factors.push(nameA + ' earns significantly more — small adjustment in favour of ' + nameB + '.'); }
-    }
-    factors.push('Equitable distribution: courts aim for fairness, not automatic equality.');
-  } else {
-    splitA = 50; splitB = 50;
-    factors.push('Separation of property regime: only jointly held assets are divided equally.');
-  }
-
-  // Duration adjustment
-  if (years < 5) { splitA -= 3; splitB += 3; factors.push('Short marriage (under 5 years): modest reduction for lesser-earning party.'); }
-  else if (years >= 20) { factors.push('Long marriage (20+ years): full equal share strongly supported.'); }
-
-  // Custody adjustment
-  if (children > 0) {
-    if (custodian === 'A') { splitA += Math.min(5 + children * 2, 12); splitB -= Math.min(5 + children * 2, 12); factors.push(nameA + ' is primary custodian of ' + children + ' child(ren) — upward adjustment applied.'); }
-    else if (custodian === 'B') { splitB += Math.min(5 + children * 2, 12); splitA -= Math.min(5 + children * 2, 12); factors.push(nameB + ' is primary custodian of ' + children + ' child(ren) — upward adjustment applied.'); }
-    else { factors.push('Shared custody: no custody-based adjustment to asset split.'); }
-  }
-
-  splitA = Math.max(20, Math.min(80, Math.round(splitA)));
-  splitB = 100 - splitA;
-
-  var valueA = total * splitA / 100;
-  var valueB = total * splitB / 100;
+  var semantic = window.AfroTools.MortgagePropertyEnglishOwnerEngine.calculate(
+    'divorce-settlement',
+    {country:cc,totalAssets:total,marriageDuration:years,children:children,custodian:custodian,partyAName:nameA,partyAIncome:incomeA,partyBName:nameB,partyBIncome:incomeB},
+    d
+  );
+  var splitA = semantic.splitA;
+  var splitB = semantic.splitB;
+  var factors = semantic.factors;
+  var valueA = semantic.valueA;
+  var valueB = semantic.valueB;
 
   document.getElementById('resSummary').textContent = nameA + ': ' + splitA + '% / ' + nameB + ': ' + splitB + '%';
   document.getElementById('resSub').textContent = 'Estimated indicative division based on ' + d.law;
@@ -543,6 +516,6 @@ function calcDivorce() {
 </script>
 <script src="/assets/js/legal-workflow-copilot.js?v=20da8404" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

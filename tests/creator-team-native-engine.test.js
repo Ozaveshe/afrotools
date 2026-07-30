@@ -1,0 +1,18 @@
+"use strict";
+const assert = require("node:assert");
+const fs = require("node:fs");
+const vm = require("node:vm");
+const context = { window: {} };
+vm.createContext(context);
+vm.runInContext(fs.readFileSync("engines/src/creator-team-engine.js", "utf8"), context);
+const engine = context.window.AfroTools.CreatorTeamEngine;
+const task = engine.createTask({ project: "Campagne", title: "Montage", owner: "Amina", status: "review", dueDate: "2026-08-01", note: "Vérifier les sous-titres" });
+assert.equal(task.project, "Campagne");
+assert.equal(task.status, "review");
+assert.equal(engine.summarize([task]).counts.review, 1);
+assert.equal(engine.summarize([task]).total, 1);
+assert.match(engine.toCsv([task]), /Campagne/);
+assert.match(engine.toCsv([task]), /Vérifier les sous-titres/);
+assert.throws(() => engine.createTask({ project: "X", status: "bad", title: "Y" }), /Status/);
+assert.throws(() => engine.createTask({ project: "", title: "Y" }), /Project/);
+console.log("creator-team native engine: 8 assertions passed");

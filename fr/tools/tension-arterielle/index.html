@@ -1,190 +1,263 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="blood-pressure">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="view-transition" content="same-origin">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<title>Suivi de tension artérielle | AfroTools</title>
-<meta name="description" content="Notez une mesure de tension artérielle et lisez sa catégorie comme information générale.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:title" content="Suivi de tension artérielle | AfroTools">
-<meta property="og:description" content="Notez une mesure de tension artérielle et lisez sa catégorie comme information générale.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/tension-arterielle/">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Suivi de tension artérielle | AfroTools">
-<meta name="twitter:description" content="Notez une mesure de tension artérielle et lisez sa catégorie comme information générale.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Vérification d'une mesure de tension artérielle | AfroTools</title>
+  <meta name="description" content="Examinez deux lectures de tension artérielle chez un adulte dans leur contexte de mesure, de grossesse ou de post-partum sans diagnostiquer, prescrire ou enregistrer…">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#285b55">
+  <meta name="tool-id" content="blood-pressure">
+  <meta name="ai-context" content="Non-diagnostic adult blood-pressure measurement context; pregnancy and six-week postpartum boundaries apply.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Vérification d'une mesure de tension artérielle | AfroTools">
+  <meta property="og:description" content="Examinez deux lectures de tension artérielle chez un adulte dans leur contexte de mesure, de grossesse ou de post-partum sans diagnostiquer, prescrire ou enregistrer…">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/tension-arterielle/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Vérification d'une mesure de tension artérielle | AfroTools">
+  <meta name="twitter:description" content="Examinez deux lectures de tension artérielle chez un adulte dans leur contexte de mesure, de grossesse ou de post-partum sans diagnostiquer, prescrire ou enregistrer…">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/blood-pressure.webp">
+  <meta property="article:modified_time" content="2026-07-26">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+  <link rel="stylesheet" href="/tools/blood-pressure/blood-pressure-check.css?v=face5b33">
+  <script src="/tools/blood-pressure/blood-pressure-check-engine.js?v=49601093"></script>
+  <script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+  <script src="/tools/blood-pressure/blood-pressure-check.js?v=afc841d9" defer></script>
+<!-- tool-structured-data:auto -->
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Suivi de tension artérielle",
-  "description": "Notez une mesure de tension artérielle et lisez sa catégorie comme information générale.",
-  "url": "https://afrotools.com/fr/tools/tension-arterielle/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Vérification d'une mesure de tension artérielle",
+    "description": "Examinez deux lectures de tension artérielle chez un adulte dans leur contexte de mesure, de grossesse ou de post-partum sans diagnostiquer, prescrire ou enregistrer…",
+    "url": "https://afrotools.com/fr/tools/tension-arterielle/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/blood-pressure.webp"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/blood-pressure.webp"
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Une seule mesure suffit-elle ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il vaut mieux mesurer dans de bonnes conditions et suivre plusieurs valeurs, sauf urgence ou symptômes."}},{"@type":"Question","name":"L’outil donne-t-il un traitement ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il affiche une lecture indicative et ne prescrit aucun médicament."}}]}</script>
-
-<style>
-body{background:#f8fafc;color:#0f172a}
-.fr-hero{background:linear-gradient(135deg,#0f172a 0%,#18304f 56%,#0f6fd6 100%);color:#fff;padding:3.5rem 1.25rem 2.5rem}
-.fr-shell{max-width:1120px;margin:0 auto}
-.fr-eyebrow{display:inline-flex;margin-bottom:.75rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#bfdbfe}
-.fr-hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.04;margin:0 0 .85rem;font-weight:800;max-width:820px}
-.fr-hero p{max-width:720px;margin:0;color:rgba(255,255,255,.84);line-height:1.72;font-size:1.02rem}
-.fr-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.2rem}
-.fr-badge{display:inline-flex;padding:.45rem .75rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);font-size:.8rem;font-weight:700}
-.fr-main{max-width:1120px;margin:0 auto;padding:1.5rem 1.25rem 3.5rem}
-.fr-card{background:#fff;border:1px solid #dbe4ee;border-radius:18px;box-shadow:0 12px 34px rgba(15,23,42,.06);overflow:hidden}
-.fr-tool-frame{min-height:680px}
-.fr-tool-frame iframe{display:block;width:100%;min-height:720px;border:0;background:#fff}
-.fr-note{margin:1rem 0 1.25rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65;font-size:.95rem}
-.fr-note strong{display:block;margin-bottom:.25rem;color:#172554}
-.fr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-top:1rem}
-.fr-link{display:block;padding:1rem;border:1px solid #dbe4ee;border-radius:14px;background:#fff;text-decoration:none;color:#0f172a}
-.fr-link:hover{border-color:#60a5fa;box-shadow:0 10px 24px rgba(15,23,42,.08)}
-.fr-link strong{display:block;margin-bottom:.3rem}
-.fr-link span{display:block;color:#64748b;font-size:.9rem;line-height:1.55}
-.fr-section{margin-top:1.35rem;padding:1.25rem;background:#fff;border:1px solid #dbe4ee;border-radius:18px}
-.fr-section h2{font-size:1.25rem;margin:0 0 .65rem;font-weight:800}
-.fr-section p,.fr-section li{color:#475569;line-height:1.78}
-.fr-section ul{padding-left:1.2rem}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:12px;background:#fff;margin:.75rem 0;overflow:hidden}
-.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.05rem;font-weight:700}
-.fr-faq summary::-webkit-details-marker{display:none}
-.fr-faq p{padding:0 1.05rem 1rem;margin:0;color:#475569;line-height:1.72}
-@media (max-width:820px){.fr-grid{grid-template-columns:1fr}.fr-tool-frame iframe{min-height:780px}.fr-hero{padding-top:2.7rem}}
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Blood Pressure Measurement Check | AfroTools":"Vérification de la mesure de la pression artérielle | AfroTools","Health tools":"Outils santé","All tools":"Tous les outils","Dark":"Sombre","Tools":"Outils","Blood pressure check":"Contrôle de la tension artérielle","Two readings, with context":"Deux lectures, avec contexte","Blood pressure measurement check":"Contrôle de la mesure de la pression artérielle","Review two adult readings without turning a home measurement into a diagnosis. The card accounts for measurement setup and applies separate pregnancy and recent-postpartum safety boundaries.":"Passez en revue deux lectures pour adultes sans transformer une mesure à domicile en diagnostic. La carte prend en compte la configuration des mesures et applique des limites de sécurité distinctes pour la grossesse et le post-partum récent.","No diagnosis":"Aucun diagnostic","No saved history":"Aucun historique enregistré","Pregnancy-aware":"Conscient de la grossesse","Symptoms matter more than this card":"Les symptômes comptent plus que cette carte","Seek local emergency help now for chest pain, trouble breathing, new weakness or numbness, trouble speaking, seizure, fainting, or another severe sudden symptom. If pregnant or within 6 weeks after birth, urgent warning signs also include a severe or persistent headache, major vision change, pain below the ribs, vomiting or sudden swelling. Do not wait for this tool or for the pressure to fall.":"Demandez dès maintenant de l’aide d’urgence locale en cas de douleur thoracique, de difficulté à respirer, de nouvelle faiblesse ou d’engourdissement, de difficulté à parler, de convulsions, d’évanouissement ou de tout autre symptôme soudain et grave. En cas de grossesse ou dans les 6 semaines suivant la naissance, les signes avant-coureurs urgents comprennent également un mal de tête sévère ou persistant, un changement majeur de la vision, une douleur sous les côtes, des vomissements ou un gonflement soudain. N'attendez pas cet outil ni que la pression baisse.","Private input":"Entrée privée","Enter two readings":"Entrez deux lectures","Measurement context":"Contexte de mesure","Adult, not pregnant and not within 6 weeks after birth":"Adulte, non enceinte et pas dans les 6 semaines après la naissance","Pregnant":"Enceinte","Gave birth within the last 6 weeks":"A accouché au cours des 6 dernières semaines","This card is for adults aged 18 or over. Children and teenagers need age- and size-specific clinical interpretation.":"Cette carte est destinée aux adultes âgés de 18 ans ou plus. Les enfants et les adolescents ont besoin d’une interprétation clinique spécifique à leur âge et à leur taille.","Readings taken at least 1 minute apart":"Lectures prises à au moins 1 minute d'intervalle","Reading 1":"Lecture 1","Systolic 1 (mmHg)":"Systolique 1 (mmHg)","Diastolic 1 (mmHg)":"Diastolique 1 (mmHg)","Reading 2":"Lecture 2","Systolic 2 (mmHg)":"Systolique 2 (mmHg)","Diastolic 2 (mmHg)":"Diastolique 2 (mmHg)","Measurement setup":"Configuration de la mesure","I rested quietly for at least 5 minutes first.":"Je me suis d'abord reposé tranquillement pendant au moins 5 minutes.","I sat with back supported, feet flat and legs uncrossed.":"Je me suis assis avec le dos soutenu, les pieds à plat et les jambes décroisées.","A correctly sized upper-arm cuff was on bare skin, with the arm supported at heart level.":"Un brassard de taille correcte était posé sur la peau nue, le bras étant soutenu au niveau du cœur.","I did not talk or use a phone during either reading.":"Je n’ai pas parlé ni utilisé de téléphone pendant ces deux lectures.","I have one or more urgent symptoms listed in the warning above.":"J'ai un ou plusieurs symptômes urgents répertoriés dans l'avertissement ci-dessus.","Review these readings":"Revoyez ces lectures","Before measuring":"Avant de mesurer","Make the reading interpretable":"Rendre la lecture interprétable","Avoid exercise, smoking and caffeine for 30 minutes where practical; empty your bladder.":"Évitez l'exercice, le tabac et la caféine pendant 30 minutes lorsque cela est possible ; videz votre vessie.","Rest quietly for at least 5 minutes. Sit supported with feet flat and legs uncrossed.":"Reposez-vous tranquillement pendant au moins 5 minutes. Asseyez-vous soutenu, les pieds à plat et les jambes décroisées.","Use a validated upper-arm device and the correct cuff size on bare skin.":"Utilisez un appareil pour le haut du bras validé et la taille de brassard appropriée sur la peau nue.","Support the arm at heart level. Stay still and silent.":"Soutenez le bras au niveau du cœur. Restez immobile et silencieux.","Take two readings at least 1 minute apart and keep both.":"Faites deux lectures à au moins 1 minute d'intervalle et conservez les deux.","Technique cannot explain away a very high reading or warning symptoms. Follow the urgent boundary shown by the tool.":"La technique ne peut pas expliquer une lecture très élevée ou des symptômes d’avertissement. Suivez la limite urgente indiquée par l'outil.","Context, not a diagnosis":"Un contexte, pas un diagnostic","Reading review":"Revue de lecture","Arithmetic average":"Moyenne arithmétique","What this does not establish:":"Ce que cela n’établit pas :","These readings do not confirm or exclude hypertension, pre-eclampsia, treatment need, medication effect or another condition. A clinician uses repeat measurements, symptoms, history, examination and sometimes urine or blood tests.":"Ces lectures ne confirment ni n'excluent l'hypertension, la pré-éclampsie, la nécessité d'un traitement, l'effet des médicaments ou une autre condition. Un clinicien utilise des mesures répétées, des symptômes, des antécédents, des examens et parfois des analyses d'urine ou de sang.","Download TXT":"Télécharger le TXT","Download PDF":"Télécharger le PDF","Clear readings":"Lectures claires","Privacy boundary":"Limite de confidentialité","Nothing is saved or sent":"Rien n'est enregistré ou envoyé","Readings, context and symptom choices remain in this page's memory only. They are not written to localStorage or sessionStorage, put in a URL, sent to an account, analytics or an API. TXT and PDF are created locally after your explicit action. Health data appears in exports, so review the file before sharing it.":"Les lectures, le contexte et les choix de symptômes restent uniquement dans la mémoire de cette page. Ils ne sont pas écrits dans localStorage ou sessionStorage, placés dans une URL, envoyés à un compte, à des analyses ou à une API. TXT et PDF sont créés localement après votre action explicite. Les données de santé apparaissent dans les exportations, alors examinez le fichier avant de le partager.","Threshold boundary":"Limite de seuil","Different contexts use different prompts":"Différents contextes utilisent différentes invites","General adult:":"Adulte général :","WHO's 140/90 mmHg clinic threshold needs readings on two different days for diagnosis. A home pair is only a snapshot.":"Le seuil clinique de 140/90 mmHg de l'OMS nécessite des lectures sur deux jours différents pour le diagnostic. Une paire locale n’est qu’un instantané.","Very high adult reading:":"Lectures adultes très élevées :","over 180 systolic or over 120 diastolic requires a repeat and immediate clinical contact if it remains that high; emergency symptoms require emergency help.":"au-dessus de 180 systoliques ou au-dessus de 120 diastoliques, il faut un contact clinique répété et immédiat s'il reste aussi élevé ; les symptômes d’urgence nécessitent une aide d’urgence.","Pregnancy or first 6 weeks after birth:":"Grossesse ou 6 premières semaines après la naissance :","140 systolic or 90 diastolic prompts maternity contact; 160 systolic or 110 diastolic is a severe boundary needing urgent assessment.":"140 invites systoliques ou 90 diastoliques contact avec la maternité ; 160 systolique ou 110 diastolique est une limite sévère nécessitant une évaluation urgente.","Official sources":"Sources officielles","Guidance checked for this card":"Guidage vérifié pour cette carte","WHO: Hypertension":"QUI : Hypertension","- adult diagnostic threshold and different-day confirmation.":"- seuil de diagnostic adulte et confirmation à un jour différent.","American Heart Association: Home monitoring":"American Heart Association : Surveillance à domicile","- technique, paired readings and over-180/120 response.":"- technique, lectures appariées et réponse supérieure à 180/120.","NICE NG133: Hypertension in pregnancy":"NICE NG133 : Hypertension pendant la grossesse","- 140/90 and severe 160/110 boundaries.":"- Limites 140/90 et sévères 160/110.","ACOG: Preeclampsia after childbirth":"ACOG : Prééclampsie après l'accouchement","- risk can extend up to 6 weeks postpartum.":"- le risque peut s'étendre jusqu'à 6 semaines post-partum.","NHS: Pre-eclampsia":"NHS : Pré-éclampsie","- pregnancy and postpartum warning symptoms.":"- symptômes précurseurs de la grossesse et du post-partum.","Sources checked: 26 July 2026. Local services may use additional thresholds and instructions; follow your maternity or clinical team's plan.":"Sources vérifiées : 26 juillet 2026. Les services locaux peuvent utiliser des seuils et des consignes supplémentaires ; suivez le plan de votre maternité ou de votre équipe clinique.","Adult reading context, not diagnosis":"Contexte de lecture adulte, pas de diagnostic","Privacy":"Confidentialité","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Review two adult blood-pressure readings in their measurement, pregnancy or postpartum context without diagnosing, prescribing or saving health data.":"Examinez deux lectures de tension artérielle chez un adulte dans leur contexte de mesure, de grossesse ou de post-partum sans diagnostiquer, prescrire ou enregistrer des données de santé.","blood-pressure":"tension artérielle","Non-diagnostic adult blood-pressure measurement context; pregnancy and six-week postpartum boundaries apply.":"Contexte de mesure de la pression artérielle chez l'adulte non diagnostique ; les limites de grossesse et de six semaines post-partum s’appliquent.","A private context card for two adult blood-pressure readings, measurement quality and pregnancy-specific safety boundaries.":"Une carte contextuelle privée pour deux lectures de tension artérielle chez l'adulte, la qualité des mesures et les limites de sécurité spécifiques à la grossesse.","Put two readings in context. Not a diagnosis, treatment plan or reassurance.":"Mettez deux lectures en contexte. Pas un diagnostic, un plan de traitement ou une assurance.","AfroTools home":"Accueil AfroTools","Primary":"Primaire","Switch to dark mode":"Passer en mode sombre","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Local export actions":"Actions d’export local","use strict":"utiliser strict","Adult, not pregnant or recently postpartum":"Adulte, pas enceinte ou récemment en post-partum","Within 6 weeks after birth":"Dans les 6 semaines après la naissance","+ maximum +":"+ maximale +","+ index +":"+ indice +","Emergency symptoms":"Symptômes d'urgence","Seek local emergency help now":"Demandez de l'aide d'urgence locale maintenant","Do not wait for another reading or use this result to decide whether symptoms are serious. If pregnant or recently postpartum, also contact the maternity team while emergency help is being arranged when possible.":"N'attendez pas une autre lecture et n'utilisez pas ce résultat pour décider si les symptômes sont graves. En cas de grossesse ou de post-partum, contactez également l'équipe de la maternité pendant qu'une aide d'urgence est organisée lorsque cela est possible.","Urgent maternity assessment":"Bilan de maternité urgent","Contact maternity emergency care now":"Contactez dès maintenant les services d'urgence de la maternité","Same-day maternity contact":"Contact maternité le jour même","Contact your maternity team today":"Contactez votre équipe de maternité dès aujourd'hui","At least one reading reaches the 140 systolic or 90 diastolic pregnancy boundary. This does not diagnose pre-eclampsia or hypertension, but it needs prompt review under your local maternity plan.":"Au moins une lecture atteint la limite de grossesse systolique 140 ou diastolique 90. Cela ne permet pas de diagnostiquer la pré-éclampsie ou l'hypertension, mais cela nécessite un examen rapide dans le cadre de votre plan de maternité local.","Immediate clinical contact":"Contact clinique immédiat","The repeat reading remains very high":"La répétition des lectures reste très élevée","The second reading is still over 180 systolic or over 120 diastolic. Contact a qualified clinician immediately. If any emergency symptom develops, seek local emergency help now.":"La deuxième lecture est toujours supérieure à 180 systolique ou supérieure à 120 diastolique. Contactez immédiatement un clinicien qualifié. Si un symptôme d’urgence apparaît, demandez immédiatement de l’aide d’urgence locale.","Prompt clinical contact":"Contact clinique rapide","One reading was over the very-high boundary":"Une lecture dépassait la limite très élevée","Clinical review":"Revue clinique","Arrange a blood-pressure review":"Organiser un examen de la tension artérielle","At least one reading reaches the WHO 140 systolic or 90 diastolic clinic threshold. A diagnosis requires professional assessment and qualifying measurements on two different days.":"Au moins une lecture atteint le seuil clinique systolique de 140 ou diastolique de 90 de l'OMS. Un diagnostic nécessite une évaluation professionnelle et des mesures de qualification sur deux jours différents.","Repeat with full setup":"Répétez avec une configuration complète","Repeat with a complete measurement setup":"Répétez avec une configuration de mesure complète","The readings are below the context threshold used by this card, but one or more technique checks were not confirmed. Repeat correctly and follow any monitoring plan from your clinician.":"Les lectures sont inférieures au seuil de contexte utilisé par cette carte, mais une ou plusieurs vérifications techniques n'ont pas été confirmées. Répétez correctement et suivez tout plan de surveillance de votre clinicien.","Below card boundary":"Sous la limite de la carte","These two readings are below the pregnancy prompt boundary":"Ces deux lectures sont inférieures à la limite d'invite de grossesse","That does not rule out pre-eclampsia or another problem. Contact the maternity team for warning symptoms, a concerning change, reduced fetal movement, or any instruction in your care plan.":"Cela n’exclut pas la pré-éclampsie ou un autre problème. Contactez l'équipe de la maternité pour des symptômes avant-coureurs, un changement inquiétant, une réduction des mouvements fœtaux ou toute instruction dans votre plan de soins.","Below WHO clinic threshold":"En dessous du seuil clinique de l’OMS","These two readings are below 140/90":"Ces deux lectures sont inférieures à 140/90","This is not a diagnosis, treatment target or reassurance about symptoms. Keep following any clinician-directed monitoring plan and seek review for concerns or repeated changes.":"Il ne s’agit pas d’un diagnostic, d’un objectif de traitement ou d’une assurance sur les symptômes. Continuez à suivre tout plan de surveillance dirigé par le clinicien et demandez un examen en cas de préoccupations ou de changements répétés.","Two home readings cannot confirm or exclude hypertension, pre-eclampsia, treatment need or another condition.":"Deux lectures à domicile ne peuvent pas confirmer ou exclure l'hypertension, la pré-éclampsie, la nécessité d'un traitement ou une autre condition.","+ reading.diastolic +":"+ lecture.diastolique +",": result.techniqueCount +":": résultat.techniqueCount +",", block:":", bloquer :","+ result.contextLabel,":"+ résultat.contextLabel,","+ result.techniqueCount +":"+ résultat.techniqueCount +","+ result.priority, result.title, result.action,":"+ résultat.priorité, résultat.titre, résultat.action,",", result.boundary,":", résultat.limite,",", format:":", format :","PDF downloaded locally.":"PDF téléchargé localement.","PDF could not be created. Use the TXT export instead.":"Le PDF n'a pas pu être créé. Utilisez plutôt l'exportation TXT.","Review readings before exporting.":"Vérifiez les lectures avant d’exporter.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","All Tools":"Tous les outils","Health":"Santé","Dark mode":"Mode sombre","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/tension-arterielle/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/blood-pressure/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/tension-arterielle/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/shinikizo-la-damu/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/blood-pressure/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-  <div class="fr-shell">
-    <span class="fr-eyebrow">Santé</span>
-    <h1>Suivi de tension artérielle</h1>
-    <p>Entrez une mesure systolique et diastolique pour mieux comprendre le classement affiché par l’outil source.</p>
-    <div class="fr-badges"><span class="fr-badge">Systolique</span><span class="fr-badge">Diastolique</span><span class="fr-badge">Suivi personnel</span></div>
-  </div>
-</section>
-<main class="fr-main">
-  <div class="fr-note"><strong>En cas de doute, consultez rapidement</strong>Une mesure isolée ne remplace pas un diagnostic. Si les chiffres sont très élevés, associés à des douleurs, essoufflement, malaise ou symptômes inhabituels, contactez un service médical.</div>
-  <section class="fr-card fr-tool-frame" aria-label="Suivi de tension artérielle">
-    <iframe id="fr-source-frame" src="/tools/blood-pressure/" title="Suivi de tension artérielle" loading="eager"></iframe>
-  </section>
-  <section class="fr-section">
-    <h2>Lire une mesure sans alarmisme</h2>
-    <p>La tension varie selon l’heure, le stress, l’activité, la posture et la méthode de mesure. Répétez les mesures correctement et gardez un historique.</p><p>L’outil aide à classer une valeur, mais le traitement et le suivi doivent rester décidés avec un professionnel.</p>
-  </section>
-  <section class="fr-section">
-    <h2>Outils liés en français</h2>
-    <div class="fr-grid"><a class="fr-link" href="/fr/tools/calculateur-imc/"><strong>Calculateur IMC</strong><span>Repère poids, taille et composition corporelle.</span></a><a class="fr-link" href="/fr/tools/apport-eau/"><strong>Apport en eau</strong><span>Estimation d’hydratation prudente.</span></a><a class="fr-link" href="/fr/tools/dosage-medicament/"><strong>Dosage médicament</strong><span>Calcul indicatif par poids, à vérifier médicalement.</span></a><a class="fr-link" href="/fr/tools/cout-hospitalier/"><strong>Coût hospitalier</strong><span>Préparer un budget de soins avec prudence.</span></a></div>
-  </section>
-  <section class="fr-section fr-faq"><h2>Questions fréquentes</h2><details><summary>Une seule mesure suffit-elle ?</summary><p>Non. Il vaut mieux mesurer dans de bonnes conditions et suivre plusieurs valeurs, sauf urgence ou symptômes.</p></details><details><summary>L’outil donne-t-il un traitement ?</summary><p>Non. Il affiche une lecture indicative et ne prescrit aucun médicament.</p></details></section>
-<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
-  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
-    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Préparation rapide</h2>
-    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Méthodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrées en résumé de vérification avant d'utiliser l'outil principal. Sources: calculateur de référence AfroTools, liens et hypothèses visibles sur cette page. Mise à jour 2026.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scénarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
+<body>
+  <header class="bpc-site-header">
+    <a class="bpc-home" href="/" aria-label="Accueil AfroTools">
+      <img src="/assets/img/logo-mark.svg" width="32" height="32" alt="">
+      <span>AfroTools</span>
+    </a>
+    <div class="bpc-header-actions">
+      <nav aria-label="Primaire"><a href="/health/">Outils santé</a><a href="/tools/">Tous les outils</a></nav>
+      <button class="bpc-theme-toggle" id="afro-theme-fallback-toggle" type="button" aria-label="Passer en mode sombre" aria-pressed="false">Sombre</button>
     </div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Créer le résumé</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
-    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour préparer votre vérification.</output>
-    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation générale ne remplace pas un avis juridique, fiscal, médical, financier ou professionnel. Vérifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou déclarer.</p>
-  </div>
-</section>
-</main>
-<script>
-(function(){
-  const textMap={"Calculate":"Calculer","Calculator":"Calculateur","Weight":"Poids","Height":"Taille","Age":"Âge","Gender":"Sexe","Male":"Homme","Female":"Femme","Result":"Résultat","Results":"Résultats","Normal":"Normal","Risk":"Risque","Health":"Santé","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter","Blood Pressure":"Tension artérielle","Medication":"Médicament","Dosage":"Dosage","Hospital":"Hôpital","Cost":"Coût","Water":"Eau","Calories":"Calories","Due Date":"Date probable","Sickle Cell":"Drépanocytose","Genotype":"Génotype"};
-  const frame=document.getElementById('fr-source-frame');
-  function replaceText(node){
-    if(!node || !node.nodeValue) return;
-    let value=node.nodeValue;
-    Object.keys(textMap).forEach(function(key){
-      value=value.split(key).join(textMap[key]);
-    });
-    node.nodeValue=value;
-  }
-  function localize(){
-    try{
-      const doc=frame.contentDocument;
-      if(!doc) return;
-      const walker=doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while((node=walker.nextNode())) replaceText(node);
-      doc.querySelectorAll('input[placeholder],textarea[placeholder],button,[aria-label],option').forEach(function(el){
-        ['placeholder','aria-label','value','title'].forEach(function(attr){
-          const value=el.getAttribute && el.getAttribute(attr);
-          if(value && textMap[value]) el.setAttribute(attr,textMap[value]);
-        });
-        if(el.childNodes && el.childNodes.length===1 && el.firstChild.nodeType===3) replaceText(el.firstChild);
-      });
-      doc.documentElement.lang='fr';
-    }catch(e){}
-  }
-  frame.addEventListener('load',function(){localize();setTimeout(localize,700);setTimeout(localize,1800);});
-})();
-</script>
-<afro-footer></afro-footer>
-<script>
-(function(){
-  const root = document.querySelector('[data-fr-decision-planner]');
-  if (!root) return;
-  const country = root.querySelector('[data-fr-decision-country]');
-  const amount = root.querySelector('[data-fr-decision-amount]');
-  const goal = root.querySelector('[data-fr-decision-goal]');
-  const output = root.querySelector('[data-fr-decision-output]');
-  const status = root.querySelector('[data-fr-decision-status]');
-  function render(){
-    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
-    const parts = [];
-    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
-    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
-    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
-    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
-    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
-  }
-  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
-  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+  </header>
+
+  <main>
+    <nav class="bpc-breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/">AfroTools</a><span aria-hidden="true">/</span>
+      <a href="/tools/">Outils</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Contrôle de la tension artérielle</span>
+    </nav>
+
+    <header class="bpc-hero">
+      <p class="bpc-kicker">Deux lectures, avec contexte</p>
+      <h1>Vérification d'une mesure de tension artérielle</h1>
+      <p>Passez en revue deux lectures pour adultes sans transformer une mesure à domicile en diagnostic. La carte prend en compte la configuration des mesures et applique des limites de sécurité distinctes pour la grossesse et le post-partum récent.</p>
+      <div class="bpc-badges" aria-label="Limites des outils">
+        <span>Aucun diagnostic</span><span>Aucun historique enregistré</span><span>Conscient de la grossesse</span>
+      </div>
+    </header>
+
+    <section class="bpc-emergency" aria-labelledby="emergency-title">
+      <h2 id="emergency-title">Les symptômes comptent plus que cette carte</h2>
+      <p>Demandez dès maintenant de l’aide d’urgence locale en cas de douleur thoracique, de difficulté à respirer, de nouvelle faiblesse ou d’engourdissement, de difficulté à parler, de convulsions, d’évanouissement ou de tout autre symptôme soudain et grave. En cas de grossesse ou dans les 6 semaines suivant la naissance, les signes avant-coureurs urgents comprennent également un mal de tête sévère ou persistant, un changement majeur de la vision, une douleur sous les côtes, des vomissements ou un gonflement soudain. N'attendez pas cet outil ni que la pression baisse.</p>
+    </section>
+
+    <div class="bpc-layout">
+      <section class="bpc-card" aria-labelledby="check-title">
+        <p class="bpc-step">Entrée privée</p>
+        <h2 id="check-title">Entrez deux lectures</h2>
+        <form id="blood-pressure-form" novalidate>
+          <div class="bpc-field">
+            <label for="health-context">Contexte de mesure</label>
+            <select id="health-context" aria-describedby="context-help form-error">
+              <option value="adult">Adulte, non enceinte et pas dans les 6 semaines après la naissance</option>
+              <option value="pregnant">Enceinte</option>
+              <option value="postpartum">A accouché au cours des 6 dernières semaines</option>
+            </select>
+            <p id="context-help" class="bpc-help">Cette carte est destinée aux adultes âgés de 18 ans ou plus. Les enfants et les adolescents ont besoin d’une interprétation clinique spécifique à leur âge et à leur taille.</p>
+          </div>
+
+          <fieldset class="bpc-readings">
+            <legend>Lectures prises à au moins 1 minute d'intervalle</legend>
+            <div class="bpc-reading-grid">
+              <div class="bpc-reading">
+                <h3>Lecture 1</h3>
+                <div class="bpc-number-grid">
+                  <div class="bpc-field"><label for="systolic-1">Systolique 1 (mmHg)</label><input id="systolic-1" type="number" min="40" max="260" step="1" inputmode="numeric" autocomplete="off" required></div>
+                  <div class="bpc-field"><label for="diastolic-1">Diastolique 1 (mmHg)</label><input id="diastolic-1" type="number" min="30" max="160" step="1" inputmode="numeric" autocomplete="off" required></div>
+                </div>
+              </div>
+              <div class="bpc-reading">
+                <h3>Lecture 2</h3>
+                <div class="bpc-number-grid">
+                  <div class="bpc-field"><label for="systolic-2">Systolique 2 (mmHg)</label><input id="systolic-2" type="number" min="40" max="260" step="1" inputmode="numeric" autocomplete="off" required></div>
+                  <div class="bpc-field"><label for="diastolic-2">Diastolique 2 (mmHg)</label><input id="diastolic-2" type="number" min="30" max="160" step="1" inputmode="numeric" autocomplete="off" required></div>
+                </div>
+              </div>
+            </div>
+          </fieldset>
+
+          <fieldset class="bpc-checks">
+            <legend>Configuration de la mesure</legend>
+            <label><input id="rested" type="checkbox"> Je me suis d'abord reposé tranquillement pendant au moins 5 minutes.</label>
+            <label><input id="positioned" type="checkbox"> Je me suis assis avec le dos soutenu, les pieds à plat et les jambes décroisées.</label>
+            <label><input id="cuff" type="checkbox"> Un brassard de taille correcte était posé sur la peau nue, le bras étant soutenu au niveau du cœur.</label>
+            <label><input id="quiet" type="checkbox"> Je n’ai pas parlé ni utilisé de téléphone pendant ces deux lectures.</label>
+          </fieldset>
+
+          <div class="bpc-symptom-check">
+            <label><input id="urgent-symptoms" type="checkbox"> J'ai un ou plusieurs symptômes urgents répertoriés dans l'avertissement ci-dessus.</label>
+          </div>
+
+          <p class="bpc-error" id="form-error" role="alert"></p>
+          <button class="bpc-primary" type="submit">Revoyez ces lectures</button>
+        </form>
+      </section>
+
+      <aside class="bpc-card bpc-measure" aria-labelledby="measure-title">
+        <p class="bpc-step">Avant de mesurer</p>
+        <h2 id="measure-title">Rendre la lecture interprétable</h2>
+        <ol>
+          <li>Évitez l'exercice, le tabac et la caféine pendant 30 minutes lorsque cela est possible ; videz votre vessie.</li>
+          <li>Reposez-vous tranquillement pendant au moins 5 minutes. Asseyez-vous soutenu, les pieds à plat et les jambes décroisées.</li>
+          <li>Utilisez un appareil pour le haut du bras validé et la taille de brassard appropriée sur la peau nue.</li>
+          <li>Soutenez le bras au niveau du cœur. Restez immobile et silencieux.</li>
+          <li>Faites deux lectures à au moins 1 minute d'intervalle et conservez les deux.</li>
+        </ol>
+        <p>La technique ne peut pas expliquer une lecture très élevée ou des symptômes d’avertissement. Suivez la limite urgente indiquée par l'outil.</p>
+      </aside>
+    </div>
+
+    <section class="bpc-card bpc-results" id="blood-pressure-results" hidden aria-labelledby="results-title" aria-live="polite">
+      <div class="bpc-results-head">
+        <div><p class="bpc-step">Un contexte, pas un diagnostic</p><h2 id="results-title" tabindex="-1">Revue de lecture</h2></div>
+        <span id="result-priority"></span>
+      </div>
+      <dl class="bpc-summary">
+        <div><dt>Lecture 1</dt><dd id="reading-one"></dd></div>
+        <div><dt>Lecture 2</dt><dd id="reading-two"></dd></div>
+        <div><dt>Moyenne arithmétique</dt><dd id="reading-average"></dd></div>
+      </dl>
+      <div class="bpc-action" id="result-action">
+        <h3 id="action-title"></h3>
+        <p id="action-text"></p>
+      </div>
+      <p id="technique-note" class="bpc-technique"></p>
+      <p class="bpc-boundary"><strong>Ce que cela n’établit pas :</strong> Ces lectures ne confirment ni n'excluent l'hypertension, la pré-éclampsie, la nécessité d'un traitement, l'effet des médicaments ou une autre condition. Un clinicien utilise des mesures répétées, des symptômes, des antécédents, des examens et parfois des analyses d'urine ou de sang.</p>
+      <div class="bpc-actions" aria-label="Actions d’export local">
+        <button id="download-txt" class="bpc-secondary" type="button">Télécharger le TXT</button>
+        <button id="download-pdf" class="bpc-secondary" type="button">Télécharger le PDF</button>
+        <button id="clear-check" class="bpc-quiet" type="button">Lectures claires</button>
+      </div>
+      <p id="export-status" class="bpc-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="bpc-info-grid">
+      <article class="bpc-card">
+        <p class="bpc-step">Limite de confidentialité</p>
+        <h2>Rien n'est enregistré ou envoyé</h2>
+        <p>Les lectures, le contexte et les choix de symptômes restent uniquement dans la mémoire de cette page. Ils ne sont pas écrits dans localStorage ou sessionStorage, placés dans une URL, envoyés à un compte, à des analyses ou à une API. TXT et PDF sont créés localement après votre action explicite. Les données de santé apparaissent dans les exportations, alors examinez le fichier avant de le partager.</p>
+      </article>
+      <article class="bpc-card">
+        <p class="bpc-step">Limite de seuil</p>
+        <h2>Différents contextes utilisent différentes invites</h2>
+        <ul>
+          <li><strong>Adulte général :</strong> Le seuil clinique de 140/90 mmHg de l'OMS nécessite des lectures sur deux jours différents pour le diagnostic. Une paire locale n’est qu’un instantané.</li>
+          <li><strong>Lectures adultes très élevées :</strong> au-dessus de 180 systoliques ou au-dessus de 120 diastoliques, il faut un contact clinique répété et immédiat s'il reste aussi élevé ; les symptômes d’urgence nécessitent une aide d’urgence.</li>
+          <li><strong>Grossesse ou 6 premières semaines après la naissance :</strong> 140 invites systoliques ou 90 diastoliques contact avec la maternité ; 160 systolique ou 110 diastolique est une limite sévère nécessitant une évaluation urgente.</li>
+        </ul>
+      </article>
+      <article class="bpc-card bpc-source-card">
+        <p class="bpc-step">Sources officielles</p>
+        <h2>Guidage vérifié pour cette carte</h2>
+        <ul class="bpc-sources">
+          <li><a href="https://www.who.int/news-room/fact-sheets/detail/hypertension" target="_blank" rel="noopener">QUI : Hypertension</a> - seuil de diagnostic adulte et confirmation à un jour différent.</li>
+          <li><a href="https://www.heart.org/en/health-topics/high-blood-pressure/understanding-blood-pressure-readings/monitoring-your-blood-pressure-at-home" target="_blank" rel="noopener">American Heart Association : Surveillance à domicile</a> - technique, lectures appariées et réponse supérieure à 180/120.</li>
+          <li><a href="https://www.nice.org.uk/guidance/ng133/chapter/Recommendations" target="_blank" rel="noopener">NICE NG133 : Hypertension pendant la grossesse</a> - Limites 140/90 et sévères 160/110.</li>
+          <li><a href="https://www.acog.org/womens-health/experts-and-stories/the-latest/7-things-to-know-about-preeclampsia" target="_blank" rel="noopener">ACOG : Prééclampsie après l'accouchement</a> - le risque peut s'étendre jusqu'à 6 semaines post-partum.</li>
+          <li><a href="https://www.nhs.uk/conditions/pre-eclampsia/" target="_blank" rel="noopener">NHS : Pré-éclampsie</a> - symptômes précurseurs de la grossesse et du post-partum.</li>
+        </ul>
+        <p class="bpc-checked">Sources vérifiées : 26 juillet 2026. Les services locaux peuvent utiliser des seuils et des consignes supplémentaires ; suivez le plan de votre maternité ou de votre équipe clinique.</p>
+      </article>
+    </section>
+  <section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Vérification d'une mesure de tension artérielle reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/blood-pressure/" hreflang="en">/tools/blood-pressure/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+
+  <footer class="bpc-site-footer">
+    <a href="/">AfroTools</a><span>Contexte de lecture adulte, pas de diagnostic</span><a href="/privacy/">Confidentialité</a>
+  </footer>
+<afro-related-tools data-ssr="1" category="health" current="blood-pressure">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

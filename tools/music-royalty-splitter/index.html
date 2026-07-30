@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -239,119 +239,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,TZ:2600,UG:3750,RW:1300,CM:615,SN:615,CI:615,MA:10,ET:57,TN:3.1,AO:835};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',TZ:'TZS ',UG:'UGX ',RW:'RWF ',CM:'XAF ',SN:'XOF ',CI:'XOF ',MA:'MAD ',ET:'ETB ',TN:'TND ',AO:'AOA '};
-var ROLES=['Songwriter','Producer','Lead Artist','Beatmaker','Featured Artist','Label','Publisher','Manager','Co-writer','Mixing Engineer'];
-var collabs=[];
-var collabId=0;
-
-function addCollab(name,role,pct){
-  var id=++collabId;
-  collabs.push(id);
-  var div=document.createElement('div');
-  div.className='collab-row';
-  div.id='cr'+id;
-  div.innerHTML='<div class="en-field"><label class="en-label">Name</label><input aria-label="E.g. Davido" type="text" id="cn'+id+'" class="en-input" placeholder="e.g. Davido" value="'+(name||'')+'"></div>'+
-    '<div class="en-field"><label class="en-label">Role</label><select id="cr_role'+id+'" class="en-select" aria-label="Cr Role">'+ROLES.map(function(r){return '<option'+(r==role?' selected':'')+'>'+r+'</option>'}).join('')+'</select></div>'+
-    '<div class="en-field"><label class="en-label">Split %</label><input aria-label="Cp'+id+'" type="number" id="cp'+id+'" class="en-input" placeholder="25" min="0" max="100" value="'+(pct||'')+'" oninput="validateSplits()"></div>'+
-    '<button type="button" class="remove-btn" onclick="removeCollab('+id+')" title="Remove">&times;</button>';
-  document.getElementById('collabList').appendChild(div);
-  validateSplits();
-}
-
-function removeCollab(id){
-  var idx=collabs.indexOf(id);
-  if(idx>-1) collabs.splice(idx,1);
-  var el=document.getElementById('cr'+id);
-  if(el) el.remove();
-  validateSplits();
-}
-
-function validateSplits(){
-  var total=0;
-  collabs.forEach(function(id){
-    var v=parseFloat(document.getElementById('cp'+id)||{}).value||0;
-    total+=v;
-  });
-  var el=document.getElementById('splitValidation');
-  if(collabs.length===0){el.style.display='none';return;}
-  el.style.display='block';
-  var t=Math.round(total*100)/100;
-  if(t===100){
-    el.className='split-validation split-ok';
-    el.textContent='✓ Splits total 100% — ready to calculate';
-  } else {
-    el.className='split-validation split-err';
-    el.textContent='⚠ Splits total '+t+'% — must equal exactly 100%';
-  }
-}
-
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:2,maximumFractionDigits:2});}
-
-function calculate(){
-  var title=document.getElementById('songTitle').value||'Untitled';
-  var country=document.getElementById('country').value;
-  var totalUSD=parseFloat(document.getElementById('totalRoyalties').value)||0;
-  var period=parseInt(document.getElementById('period').value);
-  var periodLabel={1:'Monthly',3:'Quarterly',12:'Annual'}[period];
-  if(totalUSD<=0){alert('Please enter total royalties.');return;}
-  if(collabs.length===0){alert('Add at least one collaborator.');return;}
-  var total=0;
-  var data=collabs.map(function(id){
-    var n=document.getElementById('cn'+id).value||'Collaborator';
-    var r=document.getElementById('cr_role'+id).value;
-    var p=parseFloat(document.getElementById('cp'+id).value)||0;
-    total+=p;
-    return{id:id,name:n,role:r,pct:p};
-  });
-  if(Math.round(total*100)/100!==100){alert('Splits must total exactly 100%. Currently '+Math.round(total*100)/100+'%.');return;}
-  var rate=FX[country];
-  var sym=SYM[country];
-  document.getElementById('totalDisplay').textContent='$'+fmt(totalUSD);
-  document.getElementById('localDisplay').textContent=sym+fmt(totalUSD*rate)+' ('+periodLabel+')';
-  document.getElementById('periodDisplay').textContent=periodLabel;
-
-  var tableHtml='';
-  data.forEach(function(d,i){
-    var shareUSD=totalUSD*(d.pct/100);
-    var shareLocal=shareUSD*rate;
-    var w=Math.round(d.pct);
-    tableHtml+='<div class="split-row"><div style="flex:1"><div style="font-weight:700">'+d.name+'</div><div style="font-size:.78rem;color:#64748b">'+d.role+'</div></div>'+
-      '<div class="split-bar-wrap"><div class="split-bar" style="width:'+w+'%"></div></div>'+
-      '<div style="text-align:right"><div style="font-weight:800;color:var(--en-accent-dark)">'+d.pct+'%</div><div style="font-size:.85rem;color:#64748b">$'+fmt(shareUSD)+'</div><div style="font-size:.85rem;font-weight:600">'+sym+fmt(shareLocal)+'</div></div></div>';
-  });
-  document.getElementById('splitTable').innerHTML=tableHtml;
-
-  var metricsHtml='';
-  data.forEach(function(d){
-    var shareUSD=totalUSD*(d.pct/100);
-    metricsHtml+='<div class="en-metric"><div class="en-metric-label">'+d.name+'</div><div class="en-metric-value">'+d.pct+'%</div><div class="en-metric-unit">$'+fmt(shareUSD)+' / period</div></div>';
-  });
-  document.getElementById('metricsRow').innerHTML=metricsHtml;
-
-  var projHtml='';
-  var qFactor=period===1?3:(period===3?1:0.25);
-  data.forEach(function(d){
-    var shareUSD=totalUSD*(d.pct/100);
-    var q=shareUSD*qFactor;
-    projHtml+='<tr><td class="en-td-value">'+d.name+'<br><span style="font-size:.75rem;color:#64748b">'+d.role+'</span></td>'+
-      '<td>$'+fmt(q)+'</td><td>$'+fmt(q)+'</td><td>$'+fmt(q)+'</td><td class="en-td-highlight">$'+fmt(q*4)+'</td></tr>';
-  });
-  document.getElementById('projTable').innerHTML=projHtml;
-
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-
-// Initialise with 3 default collaborators
-addCollab('','Songwriter',40);
-addCollab('','Producer',30);
-addCollab('','Lead Artist',30);
-document.getElementById('splitValidation').style.display='none';
-</script>
+<script src="/engines/music-royalty-splitter-engine.js?v=64e022b2"></script>
+<script src="/assets/js/pages/creative/creative-result-actions.js?v=a6db9431"></script>
+<script src="/assets/js/pages/creative/music-royalty-splitter-controller.js?v=2b10a5f3"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

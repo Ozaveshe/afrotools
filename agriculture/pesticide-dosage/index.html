@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -109,8 +109,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
 <style>
 :root {
@@ -852,11 +852,13 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/pesticide-data.js?v=b771cf04"></script>
+<script src="/engines/pesticide-dosage-engine.js?v=61bbf7b7"></script>
 <script>
 (function() {
   'use strict';
 
   var D = window.PesticideData;
+  var E = window.AfroTools.PesticideDosageEngine;
   var currentType = 'herbicide';
   var currentProduct = null;
   var isManual = false;
@@ -1090,19 +1092,26 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
     var waterVol = parseFloat(document.getElementById('water-vol').value) || SPRAYER_DEFAULTS[sprayerKey].water;
     var sp = D.sprayers[sprayerKey];
 
-    // Convert rate to consistent units
-    var totalProduct, productPerTank, displayUnit;
-    var rateNum = rate;
-
-    // Normalise mL and g to L and kg for display
-    if (unitLabel === 'mL/ha') { rateNum = rate / 1000; displayUnit = 'L'; }
-    else if (unitLabel === 'g/ha') { rateNum = rate / 1000; displayUnit = 'kg'; }
-    else { displayUnit = unitLabel.replace('/ha', ''); }
-
-    totalProduct = rateNum * ha;
-    var totalWater = waterVol * ha;
-    var numTanks = Math.ceil(totalWater / sp.tankSize);
-    productPerTank = totalProduct / numTanks;
+    var calculation = E.calculate({
+      kind: 'spray',
+      rate: rate,
+      unitLabel: unitLabel,
+      areaHa: ha,
+      sprayerKey: sprayerKey,
+      sprayerDefaults: SPRAYER_DEFAULTS,
+      waterPerHa: waterVol,
+      pricePerUnit: parseFloat(document.getElementById('prod-price').value),
+      currency: document.getElementById('prod-currency').value.trim() || 'USD',
+      reentryHours: reentryH,
+      preHarvestDays: phiD
+    }, D);
+    var rateNum = calculation.ratePerHa;
+    var displayUnit = calculation.displayUnit;
+    var totalProduct = calculation.totalProduct;
+    var totalWater = calculation.totalWater;
+    var numTanks = calculation.tankLoads;
+    var productPerTank = calculation.productPerTank;
+    window.PESTICIDE_LAST_RESULT = calculation;
 
     // Format values
     var totalStr, perTankStr;
@@ -1198,16 +1207,20 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
     var seedKg = parseFloat(document.getElementById('seed-qty').value);
     var rateUnit = (currentProduct && currentProduct.rateUnit) || 'g/kg seed';
 
-    // rate is in g/kg or mL/kg
-    var totalProduct = rate * seedKg; // g or mL
-    var totalStr, displayUnit;
-    if (totalProduct >= 1000) {
-      totalStr = (totalProduct / 1000).toFixed(2) + (unit === 'g' ? ' kg' : ' L');
-      displayUnit = unit === 'g' ? 'kg' : 'L';
-    } else {
-      totalStr = totalProduct.toFixed(0) + ' ' + unit;
-      displayUnit = unit;
-    }
+    var calculation = E.calculate({
+      kind: 'seed-treatment',
+      rate: rate,
+      unit: unit,
+      seedKg: seedKg,
+      reentryHours: reentryH,
+      preHarvestDays: phiD
+    }, D);
+    var totalProduct = calculation.totalProduct;
+    var displayUnit = calculation.displayUnit;
+    var totalStr = totalProduct >= 1000
+      ? calculation.displayQuantity.toFixed(2) + ' ' + displayUnit
+      : calculation.displayQuantity.toFixed(0) + ' ' + displayUnit;
+    window.PESTICIDE_LAST_RESULT = calculation;
 
     var grid = document.getElementById('results-grid');
     grid.innerHTML =
@@ -1270,6 +1283,6 @@ select:focus, input:focus { border-color: var(--acc); box-shadow: 0 0 0 3px rgba
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>
