@@ -14,11 +14,16 @@ const generatedLegalIds = new Set(JSON.parse(fs.readFileSync(
   path.join(ROOT, 'data', 'registry', 'swahili-legal-property-gaps.json'),
   'utf8'
 )).rows.map((row) => row.englishId));
-const maintained = scoped.filter((row) => (
+const { RECIPROCAL_LOCALE_OWNERS } = require('../../scripts/build-sw-legal-government-insurance-parity.js');
+const maintainedAll = scoped.filter((row) => (
   generatedLegalIds.has(row.englishId)
   || row.categoryKey === 'government'
   || row.categoryKey === 'insurance'
 ));
+const reconciledOnly = process.env.SW_PARITY_RECONCILED_ONLY === '1';
+const maintained = reconciledOnly
+  ? maintainedAll.filter((row) => Object.hasOwn(RECIPROCAL_LOCALE_OWNERS, row.englishId))
+  : maintainedAll;
 
 function routeWithSlash(route) {
   return `${String(route).replace(/\/+$/, '')}/`;
@@ -201,6 +206,8 @@ for (const row of maintained) {
   });
 }
 
-test('maintained denominator is 11 legal gaps + 15 government + 16 insurance', () => {
-  expect(maintained).toHaveLength(42);
+test(reconciledOnly
+  ? 'reconciled denominator is exactly 19 browser-proven owners'
+  : 'maintained denominator is 11 legal gaps + 15 government + 16 insurance', () => {
+  expect(maintained).toHaveLength(reconciledOnly ? 19 : 42);
 });

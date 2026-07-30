@@ -148,3 +148,22 @@ test('the 19 generated gaps are idempotent and source-owned', () => {
     assert.match(html, /build-sw-legal-government-insurance-parity\.js/);
   }
 });
+
+test('the 19 reconciled owners have reciprocal French or Hausa hreflang', () => {
+  const { RECIPROCAL_LOCALE_OWNERS } = require('../scripts/build-sw-legal-government-insurance-parity.js');
+  assert.equal(Object.keys(RECIPROCAL_LOCALE_OWNERS).length, 19);
+  const byId = new Map(rows.map((row) => [row.englishId, row]));
+  for (const [englishId, ownerRoutes] of Object.entries(RECIPROCAL_LOCALE_OWNERS)) {
+    const swahiliRoute = `${normalize(byId.get(englishId).primarySwahiliRoute)}/`;
+    for (const ownerRoute of ownerRoutes) {
+      const ownerHtml = fs.readFileSync(routeFile(ownerRoute), 'utf8');
+      assert.match(
+        ownerHtml,
+        new RegExp(`hreflang=["']sw["'][^>]+href=["']https://afrotools\\.com${swahiliRoute.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["']`, 'i'),
+        `${englishId} reciprocal owner ${ownerRoute}`
+      );
+    }
+  }
+  const nhf = fs.readFileSync(routeFile('/sw/zana/kikokotoo-nhf-nigeria/'), 'utf8');
+  assert.match(nhf, /hreflang=["']ha["'][^>]+href=["']https:\/\/afrotools\.com\/ha\/kayan-aiki\/nhf-najeriya\/["']/i);
+});

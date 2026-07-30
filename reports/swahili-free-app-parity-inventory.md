@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 562 |
-| **Accepted** | **39** |
+| **Accepted** | **58** |
 
 ## Category reconciliation
 
@@ -40,14 +40,14 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Engineering & Construction | 26 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
 | Finance, Tax & Market Data | 132 | 4 | 79 | 8 | 0 | 0 | 0 | 0 | 41 | 5 |
 | Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
+| Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 0 | 29 | 0 | 0 | 0 | 0 | 0 | 13 | 0 |
 | HR & Payroll | 6 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
-| Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
+| Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Mortgage & Property | 66 | 0 | 66 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Mortgage & Property | 66 | 0 | 66 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Personal Finance | 5 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
 | Religious & Cultural | 22 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Security & Safety | 7 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 4 | 0 |
@@ -708,11 +708,11 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | POPIA/NDPR Compliance Checker | Mortgage & Property | `/tools/data-compliance` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ulinzi-wa-data` | No |
 | Contract Generator | Mortgage & Property | `/tools/contract-generator` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba` | No |
 | Tenancy Deposit Calculator | Mortgage & Property | `/tools/tenancy-deposit` | Localized shell candidate | `/sw/zana/amana-ya-upangaji` | No |
-| Statutory Leave Days Calculator | Mortgage & Property | `/tools/leave-days` | Localized shell candidate | `/sw/zana/siku-za-likizo-za-kisheria` | No |
+| Statutory Leave Days Calculator | Mortgage & Property | `/tools/leave-days` | Localized shell candidate | `/sw/zana/siku-za-likizo-za-kisheria` | Yes |
 | Pension Projection Calculator | Finance, Tax & Market Data | `/tools/pension-proj` | Missing | None | No |
 | African Central Bank Rates | Finance, Tax & Market Data | `/tools/interest-rate-ref` | Missing | None | No |
 | African Visa Cost Checker | Mortgage & Property | `/tools/visa-cost` | Localized shell candidate | `/sw/zana/gharama-za-visa` | No |
-| Stamp Tariff Calculator | Mortgage & Property | `/tools/stamp-duty` | Localized shell candidate | `/sw/zana/kikokotoo-ushuru-wa-stampu` | No |
+| Stamp Tariff Calculator | Mortgage & Property | `/tools/stamp-duty` | Localized shell candidate | `/sw/zana/kikokotoo-ushuru-wa-stampu` | Yes |
 | Pomodoro Timer | Business & ROI | `/tools/pomodoro` | Localized shell candidate | `/sw/zana/pomodoro` | No |
 | Unit Converter (African) | Business & ROI | `/tools/unit-converter` | Localized shell candidate | `/sw/zana/kubadilisha-vipimo` | No |
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Localized shell candidate | `/sw/zana/mpango-bajeti` | No |
@@ -741,19 +741,19 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Property Valuation Estimator | Mortgage & Property | `/tools/property-valuation` | Localized shell candidate | `/sw/zana/thamani-ya-mali-isiyohamishika` | No |
 | Rent Affordability Calculator | Mortgage & Property | `/tools/rent-affordability` | Localized shell candidate | `/sw/zana/uwezo-wa-kulipa-pango` | No |
 | Tenant Screening Checklist | Mortgage & Property | `/tools/tenant-screening` | Localized shell candidate | `/sw/zana/uchunguzi-wa-mpangaji` | No |
-| Rent Intelligence | Mortgage & Property | `/tools/rent-intelligence` | Localized shell candidate | `/sw/zana/taarifa-za-soko-la-pango` | No |
-| Lease Risk Check | Mortgage & Property | `/tools/lease-risk-check` | Localized shell candidate | `/sw/zana/ukaguzi-wa-hatari-za-mkataba-wa-pango` | No |
-| Rental Agreement Generator | Mortgage & Property | `/tools/rental-agreement` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba-wa-kupangisha` | No |
+| Rent Intelligence | Mortgage & Property | `/tools/rent-intelligence` | Localized shell candidate | `/sw/zana/taarifa-za-soko-la-pango` | Yes |
+| Lease Risk Check | Mortgage & Property | `/tools/lease-risk-check` | Localized shell candidate | `/sw/zana/ukaguzi-wa-hatari-za-mkataba-wa-pango` | Yes |
+| Rental Agreement Generator | Mortgage & Property | `/tools/rental-agreement` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba-wa-kupangisha` | Yes |
 | Property Management Fee Calculator | Mortgage & Property | `/tools/property-mgmt-fees` | Localized shell candidate | `/sw/zana/ada-usimamizi-wa-mali` | No |
 | Building Material Cost Estimator | Mortgage & Property | `/tools/building-materials` | Localized shell candidate | `/sw/zana/gharama-vifaa-vya-ujenzi` | No |
 | House Construction Budget Planner | Mortgage & Property | `/tools/construction-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-ujenzi-wa-nyumba` | No |
 | Property Development Feasibility Calculator | Mortgage & Property | `/tools/dev-feasibility` | Localized shell candidate | `/sw/zana/uwezekano-wa-ujenzi` | No |
-| Land Survey Cost Estimator | Mortgage & Property | `/tools/survey-cost` | Localized shell candidate | `/sw/zana/gharama-za-upimaji-ardhi` | No |
+| Land Survey Cost Estimator | Mortgage & Property | `/tools/survey-cost` | Localized shell candidate | `/sw/zana/gharama-za-upimaji-ardhi` | Yes |
 | Property Capital Gains Tax Calculator | Mortgage & Property | `/tools/property-cgt` | Localized shell candidate | `/sw/zana/kodi-ya-faida-ya-mali` | No |
 | Property Service Charge Calculator | Mortgage & Property | `/tools/service-charge` | Localized shell candidate | `/sw/zana/ada-za-huduma-za-mali` | No |
 | Short-Let (Airbnb) Income Calculator | Mortgage & Property | `/tools/short-let-calc` | Localized shell candidate | `/sw/zana/mapato-ya-kupangisha-kwa-muda-mfupi` | No |
 | Real Estate Agent Commission Calculator | Mortgage & Property | `/tools/agent-commission` | Localized shell candidate | `/sw/zana/kamisheni-ya-wakala` | No |
-| Plot Size Converter | Mortgage & Property | `/tools/plot-converter` | Localized shell candidate | `/sw/zana/kigeuzi-cha-eneo-la-kiwanja` | No |
+| Plot Size Converter | Mortgage & Property | `/tools/plot-converter` | Localized shell candidate | `/sw/zana/kigeuzi-cha-eneo-la-kiwanja` | Yes |
 | Building Permit Checklist | Mortgage & Property | `/tools/building-permit` | Localized shell candidate | `/sw/zana/kibali-cha-ujenzi` | No |
 | Diaspora Property Investment Calculator | Mortgage & Property | `/tools/diaspora-property` | Localized shell candidate | `/sw/zana/uwekezaji-wa-diaspora-kwenye-mali` | No |
 | Off-Plan vs Ready Property Comparator | Mortgage & Property | `/tools/offplan-vs-ready` | Localized shell candidate | `/sw/zana/mradi-wa-ramani-dhidi-ya-nyumba-tayari` | No |
@@ -764,7 +764,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Savings Goal Planner | Finance, Tax & Market Data | `/tools/savings-goal` | Localized shell candidate | `/sw/zana/lengo-la-akiba` | No |
 | Car Loan Cost Planner | Finance, Tax & Market Data | `/tools/car-loan` | Localized shell candidate | `/sw/zana/mkopo-wa-gari` | No |
 | Student Loan Repayment Planner | Finance, Tax & Market Data | `/tools/student-loan` | Missing | None | No |
-| Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | No |
+| Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | Yes |
 | Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Missing | None | No |
 | Kenya NSSF Contribution Calculator | Finance, Tax & Market Data | `/tools/ke-nssf` | Missing | None | No |
 | Kenya HELB Repayment Worksheet | Education | `/tools/ke-helb` | Localized shell candidate | `/sw/zana/kikokotoo-helb-kenya` | No |
@@ -817,7 +817,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Tenancy Agreement Generator | Mortgage & Property | `/tools/tenancy-agreement` | Localized shell candidate | `/sw/zana/mkataba-wa-upangaji` | No |
 | Employment Contract Builder | Mortgage & Property | `/tools/employment-contract` | Localized shell candidate | `/sw/zana/mkataba-wa-ajira` | No |
 | CAC / Business Name Checker | Mortgage & Property | `/tools/cac-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-jina-cac-nigeria` | No |
-| African IP Rights Guide | Mortgage & Property | `/tools/ip-rights-africa` | Localized shell candidate | `/sw/zana/haki-miliki-afrika` | No |
+| African IP Rights Guide | Mortgage & Property | `/tools/ip-rights-africa` | Localized shell candidate | `/sw/zana/haki-miliki-afrika` | Yes |
 | P2P Quote Comparator | Finance, Tax & Market Data | `/crypto/p2p-rates` | Missing | None | No |
 | Crypto Market Snapshot | Finance, Tax & Market Data | `/crypto/prices` | Native candidate | `/sw/mshahara-na-kodi/crypto` | No |
 | Stablecoin Reference Snapshot | Finance, Tax & Market Data | `/crypto/stablecoins` | Missing | None | No |
@@ -980,13 +980,13 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | National ID Registration Guide | Government & Civic | `/tools/national-id-guide` | Localized shell candidate | `/sw/zana/mwongozo-kitambulisho-taifa` | Yes |
 | Voter Registration Guide | Government & Civic | `/tools/voter-registration` | Localized shell candidate | `/sw/zana/usajili-wa-mpiga-kura` | Yes |
 | Africa Election Tracker | Government & Civic | `/tools/africa-election-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-uchaguzi-afrika` | Yes |
-| National Pension Estimator | Government & Civic | `/tools/national-pension` | Localized shell candidate | `/sw/zana/makisio-ya-pensheni-ya-taifa` | No |
+| National Pension Estimator | Government & Civic | `/tools/national-pension` | Localized shell candidate | `/sw/zana/makisio-ya-pensheni-ya-taifa` | Yes |
 | Land Registry Fee Calculator | Government & Civic | `/tools/land-registry-fees` | Localized shell candidate | `/sw/zana/ada-usajili-wa-ardhi` | Yes |
 | Birth & Death Certificate Guide | Government & Civic | `/tools/birth-death-cert` | Localized shell candidate | `/sw/zana/vyeti-vya-kuzaliwa-na-kifo` | Yes |
-| Marriage Certificate Guide | Government & Civic | `/tools/marriage-cert` | Localized shell candidate | `/sw/zana/cheti-cha-ndoa` | No |
-| FOI Request Template Generator | Government & Civic | `/tools/foi-template` | Localized shell candidate | `/sw/zana/rasimu-ya-ombi-la-taarifa` | No |
-| Government Scholarship Finder | Government & Civic | `/tools/gov-scholarship` | Localized shell candidate | `/sw/zana/ufadhili-wa-serikali` | No |
-| Social Welfare Eligibility Checker | Government & Civic | `/tools/social-welfare` | Localized shell candidate | `/sw/zana/msaada-wa-kijamii` | No |
+| Marriage Certificate Guide | Government & Civic | `/tools/marriage-cert` | Localized shell candidate | `/sw/zana/cheti-cha-ndoa` | Yes |
+| FOI Request Template Generator | Government & Civic | `/tools/foi-template` | Localized shell candidate | `/sw/zana/rasimu-ya-ombi-la-taarifa` | Yes |
+| Government Scholarship Finder | Government & Civic | `/tools/gov-scholarship` | Localized shell candidate | `/sw/zana/ufadhili-wa-serikali` | Yes |
+| Social Welfare Eligibility Checker | Government & Civic | `/tools/social-welfare` | Localized shell candidate | `/sw/zana/msaada-wa-kijamii` | Yes |
 | Government Budget Comparator (YoY) | Government & Civic | `/tools/budget-comparator` | Localized shell candidate | `/sw/zana/kilinganisha-bajeti` | Yes |
 | Startup Runway Calculator | Small Business & SME | `/tools/startup-runway` | Localized shell candidate | `/sw/zana/startup-runway` | No |
 | TAM/SAM/SOM Market Size Calculator | Small Business & SME | `/tools/tam-sam-som` | Localized shell candidate | `/sw/zana/tam-sam-som` | No |
@@ -1211,7 +1211,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Thrift / Cooperative Returns Calculator — Africa | Fintech & Banking | `/tools/thrift-calc` | Missing | None | No |
 | Trade Credit Terms Calculator — Africa | Fintech & Banking | `/tools/trade-credit` | Localized shell candidate | `/sw/zana/masharti-ya-mkopo-wa-biashara` | No |
 | Kenya Data Protection Act 2019 Compliance Checker | Government & Civic | `/tools/kenya-dpa` | Localized shell candidate | `/sw/zana/ukaguzi-wa-dpa-kenya` | Yes |
-| Work Permit Cost Guide — All 54 African Countries | Government & Civic | `/tools/work-permit-cost` | Localized shell candidate | `/sw/zana/gharama-za-kibali-cha-kazi` | No |
+| Work Permit Cost Guide — All 54 African Countries | Government & Civic | `/tools/work-permit-cost` | Localized shell candidate | `/sw/zana/gharama-za-kibali-cha-kazi` | Yes |
 | Contractor vs Employee Cost — All 54 African Countries | HR & Payroll | `/tools/contractor-vs-employee` | Localized shell candidate | `/sw/zana/mkandarasi-dhidi-ya-mfanyakazi` | No |
 | Domestic Worker Salary Guide — All 15 African Countries | HR & Payroll | `/tools/domestic-worker` | Localized shell candidate | `/sw/zana/mshahara-wa-mfanyakazi-wa-nyumbani` | No |
 | Employee Cost Calculator — All 54 African Countries | HR & Payroll | `/tools/employee-cost` | Localized shell candidate | `/sw/zana/gharama-ya-mfanyakazi` | No |
@@ -1221,8 +1221,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Insurance Claim Checklist for Africa — Step-by-Step Guide | Insurance | `/tools/claim-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-wa-dai` | Yes |
 | Crop Insurance Calculator — 15 African Countries | Insurance | `/tools/crop-insurance-calc` | Localized shell candidate | `/sw/zana/kikokotoo-bima-ya-mazao` | Yes |
 | Fire Insurance Calculator for Africa — Building Cover Estimator | Insurance | `/tools/fire-insurance` | Localized shell candidate | `/sw/zana/kikokotoo-bima-ya-moto` | Yes |
-| Insurance Fraud Red Flag Checker — Africa | Insurance | `/tools/insurance-fraud-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ishara-za-udanganyifu-wa-bima` | No |
-| Marine & Cargo Insurance Calculator for Africa | Insurance | `/tools/marine-insurance` | Localized shell candidate | `/sw/zana/kikokotoo-bima-ya-bahari` | No |
+| Insurance Fraud Red Flag Checker — Africa | Insurance | `/tools/insurance-fraud-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ishara-za-udanganyifu-wa-bima` | Yes |
+| Marine & Cargo Insurance Calculator for Africa | Insurance | `/tools/marine-insurance` | Localized shell candidate | `/sw/zana/kikokotoo-bima-ya-bahari` | Yes |
 | Microinsurance Premium Calculator — 15 African Countries | Insurance | `/tools/microinsurance` | Localized shell candidate | `/sw/zana/bima-ndogo` | Yes |
 | Professional Indemnity Insurance Calculator for Africa | Insurance | `/tools/professional-indemnity` | Localized shell candidate | `/sw/zana/bima-ya-dhima-ya-kitaalamu` | Yes |
 | Affidavit Generator Africa 2026 — Free Legal Affidavit Template | Mortgage & Property | `/tools/affidavit-generator` | Localized shell candidate | `/sw/zana/kizalishaji-kiapo` | No |
@@ -1237,8 +1237,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | DPIA Tool — Data Protection Impact Assessment | Mortgage & Property | `/tools/dpia-tool` | Localized shell candidate | `/sw/zana/tathmini-ya-athari-za-ulinzi-wa-data` | No |
 | Foreign Company Registration Guide — 16 African Countries | Mortgage & Property | `/tools/foreign-company-reg` | Localized shell candidate | `/sw/zana/usajili-wa-kampuni-ya-kigeni` | No |
 | GDPR vs African Data Protection Laws Comparison 2024 | Mortgage & Property | `/tools/gdpr-vs-africa` | Localized shell candidate | `/sw/zana/gdpr-dhidi-ya-sheria-za-afrika` | No |
-| Inheritance Tax Calculator Africa 2026 — Estate & Death Duty | Mortgage & Property | `/tools/inheritance-tax` | Localized shell candidate | `/sw/zana/kikokotoo-kodi-ya-urithi` | No |
-| IP Protection Guide — Intellectual Property in Africa | Mortgage & Property | `/tools/ip-protection` | Localized shell candidate | `/sw/zana/mpango-wa-ulinzi-wa-mali-bunifu` | No |
+| Inheritance Tax Calculator Africa 2026 — Estate & Death Duty | Mortgage & Property | `/tools/inheritance-tax` | Localized shell candidate | `/sw/zana/kikokotoo-kodi-ya-urithi` | Yes |
+| IP Protection Guide — Intellectual Property in Africa | Mortgage & Property | `/tools/ip-protection` | Localized shell candidate | `/sw/zana/mpango-wa-ulinzi-wa-mali-bunifu` | Yes |
 | Legal Aid Eligibility Checker Africa 2026 — 16 Countries | Mortgage & Property | `/tools/legal-aid` | Localized shell candidate | `/sw/zana/ustahiki-wa-msaada-wa-kisheria` | No |
 | Partnership Agreement Generator — African Businesses | Mortgage & Property | `/tools/partnership-agreement` | Localized shell candidate | `/sw/zana/mkataba-wa-ubia` | No |
 | Power of Attorney Generator Africa 2026 — Free POA Template | Mortgage & Property | `/tools/power-of-attorney` | Localized shell candidate | `/sw/zana/nguvu-ya-wakili` | No |

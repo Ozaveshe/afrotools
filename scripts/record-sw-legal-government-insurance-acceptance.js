@@ -12,13 +12,6 @@ const RECEIPT_JSON = path.join(ROOT, 'reports', 'swahili-legal-government-insura
 const RECEIPT_MD = path.join(ROOT, 'reports', 'swahili-legal-government-insurance-parity-receipt.md');
 const ARTWORK_JSON = path.join(ROOT, 'reports', 'swahili-legal-government-insurance-artwork-queue.json');
 const ARTWORK_MD = path.join(ROOT, 'reports', 'swahili-legal-government-insurance-artwork-queue.md');
-const CROSS_LOCALE_BLOCKED = new Set([
-  'leave-days', 'stamp-duty', 'rent-intelligence', 'lease-risk-check', 'rental-agreement',
-  'survey-cost', 'plot-converter', 'ng-nhf', 'ip-rights-africa', 'inheritance-tax', 'ip-protection',
-  'national-pension', 'marriage-cert', 'foi-template', 'gov-scholarship', 'social-welfare',
-  'work-permit-cost', 'insurance-fraud-checker', 'marine-insurance'
-]);
-
 function read(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
 }
@@ -30,7 +23,7 @@ function evidenceFor(row) {
     generator: 'scripts/build-sw-legal-government-insurance-parity.js',
     invalidState: 'Fail-closed invalid input proved before a successful route-owned workflow.',
     browser: '320/375 mobile widths, 200% text reflow, light/dark media, keyboard focus and labels, no console/page/local-resource errors, no mutation requests.',
-    seo: 'Self canonical, OG URL, WebApplication schema inLanguage=sw, reciprocal en/sw hreflang and exact registry ownership.',
+    seo: 'Self canonical, OG URL, WebApplication schema inLanguage=sw, reciprocal en/fr/sw hreflang (plus Hausa where paired) and exact registry ownership.',
     privacy: 'Synthetic input stayed local with consent declined; no account, email, AI call or write request.'
   };
   if (row.categoryKey === 'government') {
@@ -94,16 +87,14 @@ function main() {
   const browserProved = scoped.filter((row) => (
     legalGapIds.has(row.englishId) || row.categoryKey === 'government' || row.categoryKey === 'insurance'
   ));
-  const acceptedRows = browserProved.filter((row) => !CROSS_LOCALE_BLOCKED.has(row.englishId));
+  const acceptedRows = browserProved;
   const blockedRows = scoped.filter((row) => !acceptedRows.includes(row)).map((row) => ({
     englishId: row.englishId,
     route: row.primarySwahiliRoute,
-    reason: CROSS_LOCALE_BLOCKED.has(row.englishId)
-      ? 'The app/browser receipt passed, but full hreflang reciprocity requires an edit to another locale, which is outside this lane.'
-      : 'No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner.'
+    reason: 'No route-specific app workflow, invalid-state, export and full browser receipt was produced for this older legal owner.'
   }));
-  if (acceptedRows.length !== 23 || blockedRows.length !== 74) {
-    throw new Error(`Expected 23 accepted and 74 blocked, found ${acceptedRows.length}/${blockedRows.length}`);
+  if (acceptedRows.length !== 42 || blockedRows.length !== 55) {
+    throw new Error(`Expected 42 accepted and 55 blocked, found ${acceptedRows.length}/${blockedRows.length}`);
   }
 
   const ledger = read(ACCEPTANCE);
@@ -129,15 +120,16 @@ function main() {
     reviewedAt: '2026-07-31',
     scope: 'Swahili Mortgage & Property, Government and Insurance free-app parity',
     baseSha: '99898076a0329200e8f47c2e80a41a079b0df8b3',
-    counts: { denominator: 97, accepted: 23, blocked: 74, byCategory },
+    continuationBaseSha: 'b785c3cf1463515f6a8f0f0196ff981e799ddc13',
+    counts: { denominator: 97, accepted: 42, blocked: 55, byCategory },
     proof: {
       static: {
         command: 'node --test tests/swahili-legal-government-insurance-parity.test.js',
-        result: '7 passed'
+        result: '8 passed'
       },
       browser: {
-        command: 'playwright test tests/e2e/swahili-legal-government-insurance-parity.spec.js --project=chromium --workers=4',
-        result: '43 passed'
+        command: 'SW_PARITY_RECONCILED_ONLY=1 playwright test tests/e2e/swahili-legal-government-insurance-parity.spec.js --project=chromium --workers=4',
+        result: '20 passed: exactly 19 reconciled app owners plus the denominator assertion'
       },
       generator: {
         command: 'node scripts/build-sw-legal-government-insurance-parity.js',
@@ -145,7 +137,7 @@ function main() {
       },
       hreflang: {
         command: 'node scripts/validate-hreflang.js',
-        result: 'The accepted 23-row subset has no route error. Nineteen browser-proved new owners remain blocked because reciprocity needs an out-of-scope edit to another locale.'
+        result: 'All reciprocal hreflang relationships passed after targeted French and Hausa owner reconciliation.'
       }
     },
     acceptedRows: acceptedRows.map((row) => ({
@@ -155,9 +147,9 @@ function main() {
     })),
     blockedRows,
     sourceRisks: [
-      'Government source check reports 67 sources, 8 changed and 28 blocked/manual, with 0 broken. The Swahili runtime therefore fails closed whenever freshness or integrity evidence is unavailable.',
+      'Government source check reports 67 sources, 9 changed and 27 blocked/manual, with 0 broken. The Swahili runtime therefore fails closed whenever freshness or integrity evidence is unavailable.',
       'Insurance source data is dated 2026-03-29 and is 123 days old against a 60-day high-risk cadence; 29 regulator gaps and 8 unsourced claim classes remain. Accepted insurance tools use user-entered planning assumptions and do not present live premiums.',
-      'All 66 legal rows remain unaccepted: 55 lack the full route-specific browser/export receipt and 11 browser-proved gap apps still require out-of-scope cross-locale hreflang reciprocity.'
+      'Fifty-five older legal rows remain unaccepted because they lack the full route-specific engine, output, invalid-state, export and browser receipt.'
     ],
     boundary: 'Local repository and browser proof only; no deploy, production, live government verification, legal advice, official eligibility, quote, coverage or claim decision.'
   };
@@ -187,7 +179,7 @@ function main() {
     }
   }
   if (!WRITE && drift.length) throw new Error(`Acceptance receipt drift:\n${drift.join('\n')}`);
-  process.stdout.write(`${WRITE ? 'Recorded' : 'Checked'} 23 accepted / 74 blocked; artwork ${artwork.available}/97; ${drift.length} changed outputs.\n`);
+  process.stdout.write(`${WRITE ? 'Recorded' : 'Checked'} 42 accepted / 55 blocked; artwork ${artwork.available}/97; ${drift.length} changed outputs.\n`);
 }
 
 if (require.main === module) main();
