@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -21,8 +21,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
 <style>
 :root{--rt-ink:#0f172a;--rt-muted:#526179;--rt-line:#d9e2ef;--rt-blue:#2457c5;--rt-green:#0f7a5c;--rt-amber:#9a6700;--rt-soft:#f7fafc}
@@ -54,13 +54,13 @@ body{background:#f5f7fb;color:var(--rt-ink)}
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/transfert-v2/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/remittance-v2/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="top-level-page-ui-refresh" data-fr-ua-app="remittance-v2">
 <afro-navbar></afro-navbar>
 <main class="rt-shell">
   <section class="rt-hero">
     <div>
       <span class="eyebrow">Comparaison éditable 2026</span>
-      <h1>Comparateur transferts d'argent</h1>
+      <h1>Comparateur transferts d'argent</h1><figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/remittance-v2.webp" width="320" height="180" alt="" loading="eager"></figure>
       <p>Comparez plusieurs scénarios avant d'envoyer de l'argent vers l'Afrique. Saisissez le taux que vous voyez chez le prestataire, les frais, la marge FX et la méthode de reception; AfroTools classe le montant reçu et le coût estime.</p>
       <div class="actions">
         <a class="btn btn-primary" href="#comparateur">Comparer maintenant</a>
@@ -85,31 +85,12 @@ body{background:#f5f7fb;color:var(--rt-ink)}
           <div class="field"><label for="midRate">Taux de référence</label><input id="midRate" type="number" min="0" step="any" value="1900" inputmode="decimal"><span class="help">Exemple: 1 GBP = 1900 NGN.</span></div>
           <div class="field"><label for="annualCount">Nombre d'envois / an</label><input id="annualCount" type="number" min="1" max="365" step="1" value="12" inputmode="numeric"></div>
           <div class="field"><label for="priority">Priorité</label><select id="priority"><option value="received" selected>Montant reçu</option><option value="speed">Vitesse</option><option value="bank">Compte bancaire</option><option value="mobile">Mobile money</option><option value="cash">Cash pickup</option></select></div>
+          <div class="field"><label for="providerFee">Frais de votre scénario</label><input id="providerFee" type="number" min="0" step="0.01" value="3" inputmode="decimal"></div>
+          <div class="field"><label for="fxMargin">Marge FX de votre scénario (%)</label><input id="fxMargin" type="number" min="0" step="0.1" value="0.8" inputmode="decimal"></div>
+          <div class="field"><label for="payoutMethod">Mode de réception</label><select id="payoutMethod"><option value="any" selected>Tous modes</option><option value="mobile">Mobile money</option><option value="bank">Compte bancaire</option><option value="cash">Cash pickup</option></select></div>
         </div>
 
-        <div class="providers" aria-label="Prestataires à comparer">
-          <div class="provider-row" data-provider-row>
-            <h3>Option A</h3>
-            <div class="field"><label>Nom</label><input data-name value="Wise"></div>
-            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="3"></div>
-            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="0.8"></div>
-            <div class="field"><label>Reception</label><select data-method><option value="bank" selected>Banque</option><option value="mobile">Mobile money</option><option value="cash">Cash</option></select></div>
-          </div>
-          <div class="provider-row" data-provider-row>
-            <h3>Option B</h3>
-            <div class="field"><label>Nom</label><input data-name value="Remitly"></div>
-            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="0"></div>
-            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="1.6"></div>
-            <div class="field"><label>Reception</label><select data-method><option value="bank">Banque</option><option value="mobile" selected>Mobile money</option><option value="cash">Cash</option></select></div>
-          </div>
-          <div class="provider-row" data-provider-row>
-            <h3>Option C</h3>
-            <div class="field"><label>Nom</label><input data-name value="Western Union"></div>
-            <div class="field"><label>Frais</label><input data-fee type="number" min="0" step="0.01" value="8"></div>
-            <div class="field"><label>Marge FX %</label><input data-margin type="number" min="0" step="0.1" value="2.4"></div>
-            <div class="field"><label>Reception</label><select data-method><option value="bank">Banque</option><option value="mobile">Mobile money</option><option value="cash" selected>Cash</option></select></div>
-          </div>
-        </div>
+        <p class="notice">Le classement exécute le même modèle propriétaire que la route anglaise : onze hypothèses prestataires maintenues plus votre scénario saisi. Ce ne sont pas des devis en direct.</p>
         <div class="actions">
           <button class="btn btn-primary" type="submit">Comparer</button>
           <button class="btn btn-secondary" type="button" id="copyMemo">Copier le memo</button>
@@ -156,11 +137,24 @@ body{background:#f5f7fb;color:var(--rt-ink)}
   var STORAGE_KEY = 'afrotools:fr:transfert-v2:last';
   var lastMemo = '';
   var resultPanel = document.getElementById('resultPanel');
-  var methodLabels = {bank:'Banque', mobile:'Mobile money', cash:'Cash pickup'};
+  var methodLabels = {any:'Tous modes', bank:'Banque', mobile:'Mobile money', cash:'Cash pickup'};
+  // Source-owned parity with /tools/remittance-v2/#PROVIDERS.
+  var PROVIDERS = [
+    {name:'Wise',fee:function(a){return Math.max(2.5,a*0.006);},margin:0.3,method:'bank'},
+    {name:'Lemfi',fee:function(a){return Math.max(2,a*0.005);},margin:0.5,method:'bank'},
+    {name:'Remitly',fee:function(a){return a<200?3.99:0;},margin:1,method:'mobile'},
+    {name:'WorldRemit',fee:function(a){return a<200?3.99:a<500?4.99:5.99;},margin:1.2,method:'mobile'},
+    {name:'Western Union',fee:function(a){return a<200?8:a<500?12:a<1000?15:25;},margin:2.5,method:'cash'},
+    {name:'MoneyGram',fee:function(a){return a<200?6:a<500?10:a<1000?12:20;},margin:2.2,method:'cash'},
+    {name:'Chipper Cash',fee:function(){return 0;},margin:1.5,method:'mobile'},
+    {name:'Sendwave',fee:function(){return 0;},margin:1.8,method:'mobile'},
+    {name:'OFX',fee:function(a){return a<1000?15:0;},margin:0.5,method:'bank'},
+    {name:'Flutterwave Send',fee:function(a){return Math.max(1.5,a*0.004);},margin:0.8,method:'mobile'},
+    {name:'Azimo',fee:function(a){return a<500?2.99:0;},margin:0.9,method:'bank'}
+  ];
 
   function n(id){ var v=parseFloat(document.getElementById(id).value); return Number.isFinite(v)?v:0; }
   function money(value,currency){ return currency + ' ' + Math.round(value).toLocaleString('fr-FR'); }
-  function rows(){ return Array.from(document.querySelectorAll('[data-provider-row]')); }
 
   function compare(){
     var from = document.getElementById('fromCurrency').value;
@@ -169,17 +163,34 @@ body{background:#f5f7fb;color:var(--rt-ink)}
     var midRate = n('midRate');
     var annualCount = Math.max(1, Math.round(n('annualCount')||1));
     var priority = document.getElementById('priority').value;
-    var results = rows().map(function(row){
-      var name = row.querySelector('[data-name]').value.trim() || 'Option';
-      var fee = Math.max(0, parseFloat(row.querySelector('[data-fee]').value)||0);
-      var margin = Math.max(0, parseFloat(row.querySelector('[data-margin]').value)||0);
-      var method = row.querySelector('[data-method]').value;
+    var enteredFee = Math.max(0, n('providerFee'));
+    var enteredMargin = Math.max(0, n('fxMargin'));
+    var payoutMethod = document.getElementById('payoutMethod').value;
+    if (!(amount > 0) || !(midRate > 0)) {
+      lastMemo = '';
+      resultPanel.innerHTML = '<div class="notice warn" role="status">Saisissez un montant et un taux de référence strictement supérieurs à zéro.</div>';
+      document.getElementById(!(amount > 0) ? 'amount' : 'midRate').focus();
+      return null;
+    }
+    var providerInputs = PROVIDERS.concat([{
+      name:'Votre scénario saisi',
+      ownerName:'Your entered scenario',
+      fee:function(){return enteredFee;},
+      margin:enteredMargin,
+      method:payoutMethod,
+      userEntered:true
+    }]);
+    var results = providerInputs.map(function(provider){
+      var name = provider.name;
+      var fee = provider.fee(amount);
+      var margin = provider.margin;
+      var method = provider.method;
       var net = Math.max(0, amount - fee);
       var effectiveRate = midRate * (1 - margin / 100);
       var received = net * effectiveRate;
       var referenceReceived = amount * midRate;
       var costInSendCurrency = midRate > 0 ? (referenceReceived - received) / midRate : fee;
-      return {name:name, fee:fee, margin:margin, method:method, effectiveRate:effectiveRate, received:received, cost:costInSendCurrency};
+      return {name:name, ownerName:provider.ownerName || name, fee:fee, margin:margin, method:method, effectiveRate:effectiveRate, received:received, cost:costInSendCurrency, userEntered:!!provider.userEntered};
     }).sort(function(a,b){
       if (priority === 'bank' || priority === 'mobile' || priority === 'cash') {
         var ma = a.method === priority ? -1 : 0;
@@ -208,13 +219,27 @@ body{background:#f5f7fb;color:var(--rt-ink)}
         metric('Upside annuel', money(gain * annualCount, to)) +
       '</div>' +
       '<div class="rank-table">' +
-        '<div class="rank-row header"><span>Option</span><span>Recu</span><span>Cout estime</span><span>Methode</span></div>' +
+        '<div class="rank-row header"><span>Option</span><span>Reçu</span><span>Frais et taux</span><span>Coût, marge et mode</span></div>' +
         results.map(function(r,i){
-          return '<div class="rank-row ' + (i===0?'best':'') + '"><strong>' + r.name + '</strong><span>' + money(r.received, to) + '</span><span>' + money(r.cost, from) + ' (' + r.margin.toFixed(1) + '% FX)</span><span>' + methodLabels[r.method] + '</span></div>';
+          return '<div class="rank-row ' + (i===0?'best':'') + '"><strong>' + r.name + '</strong><span>' + money(r.received, to) + '</span><span>' + money(r.fee, from) + '<br>1 ' + from + ' = ' + r.effectiveRate.toFixed(1) + ' ' + to + '</span><span>' + money(r.cost, from) + ' · ' + r.margin.toFixed(1) + '% FX · ' + (methodLabels[r.method] || r.method) + '</span></div>';
         }).join('') +
       '</div>' +
       '<div class="notice"><strong>Decision:</strong> ' + best.name + ' donne le montant recu le plus eleve avec les hypotheses saisies. L ecart avec ' + worst.name + ' est de ' + money(gain, to) + ' par transfert.</div>' +
       '<div class="notice warn"><strong>Pas un devis live:</strong> confirmez frais, taux, payout, limites et delai dans l application du prestataire avant d envoyer.</div>';
+    window.AfroToolsFrenchRemittanceV2Payload = {
+      amount: amount,
+      midRate: midRate,
+      results: results.map(function(result) {
+        return {
+          name: result.ownerName,
+          fee: result.fee,
+          margin: result.margin,
+          effectiveRate: result.effectiveRate,
+          received: result.received,
+          cost: result.cost
+        };
+      })
+    };
     return {best:best, worst:worst, results:results};
   }
 
@@ -257,6 +282,9 @@ body{background:#f5f7fb;color:var(--rt-ink)}
   compare();
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+  <script src="/assets/js/pages/fr-uniquely-african-native-guards.js?v=d703e731"></script>
+  <script src="/assets/js/pages/fr-uniquely-african-native-exports.js?v=afa89491"></script>
+  <aside class="ua-native-ai-route" aria-label="Continuer avec AfroTools AI"><a href="/fr/ai/?tool=remittance-v2&route=%2Ffr%2Ftools%2Ftransfert-v2%2F">Préparer ce workflow dans AfroTools AI</a></aside>
 </body>
 </html>

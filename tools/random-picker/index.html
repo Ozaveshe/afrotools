@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -16,8 +16,8 @@
   <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
 .tool-hero{background:linear-gradient(135deg,var(--afro-dark) 0%,#1a1f2e 100%);padding:44px 0 36px;position:relative;overflow:hidden}
@@ -174,6 +174,7 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/random-picker/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/random-picker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/selecteur-aleatoire/">
@@ -453,13 +454,13 @@ function pickNames() {
   var count = Math.min(parseInt(document.getElementById('pickCount').value) || 1, names.length);
   document.getElementById('countBadge').textContent = names.length + ' items';
 
-  // Fisher-Yates shuffle with crypto random
-  var shuffled = names.slice();
-  for (var i = shuffled.length - 1; i > 0; i--) {
-    var j = cryptoRandom(i + 1);
-    var tmp = shuffled[i]; shuffled[i] = shuffled[j]; shuffled[j] = tmp;
+  var poolForOwner = names.slice();
+  var picked = [];
+  for (var i = 0; i < count; i++) {
+    var ownerPick = window.BusinessRoiEngine.pick({items:poolForOwner,random:cryptoRandom(1000000)/1000000});
+    picked.push(ownerPick.value);
+    poolForOwner.splice(ownerPick.index,1);
   }
-  var picked = shuffled.slice(0, count);
   var finalText = picked.join(', ');
   var sub = count === 1 ? 'Selected from ' + names.length + ' items' : 'Picked ' + count + ' from ' + names.length + ' items';
 
@@ -541,16 +542,8 @@ function assignTeams() {
   var names = raw.split('\n').map(function(n) { return n.trim(); }).filter(Boolean);
   var teamCount = parseInt(document.getElementById('teamCount').value) || 2;
 
-  // Shuffle
-  for (var i = names.length - 1; i > 0; i--) {
-    var j = cryptoRandom(i + 1);
-    var tmp = names[i]; names[i] = names[j]; names[j] = tmp;
-  }
-
-  // Distribute
-  var teams = [];
-  for (var t = 0; t < teamCount; t++) teams.push([]);
-  names.forEach(function(name, idx) { teams[idx % teamCount].push(name); });
+  var randomValues=names.map(function(){return cryptoRandom(1000000)/1000000;});
+  var teams=window.BusinessRoiEngine.teams({items:names,teamCount:teamCount,randomValues:randomValues});
 
   var resultLines = teams.map(function(team, idx) {
     return 'Team ' + (idx + 1) + ': ' + team.join(', ');
@@ -604,7 +597,7 @@ document.getElementById('nameList').addEventListener('input', function() {
 </nav>
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 </body>
 </html>

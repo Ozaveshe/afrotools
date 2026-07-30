@@ -1,180 +1,325 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="drug-dosage">
 <head>
-
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Vérificateur arithmétique de dose | AfroTools</title>
+<meta name="description" content="Vérifiez la masse du médicament, le volume de liquide ou le nombre d'unités arithmétiques à partir des instructions écrites d'un clinicien ou d'un pharmacien. Aucun…">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<title>Calculateur de dosage médicament | AfroTools</title>
-<meta name="description" content="Calculez un dosage indicatif par poids avec une lecture française prudente.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:title" content="Calculateur de dosage médicament | AfroTools">
-<meta property="og:description" content="Calculez un dosage indicatif par poids avec une lecture française prudente.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/dosage-medicament/">
+<meta property="og:title" content="Vérificateur arithmétique de dose | AfroTools">
+<meta property="og:description" content="Vérifiez la masse du médicament, le volume de liquide ou le nombre d'unités arithmétiques à partir des instructions écrites d'un clinicien ou d'un pharmacien. Aucun…">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/drug-dosage.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/dosage-medicament/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de dosage médicament | AfroTools">
-<meta name="twitter:description" content="Calculez un dosage indicatif par poids avec une lecture française prudente.">
+<meta name="twitter:title" content="Vérificateur arithmétique de dose | AfroTools">
+<meta name="twitter:description" content="Vérifiez la masse du médicament, le volume de liquide ou le nombre d'unités arithmétiques à partir des instructions écrites d'un clinicien ou d'un pharmacien. Aucun…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/drug-dosage.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<meta property="article:modified_time" content="2026-07-26">
+<meta name="tool-id" content="drug-dosage">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/tools/drug-dosage/drug-dosage-vip.css?v=b7b39f3a">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calculateur de dosage médicament",
-  "description": "Calculez un dosage indicatif par poids avec une lecture française prudente.",
-  "url": "https://afrotools.com/fr/tools/dosage-medicament/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Vérificateur arithmétique de dose",
+    "description": "Vérifiez la masse du médicament, le volume de liquide ou le nombre d'unités arithmétiques à partir des instructions écrites d'un clinicien ou d'un pharmacien. Aucun…",
+    "url": "https://afrotools.com/fr/tools/dosage-medicament/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/drug-dosage.webp"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/drug-dosage.webp"
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Puis-je administrer un médicament uniquement avec ce calcul ?","acceptedAnswer":{"@type":"Answer","text":"Non. Vérifiez toujours la notice, la prescription, la concentration disponible, les allergies et l’avis d’un professionnel quand c’est nécessaire."}},{"@type":"Question","name":"Puis-je modifier un traitement avec ce résultat ?","acceptedAnswer":{"@type":"Answer","text":"Non. Ne commencez, n’arrêtez ou ne modifiez aucun traitement sur la base de cette page, surtout en cas de grossesse, enfant, maladie rénale ou hépatique, ou association de médicaments."}},{"@type":"Question","name":"Pourquoi le poids est-il demandé ?","acceptedAnswer":{"@type":"Answer","text":"Beaucoup de doses pédiatriques et certaines doses adultes utilisent le poids comme base de calcul, mais le poids ne suffit jamais à décider seul."}}]}</script>
-
-<style>
-body{background:#f8fafc;color:#0f172a}
-.fr-hero{background:linear-gradient(135deg,#0f172a 0%,#18304f 56%,#0f6fd6 100%);color:#fff;padding:3.5rem 1.25rem 2.5rem}
-.fr-shell{max-width:1120px;margin:0 auto}
-.fr-eyebrow{display:inline-flex;margin-bottom:.75rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#bfdbfe}
-.fr-hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.04;margin:0 0 .85rem;font-weight:800;max-width:820px}
-.fr-hero p{max-width:720px;margin:0;color:rgba(255,255,255,.84);line-height:1.72;font-size:1.02rem}
-.fr-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.2rem}
-.fr-badge{display:inline-flex;padding:.45rem .75rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);font-size:.8rem;font-weight:700}
-.fr-main{max-width:1120px;margin:0 auto;padding:1.5rem 1.25rem 3.5rem}
-.fr-card{background:#fff;border:1px solid #dbe4ee;border-radius:18px;box-shadow:0 12px 34px rgba(15,23,42,.06);overflow:hidden}
-.fr-tool-frame{min-height:680px}
-.fr-tool-frame iframe{display:block;width:100%;min-height:720px;border:0;background:#fff}
-.fr-note{margin:1rem 0 1.25rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65;font-size:.95rem}
-.fr-note strong{display:block;margin-bottom:.25rem;color:#172554}
-.fr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-top:1rem}
-.fr-link{display:block;padding:1rem;border:1px solid #dbe4ee;border-radius:14px;background:#fff;text-decoration:none;color:#0f172a}
-.fr-link:hover{border-color:#60a5fa;box-shadow:0 10px 24px rgba(15,23,42,.08)}
-.fr-link strong{display:block;margin-bottom:.3rem}
-.fr-link span{display:block;color:#64748b;font-size:.9rem;line-height:1.55}
-.fr-section{margin-top:1.35rem;padding:1.25rem;background:#fff;border:1px solid #dbe4ee;border-radius:18px}
-.fr-section h2{font-size:1.25rem;margin:0 0 .65rem;font-weight:800}
-.fr-section p,.fr-section li{color:#475569;line-height:1.78}
-.fr-section ul{padding-left:1.2rem}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:12px;background:#fff;margin:.75rem 0;overflow:hidden}
-.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.05rem;font-weight:700}
-.fr-faq summary::-webkit-details-marker{display:none}
-.fr-faq p{padding:0 1.05rem 1rem;margin:0;color:#475569;line-height:1.72}
-@media (max-width:820px){.fr-grid{grid-template-columns:1fr}.fr-tool-frame iframe{min-height:780px}.fr-hero{padding-top:2.7rem}}
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
-</style>
-<style data-at-trust-panel-style>
-.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
-</style>
+<script type="application/json" id="fr-health-translations">{"Medication Dose Arithmetic Checker | AfroTools":"Vérificateur arithmétique de dose de médicament | AfroTools","Skip to medication arithmetic checker":"Passer au vérificateur arithmétique des médicaments","Home":"Accueil","Health":"Santé","Medication arithmetic":"Arithmétique des médicaments","Local arithmetic worksheet · not a prescription":"Feuille de travail d'arithmétique locale · pas une prescription","Medication dose arithmetic checker":"Vérificateur arithmétique de dose de médicament","Convert an instruction you already received into a mass, liquid volume, or tablet/capsule count. This tool never chooses a medicine, dose, frequency, duration, or treatment.":"Convertissez une instruction que vous avez déjà reçue en masse, volume de liquide ou nombre de comprimés/capsules. Cet outil ne choisit jamais un médicament, une dose, une fréquence, une durée ou un traitement.","Instructions required":"Instructions requises","Unit mismatch blocking":"Blocage des incompatibilités d'unités","Runs in this browser":"Fonctionne dans ce navigateur","Possible overdose, poisoning, wrong medicine, or severe reaction?":"Possible surdosage, empoisonnement, mauvais médicament ou réaction grave ?","Do not use this calculator to decide whether to wait.":"N'utilisez pas cette calculatrice pour décider d'attendre ou non.","Contact your local emergency service, poison centre, pharmacist, or urgent medical service now. Trouble breathing, collapse, seizure, facial or throat swelling, confusion, or extreme drowsiness needs emergency help.":"Contactez dès maintenant votre service d’urgence local, votre centre antipoison, votre pharmacien ou votre service médical d’urgence. Des difficultés respiratoires, un collapsus, des convulsions, un gonflement du visage ou de la gorge, une confusion ou une somnolence extrême nécessitent une aide d'urgence.","Before entering anything":"Avant d'entrer quoi que ce soit","Copy the written instruction exactly":"Copiez exactement les instructions écrites","Use the prescription, medicine label, discharge instruction, or a pharmacist's written direction. If the instruction, unit, route, frequency, medicine name, or label concentration is unclear, stop and ask the clinician or pharmacist.":"Utilisez l'ordonnance, l'étiquette du médicament, les instructions de sortie ou les instructions écrites d'un pharmacien. Si les instructions, l'unité, la voie, la fréquence, le nom du médicament ou la concentration sur l'étiquette ne sont pas clairs, arrêtez-vous et demandez au clinicien ou au pharmacien.","Check the highlighted fields":"Vérifiez les champs en surbrillance","1. Confirm the instruction source":"1. Confirmez la source des instructions","I am copying an instruction already supplied by a qualified clinician or pharmacist. I am not using this tool to choose a medicine or dose.":"Je copie une instruction déjà fournie par un clinicien ou un pharmacien qualifié. Je n'utilise pas cet outil pour choisir un médicament ou une dose.","Medication name":"Nom du médicament","(for this worksheet only)":"(pour cette feuille de travail uniquement)","The name does not affect the arithmetic and is never checked against a drug database.":"Le nom n’affecte pas le calcul et n’est jamais comparé à une base de données sur les médicaments.","2. Enter the instructed dose":"2. Entrez la dose indiquée","Instruction format":"Format des instructions","Fixed amount":"Montant fixe","Amount per kilogram of body weight":"Quantité par kilogramme de poids corporel","Amount in the instruction":"Montant dans l'instruction","Mass unit":"Unité de masse","micrograms (mcg/µg)":"microgrammes (mcg/µg)","milligrams (mg)":"milligrammes (mg)","grams (g)":"grammes (g)","Body weight used by the clinician":"Poids corporel utilisé par le clinicien","Weight unit":"Unité de poids","kilograms (kg)":"kilogrammes (kg)","pounds (lb)":"livres (lb)","This amount is treated as user-supplied. The tool cannot tell whether it is clinically appropriate or whether it applies per dose, per day, or by a particular route.":"Ce montant est considéré comme fourni par l'utilisateur. L’outil ne peut pas dire s’il est cliniquement approprié ou s’il s’applique par dose, par jour ou par une voie particulière.","3. Choose what to check":"3. Choisissez ce que vous voulez vérifier","Medicine label format":"Format d'étiquette du médicament","Mass only — no formulation conversion":"Masse uniquement – aucune conversion de formulation","Liquid — concentration stated as mass per mL":"Liquide — concentration exprimée en masse par ml","Tablet/capsule — strength per whole unit":"Comprimé/capsule — dosage par unité entière","Copy both numbers from one concentration statement on the same label, for example “125 mg per 5 mL”. Do not enter percentages or combine “125/5” into one field.":"Copiez les deux chiffres d'une déclaration de concentration sur la même étiquette, par exemple « 125 mg par 5 ml ». N'entrez pas de pourcentages et ne combinez pas « 125/5 » dans un seul champ.","Label mass":"Masse de l'étiquette","Label mass unit":"Unité de masse de l'étiquette","Per volume (mL)":"Par volume (mL)","Enter the mass printed for one whole tablet or capsule. The tool does not advise splitting, crushing, opening, or combining dosage forms.":"Entrez la masse imprimée pour un comprimé ou une capsule entière. L'outil ne conseille pas de diviser, d'écraser, d'ouvrir ou de combiner des formes posologiques.","Strength per whole tablet/capsule":"Dosage par comprimé/capsule entier","Strength unit":"Unité de force","Check arithmetic":"Vérifier l'arithmétique","Clear worksheet":"Effacer la feuille de calcul","Arithmetic result · not a dose recommendation":"Résultat arithmétique · pas de recommandation de dose","Result":"Résultat","Print / Save PDF":"Imprimer / Enregistrer le PDF","Download text worksheet":"Télécharger la feuille de travail de texte","Both exports are created locally in this browser, without an account or email gate.":"Les deux exportations sont créées localement dans ce navigateur, sans compte ni portail de messagerie.","What this cannot decide":"Ce que cela ne peut pas décider","Clinical decisions stay with a professional":"Les décisions cliniques restent du ressort d'un professionnel","Which medicine, dose, route, frequency, duration, or maximum is appropriate.":"Quel médicament, dose, voie, fréquence, durée ou maximum est approprié.","Child or infant dosing.":"Dosage chez l'enfant ou le nourrisson.","Pregnancy or breastfeeding advice.":"Conseils de grossesse ou d'allaitement.","Kidney, liver, allergy, interaction, or multiple-medicine adjustments.":"Ajustements aux reins, au foie, aux allergies, aux interactions ou à plusieurs médicaments.","Whether a tablet may be split, crushed, opened, or substituted.":"Si un comprimé peut être divisé, écrasé, ouvert ou remplacé.","Before administering":"Avant d'administrer","Read back the five details":"Relisez les cinq détails","Right person and medicine.":"Bonne personne et médicament.","Exact written amount and unit.":"Montant écrit exact et unité.","Label strength or concentration.":"Force ou concentration de l'étiquette.","Route, timing, and frequency from the instruction.":"Itinéraire, timing et fréquence de l’instruction.","Expiry, allergies, and pharmacist/clinician clarification where anything differs.":"Expiration, allergies et clarification du pharmacien/clinicien en cas de différence.","Privacy":"Confidentialité","Your worksheet stays here":"Votre feuille de calcul reste ici","Arithmetic runs in this browser. This page does not save entries to local storage, put them in a URL, or send them to AfroTools, AI, email, analytics, or a server. Printing and text download are local browser actions.":"L'arithmétique s'exécute dans ce navigateur. Cette page n'enregistre pas les entrées dans le stockage local, ne les place pas dans une URL ou ne les envoie pas à AfroTools, à l'IA, à la messagerie électronique, aux analyses ou à un serveur. L'impression et le téléchargement de texte sont des actions du navigateur local.","Sources and freshness":"Sources et fraîcheur","Medication-safety context, not a dosing database":"Contexte de sécurité des médicaments, pas une base de données de dosage","Checked 26 July 2026. These sources support the page's safety boundaries; they do not validate any entered medicine or dose.":"Vérifié le 26 juillet 2026. Ces sources soutiennent les limites de sécurité de la page ; ils ne valident aucun médicament ou dose saisi.","WHO: Medication Without Harm":"QUI : Des médicaments sans danger","Medication errors can occur across prescribing, preparation, dispensing, administration, and monitoring.":"Des erreurs médicamenteuses peuvent survenir lors de la prescription, de la préparation, de la distribution, de l’administration et de la surveillance.","WHO: Patient safety":"QUI : Sécurité des patients","Medication errors are among common avoidable adverse events.":"Les erreurs médicamenteuses font partie des événements indésirables évitables courants.","US FDA: oral-liquid dosing designations":"FDA américaine : désignations de dosage de liquides oraux","Liquid volume measurement requires clear label units and a dosing device.":"La mesure du volume de liquide nécessite des étiquettes claires et un dispositif de dosage.","How the arithmetic works":"Comment fonctionne l'arithmétique","For a fixed instruction, the entered mass is the working amount. For a weight-based instruction, the entered amount per kilogram is multiplied by the entered weight after pounds are converted to kilograms. For a liquid label, the mass is divided by the label's mass-per-millilitre concentration. For a tablet or capsule, the mass is divided by the strength of one whole unit.":"Pour une instruction fixe, la masse saisie est la quantité utile. Pour une instruction basée sur le poids, la quantité saisie par kilogramme est multipliée par le poids saisi après conversion des livres en kilogrammes. Pour une étiquette liquide, la masse est divisée par la concentration massique par millilitre de l'étiquette. Pour un comprimé ou une capsule, la masse est divisée par la force d'une unité entière.","Mass units are normalized only between micrograms, milligrams, and grams. The checker deliberately rejects unsupported units, percentages, mixed concentration formats, zero values, non-finite values, and implausibly large arithmetic outputs that are more likely to be entry errors. These guards are not clinical maximum doses.":"Les unités de masse sont normalisées uniquement entre microgrammes, milligrammes et grammes. Le vérificateur rejette délibérément les unités non prises en charge, les pourcentages, les formats de concentration mixtes, les valeurs nulles, les valeurs non finies et les résultats arithmétiques invraisemblablement volumineux qui sont plus susceptibles d'être des erreurs de saisie. Ces gardes ne sont pas des doses maximales cliniques.","Does a successful result mean the dose is safe?":"Un résultat positif signifie-t-il que la dose est sûre ?","No. It means only that the entered numbers and supported units can be combined mathematically. A clinician or pharmacist must confirm the medicine, dose, route, timing, patient factors, and formulation.":"Non. Cela signifie seulement que les nombres saisis et les unités prises en charge peuvent être combinés mathématiquement. Un clinicien ou un pharmacien doit confirmer le médicament, la dose, la voie d'administration, le moment choisi, les facteurs liés au patient et la formulation.","What if the result is part of a tablet?":"Et si le résultat faisait partie d'une tablette ?","The page reports the exact mathematical count and warns that the formulation cannot deliver it as whole units. Do not split, crush, open, or substitute a medicine unless a pharmacist or clinician confirms that action for the exact product.":"La page indique le décompte mathématique exact et prévient que la formulation ne peut pas le fournir sous forme d'unités entières. Ne divisez pas, n'écrasez pas, n'ouvrez pas et ne remplacez pas un médicament à moins qu'un pharmacien ou un clinicien ne confirme cette action pour le produit exact.","Can I use teaspoons for a liquid?":"Puis-je utiliser des cuillères à café pour un liquide ?","No. This checker uses millilitres only. Copy the mL concentration from the label and use the supplied oral syringe, cup, or other calibrated device as instructed by a pharmacist or clinician.":"Non, ce vérificateur utilise uniquement des millilitres. Copiez la concentration en mL de l'étiquette et utilisez la seringue orale, la tasse ou tout autre dispositif calibré fourni, selon les instructions d'un pharmacien ou d'un clinicien.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","same-origin":"même origine","Check medication mass, liquid volume or unit-count arithmetic from a clinician or pharmacist's written instructions. No dose advice or prescribing.":"Vérifiez la masse du médicament, le volume de liquide ou le nombre d'unités arithmétiques à partir des instructions écrites d'un clinicien ou d'un pharmacien. Aucun conseil posologique ni prescription.","Check arithmetic from written medication instructions without selecting a medicine or recommending a dose.":"Vérifiez le calcul à partir des instructions écrites sur les médicaments sans sélectionner de médicament ni recommander de dose.","Medication arithmetic only, using instructions already supplied by a clinician or pharmacist.":"Calcul des médicaments uniquement, en utilisant les instructions déjà fournies par un clinicien ou un pharmacien.","drug-dosage":"dosage du médicament","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Copy the label name; do not guess":"Copiez le nom de l'étiquette ; ne devine pas","Inputs used in this arithmetic":"Entrées utilisées dans cette arithmétique","Medication safety boundaries":"Limites de sécurité des médicaments","use strict":"utiliser strict",", message:":", message :",", value:":", valeur :","+ input.weightUnit +":"+ entrée.weightUnit +","+ input.doseUnit +":"+ entrée.doseUnit +","+ name,":"+ nom,","+ currentResult.formula,":"+ currentResult.formule,","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Download PDF":"Télécharger le PDF","Download TXT":"Télécharger le TXT","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/dosage-medicament/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/drug-dosage/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/dosage-medicament/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-dozi-ya-dawa/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/drug-dosage/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="at-trust-panel" data-tool-verification-panel aria-label="Méthodologie, sources et limites">
-<h2>Méthodologie, sources et limites</h2>
-<div class="at-trust-grid"><div><strong>Méthodologie</strong>La page aide à préparer un calcul, une comparaison ou une vérification avec vos données avant de passer a l'outil principal.</div><div><strong>Sources</strong>Pour tout taux, barème, examen, assurance, santé, éducation ou regle pays, confirmez la source officielle ou le fournisseur avant décision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypothèses sont à valider et ne remplacent pas un avis fiscal, juridique, médical, éducatif ou professionnel.</div></div>
-<p>Dernière vérification editoriale: 2026. Utilisez le résultat comme repere de travail, puis conservez la source, la date et le contexte de votre vérification.</p>
-</section>
-<section class="fr-hero">
-  <div class="fr-shell">
-    <span class="fr-eyebrow">Santé</span>
-    <h1>Calculateur de dosage médicament</h1>
-    <p>Utilisez le poids et le médicament choisi pour vérifier une dose indicative, puis confirmez toujours avec l’étiquette, l’ordonnance ou un professionnel.</p>
-    <div class="fr-badges"><span class="fr-badge">Poids</span><span class="fr-badge">Dose indicative</span><span class="fr-badge">Vérification médicale</span></div>
+<body class="drug-dose-page">
+<a class="skip-link" href="#main-content">Passer au vérificateur arithmétique des médicaments</a>
+<afro-navbar></afro-navbar>
+<main id="main-content">
+  <header class="dose-hero">
+    <div class="dose-shell">
+      <nav class="dose-breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/health/">Santé</a><span aria-hidden="true">/</span><span>Arithmétique des médicaments</span></nav>
+      <p class="dose-eyebrow">Feuille de travail d'arithmétique locale · pas une prescription</p>
+      <h1>Vérificateur arithmétique de dose</h1>
+      <p class="dose-lede">Convertissez une instruction que vous avez déjà reçue en masse, volume de liquide ou nombre de comprimés/capsules. Cet outil ne choisit jamais un médicament, une dose, une fréquence, une durée ou un traitement.</p>
+      <ul class="dose-badges" aria-label="Limites des outils">
+        <li>Instructions requises</li><li>Blocage des incompatibilités d'unités</li><li>Fonctionne dans ce navigateur</li>
+      </ul>
+    </div>
+  </header>
+
+  <section class="dose-emergency" aria-labelledby="emergency-title">
+    <div class="dose-shell">
+      <h2 id="emergency-title">Possible surdosage, empoisonnement, mauvais médicament ou réaction grave ?</h2>
+      <p><strong>N'utilisez pas cette calculatrice pour décider d'attendre ou non.</strong> Contactez dès maintenant votre service d’urgence local, votre centre antipoison, votre pharmacien ou votre service médical d’urgence. Des difficultés respiratoires, un collapsus, des convulsions, un gonflement du visage ou de la gorge, une confusion ou une somnolence extrême nécessitent une aide d'urgence.</p>
+    </div>
+  </section>
+
+  <div class="dose-shell dose-layout">
+    <section class="dose-workspace" aria-labelledby="worksheet-title">
+      <div class="dose-card dose-intro">
+        <p class="dose-kicker">Avant d'entrer quoi que ce soit</p>
+        <h2 id="worksheet-title">Copiez exactement les instructions écrites</h2>
+        <p>Utilisez l'ordonnance, l'étiquette du médicament, les instructions de sortie ou les instructions écrites d'un pharmacien. Si les instructions, l'unité, la voie, la fréquence, le nom du médicament ou la concentration sur l'étiquette ne sont pas clairs, arrêtez-vous et demandez au clinicien ou au pharmacien.</p>
+      </div>
+
+      <form id="dose-form" class="dose-card" novalidate>
+        <div id="error-summary" class="dose-error-summary" role="alert" tabindex="-1" hidden>
+          <h2>Vérifiez les champs en surbrillance</h2>
+          <ul id="error-list"></ul>
+        </div>
+
+        <fieldset>
+          <legend>1. Confirmez la source des instructions</legend>
+          <div class="dose-check">
+            <input id="instruction-confirmed" name="instructionConfirmed" type="checkbox" required>
+            <label for="instruction-confirmed">Je copie une instruction déjà fournie par un clinicien ou un pharmacien qualifié. Je n'utilise pas cet outil pour choisir un médicament ou une dose.</label>
+          </div>
+          <div class="dose-field">
+            <label for="medication-name">Nom du médicament <span>(pour cette feuille de travail uniquement)</span></label>
+            <input id="medication-name" name="medicationName" type="text" maxlength="100" autocomplete="off" placeholder="Copiez le nom de l'étiquette ; ne devine pas">
+            <p class="dose-hint">Le nom n’affecte pas le calcul et n’est jamais comparé à une base de données sur les médicaments.</p>
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend>2. Entrez la dose indiquée</legend>
+          <div class="dose-field">
+            <label for="dose-basis">Format des instructions</label>
+            <select id="dose-basis" name="basis">
+              <option value="fixed">Montant fixe</option>
+              <option value="weight">Quantité par kilogramme de poids corporel</option>
+            </select>
+          </div>
+          <div class="dose-grid">
+            <div class="dose-field">
+              <label for="prescribed-dose">Montant dans l'instruction</label>
+              <input id="prescribed-dose" name="prescribedDose" type="number" min="0" step="any" inputmode="decimal" autocomplete="off">
+            </div>
+            <div class="dose-field">
+              <label for="dose-unit">Unité de masse</label>
+              <select id="dose-unit" name="doseUnit">
+                <option value="mcg">microgrammes (mcg/µg)</option>
+                <option value="mg" selected>milligrammes (mg)</option>
+                <option value="g">grammes (g)</option>
+              </select>
+            </div>
+          </div>
+          <div id="weight-fields" class="dose-grid" hidden>
+            <div class="dose-field">
+              <label for="body-weight">Poids corporel utilisé par le clinicien</label>
+              <input id="body-weight" name="weight" type="number" min="0" step="any" inputmode="decimal" autocomplete="off">
+            </div>
+            <div class="dose-field">
+              <label for="weight-unit">Unité de poids</label>
+              <select id="weight-unit" name="weightUnit">
+                <option value="kg">kilogrammes (kg)</option>
+                <option value="lb">livres (lb)</option>
+              </select>
+            </div>
+          </div>
+          <p class="dose-callout">Ce montant est considéré comme fourni par l'utilisateur. L’outil ne peut pas dire s’il est cliniquement approprié ou s’il s’applique par dose, par jour ou par une voie particulière.</p>
+        </fieldset>
+
+        <fieldset>
+          <legend>3. Choisissez ce que vous voulez vérifier</legend>
+          <div class="dose-field">
+            <label for="output-mode">Format d'étiquette du médicament</label>
+            <select id="output-mode" name="mode">
+              <option value="mass">Masse uniquement – aucune conversion de formulation</option>
+              <option value="liquid">Liquide — concentration exprimée en masse par ml</option>
+              <option value="solid">Comprimé/capsule — dosage par unité entière</option>
+            </select>
+          </div>
+
+          <div id="liquid-fields" class="dose-conditional" hidden>
+            <p class="dose-hint strong">Copiez les deux chiffres d'une déclaration de concentration sur la même étiquette, par exemple « 125 mg par 5 ml ». N'entrez pas de pourcentages et ne combinez pas « 125/5 » dans un seul champ.</p>
+            <div class="dose-grid dose-grid-three">
+              <div class="dose-field">
+                <label for="concentration-mass">Masse de l'étiquette</label>
+                <input id="concentration-mass" name="concentrationMass" type="number" min="0" step="any" inputmode="decimal" autocomplete="off">
+              </div>
+              <div class="dose-field">
+                <label for="concentration-unit">Unité de masse de l'étiquette</label>
+                <select id="concentration-unit" name="concentrationUnit">
+                  <option value="mcg">mcg/µg</option><option value="mg" selected>mg</option><option value="g">g</option>
+                </select>
+              </div>
+              <div class="dose-field">
+                <label for="concentration-volume">Par volume (mL)</label>
+                <input id="concentration-volume" name="concentrationVolume" type="number" min="0" step="any" inputmode="decimal" autocomplete="off">
+              </div>
+            </div>
+          </div>
+
+          <div id="solid-fields" class="dose-conditional" hidden>
+            <p class="dose-hint strong">Entrez la masse imprimée pour un comprimé ou une capsule entière. L'outil ne conseille pas de diviser, d'écraser, d'ouvrir ou de combiner des formes posologiques.</p>
+            <div class="dose-grid">
+              <div class="dose-field">
+                <label for="unit-strength">Dosage par comprimé/capsule entier</label>
+                <input id="unit-strength" name="unitStrength" type="number" min="0" step="any" inputmode="decimal" autocomplete="off">
+              </div>
+              <div class="dose-field">
+                <label for="strength-unit">Unité de force</label>
+                <select id="strength-unit" name="strengthUnit">
+                  <option value="mcg">mcg/µg</option><option value="mg" selected>mg</option><option value="g">g</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+
+        <div class="dose-actions">
+          <button class="dose-primary" type="submit">Vérifier l'arithmétique</button>
+          <button class="dose-secondary" id="reset-button" type="reset">Effacer la feuille de calcul</button>
+        </div>
+      </form>
+
+      <section id="result-panel" class="dose-card dose-result" aria-labelledby="result-title" aria-live="polite" hidden>
+        <p class="dose-kicker">Résultat arithmétique · pas de recommandation de dose</p>
+        <h2 id="result-title">Résultat</h2>
+        <p id="result-value" class="dose-result-value"></p>
+        <p id="result-formula" class="dose-formula"></p>
+        <dl id="result-details" class="dose-result-details" aria-label="Entrées utilisées dans cette arithmétique"></dl>
+        <div id="result-caution" class="dose-result-caution"></div>
+        <div class="dose-actions">
+          <button class="dose-primary" id="print-button" type="button">Imprimer / Enregistrer le PDF</button>
+          <button class="dose-secondary" id="download-button" type="button">Télécharger la feuille de travail de texte</button>
+        </div>
+        <p class="dose-hint">Les deux exportations sont créées localement dans ce navigateur, sans compte ni portail de messagerie.</p>
+      </section>
+    </section>
+
+    <aside class="dose-aside" aria-label="Limites de sécurité des médicaments">
+      <section class="dose-card">
+        <p class="dose-kicker">Ce que cela ne peut pas décider</p>
+        <h2>Les décisions cliniques restent du ressort d'un professionnel</h2>
+        <ul class="dose-list">
+          <li>Quel médicament, dose, voie, fréquence, durée ou maximum est approprié.</li>
+          <li>Dosage chez l'enfant ou le nourrisson.</li>
+          <li>Conseils de grossesse ou d'allaitement.</li>
+          <li>Ajustements aux reins, au foie, aux allergies, aux interactions ou à plusieurs médicaments.</li>
+          <li>Si un comprimé peut être divisé, écrasé, ouvert ou remplacé.</li>
+        </ul>
+      </section>
+      <section class="dose-card">
+        <p class="dose-kicker">Avant d'administrer</p>
+        <h2>Relisez les cinq détails</h2>
+        <ol class="dose-list">
+          <li>Bonne personne et médicament.</li>
+          <li>Montant écrit exact et unité.</li>
+          <li>Force ou concentration de l'étiquette.</li>
+          <li>Itinéraire, timing et fréquence de l’instruction.</li>
+          <li>Expiration, allergies et clarification du pharmacien/clinicien en cas de différence.</li>
+        </ol>
+      </section>
+      <section class="dose-card">
+        <p class="dose-kicker">Confidentialité</p>
+        <h2>Votre feuille de calcul reste ici</h2>
+        <p>L'arithmétique s'exécute dans ce navigateur. Cette page n'enregistre pas les entrées dans le stockage local, ne les place pas dans une URL ou ne les envoie pas à AfroTools, à l'IA, à la messagerie électronique, aux analyses ou à un serveur. L'impression et le téléchargement de texte sont des actions du navigateur local.</p>
+      </section>
+    </aside>
   </div>
-</section>
-<main class="fr-main">
-<section class="fr-action-planner" data-tool-verification-panel data-fr-action-planner data-tool-name="Calculateur de dosage médicament">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
-</div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/drug-dosage/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthodologie:</strong> utilisez ce brief comme aide de planification. Limites 2026: contenu non officiel; hypothèses à valider avec la source, le fournisseur ou l'autorite competente avant décision financière, juridique, santé, énergie, éducation ou business.</div>
-</section>
-  <div class="fr-note"><strong>Repère uniquement.</strong> Ne commencez, n’arrêtez ou ne modifiez aucun traitement à partir de cette page. Les médicaments peuvent être dangereux en cas d’erreur de dose, d’allergie, de grossesse, de maladie rénale ou hépatique, ou d’association avec d’autres traitements. En cas de surdose possible, réaction grave, difficulté à respirer ou malaise, contactez un service d’urgence local.</div>
-  <section class="fr-card fr-tool-frame" aria-label="Calculateur de dosage médicament">
-    <iframe id="fr-source-frame" src="/tools/drug-dosage/" title="Calculateur de dosage médicament" loading="eager"></iframe>
+
+  <section class="dose-sources">
+    <div class="dose-shell">
+      <p class="dose-kicker">Sources et fraîcheur</p>
+      <h2>Contexte de sécurité des médicaments, pas une base de données de dosage</h2>
+      <p>Vérifié le 26 juillet 2026. Ces sources soutiennent les limites de sécurité de la page ; ils ne valident aucun médicament ou dose saisi.</p>
+      <div class="dose-source-grid">
+        <a href="https://www.who.int/initiatives/medication-without-harm" target="_blank" rel="noopener"><strong>QUI : Des médicaments sans danger</strong><span>Des erreurs médicamenteuses peuvent survenir lors de la prescription, de la préparation, de la distribution, de l’administration et de la surveillance.</span></a>
+        <a href="https://www.who.int/news-room/fact-sheets/detail/patient-safety" target="_blank" rel="noopener"><strong>QUI : Sécurité des patients</strong><span>Les erreurs médicamenteuses font partie des événements indésirables évitables courants.</span></a>
+        <a href="https://www.fda.gov/media/88498/download" target="_blank" rel="noopener"><strong>FDA américaine : désignations de dosage de liquides oraux</strong><span>La mesure du volume de liquide nécessite des étiquettes claires et un dispositif de dosage.</span></a>
+      </div>
+    </div>
   </section>
-  <section class="fr-section">
-    <h2>Pourquoi rester prudent</h2>
-    <p>Le calcul par kilogramme aide à éviter les approximations, mais la forme disponible, la concentration, l’âge, les allergies, la grossesse et l’état clinique changent la décision.</p><p>Pour un enfant, une personne âgée, une personne enceinte, une maladie chronique ou une situation urgente, privilégiez l’avis d’un soignant ou d’un pharmacien.</p>
+
+  <section class="dose-explainer dose-shell" aria-labelledby="explainer-title">
+    <h2 id="explainer-title">Comment fonctionne l'arithmétique</h2>
+    <p>Pour une instruction fixe, la masse saisie est la quantité utile. Pour une instruction basée sur le poids, la quantité saisie par kilogramme est multipliée par le poids saisi après conversion des livres en kilogrammes. Pour une étiquette liquide, la masse est divisée par la concentration massique par millilitre de l'étiquette. Pour un comprimé ou une capsule, la masse est divisée par la force d'une unité entière.</p>
+    <p>Les unités de masse sont normalisées uniquement entre microgrammes, milligrammes et grammes. Le vérificateur rejette délibérément les unités non prises en charge, les pourcentages, les formats de concentration mixtes, les valeurs nulles, les valeurs non finies et les résultats arithmétiques invraisemblablement volumineux qui sont plus susceptibles d'être des erreurs de saisie. Ces gardes ne sont pas des doses maximales cliniques.</p>
+    <div class="dose-faqs">
+      <details><summary>Un résultat positif signifie-t-il que la dose est sûre ?</summary><p>Non. Cela signifie seulement que les nombres saisis et les unités prises en charge peuvent être combinés mathématiquement. Un clinicien ou un pharmacien doit confirmer le médicament, la dose, la voie d'administration, le moment choisi, les facteurs liés au patient et la formulation.</p></details>
+      <details><summary>Et si le résultat faisait partie d'une tablette ?</summary><p>La page indique le décompte mathématique exact et prévient que la formulation ne peut pas le fournir sous forme d'unités entières. Ne divisez pas, n'écrasez pas, n'ouvrez pas et ne remplacez pas un médicament à moins qu'un pharmacien ou un clinicien ne confirme cette action pour le produit exact.</p></details>
+      <details><summary>Puis-je utiliser des cuillères à café pour un liquide ?</summary><p>Non, ce vérificateur utilise uniquement des millilitres. Copiez la concentration en mL de l'étiquette et utilisez la seringue orale, la tasse ou tout autre dispositif calibré fourni, selon les instructions d'un pharmacien ou d'un clinicien.</p></details>
+    </div>
   </section>
-  <section class="fr-section">
-    <h2>Outils liés en français</h2>
-    <div class="fr-grid"><a class="fr-link" href="/fr/tools/calculateur-imc/"><strong>Calculateur IMC</strong><span>Repère poids, taille et composition corporelle.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lire une mesure et suivre ses valeurs.</span></a><a class="fr-link" href="/fr/tools/calendrier-vaccinal/"><strong>Calendrier vaccinal</strong><span>Repères à confirmer localement.</span></a><a class="fr-link" href="/fr/tools/cout-hospitalier/"><strong>Coût hospitalier</strong><span>Préparer un budget de soins avec prudence.</span></a></div>
-  </section>
-  <section class="fr-section fr-faq"><h2>Questions fréquentes</h2><details><summary>Puis-je administrer un médicament uniquement avec ce calcul ?</summary><p>Non. Vérifiez toujours la notice, la prescription, la concentration disponible, les allergies et l’avis d’un professionnel quand c’est nécessaire.</p></details><details><summary>Puis-je modifier un traitement avec ce résultat ?</summary><p>Non. Ne commencez, n’arrêtez ou ne modifiez aucun traitement sur la base de cette page, surtout en cas de grossesse, enfant, maladie rénale ou hépatique, ou association de médicaments.</p></details><details><summary>Pourquoi le poids est-il demandé ?</summary><p>Beaucoup de doses pédiatriques et certaines doses adultes utilisent le poids comme base de calcul, mais le poids ne suffit jamais à décider seul.</p></details></section>
-</main>
-<script>
-(function(){
-  const textMap={"Calculate":"Calculer","Calculator":"Calculateur","Weight":"Poids","Height":"Taille","Age":"Âge","Gender":"Sexe","Male":"Homme","Female":"Femme","Result":"Résultat","Results":"Résultats","Normal":"Normal","Risk":"Risque","Health":"Santé","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter","Blood Pressure":"Tension artérielle","Medication":"Médicament","Dosage":"Dosage","Hospital":"Hôpital","Cost":"Coût","Water":"Eau","Calories":"Calories","Due Date":"Date probable","Sickle Cell":"Drépanocytose","Genotype":"Génotype"};
-  const frame=document.getElementById('fr-source-frame');
-  function replaceText(node){
-    if(!node || !node.nodeValue) return;
-    let value=node.nodeValue;
-    Object.keys(textMap).forEach(function(key){
-      value=value.split(key).join(textMap[key]);
-    });
-    node.nodeValue=value;
-  }
-  function localize(){
-    try{
-      const doc=frame.contentDocument;
-      if(!doc) return;
-      const walker=doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while((node=walker.nextNode())) replaceText(node);
-      doc.querySelectorAll('input[placeholder],textarea[placeholder],button,[aria-label],option').forEach(function(el){
-        ['placeholder','aria-label','value','title'].forEach(function(attr){
-          const value=el.getAttribute && el.getAttribute(attr);
-          if(value && textMap[value]) el.setAttribute(attr,textMap[value]);
-        });
-        if(el.childNodes && el.childNodes.length===1 && el.firstChild.nodeType===3) replaceText(el.firstChild);
-      });
-      doc.documentElement.lang='fr';
-    }catch(e){}
-  }
-  frame.addEventListener('load',function(){localize();setTimeout(localize,700);setTimeout(localize,1800);});
-})();
-</script>
+
+  <div class="dose-related">
+    <afro-related-tools category="health" current="drug-dosage" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+  </div>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Vérificateur arithmétique de dose reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/drug-dosage/" hreflang="en">/tools/drug-dosage/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
 <afro-footer></afro-footer>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/tools/drug-dosage/drug-dosage-engine.js?v=3e400540"></script>
+<script src="/tools/drug-dosage/drug-dosage-vip.js?v=3540e5ad" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

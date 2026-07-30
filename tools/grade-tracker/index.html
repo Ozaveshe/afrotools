@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -109,7 +109,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 .faq details[open] summary::after{content:'-'}
 .faq details p{padding:0 1.25rem 1rem;color:#64748b;font-size:.95rem}
 </style>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -176,6 +176,7 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How is GPA calculated?","acceptedAnswer":{"@type":"Answer","text":"GPA = Total Quality Points / Total Credit Hours. Quality points for each course = Grade Point x Credit Hours. For example, an A (5 points) in a 3-credit course gives 15 quality points. Sum all quality points and divide by total credit hours."}},{"@type":"Question","name":"What GPA do I need for first class?","acceptedAnswer":{"@type":"Answer","text":"In the Nigerian 5.0 system: 4.50+. In the 4.0 system: 3.50+. In South Africa: 75%+ average. In the UK system: 70%+ (First Class Honours). Requirements can vary slightly between universities."}},{"@type":"Question","name":"Can I improve a bad CGPA?","acceptedAnswer":{"@type":"Answer","text":"Yes! With strategic planning, you can raise your CGPA by performing well in remaining semesters. The more credit hours remaining, the more room you have to improve. Focus on courses with higher credit loads for maximum impact. Some universities also allow you to retake failed courses."}},{"@type":"Question","name":"What's the difference between GPA and CGPA?","acceptedAnswer":{"@type":"Answer","text":"GPA (Grade Point Average) is your average for a single semester. CGPA (Cumulative Grade Point Average) is your average across ALL semesters from first year to present. Your final degree classification is based on your CGPA."}}]}
 </script>
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/grade-tracker/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/grade-tracker/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-notes/">
@@ -308,8 +309,8 @@ body{font-family:'DM Sans',system-ui,-apple-system,sans-serif;background:#f8fafc
 </afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script>
 <script src="/assets/js/components/newsletter-cta.js?v=6a0718da" defer></script>
 <script>
@@ -473,15 +474,14 @@ function calculate(){
   });
 
   if(totalCredits===0) return;
-  const gpa=totalQP/totalCredits;
-
-  // CGPA calculation
   const prevGpa=parseFloat(document.getElementById('prevGpa').value)||0;
   const prevCredits=parseInt(document.getElementById('prevCredits').value)||0;
-  let cgpa=gpa;
-  if(prevGpa>0&&prevCredits>0){
-    cgpa=(prevGpa*prevCredits+totalQP)/(prevCredits+totalCredits);
-  }
+  const ownerGrade=window.BusinessRoiEngine.grade({
+    courses:courseData.map(function(course){return {name:course.name,credits:course.credits,points:course.gp};}),
+    previousGpa:prevGpa,previousCredits:prevCredits
+  });
+  const gpa=ownerGrade.gpa;
+  let cgpa=ownerGrade.cgpa;
 
   // Classification
   const cls=sys.classes.find(c=>cgpa>=c.min)||sys.classes[sys.classes.length-1];
@@ -718,6 +718,6 @@ function downloadGradeSnapshot(type){
   for(var i=0;i<5;i++) addCourse();
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

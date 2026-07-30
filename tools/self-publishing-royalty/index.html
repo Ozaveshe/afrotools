@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -15,8 +15,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'Inter',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -203,80 +203,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS '};
-function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||2,maximumFractionDigits:d||2});}
-function calculate(){
-  var price=parseFloat(document.getElementById('bookPrice').value)||9.99;
-  var format=document.getElementById('format').value;
-  var pages=parseInt(document.getElementById('pageCount').value)||250;
-  var monthly=parseInt(document.getElementById('monthlySales').value)||80;
-  var country=document.getElementById('country').value;
-  var sym=SYM[country];var rate=FX[country];
-
-  // Print cost estimate for paperback (KDP formula approx)
-  var printCost=format==='paperback'?(1.00+pages*0.012):0;
-  var hardcoverPrint=format==='hardcover'?(6.00+pages*0.012):0;
-
-  var platforms=[];
-  if(format==='ebook'){
-    var kdpRate=price>=2.99&&price<=9.99?0.70:0.35;
-    platforms=[
-      {name:'Amazon KDP',rate:kdpRate,perCopy:price*kdpRate,note:kdpRate===0.70?'70% tier ($2.99–$9.99)':'35% tier (outside range)'},
-      {name:'IngramSpark',rate:0.65,perCopy:price*0.65,note:'60–70% standard'},
-      {name:'Smashwords',rate:0.60,perCopy:price*0.60,note:'60% net'},
-      {name:'Okadabooks',rate:0.70,perCopy:price*0.70,note:'70% — Nigeria focus'},
-      {name:'Bambooks',rate:0.70,perCopy:price*0.70,note:'70% — Nigeria/Africa'},
-    ];
-  } else if(format==='paperback'){
-    var kdpPbRate=0.60;
-    var kdpPbPerCopy=Math.max(0,(price-printCost)*kdpPbRate);
-    platforms=[
-      {name:'Amazon KDP',rate:kdpPbRate,perCopy:kdpPbPerCopy,note:'Price minus print cost ('+fmt(printCost)+'×60%)'},
-      {name:'IngramSpark',rate:0.55,perCopy:Math.max(0,(price-printCost)*0.55),note:'~55% after print cost'},
-      {name:'Local Print Run',rate:0.70,perCopy:price*0.70-printCost,note:'Higher margin, limited reach'},
-    ];
-  } else {
-    platforms=[
-      {name:'Amazon KDP (Hardcover)',rate:0.60,perCopy:Math.max(0,(price-hardcoverPrint)*0.60),note:'60% after print cost'},
-      {name:'IngramSpark',rate:0.55,perCopy:Math.max(0,(price-hardcoverPrint)*0.55),note:'55% after print cost'},
-    ];
-  }
-
-  platforms.sort(function(a,b){return b.perCopy-a.perCopy;});
-  var best=platforms[0];
-  document.getElementById('bestMonthly').textContent='$'+fmt(best.perCopy*monthly);
-  document.getElementById('bestPlatform').textContent='Best: '+best.name+' ('+sym+fmt(best.perCopy*monthly*rate,0)+'/month)';
-  document.getElementById('bestAnnual').textContent='$'+fmt(best.perCopy*monthly*12,0);
-
-  var tableHtml=platforms.map(function(p,i){
-    var mo=p.perCopy*monthly;
-    var yr=mo*12;
-    return '<tr><td class="en-td-value">'+p.name+(i===0?'<span class="winner-badge">BEST</span>':'')+'</td>'+
-      '<td>'+(p.rate*100).toFixed(0)+'%</td><td>$'+fmt(p.perCopy)+'</td><td>$'+fmt(mo,0)+'</td>'+
-      '<td class="en-td-highlight">$'+fmt(yr,0)+'</td><td style="font-size:.8rem;color:#64748b">'+p.note+'</td></tr>';
-  }).join('');
-  document.getElementById('platformTable').innerHTML=tableHtml;
-
-  // Sweet spot analysis
-  var prices=[0.99,1.99,2.99,3.99,4.99,6.99,9.99,12.99,14.99];
-  var ssHtml=prices.map(function(p){
-    var r=p>=2.99&&p<=9.99?0.70:0.35;
-    var rpc=p*r;
-    var mo=rpc*monthly;
-    return '<tr'+(p===price?' style="background:var(--en-accent-pale)"':'')+'>'+
-      '<td>$'+p.toFixed(2)+(p===price?' (current)':p===4.99?' ★ popular':'')+'</td>'+
-      '<td>'+(r*100).toFixed(0)+'%</td><td>$'+fmt(mo,0)+'</td><td class="en-td-highlight">$'+fmt(mo*12,0)+'</td></tr>';
-  }).join('');
-  document.getElementById('sweetSpotTable').innerHTML=ssHtml;
-
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="/engines/self-publishing-royalty-engine.js?v=e67d79dc"></script>
+<script src="/assets/js/pages/creative/creative-result-actions.js?v=a6db9431"></script>
+<script src="/assets/js/pages/creative/self-publishing-royalty-controller.js?v=51abac02"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

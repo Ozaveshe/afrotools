@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -212,61 +212,9 @@ html[data-theme="dark"] body{background:#07111f;color:#e5edf8}html[data-theme="d
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-document.getElementById('pv-down').addEventListener('input',function(){
-  var price=parseFloat(document.getElementById('pv-price').value)||0;
-  var down=parseFloat(this.value)/100;
-  document.getElementById('sv-initial').value=Math.round(price*down);
-});
-document.getElementById('pv-price').addEventListener('input',function(){
-  var down=parseFloat(document.getElementById('pv-down').value)/100;
-  document.getElementById('sv-initial').value=Math.round(parseFloat(this.value)*down);
-});
-function syncStartingCapital(){
-  var price=parseFloat(document.getElementById('pv-price').value)||0,cost=parseFloat(document.getElementById('pv-down').value)||0;
-  document.getElementById('sv-initial').value=(price*(1+cost/100)).toFixed(2);
-}
-document.getElementById('pv-down').addEventListener('input',syncStartingCapital);
-document.getElementById('pv-price').addEventListener('input',syncStartingCapital);
-function calcPvS(){
-  var price=parseFloat(document.getElementById('pv-price').value);
-  var purchaseCostPercent=parseFloat(document.getElementById('pv-down').value);
-  var rent=parseFloat(document.getElementById('pv-rent').value);
-  var appPercent=parseFloat(document.getElementById('pv-appreciation').value);
-  var expensePercent=parseFloat(document.getElementById('pv-expenses').value);
-  var vacancyPercent=parseFloat(document.getElementById('pv-vacancy').value);
-  var saleCostPercent=parseFloat(document.getElementById('pv-sale-cost').value);
-  var years=parseInt(document.getElementById('pv-years').value);
-  var stockPercent=parseFloat(document.getElementById('sv-return').value),currency=document.getElementById('pvs-currency').value,error=document.getElementById('pvs-error'),output=document.getElementById('pvs-results');
-  error.textContent='';output.classList.remove('on');
-  var percentages=[purchaseCostPercent,expensePercent,vacancyPercent,saleCostPercent];
-  if(!Number.isFinite(price)||price<=0||!Number.isFinite(rent)||rent<0||percentages.some(function(v){return !Number.isFinite(v)||v<0||v>100;})||!Number.isFinite(appPercent)||appPercent<=-100||appPercent>1000||!Number.isFinite(stockPercent)||stockPercent<=-100||stockPercent>1000||!Number.isFinite(years)||years<1){error.textContent='Check the amounts and scenarios. Costs must be 0% to 100%; return assumptions must be above -100% and no more than 1,000%.';return;}
-  var appRate=appPercent/100,expenses=expensePercent/100,vacancy=vacancyPercent/100,sReturn=stockPercent/100,saleCost=saleCostPercent/100;
-  var initialCapital=price*(1+purchaseCostPercent/100);document.getElementById('sv-initial').value=initialCapital.toFixed(2);
-  var propValue=price*Math.pow(1+appRate,years);
-  var annualRent=rent*12*(1-vacancy);
-  var annualExpenses=price*expenses;
-  var netAnnualRent=annualRent-annualExpenses;
-  var totalRentalIncome=netAnnualRent*years;
-  var propertyEnding=propValue*(1-saleCost)+totalRentalIncome,propertyGain=propertyEnding-initialCapital,propROI=propertyGain/initialCapital*100;
-  var stockPortfolio=initialCapital*Math.pow(1+sReturn,years),stockGain=stockPortfolio-initialCapital,stockROI=stockGain/initialCapital*100;
-  function fmt(n){return currency+' '+n.toLocaleString(undefined,{minimumFractionDigits:2,maximumFractionDigits:2});}
-  document.getElementById('prop-value').textContent=fmt(propertyEnding);
-  document.getElementById('prop-sub').textContent='Net gain after entered purchase, operating and sale costs: '+fmt(propertyGain);
-  document.getElementById('stock-value').textContent=fmt(stockPortfolio);
-  document.getElementById('stock-sub').textContent='Total-return gain: '+fmt(stockGain);
-  document.getElementById('pvs-prop-roi').textContent=propROI.toFixed(1)+'%';
-  document.getElementById('pvs-stock-roi').textContent=stockROI.toFixed(1)+'%';
-  document.getElementById('pvs-prop-income').textContent=fmt(totalRentalIncome);
-  document.getElementById('pvs-stock-income').textContent='Included';
-  var propWins=propertyEnding>=stockPortfolio;
-  document.getElementById('prop-card').className='comp-card'+(propWins?' winner':'');
-  document.getElementById('stock-card').className='comp-card'+(!propWins?' winner':'');
-  output.classList.add('on');output.focus({preventScroll:true});
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/property-vs-stocks.js?v=450d3c48"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

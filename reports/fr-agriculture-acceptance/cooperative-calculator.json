@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:cooperative-calculator",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-cooperative-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 14 Cooperative English invariants",
+    "engine": "node tests/cooperative-engine.test.js",
+    "engineResult": "PASS Cooperative engine branch and rounding invariants",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-cooperative-oracles.json node tests/fr-agriculture-cooperative.test.js",
+    "oracleResult": "PASS 36 French profiles",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id cooperative-calculator --check",
+    "browser": "PORT=42970 CI=1 npx playwright test tests/e2e/fr-agriculture-cooperative.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (55.0s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "cooperative-calculator",
+    "englishRoute": "/agriculture/cooperative-calculator/",
+    "frenchRoute": "/fr/agriculture/cooperative-calculator/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-cooperative-oracles.json",
+      "englishInvariants": 14,
+      "frenchProfiles": 36,
+      "preserves": ["agricultural, SACCO and multipurpose modes", "patronage, per-share and hybrid distributions", "allocation rounding behavior", "surplus and allocation amounts", "member and average distributions", "SACCO share interest", "cooperative versus independent comparison"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-cooperative.spec.js",
+      "result": "2 passed (55.0s)",
+      "isolatedPort": 42970,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/cooperative-calculator/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/cooperative-engine.js"],
+      "data": ["user-entered financial, membership, contribution and allocation assumptions"],
+      "freshness": "no embedded live or statutory data",
+      "confidence": "planning scenario requiring approved accounts, bylaws and jurisdiction-specific confirmation"
+    },
+    "artwork": {"imageId": "cooperative-calculator", "file": "assets/img/tools/cooperative-calculator.webp", "state": "present"},
+    "limitations": ["Prefilled allocation percentages are editable examples, not universal statutory requirements.", "The model does not validate accounts, bylaws, member eligibility or assembly approval."]
+  }]
+}

@@ -1,0 +1,108 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:poultry-roi-calculator",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-poultry-roi-english-fixtures.js --check",
+    "engine": "node tests/poultry-roi-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-poultry-roi-oracles.json node tests/fr-agriculture-poultry-roi.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id poultry-roi-calculator --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42941 npx playwright test tests/e2e/fr-agriculture-poultry-roi.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (37.1s)"
+  },
+  "rows": [
+    {
+      "englishId": "poultry-roi-calculator",
+      "countryCode": null,
+      "englishRoute": "/agriculture/poultry-roi/",
+      "frenchRoute": "/fr/agriculture/poultry-roi/",
+      "status": "accepted",
+      "oracle": {
+        "report": "reports/fr-agriculture-poultry-roi-oracles.json",
+        "englishInvariantCases": 300,
+        "frenchProfiles": 60,
+        "countries": 15,
+        "modes": [
+          "broilers",
+          "layers",
+          "indigenous",
+          "compare"
+        ],
+        "preserves": [
+          "country-specific chick, feed, labor, housing, equipment and selling prices",
+          "management-specific mortality, cycles and egg-production parameters",
+          "broiler cycle and annual costs, revenue, profit, investment, ROI and payback",
+          "layer rearing and laying costs, egg and spent-hen revenue, ROI and payback",
+          "indigenous-bird survival, costs, revenue, profit and ROI",
+          "cash-flow order and values",
+          "risk-scenario values",
+          "all 15 accepted English country controllers"
+        ]
+      },
+      "browser": {
+        "suite": "tests/e2e/fr-agriculture-poultry-roi.spec.js",
+        "result": "2 passed (37.1s)",
+        "isolatedPort": 42941,
+        "englishCountryControllers": 15,
+        "viewports": [
+          320,
+          375
+        ],
+        "reflow200Percent": {
+          "equivalentCssViewport": 640,
+          "baselineCssViewport": 1280,
+          "documentOverflow": false
+        },
+        "themes": [
+          "light",
+          "manual-dark",
+          "system-dark"
+        ],
+        "keyboardFocusA11y": true,
+        "consoleAndFirstPartyNetworkClean": true,
+        "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+        "seo": [
+          "self-canonical",
+          "og",
+          "schema-inLanguage-fr",
+          "reciprocal-semantic-hreflang"
+        ],
+        "aiRoute": "/fr/agriculture/poultry-roi/"
+      },
+      "exports": [
+        "pdf",
+        "csv",
+        "json",
+        "txt",
+        "copy",
+        "share",
+        "local-save",
+        "reset"
+      ],
+      "source": {
+        "engine": [
+          "engines/src/poultry-roi-engine.js"
+        ],
+        "data": [
+          "data/agriculture/poultry-data.js"
+        ],
+        "freshness": "static canonical production and country-cost assumptions; not live",
+        "confidence": "planning estimate"
+      },
+      "artwork": {
+        "imageId": "poultry-roi-calculator",
+        "file": "assets/img/tools/poultry-roi-calculator.webp",
+        "state": "present"
+      },
+      "limitations": [
+        "Mortality, disease, biosecurity, feed conversion, feed prices and actual sale prices can materially change the result.",
+        "Verify current local prices and veterinary or extension guidance before stocking birds or investing."
+      ]
+    }
+  ]
+}

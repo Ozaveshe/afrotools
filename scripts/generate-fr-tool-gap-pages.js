@@ -2,6 +2,7 @@
 
 const fs = require("fs");
 const path = require("path");
+const FRENCH_TRAVEL = require("./lib/french-travel-pages");
 
 const SITE = "https://afrotools.com";
 
@@ -1695,6 +1696,7 @@ const CURATED_PAGES = [
   {
     enSlug: "home-security-cost",
     frSlug: "cout-securite-maison",
+    frenchSecurityNative: true,
     title: "Estimateur cout securite maison | AfroTools",
     name: "Cout securite maison",
     description:
@@ -1720,6 +1722,7 @@ const CURATED_PAGES = [
   {
     enSlug: "cctv-cost",
     frSlug: "cout-cctv",
+    frenchSecurityNative: true,
     title: "Calculateur cout CCTV | AfroTools",
     name: "Cout CCTV",
     description:
@@ -5784,6 +5787,7 @@ const CURATED_PAGES = [
   {
     enSlug: "cybersecurity-assessment",
     frSlug: "evaluation-risque-cybersecurite",
+    frenchSecurityNative: true,
     title: "Evaluation risque cybersecurite | AfroTools",
     name: "Risque cybersecurite",
     description:
@@ -5809,6 +5813,7 @@ const CURATED_PAGES = [
   {
     enSlug: "data-breach-cost",
     frSlug: "cout-violation-donnees",
+    frenchSecurityNative: true,
     title: "Calculateur cout violation donnees | AfroTools",
     name: "Cout violation donnees",
     description:
@@ -6134,6 +6139,7 @@ const CURATED_PAGES = [
   {
     enSlug: "fire-safety-checklist",
     frSlug: "checklist-securite-incendie",
+    frenchSecurityNative: true,
     title: "Checklist securite incendie | AfroTools",
     name: "Securite incendie",
     description:
@@ -6873,6 +6879,7 @@ const CURATED_PAGES = [
   {
     enSlug: "password-strength",
     frSlug: "force-mot-de-passe",
+    frenchSecurityNative: true,
     title: "Verificateur force mot de passe | AfroTools",
     name: "Force mot de passe",
     description:
@@ -6923,6 +6930,7 @@ const CURATED_PAGES = [
   {
     enSlug: "phishing-quiz",
     frSlug: "quiz-phishing",
+    frenchSecurityNative: true,
     title: "Quiz detection phishing | AfroTools",
     name: "Quiz phishing",
     description:
@@ -7537,7 +7545,9 @@ const CURATED_PAGES = [
 ];
 
 const COVERAGE_WAVE = require("../data/localization/coverage-wave-2026-07.json");
-const WAVE_PAGES = COVERAGE_WAVE.french.filter((page) => page.native !== true).map((page) => ({
+const WAVE_PAGES = COVERAGE_WAVE.french
+  .filter((page) => page.native !== true && page.registryManaged !== false)
+  .map((page) => ({
   enSlug: page.enSlug,
   frSlug: page.frSlug,
   title: `${page.name} | AfroTools`,
@@ -7550,8 +7560,10 @@ const WAVE_PAGES = COVERAGE_WAVE.french.filter((page) => page.native !== true).m
   related: "Consultez aussi l’annuaire français pour trouver les calculateurs et guides associés.",
   sourceNote: "Cette page localisée s’appuie sur l’outil anglais indiqué. La logique métier reste celle de la source déterministe; les données variables doivent être vérifiées à leur date d’utilisation.",
   terms: page.originalName && page.originalName !== page.name ? [[page.originalName, page.name]] : [],
-}));
-const PAGES = [...CURATED_PAGES, ...WAVE_PAGES];
+  }));
+const PAGE_BY_EN_SLUG = new Map([...CURATED_PAGES, ...WAVE_PAGES].map((page) => [page.enSlug, page]));
+FRENCH_TRAVEL.PAGES.forEach((page) => PAGE_BY_EN_SLUG.set(page.enSlug, page));
+const PAGES = Array.from(PAGE_BY_EN_SLUG.values());
 
 const COMMON_TERMS = [
   ["Home", "Accueil"],
@@ -7654,8 +7666,13 @@ function lobolaNativeScript() {
 }
 
 function htmlFor(page) {
+  const frenchTravelPage = FRENCH_TRAVEL.pageForEnSlug(page.enSlug);
+  if (frenchTravelPage) return FRENCH_TRAVEL.renderPage(frenchTravelPage);
   if (page.enSlug === "route-fares") {
     return require("./lib/route-fares-locale-page.js").render("fr");
+  }
+  if (page.frenchSecurityNative === true) {
+    return require("./lib/french-security-page.js").render(page);
   }
   const enUrl = `${SITE}/tools/${page.enSlug}/`;
   const frUrl = `${SITE}/fr/tools/${page.frSlug}/`;
@@ -7949,6 +7966,14 @@ function ensureEnglishHreflang(page) {
 function main() {
   let pagesWritten = 0;
   let englishUpdated = 0;
+  const acceptancePath = path.join("data", "audits", "french-free-app-acceptance.json");
+  const acceptedRoutes = fs.existsSync(acceptancePath)
+    ? new Set(
+        JSON.parse(fs.readFileSync(acceptancePath, "utf8")).entries
+          .filter((entry) => entry.status === "accepted")
+          .map((entry) => entry.frenchRoute.replace(/\/+$/, ""))
+      )
+    : new Set();
   const slugArg = process.argv.find((arg) => arg.startsWith("--slugs="));
   const selected = slugArg
     ? new Set(slugArg.slice("--slugs=".length).split(",").map((slug) => slug.trim()).filter(Boolean))
@@ -7967,11 +7992,37 @@ function main() {
       throw new Error(`Missing English source page: ${source}`);
     }
     const dir = path.join("fr", "tools", page.frSlug);
+    const output = path.join(dir, "index.html");
+    const frenchRoute = `/fr/tools/${page.frSlug}`;
+    if (acceptedRoutes.has(frenchRoute) && fs.existsSync(output)) {
+      const current = fs.readFileSync(output, "utf8");
+      const gapOwned = /name=["']afrotools-source-owner["'][^>]*content=["']scripts\/generate-fr-tool-gap-pages\.js["']/i.test(current);
+      const verifiedGapNative = /\blobola-native\b/i.test(current);
+      const localApp = path.join(dir, "app.html");
+      const localAppReference = new RegExp(
+        `(?:src|href)=["'](?:/fr/tools/${page.frSlug}/app(?:\\.html)?|app\\.html)["']`,
+        "i"
+      );
+      const verifiedNativeSubroute = fs.existsSync(localApp) && localAppReference.test(current);
+      if (!gapOwned) {
+        if (ensureEnglishHreflang(page)) englishUpdated += 1;
+        continue;
+      }
+      if (verifiedNativeSubroute) {
+        if (ensureEnglishHreflang(page)) englishUpdated += 1;
+        continue;
+      }
+      if (!verifiedGapNative) {
+        throw new Error(
+          `Refusing to replace accepted native owner ${frenchRoute} with a French gap handoff.`
+        );
+      }
+    }
     fs.mkdirSync(dir, { recursive: true });
     // Accent/elision repair at generation time: legacy PAGES copy is partly
     // ASCII-only French; this keeps regeneration from undoing the sitewide repair.
     const { processHtml: repairFrenchAccents } = require("./repair-fr-accents.js");
-    fs.writeFileSync(path.join(dir, "index.html"), repairFrenchAccents(htmlFor(page)), "utf8");
+    fs.writeFileSync(output, repairFrenchAccents(htmlFor(page)), "utf8");
     pagesWritten += 1;
     if (ensureEnglishHreflang(page)) englishUpdated += 1;
   }

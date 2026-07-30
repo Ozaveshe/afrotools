@@ -729,6 +729,7 @@ IMPORTANT RULES:
           }
           .chat-input {
             flex: 1;
+            min-width: 0;
             background: var(--input-bg, #ffffff);
             border: 1px solid var(--input-border, #E2E8F0);
             border-radius: 10px;
@@ -763,7 +764,13 @@ IMPORTANT RULES:
           @media (max-width: 480px) {
             :host { bottom: 16px; right: 14px; }
             .panel-wrap { width: calc(100vw - 28px); right: -14px; }
+            .panel-wrap:not(.open) { display: none; }
             .panel-wrap.from-left { left: -14px; right: auto; }
+            .quick-nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+            .qn-item { min-width: 0; overflow-wrap: anywhere; }
+            .input-row { flex-wrap: wrap; }
+            .chat-input { flex-basis: 100%; width: 100%; }
+            .send-btn { width: 100%; white-space: normal; }
           }
         </style>
 
@@ -774,7 +781,7 @@ IMPORTANT RULES:
         </button>
 
         <!-- Expandable panel -->
-        <div class="panel-wrap" id="panel">
+        <div class="panel-wrap" id="panel" aria-hidden="true">
           <div class="panel" id="panelInner">
 
             <!-- Header -->
@@ -832,7 +839,7 @@ IMPORTANT RULES:
 
             <!-- Input -->
             <div class="input-row">
-              <input class="chat-input" id="inp" type="text" placeholder="${this._ui('placeholder', 'Ask about any tool...')}" autocomplete="off">
+              <input class="chat-input" id="inp" type="text" aria-label="${this._ui('placeholder', 'Ask about any tool...')}" placeholder="${this._ui('placeholder', 'Ask about any tool...')}" autocomplete="off">
               <button class="send-btn" id="send">${this._ui('send', 'Send')}</button>
             </div>
 
@@ -1107,6 +1114,7 @@ IMPORTANT RULES:
       const badge = this.shadowRoot.getElementById('badge');
       this._updatePanelAnchor();
       panel.classList.add('open');
+      panel.setAttribute('aria-hidden', 'false');
 
       // Hide badge on first open and remember
       badge.classList.remove('show');
@@ -1124,7 +1132,9 @@ IMPORTANT RULES:
 
     _close() {
       this._open = false;
-      this.shadowRoot.getElementById('panel').classList.remove('open');
+      const panel = this.shadowRoot.getElementById('panel');
+      panel.classList.remove('open');
+      panel.setAttribute('aria-hidden', 'true');
     }
 
     _injectPageContext() {

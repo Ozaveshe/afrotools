@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr" data-currency-locale-vip="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-currency-locale-vip="fr">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +8,7 @@
   <meta name="robots" content="index, follow">
   <meta name="theme-color" content="#071827">
   <meta property="og:type" content="website">
+  <meta property="og:locale" content="fr_FR">
   <meta property="og:site_name" content="AfroTools">
   <meta property="og:title" content="Convertisseur de devises avec date du taux">
   <meta property="og:description" content="Estimez une conversion avec un snapshot FX daté ou le taux de votre prestataire, sans taux simulés.">
@@ -42,6 +43,7 @@
   "image": "https://afrotools.com/assets/img/tools/currency-converter.webp"
 }
 </script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools Français","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Outils financiers","item":"https://afrotools.com/fr/finance/"},{"@type":"ListItem","position":3,"name":"Convertisseur de devises","item":"https://afrotools.com/fr/tools/convertisseur-devises/"}]}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce résultat est-il un taux bancaire garanti ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le snapshot fournit une estimation indicative. Vérifiez le taux final, le spread et les frais auprès de votre prestataire."}},{"@type":"Question","name":"Que se passe-t-il si le snapshot est ancien ?","acceptedAnswer":{"@type":"Answer","text":"La conversion par snapshot est désactivée après sept jours. Vous pouvez encore saisir un taux prestataire que vous avez vérifié."}}]}</script>
   <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
   <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
@@ -49,11 +51,12 @@
   <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
   <link rel="stylesheet" href="/assets/css/currency-converter-vip.css?v=c42c82b5">
   <link rel="stylesheet" href="/assets/css/currency-converter-locales-vip.css?v=84910ebd">
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <link rel="stylesheet" href="/assets/css/currency-converter-fr-wave1.css?v=6ade5464">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
   <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script>
-  <script src="/assets/js/lib/dark-mode.js?v=5cb64ba3" defer></script>
-  <script src="/assets/js/pages/currency-converter-locales-vip.js?v=21b209cd" defer></script>
+  <script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+  <script src="/assets/js/pages/currency-converter-locales-vip.js?v=83a8336c" defer></script>
 <script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/convertisseur-devises/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/currency-converter/">
@@ -75,18 +78,19 @@
     <section class="fxv-grid" aria-label="Convertisseur et résultat">
       <div class="fxv-card fxv-card--tool">
         <div class="fxv-card-head"><div><p class="fxv-eyebrow">Taux à vérifier</p><h2>Préparez votre conversion</h2></div><span class="fxv-status fxv-status--loading" id="fxStatus" role="status" aria-live="polite">Vérification de la date du taux…</span></div>
-        <div class="fxv-source"><div><strong id="fxSourceLabel">Source en cours de vérification</strong><span id="fxSourceDate">Aucun taux n’est utilisé avant validation.</span></div><a href="https://github.com/fawazahmed0/exchange-api" target="_blank" rel="noopener noreferrer">Voir la source ↗</a></div>
+        <div class="fxv-source"><div><strong id="fxSourceLabel">Source en cours de vérification</strong><span id="fxSourceDate">Aucun taux n’est utilisé avant validation.</span></div><a href="#source-details">Comprendre la source ↓</a></div>
         <form id="fxForm" novalidate>
           <fieldset class="fxv-mode"><legend>Taux à utiliser</legend><label><input type="radio" name="rateMode" value="snapshot" checked> Snapshot daté</label><label><input type="radio" name="rateMode" value="manual"> Mon taux prestataire</label></fieldset>
           <div class="fxv-field"><label for="fxAmount">Montant à convertir</label><input id="fxAmount" name="amount" type="number" min="0.01" step="any" inputmode="decimal" value="100" aria-describedby="fxAmountHint fxAmountError" required><span class="fxv-hint" id="fxAmountHint">Saisissez un montant positif, sans symbole monétaire.</span><span class="fxv-error" id="fxAmountError" aria-live="polite"></span></div>
           <div class="fxv-pair"><div class="fxv-field"><label for="fxFrom">Devise de départ</label><select id="fxFrom" name="from" required></select></div><button class="fxv-swap" id="fxSwap" type="button" aria-label="Inverser les devises de départ et d’arrivée">⇄</button><div class="fxv-field"><label for="fxTo">Devise d’arrivée</label><select id="fxTo" name="to" required></select></div></div>
+          <fieldset class="fxv-corridors"><legend>Corridors francophones fréquents</legend><div class="fxv-corridor-list"><button type="button" data-fx-from="EUR" data-fx-to="XOF">EUR → XOF</button><button type="button" data-fx-from="EUR" data-fx-to="XAF">EUR → XAF</button><button type="button" data-fx-from="EUR" data-fx-to="MAD">EUR → MAD</button><button type="button" data-fx-from="USD" data-fx-to="CDF">USD → CDF</button><button type="button" data-fx-from="EUR" data-fx-to="TND">EUR → TND</button></div></fieldset>
           <div class="fxv-field" id="fxManualGroup" hidden><label for="fxManualRate">Taux prestataire <span id="fxManualPair">1 USD = ? NGN</span></label><input id="fxManualRate" type="number" min="0.000001" step="any" inputmode="decimal" placeholder="Saisissez le taux affiché par votre prestataire" aria-describedby="fxManualHint fxManualError"><span class="fxv-hint" id="fxManualHint">Utilisez le taux de cette paire exacte et notez son heure.</span><span class="fxv-error" id="fxManualError" aria-live="polite"></span></div>
           <button class="fxv-primary" id="fxConvert" type="submit" disabled>Convertir avec le taux daté</button>
         </form>
       </div>
       <aside class="fxv-card fxv-card--result" aria-labelledby="result-title"><p class="fxv-eyebrow">Résultat</p><h2 id="result-title">Estimation de planification</h2><div id="fxEmpty" class="fxv-empty">Un snapshot daté valide est requis, ou choisissez « Mon taux prestataire ».</div><div id="fxResult" hidden><p class="fxv-result-label" id="fxResultEquation"></p><output class="fxv-result-value" id="fxResultValue" aria-live="polite"></output><dl class="fxv-breakdown"><div><dt>Taux utilisé</dt><dd id="fxRateUsed"></dd></div><div><dt>État du taux</dt><dd id="fxRateStatus"></dd></div><div><dt>Frais prestataire</dt><dd>Non inclus</dd></div></dl><p class="fxv-warning">Ce résultat n’est pas un paiement garanti. Le prestataire peut appliquer un spread, des frais, une taxe ou un autre taux de règlement.</p><div class="fxv-actions"><button type="button" id="fxCopy">Copier le résumé</button><button type="button" id="fxCsv">Télécharger le CSV</button></div><p class="fxv-action-status" id="fxActionStatus" role="status" aria-live="polite"></p></div></aside>
     </section>
-    <section class="fxv-card fxv-explain" aria-labelledby="method-title"><div><p class="fxv-eyebrow">Méthode</p><h2 id="method-title">Un seul taux croisé transparent</h2></div><ol><li>AfroTools lit un jeu de taux basé sur l’USD avec sa source et son horodatage.</li><li>Pour KES vers GHS, le calcul divise le taux GHS par le taux KES.</li><li>Le montant est multiplié par ce taux croisé. Les frais et spreads restent exclus.</li></ol></section>
+    <section class="fxv-card fxv-explain" id="source-details" aria-labelledby="method-title"><div><p class="fxv-eyebrow">Méthode et source</p><h2 id="method-title">Un seul taux croisé transparent</h2></div><ol><li>AfroTools lit un jeu de taux basé sur l’USD et affiche le nom fourni par le snapshot ainsi que son horodatage.</li><li>Pour KES vers GHS, le calcul divise le taux GHS par le taux KES.</li><li>Le montant est multiplié par ce taux croisé. Les frais et spreads restent exclus.</li></ol></section>
     <section class="fxv-columns"><article class="fxv-card"><p class="fxv-eyebrow">Avant un transfert</p><h2>Vérifiez le montant réellement reçu</h2><ul class="fxv-checks"><li>Comparez le montant final, pas seulement le taux annoncé.</li><li>Contrôlez les frais de transfert, carte, retrait et banque correspondante.</li><li>Conservez l’heure du devis : le taux peut évoluer avant le règlement.</li></ul></article><article class="fxv-card"><p class="fxv-eyebrow">Limites des données</p><h2>Ce que cette page ne prétend pas fournir</h2><p>Pas de taux parallèle, prévision, historique synthétique ni prix crypto. Les sélecteurs contiennent seulement les codes du jeu de données accepté.</p><p>Votre montant n’est ni envoyé, ni journalisé, ni stocké. Seules deux lectures FX maximales sont possibles : l’API, puis le snapshot local de secours.</p></article></section>
     <section class="fxv-card fxv-faq" aria-labelledby="faq-title"><p class="fxv-eyebrow">Questions</p><h2 id="faq-title">FAQ sur la conversion</h2><details><summary>Est-ce un taux bancaire ou de transfert garanti ?</summary><p>Non. Confirmez le taux final, le spread et les frais auprès de votre prestataire.</p></details><details><summary>Que se passe-t-il si le snapshot est ancien ?</summary><p>La conversion par snapshot est désactivée après sept jours. Aucun taux inventé ou codé en dur ne la remplace.</p></details></section>
     <section class="fxv-related" aria-labelledby="related-title"><p class="fxv-eyebrow">Continuer</p><h2 id="related-title">Outils financiers associés</h2><div class="related-tools-grid" data-related-tools data-category="financial" data-current-tool="convertisseur-devises-fr" data-limit="4"></div></section>
@@ -95,6 +99,10 @@
   <div class="container afro-source-meta" data-source-meta-id="forex-third-party-snapshot" data-source-meta-compact="true"></div>
 </main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+  <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+<!-- french-finance-export-contract:start -->
+<script type="application/json" id="afrotools-fr-finance-export-contract">{"schemaVersion":1,"englishId":"currency-converter","englishRoute":"/tools/currency-converter","frenchRoute":"/fr/tools/convertisseur-devises","formats":["copy","csv"]}</script>
+<script src="/assets/js/pages/french-finance-export-contract.js?v=3aef319b" defer></script>
+<!-- french-finance-export-contract:end -->
 </body>
 </html>

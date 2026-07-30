@@ -81,24 +81,25 @@
 
   function applyThemePreference(theme, options) {
     var selected = theme === 'dark' || theme === 'light' ? theme : 'auto';
-    writeThemePreference(selected);
+    if (!options || !options.silent) writeThemePreference(selected);
     var active = effectiveTheme(selected);
     document.documentElement.setAttribute('data-theme', active);
     document.documentElement.setAttribute('data-theme-choice', selected);
     syncThemeMeta(active);
     syncCountrySelectorThemes(active);
+    var silent = options && options.silent;
     var runtime = window.AfroTools && window.AfroTools.darkMode;
-    if (runtime && typeof runtime.set === 'function') runtime.set(selected);
+    if (!silent && runtime && typeof runtime.set === 'function') runtime.set(selected);
     else {
       ensureDarkModeRuntime();
-      if (!options || !options.silent) document.dispatchEvent(new CustomEvent('afrotools:theme-change', { detail: { theme: selected, activeTheme: active, isDark: active === 'dark' } }));
+      if (!silent) document.dispatchEvent(new CustomEvent('afrotools:theme-change', { detail: { theme: selected, activeTheme: active, isDark: active === 'dark' } }));
     }
   }
 
   applyThemePreference(readThemePreference() || 'auto', { silent: true });
 
   // NAVBAR_CSS_HREF_START
-  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=1ae7d64b';
+  const NAVBAR_CSS_HREF = '/assets/css/navbar.min.css?v=bc09ea15';
   // NAVBAR_CSS_HREF_END
 
   // NAVBAR_TOP_LEVEL_DATA_START
@@ -218,7 +219,7 @@
       "descFr": "Auto, santé, vie, obsèques, entreprise, voyage — 300+ calculateurs, 54 pays",
       "descSw": "Gari, afya, maisha, mazishi, biashara, safari — vikokotoo 300+, nchi 54",
       "href": "/insurance/",
-      "hrefFr": "/fr/health-insurance/",
+      "hrefFr": "/fr/insurance/",
       "color": "#f0f4f8",
       "accent": "#1e3a5f"
     },
@@ -1354,6 +1355,32 @@
         <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
         <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=1">
+        <style>
+          @media (max-width:940px) {
+            .search-btn, .theme-toggle { display: none; }
+            .right { min-width: 0; }
+          }
+          @media (max-width:380px) {
+            .logo { min-width: 0; }
+            .logo-name { overflow-wrap: anywhere; }
+            .right { gap: 4px; min-width: 44px; }
+            .inner { min-width: 0; gap: 4px; }
+            .burger { width: 44px; min-width: 44px; }
+          }
+          @media (max-width:220px) {
+            nav {
+              padding-left: max(4px, var(--nav-safe-left));
+              padding-right: max(4px, var(--nav-safe-right));
+            }
+            .inner { max-width: 100%; gap: 4px; }
+            .logo { flex: 1 1 auto; min-width: 0; margin-right: 0; }
+            .logo-mark { width: 22px; height: 22px; }
+            .logo-name { font-size: 0.72rem; }
+            .right { flex: 0 0 44px; width: 44px; min-width: 44px; gap: 0; margin-left: 0; }
+            .right > :not(.burger) { display: none; }
+            .burger { display: flex; flex: 0 0 44px; }
+          }
+        </style>
         <nav role="navigation" aria-label="${T.ariaNav}">
           <div class="inner">
             <a href="${T.homeHref}" class="logo" aria-label="AfroTools home">
@@ -1423,7 +1450,7 @@
           </div>
         </nav>
 
-        <div class="mega" id="mega" role="menu" aria-label="${T.allTools}">
+        <div class="mega" id="mega" role="menu" aria-label="${T.allTools}" aria-hidden="true">
           <div class="mega-inner tools-mega-grid">
             ${this._megaContent()}
           </div>
@@ -1433,7 +1460,7 @@
           </div>
         </div>
 
-        <div class="mega" id="countriesMega" role="menu" aria-label="${T.countries}">
+        <div class="mega" id="countriesMega" role="menu" aria-label="${T.countries}" aria-hidden="true">
           <div class="mega-inner">
             ${this._countriesContent()}
           </div>
@@ -1443,7 +1470,7 @@
           </div>
         </div>
 
-        <div class="mega" id="businessMega" role="menu" aria-label="${T.business}">
+        <div class="mega" id="businessMega" role="menu" aria-label="${T.business}" aria-hidden="true">
           <div class="mega-inner business-mega-grid">
             ${this._businessContent()}
           </div>
@@ -1453,7 +1480,7 @@
           </div>
         </div>
 
-        <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}">
+        <div class="mob" role="dialog" aria-modal="true" aria-label="${T.ariaMenu}" aria-hidden="true">
           <div class="mob-search-bar">
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
               <circle cx="8.5" cy="8.5" r="5.5"/><line x1="13" y1="13" x2="18" y2="18"/>
@@ -1601,6 +1628,7 @@
         closeBusiness();
         allBtn?.classList.add('open');
         mega?.classList.add('open');
+        mega?.setAttribute('aria-hidden', 'false');
         allBtn?.setAttribute('aria-expanded','true');
       };
       const openMega = () => prepareForOpen(showMega);
@@ -1608,6 +1636,7 @@
         this._megaOpen = false;
         allBtn?.classList.remove('open');
         mega?.classList.remove('open');
+        mega?.setAttribute('aria-hidden', 'true');
         allBtn?.setAttribute('aria-expanded','false');
       };
       const showCountries = () => {
@@ -1616,6 +1645,7 @@
         closeBusiness();
         countriesBtn?.classList.add('open');
         countriesMega?.classList.add('open');
+        countriesMega?.setAttribute('aria-hidden', 'false');
         countriesBtn?.setAttribute('aria-expanded','true');
       };
       const openCountries = () => prepareForOpen(showCountries);
@@ -1623,6 +1653,7 @@
         this._countriesOpen = false;
         countriesBtn?.classList.remove('open');
         countriesMega?.classList.remove('open');
+        countriesMega?.setAttribute('aria-hidden', 'true');
         countriesBtn?.setAttribute('aria-expanded','false');
       };
       const showBusiness = () => {
@@ -1631,6 +1662,7 @@
         closeCountries();
         businessBtn?.classList.add('open');
         businessMega?.classList.add('open');
+        businessMega?.setAttribute('aria-hidden', 'false');
         businessBtn?.setAttribute('aria-expanded','true');
       };
       const openBusiness = () => prepareForOpen(showBusiness);
@@ -1638,6 +1670,7 @@
         this._businessOpen = false;
         businessBtn?.classList.remove('open');
         businessMega?.classList.remove('open');
+        businessMega?.setAttribute('aria-hidden', 'true');
         businessBtn?.setAttribute('aria-expanded','false');
       };
       const closeMenus = () => { closeMega(); closeCountries(); closeBusiness(); };
@@ -1661,6 +1694,7 @@
         this._menuOpen = isOpen;
         burger?.classList.toggle('open', this._menuOpen);
         mob?.classList.toggle('open', this._menuOpen);
+        mob?.setAttribute('aria-hidden', String(!this._menuOpen));
         burger?.setAttribute('aria-expanded', String(this._menuOpen));
         if (this._menuOpen) {
           closeMenus();
@@ -2078,11 +2112,7 @@
       let _captureCount = 0;
       const _canCaptureSearch = !/^(localhost|127\.0\.0\.1|0\.0\.0\.0)$/.test(location.hostname) && location.protocol !== 'file:';
       const _captureSessionId = (() => {
-        try {
-          let sid = sessionStorage.getItem('_afro_search_sid');
-          if (!sid) { sid = crypto.randomUUID(); sessionStorage.setItem('_afro_search_sid', sid); }
-          return sid;
-        } catch { return null; }
+        try { return crypto.randomUUID(); } catch { return null; }
       })();
 
       const captureSearch = (query, resultsCount, source) => {

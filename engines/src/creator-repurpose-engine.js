@@ -54,6 +54,43 @@
   window.AfroTools = window.AfroTools || {}, window.AfroTools.RepurposeEngine = {
     PLATFORMS: t,
     SOURCE_TYPES: e,
+    generateLocalOutputs: function(source, sourceType, platforms, language) {
+      var clean = String(source || "").trim();
+      var selected = Array.isArray(platforms) ? platforms.filter(function(key) {
+        return t[key];
+      }) : [];
+      if (clean.length < 20) throw new Error("Source content must contain at least 20 characters.");
+      if (!selected.length) throw new Error("Choose at least one platform.");
+      var lang = language === "fr" ? "fr" : "en";
+      var firstSentence = (clean.match(/^[\s\S]{1,220}?[.!?](?:\s|$)/) || [ clean.slice(0, 180) ])[0].trim();
+      var outputs = selected.map(function(platform) {
+        var text;
+        if (lang === "fr") {
+          text = platform === "newsletter" ? "Objet : " + firstSentence + "\n\nIdée principale : " + firstSentence + "\n\nÀ retenir : adaptez ce brouillon à votre audience."
+            : platform === "twitter" ? "1/2 " + firstSentence + "\n\n2/2 Quel point ajouteriez-vous ?"
+            : platform === "blog" ? "Résumé : " + firstSentence + "\n\nPoint clé : vérifiez les faits et ajoutez les sources avant publication."
+            : firstSentence + "\n\nQuel est votre avis ?";
+        } else {
+          text = platform === "newsletter" ? "Subject: " + firstSentence + "\n\nMain idea: " + firstSentence + "\n\nTakeaway: adapt this draft for your audience."
+            : platform === "twitter" ? "1/2 " + firstSentence + "\n\n2/2 What would you add?"
+            : platform === "blog" ? "Summary: " + firstSentence + "\n\nKey point: verify facts and add sources before publishing."
+            : firstSentence + "\n\nWhat is your view?";
+        }
+        return {
+          platform: platform,
+          platformLabel: t[platform].label,
+          format: t[platform].format,
+          text: text,
+          charCount: text.length
+        };
+      });
+      return {
+        sourceType: sourceType || "blog_post",
+        language: lang,
+        sourceWordCount: clean.split(/\s+/).length,
+        outputs: outputs
+      };
+    },
     buildPrompt: function(o, a, r) {
       var n = e[a] || a, s = [];
       return s.push("Repurpose this " + n + " into platform-optimized content for: " + r.map(function(e) {

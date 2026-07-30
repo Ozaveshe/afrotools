@@ -1,53 +1,309 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="medical-report">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
-<title>Repere de rapport médical | AfroTools</title>
-<meta name="description" content="Lisez des résultats d'analyses comme repere éducatif, sans diagnostic. Les valeurs doivent être confirmees avec le laboratoire ou un professionnel de santé.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Repere de rapport médical | AfroTools">
-<meta property="og:description" content="Lecture éducative de résultats d'analyses à confirmer avec un professionnel de santé.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interprète de rapport médical | AfroTools</title>
+  <meta name="description" content="Analysez en privé les résultats de laboratoire courants, hiérarchisez les plages de référence de votre laboratoire, préparez les questions des cliniciens et exportez…">
+  <meta name="theme-color" content="var(--color-primary)">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Interprète de rapport médical | AfroTools">
+  <meta property="og:description" content="Analysez en privé les résultats de laboratoire courants, hiérarchisez les plages de référence de votre laboratoire, préparez les questions des cliniciens et exportez…">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/medical-report.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/rapport-medical/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Repere de rapport médical | AfroTools">
-<meta name="twitter:description" content="Lecture éducative de résultats d'analyses, sans diagnostic ni remplacement d'un avis médical."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <meta property="og:url" content="https://afrotools.com/fr/tools/rapport-medical/">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script src="/assets/js/lib/image-to-text-ocr-local.js?v=6a366f61" defer></script>
+  <script src="/assets/vendor/tesseract/tesseract.min.js?v=762c4256" defer></script>
+  <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233" defer></script>
+  <script src="/tools/medical-report/medical-report-engine.js?v=8dcfa324" defer></script>
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Repere de rapport médical","url":"https://afrotools.com/fr/tools/rapport-medical/","inLanguage":"fr","applicationCategory":"HealthApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/medical-report.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quelles analyses sont couvertes ?","acceptedAnswer":{"@type":"Answer","text":"L'outil peut aider a lire la NFS, le bilan hepatique, le bilan renal, la glycemie, le profil lipidique, les electrolytes et d'autres analyses courantes comme repere éducatif."}},{"@type":"Question","name":"Les valeurs de référence suffisent-elles ?","acceptedAnswer":{"@type":"Answer","text":"Non. Les valeurs de référence varient selon le laboratoire, l'age, le sexe, la grossesse, les traitements et le contexte clinique. Confirmez avec le laboratoire ou un professionnel de santé."}},{"@type":"Question","name":"Cet outil remplace-t-il l'avis du médecin ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il aide à préparer vos questions, mais ne pose pas de diagnostic et ne remplace jamais l'interpretation d'un professionnel de santé."}}]}</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/medical-report.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
-  }
+*,*::before,*::after{box-sizing:border-box}
+.mr h1,.mr h2,.mr h3,.mr h4{text-transform:none!important;letter-spacing:normal!important;font-family:'DM Sans',sans-serif!important}
+
+/* Breadcrumb */
+.crumb{max-width:1200px;margin:0 auto;padding:12px 20px 0;font-size:12px;font-weight:500;color:#9ca3af}
+.crumb a{color:#9ca3af;text-decoration:none}.crumb a:hover{color:var(--color-primary)}.crumb span{margin:0 5px}
+
+/* Layout */
+.mr-wrap{max-width:900px;margin:0 auto;padding:0 20px 100px}
+
+/* Hero */
+.mr-hero{background:linear-gradient(135deg,#0f1419,#1a1f2e);border-radius:20px;padding:48px 32px 36px;text-align:center;margin:20px auto 24px;color:#fff;position:relative;overflow:hidden}
+.mr-hero::before{content:'';position:absolute;top:-40%;right:-15%;width:320px;height:320px;background:radial-gradient(circle,rgba(77,163,255,.08),transparent 70%);pointer-events:none}
+.mr-hero-emoji{font-size:48px;margin-bottom:12px;display:block}
+.mr-hero h1{color:#fff;font-family:'Bricolage Grotesque','DM Sans',sans-serif!important;font-size:clamp(26px,5vw,40px);font-weight:800;margin-bottom:12px;line-height:1.1;letter-spacing:-.02em}
+.mr-hero h1 b{background:linear-gradient(135deg,var(--color-primary),var(--color-primary));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.mr-hero>p{font-size:15px;color:rgba(255,255,255,.7);max-width:540px;margin:0 auto 20px;line-height:1.7}
+.mr-badges{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}
+.mr-badge{padding:5px 14px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:100px;font-size:11px;font-weight:700;color:rgba(255,255,255,.85)}
+
+/* Disclaimer banner */
+.mr-disclaimer{padding:14px 18px;background:#fef3cd;border:1px solid #fde68a;border-radius:12px;font-size:12px;color:#92400e;line-height:1.65;margin-bottom:20px;display:flex;align-items:flex-start;gap:10px}
+.mr-disclaimer strong{color:#78350f}
+.mr-disclaimer-icon{font-size:18px;flex-shrink:0;margin-top:1px}
+
+/* Card */
+.mr-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:16px;padding:26px;margin-bottom:16px}
+.mr-card h2{font-size:15px;font-weight:800;color:#111;margin-bottom:18px;display:flex;align-items:center;gap:8px}
+.mr-card h2 .n{width:26px;height:26px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:800;flex-shrink:0}
+
+/* Tabs */
+.mr-tabs{display:flex;gap:2px;background:#f3f4f6;border-radius:10px;padding:3px;margin-bottom:16px;overflow-x:auto}
+.mr-tab{flex:1;min-width:80px;padding:9px 6px;border:none;background:transparent;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:700;color:#6b7280;cursor:pointer;transition:.15s;white-space:nowrap;text-align:center}
+.mr-tab.on{background:#fff;color:#111;box-shadow:0 1px 4px rgba(0,0,0,.1)}
+.mr-tab-panel{display:none}.mr-tab-panel.on{display:block}
+
+/* Textarea */
+.mr-textarea{width:100%;min-height:200px;padding:14px 16px;border:1.5px solid #e5e7eb;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:14px;color:#111;line-height:1.7;resize:vertical;outline:none;transition:.15s}
+.mr-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.08)}
+.mr-textarea::placeholder{color:#9ca3af}
+
+/* Upload zone */
+.mr-upload{border:2px dashed #d1d5db;border-radius:12px;padding:40px 20px;text-align:center;cursor:pointer;transition:.2s;background:#fafafa}
+.mr-upload:hover,.mr-upload.drag{border-color:var(--color-primary);background:#EFF6FF}
+.mr-upload-icon{font-size:36px;margin-bottom:8px;display:block}
+.mr-upload-text{font-size:14px;color:#374151;font-weight:600}
+.mr-upload-hint{font-size:12px;color:#9ca3af;margin-top:4px}
+.mr-upload input[type=file]{display:none}
+.mr-upload-preview{margin-top:12px;max-width:100%;max-height:200px;border-radius:8px;display:none}
+.mr-upload-filename{margin-top:8px;font-size:13px;color:var(--color-primary);font-weight:600;display:none}
+
+/* Quick panels */
+.mr-panels{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px}
+.mr-panel-btn{padding:8px 14px;border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:12px;font-weight:600;color:#4b5563;cursor:pointer;transition:.15s}
+.mr-panel-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:#EFF6FF}
+.mr-panel-btn.on{border-color:var(--color-primary);background:#EFF6FF;color:var(--color-primary)}
+
+/* Analyze button */
+.mr-analyze{width:100%;padding:16px;background:linear-gradient(135deg,var(--color-primary),#0062CC);color:#fff;border:none;border-radius:10px;font-family:'DM Sans',sans-serif;font-size:16px;font-weight:700;cursor:pointer;transition:.18s;display:flex;align-items:center;justify-content:center;gap:8px}
+.mr-analyze:hover{background:linear-gradient(135deg,#0063D1,var(--color-primary));transform:translateY(-1px);box-shadow:0 4px 20px rgba(0,98,204,.3)}
+.mr-analyze:active{transform:translateY(0)}
+.mr-analyze:disabled{background:#9ca3af;cursor:not-allowed;transform:none;box-shadow:none}
+
+/* Progress */
+.mr-progress{display:none;margin-top:16px}
+.mr-progress.on{display:block}
+.mr-progress-bar{height:6px;background:#e5e7eb;border-radius:100px;overflow:hidden;margin-bottom:8px}
+.mr-progress-fill{height:100%;background:linear-gradient(90deg,var(--color-primary),var(--color-primary));border-radius:100px;transition:width .3s;width:0}
+.mr-progress-text{font-size:12px;color:#6b7280;text-align:center}
+
+/* Results */
+.mr-results{display:none;margin-top:16px}.mr-results.on{display:block}
+
+/* Summary card */
+.mr-summary{background:linear-gradient(135deg,#061510 0%,#0d3320 55%,#061510 100%);border-radius:20px;padding:32px;color:#fff;margin-bottom:20px;position:relative;overflow:hidden;animation:mrFadeIn 0.6s ease-out}
+@keyframes mrFadeIn{from{opacity:0;transform:scale(0.95)}to{opacity:1;transform:scale(1)}}
+.mr-summary::before{content:'';position:absolute;top:-40%;right:-15%;width:320px;height:320px;background:radial-gradient(circle,rgba(77,163,255,.1),transparent 70%);pointer-events:none}
+.mr-summary-inner{position:relative;z-index:1}
+.mr-summary h3{font-size:18px;font-weight:800;margin-bottom:12px}
+.mr-summary-stats{display:flex;gap:16px;flex-wrap:wrap;margin-bottom:16px}
+.mr-stat{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;flex:1;min-width:120px;text-align:center}
+.mr-stat .sv{font-size:28px;font-weight:800}
+.mr-stat .sl{font-size:11px;color:rgba(255,255,255,.5);font-weight:600;margin-top:2px}
+.mr-stat.normal .sv{color:var(--color-primary)}
+.mr-stat.attention .sv{color:#f59e0b}
+.mr-stat.high .sv{color:#f87171}
+.mr-summary-msg{font-size:13px;color:rgba(255,255,255,.65);line-height:1.7}
+
+/* Marker grid */
+.mr-markers{display:grid;grid-template-columns:1fr;gap:12px;margin-bottom:20px}
+.mr-marker{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:18px 20px;transition:.15s}
+.mr-marker:hover{border-color:#d1d5db;box-shadow:0 2px 12px rgba(0,0,0,.04)}
+.mr-marker-head{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:10px;flex-wrap:wrap}
+.mr-marker-name{font-size:14px;font-weight:700;color:#111}
+.mr-marker-fullname{font-size:11px;color:#9ca3af;font-weight:500}
+.mr-marker-badge{padding:4px 10px;border-radius:100px;font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:.04em;flex-shrink:0}
+.mr-marker-badge.normal{background:#EFF6FF;color:var(--color-primary);border:1px solid rgba(0,98,204,.2)}
+.mr-marker-badge.high{background:#fef2f2;color:#dc2626;border:1px solid rgba(220,38,38,.2)}
+.mr-marker-badge.low{background:#fffbeb;color:#d97706;border:1px solid rgba(217,119,6,.2)}
+.mr-marker-value{display:flex;align-items:baseline;gap:6px;margin-bottom:10px}
+.mr-marker-val{font-size:28px;font-weight:800;color:#111;line-height:1}
+.mr-marker-unit{font-size:12px;color:#9ca3af;font-weight:600}
+.mr-range-bar{position:relative;height:8px;background:#e5e7eb;border-radius:100px;margin-bottom:6px;overflow:visible}
+.mr-range-normal{position:absolute;height:100%;background:#DBEAFE;border-radius:100px}
+.mr-range-dot{position:absolute;top:50%;transform:translate(-50%,-50%);width:14px;height:14px;border-radius:50%;border:2.5px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,.2);z-index:2}
+.mr-range-dot.normal{background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35)}
+.mr-range-dot.high{background:#dc2626}
+.mr-range-dot.low{background:#d97706}
+.mr-range-labels{display:flex;justify-content:space-between;font-size:10px;color:#9ca3af;margin-bottom:8px}
+.mr-marker-explain{font-size:12px;color:#4b5563;line-height:1.65;padding-top:8px;border-top:1px solid #f3f4f6}
+.mr-category-label{font-size:11px;font-weight:800;color:var(--color-primary);text-transform:uppercase;letter-spacing:.06em;padding:10px 0 6px;margin-top:8px}
+
+/* AI section */
+.mr-ai-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;margin-bottom:16px}
+.mr-ai-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px;flex-wrap:wrap;gap:8px}
+.mr-ai-section h3{font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0}
+.mr-ai-badge{padding:3px 9px;background:#EFF6FF;border:1px solid rgba(0,98,204,.2);border-radius:100px;font-size:10px;color:var(--color-primary);font-weight:700}
+.mr-ai-ctx{font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5}
+.mr-ai-content{font-size:13px;color:#374151;line-height:1.75;white-space:pre-wrap;padding:14px 16px;background:#f9fafb;border:1px solid #f3f4f6;border-radius:10px;margin-bottom:14px;min-height:60px}
+.mr-ai-content.loading{color:#9ca3af;font-style:italic}
+
+/* Doctor questions */
+.mr-questions{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;margin-bottom:16px}
+.mr-questions h3{font-size:15px;font-weight:800;color:#111;margin-bottom:14px;display:flex;align-items:center;gap:8px}
+.mr-q-list{list-style:none;padding:0;margin:0}
+.mr-q-list li{padding:10px 14px;border:1px solid #f3f4f6;border-radius:8px;margin-bottom:6px;font-size:13px;color:#374151;line-height:1.6;display:flex;align-items:flex-start;gap:8px}
+.mr-q-list li::before{content:'?';display:flex;align-items:center;justify-content:center;width:22px;height:22px;background:#EFF6FF;border:1px solid rgba(0,98,204,.15);border-radius:50%;font-size:11px;font-weight:800;color:var(--color-primary);flex-shrink:0;margin-top:1px}
+
+/* Share row */
+.mr-share{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin:14px 0}
+.mr-share-btn{padding:10px 18px;border:1.5px solid #e5e7eb;background:#fff;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;color:#374151;cursor:pointer;display:flex;align-items:center;gap:7px;transition:.15s}
+.mr-share-btn:hover{border-color:var(--color-primary);color:var(--color-primary);background:#EFF6FF}
+
+/* Chat */
+.mr-chat-section{background:#fff;border:1.5px solid #e5e7eb;border-radius:14px;padding:22px;margin-bottom:16px}
+.mr-chat-section h3{font-size:15px;font-weight:800;color:#111;display:flex;align-items:center;gap:8px;margin:0 0 4px}
+.mr-chat-ctx{font-size:11px;color:#9ca3af;margin-bottom:12px;line-height:1.5}
+.mr-chat-prompts{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:14px}
+.mr-chat-prompt{padding:7px 12px;background:#f9fafb;border:1px solid #e5e7eb;border-radius:7px;font-size:12px;color:#4b5563;cursor:pointer;transition:.15s;font-weight:600;font-family:'DM Sans',sans-serif}
+.mr-chat-prompt:hover{border-color:var(--color-primary);color:var(--color-primary);background:#EFF6FF}
+.mr-chat-messages{display:flex;flex-direction:column;gap:8px;max-height:320px;overflow-y:auto;margin-bottom:12px;scroll-behavior:smooth}
+.mr-chat-msg{padding:10px 14px;border-radius:10px;font-size:13px;line-height:1.65;max-width:88%}
+.mr-chat-msg.user{background:#EFF6FF;color:#111;border:1px solid rgba(0,98,204,.12);align-self:flex-end;font-weight:500}
+.mr-chat-msg.bot{background:#f9fafb;color:#374151;border:1px solid #f3f4f6;align-self:flex-start;white-space:pre-wrap}
+.mr-chat-msg.typing{color:#9ca3af;font-style:italic;background:#f9fafb;border:1px solid #f3f4f6;align-self:flex-start}
+.mr-chat-input{display:flex;gap:8px;overflow:hidden}
+.mr-chat-input input{flex:1;min-width:0;padding:10px 14px;border:1.5px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:.15s}
+.mr-chat-input input:focus{border-color:var(--color-primary)}
+.mr-chat-input button{padding:10px 20px;background:linear-gradient(135deg,#0062CC,#0055D4);box-shadow:0 4px 14px rgba(0,98,204,.35);color:#fff;border:none;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:700;cursor:pointer;transition:.15s;white-space:nowrap;flex-shrink:0}
+.mr-chat-input button:hover{background:#0063D1}
+.mr-chat-input button:disabled{background:#9ca3af;cursor:not-allowed}
+.mr-ai-consent{display:flex;gap:10px;align-items:flex-start;margin:14px 0 12px;padding:12px 14px;border:1px solid #dbeafe;background:#eff6ff;border-radius:10px;font-size:12px;line-height:1.55;color:#1f2937}
+.mr-ai-consent input{margin-top:3px;flex-shrink:0}
+.mr-boundary{display:grid;gap:8px;margin:14px 0;padding:14px 16px;border:1px solid #bfdbfe;border-radius:12px;background:#eff6ff;color:#1e3a5f;font-size:12px;line-height:1.6}
+.mr-boundary strong{color:#0f172a}
+.mr-boundary ul{margin:0;padding-left:18px}
+.mr-evidence{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:center;margin:0 0 20px;padding:14px 16px;border:1px solid #dbeafe;border-radius:12px;background:#f8fbff;color:#334155;font-size:12px;line-height:1.55}
+.mr-evidence strong{color:#0f172a}.mr-evidence a{color:#0057b8;font-weight:700}
+.mr-reference-note{margin-top:9px;padding:8px 10px;border-radius:8px;background:#f8fafc;border:1px solid #e2e8f0;color:#475569;font-size:11px;line-height:1.5}
+.mr-reference-note[data-source="lab"]{background:#ecfdf5;border-color:#a7f3d0;color:#065f46}
+.mr-emergency{display:none;margin-bottom:16px;padding:16px 18px;border:2px solid #ef4444;border-radius:12px;background:#fef2f2;color:#7f1d1d;font-size:13px;line-height:1.6}
+.mr-emergency.on{display:block}.mr-emergency strong{color:#7f1d1d}
+.mr-ai-payload{margin:10px 0 0;border:1px solid #dbeafe;border-radius:10px;background:#f8fbff}
+.mr-ai-payload summary{cursor:pointer;padding:10px 12px;color:#1e3a5f;font-size:12px;font-weight:800}
+.mr-ai-payload pre{max-height:220px;overflow:auto;margin:0;padding:0 12px 12px;white-space:pre-wrap;overflow-wrap:anywhere;color:#334155;font:11px/1.55 ui-monospace,SFMono-Regular,Consolas,monospace}
+.mr button:focus-visible,.mr a:focus-visible,.mr [role="button"]:focus-visible,.mr input:focus-visible,.mr textarea:focus-visible{outline:3px solid #f59e0b;outline-offset:3px}
+.mr-tab,.mr-panel-btn,.mr-share-btn,.mr-chat-prompt{min-height:44px}
+.mr-upload[role="button"]{min-height:148px}
+
+[data-theme="dark"] .mr-card,[data-theme="dark"] .mr-marker,[data-theme="dark"] .mr-ai-section,[data-theme="dark"] .mr-questions,[data-theme="dark"] .mr-chat-section{background:#111827;border-color:#334155}
+[data-theme="dark"] .mr-card h2,[data-theme="dark"] .mr-marker-name,[data-theme="dark"] .mr-marker-val,[data-theme="dark"] .mr-ai-section h3,[data-theme="dark"] .mr-questions h3,[data-theme="dark"] .mr-chat-section h3{color:#f8fafc}
+[data-theme="dark"] .mr-textarea,[data-theme="dark"] .mr-chat-input input,[data-theme="dark"] .mr-panel-btn,[data-theme="dark"] .mr-share-btn{background:#0f172a;border-color:#475569;color:#e5e7eb}
+[data-theme="dark"] .mr-tabs,[data-theme="dark"] .mr-ai-content,[data-theme="dark"] .mr-chat-msg.bot,[data-theme="dark"] .mr-chat-prompt{background:#0f172a;border-color:#334155;color:#cbd5e1}
+[data-theme="dark"] .mr-tab{color:#cbd5e1}[data-theme="dark"] .mr-tab.on{background:#1e293b;color:#fff}
+[data-theme="dark"] .mr-upload{background:#0f172a;border-color:#475569}[data-theme="dark"] .mr-upload-text{color:#e5e7eb}
+[data-theme="dark"] .mr-marker-explain,[data-theme="dark"] .mr-ai-ctx,[data-theme="dark"] .mr-chat-ctx{color:#cbd5e1;border-color:#334155}
+[data-theme="dark"] .mr-boundary,[data-theme="dark"] .mr-evidence,[data-theme="dark"] .mr-ai-payload{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}
+[data-theme="dark"] .mr-boundary strong,[data-theme="dark"] .mr-evidence strong{color:#f8fafc}
+[data-theme="dark"] .mr-reference-note{background:#0f172a;border-color:#334155;color:#cbd5e1}
+[data-theme="dark"] .mr-reference-note[data-source="lab"]{background:#052e2b;border-color:#047857;color:#a7f3d0}
+[data-theme="dark"] .mr-disclaimer{background:#422006;border-color:#a16207;color:#fde68a}[data-theme="dark"] .mr-disclaimer strong{color:#fef3c7}
+
+/* Toast */
+.mr-toast{position:fixed;bottom:22px;right:22px;background:#111;color:#fff;padding:11px 18px;border-radius:9px;font-size:13px;font-weight:600;transform:translateY(80px);opacity:0;transition:.3s;z-index:2000;max-width:320px}
+.mr-toast.on{transform:translateY(0);opacity:1}
+
+/* Print */
+@media print{afro-navbar,afro-footer,.mr-share,.mr-chat-section,.mr-card,.crumb,.mr-badges,.mr-disclaimer{display:none!important}.mr-results{display:block!important}.mr-results.on{display:block!important}}
+
+/* Mobile */
+@media(max-width:680px){
+  .mr-wrap{padding:0 14px 60px}
+  .mr-hero{padding:32px 18px 28px;border-radius:14px;margin:12px auto 16px}
+  .mr-summary{padding:20px 16px}
+  .mr-summary-stats{flex-direction:column}
+  .mr-markers{grid-template-columns:1fr}
+  .mr-chat-input{flex-wrap:wrap}
+  .mr-chat-input input{width:100%}
+  .mr-tabs{gap:1px}
+  .mr-panels{justify-content:center}
+  .mr-evidence{grid-template-columns:1fr}
+  .mr-card{padding:20px 14px}
+  .mr-upload{padding:28px 14px}
+  .mr-marker-head{align-items:flex-start}
+  .mr-share-btn{flex:1 1 140px;justify-content:center}
+  .mr-action-buttons,.health-action-buttons{display:grid!important;grid-template-columns:1fr}
 }
+@media(prefers-reduced-motion:reduce){.mr *{scroll-behavior:auto!important;animation:none!important;transition:none!important}}
 </style>
+<meta name="tool-id" content="medical-report">
+<script src="/assets/js/favorites.js?v=163519f9" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Interprète de rapport médical | AfroTools">
+<meta name="twitter:description" content="Analysez en privé les résultats de laboratoire courants, hiérarchisez les plages de référence de votre laboratoire, préparez les questions des cliniciens et exportez…">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/medical-report.webp">
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/health-enhancements.css?v=e7e3e3a6">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Interprète de rapport médical",
+    "description": "Analysez en privé les résultats de laboratoire courants, hiérarchisez les plages de référence de votre laboratoire, préparez les questions des cliniciens et exportez…",
+    "url": "https://afrotools.com/fr/tools/rapport-medical/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/medical-report.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
+</style>
+<script type="application/json" id="fr-health-translations">{"Medical Report Interpreter | Private Lab Result Guide":"Interprète de rapports médicaux | Guide des résultats de laboratoire privé","Tools":"Outils","Medical Report Interpreter":"Interprète de rapports médicaux","Medical Report":"Rapport médical","Interpreter":"Interprète","Understand common lab markers in plain language, keep raw reports local, and prepare safer questions for your clinician.":"Comprenez les marqueurs de laboratoire courants dans un langage simple, conservez les rapports bruts localement et préparez des questions plus sûres pour votre clinicien.","Optional AI":"IA en option","Deterministic local parser":"Analyseur local déterministe","Lab range first":"La gamme Lab en premier","No upload by default":"Aucun téléversement par défaut","&#x26A0;&#xFE0F;":"⚠️","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool explains common lab markers in plain language. It cannot diagnose, treat, or confirm that you are healthy. Always consult a qualified doctor about your results, and call your local emergency services for urgent or severe symptoms.":"Cet outil explique les marqueurs de laboratoire courants dans un langage simple. Il ne peut pas diagnostiquer, traiter ou confirmer que vous êtes en bonne santé. Consultez toujours un médecin qualifié au sujet de vos résultats et appelez vos services d'urgence locaux en cas de symptômes urgents ou graves.","Reference policy reviewed 26 July 2026.":"Politique de référence révisée le 26 juillet 2026.","The range printed by your laboratory is used when the parser can identify it. Built-in general ranges are clearly labelled fallbacks and may not apply to your method, age, sex, pregnancy status, or clinical context.":"La plage imprimée par votre laboratoire est utilisée lorsque l'analyseur peut l'identifier. Les plages générales intégrées sont clairement identifiées comme des solutions de secours et peuvent ne pas s'appliquer à votre méthode, à votre âge, à votre sexe, à votre état de grossesse ou à votre contexte clinique.","MedlinePlus guidance":"Conseils MedlinePlus","FDA lab-test context":"Contexte des tests en laboratoire FDA","Enter Your Lab Results":"Entrez vos résultats de laboratoire","Paste text":"Coller le texte","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Take photo":"Prendre une photo","Drop your lab report image here or click to browse":"Déposez l'image de votre rapport de laboratoire ici ou cliquez pour parcourir","Supports JPG, PNG (max 10MB)":"Prend en charge JPG, PNG (max 10 Mo)","Drop your PDF lab report here or click to browse":"Déposez votre rapport de laboratoire PDF ici ou cliquez pour parcourir","Supports PDF files (max 20MB)":"Prend en charge les fichiers PDF (max 20 Mo)","Tap to take a photo of your lab report":"Appuyez pour prendre une photo de votre rapport de laboratoire","Opens your phone camera":"Ouvre l'appareil photo de votre téléphone","Your report stays in this browser unless you separately enable optional AI.":"Votre rapport reste dans ce navigateur, sauf si vous activez séparément l'IA facultative.","Image OCR uses bundled AfroTools code and English language data. Source pixels are not uploaded.":"Image OCR utilise le code AfroTools fourni et des données en anglais. Les pixels sources ne sont pas téléchargés.","PDF text extraction uses bundled PDF.js. The file is not sent to a server and only the first 20 pages are read.":"L'extraction de texte PDF utilise PDF.js fourni. Le fichier n'est pas envoyé vers un serveur et seules les 20 premières pages sont lues.","OCR can misread decimals, units, names, and ranges. Compare every parsed value with the original report before acting or exporting.":"L'OCR peut mal lire les décimales, les unités, les noms et les plages. Comparez chaque valeur analysée avec le rapport d'origine avant d'agir ou d'exporter.","Quick-fill sample format:":"Format d'échantillon à remplissage rapide :","&#x1FA78; CBC":"&#x1FA78; NFS","&#x2764;&#xFE0F; Lipid Panel":"❤️ Panel lipidique","&#x1FAC0; Liver Function":"&#x1FAC0; Fonction hépatique","&#x1FAC0; Kidney Function":"&#x1FAC0; Fonction rénale","&#x1F98B; Thyroid":"&#x1F98B; Thyroïde","&#x1F36C; Diabetes":"&#x1F36C; Diabète","&#x1F9EA; Urinalysis":"&#x1F9EA; Analyse d'urine","Use optional AI interpretation and chat. This sends only the parsed marker name, numeric value, unit, range, range source, status, explicit lab critical flag, and your chat text to AfroTools AI. Follow-up requests also include earlier chat messages in this session. Raw pasted/uploaded text, files, pixels, filenames, and contact details are not included.":"Utilisez l’interprétation et le chat facultatifs de l’IA. Cela envoie uniquement le nom du marqueur analysé, la valeur numérique, l'unité, la plage, la source de la plage, le statut, l'indicateur critique de laboratoire explicite et votre texte de discussion à AfroTools AI. Les demandes de suivi incluent également les messages de discussion antérieurs de cette session. Le texte brut collé/téléchargé, les fichiers, les pixels, les noms de fichiers et les coordonnées ne sont pas inclus.","Preview the exact parsed fields optional AI may receive":"Prévisualisez les champs analysés exacts que l'IA facultative peut recevoir","Analyze locally first. This preview will show the bounded marker payload; it does not contact AI.":"Analysez d’abord localement. Cet aperçu affichera la charge utile du marqueur limité ; il ne contacte pas l'IA.","&#x1F50D; Analyze My Results":"&#x1F50D; Analyser mes résultats","Parsing your lab results...":"Analyse de vos résultats de laboratoire...","Educational only — not a diagnosis or medical advice.":"Uniquement éducatif – pas un diagnostic ou un avis médical.","These explanations are general and do not replace a doctor. A result within range does not confirm you are healthy. Always confirm your results with a qualified clinician, and call emergency services for urgent symptoms.":"Ces explications sont générales et ne remplacent pas un médecin. Un résultat dans les limites ne confirme pas que vous êtes en bonne santé. Confirmez toujours vos résultats avec un clinicien qualifié et appelez les services d'urgence en cas de symptômes urgents.","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Your pasted report includes an explicit critical, panic, or urgent flag. Contact the ordering clinic now. Call local emergency services immediately for chest pain, severe trouble breathing, fainting, seizure, new confusion, major bleeding, or rapidly worsening symptoms.":"Votre rapport collé inclut un indicateur explicite de critique, de panique ou d'urgence. Contactez la clinique de commande dès maintenant. Appelez immédiatement les services d'urgence locaux en cas de douleur thoracique, de difficultés respiratoires graves, d'évanouissements, de convulsions, d'une nouvelle confusion, d'un saignement important ou d'une aggravation rapide des symptômes.","&#x1F4CA; Your Results Summary":"&#x1F4CA; Résumé de vos résultats","Detailed Breakdown":"Répartition détaillée","&#x1F9E0; Interpretation":"&#x1F9E0; Interprétation","Local first":"Local d’abord","Local summary appears first. Optional AI only runs after consent and receives parsed marker values, not the raw report.":"Le résumé local apparaît en premier. L'IA facultative ne s'exécute qu'après consentement et reçoit les valeurs des marqueurs analysées, pas le rapport brut.","Your deterministic local summary will appear here after analysis. AI is never contacted automatically.":"Votre résumé local déterministe apparaîtra ici après analyse. L’IA n’est jamais contactée automatiquement.","Generate optional AI interpretation":"Générer une interprétation facultative de l'IA","&#x1F469;&#x200D;&#x2695;&#xFE0F; Questions to Ask Your Doctor":"&#x1F469;‍⚕️ Questions à poser à votre médecin","&#x1F517; Copy Link":"&#x1F517; Copier le lien","&#x1F5A8;&#xFE0F; Print":"&#x1F5A8;️ Imprimer","&#x1F4AC; Ask Follow-up Questions":"&#x1F4AC; Poser des questions de suivi","AI Chat":"Chat IA","Follow-up chat is optional and requires the AI consent checkbox above. Ask clinician-prep questions, not medication or treatment instructions.":"Le chat de suivi est facultatif et nécessite la case à cocher de consentement de l'IA ci-dessus. Posez des questions de préparation au clinicien, pas des instructions sur les médicaments ou le traitement.","Food questions for clinician":"Questions alimentaires pour le clinicien","Which results to ask about?":"Sur quels résultats demander ?","Explain like I am 70":"Explique comme si j'avais 70 ans","Retest questions":"Retester les questions","Send":"Envoyer","Reminder:":"Rappel :","This tool is for educational purposes only. It does not diagnose, treat, confirm health, or replace professional medical advice. Always consult your healthcare provider about your results.":"Cet outil est uniquement destiné à des fins éducatives. Il ne diagnostique, ne traite, ne confirme pas l’état de santé et ne remplace pas l’avis d’un médecin professionnel. Consultez toujours votre professionnel de la santé au sujet de vos résultats.","Frequently Asked Questions":"Questions fréquentes","Is my medical data safe?":"Mes données médicales sont-elles en sécurité ?","Parsing, image OCR, PDF text extraction, and the first interpretation run in your browser with bundled assets. Optional AI is never contacted automatically; it requires the separate checkbox and button, and its local preview shows the bounded fields before any request.":"L'analyse, l'OCR d'images, l'extraction de texte PDF et la première interprétation s'exécutent dans votre navigateur avec des ressources groupées. L'IA facultative n'est jamais contactée automatiquement ; il nécessite la case à cocher et le bouton séparés, et son aperçu local affiche les champs délimités avant toute demande.","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","Yes. JPG, PNG, and WebP images up to 10 MB can be read locally with bundled English OCR. OCR can misread decimals, units, marker names, and ranges, so compare every parsed result with the original report.":"Oui. Les images JPG, PNG et WebP jusqu'à 10 Mo peuvent être lues localement avec l'OCR en anglais fourni. L'OCR peut mal lire les décimales, les unités, les noms de marqueurs et les plages, alors comparez chaque résultat analysé avec le rapport d'origine.","Is this a medical diagnosis?":"Est-ce un diagnostic médical ?","No. This tool is for educational purposes only. It helps you understand what your lab results mean in plain language, but it is NOT a substitute for professional medical advice, diagnosis, or treatment. Always consult your healthcare provider about your results.":"Non. Cet outil est uniquement destiné à des fins éducatives. Il vous aide à comprendre ce que signifient vos résultats de laboratoire en langage simple, mais il ne remplace PAS un avis médical professionnel, un diagnostic ou un traitement. Consultez toujours votre professionnel de la santé au sujet de vos résultats.","What tests are supported?":"Quels tests sont pris en charge ?","The deterministic parser recognizes a curated set of common numeric markers across CBC, lipids, liver, kidney, thyroid, glucose, iron, vitamins, cardiac markers, and urinalysis. Qualitative results and unrecognized markers are left for clinician review.":"L'analyseur déterministe reconnaît un ensemble organisé de marqueurs numériques communs dans le CBC, les lipides, le foie, les reins, la thyroïde, le glucose, le fer, les vitamines, les marqueurs cardiaques et les analyses d'urine. Les résultats qualitatifs et les marqueurs non reconnus sont laissés à l'examen du clinicien.","Which reference range is used?":"Quelle plage de référence est utilisée ?","The parser prioritizes a numeric range printed on the same report line as the result. If none is recognized, the marker is clearly labelled with a built-in general fallback. Always verify the unit and range against the original report and discuss the result with a qualified clinician.":"L'analyseur donne la priorité à une plage numérique imprimée sur la même ligne de rapport que le résultat. Si aucun n’est reconnu, le marqueur est clairement étiqueté avec une solution de repli générale intégrée. Vérifiez toujours l'unité et la plage par rapport au rapport original et discutez du résultat avec un clinicien qualifié.","Related tools":"Outils associés","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Meal Logistics & Budget Planner":"Logistique des repas et planificateur budgétaire","Deep Review - 27 April 2026":"Examen approfondi - 27 avril 2026","Use Medical Report Interpreter in a safer care workflow":"Utilisez Medical Report Interpreter dans un flux de soins plus sûr","The interpreter already parses common biomarkers. The upgrade adds a safer decision layer around privacy, doctor questions, red flags, and source-backed interpretation limits.":"L'interprète analyse déjà les biomarqueurs courants. La mise à niveau ajoute une couche de décision plus sûre concernant la confidentialité, les questions des médecins, les signaux d'alarme et les limites d'interprétation fondées sur la source.","Use It To Decide":"Utilisez-le pour décider","Which marker is outside the reference range":"Quel marqueur est en dehors de la plage de référence","Which result needs a repeat test or clinician explanation":"Quel résultat nécessite un nouveau test ou une explication du clinicien","Which questions to ask before changing diet, supplements, or medication":"Quelles questions poser avant de changer de régime alimentaire, de suppléments ou de médicaments","Better Workflow":"Meilleur flux de travail","Use verified lab reports or confirmed genotype/blood group records":"Utilisez des rapports de laboratoire vérifiés ou des enregistrements confirmés de génotype/groupe sanguin","Write down questions before acting on the result":"Écrivez les questions avant d'agir sur le résultat","Keep personal health data private and avoid posting raw reports publicly":"Gardez les données personnelles sur la santé confidentielles et évitez de publier publiquement des rapports bruts.","Do Not Ignore":"Ne pas ignorer","A result marked critical, very high, or very low":"Un résultat marqué critique, très élevé ou très faible","Symptoms that do not match a reassuring calculator output":"Symptômes qui ne correspondent pas à une sortie rassurante de la calculatrice","Marriage, pregnancy, or transfusion decisions without professional counselling":"Décisions de mariage, de grossesse ou de transfusion sans conseils professionnels","Reference policy · reviewed 26 July 2026":"Politique de référence · révisée le 26 juillet 2026","MedlinePlus: understand lab results":"MedlinePlus : comprendre les résultats de laboratoire","FDA: tests used in clinical care":"FDA : tests utilisés en soins cliniques","Related AfroTools":"Outils AfroTools associés","Genotype Compatibility Checker":"Vérificateur de compatibilité des génotypes","Blood Group Compatibility Checker":"Vérificateur de compatibilité des groupes sanguins","Sickle Cell Genotype Advisor":"Conseiller en génotype drépanocytaire","Complete package upgrade":"Mise à niveau complète du package","Medical Report Interpreter: save, export, and continue the workflow":"Interpréteur de rapports médicaux : enregistrez, exportez et poursuivez le flux de travail","This app now has a safer local-first handoff for clinician questions, retest prompts, dashboard notes, and PDF visit prep.":"Cette application dispose désormais d'un transfert local plus sûr pour les questions des cliniciens, les invites de nouveau test, les notes du tableau de bord et la préparation des visites au format PDF.","Competitor feature checked":"Fonctionnalité concurrente vérifiée","Ada and lab-analyzer style apps":"Applications de style Ada et analyseur de laboratoire",": Symptom and report apps work best when they convert results into questions, red flags, and a shareable summary.":": Les applications de symptômes et de rapports fonctionnent mieux lorsqu'elles convertissent les résultats en questions, signaux d'alarme et résumé partageable.","Implemented here:":"Implémenté ici :","Lab-range-first parsing, local device/PDF actions, clinician-question framing, and source-backed interpretation limits.":"Analyse en premier lieu en laboratoire, actions locales sur les appareils/PDF, cadrage des questions du clinicien et limites d'interprétation basées sur la source.","MedlinePlus: understanding laboratory results":"MedlinePlus : comprendre les résultats de laboratoire","Private device and PDF actions":"Actions sur les appareils privés et les PDF","Analyze first, then save a sanitized summary and clinician questions.":"Analysez d’abord, puis enregistrez un résumé épuré et les questions du clinicien.","Download a local PDF visit-prep plan without saving or uploading the raw lab report.":"Téléchargez un plan de préparation de visite PDF local sans enregistrer ni télécharger le rapport brut de laboratoire.","Optional account sync is separate and metadata-only; marker values stay on this device.":"La synchronisation facultative du compte est distincte et concerne uniquement les métadonnées ; les valeurs des marqueurs restent sur cet appareil.","Save on this device":"Enregistrer sur cet appareil","Download PDF":"Télécharger le PDF","Save metadata to account (optional)":"Enregistrer les métadonnées sur le compte (facultatif)","Continue in Labs and compatibility pack":"Continuer dans les laboratoires et le pack de compatibilité","Open workflow hub":"Hub de flux de travail ouvert","same-origin":"même origine","Privately parse common lab results, prioritize your laboratory's reference ranges, prepare clinician questions, and export a local PDF. Not a diagnosis.":"Analysez en privé les résultats de laboratoire courants, hiérarchisez les plages de référence de votre laboratoire, préparez les questions des cliniciens et exportez un PDF local. Pas un diagnostic.","var(--color-primary)":"var(--couleur-primaire)","Medical Report Interpreter — Private Lab Result Explainer | AfroTools":"Interprète de rapport médical — Explication des résultats de laboratoire privé | AfroTools","Local-first lab result parsing that prioritizes the range printed by your laboratory, prepares clinician questions, and keeps optional AI behind explicit consent.":"Analyse des résultats de laboratoire d'abord local qui donne la priorité à la plage imprimée par votre laboratoire, prépare les questions des cliniciens et conserve l'IA facultative derrière le consentement explicite.","medical-report":"rapport médical","Medical Report Interpreter — Understand Your Lab Results in Plain Language | AfroTools":"Interprète de rapports médicaux — Comprenez vos résultats de laboratoire en langage simple | AfroTools","Private lab result explainer for common biomarkers, with optional AI only after consent. Educational, non-diagnostic guidance for clinician follow-up.":"Explicateur de résultats de laboratoire privé pour les biomarqueurs courants, avec IA facultative uniquement après consentement. Conseils éducatifs et non diagnostiques pour le suivi clinicien.","Source and review status":"Statut de la source et de l'examen","Lab result input method":"Méthode de saisie des résultats de laboratoire","Paste your lab results here. For example:&#10;&#10;WBC: 7.2 x10^9/L&#10;Hemoglobin: 13.5 g/dL&#10;Platelets: 245 x10^9/L&#10;Total Cholesterol: 210 mg/dL&#10;LDL: 130 mg/dL&#10;HDL: 55 mg/dL&#10;Fasting Glucose: 105 mg/dL&#10;HbA1c: 5.8%&#10;Creatinine: 1.0 mg/dL&#10;ALT: 32 U/L&#10;TSH: 2.5 mIU/L":"Collez vos résultats de laboratoire ici. Par exemple :\n\nGB : 7,2 x 10 ^ 9/L\nHémoglobine : 13,5 g/dL\nPlaquettes : 245 x10^9/L\nCholestérol total : 210 mg/dL\nLDL : 130 mg/dL\nHDL : 55 mg/dL\nGlycémie à jeun : 105 mg/dL\nHbA1c : 5,8 %\nCréatinine : 1,0 mg/dL\nALT : 32 U/L\nTSH : 2,5 mUI/L","Paste your lab results here. For example:&#10;&#10;WBC: 7.2 x10^9/L&#10;Hemoglobin: 13.5 g/dL&#10;Platelets: 245 x10^9/L":"Collez vos résultats de laboratoire ici. Par exemple :\n\nGB : 7,2 x 10 ^ 9/L\nHémoglobine : 13,5 g/dL\nPlaquettes : 245 x10^9/L","Choose a lab report image":"Choisissez une image de rapport de laboratoire","Selected lab report preview":"Aperçu du rapport de laboratoire sélectionné","Choose a PDF lab report":"Choisissez un rapport de laboratoire PDF","Take a photo of a lab report":"Prendre une photo d'un rapport de laboratoire","Captured lab report preview":"Aperçu du rapport de laboratoire capturé","Upload and privacy boundaries":"Importation et limites de confidentialité","Ask about your results":"Renseignez-vous sur vos résultats","Ask about your results...":"Renseignez-vous sur vos résultats...","use strict":"utiliser strict","+ number +":"+ numéro +","+ number,":"+ numéro,","White Blood Cell Count":"Nombre de globules blancs","Red Blood Cell Count":"Nombre de globules rouges","Red blood cells carry oxygen throughout your body. Low levels may indicate anemia.":"Les globules rouges transportent l'oxygène dans tout votre corps. De faibles niveaux peuvent indiquer une anémie.","The protein in red blood cells that carries oxygen. Low levels mean anemia, which causes fatigue and weakness.":"Protéine des globules rouges qui transporte l'oxygène. De faibles niveaux signifient une anémie, qui provoque de la fatigue et de la faiblesse.",", low: 36, high: 50, category:":", bas : 36, haut : 50, catégorie :",", explain:":", expliquez :",", unit:":", unité :",", alias:":", pseudonyme :",", low: 150, high: 400, category:":", bas : 150, haut : 400, catégorie :",", low: 80, high: 100, category:":", bas : 80, haut : 100, catégorie :",", low: 27, high: 33, category:":", bas : 27, haut : 33, catégorie :",", low: 32, high: 36, category:":", bas : 32, haut : 36, catégorie :",", low: 11.5, high: 14.5, category:":", bas : 11,5, haut : 14,5, catégorie :",", low: 40, high: 70, category:":", bas : 40, haut : 70, catégorie :",", low: 20, high: 40, category:":", bas : 20, haut : 40, catégorie :",", low: 2, high: 8, category:":", bas : 2, haut : 8, catégorie :",", low: 1, high: 4, category:":", faible : 1, élevé : 4, catégorie :",", low: 0, high: 1, category:":", bas : 0, haut : 1, catégorie :",", low: 0, high: 20, category:":", bas : 0, haut : 20, catégorie :",", low: 7.5, high: 11.5, category:":", bas : 7,5, haut : 11,5, catégorie :",", low: 0, high: 200, category:":", bas : 0, haut : 200, catégorie :",", low: 0, high: 100, category:":", bas : 0, haut : 100, catégorie :",", low: 40, high: 999, category:":", bas : 40, haut : 999, catégorie :",", low: 0, high: 150, category:":", bas : 0, haut : 150, catégorie :",", low: 0, high: 30, category:":", bas : 0, haut : 30, catégorie :",", low: 0, high: 3.5, category:":", bas : 0, haut : 3,5, catégorie :",", low: 7, high: 56, category:":", bas : 7, haut : 56, catégorie :",", low: 10, high: 40, category:":", bas : 10, haut : 40, catégorie :",", low: 44, high: 147, category:":", bas : 44, haut : 147, catégorie :",", low: 0, high: 45, category:":", bas : 0, haut : 45, catégorie :",", low: 0.1, high: 1.2, category:":", faible : 0,1, élevé : 1,2, catégorie :",", low: 0, high: 0.3, category:":", bas : 0, haut : 0,3, catégorie :",", low: 0.1, high: 1.0, category:":", faible : 0,1, élevé : 1,0, catégorie :",", low: 3.5, high: 5.0, category:":", faible : 3,5, élevé : 5,0, catégorie :",", low: 6.0, high: 8.3, category:":", faible : 6,0, élevé : 8,3, catégorie :",", low: 2.0, high: 3.5, category:":", faible : 2,0, élevé : 3,5, catégorie :",", low: 1.0, high: 2.5, category:":", faible : 1,0, élevé : 2,5, catégorie :",", low: 140, high: 280, category:":", bas : 140, haut : 280, catégorie :",", low: 0.6, high: 1.2, category:":", faible : 0,6, élevé : 1,2, catégorie :",", low: 7, high: 20, category:":", bas : 7, haut : 20, catégorie :",", low: 15, high: 43, category:":", bas : 15, haut : 43, catégorie :",", low: 2.4, high: 7.0, category:":", faible : 2,4, élevé : 7,0, catégorie :",", low: 90, high: 999, category:":", bas : 90, haut : 999, catégorie :",", low: 10, high: 20, category:":", bas : 10, haut : 20, catégorie :",", low: 136, high: 145, category:":", bas : 136, haut : 145, catégorie :",", low: 98, high: 106, category:":", bas : 98, haut : 106, catégorie :",", low: 22, high: 29, category:":", bas : 22, haut : 29, catégorie :",", low: 8.5, high: 10.5, category:":", bas : 8,5, haut : 10,5, catégorie :",", low: 2.5, high: 4.5, category:":", faible : 2,5, élevé : 4,5, catégorie :",", low: 1.7, high: 2.2, category:":", faible : 1,7, élevé : 2,2, catégorie :",", low: 0.4, high: 4.0, category:":", faible : 0,4, élevé : 4,0, catégorie :",", low: 0.8, high: 1.8, category:":", faible : 0,8, élevé : 1,8, catégorie :",", low: 2.3, high: 4.2, category:":", faible : 2,3, élevé : 4,2, catégorie :",", low: 4.5, high: 12.5, category:":", bas : 4,5, haut : 12,5, catégorie :",", low: 80, high: 200, category:":", bas : 80, haut : 200, catégorie :",", low: 0, high: 35, category:":", bas : 0, haut : 35, catégorie :","Fasting Glucose":"Glycémie à jeun","Fasting Blood Glucose":"Glycémie à jeun","Blood sugar after fasting 8+ hours. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.":"Glycémie après un jeûne de plus de 8 heures. Des valeurs plus élevées peuvent être associées au prédiabète ou au diabète et doivent être confirmées par un clinicien et répétées ou associées à des tests.","Fasting Blood Sugar":"Glycémie à jeun","Blood sugar after fasting. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.":"Glycémie après le jeûne. Des valeurs plus élevées peuvent être associées au prédiabète ou au diabète et doivent être confirmées par un clinicien et répétées ou associées à des tests.","Glycated Hemoglobin":"Hémoglobine glyquée",", low: 4.0, high: 5.6, category:":", faible : 4,0, élevé : 5,6, catégorie :",", low: 70, high: 140, category:":", bas : 70, haut : 140, catégorie :",", low: 2.6, high: 24.9, category:":", bas : 2,6, haut : 24,9, catégorie :",", low: 0, high: 2.5, category:":", bas : 0, haut : 2,5, catégorie :",", low: 0.5, high: 2.7, category:":", faible : 0,5, élevé : 2,7, catégorie :",", low: 4.5, high: 8.0, category:":", faible : 4,5, élevé : 8,0, catégorie :",", low: 1.005, high: 1.030, category:":", bas : 1,005, haut : 1,030, catégorie :",", low: 0, high: 15, category:":", bas : 0, haut : 15, catégorie :",", low: 0, high: 0, category:":", bas : 0, haut : 0, catégorie :",", low: 60, high: 170, category:":", bas : 60, haut : 170, catégorie :",", low: 12, high: 300, category:":", bas : 12, haut : 300, catégorie :",", low: 250, high: 370, category:":", bas : 250, haut : 370, catégorie :",", low: 20, high: 50, category:":", bas : 20, haut : 50, catégorie :",", low: 200, high: 360, category:":", bas : 200, haut : 360, catégorie :",", low: 30, high: 100, category:":", bas : 30, haut : 100, catégorie :",", low: 200, high: 900, category:":", bas : 200, haut : 900, catégorie :",", low: 2.7, high: 17.0, category:":", bas : 2,7, haut : 17,0, catégorie :",", low: 30, high: 80, category:":", bas : 30, haut : 80, catégorie :",", low: 0, high: 3.0, category:":", faible : 0, élevé : 3,0, catégorie :",", low: 0, high: 1.0, category:":", faible : 0, élevé : 1,0, catégorie :",", low: 0, high: 0.04, category:":", bas : 0, haut : 0,04, catégorie :",", low: 5, high: 15, category:":", bas : 5, haut : 15, catégorie :",", low: 22, high: 198, category:":", bas : 22, haut : 198, catégorie :",", low: 0, high: 4.0, category:":", faible : 0, élevé : 4,0, catégorie :",", low: 0, high: 10, category:":", bas : 0, haut : 10, catégorie :",", low: 0, high: 5.0, category:":", faible : 0, élevé : 5,0, catégorie :",", low: 2, high: 18, category:":", bas : 2, haut : 18, catégorie :",", low: 6, high: 23, category:":", bas : 6, haut : 23, catégorie :",", low: 270, high: 1070, category:":", bas : 270, haut : 1070, catégorie :",", low: 15, high: 350, category:":", bas : 15, haut : 350, catégorie :","Liver Function Tests":"Tests de la fonction hépatique","Kidney Function & Electrolytes":"Fonction rénale et électrolytes","Thyroid Panel":"Panneau Thyroïde","Diabetes & Blood Sugar":"Diabète et glycémie","Iron Studies":"Études sur le fer","Vitamins & Nutrients":"Vitamines et nutriments","Cardiac & Inflammation Markers":"Marqueurs cardiaques et inflammatoires","Other Tests":"Autres tests","WBC: 7.2 x10^9/L RBC: 4.8 x10^12/L Hemoglobin: 13.5 g/dL Hematocrit: 41% Platelets: 245 x10^9/L MCV: 88 fL MCH: 29 pg MCHC: 34 g/dL RDW: 13.2% Neutrophils: 58% Lymphocytes: 32% Monocytes: 6% Eosinophils: 3% Basophils: 1% ESR: 12 mm/hr":"WBC : 7,2 x10^9/L RBC : 4,8 x10^12/L Hémoglobine : 13,5 g/dL Hématocrite : 41 % Plaquettes : 245 x10^9/L MCV : 88 fL MCH : 29 pg MCHC : 34 g/dL RDW : 13,2 % Neutrophiles : 58 % Lymphocytes : 32 % Monocytes : 6 % Éosinophiles : 3 % Basophiles : 1 % ESR : 12 mm/h","Total Cholesterol: 210 mg/dL LDL: 130 mg/dL HDL: 55 mg/dL Triglycerides: 160 mg/dL VLDL: 32 mg/dL":"Cholestérol total : 210 mg/dL LDL : 130 mg/dL HDL : 55 mg/dL Triglycérides : 160 mg/dL VLDL : 32 mg/dL","ALT: 45 U/L AST: 35 U/L ALP: 85 U/L GGT: 38 U/L Total Bilirubin: 0.9 mg/dL Direct Bilirubin: 0.2 mg/dL Albumin: 4.2 g/dL Total Protein: 7.1 g/dL":"ALT : 45 U/L AST : 35 U/L ALP : 85 U/L GGT : 38 U/L Bilirubine totale : 0,9 mg/dL Bilirubine directe : 0,2 mg/dL Albumine : 4,2 g/dL Protéines totales : 7,1 g/dL","Creatinine: 1.1 mg/dL BUN: 18 mg/dL Uric Acid: 5.8 mg/dL eGFR: 85 mL/min Sodium: 140 mEq/L Potassium: 4.2 mEq/L Chloride: 102 mEq/L Calcium: 9.5 mg/dL Phosphorus: 3.8 mg/dL":"Créatinine : 1,1 mg/dL BUN : 18 mg/dL Acide urique : 5,8 mg/dL DFGe : 85 mL/min Sodium : 140 mEq/L Potassium : 4,2 mEq/L Chlorure : 102 mEq/L Calcium : 9,5 mg/dL Phosphore : 3,8 mg/dL","TSH: 5.2 mIU/L Free T4: 0.9 ng/dL Free T3: 2.8 pg/mL Total T4: 7.5 ug/dL":"TSH : 5,2 mUI/L T4 libre : 0,9 ng/dL T3 libre : 2,8 pg/mL T4 totale : 7,5 ug/dL","Fasting Glucose: 112 mg/dL HbA1c: 6.1% Insulin: 15.2 uIU/mL":"Glycémie à jeun : 112 mg/dL HbA1c : 6,1 % Insuline : 15,2 uUI/mL","The AI consent control is unavailable. Your local interpretation is still available.":"Le contrôle du consentement de l'IA n'est pas disponible. Votre interprétation locale est toujours disponible.","+ marker.value +":"+ marqueur.valeur +","+ marker.unit +":"+ marqueur.unité +","+ marker.status +":"+ marqueur.statut +","+ marker.referenceLow +":"+ marqueur.referenceLow +","+ marker.labFlag :":"+ marqueur.labFlag :",", neverSent: [":", jamaisEnvoyé : [","file bytes":"octets du fichier","image pixels":"pixels de l'image","page query string":"chaîne de requête de page","Explain the bounded parsedMarkers in simple educational language. Do not diagnose, prescribe, suggest medication or supplement changes, or state that the user is healthy. Treat a lab critical flag or severe-symptom statement as urgent escalation and suggest questions for a qualified clinician.":"Expliquez les marqueurs analysés délimités dans un langage pédagogique simple. Ne diagnostiquez pas, ne prescrivez pas, ne suggérez pas de changements de médicaments ou de suppléments, et ne déclarez pas que l'utilisateur est en bonne santé. Traitez un signalement critique de laboratoire ou une déclaration de symptômes graves comme une escalade urgente et suggérez des questions à un clinicien qualifié.","parsed marker name":"nom du marqueur analysé","numeric value":"valeur numérique","reference range":"plage de référence","reference source":"source de référence","explicit lab critical flag":"indicateur critique explicite du laboratoire","raw report text":"texte brut du rapport","contact details":"coordonnées","+ abnormal.length +":"+ longueur anormale +","+ r.value +":"+ valeur r. +","+ direction +":"+orientation +","+ r.biomarker.explain +":"+ r.biomarqueur.explain +",", labFlag: r.labFlag ||":", labFlag : r.labFlag ||",", headline: results.length +":", titre : résultats.longueur +",", resultText:":", texte du résultat :",", value:":", valeur :","Choose a PDF file.":"Choisissez un fichier PDF.","Choose a JPG, PNG, or WebP image.":"Choisissez une image JPG, PNG ou WebP.","This file is larger than the":"Ce fichier est plus volumineux que le","20 MB":"20 Mo","10 MB":"10 Mo","local-processing limit.":"limite de traitement local.","Loading OCR engine...":"Chargement du moteur OCR...","Bundled OCR runtime is unavailable.":"Le runtime OCR fourni n’est pas disponible.","Recognizing text locally from image...":"Reconnaître le texte localement à partir de l'image...","Recognizing text locally...":"Reconnaître du texte localement...","Text extracted, parsing results...":"Texte extrait, analyse des résultats...","OCR error:":"Erreur ROC :","Could not read text from this image. Please try pasting the text directly.":"Impossible de lire le texte de cette image. Veuillez essayer de coller le texte directement.","Loading PDF...":"Chargement du PDF...","Bundled PDF reader is unavailable.":"Le lecteur PDF fourni n'est pas disponible.","+ numPages +":"+ nombre de pages +",", block:":", bloquer :","mr-stat normal":"monsieur-stat normal",">\u003cdiv class=":">\u003cclasse div=",">' + high + '\u003c/div>\u003cdiv class=":">' + élevé + '\u003c/div>\u003cdiv class=",">' + low + '\u003c/div>\u003cdiv class=":">' + faible + '\u003c/div>\u003cdiv class=","+ abnormal +":"+anormal +","+ bio.unit :":"+ bio.unité :","+ bio.name +":"+ bio.nom +","mr-marker-badge ' + r.status + '":"mr-marker-badge ' + r.statut + '","+ bio.unit +":"+ bio.unité +","mr-range-dot ' + r.status + '":"mr-range-dot ' + r.statut + '","left:' + dotPos + '%":"gauche : '+ pointPos + '%","+ bio.explain +":"+ bio.expliquer +","AI unavailable":"IA indisponible","bounded parsed marker payload":"charge utile du marqueur analysé délimité","current question":"question actuelle","up to 10 earlier chat messages from this page session":"jusqu'à 10 messages de discussion antérieurs de cette session de page","Sorry, something went wrong.":"Désolé, quelque chose s'est mal passé.","The optional AI advisor is unavailable. Your local parsed results and clinician questions are still available above. Do not change medicines, supplements, diet therapy, or treatment from this tool. Contact the ordering clinician for interpretation, and seek urgent care for severe symptoms or a result your laboratory marks critical.":"Le conseiller IA en option n’est pas disponible. Vos résultats analysés localement et les questions des cliniciens sont toujours disponibles ci-dessus. Ne modifiez pas les médicaments, les suppléments, la thérapie diététique ou le traitement de cet outil. Contactez le clinicien prescripteur pour obtenir une interprétation et recherchez des soins d'urgence en cas de symptômes graves ou de résultat jugé critique par votre laboratoire.","I just analyzed my lab results with AfroTools Medical Report Interpreter!":"Je viens d'analyser mes résultats de laboratoire avec AfroTools Medical Report Interpreter !","\u003cshare-result-button tool-name=\"Medical Report\" tool-slug=\"medical-report\">\u003c/share-result-button>":"\u003cshare-result-button tool-name=\"Rapport médical\" tool-slug=\"medical-report\">\u003c/share-result-button>","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","All tools":"Tous les outils","All Tools":"Tous les outils","Health":"Santé","Health tools":"Outils santé","Dark mode":"Mode sombre","Download TXT":"Télécharger le TXT","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/rapport-medical/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/medical-report/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rapport-medical/">
@@ -56,57 +312,1273 @@
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Repere de rapport médical</h1>
-<p>Lisez vos résultats d'analyses comme aide éducative, puis confirmez-les avec le laboratoire ou un professionnel de santé.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Repere de rapport médical. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
+<nav class="crumb"><a href="/">AfroTools</a><span>/</span><a href="/tools/">Outils</a><span>/</span>Interprète de rapports médicaux</nav>
+<div class="mr">
+<main class="mr-wrap">
+
+  <!-- Hero -->
+  <section class="mr-hero">
+    <span class="mr-hero-emoji">&#x1F3E5;</span>
+    <h1>Interprète de rapport médical</h1>
+    <p>Comprenez les marqueurs de laboratoire courants dans un langage simple, conservez les rapports bruts localement et préparez des questions plus sûres pour votre clinicien.</p>
+    <div class="mr-badges">
+      <span class="mr-badge">IA en option</span>
+      <span class="mr-badge">Analyseur local déterministe</span>
+      <span class="mr-badge">La gamme Lab en premier</span>
+      <span class="mr-badge">Aucun téléversement par défaut</span>
+    </div>
+  </section>
+
+  <!-- Disclaimer top -->
+  <div class="mr-disclaimer">
+    <span class="mr-disclaimer-icon">⚠️</span>
+    <div><strong>Usage éducatif uniquement — ni diagnostic ni avis médical.</strong> Cet outil explique les marqueurs de laboratoire courants dans un langage simple. Il ne peut pas diagnostiquer, traiter ou confirmer que vous êtes en bonne santé. Consultez toujours un médecin qualifié au sujet de vos résultats et appelez vos services d'urgence locaux en cas de symptômes urgents ou graves.</div>
+  </div>
+  <div class="mr-evidence" aria-label="Statut de la source et de l'examen">
+    <div><strong>Politique de référence révisée le 26 juillet 2026.</strong> La plage imprimée par votre laboratoire est utilisée lorsque l'analyseur peut l'identifier. Les plages générales intégrées sont clairement identifiées comme des solutions de secours et peuvent ne pas s'appliquer à votre méthode, à votre âge, à votre sexe, à votre état de grossesse ou à votre contexte clinique.</div>
+    <div><a href="https://medlineplus.gov/lab-tests/how-to-understand-your-lab-results/" rel="noopener" target="_blank">Conseils MedlinePlus</a><br><a href="https://www.fda.gov/medical-devices/in-vitro-diagnostics/tests-used-clinical-care" rel="noopener" target="_blank">Contexte des tests en laboratoire FDA</a></div>
+  </div>
+
+  <!-- Input card -->
+  <div class="mr-card">
+    <h2><span class="n">1</span> Entrez vos résultats de laboratoire</h2>
+
+    <!-- Input tabs -->
+    <div class="mr-tabs" role="tablist" aria-label="Méthode de saisie des résultats de laboratoire">
+      <button type="button" class="mr-tab on" id="tab-paste" role="tab" aria-selected="true" aria-controls="panel-paste" onclick="switchInputTab('paste',this)">Coller le texte</button>
+      <button type="button" class="mr-tab" id="tab-image" role="tab" aria-selected="false" aria-controls="panel-image" onclick="switchInputTab('image',this)">Importer une image</button>
+      <button type="button" class="mr-tab" id="tab-pdf" role="tab" aria-selected="false" aria-controls="panel-pdf" onclick="switchInputTab('pdf',this)">Importer un PDF</button>
+      <button type="button" class="mr-tab" id="tab-camera" role="tab" aria-selected="false" aria-controls="panel-camera" onclick="switchInputTab('camera',this)">Prendre une photo</button>
+    </div>
+
+    <!-- Paste text panel -->
+    <div class="mr-tab-panel on" id="panel-paste" role="tabpanel" aria-labelledby="tab-paste">
+      <textarea class="mr-textarea" id="labInput" placeholder="Collez vos résultats de laboratoire ici. Par exemple :
+
+GB : 7,2 x 10 ^ 9/L
+Hémoglobine : 13,5 g/dL
+Plaquettes : 245 x10^9/L
+Cholestérol total : 210 mg/dL
+LDL : 130 mg/dL
+HDL : 55 mg/dL
+Glycémie à jeun : 105 mg/dL
+HbA1c : 5,8 %
+Créatinine : 1,0 mg/dL
+ALT : 32 U/L
+TSH : 2,5 mUI/L" aria-label="Collez vos résultats de laboratoire ici. Par exemple :
+
+GB : 7,2 x 10 ^ 9/L
+Hémoglobine : 13,5 g/dL
+Plaquettes : 245 x10^9/L"></textarea>
+    </div>
+
+    <!-- Image upload panel -->
+    <div class="mr-tab-panel" id="panel-image" role="tabpanel" aria-labelledby="tab-image" hidden>
+      <div class="mr-upload" id="imageDropZone" role="button" tabindex="0" aria-describedby="image-upload-boundary" onclick="document.getElementById('imageFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('imageFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handleImageDrop(event)">
+        <span class="mr-upload-icon">&#x1F4F7;</span>
+        <div class="mr-upload-text">Déposez l'image de votre rapport de laboratoire ici ou cliquez pour parcourir</div>
+        <div class="mr-upload-hint">Prend en charge JPG, PNG (max 10 Mo)</div>
+        <input aria-label="Choisissez une image de rapport de laboratoire" type="file" id="imageFileInput" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(this)">
+        <img class="mr-upload-preview" id="imagePreview" alt="Aperçu du rapport de laboratoire sélectionné">
+        <div class="mr-upload-filename" id="imageFilename"></div>
+      </div>
+    </div>
+
+    <!-- PDF upload panel -->
+    <div class="mr-tab-panel" id="panel-pdf" role="tabpanel" aria-labelledby="tab-pdf" hidden>
+      <div class="mr-upload" id="pdfDropZone" role="button" tabindex="0" aria-describedby="pdf-upload-boundary" onclick="document.getElementById('pdfFileInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('pdfFileInput').click()}" ondragover="event.preventDefault();this.classList.add('drag')" ondragleave="this.classList.remove('drag')" ondrop="handlePdfDrop(event)">
+        <span class="mr-upload-icon">&#x1F4C4;</span>
+        <div class="mr-upload-text">Déposez votre rapport de laboratoire PDF ici ou cliquez pour parcourir</div>
+        <div class="mr-upload-hint">Prend en charge les fichiers PDF (max 20 Mo)</div>
+        <input aria-label="Choisissez un rapport de laboratoire PDF" type="file" id="pdfFileInput" accept="application/pdf" onchange="handlePdfSelect(this)">
+        <div class="mr-upload-filename" id="pdfFilename"></div>
+      </div>
+    </div>
+
+    <!-- Camera panel -->
+    <div class="mr-tab-panel" id="panel-camera" role="tabpanel" aria-labelledby="tab-camera" hidden>
+      <div class="mr-upload" role="button" tabindex="0" aria-describedby="image-upload-boundary" onclick="document.getElementById('cameraInput').click()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();document.getElementById('cameraInput').click()}">
+        <span class="mr-upload-icon">&#x1F4F1;</span>
+        <div class="mr-upload-text">Appuyez pour prendre une photo de votre rapport de laboratoire</div>
+        <div class="mr-upload-hint">Ouvre l'appareil photo de votre téléphone</div>
+        <input aria-label="Prendre une photo d'un rapport de laboratoire" type="file" id="cameraInput" accept="image/*" capture="environment" onchange="handleImageSelect(this)">
+        <img class="mr-upload-preview" id="cameraPreview" alt="Aperçu du rapport de laboratoire capturé">
+      </div>
+    </div>
+
+    <div class="mr-boundary" aria-label="Importation et limites de confidentialité">
+      <strong>Votre rapport reste dans ce navigateur, sauf si vous activez séparément l'IA facultative.</strong>
+      <ul>
+        <li id="image-upload-boundary">Image OCR utilise le code AfroTools fourni et des données en anglais. Les pixels sources ne sont pas téléchargés.</li>
+        <li id="pdf-upload-boundary">L'extraction de texte PDF utilise PDF.js fourni. Le fichier n'est pas envoyé vers un serveur et seules les 20 premières pages sont lues.</li>
+        <li>L'OCR peut mal lire les décimales, les unités, les noms et les plages. Comparez chaque valeur analysée avec le rapport d'origine avant d'agir ou d'exporter.</li>
+      </ul>
+    </div>
+
+    <!-- Quick panels -->
+    <div style="margin-top:16px">
+      <div style="font-size:11px;font-weight:700;color:#9ca3af;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Format d'échantillon à remplissage rapide :</div>
+      <div class="mr-panels">
+        <button type="button" class="mr-panel-btn" onclick="fillSample('cbc')">&amp;#x1FA78; NFS</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('lipid')">❤️ Panel lipidique</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('liver')">&amp;#x1FAC0; Fonction hépatique</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('kidney')">&amp;#x1FAC0; Fonction rénale</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('thyroid')">&amp;#x1F98B; Thyroïde</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('diabetes')">&amp;#x1F36C; Diabète</button>
+        <button type="button" class="mr-panel-btn" onclick="fillSample('urinalysis')">&amp;#x1F9EA; Analyse d'urine</button>
+      </div>
+    </div>
+
+    <label class="mr-ai-consent">
+      <input type="checkbox" id="aiConsent">
+      <span>Utilisez l’interprétation et le chat facultatifs de l’IA. Cela envoie uniquement le nom du marqueur analysé, la valeur numérique, l'unité, la plage, la source de la plage, le statut, l'indicateur critique de laboratoire explicite et votre texte de discussion à AfroTools AI. Les demandes de suivi incluent également les messages de discussion antérieurs de cette session. Le texte brut collé/téléchargé, les fichiers, les pixels, les noms de fichiers et les coordonnées ne sont pas inclus.</span>
+    </label>
+    <details class="mr-ai-payload">
+      <summary>Prévisualisez les champs analysés exacts que l'IA facultative peut recevoir</summary>
+      <pre id="aiPayloadPreview">Analysez d’abord localement. Cet aperçu affichera la charge utile du marqueur limité ; il ne contacte pas l'IA.</pre>
+    </details>
+
+    <!-- Analyze button -->
+    <button type="button" class="mr-analyze" id="analyzeBtn" onclick="analyzeResults()">
+      &amp;#x1F50D; Analyser mes résultats
+    </button>
+
+    <!-- Progress -->
+    <div class="mr-progress" id="progressBar">
+      <div class="mr-progress-bar"><div class="mr-progress-fill" id="progressFill"></div></div>
+      <div class="mr-progress-text" id="progressText">Analyse de vos résultats de laboratoire...</div>
+    </div>
+  </div>
+
+  <!-- Results container -->
+  <div class="mr-results" id="resultsContainer">
+
+    <!-- Disclaimer near results -->
+    <div class="mr-disclaimer" role="note">
+      <span class="mr-disclaimer-icon" aria-hidden="true">⚠️</span>
+      <div><strong>Uniquement éducatif – pas un diagnostic ou un avis médical.</strong> Ces explications sont générales et ne remplacent pas un médecin. Un résultat dans les limites ne confirme pas que vous êtes en bonne santé. Confirmez toujours vos résultats avec un clinicien qualifié et appelez les services d'urgence en cas de symptômes urgents.</div>
+    </div>
+    <div class="mr-emergency" id="emergencyBanner" role="alert">
+      <strong>N'attendez pas le résultat de cet outil.</strong> Votre rapport collé inclut un indicateur explicite de critique, de panique ou d'urgence. Contactez la clinique de commande dès maintenant. Appelez immédiatement les services d'urgence locaux en cas de douleur thoracique, de difficultés respiratoires graves, d'évanouissements, de convulsions, d'une nouvelle confusion, d'un saignement important ou d'une aggravation rapide des symptômes.
+    </div>
+
+    <!-- Summary -->
+    <div class="mr-summary" id="summaryCard">
+      <div class="mr-summary-inner">
+        <h3>&amp;#x1F4CA; Résumé de vos résultats</h3>
+        <div class="mr-summary-stats" id="summaryStats"></div>
+        <div class="mr-summary-msg" id="summaryMsg"></div>
+      </div>
+    </div>
+
+    <!-- Markers -->
+    <div class="mr-card" style="padding:20px">
+      <h2><span class="n">2</span> Répartition détaillée</h2>
+      <div class="mr-markers" id="markersGrid"></div>
+    </div>
+
+    <!-- AI Interpretation -->
+    <div class="mr-ai-section">
+      <div class="mr-ai-header">
+        <h3>&amp;#x1F9E0; Interprétation <span class="mr-ai-badge">Local d’abord</span></h3>
+      </div>
+      <div class="mr-ai-ctx">Le résumé local apparaît en premier. L'IA facultative ne s'exécute qu'après consentement et reçoit les valeurs des marqueurs analysées, pas le rapport brut.</div>
+      <div class="mr-ai-content" id="aiInterpretation">Votre résumé local déterministe apparaîtra ici après analyse. L’IA n’est jamais contactée automatiquement.</div>
+      <button type="button" class="mr-chat-prompt" id="aiRunBtn" onclick="runAIInterpretation()" style="margin-top:10px">Générer une interprétation facultative de l'IA</button>
+    </div>
+
+    <!-- Questions for Doctor -->
+    <div class="mr-questions" id="doctorQuestions">
+      <h3>&amp;#x1F469;‍⚕️ Questions à poser à votre médecin</h3>
+      <ul class="mr-q-list" id="questionsList"></ul>
+    </div>
+
+    <!-- Share -->
+    <div class="mr-share">
+      <button type="button" class="mr-share-btn" onclick="shareWA()">&amp;#x1F4E2; WhatsApp</button>
+      <button type="button" class="mr-share-btn" onclick="copyLink()">&amp;#x1F517; Copier le lien</button>
+      <button type="button" class="mr-share-btn" onclick="printResults()">&amp;#x1F5A8;️ Imprimer</button>
+    </div>
+
+    <!-- Chat follow-up -->
+    <div class="mr-chat-section" id="chatSection">
+      <h3>&amp;#x1F4AC; Poser des questions de suivi <span class="mr-ai-badge">Chat IA</span></h3>
+      <div class="mr-chat-ctx">Le chat de suivi est facultatif et nécessite la case à cocher de consentement de l'IA ci-dessus. Posez des questions de préparation au clinicien, pas des instructions sur les médicaments ou le traitement.</div>
+      <div class="mr-chat-prompts" id="chatPrompts">
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What general food or habit questions should I discuss with my clinician?')">Questions alimentaires pour le clinicien</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('Which results should I ask my clinician to explain first?')">Sur quels résultats demander ?</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('Explain my results like I am 70 years old')">Explique comme si j'avais 70 ans</button>
+        <button type="button" class="mr-chat-prompt" onclick="askChat('What retest or follow-up timing questions should I ask?')">Retester les questions</button>
+      </div>
+      <div class="mr-chat-messages" id="chatMessages"></div>
+      <div class="mr-chat-input">
+        <input aria-label="Renseignez-vous sur vos résultats" type="text" id="chatInput" placeholder="Renseignez-vous sur vos résultats..." onkeydown="if(event.key==='Enter')askChat()">
+        <button type="button" id="chatBtn" onclick="askChat()">Envoyer</button>
+      </div>
+    </div>
+
+    <!-- Disclaimer bottom -->
+    <div class="mr-disclaimer" style="margin-top:20px">
+      <span class="mr-disclaimer-icon">⚠️</span>
+      <div><strong>Rappel :</strong> Cet outil est uniquement destiné à des fins éducatives. Il ne diagnostique, ne traite, ne confirme pas l’état de santé et ne remplace pas l’avis d’un médecin professionnel. Consultez toujours votre professionnel de la santé au sujet de vos résultats.</div>
+    </div>
+  </div>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/medical-report/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/medical-report/" title="Repere de rapport médical" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Repere de rapport medical";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-seo">
-<h2>Comprendre vos analyses avec prudence</h2>
-<p>Lire un rapport médical peut être deroutant avec ses abreviations et valeurs de référence. Cette page sert de repere uniquement pour préparer vos questions et mieux suivre les termes du rapport.</p>
-<p>Les valeurs de référence varient selon le laboratoire, l'age, le sexe, la grossesse, les traitements, les maladies connues et le contexte clinique. Ne commencez, n'arrêtez ou ne modifiez aucun traitement à partir de cette page. En cas de symptome inquietant ou d'aggravation rapide, contactez un service médical local.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Quelles analyses sont couvertes ?</summary><p>L'outil peut aider a lire la NFS, le bilan hepatique, le bilan renal, la glycemie, le profil lipidique, les electrolytes et d'autres analyses courantes comme repere éducatif.</p></details>
-<details><summary>Les valeurs de référence suffisent-elles ?</summary><p>Non. Les valeurs de référence varient selon le laboratoire, l'age, le sexe, la grossesse, les traitements et le contexte clinique. Confirmez toujours avec le laboratoire ou un professionnel de santé.</p></details>
-<details><summary>Cet outil remplace-t-il l'avis du médecin ?</summary><p>Non. Il vous aide à préparer vos questions, mais ne pose pas de diagnostic et ne remplace jamais une consultation ou une interpretation clinique.</p></details>
-</div>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Interprète de rapport médical reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/medical-report/" hreflang="en">/tools/medical-report/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
 </div>
 
-<section class="fr-proof-panel" data-fr-proof-panel data-tool-verification-panel aria-label="Méthode, sources et limites" style="max-width:960px;margin:24px auto;padding:0 20px;">
-  <div style="border:1px solid #dbeafe;background:#fff;border-radius:12px;padding:16px 18px;box-shadow:0 10px 26px rgba(15,23,42,.06);color:#334155;line-height:1.6">
-    <h2 style="font-size:1.1rem;margin:0 0 8px;color:#0f172a">Méthode, source et vérification</h2>
-    <p style="margin:0 0 12px">Utilisez ce résultat comme estimation de préparation. Avant décision, confirmez les taux, dates, exemptions, justificatifs et conditions avec la source competente.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px">
-      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Méthode</strong><br>Calcul local base sur les champs saisis et les hypothèses visibles de la page.</div>
-      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Source à vérifier</strong><br><a href="https://afrotools.com/fr/all-tools/" rel="noopener" target="_blank">Professionnel de santé et dossier patient local</a></div>
-      <div style="border:1px solid #e2e8f0;border-radius:10px;padding:10px"><strong>Limite</strong><br>Pas un avis fiscal, médical, juridique, bancaire ou officiel. Mise à jour à vérifier en 2026.</div>
-    </div>
-    <output data-fr-proof-output style="display:block;margin-top:12px;border:1px solid #e2e8f0;border-left:4px solid #2563eb;border-radius:0 8px 8px 0;background:#f8fafc;padding:12px;white-space:pre-line"></output>
-    <div style="display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;align-items:center"><button type="button" data-fr-proof-copy style="border:0;border-radius:999px;background:#0f172a;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Copier le brief</button><button type="button" data-fr-proof-download style="border:0;border-radius:999px;background:#2563eb;color:#fff;font-weight:800;padding:10px 14px;cursor:pointer">Télécharger TXT</button><span data-fr-proof-status aria-live="polite" style="font-size:.82rem;color:#64748b"></span></div>
+<!-- FAQ Section -->
+<section style="max-width:1200px;margin:40px auto;padding:0 24px">
+  <h2 style="font-size:1.3rem;font-weight:800;color:#111;margin-bottom:20px;font-family:'DM Sans',sans-serif">Questions fréquentes</h2>
+  <div>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Mes données médicales sont-elles en sécurité ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        L'analyse, l'OCR d'images, l'extraction de texte PDF et la première interprétation s'exécutent dans votre navigateur avec des ressources groupées. L'IA facultative n'est jamais contactée automatiquement ; il nécessite la case à cocher et le bouton séparés, et son aperçu local affiche les champs délimités avant toute demande.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Puis-je importer une photo de mon rapport de laboratoire ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Oui. Les images JPG, PNG et WebP jusqu'à 10 Mo peuvent être lues localement avec l'OCR en anglais fourni. L'OCR peut mal lire les décimales, les unités, les noms de marqueurs et les plages, alors comparez chaque résultat analysé avec le rapport d'origine.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Est-ce un diagnostic médical ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        Non. Cet outil est uniquement destiné à des fins éducatives. Il vous aide à comprendre ce que signifient vos résultats de laboratoire en langage simple, mais il ne remplace PAS un avis médical professionnel, un diagnostic ou un traitement. Consultez toujours votre professionnel de la santé au sujet de vos résultats.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Quels tests sont pris en charge ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        L'analyseur déterministe reconnaît un ensemble organisé de marqueurs numériques communs dans le CBC, les lipides, le foie, les reins, la thyroïde, le glucose, le fer, les vitamines, les marqueurs cardiaques et les analyses d'urine. Les résultats qualitatifs et les marqueurs non reconnus sont laissés à l'examen du clinicien.
+      </div>
+    </details>
+    <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
+      <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
+        Quelle plage de référence est utilisée ?
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
+      </summary>
+      <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
+        L'analyseur donne la priorité à une plage numérique imprimée sur la même ligne de rapport que le résultat. Si aucun n’est reconnu, le marqueur est clairement étiqueté avec une solution de repli générale intégrée. Vérifiez toujours l'unité et la plage par rapport au rapport original et discutez du résultat avec un clinicien qualifié.
+      </div>
+    </details>
   </div>
 </section>
 
-<script data-fr-proof-script>
-(function(){var panel=document.querySelector('[data-fr-proof-panel]');if(!panel)return;var title="Repere de rapport medical";var status=panel.querySelector('[data-fr-proof-status]');var output=panel.querySelector('[data-fr-proof-output]');function brief(){return [title,'Methode: estimation locale basee sur les champs saisis et les hypotheses visibles.','Source a verifier: Professionnel de sante et dossier patient local','Limite: confirmer les taux, dates, exemptions et conditions avant decision; pas un avis officiel.','Annee de verification: 2026'].join('\n');}function render(){if(output)output.textContent=brief();if(status)status.textContent='';}render();var copy=panel.querySelector('[data-fr-proof-copy]');if(copy)copy.addEventListener('click',function(){var text=brief();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-fr-proof-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([brief()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="brief-verification-rapport-medical.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});})();
-</script>
+<!-- Related Tools -->
+<afro-related-tools category="health" current="medical-report" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li><li><a href="/fr/tools/plan-repas-africain/" data-related-tool data-id="african-meal-plan" data-name="Logistique des repas et planificateur budgétaire" data-category="health" data-icon="ML" data-desc="Plan user-chosen meals, household servings and a grocery budget from local prices. No prescribed menu, calorie target, d">Logistique des repas et planificateur budgétaire</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<!-- Footer -->
+<!-- HEALTH-DEEP-IMPROVEMENT:START -->
+<section class="health-deep" aria-labelledby="health-deep-title">
+<span class="health-deep-kicker">Examen approfondi - 27 avril 2026</span>
+<h2 id="health-deep-title">Utilisez Medical Report Interpreter dans un flux de soins plus sûr</h2>
+<p class="health-deep-lead">L'interprète analyse déjà les biomarqueurs courants. La mise à niveau ajoute une couche de décision plus sûre concernant la confidentialité, les questions des médecins, les signaux d'alarme et les limites d'interprétation fondées sur la source.</p>
+<div class="health-deep-grid">
+<div class="health-deep-block"><h3>Utilisez-le pour décider</h3><ul><li>Quel marqueur est en dehors de la plage de référence</li><li>Quel résultat nécessite un nouveau test ou une explication du clinicien</li><li>Quelles questions poser avant de changer de régime alimentaire, de suppléments ou de médicaments</li></ul></div>
+<div class="health-deep-block"><h3>Meilleur flux de travail</h3><ul><li>Utilisez des rapports de laboratoire vérifiés ou des enregistrements confirmés de génotype/groupe sanguin</li><li>Écrivez les questions avant d'agir sur le résultat</li><li>Gardez les données personnelles sur la santé confidentielles et évitez de publier publiquement des rapports bruts.</li></ul></div>
+<div class="health-deep-block warning"><h3>Ne pas ignorer</h3><ul><li>Un résultat marqué critique, très élevé ou très faible</li><li>Symptômes qui ne correspondent pas à une sortie rassurante de la calculatrice</li><li>Décisions de mariage, de grossesse ou de transfusion sans conseils professionnels</li></ul></div>
+</div>
+<div class="health-source-row">
+<div><span>Politique de référence · révisée le 26 juillet 2026</span><div class="health-source-links"><a href="https://medlineplus.gov/lab-tests/how-to-understand-your-lab-results/" rel="noopener" target="_blank">MedlinePlus : comprendre les résultats de laboratoire</a><a href="https://www.fda.gov/medical-devices/in-vitro-diagnostics/tests-used-clinical-care" rel="noopener" target="_blank">FDA : tests utilisés en soins cliniques</a></div></div>
+<div><span>Outils AfroTools associés</span><div class="health-source-links internal"><a href="/fr/tools/rapport-medical/">Interprète de rapports médicaux</a><a href="/fr/tools/verificateur-genotype/">Vérificateur de compatibilité des génotypes</a><a href="/fr/tools/compatibilite-groupe-sanguin/">Vérificateur de compatibilité des groupes sanguins</a><a href="/fr/tools/drepanocytose/">Conseiller en génotype drépanocytaire</a></div></div>
+</div>
+</section>
+<!-- HEALTH-DEEP-IMPROVEMENT:END -->
+<!-- HEALTH-COMPLETE-PACKAGE:START -->
+<section class="health-action-kit" data-health-tool-id="medical-report" data-health-tool-name="Medical Report Interpreter" data-health-href="/fr/tools/rapport-medical/" data-health-bucket="labs" data-health-journey="labs" data-health-source-name="MedlinePlus lab-result guidance" data-health-source-url="https://medlineplus.gov/lab-tests/how-to-understand-your-lab-results/" data-health-competitor="Patient-facing lab explainers" data-health-feature="Safer explainers prioritize the laboratory's printed reference range, disclose fallbacks, and prepare clinician questions without diagnosing." aria-labelledby="health-action-title-medical-report">
+<span class="health-action-kicker">Mise à niveau complète du package</span>
+<h2 id="health-action-title-medical-report">Interpréteur de rapports médicaux : enregistrez, exportez et poursuivez le flux de travail</h2>
+<p>Cette application dispose désormais d'un transfert local plus sûr pour les questions des cliniciens, les invites de nouveau test, les notes du tableau de bord et la préparation des visites au format PDF.</p>
+<div class="health-action-grid">
+<div class="health-action-card">
+<h3>Fonctionnalité concurrente vérifiée</h3>
+<p><strong>Applications de style Ada et analyseur de laboratoire</strong>: Les applications de symptômes et de rapports fonctionnent mieux lorsqu'elles convertissent les résultats en questions, signaux d'alarme et résumé partageable.</p>
+<p><strong>Implémenté ici :</strong> Analyse en premier lieu en laboratoire, actions locales sur les appareils/PDF, cadrage des questions du clinicien et limites d'interprétation basées sur la source.</p>
+<p><a href="https://medlineplus.gov/lab-tests/how-to-understand-your-lab-results/" rel="noopener" target="_blank">MedlinePlus : comprendre les résultats de laboratoire</a></p>
+</div>
+<div class="health-action-card">
+<h3>Actions sur les appareils privés et les PDF</h3>
+<ul>
+<li>Analysez d’abord, puis enregistrez un résumé épuré et les questions du clinicien.</li>
+<li>Téléchargez un plan de préparation de visite PDF local sans enregistrer ni télécharger le rapport brut de laboratoire.</li>
+<li>La synchronisation facultative du compte est distincte et concerne uniquement les métadonnées ; les valeurs des marqueurs restent sur cet appareil.</li>
+</ul>
+<div class="health-action-buttons">
+<button type="button" class="health-workflow-btn" data-health-action="save" data-health-tool-id="medical-report">Enregistrer sur cet appareil</button>
+<button type="button" class="health-workflow-btn secondary" data-health-action="pdf" data-health-tool-id="medical-report">Télécharger le PDF</button>
+<button type="button" class="health-workflow-btn ghost" data-health-action="sync" data-health-tool-id="medical-report">Enregistrer les métadonnées sur le compte (facultatif)</button>
+</div>
+</div>
+</div>
+<div class="health-action-card" style="margin-top:1rem">
+<h3>Continuer dans les laboratoires et le pack de compatibilité</h3>
+<div class="health-action-links">
+<a href="/fr/tools/rapport-medical/">Hub de flux de travail ouvert</a>
+<a href="/fr/tools/verificateur-genotype/">Vérificateur de compatibilité des génotypes</a><a href="/fr/tools/compatibilite-groupe-sanguin/">Vérificateur de compatibilité des groupes sanguins</a><a href="/fr/tools/drepanocytose/">Conseiller en génotype drépanocytaire</a>
+</div>
+</div>
+</section>
+<!-- HEALTH-COMPLETE-PACKAGE:END -->
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<div class="mr-toast" id="mrToast"></div>
+
+<script>
+// ============================================================
+// BIOMARKER REFERENCE DATABASE (80+ markers)
+// ============================================================
+const BIOMARKERS = {
+  // CBC
+  'WBC': { name: 'Nombre de globules blancs', unit: 'x10^9/L', low: 4.0, high: 11.0, category: 'CBC', explain: 'Les globules blancs participent à la défense contre les infections. Un taux bas peut indiquer une immunité affaiblie ; un taux élevé accompagne souvent une infection ou une inflammation.' },
+  'RBC': { name: 'Red Blood Cell Count', unit: 'x10^12/L', low: 4.2, high: 5.9, category: 'CBC', explain: 'Red blood cells carry oxygen throughout your body. Low levels may indicate anemia.' },
+  'Hemoglobin': { name: 'Hemoglobin', unit: 'g/dL', low: 12.0, high: 17.0, category: 'CBC', explain: 'Protéine des globules rouges qui transporte l’oxygène. Un taux bas évoque une anémie et peut accompagner fatigue et faiblesse.' },
+  'HGB': { name: 'Hemoglobin', unit: 'g/dL', low: 12.0, high: 17.0, category: 'CBC', explain: 'Protéine des globules rouges qui transporte l’oxygène. Un taux bas évoque une anémie et peut accompagner fatigue et faiblesse.', alias: 'Hemoglobin' },
+  'Hematocrit': { name: 'Hematocrit', unit: '%', low: 36, high: 50, category: 'CBC', explain: 'The percentage of your blood that is red blood cells. Low values often accompany anemia.' },
+  'HCT': { name: 'Hematocrit', unit: '%', low: 36, high: 50, category: 'CBC', explain: 'The percentage of your blood that is red blood cells. Low values often accompany anemia.', alias: 'Hematocrit' },
+  'Platelets': { name: 'Platelet Count', unit: 'x10^9/L', low: 150, high: 400, category: 'CBC', explain: 'Tiny cells that help your blood clot to stop bleeding. Low counts mean higher bleeding risk; high counts may increase clotting risk.' },
+  'PLT': { name: 'Platelet Count', unit: 'x10^9/L', low: 150, high: 400, category: 'CBC', explain: 'Tiny cells that help your blood clot to stop bleeding. Low counts mean higher bleeding risk.', alias: 'Platelets' },
+  'MCV': { name: 'Mean Corpuscular Volume', unit: 'fL', low: 80, high: 100, category: 'CBC', explain: 'The average size of your red blood cells. Small cells may mean iron deficiency; large cells may mean B12 or folate deficiency.' },
+  'MCH': { name: 'Mean Corpuscular Hemoglobin', unit: 'pg', low: 27, high: 33, category: 'CBC', explain: 'Average amount of hemoglobin per red blood cell. Abnormal values help identify the type of anemia.' },
+  'MCHC': { name: 'Mean Corpuscular Hemoglobin Concentration', unit: 'g/dL', low: 32, high: 36, category: 'CBC', explain: 'Average concentration of hemoglobin in red blood cells. Low values suggest iron deficiency anemia.' },
+  'RDW': { name: 'Red Cell Distribution Width', unit: '%', low: 11.5, high: 14.5, category: 'CBC', explain: 'Shows variation in red blood cell size. High RDW with low MCV often indicates iron deficiency.' },
+  'Neutrophils': { name: 'Neutrophils', unit: '%', low: 40, high: 70, category: 'CBC', explain: 'The most common white blood cells, your first responders to bacterial infections. High counts often mean bacterial infection.' },
+  'Lymphocytes': { name: 'Lymphocytes', unit: '%', low: 20, high: 40, category: 'CBC', explain: 'White blood cells that fight viral infections and produce antibodies. High counts may indicate viral infection.' },
+  'Monocytes': { name: 'Monocytes', unit: '%', low: 2, high: 8, category: 'CBC', explain: 'White blood cells that clean up dead cells and fight certain infections like tuberculosis.' },
+  'Eosinophils': { name: 'Eosinophils', unit: '%', low: 1, high: 4, category: 'CBC', explain: 'White blood cells involved in allergic reactions and fighting parasites. High counts may indicate allergies or parasitic infection.' },
+  'Basophils': { name: 'Basophils', unit: '%', low: 0, high: 1, category: 'CBC', explain: 'Rarest white blood cells, involved in allergic and inflammatory responses.' },
+  'ESR': { name: 'Erythrocyte Sedimentation Rate', unit: 'mm/hr', low: 0, high: 20, category: 'CBC', explain: 'A general marker of inflammation in the body. High levels suggest inflammation from infection, autoimmune disease, or other causes.' },
+  'MPV': { name: 'Mean Platelet Volume', unit: 'fL', low: 7.5, high: 11.5, category: 'CBC', explain: 'Average size of your platelets. Larger platelets are younger and more active.' },
+
+  // Lipid Panel
+  'Total Cholesterol': { name: 'Total Cholesterol', unit: 'mg/dL', low: 0, high: 200, category: 'Lipid', explain: 'Total amount of cholesterol in your blood. Below 200 is desirable. 200-239 is borderline high. 240+ is high.' },
+  'LDL': { name: 'LDL Cholesterol (Bad)', unit: 'mg/dL', low: 0, high: 100, category: 'Lipid', explain: 'The "bad" cholesterol that builds up in artery walls, increasing heart attack and stroke risk. Lower is better.' },
+  'HDL': { name: 'HDL Cholesterol (Good)', unit: 'mg/dL', low: 40, high: 999, category: 'Lipid', explain: 'The "good" cholesterol that helps remove bad cholesterol from arteries. Higher is better. Below 40 is a risk factor.' },
+  'Triglycerides': { name: 'Triglycerides', unit: 'mg/dL', low: 0, high: 150, category: 'Lipid', explain: 'A type of fat in your blood from food you eat. High levels increase heart disease risk. Linked to diet and exercise.' },
+  'VLDL': { name: 'VLDL Cholesterol', unit: 'mg/dL', low: 0, high: 30, category: 'Lipid', explain: 'Very low density lipoprotein, another form of bad cholesterol. Usually estimated as triglycerides divided by 5.' },
+  'LDL/HDL Ratio': { name: 'LDL to HDL Ratio', unit: '', low: 0, high: 3.5, category: 'Lipid', explain: 'The ratio of bad to good cholesterol. Lower is better. Above 3.5 indicates increased cardiovascular risk.' },
+
+  // Liver Function
+  'ALT': { name: 'Alanine Aminotransferase', unit: 'U/L', low: 7, high: 56, category: 'Liver', explain: 'A liver enzyme. High levels may indicate liver damage, hepatitis, or fatty liver disease.' },
+  'SGPT': { name: 'Alanine Aminotransferase', unit: 'U/L', low: 7, high: 56, category: 'Liver', explain: 'A liver enzyme (also called ALT). High levels may indicate liver damage or hepatitis.', alias: 'ALT' },
+  'AST': { name: 'Aspartate Aminotransferase', unit: 'U/L', low: 10, high: 40, category: 'Liver', explain: 'A liver enzyme also found in heart and muscles. High levels suggest tissue damage, especially liver.' },
+  'SGOT': { name: 'Aspartate Aminotransferase', unit: 'U/L', low: 10, high: 40, category: 'Liver', explain: 'A liver enzyme (also called AST). High levels suggest liver or tissue damage.', alias: 'AST' },
+  'ALP': { name: 'Alkaline Phosphatase', unit: 'U/L', low: 44, high: 147, category: 'Liver', explain: 'An enzyme found in liver and bones. High levels may indicate liver or bone problems, or bile duct blockage.' },
+  'GGT': { name: 'Gamma-Glutamyl Transferase', unit: 'U/L', low: 0, high: 45, category: 'Liver', explain: 'A liver enzyme very sensitive to alcohol use and bile duct problems. Often the first enzyme to rise in liver disease.' },
+  'Total Bilirubin': { name: 'Total Bilirubin', unit: 'mg/dL', low: 0.1, high: 1.2, category: 'Liver', explain: 'A waste product from red blood cell breakdown, processed by the liver. High levels cause jaundice (yellow skin and eyes).' },
+  'Direct Bilirubin': { name: 'Direct Bilirubin', unit: 'mg/dL', low: 0, high: 0.3, category: 'Liver', explain: 'Bilirubin that has been processed by the liver. High levels suggest liver or bile duct issues.' },
+  'Indirect Bilirubin': { name: 'Indirect Bilirubin', unit: 'mg/dL', low: 0.1, high: 1.0, category: 'Liver', explain: 'Bilirubin not yet processed by the liver. High levels may indicate increased red blood cell destruction.' },
+  'Albumin': { name: 'Albumin', unit: 'g/dL', low: 3.5, high: 5.0, category: 'Liver', explain: 'The most abundant protein in blood, made by the liver. Low levels may indicate liver disease, kidney disease, or poor nutrition.' },
+  'Total Protein': { name: 'Total Protein', unit: 'g/dL', low: 6.0, high: 8.3, category: 'Liver', explain: 'Total protein in your blood including albumin and globulin. Abnormal levels can indicate liver, kidney, or immune issues.' },
+  'Globulin': { name: 'Globulin', unit: 'g/dL', low: 2.0, high: 3.5, category: 'Liver', explain: 'Proteins made by the liver and immune system. Includes antibodies. Abnormal levels may indicate immune or liver problems.' },
+  'A/G Ratio': { name: 'Albumin/Globulin Ratio', unit: '', low: 1.0, high: 2.5, category: 'Liver', explain: 'The ratio of albumin to globulin. Abnormal ratios may indicate liver disease, kidney disease, or immune disorders.' },
+  'LDH': { name: 'Lactate Dehydrogenase', unit: 'U/L', low: 140, high: 280, category: 'Liver', explain: 'An enzyme found in many tissues. High levels indicate tissue damage somewhere in the body.' },
+
+  // Kidney Function
+  'Creatinine': { name: 'Creatinine', unit: 'mg/dL', low: 0.6, high: 1.2, category: 'Kidney', explain: 'A waste product from muscle metabolism filtered by your kidneys. High levels suggest your kidneys are not filtering properly.' },
+  'BUN': { name: 'Blood Urea Nitrogen', unit: 'mg/dL', low: 7, high: 20, category: 'Kidney', explain: 'A waste product from protein breakdown. High levels may indicate kidney problems, dehydration, or high-protein diet.' },
+  'Urea': { name: 'Urea', unit: 'mg/dL', low: 15, high: 43, category: 'Kidney', explain: 'A waste product from protein metabolism. High levels may indicate kidney disease or dehydration.' },
+  'Uric Acid': { name: 'Uric Acid', unit: 'mg/dL', low: 2.4, high: 7.0, category: 'Kidney', explain: 'A waste product from purine breakdown. High levels can cause gout (painful joints) and kidney stones.' },
+  'eGFR': { name: 'Estimated Glomerular Filtration Rate', unit: 'mL/min', low: 90, high: 999, category: 'Kidney', explain: 'How well your kidneys filter blood. Above 90 is normal. 60-89 is mildly decreased. Below 60 may indicate kidney disease.' },
+  'GFR': { name: 'Glomerular Filtration Rate', unit: 'mL/min', low: 90, high: 999, category: 'Kidney', explain: 'How well your kidneys filter blood. Above 90 is normal. Below 60 may indicate kidney disease.', alias: 'eGFR' },
+  'BUN/Creatinine Ratio': { name: 'BUN to Creatinine Ratio', unit: '', low: 10, high: 20, category: 'Kidney', explain: 'Helps determine if kidney issues are due to kidney disease or other causes like dehydration.' },
+  'Sodium': { name: 'Sodium', unit: 'mEq/L', low: 136, high: 145, category: 'Kidney', explain: 'An electrolyte that helps regulate water balance, blood pressure, and nerve function. Abnormal levels can cause confusion or seizures.' },
+  'Potassium': { name: 'Potassium', unit: 'mEq/L', low: 3.5, high: 5.0, category: 'Kidney', explain: 'An electrolyte critical for heart rhythm and muscle function. Both high and low levels can be dangerous for your heart.' },
+  'Chloride': { name: 'Chloride', unit: 'mEq/L', low: 98, high: 106, category: 'Kidney', explain: 'An electrolyte that helps maintain fluid balance and acid-base balance in your body.' },
+  'Bicarbonate': { name: 'Bicarbonate (CO2)', unit: 'mEq/L', low: 22, high: 29, category: 'Kidney', explain: 'Helps maintain your blood pH. Low levels may indicate kidney problems or metabolic acidosis.' },
+  'Calcium': { name: 'Calcium', unit: 'mg/dL', low: 8.5, high: 10.5, category: 'Kidney', explain: 'Essential for bones, muscles, nerves, and heart function. Abnormal levels can affect many body systems.' },
+  'Phosphorus': { name: 'Phosphorus', unit: 'mg/dL', low: 2.5, high: 4.5, category: 'Kidney', explain: 'Works with calcium for bone health. Your kidneys regulate its levels. High levels in kidney disease can weaken bones.' },
+  'Magnesium': { name: 'Magnesium', unit: 'mg/dL', low: 1.7, high: 2.2, category: 'Kidney', explain: 'Essential for muscle function, nerve function, and heart rhythm. Low levels are common and cause muscle cramps.' },
+
+  // Thyroid
+  'TSH': { name: 'Thyroid Stimulating Hormone', unit: 'mIU/L', low: 0.4, high: 4.0, category: 'Thyroid', explain: 'The master thyroid controller. High TSH means your thyroid is underactive (hypothyroidism), causing fatigue and weight gain. Low TSH means overactive thyroid.' },
+  'Free T4': { name: 'Free Thyroxine', unit: 'ng/dL', low: 0.8, high: 1.8, category: 'Thyroid', explain: 'The main thyroid hormone. Low levels with high TSH confirm underactive thyroid. Controls metabolism and energy.' },
+  'Free T3': { name: 'Free Triiodothyronine', unit: 'pg/mL', low: 2.3, high: 4.2, category: 'Thyroid', explain: 'The most active thyroid hormone. Important for metabolism, energy, and body temperature regulation.' },
+  'Total T4': { name: 'Total Thyroxine', unit: 'ug/dL', low: 4.5, high: 12.5, category: 'Thyroid', explain: 'Total amount of T4 thyroid hormone, both bound and free. Affected by pregnancy and certain medications.' },
+  'Total T3': { name: 'Total Triiodothyronine', unit: 'ng/dL', low: 80, high: 200, category: 'Thyroid', explain: 'Total amount of T3 thyroid hormone. Helps assess thyroid function especially in hyperthyroidism.' },
+  'Anti-TPO': { name: 'Anti-Thyroid Peroxidase Antibodies', unit: 'IU/mL', low: 0, high: 35, category: 'Thyroid', explain: 'Antibodies that attack your thyroid. High levels indicate autoimmune thyroid disease (Hashimoto\'s or Graves\').' },
+
+  // Diabetes
+  'Fasting Glucose': { name: 'Fasting Blood Glucose', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting 8+ hours. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.' },
+  'FBS': { name: 'Fasting Blood Sugar', unit: 'mg/dL', low: 70, high: 100, category: 'Diabetes', explain: 'Blood sugar after fasting. Higher values can be associated with prediabetes or diabetes and should be confirmed with a clinician and repeat or related testing.', alias: 'Fasting Glucose' },
+  'HbA1c': { name: 'Glycated Hemoglobin', unit: '%', low: 4.0, high: 5.6, category: 'Diabetes', explain: 'Your average blood sugar over the past 3 months. Higher values can indicate increased diabetes risk and need clinician review in context.' },
+  'Random Glucose': { name: 'Random Blood Glucose', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time of day. High values, especially with symptoms like thirst and frequent urination, need prompt clinician review.' },
+  'RBS': { name: 'Random Blood Sugar', unit: 'mg/dL', low: 70, high: 140, category: 'Diabetes', explain: 'Blood sugar at any time. High values, especially with symptoms, need prompt clinician review.', alias: 'Random Glucose' },
+  'Insulin': { name: 'Fasting Insulin', unit: 'uIU/mL', low: 2.6, high: 24.9, category: 'Diabetes', explain: 'The hormone that regulates blood sugar. High fasting insulin may indicate insulin resistance, a precursor to type 2 diabetes.' },
+  'HOMA-IR': { name: 'HOMA-IR (Insulin Resistance)', unit: '', low: 0, high: 2.5, category: 'Diabetes', explain: 'A calculated measure of insulin resistance. Above 2.5 suggests insulin resistance. Lifestyle changes can improve it.' },
+  'C-Peptide': { name: 'C-Peptide', unit: 'ng/mL', low: 0.5, high: 2.7, category: 'Diabetes', explain: 'Shows how much insulin your pancreas is producing. Helps distinguish type 1 from type 2 diabetes.' },
+
+  // Urinalysis
+  'pH (Urine)': { name: 'Urine pH', unit: '', low: 4.5, high: 8.0, category: 'Urinalysis', explain: 'Acidity or alkalinity of your urine. Abnormal pH can indicate kidney stones risk, UTI, or metabolic issues.' },
+  'Specific Gravity': { name: 'Urine Specific Gravity', unit: '', low: 1.005, high: 1.030, category: 'Urinalysis', explain: 'How concentrated your urine is. Shows hydration status. Very concentrated urine may mean dehydration.' },
+  'Urine Protein': { name: 'Urine Protein', unit: 'mg/dL', low: 0, high: 15, category: 'Urinalysis', explain: 'Protein in urine. Dans la plagely very low. High levels may indicate kidney damage, especially in diabetes or high blood pressure.' },
+  'Urine Glucose': { name: 'Urine Glucose', unit: 'mg/dL', low: 0, high: 0, category: 'Urinalysis', explain: 'Sugar in urine. Dans la plagely absent. Present when blood sugar is very high, suggesting uncontrolled diabetes.' },
+  'Microalbumin': { name: 'Urine Microalbumin', unit: 'mg/L', low: 0, high: 30, category: 'Urinalysis', explain: 'Tiny amounts of protein in urine. An early warning sign of kidney damage, especially important for diabetics.' },
+
+  // Iron Studies
+  'Iron': { name: 'Serum Iron', unit: 'ug/dL', low: 60, high: 170, category: 'Iron', explain: 'Amount of iron circulating in your blood. Low iron causes fatigue, weakness, and anemia. Common in women.' },
+  'Ferritin': { name: 'Ferritin', unit: 'ng/mL', low: 12, high: 300, category: 'Iron', explain: 'Your iron storage level. Low ferritin means your body is running out of iron reserves, even before anemia develops.' },
+  'TIBC': { name: 'Total Iron Binding Capacity', unit: 'ug/dL', low: 250, high: 370, category: 'Iron', explain: 'How much iron your blood can carry. High TIBC with low iron is the classic pattern of iron deficiency.' },
+  'Transferrin Saturation': { name: 'Transferrin Saturation', unit: '%', low: 20, high: 50, category: 'Iron', explain: 'What percentage of your iron-carrying protein is loaded with iron. Below 20% suggests iron deficiency.' },
+  'Transferrin': { name: 'Transferrin', unit: 'mg/dL', low: 200, high: 360, category: 'Iron', explain: 'The protein that carries iron in your blood. High levels indicate your body needs more iron.' },
+
+  // Vitamins
+  'Vitamin D': { name: 'Vitamin D (25-OH)', unit: 'ng/mL', low: 30, high: 100, category: 'Vitamins', explain: 'Essential for bone health, immunity, and mood. Deficiency is very common and causes bone pain, fatigue, and weakness.' },
+  'Vitamin B12': { name: 'Vitamin B12', unit: 'pg/mL', low: 200, high: 900, category: 'Vitamins', explain: 'Essential for nerve function and red blood cell production. Deficiency causes fatigue, numbness, tingling, and memory issues.' },
+  'Folate': { name: 'Folate (Folic Acid)', unit: 'ng/mL', low: 2.7, high: 17.0, category: 'Vitamins', explain: 'Important for cell growth and DNA repair. Critical during pregnancy to prevent birth defects. Low levels can cause anemia.' },
+  'Vitamin A': { name: 'Vitamin A (Retinol)', unit: 'ug/dL', low: 30, high: 80, category: 'Vitamins', explain: 'Important for vision, skin health, and immune function. Deficiency can cause night blindness.' },
+
+  // Cardiac
+  'CRP': { name: 'C-Reactive Protein', unit: 'mg/L', low: 0, high: 3.0, category: 'Cardiac', explain: 'A marker of inflammation in your body. High levels increase cardiovascular risk and may indicate infection or chronic disease.' },
+  'hs-CRP': { name: 'High-Sensitivity CRP', unit: 'mg/L', low: 0, high: 1.0, category: 'Cardiac', explain: 'A sensitive inflammation marker. Below 1 is low cardiovascular risk. 1-3 is moderate. Above 3 is high risk.' },
+  'Troponin': { name: 'Troponin', unit: 'ng/mL', low: 0, high: 0.04, category: 'Cardiac', explain: 'Released when heart muscle is damaged. Elevated levels are a key indicator of heart attack. Seek emergency care if elevated.' },
+  'BNP': { name: 'B-Type Natriuretic Peptide', unit: 'pg/mL', low: 0, high: 100, category: 'Cardiac', explain: 'Released by the heart when it is under stress. High levels may indicate heart failure.' },
+  'Homocysteine': { name: 'Homocysteine', unit: 'umol/L', low: 5, high: 15, category: 'Cardiac', explain: 'An amino acid in your blood. High levels are linked to increased risk of heart disease and stroke.' },
+  'CPK': { name: 'Creatine Phosphokinase', unit: 'U/L', low: 22, high: 198, category: 'Cardiac', explain: 'An enzyme from muscles and heart. High levels indicate muscle damage, which could include the heart.' },
+
+  // Other
+  'PSA': { name: 'Prostate-Specific Antigen', unit: 'ng/mL', low: 0, high: 4.0, category: 'Other', explain: 'A protein produced by the prostate gland. Elevated levels may indicate prostate enlargement, infection, or cancer. Discuss with your doctor.' },
+  'AFP': { name: 'Alpha-Fetoprotein', unit: 'ng/mL', low: 0, high: 10, category: 'Other', explain: 'A protein that can be elevated in liver cancer or during pregnancy. Used as a tumor marker.' },
+  'CEA': { name: 'Carcinoembryonic Antigen', unit: 'ng/mL', low: 0, high: 5.0, category: 'Other', explain: 'A tumor marker. Elevated levels may indicate colorectal, lung, or other cancers. Also rises with smoking.' },
+  'Prolactin': { name: 'Prolactin', unit: 'ng/mL', low: 2, high: 18, category: 'Other', explain: 'A hormone mainly associated with milk production. Elevated levels in non-pregnant women or men may indicate a pituitary issue.' },
+  'Cortisol': { name: 'Cortisol (Morning)', unit: 'ug/dL', low: 6, high: 23, category: 'Other', explain: 'The stress hormone. Abnormal levels can be associated with adrenal or stress-response issues and should be interpreted with collection time, symptoms, and medicines.' },
+  'Testosterone': { name: 'Testosterone', unit: 'ng/dL', low: 270, high: 1070, category: 'Other', explain: 'The main male sex hormone. Low levels cause fatigue, low libido, and mood changes. Also important for women in smaller amounts.' },
+  'Estradiol': { name: 'Estradiol (E2)', unit: 'pg/mL', low: 15, high: 350, category: 'Other', explain: 'The main female estrogen. Levels vary with menstrual cycle. Important for bone health and reproductive function.' }
+};
+
+// Category display order
+const CATEGORY_ORDER = ['CBC','Lipid','Liver','Kidney','Thyroid','Diabetes','Urinalysis','Iron','Vitamins','Cardiac','Other'];
+const CATEGORY_LABELS = {
+  'CBC': 'Numération formule sanguine (NFS)',
+  'Lipid': 'Lipid Panel (Cholesterol)',
+  'Liver': 'Liver Function Tests',
+  'Kidney': 'Kidney Function & Electrolytes',
+  'Thyroid': 'Thyroid Panel',
+  'Diabetes': 'Diabetes & Blood Sugar',
+  'Urinalysis': 'Urinalysis',
+  'Iron': 'Iron Studies',
+  'Vitamins': 'Vitamins & Nutrients',
+  'Cardiac': 'Cardiac & Inflammation Markers',
+  'Other': 'Other Tests'
+};
+
+// Sample formats
+const SAMPLES = {
+  cbc: `WBC: 7.2 x10^9/L
+RBC: 4.8 x10^12/L
+Hemoglobin: 13.5 g/dL
+Hematocrit: 41%
+Platelets: 245 x10^9/L
+MCV: 88 fL
+MCH: 29 pg
+MCHC: 34 g/dL
+RDW: 13.2%
+Neutrophils: 58%
+Lymphocytes: 32%
+Monocytes: 6%
+Eosinophils: 3%
+Basophils: 1%
+ESR: 12 mm/hr`,
+  lipid: `Total Cholesterol: 210 mg/dL
+LDL: 130 mg/dL
+HDL: 55 mg/dL
+Triglycerides: 160 mg/dL
+VLDL: 32 mg/dL`,
+  liver: `ALT: 45 U/L
+AST: 35 U/L
+ALP: 85 U/L
+GGT: 38 U/L
+Total Bilirubin: 0.9 mg/dL
+Direct Bilirubin: 0.2 mg/dL
+Albumin: 4.2 g/dL
+Total Protein: 7.1 g/dL`,
+  kidney: `Creatinine: 1.1 mg/dL
+BUN: 18 mg/dL
+Uric Acid: 5.8 mg/dL
+eGFR: 85 mL/min
+Sodium: 140 mEq/L
+Potassium: 4.2 mEq/L
+Chloride: 102 mEq/L
+Calcium: 9.5 mg/dL
+Phosphorus: 3.8 mg/dL`,
+  thyroid: `TSH: 5.2 mIU/L
+Free T4: 0.9 ng/dL
+Free T3: 2.8 pg/mL
+Total T4: 7.5 ug/dL`,
+  diabetes: `Fasting Glucose: 112 mg/dL
+HbA1c: 6.1%
+Insulin: 15.2 uIU/mL`,
+  urinalysis: `pH (Urine): 6.0
+Specific Gravity: 1.020
+Urine Protein: 10 mg/dL
+Urine Glucose: 0 mg/dL`
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let parsedResults = [];
+let chatHistory = [];
+let chatLoading = false;
+let currentImageFile = null;
+let currentPdfFile = null;
+
+function hasAIConsent() {
+  var input = document.getElementById('aiConsent');
+  return !!(input && input.checked);
+}
+
+function ensureSharedAIContentConsent(action) {
+  var consent = window.AfroTools && window.AfroTools.AIConsent;
+  if (!consent || typeof consent.ensureConsent !== 'function') {
+    toast('The AI consent control is unavailable. Your local interpretation is still available.');
+    return false;
+  }
+  return consent.ensureConsent({
+    mode: 'ai_optional_content_included',
+    toolId: 'medical-report',
+    action: action,
+    contentIncluded: true
+  });
+}
+
+function getParsedSummaryLines(results) {
+  return getAiMarkers(results).map(function(marker) {
+    return marker.marker + ': ' + marker.value + ' ' + marker.unit + ' (' + marker.status + ', range: ' +
+      marker.referenceLow + '-' + (marker.referenceHigh >= 999 ? 'higher is better' : marker.referenceHigh) +
+      ', source: ' + marker.referenceSource + (marker.labFlag ? ', lab flag: ' + marker.labFlag : '') + ')';
+  });
+}
+
+function getAiMarkers(results) {
+  return window.MedicalReportEngine ? window.MedicalReportEngine.aiMarkers(results) : [];
+}
+
+function updateAiPayloadPreview(results) {
+  var preview = document.getElementById('aiPayloadPreview');
+  if (!preview) return;
+  preview.textContent = JSON.stringify({
+    destination: 'AfroTools AI advisor',
+    sentOnlyAfterCheckboxConsent: true,
+    parsedMarkers: getAiMarkers(results),
+    followUpChatAlsoSends: 'Current question and earlier messages from this page session',
+    neverSent: ['raw report text', 'file bytes', 'image pixels', 'filename', 'name', 'email', 'phone', 'page query string']
+  }, null, 2);
+}
+
+function buildAiInterpretationRequest(results) {
+  var markers = getAiMarkers(results);
+  return {
+    tool: 'medical-report',
+    message: 'Explain the bounded parsedMarkers in simple educational language. Do not diagnose, prescribe, suggest medication or supplement changes, or state that the user is healthy. Treat a lab critical flag or severe-symptom statement as urgent escalation and suggest questions for a qualified clinician.',
+    context: JSON.stringify({ parsedMarkers: markers }),
+    consent: { aiAdvisor: 'accepted', aiContentIncluded: true },
+    dataBoundary: {
+      includes: ['parsed marker name', 'numeric value', 'unit', 'status', 'reference range', 'reference source', 'explicit lab critical flag'],
+      excludes: ['raw report text', 'file bytes', 'image pixels', 'filename', 'contact details']
+    }
+  };
+}
+
+function buildLocalInterpretation(results) {
+  var abnormal = results.filter(r => r.status !== 'normal');
+  var normal = results.filter(r => r.status === 'normal');
+  var copy = '';
+
+  if (abnormal.length === 0) {
+    copy = 'Tous les marqueurs reconnus se situent dans les plages de référence affichées. Cela ne confirme pas l’état de santé général. Vérifiez la source de chaque plage : la plage du laboratoire est prioritaire lorsqu’elle est extraite ; sinon la page utilise une plage générale qui peut ne pas vous convenir.\n\n';
+    copy += 'Utilisez ceci pour préparer la consultation : demandez au clinicien si ces analyses doivent être répétées, si des marqueurs absents comptent dans votre situation et quel intervalle convient.';
+    return copy;
+  }
+
+  copy = normal.length + ' marqueur' + (normal.length === 1 ? ' reconnu se situe' : 's reconnus se situent') + ' dans la plage affichée et ' + abnormal.length + ' marqueur' + (abnormal.length === 1 ? ' se situe' : 's se situent') + ' hors plage.\n\n';
+  copy += 'Marqueurs à discuter :\n\n';
+  abnormal.forEach(function(r) {
+    var direction = r.status === 'high' ? 'above' : 'below';
+    copy += '- ' + r.biomarker.name + ' (' + r.key + ') : ' + r.value + ' ' + r.biomarker.unit + ' se situe ' + (direction === 'above' ? 'au-dessus de' : 'en dessous de') + ' la plage ' + (r.referenceSource === 'lab' ? 'du laboratoire' : 'générale de secours') + ' affichée. ' + r.biomarker.explain + '\n\n';
+  });
+  copy += 'Un résultat hors plage ne constitue pas un diagnostic. Les variations du laboratoire, le moment, l’alimentation, l’hydratation, l’exercice, le stress, les médicaments et une maladie peuvent influencer les résultats. Demandez à votre professionnel de santé si un nouveau contrôle, un marqueur associé ou une revue urgente est nécessaire.';
+  return copy;
+}
+
+function renderLocalInterpretation(results) {
+  var aiDiv = document.getElementById('aiInterpretation');
+  if (!aiDiv) return;
+  aiDiv.className = 'mr-ai-content';
+  aiDiv.textContent = buildLocalInterpretation(results);
+}
+
+function recordMedicalReportSnapshot(results) {
+  if (!window.AfroHealthWorkflow || typeof window.AfroHealthWorkflow.recordSnapshot !== 'function') return;
+  var abnormal = results.filter(r => r.status !== 'normal');
+  var normal = results.filter(r => r.status === 'normal');
+  var questions = Array.prototype.map.call(document.querySelectorAll('#questionsList li'), function(li) {
+    return li.textContent;
+  }).slice(0, 6);
+  var markers = results.map(function(r) {
+    return {
+      marker: r.key,
+      value: r.value,
+      unit: r.biomarker.unit,
+      status: r.status,
+      category: r.category,
+      range: r.biomarker.low + '-' + (r.biomarker.high >= 999 ? 'higher' : r.biomarker.high),
+      rangeSource: r.referenceSource === 'lab' ? 'lab-report' : 'general-fallback',
+      labFlag: r.labFlag || ''
+    };
+  });
+  window.AfroHealthWorkflow.recordSnapshot({
+    toolId: 'medical-report',
+    headline: results.length + ' marqueurs reconnus ; ' + abnormal.length + ' hors plage générale',
+    resultText: 'Résumé assaini du rapport médical uniquement. Le texte brut collé ou importé n’est pas inclus.',
+    fields: [
+      { label: 'Marqueurs reconnus', value: String(results.length) },
+      { label: 'Dans la plage générale', value: String(normal.length) },
+      { label: 'Hors plage générale', value: String(abnormal.length) },
+      { label: 'Contenu enregistré', value: 'Noms, valeurs et statuts des marqueurs, plus questions au clinicien ; aucun texte brut du rapport' }
+    ],
+    markers: markers,
+    clinicianQuestions: questions
+  });
+}
+
+function runAIInterpretation() {
+  if (!parsedResults.length) {
+    toast('Analyze your lab results before using optional AI.');
+    return;
+  }
+  if (!hasAIConsent()) {
+    toast('Tick the optional AI consent checkbox first.');
+    return;
+  }
+  if (!ensureSharedAIContentConsent('Send the reviewed parsed-marker payload for optional AI interpretation')) {
+    toast('AI was not contacted. Your local interpretation remains available.');
+    return;
+  }
+  fetchAIInterpretation(parsedResults);
+}
+
+document.addEventListener('click', function(e) {
+  var action = e.target.closest && e.target.closest('[data-health-tool-id="medical-report"][data-health-action]');
+  if (action && !parsedResults.length) {
+    e.preventDefault();
+    e.stopImmediatePropagation();
+    toast('Analyze results first so only a sanitized summary is saved or exported.');
+  } else if (action && parsedResults.length) {
+    recordMedicalReportSnapshot(parsedResults);
+  }
+}, true);
+
+// ============================================================
+// INPUT TAB SWITCHING
+// ============================================================
+function switchInputTab(tab, btn) {
+  document.querySelectorAll('.mr-tab').forEach(function(item) {
+    item.classList.remove('on');
+    item.setAttribute('aria-selected', 'false');
+  });
+  document.querySelectorAll('.mr-tab-panel').forEach(function(panel) {
+    panel.classList.remove('on');
+    panel.hidden = true;
+  });
+  btn.classList.add('on');
+  btn.setAttribute('aria-selected', 'true');
+  var panel = document.getElementById('panel-' + tab);
+  panel.classList.add('on');
+  panel.hidden = false;
+}
+
+// ============================================================
+// SAMPLE FILL
+// ============================================================
+function fillSample(type) {
+  document.querySelectorAll('.mr-panel-btn').forEach(b => b.classList.remove('on'));
+  event.target.classList.add('on');
+  document.getElementById('labInput').value = SAMPLES[type] || '';
+  // Switch to paste tab
+  document.querySelectorAll('.mr-tab').forEach(function(tab) {
+    tab.classList.remove('on');
+    tab.setAttribute('aria-selected', 'false');
+  });
+  document.querySelectorAll('.mr-tab-panel').forEach(function(panel) {
+    panel.classList.remove('on');
+    panel.hidden = true;
+  });
+  var pasteTab = document.getElementById('tab-paste');
+  pasteTab.classList.add('on');
+  pasteTab.setAttribute('aria-selected', 'true');
+  document.getElementById('panel-paste').classList.add('on');
+  document.getElementById('panel-paste').hidden = false;
+}
+
+// ============================================================
+// FILE HANDLING
+// ============================================================
+function handleImageDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag');
+  var files = e.dataTransfer.files;
+  if (files.length > 0 && validateLocalFile(files[0], 'image')) {
+    processImageFile(files[0], 'imagePreview', 'imageFilename');
+  }
+}
+
+function handlePdfDrop(e) {
+  e.preventDefault();
+  e.currentTarget.classList.remove('drag');
+  var files = e.dataTransfer.files;
+  if (files.length > 0 && validateLocalFile(files[0], 'pdf')) {
+    processPdfFile(files[0]);
+  }
+}
+
+function handleImageSelect(input) {
+  if (input.files.length > 0 && validateLocalFile(input.files[0], 'image')) {
+    var previewId = input.id === 'cameraInput' ? 'cameraPreview' : 'imagePreview';
+    var filenameId = input.id === 'cameraInput' ? null : 'imageFilename';
+    processImageFile(input.files[0], previewId, filenameId);
+  }
+}
+
+function handlePdfSelect(input) {
+  if (input.files.length > 0 && validateLocalFile(input.files[0], 'pdf')) {
+    processPdfFile(input.files[0]);
+  }
+}
+
+function validateLocalFile(file, kind) {
+  if (!file) return false;
+  var isPdf = kind === 'pdf';
+  var validType = isPdf ? file.type === 'application/pdf' : /^image\/(?:jpeg|png|webp)$/.test(file.type);
+  var maxBytes = (isPdf ? 20 : 10) * 1024 * 1024;
+  if (!validType) {
+    toast(isPdf ? 'Choose a PDF file.' : 'Choose a JPG, PNG, or WebP image.');
+    return false;
+  }
+  if (file.size > maxBytes) {
+    toast('This file is larger than the ' + (isPdf ? '20 MB' : '10 MB') + ' local-processing limit.');
+    return false;
+  }
+  return true;
+}
+
+function processImageFile(file, previewId, filenameId) {
+  currentImageFile = file;
+  currentPdfFile = null;
+  var reader = new FileReader();
+  reader.onload = function(e) {
+    var preview = document.getElementById(previewId);
+    if (preview) {
+      preview.src = e.target.result;
+      preview.style.display = 'block';
+    }
+    if (filenameId) {
+      var fn = document.getElementById(filenameId);
+      fn.textContent = file.name;
+      fn.style.display = 'block';
+    }
+  };
+  reader.readAsDataURL(file);
+}
+
+function processPdfFile(file) {
+  currentPdfFile = file;
+  currentImageFile = null;
+  var fn = document.getElementById('pdfFilename');
+  fn.textContent = file.name;
+  fn.style.display = 'block';
+}
+
+// ============================================================
+// OCR WITH TESSERACT
+// ============================================================
+async function ocrImage(file) {
+  updateProgress(10, 'Loading OCR engine...');
+  try {
+    if (!window.Tesseract || typeof window.Tesseract.recognize !== 'function') {
+      throw new Error('Bundled OCR runtime is unavailable.');
+    }
+    updateProgress(30, 'Recognizing text locally from image...');
+    const { data } = await window.Tesseract.recognize(file, 'eng', {
+      logger: function(message) {
+        if (message && typeof message.progress === 'number') {
+          updateProgress(30 + Math.round(message.progress * 25), 'Recognizing text locally...');
+        }
+      }
+    });
+    updateProgress(60, 'Text extracted, parsing results...');
+    return data.text;
+  } catch(e) {
+    console.error('OCR error:', e);
+    throw new Error('Could not read text from this image. Please try pasting the text directly.');
+  }
+}
+
+// ============================================================
+// PDF TEXT EXTRACTION
+// ============================================================
+async function extractPdfText(file) {
+  updateProgress(10, 'Loading PDF...');
+  try {
+    const arrayBuffer = await file.arrayBuffer();
+    if (!window.pdfjsLib) throw new Error('Bundled PDF reader is unavailable.');
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
+    const pdf = await pdfjsLib.getDocument({data: arrayBuffer}).promise;
+    let text = '';
+    const numPages = Math.min(pdf.numPages, 20);
+    for (let i = 1; i <= numPages; i++) {
+      updateProgress(10 + (i/numPages)*40, 'Reading page ' + i + ' of ' + numPages + '...');
+      const page = await pdf.getPage(i);
+      const content = await page.getTextContent();
+      text += content.items.map(item => item.str).join(' ') + '\n';
+    }
+    updateProgress(60, 'Text extracted, parsing results...');
+    return text;
+  } catch(e) {
+    console.error('PDF error:', e);
+    throw new Error('Could not read this PDF. Please try pasting the text directly.');
+  }
+}
+
+// ============================================================
+// PROGRESS BAR
+// ============================================================
+function updateProgress(pct, msg) {
+  var bar = document.getElementById('progressBar');
+  bar.classList.add('on');
+  document.getElementById('progressFill').style.width = pct + '%';
+  document.getElementById('progressText').textContent = msg;
+}
+
+function hideProgress() {
+  document.getElementById('progressBar').classList.remove('on');
+}
+
+// ============================================================
+// MAIN ANALYSIS
+// ============================================================
+async function analyzeResults() {
+  var btn = document.getElementById('analyzeBtn');
+  btn.disabled = true;
+
+  // Determine input source
+  var text = '';
+  var activePanel = document.querySelector('.mr-tab-panel.on');
+  var panelId = activePanel ? activePanel.id : 'panel-paste';
+
+  try {
+    if (panelId === 'panel-paste') {
+      text = document.getElementById('labInput').value.trim();
+      if (!text) {
+        toast('Please paste your lab results or use a sample format.');
+        btn.disabled = false;
+        return;
+      }
+      updateProgress(50, 'Parsing your lab results...');
+    } else if (panelId === 'panel-image' || panelId === 'panel-camera') {
+      if (!currentImageFile) {
+        toast('Please upload or take a photo of your lab report first.');
+        btn.disabled = false;
+        return;
+      }
+      text = await ocrImage(currentImageFile);
+      if (!text.trim()) {
+        toast('Could not extract text from this image. Try pasting results directly.');
+        btn.disabled = false;
+        hideProgress();
+        return;
+      }
+      // Show extracted text in textarea for review
+      document.getElementById('labInput').value = text;
+    } else if (panelId === 'panel-pdf') {
+      if (!currentPdfFile) {
+        toast('Please upload a PDF lab report first.');
+        btn.disabled = false;
+        return;
+      }
+      text = await extractPdfText(currentPdfFile);
+      if (!text.trim()) {
+        toast('Could not extract text from this PDF. Try pasting results directly.');
+        btn.disabled = false;
+        hideProgress();
+        return;
+      }
+      document.getElementById('labInput').value = text;
+    }
+
+    updateProgress(70, 'Matching biomarkers...');
+
+    // Parse biomarkers
+    parsedResults = parseLabText(text);
+
+    if (parsedResults.length === 0) {
+      toast('No recognized biomarkers found. Try using a sample format or check your input.');
+      btn.disabled = false;
+      hideProgress();
+      return;
+    }
+
+    updateProgress(90, 'Building your report...');
+    await new Promise(r => setTimeout(r, 300));
+
+    // Render results
+    renderSummary(parsedResults);
+    renderMarkers(parsedResults);
+    generateDoctorQuestions(parsedResults);
+    updateAiPayloadPreview(parsedResults);
+    var emergencyBanner = document.getElementById('emergencyBanner');
+    emergencyBanner.classList.toggle('on', parsedResults.some(function(result) {
+      return result.labFlag === 'critical';
+    }));
+    recordMedicalReportSnapshot(parsedResults);
+
+    // Show results
+    document.getElementById('resultsContainer').classList.add('on');
+    updateProgress(100, 'Done!');
+    await new Promise(r => setTimeout(r, 400));
+    hideProgress();
+
+    // Scroll to results
+    document.getElementById('resultsContainer').scrollIntoView({ behavior: 'smooth', block: 'start' });
+
+    // Analysis is always local. Optional AI requires the separate button after payload preview.
+    renderLocalInterpretation(parsedResults);
+
+    // Reset chat
+    chatHistory = [];
+    document.getElementById('chatMessages').innerHTML = '';
+
+  } catch(e) {
+    toast(e.message || 'Something went wrong. Please try again.');
+    hideProgress();
+  }
+
+  btn.disabled = false;
+}
+
+// ============================================================
+// PARSER
+// ============================================================
+function parseLabText(text) {
+  if (!window.MedicalReportEngine) {
+    throw new Error('The local medical-report parser did not load. Reload this page and try again.');
+  }
+  return window.MedicalReportEngine.parse(text, BIOMARKERS, CATEGORY_ORDER);
+}
+
+// ============================================================
+// RENDER SUMMARY
+// ============================================================
+function renderSummary(results) {
+  var normal = results.filter(r => r.status === 'normal').length;
+  var abnormal = results.filter(r => r.status !== 'normal').length;
+  var high = results.filter(r => r.status === 'high').length;
+  var low = results.filter(r => r.status === 'low').length;
+  var total = results.length;
+
+  var statsHtml = '';
+  statsHtml += '<div class="mr-stat normal"><div class="sv">' + normal + '</div><div class="sl">Dans la plage indiquée</div></div>';
+  if (high > 0) statsHtml += '<div class="mr-stat attention"><div class="sv">' + high + '</div><div class="sl">Au-dessus de la plage</div></div>';
+  if (low > 0) statsHtml += '<div class="mr-stat high"><div class="sv">' + low + '</div><div class="sl">En dessous de la plage</div></div>';
+  statsHtml += '<div class="mr-stat"><div class="sv" style="color:#fff">' + total + '</div><div class="sl">Marqueurs au total</div></div>';
+  document.getElementById('summaryStats').innerHTML = statsHtml;
+
+  var msg = '';
+  if (abnormal === 0) {
+    msg = 'Les ' + total + ' marqueurs reconnus se situent dans les plages de référence affichées. Cela ne confirme pas l’état de santé général. Vérifiez chaque plage et sa source dans le rapport original, puis discutez avec votre professionnel de santé des symptômes, des marqueurs manquants et du calendrier de contrôle.';
+  } else if (abnormal <= 2) {
+    msg = normal + ' sur ' + total + ' marqueurs se situent dans les plages affichées. ' + abnormal + ' marqueur' + (abnormal > 1 ? 's sont' : ' se situe') + ' hors plage ; discutez-en avec votre professionnel de santé, surtout en présence de symptômes ou d’une mention critique du laboratoire.';
+  } else {
+    msg = normal + ' sur ' + total + ' marqueurs se situent dans les plages affichées. ' + abnormal + ' marqueurs sont hors plage. Organisez une revue clinique et consultez en urgence en cas de symptômes graves ou de résultat marqué critique par le laboratoire.';
+  }
+  document.getElementById('summaryMsg').textContent = msg;
+}
+
+// ============================================================
+// RENDER MARKERS
+// ============================================================
+function renderMarkers(results) {
+  var grid = document.getElementById('markersGrid');
+  grid.innerHTML = '';
+  var currentCat = '';
+
+  results.forEach(function(r) {
+    // Category label
+    if (r.category !== currentCat) {
+      currentCat = r.category;
+      var catLabel = document.createElement('div');
+      catLabel.className = 'mr-category-label';
+      catLabel.textContent = CATEGORY_LABELS[r.category] || r.category;
+      grid.appendChild(catLabel);
+    }
+
+    var card = document.createElement('div');
+    card.className = 'mr-marker';
+
+    // Calculate range bar positions
+    var bio = r.biomarker;
+    var rangeMin = Math.min(bio.low * 0.5, r.value * 0.8);
+    var rangeMax = Math.max(bio.high * 1.5, r.value * 1.2);
+    if (rangeMin < 0) rangeMin = 0;
+    var span = rangeMax - rangeMin;
+
+    var normalLeft = ((bio.low - rangeMin) / span * 100);
+    var normalWidth = ((bio.high - bio.low) / span * 100);
+    var dotPos = ((r.value - rangeMin) / span * 100);
+
+    // Clamp positions
+    normalLeft = Math.max(0, Math.min(100, normalLeft));
+    normalWidth = Math.max(0, Math.min(100 - normalLeft, normalWidth));
+    dotPos = Math.max(2, Math.min(98, dotPos));
+
+    var rangeText = bio.low + (bio.unit ? ' ' : '') + ' - ' + (bio.high >= 999 ? '(higher is better)' : bio.high + (bio.unit ? ' ' + bio.unit : ''));
+
+    card.innerHTML = '<div class="mr-marker-head">'
+      + '<div><div class="mr-marker-name">' + r.key + '</div><div class="mr-marker-fullname">' + bio.name + '</div></div>'
+      + '<span class="mr-marker-badge ' + r.status + '">' + (r.status === 'normal' ? 'Dans la plage' : r.status === 'high' ? 'Au-dessus de la plage' : 'En dessous de la plage') + '</span>'
+      + '</div>'
+      + '<div class="mr-marker-value"><span class="mr-marker-val">' + r.value + '</span><span class="mr-marker-unit">' + bio.unit + '</span></div>'
+      + '<div class="mr-range-bar"><div class="mr-range-normal" style="left:' + normalLeft + '%;width:' + normalWidth + '%"></div><div class="mr-range-dot ' + r.status + '" style="left:' + dotPos + '%"></div></div>'
+      + '<div class="mr-range-labels"><span>' + (bio.low >= 999 ? '' : bio.low) + '</span><span style="color:var(--color-primary);font-weight:700">Plage de référence</span><span>' + (bio.high >= 999 ? '' : bio.high) + '</span></div>'
+      + '<div class="mr-marker-explain">' + bio.explain + '</div>'
+      + '<div class="mr-reference-note" data-source="' + (r.referenceSource === 'lab' ? 'lab' : 'general') + '"><strong>' +
+        (r.referenceSource === 'lab' ? 'Plage du laboratoire utilisée.' : 'Plage générale de secours utilisée.') + '</strong> ' +
+        (r.referenceSource === 'lab'
+          ? 'Cette plage a été extraite de la même ligne que le résultat. Vérifiez-la dans le rapport original.'
+          : 'L’analyseur n’a pas identifié de plage sur la ligne du rapport. Cette plage de secours peut ne pas correspondre à votre laboratoire ou à votre situation.') +
+        (r.labFlag === 'critical' ? ' La ligne source comportait aussi une mention explicite critique ou urgente.' : '') + '</div>';
+
+    grid.appendChild(card);
+  });
+}
+
+// ============================================================
+// DOCTOR QUESTIONS
+// ============================================================
+function generateDoctorQuestions(results) {
+  var questions = [];
+  var abnormal = results.filter(r => r.status !== 'normal');
+
+  if (abnormal.length === 0) {
+    questions.push('These recognized markers are within the general range. How often should I repeat these tests?');
+    questions.push('Are there any additional tests you recommend based on my age and health history?');
+    questions.push('Are there symptoms, medicines, pregnancy status, or history that change how you interpret these results?');
+  } else {
+    abnormal.forEach(function(r) {
+      var direction = r.status === 'high' ? 'high' : 'low';
+      questions.push('Mon résultat ' + r.key + ' est ' + (direction === 'high' ? 'élevé' : 'bas') + ' à ' + r.value + ' ' + r.biomarker.unit + '. Quel suivi ou nouveau contrôle dois-je envisager ?');
+    });
+    questions.push('Compte tenu de ces résultats hors plage, faut-il prévoir des analyses de suivi ?');
+    questions.push('Le moment, la préparation, les médicaments, les compléments, une maladie, une grossesse, l’hydratation ou la méthode du laboratoire peuvent-ils influencer ces résultats ?');
+    if (abnormal.some(r => r.category === 'Diabetes')) {
+      questions.push('Do these glucose-related results need confirmation, repeat testing, or another marker in my situation?');
+    }
+    if (abnormal.some(r => r.category === 'Kidney')) {
+      questions.push('How should these kidney-related results be interpreted with my age, medicines, hydration, and previous results?');
+    }
+    if (abnormal.some(r => r.category === 'Liver')) {
+      questions.push('Do these liver-related results need a repeat test or another clinician-directed investigation?');
+    }
+  }
+
+  // Limit to 6 questions
+  questions = questions.slice(0, 6);
+
+  var list = document.getElementById('questionsList');
+  list.innerHTML = '';
+  questions.forEach(function(q) {
+    var li = document.createElement('li');
+    li.textContent = q;
+    list.appendChild(li);
+  });
+}
+
+// ============================================================
+// AI INTERPRETATION
+// ============================================================
+async function fetchAIInterpretation(results) {
+  var aiDiv = document.getElementById('aiInterpretation');
+  if (!hasAIConsent()) {
+    renderLocalInterpretation(results);
+    return;
+  }
+  aiDiv.className = 'mr-ai-content loading';
+  aiDiv.textContent = 'Analyzing your results with AI...';
+
+  try {
+    var res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      },
+      body: JSON.stringify(buildAiInterpretationRequest(results))
+    });
+
+    if (!res.ok) throw new Error('AI unavailable');
+    var data = await res.json();
+    var reply = data.reply || data.content || '';
+    aiDiv.className = 'mr-ai-content';
+    aiDiv.textContent = reply;
+  } catch(e) {
+    // Provide fallback interpretation
+    aiDiv.className = 'mr-ai-content';
+    aiDiv.textContent = buildLocalInterpretation(results);
+  }
+}
+
+// ============================================================
+// CHAT
+// ============================================================
+async function askChat(preset) {
+  var q = (preset || document.getElementById('chatInput').value || '').trim();
+  if (!q || chatLoading) return;
+  if (!hasAIConsent()) {
+    toast('Tick the optional AI consent checkbox before using follow-up chat.');
+    return;
+  }
+  if (!ensureSharedAIContentConsent('Send the reviewed parsed markers and this follow-up question for optional AI help')) {
+    toast('AI was not contacted. Your local results and clinician questions remain available.');
+    return;
+  }
+  chatLoading = true;
+  document.getElementById('chatBtn').disabled = true;
+  document.getElementById('chatInput').value = '';
+
+  var chat = document.getElementById('chatMessages');
+  appendChatMsg('user', q);
+
+  var typing = document.createElement('div');
+  typing.className = 'mr-chat-msg typing';
+  typing.textContent = 'Thinking...';
+  chat.appendChild(typing);
+  chat.scrollTop = 99999;
+
+  q = q.slice(0, 500);
+  var markers = getAiMarkers(parsedResults);
+  var sys = 'You are the AfroTools Medical Report Advisor. Explain only the supplied bounded parsed marker payload in educational language. Do not diagnose, prescribe, recommend medication or supplement changes, give treatment instructions, or reassure someone that they are healthy. Encourage emergency care for severe symptoms or explicit lab-critical flags, and clinician review for personal decisions. Keep responses under 200 words. Parsed markers: ' + JSON.stringify(markers);
+  var msgs = chatHistory.slice(-10).concat([{ role: 'user', content: q }]);
+
+  try {
+    var res = await fetch('/.netlify/functions/ai-advisor', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      },
+      body: JSON.stringify({
+        tool: 'medical-report',
+        system: sys,
+        messages: msgs,
+        parsedMarkers: markers,
+        consent: { aiAdvisor: 'accepted', aiContentIncluded: true },
+        dataBoundary: {
+          includes: ['bounded parsed marker payload', 'current question', 'up to 10 earlier chat messages from this page session'],
+          excludes: ['raw report text', 'file bytes', 'image pixels', 'filename', 'contact details']
+        }
+      })
+    });
+    typing.remove();
+    if (!res.ok) throw new Error();
+    var data = await res.json();
+    var reply = data.reply || data.content || 'Sorry, something went wrong.';
+    chatHistory.push({ role: 'user', content: q });
+    chatHistory.push({ role: 'assistant', content: reply });
+    if (chatHistory.length > 24) chatHistory = chatHistory.slice(-24);
+    appendChatMsg('bot', reply);
+  } catch(e) {
+    typing.remove();
+    var fallback = 'The optional AI advisor is unavailable. Your local parsed results and clinician questions are still available above. Do not change medicines, supplements, diet therapy, or treatment from this tool. Contact the ordering clinician for interpretation, and seek urgent care for severe symptoms or a result your laboratory marks critical.';
+    appendChatMsg('bot', fallback);
+  }
+
+  chatLoading = false;
+  document.getElementById('chatBtn').disabled = false;
+  chat.scrollTop = 99999;
+}
+
+function appendChatMsg(role, text) {
+  var chat = document.getElementById('chatMessages');
+  var el = document.createElement('div');
+  el.className = 'mr-chat-msg ' + role;
+  el.textContent = text;
+  chat.appendChild(el);
+  chat.scrollTop = 99999;
+}
+
+// ============================================================
+// SHARE
+// ============================================================
+function shareWA() {
+  var normal = parsedResults.filter(r => r.status === 'normal').length;
+  var total = parsedResults.length;
+  var msg = 'I just analyzed my lab results with AfroTools Medical Report Interpreter! ' + normal + '/' + total + ' markers are normal. Try it free:';
+  window.open('https://wa.me/?text=' + encodeURIComponent(msg + ' https://afrotools.com/fr/tools/rapport-medical'), '_blank');
+}
+
+function copyLink() {
+  navigator.clipboard.writeText('https://afrotools.com/fr/tools/rapport-medical').then(function() {
+    toast('Link copied!');
+  });
+}
+
+function printResults() {
+  window.print();
+}
+
+// ============================================================
+// TOAST
+// ============================================================
+function toast(msg) {
+  var t = document.getElementById('mrToast');
+  t.textContent = msg;
+  t.className = 'mr-toast on';
+  setTimeout(function() { t.classList.remove('on'); }, 3000);
+}
+</script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Medical Report" tool-slug="medical-report"></share-result-button>';
+  target.appendChild(div);
+})();
+</script>
+<script src="/assets/js/health-workflow.js?v=15190c69" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body>
 </html>

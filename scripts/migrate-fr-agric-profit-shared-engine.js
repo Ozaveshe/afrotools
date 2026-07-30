@@ -1,0 +1,6 @@
+#!/usr/bin/env node
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');const ROOT=path.resolve(__dirname,'..'),PAGE=path.join(ROOT,'fr/tools/profit-agricole/index.html');
+const REPLACEMENT='<script src="/data/agriculture/agric-profit-data.js"></script>\n<script src="/engines/agric-profit-engine.js"></script>\n<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script>\n<script src="/assets/js/pages/fr-agric-profit-controller.js"></script>\n';
+function migrate(input){if(input.includes('/assets/js/pages/fr-agric-profit-controller.js'))return input;const start=input.lastIndexOf('<script>\n(function () {'),anchor=input.indexOf('<script src="/assets/js/lazy-analytics.js',start);const end=input.lastIndexOf('</script>',anchor);if(start<0||anchor<0||end<start)throw new Error('French Agric Profit legacy controller block missing');return input.slice(0,start)+REPLACEMENT+input.slice(end+'</script>\n'.length)}
+function run(){const current=fs.readFileSync(PAGE,'utf8'),output=migrate(current);if(process.argv.includes('--check')){assert.equal(current,output);console.log('PASS French Agric Profit shared-engine controller migration')}else{fs.writeFileSync(PAGE,output);console.log('Migrated French Agric Profit controller')}}if(require.main===module)run();module.exports={migrate};

@@ -119,6 +119,67 @@ var CreatorMoneyEngine = function() {
   function m() {
     return "cm_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2, 8);
   }
+  function calculatePlan(input) {
+    input = input || {};
+    var income = Number(input.income);
+    var expenses = Number(input.expenses);
+    var monthlyHours = Number(input.monthlyHours);
+    var taxRate = Number(input.taxRate);
+    var ownerPayRate = Number(input.ownerPayRate);
+    var reinvestmentRate = Number(input.reinvestmentRate);
+    var errors = [];
+
+    if (!Number.isFinite(income) || income < 0) errors.push("income");
+    if (!Number.isFinite(expenses) || expenses < 0) errors.push("expenses");
+    if (!Number.isFinite(monthlyHours) || monthlyHours <= 0) errors.push("monthlyHours");
+    if (!Number.isFinite(taxRate) || taxRate < 0 || taxRate > 100) errors.push("taxRate");
+    if (!Number.isFinite(ownerPayRate) || ownerPayRate < 0 || ownerPayRate > 100) errors.push("ownerPayRate");
+    if (!Number.isFinite(reinvestmentRate) || reinvestmentRate < 0 || reinvestmentRate > 100) errors.push("reinvestmentRate");
+    if (Number.isFinite(ownerPayRate) && Number.isFinite(reinvestmentRate) && ownerPayRate + reinvestmentRate > 100) errors.push("allocation");
+
+    if (errors.length) {
+      return {
+        valid: false,
+        errors: errors
+      };
+    }
+
+    var operatingProfit = income - expenses;
+    var positiveProfit = Math.max(0, operatingProfit);
+    var taxReserve = positiveProfit * taxRate / 100;
+    var afterTaxReserve = operatingProfit - taxReserve;
+    var ownerPay = Math.max(0, afterTaxReserve) * ownerPayRate / 100;
+    var reinvestment = Math.max(0, afterTaxReserve) * reinvestmentRate / 100;
+    var cashBuffer = afterTaxReserve - ownerPay - reinvestment;
+    var margin = income > 0 ? operatingProfit / income * 100 : 0;
+    var effectiveHourly = operatingProfit / monthlyHours;
+    var breakEvenHourly = expenses / monthlyHours;
+
+    return {
+      valid: true,
+      currency: input.currency || "NGN",
+      income: income,
+      expenses: expenses,
+      operatingProfit: operatingProfit,
+      margin: margin,
+      monthlyHours: monthlyHours,
+      effectiveHourly: effectiveHourly,
+      breakEvenHourly: breakEvenHourly,
+      taxRate: taxRate,
+      taxReserve: taxReserve,
+      afterTaxReserve: afterTaxReserve,
+      ownerPayRate: ownerPayRate,
+      ownerPay: ownerPay,
+      reinvestmentRate: reinvestmentRate,
+      reinvestment: reinvestment,
+      cashBuffer: cashBuffer,
+      assumptions: {
+        taxReserveIsPlanningOnly: true,
+        negativeProfitCreatesNoTaxReserve: true,
+        currencyConversionApplied: false
+      }
+    };
+  }
   return {
     INCOME_SOURCES: [ {
       id: "client",
@@ -206,6 +267,7 @@ var CreatorMoneyEngine = function() {
       color: "#64748B"
     } ],
     CURRENCIES: r,
+    calculatePlan: calculatePlan,
     addTransaction: function(e) {
       e.id = e.id || m(), e.created_at = e.created_at || (new Date).toISOString(), e.date = e.date || (new Date).toISOString().slice(0, 10),
       e.synced = !1;

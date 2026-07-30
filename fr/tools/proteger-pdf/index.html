@@ -1,41 +1,721 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Protéger un PDF par mot de passe | AfroTools</title>
-<meta name="description" content="Protégez vos PDF par mot de passe gratuitement. Chiffrement sécurisé dans votre navigateur.">
+<meta name="description" content="Chiffrez un PDF avec un mot de passe dans votre navigateur et conservez une copie originale en lieu sûr.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Protéger un PDF par mot de passe | AfroTools">
-<meta property="og:description" content="Protégez vos PDF par mot de passe gratuitement. Chiffrement sécurisé dans votre navigateur.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/proteger-pdf/">
+<meta property="og:title" content="Protéger un PDF">
+<meta property="og:description" content="Chiffrez un PDF avec un mot de passe dans votre navigateur et conservez une copie originale en lieu sûr.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/proteger-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Protéger un PDF par mot de passe | AfroTools">
-<meta name="twitter:description" content="Protégez vos PDF par mot de passe gratuitement. Chiffrement sécurisé dans votre navigateur.">
+<meta name="twitter:title" content="Password Protect PDF Online | AfroTools">
+<meta name="twitter:description" content="AES-256 PDF password protection, permissions, password helper, and unlock in your browser.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<meta property="article:modified_time" content="2026-04-27">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script type="application/ld+json">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script> <style>
+  :root {
+    --pw-blue: var(--color-primary);
+    --pw-dark: #0f1419;
+    --pw-ink: #0f172a;
+    --pw-muted: #64748b;
+    --pw-soft: #eff6ff;
+    --pw-gold: #b7791f;
+    --pw-green: #047857;
+    --pw-red: #b91c1c;
+  }
+
+  .tool-hero {
+    background: #f7fbff;
+    border-bottom: 1px solid #dbeafe;
+    padding: 34px 0 22px;
+  }
+
+  .tool-hero-inner,
+  .tool-main-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 800;
+    color: #64748b;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: #64748b;
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--pw-blue);
+  }
+
+  h1 {
+    color: #0f172a;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin: 0 0 10px;
+  }
+
+  h1 em {
+    color: var(--pw-blue);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    color: #334155;
+    font-size: 0.9rem;
+    line-height: 1.62;
+    max-width: 720px;
+    margin: 0 0 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    min-height: 28px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    border: 1px solid #bae6fd;
+    background: #fff;
+    color: #075985;
+    font-size: 0.7rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .tool-main {
+    padding: 24px 0 56px;
+  }
+
+  .workflow-strip {
+    max-width: 1220px;
+    margin: 0 auto 14px;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 10px;
+  }
+
+  .workflow-step {
+    background: #fff;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    padding: 12px 14px;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    flex: 0 0 28px;
+    min-height: 28px;
+    border-radius: 6px;
+    background: #e0f2fe;
+    color: #075985;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.72rem;
+    font-weight: 800;
+  }
+
+  .step-title {
+    display: block;
+    font-size: 0.82rem;
+    color: #0f172a;
+    font-weight: 800;
+    margin-bottom: 2px;
+  }
+
+  .step-copy {
+    display: block;
+    font-size: 0.74rem;
+    color: #64748b;
+    line-height: 1.45;
+  }
+
+  .tool-main-inner {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 390px;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    align-items: center;
+    background: #f9fafb;
+  }
+
+  .card-title {
+    color: #374151;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-kicker {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .segmented {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px;
+  }
+
+  .mode-btn,
+  .mini-btn,
+  .toggle-password {
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    background: var(--pw-soft);
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
+    touch-action: manipulation;
+  }
+
+  .mode-btn {
+    min-height: 46px;
+    padding: 12px 14px;
+    font-size: 0.75rem;
+  }
+
+  .mode-btn:hover,
+  .mini-btn:hover,
+  .toggle-password:hover,
+  .mode-btn:focus-visible,
+  .mini-btn:focus-visible,
+  .toggle-password:focus-visible {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .mode-btn.on {
+    background: var(--pw-blue);
+    border-color: var(--pw-blue);
+    color: #fff;
+  }
+
+  .drop-zone {
+    border: 2px dashed #bfdbfe;
+    border-radius: 8px;
+    background: var(--pw-soft);
+    cursor: pointer;
+    padding: 30px 18px;
+    text-align: center;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+    min-height: 128px;
+    touch-action: manipulation;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover,
+  .drop-zone:focus-visible {
+    background: #fff;
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .drop-title {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    color: #6b8cae;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+  }
+
+  .file-summary {
+    display: none;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    background: #f8fbff;
+    border-radius: 7px;
+  }
+
+  .file-summary.on {
+    display: flex;
+  }
+
+  .file-summary-text {
+    color: #1e40af;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .file-list {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .file-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid #e5e7eb;
+    background: #f9fafb;
+    border-radius: 6px;
+    padding: 10px 12px;
+  }
+
+  .file-info {
+    min-width: 0;
+  }
+
+  .file-name {
+    color: #1e293b;
+    font-size: 0.82rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-meta,
+  .field-hint {
+    color: var(--pw-muted);
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .mini-btn,
+  .toggle-password {
+    min-height: 40px;
+    padding: 8px 11px;
+    font-size: 0.68rem;
+  }
+
+  .panel {
+    display: block;
+  }
+
+  .panel.hidden {
+    display: none;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .label-text {
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .input-row {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 8px;
+  }
+
+  .input {
+    width: 100%;
+    min-height: 44px;
+    padding: 10px 12px;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    background: #fff;
+    color: #1e293b;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    font-weight: 650;
+    outline: none;
+  }
+
+  .input:focus {
+    border-color: var(--pw-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .grid-2,
+  .permission-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+  }
+
+  .permission-grid {
+    margin-top: 8px;
+  }
+
+  .check-option {
+    display: flex;
+    gap: 9px;
+    align-items: flex-start;
+    min-height: 46px;
+    padding: 10px 11px;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    background: #f8fafc;
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 800;
+    line-height: 1.35;
+  }
+
+  .check-option input {
+    accent-color: var(--pw-blue);
+    margin-top: 2px;
+  }
+
+  .password-strength {
+    display: none;
+    margin-top: 8px;
+  }
+
+  .password-strength.on {
+    display: block;
+  }
+
+  .strength-meter {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 4px;
+    margin-bottom: 5px;
+  }
+
+  .strength-meter span {
+    height: 5px;
+    border-radius: 999px;
+    background: #e5e7eb;
+  }
+
+  .strength-meter[data-score="1"] span:nth-child(-n+1) { background: var(--pw-red); }
+  .strength-meter[data-score="2"] span:nth-child(-n+2) { background: #d97706; }
+  .strength-meter[data-score="3"] span:nth-child(-n+3) { background: var(--pw-gold); }
+  .strength-meter[data-score="4"] span:nth-child(-n+4) { background: #059669; }
+  .strength-meter[data-score="5"] span:nth-child(-n+5) { background: var(--pw-green); }
+
+  .strength-line {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+    color: #475569;
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .calc-btn,
+  .act-btn {
+    width: 100%;
+    border: 0;
+    border-radius: 7px;
+    background: var(--pw-blue);
+    color: #fff;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 800;
+    padding: 13px 16px;
+    min-height: 46px;
+    transition: box-shadow 0.16s, opacity 0.16s, background 0.16s;
+    touch-action: manipulation;
+  }
+
+  .calc-btn:hover,
+  .act-btn:hover,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
+    box-shadow: 0 10px 22px rgba(0,113,227,0.22);
+    outline: none;
+  }
+
+  .calc-btn:disabled,
+  .mini-btn:disabled,
+  .toggle-password:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow: none;
+  }
+
+  .result-card {
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    color: #1e293b;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.55;
+  }
+
+  .progress-bar {
+    display: none;
+    width: 100%;
+    height: 6px;
+    margin-top: 12px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    overflow: hidden;
+  }
+
+  .progress-bar.on {
+    display: block;
+  }
+
+  .progress-fill {
+    width: 0%;
+    height: 100%;
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--pw-blue), #60a5fa);
+    transition: width 0.25s;
+  }
+
+  .result-rows {
+    display: grid;
+    gap: 8px;
+    margin-top: 12px;
+  }
+
+  .result-row {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    background: #f8fafc;
+  }
+
+  .result-row.error {
+    border-color: #fecaca;
+    background: #fff7f7;
+  }
+
+  .result-name {
+    color: #1e293b;
+    font-size: 0.76rem;
+    font-weight: 800;
+    overflow-wrap: anywhere;
+  }
+
+  .result-meta {
+    color: #64748b;
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.45;
+    margin-top: 3px;
+  }
+
+  .result-row.error .result-meta {
+    color: var(--pw-red);
+  }
+
+  .result-note {
+    display: none;
+    margin-top: 12px;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    background: var(--pw-soft);
+    color: #334155;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.55;
+  }
+
+  .result-note.on {
+    display: block;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .info-card {
+    margin-top: 18px;
+    border-left: 4px solid var(--pw-blue);
+    border-radius: 8px;
+    background: #f8fafc;
+    padding: 18px;
+  }
+
+  .info-card.gold {
+    border-left-color: var(--pw-gold);
+    background: #fffaf0;
+  }
+
+  .info-title {
+    color: var(--pw-ink);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .info-text {
+    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 650;
+    line-height: 1.62;
+  }
+
+  .info-text ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+  }
+
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .label-text,:root[data-theme="dark"] .info-title { color:#eef5ff; }
+  :root[data-theme="dark"] .field-hint,:root[data-theme="dark"] .label-value { color:#b8c7dc; }
+  :root[data-theme="dark"] .info-card { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .info-card .info-text,:root[data-theme="dark"] .info-card .info-text li { color:#eef5ff!important; }
+
+  @media (max-width: 900px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tool-hero {
+      padding: 34px 0 30px;
+    }
+
+    .tool-hero-inner,
+    .tool-main-inner,
+    .workflow-strip {
+      padding: 0 16px;
+    }
+
+    .segmented,
+    .grid-2,
+    .permission-grid,
+    .input-row,
+    .workflow-strip {
+      grid-template-columns: 1fr;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .file-summary {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Protéger un PDF",
-  "description": "Protégez vos PDF par mot de passe gratuitement. Chiffrement sécurisé dans votre navigateur.",
+  "description": "Chiffrez un PDF avec un mot de passe dans votre navigateur et conservez une copie originale en lieu sûr.",
   "url": "https://afrotools.com/fr/tools/proteger-pdf/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "BrowserApplication",
+  "inLanguage": "fr",
+  "applicationCategory": "Application de sécurité",
   "operatingSystem": "Web",
+  "browserRequirements": "Nécessite JavaScript et WebAssembly",
+  "featureList": [
+    "Protection par mot de passe PDF AES-256",
+    "Contrôles d'autorisation du propriétaire",
+    "Générateur de mots de passe et aide à la copie",
+    "Estimation de la force du mot de passe",
+    "Déverrouillage PDF par mot de passe connu",
+    "Sortie ZIP par lots"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -48,88 +728,287 @@
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-password.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Protéger un PDF","item":"https://afrotools.com/fr/tools/proteger-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-password.webp">
+</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Protéger un PDF","item":"https://afrotools.com/fr/tools/proteger-pdf/"}],"inLanguage":"fr"}</script>
+
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em,
+  body.top-level-page-ui-refresh .breadcrumb span { color: var(--color-primary); }
+</style>
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="Protéger un PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-password","locale":"fr","englishOwner":"tools/pdf-password/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{".mini-btn,.toggle-password":".mini-btn,.toggle-mot de passe","0 B":"0B","ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%*-_=+?":"ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz23456789!@#$%*-_=+?","Add an open password, set viewer permissions, batch export protected PDFs, or unlock a file when you already know the password. Files and passwords stay in this browser.":"Ajoutez un mot de passe d'ouverture, définissez les autorisations de visualisation, exportez par lots des PDF protégés ou déverrouillez un fichier lorsque vous connaissez déjà le mot de passe. Les fichiers et les mots de passe restent dans ce navigateur.","AES-256 PDF password protection":"Protection par mot de passe PDF AES-256","AES-256 protect output.":"Sortie de protection AES-256.","AES-256 standard security":"Sécurité standard AES-256","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","All permissions allowed":"Toutes les autorisations autorisées","Allow comments and annotations":"Autoriser les commentaires et les annotations","Allow document editing":"Autoriser la modification du document","Allow form filling":"Autoriser le remplissage du formulaire","Allow page extraction and assembly":"Autoriser l’extraction et l’assemblage des pages","Allow printing":"Autoriser l'impression","Allow text and image copying":"Autoriser la copie de texte et d'images","annotations":"annotations","application/pdf":"candidature/pdf","application/zip":"application/zip","aria-pressed":"aria-pressé","B":"B","Batch ZIP":"Code postal du lot","Batch ZIP output":"Sortie ZIP par lots","Before sharing":"Avant de partager","button":"bouton","change":"changement","Check the password and try again. Unlock cannot bypass an unknown open password.":"Vérifiez le mot de passe et réessayez. Le déverrouillage ne peut pas contourner un mot de passe ouvert inconnu.","Check your settings.":"Vérifiez vos paramètres.","Choose at least one PDF file.":"Choisissez au moins un fichier PDF.","Choose mode":"Choisir le mode","Choose password-protected PDFs":"Choisissez des PDF protégés par mot de passe","Choose PDFs to password-protect":"Choisissez les PDF à protéger par mot de passe","Clear":"Effacer","click":"cliquez","Clipboard is not available in this browser.":"Le Presse-papiers n'est pas disponible dans ce navigateur.","Compliant viewers":"Téléspectateurs conformes","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Confirm Password":"Confirmer le mot de passe","Copy blocked. Select and copy the password manually.":"Copie bloquée. Sélectionnez et copiez le mot de passe manuellement.","Copy Password":"Copier le mot de passe","copying":"copier","could not be processed.":"n'a pas pu être traité.","Could not process this PDF.":"Impossible de traiter ce PDF.","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","CV / Resume Builder":"Générateur de CV","data-target":"cible de données","Do not use this as a legal redaction, certified security, password recovery, or compliance workflow.":"Ne l'utilisez pas comme un processus de rédaction juridique, de sécurité certifiée, de récupération de mot de passe ou de conformité.","document":"document","DOMContentLoaded":"DOMContentLoaded","Download":"Télécharger","Download PDF":"Télécharger le PDF","Download ZIP":"Télécharger le ZIP","dragleave":"glisser","dragover":"drague","drop":"baisse","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","editing":"édition","email-gate-modal":"email-gate-modal","Empty":"Vide","Enter":"Entrer","Enter the known password and export unencrypted copies.":"Entrez le mot de passe connu et exportez des copies non cryptées.","Enter the known PDF password.":"Saisissez le mot de passe PDF connu.","Enter the password people will use to open the PDF.":"Entrez le mot de passe que les gens utiliseront pour ouvrir le PDF.","error":"erreur","Error:":"Erreur:","Excellent":"Excellent","file":"déposer","file-info":"informations sur le fichier","file-meta":"fichier-méta","file-name":"nom de fichier","file-row":"ligne de fichier","For visible covers, signatures, or page cleanup before protecting, use":"Pour des couvertures, des signatures ou un nettoyage de page visibles avant la protection, utilisez","form filling":"remplissage de formulaire","Full-access password":"Mot de passe d'accès complet","GB":"FR","Generate or enter a password first.":"Générez ou saisissez d'abord un mot de passe.","Generate Strong Password":"Générer un mot de passe robuste","Generate, confirm, copy, and store it separately.":"Générez-le, confirmez-le, copiez-le et stockez-le séparément.","Generated a strong password. Keep a copy because AfroTools cannot recover it later.":"Généré un mot de passe fort. Conservez une copie car AfroTools ne peut pas la récupérer plus tard.","Good":"Bien","hidden":"caché","Hide":"Cacher","Important":"Important","inline-flex":"inline-flex","input":"saisir","Invoice Generator":"Générateur de facture","KB":"Ko","Keep the original unprotected file, test the protected output, and share the password through a separate trusted channel.":"Conservez le fichier d'origine non protégé, testez la sortie protégée et partagez le mot de passe via un canal de confiance distinct.","keydown":"touche enfoncée","Known password required":"Mot de passe connu requis","Known-password PDF unlock":"Déverrouillage PDF par mot de passe connu","Known-password unlock":"Déverrouillage par mot de passe connu","Leave blank to generate an internal owner key.":"Laissez vide pour générer une clé de propriétaire interne.","loading":"chargement","Loading PDF security engine...":"Chargement du moteur de sécurité PDF...","Local-first PDF protection":"Protection PDF d'abord locale","Long unique passphrases are safest.":"Les phrases secrètes longues et uniques sont les plus sûres.","MB":"Mo","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Methodology":"Méthode","mini-btn":"mini-btn","Mode":"Mode","New files use PDF AES-256 encryption. Permission restrictions are honored by compliant PDF viewers, but they are not DRM.":"Les nouveaux fichiers utilisent le cryptage PDF AES-256. Les restrictions d'autorisation sont respectées par les visionneuses PDF conformes, mais elles ne sont pas des DRM.","No files were processed.":"Aucun dossier n'a été traité.","No PDFs selected.":"Aucun PDF sélectionné.","non-PDF file":"fichier non PDF","none":"aucun","Open or owner password":"Mot de passe d'ouverture ou de propriétaire","Open Password":"Mot de passe d’ouverture","Optional":"Facultatif","Owner Password":"Mot de passe propriétaire","Owner permission controls":"Contrôles d'autorisation du propriétaire","page assembly":"assemblage de pages","password":"mot de passe","Password accepted -":"Mot de passe accepté -","Password confirmation does not match.":"La confirmation du mot de passe ne correspond pas.","Password copied. Share it through a separate channel.":"Mot de passe copié. Partagez-le via un canal séparé.","Password generator and copy helper":"Générateur de mots de passe et aide à la copie","Password protect a PDF":"Un mot de passe protège un PDF","Password Protect PDF Online":"Protéger le PDF en ligne par mot de passe","Password Protect PDF Online | AES-256 Local Tool | AfroTools":"Protéger le PDF en ligne par mot de passe | Outil local AES-256 | AfroOutils","Password protection and unlock attempts run locally. This tool does not recover unknown passwords, store passwords, or guarantee that every PDF reader enforces permissions the same way.":"La protection par mot de passe et les tentatives de déverrouillage s'exécutent localement. Cet outil ne récupère pas les mots de passe inconnus, ne stocke pas les mots de passe et ne garantit pas que chaque lecteur PDF applique les autorisations de la même manière.","Password strength estimate":"Estimation de la force du mot de passe","Password strength feedback is a local estimate and does not check breach databases.":"Les commentaires sur la force du mot de passe sont une estimation locale et ne vérifient pas les bases de données de violations.","Password to open":"Mot de passe pour ouvrir","Password Tool":"Outil de mot de passe","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF files":"Fichiers PDF","PDF Merge & Split":"Fusionner et diviser des PDF","PDF only":"PDF uniquement","PDF Password":"Mot de passe du PDF","PDF password mode":"Mode mot de passe PDF","PDF password steps":"Étapes du mot de passe PDF","PDF password task failed.":"La tâche de mot de passe PDF a échoué.","PDF permission flags restrict actions in compliant readers, but they are not the same as document rights management. Keep a clean original and store passwords securely.":"Les indicateurs d'autorisation PDF restreignent les actions dans les lecteurs conformes, mais ils ne sont pas identiques à la gestion des droits sur les documents. Conservez un original propre et stockez les mots de passe en toute sécurité.","PDF security engine failed to load.":"Le moteur de sécurité PDF n'a pas pu se charger.","PDF Workspace":"Espace de travail PDF","Permission flags can be interpreted differently by PDF readers; encryption strength and compatibility should be tested.":"Les indicateurs d'autorisation peuvent être interprétés différemment par les lecteurs PDF ; la force du cryptage et la compatibilité doivent être testées.","printing":"impression","protect":"protéger","Protect a copy, then test the password in another reader":"Protégez une copie, puis testez le mot de passe dans un autre lecteur","Protect a PDF, or unlock with a known password.":"Protégez un PDF ou déverrouillez-le avec un mot de passe connu.","Protect or unlock":"Protéger ou déverrouiller","Protect PDF":"Protéger le PDF","Protect PDFs with AES-256 passwords, owner permissions, password strength checks, password copy helper, and batch ZIP output. Unlock PDFs when you know the password.":"Protégez les PDF avec des mots de passe AES-256, des autorisations de propriétaire, des vérifications de la force des mots de passe, une aide à la copie de mot de passe et une sortie ZIP par lots. Déverrouillez les PDF lorsque vous connaissez le mot de passe.","Protected":"Protégé","Protecting":"Protéger","Protecting...":"Protéger...","Protection complete.":"Protection complète.","Protection limits":"Limites de protection","Protection Settings":"Paramètres de protection","QPDF WebAssembly applies PDF standard security locally in the browser. Files and passwords are not uploaded to AfroTools.":"QPDF WebAssembly applique la sécurité standard PDF localement dans le navigateur. Les fichiers et les mots de passe ne sont pas téléchargés sur AfroTools.","Refresh the page and try again. If the PDF uses unusual security, it may not be supported by the browser engine.":"Actualisez la page et réessayez. Si le PDF utilise une sécurité inhabituelle, il se peut qu'il ne soit pas pris en charge par le moteur du navigateur.","Related tools":"Outils associés","Remove":"Supprimer","Repeat password":"Répéter le mot de passe","Requires JavaScript and WebAssembly":"Nécessite JavaScript et WebAssembly","Restricted":"Limité","Result":"Résultat","result-meta":"résultat-méta","result-name":"nom du résultat","result-row":"ligne de résultat","Reviewed 2026. Disclaimer: verify with the recipient and another PDF reader before relying on protection. Direct local downloads do not upload your files.":"Révisé en 2026. Avertissement : vérifiez auprès du destinataire et d'un autre lecteur PDF avant de compter sur la protection. Les téléchargements locaux directs ne téléchargent pas vos fichiers.","s.":"s.","Save a protected PDF or batch ZIP.":"Enregistrez un PDF protégé ou un ZIP par lots.","Security Model":"Modèle de sécurité","SecurityApplication":"Application de sécurité","selected,":"choisi,","Set password":"Définir le mot de passe","Show":"Montrer","Single PDF downloads as a PDF. Multiple PDFs download as a ZIP.":"Téléchargements PDF uniques au format PDF. Plusieurs PDF sont téléchargés au format ZIP.","Single PDF or batch ZIP downloads.":"Téléchargements PDF uniques ou ZIP par lots.","Skipped":"Sauté","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","Store the password safely. Lost open passwords cannot be recovered.":"Conservez le mot de passe en toute sécurité. Les mots de passe ouverts perdus ne peuvent pas être récupérés.","Strong":"Fort","text":"texte","This tool cannot guess, bypass, or recover an unknown open password.":"Cet outil ne peut pas deviner, contourner ou récupérer un mot de passe ouvert inconnu.","Tools":"Outils","Total:":"Total:","total.":"total.","unlock":"ouvrir","Unlock complete.":"Déverrouillage terminé.","Unlock PDF":"Déverrouiller le PDF","Unlock Settings":"Déverrouiller les paramètres","Unlocked":"Débloqué","Unlocked files are unencrypted copies created only after the supplied password was accepted.":"Les fichiers déverrouillés sont des copies non cryptées créées uniquement après l'acceptation du mot de passe fourni.","Unlocking":"Déverrouillage","Unlocking...":"Déverrouillage...","Upload PDFs to protect":"Téléchargez des PDF à protéger","Upload protected PDFs to unlock":"Téléchargez des PDF protégés pour déverrouiller","Use a different owner password, or leave it blank so AfroTools can generate one.":"Utilisez un mot de passe propriétaire différent ou laissez-le vide pour qu'AfroTools puisse en générer un.","Use a longer password with mixed letters, numbers, and symbols.":"Utilisez un mot de passe plus long avec un mélange de lettres, de chiffres et de symboles.","Use a password with at least 8 characters.":"Utilisez un mot de passe d'au moins 8 caractères.","use strict":"utiliser strict","User and owner password support.":"Prise en charge des mots de passe utilisateur et propriétaire.","Uses local PDF encryption/decryption support to create protected copies or unlock PDFs when the correct password is supplied.":"Utilise la prise en charge locale du cryptage/déchiffrement des PDF pour créer des copies protégées ou déverrouiller des PDF lorsque le mot de passe correct est fourni.","Very weak":"Très faible","Viewer Permissions":"Autorisations du spectateur","Weak":"Faible","Web":"Web"}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/proteger-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-password/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/proteger-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kulinda-pdf-kwa-nenosiri/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-password/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Protéger PDF</nav>
-<div class="fr-hero">
-<h1><em>Protéger un PDF</em></h1>
-<p>Ajoutez un mot de passe pour protéger vos documents PDF confidentiels.</p>
-</div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparez votre fichier ou votre scénario</h2>
-  <p>Ajoutez trois notes utiles avant de lancer Protéger un PDF. Ce brouillon reste dans votre navigateur et sert seulement à garder le contexte clair.</p>
-  <div class="fr-prep-fields">
-    <label>Fichier local<input name="localFile" type="file" accept="application/pdf,.html,.txt,.doc,.docx,image/*" aria-label="Choisir un fichier local"></label>
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Outils</span></div>
+    <h1>Protéger un PDF</h1>
+    <p class="hero-sub">Chiffrez un PDF avec un mot de passe dans votre navigateur et conservez une copie originale en lieu sûr.</p>
+    <div class="hero-badges">
+      <span class="badge">AES-256</span>
+      <span class="badge">Déverrouillage par mot de passe connu</span>
+      <span class="badge">Code postal du lot</span>
+    </div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-password/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+</section>
+
+<main class="tool-main">
+  <div class="workflow-strip" aria-label="Étapes du mot de passe PDF">
+    <div class="workflow-step"><span class="step-num">1</span><span><span class="step-title">Choisir le mode</span><span class="step-copy">Protégez un PDF ou déverrouillez-le avec un mot de passe connu.</span></span></div>
+    <div class="workflow-step"><span class="step-num">2</span><span><span class="step-title">Définir le mot de passe</span><span class="step-copy">Générez-le, confirmez-le, copiez-le et stockez-le séparément.</span></span></div>
+    <div class="workflow-step"><span class="step-num">3</span><span><span class="step-title">Télécharger</span><span class="step-copy">Enregistrez un PDF protégé ou un ZIP par lots.</span></span></div>
+  </div>
+  <div class="tool-main-inner">
+    <section>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Mode</span>
+          <span class="card-kicker">Protéger ou déverrouiller</span>
+        </div>
+        <div class="card-body">
+          <div class="segmented" role="group" aria-label="Mode mot de passe PDF">
+            <button class="mode-btn on" id="modeProtect" type="button" aria-pressed="true">Protéger le PDF</button>
+            <button class="mode-btn" id="modeUnlock" type="button" aria-pressed="false">Déverrouiller le PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title" id="fileModeLabel">Téléchargez des PDF à protéger</span>
+          <span class="card-kicker">PDF uniquement</span>
+        </div>
+        <div class="card-body">
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
+            <div class="drop-title" id="dropTitle">Choisissez les PDF à protéger par mot de passe</div>
+            <div class="drop-hint" id="dropHint">Téléchargements PDF uniques au format PDF. Plusieurs PDF sont téléchargés au format ZIP.</div>
+            <input aria-label="Fichiers PDF" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
+          </div>
+          <div class="file-summary" id="fileSummary">
+            <span class="file-summary-text" id="fileSummaryText">Aucun PDF sélectionné.</span>
+            <button class="mini-btn" id="clearFilesBtn" type="button">Effacer</button>
+          </div>
+          <div class="file-list" id="fileList" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="card panel" id="protectPanel">
+        <div class="card-head">
+          <span class="card-title">Paramètres de protection</span>
+          <span class="card-kicker">Sécurité standard AES-256</span>
+        </div>
+        <div class="card-body">
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="openPassword">Mot de passe d’ouverture</label></div>
+              <div class="input-row">
+                <input class="input" id="openPassword" type="password" autocomplete="new-password" placeholder="Mot de passe pour ouvrir">
+                <button class="toggle-password" type="button" data-target="openPassword">Montrer</button>
+              </div>
+              <div class="password-strength" id="passwordStrength">
+                <div class="strength-meter" id="strengthMeter" data-score="0"><span></span><span></span><span></span><span></span><span></span></div>
+                <div class="strength-line"><span id="strengthLabel">Vide</span><span id="strengthHint"></span></div>
+              </div>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="confirmPassword">Confirmer le mot de passe</label></div>
+              <div class="input-row">
+                <input class="input" id="confirmPassword" type="password" autocomplete="new-password" placeholder="Répéter le mot de passe">
+                <button class="toggle-password" type="button" data-target="confirmPassword">Montrer</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="ownerPassword">Mot de passe propriétaire</label><span class="field-hint">Facultatif</span></div>
+              <div class="input-row">
+                <input class="input" id="ownerPassword" type="password" autocomplete="new-password" placeholder="Mot de passe d'accès complet">
+                <button class="toggle-password" type="button" data-target="ownerPassword">Montrer</button>
+              </div>
+              <div class="field-hint">Laissez vide pour générer une clé de propriétaire interne.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><span class="label-text">Outil de mot de passe</span></div>
+              <button class="mini-btn" id="generatePassword" type="button">Générer un mot de passe robuste</button>
+              <button class="mini-btn" id="copyOpenPassword" type="button" style="margin-left:8px;">Copier le mot de passe</button>
+              <div class="field-hint" id="passwordToolStatus" role="status" aria-live="polite" style="margin-top:6px;"></div>
+              <div class="field-hint" style="margin-top:6px;">Conservez le mot de passe en toute sécurité. Les mots de passe ouverts perdus ne peuvent pas être récupérés.</div>
+            </div>
+          </div>
+
+          <div class="field">
+            <div class="label-row"><span class="label-text">Autorisations du spectateur</span><span class="field-hint">Téléspectateurs conformes</span></div>
+            <div class="permission-grid">
+              <label class="check-option"><input type="checkbox" id="allowPrint" checked> Autoriser l'impression</label>
+              <label class="check-option"><input type="checkbox" id="allowCopy" checked> Autoriser la copie de texte et d'images</label>
+              <label class="check-option"><input type="checkbox" id="allowEdit" checked> Autoriser la modification du document</label>
+              <label class="check-option"><input type="checkbox" id="allowAnnotate" checked> Autoriser les commentaires et les annotations</label>
+              <label class="check-option"><input type="checkbox" id="allowForm" checked> Autoriser le remplissage du formulaire</label>
+              <label class="check-option"><input type="checkbox" id="allowAssemble" checked> Autoriser l’extraction et l’assemblage des pages</label>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="processBtn" type="button" disabled>Protéger le PDF</button>
+        </div>
+      </div>
+
+      <div class="card panel hidden" id="unlockPanel">
+        <div class="card-head">
+          <span class="card-title">Déverrouiller les paramètres</span>
+          <span class="card-kicker">Mot de passe connu requis</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <div class="label-row"><label class="label-text" for="unlockPassword">Mot de passe du PDF</label></div>
+            <div class="input-row">
+              <input class="input" id="unlockPassword" type="password" autocomplete="current-password" placeholder="Mot de passe d'ouverture ou de propriétaire">
+              <button class="toggle-password" type="button" data-target="unlockPassword">Montrer</button>
+            </div>
+            <div class="field-hint">Cet outil ne peut pas deviner, contourner ou récupérer un mot de passe ouvert inconnu.</div>
+          </div>
+          <button class="calc-btn" id="unlockProcessBtn" type="button" disabled>Déverrouiller le PDF</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card result-card" id="resultCard">
+        <div class="card-head"><span class="card-title">Résultat</span></div>
+        <div class="card-body">
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote" role="status" aria-live="polite"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Télécharger le PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Modèle de sécurité</div>
+        <div class="info-text">
+          QPDF WebAssembly applique la sécurité standard PDF localement dans le navigateur. Les fichiers et les mots de passe ne sont pas téléchargés sur AfroTools.
+          <ul>
+            <li>Sortie de protection AES-256.</li>
+            <li>Prise en charge des mots de passe utilisateur et propriétaire.</li>
+            <li>Téléchargements PDF uniques ou ZIP par lots.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card gold">
+        <div class="info-title">Important</div>
+        <div class="info-text">
+          Les indicateurs d'autorisation PDF restreignent les actions dans les lecteurs conformes, mais ils ne sont pas identiques à la gestion des droits sur les documents. Conservez un original propre et stockez les mots de passe en toute sécurité.
+        </div>
+      </div>
+    </aside>
   </div>
 
-  <!-- fr-pdf-proof-note:start -->
-  <p class="fr-pdf-proof-note"><strong>Méthodologie :</strong> la page prépare le contexte, puis l'outil source traite le fichier dans le navigateur selon le mode choisi. <strong>Limites :</strong> vérifiez toujours le rendu export? avant un dépôt officiel, juridique ou client. <strong>Privacy locale :</strong> les fichiers restent dans votre navigateur; no upload automatique depuis ce panneau.</p>
-  <!-- fr-pdf-proof-note:end -->
+</main>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-password-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Limites de protection</span>
+        <h2 class="tool-verification-title" id="pdf-password-verification-title">Protégez une copie, puis testez le mot de passe dans un autre lecteur</h2>
+        <p class="tool-verification-lead">La protection par mot de passe et les tentatives de déverrouillage s'exécutent localement. Cet outil ne récupère pas les mots de passe inconnus, ne stocke pas les mots de passe et ne garantit pas que chaque lecteur PDF applique les autorisations de la même manière.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Protection PDF d'abord locale</span>
+        <p class="tool-verification-note">Révisé en 2026. Avertissement : vérifiez auprès du destinataire et d'un autre lecteur PDF avant de compter sur la protection. Les téléchargements locaux directs ne téléchargent pas vos fichiers.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Méthode</h3>
+        <ul class="tool-verification-list">
+          <li>Utilise la prise en charge locale du cryptage/déchiffrement des PDF pour créer des copies protégées ou déverrouiller des PDF lorsque le mot de passe correct est fourni.</li>
+          <li>Les commentaires sur la force du mot de passe sont une estimation locale et ne vérifient pas les bases de données de violations.</li>
+          <li>Les indicateurs d'autorisation peuvent être interprétés différemment par les lecteurs PDF ; la force du cryptage et la compatibilité doivent être testées.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Avant de partager</h3>
+        <ul class="tool-verification-list">
+          <li>Conservez le fichier d'origine non protégé, testez la sortie protégée et partagez le mot de passe via un canal de confiance distinct.</li>
+          <li>Ne l'utilisez pas comme un processus de rédaction juridique, de sécurité certifiée, de récupération de mot de passe ou de conformité.</li>
+          <li>Pour des couvertures, des signatures ou un nettoyage de page visibles avant la protection, utilisez <a href="/fr/tools/espace-pdf/">Espace de travail PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
-<iframe src="/tools/pdf-password/" class="fr-tool-frame" title="Protéger un PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Protéger un PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Fichier/donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.';}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-})();
-</script>
-<section class="fr-seo">
-<h2>Protéger un PDF</h2>
-<p>L’outil de protection PDF d’AfroTools vous permet de chiffrer vos documents avec un mot de passe.</p>
-<p>Le chiffrement se fait entièrement dans votre navigateur. Définissez un mot de passe et restreignez les permissions.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Quel niveau de chiffrement est utilisé ?</summary><p>Chiffrement AES standard offrant un niveau de sécurité professionnel.</p></details>
-<details><summary>Puis-je aussi supprimer un mot de passe ?</summary><p>Oui, si vous connaissez le mot de passe actuel, vous pouvez le supprimer.</p></details>
-<details><summary>Les permissions peuvent-elles être restreintes ?</summary><p>Oui, restreignez l’impression, la copie de texte et la modification du document.</p></details>
+<afro-related-tools category="document-pdf" current="pdf-password" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-password">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-password">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : PDF, ZIP</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-password/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-password"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<script src="/assets/js/lib/qpdf-aes.js?v=d44daa51"></script> <script src="/tools/pdf-password/app.js?v=a8419072"></script> <script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var copyButton = document.getElementById('copyOpenPassword');
+    var password = document.getElementById('openPassword');
+    var status = document.getElementById('passwordToolStatus');
+    if (!copyButton || !password || !status) return;
+    copyButton.addEventListener('click', function () {
+      var value = password.value || '';
+      if (!value) {
+        status.textContent = 'Generate or enter a password first.';
+        return;
+      }
+      if (!navigator.clipboard || !navigator.clipboard.writeText) {
+        status.textContent = 'Clipboard is not available in this browser.';
+        return;
+      }
+      navigator.clipboard.writeText(value).then(function () {
+        status.textContent = 'Password copied. Share it through a separate channel.';
+      }).catch(function () {
+        status.textContent = 'Copy blocked. Select and copy the password manually.';
+      });
+    });
+  });
+</script> <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

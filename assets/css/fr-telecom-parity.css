@@ -1,0 +1,569 @@
+:root {
+  color-scheme: light dark;
+  --tel-bg: #f4f7fb;
+  --tel-surface: #ffffff;
+  --tel-text: #132238;
+  --tel-muted: #526176;
+  --tel-border: #cbd5e1;
+  --tel-accent: #006b61;
+  --tel-accent-strong: #00534b;
+  --tel-alert-bg: #fff8df;
+  --tel-alert-border: #b76e00;
+  --tel-error-bg: #fff1f2;
+  --tel-error: #9f1239;
+}
+
+[data-theme="dark"] {
+  --tel-bg: #0d1724;
+  --tel-surface: #152233;
+  --tel-text: #f1f5f9;
+  --tel-muted: #c0cada;
+  --tel-border: #526176;
+  --tel-accent: #5eead4;
+  --tel-accent-strong: #99f6e4;
+  --tel-alert-bg: #382d12;
+  --tel-alert-border: #fbbf24;
+  --tel-error-bg: #3f1723;
+  --tel-error: #fecdd3;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body.fr-telecom-app {
+  margin: 0;
+  background: var(--tel-bg);
+  color: var(--tel-text);
+  font-family: var(--font-body, "DM Sans", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+}
+
+.tel-skip {
+  position: fixed;
+  z-index: 1000;
+  top: 0.5rem;
+  left: 0.5rem;
+  transform: translateY(-180%);
+  padding: 0.75rem 1rem;
+  border-radius: 0.4rem;
+  background: var(--tel-surface);
+  color: var(--tel-text);
+}
+
+.tel-skip:focus {
+  transform: none;
+}
+
+.tel-hero {
+  padding: clamp(2rem, 6vw, 4.5rem) 1rem 2rem;
+  background: #071827;
+  color: #fff;
+}
+
+.tel-shell {
+  width: min(70rem, 100%);
+  margin-inline: auto;
+}
+
+.tel-hero-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(14rem, 22rem);
+  gap: clamp(1rem, 4vw, 3rem);
+  align-items: center;
+}
+
+.tel-app-artwork {
+  margin: 0;
+}
+
+.tel-app-artwork img {
+  display: block;
+  width: 100%;
+  height: auto;
+  border: 1px solid #526176;
+  border-radius: 0.65rem;
+  background: #ffffff;
+}
+
+.tel-kicker {
+  margin: 0 0 0.75rem;
+  color: #99f6e4;
+  font-weight: 800;
+  letter-spacing: 0.03em;
+}
+
+.tel-hero h1 {
+  max-width: 50rem;
+  margin: 0;
+  font-size: clamp(2rem, 7vw, 3.7rem);
+  line-height: 1.06;
+}
+
+.tel-lede {
+  max-width: 48rem;
+  margin: 1rem 0 0;
+  color: #d8e3ee;
+  font-size: clamp(1rem, 2.2vw, 1.18rem);
+  line-height: 1.65;
+}
+
+.tel-main {
+  padding: 1.25rem 1rem 4rem;
+}
+
+.tel-source-alert,
+.tel-privacy,
+.tel-method,
+.tel-tool,
+.tel-results-panel,
+.tel-export-panel {
+  border: 1px solid var(--tel-border);
+  border-radius: 0.65rem;
+  background: var(--tel-surface);
+}
+
+.tel-source-alert {
+  margin-bottom: 1rem;
+  padding: 1rem;
+  border-color: var(--tel-alert-border);
+  background: var(--tel-alert-bg);
+}
+
+.tel-source-alert strong,
+.tel-source-alert p {
+  display: block;
+  margin: 0;
+}
+
+.tel-source-alert p {
+  margin-top: 0.4rem;
+  color: var(--tel-muted);
+  line-height: 1.55;
+}
+
+.tel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.1fr) minmax(18rem, 0.9fr);
+  gap: 1rem;
+  align-items: start;
+}
+
+.tel-tool,
+.tel-results-panel,
+.tel-export-panel,
+.tel-method,
+.tel-privacy {
+  padding: clamp(1rem, 3vw, 1.5rem);
+}
+
+.tel-tool h2,
+.tel-results-panel h2,
+.tel-export-panel h2,
+.tel-method h2,
+.tel-privacy h2 {
+  margin: 0 0 0.8rem;
+  font-size: 1.25rem;
+}
+
+.tel-fields {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 0.9rem;
+}
+
+.tel-field {
+  min-width: 0;
+}
+
+.tel-field label,
+.tel-field legend {
+  display: block;
+  margin-bottom: 0.35rem;
+  color: var(--tel-text);
+  font-weight: 750;
+}
+
+.tel-field small {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--tel-muted);
+  line-height: 1.4;
+}
+
+.tel-field input,
+.tel-field select {
+  width: 100%;
+  min-height: 2.85rem;
+  padding: 0.62rem 0.72rem;
+  border: 1px solid var(--tel-border);
+  border-radius: 0.45rem;
+  background: var(--tel-surface);
+  color: var(--tel-text);
+  font: inherit;
+}
+
+.tel-field input[type="range"] {
+  padding-inline: 0;
+  border: 0;
+  background: transparent;
+  accent-color: var(--tel-accent);
+}
+
+.tel-range-value {
+  display: block;
+  margin-top: 0.2rem;
+  color: var(--tel-muted);
+  font-weight: 750;
+}
+
+.tel-button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.7rem;
+  margin-top: 1rem;
+}
+
+.tel-button,
+.tel-file-label {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 2.85rem;
+  padding: 0.65rem 0.9rem;
+  border: 2px solid var(--tel-accent);
+  border-radius: 0.45rem;
+  background: var(--tel-accent);
+  color: #fff;
+  font: inherit;
+  font-weight: 800;
+  line-height: 1.25;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.tel-button[hidden] {
+  display: none;
+}
+
+[data-theme="dark"] .tel-button,
+[data-theme="dark"] .tel-file-label {
+  color: #032c28;
+}
+
+.tel-button.secondary,
+.tel-file-label {
+  background: transparent;
+  color: var(--tel-accent-strong);
+}
+
+.tel-button:hover,
+.tel-button:focus-visible,
+.tel-file-label:hover,
+.tel-file-label:focus-within {
+  outline: 3px solid color-mix(in srgb, var(--tel-accent) 35%, transparent);
+  outline-offset: 2px;
+}
+
+.tel-file-label input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+.tel-error {
+  min-height: 1.5rem;
+  margin: 0.8rem 0 0;
+  padding: 0;
+  color: var(--tel-error);
+  font-weight: 750;
+}
+
+.tel-error:not(:empty) {
+  padding: 0.75rem;
+  border: 1px solid var(--tel-error);
+  border-radius: 0.45rem;
+  background: var(--tel-error-bg);
+}
+
+.tel-result-list {
+  margin: 0;
+}
+
+.tel-result-row {
+  display: grid;
+  grid-template-columns: minmax(8rem, 0.8fr) minmax(0, 1.2fr);
+  gap: 0.7rem;
+  padding: 0.7rem 0;
+  border-bottom: 1px solid var(--tel-border);
+}
+
+.tel-result-row dt {
+  color: var(--tel-muted);
+  font-weight: 700;
+}
+
+.tel-result-row dd {
+  margin: 0;
+  overflow-wrap: anywhere;
+  font-weight: 750;
+}
+
+.tel-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.tel-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.tel-table th,
+.tel-table td {
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--tel-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.tel-table th {
+  background: color-mix(in srgb, var(--tel-border) 20%, var(--tel-surface));
+}
+
+.tel-empty {
+  color: var(--tel-muted);
+  line-height: 1.6;
+}
+
+.fr-telecom-metrics {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(9.5rem, 1fr));
+  gap: 0.7rem;
+  margin-bottom: 1rem;
+}
+
+.fr-telecom-metric {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+  padding: 0.8rem;
+  border: 1px solid var(--tel-border);
+  border-radius: 0.45rem;
+  background: color-mix(in srgb, var(--tel-border) 15%, var(--tel-surface));
+}
+
+.fr-telecom-metric span,
+.fr-telecom-metric small {
+  color: var(--tel-muted);
+}
+
+.fr-telecom-metric strong {
+  overflow-wrap: anywhere;
+  font-size: 1.1rem;
+}
+
+.fr-telecom-callout,
+.fr-telecom-source {
+  padding: 0.8rem;
+  border-left: 4px solid var(--tel-alert-border);
+  background: var(--tel-alert-bg);
+  color: var(--tel-muted);
+  line-height: 1.55;
+}
+
+.fr-telecom-source {
+  margin-top: 1rem;
+}
+
+.fr-telecom-source p {
+  margin: 0.4rem 0;
+  color: var(--tel-muted);
+}
+
+.fr-telecom-source a {
+  color: var(--tel-accent-strong);
+}
+
+.fr-telecom-table-wrap {
+  max-width: 100%;
+  overflow-x: auto;
+}
+
+.fr-telecom-table-wrap table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.fr-telecom-table-wrap th,
+.fr-telecom-table-wrap td {
+  padding: 0.65rem;
+  border-bottom: 1px solid var(--tel-border);
+  text-align: left;
+  vertical-align: top;
+}
+
+.fr-telecom-table-wrap th {
+  background: color-mix(in srgb, var(--tel-border) 20%, var(--tel-surface));
+}
+
+.tel-aside {
+  display: grid;
+  gap: 1rem;
+}
+
+.tel-export-status {
+  min-height: 1.5rem;
+  margin: 0.75rem 0 0;
+  color: var(--tel-muted);
+}
+
+.tel-method,
+.tel-privacy {
+  margin-top: 1rem;
+}
+
+.tel-method p,
+.tel-method li,
+.tel-privacy p {
+  color: var(--tel-muted);
+  line-height: 1.62;
+}
+
+.tel-method a,
+.tel-privacy a {
+  color: var(--tel-accent-strong);
+}
+
+@media (max-width: 48rem) {
+  .tel-hero-grid,
+  .tel-layout,
+  .tel-fields {
+    grid-template-columns: 1fr;
+  }
+
+  .tel-app-artwork {
+    width: min(100%, 24rem);
+  }
+}
+
+@media (max-width: 23.5rem) {
+  .fr-telecom-app :where(
+    header,
+    main,
+    section,
+    aside,
+    div,
+    form,
+    fieldset,
+    ul,
+    li,
+    a,
+    span,
+    p,
+    h1,
+    h2,
+    h3,
+    strong,
+    small,
+    table,
+    thead,
+    tbody,
+    tr,
+    th,
+    td
+  ) {
+    min-width: 0;
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+
+  .tel-main,
+  .tel-hero {
+    padding-inline: 0.75rem;
+  }
+
+  .tel-tool,
+  .tel-results-panel,
+  .tel-export-panel,
+  .tel-method,
+  .tel-privacy {
+    padding: 0.85rem;
+  }
+
+  .tel-button,
+  .tel-file-label {
+    width: 100%;
+  }
+
+  .tel-result-row,
+  .fr-telecom-metrics,
+  .tel-hub-list {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .tel-table-wrap,
+  .fr-telecom-table-wrap {
+    overflow: visible;
+  }
+
+  .tel-table,
+  .fr-telecom-table-wrap table,
+  .tel-table tbody,
+  .fr-telecom-table-wrap tbody,
+  .tel-table tr,
+  .fr-telecom-table-wrap tr,
+  .tel-table td,
+  .fr-telecom-table-wrap td {
+    display: block;
+    width: 100%;
+  }
+
+  .tel-table thead,
+  .fr-telecom-table-wrap thead {
+    display: none;
+  }
+
+  .tel-table tr,
+  .fr-telecom-table-wrap tr {
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--tel-border);
+  }
+
+  .tel-table td,
+  .fr-telecom-table-wrap td {
+    padding: 0.35rem 0;
+    border: 0;
+  }
+
+  .tel-table td::before,
+  .fr-telecom-table-wrap td::before {
+    content: attr(data-label);
+    display: block;
+    margin-bottom: 0.15rem;
+    color: var(--tel-muted);
+    font-size: 0.72em;
+    font-weight: 700;
+  }
+
+  .tel-hub-card {
+    overflow: visible;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

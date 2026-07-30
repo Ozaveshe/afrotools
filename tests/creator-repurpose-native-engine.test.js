@@ -1,0 +1,13 @@
+const assert=require("node:assert/strict"),fs=require("node:fs"),path=require("node:path"),vm=require("node:vm");
+const context={console,Date,Math,JSON};context.window=context;
+vm.runInNewContext(fs.readFileSync(path.join(__dirname,"..","engines","src","creator-repurpose-engine.js"),"utf8"),context);
+const engine=context.AfroTools.RepurposeEngine;
+const result=engine.generateLocalOutputs("Une entreprise créative doit communiquer clairement avec ses clients.","blog_post",["instagram","twitter","newsletter","blog"],"fr");
+assert.equal(result.outputs.length,4);
+assert.equal(result.language,"fr");
+assert.ok(result.sourceWordCount>5);
+assert.match(result.outputs.find(item=>item.platform==="twitter").text,/1\/2/);
+assert.match(result.outputs.find(item=>item.platform==="blog").text,/vérifiez les faits/);
+assert.throws(()=>engine.generateLocalOutputs("court","blog_post",["instagram"],"fr"),/20 characters/);
+assert.throws(()=>engine.generateLocalOutputs("Contenu suffisamment long pour être adapté.","blog_post",[],"fr"),/platform/);
+console.log("creator-repurpose native engine: 7 assertions passed");

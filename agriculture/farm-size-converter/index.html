@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -78,8 +78,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
 <style>
 :root{
@@ -355,63 +355,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 </afro-related-tools>
 <afro-footer></afro-footer>
 
+<script src="/data/agriculture/farm-size-data.js?v=694578af"></script>
+<script src="/engines/farm-size-engine.js?v=89b4acf2"></script>
 <script>
 // ═══════════════════════════════════════════════════
 //  LAND UNITS DATA
 // ═══════════════════════════════════════════════════
-var LAND_UNITS = {
-  // INTERNATIONAL
-  "hectare":     { name: "Hectare (ha)", sqm: 10000, category: "international", abbr: "ha" },
-  "acre":        { name: "Acre", sqm: 4046.86, category: "international", abbr: "ac" },
-  "sqm":         { name: "Square Meter (m²)", sqm: 1, category: "international", abbr: "m²" },
-  "sqkm":        { name: "Square Kilometer (km²)", sqm: 1000000, category: "international", abbr: "km²" },
-  "sqft":        { name: "Square Foot (ft²)", sqm: 0.092903, category: "international", abbr: "ft²" },
-  // NIGERIA
-  "plot_ng_standard": { name: "Plot — Nigeria Standard (648 m²)", sqm: 648, category: "nigeria", abbr: "plot", notes: "60ft × 120ft = 18m × 36m. Most common in Lagos, Ogun, Oyo." },
-  "plot_ng_450":      { name: "Plot — Nigeria 450 m²", sqm: 450, category: "nigeria", abbr: "plot", notes: "15m × 30m. Common in Abuja (some areas), Kaduna, Enugu." },
-  "plot_ng_460":      { name: "Plot — Nigeria FCT/Abuja (460 m²)", sqm: 460, category: "nigeria", abbr: "plot", notes: "AGIS standard plot in FCT Abuja." },
-  "plot_ng_930":      { name: "Plot — Nigeria 930 m² (half acre)", sqm: 930, category: "nigeria", abbr: "plot", notes: "Half acre. Used in some northern states." },
-  // EGYPT & SUDAN
-  "feddan":      { name: "Feddan (Egypt / Sudan)", sqm: 4200, category: "egypt_sudan", abbr: "feddan", notes: "1 feddan = 24 kirat = 0.42 ha. Traditional Egyptian & Sudanese unit." },
-  "kirat":       { name: "Kirat (Egypt)", sqm: 175, category: "egypt_sudan", abbr: "kirat", notes: "1/24 of a feddan. Traditional sub-unit." },
-  "sahm":        { name: "Sahm (Egypt)", sqm: 350, category: "egypt_sudan", abbr: "sahm", notes: "2 kirat = 1 sahm." },
-  "qasaba":      { name: "Qasaba sq. (Egypt)", sqm: 7.29, category: "egypt_sudan", abbr: "qasaba", notes: "1 qasaba ≈ 2.7m linear. 7.29 m² when squared." },
-  // SOUTH AFRICA & SOUTHERN AFRICA
-  "morgen":      { name: "Morgen (South Africa / Namibia)", sqm: 8567, category: "southern_africa", abbr: "morgen", notes: "Cape morgen. Used in SA, Namibia, Zimbabwe. ~2.1 acres. Historical Dutch unit." },
-  // ETHIOPIA & ERITREA
-  "timad":       { name: "Timad (Ethiopia)", sqm: 2500, category: "ethiopia", abbr: "timad", notes: "~0.25 ha. Common in Amhara & Tigray. 'Area plowed by a pair of oxen in one day.'" },
-  "tseri":       { name: "Tseri (Ethiopia / Eritrea)", sqm: 2500, category: "ethiopia", abbr: "tseri", notes: "~0.25 ha. Used in Tigray and Eritrea. Similar to timad." },
-  "gasha":       { name: "Gasha / Gasga (Ethiopia)", sqm: 400000, category: "ethiopia", abbr: "gasha", notes: "~40 ha. Traditional large land grant unit." },
-  "kert":        { name: "Kert (Ethiopia)", sqm: 625, category: "ethiopia", abbr: "kert", notes: "~1/16 of a hectare. Used in some Ethiopian regions." },
-  // MAURITIUS & ISLANDS
-  "arpent":      { name: "Arpent (Mauritius / Seychelles)", sqm: 3403, category: "islands", abbr: "arpent", notes: "French colonial unit. 100 toises × 100 toises. Still used for sugar cane land." },
-  "perche_sq":   { name: "Perche carrée (Mauritius)", sqm: 34.03, category: "islands", abbr: "perche", notes: "1/100th of an arpent. Sub-unit." },
-  // GHANA
-  "rope_gh":     { name: "Rope (Ghana — 100ft)", sqm: 929, category: "ghana", abbr: "rope", notes: "100ft × 100ft. Informal unit used in land transactions." },
-  "polo_gh":     { name: "Polo (Ghana)", sqm: 625, category: "ghana", abbr: "polo", notes: "25m × 25m. Used in cocoa farming regions." },
-  // FRANCOPHONE
-  "are":         { name: "Are", sqm: 100, category: "francophone", abbr: "are", notes: "100 m². Used in francophone Africa (Morocco, Tunisia, Algeria, Senegal, etc.)." },
-  "corde_sn":    { name: "Corde (Senegal)", sqm: 2500, category: "francophone", abbr: "corde", notes: "Traditional Senegalese unit. ~0.25 ha. Varies by region." },
-  // REFERENCE
-  "football_pitch": { name: "Football Pitch (FIFA)", sqm: 7140, category: "reference", abbr: "pitch", notes: "105m × 68m = 7,140 m² = ~0.71 ha. A useful mental reference." },
-  "tennis_court":   { name: "Tennis Court", sqm: 260, category: "reference", abbr: "court", notes: "23.77m × 10.97m ≈ 261 m²." },
-  "basketball_court": { name: "Basketball Court", sqm: 420, category: "reference", abbr: "court", notes: "28m × 15m = 420 m²." }
-};
-
-var CATEGORY_LABELS = {
-  "international":  "International Standard",
-  "nigeria":        "Nigeria",
-  "egypt_sudan":    "Egypt & Sudan",
-  "southern_africa":"Southern Africa",
-  "ethiopia":       "Ethiopia & Eritrea",
-  "islands":        "Mauritius & Islands",
-  "ghana":          "Ghana",
-  "francophone":    "Francophone Africa",
-  "reference":      "Reference (Visual)"
-};
-
-// KEY UNITS shown in quick-reference tiles
-var KEY_REFS = ["sqm","hectare","acre","sqkm","feddan","plot_ng_standard","morgen","timad","arpent","football_pitch"];
+var FARM_SIZE_DATA = window.AfroTools.FarmSizeData;
+var FARM_SIZE_ENGINE = window.AfroTools.FarmSizeEngine;
+var LAND_UNITS = FARM_SIZE_DATA.units;
+var CATEGORY_LABELS = FARM_SIZE_DATA.categoryLabels;
+var KEY_REFS = FARM_SIZE_DATA.keyRefs;
 
 // ═══════════════════════════════════════════════════
 //  POPULATE SELECTS
@@ -477,78 +431,59 @@ function fmt(n) {
 //  CONVERT
 // ═══════════════════════════════════════════════════
 function convert() {
-  var val     = parseFloat(document.getElementById('inputVal').value);
+  var val = parseFloat(document.getElementById('inputVal').value);
   var fromKey = document.getElementById('fromUnit').value;
-  var toKey   = document.getElementById('toUnit').value;
+  var toKey = document.getElementById('toUnit').value;
+  var model = FARM_SIZE_ENGINE.calculate({ amount: val, fromKey: fromKey, toKey: toKey }, FARM_SIZE_DATA);
 
-  if (isNaN(val) || val < 0) {
+  if (!model.ok) {
     document.getElementById('inputVal').focus();
     return;
   }
+  window.FARM_SIZE_LAST_RESULT = model;
 
-  var fromUnit = LAND_UNITS[fromKey];
-  var toUnit   = LAND_UNITS[toKey];
+  document.getElementById('eqFrom').textContent = fmt(model.input.amount) + ' ' + model.fromUnit.name;
+  document.getElementById('eqVal').textContent = fmt(model.result);
+  document.getElementById('eqUnit').textContent = model.toUnit.name;
 
-  // Convert via m²
-  var sqm    = val * fromUnit.sqm;
-  var result = sqm / toUnit.sqm;
-
-  // Primary result
-  document.getElementById('eqFrom').textContent  = fmt(val) + ' ' + fromUnit.name;
-  document.getElementById('eqVal').textContent   = fmt(result);
-  document.getElementById('eqUnit').textContent  = toUnit.name;
-
-  // Football pitch context
-  var pitches = sqm / 7140;
+  var context = model.context;
   var ctxStr;
-  if (pitches < 0.01)      ctxStr = 'About ' + fmt(sqm) + ' m² — smaller than a tennis court';
-  else if (pitches < 0.1)  ctxStr = 'About ' + fmt(pitches * 100) + '% of a football pitch';
-  else if (pitches < 1)    ctxStr = 'About ' + fmt(pitches) + ' football pitches';
-  else if (pitches < 1000) ctxStr = fmt(pitches) + ' football pitches';
-  else                     ctxStr = fmt(pitches) + ' football pitches (' + fmt(sqm / 1000000) + ' km²)';
+  if (context.code === 'smaller-than-tennis') ctxStr = 'About ' + fmt(context.squareMetres) + ' m² — smaller than a tennis court';
+  else if (context.code === 'pitch-percent') ctxStr = 'About ' + fmt(context.percent) + '% of a football pitch';
+  else if (context.code === 'pitch-about') ctxStr = 'About ' + fmt(context.pitches) + ' football pitches';
+  else if (context.code === 'pitches') ctxStr = fmt(context.pitches) + ' football pitches';
+  else ctxStr = fmt(context.pitches) + ' football pitches (' + fmt(context.squareKilometres) + ' km²)';
   document.getElementById('eqContext').textContent = '≈ ' + ctxStr;
 
-  // Country context for local units
   var ctxEl = document.getElementById('countryCtx');
-  if (fromUnit.notes) {
-    ctxEl.innerHTML = '<strong>About this unit:</strong> ' + fromUnit.notes;
+  if (model.fromUnit.notes) {
+    ctxEl.innerHTML = '<strong>About this unit:</strong> ' + model.fromUnit.notes;
     ctxEl.style.display = 'block';
   } else {
     ctxEl.style.display = 'none';
   }
 
-  // Key reference tiles
   var grid = document.getElementById('resultGrid');
   grid.innerHTML = '';
-  KEY_REFS.forEach(function(key) {
-    if (key === fromKey && key === toKey) return;
-    var u    = LAND_UNITS[key];
-    var conv = sqm / u.sqm;
+  model.keyReferences.forEach(function(item) {
     var tile = document.createElement('div');
-    tile.className = 'result-tile' + (key === toKey || key === fromKey ? ' highlight' : '');
+    tile.className = 'result-tile' + (item.highlight ? ' highlight' : '');
     tile.innerHTML =
-      '<div class="rt-label">' + u.name + '</div>' +
-      '<div class="rt-val">' + fmt(conv) + ' ' + u.abbr + '</div>' +
-      (key === 'football_pitch' ? '<div class="rt-sub">≈ ' + fmt(conv) + ' pitches</div>' : '');
+      '<div class="rt-label">' + item.unit.name + '</div>' +
+      '<div class="rt-val">' + fmt(item.value) + ' ' + item.unit.abbr + '</div>' +
+      (item.key === 'football_pitch' ? '<div class="rt-sub">≈ ' + fmt(item.value) + ' pitches</div>' : '');
     grid.appendChild(tile);
   });
 
-  // Full reference table
   var tbody = document.getElementById('refTableBody');
   tbody.innerHTML = '';
-  var catOrder = ["international","nigeria","egypt_sudan","southern_africa","ethiopia","islands","ghana","francophone","reference"];
-  catOrder.forEach(function(cat) {
-    Object.keys(LAND_UNITS).forEach(function(key) {
-      var u = LAND_UNITS[key];
-      if (u.category !== cat) return;
-      var conv = sqm / u.sqm;
-      var tr = document.createElement('tr');
-      tr.innerHTML =
-        '<td>' + u.name + '</td>' +
-        '<td style="font-weight:700">' + fmt(conv) + ' ' + u.abbr + '</td>' +
-        '<td><span class="cat-badge cat-' + cat + '">' + CATEGORY_LABELS[cat] + '</span></td>';
-      tbody.appendChild(tr);
-    });
+  model.table.forEach(function(item) {
+    var tr = document.createElement('tr');
+    tr.innerHTML =
+      '<td>' + item.unit.name + '</td>' +
+      '<td style="font-weight:700">' + fmt(item.value) + ' ' + item.unit.abbr + '</td>' +
+      '<td><span class="cat-badge cat-' + item.category + '">' + CATEGORY_LABELS[item.category] + '</span></td>';
+    tbody.appendChild(tr);
   });
 
   document.getElementById('results').classList.add('show');
@@ -587,6 +522,6 @@ convert();
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

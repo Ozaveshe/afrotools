@@ -1,0 +1,1243 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta name="afrotools-content-id" content="fr-developer:ussd-flow-builder">
+<meta name="afrotools-source-owner" content="scripts/build-french-developer-native-clones.js">
+<meta name="afrotools-source-input" content="tools/ussd-flow-builder/index.html">
+<meta name="afrotools-source-hash" content="7ef4c5a25ad15f53">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Constructeur de flux USSD | AfroTools</title>
+<meta name="description" content="Constructeur de flux USSD gratuit, local et privé dans votre navigateur.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Constructeur et simulateur de flux USSD pour l'Afrique | AfroTools">
+<meta property="og:description" content="Créez des flux USSD avec la simulation téléphonique, les vérifications CON/END, les avertissements de limite de caractères, les charges utiles de rappel et les notes de transfert de lancement.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/ussd-flow-builder.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/constructeur-flux-ussd/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Constructeur et simulateur de flux USSD pour l'Afrique | AfroTools">
+<meta name="twitter:description" content="Concevez, lintez, simulez et exportez des flux USSD prêts pour l'Afrique avec des notes de transfert de lancement.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/ussd-flow-builder.webp">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Constructeur et simulateur de flux USSD pour l'Afrique","applicationCategory":"DéveloppeurApplication","operatingSystem":"Web","url":"https://afrotools.com/fr/tools/constructeur-flux-ussd/","description":"Concevez, lintez, simulez et exportez des flux de menu USSD avec la validation CON/END, les limites de caractères des opérateurs de télécommunications, les charges utiles de test de rappel et les notes de transfert de lancement.","featureList":["Générateur de cartes d'écran USSD","Simulateur de session de type téléphonique","Validation des réponses CON et END","Avertissements de limite de caractère du marché","Gestionnaires de démarrage de rappel Node et PHP","Exportation du flux JSON","Charge utile du test de rappel","Brief de transfert de lancement"],"browserRequirements":"Fonctionne dans un navigateur moderne. L'état du flux est stocké localement, sauf si l'utilisateur exporte un fichier.","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"image":"https://afrotools.com/assets/img/tools/ussd-flow-builder.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Comment concevoir et tester un flux de menu USSD","description":"Créez des écrans USSD, simulez la saisie de l'utilisateur, validez la forme de la réponse de rappel, puis exportez le code et lancez les notes.","step":[{"@type":"HowToStep","name":"Choisir le fournisseur et les règles du marché","text":"Définissez le code de service, le modèle de fournisseur, le marché et le délai d'expiration afin que le constructeur puisse appliquer des contrôles conservateurs de limite de caractères."},{"@type":"HowToStep","name":"Menu de construction, écrans de saisie et finaux","text":"Créez des identifiants d'écran, des invites, des options de menu, des variables capturées et des réponses finales END."},{"@type":"HowToStep","name":"Simuler la session téléphonique","text":"Utilisez le simulateur de téléphone pour tester les chemins de menu, les entrées invalides, la navigation arrière et la navigation d'accueil."},{"@type":"HowToStep","name":"Examiner les peluches et exporter le transfert","text":"Vérifiez la forme CON/END, les liens morts, les invites longues et les écrans END, puis exportez JSON, le code, les charges utiles et les notes de lancement."}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils développeur","item":"https://afrotools.com/developer-tools/"},{"@type":"ListItem","position":3,"name":"USSD Générateur de flux","item":"https://afrotools.com/fr/tools/constructeur-flux-ussd/"}]}</script>
+<style>
+:root{
+  --ink:#14213d;
+  --muted:#64748b;
+  --line:#dbe4ee;
+  --soft:#f7fafc;
+  --panel:#ffffff;
+  --green:#047857;
+  --teal:#0891b2;
+  --amber:#b45309;
+  --red:#b91c1c;
+  --blue:#1d4ed8;
+  --shadow:0 10px 30px rgba(15,23,42,.08);
+  --mono:'JetBrains Mono',ui-monospace,SFMono-Regular,Consolas,monospace;
+}
+body{font-family:Inter,system-ui,sans-serif;background:#f8fafc;color:var(--ink)}
+.hero{background:linear-gradient(135deg,#07151f 0%,#12343b 52%,#0f766e 100%);color:#fff}
+.hero-inner{max-width:1240px;margin:0 auto;padding:42px 22px 34px}
+.breadcrumb{display:flex;gap:8px;align-items:center;font-size:.74rem;text-transform:uppercase;letter-spacing:.08em;color:rgba(255,255,255,.62);margin-bottom:14px}
+.breadcrumb a{color:rgba(255,255,255,.72);text-decoration:none}
+.breadcrumb a:hover{color:#fff}
+h1{font-size:clamp(2rem,5vw,4.6rem);line-height:.98;margin:0 0 14px;font-weight:800;letter-spacing:0;max-width:920px}
+.hero-copy{font-size:1.02rem;line-height:1.72;max-width:760px;color:rgba(255,255,255,.82);margin:0}
+.hero-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-top:26px}
+.hero-stat{border:1px solid rgba(255,255,255,.16);background:rgba(255,255,255,.08);border-radius:8px;padding:14px}
+.hero-stat strong{display:block;font-size:1.45rem;color:#fff}
+.hero-stat span{font-size:.78rem;color:rgba(255,255,255,.68)}
+.wrap{max-width:1240px;margin:0 auto;padding:24px 22px 70px}
+.topbar{display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap}
+.btn{appearance:none;min-height:44px;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 13px;font:700 .82rem Inter,sans-serif;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:6px}
+.btn:hover{border-color:#94a3b8;background:#f8fafc}
+.btn.primary{background:#0f766e;color:#fff;border-color:#0f766e}
+.btn.primary:hover{background:#115e59}
+.btn.danger{color:var(--red)}
+.btn.small{font-size:.76rem;padding:7px 10px}
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 380px;gap:18px;align-items:start}
+.left{display:grid;gap:16px}
+.right{display:grid;gap:16px;position:sticky;top:78px}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:8px;box-shadow:var(--shadow);overflow:hidden}
+.card-head{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 16px;border-bottom:1px solid var(--line);background:#fbfdff}
+.card-title{font-size:.76rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#334155}
+.card-body{padding:16px}
+.form-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.form-grid.two{grid-template-columns:repeat(2,minmax(0,1fr))}
+.field{min-width:0}
+label{display:block;font-size:.74rem;font-weight:700;color:#475569;margin-bottom:5px}
+input,select,textarea{width:100%;min-height:44px;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:7px;background:#fff;color:var(--ink);font:500 .88rem Inter,sans-serif;padding:9px 10px}
+textarea{min-height:96px;resize:vertical;line-height:1.45}
+input:focus,select:focus,textarea:focus{outline:none;border-color:#0f766e;box-shadow:0 0 0 3px rgba(15,118,110,.14)}
+.hint{font-size:.78rem;line-height:1.55;color:var(--muted);margin:8px 0 0}
+.screen-list{display:flex;gap:8px;flex-wrap:wrap}
+.screen-chip{min-width:44px;min-height:44px;border:1px solid var(--line);background:#fff;border-radius:7px;padding:8px 10px;cursor:pointer;color:#334155;font-weight:700;font-size:.79rem}
+.screen-chip.active{background:#ecfdf5;border-color:#0f766e;color:#065f46}
+.screen-chip .type{display:block;font-size:.68rem;font-weight:700;color:#64748b;margin-top:2px}
+.options{display:grid;gap:8px}
+.option-row{display:grid;grid-template-columns:64px minmax(0,1fr) minmax(120px,180px) 38px;gap:8px;align-items:end}
+.metric-row{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.metric{border:1px solid var(--line);border-radius:8px;padding:12px;background:#fff}
+.metric strong{display:block;font-size:1.25rem}
+.metric span{display:block;font-size:.74rem;color:var(--muted);margin-top:2px}
+.lint-list{display:grid;gap:8px}
+.lint{border-left:4px solid #94a3b8;background:#f8fafc;border-radius:7px;padding:10px 11px;font-size:.82rem;line-height:1.45}
+.lint.ok{border-left-color:var(--green);background:#ecfdf5;color:#064e3b}
+.lint.warn{border-left-color:var(--amber);background:#fffbeb;color:#78350f}
+.lint.error{border-left-color:var(--red);background:#fef2f2;color:#7f1d1d}
+.phone{background:#101820;border-radius:30px;padding:13px;max-width:285px;margin:0 auto;box-shadow:0 20px 45px rgba(2,6,23,.28)}
+.phone-top{height:20px;display:flex;align-items:center;justify-content:center;color:#64748b;font:600 .62rem var(--mono)}
+.screen{background:#f6f1d5;border-radius:17px;min-height:350px;color:#0f172a;padding:14px;display:flex;flex-direction:column;font:500 .86rem var(--mono);line-height:1.55}
+.ussd-text{white-space:pre-wrap;word-break:break-word;flex:1}
+.ussd-entry{display:flex;gap:7px;margin-top:12px}
+.ussd-entry input{font-family:var(--mono);font-size:.84rem;border-color:#a8a29e}
+.phone-nav{height:46px;display:flex;gap:28px;align-items:center;justify-content:center;color:#475569;font-size:.68rem}
+.transcript{max-height:210px;overflow:auto;border:1px solid var(--line);border-radius:7px;background:#f8fafc;padding:10px;font:.76rem var(--mono);line-height:1.5;white-space:pre-wrap}
+.tabs{display:flex;border-bottom:1px solid var(--line);background:#f8fafc;overflow:auto}
+  .tab{border:0;border-right:1px solid var(--line);background:transparent;padding:11px 13px;font:800 .73rem Inter,sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#64748b;cursor:pointer;min-height:44px}
+.tab.active{background:#fff;color:#0f766e}
+.tab-panel{display:none}
+  .tab-panel.active{display:block}
+  .codebox{margin:0;background:#0b1220;color:#dbeafe;border-radius:0;padding:16px;overflow:auto;white-space:pre;line-height:1.55;font:500 .78rem var(--mono);max-height:440px}
+  .handoff-section{max-width:1180px;margin:24px auto 0;padding:0 0 12px}
+  .handoff-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(260px,.55fr);gap:16px}
+  .handoff-section h2{font-size:1.45rem;line-height:1.2;margin:0 0 10px;color:var(--ink)}
+  .handoff-section p{font-size:.9rem;line-height:1.7;color:#475569;margin:0 0 12px}
+  .handoff-list{display:grid;gap:8px;margin:0;padding:0;list-style:none}
+  .handoff-list li{border:1px solid var(--line);background:#fff;border-radius:8px;padding:10px 12px;font-size:.84rem;line-height:1.5;color:#334155}
+  .handoff-note{border:1px solid #bae6fd;background:#f0f9ff;border-radius:8px;padding:14px;color:#075985;font-size:.84rem;line-height:1.6}
+.ussd-faq__grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.ussd-faq details{border:1px solid var(--line);background:#fff;border-radius:8px;padding:12px}
+.ussd-faq summary{min-height:44px;display:flex;align-items:center;cursor:pointer;font-weight:800;font-size:.86rem;color:var(--ink)}
+.ussd-faq p{margin:8px 0 0;font-size:.84rem;line-height:1.62;color:#475569}
+.source-card{display:grid;gap:8px}
+.source-card a{color:#0f766e;text-decoration:none;font-weight:700}
+.source-card a:hover{text-decoration:underline}
+.checklist{display:grid;gap:8px}
+.check{display:flex;gap:9px;align-items:flex-start;font-size:.82rem;line-height:1.5;color:#334155}
+.check span{width:18px;height:18px;border-radius:50%;background:#dcfce7;color:#166534;display:inline-flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:800;flex:0 0 18px}
+.toast{position:fixed;right:18px;bottom:18px;background:#0f172a;color:#fff;border-radius:8px;padding:11px 14px;font-size:.84rem;font-weight:700;box-shadow:0 12px 30px rgba(0,0,0,.24);opacity:0;transform:translateY(8px);transition:.18s;z-index:20}
+.toast.show{opacity:1;transform:translateY(0)}
+@media(max-width:980px){
+  .grid{grid-template-columns:1fr}
+  .right{position:static}
+  .hero-grid,.metric-row,.handoff-grid,.ussd-faq__grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+}
+@media(max-width:680px){
+  .hero-inner,.wrap{padding-left:16px;padding-right:16px}
+  .form-grid,.form-grid.two,.hero-grid,.metric-row,.handoff-grid,.ussd-faq__grid{grid-template-columns:1fr}
+  .option-row{grid-template-columns:56px 1fr}
+  .option-row .remove-cell{grid-column:1 / -1}
+}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment dois-je utiliser ce constructeur ?","acceptedAnswer":{"@type":"Answer","text":"Créez des écrans de menu, de saisie et END, simulez une saisie téléphonique, examinez les avertissements de charpie, puis exportez JSON, les gestionnaires de démarrage, les charges utiles de rappel et le brief de lancement."}},{"@type":"Question","name":"Que dois-je vérifier avant de soumettre ?","acceptedAnswer":{"@type":"Answer","text":"Vérifiez les réponses CON/END, la longueur de l'invite, les liens morts, les écrans END, les champs de charge utile de rappel, la persistance de la session, l'hébergement HTTPS, la minimisation des données et les règles actuelles du fournisseur."}},{"@type":"Question","name":"Cela fournit-il un code USSD actif ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s’agit d’un outil de conception et de code de démarrage local. Votre agrégateur ou opérateur de télécommunications contrôle toujours l’approvisionnement, la facturation, la certification et le lancement de la production des shortcodes."}}]}</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Constructeur et simulateur de flux USSD pour l'Afrique","description":"Concevez, lintez, simulez et exportez des flux de menu USSD avec la validation CON/END, les limites de caractères des opérateurs de télécommunications, les charges utiles de test de rappel et les notes de transfert de lancement.","url":"https://afrotools.com/fr/tools/constructeur-flux-ussd/","inLanguage":"en","applicationCategory":"UtilitairesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/ussd-flow-builder.webp"}</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/constructeur-flux-ussd/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/ussd-flow-builder/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/constructeur-flux-ussd/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mjenzi-mtiririko-ussd/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/ussd-flow-builder/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<header class="hero">
+  <div class="hero-inner">
+    <nav class="breadcrumb">
+      <a href="/">AfroTools</a><span>/</span>
+      <a href="/developer-tools/">Outils développeur</a><span>/</span>
+      <span>USSD Générateur de flux</span>
+    </nav>
+    <h1>Constructeur de flux USSD</h1>
+    <p class="hero-copy">Créez des états de menu, testez une session de type téléphone en direct, détectez les erreurs CON/END, surveillez les limites de caractères des opérateurs de télécommunications et exportez les gestionnaires de démarrage pour les rappels de style Africa's Talking.</p>
+    <div class="hero-grid">
+      <div class="hero-stat"><strong id="hero-screens">0</strong><span>écrans en flux</span></div>
+      <div class="hero-stat"><strong id="hero-issues">0</strong><span>problèmes de peluches</span></div>
+      <div class="hero-stat"><strong>CON/END</strong><span>contrat de réponse</span></div>
+      <div class="hero-stat"><strong>160</strong><span>Limite du menu Safaricom</span></div>
+    </div>
+  </div>
+</header>
+
+<main class="wrap">
+  <div class="topbar">
+    <div class="toolbar">
+      <button class="btn primary" id="save-flow" type="button">Enregistrer le flux</button>
+      <button class="btn" id="export-flow" type="button">Exporter JSON</button>
+      <button class="btn" id="import-flow" type="button">Importer JSON</button>
+      <input aria-label="Importer le fichier" id="import-file" type="file" accept="application/json" hidden>
+    </div>
+    <div class="toolbar">
+      <select id="template-select" aria-label="Charger le modèle">
+        <option value="">Charger le modèle</option>
+        <option value="wallet">Portefeuille d'argent mobile</option>
+        <option value="clinic">Rendez-vous à la clinique</option>
+        <option value="market">Service de prix à la ferme</option>
+        <option value="loan">Remboursement du prêt</option>
+      </select>
+      <button class="btn" id="reset-flow" type="button">Réinitialiser</button>
+    </div>
+  </div>
+
+  <section class="grid">
+    <div class="left">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Paramètres de flux</span></div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="field"><label for="flow-name">Nom du produit</label><input id="flow-name" value="AfroWallet"></div>
+            <div class="field"><label for="service-code">Code de service</label><input id="service-code" value="*384*123#"></div>
+            <div class="field"><label for="provider">Modèle de fournisseur</label><select id="provider"><option value="africastalking">Africa's Talking</option><option value="generic">Passerelle USSD générique</option><option value="hubtel">Rappel de style Hubtel</option></select></div>
+          </div>
+          <div class="form-grid" style="margin-top:12px">
+            <div class="field"><label for="country">Marché</label><select id="country"><option value="ke-safaricom">Kenya, Safaricom</option><option value="ke-airtel">Kenya, Airtel</option><option value="ng-conservative">Conservateur nigérian</option><option value="generic">Conservateur générique</option></select></div>
+            <div class="field"><label for="session-timeout">Secondes d'expiration de la session</label><input id="session-timeout" type="number" value="180" min="20" max="600"></div>
+            <div class="field"><label for="home-screen">Écran d'accueil</label><select id="home-screen"></select></div>
+          </div>
+          <p class="hint">Africa's Talking s'attend à ce que les réponses de rappel commencent par CON pour les menus continus ou par END pour les écrans finaux. Ce générateur valide cette forme avant de copier le code.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Plan d'écran</span>
+          <div class="toolbar"><button class="btn small" id="add-screen" type="button">Ajouter un écran</button><button class="btn small danger" id="delete-screen" type="button">Delete current</button></div>
+        </div>
+        <div class="card-body">
+          <div class="screen-list" id="screen-list"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head">
+          <span class="card-title">Éditeur d'écran</span>
+          <button class="btn small" id="duplicate-screen" type="button">Dupliquer</button>
+        </div>
+        <div class="card-body">
+          <div class="form-grid">
+            <div class="field"><label for="screen-id">ID d'écran</label><input id="screen-id" placeholder="home"></div>
+            <div class="field"><label for="screen-type">Type d'écran</label><select id="screen-type"><option value="menu">Menus</option><option value="input">Capture d'entrée</option><option value="end">Écran END final</option></select></div>
+            <div class="field"><label for="screen-var">Variable capturée</label><input id="screen-var" placeholder="montant"></div>
+          </div>
+          <div class="field" style="margin-top:12px"><label for="screen-prompt">Texte d'invite</label><textarea id="screen-prompt" placeholder="Welcome text or input prompt"></textarea></div>
+          <div class="form-grid two" style="margin-top:12px">
+            <div class="field"><label for="screen-next">Écran suivant pour la saisie</label><select id="screen-next"></select></div>
+            <div class="field"><label for="screen-note">Note interne</label><input id="screen-note" placeholder="Note de mise en œuvre facultative"></div>
+          </div>
+          <div style="margin-top:14px">
+            <div class="card-head" style="margin:-1px -1px 12px;border:1px solid var(--line);border-radius:8px 8px 0 0"><span class="card-title">Options des menus</span><button class="btn small" id="add-option" type="button">Ajouter une option</button></div>
+            <div class="options" id="option-list"></div>
+          </div>
+          <div class="toolbar" style="margin-top:14px"><button class="btn primary" id="apply-screen" type="button">Appliquer les modifications d'écran</button></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Sortie générée</span><button class="btn small" id="copy-output" type="button">Copier la sortie active</button></div>
+        <div class="tabs">
+          <button class="tab active" data-output="node" type="button">Gestionnaire Node</button>
+          <button class="tab" data-output="php" type="button">Gestionnaire PHP</button>
+          <button class="tab" data-output="json" type="button">Flux JSON</button>
+          <button class="tab" data-output="payload" type="button">Tester la charge utile</button>
+          <button class="tab" data-output="brief" type="button">Brief de lancement</button>
+        </div>
+        <div class="tab-panel active" id="panel-node"><pre class="codebox" id="code-node"></pre></div>
+        <div class="tab-panel" id="panel-php"><pre class="codebox" id="code-php"></pre></div>
+        <div class="tab-panel" id="panel-json"><pre class="codebox" id="code-json"></pre></div>
+        <div class="tab-panel" id="panel-payload"><pre class="codebox" id="code-payload"></pre></div>
+        <div class="tab-panel" id="panel-brief"><pre class="codebox" id="code-brief"></pre></div>
+      </section>
+    </div>
+
+    <aside class="right">
+      <section class="card">
+        <div class="card-head"><span class="card-title">Simulateur de téléphone</span><button class="btn small" id="restart-session" type="button">Redémarrer</button></div>
+        <div class="card-body">
+          <div class="phone">
+            <div class="phone-top" id="phone-code">*384*123#</div>
+            <div class="screen">
+              <div class="ussd-text" id="phone-text"></div>
+              <div class="ussd-entry">
+                <input aria-label="Entrée téléphonique" id="phone-input" inputmode="numeric" placeholder="1">
+                <button class="btn small primary" id="send-input" type="button">Envoyer</button>
+              </div>
+            </div>
+            <div class="phone-nav"><span>Annuler</span><span>OK</span></div>
+          </div>
+          <p class="hint">Utilisez 0 pour revenir en arrière et 00 pour rentrer à la maison. Le simulateur conserve les variables de session en mémoire comme le ferait un véritable service de rappel.</p>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Santé du flux</span></div>
+        <div class="card-body">
+          <div class="metric-row">
+            <div class="metric"><strong id="m-screens">0</strong><span>screens</span></div>
+            <div class="metric"><strong id="m-end">0</strong><span>END écrans</span></div>
+            <div class="metric"><strong id="m-long">0</strong><span>menus longs</span></div>
+            <div class="metric"><strong id="m-dead">0</strong><span>liens morts</span></div>
+          </div>
+          <div class="lint-list" id="lint-list" style="margin-top:12px"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Transcription de la séance</span></div>
+        <div class="card-body"><div class="transcript" id="transcript"></div></div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Liste de contrôle de rappel</span></div>
+        <div class="card-body checklist">
+          <div class="check"><span>1</span><div>Exposer un HTTPS POST URL public tel que <strong>/ussd</strong>.</div></div>
+          <div class="check"><span>2</span><div>Lire <strong>ID de session</strong>, <strong>Code de service</strong>, <strong>Numéro de téléphone</strong> et <strong>text</strong> du corps de rappel.</div></div>
+          <div class="check"><span>3</span><div>Renvoyez du texte brut commençant par <strong>CON</strong> pour les menus ou <strong>END</strong> pour les écrans finaux.</div></div>
+          <div class="check"><span>4</span><div>Gardez les invites courtes. Certains menus des opérateurs de télécommunications kenyans comportent entre 160 et 184 caractères.</div></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-head"><span class="card-title">Références officielles</span></div>
+        <div class="card-body source-card">
+          <a href="https://help.africastalking.com/en/collections/150775-ussd" target="_blank" rel="noopener">Africa's Talking USSD aide</a>
+          <a href="https://help.africastalking.com/en/articles/484351-why-am-i-seeing-the-error-messages-response-should-start-with-a-con-or-an-end" target="_blank" rel="noopener">Erreur de réponse CON et END</a>
+          <a href="https://help.africastalking.com/en/articles/1284096-what-is-the-character-limit-for-ussd-menus-and-user-input-in-kenya" target="_blank" rel="noopener">Limites de caractères du menu Kenya</a>
+        </div>
+      </section>
+    </aside>
+  </section>
+
+<section class="handoff-section" aria-labelledby="ussd-handoff-title">
+  <div class="handoff-grid">
+    <div class="card">
+      <div class="card-body">
+        <h2 id="ussd-handoff-title">Préparez un transfert de passerelle avant la soumission du shortcode.</h2>
+        <p>Les fournisseurs USSD ont généralement besoin d'un rappel public URL, d'un contrat de réponse, d'exemples de charges utiles et d'une preuve que chaque chemin de menu se termine proprement. L'onglet de présentation du lancement transforme le flux local actuel en une note de transfert pour l'ingénierie, l'assurance qualité ou l'examen par l'agrégateur.</p>
+        <ul class="handoff-list">
+          <li>Utilisez le simulateur pour tester les chemins heureux, les entrées invalides, la navigation arrière et les réponses finales END.</li>
+          <li>Gardez les exemples de requêtes synthétiques. Ne mettez pas de codes PIN, de cartes d'identité nationales, de secrets de paiement ou de vrais numéros de téléphone dans les JSON partagés.</li>
+          <li>Exportez le flux JSON et lancez le brief ensemble afin que les développeurs de rappel puissent rejouer la même carte d'écran.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="handoff-note">
+      <strong>Ce que cet outil ne fait pas :</strong> il ne fournit pas de shortcode, n'héberge pas votre rappel, ne certifie pas une intégration de société de télécommunications, ne stocke pas les sessions de production et n'approuve pas la conformité des paiements. Confirmez les documents actuels de l'agrégateur, les limites des opérateurs de télécommunications et les règles de protection des données avant le lancement.
+    </div>
+  </div>
+</section>
+<section class="handoff-section ussd-faq" aria-labelledby="ussd-flow-builder-faq-title">
+  <h2 id="ussd-flow-builder-faq-title">USSD FAQ sur le générateur de flux</h2>
+  <div class="ussd-faq__grid"><details><summary>Comment dois-je utiliser ce constructeur ?</summary><p>Créez des écrans de menu, de saisie et END, simulez une saisie téléphonique, examinez les avertissements de charpie, puis exportez JSON, les gestionnaires de démarrage, les charges utiles de rappel et le brief de lancement.</p></details><details><summary>Que dois-je vérifier avant de soumettre ?</summary><p>Vérifiez les réponses CON/END, la longueur de l'invite, les liens morts, les écrans END, les champs de charge utile de rappel, la persistance de la session, l'hébergement HTTPS, la minimisation des données et les règles actuelles du fournisseur.</p></details><details><summary>Cela fournit-il un code USSD actif ?</summary><p>Non. Il s’agit d’un outil de conception et de code de démarrage local. Votre agrégateur ou opérateur de télécommunications contrôle toujours l’approvisionnement, la facturation, la certification et le lancement de la production des shortcodes.</p></details></div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="ussd-flow-builder">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">USSD contrôle de flux</span>
+          <h2 class="tool-verification-title">Valider le comportement du menu avant la soumission de l'opérateur de télécommunication</h2>
+          <p class="tool-verification-lead">Créez des écrans, simulez une session téléphonique, modifiez le comportement CON/END, surveillez les limites de caractères et exportez le code de démarrage de rappel.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Générateur de flux local</span>
+          <p class="tool-verification-note">Aucun code d'opérateur de télécommunication, d'agrégateur ou de USSD en direct n'est fourni.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Que vérifier</h3>
+          <ul class="tool-verification-list">
+            <li>Méthodologie : stocker les écrans/options localement, rendre l'état du simulateur, les liens et la longueur du menu Lint, puis générer Node, PHP, JSON et tester les sorties de charge utile.</li>
+            <li>Testez chaque chemin, entrée non valide, délai d'attente, comportement de retour/annulation, variante de langue et limite de caractères de l'opérateur de télécommunication avant la soumission.</li>
+            <li>Exportez JSON et le code uniquement après avoir examiné les règles de sécurité des rappels, de persistance de session, de journalisation et de minimisation des données.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limites</h3>
+          <ul class="tool-verification-list">
+            <li>Avis de non-responsabilité : conception et démarrage du code uniquement, pas d'approbation des opérateurs de télécommunications, de certification d'agrégateur, d'hébergement de production ou de conformité des paiements.</li>
+            <li>Les formats de rappel de la passerelle, les délais d'expiration des sessions, les règles de shortcode et les conditions de facturation diffèrent selon le marché et le fournisseur.</li>
+            <li>Ne mettez pas de codes PIN, d'identités nationales, de numéros de téléphone ou de secrets de paiement dans des exemples partagés.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#lint-list">Examiner le flux de charpie</a>
+        <p class="tool-verification-disclaimer">Note source/référence : vérifiez par rapport aux documents actuels de l'agrégateur, aux règles de soumission des opérateurs de télécommunications, aux exigences de protection des données et aux tests de rappel de production avant le lancement.</p>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div class="toast" id="toast"></div>
+<afro-related-tools data-ssr="1" category="developer" current="ussd-flow-builder">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Convertisseur de formats de données</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Simulateur de codes</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Testeur (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encodeur/Décodeur</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Générateur de hachage</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
+
+<script>
+(function(){
+  'use strict';
+
+  var STORAGE = 'afrotools.ussdFlow.v2';
+  var selectedId = 'home';
+  var activeOutput = 'node';
+  var session = null;
+  var dirtyEditor = false;
+
+  var limits = {
+    'ke-safaricom': { menu: 160, input: 80, label: 'Kenya Safaricom' },
+    'ke-airtel': { menu: 184, input: 90, label: 'Kenya Airtel' },
+    'ng-conservative': { menu: 160, input: 80, label: 'Nigeria conservative' },
+    generic: { menu: 150, input: 70, label: 'Generic conservative' }
+  };
+
+  var templates = {
+    wallet: {
+      name: 'AfroWallet',
+      serviceCode: '*384*123#',
+      provider: 'africastalking',
+      country: 'ke-safaricom',
+      timeout: 180,
+      home: 'home',
+      screens: [
+        {id:'home', type:'menu', prompt:'Welcome to AfroWallet', options:[
+          {key:'1', label:'Check balance', next:'balance'},
+          {key:'2', label:'Send money', next:'send_phone'},
+          {key:'3', label:'Buy airtime', next:'airtime_phone'}
+        ]},
+        {id:'balance', type:'end', prompt:'Your balance is KES 0.00. Thank you.'},
+        {id:'send_phone', type:'input', prompt:'Enter recipient phone number', variable:'recipient', next:'send_amount'},
+        {id:'send_amount', type:'input', prompt:'Enter amount', variable:'amount', next:'send_confirm'},
+        {id:'send_confirm', type:'menu', prompt:'Send {amount} to {recipient}?', options:[
+          {key:'1', label:'Confirm', next:'send_done'},
+          {key:'2', label:'Cancel', next:'home'}
+        ]},
+        {id:'send_done', type:'end', prompt:'Request received. You will get an SMS shortly.'},
+        {id:'airtime_phone', type:'input', prompt:'Enter phone number for airtime', variable:'airtimePhone', next:'airtime_amount'},
+        {id:'airtime_amount', type:'input', prompt:'Enter airtime amount', variable:'airtimeAmount', next:'airtime_done'},
+        {id:'airtime_done', type:'end', prompt:'Airtime request received for {airtimePhone}.'}
+      ]
+    },
+    clinic: {
+      name: 'ClinicConnect',
+      serviceCode: '*789#',
+      provider: 'africastalking',
+      country: 'ke-safaricom',
+      timeout: 180,
+      home: 'home',
+      screens: [
+        {id:'home', type:'menu', prompt:'ClinicConnect', options:[
+          {key:'1', label:'Book appointment', next:'clinic'},
+          {key:'2', label:'Check clinic hours', next:'hours'},
+          {key:'3', label:'Emergency contacts', next:'emergency'}
+        ]},
+        {id:'clinic', type:'menu', prompt:'Choose clinic', options:[
+          {key:'1', label:'Nairobi Central', next:'date'},
+          {key:'2', label:'Kisumu West', next:'date'}
+        ]},
+        {id:'date', type:'input', prompt:'Enter preferred date DDMM', variable:'date', next:'booked'},
+        {id:'booked', type:'end', prompt:'Appointment request received for {date}. We will confirm by SMS.'},
+        {id:'hours', type:'end', prompt:'Clinics open Mon to Sat, 8am to 5pm.'},
+        {id:'emergency', type:'end', prompt:'For emergencies call your local emergency line immediately.'}
+      ]
+    },
+    market: {
+      name: 'FarmPrice',
+      serviceCode: '*456#',
+      provider: 'africastalking',
+      country: 'ng-conservative',
+      timeout: 180,
+      home: 'home',
+      screens: [
+        {id:'home', type:'menu', prompt:'FarmPrice market service', options:[
+          {key:'1', label:'Maize prices', next:'maize'},
+          {key:'2', label:'Rice prices', next:'rice'},
+          {key:'3', label:'Set market alert', next:'phone'}
+        ]},
+        {id:'maize', type:'end', prompt:'Maize: Lagos NGN 620/kg, Kano NGN 570/kg. Prices are estimates.'},
+        {id:'rice', type:'end', prompt:'Rice: Lagos NGN 1,250/kg, Kano NGN 1,090/kg. Prices are estimates.'},
+        {id:'phone', type:'input', prompt:'Enter phone number for alerts', variable:'phone', next:'done'},
+        {id:'done', type:'end', prompt:'Alert saved for {phone}.'}
+      ]
+    },
+    loan: {
+      name: 'LoanAssist',
+      serviceCode: '*555#',
+      provider: 'africastalking',
+      country: 'generic',
+      timeout: 180,
+      home: 'home',
+      screens: [
+        {id:'home', type:'menu', prompt:'LoanAssist', options:[
+          {key:'1', label:'Check due amount', next:'due'},
+          {key:'2', label:'Request extension', next:'reason'},
+          {key:'3', label:'Pay instructions', next:'pay'}
+        ]},
+        {id:'due', type:'end', prompt:'Your current due amount is 0.00. This is a demo response.'},
+        {id:'reason', type:'input', prompt:'Enter reason for extension', variable:'reason', next:'extension_done'},
+        {id:'extension_done', type:'end', prompt:'Extension request received.'},
+        {id:'pay', type:'end', prompt:'Pay through your mobile money menu using business number 000000.'}
+      ]
+    }
+  };
+
+  var flow = clone(templates.wallet);
+
+  function $(id){ return document.getElementById(id); }
+  function clone(obj){ return JSON.parse(JSON.stringify(obj)); }
+  function esc(value){
+    return String(value == null ? '' : value).replace(/[&<>"']/g, function(ch){
+      return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];
+    });
+  }
+  function safeId(value){
+    return String(value || '').trim().toLowerCase().replace(/[^a-z0-9_]+/g,'_').replace(/^_+|_+$/g,'') || 'screen';
+  }
+  function screenById(id){ return flow.screens.find(function(screen){ return screen.id === id; }); }
+  function currentScreen(){ return screenById(selectedId) || flow.screens[0]; }
+  function optionTargetOptions(currentId){
+    return flow.screens.map(function(screen){
+      return '<option value="'+esc(screen.id)+'"'+(screen.id === currentId ? ' selected' : '')+'>'+esc(screen.id)+'</option>';
+    }).join('');
+  }
+  function toast(message){
+    var el = $('toast');
+    el.textContent = message;
+    el.classList.add('show');
+    clearTimeout(toast._timer);
+    toast._timer = setTimeout(function(){ el.classList.remove('show'); }, 1800);
+  }
+  function applyVars(text, vars){
+    return String(text || '').replace(/\{([a-zA-Z0-9_]+)\}/g, function(_, key){
+      return vars && Object.prototype.hasOwnProperty.call(vars, key) ? vars[key] : '{'+key+'}';
+    });
+  }
+  function buildMenuText(screen, vars){
+    var lines = [applyVars(screen.prompt, vars)];
+    (screen.options || []).forEach(function(opt){ lines.push(opt.key + '. ' + applyVars(opt.label, vars)); });
+    lines.push('0. Back');
+    lines.push('00. Home');
+    return lines.join('\n');
+  }
+  function responseFor(screen, vars){
+    if (!screen) return 'END Invalid flow state.';
+    if (screen.type === 'end') return 'END ' + applyVars(screen.prompt, vars);
+    if (screen.type === 'input') return 'CON ' + applyVars(screen.prompt, vars);
+    return 'CON ' + buildMenuText(screen, vars);
+  }
+  function compactFlow(){
+    return {
+      name: flow.name,
+      serviceCode: flow.serviceCode,
+      provider: flow.provider,
+      country: flow.country,
+      timeout: Number(flow.timeout) || 180,
+      home: flow.home,
+      screens: flow.screens
+    };
+  }
+
+  function syncSettingsFromInputs(){
+    flow.name = $('flow-name').value.trim() || 'USSD App';
+    flow.serviceCode = $('service-code').value.trim() || '*000#';
+    flow.provider = $('provider').value;
+    flow.country = $('country').value;
+    flow.timeout = Number($('session-timeout').value) || 180;
+    flow.home = $('home-screen').value || (flow.screens[0] && flow.screens[0].id) || 'home';
+  }
+  function syncSettingsToInputs(){
+    $('flow-name').value = flow.name || '';
+    $('service-code').value = flow.serviceCode || '';
+    $('provider').value = flow.provider || 'africastalking';
+    $('country').value = flow.country || 'generic';
+    $('session-timeout').value = flow.timeout || 180;
+  }
+
+  function renderHomeSelect(){
+    $('home-screen').innerHTML = optionTargetOptions(flow.home);
+    $('home-screen').value = flow.home || (flow.screens[0] && flow.screens[0].id) || '';
+  }
+  function renderScreenSelects(){
+    renderHomeSelect();
+    var current = currentScreen();
+    $('screen-next').innerHTML = '<option value="">No next screen</option>' + optionTargetOptions(current && current.next);
+  }
+  function renderScreenList(){
+    $('screen-list').innerHTML = flow.screens.map(function(screen){
+      return '<button class="screen-chip '+(screen.id === selectedId ? 'active' : '')+'" data-screen="'+esc(screen.id)+'" type="button">'+
+        esc(screen.id)+'<span class="type">'+esc(screen.type)+'</span></button>';
+    }).join('');
+  }
+  function renderEditor(){
+    var screen = currentScreen();
+    if (!screen) return;
+    $('screen-id').value = screen.id;
+    $('screen-type').value = screen.type || 'menu';
+    $('screen-var').value = screen.variable || '';
+    $('screen-prompt').value = screen.prompt || '';
+    $('screen-note').value = screen.note || '';
+    renderScreenSelects();
+    $('screen-next').value = screen.next || '';
+    renderOptions(screen);
+    dirtyEditor = false;
+  }
+  function renderOptions(screen){
+    var options = screen.options || [];
+    $('option-list').innerHTML = options.map(function(opt, index){
+      return '<div class="option-row" data-index="'+index+'">'+
+        '<div class="field"><label>Key</label><input aria-label="Opt key" class="opt-key" value="'+esc(opt.key || String(index + 1))+'"></div>'+
+        '<div class="field"><label>Label</label><input aria-label="Opt label" class="opt-label" value="'+esc(opt.label || '')+'"></div>'+
+        '<div class="field"><label>Next</label><select class="opt-next" aria-label="Select option">'+optionTargetOptions(opt.next || '')+'</select></div>'+
+        '<div class="field remove-cell"><label>&nbsp;</label><button class="btn small danger opt-remove" type="button">Remove</button></div>'+
+      '</div>';
+    }).join('') || '<p class="hint">Menu screens need options. Input and END screens ignore this section.</p>';
+  }
+
+  function collectEditorScreen(){
+    var old = currentScreen() || {};
+    var id = safeId($('screen-id').value);
+    var type = $('screen-type').value;
+    var rows = Array.prototype.slice.call(document.querySelectorAll('.option-row'));
+    var options = rows.map(function(row, index){
+      return {
+        key: row.querySelector('.opt-key').value.trim() || String(index + 1),
+        label: row.querySelector('.opt-label').value.trim() || 'Option ' + (index + 1),
+        next: row.querySelector('.opt-next').value
+      };
+    });
+    var next = $('screen-next').value;
+    var screen = {
+      id: id,
+      type: type,
+      prompt: $('screen-prompt').value.trim() || 'Untitled screen'
+    };
+    if (type === 'menu') screen.options = options;
+    if (type === 'input') {
+      screen.variable = safeId($('screen-var').value || old.variable || 'value');
+      screen.next = next || flow.home;
+    }
+    if ($('screen-note').value.trim()) screen.note = $('screen-note').value.trim();
+    return screen;
+  }
+
+  function applyEditor(){
+    syncSettingsFromInputs();
+    var nextScreen = collectEditorScreen();
+    var existing = flow.screens.findIndex(function(screen){ return screen.id === selectedId; });
+    var duplicate = flow.screens.some(function(screen, index){ return screen.id === nextScreen.id && index !== existing; });
+    if (duplicate) {
+      toast('Screen ID already exists');
+      return;
+    }
+    if (existing >= 0) {
+      var oldId = flow.screens[existing].id;
+      flow.screens[existing] = nextScreen;
+      if (oldId !== nextScreen.id) {
+        flow.screens.forEach(function(screen){
+          if (screen.next === oldId) screen.next = nextScreen.id;
+          (screen.options || []).forEach(function(opt){ if (opt.next === oldId) opt.next = nextScreen.id; });
+        });
+        if (flow.home === oldId) flow.home = nextScreen.id;
+      }
+    } else {
+      flow.screens.push(nextScreen);
+    }
+    selectedId = nextScreen.id;
+    dirtyEditor = false;
+    renderAll();
+    toast('Screen updated');
+  }
+
+  function addScreen(){
+    applyEditor();
+    var base = 'screen_' + (flow.screens.length + 1);
+    var id = base;
+    var count = 2;
+    while (screenById(id)) id = base + '_' + count++;
+    flow.screens.push({id:id, type:'end', prompt:'Thanks for using ' + (flow.name || 'this service') + '.'});
+    selectedId = id;
+    renderAll();
+  }
+  function duplicateScreen(){
+    applyEditor();
+    var screen = clone(currentScreen());
+    var id = screen.id + '_copy';
+    var count = 2;
+    while (screenById(id)) id = screen.id + '_copy_' + count++;
+    screen.id = id;
+    flow.screens.push(screen);
+    selectedId = id;
+    renderAll();
+  }
+  function deleteScreen(){
+    if (flow.screens.length <= 1) {
+      toast('Keep at least one screen');
+      return;
+    }
+    var id = selectedId;
+    flow.screens = flow.screens.filter(function(screen){ return screen.id !== id; });
+    flow.screens.forEach(function(screen){
+      if (screen.next === id) screen.next = flow.home;
+      (screen.options || []).forEach(function(opt){ if (opt.next === id) opt.next = flow.home; });
+    });
+    if (flow.home === id) flow.home = flow.screens[0].id;
+    selectedId = flow.home;
+    renderAll();
+    toast('Screen deleted');
+  }
+
+  function lintFlow(){
+    var messages = [];
+    var deadLinks = 0;
+    var longMenus = 0;
+    var ids = {};
+    var reachable = {};
+    var limit = limits[flow.country] || limits.generic;
+    flow.screens.forEach(function(screen){
+      if (ids[screen.id]) messages.push({type:'error', text:'Duplicate screen ID: ' + screen.id});
+      ids[screen.id] = true;
+    });
+    if (!screenById(flow.home)) messages.push({type:'error', text:'Home screen does not exist.'});
+    function visit(id){
+      if (!id || reachable[id]) return;
+      var screen = screenById(id);
+      if (!screen) return;
+      reachable[id] = true;
+      if (screen.next) visit(screen.next);
+      (screen.options || []).forEach(function(opt){ visit(opt.next); });
+    }
+    visit(flow.home);
+    flow.screens.forEach(function(screen){
+      var body = responseFor(screen, {});
+      var bodyWithoutPrefix = body.replace(/^(CON|END)\s+/, '');
+      if (screen.type !== 'end' && bodyWithoutPrefix.length > limit.menu) {
+        longMenus += 1;
+        messages.push({type:'warn', text:screen.id + ' is ' + bodyWithoutPrefix.length + ' chars. ' + limit.label + ' menu guidance is about ' + limit.menu + ' chars.'});
+      }
+      if (screen.type === 'menu' && !(screen.options || []).length) {
+        messages.push({type:'error', text:screen.id + ' is a menu with no options.'});
+      }
+      if (screen.type === 'input' && !screen.variable) {
+        messages.push({type:'warn', text:screen.id + ' captures input but has no variable name.'});
+      }
+      if (screen.type === 'input' && !screen.next) {
+        messages.push({type:'error', text:screen.id + ' captures input but has no next screen.'});
+      }
+      if (screen.next && !screenById(screen.next)) {
+        deadLinks += 1;
+        messages.push({type:'error', text:screen.id + ' points to missing screen ' + screen.next + '.'});
+      }
+      (screen.options || []).forEach(function(opt){
+        if (!screenById(opt.next)) {
+          deadLinks += 1;
+          messages.push({type:'error', text:screen.id + ' option ' + opt.key + ' points to missing screen ' + opt.next + '.'});
+        }
+      });
+      if (!reachable[screen.id]) {
+        messages.push({type:'warn', text:screen.id + ' is not reachable from the home screen.'});
+      }
+    });
+    if (!flow.screens.some(function(screen){ return screen.type === 'end'; })) {
+      messages.push({type:'warn', text:'Add at least one END screen so sessions can terminate cleanly.'});
+    }
+    if (!messages.length) messages.push({type:'ok', text:'Flow passes current checks. Generated responses begin with CON or END.'});
+    return {
+      messages: messages,
+      deadLinks: deadLinks,
+      longMenus: longMenus,
+      endScreens: flow.screens.filter(function(screen){ return screen.type === 'end'; }).length
+    };
+  }
+
+  function renderHealth(){
+    var health = lintFlow();
+    $('lint-list').innerHTML = health.messages.map(function(msg){
+      return '<div class="lint '+esc(msg.type)+'">'+esc(msg.text)+'</div>';
+    }).join('');
+    $('m-screens').textContent = flow.screens.length;
+    $('m-end').textContent = health.endScreens;
+    $('m-long').textContent = health.longMenus;
+    $('m-dead').textContent = health.deadLinks;
+    $('hero-screens').textContent = flow.screens.length;
+    $('hero-issues').textContent = health.messages.filter(function(msg){ return msg.type !== 'ok'; }).length;
+  }
+
+  function resetSession(){
+    session = { screen: flow.home, vars: {}, stack: [], transcript: [] };
+    renderPhone();
+    renderTranscript('Session started');
+  }
+  function renderPhone(){
+    if (!session) session = { screen: flow.home, vars: {}, stack: [], transcript: [] };
+    var screen = screenById(session.screen) || screenById(flow.home);
+    $('phone-code').textContent = flow.serviceCode || '*000#';
+    $('phone-text').textContent = responseFor(screen, session.vars);
+    $('phone-input').value = '';
+    $('phone-input').disabled = screen && screen.type === 'end';
+  }
+  function renderTranscript(event){
+    if (!session) return;
+    if (event) session.transcript.push(event);
+    $('transcript').textContent = session.transcript.join('\n');
+  }
+  function sendInput(){
+    if (!session) resetSession();
+    var input = $('phone-input').value.trim();
+    var screen = screenById(session.screen);
+    if (!screen) {
+      session.screen = flow.home;
+      renderPhone();
+      return;
+    }
+    renderTranscript('USER: ' + (input || '[empty]'));
+    if (input === '00') {
+      session.stack = [];
+      session.screen = flow.home;
+      renderTranscript('SYSTEM: home');
+      renderPhone();
+      return;
+    }
+    if (input === '0') {
+      session.screen = session.stack.pop() || flow.home;
+      renderTranscript('SYSTEM: back');
+      renderPhone();
+      return;
+    }
+    if (screen.type === 'end') {
+      resetSession();
+      return;
+    }
+    if (screen.type === 'input') {
+      session.vars[screen.variable || 'value'] = input;
+      if (screen.next) {
+        session.stack.push(screen.id);
+        session.screen = screen.next;
+      }
+      renderTranscript('CAPTURE: ' + (screen.variable || 'value') + '=' + input);
+      renderPhone();
+      return;
+    }
+    var match = (screen.options || []).find(function(opt){ return opt.key === input; });
+    if (!match) {
+      renderTranscript('SYSTEM: invalid option');
+      renderPhone();
+      return;
+    }
+    session.stack.push(screen.id);
+    session.screen = match.next;
+    renderTranscript('SYSTEM: ' + screen.id + ' -> ' + match.next);
+    renderPhone();
+  }
+
+  function exportJsonText(){
+    return JSON.stringify(compactFlow(), null, 2);
+  }
+  function jsString(value){
+    return JSON.stringify(String(value == null ? '' : value));
+  }
+  function phpString(value){
+    return "'" + String(value == null ? '' : value).replace(/\\/g,'\\\\').replace(/'/g,"\\'") + "'";
+  }
+  function generateNode(){
+    var data = compactFlow();
+    return [
+      '// Generated by AfroTools USSD Flow Builder',
+      '// Store session state in Redis or your database for production.',
+      "const express = require('express');",
+      'const app = express();',
+      "app.use(express.urlencoded({ extended: false }));",
+      '',
+      'const flow = ' + JSON.stringify(data, null, 2) + ';',
+      'const sessions = new Map();',
+      '',
+      'function applyVars(text, vars) {',
+      "  return String(text || '').replace(/\\{([a-zA-Z0-9_]+)\\}/g, (_, key) => vars[key] || `{${key}}`);",
+      '}',
+      '',
+      'function screen(id) { return flow.screens.find(item => item.id === id); }',
+      'function responseFor(item, vars) {',
+      "  if (!item) return 'END Invalid flow state.';",
+      "  if (item.type === 'end') return 'END ' + applyVars(item.prompt, vars);",
+      "  if (item.type === 'input') return 'CON ' + applyVars(item.prompt, vars);",
+      "  const lines = [applyVars(item.prompt, vars), ...item.options.map(opt => `${opt.key}. ${applyVars(opt.label, vars)}`), '0. Back', '00. Home'];",
+      "  return 'CON ' + lines.join('\\n');",
+      '}',
+      '',
+      "app.post('/ussd', (req, res) => {",
+      "  const { sessionId = 'local', text = '' } = req.body;",
+      "  const input = String(text || '').split('*').filter(Boolean).pop() || '';",
+      "  const state = sessions.get(sessionId) || { current: flow.home, vars: {}, stack: [] };",
+      "  const current = screen(state.current) || screen(flow.home);",
+      '',
+      "  if (!text) {",
+      '    state.current = flow.home;',
+      '  } else if (input === "00") {',
+      '    state.current = flow.home;',
+      '    state.stack = [];',
+      '  } else if (input === "0") {',
+      '    state.current = state.stack.pop() || flow.home;',
+      "  } else if (current.type === 'input') {",
+      "    state.vars[current.variable || 'value'] = input;",
+      '    state.stack.push(current.id);',
+      '    state.current = current.next || flow.home;',
+      "  } else if (current.type === 'menu') {",
+      '    const next = current.options.find(opt => opt.key === input);',
+      '    if (next) {',
+      '      state.stack.push(current.id);',
+      '      state.current = next.next;',
+      '    }',
+      '  }',
+      '',
+      '  const nextScreen = screen(state.current);',
+      "  if (nextScreen && nextScreen.type !== 'end') sessions.set(sessionId, state);",
+      '  else sessions.delete(sessionId);',
+      "  res.type('text/plain').send(responseFor(nextScreen, state.vars));",
+      '});'
+    ].join('\n');
+  }
+  function generatePhp(){
+    var data = compactFlow();
+    return [
+      '<?php',
+      '// Generated by AfroTools USSD Flow Builder',
+      '// Save session state in Redis, database or cache for production.',
+      '$flow = json_decode(' + phpString(JSON.stringify(data)) + ', true);',
+      '$sessionId = $_POST["sessionId"] ?? "local";',
+      '$text = $_POST["text"] ?? "";',
+      '$parts = array_values(array_filter(explode("*", $text), fn($x) => $x !== ""));',
+      '$input = count($parts) ? end($parts) : "";',
+      '',
+      'function find_screen($flow, $id) {',
+      '  foreach ($flow["screens"] as $screen) if ($screen["id"] === $id) return $screen;',
+      '  return null;',
+      '}',
+      'function apply_vars($text, $vars) {',
+      '  return preg_replace_callback("/\\{([a-zA-Z0-9_]+)\\}/", fn($m) => $vars[$m[1]] ?? $m[0], $text);',
+      '}',
+      'function response_for($screen, $vars) {',
+      '  if (!$screen) return "END Invalid flow state.";',
+      '  if ($screen["type"] === "end") return "END " . apply_vars($screen["prompt"], $vars);',
+      '  if ($screen["type"] === "input") return "CON " . apply_vars($screen["prompt"], $vars);',
+      '  $lines = [apply_vars($screen["prompt"], $vars)];',
+      '  foreach (($screen["options"] ?? []) as $opt) $lines[] = $opt["key"] . ". " . apply_vars($opt["label"], $vars);',
+      '  $lines[] = "0. Back";',
+      '  $lines[] = "00. Home";',
+      '  return "CON " . implode("\\n", $lines);',
+      '}',
+      '',
+      '$state = ["current" => $flow["home"], "vars" => [], "stack" => []];',
+      '// Replace this demo line with cache lookup by $sessionId.',
+      '$current = find_screen($flow, $state["current"]);',
+      'header("Content-Type: text/plain");',
+      'echo response_for($current, $state["vars"]);'
+    ].join('\n');
+  }
+  function generatePayload(){
+    return JSON.stringify({
+      sessionId: 'ATUid_SampleSession',
+      serviceCode: flow.serviceCode,
+      phoneNumber: '+254700000000',
+      text: ''
+    }, null, 2);
+  }
+  function generateLaunchBrief(){
+    var health = lintFlow();
+    var limit = limits[flow.country] || limits.generic;
+    var endings = flow.screens.filter(function(screen){ return screen.type === 'end'; }).map(function(screen){ return screen.id; });
+    var variables = flow.screens.filter(function(screen){ return screen.type === 'input'; }).map(function(screen){ return screen.variable || screen.id; });
+    var messages = health.messages.map(function(msg){ return '- ' + msg.type.toUpperCase() + ': ' + msg.text; }).join('\n');
+    return [
+      'AfroTools USSD launch handoff',
+      'Product: ' + flow.name,
+      'Service code: ' + flow.serviceCode,
+      'Provider model: ' + flow.provider,
+      'Market profile: ' + limit.label,
+      'Session timeout: ' + (flow.timeout || 180) + ' seconds',
+      'Home screen: ' + flow.home,
+      '',
+      'Flow summary',
+      '- Screens: ' + flow.screens.length,
+      '- END screens: ' + health.endScreens + (endings.length ? ' (' + endings.join(', ') + ')' : ''),
+      '- Captured variables: ' + (variables.length ? variables.join(', ') : 'none'),
+      '- Long-menu warnings: ' + health.longMenus,
+      '- Dead links: ' + health.deadLinks,
+      '',
+      'Callback contract to implement',
+      '- Accept HTTPS POST requests from the gateway callback URL.',
+      '- Read sessionId, serviceCode, phoneNumber and text from the request body.',
+      '- Return text/plain responses starting with CON for continuing menus or END for final screens.',
+      '- Store production session state in Redis, a database or another short-lived server store.',
+      '- Avoid logging PINs, national IDs, payment secrets or full phone numbers.',
+      '',
+      'QA paths before submission',
+      '- Dial the home screen and every visible menu option.',
+      '- Test invalid input, 0 back, 00 home and timeout behavior.',
+      '- Verify every input capture advances to the intended next screen.',
+      '- Confirm prompt lengths against the current aggregator and telco rules.',
+      '- Replay the exported callback payload against staging before sending to the provider.',
+      '',
+      'Current lint',
+      messages || '- OK: Flow passes current checks.',
+      '',
+      'Limitations',
+      '- This is a local design and starter-code tool, not telco approval or aggregator certification.',
+      '- Gateway formats, session timeout, shortcode rules and billing terms can differ by provider and market.'
+    ].join('\n');
+  }
+  function renderGenerated(){
+    $('code-node').textContent = generateNode();
+    $('code-php').textContent = generatePhp();
+    $('code-json').textContent = exportJsonText();
+    $('code-payload').textContent = generatePayload();
+    $('code-brief').textContent = generateLaunchBrief();
+  }
+
+  function renderAll(){
+    syncSettingsToInputs();
+    renderScreenSelects();
+    renderScreenList();
+    renderEditor();
+    renderHealth();
+    renderGenerated();
+    if (!session) resetSession();
+    else renderPhone();
+  }
+
+  function loadTemplate(name){
+    if (!templates[name]) return;
+    flow = clone(templates[name]);
+    selectedId = flow.home;
+    session = null;
+    renderAll();
+    toast('Template loaded');
+  }
+  function saveFlow(){
+    applyEditor();
+    try {
+      localStorage.setItem(STORAGE, exportJsonText());
+      toast('Flow saved in this browser');
+    } catch(e) {
+      toast('Browser storage is unavailable');
+    }
+  }
+  function loadSaved(){
+    try {
+      var saved = localStorage.getItem(STORAGE);
+      if (saved) {
+        var parsed = JSON.parse(saved);
+        if (parsed && Array.isArray(parsed.screens)) {
+          flow = parsed;
+          selectedId = flow.home || flow.screens[0].id;
+        }
+      }
+    } catch(e) {}
+  }
+  function downloadJson(){
+    applyEditor();
+    var blob = new Blob([exportJsonText()], {type:'application/json'});
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = safeId(flow.name) + '-ussd-flow.json';
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    URL.revokeObjectURL(url);
+  }
+  function importJsonFile(file){
+    var reader = new FileReader();
+    reader.onload = function(){
+      try {
+        var parsed = JSON.parse(reader.result);
+        if (!parsed || !Array.isArray(parsed.screens)) throw new Error('Invalid flow JSON');
+        flow = parsed;
+        selectedId = flow.home || flow.screens[0].id;
+        session = null;
+        renderAll();
+        toast('Flow imported');
+      } catch(e) {
+        toast('Could not import flow JSON');
+      }
+    };
+    reader.readAsText(file);
+  }
+  function copyActiveOutput(){
+    var el = $('code-' + activeOutput);
+    copyText(el.textContent, 'Output copied');
+  }
+
+  function copyText(text, message){
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(function(){ toast(message); }).catch(function(){ fallbackCopyText(text, message); });
+      return;
+    }
+    fallbackCopyText(text, message);
+  }
+
+  function fallbackCopyText(text, message){
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      document.execCommand('copy');
+      toast(message);
+    } catch(e) {
+      toast('Copy failed');
+    }
+    textarea.remove();
+  }
+
+  document.addEventListener('click', function(event){
+    var chip = event.target.closest('.screen-chip');
+    if (chip) {
+      if (dirtyEditor) applyEditor();
+      selectedId = chip.getAttribute('data-screen');
+      renderAll();
+      return;
+    }
+    if (event.target.classList.contains('opt-remove')) {
+      event.target.closest('.option-row').remove();
+      dirtyEditor = true;
+      return;
+    }
+    if (event.target.classList.contains('tab')) {
+      activeOutput = event.target.getAttribute('data-output');
+      document.querySelectorAll('.tab').forEach(function(tab){ tab.classList.toggle('active', tab === event.target); });
+      document.querySelectorAll('.tab-panel').forEach(function(panel){ panel.classList.remove('active'); });
+      $('panel-' + activeOutput).classList.add('active');
+    }
+  });
+
+  ['flow-name','service-code','provider','country','session-timeout','home-screen'].forEach(function(id){
+    $(id).addEventListener('input', function(){
+      syncSettingsFromInputs();
+      renderHealth();
+      renderGenerated();
+      renderPhone();
+    });
+  });
+  ['screen-id','screen-type','screen-var','screen-prompt','screen-next','screen-note'].forEach(function(id){
+    $(id).addEventListener('input', function(){ dirtyEditor = true; });
+  });
+  $('option-list').addEventListener('input', function(){ dirtyEditor = true; });
+  $('apply-screen').addEventListener('click', applyEditor);
+  $('add-screen').addEventListener('click', addScreen);
+  $('duplicate-screen').addEventListener('click', duplicateScreen);
+  $('delete-screen').addEventListener('click', deleteScreen);
+  $('add-option').addEventListener('click', function(){
+    var count = document.querySelectorAll('.option-row').length + 1;
+    var holder = document.createElement('div');
+    holder.innerHTML = '<div class="option-row" data-index="'+(count - 1)+'">'+
+      '<div class="field"><label>Key</label><input aria-label="Opt key" class="opt-key" value="'+count+'"></div>'+
+      '<div class="field"><label>Label</label><input aria-label="Opt label" class="opt-label" value="New option"></div>'+
+      '<div class="field"><label>Next</label><select class="opt-next" aria-label="Select option">'+optionTargetOptions(flow.home)+'</select></div>'+
+      '<div class="field remove-cell"><label>&nbsp;</label><button class="btn small danger opt-remove" type="button">Remove</button></div>'+
+      '</div>';
+    $('option-list').appendChild(holder.firstChild);
+    dirtyEditor = true;
+  });
+  $('template-select').addEventListener('change', function(){ loadTemplate(this.value); this.value = ''; });
+  $('reset-flow').addEventListener('click', function(){ flow = clone(templates.wallet); selectedId = flow.home; session = null; renderAll(); toast('Flow reset'); });
+  $('save-flow').addEventListener('click', saveFlow);
+  $('export-flow').addEventListener('click', downloadJson);
+  $('import-flow').addEventListener('click', function(){ $('import-file').click(); });
+  $('import-file').addEventListener('change', function(){ if (this.files && this.files[0]) importJsonFile(this.files[0]); this.value = ''; });
+  $('restart-session').addEventListener('click', resetSession);
+  $('send-input').addEventListener('click', sendInput);
+  $('phone-input').addEventListener('keydown', function(event){ if (event.key === 'Enter') sendInput(); });
+  $('copy-output').addEventListener('click', copyActiveOutput);
+
+  loadSaved();
+  renderAll();
+})();
+</script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script data-fr-native-localizer>
+(function(){
+  var terms=new Map([["USSD providers usually need a public callback URL, a response contract, sample payloads and evidence that every menu path terminates cleanly. The launch brief tab turns the current local flow into a handoff note for engineering, QA or aggregator review.","Les fournisseurs USSD ont généralement besoin d'un rappel public URL, d'un contrat de réponse, d'exemples de charges utiles et d'une preuve que chaque chemin de menu se termine proprement. L'onglet de présentation du lancement transforme le flux local actuel en une note de transfert pour l'ingénierie, l'assurance qualité ou l'examen par l'agrégateur."],["it does not provision a shortcode, host your callback, certify a telco integration, store production sessions or approve payment compliance. Confirm current aggregator docs, telco limits and data-protection rules before launch.","il ne fournit pas de shortcode, n'héberge pas votre rappel, ne certifie pas une intégration de société de télécommunications, ne stocke pas les sessions de production et n'approuve pas la conformité des paiements. Confirmez les documents actuels de l'agrégateur, les limites des opérateurs de télécommunications et les règles de protection des données avant le lancement."],["Build menu states, test a live phone-style session, catch CON/END mistakes, watch telco character limits, and export starter handlers for Africa's Talking style callbacks.","Créez des états de menu, testez une session de type téléphone en direct, détectez les erreurs CON/END, surveillez les limites de caractères des opérateurs de télécommunications et exportez les gestionnaires de démarrage pour les rappels de style Africa's Talking."],["Check CON/END responses, prompt length, dead links, END screens, callback payload fields, session persistence, HTTPS hosting, data minimization and current provider rules.","Vérifiez les réponses CON/END, la longueur de l'invite, les liens morts, les écrans END, les champs de charge utile de rappel, la persistance de la session, l'hébergement HTTPS, la minimisation des données et les règles actuelles du fournisseur."],["Africa's Talking expects callback responses to begin with CON for continuing menus or END for final screens. This builder validates that shape before you copy code.","Africa's Talking s'attend à ce que les réponses de rappel commencent par CON pour les menus continus ou par END pour les écrans finaux. Ce générateur valide cette forme avant de copier le code."],["Source/reference note: verify against current aggregator docs, telco submission rules, data-protection requirements, and production callback tests before launch.","Note source/référence : vérifiez par rapport aux documents actuels de l'agrégateur, aux règles de soumission des opérateurs de télécommunications, aux exigences de protection des données et aux tests de rappel de production avant le lancement."],["No. It is a local design and starter-code tool. Your aggregator or telco still controls shortcode provisioning, billing, certification and production launch.","Non. Il s’agit d’un outil de conception et de code de démarrage local. Votre agrégateur ou opérateur de télécommunications contrôle toujours l’approvisionnement, la facturation, la certification et le lancement de la production des shortcodes."],["Create menu, input and END screens, simulate phone input, review lint warnings, then export JSON, starter handlers, callback payloads and the launch brief.","Créez des écrans de menu, de saisie et END, simulez une saisie téléphonique, examinez les avertissements de charpie, puis exportez JSON, les gestionnaires de démarrage, les charges utiles de rappel et le brief de lancement."],["Methodology: store screens/options locally, render simulator state, lint menu links and length, then generate Node, PHP, JSON, and test payload outputs.","Méthodologie : stocker les écrans/options localement, rendre l'état du simulateur, les liens et la longueur du menu Lint, puis générer Node, PHP, JSON et tester les sorties de charge utile."],["Design, lint, simulate and export USSD menu flows with CON/END validation, telco character limits, callback test payloads and launch handoff notes.","Concevez, lintez, simulez et exportez des flux de menu USSD avec la validation CON/END, les limites de caractères des opérateurs de télécommunications, les charges utiles de test de rappel et les notes de transfert de lancement."],["Disclaimer: design and code starter only, not telco approval, aggregator certification, production hosting, or payment compliance.","Avis de non-responsabilité : conception et démarrage du code uniquement, pas d'approbation des opérateurs de télécommunications, de certification d'agrégateur, d'hébergement de production ou de conformité des paiements."],["Build USSD flows with phone simulation, CON/END checks, character-limit warnings, callback payloads and launch handoff notes.","Créez des flux USSD avec la simulation téléphonique, les vérifications CON/END, les avertissements de limite de caractères, les charges utiles de rappel et les notes de transfert de lancement."],["Test every path, invalid input, timeout, back/cancel behavior, language variant, and telco character limit before submission.","Testez chaque chemin, entrée non valide, délai d'attente, comportement de retour/annulation, variante de langue et limite de caractères de l'opérateur de télécommunication avant la soumission."],["Use 0 to go back and 00 to return home. The simulator keeps session variables in memory like a real callback service would.","Utilisez 0 pour revenir en arrière et 00 pour rentrer à la maison. Le simulateur conserve les variables de session en mémoire comme le ferait un véritable service de rappel."],["Build screens, simulate a phone session, lint CON/END behavior, watch character limits, and export callback starter code.","Créez des écrans, simulez une session téléphonique, modifiez le comportement CON/END, surveillez les limites de caractères et exportez le code de démarrage de rappel."],["Export JSON and code only after reviewing callback security, session persistence, logging, and data-minimization rules.","Exportez JSON et le code uniquement après avoir examiné les règles de sécurité des rappels, de persistance de session, de journalisation et de minimisation des données."],["Set the service code, provider model, market and timeout so the builder can apply conservative character-limit checks.","Définissez le code de service, le modèle de fournisseur, le marché et le délai d'expiration afin que le constructeur puisse appliquer des contrôles conservateurs de limite de caractères."],["Keep request examples synthetic. Do not put PINs, national IDs, payment secrets or real phone numbers in shared JSON.","Gardez les exemples de requêtes synthétiques. Ne mettez pas de codes PIN, de cartes d'identité nationales, de secrets de paiement ou de vrais numéros de téléphone dans les JSON partagés."],["Check CON/END shape, dead links, long prompts and END screens, then export JSON, code, payloads and launch notes.","Vérifiez la forme CON/END, les liens morts, les invites longues et les écrans END, puis exportez JSON, le code, les charges utiles et les notes de lancement."],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["Create USSD screens, simulate user input, validate callback response shape, then export code and launch notes.","Créez des écrans USSD, simulez la saisie de l'utilisateur, validez la forme de la réponse de rappel, puis exportez le code et lancez les notes."],["Gateway callback formats, session timeouts, shortcode rules, and billing terms differ by market and provider.","Les formats de rappel de la passerelle, les délais d'expiration des sessions, les règles de shortcode et les conditions de facturation diffèrent selon le marché et le fournisseur."],["Export the flow JSON and launch brief together so callback developers can replay the same screen map.","Exportez le flux JSON et lancez le brief ensemble afin que les développeurs de rappel puissent rejouer la même carte d'écran."],["Use the phone simulator to test menu paths, invalid entries, back navigation and home navigation.","Utilisez le simulateur de téléphone pour tester les chemins de menu, les entrées invalides, la navigation arrière et la navigation d'accueil."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["Use the simulator to test happy paths, invalid input, back navigation and final END responses.","Utilisez le simulateur pour tester les chemins heureux, les entrées invalides, la navigation arrière et les réponses finales END."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."],["CON Welcome to AfroWallet 1. Check balance 2. Send money 3. Buy airtime 0. Back 00. Home","CON Bienvenue sur AfroWallet 1. Vérifier le solde 2. Envoyer de l'argent 3. Acheter du temps d'antenne 0. Retour 00. Accueil"],["Do not put PINs, national IDs, phone numbers, or payment secrets into shared examples.","Ne mettez pas de codes PIN, d'identités nationales, de numéros de téléphone ou de secrets de paiement dans des exemples partagés."],["Runs in a modern browser. Flow state is stored locally unless the user exports a file.","Fonctionne dans un navigateur moderne. L'état du flux est stocké localement, sauf si l'utilisateur exporte un fichier."],["Create screen IDs, prompts, menu options, captured variables and final END responses.","Créez des identifiants d'écran, des invites, des options de menu, des variables capturées et des réponses finales END."],["Design, lint, simulate and export Africa-ready USSD flows with launch handoff notes.","Concevez, lintez, simulez et exportez des flux USSD prêts pour l'Afrique avec des notes de transfert de lancement."],[", ' state.stack.push(current.id);', ' state.current = current.next || flow.home;',",", ' state.stack.push(current.id);', ' state.current = current.next || flux.home;',"],["Keep prompts short. Some Kenyan telco menus are around 160 to 184 characters.","Gardez les invites courtes. Certains menus des opérateurs de télécommunications kenyans comportent entre 160 et 184 caractères."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],[") { session.screen = session.stack.pop() || flow.home; renderTranscript(",") { session.screen = session.stack.pop() || flux.home; rendreTranscript("],["Flow passes current checks. Generated responses begin with CON or END.","Flow réussit les contrôles en cours. Les réponses générées commencent par CON ou END."],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["); } function responseFor(screen, vars){ if (!screen) return","); } function réponseFor(screen, vars){ if (!screen) return"],[") {', ' state.current = state.stack.pop() || flow.home;',",") {', ' state.current = state.stack.pop() || flux.home;',"],["No telco, aggregator, or live USSD code is provisioned.","Aucun code d'opérateur de télécommunication, d'agrégateur ou de USSD en direct n'est fourni."],[").value; var screen = { id: id, type: type, prompt: $(",").valeur; var screen = { id : id, type : type, invite : $("],["Prepare a gateway handoff before shortcode submission.","Préparez un transfert de passerelle avant la soumission du shortcode."],["USSD Flow Builder and Simulator for Africa | AfroTools","Constructeur et simulateur de flux USSD pour l'Afrique | AfroTools"],[").textContent = responseFor(screen, session.vars); $(",").textContent = réponseFor(écran, session.vars); $("],["Design USSD flows that survive real callback rules.","Concevez des flux USSD qui survivent aux règles de rappel réelles."],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Validate menu behavior before telco submission","Valider le comportement du menu avant la soumission de l'opérateur de télécommunication"],["Request received. You will get an SMS shortly.","Demande reçue. Vous recevrez bientôt un SMS."],[", serviceCode: flow.serviceCode, phoneNumber:",", code de service : flow.serviceCode, numéro de téléphone :"],["Airtime request received for {airtimePhone}.","Demande de recharge reçue pour {airtimePhone}."],["&& !screen.variable) { messages.push({type:","&& !screen.variable) { messages.push({type :"],["+ count++; flow.screens.push({id:id, type:","+ compte++; flow.screens.push({id:id, tapez :"],["USSD Flow Builder and Simulator for Africa","Constructeur et simulateur de flux USSD pour l'Afrique"],["+ applyVars(screen.prompt, vars); return","+ applyVars(screen.prompt, vars); retour"],["&& !screen.next) { messages.push({type:","&& !screen.next) { messages.push({type :"],["How to design and test a USSD menu flow","Comment concevoir et tester un flux de menu USSD"],["What should I verify before submission?","Que dois-je vérifier avant de soumettre ?"],["Expose a public HTTPS POST URL such as","Exposer un HTTPS POST URL public tel que"],["Node and PHP callback starter handlers","Gestionnaires de démarrage de rappel Node et PHP"],["Does this provision a live USSD code?","Cela fournit-il un code USSD actif ?"],["Your balance is KES 0.00. Thank you.","Votre solde est de 0,00 KES. Merci."],[") { session.vars[screen.variable ||",") { session.vars[écran.variable ||"],["Build menu, input and final screens","Menu de construction, écrans de saisie et finaux"],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],[").value; flow.timeout = Number($(",").valeur; flow.timeout = Nombre($("],["Choose provider and market rules","Choisir le fournisseur et les règles du marché"],["Return plain text beginning with","Renvoyez du texte brut commençant par"],[") { screen.variable = safeId($(",") { écran.variable = safeId($("],[").value) || 180; flow.home = $(",").valeur) || 180 ; flux.home = $("],["CON and END response validation","Validation des réponses CON et END"],["Market character-limit warnings","Avertissements de limite de caractère du marché"],["How should I use this builder?","Comment dois-je utiliser ce constructeur ?"],["Review lint and export handoff","Examiner les peluches et exporter le transfert"],["Enter phone number for airtime","Saisissez le numéro de téléphone à recharger"],["Phone-style session simulator","Simulateur de session de type téléphonique"],["Send {amount} to {recipient}?","Envoyer {amount} à {recipient} ?"],["Optional implementation note","Note de mise en œuvre facultative"],["Welcome text or input prompt","Texte de bienvenue ou invite de saisie"],["Enter recipient phone number","Saisissez le numéro de téléphone du destinataire"],["], $vars);', ' if ($screen[","], $vars);', ' si ($écran["],["Kenya menu character limits","Limites de caractères du menu Kenya"],["What this tool does not do:","Ce que cet outil ne fait pas :"],[").value = flow.provider ||",").value = flux.provider ||"],[").value; flow.country = $(",").valeur; flux.pays = $("],["] as $screen) if ($screen[","] comme $screen) si ($screen["],["Africa's Talking USSD help","Africa's Talking USSD aide"],["CON and END response error","Erreur de réponse CON et END"],["JSON Formatter & Validator","JSON Formateur et validateur"],["Simulate the phone session","Simuler la session téléphonique"],["Frequently Asked Questions","Questions fréquentes"],[").value = flow.country ||",").value = flux.pays ||"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["from the callback body.","du corps de rappel."],["Session timeout seconds","Secondes d'expiration de la session"],["USSD screen map builder","Générateur de cartes d'écran USSD"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],[").value = flow.name ||",").value = flux.nom ||"],["+ flow.screens.length,","+ flux.écrans.longueur,"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],[". apply_vars($screen[",". apply_vars($écran["],["+ (screen.variable ||","+ (écran.variable ||"],["Callback test payload","Charge utile du test de rappel"],["Data Format Converter","Convertisseur de formats de données"],["Hubtel style callback","Rappel de style Hubtel"],["Next screen for input","Écran suivant pour la saisie"],["USSD Flow Builder FAQ","USSD FAQ sur le générateur de flux"],["Welcome to AfroWallet","Bienvenue sur AfroWallet"],["; flow.provider = $(","; flux.provider = $("],["Apply screen changes","Appliquer les modifications d'écran"],["Generic conservative","Conservateur générique"],["Generic USSD gateway","Passerelle USSD générique"],["Launch handoff brief","Brief de transfert de lancement"],["Nigeria conservative","Conservateur nigérian"],["Safaricom menu limit","Limite du menu Safaricom"],["Enter airtime amount","Saisissez le montant de la recharge"],["Mobile money wallet","Portefeuille d'argent mobile"],["Official References","Références officielles"],["USSD Code Simulator","USSD Simulateur de codes"],["Export or save path","Chemin d’exportation ou d’enregistrement"],[", text:screen.id +",", texte :screen.id +"],[";', ' if ($screen[",";', ' si ($écran["],["Callback Checklist","Liste de contrôle de rappel"],["Clinic appointment","Rendez-vous à la clinique"],["Copy active output","Copier la sortie active"],["Farm price service","Service de prix à la ferme"],["for final screens.","pour les écrans finaux."],["Local flow builder","Générateur de flux local"],["Session Transcript","Transcription de la séance"],["Ussd Flow Builder","Constructeur de flux USSD"],["Captured variable","Variable capturée"],["response contract","contrat de réponse"],["USSD Flow Builder","USSD Générateur de flux"],["+ flow.provider,","+ flux.provider,"],["Accept analytics","Accepter les analyses"],["Final END screen","Écran END final"],["Flow JSON export","Exportation du flux JSON"],["Generated Output","Sortie générée"],["Reject analytics","Rejeter les analyses"],["Review flow lint","Examiner le flux de charpie"],["Converted Output","Sortie convertie"],["+ (flow.name ||","+ (flux.nom ||"],["+ screen.next +","+ écran.suivant +"],["Developer Tools","Outils de développement"],["Phone Simulator","Simulateur de téléphone"],["Privacy details","Détails de confidentialité"],["screens in flow","écrans en flux"],["Session started","Séance démarrée"],["USSD flow check","USSD contrôle de flux"],["Download Result","Télécharger le résultat"],["Select All TLDs","Sélectionner tous les TLD"],["Cookie consent","Consentement aux cookies"],["Hash Generator","Générateur de hachage"],["Loan repayment","Remboursement du prêt"],["No next screen","Pas d'écran suivant"],["Provider model","Modèle de fournisseur"],["+ screen.id +","+ écran.id +"],["Check balance","Vérifier le solde"],["Flow Settings","Paramètres de flux"],["Input capture","Capture d'entrée"],["Internal note","Note interne"],["Load template","Charger le modèle"],["Related tools","Outils associés"],["Screen Editor","Éditeur d'écran"],["What to check","Que vérifier"],["Output Format","Format de sortie"],["Import review","Vérification de l’importation"],["+ flow.home,","+ flux.home,"],["+ flow.name,","+ flux.nom,"],["for menus or","pour les menus ou"],["Launch brief","Brief de lancement"],["Menu Options","Options des menus"],["Node handler","Gestionnaire Node"],["Product name","Nom du produit"],["Service code","Code de service"],["Test payload","Tester la charge utile"],["Enter amount","Saisissez le montant"],["Input Format","Format d’entrée"],[", provider:",", fournisseur :"],["Buy airtime","Acheter du temps d'antenne"],["END screens","END écrans"],["Export JSON","Exporter JSON"],["Flow Health","Santé du flux"],["Home screen","Écran d'accueil"],["Import file","Importer le fichier"],["Import JSON","Importer JSON"],["lint issues","problèmes de peluches"],["Phone input","Entrée téléphonique"],["PHP handler","Gestionnaire PHP"],["Prompt text","Texte d'invite"],["Screen type","Type d'écran"],["Load Sample","Charger un exemple"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Copy Result","Copier le résultat"],["Add option","Ajouter une option"],["Add screen","Ajouter un écran"],["dead links","liens morts"],["long menus","menus longs"],["Screen Map","Plan d'écran"],["Send money","Envoyer de l'argent"],["Input Data","Données source"],["No results","Aucun résultat"],["=> $flow[","=> $flux["],["Flow JSON","Flux JSON"],["Opt label","Opter pour le libellé"],["Save flow","Enregistrer le flux"],["Screen ID","ID d'écran"],["All Tools","Tous les outils"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["Generate","Générer"],["Download","Télécharger"],["Settings","Paramètres"],["Opt key","Clé Opter"],["Preview","Aperçu"],["Options","Options"],["Results","Résultats"],["Example","Exemple"],["Copied","Copié"],["Export","Exporter"],["Import","Importer"],["Result","Résultat"],["Search","Rechercher"],["Output","Sortie"],["Format","Format"],["Where:","Où :"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Saved","Enregistré"],["Share","Partager"],["Error","Erreur"],["Input","Entrée"],["Ready","Prêt"],["What:","Quoi :"],["Copy","Copier"],["Save","Enregistrer"],["File","Fichier"],["and","et"]]);
+  var exportTerms=new Map([["Ussd Flow Builder","Constructeur de flux USSD"],[", ' state.stack.push(current.id);', ' state.current = current.next || flow.home;',",", ' state.stack.push(current.id);', ' state.current = current.next || flux.home;',"],[", provider:",", fournisseur :"],[", serviceCode: flow.serviceCode, phoneNumber:",", code de service : flow.serviceCode, numéro de téléphone :"],[", text:screen.id +",", texte :screen.id +"],["; flow.provider = $(","; flux.provider = $("],[";', ' if ($screen[",";', ' si ($écran["],[". apply_vars($screen[",". apply_vars($écran["],["'+esc(screen.id)+'","'+esc(écran.id)+'"],[") { screen.variable = safeId($(",") { écran.variable = safeId($("],[") { session.screen = session.stack.pop() || flow.home; renderTranscript(",") { session.screen = session.stack.pop() || flux.home; rendreTranscript("],[") { session.vars[screen.variable ||",") { session.vars[écran.variable ||"],[") {', ' state.current = state.stack.pop() || flow.home;',",") {', ' state.current = state.stack.pop() || flux.home;',"],["); } function responseFor(screen, vars){ if (!screen) return","); } function réponseFor(screen, vars){ if (!screen) return"],[").textContent = responseFor(screen, session.vars); $(",").textContent = réponseFor(écran, session.vars); $("],[").value = flow.country ||",").value = flux.pays ||"],[").value = flow.name ||",").value = flux.nom ||"],[").value = flow.provider ||",").value = flux.provider ||"],[").value; flow.country = $(",").valeur; flux.pays = $("],[").value; flow.timeout = Number($(",").valeur; flow.timeout = Nombre($("],[").value; var screen = { id: id, type: type, prompt: $(",").valeur; var screen = { id : id, type : type, invite : $("],[").value) || 180; flow.home = $(",").valeur) || 180 ; flux.home = $("],["] as $screen) if ($screen[","] comme $screen) si ($screen["],["], $vars);', ' if ($screen[","], $vars);', ' si ($écran["],["&& !screen.next) { messages.push({type:","&& !screen.next) { messages.push({type :"],["&& !screen.variable) { messages.push({type:","&& !screen.variable) { messages.push({type :"],["+ (flow.name ||","+ (flux.nom ||"],["+ (screen.variable ||","+ (écran.variable ||"],["+ applyVars(screen.prompt, vars); return","+ applyVars(screen.prompt, vars); retour"],["+ count++; flow.screens.push({id:id, type:","+ compte++; flow.screens.push({id:id, tapez :"],["+ flow.home,","+ flux.home,"],["+ flow.name,","+ flux.nom,"],["+ flow.provider,","+ flux.provider,"],["+ flow.screens.length,","+ flux.écrans.longueur,"],["+ screen.id +","+ écran.id +"],["+ screen.next +","+ écran.suivant +"],["+esc(screen.id)+","+esc(écran.id)+"],["=> $flow[","=> $flux["],["Accept analytics","Accepter les analyses"],["Add option","Ajouter une option"],["Add screen","Ajouter un écran"],["Africa's Talking expects callback responses to begin with CON for continuing menus or END for final screens. This builder validates that shape before you copy code.","Africa's Talking s'attend à ce que les réponses de rappel commencent par CON pour les menus continus ou par END pour les écrans finaux. Ce générateur valide cette forme avant de copier le code."],["Africa's Talking USSD help","Africa's Talking USSD aide"],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["Answer","Réponse"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["Apply screen changes","Appliquer les modifications d'écran"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],["BreadcrumbList","Fil d'ArianeListe"],["Build menu states, test a live phone-style session, catch CON/END mistakes, watch telco character limits, and export starter handlers for Africa's Talking style callbacks.","Créez des états de menu, testez une session de type téléphone en direct, détectez les erreurs CON/END, surveillez les limites de caractères des opérateurs de télécommunications et exportez les gestionnaires de démarrage pour les rappels de style Africa's Talking."],["Build menu, input and final screens","Menu de construction, écrans de saisie et finaux"],["Build screens, simulate a phone session, lint CON/END behavior, watch character limits, and export callback starter code.","Créez des écrans, simulez une session téléphonique, modifiez le comportement CON/END, surveillez les limites de caractères et exportez le code de démarrage de rappel."],["Build USSD flows with phone simulation, CON/END checks, character-limit warnings, callback payloads and launch handoff notes.","Créez des flux USSD avec la simulation téléphonique, les vérifications CON/END, les avertissements de limite de caractères, les charges utiles de rappel et les notes de transfert de lancement."],["Buy airtime","Acheter du temps d'antenne"],["Callback Checklist","Liste de contrôle de rappel"],["Callback test payload","Charge utile du test de rappel"],["Cancel","Annuler"],["Captured variable","Variable capturée"],["Check balance","Vérifier le solde"],["Check CON/END responses, prompt length, dead links, END screens, callback payload fields, session persistence, HTTPS hosting, data minimization and current provider rules.","Vérifiez les réponses CON/END, la longueur de l'invite, les liens morts, les écrans END, les champs de charge utile de rappel, la persistance de la session, l'hébergement HTTPS, la minimisation des données et les règles actuelles du fournisseur."],["Check CON/END shape, dead links, long prompts and END screens, then export JSON, code, payloads and launch notes.","Vérifiez la forme CON/END, les liens morts, les invites longues et les écrans END, puis exportez JSON, le code, les charges utiles et les notes de lancement."],["Choose provider and market rules","Choisir le fournisseur et les règles du marché"],["Clinic appointment","Rendez-vous à la clinique"],["CON and END response error","Erreur de réponse CON et END"],["CON and END response validation","Validation des réponses CON et END"],["CON Welcome to AfroWallet 1. Check balance 2. Send money 3. Buy airtime 0. Back 00. Home","CON Bienvenue sur AfroWallet 1. Vérifier le solde 2. Envoyer de l'argent 3. Acheter du temps d'antenne 0. Retour 00. Accueil"],["Cookie consent","Consentement aux cookies"],["Copy active output","Copier la sortie active"],["Create menu, input and END screens, simulate phone input, review lint warnings, then export JSON, starter handlers, callback payloads and the launch brief.","Créez des écrans de menu, de saisie et END, simulez une saisie téléphonique, examinez les avertissements de charpie, puis exportez JSON, les gestionnaires de démarrage, les charges utiles de rappel et le brief de lancement."],["Create screen IDs, prompts, menu options, captured variables and final END responses.","Créez des identifiants d'écran, des invites, des options de menu, des variables capturées et des réponses finales END."],["Create USSD screens, simulate user input, validate callback response shape, then export code and launch notes.","Créez des écrans USSD, simulez la saisie de l'utilisateur, validez la forme de la réponse de rappel, puis exportez le code et lancez les notes."],["Data Format Converter","Convertisseur de formats de données"],["dead links","liens morts"],["Design USSD flows that survive real callback rules.","Concevez des flux USSD qui survivent aux règles de rappel réelles."],["Design, lint, simulate and export Africa-ready USSD flows with launch handoff notes.","Concevez, lintez, simulez et exportez des flux USSD prêts pour l'Afrique avec des notes de transfert de lancement."],["Design, lint, simulate and export USSD menu flows with CON/END validation, telco character limits, callback test payloads and launch handoff notes.","Concevez, lintez, simulez et exportez des flux de menu USSD avec la validation CON/END, les limites de caractères des opérateurs de télécommunications, les charges utiles de test de rappel et les notes de transfert de lancement."],["Developer Tools","Outils développeur"],["DeveloperApplication","DéveloppeurApplication"],["Disclaimer: design and code starter only, not telco approval, aggregator certification, production hosting, or payment compliance.","Avis de non-responsabilité : conception et démarrage du code uniquement, pas d'approbation des opérateurs de télécommunications, de certification d'agrégateur, d'hébergement de production ou de conformité des paiements."],["Do not put PINs, national IDs, phone numbers, or payment secrets into shared examples.","Ne mettez pas de codes PIN, d'identités nationales, de numéros de téléphone ou de secrets de paiement dans des exemples partagés."],["Does this provision a live USSD code?","Cela fournit-il un code USSD actif ?"],["Duplicate","Dupliquer"],["END screens","END écrans"],["Export JSON","Exporter JSON"],["Export JSON and code only after reviewing callback security, session persistence, logging, and data-minimization rules.","Exportez JSON et le code uniquement après avoir examiné les règles de sécurité des rappels, de persistance de session, de journalisation et de minimisation des données."],["Export the flow JSON and launch brief together so callback developers can replay the same screen map.","Exportez le flux JSON et lancez le brief ensemble afin que les développeurs de rappel puissent rejouer la même carte d'écran."],["Expose a public HTTPS POST URL such as","Exposer un HTTPS POST URL public tel que"],["FAQPage","Page FAQ"],["Farm price service","Service de prix à la ferme"],["Final END screen","Écran END final"],["Flow Health","Santé du flux"],["Flow JSON","Flux JSON"],["Flow JSON export","Exportation du flux JSON"],["Flow passes current checks. Generated responses begin with CON or END.","Flow réussit les contrôles en cours. Les réponses générées commencent par CON ou END."],["Flow Settings","Paramètres de flux"],["for final screens.","pour les écrans finaux."],["for menus or","pour les menus ou"],["from the callback body.","du corps de rappel."],["Gateway callback formats, session timeouts, shortcode rules, and billing terms differ by market and provider.","Les formats de rappel de la passerelle, les délais d'expiration des sessions, les règles de shortcode et les conditions de facturation diffèrent selon le marché et le fournisseur."],["Generated Output","Sortie générée"],["Generic conservative","Conservateur générique"],["Generic USSD gateway","Passerelle USSD générique"],["Hash Generator","Générateur de hachage"],["Home screen","Écran d'accueil"],["How should I use this builder?","Comment dois-je utiliser ce constructeur ?"],["How to design and test a USSD menu flow","Comment concevoir et tester un flux de menu USSD"],["HowTo","Comment faire"],["HowToStep","CommentÉtape"],["Hubtel style callback","Rappel de style Hubtel"],["Import file","Importer le fichier"],["Import JSON","Importer JSON"],["Input capture","Capture d'entrée"],["Internal note","Note interne"],["it does not provision a shortcode, host your callback, certify a telco integration, store production sessions or approve payment compliance. Confirm current aggregator docs, telco limits and data-protection rules before launch.","il ne fournit pas de shortcode, n'héberge pas votre rappel, ne certifie pas une intégration de société de télécommunications, ne stocke pas les sessions de production et n'approuve pas la conformité des paiements. Confirmez les documents actuels de l'agrégateur, les limites des opérateurs de télécommunications et les règles de protection des données avant le lancement."],["JSON Formatter & Validator","JSON Formateur et validateur"],["Keep prompts short. Some Kenyan telco menus are around 160 to 184 characters.","Gardez les invites courtes. Certains menus des opérateurs de télécommunications kenyans comportent entre 160 et 184 caractères."],["Keep request examples synthetic. Do not put PINs, national IDs, payment secrets or real phone numbers in shared JSON.","Gardez les exemples de requêtes synthétiques. Ne mettez pas de codes PIN, de cartes d'identité nationales, de secrets de paiement ou de vrais numéros de téléphone dans les JSON partagés."],["Kenya menu character limits","Limites de caractères du menu Kenya"],["Key","Clé"],["Label","Étiquette"],["Launch brief","Brief de lancement"],["Launch handoff brief","Brief de transfert de lancement"],["Limitations","Limites"],["lint issues","problèmes de peluches"],["ListItem","Élément de liste"],["Load template","Charger le modèle"],["Loan repayment","Remboursement du prêt"],["Local flow builder","Générateur de flux local"],["long menus","menus longs"],["Market","Marché"],["Market character-limit warnings","Avertissements de limite de caractère du marché"],["Menu","Menus"],["Menu Options","Options des menus"],["Methodology: store screens/options locally, render simulator state, lint menu links and length, then generate Node, PHP, JSON, and test payload outputs.","Méthodologie : stocker les écrans/options localement, rendre l'état du simulateur, les liens et la longueur du menu Lint, puis générer Node, PHP, JSON et tester les sorties de charge utile."],["Mobile money wallet","Portefeuille d'argent mobile"],["Next","Suivant"],["Next screen for input","Écran suivant pour la saisie"],["Nigeria conservative","Conservateur nigérian"],["No next screen","Pas d'écran suivant"],["No telco, aggregator, or live USSD code is provisioned.","Aucun code d'opérateur de télécommunication, d'agrégateur ou de USSD en direct n'est fourni."],["No. It is a local design and starter-code tool. Your aggregator or telco still controls shortcode provisioning, billing, certification and production launch.","Non. Il s’agit d’un outil de conception et de code de démarrage local. Votre agrégateur ou opérateur de télécommunications contrôle toujours l’approvisionnement, la facturation, la certification et le lancement de la production des shortcodes."],["Node and PHP callback starter handlers","Gestionnaires de démarrage de rappel Node et PHP"],["Node handler","Gestionnaire Node"],["Offer","Offre"],["Official References","Références officielles"],["Opt key","Clé Opter"],["Opt label","Opter pour le libellé"],["Optional implementation note","Note de mise en œuvre facultative"],["Organization","Organisation"],["Phone input","Entrée téléphonique"],["Phone Simulator","Simulateur de téléphone"],["Phone-style session simulator","Simulateur de session de type téléphonique"],["phoneNumber","Numéro de téléphone"],["PHP handler","Gestionnaire PHP"],["Prepare a gateway handoff before shortcode submission.","Préparez un transfert de passerelle avant la soumission du shortcode."],["Privacy details","Détails de confidentialité"],["Product name","Nom du produit"],["Prompt text","Texte d'invite"],["Provider model","Modèle de fournisseur"],["Read","Lire"],["Reject analytics","Rejeter les analyses"],["Related tools","Outils associés"],["Remove","Supprimer"],["Reset","Réinitialiser"],["response contract","contrat de réponse"],["Restart","Redémarrer"],["Review flow lint","Examiner le flux de charpie"],["Review lint and export handoff","Examiner les peluches et exporter le transfert"],["Runs in a modern browser. Flow state is stored locally unless the user exports a file.","Fonctionne dans un navigateur moderne. L'état du flux est stocké localement, sauf si l'utilisateur exporte un fichier."],["Safaricom menu limit","Limite du menu Safaricom"],["Save flow","Enregistrer le flux"],["Screen Editor","Éditeur d'écran"],["Screen ID","ID d'écran"],["Screen Map","Plan d'écran"],["Screen type","Type d'écran"],["screens in flow","écrans en flux"],["Send","Envoyer"],["Send money","Envoyer de l'argent"],["Service code","Code de service"],["serviceCode","Code de service"],["Session started","Séance démarrée"],["Session timeout seconds","Secondes d'expiration de la session"],["Session Transcript","Transcription de la séance"],["sessionId","ID de session"],["Set the service code, provider model, market and timeout so the builder can apply conservative character-limit checks.","Définissez le code de service, le modèle de fournisseur, le marché et le délai d'expiration afin que le constructeur puisse appliquer des contrôles conservateurs de limite de caractères."],["Simulate the phone session","Simuler la session téléphonique"],["SoftwareApplication","LogicielApplication"],["Source/reference note: verify against current aggregator docs, telco submission rules, data-protection requirements, and production callback tests before launch.","Note source/référence : vérifiez par rapport aux documents actuels de l'agrégateur, aux règles de soumission des opérateurs de télécommunications, aux exigences de protection des données et aux tests de rappel de production avant le lancement."],["Test every path, invalid input, timeout, back/cancel behavior, language variant, and telco character limit before submission.","Testez chaque chemin, entrée non valide, délai d'attente, comportement de retour/annulation, variante de langue et limite de caractères de l'opérateur de télécommunication avant la soumission."],["Test payload","Tester la charge utile"],["Use 0 to go back and 00 to return home. The simulator keeps session variables in memory like a real callback service would.","Utilisez 0 pour revenir en arrière et 00 pour rentrer à la maison. Le simulateur conserve les variables de session en mémoire comme le ferait un véritable service de rappel."],["Use the phone simulator to test menu paths, invalid entries, back navigation and home navigation.","Utilisez le simulateur de téléphone pour tester les chemins de menu, les entrées invalides, la navigation arrière et la navigation d'accueil."],["Use the simulator to test happy paths, invalid input, back navigation and final END responses.","Utilisez le simulateur pour tester les chemins heureux, les entrées invalides, la navigation arrière et les réponses finales END."],["USSD Code Simulator","USSD Simulateur de codes"],["USSD Flow Builder","USSD Générateur de flux"],["USSD Flow Builder and Simulator for Africa","Constructeur et simulateur de flux USSD pour l'Afrique"],["USSD Flow Builder and Simulator for Africa | AfroTools","Constructeur et simulateur de flux USSD pour l'Afrique | AfroTools"],["USSD Flow Builder FAQ","USSD FAQ sur le générateur de flux"],["USSD flow check","USSD contrôle de flux"],["USSD providers usually need a public callback URL, a response contract, sample payloads and evidence that every menu path terminates cleanly. The launch brief tab turns the current local flow into a handoff note for engineering, QA or aggregator review.","Les fournisseurs USSD ont généralement besoin d'un rappel public URL, d'un contrat de réponse, d'exemples de charges utiles et d'une preuve que chaque chemin de menu se termine proprement. L'onglet de présentation du lancement transforme le flux local actuel en une note de transfert pour l'ingénierie, l'assurance qualité ou l'examen par l'agrégateur."],["USSD screen map builder","Générateur de cartes d'écran USSD"],["UtilitiesApplication","UtilitairesApplication"],["Validate menu behavior before telco submission","Valider le comportement du menu avant la soumission de l'opérateur de télécommunication"],["WebApplication","Application Web"],["Welcome text or input prompt","Texte de bienvenue ou invite de saisie"],["Welcome to AfroWallet","Bienvenue sur AfroWallet"],["Your balance is KES 0.00. Thank you.","Votre solde est de 0,00 KES. Merci."],["Enter recipient phone number","Saisissez le numéro de téléphone du destinataire"],["Enter amount","Saisissez le montant"],["Send {amount} to {recipient}?","Envoyer {amount} à {recipient} ?"],["Confirm","Confirmer"],["Request received. You will get an SMS shortly.","Demande reçue. Vous recevrez bientôt un SMS."],["Enter phone number for airtime","Saisissez le numéro de téléphone à recharger"],["Enter airtime amount","Saisissez le montant de la recharge"],["Airtime request received for {airtimePhone}.","Demande de recharge reçue pour {airtimePhone}."],["What should I verify before submission?","Que dois-je vérifier avant de soumettre ?"],["What this tool does not do:","Ce que cet outil ne fait pas :"],["What to check","Que vérifier"],["All Tools","Tous les outils"],["Input Format","Format d’entrée"],["Output Format","Format de sortie"],["Input Data","Données source"],["Converted Output","Sortie convertie"],["Load Sample","Charger un exemple"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Download Result","Télécharger le résultat"],["Copy Result","Copier le résultat"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["Generate","Générer"],["Download","Télécharger"],["Copy","Copier"],["Copied","Copié"],["Paste","Coller"],["Clear","Effacer"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["Output","Sortie"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Frequently Asked Questions","Questions fréquentes"],["Import review","Vérification de l’importation"],["Export or save path","Chemin d’exportation ou d’enregistrement"],["Select All TLDs","Sélectionner tous les TLD"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],["Return plain text beginning with","Renvoyez du texte brut commençant par"],["Ready","Prêt"],["What:","Quoi :"],["Where:","Où :"],["and","et"],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."]]);
+  var linePrefixes=[
+    ['Checked:','Vérifié :'],['Project type:','Type de projet :'],['Market:','Marché :'],['Ops comfort:','Aisance opérationnelle :'],
+    ['Budget:','Budget :'],['Estimated transfer:','Transfert estimé :'],['Recommended provider:','Fournisseur recommandé :'],
+    ['Entry price:','Prix d’entrée :'],['Why:','Pourquoi :'],['Risk note:','Note de risque :'],['Official source:','Source officielle :'],
+    ['Risk flags:','Indicateurs de risque :'],['Shortlist alternatives:','Autres options présélectionnées :'],['Before buying:','Avant l’achat :']
+  ];
+  function translateLine(value){
+    var leading=(value.match(/^\s*/)||[''])[0],trailing=(value.match(/\s*$/)||[''])[0],text=value.trim(),bullet='';
+    if(text.startsWith('- ')){bullet='- ';text=text.slice(2);}
+    if(terms.has(text))return leading+bullet+terms.get(text)+trailing;
+    if(bullet&&text.includes(': ')){var colon=text.indexOf(': '),label=text.slice(0,colon+1),detail=text.slice(colon+2);return leading+bullet+label+' '+(terms.get(detail)||detail)+trailing;}
+    for(var i=0;i<linePrefixes.length;i++){var pair=linePrefixes[i];if(text.startsWith(pair[0])){var remainder=text.slice(pair[0].length).trim();return leading+bullet+pair[1]+' '+(terms.get(remainder)||remainder)+trailing;}}
+    return value;
+  }
+  function swap(value){
+    var original=String(value||''), leading=(original.match(/^\s*/)||[''])[0], trailing=(original.match(/\s*$/)||[''])[0], key=original.trim().replace(/\s+/g,' ');
+    if(terms.has(key))return leading+terms.get(key)+trailing;
+    var preview=key.match(/^Previewing (.+) across (\d+) selected TLDs\. This is not a live availability check\.$/);
+    if(preview)return leading+'Aperçu de '+preview[1]+' sur '+preview[2]+' TLD sélectionnés. Il ne s’agit pas d’un contrôle de disponibilité en direct.'+trailing;
+    var sitemap=key.match(/^(\d+) same-host URLs generated\. Add lastmod only when you have actual page modified dates\.$/);
+    if(sitemap)return leading+sitemap[1]+' URL du même hôte générées. Ajoutez lastmod uniquement si vous disposez des dates réelles de modification des pages.'+trailing;
+    if(original.includes('\n'))return original.split('\n').map(translateLine).join('\n');
+    return original;
+  }
+  function localize(root){
+    if(!root)return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){var parent=node.parentElement;if(!node.nodeValue||!node.nodeValue.trim()||(parent&&(/^(script|style|code|pre|textarea)$/i.test(parent.tagName)||parent.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+    var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(function(node){node.nodeValue=swap(node.nodeValue);});
+    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"]').forEach(function(el){['placeholder','aria-label','title','alt','value'].forEach(function(attr){if(el.hasAttribute(attr))el.setAttribute(attr,swap(el.getAttribute(attr)));});});
+  }
+  localize(document);
+  (function localizeJsonDownloads(){
+    var NativeBlob=window.Blob;
+    var preservedKeys=new Set(['id','type','provider','country','ops','risk','supports','tags','source','url','serviceCode','home','next','variable','key','project','localPay','countries']);
+    function visit(value,key){
+      if(Array.isArray(value))return value.map(function(item){return visit(item,key);});
+      if(value&&typeof value==='object'){Object.keys(value).forEach(function(childKey){value[childKey]=visit(value[childKey],childKey);});return value;}
+      if(typeof value!=='string'||preservedKeys.has(key)||/^(?:https?:\/\/|\/)/i.test(value))return value;
+      var normalized=value.replace(/\s+/g,' ').trim();
+      return exportTerms.has(normalized)?exportTerms.get(normalized):value;
+    }
+    function FrenchBlob(parts,options){
+      var nextParts=parts;
+      if(options&&/application\/json/i.test(options.type||'')&&Array.isArray(parts)&&parts.length===1&&typeof parts[0]==='string'){
+        try{nextParts=[JSON.stringify(visit(JSON.parse(parts[0]),''),null,parts[0].includes('\n')?2:0)];}catch(_){}
+      }
+      return new NativeBlob(nextParts,options);
+    }
+    FrenchBlob.prototype=NativeBlob.prototype;
+    Object.setPrototypeOf(FrenchBlob,NativeBlob);
+    window.Blob=FrenchBlob;
+  })();
+  new MutationObserver(function(records){records.forEach(function(record){record.addedNodes.forEach(function(node){if(node.nodeType===1)localize(node);else if(node.nodeType===3&&node.parentElement&&!/^(script|style|code|pre|textarea)$/i.test(node.parentElement.tagName)&&!node.parentElement.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))node.nodeValue=swap(node.nodeValue);});});}).observe(document.body,{childList:true,subtree:true});
+})();
+</script>
+</body>
+</html>

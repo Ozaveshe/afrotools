@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -215,49 +215,29 @@ html[data-theme="dark"]{--en-bg:#0b1220;--en-card:#111c2f;--en-text:#f1f5f9;--en
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/assets/js/engines/home-security-cost.js?v=b2f3e0cb"></script>
 <script>
-var COSTS={
-  NG:{cctv:{basic:[150000,300000],standard:[250000,500000],premium:[500000,1500000]},alarm:{basic:[50000,150000],standard:[100000,250000],premium:[200000,500000]},guard:{unarmed:80000,armed:150000},monitoring:15000,maintenance:5000},
-  KE:{cctv:{basic:[20000,50000],standard:[40000,100000],premium:[80000,200000]},alarm:{basic:[8000,20000],standard:[15000,35000],premium:[30000,80000]},guard:{unarmed:15000,armed:30000},monitoring:2000,maintenance:700},
-  ZA:{cctv:{basic:[5000,12000],standard:[10000,25000],premium:[20000,60000]},alarm:{basic:[2000,5000],standard:[4000,10000],premium:[8000,25000]},guard:{unarmed:8000,armed:18000},monitoring:500,maintenance:200},
-  GH:{cctv:{basic:[3000,7000],standard:[6000,15000],premium:[12000,35000]},alarm:{basic:[1200,3000],standard:[2500,6000],premium:[5000,15000]},guard:{unarmed:700,armed:1500},monitoring:300,maintenance:120},
-  EG:{cctv:{basic:[8000,20000],standard:[15000,40000],premium:[30000,100000]},alarm:{basic:[3000,8000],standard:[6000,15000],premium:[12000,35000]},guard:{unarmed:2000,armed:4000},monitoring:800,maintenance:300},
-  TZ:{cctv:{basic:[80000,200000],standard:[150000,400000],premium:[300000,1000000]},alarm:{basic:[30000,80000],standard:[60000,150000],premium:[120000,350000]},guard:{unarmed:80000,armed:150000},monitoring:15000,maintenance:5000}
-};
-var SYM={NG:'NGN ',KE:'KES ',ZA:'ZAR ',GH:'GHS ',EG:'EGP ',TZ:'TZS '};
-var HOME_MULT={flat:0.7,bungalow:1.0,duplex:1.4,mansion:2.5};
 function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
 function calculate(){
   var country=document.getElementById('country').value;
   var homeType=document.getElementById('homeType').value;
   var riskLevel=document.getElementById('riskLevel').value;
   var secLevel=document.getElementById('securityLevel').value;
-  var sym=SYM[country];
-  var costs=COSTS[country]||COSTS['NG'];
-  var homeMult=HOME_MULT[homeType]||1;
-  var cctvRange=costs.cctv[secLevel]||costs.cctv.standard;
-  var cctvSetup=(cctvRange[0]+cctvRange[1])/2*homeMult;
-  var alarmRange=costs.alarm[secLevel]||costs.alarm.standard;
-  var alarmSetup=(alarmRange[0]+alarmRange[1])/2;
-  var guardMonthly=secLevel==='premium'?(riskLevel==='high'?costs.guard.armed:costs.guard.unarmed):0;
-  var monitoring=secLevel==='basic'?0:costs.monitoring;
-  var maintenance=costs.maintenance;
-  var totalSetup=cctvSetup+(secLevel!=='basic'?alarmSetup:0);
-  var totalMonthly=guardMonthly+monitoring+maintenance;
-  var annualCost=totalSetup/5+totalMonthly*12;
-  document.getElementById('setupCost').textContent=sym+fmt(totalSetup);
-  document.getElementById('monthlyRunning').textContent='Monthly running cost: '+sym+fmt(totalMonthly)+'/month';
-  document.getElementById('annualCost').textContent=sym+fmt(annualCost);
+  var result=window.AfroToolsHomeSecurityCost.calculate({country:country,homeType:homeType,riskLevel:riskLevel,securityLevel:secLevel});
+  var sym=result.currency;
+  document.getElementById('setupCost').textContent=sym+fmt(result.totalSetup);
+  document.getElementById('monthlyRunning').textContent='Monthly running cost: '+sym+fmt(result.totalMonthly)+'/month';
+  document.getElementById('annualCost').textContent=sym+fmt(result.annualCost);
   document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Setup Cost</div><div class="en-metric-value">'+sym+fmt(totalSetup/1000)+'k</div><div class="en-metric-unit">One-time investment</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Monthly Cost</div><div class="en-metric-value">'+sym+fmt(totalMonthly/1000)+'k</div><div class="en-metric-unit">Running cost</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">5-Year Total</div><div class="en-metric-value">'+sym+fmt((totalSetup+totalMonthly*60)/1000)+'k</div><div class="en-metric-unit">Setup + 5yrs running</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Setup Cost</div><div class="en-metric-value">'+sym+fmt(result.totalSetup/1000)+'k</div><div class="en-metric-unit">One-time investment</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">Monthly Cost</div><div class="en-metric-value">'+sym+fmt(result.totalMonthly/1000)+'k</div><div class="en-metric-unit">Running cost</div></div>'+
+    '<div class="en-metric"><div class="en-metric-label">5-Year Total</div><div class="en-metric-value">'+sym+fmt(result.fiveYear/1000)+'k</div><div class="en-metric-unit">Setup + 5yrs running</div></div>'+
     '<div class="en-metric"><div class="en-metric-label">Planning Context</div><div class="en-metric-value">'+homeType+'</div><div class="en-metric-unit">'+riskLevel+' stated risk</div></div>';
   var rows=[];
-  rows.push({comp:'CCTV System',setup:cctvSetup,monthly:maintenance,annual:cctvSetup/5+maintenance*12,note:secLevel+' package'});
-  if(secLevel!=='basic') rows.push({comp:'Alarm System',setup:alarmSetup,monthly:monitoring,annual:alarmSetup/5+monitoring*12,note:'With monitoring'});
-  if(guardMonthly>0) rows.push({comp:'Guard Service',setup:0,monthly:guardMonthly,annual:guardMonthly*12,note:riskLevel==='high'?'Armed guard':'Unarmed guard'});
-  rows.push({comp:'TOTAL',setup:totalSetup,monthly:totalMonthly,annual:annualCost,note:''});
+  rows.push({comp:'CCTV System',setup:result.cctvSetup,monthly:result.maintenance,annual:result.cctvSetup/5+result.maintenance*12,note:secLevel+' package'});
+  if(secLevel!=='basic') rows.push({comp:'Alarm System',setup:result.alarmSetup,monthly:result.monitoring,annual:result.alarmSetup/5+result.monitoring*12,note:'With monitoring'});
+  if(result.guardMonthly>0) rows.push({comp:'Guard Service',setup:0,monthly:result.guardMonthly,annual:result.guardMonthly*12,note:riskLevel==='high'?'Armed guard':'Unarmed guard'});
+  rows.push({comp:'TOTAL',setup:result.totalSetup,monthly:result.totalMonthly,annual:result.annualCost,note:''});
   document.getElementById('breakdownTable').innerHTML=rows.map(function(r,i){
     return '<tr'+(i===rows.length-1?' style="background:var(--en-accent-pale);font-weight:800"':'')+'>'+
       '<td class="en-td-value">'+r.comp+'</td><td>'+sym+fmt(r.setup)+'</td><td>'+sym+fmt(r.monthly)+'</td>'+
@@ -277,6 +257,6 @@ function printHomeSecurityEstimate(){var status=document.getElementById('homeSec
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/pages/security-focus.js?v=571d331e" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

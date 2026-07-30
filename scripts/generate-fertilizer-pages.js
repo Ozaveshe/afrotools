@@ -8,6 +8,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { synchronizeHtml: synchronizeAgricultureHreflang } = require('./lib/fr-agriculture-hreflang');
 const { DATA: fertilizerContent, renderSeoBlock } = require('./expand-fertilizer');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -133,6 +134,19 @@ countries.forEach(c => {
 
   // URLs
   html = html.replace(/\/agriculture\/fertilizer\/nigeria/g, `/agriculture/fertilizer/${c.slug}`);
+  const countryArtwork = `fertilizer-${c.slug}.webp`;
+  const socialArtwork = fs.existsSync(path.join(ROOT, 'assets/img/tools', countryArtwork))
+    ? countryArtwork
+    : 'fertilizer-nigeria.webp';
+  html = html.replace(/fertilizer-nigeria\.webp/g, socialArtwork);
+  html = synchronizeAgricultureHreflang(html, {
+    english: {
+      id: `fertilizer-${c.slug}`,
+      route: `/agriculture/fertilizer/${c.slug}`,
+      file: `agriculture/fertilizer/${c.slug}.html`,
+    },
+    french: { route: `/fr/agriculture/fertilizer/${c.slug}` },
+  });
 
   // Breadcrumb
   html = html.replace(/(<span aria-current="page">)Nigeria(<\/span>)/g, `$1${c.name}$2`);
@@ -167,6 +181,9 @@ countries.forEach(c => {
     throw new Error(`[FERTILIZER_COUNTRY_CONTENT_OWNER_MISSING] ${c.slug}`);
   }
   html = html.replace(inheritedSeo, renderSeoBlock(content).trim());
+  if (!html.includes(`/assets/img/tools/${socialArtwork}`)) {
+    throw new Error(`[FERTILIZER_COUNTRY_ARTWORK_MISMATCH] ${c.slug} is missing ${socialArtwork}`);
+  }
 
   const outPath = path.join(OUTPUT_DIR, `${c.slug}.html`);
   fs.writeFileSync(outPath, html, 'utf8');

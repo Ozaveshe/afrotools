@@ -1,0 +1,83 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-artwork-route-real-proof-repair",
+  "rejectedCommit": "10496545f15a17a0520471a9a65e94dae14f5f73",
+  "scope": {
+    "manifestRoutes": 447,
+    "browserNavigations": 894,
+    "deletedFiles": 0,
+    "otherLocalesChanged": 0,
+    "sitemapsChanged": 0,
+    "ledgersChanged": 0
+  },
+  "proofRepairs": [
+    "Removed DOMParser route substitution and cloned hero images from the browser proof.",
+    "Opened every manifest route as the top-level document and measured its authored img.hero-art in place.",
+    "Removed forced hero display, dimensions, and object-fit from the proof.",
+    "Added exact currentSrc, HTTP 200, natural-dimension, computed-style, bounding-box, semantic-alt, OG, and Twitter assertions.",
+    "Replaced the fake 640px scenario with a real 375px viewport and repository-standard 200% root text scaling.",
+    "Recorded and asserted the baseline and computed root font sizes, applied scale, and effective layout and visual viewport."
+  ],
+  "productDefectsFoundAndFixed": [
+    {
+      "owner": "assets/js/components/footer.js",
+      "defect": "Long French footer links expanded the page at 200% text.",
+      "fix": "Allow link labels to wrap anywhere while preserving the authored footer layout.",
+      "generatedOutput": "assets/js/components/footer.min.js",
+      "generator": "node scripts/minify.js --only=assets/js/components/footer.js"
+    },
+    {
+      "owner": "fr/tools/calculateur-engrais/index.html",
+      "defect": "The scaled Recommendation et produit heading overflowed its card.",
+      "fix": "Allow fertilizer card content to wrap at narrow scaled widths."
+    }
+  ],
+  "browser": {
+    "routeReal320": {
+      "routes": 447,
+      "passed": 447,
+      "failed": 0,
+      "receipt": "reports/fr-agriculture-artwork-browser-proof.json"
+    },
+    "textScale200At375": {
+      "routes": 447,
+      "passed": 447,
+      "failed": 0,
+      "minimumAppliedScale": 2,
+      "maximumAppliedScale": 2,
+      "receipt": "reports/fr-agriculture-artwork-responsive-proof.json"
+    },
+    "serverReceipt": "reports/fr-agriculture-artwork-browser-server.json"
+  },
+  "validation": [
+    {
+      "command": "npx playwright test tests/e2e/fr-agriculture-artwork.spec.js --project=chromium --workers=1 --grep \"200% text\"",
+      "result": "PASS 1/1; 447/447 routes"
+    },
+    {
+      "command": "npx playwright test tests/e2e/fr-agriculture-artwork.spec.js --project=chromium --workers=1 --grep \"actual accessible artwork\"",
+      "result": "PASS 1/1; 447/447 routes"
+    },
+    {
+      "command": "npm run test:fr-agriculture-artwork",
+      "result": "PASS 447/447 static resolver, artwork, alt, browser receipt and reflow receipt contracts"
+    },
+    {
+      "command": "node tests/fr-agriculture-parity-manifest.test.js",
+      "result": "PASS 447 rows; 443 generated and 4 hand-authored owners"
+    },
+    {
+      "command": "npm run lint",
+      "result": "PASS 45 JavaScript files"
+    },
+    {
+      "command": "npm run type-check",
+      "result": "PASS AI manifest and prompt contracts"
+    },
+    {
+      "command": "git diff --check",
+      "result": "PASS"
+    }
+  ],
+  "result": "PASS"
+}

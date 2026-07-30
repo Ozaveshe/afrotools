@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -16,8 +16,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419;--accent:#1d4ed8}
 .tool-hero{background:linear-gradient(135deg,#1e3a5f 0%,#1d4ed8 100%);padding:44px 0 36px}
@@ -111,7 +111,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
   "image": "https://afrotools.com/assets/img/tools/cac-cost.webp"
 }
 </script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -190,7 +190,7 @@ input:focus,select:focus{outline:none;border-color:var(--accent);box-shadow:0 0 
 <div class="card-head"><span class="card-title">Registration Details</span></div>
 <div class="card-body">
 <div class="row" style="margin-bottom:14px">
-<div><label>Share Capital (NGN)</label><input aria-label="ShareCapital" type="number" id="shareCapital" value="1000000" min="10000" step="100000"></div>
+<div><label>Share Capital (NGN)</label><input aria-label="ShareCapital" type="number" id="shareCapital" value="1000000" min="10000" step="10000"></div>
 <div><label>Number of Directors/Partners</label><input aria-label="Directors" type="number" id="directors" value="2" min="1" max="20"></div>
 </div>
 <div class="row" style="margin-bottom:14px">
@@ -467,6 +467,7 @@ Reviewed by AfroTools workflow on 28 April 2026. Informational only, not legal a
 <afro-newsletter-cta></afro-newsletter-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/mortgage-property-english-owner.js?v=9017302d"></script>
 <script>
 var selectedType = 'bn';
 var USD_RATE = 1620; // approximate NGN/USD rate
@@ -485,77 +486,38 @@ function selectType(type) {
 
 function calculate() {
   var type = selectedType;
-  var shareCapital = +document.getElementById('shareCapital').value || 1000000;
-  var directors = +document.getElementById('directors').value || 2;
+  var shareCapitalInput = document.getElementById('shareCapital');
+  var directorsInput = document.getElementById('directors');
+  var shareCapital = Number(shareCapitalInput.value);
+  var directors = Number(directorsInput.value);
+  shareCapitalInput.setCustomValidity(Number.isFinite(shareCapital) && shareCapital >= 10000 ? '' : 'Enter share capital of at least NGN 10,000.');
+  directorsInput.setCustomValidity(Number.isInteger(directors) && directors >= 1 && directors <= 20 ? '' : 'Enter 1 to 20 directors or partners.');
+  if (!shareCapitalInput.reportValidity() || !directorsInput.reportValidity()) {
+    document.getElementById('resultCard').style.display = 'none';
+    return;
+  }
   var useAgent = document.getElementById('useAgent').value;
   var express = document.getElementById('express').value === 'yes';
   var addAnnualReturns = document.getElementById('addAnnualReturns').checked;
   var addStatusReport = document.getElementById('addStatusReport').checked;
   var addScuml = document.getElementById('addScuml').checked;
-
-  var items = [];
-
-  if (type === 'bn') {
-    items.push({item:'Business Name Registration Fee (CAC)',amount:13500});
-    items.push({item:'Name Reservation Fee',amount:500});
-    if (useAgent === 'agent') items.push({item:'Agent / Accredited Lawyer Fee',amount:25000});
-    if (express) items.push({item:'Express Processing',amount:5000});
-    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
-  } else if (type === 'llc') {
-    var regFee = 25000;
-    if (shareCapital > 1000000 && shareCapital <= 5000000) regFee = 35000;
-    else if (shareCapital > 5000000 && shareCapital <= 25000000) regFee = 50000;
-    else if (shareCapital > 25000000 && shareCapital <= 100000000) regFee = 100000;
-    else if (shareCapital > 100000000) regFee = 200000;
-
-    items.push({item:'Company Registration Fee (CAC)',amount:regFee});
-    items.push({item:'Name Reservation Fee',amount:500});
-    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
-    items.push({item:'CAC Filing Fee (MEMART)',amount:5000});
-    items.push({item:'Certified True Copy (CTC) of Certificate',amount:3000});
-    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
-    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART drafting + filing)',amount:55000});
-    if (express) items.push({item:'Express Processing',amount:15000});
-    if (addStatusReport) items.push({item:'Company Status Report (for bank account)',amount:5000});
-    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
-  } else if (type === 'llp') {
-    var llpRegFee = 25000;
-    if (shareCapital > 1000000 && shareCapital <= 5000000) llpRegFee = 35000;
-    else if (shareCapital > 5000000) llpRegFee = 50000;
-
-    items.push({item:'LLP Registration Fee (CAC)',amount:llpRegFee});
-    items.push({item:'Name Reservation Fee',amount:500});
-    items.push({item:'Partnership Deed Filing',amount:5000});
-    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Deed drafting + filing)',amount:45000});
-    if (express) items.push({item:'Express Processing',amount:10000});
-    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:5000});
-  } else if (type === 'ngo') {
-    items.push({item:'Incorporated Trustee / NGO Registration (CAC)',amount:20000});
-    items.push({item:'Name Reservation Fee',amount:500});
-    items.push({item:'Trustees Declaration Filing',amount:5000});
-    items.push({item:'Newspaper Publication (required by law)',amount:15000});
-    if (addScuml) items.push({item:'SCUML Registration',amount:0});
-    if (useAgent === 'agent') items.push({item:'Lawyer Fee (Constitution + filing)',amount:50000});
-    if (express) items.push({item:'Express Processing',amount:10000});
-    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:3000});
-  } else if (type === 'plc') {
-    var plcRegFee = 200000;
-    if (shareCapital > 100000000 && shareCapital <= 500000000) plcRegFee = 350000;
-    else if (shareCapital > 500000000) plcRegFee = 500000;
-
-    items.push({item:'PLC Registration Fee (CAC)',amount:plcRegFee});
-    items.push({item:'Name Reservation Fee',amount:500});
-    items.push({item:'Stamp Duty on Share Capital (0.75%)',amount:Math.round(shareCapital*0.0075)});
-    items.push({item:'CAC Filing Fee (MEMART)',amount:15000});
-    items.push({item:'Certified True Copy (CTC)',amount:5000});
-    if (directors > 2) items.push({item:'Extra Director Forms ('+(directors-2)+' × ₦2,000)',amount:(directors-2)*2000});
-    if (useAgent === 'agent') items.push({item:'Lawyer Fee (MEMART + SEC filing)',amount:150000});
-    if (addStatusReport) items.push({item:'Company Status Report',amount:5000});
-    if (addAnnualReturns) items.push({item:'Annual Returns Filing (Year 1)',amount:10000});
+  var semantic = window.AfroTools.MortgagePropertyEnglishOwnerEngine.calculate('cac-cost', {
+    entityType: type,
+    shareCapital: shareCapital,
+    directors: directors,
+    useAgent: useAgent,
+    express: express,
+    addAnnualReturns: addAnnualReturns,
+    addStatusReport: addStatusReport,
+    addScuml: addScuml
+  });
+  if (!semantic.ok) {
+    document.getElementById('resultCard').style.display = 'none';
+    return;
   }
-
-  var total = items.reduce(function(s,i){return s+i.amount;}, 0);
-  var usdEquiv = Math.round(total / USD_RATE);
+  var items = semantic.items;
+  var total = semantic.total;
+  var usdEquiv = semantic.usdEquivalent;
 
   document.getElementById('totalAmount').textContent = '₦' + total.toLocaleString('en-NG');
   document.getElementById('usdAmount').textContent = '≈ $' + usdEquiv.toLocaleString('en') + ' USD (at ₦' + USD_RATE + '/USD)';
@@ -588,7 +550,7 @@ document.addEventListener('DOMContentLoaded', function(){
   target.appendChild(div);
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script id="legal-action-copy-script">
 (function(){
   document.addEventListener('click', function(event) {

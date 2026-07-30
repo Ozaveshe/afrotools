@@ -291,6 +291,21 @@ function injectLinks(indexPath, links, sectionTitle) {
     }
   }
 
+  // Some source-owned hubs already render a complete static directory. In
+  // that case another SEO nav adds no crawlability and visibly duplicates the
+  // same links. Treat the source-owned anchors as the discovery surface.
+  const staticHrefs = new Set(
+    [...html.matchAll(/<a\b[^>]*\bhref=["']([^"']+)["'][^>]*>/gi)]
+      .map((match) => match[1].split(/[?#]/)[0].replace(/\/+$/, '') || '/')
+  );
+  const allLinksAlreadyStatic = links.length > 0 && links.every((link) => (
+    staticHrefs.has(String(link.href).split(/[?#]/)[0].replace(/\/+$/, '') || '/')
+  ));
+  if (allLinksAlreadyStatic) {
+    writeFileSyncWithRetry(indexPath, html, 'utf8');
+    return;
+  }
+
   // Build link list
   const linkHtml = links.map(l =>
     `<li><a href="${l.href}">${l.text}</a></li>`

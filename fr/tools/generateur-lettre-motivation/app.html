@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lettre de motivation — espace de travail | AfroTools</title>
+<meta name="description" content="Rédigez et exportez localement une lettre de motivation à partir de vos informations, sans envoyer votre CV ni l’offre d’emploi.">
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<meta property="og:title" content="Lettre de motivation">
+<meta property="og:description" content="Rédigez et exportez localement une lettre de motivation à partir de vos informations, sans envoyer votre CV ni l’offre d’emploi.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/fr/cover-letter.png">
+<meta property="og:image:width" content="1536">
+<meta property="og:image:height" content="1024">
+<meta property="og:url" content="https://afrotools.com/fr/tools/generateur-lettre-motivation/app">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cover Letter Generator | AfroTools">
+<meta name="twitter:description" content="Free Africa-first cover letter generator with JD matching, readiness scoring, local drafts, and private export.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fr/cover-letter.png">
+<meta property="article:modified_time" content="2026-05-23">
+<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script> <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script> <style>
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;min-height:44px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
+.topbar a{display:inline-flex;align-items:center;min-height:44px;color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:44px}
+.btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
+.btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
+.btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
+.btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
+.btn-danger{color:#b91c1c;border-color:#fecaca}
+.app-shell{--workbench-height:clamp(660px,calc(100vh - 300px),790px);width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;text-transform:uppercase}
+.hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
+.hero-strip p{margin:8px 0 0;color:#4b5563;max-width:760px;line-height:1.55}
+.status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
+.pill-button{cursor:pointer;min-height:44px}
+.pill-button:hover,.pill-button:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.workflow-progress{margin:0 0 16px}
+.workflow-progress ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.progress-step{display:grid;grid-template-columns:auto 1fr;gap:7px 9px;align-items:center;min-height:78px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:11px;box-shadow:0 14px 34px rgba(15,23,42,.06)}
+.progress-step span{display:grid;place-items:center;width:27px;height:27px;border-radius:999px;background:#e5e7eb;color:#475569;font-size:.78rem;font-weight:900}
+.progress-step strong{font-size:.84rem;color:#111827;line-height:1.15}
+.progress-step small{grid-column:2;color:#6b7280;font-size:.72rem;line-height:1.35}
+.progress-step[data-state=done]{border-color:#bbf7d0;background:#f0fdf4}
+.progress-step[data-state=done] span{background:#16a34a;color:#fff}
+.progress-step[data-state=current]{border-color:#fed7aa;box-shadow:0 14px 34px rgba(249,115,22,.14)}
+.progress-step[data-state=current] span{background:#f97316;color:#fff}
+.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(280px,330px) minmax(520px,1fr);grid-template-areas:"inputs insights draft";gap:16px;align-items:stretch}
+.panel,.preview-card,.insights-card{min-height:0;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{grid-area:inputs;padding:18px;height:var(--workbench-height);overflow:auto}
+.preview-card{grid-area:draft;height:var(--workbench-height);display:flex;flex-direction:column}
+.insights-card{grid-area:insights}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;color:#374151}
+.stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 16px;padding:5px;border:1px solid #e5e7eb;border-radius:8px;background:#f9fafb}
+.stage-tab{border:0;border-radius:8px;background:transparent;color:#4b5563;padding:9px 7px;min-height:44px;font-size:.78rem;font-weight:900;line-height:1.15}
+.stage-tab[aria-selected=true]{background:#fff;color:#111827;box-shadow:0 7px 18px rgba(15,23,42,.1)}
+.flow-stage{border-top:1px solid #e5e7eb;margin-top:16px;padding-top:16px}
+.flow-stage:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.stage-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.stage-heading h3{margin:0;font-size:.92rem;color:#111827;text-transform:none;letter-spacing:0}
+.stage-heading p{margin:4px 0 0;color:#6b7280;font-size:.8rem;line-height:1.45}
+.stage-badge{flex:0 0 auto;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;border-radius:999px;padding:5px 8px;font-size:.68rem;font-weight:900;text-transform:uppercase}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field>span:first-child{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
+.field textarea{min-height:86px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.field.full{grid-column:1/-1}
+.helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.field-help{display:block;margin:0;color:#6b7280;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:500}
+.field-tip{display:block;border-left:3px solid #fdba74;background:#fff7ed;color:#7c2d12;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:600}
+.upload-placeholder{border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:12px;margin:2px 0 12px;color:#4b5563;font-size:.8rem;line-height:1.45}
+.upload-placeholder button{margin-top:8px}
+.ai-assist-panel{border:1px solid #bfdbfe;background:#f8fbff;border-radius:8px;padding:14px;margin-top:16px}
+.ai-assist-panel:target{box-shadow:0 0 0 3px rgba(11,99,206,.15),0 18px 44px rgba(11,99,206,.14)}
+.ai-assist-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.ai-assist-head h3{margin:0;font-size:.94rem;color:#111827;text-transform:none;letter-spacing:0}
+.ai-assist-head p{margin:5px 0 0;color:#4b5563;font-size:.78rem;line-height:1.45}
+.ai-assist-note{border-left:3px solid #0b63ce;background:#eef5ff;color:#1e3a8a;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.45;margin:8px 0 10px}
+.ai-consent-row{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;min-height:44px;margin:8px 0 10px;color:#374151;font-size:.78rem;line-height:1.45;cursor:pointer}
+.ai-consent-row input{width:22px;height:22px;margin-top:1px}
+.ai-assist-preview,.ai-assist-output{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.78rem;line-height:1.5;resize:vertical}
+.ai-assist-preview{min-height:136px;font-family:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace}
+.ai-assist-output{min-height:160px}
+.ai-assist-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.ai-status{min-height:20px;margin:8px 0 0;color:#4b5563;font-size:.78rem;font-weight:700}
+.ai-status.is-error{color:#b91c1c}
+.ai-status.is-good{color:#166534}
+.segmented{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.template-option{border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:9px 10px;font-size:.78rem;font-weight:800;color:#374151}
+.template-option[aria-pressed="true"]{border-color:#0b63ce;background:#eef5ff;color:#0b63ce}
+.mobile-stage-actions{display:none}
+.desktop-actions{display:flex}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.58;cursor:not-allowed}
+#afro-theme-fallback-toggle{min-height:44px!important}
+.preview-card{overflow:hidden}
+.preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
+.preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.export-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:12px 16px 0;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0b63ce}
+.export-review-status{grid-column:1/-1;margin:0;color:#475569;font-size:.76rem;font-weight:700}
+.letter-editor{display:grid;grid-template-columns:1fr;gap:0;min-height:0;flex:1;overflow:auto}
+.letter-text-wrap{padding:16px;border-bottom:1px solid #e5e7eb;background:#f9fafb}
+#letterText{width:100%;min-height:285px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
+#letterText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
+.paper-wrap{min-width:0;padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:420px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px 32px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.62}
+.paper p{margin:0 0 13px;white-space:pre-wrap}
+.paper .paper-name{font-weight:700;font-size:15px;margin-bottom:2px}
+.paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
+.insights-card{height:var(--workbench-height);padding:0;position:static;overflow:hidden;display:flex;flex-direction:column}
+.readiness-summary{padding:14px 16px;background:linear-gradient(180deg,#f8fbff,#f8fafc);border-bottom:1px solid #e5e7eb}
+.readiness-summary h2{font-size:.98rem}
+.readiness-details{min-height:0;overflow:auto;padding:12px;display:grid;gap:12px}
+.readiness-section{min-width:0}
+.readiness-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:7px}
+.readiness-section h3{margin:0;font-size:.82rem;color:#111827}
+.readiness-section p{margin:3px 0 0;color:#6b7280;font-size:.72rem;line-height:1.4}
+.score-ring{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;margin:10px 0 0}
+.score-number{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:7px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.15rem}
+.score-copy{font-size:.76rem;color:#4b5563;line-height:1.42}
+.checks{display:grid;grid-template-columns:1fr;gap:7px;margin:0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:7px 8px;font-size:.72rem;line-height:1.32;color:#374151;background:#fff}
+.check strong{display:flex;align-items:center;gap:6px;margin-bottom:2px;font-size:.72rem;color:#1f2937}
+.check strong::before{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:16px;border-radius:999px;font-size:.54rem;font-weight:900}
+.check.good{border-color:#bbf7d0;background:#f4fdf7}
+.check.good strong::before{content:"OK";background:#dcfce7;color:#166534}
+.check.warn{border-color:#fde68a;background:#fff9eb}
+.check.warn strong::before{content:"FIX";background:#fef3c7;color:#92400e}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0 10px}
+.chip{border:1px solid #d1d5db;background:#f9fafb;border-radius:999px;padding:4px 7px;font-size:.68rem;font-weight:800;color:#374151}
+.chip.hit{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.miss{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.ai-jump-card{border:1px solid #bfdbfe;background:#f8fbff;border-radius:8px;padding:10px;margin:8px 0}
+.ai-jump-card h3{margin:0 0 5px;font-size:.84rem;color:#111827}
+.ai-jump-card p{margin:0 0 9px;color:#4b5563;font-size:.72rem;line-height:1.42}
+.ai-jump-card .btn{width:100%;justify-content:center}
+.saved-list{display:grid;gap:8px;max-height:120px;overflow:auto;margin-top:10px}
+.saved-item{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
+.saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
+.saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
+.saved-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{border:1px dashed #cfd8e3;background:#f8fafc;border-radius:8px;padding:12px;color:#6b7280;font-size:.8rem;line-height:1.45;margin:8px 0 12px}
+[hidden]{display:none!important}
+.toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.import-input{display:none}
+@media print{body{background:#fff}.topbar,.hero-strip,.workflow-progress,.panel,.insights-card,.preview-top,.export-review,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+:root[data-theme=dark] body{background:#0b1120;color:#e5edf8}
+:root[data-theme=dark] .topbar,:root[data-theme=dark] .panel,:root[data-theme=dark] .preview-card,:root[data-theme=dark] .insights-card,:root[data-theme=dark] .progress-step,:root[data-theme=dark] .saved-item{background:#101a2b;border-color:#294164;color:#e5edf8}
+:root[data-theme=dark] .preview-top,:root[data-theme=dark] .letter-text-wrap,:root[data-theme=dark] .readiness-summary,:root[data-theme=dark] .stage-tabs,:root[data-theme=dark] .flow-stage,:root[data-theme=dark] .readiness-section,:root[data-theme=dark] .mobile-stage-actions{background:#152238;border-color:#294164}
+:root[data-theme=dark] .field input,:root[data-theme=dark] .field select,:root[data-theme=dark] .field textarea,:root[data-theme=dark] #letterText,:root[data-theme=dark] .ai-assist-preview,:root[data-theme=dark] .ai-assist-output{background:#0b1423;border-color:#35527b;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme=dark] .field>span:first-child,:root[data-theme=dark] .panel h2,:root[data-theme=dark] .panel h3,:root[data-theme=dark] .preview-card h2,:root[data-theme=dark] .insights-card h2,:root[data-theme=dark] .readiness-section h3,:root[data-theme=dark] .stage-heading h3,:root[data-theme=dark] .progress-step strong,:root[data-theme=dark] .topbar-title{color:#f1f5f9}
+:root[data-theme=dark] .field-help,:root[data-theme=dark] .helper,:root[data-theme=dark] .stage-heading p,:root[data-theme=dark] .readiness-section p,:root[data-theme=dark] .score-copy,:root[data-theme=dark] .progress-step small,:root[data-theme=dark] .hero-strip p{color:#b7c5d8}
+:root[data-theme=dark] .export-review,:root[data-theme=dark] .ai-assist-panel,:root[data-theme=dark] .ai-jump-card,:root[data-theme=dark] .empty-state,:root[data-theme=dark] .upload-placeholder{background:#101d31;border-color:#35527b;color:#dbeafe}
+:root[data-theme=dark] .export-review-status{color:#b7c5d8}
+:root[data-theme=dark] .check{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme=dark] .check strong{color:#f1f5f9}
+:root[data-theme=dark] .check.good{background:#10271f;border-color:#2f6f50}
+:root[data-theme=dark] .check.warn{background:#2b2515;border-color:#7c6723}
+:root[data-theme=dark] .paper{background:#fff;color:#1f2937;border-color:#cbd5e1}
+@media(max-width:1320px){#letterText{min-height:300px}}
+@media(max-width:1180px){.app-shell{--workbench-height:clamp(620px,calc(100vh - 290px),760px)}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress ol{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:minmax(300px,390px) minmax(0,1fr);grid-template-areas:"inputs draft" "insights draft";align-items:start}.insights-card{height:auto;min-height:360px}.readiness-details{overflow:visible}.checks{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
+@media(max-width:900px){.app-shell{--workbench-height:auto}.topbar{position:static;align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto;min-height:44px}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress{position:sticky;top:0;z-index:18;background:linear-gradient(180deg,#f6f7f3 78%,rgba(246,247,243,0));padding-top:8px}.workflow-progress ol{display:flex;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}.progress-step{min-width:180px;scroll-snap-align:start}.workspace{grid-template-columns:1fr;grid-template-areas:"inputs" "insights" "draft"}.panel,.preview-card,.insights-card{height:auto}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.flow-stage,.insights-card,.preview-card{display:none}.app-shell[data-stage=profile] .flow-stage[data-stage-panel=profile],.app-shell[data-stage=job] .flow-stage[data-stage-panel=job],.app-shell[data-stage=draft] .flow-stage[data-stage-panel=draft]{display:block}.app-shell[data-stage=job] .insights-card{display:flex}.app-shell[data-stage=draft] .preview-card{display:flex}.stage-tabs{position:sticky;top:92px;z-index:10}.mobile-stage-actions{display:flex;position:sticky;bottom:12px;z-index:12;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-top:16px;box-shadow:0 18px 35px rgba(15,23,42,.16)}.mobile-stage-actions .btn{flex:1}.desktop-actions{display:none}.letter-editor{min-height:auto}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}.readiness-details{padding:16px}.checks{grid-template-columns:1fr}#afro-theme-fallback-toggle{display:none!important}}
+</style> <script>
+window.addEventListener('unhandledrejection', function (event) {
+  var reason = event.reason;
+  var message = reason && reason.message ? reason.message : String(reason || '');
+  if (message.indexOf('Transition was skipped') !== -1) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
+</script> <script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+<meta name="content-language" content="fr">
+
+<meta property="og:image:alt" content="Lettre de motivation">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"cover-letter","locale":"fr","englishOwner":"tools/cover-letter-generator/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"(prefers-color-scheme: dark)":"(préfère la palette de couleurs : foncé)","[data-action]":"[données-action]","[data-action],[data-load],[data-delete]":"[action-données],[chargement-données],[suppression-données]","[data-action=\"rebuild\"],[data-load],[data-delete],#aiAssistApply":"[data-action=\"rebuild\"],[data-load],[data-delete],#aiAssistApply","[data-ai-assist-open]":"[data-ai-assist-open]","[data-next-stage]":"[données-étape suivante]","[data-progress-step=\"":"[étape de progression des données = \"","[data-stage-panel=\"":"[panneau-de-données=\"","[data-stage-target]":"[cible-étape-données]","1. Profile & CV":"1. Profil et CV","2. Job & match":"2. Emploi et correspondance","3. Draft & export":"3. Rédiger et exporter","A strong cover letter gives context that a CV cannot. It explains why this role, why this employer, and why your proof points matter. AfroTools helps job seekers build that story with role templates, a job-description matcher, market context, and export formats that work for recruiters and job portals.":"Une lettre de motivation solide donne un contexte qu'un CV ne peut pas fournir. Il explique pourquoi ce rôle, pourquoi cet employeur et pourquoi vos preuves sont importantes. AfroTools aide les demandeurs d'emploi à construire cette histoire avec des modèles de rôle, un outil de mise en correspondance des descriptions de poste, le contexte du marché et des formats d'exportation qui fonctionnent pour les recruteurs et les portails d'emploi.","a[href=\"#job-match\"]":"un[href=\"#job-match\"]","achievement":"réalisation","Adaeze Okonkwo":"Adaeze Okonkwo","adaeze@email.com":"adaeze@email.com","Add a referral only if the person agreed or the connection is relevant.":"Ajoutez une référence uniquement si la personne a accepté ou si la connexion est pertinente.","Add contact details and CV context.":"Ajoutez les coordonnées et le contexte du CV.","Add one clean link that backs up your experience or work samples.":"Ajoutez un lien propre qui sauvegarde votre expérience ou vos échantillons de travail.","Add proof":"Ajouter une preuve","Add your target role and proof points to start scoring.":"Ajoutez votre rôle cible et vos points de preuve pour commencer à noter.","AF":"AF","Africa-aware guidance":"Des conseils adaptés à l’Afrique","Africa-aware professional writing":"Une rédaction professionnelle soucieuse de l’Afrique","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","aft_theme":"aft_theme","AI Assist":"Assistance IA","AI Assist copywriter":"Rédacteur AI Assist","AI Assist filled the draft. Review every fact before exporting.":"L’assistance IA a rempli le brouillon. Vérifiez chaque fait avant l’exportation.","AI result":"Résultat de l'IA","AI task":"Tâche IA","ai-assist":"assistance ai","app.html":"application.html","Application details":"Détails de la candidature","Application progress":"Progression de la candidature","Application readiness":"Préparation de la candidature","Application source":"Source de la demande","Apply to draft":"Postuler au brouillon","aria-current":"aria-courant","aria-selected":"air sélectionné","ArrowLeft":"FlècheGauche","ArrowRight":"FlècheDroite","auto":"auto","Availability":"Disponibilité","Back":"Retour","Back to cover letter landing page":"Retour à la page de destination de la lettre de motivation","breadcrumb":"fil d'Ariane","Briefly explain a transition, gap, relocation, or study break if it helps the application.":"Expliquez brièvement une transition, une interruption, un déménagement ou une pause d'études si cela aide la candidature.","Builder":"Constructeur","Built for privacy and practical reuse":"Conçu pour l'intimité et la réutilisation pratique","Built for real applications, not generic text":"Conçu pour des applications réelles, pas pour du texte générique","BusinessApplication":"Application métier","Can I edit the generated letter?":"Puis-je modifier la lettre générée ?","Can I save multiple letters?":"Puis-je enregistrer plusieurs lettres ?","Candidate profile":"Profil du candidat","Career change or gap note":"Changement de carrière ou note d'écart","CAREER DOCUMENTS":"DOCUMENTS DE CARRIÈRE","change":"changement","Check job match":"Vérifier l'adéquation de l'emploi","Checker":"Vérificateur","Checks":"Chèques","Checks contact details, proof points, company motivation, letter length, structure, and placeholders.":"Vérifie les coordonnées, les éléments de preuve, la motivation de l'entreprise, la longueur des lettres, la structure et les espaces réservés.","Choose one focused task so the credit produces a useful result.":"Choisissez une tâche ciblée pour que le crédit produise un résultat utile.","Choose the structure, tone, and length before creating or refreshing the draft.":"Choisissez la structure, le ton et la longueur avant de créer ou d'actualiser le brouillon.","Choose your target":"Choisissez votre cible","City and country help recruiters understand market fit and availability.":"La ville et le pays aident les recruteurs à comprendre l’adéquation et la disponibilité du marché.","Clear the important gaps before exporting.":"Comblez les lacunes importantes avant d’exporter.","click":"cliquez","Company":"Entreprise","Complete the named recipient, role, company, and letter content before export.":"Complétez le contenu du destinataire, du rôle, de l'entreprise et de la lettre nommés avant l'exportation.","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Connect the employer's mission, product, market, or growth stage to your background.":"Connectez la mission, le produit, le marché ou l'étape de croissance de l'employeur à votre expérience.","Copy":"Copier","Copy AI result":"Copier le résultat de l'IA","Cover Letter":"Lettre de motivation","Cover Letter Generator":"Générateur de lettre de motivation","Cover Letter Generator | Private App | AfroTools":"Générateur de lettre de motivation | Application privée | AfroOutils","Cover Letter Generator for African job applications":"Générateur de lettres de motivation pour les candidatures africaines","Cover letter workflow":"Flux de travail de la lettre de motivation","cover-letter":"lettre de motivation","Cover-letter improvements can automatically fill the draft. Messages and talking points stay here for review and copy.":"Les améliorations de la lettre de motivation peuvent automatiquement remplir le brouillon. Les messages et les points de discussion restent ici pour examen et copie.","Create a better letter in 4 steps":"Créez une meilleure lettre en 4 étapes","Create a private, job-matched cover letter.":"Créez une lettre de motivation privée adaptée à l'emploi.","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","Create and review a complete letter before downloading or printing.":"Créez et révisez une lettre complète avant de la télécharger ou de l’imprimer.","Create cover letter":"Créer une lettre de motivation","Create Cover Letter":"Créer une lettre de motivation","Create interview talking points":"Créer des points de discussion pour l'entretien","Create or edit your letter.":"Créez ou modifiez votre lettre.","Create tailored cover letters for African and global job applications with templates, job-description matching, readiness checks, optional AI Assist, saved drafts, and PDF, Word, TXT, and JSON export.":"Créez des lettres de motivation sur mesure pour les candidatures africaines et mondiales avec des modèles, une correspondance de description de poste, des contrôles de préparation, une assistance IA en option, des brouillons enregistrés et une exportation PDF, Word, TXT et JSON.","current":"actuel","CV / Resume Builder":"Générateur de CV","CV upload support is planned.":"Un support pour le téléchargement de CV est prévu.","dark":"sombre","data-action":"action de données","data-next-stage":"données-étape suivante","data-stage":"étape de données","data-stage-target":"cible de l'étape de données","data-state":"état des données","data-theme":"thème de données","data-theme-choice":"choix du thème des données","Dear Hiring Manager,":"Cher responsable du recrutement,","Does it use server AI?":"Utilise-t-il l'IA du serveur ?","DOMContentLoaded":"DOMContentLoaded","done":"fait","Download PDF":"Télécharger le PDF","draft":"brouillon","Draft":"Brouillon","Draft ready":"Brouillon prêt","Edit and export":"Modifier et exporter","Edit freely. Click Create cover letter if you want the form to regenerate the draft.":"Modifiez librement. Cliquez sur Créer une lettre de motivation si vous souhaitez que le formulaire régénère le brouillon.","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","Editable letter":"Lettre modifiable","email":"e-mail","Email":"E-mail","End":"Fin","export":"exporter","Export":"Exporter","Export a Word-compatible file, plain text, or JSON backup for reuse across devices.":"Exportez un fichier compatible Word, du texte brut ou une sauvegarde JSON pour le réutiliser sur tous les appareils.","Export JSON":"Exporter en JSON","Export ready":"Prêt à exporter","false":"FAUX","Feature summary":"Résumé des fonctionnalités","Features":"Caractéristiques","Find missing keywords and proof points":"Trouvez les mots-clés et les preuves manquants","For now, paste the relevant CV summary or bullet points above so the generator stays fully local in your browser.":"Pour l'instant, collez le résumé du CV ou les puces pertinents ci-dessus afin que le générateur reste entièrement local dans votre navigateur.","Free":"Gratuit","Free Africa-first, local-first cover letter generator. Tailor your letter to the job description, check missing keywords, improve readiness, and export privately without an account.":"Générateur gratuit de lettres de motivation axé sur l'Afrique et le local. Adaptez votre lettre à la description de poste, vérifiez les mots-clés manquants, améliorez votre préparation et exportez en privé sans compte.","Free Cover Letter Generator for Africa":"Générateur de lettre de motivation gratuit pour l'Afrique","Free Cover Letter Generator for Africa | AfroTools":"Générateur de lettre de motivation gratuit pour l'Afrique | AfroOutils","Free Cover Letter Generator for African Job Applications":"Générateur de lettre de motivation gratuit pour les candidatures africaines","Frequently Asked Questions":"Questions fréquentes","Full name":"Nom et prénom","Generate a stronger targeted cover letter":"Générez une lettre de motivation plus ciblée","Generate or improve a letter, find proof gaps, or write recruiter messages after you review the exact payload.":"Générez ou améliorez une lettre, trouvez des lacunes dans les preuves ou rédigez des messages pour le recruteur après avoir examiné la charge utile exacte.","Generation settings":"Paramètres de génération","Generator":"Générateur","Good input names your function, industries, tools, achievements, and markets served.":"Une bonne saisie précise votre fonction, vos secteurs, vos outils, vos réalisations et les marchés servis.","Hiring manager":"Responsable du recrutement","Home":"Accueil","I am excited to apply for the Operations Lead role at a fast-growing African fintech. With experience in customer operations, reconciliations, and team coordination, I bring practical evidence of reducing turnaround time and improving service quality.":"Je suis ravi de postuler pour le poste de responsable des opérations dans une fintech africaine à croissance rapide. Fort de mon expérience dans les opérations clients, les rapprochements et la coordination d'équipe, j'apporte des preuves pratiques de la réduction des délais d'exécution et de l'amélioration de la qualité du service.","I reviewed the recipient, company, role, evidence, contact details, spelling, and final letter preview before export.":"J'ai examiné le destinataire, l'entreprise, le rôle, les preuves, les coordonnées, l'orthographe et l'aperçu de la lettre finale avant l'exportation.","I understand the payload shown below will be sent to AfroTools AI for this one request. Do not use real private data unless you are comfortable sending it.":"Je comprends que la charge utile indiquée ci-dessous sera envoyée à AfroTools AI pour cette seule demande. N'utilisez pas de véritables données privées à moins que vous ne soyez à l'aise de les envoyer.","Immediate, 30 days, after notice":"Immédiat, 30 jours, après préavis","Import":"Importer","Import saved cover letter JSON":"Importer la lettre de motivation enregistrée JSON","Improve the current draft":"Améliorer le projet actuel","Improve this field: \"After completing a data analytics certificate, I am targeting operations roles where I can combine branch support experience with reporting skills.\"":"Améliorez ce champ : « Après une certification en analyse de données, je vise des postes opérationnels combinant mon expérience d’assistance aux agences et mes compétences en reporting. »","Improve this field: \"Operations associate with 4 years supporting fintech teams in Nigeria and Ghana, including reconciliations, vendor follow-up, and customer issue resolution.\"":"Améliorez ce champ : « Spécialiste des opérations avec quatre ans d’expérience auprès d’équipes fintech au Nigeria et au Ghana, notamment en rapprochements, suivi des fournisseurs et résolution des demandes clients. »","Improve this field: \"Reduced monthly reconciliation time by 35% across 12 branches by redesigning the Excel review tracker.\"":"Améliorez ce champ : « Réduction de 35 % du temps de rapprochement mensuel dans 12 agences grâce à la refonte du tableau de suivi Excel. »","Improve this field: paste the full advert, then keep the role requirements, core tools, language requirements, and location rules.":"Améliorez ce champ : collez l'annonce complète, puis conservez les exigences du rôle, les outils de base, les exigences linguistiques et les règles de localisation.","Include your country code when applying across markets.":"Incluez le code de votre pays lorsque vous postulez sur tous les marchés.","input":"saisir","Invoice Generator":"Générateur de facture","Is this really free?":"Est-ce vraiment gratuit ?","JD":"JD","Job description":"Description de l'emploi","Job description added":"Description du poste ajoutée","Job keywords matched: operations, reconciliation, stakeholder, fintech.":"Mots-clés du poste correspondant : opérations, réconciliation, partie prenante, fintech.","Job title":"Titre d'emploi","Job-description matching":"Correspondance avec la description de poste","job-match":"correspondance d'emploi","Keep greeting and sign-off clear.":"Gardez une formule d’appel et une signature claires.","Keep multiple local drafts for different jobs and reopen them from the landing page.":"Conservez plusieurs brouillons locaux pour différentes tâches et rouvrez-les à partir de la page de destination.","Keep this short and positive. Focus on readiness, not apology.":"Soyez bref et positif. Concentrez-vous sur la préparation, pas sur les excuses.","keydown":"touche enfoncée","Led a team of 5 to cut reconciliation time by 35 percent across 12 branches.":"A dirigé une équipe de 5 personnes pour réduire le temps de rapprochement de 35 % dans 12 succursales.","Length":"Longueur","Letter changed. Review the final preview again before export.":"Lettre modifiée. Vérifiez à nouveau l'aperçu final avant l'exportation.","Letter text":"Texte de la lettre","light":"lumière","LinkedIn or portfolio":"LinkedIn ou portfolio","LinkedIn, referral, company site":"LinkedIn, référencement, site d'entreprise","linkedin.com/in/adaeze or portfolio link":"linkedin.com/in/adaeze ou lien portfolio","List skills from the job post that you can honestly prove.":"Énumérez les compétences de l’offre d’emploi que vous pouvez prouver honnêtement.","Live draft preview":"Aperçu du brouillon en direct","loading":"chargement","Local drafts from this browser.":"Brouillons locaux de ce navigateur.","Local PDF export":"Exportation PDF locale","Local-first":"Le local d’abord","Location":"Emplacement","Many application workflows use keyword screening before a recruiter reads your document. The AfroTools checker highlights the terms already present in your letter and the important terms still missing from the job description. That makes every draft easier to tailor for a specific employer.":"De nombreux flux de travail de candidature utilisent la sélection de mots clés avant qu'un recruteur ne lise votre document. Le vérificateur AfroTools met en avant les termes déjà présents dans votre lettre et les termes importants encore absents de la description de poste. Cela rend chaque projet plus facile à adapter à un employeur spécifique.","Many cover letter builders require accounts or hide downloads behind paid steps. AfroTools keeps the workflow local-first. You can save versions in your browser, export a backup JSON file, create a Word-compatible document, download a PDF, or copy the text into an application form.":"De nombreux créateurs de lettres de motivation exigent des comptes ou cachent les téléchargements derrière des étapes payantes. AfroTools maintient le flux de travail local d'abord. Vous pouvez enregistrer des versions dans votre navigateur, exporter un fichier JSON de sauvegarde, créer un document compatible Word, télécharger un PDF ou copier le texte dans un formulaire de candidature.","Market context for Nigeria, Kenya, Ghana, South Africa, Rwanda, Uganda, Tanzania, Ethiopia, remote, and pan-African roles.":"Contexte du marché pour le Nigeria, le Kenya, le Ghana, l'Afrique du Sud, le Rwanda, l'Ouganda, la Tanzanie, l'Éthiopie, les rôles éloignés et panafricains.","Market or country":"Marché ou pays","Match the title from the advert, including level if listed.":"Faites correspondre le titre de l'annonce, y compris le niveau s'il est répertorié.","Matched and missing terms from the pasted job description.":"Termes correspondants et manquants dans la description de poste collée.","Mention notice period or relocation readiness only when it helps.":"Mentionnez la période de préavis ou la préparation au déménagement uniquement lorsque cela peut aider.","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Ms. Njeri Kamau":"Mme Njeri Kamau","Name or connection, optional":"Nom ou connexion, facultatif","nearest":"le plus proche","Need a sharper draft?":"Besoin d'un tirant d'eau plus net ?","New Letter":"Nouvelle lettre","Next: Draft & export":"Suivant : Brouillon et exportation","Next: Job & match":"Suivant : Emploi et correspondance","No account":"Pas de compte","No account required. Resume and job data stay local unless you explicitly run optional AI Assist.":"Aucun compte requis. Les données de CV et de travail restent locales, sauf si vous exécutez explicitement AI Assist en option.","No draft yet. Complete the profile, job details, and proof points, then choose Create cover letter.":"Pas encore de brouillon. Complétez le profil, les détails du poste et les preuves, puis choisissez Créer une lettre de motivation.","No watermark":"Pas de filigrane","Open AI Assist":"Assistance IA ouverte","Open the opt-in AI copywriter to rewrite the letter, find missing proof, or draft recruiter follow-ups. Nothing is sent until you review and consent.":"Ouvrez le rédacteur IA opt-in pour réécrire la lettre, trouver les preuves manquantes ou rédiger les suivis du recruteur. Rien n'est envoyé jusqu'à ce que vous examiniez et consentiez.","Operations, Excel, stakeholder management":"Opérations, Excel, gestion des parties prenantes","Opt-in":"S'inscrire","Optional AI Assist":"Assistance IA en option","Optional AI Copywriter & Advisor":"Rédacteur et conseiller IA en option","Optional. Add a name only when you are confident it is correct.":"Facultatif. Ajoutez un nom uniquement lorsque vous êtes sûr qu'il est correct.","Paste a job description to see role keywords and missing terms.":"Collez une description de poste pour voir les mots-clés du rôle et les termes manquants.","Paste a short resume summary or key responsibilities you want the letter to reflect.":"Collez un bref résumé du CV ou les responsabilités que la lettre doit refléter.","Paste responsibilities, requirements, tools, and qualifications. Remove private recruiter notes before sharing a device.":"Collez les responsabilités, les exigences, les outils et les qualifications. Supprimez les notes privées du recruteur avant de partager un appareil.","Paste the job post":"Collez l'offre d'emploi","Paste the job post. The checker will compare your letter with the role keywords.":"Collez l’offre d’emploi. Le vérificateur comparera votre lettre aux mots-clés du poste.","Paste the role details for matching.":"Collez les détails du rôle pour la correspondance.","Paste the role post and see matched and missing keywords before you submit.":"Collez la publication sur le rôle et consultez les mots-clés correspondants et manquants avant de la soumettre.","Paste the strongest summary or background you want reflected in the letter.":"Collez le résumé ou l'arrière-plan le plus fort que vous souhaitez refléter dans la lettre.","Payload preview":"Aperçu de la charge utile","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF Merge & Split":"Fusionner et diviser des PDF","PDF Workspace":"Espace de travail PDF","PDF, Word-compatible DOC, TXT, JSON, print, and copy.":"PDF, DOC compatible Word, TXT, JSON, impression et copie.","PDF/DOC/TXT/JSON":"PDF/DOC/TXT/JSON","pending":"en attente","phone":"téléphone","Phone":"Téléphone","Pick a structure that matches the role type and seniority.":"Choisissez une structure qui correspond au type de rôle et à l'ancienneté.","Pick the market closest to the role so guidance reflects local hiring norms.":"Choisissez le marché le plus proche du poste afin que les orientations reflètent les normes d'embauche locales.","Pick the role family, tone, market, and ideal letter length.":"Choisissez la famille de rôles, le ton, le marché et la longueur idéale de la lettre.","Polish the final text, save versions, and download PDF, Word, TXT, or JSON.":"Peaufinez le texte final, enregistrez les versions et téléchargez des PDF, Word, TXT ou JSON.","Price":"Prix","print":"imprimer","Print":"Imprimer","Print preview":"Aperçu avant impression","Private application builder":"Générateur d'applications privées","Private by default":"Privé par défaut","Product Manager":"Chef de produit","profile":"profil","Profile complete":"Profil terminé","proof":"preuve","Proof points":"Points de preuve","Proof points added":"Points de preuve ajoutés","Proof with result":"Preuve avec résultat","QA":"Assurance qualité","Quality check":"Contrôle qualité","Readiness checks":"Contrôles de préparation","Readiness score":"Score de préparation","Readiness will appear once you add a target job, proof points, and a draft.":"L'état de préparation apparaîtra une fois que vous aurez ajouté un travail cible, des points de preuve et un brouillon.","Referral":"Référence","Related tools":"Outils associés","Relevant achievement":"Réalisation pertinente","Requires JavaScript":"Nécessite JavaScript","Resume summary or background":"Résumé ou contexte du CV","Resume/CV":"CV/CV","Review draft":"Ébauche de révision","Review payload":"Vérifier la charge utile","Review the final letter preview and confirm it before export.":"Vérifiez l'aperçu final de la lettre et confirmez-le avant l'exportation.","Role keywords":"Mots-clés de rôle","Role templates":"Modèles de rôles","Run AI Assist":"Exécuter l'assistance IA","Safaricom":"Safaricom","Save":"Enregistrer","SAVE":"ENREGISTRER","Save, copy, print, or download.":"Enregistrez, copiez, imprimez ou téléchargez.","Saved drafts from this browser will appear here. They stay on this device unless you export them.":"Les brouillons enregistrés à partir de ce navigateur apparaîtront ici. Ils restent sur cet appareil jusqu'à ce que vous les exportiez.","Saved letters":"Lettres enregistrées","Saved versions":"Versions enregistrées","saved-letters":"lettres-sauvegardées","See Features":"Voir les fonctionnalités","Select the result and copy manually.":"Sélectionnez le résultat et copiez-le manuellement.","Short is best for email applications; standard works for most portal uploads.":"Le format court est idéal pour les applications de messagerie ; la norme fonctionne pour la plupart des téléchargements sur le portail.","Show evidence, skills, and motivation.":"Montrez des preuves, des compétences et de la motivation.","skills":"compétences","smooth":"lisse","Specific evidence makes the draft stronger and improves match quality.":"Des preuves spécifiques renforcent le projet et améliorent la qualité des matchs.","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","start":"commencer","Start with recruiter-ready contact details and a short CV summary.":"Commencez par des coordonnées prêtes pour le recruteur et un bref résumé de votre CV.","step":"étape","Step 1":"Étape 1","Step 2":"Étape 2","Step 3":"Étape 3","tabindex":"tabindex","Target job":"Emploi cible","Technology, finance, health, education, NGO, government, sales, creative, graduate, and general templates.":"Modèles de technologie, finance, santé, éducation, ONG, gouvernement, ventes, créatifs, diplômés et généraux.","Technology, finance, healthcare, education, engineering, NGO and development, government, sales, creative, graduate or internship, and general applications.":"Technologie, finance, soins de santé, éducation, ingénierie, ONG et développement, gouvernement, ventes, création, diplôme ou stage et applications générales.","Template":"Modèle","Templates":"Modèles","The company's expansion across East Africa aligns with my experience scaling customer operations.":"L'expansion de l'entreprise en Afrique de l'Est correspond à mon expérience dans la mise à l'échelle des opérations clients.","The default builder runs locally in your browser. Optional AI Assist only runs after you review the exact payload, tick the consent box, and spend one AI Assist request.":"Le générateur par défaut s'exécute localement dans votre navigateur. AI Assist en option ne s'exécute qu'après avoir examiné la charge utile exacte, coché la case de consentement et effectué une demande AI Assist.","The tool includes market context for African employers and remote teams while keeping the final letter professional enough for multinational applications. It works whether you are applying in Lagos, Nairobi, Accra, Johannesburg, Kigali, Kampala, Dar es Salaam, Addis Ababa, or to a global remote role.":"L'outil inclut le contexte du marché pour les employeurs africains et les équipes distantes tout en gardant la lettre finale suffisamment professionnelle pour les candidatures multinationales. Cela fonctionne que vous postuliez à Lagos, Nairobi, Accra, Johannesburg, Kigali, Kampala, Dar es Salaam, Addis-Abeba ou à un poste à distance mondial.","This can help the letter reference a referral or posting channel naturally.":"Cela peut aider la lettre à faire naturellement référence à un canal de référence ou de publication.","This is the exact text that will be sent. It is rebuilt from the fields on this page and stays local until you run AI Assist.":"C'est le texte exact qui sera envoyé. Il est reconstruit à partir des champs de cette page et reste local jusqu'à ce que vous exécutiez AI Assist.","Tone":"Tonifier","Tools":"Outils","Top skills":"Meilleures compétences","Transition was skipped":"La transition a été ignorée","true":"vrai","Turn skills, achievements, and company motivation into a structured draft.":"Transformez les compétences, les réalisations et la motivation de l’entreprise en un projet structuré.","unhandledrejection":"rejet non géré","Upload CV later":"Téléchargez votre CV plus tard","Use a measurable result, scope, or concrete responsibility.":"Utilisez un résultat mesurable, une portée ou une responsabilité concrète.","Use a professional inbox you check often during hiring.":"Utilisez une boîte de réception professionnelle que vous consultez souvent lors de l'embauche.","Use a reviewed, consent-based AI request to improve a draft, find missing proof, or write recruiter messages.":"Utilisez une demande d'IA examinée et basée sur le consentement pour améliorer un brouillon, trouver des preuves manquantes ou rédiger des messages pour le recruteur.","Use the actual job post so keyword checks and readiness scoring stay relevant.":"Utilisez l'offre d'emploi réelle pour que les vérifications de mots clés et l'évaluation de l'état de préparation restent pertinentes.","Use the employer name exactly as the role advert shows it.":"Utilisez le nom de l'employeur exactement comme l'indique l'annonce de poste.","Use the matcher to catch missing keywords before an ATS or recruiter does.":"Utilisez le matcher pour détecter les mots-clés manquants avant qu'un ATS ou un recruteur ne le fasse.","Use the same name shown on your CV and application profile.":"Utilisez le même nom que celui indiqué sur votre CV et votre profil de candidature.","Use total relevant experience, not every year worked.":"Utilisez une expérience totalement pertinente, pas chaque année travaillée.","Use warm professional for most roles; choose direct for short recruiter screens.":"Faire appel à un professionnel chaleureux pour la plupart des rôles ; choisissez Direct pour les écrans de recrutement courts.","Uses 1 AI Assist request after a successful response. Review the payload first, then consent before any CV, job description, or draft text is sent.":"Utilise 1 requête AI Assist après une réponse réussie. Examinez d’abord la charge utile, puis consentez avant l’envoi d’un CV, d’une description de poste ou d’un brouillon de texte.","Uses the local AfroTools jsPDF asset so downloads do not depend on a third-party CDN.":"Utilise l'actif jsPDF local AfroTools afin que les téléchargements ne dépendent pas d'un CDN tiers.","Web":"Web","What exports are supported?":"Quelles exportations sont prises en charge ?","Which industries are supported?":"Quelles industries sont soutenues ?","Why job-description matching matters":"Pourquoi la correspondance avec les descriptions de poste est importante","Why this company?":"Pourquoi cette entreprise ?","word":"mot","Word":"Mot","Word, TXT, and JSON":"Word, TXT et JSON","Workflow":"Flux de travail","Write a follow-up email":"Écrivez un e-mail de suivi","Write a LinkedIn message":"Écrivez un message LinkedIn","Write a recruiter email":"Écrire un email de recruteur","Write a targeted cover letter for African and global job applications. Match the job description, improve your readiness score, optionally use AI Assist after reviewing the payload, and export PDF, Word, TXT, or JSON.":"Rédigez une lettre de motivation ciblée pour les candidatures africaines et mondiales. Faites correspondre la description du poste, améliorez votre score de préparation, utilisez éventuellement AI Assist après avoir examiné la charge utile et exportez au format PDF, Word, TXT ou JSON.","Years of experience":"Années d'expérience","Yes. Saved letters are stored locally in your browser and appear on this page.":"Oui. Les lettres enregistrées sont stockées localement dans votre navigateur et apparaissent sur cette page.","Yes. The draft is fully editable before you save, copy, print, or export it.":"Oui. Le brouillon est entièrement modifiable avant de l’enregistrer, de le copier, de l’imprimer ou de l’exporter.","Yes. There is no registration, no watermark, and no paid export step.":"Oui. Il n’y a pas d’enregistrement, pas de filigrane et aucune étape d’exportation payante.","Your Saved Letters":"Vos lettres enregistrées"}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/generateur-lettre-motivation/app">
+</head>
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
+<h1 class="sr-only">Générateur de lettres de motivation pour les candidatures africaines</h1>
+<div class="topbar">
+  <a href="index.html" aria-label="Retour à la page de destination de la lettre de motivation">Retour</a>
+  <div class="topbar-title">Générateur de lettre de motivation</div>
+  <div class="topbar-actions">
+    <button class="btn" type="button" data-action="copy">Copier</button>
+    <button class="btn" type="button" data-action="save">Enregistrer</button>
+    <a class="btn btn-soft" href="#job-match">Vérifier l'adéquation de l'emploi</a>
+    <button class="btn btn-soft" type="button" data-ai-assist-open>Assistance IA</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Télécharger le PDF</button>
+  </div>
+</div>
+
+<main class="app-shell" data-stage="profile">
+  <section class="hero-strip" aria-labelledby="app-title">
+    <div>
+      <p class="eyebrow">Générateur d'applications privées</p>
+      <h2 id="app-title">Créez une lettre de motivation privée adaptée à l'emploi.</h2>
+      <p>Générateur gratuit de lettres de motivation axé sur l'Afrique et le local. Adaptez votre lettre à la description de poste, vérifiez les mots-clés manquants, améliorez votre préparation et exportez en privé sans compte.</p>
+    </div>
+    <div class="status-line" aria-label="Résumé des fonctionnalités">
+      <span class="pill">Gratuit</span>
+      <span class="pill">Pas de compte</span>
+      <span class="pill">Pas de filigrane</span>
+      <span class="pill">Le local d’abord</span>
+      <button class="pill pill-button" type="button" data-ai-assist-open>Rédacteur AI Assist</button>
+      <span class="pill">PDF/DOC/TXT/JSON</span>
+    </div>
+  </section>
+
+  <section class="workflow-progress" aria-label="Progression de la candidature">
+    <ol>
+      <li class="progress-step" data-progress-step="profile"><span>1</span><strong>Profil terminé</strong><small>Ajoutez les coordonnées et le contexte du CV.</small></li>
+      <li class="progress-step" data-progress-step="job"><span>2</span><strong>Description du poste ajoutée</strong><small>Collez les détails du rôle pour la correspondance.</small></li>
+      <li class="progress-step" data-progress-step="proof"><span>3</span><strong>Points de preuve ajoutés</strong><small>Montrez des preuves, des compétences et de la motivation.</small></li>
+      <li class="progress-step" data-progress-step="draft"><span>4</span><strong>Brouillon prêt</strong><small>Créez ou modifiez votre lettre.</small></li>
+      <li class="progress-step" data-progress-step="export"><span>5</span><strong>Prêt à exporter</strong><small>Enregistrez, copiez, imprimez ou téléchargez.</small></li>
+    </ol>
+  </section>
+
+  <div class="workspace">
+    <section class="panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Constructeur</p>
+          <h2 id="builder-title">Détails de la candidature</h2>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Créer une lettre de motivation</button>
+      </div>
+
+      <div class="stage-tabs" role="tablist" aria-label="Flux de travail de la lettre de motivation">
+        <button class="stage-tab" id="tab-profile" type="button" role="tab" aria-controls="stage-profile" aria-selected="true" data-stage-target="profile">1. Profil et CV</button>
+        <button class="stage-tab" id="tab-job" type="button" role="tab" aria-controls="stage-job" aria-selected="false" data-stage-target="job">2. Emploi et correspondance</button>
+        <button class="stage-tab" id="tab-draft" type="button" role="tab" aria-controls="stage-draft" aria-selected="false" data-stage-target="draft">3. Rédiger et exporter</button>
+      </div>
+
+      <div class="flow-stage" id="stage-profile" role="tabpanel" aria-labelledby="tab-profile" data-stage-panel="profile">
+        <div class="stage-heading">
+          <div>
+            <h3>Profil du candidat</h3>
+            <p>Commencez par des coordonnées prêtes pour le recruteur et un bref résumé de votre CV.</p>
+          </div>
+          <span class="stage-badge">Étape 1</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Nom et prénom</span><input id="fullName" autocomplete="name" placeholder="Adaeze Okonkwo" aria-describedby="fullNameHelp"><span class="field-help" id="fullNameHelp">Utilisez le même nom que celui indiqué sur votre CV et votre profil de candidature.</span></label>
+          <label class="field"><span>E-mail</span><input id="email" type="email" autocomplete="email" placeholder="adaeze@email.com" aria-describedby="emailHelp"><span class="field-help" id="emailHelp">Utilisez une boîte de réception professionnelle que vous consultez souvent lors de l'embauche.</span></label>
+          <label class="field"><span>Téléphone</span><input id="phone" autocomplete="tel" placeholder="+234 801 234 5678" aria-describedby="phoneHelp"><span class="field-help" id="phoneHelp">Incluez le code de votre pays lorsque vous postulez sur tous les marchés.</span></label>
+          <label class="field"><span>Emplacement</span><input id="city" autocomplete="address-level2" placeholder="Lagos, Nigeria" aria-describedby="cityHelp"><span class="field-help" id="cityHelp">La ville et le pays aident les recruteurs à comprendre l’adéquation et la disponibilité du marché.</span></label>
+          <label class="field full"><span>LinkedIn ou portfolio</span><input id="portfolio" placeholder="linkedin.com/in/adaeze ou lien portfolio" aria-describedby="portfolioHelp"><span class="field-help" id="portfolioHelp">Ajoutez un lien propre qui sauvegarde votre expérience ou vos échantillons de travail.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>CV/CV</h3>
+            <p>Collez le résumé ou l'arrière-plan le plus fort que vous souhaitez refléter dans la lettre.</p>
+          </div>
+        </div>
+        <label class="field full"><span>Résumé ou contexte du CV</span><textarea id="resumeSummary" placeholder="Collez un bref résumé du CV ou les responsabilités que la lettre doit refléter." aria-describedby="resumeSummaryHelp"></textarea><span class="field-help" id="resumeSummaryHelp">Une bonne saisie précise votre fonction, vos secteurs, vos outils, vos réalisations et les marchés servis.</span><span class="field-tip">Améliorez ce champ : « Spécialiste des opérations avec quatre ans d’expérience auprès d’équipes fintech au Nigeria et au Ghana, notamment en rapprochements, suivi des fournisseurs et résolution des demandes clients. »</span></label>
+        <div class="upload-placeholder">
+          <strong>Un support pour le téléchargement de CV est prévu.</strong> Pour l'instant, collez le résumé du CV ou les puces pertinents ci-dessus afin que le générateur reste entièrement local dans votre navigateur.
+          <button class="btn" type="button" disabled aria-disabled="true">Téléchargez votre CV plus tard</button>
+        </div>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="job">Suivant : Emploi et correspondance</button></div>
+      </div>
+
+      <div class="flow-stage" id="stage-job" role="tabpanel" aria-labelledby="tab-job" data-stage-panel="job">
+        <div class="stage-heading">
+          <div>
+            <h3>Emploi cible</h3>
+            <p>Utilisez l'offre d'emploi réelle pour que les vérifications de mots clés et l'évaluation de l'état de préparation restent pertinentes.</p>
+          </div>
+          <span class="stage-badge">Étape 2</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Titre d'emploi</span><input id="jobTitle" placeholder="Chef de produit" aria-describedby="jobTitleHelp"><span class="field-help" id="jobTitleHelp">Faites correspondre le titre de l'annonce, y compris le niveau s'il est répertorié.</span></label>
+          <label class="field"><span>Entreprise</span><input id="company" placeholder="Safaricom" aria-describedby="companyHelp"><span class="field-help" id="companyHelp">Utilisez le nom de l'employeur exactement comme l'indique l'annonce de poste.</span></label>
+          <label class="field"><span>Responsable du recrutement</span><input id="hiringManager" placeholder="Mme Njeri Kamau" aria-describedby="hiringManagerHelp"><span class="field-help" id="hiringManagerHelp">Facultatif. Ajoutez un nom uniquement lorsque vous êtes sûr qu'il est correct.</span></label>
+          <label class="field"><span>Source de la demande</span><input id="source" placeholder="LinkedIn, référencement, site d'entreprise" aria-describedby="sourceHelp"><span class="field-help" id="sourceHelp">Cela peut aider la lettre à faire naturellement référence à un canal de référence ou de publication.</span></label>
+          <label class="field full"><span>Marché ou pays</span><select id="market" aria-describedby="marketHelp"></select><span class="field-help" id="marketHelp">Choisissez le marché le plus proche du poste afin que les orientations reflètent les normes d'embauche locales.</span></label>
+          <label class="field full"><span>Description de l'emploi</span><textarea id="jobDescription" placeholder="Collez l’offre d’emploi. Le vérificateur comparera votre lettre aux mots-clés du poste." aria-describedby="jobDescriptionHelp"></textarea><span class="field-help" id="jobDescriptionHelp">Collez les responsabilités, les exigences, les outils et les qualifications. Supprimez les notes privées du recruteur avant de partager un appareil.</span><span class="field-tip">Améliorez ce champ : collez l'annonce complète, puis conservez les exigences du rôle, les outils de base, les exigences linguistiques et les règles de localisation.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>Points de preuve</h3>
+            <p>Des preuves spécifiques renforcent le projet et améliorent la qualité des matchs.</p>
+          </div>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Années d'expérience</span><input id="years" type="number" min="0" max="60" value="3" aria-describedby="yearsHelp"><span class="field-help" id="yearsHelp">Utilisez une expérience totalement pertinente, pas chaque année travaillée.</span></label>
+          <label class="field"><span>Meilleures compétences</span><input id="skills" placeholder="Opérations, Excel, gestion des parties prenantes" aria-describedby="skillsHelp"><span class="field-help" id="skillsHelp">Énumérez les compétences de l’offre d’emploi que vous pouvez prouver honnêtement.</span></label>
+          <label class="field full"><span>Réalisation pertinente</span><textarea id="achievement" placeholder="A dirigé une équipe de 5 personnes pour réduire le temps de rapprochement de 35 % dans 12 succursales." aria-describedby="achievementHelp"></textarea><span class="field-help" id="achievementHelp">Utilisez un résultat mesurable, une portée ou une responsabilité concrète.</span><span class="field-tip">Améliorez ce champ : « Réduction de 35 % du temps de rapprochement mensuel dans 12 agences grâce à la refonte du tableau de suivi Excel. »</span></label>
+          <label class="field full"><span>Pourquoi cette entreprise ?</span><textarea id="whyCompany" placeholder="L'expansion de l'entreprise en Afrique de l'Est correspond à mon expérience dans la mise à l'échelle des opérations clients." aria-describedby="whyCompanyHelp"></textarea><span class="field-help" id="whyCompanyHelp">Connectez la mission, le produit, le marché ou l'étape de croissance de l'employeur à votre expérience.</span></label>
+          <label class="field"><span>Disponibilité</span><input id="availability" placeholder="Immédiat, 30 jours, après préavis" aria-describedby="availabilityHelp"><span class="field-help" id="availabilityHelp">Mentionnez la période de préavis ou la préparation au déménagement uniquement lorsque cela peut aider.</span></label>
+          <label class="field"><span>Référence</span><input id="referral" placeholder="Nom ou connexion, facultatif" aria-describedby="referralHelp"><span class="field-help" id="referralHelp">Ajoutez une référence uniquement si la personne a accepté ou si la connexion est pertinente.</span></label>
+          <label class="field full"><span>Changement de carrière ou note d'écart</span><textarea id="contextNote" placeholder="Expliquez brièvement une transition, une interruption, un déménagement ou une pause d'études si cela aide la candidature." aria-describedby="contextNoteHelp"></textarea><span class="field-help" id="contextNoteHelp">Soyez bref et positif. Concentrez-vous sur la préparation, pas sur les excuses.</span><span class="field-tip">Améliorez ce champ : « Après une certification en analyse de données, je vise des postes opérationnels combinant mon expérience d’assistance aux agences et mes compétences en reporting. »</span></label>
+        </div>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="draft">Suivant : Brouillon et exportation</button></div>
+      </div>
+
+      <div class="flow-stage" id="stage-draft" role="tabpanel" aria-labelledby="tab-draft" data-stage-panel="draft">
+        <div class="stage-heading">
+          <div>
+            <h3>Paramètres de génération</h3>
+            <p>Choisissez la structure, le ton et la longueur avant de créer ou d'actualiser le brouillon.</p>
+          </div>
+          <span class="stage-badge">Étape 3</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Modèle</span><select id="templateId" aria-describedby="templateHelp"></select><span class="field-help" id="templateHelp">Choisissez une structure qui correspond au type de rôle et à l'ancienneté.</span></label>
+          <label class="field"><span>Tonifier</span><select id="toneId" aria-describedby="toneHelp"></select><span class="field-help" id="toneHelp">Faire appel à un professionnel chaleureux pour la plupart des rôles ; choisissez Direct pour les écrans de recrutement courts.</span></label>
+          <label class="field full"><span>Longueur</span><select id="lengthId" aria-describedby="lengthHelp"></select><span class="field-help" id="lengthHelp">Le format court est idéal pour les applications de messagerie ; la norme fonctionne pour la plupart des téléchargements sur le portail.</span></label>
+        </div>
+        <div class="actions-row desktop-actions">
+          <button class="btn btn-primary" type="button" data-action="rebuild">Créer une lettre de motivation</button>
+          <a class="btn btn-soft" href="#preview-title">Ébauche de révision</a>
+        </div>
+        <section class="ai-assist-panel" id="ai-assist" aria-labelledby="ai-assist-title">
+          <div class="ai-assist-head">
+            <div>
+              <h3 id="ai-assist-title">Rédacteur et conseiller IA en option</h3>
+              <p>Générez ou améliorez une lettre, trouvez des lacunes dans les preuves ou rédigez des messages pour le recruteur après avoir examiné la charge utile exacte.</p>
+            </div>
+            <span class="stage-badge">S'inscrire</span>
+          </div>
+          <p class="ai-assist-note">Utilise 1 requête AI Assist après une réponse réussie. Examinez d’abord la charge utile, puis consentez avant l’envoi d’un CV, d’une description de poste ou d’un brouillon de texte.</p>
+          <label class="field full"><span>Tâche IA</span><select id="aiAssistAction" aria-describedby="aiAssistActionHelp">
+            <option value="generate-letter">Générez une lettre de motivation plus ciblée</option>
+            <option value="improve-draft">Améliorer le projet actuel</option>
+            <option value="missing-proof">Trouvez les mots-clés et les preuves manquants</option>
+            <option value="recruiter-email">Écrire un email de recruteur</option>
+            <option value="linkedin-message">Écrivez un message LinkedIn</option>
+            <option value="follow-up-email">Écrivez un e-mail de suivi</option>
+            <option value="interview-points">Créer des points de discussion pour l'entretien</option>
+          </select><span class="field-help" id="aiAssistActionHelp">Choisissez une tâche ciblée pour que le crédit produise un résultat utile.</span></label>
+          <label class="ai-consent-row" for="aiAssistConsent">
+            <input id="aiAssistConsent" type="checkbox">
+            <span>Je comprends que la charge utile indiquée ci-dessous sera envoyée à AfroTools AI pour cette seule demande. N'utilisez pas de véritables données privées à moins que vous ne soyez à l'aise de les envoyer.</span>
+          </label>
+          <label class="field full"><span>Aperçu de la charge utile</span><textarea class="ai-assist-preview" id="aiAssistPayloadPreview" readonly aria-describedby="aiAssistPayloadHelp"></textarea><span class="field-help" id="aiAssistPayloadHelp">C'est le texte exact qui sera envoyé. Il est reconstruit à partir des champs de cette page et reste local jusqu'à ce que vous exécutiez AI Assist.</span></label>
+          <div class="ai-assist-actions">
+            <button class="btn btn-soft" type="button" id="aiAssistRefresh">Vérifier la charge utile</button>
+            <button class="btn btn-primary" type="button" id="aiAssistRun">Exécuter l'assistance IA</button>
+            <button class="btn" type="button" id="aiAssistApply">Postuler au brouillon</button>
+            <button class="btn" type="button" id="aiAssistCopy">Copier le résultat de l'IA</button>
+          </div>
+          <label class="field full"><span>Résultat de l'IA</span><textarea class="ai-assist-output" id="aiAssistOutput" spellcheck="true" aria-describedby="aiAssistOutputHelp"></textarea><span class="field-help" id="aiAssistOutputHelp">Les améliorations de la lettre de motivation peuvent automatiquement remplir le brouillon. Les messages et les points de discussion restent ici pour examen et copie.</span></label>
+          <div class="ai-status" id="aiAssistStatus" role="status" aria-live="polite"></div>
+        </section>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-action="rebuild">Créer une lettre de motivation</button></div>
+      </div>
+    </section>
+
+    <aside class="insights-card" id="job-match" aria-labelledby="insights-title">
+      <div class="readiness-summary">
+        <p class="eyebrow">Contrôle qualité</p>
+        <h2 id="insights-title">Préparation de la candidature</h2>
+        <div class="score-ring">
+          <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+          <div class="score-copy" id="scoreCopy">Ajoutez votre rôle cible et vos points de preuve pour commencer à noter.</div>
+        </div>
+        <div class="empty-state" id="readinessEmpty">L'état de préparation apparaîtra une fois que vous aurez ajouté un travail cible, des points de preuve et un brouillon.</div>
+      </div>
+
+      <div class="readiness-details">
+        <section class="readiness-section" aria-label="Contrôles de préparation">
+          <div class="readiness-section-head">
+            <div>
+              <h3>Chèques</h3>
+              <p>Comblez les lacunes importantes avant d’exporter.</p>
+            </div>
+          </div>
+          <div class="checks" id="checksList"></div>
+        </section>
+
+        <section class="readiness-section" aria-labelledby="role-keywords-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="role-keywords-title">Mots-clés de rôle</h3>
+              <p>Termes correspondants et manquants dans la description de poste collée.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="keywordsEmpty">Collez une description de poste pour voir les mots-clés du rôle et les termes manquants.</div>
+          <div class="chip-row" id="keywordChips"></div>
+        </section>
+
+        <div class="ai-jump-card" aria-labelledby="ai-jump-title">
+          <h3 id="ai-jump-title">Besoin d'un tirant d'eau plus net ?</h3>
+          <p>Ouvrez le rédacteur IA opt-in pour réécrire la lettre, trouver les preuves manquantes ou rédiger les suivis du recruteur. Rien n'est envoyé jusqu'à ce que vous examiniez et consentiez.</p>
+          <button class="btn btn-primary" type="button" data-ai-assist-open>Assistance IA ouverte</button>
+        </div>
+
+        <section class="readiness-section" aria-labelledby="saved-letters-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="saved-letters-title">Lettres enregistrées</h3>
+              <p>Brouillons locaux de ce navigateur.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="savedEmpty">Les brouillons enregistrés à partir de ce navigateur apparaîtront ici. Ils restent sur cet appareil jusqu'à ce que vous les exportiez.</div>
+          <div class="saved-list" id="savedList"></div>
+        </section>
+      </div>
+    </aside>
+
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-top">
+        <div>
+          <p class="eyebrow">Brouillon</p>
+          <h2 id="preview-title">Lettre modifiable</h2>
+        </div>
+        <div class="preview-tools">
+          <button class="btn" type="button" data-action="word">Mot</button>
+          <button class="btn" type="button" data-action="txt">TXT</button>
+          <button class="btn" type="button" data-action="json">Exporter en JSON</button>
+          <button class="btn" type="button" data-action="import">Importer</button>
+          <button class="btn" type="button" data-action="print">Imprimer</button>
+          <input aria-label="Importer la lettre de motivation enregistrée JSON" class="import-input" id="importInput" type="file" accept="application/json,.json">
+        </div>
+      </div>
+      <label class="export-review" for="exportReviewConfirm">
+        <input id="exportReviewConfirm" type="checkbox">
+        <span>J'ai examiné le destinataire, l'entreprise, le rôle, les preuves, les coordonnées, l'orthographe et l'aperçu de la lettre finale avant l'exportation.</span>
+        <span class="export-review-status" id="exportReviewStatus" role="status" aria-live="polite">Créez et révisez une lettre complète avant de la télécharger ou de l’imprimer.</span>
+      </label>
+      <div class="letter-editor">
+        <div class="letter-text-wrap">
+          <label class="field full" style="margin:0">
+            <span>Texte de la lettre</span>
+            <textarea id="letterText" spellcheck="true" data-testid="letter-text"></textarea>
+          </label>
+          <p class="helper" id="editState">Modifiez librement. Cliquez sur Créer une lettre de motivation si vous souhaitez que le formulaire régénère le brouillon.</p>
+          <div class="empty-state" id="draftEmpty">Pas encore de brouillon. Complétez le profil, les détails du poste et les preuves, puis choisissez Créer une lettre de motivation.</div>
+        </div>
+        <div class="paper-wrap" aria-label="Aperçu avant impression">
+          <article class="paper" id="paperPreview"></article>
+        </div>
+      </div>
+    </section>
+  </div>
+</main>
+
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/pages/cover-letter-generator.js?v=14ca1cc2" defer></script> <script>
+(function(){
+  var stages=["profile","job","draft"];
+  var progress=["profile","job","proof","draft","export"];
+  function id(name){return document.getElementById(name)}
+  function value(name){var field=id(name);return field?String(field.value||"").trim():""}
+  function hasText(name,min){return value(name).length>=(min||1)}
+  function scheduleProgress(){window.clearTimeout(scheduleProgress.timer);scheduleProgress.timer=window.setTimeout(updateProgress,80)}
+  function setStage(stage,focusPanel){
+    if(stages.indexOf(stage)===-1)stage="profile";
+    var shell=document.querySelector(".app-shell");
+    if(!shell)return;
+    shell.setAttribute("data-stage",stage);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      var active=button.getAttribute("data-stage-target")===stage;
+      button.setAttribute("aria-selected",active?"true":"false");
+      button.setAttribute("tabindex",active?"0":"-1");
+    });
+    if(focusPanel){
+      var panel=document.querySelector('[data-stage-panel="'+stage+'"]');
+      var focusable=panel&&panel.querySelector("input,select,textarea,button,a");
+      if(focusable)focusable.focus({preventScroll:true});
+      if(panel)panel.scrollIntoView({block:"start",behavior:"smooth"});
+    }
+    updateProgress();
+  }
+  function scoreValue(){
+    var score=parseInt((id("scoreValue")||{}).textContent||"0",10);
+    return Number.isFinite(score)?score:0;
+  }
+  function draftIsReady(){
+    var text=value("letterText");
+    return text.length>160&&!/your organization|the advertised role|Your Name/i.test(text);
+  }
+  function updateProgress(){
+    var profileComplete=hasText("fullName")&&(hasText("email")||hasText("phone"))&&hasText("resumeSummary",24);
+    var jobAdded=hasText("jobDescription",40);
+    var proofAdded=hasText("skills")&&hasText("achievement",25)&&hasText("whyCompany",25);
+    var draftReady=draftIsReady();
+    var exportReady=draftReady&&scoreValue()>=65;
+    var status={profile:profileComplete,job:jobAdded,proof:proofAdded,draft:draftReady,export:exportReady};
+    var firstPending=progress.find(function(step){return !status[step]})||"export";
+    progress.forEach(function(step){
+      var item=document.querySelector('[data-progress-step="'+step+'"]');
+      if(!item)return;
+      item.setAttribute("data-state",status[step]?"done":step===firstPending?"current":"pending");
+      item.setAttribute("aria-current",step===firstPending?"step":"false");
+    });
+    toggleEmptyStates({jobAdded:jobAdded,proofAdded:proofAdded,draftReady:draftReady});
+  }
+  function toggleEmptyStates(state){
+    var draftEmpty=id("draftEmpty");
+    if(draftEmpty)draftEmpty.hidden=state.draftReady;
+    var readinessEmpty=id("readinessEmpty");
+    if(readinessEmpty)readinessEmpty.hidden=state.jobAdded||state.proofAdded||state.draftReady;
+    var keywordsEmpty=id("keywordsEmpty");
+    if(keywordsEmpty)keywordsEmpty.hidden=hasText("jobDescription",40);
+    var keywordChips=id("keywordChips");
+    if(keywordChips)keywordChips.hidden=!hasText("jobDescription",40);
+    var savedEmpty=id("savedEmpty");
+    var savedList=id("savedList");
+    if(savedEmpty&&savedList){
+      var hasSaved=Boolean(savedList.querySelector(".saved-item"));
+      savedEmpty.hidden=hasSaved;
+      savedList.hidden=!hasSaved&&/No saved letters yet/i.test(savedList.textContent||"");
+    }
+  }
+  function openAiAssist(){
+    setStage("draft",false);
+    window.setTimeout(function(){
+      var panel=id("ai-assist");
+      var action=id("aiAssistAction");
+      if(panel){
+        var scroller=panel.closest(".panel");
+        if(scroller)scroller.scrollTo({top:Math.max(0,panel.offsetTop-scroller.offsetTop-12),behavior:"smooth"});
+        panel.scrollIntoView({block:"nearest",behavior:"smooth"});
+      }
+      if(action)action.focus();
+      if(window.history&&window.history.replaceState)window.history.replaceState(null,"","#ai-assist");
+    },80);
+  }
+  function initWorkflow(){
+    setStage((document.querySelector(".app-shell")||{}).getAttribute("data-stage")||"profile",false);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-stage-target"),true)});
+      button.addEventListener("keydown",function(event){
+        var current=stages.indexOf(button.getAttribute("data-stage-target"));
+        var next=current;
+        if(event.key==="ArrowRight")next=(current+1)%stages.length;
+        if(event.key==="ArrowLeft")next=(current+stages.length-1)%stages.length;
+        if(event.key==="Home")next=0;
+        if(event.key==="End")next=stages.length-1;
+        if(next!==current){event.preventDefault();setStage(stages[next],true)}
+      });
+    });
+    document.querySelectorAll("[data-next-stage]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-next-stage"),true)});
+    });
+    document.querySelectorAll('a[href="#job-match"]').forEach(function(link){
+      link.addEventListener("click",function(){setStage("job",false);window.setTimeout(function(){var match=id("job-match");if(match)match.scrollIntoView({block:"start",behavior:"smooth"})},60)});
+    });
+    document.querySelectorAll("[data-ai-assist-open]").forEach(function(button){
+      button.addEventListener("click",openAiAssist);
+    });
+    document.addEventListener("input",scheduleProgress,true);
+    document.addEventListener("change",scheduleProgress,true);
+    document.addEventListener("click",function(event){
+      if(event.target.closest("[data-action],[data-load],[data-delete]"))scheduleProgress();
+    },true);
+    var savedList=id("savedList");
+    if(savedList&&window.MutationObserver)new MutationObserver(scheduleProgress).observe(savedList,{childList:true,subtree:true});
+    window.setTimeout(updateProgress,120);
+    window.setTimeout(updateProgress,500);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initWorkflow);else initWorkflow();
+})();
+</script> <script src="/fr/tools/generateur-lettre-motivation/js/cover-letter-ai-assist.js?v=e4551f10" defer></script> <script>
+(function(){
+  var review=document.getElementById('exportReviewConfirm');
+  var status=document.getElementById('exportReviewStatus');
+  var exportActions=['pdf','word','txt','json','print'];
+  function draftReady(){
+    var text=String((document.getElementById('letterText')||{}).value||'').trim();
+    return text.length>=160&&!/Your Name|your organization|the advertised role/i.test(text);
+  }
+  function requireReview(event){
+    var action=event.target&&event.target.closest&&event.target.closest('[data-action]');
+    if(!action||exportActions.indexOf(action.getAttribute('data-action'))===-1)return;
+    if(!draftReady()){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent='Complete the named recipient, role, company, and letter content before export.';
+      var letter=document.getElementById('letterText');
+      if(letter)letter.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final letter preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.app-shell')){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var action=event.target.closest('[data-action="rebuild"],[data-load],[data-delete],#aiAssistApply');
+    if(!action)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script> <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

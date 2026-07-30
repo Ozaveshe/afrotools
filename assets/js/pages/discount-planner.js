@@ -204,14 +204,23 @@
     download(new Blob([JSON.stringify({ schemaVersion: 1, tool: "discount-calc", result: latest, scopeNote: c.scope }, null, 2)], { type: "application/json" }), "afrotools-discount-plan.json");
   }
   function exportPdf() {
-    var JsPdf = window.jspdf && window.jspdf.jsPDF;
-    if (!JsPdf) { el("dcpStatus").textContent = "PDF library unavailable."; return; }
-    var doc = new JsPdf({ unit: "pt", format: "a4" });
-    doc.setProperties({ title: c.pdfTitle, subject: c.scope, creator: "AfroTools" });
-    doc.setFont("helvetica", "bold"); doc.setFontSize(18); doc.text(c.pdfTitle, 44, 52);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-    doc.text(doc.splitTextToSize(summary(), 500), 44, 78);
-    download(doc.output("blob"), "afrotools-discount-plan.pdf");
+    if (!window.AfroTools || !window.AfroTools.localVatPdf) {
+      el("dcpStatus").textContent = "PDF library unavailable.";
+      return;
+    }
+    window.AfroTools.localVatPdf({
+      title: c.pdfTitle,
+      rows: summary().split("\n").slice(1).map(function (line) {
+        var separator = line.indexOf(":");
+        return {
+          label: separator > -1 ? line.slice(0, separator) : line,
+          value: separator > -1 ? line.slice(separator + 1).trim() : "",
+        };
+      }),
+      disclaimer: c.scope,
+      fileName: "afrotools-discount-plan.pdf",
+    });
+    el("dcpStatus").textContent = c.downloaded;
   }
 
   addDiscount(20);

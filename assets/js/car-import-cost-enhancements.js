@@ -149,6 +149,67 @@
       t.classList.toggle("active", t.getAttribute("data-quick-start") === e);
     });
   }
+  function resetCarImportForm(form) {
+    if (!form) return;
+    form.reset();
+    const country = a("#carImportCountry", form);
+    const sourceMarket = a("#carImportSourceMarket", form);
+    if (country) {
+      country.value = document.body.getAttribute("data-default-country") || "NG";
+      country.dispatchEvent(new Event("change", { bubbles: true }));
+    }
+    if (sourceMarket) sourceMarket.value = "japan";
+    const results = a("#carImportResults");
+    const aiLog = a("#carImportAiLog");
+    const aiQuestion = a("#carImportAiQuestion");
+    const localSave = a("#carImportSaveLocal");
+    const cloudSave = a("#carImportCloudSave");
+    if (results) results.hidden = true;
+    [
+      "carImportBadgeStack",
+      "carImportWarnings",
+      "carImportMetrics",
+      "carImportWaterfall",
+      "carImportBasisTable",
+      "carImportOfficialTable",
+      "carImportPracticalTable",
+      "carImportRegistrationTable",
+      "carImportSensitivityTable",
+      "carImportScenarioTable",
+      "carImportCompareTable",
+      "carImportDocuments",
+      "carImportResultSources",
+      "carImportResultDisclaimer",
+    ].forEach(function clearGeneratedOutput(id) {
+      const output = document.getElementById(id);
+      if (output) output.replaceChildren();
+    });
+    [
+      "carImportTotalLocal",
+      "carImportSummaryLine",
+      "carImportRulePackLine",
+      "carImportFinanceBlock",
+    ].forEach(function clearGeneratedText(id) {
+      const output = document.getElementById(id);
+      if (output) output.textContent = "";
+    });
+    const total = a("#carImportTotal");
+    if (total) total.textContent = "USD 0";
+    if (aiLog) aiLog.replaceChildren();
+    if (aiQuestion) aiQuestion.value = "";
+    if (localSave) localSave.textContent = "Save locally";
+    if (cloudSave && typeof cloudSave.setData === "function") cloudSave.setData(null);
+    try {
+      localStorage.removeItem("carImportCostLastInput");
+      sessionStorage.removeItem("carImportCostLastInput");
+    } catch (storageError) {
+      // Reset remains usable when storage is unavailable.
+    }
+    history.replaceState(null, "", location.pathname);
+    form.dispatchEvent(
+      new CustomEvent("car-import:reset", { bubbles: true }),
+    );
+  }
   function u(t) {
     const o = e[t],
       r = a("#carImportCountry");
@@ -203,7 +264,10 @@
       i = a("#carImportSourceMarket option:checked")
         ? a("#carImportSourceMarket option:checked").textContent
         : "the selected source market";
-    const guideMarkup = `<strong>Fast read:</strong> This ${n(r)} quote already includes more than customs. Use <strong>Official Charges</strong> to isolate customs-only costs, or open <strong>Compare</strong> to see whether ${n(i)} still looks best against the other source markets.`;
+    const guideMarkup =
+      "fr" === document.documentElement.lang
+        ? `<strong>Lecture rapide :</strong> Cette estimation pour ${n(r)} inclut davantage que les seuls droits de douane. Utilisez <strong>Coûts présentés comme officiels</strong> pour isoler les coûts douaniers, ou ouvrez <strong>Comparer</strong> pour vérifier si ${n(i)} reste préférable aux autres marchés sources.`
+        : `<strong>Fast read:</strong> This ${n(r)} quote already includes more than customs. Use <strong>Official Charges</strong> to isolate customs-only costs, or open <strong>Compare</strong> to see whether ${n(i)} still looks best against the other source markets.`;
     if (o.innerHTML !== guideMarkup) o.innerHTML = guideMarkup;
   }
   function p(i) {
@@ -213,7 +277,8 @@
     const c = a("h2", i),
       l = a(".car-import-help", i),
       p = a('.car-import-button[type="submit"]', i),
-      d = a("#carImportCompareMode", i);
+      d = a("#carImportCompareMode", i),
+      actions = a(".car-import-actions", i);
     (c &&
       (c.textContent =
         "Know the true landed cost before you buy, bid, or ship"),
@@ -265,6 +330,19 @@
         )),
       p && (p.textContent = "Get landed cost"),
       d && (d.textContent = "Open source comparison"),
+      actions &&
+        !a("#carImportReset", actions) &&
+        (function addResetControl() {
+          const reset = document.createElement("button");
+          reset.id = "carImportReset";
+          reset.type = "button";
+          reset.className = "car-import-button tertiary";
+          reset.textContent = "Reset";
+          reset.addEventListener("click", function resetCarImport() {
+            resetCarImportForm(i);
+          });
+          actions.appendChild(reset);
+        })(),
       r(".car-import-quick-card", i).forEach(function (e) {
         e.addEventListener("click", function () {
           u(e.getAttribute("data-quick-start"));

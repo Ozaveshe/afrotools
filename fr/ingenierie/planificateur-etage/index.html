@@ -1,0 +1,740 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planificateur de plan d’étage | AfroTools</title>
+<meta name="description" content="Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Planificateur de plan d’étage | AfroTools">
+<meta property="og:description" content="Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afroplan-floor-planner.webp">
+<meta property="og:url" content="https://afrotools.com/fr/ingenierie/planificateur-etage/">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&family=JetBrains+Mono:wght@400;500&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/engineering/floor-planner/css/floor-planner.css?v=99e2ec30">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-qa.css?v=f3f0619b">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-action-safety.css?v=17b668b5">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-mvp-sprint.css?v=b636a92e">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-s-class.css?v=53dca39b">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-layout-access.css?v=9602e5e4">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-export-print.css?v=6b153d4b">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-product-polish.css?v=ba941c04">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-controls-polish.css?v=1dad5e5a">
+<link rel="stylesheet" href="/engineering/floor-planner/css/fp-3d-polish.css?v=8e59eeca">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Planificateur de plan d’étage | AfroTools">
+<meta name="twitter:description" content="Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afroplan-floor-planner.webp">
+
+
+
+<meta property="article:modified_time" content="2026-03-28">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="fr-engineering:afroplan-floor-planner">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/engineering/floor-planner/">
+<meta name="afrotools-ai-tool-id" content="afroplan-floor-planner">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Planificateur de plan d’étage",
+    "description": "Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.",
+    "url": "https://afrotools.com/fr/ingenierie/planificateur-etage/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Choisissez un modèle ou dessinez les pièces, portes et fenêtres, puis examinez les surfaces et le coût indicatif.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser Planificateur de plan d’étage ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Choisissez un modèle ou dessinez les pièces, portes et fenêtres, puis examinez les surfaces et le coût indicatif."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Le plan obtenu sert à la préparation du projet et ne remplace pas un plan architectural ou structurel approuvé."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]</script>
+<link rel="canonical" href="https://afrotools.com/fr/ingenierie/planificateur-etage/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/engineering/floor-planner/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/ingenierie/planificateur-etage/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mpangaji-ramani-ya-sakafu/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/engineering/floor-planner/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<main id="fp-app">
+  <section class="fp-consumer-hero" aria-labelledby="fpHeroTitle">
+    <div class="fp-hero-main">
+      <span class="fp-hero-eyebrow">AfroTools Plancher planner</span>
+      <h1 id="fpHeroTitle">Informations et hypothèses du calcul</h1>
+      <p>Estimer</p>
+      <p class="fp-hero-trust">Fonctionne dans votre navigateur, sans expérience en CAO.</p>
+      <div class="fp-hero-ctas">
+        <button type="button" id="fpStartPlanning" class="fp-btn fp-btn-primary">Commencer le plan</button>
+        <button type="button" id="fpOpenTemplateGallery" class="fp-btn fp-btn-secondary" aria-controls="fpTemplatesModal">Charger un modèle</button>
+      </div>
+    </div>
+    <div class="fp-quick-actions" aria-label="Actions rapides">
+      <button type="button" class="fp-quick-card" data-fp-click="fpOpenTemplateGallery">
+        <span class="fp-major-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="14" rx="2"/><path d="M4 11h16M10 5v14"/></svg></span>
+        <strong>Commencer avec un modèle</strong>
+        <span>Ouvrez un modèle de maison, boutique, bureau ou salle de classe.</span>
+      </button>
+      <button type="button" class="fp-quick-card" data-fp-open="fpToolSetup" data-fp-focus="fpRoomType">
+        <span class="fp-major-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="2"/><path d="M9 4v16M4 12h16"/></svg></span>
+        <strong>Ajouter une pièce mesurée</strong>
+        <span>Renseignez les données demandées.</span>
+      </button>
+      <button type="button" class="fp-quick-card" data-fp-open="fpToolSetup" data-fp-focus="fpWallHeight">
+        <span class="fp-major-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M5 19V5h14v14z"/><path d="M8 9h8M8 13h8M8 17h4"/></svg></span>
+        <strong>Estimer les matériaux</strong>
+        <span>Informations et hypothèses du calcul</span>
+      </button>
+      <button type="button" class="fp-quick-card" data-fp-scroll="fpWorkspace">
+        <span class="fp-major-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 4v10"/><path d="M8 10l4 4 4-4"/><path d="M5 18h14"/></svg></span>
+        <strong>Exporter le dossier</strong>
+        <span class="fp-visually-hidden-copy">Exporter PDF/PNG/BOQ</span>
+        <span>PDF, PNG et bordereau lorsque votre plan est prêt.</span>
+      </button>
+    </div>
+    <div class="fp-project-setup">
+      <label class="fp-country-inline">
+        <span>Pays</span>
+        <select id="fpProjectCountry" aria-label="Informations et hypothèses du calcul">
+          <option value="NG">Nigeria (NGN)</option>
+          <option value="KE">Kenya (KES)</option>
+          <option value="GH">Ghana (GHS)</option>
+          <option value="ZA">Afrique du Sud (ZAR)</option>
+          <option value="TZ">Tanzanie (TZS)</option>
+        </select>
+      </label>
+      <details class="fp-project-drawer">
+      <summary>Configuration du projet</summary>
+      <div class="fp-project-strip">
+        <label>Nom du projet
+          <input id="fpProjectName" type="text" value="Floor Plan Draft">
+        </label>
+        <label>Ville ou note de marché
+          <input id="fpProjectCity" type="text" placeholder="Facultatif, par exemple Lagos continental">
+        </label>
+        <div class="fp-project-actions" aria-label="Actions de planification">
+          <button type="button" id="fpFocusPlannerTop" class="fp-act-btn" aria-pressed="false">Activer le planificateur</button>
+          <button type="button" id="fpSavePlanNow" class="fp-act-btn">Enregistrer le brouillon local</button>
+          <button type="button" id="fpRestorePlan" class="fp-act-btn fp-act-btn-tertiary">Restaurer</button>
+          <button type="button" id="fpCopyPlanningSummary" class="fp-act-btn fp-act-btn-tertiary">Copier le résumé</button>
+          <button type="button" class="fp-act-btn" data-safe-template="qa-4x3-fixture">Charger le modèle 4 m × 3 m</button>
+        </div>
+      </div>
+      </details>
+    </div>
+  </section>
+
+  <section class="fp-command-center" aria-label="Informations et hypothèses du calcul">
+    <details class="fp-tool-setup" id="fpToolSetup">
+      <summary>Estimer</summary>
+      <div class="fp-tool-setup-intro" aria-label="Pièce planning shortcut">
+        <div>
+          <strong>Informations et hypothèses du calcul</strong>
+          <span>Estimer</span>
+        </div>
+        <button type="button" class="fp-btn fp-btn-primary" data-fp-scroll="fpWorkspace">Retour au canevas</button>
+      </div>
+    <div class="fp-workflow-grid">
+      <section class="fp-work-card fp-describe-card" aria-labelledby="fpDescribeTitle">
+        <div class="fp-work-card-head">
+          <div>
+            <h2 id="fpDescribeTitle">Describe to plan <span class="fp-beta-pill">Beta</span></h2>
+            <p class="fp-room-helper">Créer</p>
+          </div>
+          <output id="fpDescribeStatus" aria-live="polite">Informations et hypothèses du calcul</output>
+        </div>
+        <div class="fp-describe-form">
+          <label for="fpDescribeInput">Plan description</label>
+          <textarea id="fpDescribeInput" class="fp-ai-input" rows="3" placeholder="Example: 2 bedroom bungalow with parlour, kitchen, 2 bathrooms and veranda"></textarea>
+          <div class="fp-describe-examples" aria-label="Describe to plan examples">
+            <button type="button" data-fp-describe-example="Self-contained room with bathroom and kitchenette">Self-contained</button>
+            <button type="button" data-fp-describe-example="Small shop with store and counter">Petite boutique</button>
+            <button type="button" data-fp-describe-example="3-bedroom bungalow with veranda">3-bedroom bungalow</button>
+          </div>
+          <div class="fp-room-actions">
+            <button type="button" id="fpDescribeGenerate" class="fp-btn fp-btn-primary">Créer</button>
+            <button type="button" id="fpDescribeClear" class="fp-btn">Effacer</button>
+          </div>
+          <p class="fp-describe-note">Le plan obtenu sert à la préparation du projet et ne remplace pas un plan architectural ou structurel approuvé.</p>
+        </div>
+      </section>
+      <section class="fp-work-card" aria-labelledby="fpRoomBuilderTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpRoomBuilderTitle">Plan Pièces</h2>
+          <output id="fpRoomBuilderStatus" aria-live="polite">0 Pièces sur le canevas</output>
+        </div>
+        <form id="fpRoomBuilder" class="fp-room-builder-card" novalidate>
+          <p class="fp-room-helper">Ajouter</p>
+          <div class="fp-room-step">
+            <span class="fp-step-number">1</span>
+            <div class="fp-step-body">
+              <label for="fpRoomType">Informations et hypothèses du calcul</label>
+              <input id="fpRoomType" type="text" value="Room" autocomplete="off">
+              <div class="fp-room-presets" aria-label="Informations et hypothèses du calcul">
+                <button type="button" data-fp-room-preset="Bedroom">Bedroom</button>
+                <button type="button" data-fp-room-preset="Parlour/Living room">Parlour/Living Pièce</button>
+                <button type="button" data-fp-room-preset="Kitchen">Cuisine</button>
+                <button type="button" data-fp-room-preset="Bathroom">Bathroom</button>
+                <button type="button" data-fp-room-preset="Store">Store</button>
+                <button type="button" data-fp-room-preset="Veranda">Veranda</button>
+                <button type="button" data-fp-room-preset="Shop floor">Boutique</button>
+                <button type="button" data-fp-room-preset="Office">Bureau</button>
+              </div>
+            </div>
+          </div>
+          <div class="fp-room-step">
+            <span class="fp-step-number">2</span>
+            <div class="fp-step-body">
+              <div class="fp-dimension-row">
+                <label for="fpRoomWidth">Largeur <span class="fp-room-unit-label">(m)</span>
+                  <input id="fpRoomWidth" type="number" min="0.1" max="60" step="0.1" value="3.6" inputmode="decimal">
+                </label>
+                <label for="fpRoomDepth">Profondeur <span class="fp-room-unit-label">(m)</span>
+                  <input id="fpRoomDepth" type="number" min="0.1" max="60" step="0.1" value="3.0" inputmode="decimal">
+                </label>
+              </div>
+              <output id="fpRoomValidation" class="fp-room-validation" aria-live="polite"></output>
+            </div>
+          </div>
+          <div class="fp-room-step">
+            <span class="fp-step-number">3</span>
+            <div class="fp-step-body">
+              <label for="fpWallMaterial">Type de mur</label>
+              <select id="fpWallMaterial">
+                <option value="block">Block Mur</option>
+                <option value="brick">Brick Mur</option>
+                <option value="drywall">Drywall partition</option>
+              </select>
+              <div class="fp-room-actions">
+                <button type="submit" class="fp-btn fp-btn-primary">Ajouter</button>
+                <button type="button" id="fpAddAnotherRoom" class="fp-btn fp-btn-secondary">Ajouter</button>
+                <button type="button" id="fpAutoArrangeRooms" class="fp-btn fp-btn-tertiary">Auto arrange Pièces</button>
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="fp-room-list-panel" aria-labelledby="fpRoomListTitle">
+          <div class="fp-room-list-head">
+            <strong id="fpRoomListTitle">Pièces</strong>
+            <span id="fpRoomListMeta">Non Pièces yet</span>
+          </div>
+          <div id="fpRoomList" class="fp-room-list" aria-live="polite">
+            <p class="fp-room-empty">Aucune pièce. Ajoutez une pièce ci-dessus ou chargez un modèle.</p>
+          </div>
+        </div>
+      </section>
+      <section class="fp-work-card" aria-labelledby="fpEstimateBuilderTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpEstimateBuilderTitle">Estimer les matériaux</h2>
+          <div class="fp-estimate-meta">
+            <output id="fpEstimateStatus" aria-live="polite">Informations et hypothèses du calcul</output>
+          </div>
+        </div>
+        <div id="fpEstimateCard" class="fp-estimate-card" aria-live="polite"></div>
+        <form id="fpEstimateBuilder" class="fp-estimate-form">
+          <details id="fpEstimateAssumptions" class="fp-estimate-drawer">
+            <summary class="fp-summary-secondary">Edit Hypothèses</summary>
+            <div class="fp-inline-fields">
+              <label>Hauteur des murs (m)
+                <input id="fpWallHeight" type="number" min="2.4" max="4.5" step="0.1" value="3.0">
+              </label>
+              <label>Type de mur
+                <select id="fpEstimateWallType">
+                  <option value="block">Block Mur</option>
+                  <option value="brick">Brick Mur</option>
+                </select>
+              </label>
+              <label>Informations et hypothèses du calcul<input id="fpWastePct" type="number" min="0" max="30" step="1" value="10">
+              </label>
+              <label>Provision de main-d’œuvre (%)
+                <input id="fpLabourPct" type="number" min="0" max="80" step="1" value="35">
+              </label>
+              <label>Informations et hypothèses du calcul<input id="fpFinishRate" type="number" min="0" step="1" value="4500">
+              </label>
+              <label class="fp-checkbox-row">
+                <input id="fpRoofEnabled" type="checkbox" checked>
+                <span>Inclure les feuilles de toiture</span>
+              </label>
+            </div>
+            <div class="fp-rate-editor">
+              <div class="fp-rate-editor-head">
+                <strong>Unité rates</strong>
+                <button type="button" id="fpResetRates" class="fp-btn fp-btn-tertiary">Réinitialiser to Tarifs par défaut</button>
+              </div>
+              <div id="fpRateEditor" class="fp-rate-grid"></div>
+            </div>
+          </details>
+          <div class="fp-inline-actions">
+            <button type="submit" class="fp-btn fp-btn-primary">Update Estimer</button>
+            <button type="button" id="fpOpenEstimateModal" class="fp-btn fp-btn-secondary">BOQ details</button>
+            <button type="button" id="fpOpenPrintPack" class="fp-btn fp-btn-primary">Exporter le dossier</button>
+          </div>
+        </form>
+      </section>
+      <section class="fp-work-card fp-result-card" aria-labelledby="fpLiveSummaryTitle">
+        <div class="fp-work-card-head">
+          <h2 id="fpLiveSummaryTitle">Exporter builder pack</h2>
+          <span id="fpSaveState">Informations et hypothèses du calcul</span>
+        </div>
+        <div id="fpLiveSummary" class="fp-live-summary" aria-live="polite"></div>
+      </section>
+    </div>
+    <div class="fp-trust-row fp-consumer-steps" aria-label="Planner steps">
+      <div><strong>Plan Pièces</strong>Ajouter</div>
+      <div><strong>Ajouter</strong>Informations et hypothèses du calcul</div>
+      <div><strong>Estimer les matériaux</strong>Informations et hypothèses du calcul</div>
+      <div><strong>Exporter builder pack</strong>Charger</div>
+    </div>
+    </details>
+  </section>
+
+  <section class="fp-workspace" id="fpWorkspace" aria-label="Plancher planner workspace">
+    <div class="fp-workspace-topbar" role="toolbar" aria-label="Plancher planner Outils">
+      <div class="fp-workspace-toolset" aria-label="Dessin Outils">
+        <button type="button" class="fp-tool fp-tool-top active" data-tool="select" title="Sélectionnez une option." aria-label="Sélectionnez une option."><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 2l12 8-5 1.5L8.5 17z"/></svg>Sélectionnez une option.</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="wall" title="Draw Mur (W)" aria-label="Mur tool (W)"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="8" width="16" height="4" rx="1"/></svg>Mur</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="door" title="Ajouter" aria-label="Porte tool (D)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 3h2v14H4zM6 3h8v2H6z"/><path d="M6 3a8 8 0 018 8H6z" opacity=".3"/></svg>Porte</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="window" title="Ajouter" aria-label="Fenêtre tool (N)"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="2" y="7" width="16" height="6" rx="1" fill="none" stroke="currentColor" stroke-width="2"/><path d="M10 7v6" stroke="currentColor" stroke-width="2"/></svg>Fenêtre</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="furniture" title="Ajouter" aria-label="Mobilier tool (F)"><svg viewBox="0 0 20 20" aria-hidden="true"><rect x="3" y="10" width="14" height="6" rx="2"/><rect x="5" y="7" width="10" height="4" rx="1" opacity=".45"/></svg>Mobilier</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="measure" title="Measure (M)" aria-label="Measure tool (M)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M2 18L18 2" stroke="currentColor" stroke-width="2"/><path d="M2 18v-5M2 18h5M18 2v5M18 2h-5" stroke="currentColor" stroke-width="1.5"/></svg>Measure</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="label" title="Ajouter" aria-label="Label tool (L)"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M5 16l4.5-12h1L15 16h-2l-.8-2.4H7.8L7 16zM8.4 12h3.2L10 7.2z"/></svg>Label</button>
+        <button type="button" class="fp-tool fp-tool-top" data-tool="erase" title="Erase selected (Delete)" aria-label="Erase tool or delete selected"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M3 14l7-10 7 4-5 8H5z" opacity=".3"/><path d="M5 16h10" stroke="currentColor" stroke-width="2"/></svg>Erase</button>
+      </div>
+      <div class="fp-workspace-actions" aria-label="Plan actions">
+        <button type="button" id="fpUndo" class="fp-act-btn" title="Undo (Ctrl+Z)" aria-label="Undo (Ctrl+Z)" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 8h8a3 3 0 010 6H8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M6 5L3 8l3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Undo</button>
+        <button type="button" id="fpRedo" class="fp-act-btn" title="Redo (Ctrl+Y)" aria-label="Redo (Ctrl+Y)" disabled><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M13 8H5a3 3 0 000 6h3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M10 5l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg> Redo</button>
+        <button type="button" id="fpSave" class="fp-act-btn" title="Enregistrer" aria-label="Enregistrer plan"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><path d="M3 2h8l3 3v8a1 1 0 01-1 1H3a1 1 0 01-1-1V3a1 1 0 011-1z" stroke="currentColor" stroke-width="1.5"/><rect x="5" y="9" width="6" height="4" rx="0.5" stroke="currentColor" stroke-width="1"/></svg> Enregistrer</button>
+        <button type="button" id="fpResetView" class="fp-act-btn" title="Réinitialiser" aria-label="Réinitialiser">Réinitialiser</button>
+        <button type="button" id="fpFitPlanTop" class="fp-act-btn" title="Ajuster la vue" aria-label="Ajuster la vue">Ajuster la vue</button>
+        <button type="button" id="fpOpen3D" class="fp-act-btn" data-fp-open-3d title="Vue 3D" aria-label="Vue 3D">Vue 3D</button>
+        <button type="button" id="fpFocusPlanner" class="fp-act-btn" aria-pressed="false" title="Full screen planner">Full screen planner</button>
+        <button type="button" id="fpToggleProps" class="fp-act-btn" aria-expanded="true" aria-controls="fpProps" title="Show or hide properties">Properties</button>
+      </div>
+    </div>
+
+    <!-- Main Layout -->
+    <div class="fp-layout">
+    <!-- Left Toolbar -->
+    <div class="fp-toolbar" id="fpToolbar">
+      <button type="button" class="fp-tool active" data-tool="select" title="Sélectionnez une option." aria-label="Sélectionnez une option."><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 2l12 8-5 1.5L8.5 17z" fill="currentColor"/></svg><span>Sélectionnez une option.</span></button>
+      <button type="button" class="fp-tool" data-tool="wall" title="Draw Mur (W)" aria-label="Mur tool (W)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="8" width="16" height="4" rx="1" fill="currentColor"/></svg><span>Mur</span></button>
+      <button type="button" class="fp-tool" data-tool="door" title="Porte (D)" aria-label="Porte tool (D)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M4 3h2v14H4zM6 3h8v2H6z" fill="currentColor"/><path d="M6 3a8 8 0 018 8H6z" fill="currentColor" opacity="0.3"/></svg><span>Porte</span></button>
+      <button type="button" class="fp-tool" data-tool="window" title="Fenêtre (N)" aria-label="Fenêtre tool (N)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="2" y="7" width="16" height="6" rx="1" stroke="currentColor" stroke-width="2" fill="none"/><line x1="10" y1="7" x2="10" y2="13" stroke="currentColor" stroke-width="2"/></svg><span>Fenêtre</span></button>
+      <div class="fp-tool-sep"></div>
+      <button type="button" class="fp-tool" data-tool="furniture" title="Mobilier (F)" aria-label="Mobilier tool (F)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="10" width="14" height="6" rx="2" fill="currentColor"/><rect x="5" y="7" width="10" height="4" rx="1" fill="currentColor" opacity="0.5"/></svg><span>Mobilier</span></button>
+      <button type="button" class="fp-tool" data-tool="measure" title="Measure (M)" aria-label="Measure tool (M)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 18L18 2" stroke="currentColor" stroke-width="2"/><path d="M2 18v-5M2 18h5M18 2v5M18 2h-5" stroke="currentColor" stroke-width="1.5"/></svg><span>Measure</span></button>
+      <button type="button" class="fp-tool" data-tool="label" title="Label (L)" aria-label="Label tool (L)"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><text x="4" y="15" font-size="14" font-weight="bold" fill="currentColor">A</text></svg><span>Label</span></button>
+      <div class="fp-tool-sep"></div>
+      <button type="button" class="fp-tool" data-tool="erase" title="Erase (Delete)" aria-label="Erase tool or delete selected"><svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 14l7-10 7 4-5 8H5z" fill="currentColor" opacity="0.3"/><path d="M5 16h10" stroke="currentColor" stroke-width="2"/></svg><span>Erase</span></button>
+    </div>
+
+    <!-- Canvas Container -->
+    <div class="fp-canvas-wrap" id="fpCanvasWrap">
+      <!-- Rulers -->
+      <canvas id="fpRulerH" class="fp-ruler fp-ruler-h" height="24"></canvas>
+      <canvas id="fpRulerV" class="fp-ruler fp-ruler-v" width="24"></canvas>
+      <div class="fp-ruler-corner"></div>
+      <!-- Main Canvas -->
+      <canvas id="fpCanvas"></canvas>
+      <!-- Zoom Controls -->
+      <div class="fp-zoom-controls">
+        <button type="button" id="fpZoomIn" class="fp-zoom-btn" title="Informations et hypothèses du calcul" aria-label="Informations et hypothèses du calcul">+</button>
+        <span id="fpZoomLevel" class="fp-zoom-level">100%</span>
+        <button type="button" id="fpZoomOut" class="fp-zoom-btn" title="Informations et hypothèses du calcul" aria-label="Informations et hypothèses du calcul">&minus;</button>
+        <button type="button" id="fpZoomFit" class="fp-zoom-btn" title="Ajuster la vue" aria-label="Ajuster la vue" style="font-size:11px">Ajuster la vue</button>
+      </div>
+      <div class="fp-view-switcher" role="group" aria-label="Aperçu">
+        <button type="button" class="fp-view-switch active" data-fp-view-mode="2d" aria-pressed="true">2D plan</button>
+        <button type="button" class="fp-view-switch" data-fp-view-mode="3d" data-fp-open-3d aria-pressed="false">Vue 3D</button>
+      </div>
+      <div class="fp-zoom-panel" aria-label="Informations et hypothèses du calcul">
+        <div class="fp-zoom-panel-head">
+          <strong>Informations et hypothèses du calcul</strong>
+          <output id="fpZoomPanelLevel" for="fpZoomSlider">100%</output>
+        </div>
+        <div class="fp-zoom-panel-controls">
+          <button type="button" class="fp-zoom-panel-btn" data-fp-zoom-action="out" aria-label="Informations et hypothèses du calcul">-</button>
+          <input id="fpZoomSlider" class="fp-zoom-slider" type="range" min="10" max="500" step="5" value="100" aria-label="Informations et hypothèses du calcul">
+          <button type="button" class="fp-zoom-panel-btn" data-fp-zoom-action="in" aria-label="Informations et hypothèses du calcul">+</button>
+        </div>
+        <div class="fp-zoom-panel-actions">
+          <button type="button" data-fp-zoom-action="fit">Ajuster la vue</button>
+          <button type="button" data-fp-zoom-action="reset">100%</button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right Properties Panel -->
+    <div class="fp-props" id="fpProps">
+      <div class="fp-props-header">
+        <span>Properties</span>
+        <button type="button" id="fpPropsClose" class="fp-props-toggle" title="Fermer properties" aria-label="Fermer properties panel">&times;</button>
+      </div>
+      <div id="fpPropsContent" class="fp-props-body">
+        <div class="fp-props-empty">Aperçu</div>
+      </div>
+    </div>
+  </div>
+
+    <!-- Workspace Action Footer -->
+    <div class="fp-action-bar" role="toolbar" aria-label="Informations et hypothèses du calcul">
+    <div class="fp-action-left">
+      <output id="fpWorkspaceStatus" class="fp-workspace-status" aria-live="polite">Outil : sélection</output>
+      <select id="fpUnits" class="fp-act-select" title="Pièces" aria-label="Pièces">
+        <option value="m">Metric (m)</option>
+        <option value="ft">Imperial (ft)</option>
+      </select>
+      <button type="button" id="fpMoreActions" class="fp-act-btn fp-more-actions" aria-expanded="false" aria-controls="fpActionMenu">More</button>
+    </div>
+    <div class="fp-action-right" id="fpActionMenu">
+      <button type="button" id="fpOptimize" class="fp-act-btn" title="Informations et hypothèses du calcul">Review plan</button>
+      <button type="button" id="fpOpenEstimateBoq" class="fp-act-btn" title="Estimer">Estimer</button>
+      <button type="button" class="fp-act-btn" data-fp-open-3d title="Vue 3D">Vue 3D</button>
+      <button type="button" id="fpAiChat" class="fp-act-btn" title="Ouvrir local planning help">Local help</button>
+      <span class="fp-act-sep"></span>
+      <button type="button" id="fpExportPackPdf" class="fp-act-btn fp-act-btn-primary" title="Exporter builder pack PDF">Builder pack</button>
+      <button type="button" id="fpExportPlanPng" class="fp-act-btn" title="Exporter plan PNG">PNG</button>
+      <button type="button" id="fpExportBoqData" class="fp-act-btn" title="Exporter BOQ CSV or JSON">BOQ CSV/JSON</button>
+      <button type="button" id="fpShare" class="fp-act-btn" title="Partager Plan">Partager</button>
+    </div>
+    <div class="fp-export-proof" aria-labelledby="fpExportProofTitle">
+      <strong id="fpExportProofTitle">Builder pack</strong>
+      <span>Enregistrer le résultat</span>
+      <span>Informations et hypothèses du calcul</span>
+      <output id="fpExportProofStatus" class="fp-export-proof-status" role="status" aria-live="polite" aria-atomic="true">Non Exporter attempted yet.</output>
+    </div>
+    </div>
+  </section>
+
+  <section class="fp-assumptions-section" aria-label="Informations et hypothèses du calcul">
+    <details id="fpAssumptionsPanel" class="fp-assumptions-accordion">
+      <summary>Informations et hypothèses du calcul</summary>
+      <div class="fp-assumptions-body">
+        <p>Il s’agit d’une estimation de planification, et non d’un plan architectural ou d’un dossier d’autorisation.</p>
+        <p>Choisissez un modèle ou dessinez les pièces, portes et fenêtres, puis examinez les surfaces et le coût indicatif.</p>
+        <p>Informations et hypothèses du calcul</p>
+        <ul>
+          <li>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</li>
+          <li>Estimer</li>
+          <li>Charger</li>
+          <li>Choisissez un modèle ou dessinez les pièces, portes et fenêtres, puis examinez les surfaces et le coût indicatif.</li>
+        </ul>
+      </div>
+    </details>
+  </section>
+
+  <section class="fp-seo-section" aria-labelledby="fpSeoGuideTitle">
+    <div class="fp-seo-grid">
+      <article class="fp-seo-card fp-seo-card-wide">
+        <span class="fp-seo-eyebrow">Fonctionnement</span>
+        <h2 id="fpSeoGuideTitle">Boutique</h2>
+        <ol class="fp-seo-steps">
+          <li>Commencez avec un modèle ou un canevas vide.</li>
+          <li>Ajouter</li>
+          <li>Estimer</li>
+          <li>Informations et hypothèses du calcul</li>
+        </ol>
+      </article>
+
+      <article class="fp-seo-card">
+        <span class="fp-seo-eyebrow">Modèles populaires</span>
+        <h2>Informations et hypothèses du calcul</h2>
+        <p>Charger</p>
+        <button type="button" class="fp-btn fp-btn-secondary" data-fp-click="fpOpenTemplateGallery">Voir les modèles</button>
+      </article>
+
+      <article class="fp-seo-card">
+        <span class="fp-seo-eyebrow">Construction Estimer</span>
+        <h2>Informations et hypothèses du calcul</h2>
+        <p>Estimer</p>
+        <a href="#fpWorkspace" class="fp-seo-link">Informations et hypothèses du calcul</a>
+      </article>
+    </div>
+
+    <div class="fp-seo-lower">
+      <section class="fp-seo-card" aria-labelledby="fpFaqTitle">
+        <span class="fp-seo-eyebrow">Informations et hypothèses du calcul</span>
+        <h2 id="fpFaqTitle">Plancher planner questions</h2>
+        <details>
+          <summary>Informations et hypothèses du calcul</summary>
+          <p>Estimer</p>
+        </details>
+        <details>
+          <summary>Informations et hypothèses du calcul</summary>
+          <p>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</p>
+        </details>
+        <details>
+          <summary>Créer</summary>
+          <p>Estimer</p>
+        </details>
+        <details>
+          <summary>Informations et hypothèses du calcul</summary>
+          <p>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</p>
+        </details>
+      </section>
+
+      <section class="fp-seo-card" aria-labelledby="fpRelatedTitle">
+        <span class="fp-seo-eyebrow">Outils associés</span>
+        <h2 id="fpRelatedTitle">Construction calculateurs</h2>
+        <nav class="fp-related-links" aria-label="Related construction Outils">
+          <a href="/tools/floor-plan/">Calculateur de coût de construction</a>
+          <a href="/tools/building-materials/">Informations et hypothèses du calcul</a>
+          <a href="/tools/paint-calculator/">Paint Calculateur</a>
+          <a href="/tools/roof-calculator/">toiture Calculateur</a>
+          <a href="/tools/land-size/">Informations et hypothèses du calcul</a>
+        </nav>
+      </section>
+    </div>
+  </section>
+
+<section class="df-upgrade" data-df-upgrade="afroplan-floor-planner">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">Parcours pratique</span>
+      <h2>Informations et hypothèses du calcul</h2>
+
+      <ul class="df-upgrade__bullets"><li>Le plan obtenu sert à la préparation du projet et ne remplace pas un plan architectural ou structurel approuvé.</li><li>Le plan obtenu sert à la préparation du projet et ne remplace pas un plan architectural ou structurel approuvé.</li><li>Contrôles de qualité traités ici: Avertissement, sources, browserOk.</li><li>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</li></ul>
+      <p class="df-upgrade__note"><strong>Révisé en 2026.</strong>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</p>
+    </div>
+    <form class="df-form" data-df-form="afroplan-floor-planner">
+      <label>Pays<select name="country" aria-label="Pays"><option value="Nigeria">Nigeria</option><option value="Kenya">Kenya</option><option value="Ghana">Ghana</option><option value="South Africa">Afrique du Sud</option></select></label>
+      <label>Montant ou quantité<input name="amount" type="number" value="100" min="0" step="any" aria-label="Montant ou quantité"></label>
+      <label>Priorité<select name="priority" aria-label="Priorité"><option value="cost">Coût</option><option value="speed">rapidité</option><option value="quality">qualité</option><option value="risk">risque</option></select></label>
+      <label>Pourcentage de réserve<input name="buffer" type="number" value="10" min="0" step="any" aria-label="Pourcentage de réserve"></label>
+      <button type="submit">Créer le résumé</button>
+      <output class="df-result" data-df-result="afroplan-floor-planner" data-df-base="Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local." aria-live="polite">Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</output>
+      <div class="df-actions"><button type="button" data-df-copy="afroplan-floor-planner">Copier le résumé</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="afroplan-floor-planner-faq-title">
+  <h2 id="afroplan-floor-planner-faq-title">Informations et hypothèses du calcul</h2>
+  <div class="df-faq__grid"><details><summary>Est-ce officiel ?</summary><p>Non. Il s’agit d’un parcours de planification pédagogique, et non d’un dépôt officiel, d’un devis, d’une décision juridique ou d’un résultat garanti.</p></details></div>
+</section>
+</main>
+
+<!-- Templates Modal -->
+<div id="fpTemplatesModal" class="fp-modal-overlay" hidden>
+  <div class="fp-modal fp-modal-lg" role="dialog" aria-modal="true" aria-labelledby="fpTemplatesTitle">
+    <div class="fp-modal-header">
+      <h2 id="fpTemplatesTitle">Modèles africains de plans d’étage</h2>
+      <button type="button" class="fp-modal-close" data-close="fpTemplatesModal" aria-label="Informations et hypothèses du calcul">&times;</button>
+    </div>
+    <div class="fp-modal-body" id="fpTemplatesGrid"></div>
+  </div>
+</div>
+
+<!-- Furniture Panel (slide-in) -->
+<div id="fpFurniturePanel" class="fp-slide-panel" hidden>
+  <div class="fp-slide-header">
+    <h3>Mobilier et équipements</h3>
+    <button type="button" class="fp-slide-close" data-close="fpFurniturePanel">&times;</button>
+  </div>
+  <div class="fp-slide-body" id="fpFurnitureList"></div>
+</div>
+
+<!-- 3D Preview Modal -->
+<div id="fp3dModal" class="fp-modal-overlay fp-3d-overlay" hidden>
+  <div class="fp-3d-modal" role="dialog" aria-modal="true" aria-labelledby="fp3dTitle">
+    <div class="fp-3d-header">
+      <div>
+        <span class="fp-3d-eyebrow">Vue 3D</span>
+        <h2 id="fp3dTitle">Examiner votre plan en 3D</h2>
+        <p class="fp-3d-helper">Faites glisser pour pivoter. Faites défiler ou pincez pour zoomer. Utilisez les vues prédéfinies.</p>
+      </div>
+      <div class="fp-3d-actions">
+        <div class="fp-3d-camera-tabs" role="group" aria-label="Vue 3D">
+          <button type="button" class="fp-3d-camera active" data-fp-3d-view="orbit" aria-pressed="true">Orbite</button>
+          <button type="button" class="fp-3d-camera" data-fp-3d-view="top" aria-pressed="false">Dessus</button>
+          <button type="button" class="fp-3d-camera" data-fp-3d-view="room" aria-pressed="false">Pièce</button>
+        </div>
+        <button type="button" id="fp3dRefresh" class="fp-act-btn">Actualiser</button>
+        <button type="button" id="fp3dFit" class="fp-act-btn">Ajuster la vue</button>
+        <button type="button" class="fp-modal-close" data-close="fp3dModal" aria-label="Vue 3D">&times;</button>
+      </div>
+    </div>
+    <div class="fp-3d-stage" id="fp3dViewport" aria-label="Vue 3D">
+      <div class="fp-3d-loading">Vue 3D</div>
+    </div>
+    <div class="fp-3d-footer">
+      <div class="fp-3d-status-stack">
+        <output id="fp3dStatus" role="status" aria-live="polite">Vue 3D</output>
+        <div id="fp3dStats" class="fp-3d-stats" aria-label="Vue 3D"></div>
+      </div>
+      <div id="fp3dLegend" class="fp-3d-legend" aria-label="3D Mobilier shown"></div>
+    </div>
+  </div>
+</div>
+
+<!-- Cost Estimator Modal -->
+<div id="fpCostModal" class="fp-modal-overlay" hidden>
+  <div class="fp-modal fp-modal-lg">
+    <div class="fp-modal-header">
+      <h2>Coût de construction Estimer</h2>
+      <button type="button" class="fp-modal-close" data-close="fpCostModal">&times;</button>
+    </div>
+    <div class="fp-modal-body" id="fpCostContent"></div>
+  </div>
+</div>
+
+<!-- Local Help Drawer -->
+<div id="fpChatDrawer" class="fp-chat-drawer" hidden>
+  <div class="fp-chat-header">
+    <span>AfroPlan Local Help</span>
+    <button type="button" id="fpChatClose" class="fp-chat-close">&times;</button>
+  </div>
+  <div id="fpChatMessages" class="fp-chat-messages"></div>
+  <div class="fp-chat-input-wrap">
+    <input aria-label="Ask a local planning question" type="text" id="fpChatInput" class="fp-chat-input" placeholder="Ask a local planning question...">
+    <button type="button" id="fpChatSend" class="fp-chat-send">Send</button>
+  </div>
+</div>
+
+<!-- Mobile Bottom Sheet (tool selection) -->
+<div id="fpMobileTools" class="fp-mobile-sheet" hidden>
+  <div class="fp-mobile-handle"></div>
+  <div class="fp-mobile-sheet-head">
+    <strong>Outils</strong>
+    <span>Informations et hypothèses du calcul</span>
+    <button type="button" id="fpMobileToolsClose" aria-label="Fermer Outils">&times;</button>
+  </div>
+  <div class="fp-mobile-tools-grid" id="fpMobileToolsGrid"></div>
+</div>
+
+<!-- Mobile FAB for tools -->
+<button type="button" id="fpMobileFab" class="fp-mobile-fab" title="Outils" aria-label="Ouvrir Dessin Outils">
+  <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M12 2a7 7 0 017 7v3l2 4H3l2-4V9a7 7 0 017-7z" fill="currentColor" opacity="0.2"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
+</button>
+<nav class="fr-engineering-related-tools" aria-labelledby="afroplan-floor-planner-related-title">
+  <h2 id="afroplan-floor-planner-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/tools/calculateur-solaire/">Calculateur solaire</a></li>
+      <li><a href="/fr/tools/plan-etage/">Estimateur de coût de construction</a></li>
+      <li><a href="/fr/tools/devis-quantitatif/">Constructeur de devis quantitatif</a></li>
+  </ul>
+</nav>
+<afro-footer></afro-footer>
+
+<!-- Core scripts (loaded immediately) -->
+<script src="/engineering/floor-planner/js/fp-canvas.fr.js?v=c14294a6"></script>
+<script src="/engineering/floor-planner/js/fp-walls.fr.js?v=2481e207"></script>
+<script src="/engineering/floor-planner/js/fp-objects.fr.js?v=39490bec"></script>
+<script src="/engineering/floor-planner/js/fp-furniture.fr.js?v=10a4174b"></script>
+<script src="/engineering/floor-planner/js/fp-templates.fr.js?v=a3a18571"></script>
+<script src="/engineering/floor-planner/js/fp-app.fr.js?v=f3fe6921"></script>
+<script src="/engineering/floor-planner/js/fp-qa.fr.js?v=4b1d2d58"></script>
+<script src="/engineering/floor-planner/js/fp-boq-engine.fr.js?v=ee039161"></script>
+<script src="/assets/js/lib/fp-material-pricing.js?v=2988d51e"></script>
+<script src="/engineering/floor-planner/js/fp-s-class.fr.js?v=d603b89a"></script>
+<script src="/engineering/floor-planner/js/fp-beta-safe.fr.js?v=b9aac097"></script>
+<script src="/engineering/floor-planner/js/fp-mvp-sprint.fr.js?v=98fcca06"></script>
+<script src="/engineering/floor-planner/js/fp-ai-consent.fr.js?v=ec8069c8"></script>
+<script src="/engineering/floor-planner/js/fp-export-suite.fr.js?v=d8ce00d5"></script>
+<script src="/engineering/floor-planner/js/fp-action-safety.fr.js?v=3dd2d9f8"></script>
+<script src="/engineering/floor-planner/js/fp-layout-access.fr.js?v=81cce242"></script>
+<script src="/engineering/floor-planner/js/fp-3d-preview.fr.js?v=81aea2b4"></script>
+<script src="/engineering/floor-planner/js/fp-view-engine.fr.js?v=9983c0eb"></script>
+<script src="/engineering/floor-planner/js/fp-controls-polish.fr.js?v=18c059ff"></script>
+<script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
+<script src="/engineering/floor-planner/js/fp-workspace-sync.fr.js?v=66164321" defer></script>
+<!-- Lazy-loaded: fp-ai.js, fp-cost.js, fp-export.js -->
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/pages/fr-engineering-df-app-upgrades.js?v=a0a76258" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="afroplan-floor-planner" aria-labelledby="afroplan-floor-planner-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="afroplan-floor-planner-fr-guide-title">Planificateur de plan d’étage : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/afroplan-floor-planner.webp" alt="Illustration du parcours Planificateur de plan d’étage" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours Planificateur de plan d’étage.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Composez un plan d’étage, estimez les surfaces et préparez un quantitatif local.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Choisissez un modèle ou dessinez les pièces, portes et fenêtres, puis examinez les surfaces et le coût indicatif.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Le plan obtenu sert à la préparation du projet et ne remplace pas un plan architectural ou structurel approuvé.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/engineering/floor-planner/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/engineering/floor-planner/">https://afrotools.com/engineering/floor-planner/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="afroplan-floor-planner">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"afroplan-floor-planner","name":"Planificateur de plan d’étage","source":"/engineering/floor-planner/","privacy":"local-first","aiConsent":"explicit"};</script>
+</body>
+</html>

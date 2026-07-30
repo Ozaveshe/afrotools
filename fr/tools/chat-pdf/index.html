@@ -1,136 +1,1885 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>Chat avec PDF par IA | AfroTools</title>
-<meta name="description" content="Posez des questions à un PDF, résumez les passages et vérifiez les citations de page avant de vous appuyer sur la réponse.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interroger un PDF avec consentement explicite | AfroTools</title>
+<meta name="description" content="Extrayez d’abord le texte localement, puis choisissez explicitement si vous souhaitez envoyer le contenu à l’assistance IA configurée.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Chat avec PDF par IA | AfroTools">
-<meta property="og:description" content="Posez des questions à un PDF, résumez les passages et vérifiez les citations de page avant de vous appuyer sur la réponse.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/chat-pdf/">
+<meta property="og:title" content="Questions sur un PDF">
+<meta property="og:description" content="Extrayez d’abord le texte localement, puis choisissez explicitement si vous souhaitez envoyer le contenu à l’assistance IA configurée.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/chat-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Chat avec PDF par IA | AfroTools">
-<meta name="twitter:description" content="Posez des questions à un PDF, résumez les passages et vérifiez les citations de page avant de vous appuyer sur la réponse.">
+<meta name="twitter:title" content="Chat with PDF | AfroTools">
+<meta name="twitter:description" content="Ask questions, summarize, search, and get local page-cited answers from PDFs.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Questions sur un PDF","description":"Extrayez d’abord le texte localement, puis choisissez explicitement si vous souhaitez envoyer le contenu à l’assistance IA configurée.","url":"https://afrotools.com/fr/tools/chat-pdf/","inLanguage":"fr","applicationCategory":"ProductivitéApplication","operatingSystem":"Web","browserRequirements":"Nécessite JavaScript et un navigateur moderne","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-chat.webp"}</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mes données PDF sont-elles privées et sécurisées ?","acceptedAnswer":{"@type":"Answer","text":"Votre fichier PDF est analysé dans votre navigateur. Les réponses locales n’appellent pas le point de terminaison AI. Si vous activez AI Assist, un extrait de texte extrait plafonné et votre question actuelle sont envoyés pour analyse, et non le fichier d'origine."}},{"@type":"Question","name":"Quels types de PDF fonctionnent le mieux ?","acceptedAnswer":{"@type":"Answer","text":"Les PDF basés sur du texte fonctionnent mieux, y compris les rapports, les contrats, les documents de recherche et les livres électroniques. Les PDF numérisés ou contenant uniquement des images peuvent ne pas extraire le texte correctement. Pour ceux-là, essayez d’abord notre outil OCR."}},{"@type":"Question","name":"Combien de questions puis-je poser ?","acceptedAnswer":{"@type":"Answer","text":"Les réponses citées sur les pages locales sont disponibles sans limite quotidienne d'IA. Les réponses basées sur l'IA peuvent avoir des limites quotidiennes si vous activez AI Assist."}},{"@type":"Question","name":"Existe-t-il une limite de taille ?","acceptedAnswer":{"@type":"Answer","text":"Les PDF jusqu'à 20 Mo sont pris en charge. Les documents volumineux sont indexés localement par page. AI Assist ne reçoit qu'une fenêtre contextuelle limitée après le consentement, tandis que la recherche locale peut toujours fonctionner sur toutes les pages extraites."}},{"@type":"Question","name":"Puis-je poser des questions complémentaires ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Le mode local utilise la question actuelle et le texte de la page extraite. AI Assist reçoit également la question actuelle avec un extrait de texte extrait après consentement."}}],"inLanguage":"fr"}</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script src="/assets/js/components/fr-pdf-frame-localizer.min.js?v=2a5f2edd" defer></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Chat avec PDF par IA",
-  "description": "Posez des questions à un PDF, résumez les passages et vérifiez les citations de page avant de vous appuyer sur la réponse.",
-  "url": "https://afrotools.com/fr/tools/chat-pdf/",
-  "inLanguage": "fr",
-  "applicationCategory": "BrowserApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/pdf-chat.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/all-tools/"},{"@type":"ListItem","position":3,"name":"Chat avec PDF par IA","item":"https://afrotools.com/fr/tools/chat-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+    --chat-user: var(--color-primary, #008751);
+    --chat-ai: #f3f4f6;
+  }
+
+  /* ── Hero ── */
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: 0;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0;
+  }
+
+  .b-green {
+    background: rgba(0, 135, 81, 0.18);
+    color: var(--afro-green);
+    border: 1px solid rgba(0, 135, 81, 0.38);
+  }
+
+  .b-blue {
+    background: rgba(59, 130, 246, 0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59, 130, 246, 0.3);
+  }
+
+  /* ── Upload View ── */
+  .upload-view {
+    max-width: 680px;
+    margin: 48px auto 64px;
+    padding: 0 24px;
+    text-align: center;
+  }
+
+  .upload-view.hidden { display: none; }
+
+  .upload-title {
+    font-size: 1.5rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 8px;
+  }
+
+  .upload-subtitle {
+    font-size: 0.92rem;
+    color: #64748b;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .drop-zone {
+    border: 2px dashed #d1d5db;
+    border-radius: 16px;
+    padding: 56px 32px;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    background: #fafbfc;
+    position: relative;
+    touch-action: manipulation;
+    display: block;
+  }
+  .drop-zone > * { max-width: 100%; overflow-wrap: anywhere; }
+
+  .drop-zone:hover,
+  .drop-zone.dragover {
+    border-color: var(--afro-green);
+    background: rgba(0, 135, 81, 0.04);
+  }
+
+  .drop-zone-icon {
+    width: 56px;
+    height: 56px;
+    margin: 0 auto 16px;
+    background: rgba(0, 135, 81, 0.1);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .drop-zone-icon svg {
+    width: 28px;
+    height: 28px;
+    color: var(--afro-green);
+  }
+
+  .drop-zone-text {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: #334155;
+    margin-bottom: 4px;
+  }
+
+  .drop-zone-hint {
+    font-size: 0.78rem;
+    color: #94a3b8;
+  }
+
+  .drop-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+  }
+
+  .feature-pills {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 32px;
+  }
+
+  .feature-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 7px 14px;
+    background: #f1f5f9;
+    border-radius: 100px;
+    font-size: 0.78rem;
+    font-weight: 600;
+    color: #475569;
+  }
+
+  .feature-pill svg {
+    width: 14px;
+    height: 14px;
+    color: var(--afro-green);
+  }
+
+  .upload-error {
+    margin-top: 16px;
+    padding: 10px 16px;
+    background: #fef2f2;
+    border: 1px solid #fecaca;
+    border-radius: 10px;
+    color: #dc2626;
+    font-size: 0.82rem;
+    font-weight: 600;
+    display: none;
+  }
+
+  .upload-error.show { display: block; }
+
+  .upload-loading {
+    margin-top: 20px;
+    display: none;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-size: 0.85rem;
+    color: #64748b;
+    font-weight: 600;
+  }
+
+  .upload-loading.show { display: flex; }
+
+  .upload-spinner {
+    width: 20px;
+    height: 20px;
+    border: 2.5px solid #e2e8f0;
+    border-top-color: var(--afro-green);
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  /* ── Workspace ── */
+  .workspace {
+    display: none;
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 16px;
+  }
+
+  .workspace.show {
+    display: grid;
+    grid-template-columns: 1.5fr 1fr;
+    gap: 0;
+    height: calc(100vh - 80px);
+    min-height: 500px;
+    margin-top: 0;
+  }
+
+  /* ── PDF Panel ── */
+  .pdf-panel {
+    display: flex;
+    flex-direction: column;
+    border-right: 1px solid #e5e7eb;
+    background: #f8fafc;
+    overflow: hidden;
+  }
+
+  .file-bar {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 0.78rem;
+    flex-shrink: 0;
+  }
+
+  .file-bar-icon {
+    width: 28px;
+    height: 28px;
+    background: #fee2e2;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .file-bar-icon svg { width: 14px; height: 14px; color: #dc2626; }
+
+  .file-bar-name {
+    font-weight: 700;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    flex: 1;
+  }
+
+  .file-bar-meta {
+    color: #94a3b8;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+
+  .file-bar-close {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    color: #94a3b8;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.15s;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .file-bar-close:hover { background: #f1f5f9; color: #475569; }
+  .file-bar-close svg { width: 16px; height: 16px; }
+
+  .doc-tools {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    background: #fff;
+    border-bottom: 1px solid #e5e7eb;
+    flex-wrap: wrap;
+  }
+
+  .doc-search {
+    flex: 1;
+    min-width: 180px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 8px 10px;
+    font: 600 0.76rem 'DM Sans', sans-serif;
+    color: #334155;
+    outline: none;
+    background: #f8fafc;
+    min-height: 44px;
+  }
+
+  .doc-search:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,135,81,0.1);
+  }
+
+  .doc-stat {
+    font-size: 0.7rem;
+    color: #64748b;
+    font-weight: 700;
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    border-radius: 999px;
+    padding: 6px 10px;
+    white-space: nowrap;
+  }
+
+  .pdf-preview {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .pdf-preview canvas {
+    max-width: 100%;
+    border-radius: 4px;
+    box-shadow: 0 2px 12px rgba(0,0,0,0.1);
+    background: #fff;
+  }
+
+  .page-nav {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 16px;
+    background: #fff;
+    border-top: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .page-nav button {
+    background: #f1f5f9;
+    border: none;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    color: #475569;
+    font-weight: 600;
+    font-size: 0.78rem;
+    transition: all 0.15s;
+    min-height: 44px;
+    min-width: 56px;
+    touch-action: manipulation;
+  }
+
+  .page-nav button:hover:not(:disabled) { background: #e2e8f0; }
+  .page-nav button:disabled { opacity: 0.4; cursor: default; }
+
+  .page-nav-info {
+    font-size: 0.78rem;
+    color: #64748b;
+    font-weight: 600;
+    flex: 1;
+    text-align: center;
+  }
+
+  /* ── Chat Panel ── */
+  .chat-panel {
+    display: flex;
+    flex-direction: column;
+    background: #fff;
+    overflow: hidden;
+  }
+
+  .chat-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 12px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    flex-shrink: 0;
+  }
+
+  .chat-header-icon {
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, var(--afro-green), #4DA3FF);
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .chat-header-icon svg { width: 16px; height: 16px; color: #fff; }
+
+  .chat-header-title {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: #1e293b;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .chat-header-subtitle {
+    font-size: 0.7rem;
+    color: #94a3b8;
+    font-weight: 500;
+  }
+
+  .chat-header-main {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .chat-actions {
+    display: flex;
+    gap: 6px;
+    margin-left: auto;
+  }
+
+  .chat-tool-btn {
+    border: 1px solid #e2e8f0;
+    background: #f8fafc;
+    color: #475569;
+    border-radius: 8px;
+    padding: 6px 9px;
+    font: 700 0.68rem 'DM Sans', sans-serif;
+    cursor: pointer;
+    transition: all 0.15s;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .chat-tool-btn:hover {
+    border-color: var(--afro-green);
+    color: var(--afro-green);
+    background: rgba(0,135,81,0.06);
+  }
+
+  /* ── Messages ── */
+  .messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+  }
+
+  .msg {
+    max-width: 88%;
+    animation: msgIn 0.3s ease;
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .msg-ai {
+    align-self: flex-start;
+  }
+
+  .msg-user {
+    align-self: flex-end;
+  }
+
+  .msg-bubble {
+    padding: 10px 14px;
+    border-radius: 14px;
+    font-size: 0.84rem;
+    line-height: 1.65;
+    word-break: break-word;
+  }
+
+  .msg-ai .msg-bubble {
+    background: var(--chat-ai);
+    color: #1e293b;
+    border-bottom-left-radius: 4px;
+  }
+
+  .msg-user .msg-bubble {
+    background: var(--chat-user);
+    color: #fff;
+    border-bottom-right-radius: 4px;
+  }
+
+  .msg-ai .msg-bubble strong { color: #0f172a; }
+
+  .msg-ai .msg-bubble ul,
+  .msg-ai .msg-bubble ol {
+    padding-left: 18px;
+    margin: 6px 0;
+  }
+
+  .msg-ai .msg-bubble li { margin-bottom: 3px; }
+
+  .msg-ai .msg-bubble p { margin: 6px 0; }
+  .msg-ai .msg-bubble p:first-child { margin-top: 0; }
+  .msg-ai .msg-bubble p:last-child { margin-bottom: 0; }
+
+  .citation-btn {
+    display: inline-flex;
+    align-items: center;
+    border: 1px solid rgba(0,135,81,0.28);
+    background: rgba(0,135,81,0.08);
+    color: var(--afro-green);
+    border-radius: 999px;
+    padding: 2px 8px;
+    margin: 0 2px;
+    font: 700 0.68rem 'DM Sans', sans-serif;
+    cursor: pointer;
+    vertical-align: baseline;
+    min-height: 32px;
+    touch-action: manipulation;
+  }
+
+  .privacy-choice {
+    margin: 10px 16px 0;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background: #f8fbff;
+    flex-shrink: 0;
+  }
+
+  .privacy-choice label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #334155;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .privacy-choice input {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    flex: 0 0 auto;
+    accent-color: var(--afro-green);
+  }
+
+  .citation-btn:hover {
+    background: rgba(0,135,81,0.14);
+  }
+
+  .msg-label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    color: #94a3b8;
+    margin-bottom: 3px;
+    text-transform: uppercase;
+    letter-spacing: 0;
+  }
+
+  .msg-user .msg-label { text-align: right; }
+
+  .msg-error .msg-bubble {
+    background: #fef2f2;
+    color: #dc2626;
+    border: 1px solid #fecaca;
+  }
+
+  .msg-error .msg-bubble a {
+    color: var(--afro-green);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  /* ── Typing indicator ── */
+  .typing {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    padding: 12px 16px;
+  }
+
+  .typing-dot {
+    width: 7px;
+    height: 7px;
+    background: #94a3b8;
+    border-radius: 50%;
+    animation: typingPulse 1.4s ease-in-out infinite;
+  }
+
+  .typing-dot:nth-child(2) { animation-delay: 0.2s; }
+  .typing-dot:nth-child(3) { animation-delay: 0.4s; }
+
+  @keyframes typingPulse {
+    0%, 60%, 100% { transform: scale(0.7); opacity: 0.4; }
+    30% { transform: scale(1); opacity: 1; }
+  }
+
+  /* ── Quick Actions ── */
+  .quick-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 8px 16px 0;
+    flex-shrink: 0;
+  }
+
+  .quick-btn {
+    background: #f1f5f9;
+    border: 1px solid #e2e8f0;
+    padding: 5px 12px;
+    border-radius: 100px;
+    font-size: 0.72rem;
+    font-weight: 600;
+    color: #475569;
+    cursor: pointer;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .quick-btn:hover {
+    background: var(--afro-green);
+    color: #fff;
+    border-color: var(--afro-green);
+  }
+
+  /* ── Input Bar ── */
+  .chat-input-bar {
+    display: flex;
+    align-items: flex-end;
+    gap: 8px;
+    padding: 10px 16px 12px;
+    border-top: 1px solid #e5e7eb;
+    background: #fff;
+    flex-shrink: 0;
+  }
+
+  .chat-input-bar textarea {
+    flex: 1;
+    resize: none;
+    border: 1px solid #e2e8f0;
+    border-radius: 12px;
+    padding: 10px 14px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    color: #1e293b;
+    background: #f8fafc;
+    max-height: 120px;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+
+  .chat-input-bar textarea:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+  }
+
+  .chat-input-bar textarea::placeholder { color: #94a3b8; }
+
+  .send-btn {
+    width: 44px;
+    height: 44px;
+    background: var(--afro-green);
+    border: none;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.15s;
+    flex-shrink: 0;
+    touch-action: manipulation;
+  }
+
+  .send-btn:hover { opacity: 0.85; transform: scale(1.04); }
+  .send-btn:disabled { opacity: 0.4; cursor: default; transform: none; }
+  .send-btn svg { width: 18px; height: 18px; color: #fff; }
+
+  .chat-footer {
+    padding: 4px 16px 6px;
+    font-size: 0.65rem;
+    color: #94a3b8;
+    text-align: center;
+    flex-shrink: 0;
+  }
+
+  /* ── SEO Section ── */
+  .seo-section {
+    max-width: 800px;
+    margin: 64px auto;
+    padding: 0 24px;
+  }
+
+  .seo-section h2 {
+    font-size: 1.4rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 12px;
+  }
+
+  .seo-section p {
+    font-size: 0.9rem;
+    color: #475569;
+    line-height: 1.7;
+    margin-bottom: 16px;
+  }
+
+  .seo-section h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 24px 0 8px;
+  }
+
+  /* ── FAQs ── */
+  .faq-section {
+    max-width: 800px;
+    margin: 0 auto 64px;
+    padding: 0 24px;
+  }
+
+  .faq-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #0f172a;
+    margin-bottom: 20px;
+  }
+
+  .faq-item {
+    border-bottom: 1px solid #e5e7eb;
+  }
+
+  .faq-q {
+    width: 100%;
+    background: none;
+    border: none;
+    padding: 16px 0;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #1e293b;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .faq-q::after {
+    content: '+';
+    font-size: 1.2rem;
+    font-weight: 400;
+    color: #94a3b8;
+    transition: transform 0.2s;
+    flex-shrink: 0;
+  }
+
+  .faq-item.open .faq-q::after {
+    content: '-';
+  }
+
+  .faq-a {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+  }
+
+  .faq-item.open .faq-a {
+    max-height: 200px;
+  }
+
+  .faq-a p {
+    padding: 0 0 16px;
+    font-size: 0.85rem;
+    color: #64748b;
+    line-height: 1.7;
+  }
+
+  .drop-zone:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 4px; }
+  :root[data-theme="dark"] .upload-view,
+  :root[data-theme="dark"] .pdf-panel,
+  :root[data-theme="dark"] .chat-panel,
+  :root[data-theme="dark"] .chat-header,
+  :root[data-theme="dark"] .chat-input-bar,
+  :root[data-theme="dark"] .file-bar,
+  :root[data-theme="dark"] .doc-tools { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .drop-zone,
+  :root[data-theme="dark"] .privacy-choice,
+  :root[data-theme="dark"] .quick-btn,
+  :root[data-theme="dark"] .chat-input-bar textarea,
+  :root[data-theme="dark"] .doc-search { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .upload-title,
+  :root[data-theme="dark"] .drop-zone-text,
+  :root[data-theme="dark"] .chat-header-title,
+  :root[data-theme="dark"] .privacy-choice label,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] .faq-q { color: #eef5ff; }
+  :root[data-theme="dark"] .upload-subtitle,
+  :root[data-theme="dark"] .drop-zone-hint,
+  :root[data-theme="dark"] .chat-header-subtitle,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .faq-a p { color: #d8e4f5; }
+  :root[data-theme="dark"] .msg-ai .msg-bubble { background: #1d2b40; color: #eef5ff; }
+  :root[data-theme="dark"] .faq-item { border-color: #3a4c68; }
+
+  /* ── Responsive ── */
+  @media (max-width: 768px) {
+    .workspace.show {
+      grid-template-columns: 1fr;
+      height: auto;
+      min-height: 0;
+    }
+
+    .pdf-panel {
+      border-right: none;
+      border-bottom: 1px solid #e5e7eb;
+      max-height: 45vh;
+    }
+
+    .chat-panel {
+      height: 55vh;
+      min-height: 400px;
+    }
+
+    .doc-tools {
+      align-items: stretch;
+    }
+
+    .doc-search {
+      flex-basis: 100%;
+    }
+
+    .chat-header {
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .chat-actions {
+      width: 100%;
+      margin-left: 42px;
+    }
+
+    .msg { max-width: 92%; }
+  }
+
+  @media (max-width: 480px) {
+    .chat-actions {
+      margin-left: 0;
+    }
+
+    .chat-tool-btn {
+      flex: 1;
+      justify-content: center;
+    }
+  }
+</style> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Questions sur un PDF","item":"https://afrotools.com/fr/tools/chat-pdf/"}],"inLanguage":"fr"}</script>
+<meta property="article:modified_time" content="2026-04-28">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="Questions sur un PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-chat","locale":"fr","englishOwner":"tools/pdf-chat/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"_transcript.txt":"_transcript.txt","- Ask about a specific term and jump to the cited page":"- Renseignez-vous sur un terme spécifique et accédez à la page citée","- Find deadlines, amounts, obligations, risks, or names":"- Trouver des délais, des montants, des obligations, des risques ou des noms","- Summarize the document":"- Résumer le document","--- Page":"--- Page",".faq-item.open":".faq-item.open","[Page":"[Page","**Best matches from the document:**":"**Meilleures correspondances du document :**","**Details found:**":"**Détails trouvés :**","**Detected themes:**":"**Thèmes détectés :**","**Search results for \"":"**Résultats de recherche pour \"","**Summary grounded in the PDF:**":"**Résumé basé sur le PDF :**","**What you can ask:**":"**Ce que vous pouvez demander :**","\u003c/li>":"\u003c/li>","\u003c/ol>":"\u003c/ol>","\u003c/p>":"\u003c/p>","\u003c/p>\u003cp>":"\u003c/p>\u003cp>","\u003c/ul>":"\u003c/ul>","\u003cbul>$1\u003c/bul>":"\u003cbul>1$\u003c/bul>","\u003cbutton type=\"button\" class=\"citation-btn\" data-page=\"$1\">Page $1\u003c/button>":"\u003cbutton type=\"button\" class=\"citation-btn\" data-page=\"$1\">Page $1\u003c/button>","\u003cdiv class=\"typing-dot\">\u003c/div>\u003cdiv class=\"typing-dot\">\u003c/div>\u003cdiv class=\"typing-dot\">\u003c/div>":"\u003cdiv class=\"typing-dot\">\u003c/div>\u003cdiv class=\"typing-dot\">\u003c/div>\u003cdiv class=\"typing-dot\">\u003c/div>","\u003cli>":"\u003cli>","\u003cnli>$1\u003c/nli>":"\u003cnli>1 $\u003c/nli>","\u003col>":"\u003col>","\u003cp>":"\u003cp>","\u003cstrong>$1\u003c/strong>":"\u003cstrong>1 $\u003c/strong>","\u003cul>":"\u003cul>","0 words":"0 mots","accepted":"accepté","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","AfroTools Assistant":"Assistant AfroTools","AI Assist answered with your consent. Verify cited pages before relying on answers.":"AI Assist a répondu avec votre consentement. Vérifiez les pages citées avant de vous fier aux réponses.","AI Assist is on with content consent. Questions may send capped extracted text to AfroTools AI.":"AI Assist est activé avec le consentement du contenu. Les questions peuvent envoyer du texte extrait plafonné à AfroTools AI.","AI Assist questions remaining today. Verify cited pages before relying on answers.":"Questions restantes sur AI Assist aujourd'hui. Vérifiez les pages citées avant de vous fier aux réponses.","AI Assist stayed off because document-content consent was not confirmed.":"AI Assist est resté désactivé car le consentement sur le contenu du document n'a pas été confirmé.","AI Assist stays off. Local page-cited answers remain available.":"AI Assist reste désactivé. Les réponses citées sur les pages locales restent disponibles.","AI Assist was unavailable, so this answer was generated locally from extracted page text.":"AI Assist n'était pas disponible, cette réponse a donc été générée localement à partir du texte de la page extrait.","ai_optional_content_included":"ai_optional_content_inclus","ai-service-unavailable":"service ai indisponible","Analyzing document...":"Analyse du document...","Answered locally from extracted page text. Nothing was sent to AI.":"Réponse locale à partir du texte de la page extraite. Rien n'a été envoyé à AI.","Answered locally. Review the AI content notice before enabling AI Assist.":"Répondu localement. Consultez l’avis de contenu AI avant d’activer AI Assist.","application/json":"application/json","application/pdf":"candidature/pdf","aria-controls":"contrôles aria","aria-expanded":"aria-développé","Ask a question about this PDF...":"Posez une question sur ce PDF...","Ask for summaries, extract key points, find dates and amounts, identify obligations or risks, search a term across pages, copy answers, download the transcript, or click a page citation to inspect the source page.":"Demandez des résumés, extrayez les points clés, recherchez des dates et des montants, identifiez les obligations ou les risques, recherchez un terme sur plusieurs pages, copiez les réponses, téléchargez la transcription ou cliquez sur une citation de page pour inspecter la page source.","Ask Questions":"Poser des questions","assistant":"assistant","Authorization":"Autorisation","auto":"auto","Bearer":"Porteur","Can I ask follow-up questions?":"Puis-je poser des questions complémentaires ?","change":"changement","Chat about":"Discutez de","Chat about your PDF":"Discutez de votre PDF","Chat cleared. AI Assist remains on for new questions.":"Chat effacé. AI Assist reste activé pour les nouvelles questions.","Chat cleared. Local mode remains on for new questions.":"Chat effacé. Le mode local reste activé pour les nouvelles questions.","Chat with":"Discutez avec","Chat with any text-based PDF document. Upload contracts, reports, research papers, textbooks, school notes, or business documents, then ask questions in natural language. The assistant indexes extracted text by page, answers with citations, and lets you search, copy, or download a transcript.":"Discutez avec n’importe quel document PDF textuel. Téléchargez des contrats, des rapports, des documents de recherche, des manuels scolaires, des notes scolaires ou des documents professionnels, puis posez des questions en langage naturel. L'assistant indexe le texte extrait par page, répond avec des citations et vous permet de rechercher, copier ou télécharger une transcription.","Chat with PDF":"Discutez avec PDF","Chat with PDF - Ask, Summarize, Cite Pages | AfroTools":"Discutez avec PDF - Demandez, résumez, citez des pages | AfroOutils","Chat with your":"Discutez avec votre","Choose a PDF file":"Choisissez un fichier PDF","Choose PDF file":"Choisissez le fichier PDF","Clear":"Effacer","Clear chat":"Effacer le chat","click":"cliquez","Client-side":"Côté client","Close document":"Fermer le document","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","conclusion":"conclusion","Content-Type":"Type de contenu","Copy":"Copier","Copy failed. Use Download instead.":"La copie a échoué. Utilisez plutôt Télécharger.","Copy transcript":"Copier la transcription","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","CV / Resume Builder":"Générateur de CV","Daily AI limit reached, so I used the local page-citation assistant for this answer.":"La limite quotidienne de l'IA a été atteinte, j'ai donc utilisé l'assistant de citation de page local pour cette réponse.","Daily AI limit reached. Local citation assistant is still available.":"Limite quotidienne d'IA atteinte. L'assistant de citation local est toujours disponible.","Download":"Télécharger","Download transcript":"Télécharger la transcription","Drop your PDF here or click to browse":"Déposez votre PDF ici ou cliquez pour le sélectionner","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","Enable AI Assist: review and approve sending this question and a capped extracted-text excerpt to AfroTools AI. Leave off for local page-cited answers.":"Activer AI Assist : examinez et approuvez l'envoi de cette question et d'un extrait de texte extrait plafonné à AfroTools AI. Laissez de côté les réponses citées par les pages locales.","Enter":"Entrer","Explain":"Expliquer","Explain the main concepts in this document in simple terms.":"Expliquez les principaux concepts de ce document en termes simples.","Failed to load PDF. The file may be corrupted or password-protected.":"Échec du chargement du PDF. Le fichier est peut-être corrompu ou protégé par mot de passe.","Failed to render page":"Échec du rendu de la page","false":"FAUX","File is too large. Maximum size is 20 MB.":"Le fichier est trop volumineux. La taille maximale est de 20 Mo.","Find dates, deadlines, numbers, fees, amounts, and obligations in this document.":"Recherchez les dates, échéances, chiffres, frais, montants et obligations dans ce document.","Find Details":"Rechercher des détails","Find Key Points":"Trouver les points clés","findings":"résultats","Frequently Asked Questions":"Questions fréquentes","Get Summaries":"Obtenir des résumés","Grounded Answers":"Des réponses fondées","Grounded document assistant":"Assistant de documents ancré","hidden":"caché","Home":"Accueil","How It Works":"Fonctionnement","How many questions can I ask?":"Combien de questions puis-je poser ?","I could not find a strong match in the extracted text. Try asking about a specific phrase, section title, amount, date, or named party.":"Je n'ai pas pu trouver de correspondance forte dans le texte extrait. Essayez de poser des questions sur une phrase spécifique, un titre de section, un montant, une date ou une partie nommée.","I could not find enough selectable text to summarize this document confidently.":"Je n'ai pas trouvé suffisamment de texte sélectionnable pour résumer ce document en toute confiance.","I did not find clear dates, amounts, obligations, or risk language for that request. Try a more specific term.":"Je n'ai pas trouvé de dates, de montants, d'obligations ou de termes clairs concernant les risques pour cette demande. Essayez un terme plus spécifique.","I've indexed this PDF across":"J'ai indexé ce PDF sur","input":"saisir","Invoice Generator":"Générateur de facture","Is my PDF data private and secure?":"Mes données PDF sont-elles privées et sécurisées ?","Is there a file size limit?":"Existe-t-il une limite de taille ?","Key Points":"Points clés","keydown":"touche enfoncée","List risks, warnings, exceptions, or important caveats in this document.":"Énumérez les risques, avertissements, exceptions ou réserves importantes de ce document.","Local mode is on. Nothing is sent to AI unless you turn on AI Assist.":"Le mode local est activé. Rien n’est envoyé à AI sauf si vous activez AI Assist.","Local page-cited answers are available without a daily AI limit. AI-backed responses may have daily limits if you turn on AI Assist.":"Les réponses citées sur les pages locales sont disponibles sans limite quotidienne d'IA. Les réponses basées sur l'IA peuvent avoir des limites quotidiennes si vous activez AI Assist.","Local page-cited answers by default":"Réponses citées par page locale par défaut","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Message":"Message","messages":"messages","msg msg-":"msg msg-","msg msg-ai":"msg msg-ai","msg msg-ai msg-error":"msg msg-ai msg-erreur","msg-bubble":"bulle msg","msg-label":"étiquette msg","Next":"Suivant","No strong matches found. Try a shorter phrase or exact term.":"Aucune correspondance forte trouvée. Essayez une phrase plus courte ou un terme exact.","Note: this document is large, so optional AI Assist would receive only the first 18,000 characters after consent. Local citations can still search all extracted pages.":"Remarque : ce document est volumineux, donc AI Assist en option ne recevrait que les 18 000 premiers caractères après consentement. Les citations locales peuvent toujours rechercher toutes les pages extraites.","open":"ouvrir","Optional AI Assist":"Assistance IA en option","overview":"aperçu","padding:32px;color:#94a3b8;font-size:0.85rem;text-align:center":"remplissage : 32 px ; couleur : #94a3b8 ; taille de la police : 0,85rem ; alignement du texte : centre","page":"page","Page":"Page","Page 1 of 1":"Page 1 sur 1","Page Citations":"Citations de pages","pages |":"pages |","PDF Chat AI Assist unavailable:":"PDF Chat AI Assist indisponible :","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF files up to 20 MB":"Fichiers PDF jusqu'à 20 Mo","PDF load error:":"Erreur de chargement du PDF :","PDF Merge & Split":"Fusionner et diviser des PDF","PDF Tools":"Outils PDF","PDF Workspace":"Espace de travail PDF","pdf-chat":"chat-pdf","PDFs up to 20 MB are supported. Large documents are indexed locally by page. AI Assist receives only a capped context window after consent, while local search can still work across all extracted pages.":"Les PDF jusqu'à 20 Mo sont pris en charge. Les documents volumineux sont indexés localement par page. AI Assist ne reçoit qu'une fenêtre contextuelle limitée après le consentement, tandis que la recherche locale peut toujours fonctionner sur toutes les pages extraites.","Please provide a concise summary of this document.":"Veuillez fournir un résumé concis de ce document.","Please upload a PDF file.":"Veuillez télécharger un fichier PDF.","Prev":"Précédent","ProductivityApplication":"ProductivitéApplication","purpose":"but","Question about this PDF":"Question sur ce PDF","Related tools":"Outils associés","Render error:":"Erreur de rendu :","Requires JavaScript and a modern browser":"Nécessite JavaScript et un navigateur moderne","Risks":"Risques","Search":"Rechercher","Search document text or pages":"Rechercher du texte ou des pages d'un document","Search document text or pages...":"Rechercher du texte ou des pages d'un document...","Search:":"Recherche:","Send message":"Envoyer un message","Send question and capped PDF excerpt":"Envoyer la question et un extrait PDF plafonné","Server error:":"Erreur du serveur :","show":"montrer","Sorry, I could not generate a response.":"Désolé, je n'ai pas pu générer de réponse.","Spacebar":"Barre d'espace","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","Summarize":"Résumer","summary":"résumé","summary overview introduction conclusion key findings":"résumé aperçu introduction conclusion principales conclusions","Text-based PDFs work best, including reports, contracts, research papers, and ebooks. Scanned or image-only PDFs may not extract text properly. For those, try our OCR tool first.":"Les PDF basés sur du texte fonctionnent mieux, y compris les rapports, les contrats, les documents de recherche et les livres électroniques. Les PDF numérisés ou contenant uniquement des images peuvent ne pas extraire le texte correctement. Pour ceux-là, essayez d’abord notre outil OCR.","text/plain":"texte/plain","These are extractive results from the PDF text, so verify the cited page before relying on them.":"Il s'agit de résultats extractifs du texte PDF, alors vérifiez la page citée avant de vous y fier.","This PDF appears to be scanned or image-only. Try our \u003ca href=\"/tools/pdf-ocr/\" style=\"color:var(--color-primary);font-weight:700\">OCR tool\u003c/a> first to extract text.":"Ce PDF semble être numérisé ou contenant uniquement une image. Essayez d'abord notre \u003ca href=\"/tools/pdf-ocr/\" style=\"color:var(--color-primary);font-weight:700\">outil OCR\u003c/a> pour extraire le texte.","Tools":"Outils","Transcript copied to clipboard.":"Transcription copiée dans le presse-papiers.","true":"vrai","typing":"dactylographie","unknown error":"erreur inconnue","Upload a PDF, ask questions locally, summarize content, search pages, and receive grounded answers with page citations. Optional AI Assist requires consent.":"Téléchargez un PDF, posez des questions localement, résumez le contenu, recherchez des pages et recevez des réponses fondées avec des citations de pages. AI Assist en option nécessite le consentement.","Upload a text PDF, ask locally by default, and jump from every answer back to the cited page. AI Assist stays off until you choose it.":"Téléchargez un PDF texte, demandez localement par défaut et revenez de chaque réponse à la page citée. AI Assist reste désactivé jusqu'à ce que vous le choisissiez.","Upload a text-based PDF and ask questions. The assistant indexes pages, answers from the document, and links back to sources.":"Téléchargez un PDF texte et posez des questions. L'assistant indexe les pages, les réponses du document et renvoie aux sources.","use strict":"utiliser strict","user":"utilisateur","Using local citation assistant. Answers are extractive and grounded in the PDF text.":"Utilisation de l'assistant de citation local. Les réponses sont extractives et fondées sur le texte PDF.","Web":"Web","What are the key points and main takeaways from this document?":"Quels sont les points clés et les principaux enseignements de ce document ?","What types of PDFs work best?":"Quels types de PDF fonctionnent le mieux ?","What You Can Do":"Ce que vous pouvez faire","words":"mots","words.":"mots.","workspace":"espace de travail","X-AfroTools-AI-Consent":"X-AfroTools-AI-Consentement","X-AfroTools-AI-Content-Consent":"X-AfroTools-AI-Content-Consentement","Yes. Local mode uses the current question and extracted page text. AI Assist also receives the current question with a capped extracted-text excerpt after consent.":"Oui. Le mode local utilise la question actuelle et le texte de la page extraite. AI Assist reçoit également la question actuelle avec un extrait de texte extrait après consentement.","You":"Toi","Your PDF file is parsed in your browser. Local answers do not call the AI endpoint. If you turn on AI Assist, a capped extracted-text excerpt and your current question are sent for analysis, not the original file.":"Votre fichier PDF est analysé dans votre navigateur. Les réponses locales n’appellent pas le point de terminaison AI. Si vous activez AI Assist, un extrait de texte extrait plafonné et votre question actuelle sont envoyés pour analyse, et non le fichier d'origine.","Your PDF is processed in your browser using pdf.js. Selectable text is extracted and indexed locally by page. Local answers are the default. AI Assist is optional and only runs after you choose to send a capped extracted-text excerpt with your question.":"Votre PDF est traité dans votre navigateur à l'aide de pdf.js. Le texte sélectionnable est extrait et indexé localement par page. Les réponses locales sont la valeur par défaut. AI Assist est facultatif et ne s'exécute qu'après avoir choisi d'envoyer un extrait de texte extrait avec votre question."}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/chat-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-chat/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chat-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/chat-na-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-chat/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils français</a><span>/</span>Chat PDF</nav>
-<div class="fr-hero">
-<h1><em>Chat avec PDF par IA</em></h1>
-<p>Interrogez un PDF et revenez aux pages citées pour vérifier la réponse.</p>
-</div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparez votre fichier ou votre scénario</h2>
-  <p>Ajoutez trois notes utiles avant de lancer Chat avec PDF par IA. Ce brouillon reste dans votre navigateur et sert seulement à garder le contexte clair.</p>
-  <div class="fr-prep-fields">
-    <label>Fichier local<input name="localFile" type="file" accept="application/pdf,.html,.txt,.doc,.docx,image/*" aria-label="Choisir un fichier local"></label>
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
+<afro-navbar></afro-navbar>
+
+<main>
+<!-- Hero -->
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">Accueil</a> / <a href="/fr/document-pdf/">Outils PDF</a> / <span>Discutez avec PDF</span>
+    </div>
+    <h1>Questions sur un PDF</h1>
+    <p class="hero-sub">Extrayez d’abord le texte localement, puis choisissez explicitement si vous souhaitez envoyer le contenu à l’assistance IA configurée.</p>
+    <div class="hero-badges">
+      <span class="badge b-blue">Des réponses fondées</span>
+      <span class="badge b-green">Côté client</span>
+      <span class="badge b-green">Citations de pages</span>
+    </div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-chat/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+</section>
+
+<!-- Upload View -->
+<div class="upload-view" id="uploadView">
+  <h2 class="upload-title">Discutez avec votre <b>PDF</b></h2>
+  <p class="upload-subtitle">Téléchargez un PDF texte et posez des questions. L'assistant indexe les pages, les réponses du document et renvoie aux sources.</p>
+
+  <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Choisissez un fichier PDF">
+    <div class="drop-zone-icon">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/></svg>
+    </div>
+    <div class="drop-zone-text">Déposez votre PDF ici ou cliquez pour le sélectionner</div>
+    <div class="drop-zone-hint">Fichiers PDF jusqu'à 20 Mo</div>
+    <input aria-label="Choisissez le fichier PDF" type="file" accept=".pdf,application/pdf" id="fileInput">
   </div>
 
-  <!-- fr-pdf-proof-note:start -->
-  <p class="fr-pdf-proof-note"><strong>Méthodologie :</strong> la page prépare le contexte, puis l'outil source traite le fichier dans le navigateur selon le mode choisi. <strong>Limites :</strong> vérifiez toujours le rendu export? avant un dépôt officiel, juridique ou client. <strong>Privacy locale :</strong> les fichiers restent dans votre navigateur; no upload automatique depuis ce panneau.</p>
-  <!-- fr-pdf-proof-note:end -->
+  <div class="upload-error" id="uploadError"></div>
+  <div class="upload-loading" id="uploadLoading">
+    <div class="upload-spinner"></div>
+    <span>Analyse du document...</span>
+  </div>
+
+  <div class="feature-pills">
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8.228 9c.549-1.165 2.03-2 3.772-2 2.21 0 4 1.343 4 3 0 1.4-1.278 2.575-3.006 2.907-.542.104-.994.54-.994 1.093m0 3h.01"/></svg>
+      Poser des questions
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4 6h16M4 12h8m-8 6h16"/></svg>
+      Obtenir des résumés
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+      Trouver les points clés
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
+      Assistance IA en option
+    </span>
+    <span class="feature-pill">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6M9 12h6m-6 7h6M5 5h.01M5 12h.01M5 19h.01"/></svg>
+      Citations de pages
+    </span>
+  </div>
+</div>
+
+<!-- Workspace -->
+<div class="workspace" id="workspace">
+  <!-- PDF Panel -->
+  <div class="pdf-panel">
+    <div class="file-bar">
+      <div class="file-bar-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M7 21h10a2 2 0 002-2V9l-5-5H7a2 2 0 00-2 2v13a2 2 0 002 2z"/></svg>
+      </div>
+      <span class="file-bar-name" id="fileName">document.pdf</span>
+      <span class="file-bar-meta" id="fileMeta"></span>
+      <button type="button" class="file-bar-close" id="closeBtn" title="Fermer le document">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
+      </button>
+    </div>
+    <div class="doc-tools">
+      <input aria-label="Rechercher du texte ou des pages d'un document" class="doc-search" id="docSearchInput" type="search" placeholder="Rechercher du texte ou des pages d'un document...">
+      <button type="button" class="chat-tool-btn" id="docSearchBtn">Rechercher</button>
+      <span class="doc-stat" id="docStats">0 mots</span>
+    </div>
+    <div class="pdf-preview" id="pdfPreview"></div>
+    <div class="page-nav">
+      <button type="button" id="prevPage">Précédent</button>
+      <span class="page-nav-info" id="pageInfo">Page 1 sur 1</span>
+      <button type="button" id="nextPage">Suivant</button>
+    </div>
+  </div>
+
+  <!-- Chat Panel -->
+  <div class="chat-panel">
+    <div class="chat-header">
+      <div class="chat-header-icon">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
+      </div>
+      <div class="chat-header-main">
+        <div class="chat-header-title" id="chatTitle">Discutez de votre PDF</div>
+        <div class="chat-header-subtitle" id="chatMode">Assistant de documents ancré</div>
+      </div>
+      <div class="chat-actions">
+        <button type="button" class="chat-tool-btn" id="copyChatBtn" title="Copier la transcription">Copier</button>
+        <button type="button" class="chat-tool-btn" id="downloadChatBtn" title="Télécharger la transcription">Télécharger</button>
+        <button type="button" class="chat-tool-btn" id="clearChatBtn" title="Effacer le chat">Effacer</button>
+      </div>
+    </div>
+
+    <div class="messages" id="messages"></div>
+
+    <div class="quick-actions" id="quickActions">
+      <button type="button" class="quick-btn" data-prompt="Please provide a concise summary of this document.">Résumer</button>
+      <button type="button" class="quick-btn" data-prompt="What are the key points and main takeaways from this document?">Points clés</button>
+      <button type="button" class="quick-btn" data-prompt="Explain the main concepts in this document in simple terms.">Expliquer</button>
+      <button type="button" class="quick-btn" data-prompt="Find dates, deadlines, numbers, fees, amounts, and obligations in this document.">Rechercher des détails</button>
+      <button type="button" class="quick-btn" data-prompt="List risks, warnings, exceptions, or important caveats in this document.">Risques</button>
+    </div>
+
+    <div class="privacy-choice">
+      <label for="aiAssistConsent">
+        <input type="checkbox" id="aiAssistConsent">
+        <span>Activer AI Assist : examinez et approuvez l'envoi de cette question et d'un extrait de texte extrait plafonné à AfroTools AI. Laissez de côté les réponses citées par les pages locales.</span>
+      </label>
+    </div>
+
+    <div class="chat-input-bar">
+      <textarea id="chatInput" rows="1" placeholder="Posez une question sur ce PDF..." aria-label="Question sur ce PDF"></textarea>
+      <button type="button" class="send-btn" id="sendBtn" disabled title="Envoyer un message" aria-label="Envoyer un message">
+        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </button>
+    </div>
+    <div class="chat-footer" id="chatFooter"></div>
+  </div>
+</div>
+
+<!-- SEO -->
+<section class="seo-section">
+  <h2>Discutez avec PDF</h2>
+  <p>Discutez avec n’importe quel document PDF textuel. Téléchargez des contrats, des rapports, des documents de recherche, des manuels scolaires, des notes scolaires ou des documents professionnels, puis posez des questions en langage naturel. L'assistant indexe le texte extrait par page, répond avec des citations et vous permet de rechercher, copier ou télécharger une transcription.</p>
+
+  <h3>Fonctionnement</h3>
+  <p>Votre PDF est traité dans votre navigateur à l'aide de pdf.js. Le texte sélectionnable est extrait et indexé localement par page. Les réponses locales sont la valeur par défaut. AI Assist est facultatif et ne s'exécute qu'après avoir choisi d'envoyer un extrait de texte extrait avec votre question.</p>
+
+  <h3>Ce que vous pouvez faire</h3>
+  <p>Demandez des résumés, extrayez les points clés, recherchez des dates et des montants, identifiez les obligations ou les risques, recherchez un terme sur plusieurs pages, copiez les réponses, téléchargez la transcription ou cliquez sur une citation de page pour inspecter la page source.</p>
 </section>
-<iframe src="/tools/pdf-chat/" class="fr-tool-frame" title="Chat avec PDF par IA" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Chat avec PDF par IA";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Fichier/donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.';}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-})();
-</script>
-<section class="fr-seo">
-<h2>Chat avec PDF en français</h2>
-<p>Le chat PDF aide à explorer un rapport, contrat, manuel ou dossier long sans perdre le lien avec les pages sources.</p>
-<p>Lorsque le mode IA est utilisé, le texte extrait peut servir au contexte de réponse. Les réponses doivent être vérifiées dans les pages citées avant décision.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Quels PDF fonctionnent le mieux ?</summary><p>Les PDF contenant du texte sélectionnable donnent les meilleurs résultats. Les scans peuvent demander un OCR avant analyse.</p></details>
-<details><summary>Les réponses sont-elles fiables ?</summary><p>Elles aident à repérer l’information, mais vous devez vérifier les citations et les pages source.</p></details>
-<details><summary>Puis-je exporter la conversation ?</summary><p>Oui, utilisez les contrôles de copie ou de téléchargement de la transcription lorsque l’outil les affiche.</p></details>
+
+<!-- FAQs -->
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+<section class="faq-section">
+  <h2>Questions fréquentes</h2>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Mes données PDF sont-elles privées et sécurisées ?</button>
+    <div class="faq-a"><p>Votre fichier PDF est analysé dans votre navigateur. Les réponses locales n’appellent pas le point de terminaison AI. Si vous activez AI Assist, un extrait de texte extrait plafonné et votre question actuelle sont envoyés pour analyse, et non le fichier d'origine.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Quels types de PDF fonctionnent le mieux ?</button>
+    <div class="faq-a"><p>Les PDF basés sur du texte fonctionnent mieux, y compris les rapports, les contrats, les documents de recherche et les livres électroniques. Les PDF numérisés ou contenant uniquement des images peuvent ne pas extraire le texte correctement. Pour ceux-là, essayez d’abord notre outil OCR.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Combien de questions puis-je poser ?</button>
+    <div class="faq-a"><p>Les réponses citées sur les pages locales sont disponibles sans limite quotidienne d'IA. Les réponses basées sur l'IA peuvent avoir des limites quotidiennes si vous activez AI Assist.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Existe-t-il une limite de taille ?</button>
+    <div class="faq-a"><p>Les PDF jusqu'à 20 Mo sont pris en charge. Les documents volumineux sont indexés localement par page. AI Assist ne reçoit qu'une fenêtre contextuelle limitée après le consentement, tandis que la recherche locale peut toujours fonctionner sur toutes les pages extraites.</p></div>
+  </div>
+
+  <div class="faq-item">
+    <button type="button" class="faq-q">Puis-je poser des questions complémentaires ?</button>
+    <div class="faq-a"><p>Oui. Le mode local utilise la question actuelle et le texte de la page extraite. AI Assist reçoit également la question actuelle avec un extrait de texte extrait après consentement.</p></div>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-chat"></afro-related-tools>
+
+</main>
+
+<afro-related-tools category="document-pdf" current="pdf-chat" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-chat">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-chat">Vérifier le résultat avant de le partager</h2>
+      <p>Toute fonction réseau ou IA exige un consentement explicite après affichage du contenu à envoyer. Une solution locale reste disponible.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : TXT</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-chat/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
+</section>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script> <script>
+(function() {
+  'use strict';
+
+  /* ── State ── */
+  let pdfDoc = null;
+  let pdfData = null;
+  let context = '';
+  let pageTexts = [];
+  let searchableText = '';
+  let documentStats = { words: 0, characters: 0 };
+  let chatHistory = [];
+  let currentPage = 1;
+  let totalPages = 0;
+  let isSending = false;
+  let renderedPages = {};
+
+  /* ── Elements ── */
+  const uploadView = document.getElementById('uploadView');
+  const workspace = document.getElementById('workspace');
+  const dropZone = document.getElementById('dropZone');
+  const fileInput = document.getElementById('fileInput');
+  const uploadError = document.getElementById('uploadError');
+  const uploadLoading = document.getElementById('uploadLoading');
+  const pdfPreview = document.getElementById('pdfPreview');
+  const messagesEl = document.getElementById('messages');
+  const chatInput = document.getElementById('chatInput');
+  const sendBtn = document.getElementById('sendBtn');
+  const chatTitle = document.getElementById('chatTitle');
+  const chatMode = document.getElementById('chatMode');
+  const chatFooter = document.getElementById('chatFooter');
+  const pageInfo = document.getElementById('pageInfo');
+  const prevPageBtn = document.getElementById('prevPage');
+  const nextPageBtn = document.getElementById('nextPage');
+  const closeBtn = document.getElementById('closeBtn');
+  const quickActions = document.getElementById('quickActions');
+  const docStats = document.getElementById('docStats');
+  const docSearchInput = document.getElementById('docSearchInput');
+  const docSearchBtn = document.getElementById('docSearchBtn');
+  const copyChatBtn = document.getElementById('copyChatBtn');
+  const downloadChatBtn = document.getElementById('downloadChatBtn');
+  const clearChatBtn = document.getElementById('clearChatBtn');
+  const aiAssistConsent = document.getElementById('aiAssistConsent');
+
+  /* ── Drag & Drop ── */
+  PdfUtils.initDragDrop(dropZone, {
+    accept: '.pdf',
+    multiple: false,
+    onFiles: function(files) { if (files[0]) handleFile(files[0]); }
+  });
+
+  fileInput.addEventListener('change', function() {
+    if (this.files[0]) handleFile(this.files[0]);
+  });
+  dropZone.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      fileInput.click();
+    }
+  });
+
+  /* ── File Handling ── */
+  async function handleFile(file) {
+    if (file.type !== 'application/pdf' && !file.name.toLowerCase().endsWith('.pdf')) {
+      showUploadError('Please upload a PDF file.');
+      return;
+    }
+    if (file.size > 20 * 1024 * 1024) {
+      showUploadError('File is too large. Maximum size is 20 MB.');
+      return;
+    }
+
+    hideUploadError();
+    uploadLoading.classList.add('show');
+
+    try {
+      pdfData = await PdfUtils.loadPdf(file);
+      pdfDoc = pdfData.pdfDoc;
+      totalPages = pdfData.pageCount;
+
+      /* Extract text */
+      const textData = await PdfUtils.extractText(pdfDoc);
+      pageTexts = textData.map(function(p) {
+        return {
+          page: p.page,
+          text: (p.text || '').replace(/\s+/g, ' ').trim()
+        };
+      });
+      const fullText = pageTexts.map(function(p) {
+        return '--- Page ' + p.page + ' ---\n' + p.text;
+      }).join('\n\n');
+      searchableText = fullText.toLowerCase();
+      documentStats = {
+        words: (fullText.match(/\b[\w'-]+\b/g) || []).length,
+        characters: fullText.length
+      };
+
+      if (!fullText.trim() || fullText.replace(/\s/g, '').length < 30) {
+        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/fr/tools/ocr-pdf/" style="color:var(--color-primary);font-weight:700">OCR tool</a> first to extract text.');
+        uploadLoading.classList.remove('show');
+        if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
+        pdfDoc = null;
+        pdfData = null;
+        return;
+      }
+
+      var truncated = fullText.length > 18000;
+      context = fullText.substring(0, 18000);
+
+      /* Switch to workspace */
+      uploadView.classList.add('hidden');
+      workspace.classList.add('show');
+
+      /* File info */
+      document.getElementById('fileName').textContent = pdfData.fileName;
+      document.getElementById('fileMeta').textContent = totalPages + ' pages  |  ' + PdfUtils.formatSize(pdfData.fileSize);
+      chatTitle.textContent = 'Chat about ' + pdfData.fileName;
+      chatMode.textContent = 'Local page-cited answers by default';
+      docStats.textContent = documentStats.words.toLocaleString() + ' words';
+
+      /* Render first page */
+      currentPage = 1;
+      renderedPages = {};
+      await renderCurrentPage();
+      updatePageNav();
+
+      /* Welcome message */
+      chatHistory = [];
+      messagesEl.innerHTML = '';
+      var welcomeMsg = buildDocumentOverview(truncated);
+      addMessage('ai', welcomeMsg);
+      chatFooter.textContent = 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
+
+    } catch (err) {
+      console.error('PDF load error:', err);
+      showUploadError('Failed to load PDF. The file may be corrupted or password-protected.');
+    } finally {
+      uploadLoading.classList.remove('show');
+    }
+  }
+
+  /* ── PDF Rendering ── */
+  async function renderCurrentPage() {
+    pdfPreview.innerHTML = '';
+    try {
+      let canvas;
+      if (renderedPages[currentPage]) {
+        canvas = renderedPages[currentPage];
+      } else {
+        canvas = await PdfUtils.renderPage(pdfDoc, currentPage, 1.2);
+        renderedPages[currentPage] = canvas;
+      }
+      pdfPreview.appendChild(canvas);
+    } catch (err) {
+      console.error('Render error:', err);
+      const errDiv = document.createElement('div');
+      errDiv.style.cssText = 'padding:32px;color:#94a3b8;font-size:0.85rem;text-align:center';
+      errDiv.textContent = 'Failed to render page ' + currentPage;
+      pdfPreview.appendChild(errDiv);
+    }
+  }
+
+  function updatePageNav() {
+    pageInfo.textContent = 'Page ' + currentPage + ' of ' + totalPages;
+    prevPageBtn.disabled = currentPage <= 1;
+    nextPageBtn.disabled = currentPage >= totalPages;
+  }
+
+  async function goToPage(pageNumber) {
+    const target = Math.max(1, Math.min(totalPages, parseInt(pageNumber, 10) || 1));
+    if (!pdfDoc || target === currentPage || isRendering) return;
+    isRendering = true;
+    prevPageBtn.disabled = true;
+    nextPageBtn.disabled = true;
+    currentPage = target;
+    await renderCurrentPage();
+    isRendering = false;
+    updatePageNav();
+  }
+
+  var isRendering = false;
+  prevPageBtn.addEventListener('click', async function() {
+    if (currentPage > 1 && !isRendering) {
+      isRendering = true;
+      prevPageBtn.disabled = true;
+      nextPageBtn.disabled = true;
+      currentPage--;
+      await renderCurrentPage();
+      isRendering = false;
+      updatePageNav();
+    }
+  });
+
+  nextPageBtn.addEventListener('click', async function() {
+    if (currentPage < totalPages && !isRendering) {
+      isRendering = true;
+      prevPageBtn.disabled = true;
+      nextPageBtn.disabled = true;
+      currentPage++;
+      await renderCurrentPage();
+      isRendering = false;
+      updatePageNav();
+    }
+  });
+
+  /* ── Close Document ── */
+  closeBtn.addEventListener('click', function() {
+    workspace.classList.remove('show');
+    uploadView.classList.remove('hidden');
+    if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
+    pdfDoc = null;
+    pdfData = null;
+    context = '';
+    pageTexts = [];
+    searchableText = '';
+    documentStats = { words: 0, characters: 0 };
+    chatHistory = [];
+    renderedPages = {};
+    messagesEl.innerHTML = '';
+    pdfPreview.innerHTML = '';
+    fileInput.value = '';
+    chatInput.value = '';
+    chatFooter.textContent = '';
+    aiAssistConsent.checked = false;
+    docSearchInput.value = '';
+    docStats.textContent = '0 words';
+    updateSendBtn();
+  });
+
+  const STOP_WORDS = new Set('a,an,and,are,as,at,be,by,can,do,does,for,from,how,i,in,is,it,of,on,or,that,the,this,to,what,when,where,which,who,why,with,you,your,about,please,provide,find,list,give,main,key,points,summary,summarize,explain,page,pages,pdf,document,documents'.split(','));
+
+  function tokenize(text) {
+    return (text || '').toLowerCase().match(/[a-z0-9][a-z0-9'-]{1,}/g) || [];
+  }
+
+  function queryTerms(text) {
+    return tokenize(text).filter(function(term) { return !STOP_WORDS.has(term); }).slice(0, 18);
+  }
+
+  function splitSentences(text) {
+    return (text || '')
+      .replace(/\s+/g, ' ')
+      .split(/(?<=[.!?])\s+/)
+      .map(function(sentence) { return sentence.trim(); })
+      .filter(function(sentence) { return sentence.length > 24; });
+  }
+
+  function scoreText(text, terms) {
+    const lower = (text || '').toLowerCase();
+    return terms.reduce(function(score, term) {
+      const matches = lower.split(term).length - 1;
+      return score + matches * (term.length > 4 ? 2 : 1);
+    }, 0);
+  }
+
+  function findRelevantPages(question, limit) {
+    const terms = queryTerms(question);
+    const scored = pageTexts.map(function(page) {
+      return {
+        page: page.page,
+        text: page.text,
+        score: scoreText(page.text, terms)
+      };
+    }).filter(function(item) { return item.score > 0; })
+      .sort(function(a, b) { return b.score - a.score || a.page - b.page; });
+
+    if (scored.length) return scored.slice(0, limit || 4);
+    return pageTexts.filter(function(page) { return page.text; }).slice(0, limit || 3).map(function(page) {
+      return { page: page.page, text: page.text, score: 0 };
+    });
+  }
+
+  function bestSentencesFromPages(pages, terms, maxCount) {
+    const candidates = [];
+    pages.forEach(function(page) {
+      splitSentences(page.text).forEach(function(sentence) {
+        candidates.push({ page: page.page, sentence: sentence, score: scoreText(sentence, terms) });
+      });
+    });
+    candidates.sort(function(a, b) { return b.score - a.score || a.page - b.page; });
+    return candidates.slice(0, maxCount || 5);
+  }
+
+  function topKeywords() {
+    const counts = {};
+    tokenize(searchableText).forEach(function(term) {
+      if (STOP_WORDS.has(term) || term.length < 4) return;
+      counts[term] = (counts[term] || 0) + 1;
+    });
+    return Object.keys(counts).sort(function(a, b) { return counts[b] - counts[a]; }).slice(0, 8);
+  }
+
+  function buildDocumentOverview(truncated) {
+    const keywords = topKeywords();
+    let overview = "I've indexed this PDF across " + totalPages + " page" + (totalPages !== 1 ? 's' : '') + " and " + documentStats.words.toLocaleString() + " words.\n\n";
+    overview += "**What you can ask:**\n";
+    overview += "- Summarize the document\n";
+    overview += "- Find deadlines, amounts, obligations, risks, or names\n";
+    overview += "- Ask about a specific term and jump to the cited page\n";
+    if (keywords.length) overview += "\n**Detected themes:** " + keywords.join(', ') + ".";
+    if (truncated) overview += "\n\nNote: this document is large, so optional AI Assist would receive only the first 18,000 characters after consent. Local citations can still search all extracted pages.";
+    return overview;
+  }
+
+  function buildSummaryAnswer() {
+    const pages = findRelevantPages('summary overview introduction conclusion key findings', Math.min(5, totalPages));
+    const sentences = bestSentencesFromPages(pages, ['summary', 'overview', 'findings', 'conclusion', 'purpose'], 5);
+    if (!sentences.length) return 'I could not find enough selectable text to summarize this document confidently.';
+    let answer = '**Summary grounded in the PDF:**\n';
+    sentences.forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    return answer;
+  }
+
+  function buildDetailsAnswer(question) {
+    const detailRegex = /\b(?:\d{1,2}[\/.-]\d{1,2}[\/.-]\d{2,4}|\d{4}|[$€£₦R]|USD|NGN|KES|GHS|ZAR|deadline|due|amount|fee|price|cost|rate|percent|%|must|shall|required|risk|warning|exception|penalty|date)\b/ig;
+    const relevant = findRelevantPages(question, 6);
+    const details = [];
+    relevant.forEach(function(page) {
+      splitSentences(page.text).forEach(function(sentence) {
+        if (detailRegex.test(sentence)) details.push({ page: page.page, sentence: sentence });
+        detailRegex.lastIndex = 0;
+      });
+    });
+    if (!details.length) return 'I did not find clear dates, amounts, obligations, or risk language for that request. Try a more specific term.';
+    let answer = '**Details found:**\n';
+    details.slice(0, 7).forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    return answer;
+  }
+
+  function buildLocalAnswer(question) {
+    const lower = question.toLowerCase();
+    if (/summary|summarize|overview|gist/.test(lower)) return buildSummaryAnswer();
+    if (/date|deadline|amount|fee|price|cost|risk|warning|obligation|shall|required|penalty|number|detail/.test(lower)) return buildDetailsAnswer(question);
+
+    const terms = queryTerms(question);
+    const relevant = findRelevantPages(question, 4);
+    const sentences = bestSentencesFromPages(relevant, terms, 5);
+
+    if (!sentences.length || !terms.length) {
+      return 'I could not find a strong match in the extracted text. Try asking about a specific phrase, section title, amount, date, or named party.';
+    }
+
+    let answer = '**Best matches from the document:**\n';
+    sentences.forEach(function(item) {
+      answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+    });
+    answer += '\nThese are extractive results from the PDF text, so verify the cited page before relying on them.';
+    return answer;
+  }
+
+  /* ── Chat Messages ── */
+  function addMessage(role, text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-' + role;
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = role === 'ai' ? 'AfroTools Assistant' : 'You';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    if (role === 'ai') {
+      bubble.innerHTML = formatAiText(text);
+    } else {
+      bubble.textContent = text;
+    }
+
+    msg.appendChild(label);
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+    return msg;
+  }
+
+  function addTypingIndicator() {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-ai';
+    msg.id = 'typingMsg';
+
+    const label = document.createElement('div');
+    label.className = 'msg-label';
+    label.textContent = 'AfroTools Assistant';
+
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+
+    const typing = document.createElement('div');
+    typing.className = 'typing';
+    typing.innerHTML = '<div class="typing-dot"></div><div class="typing-dot"></div><div class="typing-dot"></div>';
+
+    bubble.appendChild(typing);
+    msg.appendChild(label);
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+  }
+
+  function removeTypingIndicator() {
+    const el = document.getElementById('typingMsg');
+    if (el) el.remove();
+  }
+
+  function formatAiText(text) {
+    /* Basic markdown-like formatting */
+    let html = text
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;');
+
+    /* Bold */
+    html = html.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
+
+    /* Bullet lists — wrap consecutive <li> groups in <ul> */
+    html = html.replace(/^[-*]\s+(.+)/gm, '<bul>$1</bul>');
+    html = html.replace(/((?:<bul>.*?<\/bul>\n?)+)/g, function(match) {
+      return '<ul>' + match.replace(/<bul>/g, '<li>').replace(/<\/bul>/g, '</li>') + '</ul>';
+    });
+
+    /* Numbered lists — wrap consecutive items in <ol> */
+    html = html.replace(/^\d+\.\s+(.+)/gm, '<nli>$1</nli>');
+    html = html.replace(/((?:<nli>.*?<\/nli>\n?)+)/g, function(match) {
+      return '<ol>' + match.replace(/<nli>/g, '<li>').replace(/<\/nli>/g, '</li>') + '</ol>';
+    });
+
+    /* Paragraphs */
+    html = html.replace(/\n{2,}/g, '</p><p>');
+    html = '<p>' + html + '</p>';
+    html = html.replace(/<p>\s*<\/p>/g, '');
+    html = html.replace(/\[Page\s+(\d+)\]/gi, '<button type="button" class="citation-btn" data-page="$1">Page $1</button>');
+
+    return html;
+  }
+
+  function scrollToBottom() {
+    requestAnimationFrame(function() {
+      messagesEl.scrollTop = messagesEl.scrollHeight;
+    });
+  }
+
+  function addErrorMessage(text) {
+    const msg = document.createElement('div');
+    msg.className = 'msg msg-ai msg-error';
+    const bubble = document.createElement('div');
+    bubble.className = 'msg-bubble';
+    bubble.innerHTML = text;
+    msg.appendChild(bubble);
+    messagesEl.appendChild(msg);
+    scrollToBottom();
+  }
+
+  messagesEl.addEventListener('click', function(e) {
+    const citation = e.target.closest('.citation-btn');
+    if (!citation) return;
+    goToPage(citation.dataset.page);
+  });
+
+  /* ── Send Message ── */
+  async function sendMessage(userMessage) {
+    if (!userMessage.trim() || isSending || !context) return;
+
+    isSending = true;
+    updateSendBtn();
+
+    /* User bubble */
+    addMessage('user', userMessage);
+    chatHistory.push({ role: 'user', content: userMessage });
+
+    /* Typing */
+    addTypingIndicator();
+
+    try {
+      if (!aiAssistConsent.checked) {
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText);
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally from extracted page text. Nothing was sent to AI.';
+        return;
+      }
+
+      const consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      const hasContentConsent = consentApi && typeof consentApi.hasConsent === 'function' &&
+        consentApi.hasConsent('ai_optional_content_included', 'pdf-chat');
+      if (!hasContentConsent) {
+        aiAssistConsent.checked = false;
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText + '\n\nAI Assist stayed off because document-content consent was not confirmed.');
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally. Review the AI content notice before enabling AI Assist.';
+        return;
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      };
+      if (window.AfroAuth && typeof window.AfroAuth.getSessionToken === 'function') {
+        const token = window.AfroAuth.getSessionToken();
+        if (token) headers['Authorization'] = 'Bearer ' + token;
+      }
+
+      const response = await fetch('/.netlify/functions/ai-advisor', {
+        method: 'POST',
+        headers: headers,
+        body: JSON.stringify({
+          tool: 'pdf-chat',
+          context: context,
+          messages: [{ role: 'user', content: userMessage }]
+        })
+      });
+
+      removeTypingIndicator();
+
+      if (response.status === 429) {
+        const localText = buildLocalAnswer(userMessage);
+        addMessage('ai', localText + '\n\nDaily AI limit reached, so I used the local page-citation assistant for this answer.');
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Daily AI limit reached. Local citation assistant is still available.';
+        isSending = false;
+        updateSendBtn();
+        return;
+      }
+
+      if (response.status === 404 || response.status >= 500) {
+        throw new Error('ai-service-unavailable');
+      }
+
+      if (!response.ok) {
+        throw new Error('Server error: ' + response.status);
+      }
+
+      const data = await response.json();
+      const aiText = data.reply || data.message || 'Sorry, I could not generate a response.';
+      addMessage('ai', aiText);
+      chatHistory.push({ role: 'assistant', content: aiText });
+
+      /* Update remaining count if provided */
+      if (data.remaining !== undefined) {
+        chatFooter.textContent = data.remaining + ' AI Assist questions remaining today. Verify cited pages before relying on answers.';
+      } else {
+        chatFooter.textContent = 'AI Assist answered with your consent. Verify cited pages before relying on answers.';
+      }
+
+    } catch (err) {
+      removeTypingIndicator();
+      console.warn('PDF Chat AI Assist unavailable:', err && err.message ? err.message : 'unknown error');
+      const localText = buildLocalAnswer(userMessage);
+      addMessage('ai', localText + '\n\nAI Assist was unavailable, so this answer was generated locally from extracted page text.');
+      chatHistory.push({ role: 'assistant', content: localText });
+      chatFooter.textContent = 'Using local citation assistant. Answers are extractive and grounded in the PDF text.';
+    } finally {
+      isSending = false;
+      updateSendBtn();
+    }
+  }
+
+  /* ── Input Handling ── */
+  chatInput.addEventListener('input', function() {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    updateSendBtn();
+  });
+
+  chatInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      if (chatInput.value.trim() && !isSending) {
+        const msg = chatInput.value.trim();
+        chatInput.value = '';
+        chatInput.style.height = 'auto';
+        updateSendBtn();
+        sendMessage(msg);
+      }
+    }
+  });
+
+  sendBtn.addEventListener('click', function() {
+    if (chatInput.value.trim() && !isSending) {
+      const msg = chatInput.value.trim();
+      chatInput.value = '';
+      chatInput.style.height = 'auto';
+      updateSendBtn();
+      sendMessage(msg);
+    }
+  });
+
+  function updateSendBtn() {
+    sendBtn.disabled = !chatInput.value.trim() || isSending || !context;
+  }
+  updateSendBtn(); /* initial state */
+
+  aiAssistConsent.addEventListener('change', function() {
+    if (this.checked) {
+      var consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      var accepted = consentApi && typeof consentApi.ensureConsent === 'function' && consentApi.ensureConsent({
+        mode: 'ai_optional_content_included',
+        toolId: 'pdf-chat',
+        action: 'Send question and capped PDF excerpt',
+        contentIncluded: true,
+        requireFresh: true
+      });
+      if (!accepted) {
+        this.checked = false;
+        chatFooter.textContent = 'AI Assist stays off. Local page-cited answers remain available.';
+        return;
+      }
+    }
+    chatFooter.textContent = this.checked
+      ? 'AI Assist is on with content consent. Questions may send capped extracted text to AfroTools AI.'
+      : 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
+  });
+
+  /* ── Quick Actions ── */
+  quickActions.addEventListener('click', function(e) {
+    const btn = e.target.closest('.quick-btn');
+    if (!btn || isSending) return;
+    sendMessage(btn.dataset.prompt);
+  });
+
+  function transcriptText() {
+    return Array.from(messagesEl.querySelectorAll('.msg')).map(function(msg) {
+      const label = msg.querySelector('.msg-label');
+      const bubble = msg.querySelector('.msg-bubble');
+      return (label ? label.textContent : 'Message') + ':\n' + (bubble ? bubble.textContent.trim() : '');
+    }).join('\n\n');
+  }
+
+  function runDocumentSearch() {
+    const query = docSearchInput.value.trim();
+    if (!query || !pageTexts.length) return;
+    addMessage('user', 'Search: ' + query);
+    const relevant = findRelevantPages(query, 5);
+    const terms = queryTerms(query);
+    const sentences = bestSentencesFromPages(relevant, terms, 6);
+    let answer = '**Search results for "' + query + '":**\n';
+    if (!sentences.length) {
+      answer += 'No strong matches found. Try a shorter phrase or exact term.';
+    } else {
+      sentences.forEach(function(item) {
+        answer += '- ' + item.sentence + ' [Page ' + item.page + ']\n';
+      });
+    }
+    addMessage('ai', answer);
+    chatHistory.push({ role: 'user', content: 'Search: ' + query });
+    chatHistory.push({ role: 'assistant', content: answer });
+  }
+
+  docSearchBtn.addEventListener('click', runDocumentSearch);
+  docSearchInput.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter') runDocumentSearch();
+  });
+
+  copyChatBtn.addEventListener('click', function() {
+    const text = transcriptText();
+    if (!text) return;
+    navigator.clipboard.writeText(text).then(function() {
+      chatFooter.textContent = 'Transcript copied to clipboard.';
+    }).catch(function() {
+      chatFooter.textContent = 'Copy failed. Use Download instead.';
+    });
+  });
+
+  downloadChatBtn.addEventListener('click', function() {
+    const text = transcriptText();
+    if (!text || !window.PdfUtils) return;
+    const baseName = (pdfData && pdfData.fileName ? pdfData.fileName.replace(/\.pdf$/i, '') : 'pdf-chat') + '_transcript.txt';
+    window.PdfUtils.downloadBlob(new Blob([text], { type: 'text/plain' }), baseName);
+  });
+
+  clearChatBtn.addEventListener('click', function() {
+    messagesEl.innerHTML = '';
+    chatHistory = [];
+    addMessage('ai', buildDocumentOverview(context.length >= 18000));
+    chatFooter.textContent = aiAssistConsent.checked
+      ? 'Chat cleared. AI Assist remains on for new questions.'
+      : 'Chat cleared. Local mode remains on for new questions.';
+  });
+
+  /* ── FAQs ── */
+  document.querySelectorAll('.faq-q').forEach(function(btn, index) {
+    var panel = btn.nextElementSibling;
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'pdfChatFaq' + index);
+    if (panel) panel.id = 'pdfChatFaq' + index;
+    btn.addEventListener('click', function() {
+      const item = this.closest('.faq-item');
+      const wasOpen = item.classList.contains('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) {
+        el.classList.remove('open');
+        var openButton = el.querySelector('.faq-q');
+        if (openButton) openButton.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+      }
+    });
+  });
+
+  /* ── Upload Error Helpers ── */
+  function showUploadError(msg) {
+    uploadError.innerHTML = msg;
+    uploadError.classList.add('show');
+  }
+
+  function hideUploadError() {
+    uploadError.classList.remove('show');
+  }
+
+})();
+</script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 </body>
 </html>

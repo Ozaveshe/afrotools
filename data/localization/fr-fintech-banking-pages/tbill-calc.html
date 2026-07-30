@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="afrotools-content-id" content="fr-fintech-banking:tbill-calc"><meta name="afrotools-source-owner" content="data/localization/fr-fintech-banking-pages/tbill-calc.html">
+  <title>Calculateur de rendement des bons du Trésor | AfroTools</title>
+  <meta name="description" content="Calculez le prix d’achat, le rendement brut, la retenue et le rendement net annualisé d’un bon du Trésor à partir d’un taux actuel.">
+  <meta property="og:title" content="Rendement d’un bon du Trésor | AfroTools"><meta property="og:description" content="Convertissez un taux d’escompte ou un rendement d’investissement en prix d’achat et rendement net.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/fr/tbill-calc.webp"><meta property="og:image:width" content="800"><meta property="og:image:height" content="450">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/rendement-bons-tresor/"><meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Rendement des bons du Trésor | AfroTools"><meta name="twitter:description" content="Estimez le prix d’achat et le rendement net d’un bon détenu jusqu’à l’échéance."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fr/tbill-calc.webp">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/rendement-bons-tresor/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/tbill-calc/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/rendement-bons-tresor/">
+  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-hati-za-hazina/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/tbill-calc/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5"><link rel="stylesheet" href="/assets/css/fr-fintech-native.css?v=dd416d67">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de rendement des bons du Trésor","url":"https://afrotools.com/fr/tools/rendement-bons-tresor/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","isBasedOn":"https://afrotools.com/tools/tbill-calc/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"},"image":"https://afrotools.com/assets/img/tools/fr/tbill-calc.webp"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Fintech et banque","item":"https://afrotools.com/fr/fintech/"},{"@type":"ListItem","position":3,"name":"Bons du Trésor","item":"https://afrotools.com/fr/tools/rendement-bons-tresor/"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Le pays charge-t-il les derniers taux d’adjudication ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il modifie uniquement le libellé de devise. Saisissez le taux exact de l’avis officiel ou du devis de l’intermédiaire."}},{"@type":"Question","name":"Pourquoi le rendement peut-il dépasser le taux d’escompte ?","acceptedAnswer":{"@type":"Answer","text":"Le taux d’escompte est calculé sur la valeur nominale, tandis que le rendement d’investissement est calculé sur le prix d’achat inférieur."}},{"@type":"Question","name":"L’outil modélise-t-il une vente avant l’échéance ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il suppose que le bon est conservé jusqu’à l’échéance choisie et remboursé à sa valeur nominale."}}]}</script>
+</head>
+<body>
+  <afro-navbar theme="dark" active="fintech"></afro-navbar>
+  <header class="tool-hero"><div class="container"><nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>›</span><a href="/fr/fintech/">Fintech et banque</a><span>›</span>Bons du Trésor</nav>
+    <h1>Calculer le rendement d’un bon du Trésor</h1><p>Saisissez le type de taux indiqué dans une adjudication ou un devis actuel. Convertissez le taux d’escompte ou le rendement d’investissement en prix d’achat, rendement brut et rendement net annualisé.</p>
+    <div class="hero-badges"><span class="hero-badge">10 libellés de devise</span><span class="hero-badge">Vous saisissez les conditions actuelles</span><span class="hero-badge">Calcul local et gratuit</span></div>
+  </div></header>
+  <main class="container">
+    <section class="card" aria-labelledby="tb-title"><h2 id="tb-title">Conditions du bon du Trésor</h2>
+      <div class="form-grid">
+        <div class="form-group"><label for="tb-country">Pays et devise</label><select id="tb-country" onchange="fillTBRates()"><option value="NG" data-sym="NGN ">Nigeria (NGN)</option><option value="KE" data-sym="KES ">Kenya (KES)</option><option value="ZA" data-sym="ZAR ">Afrique du Sud (ZAR)</option><option value="GH" data-sym="GHS ">Ghana (GHS)</option><option value="EG" data-sym="EGP ">Égypte (EGP)</option><option value="TZ" data-sym="TZS ">Tanzanie (TZS)</option><option value="UG" data-sym="UGX ">Ouganda (UGX)</option><option value="ZM" data-sym="ZMW ">Zambie (ZMW)</option><option value="RW" data-sym="RWF ">Rwanda (RWF)</option><option value="MA" data-sym="MAD ">Maroc (MAD)</option></select></div>
+        <div class="form-group"><label for="tb-tenor">Durée du bon</label><select id="tb-tenor" onchange="fillTBRates()"><option value="91">91 jours (3 mois)</option><option value="182">182 jours (6 mois)</option><option value="364" selected>364 jours (1 an)</option></select></div>
+        <div class="form-group"><label for="tb-amount">Valeur nominale versée à l’échéance</label><input type="number" id="tb-amount" value="1000000" min="0.01" step="0.01" required></div>
+        <div class="form-group"><label for="tb-rate">Taux proposé (%)</label><input type="number" id="tb-rate" placeholder="Par exemple 12" min="0" max="100" step="0.01" required></div>
+        <div class="form-group"><label for="tb-ratetype">Type de taux</label><select id="tb-ratetype"><option value="yield" selected>Rendement d’investissement</option><option value="discount">Taux d’escompte d’adjudication</option></select></div>
+        <div class="form-group"><label for="tb-tax">Retenue (%)</label><input type="number" id="tb-tax" value="0" min="0" max="100" step="0.01" required></div>
+      </div>
+      <button type="button" class="btn-calc" onclick="calcTBill()">Calculer le rendement proposé</button><p class="form-error" id="tb-error" role="alert"></p>
+      <div class="source-box"><strong>Source et fraîcheur :</strong> utilisez le résultat officiel de l’adjudication, l’avis du bureau de la dette, la note d’opération du courtier ou le devis bancaire actuel. Aucun taux, impôt ni minimum d’investissement n’est récupéré en direct. Dernière revue méthodologique : juillet 2026.</div>
+      <div class="results" id="tb-results" aria-live="polite" tabindex="-1">
+        <div class="res-hero"><div class="res-label">Montant net reçu à l’échéance</div><div class="res-val" id="tb-maturity"></div><div class="res-sub" id="tb-sub"></div></div>
+        <div class="metrics"><div class="metric"><div class="metric-val" id="tb-price"></div><div class="metric-label">Prix d’achat</div></div><div class="metric"><div class="metric-val" id="tb-return"></div><div class="metric-label">Rendement brut</div></div><div class="metric"><div class="metric-val" id="tb-tax-amt"></div><div class="metric-label">Retenue</div></div><div class="metric"><div class="metric-val" id="tb-net"></div><div class="metric-label">Rendement net</div></div><div class="metric"><div class="metric-val" id="tb-actual-yield"></div><div class="metric-label">Rendement réel annualisé</div></div><div class="metric"><div class="metric-val" id="tb-annualized"></div><div class="metric-label">Rendement net annualisé</div></div></div>
+        <div class="info-box"><strong>Estimation uniquement :</strong> le modèle suppose un remboursement à la valeur nominale selon une base de 365 jours. Il n’intègre pas les jours de règlement, les frais, le réinvestissement, la vente sur le marché secondaire, le défaut, l’inflation ni le risque de change.</div>
+      </div>
+      <div class="privacy-box"><strong>Confidentialité :</strong> le calcul reste dans votre navigateur. Aucun numéro de compte, ordre d’achat ni identifiant personnel n’est demandé ou envoyé.</div>
+    </section>
+    <section class="card" aria-labelledby="tb-faq"><h2 id="tb-faq">Questions fréquentes</h2><details><summary>Le pays charge-t-il les derniers taux d’adjudication ?</summary><p>Non. Il modifie seulement le libellé de devise. Saisissez le taux exact de l’avis officiel ou du devis de l’intermédiaire.</p></details><details><summary>Quelle différence entre rendement et taux d’escompte ?</summary><p>Le taux d’escompte est appliqué à la valeur nominale pour calculer le prix. Le rendement est calculé sur le prix effectivement payé.</p></details><details><summary>Un particulier peut-il acheter ce bon ?</summary><p>Les canaux d’accès, l’admissibilité, les minimums et le règlement varient selon l’émission. Consultez l’avis officiel ou un intermédiaire autorisé.</p></details><details><summary>Le rendement est-il imposable ?</summary><p>La fiscalité varie selon la juridiction, l’investisseur et l’instrument. Confirmez la retenue auprès de l’émetteur, de l’intermédiaire ou de l’administration fiscale.</p></details></section>
+    <nav class="card" aria-labelledby="tb-related"><h2 id="tb-related">Outils associés</h2><ul class="related-links"><li><a href="/fr/tools/depot-terme/">Dépôt à terme</a></li><li><a href="/fr/tools/rendement-reel-inflation/">Rendement réel après inflation</a></li><li><a href="/fr/tools/rendement-obligations/">Rendement d’une obligation</a></li></ul></nav>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/pages/fintech-shared-controller-i18n.js?v=a83a18f5"></script><script src="/assets/js/pages/fintech-shared-controllers/tbill-calc.js?v=c8776b37"></script><script src="/assets/js/pages/fr-fintech-reflow.js?v=25a788f1"></script>
+  <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

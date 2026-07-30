@@ -1,261 +1,407 @@
-!function() {
-  "use strict";
-  window.AfroTools = window.AfroTools || {};
-  var e = null;
-  function r() {
-    return e || (e = window.AfroTools.PoultryProduction), e || (console.error("[PoultryROI] PoultryProduction data not loaded. Ensure the data script is included before this engine."),
-    null);
+(function poultryRoiEngineModule(root, factory) {
+  'use strict';
+  var api = factory(root);
+  if (typeof module === 'object' && module.exports) module.exports = api;
+  if (root) {
+    root.AfroTools = root.AfroTools || {};
+    root.AfroTools.PoultryROIEngine = api;
   }
-  function i(e, r) {
-    return e.feed_per_kg && e.feed_per_kg[r] ? e.feed_per_kg[r] : 0;
+}(typeof window !== 'undefined' ? window : globalThis, function createPoultryRoiEngine(root) {
+  'use strict';
+
+  function getProductionData(explicitData) {
+    return explicitData || (root && root.AfroTools && root.AfroTools.PoultryProduction) || null;
   }
-  function o(e, o) {
-    var t, n = r().broilers, a = e.management || "smallholder", s = e.flockSize || 100, l = n.mortalityPct[a] || 8, c = e.cyclesPerYear || n.cyclesPerYear[a] || 4, d = s * o.dayOldChick.broiler, u = s * n.feedBreakdown.starter_kg * i(o, "starter") + s * n.feedBreakdown.grower_kg * i(o, "grower") + s * n.feedBreakdown.finisher_kg * i(o, "finisher"), g = (n.vaccinationUSD_per_bird,
-    o.symbol, (t = r()) && t.usdRates && t.usdRates.null), p = r().usdRates[e.countryCode] || 1;
-    g = s * n.vaccinationUSD_per_bird * p;
-    var _ = s * n.medicationUSD_per_bird * p, f = n.cycleWeeks, h = f / 4.33 * o.labor_per_month, m = o.electricity_per_month ? f / 4.33 * o.electricity_per_month : 0, y = o.water_per_month ? f / 4.33 * o.water_per_month : 0, P = s / n.birdsPerSqM, b = Math.ceil(P / 5), k = o.litter_per_bag ? b * o.litter_per_bag : 0, v = d + u + g + _ + h + m + y + k, w = .04 * v;
-    v += w;
-    var M = Math.round(s * (1 - l / 100)), S = o.sellingPrice.broiler_per_bird || 2 * o.sellingPrice.broiler_live_per_kg, C = M * S, z = C - v, q = 0, O = 0;
-    if (!e.ownHouse) {
-      var R = e.housingType || "simple";
-      q = P * (o.housing_per_sqm[R] || o.housing_per_sqm.simple || 0), O = s * (o.equipment_per_bird || 0);
+
+  function feedPrice(countryData, type) {
+    return countryData.feed_per_kg && countryData.feed_per_kg[type]
+      ? countryData.feed_per_kg[type]
+      : 0;
+  }
+
+  function calculateBroilers(inputs, countryData, production) {
+    var model = production.broilers;
+    var management = inputs.management || 'smallholder';
+    var flockSize = inputs.flockSize || 100;
+    var mortalityPct = model.mortalityPct[management] || 8;
+    var cyclesYear = inputs.cyclesPerYear || model.cyclesPerYear[management] || 4;
+    var chickCost = flockSize * countryData.dayOldChick.broiler;
+    var feedCost = (
+      flockSize * model.feedBreakdown.starter_kg * feedPrice(countryData, 'starter')
+      + flockSize * model.feedBreakdown.grower_kg * feedPrice(countryData, 'grower')
+      + flockSize * model.feedBreakdown.finisher_kg * feedPrice(countryData, 'finisher')
+    );
+    var rate = production.usdRates[inputs.countryCode] || 1;
+    var vaccinationCost = flockSize * model.vaccinationUSD_per_bird * rate;
+    var medicationCost = flockSize * model.medicationUSD_per_bird * rate;
+    var cycleWeeks = model.cycleWeeks;
+    var laborCost = cycleWeeks / 4.33 * countryData.labor_per_month;
+    var electricityCost = countryData.electricity_per_month
+      ? cycleWeeks / 4.33 * countryData.electricity_per_month
+      : 0;
+    var waterCost = countryData.water_per_month
+      ? cycleWeeks / 4.33 * countryData.water_per_month
+      : 0;
+    var housingArea = flockSize / model.birdsPerSqM;
+    var litterBags = Math.ceil(housingArea / 5);
+    var litterCost = countryData.litter_per_bag ? litterBags * countryData.litter_per_bag : 0;
+    var cycleCost = chickCost + feedCost + vaccinationCost + medicationCost
+      + laborCost + electricityCost + waterCost + litterCost;
+    var otherCost = cycleCost * 0.04;
+    cycleCost += otherCost;
+
+    var survivingBirds = Math.round(flockSize * (1 - mortalityPct / 100));
+    var sellingPrice = countryData.sellingPrice.broiler_per_bird
+      || countryData.sellingPrice.broiler_live_per_kg * 2;
+    var cycleRevenue = survivingBirds * sellingPrice;
+    var cycleProfit = cycleRevenue - cycleCost;
+    var housingInvestment = 0;
+    var equipmentInvestment = 0;
+    if (!inputs.ownHouse) {
+      var housingType = inputs.housingType || 'simple';
+      housingInvestment = housingArea * (
+        countryData.housing_per_sqm[housingType]
+        || countryData.housing_per_sqm.simple
+        || 0
+      );
+      equipmentInvestment = flockSize * (countryData.equipment_per_bird || 0);
     }
-    var B = q + O, Y = v, E = C * c, F = v * c, T = E - F, H = T - B / 10, U = B + Y, A = U > 0 ? H / U * 100 : T > 0 ? 999 : 0, D = H > 0 ? U / H * 12 : 9999, L = M > 0 ? v / (2 * M) : 0, j = M > 0 ? z / M : 0, x = u / v * 100, I = l, W = (Math.round(s * (1 - 2 * I / 100)) * S - v) * c, K = (C - (v - u + 1.2 * u)) * c, N = (.85 * C - v) * c, G = function(e, r, i, o, t, n, a, s) {
-      for (var l = [], c = Math.min(s, 4), d = 0; d < c; d++) {
-        l.push({
-          label: "Cycle " + (d + 1) + " in",
-          amount: -o,
-          type: "expense"
-        }), l.push({
-          label: "Cycle " + (d + 1) + " out",
-          amount: t,
-          type: "revenue"
-        });
-      }
-      return l;
-    }(0, 0, 0, v, C, 0, 0, c);
+    var totalInvestment = housingInvestment + equipmentInvestment;
+    var workingCapital = cycleCost;
+    var annualRevenue = cycleRevenue * cyclesYear;
+    var annualCosts = cycleCost * cyclesYear;
+    var annualProfit = annualRevenue - annualCosts;
+    var annualProfitAfterDepreciation = annualProfit - totalInvestment / 10;
+    var investmentAndWorkingCapital = totalInvestment + workingCapital;
+    var roi = investmentAndWorkingCapital > 0
+      ? annualProfitAfterDepreciation / investmentAndWorkingCapital * 100
+      : annualProfit > 0 ? 999 : 0;
+    var paybackMonths = annualProfitAfterDepreciation > 0
+      ? investmentAndWorkingCapital / annualProfitAfterDepreciation * 12
+      : 9999;
+    var costPerKg = survivingBirds > 0 ? cycleCost / (survivingBirds * 2) : 0;
+    var profitPerBird = survivingBirds > 0 ? cycleProfit / survivingBirds : 0;
+    var feedPct = feedCost / cycleCost * 100;
+    var highMortalityProfit = (
+      Math.round(flockSize * (1 - 2 * mortalityPct / 100)) * sellingPrice - cycleCost
+    ) * cyclesYear;
+    var highFeedProfit = (cycleRevenue - (cycleCost - feedCost + feedCost * 1.2)) * cyclesYear;
+    var lowPriceProfit = (cycleRevenue * 0.85 - cycleCost) * cyclesYear;
+    var cashFlow = [];
+    var displayedCycles = Math.min(cyclesYear, 4);
+    for (var cycleIndex = 0; cycleIndex < displayedCycles; cycleIndex += 1) {
+      cashFlow.push({
+        label: 'Cycle ' + (cycleIndex + 1) + ' in',
+        amount: -cycleCost,
+        type: 'expense',
+      });
+      cashFlow.push({
+        label: 'Cycle ' + (cycleIndex + 1) + ' out',
+        amount: cycleRevenue,
+        type: 'revenue',
+      });
+    }
+
     return {
-      mode: "broilers",
-      flockSize: s,
-      survivingBirds: M,
-      mortalityPct: l,
-      cyclesYear: c,
+      mode: 'broilers',
+      flockSize: flockSize,
+      survivingBirds: survivingBirds,
+      mortalityPct: mortalityPct,
+      cyclesYear: cyclesYear,
       perCycle: {
-        revenue: C,
+        revenue: cycleRevenue,
         costs: {
-          chicks: d,
-          feed: u,
-          vaccination: g,
-          medication: _,
-          labor: h,
-          electricity: m,
-          water: y,
-          litter: k,
-          other: w,
-          total: v
+          chicks: chickCost,
+          feed: feedCost,
+          vaccination: vaccinationCost,
+          medication: medicationCost,
+          labor: laborCost,
+          electricity: electricityCost,
+          water: waterCost,
+          litter: litterCost,
+          other: otherCost,
+          total: cycleCost,
         },
-        profit: z
+        profit: cycleProfit,
       },
       annual: {
-        revenue: E,
-        costs: F,
-        profit: T
+        revenue: annualRevenue,
+        costs: annualCosts,
+        profit: annualProfit,
       },
       investment: {
-        housing: q,
-        equipment: O,
-        total: B
+        housing: housingInvestment,
+        equipment: equipmentInvestment,
+        total: totalInvestment,
       },
-      workingCapital: Y,
+      workingCapital: workingCapital,
       metrics: {
-        roi: A,
-        paybackMonths: D,
-        costPerKg: L,
-        profitPerBird: j,
-        feedPct: x
+        roi: roi,
+        paybackMonths: paybackMonths,
+        costPerKg: costPerKg,
+        profitPerBird: profitPerBird,
+        feedPct: feedPct,
       },
       risks: {
         highMortality: {
-          desc: "Mortality doubles to " + 2 * I + "%",
-          annualProfit: W
+          desc: 'Mortality doubles to ' + (mortalityPct * 2) + '%',
+          annualProfit: highMortalityProfit,
         },
         highFeed: {
-          desc: "Feed prices rise 20%",
-          annualProfit: K
+          desc: 'Feed prices rise 20%',
+          annualProfit: highFeedProfit,
         },
         lowPrice: {
-          desc: "Selling price drops 15%",
-          annualProfit: N
-        }
+          desc: 'Selling price drops 15%',
+          annualProfit: lowPriceProfit,
+        },
       },
-      cashFlow: G
+      cashFlow: cashFlow,
     };
   }
-  function t(e, o) {
-    var t = r().layers, n = e.management || "smallholder", a = e.flockSize || 100, s = r().usdRates[e.countryCode] || 1, l = t.eggsPerHenYear[n] || 240, c = a * o.dayOldChick.layer, d = a * t.feedRearing_kg * ((i(o, "starter") + i(o, "grower")) / 2), u = a * t.vaccinationUSD_per_bird * s, g = t.mortalityRearing_pct / 100, p = Math.round(a * (1 - g)), _ = t.mortalityLaying_pct / 100, f = p * (1 - _ / 2), h = p * t.feedLayingPerYear_kg * i(o, "layer_mash"), m = 12 * o.labor_per_month, y = 12 * (o.electricity_per_month || 0), P = 12 * (o.water_per_month || 0), b = o.litter_per_bag ? Math.ceil(p / r().layers.birdsPerSqM / 5) * o.litter_per_bag * 4 : 0, k = c + d + u, v = h + m + y + P + b, w = k + v, M = .04 * w;
-    w += M;
-    var S = Math.round(f * l), C = S * o.sellingPrice.egg_per_egg, z = Math.round(p * (1 - _)), q = z * o.sellingPrice.spent_layer_per_bird, O = C + q, R = O - w, B = 0, Y = 0;
-    if (!e.ownHouse) {
-      var E = e.housingType || "simple";
-      B = p / r().layers.birdsPerSqM * (o.housing_per_sqm[E] || o.housing_per_sqm.simple || 0),
-      Y = a * (o.equipment_per_bird || 0);
+
+  function calculateLayers(inputs, countryData, production) {
+    var model = production.layers;
+    var management = inputs.management || 'smallholder';
+    var flockSize = inputs.flockSize || 100;
+    var rate = production.usdRates[inputs.countryCode] || 1;
+    var eggsPerHenYear = model.eggsPerHenYear[management] || 240;
+    var chickCost = flockSize * countryData.dayOldChick.layer;
+    var rearingFeedCost = flockSize * model.feedRearing_kg * (
+      (feedPrice(countryData, 'starter') + feedPrice(countryData, 'grower')) / 2
+    );
+    var vaccinationCost = flockSize * model.vaccinationUSD_per_bird * rate;
+    var rearingMortality = model.mortalityRearing_pct / 100;
+    var survivingToLay = Math.round(flockSize * (1 - rearingMortality));
+    var layingMortality = model.mortalityLaying_pct / 100;
+    var averageLayers = survivingToLay * (1 - layingMortality / 2);
+    var layingFeedCost = survivingToLay * model.feedLayingPerYear_kg
+      * feedPrice(countryData, 'layer_mash');
+    var laborCost = countryData.labor_per_month * 12;
+    var electricityCost = (countryData.electricity_per_month || 0) * 12;
+    var waterCost = (countryData.water_per_month || 0) * 12;
+    var litterCost = countryData.litter_per_bag
+      ? Math.ceil(survivingToLay / production.layers.birdsPerSqM / 5)
+        * countryData.litter_per_bag * 4
+      : 0;
+    var rearingCost = chickCost + rearingFeedCost + vaccinationCost;
+    var operatingCost = layingFeedCost + laborCost + electricityCost + waterCost + litterCost;
+    var annualCost = rearingCost + operatingCost;
+    var miscCost = annualCost * 0.04;
+    annualCost += miscCost;
+
+    var eggsProduced = Math.round(averageLayers * eggsPerHenYear);
+    var eggRevenue = eggsProduced * countryData.sellingPrice.egg_per_egg;
+    var spentHens = Math.round(survivingToLay * (1 - layingMortality));
+    var spentHenRevenue = spentHens * countryData.sellingPrice.spent_layer_per_bird;
+    var annualRevenue = eggRevenue + spentHenRevenue;
+    var annualProfit = annualRevenue - annualCost;
+    var housingInvestment = 0;
+    var equipmentInvestment = 0;
+    if (!inputs.ownHouse) {
+      var housingType = inputs.housingType || 'simple';
+      housingInvestment = survivingToLay / production.layers.birdsPerSqM * (
+        countryData.housing_per_sqm[housingType]
+        || countryData.housing_per_sqm.simple
+        || 0
+      );
+      equipmentInvestment = flockSize * (countryData.equipment_per_bird || 0);
     }
-    var F = B + Y, T = R - F / 10, H = F + k, U = H > 0 ? T / H * 100 : 0, A = T > 0 ? H / T * 12 : 9999, D = Math.floor(S / 30), L = S > 0 ? w / S : 0, j = S > 0 ? w / S : 0, x = (h + d) / w * 100, I = .85 * S * o.sellingPrice.egg_per_egg + q - w, W = O - (w + .2 * h), K = .9 * f * l * o.sellingPrice.egg_per_egg + .9 * q - w, N = function(e, r, i, o) {
-      for (var t = [], n = r / 4, a = i / 12, s = o / 12, l = 1; l <= 18; l++) {
-        if (l <= 4) {
-          t.push({
-            label: "Month " + l,
-            income: 0,
-            expense: n,
-            net: -n
-          });
-        } else {
-          var c = s - a;
-          t.push({
-            label: "Month " + l,
-            income: s,
-            expense: a,
-            net: c
-          });
-        }
+    var totalInvestment = housingInvestment + equipmentInvestment;
+    var annualProfitAfterDepreciation = annualProfit - totalInvestment / 10;
+    var investmentAndWorkingCapital = totalInvestment + rearingCost;
+    var roi = investmentAndWorkingCapital > 0
+      ? annualProfitAfterDepreciation / investmentAndWorkingCapital * 100
+      : 0;
+    var paybackMonths = annualProfitAfterDepreciation > 0
+      ? investmentAndWorkingCapital / annualProfitAfterDepreciation * 12
+      : 9999;
+    var cratesOf30 = Math.floor(eggsProduced / 30);
+    var costPerEgg = eggsProduced > 0 ? annualCost / eggsProduced : 0;
+    var breakEvenEggPrice = eggsProduced > 0 ? annualCost / eggsProduced : 0;
+    var feedPct = (layingFeedCost + rearingFeedCost) / annualCost * 100;
+    var lowEggPriceProfit = eggsProduced * 0.85 * countryData.sellingPrice.egg_per_egg
+      + spentHenRevenue - annualCost;
+    var highFeedProfit = annualRevenue - (annualCost + layingFeedCost * 0.2);
+    var highMortalityProfit = averageLayers * 0.9 * eggsPerHenYear
+      * countryData.sellingPrice.egg_per_egg + spentHenRevenue * 0.9 - annualCost;
+    var cashFlow = [];
+    var monthlyRearingCost = rearingCost / 4;
+    var monthlyOperatingCost = (operatingCost + miscCost) / 12;
+    var monthlyRevenue = annualRevenue / 12;
+    for (var month = 1; month <= 18; month += 1) {
+      if (month <= 4) {
+        cashFlow.push({
+          label: 'Month ' + month,
+          income: 0,
+          expense: monthlyRearingCost,
+          net: -monthlyRearingCost,
+        });
+      } else {
+        cashFlow.push({
+          label: 'Month ' + month,
+          income: monthlyRevenue,
+          expense: monthlyOperatingCost,
+          net: monthlyRevenue - monthlyOperatingCost,
+        });
       }
-      return t;
-    }(0, k, v + M, O);
+    }
+
     return {
-      mode: "layers",
-      flockSize: a,
-      survivingToLay: p,
-      eggsPerHenYear: l,
-      eggsProduced: S,
-      cratesOf30: D,
-      spentHens: z,
+      mode: 'layers',
+      flockSize: flockSize,
+      survivingToLay: survivingToLay,
+      eggsPerHenYear: eggsPerHenYear,
+      eggsProduced: eggsProduced,
+      cratesOf30: cratesOf30,
+      spentHens: spentHens,
       annual: {
         revenue: {
-          eggs: C,
-          spentHens: q,
-          total: O
+          eggs: eggRevenue,
+          spentHens: spentHenRevenue,
+          total: annualRevenue,
         },
         costs: {
-          rearing: k,
-          layingFeed: h,
-          labor: m,
-          electricity: y,
-          water: P,
-          litter: b,
-          misc: M,
-          total: w
+          rearing: rearingCost,
+          layingFeed: layingFeedCost,
+          labor: laborCost,
+          electricity: electricityCost,
+          water: waterCost,
+          litter: litterCost,
+          misc: miscCost,
+          total: annualCost,
         },
-        profit: R
+        profit: annualProfit,
       },
       investment: {
-        housing: B,
-        equipment: Y,
-        total: F
+        housing: housingInvestment,
+        equipment: equipmentInvestment,
+        total: totalInvestment,
       },
-      workingCapital: k,
+      workingCapital: rearingCost,
       metrics: {
-        roi: U,
-        paybackMonths: A,
-        costPerEgg: L,
-        breakEvenEggPrice: j,
-        feedPct: x
+        roi: roi,
+        paybackMonths: paybackMonths,
+        costPerEgg: costPerEgg,
+        breakEvenEggPrice: breakEvenEggPrice,
+        feedPct: feedPct,
       },
       risks: {
         lowEggPrice: {
-          desc: "Egg price drops 15%",
-          annualProfit: I
+          desc: 'Egg price drops 15%',
+          annualProfit: lowEggPriceProfit,
         },
         highFeed: {
-          desc: "Feed prices rise 20%",
-          annualProfit: W
+          desc: 'Feed prices rise 20%',
+          annualProfit: highFeedProfit,
         },
         highMortality: {
-          desc: "Laying mortality doubles",
-          annualProfit: K
-        }
+          desc: 'Laying mortality doubles',
+          annualProfit: highMortalityProfit,
+        },
       },
-      cashFlow: N
+      cashFlow: cashFlow,
     };
   }
-  function n(e, o) {
-    var t = r().indigenous, n = e.flockSize || 50, a = r().usdRates[e.countryCode] || 1, s = t.mortalityPct, l = t.cyclesPerYear, c = (t.marketWeight_kg,
-    n * o.dayOldChick.indigenous), d = n * t.feedBreakdown_kg * ((i(o, "starter") + i(o, "grower")) / 2) * .5, u = 16 / 4.33 * o.labor_per_month * .25, g = .01 * n * a, p = c + d + u + g, _ = .05 * p;
-    p += _;
-    var f = Math.round(n * (1 - s / 100)), h = o.sellingPrice.indigenous_live_per_bird, m = f * h, y = m - p, P = m * l, b = p * l, k = P - b;
+
+  function calculateIndigenous(inputs, countryData, production) {
+    var model = production.indigenous;
+    var flockSize = inputs.flockSize || 50;
+    var rate = production.usdRates[inputs.countryCode] || 1;
+    var mortalityPct = model.mortalityPct;
+    var cyclesYear = model.cyclesPerYear;
+    var chickCost = flockSize * countryData.dayOldChick.indigenous;
+    var feedCost = flockSize * model.feedBreakdown_kg * (
+      (feedPrice(countryData, 'starter') + feedPrice(countryData, 'grower')) / 2
+    ) * 0.5;
+    var laborCost = 16 / 4.33 * countryData.labor_per_month * 0.25;
+    var vaccinationCost = flockSize * 0.01 * rate;
+    var cycleCost = chickCost + feedCost + laborCost + vaccinationCost;
+    var miscCost = cycleCost * 0.05;
+    cycleCost += miscCost;
+    var survivingBirds = Math.round(flockSize * (1 - mortalityPct / 100));
+    var sellingPrice = countryData.sellingPrice.indigenous_live_per_bird;
+    var cycleRevenue = survivingBirds * sellingPrice;
+    var cycleProfit = cycleRevenue - cycleCost;
+    var annualRevenue = cycleRevenue * cyclesYear;
+    var annualCosts = cycleCost * cyclesYear;
+    var annualProfit = annualRevenue - annualCosts;
+
     return {
-      mode: "indigenous",
-      flockSize: n,
-      survivingBirds: f,
-      mortalityPct: s,
-      cyclesYear: l,
+      mode: 'indigenous',
+      flockSize: flockSize,
+      survivingBirds: survivingBirds,
+      mortalityPct: mortalityPct,
+      cyclesYear: cyclesYear,
       perCycle: {
-        revenue: m,
+        revenue: cycleRevenue,
         costs: {
-          chicks: c,
-          feed: d,
-          labor: u,
-          vaccination: g,
-          misc: _,
-          total: p
+          chicks: chickCost,
+          feed: feedCost,
+          labor: laborCost,
+          vaccination: vaccinationCost,
+          misc: miscCost,
+          total: cycleCost,
         },
-        profit: y
+        profit: cycleProfit,
       },
       annual: {
-        revenue: P,
-        costs: b,
-        profit: k
+        revenue: annualRevenue,
+        costs: annualCosts,
+        profit: annualProfit,
       },
       metrics: {
-        roi: b > 0 ? k / b * 100 : 0,
-        paybackMonths: k > 0 ? p / k * 12 : 9999,
-        profitPerBird: f > 0 ? y / f : 0,
-        feedPct: d / p * 100
+        roi: annualCosts > 0 ? annualProfit / annualCosts * 100 : 0,
+        paybackMonths: annualProfit > 0 ? cycleCost / annualProfit * 12 : 9999,
+        profitPerBird: survivingBirds > 0 ? cycleProfit / survivingBirds : 0,
+        feedPct: feedCost / cycleCost * 100,
       },
       risks: {
         highMortality: {
-          desc: "Mortality rises to 35%",
-          annualProfit: (Math.round(.65 * n) * h - p) * l
+          desc: 'Mortality rises to 35%',
+          annualProfit: (Math.round(flockSize * 0.65) * sellingPrice - cycleCost) * cyclesYear,
         },
         lowPrice: {
-          desc: "Price drops 20%",
-          annualProfit: (f * h * .8 - p) * l
-        }
-      }
+          desc: 'Price drops 20%',
+          annualProfit: (survivingBirds * sellingPrice * 0.8 - cycleCost) * cyclesYear,
+        },
+      },
     };
   }
-  window.AfroTools.PoultryROIEngine = {
-    calculate: function(e, r) {
-      if (!r) {
+
+  function calculate(inputs, countryData, explicitProductionData) {
+    if (!countryData) return { error: 'No country data provided' };
+    var mode = inputs.mode || 'broilers';
+    try {
+      var production = getProductionData(explicitProductionData);
+      if (!production) throw new Error('PoultryProduction data not loaded');
+      if (mode === 'broilers') return calculateBroilers(inputs, countryData, production);
+      if (mode === 'layers') return calculateLayers(inputs, countryData, production);
+      if (mode === 'indigenous') return calculateIndigenous(inputs, countryData, production);
+      if (mode === 'compare') {
         return {
-          error: "No country data provided"
+          mode: 'compare',
+          broiler: calculateBroilers(Object.assign({}, inputs, {
+            mode: 'broilers',
+            flockSize: inputs.flockSize || 100,
+          }), countryData, production),
+          layer: calculateLayers(Object.assign({}, inputs, {
+            mode: 'layers',
+            flockSize: inputs.flockSize || 100,
+          }), countryData, production),
+          indigenous: calculateIndigenous(Object.assign({}, inputs, {
+            mode: 'indigenous',
+            flockSize: inputs.flockSize || 100,
+          }), countryData, production),
         };
       }
-      var i = e.mode || "broilers";
-      try {
-        return "broilers" === i ? o(e, r) : "layers" === i ? t(e, r) : "indigenous" === i ? n(e, r) : "compare" === i ? function(e, r) {
-          return {
-            mode: "compare",
-            broiler: o(Object.assign({}, e, {
-              mode: "broilers",
-              flockSize: e.flockSize || 100
-            }), r),
-            layer: t(Object.assign({}, e, {
-              mode: "layers",
-              flockSize: e.flockSize || 100
-            }), r),
-            indigenous: n(Object.assign({}, e, {
-              mode: "indigenous",
-              flockSize: e.flockSize || 100
-            }), r)
-          };
-        }(e, r) : {
-          error: "Unknown mode: " + i
-        };
-      } catch (e) {
-        return {
-          error: e.message || "Calculation error"
-        };
-      }
+      return { error: 'Unknown mode: ' + mode };
+    } catch (error) {
+      return { error: error.message || 'Calculation error' };
     }
+  }
+
+  return {
+    calculate: calculate,
   };
-}();
+}));

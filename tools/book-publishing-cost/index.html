@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -256,69 +256,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
-function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||0,maximumFractionDigits:d||0});}
-function calculate(){
-  var country=document.getElementById('country').value;
-  var sym=SYM[country];var rate=FX[country];
-  var retailUSD=parseFloat(document.getElementById('retailPrice').value)||12;
-  var monthly=parseInt(document.getElementById('monthlySales').value)||50;
-  var devEdit=parseFloat(document.getElementById('devEdit').value)||0;
-  var copyEdit=parseFloat(document.getElementById('copyEdit').value)||0;
-  var proofread=parseFloat(document.getElementById('proofread').value)||0;
-  var coverDesign=parseFloat(document.getElementById('coverDesign').value)||0;
-  var layout=parseFloat(document.getElementById('layout').value)||0;
-  var isbn=parseFloat(document.getElementById('isbn').value)||0;
-  var printQty=parseInt(document.getElementById('printQty').value)||0;
-  var printCost=parseFloat(document.getElementById('printCost').value)||0;
-  var editingTotal=devEdit+copyEdit+proofread;
-  var setupTotal=editingTotal+coverDesign+layout+isbn;
-  var printTotal=printQty*printCost;
-  var totalUSD=setupTotal+printTotal;
-  var totalLocal=totalUSD*rate;
-  document.getElementById('totalBudget').textContent='$'+fmt(totalUSD,2);
-  document.getElementById('localBudget').textContent=sym+fmt(totalLocal)+' (using the built-in planning rate)';
-  var platforms=[
-    {name:'Amazon KDP (ebook)',royalty:retailUSD>=2.99&&retailUSD<=9.99?0.70:0.35,platform:'Amazon KDP'},
-    {name:'IngramSpark',royalty:0.60,platform:'IngramSpark'},
-    {name:'Okadabooks',royalty:0.70,platform:'Nigeria'},
-    {name:'Bambooks',royalty:0.70,platform:'Nigeria'},
-    {name:'Traditional Publisher',royalty:0.12,platform:'Publisher'}
-  ];
-  var kdpRoyalty=retailUSD>=2.99&&retailUSD<=9.99?0.70:0.35;
-  var royaltyPerCopy=retailUSD*kdpRoyalty;
-  var breakEven=royaltyPerCopy>0?Math.ceil(totalUSD/royaltyPerCopy):9999;
-  document.getElementById('breakEven').textContent=fmt(breakEven)+' copies';
-  var royaltyHtml=platforms.map(function(p){
-    var rpc=retailUSD*p.royalty;
-    var mo=rpc*monthly;
-    var yr=mo*12;
-    return '<tr><td class="en-td-value">'+p.name+'</td><td>'+(p.royalty*100).toFixed(0)+'%</td><td>$'+fmt(rpc,2)+'</td><td>$'+fmt(mo,0)+'</td><td class="en-td-highlight">$'+fmt(yr,0)+'</td></tr>';
-  }).join('');
-  document.getElementById('royaltyTable').innerHTML=royaltyHtml;
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Editing Costs</div><div class="en-metric-value">$'+fmt(editingTotal)+'</div><div class="en-metric-unit">Dev + Copy + Proof</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Setup Costs</div><div class="en-metric-value">$'+fmt(setupTotal)+'</div><div class="en-metric-unit">Cover, layout, ISBN</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Print Run</div><div class="en-metric-value">$'+fmt(printTotal)+'</div><div class="en-metric-unit">'+fmt(printQty)+' copies</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Monthly Revenue</div><div class="en-metric-value">$'+fmt(royaltyPerCopy*monthly)+'</div><div class="en-metric-unit">At '+fmt(monthly)+' sales/mo</div></div>';
-  var projHtml='';
-  [1,2,3].forEach(function(yr){
-    var salesMultiplier=[1,1.3,1.6][yr-1];
-    var copies=Math.round(monthly*12*salesMultiplier);
-    var gross=copies*retailUSD;
-    var pubCost=yr===1?totalUSD:0;
-    var net=copies*royaltyPerCopy-pubCost;
-    projHtml+='<tr><td>Year '+yr+'</td><td>'+fmt(copies)+'</td><td>$'+fmt(gross)+'</td><td>$'+fmt(pubCost)+'</td><td class="en-td-highlight'+(net>=0?' en-text-accent':'')+'">$'+fmt(net)+'</td></tr>';
-  });
-  document.getElementById('projTable').innerHTML=projHtml;
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="/engines/book-publishing-cost-engine.js?v=67acf33c"></script>
+<script src="/assets/js/pages/creative/creative-result-tools.js?v=d06b5bc3"></script>
+<script src="/assets/js/pages/creative/book-publishing-cost-controller.js?v=af639e17"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

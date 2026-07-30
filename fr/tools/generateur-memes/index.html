@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -26,10 +26,10 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Générateur de memes gratuit | AfroTools","description":"Créez un meme dans le navigateur avec image, texte haut/bas, aperçu canvas, copie du brief, téléchargement PNG et contrôles de droits avant publication.","url":"https://afrotools.com/fr/tools/generateur-memes/","inLanguage":"fr","applicationCategory":"DesignApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/meme-generator.webp"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment utiliser le générateur de memes AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Ajoutez une image, choisissez le texte haut et bas, vérifiez le cadrage dans l'aperçu, puis téléchargez le rendu ou ouvrez l'outil complet."}},{"@type":"Question","name":"Les images restent-elles privées ?","acceptedAnswer":{"@type":"Answer","text":"Cette surface de préparation fonctionne dans le navigateur. Evitez les photos sensibles et vérifiez les droits d'image avant publication."}},{"@type":"Question","name":"Puis-je publier le même directement ?","acceptedAnswer":{"@type":"Answer","text":"Exportez le rendu, puis vérifiez les droits, le contexte culturel, les personnes visibles et les regles de la plateforme avant publication."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment utiliser le générateur de memes AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Ajoutez une image, choisissez le texte haut et bas, vérifiez le cadrage dans l'aperçu, puis téléchargez le rendu PNG."}},{"@type":"Question","name":"Les images restent-elles privées ?","acceptedAnswer":{"@type":"Answer","text":"Cette surface de préparation fonctionne dans le navigateur. Evitez les photos sensibles et vérifiez les droits d'image avant publication."}},{"@type":"Question","name":"Puis-je publier le même directement ?","acceptedAnswer":{"@type":"Answer","text":"Exportez le rendu, puis vérifiez les droits, le contexte culturel, les personnes visibles et les regles de la plateforme avant publication."}}]}</script>
 <style>
 .fr-tool-hero{background:linear-gradient(135deg,#0f1419,#1a1f2e);padding:48px 0 36px;text-align:center}
 .fr-tool-wrap{max-width:1080px;margin:0 auto;padding:0 24px}
@@ -55,6 +55,11 @@
 .fr-faq{margin-top:18px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
 .fr-faq details{background:#fff;border:1px solid #dbe4f0;border-radius:10px;padding:14px}
 .fr-faq summary{font-weight:800;color:#0f172a;cursor:pointer}
+html[data-theme="dark"] .fr-card,html[data-theme="dark"] .fr-faq details{background:#0f2133;border-color:#334b63;color:#edf5ff}
+html[data-theme="dark"] .fr-card h2,html[data-theme="dark"] .fr-faq summary{color:#edf5ff}
+html[data-theme="dark"] .fr-card p,html[data-theme="dark"] .fr-card li{color:#b9c9d8}
+html[data-theme="dark"] .fr-field input,html[data-theme="dark"] .fr-field select{background:#091827;border-color:#4b647d;color:#edf5ff}
+@media(prefers-color-scheme:dark){html:not([data-theme="light"]) .fr-card,html:not([data-theme="light"]) .fr-faq details{background:#0f2133;border-color:#334b63;color:#edf5ff}html:not([data-theme="light"]) .fr-card h2,html:not([data-theme="light"]) .fr-faq summary{color:#edf5ff}html:not([data-theme="light"]) .fr-card p,html:not([data-theme="light"]) .fr-card li{color:#b9c9d8}html:not([data-theme="light"]) .fr-field input,html:not([data-theme="light"]) .fr-field select{background:#091827;border-color:#4b647d;color:#edf5ff}}
 @media (max-width:820px){.fr-tool-grid,.fr-faq{grid-template-columns:1fr}.fr-tool-wrap{padding:0 16px}}
 </style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/generateur-memes/">
@@ -67,7 +72,7 @@
 <main>
 <section class="fr-tool-hero">
 <div class="fr-tool-wrap">
-<nav class="fr-tool-crumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/tools/outils-image/">Image et design</a> / <span>Générateur de memes</span></nav>
+<nav class="fr-tool-crumb" aria-label="Fil d'Ariane"><a href="/fr/">Accueil</a> / <a href="/fr/image-design/">Image et design</a> / <span>Générateur de memes</span></nav>
 <h1>Générateur de memes</h1>
 <p>Composez un même lisible, vérifiez les droits d'image et exportez un aperçu PNG sans transformer cette page en simple redirection.</p>
 <span class="fr-tool-badge">Aperçu local</span>
@@ -79,7 +84,7 @@
 <form id="memePrepForm" class="fr-card fr-form">
 <span class="fr-kicker">Atelier même</span>
 <h2>Composer un même avant export</h2>
-<p>Préparez le visuel, le texte haut/bas, le format social et la vérification des droits avant de publier ou d'ouvrir l'outil complet.</p>
+<p>Préparez le visuel, le texte haut/bas, le format social et la vérification des droits avant de publier.</p>
 <label>Image de base
 <input id="memeImage" type="file" accept="image/*" aria-label="Image de base du meme">
 </label>
@@ -95,7 +100,7 @@
 <div class="fr-actions">
 <button class="fr-primary" type="submit">Créer l'aperçu</button>
 <button class="fr-secondary" type="button" id="memeCopy">Copier le brief</button>
-<a class="fr-dark" href="/fr/tools/meme-generator/">Outil complet</a>
+<a class="fr-dark" href="/tools/meme-generator/" hreflang="en">Comparer la version anglaise</a>
 </div>
 <output id="memeResult" class="fr-result" aria-live="polite">Résultat : brief prêt avec image, texte, format, droits à vérifier et export PNG.</output>
 </form>
@@ -108,9 +113,9 @@
 <section class="fr-faq" aria-label="Vérification du meme" data-tool-verification-panel="generateur-memes-fr">
 <details open><summary>Sources &amp; vérification</summary><p>Dernière vérification 2026. Source officielle à vérifier selon le canal de publication : <a href="https://help.instagram.com/1631821640426723" rel="noopener" target="_blank">Instagram Help</a>, <a href="https://creativecommons.org/licenses/" rel="noopener" target="_blank">Creative Commons</a> et règles internes de la marque.</p></details>
 <details><summary>Méthodologie</summary><p>Méthodologie : image importée, texte haut/bas, contraste, lisibilite mobile, droits, contexte culturel et hypothèse de format sont contrôles avant export.</p></details>
-<details><summary>Batch workflow</summary><p>Workflow batch : préparez plusieurs variantes de texte, comparez les aperçus, copiez le brief et exportez seulement les versions validees.</p></details>
+<details><summary>Préparer plusieurs variantes</summary><p>Préparez plusieurs variantes de texte, comparez les aperçus, copiez le brief et exportez seulement les versions validées.</p></details>
 <details><summary>Limites</summary><p>Avertissement : ce n'est pas une validation juridique ou une moderation automatique. Relisez avant publication et confirmez les droits.</p></details>
-<details><summary>Sortie</summary><p>Copiez le brief, téléchargez l'aperçu PNG, enregistrez le fichier ou ouvrez l'outil complet pour plus de styles.</p></details>
+<details><summary>Sortie</summary><p>Copiez le brief ou téléchargez directement l'aperçu PNG généré dans votre navigateur.</p></details>
 </section>
 </div>
 </section>
@@ -171,6 +176,6 @@
   draw();
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -1,0 +1,413 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-uniquely-african-parity",
+  "category": {
+    "key": "african",
+    "englishName": "Uniquely African",
+    "englishHub": "/uniquely-african/",
+    "frenchHub": "/fr/uniquely-african/"
+  },
+  "foundation": "8ce5cac175e42201968b1f7540752d6acf92d4ca",
+  "denominator": 34,
+  "acceptance": {
+    "accepted": 34,
+    "required": 34,
+    "state": "accepted"
+  },
+  "invariants": {
+    "exactRows": 34,
+    "uniqueEnglishIds": true,
+    "uniqueEnglishRoutes": true,
+    "uniqueFrenchRoutes": true,
+    "nativeFrenchRuntime": true,
+    "allowIframe": false,
+    "allowEnglishHtmlFetch": false,
+    "allowBridgeHandoff": false,
+    "allowUnmanifestedRoute": false
+  },
+  "owners": {
+    "generator": "scripts/generate-fr-uniquely-african.js",
+    "validator": "scripts/validate-fr-uniquely-african.js",
+    "sharedFrenchController": "assets/js/pages/fr-uniquely-african.js",
+    "sharedFrenchStyles": "assets/css/fr-uniquely-african.css",
+    "extractedEngine": "engines/src/uniquely-african-engine.js",
+    "receipt": "reports/fr-uniquely-african-parity/acceptance-receipt.json",
+    "artworkQueue": "reports/fr-uniquely-african-parity/artwork-audit.json"
+  },
+  "rows": [
+    {
+      "index": 1,
+      "english": {"id": "japa-calculator", "route": "/tools/japa-calculator/", "file": "tools/japa-calculator/index.html"},
+      "french": {"route": "/fr/tools/calculateur-japa/", "file": "fr/tools/calculateur-japa/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Relocation from African countries to common diaspora destinations; preserve origin and destination assumptions.",
+      "countryCodes": ["NG", "GH", "KE", "ZA", "EG", "MA", "SN", "CI"],
+      "engineOwner": "tools/japa-calculator/index.html#calculate",
+      "dataOwner": "tools/japa-calculator/index.html#country-and-destination-assumptions",
+      "exports": ["copy", "txt", "json", "pdf"],
+      "artwork": {"id": "japa-calculator", "path": "assets/img/tools/japa-calculator.webp", "state": "present"}
+    },
+    {
+      "index": 2,
+      "english": {"id": "mobile-money-fees", "route": "/tools/mobile-money-fees/", "file": "tools/mobile-money-fees/index.html"},
+      "french": {"route": "/fr/tools/frais-mobile-money/", "file": "fr/tools/frais-mobile-money/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "African mobile-money fee comparison; preserve operator, country, currency, fee band and transaction type.",
+      "countryCodes": ["GH", "KE", "NG", "TZ", "UG", "RW", "SN", "CI"],
+      "engineOwner": "tools/mobile-money-fees/index.html#compare",
+      "dataOwner": "tools/mobile-money-fees/index.html#provider-fee-tables",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "mobile-money-fees", "path": "assets/img/tools/mobile-money-fees.webp", "state": "present"}
+    },
+    {
+      "index": 3,
+      "english": {"id": "fintech-fee-watch", "route": "/tools/fintech-fee-watch/", "file": "tools/fintech-fee-watch/index.html"},
+      "french": {"route": "/fr/tools/suivi-frais-fintech/", "file": "fr/tools/suivi-frais-fintech/index.html", "baselineState": "bridge-handoff"},
+      "culturalScope": "African fintech transfer, withdrawal, card, merchant and foreign-exchange fees; never imply a live feed when unavailable.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#fintech-fee-watch",
+      "dataOwner": "assets/js/market-data-app.js#fintech-fees",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "fintech-fee-watch", "path": "assets/img/tools/fintech-fee-watch.webp", "state": "present"}
+    },
+    {
+      "index": 4,
+      "english": {"id": "ajo-chama", "route": "/tools/ajo-tracker/", "file": "tools/ajo-tracker/index.html"},
+      "french": {"route": "/fr/tools/suivi-tontine/", "file": "fr/tools/suivi-tontine/index.html", "baselineState": "semantic-owner-correction"},
+      "culturalScope": "Rotating savings tracker covering Ajo, Esusu, Chama, Stokvel and Tontine terminology without collapsing local practices.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#ajo-chama",
+      "dataOwner": "tools/ajo-tracker/index.html#rotation-rules",
+      "exports": ["copy", "json", "pdf"],
+      "artwork": {"id": "ajo-chama", "path": "assets/img/tools/ajo-chama.webp", "state": "present"}
+    },
+    {
+      "index": 5,
+      "english": {"id": "electricity-estimator", "route": "/tools/electricity-estimator/", "file": "tools/electricity-estimator/index.html"},
+      "french": {"route": "/fr/tools/estimateur-electricite/", "file": "fr/tools/estimateur-electricite/index.html", "baselineState": "english-html-fetch"},
+      "culturalScope": "Household and small-business appliance energy planning; tariffs are user-confirmed planning inputs, not official live rates.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#electricity-estimator",
+      "dataOwner": "tools/electricity-estimator/index.html#appliance-catalogue",
+      "exports": ["copy", "txt", "json"],
+      "artwork": {"id": "electricity-estimator", "path": "assets/img/tools/electricity-estimator.webp", "state": "present"}
+    },
+    {
+      "index": 6,
+      "english": {"id": "fuel-cost", "route": "/tools/fuel-cost/", "file": "tools/fuel-cost/index.html"},
+      "french": {"route": "/fr/tools/cout-carburant/", "file": "fr/tools/cout-carburant/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Road-trip and generator fuel planning across African currencies; preserve distance, efficiency, fuel type and local price inputs.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#fuel-cost",
+      "dataOwner": "tools/fuel-cost/index.html#route-and-fuel-defaults",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "fuel-cost", "path": "assets/img/tools/fuel-cost.webp", "state": "present"}
+    },
+    {
+      "index": 7,
+      "english": {"id": "hawala-tracker", "route": "/tools/hawala-tracker/", "file": "tools/hawala-tracker/index.html"},
+      "french": {"route": "/fr/tools/suivi-hawala/", "file": "fr/tools/suivi-hawala/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Formal and informal remittance comparison; present Hawala as a planning comparison and retain compliance and verification limits.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#hawala-tracker",
+      "dataOwner": "tools/hawala-tracker/index.html#channel-assumptions",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "hawala-tracker", "path": "assets/img/tools/hawala-tracker.webp", "state": "present"}
+    },
+    {
+      "index": 8,
+      "english": {"id": "burial-cost", "route": "/tools/burial-cost/", "file": "tools/burial-cost/index.html"},
+      "french": {"route": "/fr/tools/cout-funerailles/", "file": "fr/tools/cout-funerailles/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "African funeral planning with country, faith, community, transport and gathering choices treated respectfully as user-selected assumptions.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "tools/burial-cost/index.html#calculate",
+      "dataOwner": "tools/burial-cost/index.html#country-and-ceremony-costs",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "burial-cost", "path": "assets/img/tools/burial-cost.webp", "state": "present"}
+    },
+    {
+      "index": 9,
+      "english": {"id": "staple-basket", "route": "/tools/staple-basket/", "file": "tools/staple-basket/index.html"},
+      "french": {"route": "/fr/tools/panier-produits-base/", "file": "fr/tools/panier-produits-base/index.html", "baselineState": "bridge-handoff"},
+      "culturalScope": "Country and market-specific staple baskets; preserve item names, units, market labels, observation dates and offline fallback status.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#staple-basket",
+      "dataOwner": "assets/js/market-data-app.js#staple-baskets",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "staple-basket", "path": "assets/img/tools/staple-basket.webp", "state": "present"}
+    },
+    {
+      "index": 10,
+      "english": {"id": "wholesale-retail-spread", "route": "/tools/wholesale-retail-spread/", "file": "tools/wholesale-retail-spread/index.html"},
+      "french": {"route": "/fr/tools/marge-gros-detail/", "file": "fr/tools/marge-gros-detail/index.html", "baselineState": "bridge-handoff"},
+      "culturalScope": "African wholesale-to-retail market spreads; preserve market, commodity, unit, currency, observation date and submitted-data limitations.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#wholesale-retail-spread",
+      "dataOwner": "assets/js/market-data-app.js#wholesale-retail-spreads",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "wholesale-retail-spread", "path": "assets/img/tools/wholesale-retail-spread.webp", "state": "present"}
+    },
+    {
+      "index": 11,
+      "english": {"id": "land-size", "route": "/tools/land-size/", "file": "tools/land-size/index.html"},
+      "french": {"route": "/fr/tools/taille-terrain/", "file": "fr/tools/taille-terrain/index.html", "baselineState": "english-html-fetch"},
+      "culturalScope": "African plot and farm area conversion; preserve locally used plot assumptions as explicit configurable estimates.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#land-size",
+      "dataOwner": "tools/land-size/index.html#unit-and-plot-factors",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "land-size", "path": "assets/img/tools/land-size.webp", "state": "present"}
+    },
+    {
+      "index": 12,
+      "english": {"id": "naira-to-words", "route": "/tools/naira-to-words/", "file": "tools/naira-to-words/index.html"},
+      "french": {"route": "/fr/tools/naira-en-lettres/", "file": "fr/tools/naira-en-lettres/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Nigerian naira and kobo wording for planning and document preparation; preserve NGN identity and cheque-line rules.",
+      "countryCodes": ["NG"],
+      "engineOwner": "tools/naira-to-words/index.html#amountToWords",
+      "dataOwner": "tools/naira-to-words/index.html#number-word-rules",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "naira-to-words", "path": "assets/img/tools/naira-to-words.webp", "state": "present"}
+    },
+    {
+      "index": 13,
+      "english": {"id": "amount-words-ke", "route": "/tools/amount-words-ke/", "file": "tools/amount-words-ke/index.html"},
+      "french": {"route": "/fr/tools/montant-lettres-ke/", "file": "fr/tools/montant-lettres-ke/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Kenyan shilling and cent wording; preserve KES identity and document-line conventions.",
+      "countryCodes": ["KE"],
+      "engineOwner": "tools/amount-words-ke/index.html#amountToWords",
+      "dataOwner": "tools/amount-words-ke/index.html#number-word-rules",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "amount-words-ke", "path": "assets/img/tools/amount-words-ke.webp", "state": "present"}
+    },
+    {
+      "index": 14,
+      "english": {"id": "amount-words-gh", "route": "/tools/amount-words-gh/", "file": "tools/amount-words-gh/index.html"},
+      "french": {"route": "/fr/tools/montant-lettres-gh/", "file": "fr/tools/montant-lettres-gh/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Ghana cedi and pesewa wording; preserve GHS identity and document-line conventions.",
+      "countryCodes": ["GH"],
+      "engineOwner": "tools/amount-words-gh/index.html#amountToWords",
+      "dataOwner": "tools/amount-words-gh/index.html#number-word-rules",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "amount-words-gh", "path": "assets/img/tools/amount-words-gh.webp", "state": "present"}
+    },
+    {
+      "index": 15,
+      "english": {"id": "susu-tracker", "route": "/tools/susu-tracker/", "file": "tools/susu-tracker/index.html"},
+      "french": {"route": "/fr/tools/suivi-susu/", "file": "fr/tools/suivi-susu/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Susu, Esusu, Chama and Tontine contribution schedules; keep local group terms and payout-order assumptions visible.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "tools/susu-tracker/index.html#generate",
+      "dataOwner": "tools/susu-tracker/index.html#schedule-rules",
+      "exports": ["copy", "csv", "json"],
+      "artwork": {"id": "susu-tracker", "path": "assets/img/tools/susu-tracker.webp", "state": "present"}
+    },
+    {
+      "index": 16,
+      "english": {"id": "whatsapp-link", "route": "/tools/whatsapp-link/", "file": "tools/whatsapp-link/index.html"},
+      "french": {"route": "/fr/tools/lien-whatsapp/", "file": "fr/tools/lien-whatsapp/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "International WhatsApp links with explicit country calling codes; phone numbers remain local and are never sent by AfroTools.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "tools/whatsapp-link/index.html#generateLink",
+      "dataOwner": "tools/whatsapp-link/index.html#calling-code-and-template-rules",
+      "exports": ["copy", "json", "qr"],
+      "artwork": {"id": "whatsapp-link", "path": "assets/img/tools/whatsapp-link.webp", "state": "present"}
+    },
+    {
+      "index": 17,
+      "english": {"id": "remittance-compare", "route": "/tools/remittance-compare/", "file": "tools/remittance-compare/index.html"},
+      "french": {"route": "/fr/tools/transfert-argent/", "file": "fr/tools/transfert-argent/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Diaspora-to-Africa remittance corridors; preserve sender/recipient currencies, provider fees, FX margins and quote freshness limits.",
+      "countryCodes": ["NG", "KE", "GH", "ZA", "MA", "ET"],
+      "engineOwner": "tools/remittance-compare/index.html#compare",
+      "dataOwner": "tools/remittance-compare/index.html#corridor-and-provider-fixtures",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "remittance-compare", "path": "assets/img/tools/remittance-compare.webp", "state": "present"}
+    },
+    {
+      "index": 18,
+      "english": {"id": "informal-fx-watch", "route": "/tools/informal-fx-watch/", "file": "tools/informal-fx-watch/index.html"},
+      "french": {"route": "/fr/tools/taux-change-parallele/", "file": "fr/tools/taux-change-parallele/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Official and observed informal FX spreads; observations are dated and unverified unless the named source proves otherwise.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#informal-fx-watch",
+      "dataOwner": "assets/js/market-data-app.js#fx-spreads",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "informal-fx-watch", "path": "assets/img/tools/informal-fx-watch.webp", "state": "present"}
+    },
+    {
+      "index": 19,
+      "english": {"id": "remittance-v2", "route": "/tools/remittance-v2/", "file": "tools/remittance-v2/index.html"},
+      "french": {"route": "/fr/tools/transfert-v2/", "file": "fr/tools/transfert-v2/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Remittance provider comparison across named African corridors; preserve fee, exchange-rate and recipient-amount calculations.",
+      "countryCodes": ["NG", "KE", "GH", "MW"],
+      "engineOwner": "tools/remittance-v2/index.html#compare",
+      "dataOwner": "tools/remittance-v2/index.html#provider-fixtures",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "remittance-v2", "path": "assets/img/tools/remittance-v2.webp", "state": "present"}
+    },
+    {
+      "index": 20,
+      "english": {"id": "cost-of-living", "route": "/tools/cost-of-living/", "file": "tools/cost-of-living/index.html"},
+      "french": {"route": "/fr/tools/cout-de-la-vie/", "file": "fr/tools/cout-de-la-vie/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "African city cost comparison; preserve city, household profile, currency, basket assumptions and data vintage.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#cost-of-living",
+      "dataOwner": "tools/cost-of-living/index.html#city-cost-fixtures",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "cost-of-living", "path": "assets/img/tools/cost-of-living.webp", "state": "present"}
+    },
+    {
+      "index": 21,
+      "english": {"id": "afroatlas", "route": "/tools/afroatlas/", "file": "tools/afroatlas/index.html"},
+      "french": {"route": "/fr/tools/afroatlas/", "file": "fr/tools/afroatlas/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "African country economic and resource explorer; preserve country identity, units, rankings, sources and data year.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/afroatlas-engine.js",
+      "dataOwner": "engines/src/afroatlas-engine.js#country-dataset",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "afroatlas", "path": "assets/img/tools/afroatlas.webp", "state": "present"}
+    },
+    {
+      "index": 22,
+      "english": {"id": "afropoints", "route": "/tools/afropoints/", "file": "tools/afropoints/index.html"},
+      "french": {"route": "/fr/tools/afropoints/", "file": "fr/tools/afropoints/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "African data-contribution rewards; preserve task, evidence, points and moderation rules without implying guaranteed cash value.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/afropoints-engine.js",
+      "dataOwner": "engines/src/afropoints-engine.js#task-and-points-rules",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "afropoints", "path": "assets/img/tools/afropoints.webp", "state": "present"}
+    },
+    {
+      "index": 23,
+      "english": {"id": "afrokitchen", "route": "/tools/afrokitchen/", "file": "tools/afrokitchen/index.html"},
+      "french": {"route": "/fr/tools/afrocuisine/", "file": "fr/tools/afrocuisine/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "African recipe atlas and meal planner; retain dish origins, local names, ingredients, dietary cautions and serving units.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/afrokitchen-engine.js",
+      "dataOwner": "tools/afrokitchen/cuisine-intelligence-data.js",
+      "exports": ["copy", "txt", "json"],
+      "artwork": {"id": "afrokitchen", "path": "assets/img/tools/afrokitchen.webp", "state": "present"}
+    },
+    {
+      "index": 24,
+      "english": {"id": "africa-conflict", "route": "/tools/africa-conflict/", "file": "tools/africa-conflict/index.html"},
+      "french": {"route": "/fr/tools/carte-conflits-afrique/", "file": "fr/tools/carte-conflits-afrique/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Conflict information dashboard; preserve country, severity, dates, sources and uncertainty, and never present stale records as live safety advice.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/africa-conflict-engine.js",
+      "dataOwner": "engines/src/africa-conflict-engine.js#conflict-records",
+      "exports": ["copy", "txt", "json"],
+      "artwork": {"id": "africa-conflict", "path": "assets/img/tools/africa-conflict.webp", "state": "present"}
+    },
+    {
+      "index": 25,
+      "english": {"id": "brideprice-advisor", "route": "/tools/brideprice-advisor/", "file": "tools/brideprice-advisor/index.html"},
+      "french": {"route": "/fr/tools/conseiller-dot/", "file": "fr/tools/conseiller-dot/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Marriage-family planning across distinct cultures; no culture is reduced to a universal price and all values remain user-confirmed estimates.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/brideprice-culture-engine.js",
+      "dataOwner": "data/uniquely-african/brideprice-data.json",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "brideprice-advisor", "path": "assets/img/tools/brideprice-advisor.webp", "state": "present"}
+    },
+    {
+      "index": 26,
+      "english": {"id": "ajo-interest", "route": "/tools/ajo-interest/", "file": "tools/ajo-interest/index.html"},
+      "french": {"route": "/fr/tools/interet-tontine/", "file": "fr/tools/interet-tontine/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Ajo, Esusu, Chama, Stokvel and Tontine rotation comparison; contribution and payout rules remain explicit.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "tools/ajo-interest/index.html#calculate",
+      "dataOwner": "tools/ajo-interest/index.html#rotation-and-interest-rules",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "ajo-interest", "path": "assets/img/tools/ajo-interest.webp", "state": "present"}
+    },
+    {
+      "index": 27,
+      "english": {"id": "diaspora-guide", "route": "/tools/diaspora-guide/", "file": "tools/diaspora-guide/index.html"},
+      "french": {"route": "/fr/tools/guide-diaspora/", "file": "fr/tools/guide-diaspora/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Diaspora tax and residency planning; preserve origin, destination, residency and remittance choices while clearly disclaiming legal and tax advice.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#diaspora-guide",
+      "dataOwner": "tools/diaspora-guide/index.html#residency-guidance",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "diaspora-guide", "path": "assets/img/tools/diaspora-guide.webp", "state": "present"}
+    },
+    {
+      "index": 28,
+      "english": {"id": "nollywood-pitch", "route": "/tools/nollywood-pitch/", "file": "tools/nollywood-pitch/index.html"},
+      "french": {"route": "/fr/tools/pitch-nollywood/", "file": "fr/tools/pitch-nollywood/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Nollywood production budgeting; preserve Nigerian production categories, naira currency, contingency and distribution assumptions.",
+      "countryCodes": ["NG"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#nollywood-pitch",
+      "dataOwner": "tools/nollywood-pitch/index.html#budget-presets",
+      "exports": ["copy", "txt", "json"],
+      "artwork": {"id": "nollywood-pitch", "path": "assets/img/tools/nollywood-pitch.webp", "state": "present"}
+    },
+    {
+      "index": 29,
+      "english": {"id": "okada-income", "route": "/tools/okada-income/", "file": "tools/okada-income/index.html"},
+      "french": {"route": "/fr/tools/revenu-okada/", "file": "fr/tools/revenu-okada/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Okada, boda-boda and moto-taxi income planning; preserve local vehicle terms, currency, working pattern, fuel and maintenance assumptions.",
+      "countryCodes": ["NG", "KE", "UG", "TZ", "RW"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#okada-income",
+      "dataOwner": "tools/okada-income/index.html#country-and-cost-defaults",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "okada-income", "path": "assets/img/tools/okada-income.webp", "state": "present"}
+    },
+    {
+      "index": 30,
+      "english": {"id": "market-days", "route": "/tools/market-days/", "file": "tools/market-days/index.html"},
+      "french": {"route": "/fr/tools/jours-marche/", "file": "fr/tools/jours-marche/index.html", "baselineState": "native-candidate"},
+      "culturalScope": "Igbo four-day market calendar; preserve Eke, Orie, Afo and Nkwo names, Nigeria date basis and named-market evidence.",
+      "countryCodes": ["NG"],
+      "engineOwner": "assets/js/engines/igbo-market-days.js",
+      "dataOwner": "assets/js/pages/market-days.js#named-markets",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "market-days", "path": "assets/img/tools/market-days.webp", "state": "present"}
+    },
+    {
+      "index": 31,
+      "english": {"id": "ajo-chama-calc", "route": "/tools/ajo-chama/", "file": "tools/ajo-chama/index.html"},
+      "french": {"route": "/fr/tools/ajo-chama/", "file": "fr/tools/ajo-chama/index.html", "baselineState": "semantic-owner-correction"},
+      "culturalScope": "Ajo, Chama, Tontine and Stokvel calculator; separate calculation and printable rotation ownership from the savings tracker.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "tools/ajo-chama/index.html#generateSchedule",
+      "dataOwner": "tools/ajo-chama/index.html#schedule-and-penalty-rules",
+      "exports": ["copy", "csv", "json", "print"],
+      "artwork": {"id": "ajo-chama-calc", "path": "assets/img/tools/ajo-chama-calc.webp", "state": "present"}
+    },
+    {
+      "index": 32,
+      "english": {"id": "afroprices", "route": "/tools/afroprices/", "file": "tools/afroprices/index.html"},
+      "french": {"route": "/fr/tools/afroprix/", "file": "fr/tools/afroprix/index.html", "baselineState": "english-iframe"},
+      "culturalScope": "Cross-country African price comparison; preserve country, city, product, unit, currency, source and observation date.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/afroprices-engine.js",
+      "dataOwner": "engines/src/afroprices-engine.js#price-records",
+      "exports": ["copy", "json"],
+      "artwork": {"id": "afroprices", "path": "assets/img/tools/afroprices.webp", "state": "present"}
+    },
+    {
+      "index": 33,
+      "english": {"id": "ankara-kente-cost", "route": "/tools/ankara-kente-cost/", "file": "tools/ankara-kente-cost/index.html"},
+      "french": {"route": "/fr/tools/cout-ankara-kente/", "file": "fr/tools/cout-ankara-kente/index.html", "baselineState": "bridge-handoff"},
+      "culturalScope": "Ankara and Kente garment costing; preserve fabric identity, yards, pattern matching, tailoring, accessories, waste and local currency.",
+      "countryCodes": ["NG", "GH", "CI", "SN"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#ankara-kente-cost",
+      "dataOwner": "tools/ankara-kente-cost/index.html#fabric-and-garment-rules",
+      "exports": ["copy", "json", "print"],
+      "artwork": {"id": "ankara-kente-cost", "path": "assets/img/tools/ankara-kente-cost.webp", "state": "present"}
+    },
+    {
+      "index": 34,
+      "english": {"id": "fabric-cost", "route": "/tools/fabric-cost/", "file": "tools/fabric-cost/index.html"},
+      "french": {"route": "/fr/tools/cout-tissu-matiere/", "file": "fr/tools/cout-tissu-matiere/index.html", "baselineState": "bridge-handoff"},
+      "culturalScope": "African tailoring material costing; preserve fabric type, unit, quantity, waste, notions, labour and currency as explicit inputs.",
+      "countryCodes": ["ALL"],
+      "engineOwner": "engines/src/uniquely-african-engine.js#fabric-cost",
+      "dataOwner": "tools/fabric-cost/index.html#material-cost-rules",
+      "exports": ["copy", "json", "print"],
+      "artwork": {"id": "fabric-cost", "path": "assets/img/tools/fabric-cost.webp", "state": "present"}
+    }
+  ]
+}

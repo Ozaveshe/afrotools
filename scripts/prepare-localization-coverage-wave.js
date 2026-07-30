@@ -12,6 +12,10 @@ const {
 const ROOT = path.resolve(__dirname, "..");
 const OUTPUT = path.join(ROOT, "data", "localization", "coverage-wave-2026-07.json");
 const REFRESH = process.argv.includes("--refresh");
+const FRENCH_WAVE_NOINDEX_ALIASES = new Set([
+  "carbon-credit/nigeria",
+  "flood-risk/nigeria",
+]);
 
 const SWAHILI_COPY = {
   "50-30-20-budget": ["bajeti-50-30-20", "Kikokotoo cha bajeti ya 50/30/20"],
@@ -211,6 +215,29 @@ const FRENCH_ROUTE_NAMES = {
   "work-permit-cost": "Estimateur du coût d’un permis de travail",
 };
 
+const FRENCH_NATIVE_ROUTES = [
+  {
+    enSlug: "immigration-points",
+    frSlug: "calculateur-de-points-d-immigration",
+    name: "Calculateur de points d’immigration",
+    originalName: "Immigration Points Calculator — Canada CRS, Australia Points, UK Skilled Worker",
+    description: "Estimez localement les facteurs sélectionnés pour le Canada, l’Australie ou la voie Skilled Worker britannique, puis vérifiez le résultat auprès de l’autorité compétente.",
+    category: "diaspora",
+    priority: 50,
+    native: true,
+  },
+  {
+    enSlug: "visa-tracker",
+    frSlug: "suivi-de-demande-de-visa",
+    name: "Suivi privé de demande de visa",
+    originalName: "Visa Application Tracker — UK, Canada, Australia, USA, UAE",
+    description: "Construisez localement un calendrier à partir d’une fourchette officielle saisie, sans déduire le statut du dossier ni demander d’identifiant.",
+    category: "diaspora",
+    priority: 50,
+    native: true,
+  },
+];
+
 const SWAHILI_CATEGORY_OVERRIDES = {
   "afropayroll-os": "financial",
   "doc-generator": "document-pdf",
@@ -367,6 +394,7 @@ function buildFrenchWave() {
       description: `Préparez vos informations, puis utilisez l’outil « ${name} » et vérifiez les hypothèses adaptées à votre pays.`,
       category: record.category_key || "other",
       priority: Number(record.priority || 0),
+      ...(FRENCH_WAVE_NOINDEX_ALIASES.has(enSlug) ? { registryManaged: false } : {}),
     };
   });
 }
@@ -405,8 +433,12 @@ function buildSwahiliWave() {
 function validateManifest(manifest) {
   if (!manifest || manifest.schemaVersion !== "1.0.0") throw new Error("Unexpected localization wave schema");
   if (!Array.isArray(manifest.french) || manifest.french.length !== 300) throw new Error("French wave must contain exactly 300 reviewed routes");
+  if (!Array.isArray(manifest.nativeFrench)) throw new Error("French native route additions must be an array");
   if (!Array.isArray(manifest.swahili) || manifest.swahili.length !== 100) throw new Error("Swahili wave must contain exactly 100 reviewed routes");
-  for (const entry of [...manifest.french, ...manifest.swahili]) {
+  const frenchRoutes = [...manifest.french, ...manifest.nativeFrench];
+  if (new Set(frenchRoutes.map((entry) => entry.enSlug)).size !== frenchRoutes.length) throw new Error("Duplicate French wave English owner");
+  if (new Set(frenchRoutes.map((entry) => entry.frSlug)).size !== frenchRoutes.length) throw new Error("Duplicate French wave route");
+  for (const entry of [...frenchRoutes, ...manifest.swahili]) {
     if (!fs.existsSync(path.join(ROOT, "tools", entry.enSlug, "index.html"))) throw new Error(`Missing English source tools/${entry.enSlug}/index.html`);
   }
   const firstHundred = parseDocumentedSwahiliGaps().slice(0, 100);
@@ -414,10 +446,20 @@ function validateManifest(manifest) {
 }
 
 function refreshDerivedCopy(manifest) {
-  manifest.french = manifest.french.map((entry) => ({
-    ...entry,
-    description: `Préparez vos informations, puis utilisez l’outil « ${entry.name} » et vérifiez les hypothèses adaptées à votre pays.`,
-  }));
+  const nativeByOwner = new Map(FRENCH_NATIVE_ROUTES.map((entry) => [entry.enSlug, entry]));
+  manifest.french = manifest.french.map((entry) => {
+    const native = nativeByOwner.get(entry.enSlug);
+    return native
+      ? { ...entry, ...native }
+      : {
+          ...entry,
+          description: `Préparez vos informations, puis utilisez l’outil « ${entry.name} » et vérifiez les hypothèses adaptées à votre pays.`,
+        };
+  });
+  const waveOwners = new Set(manifest.french.map((entry) => entry.enSlug));
+  manifest.nativeFrench = FRENCH_NATIVE_ROUTES
+    .filter((entry) => !waveOwners.has(entry.enSlug))
+    .map((entry) => ({ ...entry }));
   manifest.swahili = manifest.swahili.map((entry) => {
     const output = path.join(ROOT, "sw", "zana", entry.swSlug, "index.html");
     const outputExists = fs.existsSync(output);
@@ -457,7 +499,7 @@ function main() {
   manifest = refreshDerivedCopy(manifest);
   validateManifest(manifest);
   writeAtomic(OUTPUT, `${JSON.stringify(manifest, null, 2)}\n`);
-  console.log(`Localization wave ready: ${manifest.french.length} French routes and ${manifest.swahili.length} Swahili routes.`);
+  console.log(`Localization wave ready: ${manifest.french.length} French wave routes, ${manifest.nativeFrench.length} native French additions, and ${manifest.swahili.length} Swahili routes.`);
   console.log(`Swahili range: ${manifest.swahili[0].enSlug} -> ${manifest.swahili.at(-1).enSlug}`);
 }
 

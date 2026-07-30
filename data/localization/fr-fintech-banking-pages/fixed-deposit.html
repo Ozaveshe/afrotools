@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="afrotools-content-id" content="fr-fintech-banking:fixed-deposit">
+  <meta name="afrotools-source-owner" content="data/localization/fr-fintech-banking-pages/fixed-deposit.html">
+  <title>Calculateur de dépôt à terme et intérêts nets | AfroTools</title>
+  <meta name="description" content="Calculez les intérêts bruts, la retenue, les intérêts nets et la valeur à l’échéance d’un dépôt à terme à partir du taux réellement proposé.">
+  <meta property="og:title" content="Dépôt à terme : rendement brut et net | AfroTools">
+  <meta property="og:description" content="Comparez un taux simple ou composé mensuellement et vérifiez la valeur nette à l’échéance.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/fixed-deposit.webp">
+  <meta property="og:image:width" content="800"><meta property="og:image:height" content="450">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/depot-terme/">
+  <meta property="og:type" content="website"><meta property="og:locale" content="fr_FR"><meta property="og:site_name" content="AfroTools">
+  <meta name="twitter:card" content="summary_large_image"><meta name="twitter:title" content="Calculateur de dépôt à terme | AfroTools">
+  <meta name="twitter:description" content="Estimez le rendement brut et net à partir des conditions d’un devis bancaire actuel."><meta name="twitter:image" content="https://afrotools.com/assets/img/tools/fixed-deposit.webp">
+  <link rel="canonical" href="https://afrotools.com/fr/tools/depot-terme/">
+  <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/fixed-deposit/">
+  <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/depot-terme/">
+  <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-amana-ya-muda/">
+  <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/fixed-deposit/">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5"><link rel="stylesheet" href="/assets/css/fr-fintech-native.css?v=dd416d67">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Calculateur de dépôt à terme","url":"https://afrotools.com/fr/tools/depot-terme/","inLanguage":"fr","applicationCategory":"FinanceApplication","operatingSystem":"Web","isBasedOn":"https://afrotools.com/tools/fixed-deposit/","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools"},"image":"https://afrotools.com/assets/img/tools/fixed-deposit.webp"}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/fr/"},{"@type":"ListItem","position":2,"name":"Fintech et banque","item":"https://afrotools.com/fr/fintech/"},{"@type":"ListItem","position":3,"name":"Dépôt à terme","item":"https://afrotools.com/fr/tools/depot-terme/"}]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","inLanguage":"fr","mainEntity":[{"@type":"Question","name":"Le pays charge-t-il un taux de marché ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le pays modifie uniquement le libellé de devise. Saisissez le taux de l’offre bancaire actuelle."}},{"@type":"Question","name":"Quel taux de retenue saisir ?","acceptedAnswer":{"@type":"Answer","text":"Saisissez le taux applicable à votre compte et à votre juridiction, puis confirmez-le auprès de la banque ou de l’administration fiscale."}},{"@type":"Question","name":"Que signifie l’équivalent mensuel ?","acceptedAnswer":{"@type":"Answer","text":"Il divise les intérêts nets par le nombre de mois. C’est une moyenne de planification, pas une promesse de versement mensuel."}}]}</script>
+</head>
+<body>
+  <afro-navbar theme="dark" active="fintech"></afro-navbar>
+  <header class="tool-hero"><div class="container">
+    <nav class="breadcrumb" aria-label="Fil d’Ariane"><a href="/fr/">Accueil</a><span>›</span><a href="/fr/fintech/">Fintech et banque</a><span>›</span>Dépôt à terme</nav>
+    <h1>Calculer le rendement d’un dépôt à terme</h1>
+    <p>Saisissez le taux annuel et la retenue indiqués dans une offre bancaire actuelle. Modélisez des intérêts simples ou composés mensuellement et vérifiez la valeur nette à l’échéance.</p>
+    <div class="hero-badges"><span class="hero-badge">20 libellés de devise</span><span class="hero-badge">Vous saisissez le taux proposé</span><span class="hero-badge">Calcul local et gratuit</span></div>
+  </div></header>
+  <main class="container">
+    <section class="card" aria-labelledby="fd-title">
+      <h2 id="fd-title">Conditions du dépôt</h2>
+      <div class="form-grid">
+        <div class="form-group"><label for="fd-country">Pays et devise</label><select id="fd-country" onchange="fillFDRate()">
+          <option value="NG" data-currency="NGN" data-sym="NGN ">Nigeria (NGN)</option><option value="KE" data-currency="KES" data-sym="KES ">Kenya (KES)</option>
+          <option value="ZA" data-currency="ZAR" data-sym="ZAR ">Afrique du Sud (ZAR)</option><option value="GH" data-currency="GHS" data-sym="GHS ">Ghana (GHS)</option>
+          <option value="EG" data-currency="EGP" data-sym="EGP ">Égypte (EGP)</option><option value="TZ" data-currency="TZS" data-sym="TZS ">Tanzanie (TZS)</option>
+          <option value="UG" data-currency="UGX" data-sym="UGX ">Ouganda (UGX)</option><option value="ZM" data-currency="ZMW" data-sym="ZMW ">Zambie (ZMW)</option>
+          <option value="MZ" data-currency="MZN" data-sym="MZN ">Mozambique (MZN)</option><option value="RW" data-currency="RWF" data-sym="RWF ">Rwanda (RWF)</option>
+          <option value="MA" data-currency="MAD" data-sym="MAD ">Maroc (MAD)</option><option value="ET" data-currency="ETB" data-sym="ETB ">Éthiopie (ETB)</option>
+          <option value="SN" data-currency="XOF" data-sym="XOF ">Sénégal (XOF)</option><option value="CI" data-currency="XOF" data-sym="XOF ">Côte d’Ivoire (XOF)</option>
+          <option value="CM" data-currency="XAF" data-sym="XAF ">Cameroun (XAF)</option><option value="AO" data-currency="AOA" data-sym="AOA ">Angola (AOA)</option>
+          <option value="MW" data-currency="MWK" data-sym="MWK ">Malawi (MWK)</option><option value="BW" data-currency="BWP" data-sym="BWP ">Botswana (BWP)</option>
+          <option value="NA" data-currency="NAD" data-sym="NAD ">Namibie (NAD)</option><option value="ZW" data-currency="USD" data-sym="USD ">Zimbabwe (USD)</option>
+        </select></div>
+        <div class="form-group"><label for="fd-tenor">Durée</label><select id="fd-tenor"><option value="1">1 mois</option><option value="3">3 mois</option><option value="6">6 mois</option><option value="9">9 mois</option><option value="12" selected>12 mois</option><option value="24">24 mois</option></select></div>
+        <div class="form-group"><label for="fd-amount">Capital placé</label><input type="number" id="fd-amount" value="500000" min="0.01" step="0.01" required></div>
+        <div class="form-group"><label for="fd-rate">Taux d’intérêt annuel (%)</label><input type="number" id="fd-rate" placeholder="Par exemple 12" step="0.01" min="0" max="100" required></div>
+        <div class="form-group"><label for="fd-tax">Retenue sur les intérêts (%)</label><input type="number" id="fd-tax" value="0" step="0.01" min="0" max="100" required></div>
+        <div class="form-group"><label for="fd-compound">Méthode d’intérêt</label><select id="fd-compound"><option value="simple">Intérêts simples</option><option value="compound">Composition mensuelle</option></select></div>
+      </div>
+      <button type="button" class="btn-calc" onclick="calcFD()">Calculer le rendement proposé</button><p class="form-error" id="fd-error" role="alert"></p>
+      <div class="source-box"><strong>Source et fraîcheur :</strong> utilisez la fiche de conditions actuelle de la banque, notamment le taux nominal, la méthode de calcul, la durée, la retenue et les conditions de retrait anticipé. Le taux directeur d’une banque centrale n’est pas un devis de dépôt. Dernière revue méthodologique : juillet 2026.</div>
+      <div class="results" id="fd-results" aria-live="polite" tabindex="-1">
+        <div class="res-hero"><div class="res-label">Valeur nette à l’échéance</div><div class="res-val" id="fd-total"></div><div class="res-sub" id="fd-total-sub"></div></div>
+        <div class="metrics">
+          <div class="metric"><div class="metric-val" id="fd-interest"></div><div class="metric-label">Intérêts bruts</div></div>
+          <div class="metric"><div class="metric-val" id="fd-tax-amt"></div><div class="metric-label">Retenue</div></div>
+          <div class="metric"><div class="metric-val" id="fd-net-interest"></div><div class="metric-label">Intérêts nets</div></div>
+          <div class="metric"><div class="metric-val" id="fd-monthly"></div><div class="metric-label">Équivalent mensuel</div></div>
+          <div class="metric"><div class="metric-val" id="fd-ear"></div><div class="metric-label">Taux annuel effectif</div></div>
+          <div class="metric"><div class="metric-val" id="fd-net-ear"></div><div class="metric-label">Taux annuel net</div></div>
+        </div>
+        <div class="table-wrap"><table id="fd-schedule-table"><thead><tr><th>Période</th><th>Solde initial</th><th>Intérêts</th><th>Solde final</th></tr></thead><tbody id="fd-schedule"></tbody></table></div>
+        <div class="info-box">Cette estimation de trésorerie n’est ni une recommandation ni une garantie. Vérifiez la protection des dépôts, le retrait anticipé, la fiscalité, les frais, le calendrier de versement et la méthode de calcul avant de placer des fonds.</div>
+      </div>
+      <div class="privacy-box"><strong>Confidentialité :</strong> le calcul reste dans ce navigateur. Aucun numéro de compte, nom de banque ni identifiant personnel n’est demandé ou envoyé.</div>
+    </section>
+    <section class="card" aria-labelledby="fd-faq"><h2 id="fd-faq">Questions fréquentes</h2>
+      <details><summary>Le choix du pays charge-t-il un taux de marché ?</summary><p>Non. Il modifie seulement le libellé de devise. Saisissez le taux de l’offre que vous examinez.</p></details>
+      <details><summary>Quel taux de retenue dois-je saisir ?</summary><p>Saisissez le taux applicable à votre compte et à votre juridiction, ou zéro pour modéliser les intérêts bruts. Confirmez-le auprès de la banque ou de l’administration fiscale.</p></details>
+      <details><summary>Que signifie l’équivalent mensuel ?</summary><p>Il divise les intérêts nets par la durée. Il ne signifie pas que la banque verse nécessairement des intérêts chaque mois.</p></details>
+      <details><summary>Que se passe-t-il en cas de retrait anticipé ?</summary><p>L’outil ne modélise pas le retrait anticipé. Vérifiez le préavis, la perte d’intérêts, la révision du taux et les frais dans les conditions du dépôt.</p></details>
+    </section>
+    <nav class="card" aria-labelledby="fd-related"><h2 id="fd-related">Outils associés</h2><ul class="related-links"><li><a href="/fr/tools/rendement-reel-inflation/">Rendement réel après inflation</a></li><li><a href="/fr/tools/rendement-bons-tresor/">Rendement des bons du Trésor</a></li><li><a href="/fr/tools/fonds-urgence/">Objectif de fonds d’urgence</a></li></ul></nav>
+  </main>
+  <afro-footer></afro-footer>
+  <script src="/assets/js/pages/fintech-shared-controller-i18n.js?v=a83a18f5"></script><script src="/assets/js/pages/fintech-shared-controllers/fixed-deposit.js?v=72db8589"></script>
+  <script src="/assets/js/pages/fr-fintech-reflow.js?v=25a788f1"></script>
+  <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

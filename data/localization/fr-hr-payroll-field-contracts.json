@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "description": "Source-owned DOM contract mappings from each canonical English HR/Payroll control to its native French counterpart. Omitted attributes must remain absent.",
+  "attributes": ["type", "required", "min", "max", "step", "maxlength", "inputmode", "autocomplete", "pattern", "rows"],
+  "tools": [
+    {
+      "id": "contractor-vs-employee",
+      "englishOwner": "tools/contractor-vs-employee/index.html",
+      "controls": [
+        {"french": "currency", "english": {"by": "name", "value": "currency"}, "element": "input", "type": "text", "required": true, "maxlength": "8", "autocomplete": "off"},
+        {"french": "employeeBase", "english": {"by": "name", "value": "employeeBase"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "employeeAddons", "english": {"by": "name", "value": "employeeAddons"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "employeeOther", "english": {"by": "name", "value": "employeeOther"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "contractorQuote", "english": {"by": "name", "value": "contractorQuote"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "contractorOther", "english": {"by": "name", "value": "contractorOther"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "sourceLabel", "extension": "dated-source-evidence", "element": "input", "required": true, "autocomplete": "off"},
+        {"french": "sourceDate", "extension": "dated-source-evidence", "element": "input", "type": "date", "required": true}
+      ]
+    },
+    {
+      "id": "domestic-worker",
+      "englishOwner": "tools/domestic-worker/index.html",
+      "controls": [
+        {"french": "country", "english": {"by": "name", "value": "country"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "role", "english": {"by": "name", "value": "role"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "currency", "english": {"by": "name", "value": "currency"}, "element": "input", "required": false, "maxlength": "6", "autocomplete": "off"},
+        {"french": "basePay", "english": {"by": "name", "value": "basePay"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any"},
+        {"french": "payPeriod", "english": {"by": "name", "value": "payPeriod"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "legalFloor", "english": {"by": "name", "value": "legalFloor"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any"},
+        {"french": "floorPeriod", "english": {"by": "name", "value": "floorPeriod"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "sourceDate", "english": {"by": "name", "value": "sourceDate"}, "element": "input", "type": "date", "required": true},
+        {"french": "sourceLabel", "english": {"by": "name", "value": "sourceLabel"}, "element": "input", "required": true, "autocomplete": "off"},
+        {"french": "hoursPerWeek", "english": {"by": "name", "value": "hoursPerWeek"}, "element": "input", "type": "number", "required": true, "min": "1", "max": "84", "step": "0.5"},
+        {"french": "daysPerWeek", "english": {"by": "name", "value": "daysPerWeek"}, "element": "input", "type": "number", "required": true, "min": "1", "max": "7", "step": "0.5"},
+        {"french": "overtimeHours", "english": {"by": "name", "value": "overtimeHours"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "160", "step": "0.5"},
+        {"french": "overtimeMultiplier", "english": {"by": "name", "value": "overtimeMultiplier"}, "element": "input", "type": "number", "required": false, "min": "1", "max": "3", "step": "0.05"},
+        {"french": "allowances", "english": {"by": "name", "value": "allowances"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "inKind", "english": {"by": "name", "value": "inKindValue"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "employerPct", "english": {"by": "name", "value": "employerContribution"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "40", "step": "0.1"},
+        {"french": "leavePct", "english": {"by": "name", "value": "leaveReserve"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "30", "step": "0.1"},
+        {"french": "adminCost", "english": {"by": "name", "value": "adminCost"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "annualBonus", "english": {"by": "name", "value": "annualBonus"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "setupCost", "english": {"by": "name", "value": "setupCost"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "retentionBuffer", "english": {"by": "name", "value": "retentionBuffer"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "50", "step": "0.5"},
+        {"french": "contractStatus", "english": {"by": "name", "value": "contractStatus"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "payRecord", "english": {"by": "name", "value": "payRecord"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "restDays", "english": {"by": "name", "value": "restDays"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "notes", "english": {"by": "name", "value": "notes"}, "element": "textarea", "required": false}
+      ]
+    },
+    {
+      "id": "employee-cost",
+      "englishOwner": "tools/employee-cost/index.html",
+      "controls": [
+        {"french": "currency", "english": {"by": "id", "value": "employee-cost-currency"}, "element": "input", "type": "text", "required": true, "maxlength": "8", "autocomplete": "off"},
+        {"french": "salary", "english": {"by": "id", "value": "employee-cost-salary"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "obligations", "english": {"by": "id", "value": "employee-cost-obligations"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "benefits", "english": {"by": "id", "value": "employee-cost-benefits"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "allowances", "english": {"by": "id", "value": "employee-cost-allowances"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "other", "english": {"by": "id", "value": "employee-cost-other"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "oneOff", "english": {"by": "id", "value": "employee-cost-once"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "allocationMonths", "english": {"by": "id", "value": "employee-cost-allocation"}, "element": "input", "type": "number", "required": true, "min": "1", "max": "60", "step": "1", "inputmode": "numeric"},
+        {"french": "sourceLabel", "english": {"by": "id", "value": "employee-cost-source"}, "element": "input", "type": "text", "required": true},
+        {"french": "sourceDate", "english": {"by": "id", "value": "employee-cost-source-date"}, "element": "input", "type": "date", "required": true}
+      ]
+    },
+    {
+      "id": "gratuity-calculator",
+      "englishOwner": "tools/gratuity-calculator/index.html",
+      "controls": [
+        {"french": "currency", "english": {"by": "id", "value": "gratuity-currency"}, "element": "input", "type": "text", "required": true, "maxlength": "8", "autocomplete": "off"},
+        {"french": "monthlyPay", "english": {"by": "id", "value": "gratuity-pay"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "years", "english": {"by": "id", "value": "gratuity-years"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "1", "inputmode": "numeric"},
+        {"french": "months", "english": {"by": "id", "value": "gratuity-months"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "11", "step": "1", "inputmode": "numeric"},
+        {"french": "daysPerYear", "english": {"by": "id", "value": "gratuity-days"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "divisor", "english": {"by": "id", "value": "gratuity-divisor"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "additions", "english": {"by": "id", "value": "gratuity-additions"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "deductions", "english": {"by": "id", "value": "gratuity-deductions"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any", "inputmode": "decimal"},
+        {"french": "sourceLabel", "english": {"by": "id", "value": "gratuity-source"}, "element": "input", "type": "text", "required": true},
+        {"french": "sourceDate", "english": {"by": "id", "value": "gratuity-source-date"}, "element": "input", "type": "date", "required": true}
+      ]
+    },
+    {
+      "id": "maternity-leave",
+      "englishOwner": "tools/maternity-leave/index.html",
+      "controls": [
+        {"french": "country", "english": {"by": "id", "value": "countrySelect"}, "element": "select", "required": true, "options": "country-cards"},
+        {"french": "leaveType", "english": {"by": "id", "value": "leaveType"}, "element": "select", "required": false, "options": "inline"},
+        {"french": "monthlySalary", "english": {"by": "id", "value": "monthlySalary"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "0.01", "inputmode": "decimal"},
+        {"french": "currency", "english": {"by": "id", "value": "currencyLabel"}, "element": "input", "type": "text", "required": false, "maxlength": "12"},
+        {"french": "startDate", "english": {"by": "id", "value": "startDate"}, "element": "input", "type": "date", "required": false},
+        {"french": "officialDays", "english": {"by": "id", "value": "plannedDays"}, "element": "input", "type": "number", "required": false, "min": "1", "max": "365", "step": "1", "inputmode": "numeric"},
+        {"french": "requestedDays", "english": {"by": "id", "value": "requestedDays"}, "element": "input", "type": "number", "required": false, "min": "1", "max": "365", "step": "1", "inputmode": "numeric"},
+        {"french": "officialRate", "english": {"by": "id", "value": "payRate"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "100", "step": "any", "inputmode": "decimal"},
+        {"french": "companyDays", "english": {"by": "id", "value": "companyDays"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "365", "step": "1", "inputmode": "numeric"},
+        {"french": "companyRate", "english": {"by": "id", "value": "companyRate"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "100", "step": "any", "inputmode": "decimal"},
+        {"french": "compareCountry", "english": {"by": "id", "value": "compareCountry"}, "element": "select", "required": false, "options": "country-cards"},
+        {"french": "sourceLabel", "english": {"by": "id", "value": "leaveSource"}, "element": "input", "type": "text", "required": false},
+        {"french": "sourceDate", "english": {"by": "id", "value": "leaveSourceDate"}, "element": "input", "type": "date", "required": false},
+        {"french": "leaveNotes", "english": {"by": "id", "value": "leaveNotes"}, "element": "textarea", "required": false, "rows": "3"}
+      ]
+    },
+    {
+      "id": "retrenchment-calculator",
+      "englishOwner": "tools/retrenchment-calculator/index.html",
+      "controls": [
+        {"french": "currency", "english": {"by": "id", "value": "retrenchment-currency"}, "element": "input", "type": "text", "required": true, "maxlength": "8"},
+        {"french": "monthlyPay", "english": {"by": "id", "value": "retrenchment-pay"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any"},
+        {"french": "years", "english": {"by": "id", "value": "retrenchment-years"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "1"},
+        {"french": "months", "english": {"by": "id", "value": "retrenchment-months"}, "element": "input", "type": "number", "required": false, "min": "0", "max": "11", "step": "1"},
+        {"french": "weeksPerYear", "english": {"by": "id", "value": "retrenchment-weeks"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any"},
+        {"french": "noticeMonths", "english": {"by": "id", "value": "retrenchment-notice"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "leaveDays", "english": {"by": "id", "value": "retrenchment-leave-days"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "divisor", "english": {"by": "id", "value": "retrenchment-divisor"}, "element": "input", "type": "number", "required": true, "min": "0", "step": "any"},
+        {"french": "other", "english": {"by": "id", "value": "retrenchment-other"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "deductions", "english": {"by": "id", "value": "retrenchment-deductions"}, "element": "input", "type": "number", "required": false, "min": "0", "step": "any"},
+        {"french": "sourceLabel", "english": {"by": "id", "value": "retrenchment-source"}, "element": "input", "type": "text", "required": true},
+        {"french": "sourceDate", "english": {"by": "id", "value": "retrenchment-source-date"}, "element": "input", "type": "date", "required": true}
+      ]
+    }
+  ]
+}

@@ -60,4 +60,17 @@ assert.strictEqual(deduped.count, 1);
 assert.ok(!deduped.html.includes('<summary>Repeated answer</summary>'));
 assert.strictEqual((deduped.html.match(new RegExp(repeatedParagraph, 'g')) || []).length, 1);
 
+const generatedFromLocalizationTemplate = `<!doctype html><html lang="fr"><head>
+<meta name="afrotools-source-owner" content="data/localization/fr-fintech-banking-pages/invoice-factoring.html">
+<meta name="afrotools-content-id" content="fixture:localized-template">
+</head><body><main><h1>Affacturage</h1></main></body></html>`;
+findings = api.auditHtml(generatedFromLocalizationTemplate, {
+  file: 'fr/tools/fixture-localized-template/index.html',
+  route: '/fr/tools/fixture-localized-template/',
+  locale: 'fr',
+  state: 'native',
+  catalogValues: new Set()
+});
+assert.ok(!rules(findings).has('GENERATED_SOURCE_IS_OUTPUT'));
+
 console.log('Content integrity malformed-fixture tests passed');

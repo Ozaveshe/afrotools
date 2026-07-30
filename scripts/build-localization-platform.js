@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 
+const fs = require('fs');
 const path = require('path');
 const api = require('./lib/localization-platform');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
@@ -15,6 +16,40 @@ if (process.argv.includes('--write-yoruba-client')) {
 
 const write = process.argv.includes('--write');
 const check = process.argv.includes('--check') || !write;
+const routeArgument = process.argv.find((argument) => argument.startsWith('--route='));
+const targetRoute = routeArgument ? routeArgument.slice('--route='.length) : '';
+
+if (targetRoute) {
+  const outcome = api.generateLocalizationArtifacts({ write: false });
+  const generatedRecord = outcome.coverage && outcome.coverage.records.find((record) => record.route === targetRoute);
+  if (!generatedRecord) {
+    console.error(`No generated localization coverage record exists for ${targetRoute}.`);
+    process.exit(1);
+  }
+
+  const coveragePath = path.join(api.ROOT, 'data', 'registry', 'locale-page-coverage.json');
+  const currentCoverage = JSON.parse(fs.readFileSync(coveragePath, 'utf8'));
+  const currentIndex = currentCoverage.records.findIndex((record) => record.route === targetRoute);
+  if (currentIndex === -1) {
+    console.error(`No committed localization coverage record exists for ${targetRoute}.`);
+    process.exit(1);
+  }
+
+  if (!write) {
+    if (JSON.stringify(currentCoverage.records[currentIndex]) !== JSON.stringify(generatedRecord)) {
+      console.error(`Localization coverage record is stale for ${targetRoute}.`);
+      process.exit(1);
+    }
+    console.log(`Localization coverage record is current for ${targetRoute}.`);
+    process.exit(0);
+  }
+
+  currentCoverage.records[currentIndex] = generatedRecord;
+  writeFileSyncWithRetry(coveragePath, `${JSON.stringify(currentCoverage, null, 2)}\n`, 'utf8');
+  console.log(`Regenerated data/registry/locale-page-coverage.json for ${targetRoute} only.`);
+  process.exit(0);
+}
+
 const outcome = api.generateLocalizationArtifacts({ write });
 
 if (!outcome.ok) {

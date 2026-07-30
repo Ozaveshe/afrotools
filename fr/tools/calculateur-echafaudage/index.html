@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur d’échafaudage | AfroTools</title>
+<meta name="description" content="Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+<meta property="og:title" content="Calculateur d’échafaudage | AfroTools">
+<meta property="og:description" content="Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-echafaudage/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur d’échafaudage | AfroTools">
+<meta name="twitter:description" content="Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+
+.qe-workflow { margin: 1.5rem 0; }
+.qe-card { background:#fff; border:1px solid #d6d3d1; border-radius:8px; padding:1.2rem; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+.qe-card h2 { margin:0 0 .45rem; color:#292524; font-size:1.25rem; }
+.qe-card p { color:#57534e; line-height:1.6; margin:.35rem 0; }
+.qe-actions { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
+.qe-actions button { border:1px solid #a8a29e; background:#fff; color:#292524; border-radius:8px; padding:.7rem 1rem; font-weight:800; cursor:pointer; font-family:inherit; }
+.qe-actions button:first-child { background:#44403c; color:#fff; border-color:#44403c; }
+.qe-actions button:focus-visible { outline:2px solid #78716c; outline-offset:2px; }
+.qe-status { min-height:1.25rem; color:#57534e; font-size:.84rem; margin:.7rem 0 0; }
+.qe-verification { margin-top:1rem; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; }
+.qe-verification div { background:#fafaf9; border:1px solid #e7e5e4; border-radius:8px; padding:.85rem; }
+.qe-verification strong { display:block; color:#292524; margin-bottom:.35rem; }
+.qe-verification span { color:#57534e; font-size:.86rem; line-height:1.5; }
+@media (max-width: 760px) { .qe-verification { grid-template-columns:1fr; } .qe-actions button { width:100%; } }
+
+</style>
+
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/scaffolding-calc.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scaffolding-calc.webp">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<meta name="afrotools-content-id" content="fr-engineering:scaffolding-calc">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/tools/scaffolding-calc/">
+<meta name="afrotools-ai-tool-id" content="scaffolding-calc">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur d’échafaudage",
+    "description": "Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.",
+    "url": "https://afrotools.com/fr/tools/calculateur-echafaudage/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Le moteur partagé utilise périmètre, hauteur, type, durée et tarifs du pays.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser Calculateur d’échafaudage ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le moteur partagé utilise périmètre, hauteur, type, durée et tarifs du pays."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Un responsable compétent doit vérifier ancrages, charges, stabilité, accès et inspections."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-echafaudage/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scaffolding-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-echafaudage/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scaffolding-calc/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Accueil</a></li><li><a href="/engineering/">Ingénierie</a></li>
+    <li aria-current="page">Scaffolding Calculateur</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Scaffolding Calculateur</h1>
+    <p>Calculer</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Bâtiment & Scaffolding Details</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label" for="sg-country">Pays</label>
+          <select class="en-select" id="sg-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">Afrique du Sud (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Égypte (EGP)</option><option value="ET">Éthiopie (ETB)</option><option value="TZ">Tanzanie (TZS)</option><option value="UG">Ouganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Maroc (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Bâtiment Perimeter (metres)</label>
+          <input aria-label="Sg perimeter" type="number" class="en-input" id="sg-perimeter" value="60" min="4">
+          <span class="en-hint">Total Longueur of Murs requiring scaffolding</span>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Bâtiment Hauteur (metres)</label>
+          <input aria-label="Sg Hauteur" type="number" class="en-input" id="sg-height" value="9" min="2" max="100">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Scaffolding Type</label>
+          <select class="en-select" id="sg-type" aria-label="Sg Type">
+            <option value="tube_coupler">Informations et hypothèses du calcul</option>
+            <option value="system">System / Kwikstage Scaffolding</option>
+            <option value="bamboo">Bamboo Scaffolding (W/E Africa informal)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Rental or Purchase?</label>
+          <select class="en-select" id="sg-mode" aria-label="Sg Mode">
+            <option value="rent">Rent (most common)</option>
+            <option value="buy">Purchase</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Rental Duration (weeks)</label>
+          <input aria-label="Sg weeks" type="number" class="en-input" id="sg-weeks" value="8" min="1" max="104">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Informations et hypothèses du calcul</label>
+          <select class="en-select" id="sg-labour" aria-label="Sg Main-d’œuvre">
+            <option value="yes">Oui — include erection & dismantling</option>
+            <option value="no">Informations et hypothèses du calcul</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="en-btn" onclick="calcScaffolding()">Calculer Scaffolding</button>
+    </div>
+
+    <div class="en-results" id="sg-results">
+      <div class="en-results-hero">
+        <div class="en-results-title" id="sg-headline">Scaffolding Estimer</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Total Scaffold Surface</div><div class="en-stat-value" id="sg-area">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Tubes nécessaires</div><div class="en-stat-value" id="sg-tubes">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Boards / Decks</div><div class="en-stat-value" id="sg-boards">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Couplers / Fittings</div><div class="en-stat-value" id="sg-couplers">—</div></div>
+      </div>
+      <div class="en-results-grid" style="margin-top:1rem">
+        <div class="en-stat-card"><div class="en-stat-label">Matériaux Coût</div><div class="en-stat-value" id="sg-mat-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Main-d’œuvre (erect + dismantle)</div><div class="en-stat-value" id="sg-lab-cost">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Coût total</div><div class="en-stat-value" id="sg-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Coût per m² per week</div><div class="en-stat-value" id="sg-per-m2">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Safety Checklist</h3>
+        <ul style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem">
+          <li>Informations et hypothèses du calcul</li>
+          <li>Informations et hypothèses du calcul</li>
+          <li>Informations et hypothèses du calcul</li>
+          <li>Charger</li>
+          <li>Un responsable compétent doit vérifier ancrages, charges, stabilité, accès et inspections.</li>
+          <li id="sg-bamboo-note" style="display:none">Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+    <section class="qe-workflow" data-queued-engineering-upgrade="scaffolding-calc" data-tool-verification-panel data-tool-id="scaffolding-calc" aria-labelledby="scaffolding-calc-workflow-title">
+      <div class="qe-card">
+        <h2 id="scaffolding-calc-workflow-title">Exportable planning brief</h2>
+        <p>Charger</p>
+        <div class="qe-actions">
+          <button type="button" data-qe-copy="scaffolding-calc">Copier brief</button>
+          <button type="button" data-qe-download="scaffolding-calc" data-no-gate="true">Télécharger le TXT</button>
+        </div>
+        <p class="qe-status" id="scaffolding-calc-qe-status" role="status" aria-live="polite"></p>
+        <div class="qe-verification" aria-label="Scaffolding Calculateur verification notes">
+          <div><strong>Source</strong><span>Un responsable compétent doit vérifier ancrages, charges, stabilité, accès et inspections.</span></div>
+          <div><strong>Actualité</strong><span>Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.</span></div>
+          <div><strong>Méthodologie</strong><span>Le moteur partagé utilise périmètre, hauteur, type, durée et tarifs du pays.</span></div>
+          <div><strong>Limites</strong><span>Charger</span></div>
+        </div>
+      </div>
+    </section>
+</main>
+<nav class="fr-engineering-related-tools" aria-labelledby="scaffolding-calc-related-title">
+  <h2 id="scaffolding-calc-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/tools/dimensionnement-fenetres-portes/">Dimensionnement des fenêtres et portes</a></li>
+      <li><a href="/fr/tools/materiaux-plomberie/">Calculateur de matériaux de plomberie</a></li>
+      <li><a href="/fr/ingenierie/afrodraft/">AfroDraft CAO 2D</a></li>
+  </ul>
+</nav>
+<afro-footer></afro-footer>
+<script src="/engines/scaffolding-engine.js?v=4838c3b3"></script>
+<script>
+function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcScaffolding(){
+  var result = window.AfroTools.ScaffoldingEngine.calculate({
+    country:document.getElementById('sg-country').value,
+    perimeter:document.getElementById('sg-perimeter').value,
+    height:document.getElementById('sg-height').value,
+    type:document.getElementById('sg-type').value,
+    mode:document.getElementById('sg-mode').value,
+    weeks:document.getElementById('sg-weeks').value,
+    includeLabour:document.getElementById('sg-labour').value === 'yes'
+  });
+  if (!result.ok) {
+    document.getElementById('sg-results').classList.remove('on');
+    return;
+  }
+  document.getElementById('sg-bamboo-note').style.display = result.type === 'bamboo' ? 'list-item' : 'none';
+  document.getElementById('sg-headline').textContent = result.perimeter + 'm × ' + result.height + 'm — ' + result.area.toLocaleString() + 'm² scaffold';
+  document.getElementById('sg-area').textContent = result.area.toLocaleString() + ' m²';
+  document.getElementById('sg-tubes').textContent = result.tubes.toLocaleString() + ' tubes';
+  document.getElementById('sg-boards').textContent = result.boards.toLocaleString() + ' boards';
+  document.getElementById('sg-couplers').textContent = result.type === 'bamboo' ? 'N/A (lashed)' : result.couplers.toLocaleString();
+  document.getElementById('sg-mat-cost').textContent = fmtCur(result.symbol, result.materialCost) + (result.mode === 'rent' ? ' (' + result.weeks + ' wks)' : ' (purchase)');
+  document.getElementById('sg-lab-cost').textContent = result.includeLabour ? fmtCur(result.symbol, result.labourCost) : 'Not included';
+  document.getElementById('sg-total').textContent = fmtCur(result.symbol, result.total);
+  document.getElementById('sg-per-m2').textContent = result.mode === 'rent' ? fmtCur(result.symbol, result.materialCostPerM2) + '/m²/wk' : fmtCur(result.symbol, result.materialCostPerM2) + '/m² (purchase)';
+
+  document.getElementById('sg-results').classList.add('on');
+  document.getElementById('sg-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+<script>
+(function(){
+  var config = {
+    title: "Scaffolding Calculateur",
+    slug: "scaffolding-calc",
+    resultSelector: "#sg-results",
+    primary: "#sg-total"
+  };
+  function clean(text){ return String(text || '').replace(/\s+/g, ' ').trim(); }
+  function labelFor(field){
+    if (!field) return '';
+    if (field.id) {
+      var direct = document.querySelector('label[for="' + field.id + '"]');
+      if (direct) return clean(direct.textContent);
+    }
+    var wrap = field.closest && field.closest('.en-field');
+    var label = wrap && wrap.querySelector('label, .en-label');
+    return clean(label ? label.textContent : (field.getAttribute('aria-label') || field.id || field.name || 'Input'));
+  }
+  function valueFor(field){
+    if (!field) return '';
+    if (field.tagName && field.tagName.toLowerCase() === 'select') {
+      return clean(field.options[field.selectedIndex] ? field.options[field.selectedIndex].text : field.value);
+    }
+    return clean(field.value);
+  }
+  function captureInputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('.en-field input, .en-field select')).map(function(field){
+      return '- ' + labelFor(field) + ': ' + valueFor(field);
+    }).filter(function(line){ return line.indexOf(':') !== line.length - 1; }).slice(0, 18);
+  }
+  function captureResults(){
+    var result = document.querySelector(config.resultSelector);
+    if (!result || !result.classList.contains('on')) {
+      var button = document.querySelector('button[onclick*="calc"], .en-btn');
+      if (button) button.click();
+      result = document.querySelector(config.resultSelector);
+    }
+    var primary = clean(document.querySelector(config.primary) && document.querySelector(config.primary).textContent);
+    var stats = Array.prototype.slice.call(document.querySelectorAll(config.resultSelector + ' .en-stat-card')).map(function(card){
+      var label = clean(card.querySelector('.en-stat-label') && card.querySelector('.en-stat-label').textContent);
+      var value = clean(card.querySelector('.en-stat-value') && card.querySelector('.en-stat-value').textContent);
+      return label && value ? '- ' + label + ': ' + value : '';
+    }).filter(Boolean).slice(0, 12);
+    return { primary: primary, stats: stats };
+  }
+  function buildBrief(){
+    var result = captureResults();
+    var lines = [
+      config.title + ' - AfroTools planning brief',
+      'Generated locally in this browser.',
+      '',
+      'Headline Résultat: ' + (result.primary || 'Run the Calculateur to Actualiser the Résultat.'),
+      '',
+      'Inputs:',
+      captureInputs().join('\n') || '- Non Entrées captured.',
+      '',
+      'Results:',
+      result.stats.join('\n') || '- Non Résultat values captured.',
+      '',
+      'Hypothèses and checks:',
+      '- Estimation indicative only; confirm current supplier, contractor, professional, permit, safety, and Chantier conditions before acting.',
+      '- The Calculateur does not send Paramètres du projet to a server when copying or downloading.',
+      '- Keep a quote pack with drawings, photos, measurements, and supplier terms beside this Estimer.'
+    ];
+    return lines.join('\n');
+  }
+  function status(message){
+    var el = document.getElementById(config.slug + '-qe-status');
+    if (el) el.textContent = message;
+  }
+  function copyBrief(){
+    var text = buildBrief();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ status('Brief copied.'); }).catch(function(){ fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text){
+    var area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand('copy'); status('Brief selected and copied.'); }
+    catch (err) { status('Brief selected. Press Ctrl+C to Copier.'); }
+    document.body.removeChild(area);
+  }
+  function downloadBrief(){
+    var text = buildBrief();
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = config.slug + '-planning-brief.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    status('TXT brief downloaded.');
+  }
+  document.addEventListener('click', function(event){
+    if (event.target.closest('[data-qe-copy="' + config.slug + '"]')) copyBrief();
+    if (event.target.closest('[data-qe-download="' + config.slug + '"]')) downloadBrief();
+  });
+}());
+</script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="scaffolding-calc" aria-labelledby="scaffolding-calc-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="scaffolding-calc-fr-guide-title">Calculateur d’échafaudage : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/scaffolding-calc.webp" alt="Illustration du parcours Calculateur d’échafaudage" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours Calculateur d’échafaudage.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Calculez surface, tubes, planchers, raccords, location ou achat et main-d’œuvre.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Le moteur partagé utilise périmètre, hauteur, type, durée et tarifs du pays.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Un responsable compétent doit vérifier ancrages, charges, stabilité, accès et inspections.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/tools/scaffolding-calc/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/tools/scaffolding-calc/">https://afrotools.com/tools/scaffolding-calc/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="scaffolding-calc">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"scaffolding-calc","name":"Calculateur d’échafaudage","source":"/tools/scaffolding-calc/","privacy":"local-first","aiConsent":"explicit"};</script>
+</body>
+</html>

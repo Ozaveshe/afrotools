@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -219,61 +219,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP '};
-var CPM_RATES={africa:{pre:3,mid:5,post:2},mixed:{pre:7,mid:10,post:5},diaspora:{pre:15,mid:20,post:10}};
-var NICHE_MULT={business:1.5,entertainment:1.0,news:1.2,education:1.3,sports:1.1,culture:0.9,tech:1.4};
-function fmt(n,d){return n.toLocaleString('en-US',{minimumFractionDigits:d||0,maximumFractionDigits:d||2});}
-function calculate(){
-  var country=document.getElementById('country').value;
-  var sym=SYM[country];var rate=FX[country];
-  var downloads=parseInt(document.getElementById('downloads').value)||5000;
-  var episodes=parseInt(document.getElementById('episodes').value)||4;
-  var audience=document.getElementById('audience').value;
-  var niche=document.getElementById('niche').value;
-  var patrons=parseInt(document.getElementById('patrons').value)||0;
-  var patronFee=parseFloat(document.getElementById('patronFee').value)||5;
-  var cpm=CPM_RATES[audience];
-  var nicheMult=NICHE_MULT[niche]||1;
-  var downloadsPerEp=downloads/episodes;
-  var preRoll=downloadsPerEp>1000?(downloadsPerEp/1000*cpm.pre*episodes*nicheMult):0;
-  var midRoll=downloadsPerEp>1000?(downloadsPerEp/1000*cpm.mid*episodes*nicheMult):0;
-  var postRoll=downloadsPerEp>1000?(downloadsPerEp/1000*cpm.post*episodes*nicheMult):0;
-  var adTotal=preRoll+midRoll+postRoll;
-  var sponsorship=downloadsPerEp>=1000?(downloadsPerEp/1000)*150*nicheMult:0;
-  var patreonRevenue=patrons*patronFee;
-  var merch=downloads>=5000?downloads*0.001*15:0;
-  var total=adTotal+sponsorship+patreonRevenue+merch;
-  document.getElementById('totalMonthly').textContent='$'+fmt(total,0);
-  document.getElementById('localMonthly').textContent=sym+fmt(total*rate,0)+'/month';
-  document.getElementById('annualRevenue').textContent='$'+fmt(total*12,0);
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Ad Revenue</div><div class="en-metric-value">$'+fmt(adTotal,0)+'</div><div class="en-metric-unit">Pre/mid/post roll</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Sponsorships</div><div class="en-metric-value">$'+fmt(sponsorship,0)+'</div><div class="en-metric-unit">Direct deals</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Patreon/Support</div><div class="en-metric-value">$'+fmt(patreonRevenue,0)+'</div><div class="en-metric-unit">'+patrons+' patrons</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Downloads/Episode</div><div class="en-metric-value">'+fmt(downloadsPerEp,0)+'</div><div class="en-metric-unit">'+episodes+' eps/month</div></div>';
-  var streams=[
-    {name:'Pre-Roll Ads',monthly:preRoll},{name:'Mid-Roll Ads',monthly:midRoll},{name:'Post-Roll Ads',monthly:postRoll},
-    {name:'Direct Sponsorships',monthly:sponsorship},{name:'Patreon / Listeners',monthly:patreonRevenue},{name:'Merchandise',monthly:merch}
-  ];
-  document.getElementById('streamTable').innerHTML=streams.map(function(s){
-    var status=s.monthly>0?'<span style="color:#16a34a;font-weight:700">&#x2705; Active</span>':'<span style="color:#94a3b8">Not yet unlocked</span>';
-    return '<tr><td class="en-td-value">'+s.name+'</td><td>$'+fmt(s.monthly,0)+'</td><td class="en-td-highlight">$'+fmt(s.monthly*12,0)+'</td><td>'+status+'</td></tr>';
-  }).join('');
-  var thresholds=[
-    {name:'Programmatic Ads',threshold:1000},{name:'Direct Sponsorships',threshold:5000},{name:'Premium Sponsors',threshold:10000},{name:'Brand Deals (major)',threshold:50000}
-  ];
-  document.getElementById('unlockTable').innerHTML=thresholds.map(function(t){
-    var status=downloads>=t.threshold?'<span style="color:#16a34a;font-weight:700">&#x2705; Unlocked!</span>':'<span style="color:#f59e0b;font-weight:600">'+fmt(t.threshold-downloads)+' more downloads needed</span>';
-    return '<tr><td class="en-td-value">'+t.name+'</td><td>'+fmt(t.threshold)+' downloads/ep</td><td>'+status+'</td></tr>';
-  }).join('');
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="/engines/podcast-monetization-engine.js?v=f40c3588"></script>
+<script src="/assets/js/pages/creative/creative-result-tools.js?v=d06b5bc3"></script>
+<script src="/assets/js/pages/creative/podcast-monetization-controller.js?v=5478cabf"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://afrotools.com/schemas/fr-agriculture-parity-manifest.schema.json",
+  "title": "AfroTools French Agriculture parity manifest",
+  "type": "object",
+  "required": ["schemaVersion", "programme", "locale", "source", "constraints", "rows"],
+  "properties": {
+    "schemaVersion": { "const": 1 },
+    "programme": { "const": "fr-agriculture-parity" },
+    "locale": { "const": "fr" },
+    "source": { "const": "assets/js/components/tool-registry.js" },
+    "constraints": {
+      "type": "object",
+      "required": ["expectedRows", "expectedGeneratedRows", "expectedHandAuthoredRows"],
+      "properties": {
+        "expectedRows": { "const": 447 },
+        "expectedGeneratedRows": { "const": 443 },
+        "expectedHandAuthoredRows": { "const": 4 }
+      }
+    },
+    "rows": {
+      "type": "array",
+      "minItems": 447,
+      "maxItems": 447,
+      "items": {
+        "type": "object",
+        "required": [
+          "english",
+          "french",
+          "family",
+          "country",
+          "owners",
+          "hreflang",
+          "ai",
+          "artwork",
+          "acceptance"
+        ],
+        "properties": {
+          "english": {
+            "type": "object",
+            "required": ["id", "route", "routeKey", "file", "status"]
+          },
+          "french": {
+            "type": "object",
+            "required": [
+              "route",
+              "routeKey",
+              "file",
+              "ownerState",
+              "contractId",
+              "rendererId",
+              "currentRuntimeState"
+            ]
+          },
+          "family": { "type": "string", "minLength": 1 },
+          "country": {
+            "oneOf": [
+              { "type": "null" },
+              {
+                "type": "object",
+                "required": ["code", "englishSlug", "frenchName"],
+                "properties": {
+                  "code": { "type": "string", "pattern": "^[A-Z]{2}$" }
+                }
+              }
+            ]
+          },
+          "owners": {
+            "type": "object",
+            "required": ["englishPage", "englishEngine", "englishData", "frenchRenderer"]
+          },
+          "hreflang": {
+            "type": "object",
+            "required": ["owner", "state", "englishRoute", "frenchRoute"]
+          },
+          "ai": {
+            "type": "object",
+            "required": ["owner", "state", "mappedRoute"]
+          },
+          "artwork": {
+            "type": "object",
+            "required": ["imageId", "file", "state"]
+          },
+          "acceptance": {
+            "type": "object",
+            "required": [
+              "state",
+              "oracle",
+              "browserReceipt",
+              "exportReceipt",
+              "sourceReceipt",
+              "limitations"
+            ]
+          }
+        }
+      }
+    }
+  }
+}

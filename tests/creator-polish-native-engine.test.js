@@ -1,0 +1,18 @@
+"use strict";
+const assert = require("node:assert");
+const fs = require("node:fs");
+const vm = require("node:vm");
+const context = { window: {} };
+vm.createContext(context);
+vm.runInContext(fs.readFileSync("engines/src/creator-polish-engine.js", "utf8"), context);
+const engine = context.window.AfroTools.CreatorPolishEngine;
+const result = engine.analyze({ lang: "fr", text: "Ce projet explique clairement le travail.  Le travail reste local.. Le travail peut ensuite être relu par une personne." });
+assert.equal(result.language, "fr");
+assert.ok(result.metrics.words > 10);
+assert.equal(result.metrics.sentences, 3);
+assert.ok(result.repeatedWords.includes("travail"));
+assert.ok(!result.cleaned.includes("  "));
+assert.ok(!result.cleaned.includes(".."));
+assert.match(result.boundary, /locale/);
+assert.throws(() => engine.analyze({ text: "Trop court" }), /20/);
+console.log("creator-polish native engine: 8 assertions passed");

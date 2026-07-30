@@ -12,6 +12,14 @@
   },
   "rules": [
     {
+      "id": "fr-engineering-native-owners",
+      "locale": "fr",
+      "routePattern": "^/fr/(?:ingenierie(?:/(?:afrodraft|planificateur-etage))?|tools/(?:calculateur-solaire|plan-etage|devis-quantitatif|calcul-structure|charge-electrique|dosage-beton|calculateur-peinture|calculateur-carrelage|dimensionnement-citerne|calculateur-toiture|cout-forage|calculateur-armature|dimensionnement-generateur|generateur-boq|cout-renovation|dimensionnement-fosse-septique|cout-cloture|cout-piscine|honoraires-architecte|estimateur-du-cout-de-preparation-d-un-terrain|estimateur-du-cout-de-construction-routiere|calculateur-echafaudage|dimensionnement-fenetres-portes|materiaux-plomberie))/$",
+      "state": "native",
+      "sourceOwner": "scripts/build-french-engineering-parity.js and native French runtime owners",
+      "engineLocaleNeutral": true
+    },
+    {
       "id": "fr-shared-tool-shells",
       "locale": "fr",
       "routePattern": "^/fr/(?:tools|widgets)/",
@@ -53,6 +61,22 @@
     }
   ],
   "overrides": [
+    { "route": "/fr/creative/", "state": "native", "sourceOwner": "scripts/build-fr-creative-hub.js", "engineLocaleNeutral": true, "equivalentRoute": "/creative/" },
+    { "route": "/fr/tools/calendrier-medias-sociaux/", "state": "native", "sourceOwner": "scripts/build-fr-creative-simple-native.js", "engineLocaleNeutral": true, "equivalentRoute": "/tools/social-media-calendar/" },
+    { "route": "/fr/tools/forfait-photo-mariage/", "state": "native", "sourceOwner": "scripts/build-fr-creative-simple-native.js", "engineLocaleNeutral": true, "equivalentRoute": "/tools/wedding-photo-package/" },
+    { "route": "/fr/telecom/calculateur-roaming/", "state": "native", "sourceOwner": "scripts/build-french-telecom-parity.js, fr/telecom/calculateur-roaming/index.html, assets/js/pages/fr-telecom-app.js and assets/js/engines/telecom-planning-engine.js", "engineLocaleNeutral": true },
+    { "route": "/fr/telecom/calculateur-consommation-data/", "state": "native", "sourceOwner": "scripts/build-french-telecom-parity.js, fr/telecom/calculateur-consommation-data/index.html, assets/js/pages/fr-telecom-app.js and assets/js/engines/telecom-planning-engine.js", "engineLocaleNeutral": true },
+    { "route": "/fr/gouvernement/", "state": "native", "sourceOwner": "scripts/build-fr-government-parity.js", "engineLocaleNeutral": true, "equivalentRoute": "/government/" },
+    { "route": "/fr/tools/cout-permis-travail/", "state": "native", "sourceOwner": "data/government/fr-parity-apps.json", "engineLocaleNeutral": true, "equivalentRoute": "/tools/work-permit-cost/" },
+    { "route": "/fr/tools/cout-cctv/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/cout-cctv/index.html; controller=assets/js/pages/french-security-tools.js; engine=assets/js/pages/french-security-tools.js:cctvEngine", "engineLocaleNeutral": false },
+    { "route": "/fr/tools/cout-securite-maison/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/cout-securite-maison/index.html; controller=assets/js/pages/french-security-tools.js; engine=assets/js/engines/home-security-cost.js", "engineLocaleNeutral": true },
+    { "route": "/fr/tools/cout-violation-donnees/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/cout-violation-donnees/index.html; controller=assets/js/pages/french-security-tools.js; engine=assets/js/pages/french-security-tools.js:breachEngine", "engineLocaleNeutral": false },
+    { "route": "/fr/tools/evaluation-risque-cybersecurite/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/evaluation-risque-cybersecurite/index.html; controller=assets/js/pages/french-security-tools.js; engine=assets/js/pages/french-security-tools.js:cyberEngine", "engineLocaleNeutral": false },
+    { "route": "/fr/tools/checklist-securite-incendie/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/checklist-securite-incendie/index.html; controller=assets/js/pages/french-security-tools.js:fireEngine; engine=assets/js/engines/security-fire-safety.js", "engineLocaleNeutral": true },
+    { "route": "/fr/tools/force-mot-de-passe/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/force-mot-de-passe/index.html; controller=assets/js/pages/french-security-tools.js:renderPassword; engine=assets/js/pages/french-security-tools.js:scorePassword+generatePassword+generatePassphrase", "engineLocaleNeutral": false },
+    { "route": "/fr/tools/quiz-phishing/", "state": "native", "sourceOwner": "generator=scripts/generate-fr-tool-gap-pages.js -> scripts/lib/french-security-page.js; page=fr/tools/quiz-phishing/index.html; controller=assets/js/pages/french-security-tools.js:renderPhishing; engine=assets/js/pages/french-security-tools.js:PHISHING_QUESTIONS", "engineLocaleNeutral": false },
+    { "route": "/fr/tools/calculateur-de-points-d-immigration/", "state": "native", "sourceOwner": "fr/tools/calculateur-de-points-d-immigration/index.html and assets/js/pages/fr-diaspora-apps.js", "engineLocaleNeutral": true },
+    { "route": "/fr/tools/suivi-de-demande-de-visa/", "state": "native", "sourceOwner": "fr/tools/suivi-de-demande-de-visa/index.html and assets/js/pages/fr-diaspora-apps.js", "engineLocaleNeutral": true },
     { "route": "/tools/cbk-rates/", "state": "native", "sourceOwner": "tools/cbk-rates/index.html and assets/js/pages/cbk-manual-converter.js", "engineLocaleNeutral": true },
     { "route": "/fr/tools/taux-de-change-de-la-cbk/", "state": "native", "sourceOwner": "fr/tools/taux-de-change-de-la-cbk/index.html and assets/js/pages/cbk-manual-converter.js", "engineLocaleNeutral": true },
     { "route": "/sw/zana/viwango-vya-cbk/", "state": "native", "sourceOwner": "sw/zana/viwango-vya-cbk/index.html and assets/js/pages/cbk-manual-converter.js", "engineLocaleNeutral": true },
@@ -77,6 +101,7 @@
     { "route": "/fr/benin/calculateur-tva/", "state": "native", "sourceOwner": "fr/benin/calculateur-tva.html and assets/js/engines/bj-vat.js", "engineLocaleNeutral": true },
     { "route": "/sw/benin/kikokotoo-vat/", "state": "native", "sourceOwner": "sw/benin/kikokotoo-vat/index.html and assets/js/engines/bj-vat.js", "engineLocaleNeutral": true },
     { "route": "/fr/benin/bj-vat/", "state": "deprecated", "sourceOwner": "fr/benin/bj-vat.html noindex redirect alias", "engineLocaleNeutral": false, "redirectTarget": "/fr/benin/calculateur-tva/" },
+    { "route": "/fr/guinea-bissau/gw-vat/", "state": "native", "sourceOwner": "fr/guinea-bissau/gw-vat.html and assets/js/engines/gw-vat.js", "engineLocaleNeutral": true },
     { "route": "/fr/cameroon/cm-vat/", "state": "deprecated", "sourceOwner": "fr/cameroon/cm-vat.html noindex redirect alias", "engineLocaleNeutral": false, "redirectTarget": "/fr/cameroun/calculateur-tva/" },
     { "route": "/sw/auth/", "state": "english-fallback", "fallbackRoute": "/auth/", "sourceOwner": "scripts/build-swahili-product-surface.js: explicit account bridge" },
     { "route": "/sw/dashboard/", "state": "english-fallback", "fallbackRoute": "/dashboard/", "sourceOwner": "scripts/build-swahili-product-surface.js: explicit dashboard bridge" },

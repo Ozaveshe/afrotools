@@ -58,6 +58,57 @@
 
   var MAJOR_TOOL_OVERRIDES = { 'cv-builder': major('career-documents', ['write cv', 'build resume', 'improve cv', 'ats cv'], ['Help me build a CV for a finance role in Kenya'], [], [INPUTS.targetRole], 'browser_local', ['route_only', 'prefill', 'explain', 'generate_document', 'export'], ['cv', 'pdf', 'json'], 'user_input', 'employment', ['pro_export']), 'cover-letter': major('career-documents', ['write cover letter', 'job application letter', 'application pack'], ['Write a cover letter for an NGO program officer role'], [], [INPUTS.targetRole], 'browser_local', ['route_only', 'generate_document', 'export'], ['report', 'pdf', 'json'], 'user_input', 'employment', ['pro_export']), 'scholarship-finder': major('scholarships', ['find scholarships', 'scholarship eligibility', 'study funding'], ["Find scholarships for a Nigerian master's student in Canada"], [INPUTS.country, INPUTS.studyLevel], [INPUTS.targetCountry], 'account_optional', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['shortlist', 'checklist', 'json'], 'mixed', 'education', ['lead_opt_in']), 'study-abroad-cost': major('study-abroad', ['study abroad cost', 'student budget abroad'], ['Estimate study abroad costs from Ghana to the UK'], [INPUTS.country, INPUTS.targetCountry, INPUTS.studyLevel], [INPUTS.budget], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['number', 'table', 'checklist', 'report'], 'estimated', 'education', ['lead_opt_in']), 'import-duty': major('customs-duty', ['import duty', 'customs duty', 'landed cost'], ['Estimate import duty for phones shipped to Nigeria'], [INPUTS.destinationCountry, INPUTS.itemCategory, INPUTS.itemValue], [INPUTS.originCountry], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['api', 'lead_opt_in']), 'cbk-rates': Object.assign(major('exchange-rates', ['use a dated CBK mean rate', 'manual KES conversion', 'understand the CBK indicative table'], ['Open the official CBK table and help me enter its dated Mean rate', 'Convert with a CBK Mean value I already have'], [INPUTS.foreignAmount, INPUTS.currencyCode, INPUTS.cbkMeanRate, INPUTS.quotedUnits, INPUTS.sourceDate], [], 'browser_local', ['route_only', 'prefill', 'explain'], ['number', 'report'], 'user_input', 'finance', []), { title: 'CBK Rate Guide & Manual KES Converter', shortDescription: 'Enter a dated Mean rate from the official CBK table and calculate locally. The tool supplies no current or bundled rate.', countriesSupported: ['KENYA'], languagesSupported: ['en', 'fr', 'sw'], currencySupport: ['KES'] }), 'ng-cit': Object.assign(major('corporate-income-tax', ['nigeria company income tax', 'nigeria cit 2026', 'development levy nigeria', 'small company tax nigeria'], ['Estimate 2026 CIT for a Nigerian company using reviewed statutory profit bases'], [INPUTS.companyTurnover, INPUTS.companyFixedAssets, INPUTS.totalProfits, INPUTS.assessableProfits, INPUTS.professionalServices], [INPUTS.mneGroup], 'browser_local', ['route_only', 'explain'], ['number', 'report'], 'official', 'tax', []), { title: 'Nigeria CIT Calculator', shortDescription: 'Estimate 2026 CIT and development levy after checking every NTA 2025 small-company condition; no filing or effective-tax-rate top-up is produced.', countriesSupported: ['NIGERIA'], languagesSupported: ['en', 'fr', 'ha', 'yo'], currencySupport: ['NGN'] }), 'ng-cgt': Object.assign(major('capital-gains-tax', ['nigeria capital gains tax', 'nigeria cgt 2026', 'nigeria asset disposal tax', 'nigeria share gain tax'], ['Estimate 2026 Nigeria tax on an asset disposal under the NTA 2025 rules'], [INPUTS.sellerType, INPUTS.assetType, INPUTS.disposalProceeds, INPUTS.acquisitionCost, INPUTS.disposalCosts], [INPUTS.otherChargeableIncome, INPUTS.companyTurnover, INPUTS.companyFixedAssets, INPUTS.professionalServices], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'report'], 'official', 'tax', []), { title: 'Nigeria CGT Calculator', shortDescription: 'Estimate a scoped 2026 disposal gain and incremental tax under NTA 2025; complex transactions, filing and official assessment remain outside the tool.', countriesSupported: ['NIGERIA'], languagesSupported: ['en', 'fr', 'ha'], currencySupport: ['NGN'] }), 'ke-cgt': Object.assign(major('capital-gains-tax', ['kenya capital gains tax', 'kenya cgt 2026', 'kra cgt calculator', 'kenya property gain tax'], ['Estimate Kenya CGT from net transfer value and documented adjusted cost'], [INPUTS.disposalProceeds, INPUTS.acquisitionCost, INPUTS.disposalCosts], [], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'report'], 'official', 'tax', []), { title: 'Kenya Capital Gains Tax Calculator', shortDescription: 'Estimate the general 15% Kenya CGT after separating transfer costs and adjusted cost; exemption eligibility, filing and official assessment remain outside the tool.', countriesSupported: ['KENYA'], languagesSupported: ['en', 'fr'], currencySupport: ['KES'] }), 'za-cgt': Object.assign(major('capital-gains-tax', ['south africa capital gains tax', 'south africa cgt 2027', 'sars cgt calculator', 'south africa property gain tax'], ['Estimate a South African taxable capital gain for the 2027 assessment year'], [INPUTS.sellerType, INPUTS.assetType, INPUTS.disposalProceeds, INPUTS.acquisitionCost, INPUTS.disposalCosts], [INPUTS.otherChargeableIncome], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'report'], 'official', 'tax', []), { title: 'South Africa CGT Calculator', shortDescription: 'Estimate a scoped SARS 2027 capital gain, exclusions, losses, taxable capital gain and incremental normal tax; filing and official assessment stay outside the tool.', countriesSupported: ['SOUTH AFRICA'], languagesSupported: ['en'], currencySupport: ['ZAR'] }), 'dz-vat': Object.assign(major('vat-business-tax', ['algeria vat', 'algeria tva 19', 'extract algeria vat', 'algeria reduced vat'], ['Add Algeria VAT to a DZD amount', 'Extract Algeria VAT from a tax-inclusive total'], [INPUTS.vatAmount, INPUTS.vatMode, INPUTS.vatRateKind], [INPUTS.taxpayerRegime], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'pdf'], 'official', 'tax', []), { title: 'Algeria VAT Calculator', shortDescription: 'Add or extract 19% VAT, use 9% only after article 23 confirmation, and keep IFU regime screening separate from the calculation.', countriesSupported: ['ALGERIA'], languagesSupported: ['en', 'fr', 'sw'], currencySupport: ['DZD'] }), 'ao-vat': Object.assign(major('vat-business-tax', ['angola vat', 'angola iva 14', 'extract angola vat', 'angola simplified vat', 'cabinda vat'], ['Add Angola IVA to an AOA amount', 'Extract Angola IVA from a tax-inclusive total'], [INPUTS.vatAmount, INPUTS.vatMode, INPUTS.vatRateKind], [INPUTS.taxpayerRegime], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'pdf'], 'official', 'tax', []), { title: 'Angola VAT Calculator', shortDescription: 'Add or extract 14% IVA; use the 7%, 5% or eligible Cabinda 1% treatments only after confirming the statutory facts and taxpayer regime.', countriesSupported: ['ANGOLA'], languagesSupported: ['en', 'fr', 'sw'], currencySupport: ['AOA'] }), 'bj-vat': Object.assign(major('vat-business-tax', ['benin vat', 'benin tva 18', 'extract benin vat', 'benin vat invoice'], ['Add Benin VAT to an XOF amount', 'Extract Benin VAT from a tax-inclusive total'], [INPUTS.vatAmount, INPUTS.vatMode, INPUTS.vatRateKind], [], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'pdf'], 'official', 'tax', []), { title: 'Benin VAT Calculator', shortDescription: 'Add or extract 18% VAT; confirm export zero-rating, Article 229 classification and the current Article 228 threshold before filing.', countriesSupported: ['BENIN'], languagesSupported: ['en', 'fr', 'sw'], currencySupport: ['XOF'] }), 'bw-vat': Object.assign(major('vat-business-tax', ['botswana vat', 'botswana vat 14', 'extract botswana vat', 'burs vat registration', 'botswana digital vat'], ['Add Botswana VAT to a BWP amount', 'Extract Botswana VAT from a tax-inclusive total', 'Screen Botswana VAT registration turnover'], [INPUTS.vatAmount, INPUTS.vatMode, INPUTS.vatRateKind], [], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'pdf'], 'official', 'tax', []), { title: 'Botswana VAT Calculator', shortDescription: 'Add or extract the current 14% standard VAT, check one invoice line and screen BURS registration bands; zero-rating, exemptions and digital-services treatment remain confirmation-only.', countriesSupported: ['BOTSWANA'], languagesSupported: ['en', 'fr', 'sw'], currencySupport: ['BWP'] }), 'car-import-cost': major('vehicle-import', ['car import cost', 'vehicle import duty', 'landed car cost'], ['How much duty will I pay to import a 2016 Toyota Axio into Nigeria?'], [INPUTS.destinationCountry, INPUTS.itemCategory], [INPUTS.purchasePrice, INPUTS.shippingCost, INPUTS.fxRate, INPUTS.vehicleMake, INPUTS.vehicleModel, INPUTS.vehicleYear, INPUTS.originCountry], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['api', 'lead_opt_in']), 'vat-calc-pan-african': major('vat-business-tax', ['vat calculator', 'vat invoice', 'sales tax africa'], ['Create a VAT invoice in Ghana'], [INPUTS.country], [INPUTS.invoiceAmount, INPUTS.vatTreatment], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'pdf'], 'mixed', 'tax', ['api', 'widget', 'lead_opt_in']), 'solar-roi': major('solar-roi', ['solar roi', 'solar payback', 'replace generator'], ['Will solar pay back for a shop in Lagos?'], [INPUTS.country, INPUTS.monthlyBill], [], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['number', 'table', 'report'], 'mixed', 'energy', ['lead_opt_in']), 'fuel-tracker': major('fuel-prices', ['fuel price', 'petrol price', 'diesel price'], ['Show current petrol price context for Kenya'], [], [INPUTS.country], 'browser_local', ['route_only', 'prefill', 'explain', 'compare'], ['table', 'report'], 'mixed', 'energy', ['api', 'widget']), 'generator-fuel': major('generator-cost', ['generator fuel cost', 'diesel generator cost', 'petrol generator spend'], ['Estimate generator fuel cost for a shop in Lagos'], [INPUTS.country], [INPUTS.generatorSize, INPUTS.generatorHours], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'energy', ['widget', 'lead_opt_in']), 'cost-of-living': major('cost-of-living', ['cost of living', 'rent affordability', 'monthly budget'], ['Can I live in Accra on GHS 8000 per month?'], [INPUTS.country], [INPUTS.city, INPUTS.monthlyBudget, INPUTS.householdSize], 'browser_local', ['route_only', 'explain', 'compare', 'export'], ['number', 'table', 'checklist', 'report'], 'estimated', 'finance', ['api', 'lead_opt_in']), 'japa-calculator': major('relocation-planning', ['japa cost', 'relocation budget', 'move abroad cost'], ['How much should I save before moving from Lagos to Nairobi?'], [INPUTS.country, INPUTS.targetCountry], [INPUTS.budget, INPUTS.householdSize], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'checklist', 'report'], 'estimated', 'immigration', ['lead_opt_in']), 'invoice-generator': major('invoices', ['create invoice', 'download invoice', 'bill client'], ['Create an invoice for a design project in Ghana cedis'], [], [INPUTS.clientName], 'browser_local', ['route_only', 'prefill', 'generate_document', 'export'], ['pdf', 'json', 'report'], 'user_input', 'finance', ['pro_export']), 'paye-calculator': major('salary-tax', ['calculate paye', 'salary tax', 'net pay'], ['Calculate monthly PAYE for a salary in Nigeria'], [INPUTS.country, INPUTS.grossPay, INPUTS.payPeriod], [], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'pdf'], 'mixed', 'tax', ['pro_export']), 'ao-paye': major('salary-tax', ['angola paye', 'angola salary tax', 'irt inss', 'net pay in angola'], ['Calculate monthly salary tax for AOA 1000000 in Angola'], [INPUTS.country, INPUTS.grossPay, INPUTS.payPeriod], [], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'pdf'], 'mixed', 'tax', ['pro_export']), 'pdf-workspace': major('pdf-tools', ['merge pdf', 'split pdf', 'compress pdf'], ['Merge these PDFs without uploading them'], [], [INPUTS.pdfAction, INPUTS.documentFile], 'browser_local', ['route_only', 'prefill', 'export'], ['pdf', 'json'], 'user_input', 'none', ['pro_export']), 'gpa-calculator': major('academic-grades', ['gpa calculator', 'cgpa calculator', 'convert grades'], ['Calculate my GPA from university grades'], [INPUTS.country], [INPUTS.gradeBand, INPUTS.gpaScale], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table'], 'estimated', 'education', []), 'waec-calculator': major('waec-neco-grades', ['waec calculator', 'neco grade calculator', 'o level grades'], ['Calculate WAEC grade points for my subjects'], [INPUTS.country], [INPUTS.examSubjects], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table'], 'estimated', 'education', []), 'ielts-calculator': major('ielts-pathway', ['ielts score', 'english test score', 'study visa english'], ['Check whether IELTS 7 is enough for Canada study plans'], [INPUTS.country], [INPUTS.ieltsScore, INPUTS.targetCountry, INPUTS.studyLevel], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'checklist'], 'estimated', 'education', ['lead_opt_in']), 'business-planner': major('business-planning', ['business plan', 'start a business', 'registration checklist'], ['Build a market-entry plan for a salon in Accra'], [INPUTS.country], [], 'ai_optional', ['route_only', 'prefill', 'explain', 'generate_document', 'export'], ['checklist', 'report', 'pdf'], 'mixed', 'finance', ['pro_export', 'lead_opt_in']), 'medical-report': major('health-explainer', ['explain lab report', 'medical report'], ['Explain what these CBC results mean'], [], [INPUTS.documentFile], 'ai_optional', ['route_only', 'explain', 'export'], ['report', 'pdf'], 'user_input', 'health', ['pro_export']), 'afroplan-floor-planner': major('floor-planning', ['floor plan', 'room layout', 'house plan'], ['Draft a two-bedroom layout for a narrow plot'], [], [INPUTS.plotSize, INPUTS.roomSize, INPUTS.buildingType], 'ai_optional', ['route_only', 'explain', 'export'], ['image', 'json', 'report'], 'user_input', 'none', ['pro_export', 'lead_opt_in']), afrodraft: major('cad-drafting', ['cad plan', 'technical drawing', 'afrodraft'], ['Create a CAD-like concept plan for a shop'], [], [INPUTS.plotSize, INPUTS.buildingType, INPUTS.outputDesired], 'browser_local', ['route_only', 'explain', 'export'], ['image', 'json', 'pdf'], 'user_input', 'none', ['pro_export']), 'building-materials': major('construction-materials', ['estimate blocks', 'cement bags', 'building materials'], ['Estimate blocks and cement for a small room'], [], [INPUTS.country, INPUTS.roomSize, INPUTS.materialPreference], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'report'], 'estimated', 'legal', ['lead_opt_in', 'pro_export']), 'boq-generator': major('construction-boq', ['boq', 'bill of quantities', 'quantity takeoff'], ['Prepare a BOQ for a 3 bedroom bungalow'], [], [INPUTS.country, INPUTS.plotSize, INPUTS.buildingType], 'browser_local', ['route_only', 'explain', 'export'], ['table', 'pdf', 'json'], 'estimated', 'legal', ['pro_export', 'lead_opt_in']), 'land-size': major('land-measurement', ['land size', 'plot size', 'plot conversion'], ['Convert a 50 by 100 plot'], [], [INPUTS.country, INPUTS.plotSize], 'browser_local', ['route_only', 'prefill', 'explain'], ['number', 'table'], 'estimated', 'none', []), 'construction-budget': major('construction-budget', ['building cost', 'construction budget', 'house budget'], ['Estimate construction budget for a bungalow'], [], [INPUTS.country, INPUTS.plotSize, INPUTS.buildingType], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'estimated', 'finance', ['pro_export', 'lead_opt_in']), 'crop-yield-estimator': major('crop-yield', ['crop yield', 'maize farm', 'harvest estimate'], ['Estimate maize yield for 2 hectares in Nigeria'], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'none', ['lead_opt_in']), 'farm-profit-calculator': major('farm-profit', ['farm profit', 'farm roi', 'farm margin'], ['Is a maize farm profitable in Nigeria?'], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize, INPUTS.budget], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in', 'pro_export']), 'poultry-roi-calculator': major('poultry-roi', ['poultry roi', 'broiler profit', 'layer farm'], ['Calculate poultry ROI for 500 broilers in Ghana'], [], [INPUTS.country, INPUTS.birdCount, INPUTS.budget], 'browser_local', ['route_only', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in', 'pro_export']), 'fish-farming-roi': major('fish-farming-roi', ['fish farming roi', 'catfish profit', 'tilapia farm'], ['Plan fish farming ROI for tilapia in Kenya'], [], [INPUTS.country, INPUTS.fishCount, INPUTS.budget], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in', 'pro_export']), 'livestock-feed-calculator': major('livestock-feed', ['livestock feed', 'feed ration', 'cattle feed'], ['Estimate livestock feed cost for goats'], [], [INPUTS.country, INPUTS.livestockCount, INPUTS.budget], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in']), 'fertilizer-calculator': major('fertilizer-inputs', ['fertilizer', 'npk', 'urea'], ['Estimate fertilizer needs for maize'], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in']), 'input-prices': major('agri-input-prices', ['input prices', 'seed prices', 'fertilizer prices'], ['Compare fertilizer and seed prices in Ghana'], [], [INPUTS.country, INPUTS.crop], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['table', 'report'], 'mixed', 'finance', ['api', 'lead_opt_in']), 'irrigation-calculator': major('irrigation-planning', ['irrigation', 'water pump', 'drip irrigation'], ['Plan irrigation for onions in Senegal'], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'none', ['lead_opt_in']), 'storage-loss': major('post-harvest-storage', ['storage loss', 'post harvest', 'grain storage'], ['Estimate maize storage losses'], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize], 'browser_local', ['route_only', 'prefill', 'explain', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in']), 'commodity-prices': major('market-prices', ['commodity prices', 'market price', 'farm gate price'], ['Check maize market price planning'], [], [INPUTS.country, INPUTS.crop], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['table', 'report'], 'mixed', 'finance', ['api', 'lead_opt_in']), 'cocoa-tracker': major('cocoa-market', ['cocoa', 'farm gate cocoa', 'cocoa export'], ["Plan cocoa farm-gate pricing in Cote d'Ivoire"], [], [INPUTS.country, INPUTS.crop, INPUTS.farmSize], 'browser_local', ['route_only', 'prefill', 'explain', 'compare', 'export'], ['number', 'table', 'report'], 'mixed', 'finance', ['lead_opt_in']), afroatlas: major('country-intelligence', ['compare countries', 'africa data', 'country profile'], ['Compare Kenya and Ghana for a small ecommerce launch'], [], [INPUTS.country], 'browser_local', ['route_only', 'explain', 'compare', 'export'], ['map', 'table', 'report'], 'mixed', 'none', ['api', 'lead_opt_in']), afrostream: major('creator-intelligence', ['find streamers', 'creator news', 'african streamers'], ['Find Nigerian streamers with recent creator news'], [], [INPUTS.country, INPUTS.creatorName], 'browser_local', ['route_only', 'explain', 'compare', 'export'], ['shortlist', 'table', 'report'], 'mixed', 'none', ['sponsored_slot', 'lead_opt_in']) };
 
+  var FRENCH_DOCUMENT_PDF_INTENTS = {
+    'pdf-workspace': ['espace pdf', 'plusieurs opérations pdf'],
+    'pdf-merge-split': ['fusionner des pdf', 'diviser un pdf', 'fusionner diviser pdf'],
+    'pdf-compress': ['compresser un pdf', 'réduire la taille pdf'],
+    'pdf-image-convert': ['pdf en image', 'image en pdf', 'convertir pdf image'],
+    'pdf-watermark': ['filigrane pdf', 'ajouter un filigrane pdf'],
+    'pdf-password': ['protéger pdf mot de passe', 'déverrouiller pdf'],
+    'pdf-page-numbers': ['numérotation pdf', 'numéroter les pages pdf'],
+    'pdf-sign': ['signer un pdf', 'signature pdf'],
+    'pdf-ocr': ['ocr pdf', 'extraire texte pdf numérisé'],
+    'pdf-form-filler': ['remplir formulaire pdf', 'compléter formulaire pdf'],
+    'pdf-redact': ['caviarder un pdf', 'masquer données pdf'],
+    'pdf-header-footer': ['en-tête pied de page pdf', 'ajouter en-tête pdf'],
+    'pdf-editor': ['éditeur pdf', 'annoter un pdf'],
+    'pdf-convert': ['convertir des documents', 'convertir pdf word excel'],
+    'pdf-reorder': ['réorganiser pages pdf', 'tourner supprimer pages pdf'],
+    'pdf-chat': ['questions sur un pdf', 'interroger un pdf'],
+    'pdf-translate': ['traduire un pdf', 'traduction pdf'],
+    'pdf-compare': ['comparer des pdf', 'différences entre deux pdf'],
+    'pdf-to-audio': ['pdf en audio', 'lire un pdf à voix haute'],
+    'pdf-bates': ['numérotation bates pdf', 'tampon bates pdf'],
+    'html-to-pdf': ['html en pdf', 'convertir html pdf'],
+    'pdf-find-replace': ['rechercher remplacer pdf', 'remplacer texte pdf'],
+    'pdf-repair': ['réparer un pdf', 'pdf endommagé'],
+    'pdf-workflow': ['flux de travail pdf', 'enchaîner opérations pdf'],
+    'cv-builder': ['générateur de cv', 'créer un cv'],
+    'invoice-generator': ['générateur de factures', 'créer une facture'],
+    'cover-letter': ['lettre de motivation', 'créer lettre motivation'],
+    'meeting-minutes': ['compte rendu de réunion', 'procès verbal réunion'],
+    'receipt-generator': ['générateur de reçus', 'créer un reçu'],
+    'business-plan': ['plan d’affaires document', 'créer plan affaires'],
+    'document-pdf': ['outils documents pdf', 'documents et pdf'],
+    'freelance-invoice': ['facture freelance', 'facture pour freelance']
+  };
+  [
+    ['50-30-20-budget', 'budget-personal', ['budget 50 30 20', 'repartir revenu besoins envies epargne', 'répartir mon salaire avec la règle 50 30 20'], ['Répartir mon salaire avec la règle 50/30/20']],
+    ['album-budget', 'creator-budget', ['album budget', 'budget album ep single', 'préparer le budget de sortie de mon album'], ['Préparer le budget de sortie de mon album']],
+    ['film-budget', 'creator-budget', ['film budget', 'budget film tournage postproduction', 'répartir le budget de mon film'], ['Répartir le budget de mon film']],
+    ['security-emergency-fund', 'emergency-savings', ['emergency fund', 'fonds urgence securite', 'calculer mon fonds d urgence de sécurité'], ['Calculer mon fonds d’urgence et de sécurité']],
+    ['side-hustle-ranker', 'income-experiment', ['side hustle ranker', 'activite complementaire', 'classer mes idées activité complémentaire'], ['Classer mes idées d’activité complémentaire selon mon temps, mes compétences et mon capital']]
+  ].forEach(function addFrenchPersonalFinanceOverride(item) {
+    MAJOR_TOOL_OVERRIDES[item[0]] = Object.assign(
+      major(item[1], item[2], item[3], [], [], 'browser_local', ['route_only'], ['number', 'table', 'report', 'json', 'pdf'], 'user_input', 'finance', []),
+      {
+        languagesSupported: ['en', 'fr'],
+        currencySupport: ['local'],
+        shortDescription: 'Open a deterministic browser-local planning workflow. Financial inputs are never prefetched, sent to AI, stored in analytics or required for routing.'
+      }
+    );
+  });
+
   MAJOR_TOOL_OVERRIDES['crypto-dca'] = Object.assign(
     major(
       'historical-market-replay',
@@ -682,7 +733,7 @@
   MAJOR_TOOL_OVERRIDES['contractor-vs-employee'] = Object.assign(
     major(
       'worker-cost-comparison',
-      ['contractor vs employee cost', 'employee or contractor cost', 'hiring model cost comparison'],
+      ['contractor vs employee cost', 'employee or contractor cost', 'hiring model cost comparison', 'prestataire ou salarié', 'coût prestataire salarié'],
       ['Open the private contractor versus employee cost calculator'],
       [],
       [],
@@ -697,14 +748,14 @@
       title: 'Contractor vs Employee Cost Calculator',
       shortDescription: 'Compare user-entered employee and contractor costs locally, without treating price as a worker-classification verdict. AfroTools AI can open the calculator but cannot prefill it, and no pay, cost or contract field is sent to AI.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['local'],
     },
   );
   MAJOR_TOOL_OVERRIDES['domestic-worker'] = Object.assign(
     major(
       'domestic-worker-pay-planning',
-      ['domestic worker pay calculator', 'household worker employer cost', 'domestic worker wage floor plan'],
+      ['domestic worker pay calculator', 'household worker employer cost', 'domestic worker wage floor plan', 'employée de maison', 'employé de maison', 'budget emploi à domicile'],
       ['Open the private domestic worker pay and cost calculator'],
       [],
       [],
@@ -719,14 +770,14 @@
       title: 'Domestic Worker Pay and Cost Calculator',
       shortDescription: 'Build a local pay-and-employer-cost plan from user-entered terms and a dated wage-floor source. AfroTools AI can open the calculator but cannot prefill it, and no pay, work-pattern, source or contract-readiness field is sent to AI.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['local'],
     },
   );
   MAJOR_TOOL_OVERRIDES['gratuity-calculator'] = Object.assign(
     major(
       'gratuity-final-pay-planning',
-      ['gratuity calculator', 'final pay estimate', 'severance planning calculator'],
+      ['gratuity calculator', 'final pay estimate', 'severance planning calculator', 'indemnité de départ', 'estimer une indemnité de départ'],
       ['Open the private gratuity and final-pay planning calculator'],
       [],
       [],
@@ -741,14 +792,14 @@
       title: 'Gratuity and Final-Pay Planning Calculator',
       shortDescription: 'Build a local final-pay estimate from user-entered pay, service, eligible days, payroll divisor, adjustments, and dated rule evidence. AfroTools AI can open the calculator but cannot prefill it, and no pay, service, adjustment or rule-source field is sent to AI.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['local'],
     },
   );
   MAJOR_TOOL_OVERRIDES['maternity-leave'] = Object.assign(
     major(
       'parental-leave-pay-planning',
-      ['maternity leave calculator', 'parental leave pay estimate', 'paternity leave planning'],
+      ['maternity leave calculator', 'parental leave pay estimate', 'paternity leave planning', 'congé maternité', 'congé parental', 'politique employeur congé'],
       ['Open the private parental leave pay planning calculator'],
       [],
       [],
@@ -763,14 +814,14 @@
       title: 'Parental Leave Pay Planning Calculator',
       shortDescription: 'Build a local leave and pay estimate from user-entered official-rule, salary, date, leave-day, replacement-rate, employer-policy, and HR-note values. AfroTools AI can open the planner but cannot prefill it, and no leave, pay, source or notes field is sent to AI.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['local'],
     },
   );
   MAJOR_TOOL_OVERRIDES['retrenchment-calculator'] = Object.assign(
     major(
       'retrenchment-package-planning',
-      ['retrenchment calculator', 'severance package estimate', 'redundancy final package planning'],
+      ['retrenchment calculator', 'severance package estimate', 'redundancy final package planning', 'indemnité de licenciement économique', 'licenciement économique'],
       ['Open the private retrenchment package planning calculator'],
       [],
       [],
@@ -785,14 +836,14 @@
       title: 'Retrenchment Package Planning Calculator',
       shortDescription: 'Build a local package estimate from user-entered pay, service, severance weeks, notice, leave, additions, deductions, and dated rule evidence. AfroTools AI can open the calculator but cannot prefill it, and no pay, service, package or rule-source field is sent to AI.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['local'],
     },
   );
   MAJOR_TOOL_OVERRIDES['employee-cost'] = Object.assign(
     major(
       'employee-cost-planning',
-      ['employee cost calculator', 'total employer cost', 'hiring cost budget'],
+      ['employee cost calculator', 'total employer cost', 'hiring cost budget', 'coût total d’un salarié', 'coût total salarié'],
       ['Open the private employee cost planning calculator'],
       [],
       [],
@@ -829,7 +880,7 @@
       title: 'Investment Return Calculator',
       shortDescription: 'Project compound growth and inflation-adjusted value from user-entered assumptions; no live rate, forecast, suitability verdict or guaranteed return.',
       countriesSupported: ['ALL'],
-      languagesSupported: ['en'],
+      languagesSupported: ['en', 'fr'],
       currencySupport: ['NGN', 'KES', 'ZAR', 'GHS', 'EGP', 'TZS', 'UGX', 'XOF', 'ETB', 'RWF', 'MUR', 'BWP', 'MAD', 'USD'],
     },
   );
@@ -1417,7 +1468,13 @@
     var countries = normalizeCountries(record.countries);
     var stakes = inferHighStakes(record);
     var base = { id: id, slug: slugFromRoute(route, id), route: route, title: text(record.name, id), shortDescription: text(record.description || record.desc, 'AfroTools workflow'), category: text(record.category_key || record.category, 'uncategorized'), subcategory: text(record.category_key || record.category, 'general'), countriesSupported: countries, languagesSupported: unique([text(record.language || record.lang, 'en').toLowerCase()]), currencySupport: unique(countries.indexOf('ALL') !== -1 || /forex|currency|fx|import|remittance|japa|study|travel|crypto/.test(haystack(record)) ? ['local', 'USD'] : ['local']), userIntents: unique([text(record.name, id).toLowerCase(), id.replace(/-/g, ' '), 'open ' + text(record.name, id).toLowerCase(), text(record.category_key, 'tools').replace(/-/g, ' ') + ' tool'].concat(deriveNaturalIntents(text(record.name, id)))), exampleQueries: ['Open ' + text(record.name, id), 'Help me use ' + text(record.name, id)], requiredInputs: inferRequired(record, stakes), optionalInputs: [], privacyMode: inferPrivacy(record, stakes), aiCapabilities: inferCapabilities(record), outputTypes: inferOutputs(record, stakes), sourcePolicy: inferSource(record, stakes), highStakesDomain: stakes, monetizationSurfaces: inferMonetization(record), aliases: array(record.aliases), status: text(record.status, 'Live'), priority: Number(record.priority || 0) };
-    return normalizeEntry(Object.assign({}, base, overrides[id] || {}));
+    var localized = Object.assign({}, base, overrides[id] || {});
+    if (FRENCH_DOCUMENT_PDF_INTENTS[id]) {
+      localized.userIntents = unique(array(localized.userIntents).concat(FRENCH_DOCUMENT_PDF_INTENTS[id]));
+      localized.exampleQueries = unique(array(localized.exampleQueries).concat('Ouvrir ' + FRENCH_DOCUMENT_PDF_INTENTS[id][0]));
+      localized.languagesSupported = unique(array(localized.languagesSupported).concat('fr'));
+    }
+    return normalizeEntry(localized);
   }
 
   function normalizeEntry(entry) {

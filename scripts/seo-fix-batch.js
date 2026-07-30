@@ -199,15 +199,7 @@ function fixCountryPage(toolSlug, countrySlug) {
 
   // Priority 2: Add cross-tool-nav.js if missing
   if (!html.includes('cross-tool-nav.js')) {
-    // Insert before </body> or before the twemoji script
-    if (html.includes('twemoji')) {
-      html = html.replace(
-        /(<script src="https:\/\/cdn\.jsdelivr\.net\/npm\/@twemoji)/,
-        CROSS_TOOL_SCRIPT + '\n$1'
-      );
-    } else {
-      html = html.replace('</body>', CROSS_TOOL_SCRIPT + '\n</body>');
-    }
+    html = html.replace('</body>', CROSS_TOOL_SCRIPT + '\n</body>');
     stats.crossToolAdded++;
     changed = true;
   }

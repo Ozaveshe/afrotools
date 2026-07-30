@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const crypto = require('crypto');
 
 const sourceConfidence = require('../assets/js/lib/source-confidence.js');
 const canonicalRegistry = require('./lib/canonical-registry');
@@ -13,9 +14,61 @@ const TOOL_VERIFICATION_PATH = path.join(ROOT, 'data', 'tool-verification.json')
 const META_PATH = path.join(ROOT, 'data', '_meta.json');
 const COUNTRY_PATH = path.join(ROOT, 'data', 'registry', 'countries.json');
 const COVERAGE_REPORT_PATH = path.join(ROOT, 'reports', 'source-registry-coverage.json');
+const TELECOM_DATASET_PATH = path.join(ROOT, 'data', 'telecom', 'country-telecom-index.js');
+const TELECOM_LEDGER_PATH = path.join(ROOT, 'data', 'telecom', 'official-sources.json');
+
+const TELECOM_ROUTE_PAIRS = [
+  ['/telecom/data-plan-compare/', '/fr/telecom/comparateur-forfaits-data/', 'telecom-data-plan'],
+  ['/telecom/ussd-directory/', '/fr/telecom/annuaire-codes-ussd/', 'telecom-ussd'],
+  ['/telecom/roaming-cost/', '/fr/telecom/calculateur-roaming/', 'telecom-roaming'],
+  ['/telecom/starlink-compare/', '/fr/telecom/comparateur-starlink-isp/', 'telecom-starlink'],
+  ['/telecom/tv-compare/', '/fr/telecom/comparateur-tv-streaming/', 'telecom-tv'],
+  ['/telecom/data-usage-calc/', '/fr/telecom/calculateur-consommation-data/', 'telecom-data-usage'],
+  ['/telecom/airtime-value/', '/fr/telecom/valeur-credit-telephonique/', 'telecom-airtime'],
+  ['/telecom/number-portability/', '/fr/telecom/portabilite-numero-mobile/', 'telecom-portability'],
+  ['/telecom/sim-registration/', '/fr/telecom/verification-enregistrement-sim/', 'telecom-sim-reg'],
+  ['/telecom/internet-compare/', '/fr/telecom/comparateur-internet/', 'telecom-internet'],
+  ['/telecom/fiber-lte-5g/', '/fr/telecom/fibre-lte-5g/', 'telecom-fiber-lte-5g'],
+  ['/telecom/business-internet/', '/fr/telecom/internet-entreprise/', 'telecom-business-internet'],
+  ['/telecom/bulk-sms-pricing/', '/fr/telecom/prix-sms-pro/', 'telecom-bulk-sms'],
+  ['/telecom/whatsapp-vs-sms/', '/fr/telecom/whatsapp-vs-sms/', 'telecom-whatsapp-vs-sms'],
+];
 
 function readJson(filePath) {
   return JSON.parse(fs.readFileSync(filePath, 'utf8'));
+}
+
+function buildTelecomSnapshotEntry(today) {
+  const datasetSource = fs.readFileSync(TELECOM_DATASET_PATH, 'utf8');
+  const dataset = new Function(datasetSource + '; return TELECOM_DATA;')();
+  const ledger = readJson(TELECOM_LEDGER_PATH);
+  const reviewedAt = dateOnly(dataset.lastUpdated);
+  const cadenceDays = Number(ledger.highRiskCadenceDays) || 30;
+  const digest = crypto.createHash('sha256').update(datasetSource).digest('hex');
+  const regulatorGapCount = (((ledger.gaps || {}).regulatorsWithoutUrl) || []).length;
+  const unsourcedClaimCount = (((ledger.gaps || {}).unsourcedClaims) || []).length;
+
+  return {
+    id: 'telecom-static-snapshot',
+    sourceName: 'AfroTools archived Telecom planning snapshot',
+    sourceType: 'third_party_snapshot',
+    countryCodes: unique(Object.keys(dataset.countries || {})),
+    appliesTo: ['business', 'other'],
+    effectiveFrom: reviewedAt,
+    lastCheckedAt: reviewedAt,
+    lastReviewedAt: reviewedAt,
+    freshnessStatus: freshnessStatus(reviewedAt, reviewedAt, cadenceDays, today),
+    confidence: 'low_confidence',
+    reviewCadenceDays: cadenceDays,
+    notes: 'Archived Telecom planning snapshot; artifactDigest=sha256:' + digest + '. The source ledger records ' + (ledger.sources || []).length + ' links, ' + regulatorGapCount + ' regulator gaps, and ' + unsourcedClaimCount + ' unsourced claim families. Hash changes are review signals only and do not refresh tariffs, availability, codes, deadlines, or legal claims.',
+    displayDisclaimer: 'Planning-grade archived Telecom data only. Verify every current tariff, offer, code, coverage result, availability claim, deadline, and legal requirement with the relevant operator or regulator.',
+    toolIds: unique(TELECOM_ROUTE_PAIRS.map(function (row) {
+      return row[2];
+    })),
+    routes: unique(TELECOM_ROUTE_PAIRS.flatMap(function (row) {
+      return row.slice(0, 2);
+    }).map(normalizedRoute)),
+  };
 }
 
 function atomicWriteJson(targetPath, value) {
@@ -200,7 +253,7 @@ function buildRegistry() {
     toolsByRoute.get(route).push(tool.id);
   });
 
-  const generatedId = /^(?:paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
+  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
   const entries = new Map(
     existing.sources
       .filter(function (source) {
@@ -247,6 +300,8 @@ function buildRegistry() {
     },
   });
   mergeCoverage(fuel, ['fuel-tracker'], ['/tools/fuel-tracker/']);
+
+  add(buildTelecomSnapshotEntry(today));
 
   add({
     id: 'route-fares-user-input-method',
@@ -1388,7 +1443,39 @@ function buildRegistry() {
   };
 }
 
+function syncTelecomSourceRegistry(checkOnly) {
+  const current = readJson(SOURCE_PATH);
+  const expected = buildTelecomSnapshotEntry(new Date().toISOString().slice(0, 10));
+  const actual = current.sources.find(function (entry) {
+    return entry.id === expected.id;
+  });
+
+  if (checkOnly) {
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      console.error('Telecom source-registry entry is stale. Run npm run source-registry:build -- --telecom-only.');
+      process.exit(1);
+    }
+    console.log('Telecom source-registry entry is current: ' + expected.notes.match(/sha256:[a-f0-9]{64}/)[0] + '.');
+    return;
+  }
+
+  const sources = current.sources
+    .filter(function (entry) {
+      return entry.id !== expected.id;
+    })
+    .concat(expected)
+    .sort(function (a, b) {
+      return a.id.localeCompare(b.id);
+    });
+  atomicWriteJson(SOURCE_PATH, Object.assign({}, current, { sources }));
+  console.log('Updated Telecom source-registry entry without changing unrelated source records.');
+}
+
 function main() {
+  if (process.argv.includes('--telecom-only')) {
+    syncTelecomSourceRegistry(process.argv.includes('--check'));
+    return;
+  }
   const built = buildRegistry();
   if (built.registry.sources.length < 100) throw new Error('Source registry target not met: ' + built.registry.sources.length + ' entries.');
   if (process.argv.includes('--check')) {
@@ -1407,4 +1494,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { atomicWriteJson, buildRegistry, dateOnly, freshnessStatus, normalizedRoute };
+module.exports = { atomicWriteJson, buildRegistry, buildTelecomSnapshotEntry, dateOnly, freshnessStatus, normalizedRoute, syncTelecomSourceRegistry };

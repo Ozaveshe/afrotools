@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,9 +40,9 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Scaffolding Calculator","item":"https://afrotools.com/tools/scaffolding-calc/"}]}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/scaffolding-calc.webp">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/scaffolding-calc.webp">
   <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
@@ -74,6 +74,7 @@
 </script>
 <link rel="canonical" href="https://afrotools.com/tools/scaffolding-calc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/scaffolding-calc/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-echafaudage/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/scaffolding-calc/">
 </head>
 <body class="top-level-page-ui-refresh">
@@ -198,65 +199,34 @@
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
+<script src="/engines/scaffolding-engine.js?v=4838c3b3"></script>
 <script>
-var SG_RATES = {
-  NG:{ sym:'₦', tube_rent_wk:800, tube_buy:4500, board_rent_wk:400, board_buy:2200, coupler_rent_wk:120, coupler_buy:650, bamboo_rent_wk:200, labour_m2:3500 },
-  KE:{ sym:'KES', tube_rent_wk:320, tube_buy:1800, board_rent_wk:160, board_buy:880, coupler_rent_wk:48, coupler_buy:260, bamboo_rent_wk:80, labour_m2:1400 },
-  ZA:{ sym:'ZAR', tube_rent_wk:90, tube_buy:520, board_rent_wk:45, board_buy:260, coupler_rent_wk:14, coupler_buy:75, bamboo_rent_wk:0, labour_m2:420 },
-  GH:{ sym:'GHS', tube_rent_wk:70, tube_buy:400, board_rent_wk:35, board_buy:200, coupler_rent_wk:11, coupler_buy:58, bamboo_rent_wk:18, labour_m2:320 },
-  EG:{ sym:'EGP', tube_rent_wk:75, tube_buy:430, board_rent_wk:38, board_buy:215, coupler_rent_wk:12, coupler_buy:62, bamboo_rent_wk:0, labour_m2:350 },
-  ET:{ sym:'ETB', tube_rent_wk:180, tube_buy:1000, board_rent_wk:90, board_buy:500, coupler_rent_wk:27, coupler_buy:150, bamboo_rent_wk:45, labour_m2:850 },
-  TZ:{ sym:'TZS', tube_rent_wk:6500, tube_buy:36000, board_rent_wk:3200, board_buy:18000, coupler_rent_wk:960, coupler_buy:5400, bamboo_rent_wk:1600, labour_m2:30000 },
-  UG:{ sym:'UGX', tube_rent_wk:8500, tube_buy:47000, board_rent_wk:4200, board_buy:23000, coupler_rent_wk:1260, coupler_buy:7000, bamboo_rent_wk:2100, labour_m2:40000 },
-  RW:{ sym:'RWF', tube_rent_wk:1400, tube_buy:7800, board_rent_wk:700, board_buy:3900, coupler_rent_wk:210, coupler_buy:1170, bamboo_rent_wk:350, labour_m2:6500 },
-  MA:{ sym:'MAD', tube_rent_wk:35, tube_buy:200, board_rent_wk:18, board_buy:100, coupler_rent_wk:5, coupler_buy:29, bamboo_rent_wk:0, labour_m2:165 }
-};
-
 function fmtCur(sym,n){ return sym + Math.round(n).toLocaleString(); }
 
 function calcScaffolding(){
-  var country = document.getElementById('sg-country').value;
-  var perimeter = +document.getElementById('sg-perimeter').value;
-  var height = +document.getElementById('sg-height').value;
-  var stype = document.getElementById('sg-type').value;
-  var mode = document.getElementById('sg-mode').value;
-  var weeks = +document.getElementById('sg-weeks').value;
-  var inclLabour = document.getElementById('sg-labour').value === 'yes';
-  var r = SG_RATES[country], sym = r.sym;
-
-  var area = perimeter * height;
-  // Tube-and-coupler: 1 tube per 1.5m² roughly
-  var tubes = Math.ceil(area / 1.5);
-  // Boards: 1 per 2m² (every 2m lift height)
-  var boards = Math.ceil((perimeter * Math.ceil(height / 2)));
-  var couplers = Math.ceil(tubes * 2.5);
-
-  var matCost, rentMode;
-  if (stype === 'bamboo') {
-    matCost = mode === 'buy' ? 0 : tubes * r.bamboo_rent_wk * weeks;
-    rentMode = mode === 'rent';
-    document.getElementById('sg-bamboo-note').style.display = 'list-item';
-  } else {
-    if (mode === 'rent') {
-      matCost = tubes * r.tube_rent_wk * weeks + boards * r.board_rent_wk * weeks + couplers * r.coupler_rent_wk * weeks;
-    } else {
-      matCost = tubes * r.tube_buy + boards * r.board_buy + couplers * r.coupler_buy;
-    }
-    document.getElementById('sg-bamboo-note').style.display = 'none';
+  var result = window.AfroTools.ScaffoldingEngine.calculate({
+    country:document.getElementById('sg-country').value,
+    perimeter:document.getElementById('sg-perimeter').value,
+    height:document.getElementById('sg-height').value,
+    type:document.getElementById('sg-type').value,
+    mode:document.getElementById('sg-mode').value,
+    weeks:document.getElementById('sg-weeks').value,
+    includeLabour:document.getElementById('sg-labour').value === 'yes'
+  });
+  if (!result.ok) {
+    document.getElementById('sg-results').classList.remove('on');
+    return;
   }
-
-  var labCost = inclLabour ? area * r.labour_m2 : 0;
-  var total = matCost + labCost;
-
-  document.getElementById('sg-headline').textContent = perimeter + 'm × ' + height + 'm — ' + area.toLocaleString() + 'm² scaffold';
-  document.getElementById('sg-area').textContent = area.toLocaleString() + ' m²';
-  document.getElementById('sg-tubes').textContent = tubes.toLocaleString() + ' tubes';
-  document.getElementById('sg-boards').textContent = boards.toLocaleString() + ' boards';
-  document.getElementById('sg-couplers').textContent = stype === 'bamboo' ? 'N/A (lashed)' : couplers.toLocaleString();
-  document.getElementById('sg-mat-cost').textContent = fmtCur(sym, matCost) + (mode === 'rent' ? ' (' + weeks + ' wks)' : ' (purchase)');
-  document.getElementById('sg-lab-cost').textContent = inclLabour ? fmtCur(sym, labCost) : 'Not included';
-  document.getElementById('sg-total').textContent = fmtCur(sym, total);
-  document.getElementById('sg-per-m2').textContent = mode === 'rent' ? fmtCur(sym, matCost / area / weeks) + '/m²/wk' : fmtCur(sym, matCost / area) + '/m² (purchase)';
+  document.getElementById('sg-bamboo-note').style.display = result.type === 'bamboo' ? 'list-item' : 'none';
+  document.getElementById('sg-headline').textContent = result.perimeter + 'm × ' + result.height + 'm — ' + result.area.toLocaleString() + 'm² scaffold';
+  document.getElementById('sg-area').textContent = result.area.toLocaleString() + ' m²';
+  document.getElementById('sg-tubes').textContent = result.tubes.toLocaleString() + ' tubes';
+  document.getElementById('sg-boards').textContent = result.boards.toLocaleString() + ' boards';
+  document.getElementById('sg-couplers').textContent = result.type === 'bamboo' ? 'N/A (lashed)' : result.couplers.toLocaleString();
+  document.getElementById('sg-mat-cost').textContent = fmtCur(result.symbol, result.materialCost) + (result.mode === 'rent' ? ' (' + result.weeks + ' wks)' : ' (purchase)');
+  document.getElementById('sg-lab-cost').textContent = result.includeLabour ? fmtCur(result.symbol, result.labourCost) : 'Not included';
+  document.getElementById('sg-total').textContent = fmtCur(result.symbol, result.total);
+  document.getElementById('sg-per-m2').textContent = result.mode === 'rent' ? fmtCur(result.symbol, result.materialCostPerM2) + '/m²/wk' : fmtCur(result.symbol, result.materialCostPerM2) + '/m² (purchase)';
 
   document.getElementById('sg-results').classList.add('on');
   document.getElementById('sg-results').scrollIntoView({ behavior:'smooth', block:'start' });

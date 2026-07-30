@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -40,8 +40,8 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box}
 body{font-family:'DM Sans',sans-serif;background:#f8fafd;color:#0f172a;line-height:1.6;margin:0}
@@ -187,55 +187,9 @@ details[open] summary::after{content:'\2212'}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-function calcQR(){
-  var ids=['qr-avg-txn','qr-daily-txns','qr-days','qr-rate','qr-flat','qr-pos-rate','qr-pos-flat','qr-mm-rate','qr-mm-flat','qr-cash-cost'];
-  var v={};
-  ids.forEach(function(id){v[id]=Number(document.getElementById(id).value);});
-  var error=document.getElementById('qr-error');
-  var results=document.getElementById('qr-results');
-  if(ids.some(function(id){return !Number.isFinite(v[id]);})||v['qr-avg-txn']<=0||v['qr-daily-txns']<=0||v['qr-days']<1||v['qr-days']>31||ids.slice(3).some(function(id){return v[id]<0;})){
-    error.textContent='Enter a positive transaction value and count, 1–31 operating days, and non-negative fee values.';
-    error.classList.add('on');results.classList.remove('on');return;
-  }
-  error.classList.remove('on');
-  var currency=document.getElementById('qr-currency').value;
-  var avgTxn=v['qr-avg-txn'];
-  var monthlyTxns=v['qr-daily-txns']*v['qr-days'];
-  var monthlyVol=avgTxn*monthlyTxns;
-  var fee=function(rate,flat){return monthlyVol*rate/100+monthlyTxns*flat;};
-  var monthlyQRFee=fee(v['qr-rate'],v['qr-flat']);
-  var qrTxnFee=monthlyQRFee/monthlyTxns;
-  var effectiveRate=monthlyQRFee/monthlyVol*100;
-  var posFee=fee(v['qr-pos-rate'],v['qr-pos-flat']);
-  var mmFee=fee(v['qr-mm-rate'],v['qr-mm-flat']);
-  var cashFee=monthlyVol*v['qr-cash-cost']/100;
-  var nf=new Intl.NumberFormat(undefined,{style:'currency',currency:currency,maximumFractionDigits:2});
-  function fmt(n){return nf.format(n);}
-  document.getElementById('qr-monthly-vol').textContent=fmt(monthlyVol);
-  document.getElementById('qr-per-txn').textContent=fmt(qrTxnFee);
-  document.getElementById('qr-effective-rate').textContent=effectiveRate.toFixed(2)+'%';
-  document.getElementById('qr-annual-fee').textContent=fmt(monthlyQRFee*12);
-  document.getElementById('qr-monthly-fee').textContent=fmt(monthlyQRFee);
-  document.getElementById('qr-sub').textContent='On '+fmt(monthlyVol)+' monthly volume · '+monthlyTxns.toLocaleString()+' transactions';
-  var methods=[
-    {name:'QR Payments',fee:monthlyQRFee,rate:effectiveRate},
-    {name:'Mobile Money',fee:mmFee,rate:mmFee/monthlyVol*100},
-    {name:'POS / Card',fee:posFee,rate:posFee/monthlyVol*100},
-    {name:'Cash Handling',fee:cashFee,rate:cashFee/monthlyVol*100}
-  ];
-  methods.sort(function(a,b){return a.fee-b.fee;});
-  var compareHTML='';
-  for(var i=0;i<methods.length;i++){
-    var m=methods[i];
-    compareHTML+='<div class="method-item'+(i===0?' best':'')+'"><div class="method-name">'+m.name+(i===0?' · Lowest entered cost':'')+'</div><div class="method-fee">'+fmt(m.fee)+'/mo</div><div class="method-rate">'+m.rate.toFixed(2)+'% of volume</div></div>';
-  }
-  document.getElementById('qr-compare').innerHTML=compareHTML;
-  document.getElementById('qr-results').classList.add('on');
-}
-</script>
+<script src="/assets/js/pages/fintech-shared-controllers/qr-payment.js?v=99153676"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

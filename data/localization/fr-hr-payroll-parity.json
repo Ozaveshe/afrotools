@@ -1,0 +1,146 @@
+{
+  "schemaVersion": 1,
+  "locale": "fr",
+  "category": "HR & Payroll",
+  "hubRoute": "/fr/hr-payroll/",
+  "reviewedAt": "2026-07-29",
+  "sourceOwner": "scripts/build-french-hr-payroll-parity.js",
+  "tools": [
+    {
+      "id": "contractor-vs-employee",
+      "route": "/fr/tools/contractant-vs-salarie/",
+      "englishRoute": "/tools/contractor-vs-employee/",
+      "swahiliRoute": "/sw/zana/mkandarasi-dhidi-ya-mfanyakazi/",
+      "title": "Prestataire ou salarié : comparer le coût",
+      "shortTitle": "Prestataire ou salarié",
+      "description": "Comparez deux budgets mensuels et annuels sans décider du statut juridique du travailleur.",
+      "image": "/assets/img/tools/contractor-vs-employee.webp",
+      "formulaOwner": "tools/contractor-vs-employee/index.html",
+      "fields": [
+        ["employeeBase", "Salaire mensuel de base", "number", "1000"],
+        ["employeeAddons", "Cotisations et avantages employeur", "number", "200"],
+        ["employeeOther", "Autres coûts salariés récurrents", "number", "50"],
+        ["contractorQuote", "Montant mensuel du prestataire", "number", "1400"],
+        ["contractorOther", "Autres coûts du prestataire", "number", "0"]
+      ]
+    },
+    {
+      "id": "domestic-worker",
+      "route": "/fr/tools/salaire-employe-maison/",
+      "englishRoute": "/tools/domestic-worker/",
+      "swahiliRoute": "/sw/zana/mshahara-wa-mfanyakazi-wa-nyumbani/",
+      "title": "Budget d'emploi d'une personne à domicile",
+      "shortTitle": "Emploi à domicile",
+      "description": "Transformez la rémunération convenue en budget employeur mensuel et annuel, avec chaque hypothèse visible.",
+      "image": "/assets/img/tools/domestic-worker.webp",
+      "formulaOwner": "tools/domestic-worker/index.html",
+      "fields": [
+        ["country", "Pays du plan d'emploi", "select", "nigeria", [["nigeria", "Nigeria"], ["kenya", "Kenya"], ["south-africa", "Afrique du Sud"], ["ghana", "Ghana"], ["egypt", "Égypte"], ["ethiopia", "Éthiopie"], ["tanzania", "Tanzanie"], ["uganda", "Ouganda"], ["rwanda", "Rwanda"], ["cote-divoire", "Côte d'Ivoire"], ["cameroon", "Cameroun"], ["senegal", "Sénégal"], ["morocco", "Maroc"], ["tunisia", "Tunisie"], ["angola", "Angola"]]],
+        ["role", "Rôle de la personne employée", "select", "live-out-housekeeper", [["live-out-housekeeper", "Aide ménagère non logée"], ["live-in-helper", "Employé·e de maison logé·e"], ["nanny", "Garde d'enfants"], ["elder-care", "Aide à une personne âgée"], ["cook", "Cuisinier·ère"], ["gardener", "Jardinier·ère"]]],
+        ["basePay", "Rémunération convenue", "number", "1000"],
+        ["payPeriod", "Périodicité", "select", "monthly", [["monthly", "Mensuelle"], ["weekly", "Hebdomadaire"], ["daily", "Journalière"], ["hourly", "Horaire"]]],
+        ["legalFloor", "Plancher de rémunération vérifié", "number", "0"],
+        ["floorPeriod", "Périodicité du plancher", "select", "monthly", [["monthly", "Mensuelle"], ["weekly", "Hebdomadaire"], ["daily", "Journalière"], ["hourly", "Horaire"]]],
+        ["hoursPerWeek", "Heures de travail par semaine", "number", "40"],
+        ["daysPerWeek", "Jours de travail par semaine", "number", "5"],
+        ["overtimeHours", "Heures supplémentaires mensuelles", "number", "0"],
+        ["overtimeMultiplier", "Coefficient heures supplémentaires", "number", "1.5"],
+        ["allowances", "Indemnités en espèces", "number", "100"],
+        ["inKind", "Avantages en nature mensuels", "number", "50"],
+        ["employerPct", "Cotisations employeur (%)", "number", "5"],
+        ["leavePct", "Provision congés (%)", "number", "4"],
+        ["adminCost", "Coûts administratifs mensuels", "number", "20"],
+        ["annualBonus", "Prime annuelle", "number", "600"],
+        ["setupCost", "Coûts initiaux", "number", "0"],
+        ["retentionBuffer", "Marge de fidélisation (%)", "number", "10"],
+        ["contractStatus", "Contrat écrit", "select", "no", [["no", "Non"], ["draft", "Brouillon"], ["yes", "Oui"]]],
+        ["payRecord", "Bulletin ou reçu de paiement", "select", "no", [["no", "Non"], ["partial", "Partiel"], ["yes", "Oui"]]],
+        ["restDays", "Repos et jours fériés documentés", "select", "no", [["no", "Non"], ["partial", "Partiel"], ["yes", "Oui"]]],
+        ["notes", "Notes de planification (sans données nominatives)", "textarea", "", {"placeholder": "Ex. tâches, horaires, date de paie ou hypothèses à confirmer."}]
+      ]
+    },
+    {
+      "id": "employee-cost",
+      "route": "/fr/tools/cout-total-employe/",
+      "englishRoute": "/tools/employee-cost/",
+      "swahiliRoute": "/sw/zana/gharama-ya-mfanyakazi/",
+      "title": "Calculer le coût total d'un salarié",
+      "shortTitle": "Coût total d'un salarié",
+      "description": "Additionnez salaire, obligations, avantages, indemnités et coûts ponctuels sans taux juridique prérempli.",
+      "image": "/assets/img/tools/employee-cost.webp",
+      "formulaOwner": "tools/employee-cost/index.html",
+      "fields": [
+        ["salary", "Salaire mensuel", "number", "1000"],
+        ["obligations", "Obligations employeur mensuelles", "number", "100"],
+        ["benefits", "Avantages mensuels", "number", "50"],
+        ["allowances", "Indemnités mensuelles", "number", "100"],
+        ["other", "Autres coûts récurrents", "number", "50"],
+        ["oneOff", "Coûts ponctuels", "number", "0"],
+        ["allocationMonths", "Étalement des coûts ponctuels (mois)", "number", "12"]
+      ]
+    },
+    {
+      "id": "gratuity-calculator",
+      "route": "/fr/tools/calculateur-indemnite-depart/",
+      "englishRoute": "/tools/gratuity-calculator/",
+      "title": "Estimer une indemnité de départ",
+      "shortTitle": "Indemnité de départ",
+      "description": "Appliquez une règle vérifiée par vos soins, en séparant base, compléments et déductions.",
+      "image": "/assets/img/tools/gratuity-calculator.webp",
+      "formulaOwner": "tools/gratuity-calculator/index.html",
+      "fields": [
+        ["monthlyPay", "Rémunération mensuelle de référence", "number", "3000"],
+        ["years", "Années de service", "number", "5"],
+        ["months", "Mois de service supplémentaires", "number", "6"],
+        ["daysPerYear", "Jours de salaire par année de service", "number", "15"],
+        ["divisor", "Diviseur mensuel pour le salaire journalier", "number", "30"],
+        ["additions", "Compléments", "number", "500"],
+        ["deductions", "Déductions", "number", "250"]
+      ]
+    },
+    {
+      "id": "maternity-leave",
+      "route": "/fr/tools/conge-maternite-paternite/",
+      "englishRoute": "/tools/maternity-leave/",
+      "title": "Planifier un congé maternité ou parental",
+      "shortTitle": "Congé maternité ou parental",
+      "description": "Comparez une durée de référence, votre demande et la politique employeur avec des taux saisis manuellement.",
+      "image": "/assets/img/tools/maternity-leave.webp",
+      "formulaOwner": "tools/maternity-leave/verified-planner.js",
+      "fields": [
+        ["country", "Pays du congé", "country-select", "/tools/maternity-leave/nigeria/"],
+        ["leaveType", "Type de congé", "select", "maternity", [["maternity", "Maternité ou parent ayant accouché"], ["paternity", "Paternité ou congé du partenaire"], ["both", "Comparer les deux"]]],
+        ["monthlySalary", "Salaire mensuel", "number", "3043.75"],
+        ["startDate", "Date de début du congé", "date", "2026-08-01"],
+        ["officialDays", "Durée de référence vérifiée (jours)", "number", "90"],
+        ["requestedDays", "Durée demandée (jours)", "number", "100"],
+        ["officialRate", "Taux de remplacement de référence (%)", "number", "80"],
+        ["companyDays", "Durée prévue par l'employeur (jours)", "number", "112"],
+        ["companyRate", "Taux de remplacement employeur (%)", "number", "100"],
+        ["compareCountry", "Pays de comparaison", "country-select", "/tools/maternity-leave/nigeria/"],
+        ["leaveNotes", "Hypothèses et notes RH (sans données nominatives)", "textarea", "", {"placeholder": "Ex. ancienneté requise à vérifier ou complément employeur à confirmer."}]
+      ]
+    },
+    {
+      "id": "retrenchment-calculator",
+      "route": "/fr/tools/calculateur-d-indemnite-de-licenciement/",
+      "englishRoute": "/tools/retrenchment-calculator/",
+      "title": "Estimer une indemnité de licenciement économique",
+      "shortTitle": "Indemnité de licenciement",
+      "description": "Reconstituez un paquet de départ à partir d'une règle vérifiée, du préavis, des congés et des déductions.",
+      "image": "/assets/img/tools/retrenchment-calculator.webp",
+      "formulaOwner": "tools/retrenchment-calculator/verified-planner.js",
+      "fields": [
+        ["monthlyPay", "Rémunération mensuelle de référence", "number", "7800"],
+        ["years", "Années de service", "number", "7"],
+        ["months", "Mois de service supplémentaires", "number", "4"],
+        ["weeksPerYear", "Semaines de salaire par année de service", "number", "1"],
+        ["noticeMonths", "Mois de préavis payés", "number", "1"],
+        ["leaveDays", "Jours de congé non pris", "number", "10"],
+        ["divisor", "Diviseur mensuel pour les congés", "number", "39"],
+        ["other", "Autres montants", "number", "1000"],
+        ["deductions", "Déductions", "number", "500"]
+      ]
+    }
+  ]
+}

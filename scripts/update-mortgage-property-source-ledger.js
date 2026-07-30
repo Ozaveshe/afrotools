@@ -65,7 +65,23 @@ if (new Set(tools).size !== tools.length) errors.push('Duplicate entries in tool
 
 const sources = ledger.sources || [];
 const ids = new Set();
-const KNOWN_TYPES = new Set(['revenue-authority', 'central-bank', 'scheme-administrator', 'regulator', 'registry']);
+const KNOWN_TYPES = new Set([
+  'revenue-authority',
+  'central-bank',
+  'scheme-administrator',
+  'regulator',
+  'registry',
+  'professional-standard',
+  'official-statistical-framework',
+  'government-land-and-tenancy-directory',
+  'data-protection-regulator',
+  'official-statistical-series',
+  'professional-regulator',
+  'official-statistical-standard',
+  'measurement-standard',
+  'planning-permit-authority',
+  'government-investment-guide'
+]);
 
 for (const s of sources) {
   if (!s.id) errors.push('Source with no id.');

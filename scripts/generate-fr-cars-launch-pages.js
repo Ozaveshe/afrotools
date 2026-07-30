@@ -6,6 +6,12 @@ const Price = require("../assets/js/lib/car-price-intelligence.js");
 const { FR_CARS_COUNTRY_SLUG_TO_EN } = require("./lib/french-cars-route-map");
 
 const root = path.join(__dirname, "..");
+const englishCarsHtml = fs.readFileSync(path.join(root, "cars", "index.html"), "utf8");
+const currentChatBundle = englishCarsHtml.match(/\bdata-chat-bundle=["']([^"']+)["']/);
+if (!currentChatBundle) {
+  throw new Error("English cars owner is missing its data-chat-bundle source.");
+}
+const chatBundlePath = currentChatBundle[1];
 const priceData = readJson("data/cars/price-intelligence.json");
 const importData = loadImportData();
 const reciprocalPairs = [];
@@ -316,17 +322,16 @@ function injectEnglishHreflang({ enRoute, frRoute }) {
   }
 
   let html = fs.readFileSync(filePath, "utf8");
-  const block = [
-    `<link rel="alternate" hreflang="en" href="${absUrl(enRoute)}">`,
-    `<link rel="alternate" hreflang="fr" href="${absUrl(frRoute)}">`,
-    `<link rel="alternate" hreflang="x-default" href="${absUrl(enRoute)}">`
-  ].join("\n  ");
-
-  html = html.replace(/<link\s+rel=["']alternate["']\s+hreflang=["'][^"']+["']\s+href=["'][^"']+["']\s*\/?>\s*\n?/gi, "");
-  if (html.includes('<meta name="robots"')) {
-    html = html.replace('<meta name="robots"', `${block}\n  <meta name="robots"`);
+  const frenchTag = `<link rel="alternate" hreflang="fr" href="${absUrl(frRoute)}">`;
+  html = html.replace(
+    /^[ \t]*<link\b(?=[^>]*\brel=["']alternate["'])(?=[^>]*\bhreflang=["']fr["'])[^>]*>[ \t]*\r?\n?/gim,
+    ""
+  );
+  const canonical = html.match(/<link\b(?=[^>]*\brel=["']canonical["'])[^>]*>/i);
+  if (canonical) {
+    html = html.replace(canonical[0], `${canonical[0]}\n${frenchTag}`);
   } else {
-    html = html.replace("</head>", `  ${block}\n</head>`);
+    html = html.replace("</head>", `  ${frenchTag}\n</head>`);
   }
   fs.writeFileSync(filePath, html, "utf8");
 }
@@ -481,7 +486,7 @@ function frenchVehicleProfile(vehicle) {
 function layout({ title, description, canonical, enUrl, schema, body }) {
   const pageBody = normalizeFrenchText(body);
   return `<!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.8446833d.min.js">
+<html lang="fr" data-chat-bundle="${chatBundlePath}">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -547,7 +552,7 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
   </style>
   <script type="application/ld+json">${escapeJson(schema)}</script>
 </head>
-<body class="cars-page fr-cars-main">
+<body class="cars-page fr-cars-main" data-fr-transport-parity="car-price-intelligence">
   <afro-navbar theme="dark" active="transport"></afro-navbar>
   ${pageBody}
   <afro-footer></afro-footer>
@@ -594,7 +599,7 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
         local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
         gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
         risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
-        summary.value = 'Marche: ' + selected(market).text + '\nModele: ' + selected(model).text + '\nCout rendu estime: ' + landed.textContent + '\nFourchette locale: ' + local.textContent + '\nMarge budget: ' + gap.textContent + '\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+        summary.value = 'Marche: ' + selected(market).text + '\\nModele: ' + selected(model).text + '\\nCout rendu estime: ' + landed.textContent + '\\nFourchette locale: ' + local.textContent + '\\nMarge budget: ' + gap.textContent + '\\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
       }
       form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
       ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });

@@ -45,7 +45,8 @@ for (const relative of ['tools/lobola-negotiation-checklist/index.html', 'tools/
 
 const frenchCalculator = read('fr/tools/calculateur-lobola/index.html');
 assert(!frenchCalculator.includes('<iframe'), 'French Lobola calculator must not embed the English route');
-assert(frenchCalculator.includes('data-locale="fr"'), 'French Lobola calculator must use the localized native planner');
+assert(frenchCalculator.includes('data-tool="lobola-calculator"'), 'French Lobola calculator must expose the native planner owner');
+assert(frenchCalculator.includes('"locale":"fr"'), 'French Lobola calculator must configure the shared runtime in French');
 assert(frenchCalculator.includes('/fr/tools/checklist-negociation-dot/'), 'French calculator must connect to its meeting checklist');
 assert(frenchCalculator.includes('/fr/tools/liste-cadeaux-dot/'), 'French calculator must connect to its gift list');
 

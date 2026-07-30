@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:pesticide-dosage-calculator",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "engine": "node tests/pesticide-dosage-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-pesticide-dosage-oracles.json node tests/fr-agriculture-pesticide-dosage.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id pesticide-dosage-calculator --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42949 npx playwright test tests/e2e/fr-agriculture-pesticide-dosage.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (12.9s)"
+  },
+  "rows": [
+    {
+      "englishId": "pesticide-dosage-calculator",
+      "countryCode": null,
+      "englishRoute": "/agriculture/pesticide-dosage/",
+      "frenchRoute": "/fr/agriculture/pesticide-dosage/",
+      "status": "accepted",
+      "oracle": {
+        "report": "reports/fr-agriculture-pesticide-dosage-oracles.json",
+        "engineScenarios": 152,
+        "catalogProducts": 19,
+        "catalogProfiles": 49,
+        "preserves": [
+          "midpoint catalog dose",
+          "L/ha, mL/ha, kg/ha and g/ha conversion",
+          "water volume and tank-load ceiling",
+          "product per tank and optional cost",
+          "seed-treatment g/kg and mL/kg totals",
+          "re-entry and pre-harvest intervals",
+          "English accepted workflow output"
+        ]
+      },
+      "browser": {
+        "suite": "tests/e2e/fr-agriculture-pesticide-dosage.spec.js",
+        "result": "2 passed (12.9s)",
+        "isolatedPort": 42949,
+        "viewports": [320, 375],
+        "reflow200Percent": {
+          "equivalentCssViewport": 640,
+          "baselineCssViewport": 1280,
+          "documentOverflow": false
+        },
+        "themes": ["light", "manual-dark", "system-dark"],
+        "keyboardFocusA11y": true,
+        "consoleAndFirstPartyNetworkClean": true,
+        "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+        "seo": [
+          "self-canonical",
+          "og",
+          "schema-inLanguage-fr",
+          "reciprocal-semantic-hreflang"
+        ],
+        "aiRoute": "/fr/agriculture/pesticide-dosage/"
+      },
+      "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+      "source": {
+        "engine": ["engines/src/pesticide-dosage-engine.js"],
+        "data": ["data/agriculture/pesticide-data.js"],
+        "freshness": "static product reference; not live registration, label or price data",
+        "confidence": "label-led calculation aid"
+      },
+      "artwork": {
+        "imageId": "pesticide-dosage-calculator",
+        "file": "assets/img/tools/pesticide-dosage-calculator.webp",
+        "state": "present"
+      },
+      "limitations": [
+        "The current registered label and local authority requirements always override this calculator.",
+        "Product registration, formulation, crop approval, weather, buffers and protective equipment must be verified locally."
+      ]
+    }
+  ]
+}

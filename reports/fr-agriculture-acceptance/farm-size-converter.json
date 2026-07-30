@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:farm-size-converter",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-farm-size-converter-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 27 Farm Size English invariants",
+    "engine": "node tests/farm-size-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-farm-size-oracles.json node tests/fr-agriculture-farm-size.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id farm-size-converter --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42953 CI=1 npx playwright test tests/e2e/fr-agriculture-farm-size.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (48.0s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "farm-size-converter",
+    "countryCode": null,
+    "englishRoute": "/agriculture/farm-size-converter/",
+    "frenchRoute": "/fr/agriculture/farm-size-converter/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-farm-size-oracles.json",
+      "englishBrowserInvariants": 27,
+      "engineScenarios": 5103,
+      "frenchProfiles": 5103,
+      "units": 27,
+      "preserves": [
+        "all 27 accepted land-unit factors and display order",
+        "international and named African unit identities",
+        "country and regional unit notes",
+        "conversion through square metres",
+        "football-pitch context thresholds",
+        "reference-tile and full-table ordering",
+        "English number-formatting thresholds",
+        "swap and invalid-input focus behavior"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-farm-size.spec.js",
+      "result": "2 passed (48.0s)",
+      "isolatedPort": 42953,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport":640,"baselineCssViewport":1280,"documentOverflow":false},
+      "themes": ["light","manual-dark","system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical","og","schema-inLanguage-fr","reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/farm-size-converter/"
+    },
+    "exports": ["pdf","csv","json","txt","copy","share","local-save","reset"],
+    "source": {
+      "engine": ["engines/src/farm-size-engine.js"],
+      "data": ["data/agriculture/farm-size-data.json","data/agriculture/farm-size-data.js"],
+      "freshness": "static conversion factors extracted from the accepted English application; not live",
+      "confidence": "exact arithmetic for the selected factor; local unit dimensions require confirmation"
+    },
+    "artwork": {"imageId":"farm-size-converter","file":"assets/img/tools/farm-size-converter.webp","state":"present"},
+    "limitations": [
+      "Traditional and informal land-unit dimensions can vary by region, document and transaction.",
+      "Confirm local dimensions with a surveyor, land registry or counterparty before a land transaction."
+    ]
+  }]
+}

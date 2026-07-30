@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -14,8 +14,8 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{font-family:'DM Sans',system-ui,sans-serif;background:#F8FAFD;color:#0f172a;-webkit-font-smoothing:antialiased}
@@ -238,66 +238,11 @@ a{text-decoration:none;color:inherit}
 <!-- RELATED_TOOLS_SSR_END -->
 </afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-var FX={NG:1660,KE:130,ZA:18.5,GH:15.5,EG:48,TZ:2600};
-var SYM={NG:'₦',KE:'KES ',ZA:'R',GH:'GHS ',EG:'EGP ',TZ:'TZS '};
-var MARKET={
-  NG:{new:[15000,40000],mid:[50000,150000],senior:[150000,500000],established:[500000,2000000]},
-  KE:{new:[2000,5000],mid:[6000,18000],senior:[20000,60000],established:[60000,200000]},
-  ZA:{new:[500,1500],mid:[1500,5000],senior:[5000,15000],established:[15000,60000]},
-  GH:{new:[300,800],mid:[900,2500],senior:[2500,8000],established:[8000,25000]},
-  EG:{new:[1000,3000],mid:[3000,9000],senior:[9000,25000],established:[25000,80000]},
-  TZ:{new:[50000,100000],mid:[150000,400000],senior:[400000,1200000],established:[1200000,4000000]}
-};
-function fmt(n){return n.toLocaleString('en-US',{minimumFractionDigits:0,maximumFractionDigits:0});}
-function calculate(){
-  var country=document.getElementById('country').value;
-  var speciality=document.getElementById('speciality').value;
-  var experience=document.getElementById('experience').value;
-  var equipLevel=document.getElementById('equipment').value;
-  var shootHrs=parseFloat(document.getElementById('shootHours').value)||4;
-  var editHrs=parseFloat(document.getElementById('editHours').value)||3;
-  var studioRent=parseFloat(document.getElementById('studioRent').value)||0;
-  var workDays=parseInt(document.getElementById('workDays').value)||20;
-  var equipValue=parseFloat(document.getElementById('equipValue').value)||500000;
-  var prints=document.getElementById('prints').value;
-  var sym=SYM[country];var rate=FX[country];
-  var mkt=MARKET[country]||MARKET['NG'];
-  var mktRange=mkt[experience];
-  var basePrice=(mktRange[0]+mktRange[1])/2;
-  var specialityMult={portrait:1,wedding:2.5,commercial:1.8,realestate:1.2,product:1.4,events:1.3,fashion:1.6}[speciality]||1;
-  var equipMult={entry:0.8,mid:1.0,pro:1.3}[equipLevel]||1;
-  var printMult={no:1,basic:1.1,album:1.25}[prints]||1;
-  var sessionPrice=basePrice*specialityMult*equipMult*printMult;
-  var dailyCost=(studioRent/workDays)+(equipValue*0.20/workDays/12);
-  sessionPrice=Math.max(sessionPrice,dailyCost*2);
-  var dayRate=sessionPrice*(8/shootHrs);
-  var monthly=workDays/5*sessionPrice;
-  var annual=monthly*12;
-  document.getElementById('sessionPrice').textContent=sym+fmt(sessionPrice);
-  document.getElementById('dayRate').textContent='Day rate: '+sym+fmt(dayRate)+' | '+sym+fmt(monthly)+'/month estimated';
-  document.getElementById('annualIncome').textContent=sym+fmt(annual/1000)+'k';
-  document.getElementById('metrics').innerHTML=
-    '<div class="en-metric"><div class="en-metric-label">Daily Overhead</div><div class="en-metric-value">'+sym+fmt(dailyCost)+'</div><div class="en-metric-unit">Rent + depreciation</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Session Hours</div><div class="en-metric-value">'+(shootHrs+editHrs)+'</div><div class="en-metric-unit">Shoot + editing</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Hourly Rate</div><div class="en-metric-value">'+sym+fmt(sessionPrice/(shootHrs+editHrs))+'</div><div class="en-metric-unit">Effective hourly</div></div>'+
-    '<div class="en-metric"><div class="en-metric-label">Profit Margin</div><div class="en-metric-value">~60%</div><div class="en-metric-unit">After overhead</div></div>';
-  var mktLevels=['new','mid','senior','established'];
-  var mktLabels={new:'New (0–1yr)',mid:'Experienced (2–5yr)',senior:'Senior (5+yr)',established:'Established'};
-  document.getElementById('marketTable').innerHTML=mktLevels.map(function(lvl){
-    var r=mkt[lvl];
-    return '<tr'+(lvl===experience?' style="background:var(--en-accent-pale)"':'')+'>'+
-      '<td class="en-td-value">'+mktLabels[lvl]+(lvl===experience?' ←':''  )+'</td>'+
-      '<td>'+sym+fmt(r[0])+'–'+sym+fmt(r[1])+'</td>'+
-      '<td>'+sym+fmt((r[0]+r[1])/2*2)+'</td>'+
-      '<td>'+sym+fmt(r[1]*2.5)+'–'+sym+fmt(r[1]*5)+'</td></tr>';
-  }).join('');
-  document.getElementById('results').classList.add('on');
-  document.getElementById('results').scrollIntoView({behavior:'smooth',block:'start'});
-}
-</script>
+<script src="/engines/photography-pricing-engine.js?v=85963d72"></script>
+<script src="/assets/js/pages/creative/creative-result-tools.js?v=d06b5bc3"></script>
+<script src="/assets/js/pages/creative/photography-pricing-controller.js?v=e4deb764"></script>
 <script src="/assets/js/pages/english-df-app-upgrades.js?v=f63d989d" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

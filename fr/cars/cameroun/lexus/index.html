@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
+<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -65,7 +65,7 @@
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/cars/cameroun/lexus/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/cars/cameroon/lexus/">
 </head>
-<body class="cars-page fr-cars-main">
+<body class="cars-page fr-cars-main" data-fr-transport-parity="car-price-intelligence">
   <afro-navbar theme="dark" active="transport"></afro-navbar>
   <main>
     <section class="fr-cars-hero">
@@ -101,8 +101,8 @@
     </section>
   </main>
   <afro-footer></afro-footer>
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-  <script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
   <script>
     (function () {
@@ -144,12 +144,7 @@
         local.textContent = fmt(localLow, currency) + ' - ' + fmt(localHigh, currency);
         gap.textContent = (ok ? '+' : '-') + fmt(Math.abs(gapValue), currency);
         risk.textContent = (car.dataset.risk || 'Moyen') + ' / revente ' + (car.dataset.resale || 'a verifier');
-        summary.value = 'Marche: ' + selected(market).text + '
-Modele: ' + selected(model).text + '
-Cout rendu estime: ' + landed.textContent + '
-Fourchette locale: ' + local.textContent + '
-Marge budget: ' + gap.textContent + '
-Note: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
+        summary.value = 'Marche: ' + selected(market).text + '\nModele: ' + selected(model).text + '\nCout rendu estime: ' + landed.textContent + '\nFourchette locale: ' + local.textContent + '\nMarge budget: ' + gap.textContent + '\nNote: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
       }
       form.addEventListener('submit', function(event){ event.preventDefault(); calculate(); });
       ['change','input'].forEach(function(evt){ [market, model, budget, fx, logistics, localFees].forEach(function(el){ el.addEventListener(evt, calculate); }); });
@@ -158,6 +153,6 @@ Note: estimation AfroTools, a verifier avec vendeur, transitaire et autorite.';
       calculate();
     })();
   </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

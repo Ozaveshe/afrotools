@@ -145,14 +145,19 @@ function run() {
 
   // PAYE facts are derived from the executable engine and reconciled with the
   // formula registry's version/source metadata.
-  ['ng-paye', 'ke-paye'].forEach(function (key) {
+  ['ng-paye', 'ke-paye', 'sn-paye', 'sn-paye-fr'].forEach(function (key) {
     const facts = freshlyBuilt.records[key].sourceRecord.facts;
     const formula = formulaById.get(facts.formulaId);
     assert.strictEqual(facts.formulaVersion, formula.formulaVersion);
     assert.strictEqual(facts.sourceCheckedOn, formula.lastVerified);
+    assert.ok(facts.bands.length > 0, key + ' needs executable tax bands');
     facts.bands.forEach(function (band) {
+      assert.ok(Number.isFinite(band.from), key + ' band start must be finite');
+      assert.ok(band.to === null || Number.isFinite(band.to), key + ' band end must be finite or open');
+      assert.ok(Number.isFinite(band.rate), key + ' band rate must be finite');
       assert.ok(generated[key].includes(String(band.rate * 100) + '%'));
     });
+    assert.ok(!generated[key].includes('NaN'), key + ' must not expose NaN facts');
   });
 
   // VAT rate comes from the formula-owned executable artifact, while the

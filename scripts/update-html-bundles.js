@@ -4,7 +4,7 @@
  * Replaces individual <script> tags with bundle references.
  * Reads manifest.json from bundle.js output.
  *
- * Usage: node scripts/update-html-bundles.js
+ * Usage: node scripts/update-html-bundles.js [--only=path/to/page.html,...]
  * Part of: npm run build (after bundle.js)
  */
 const fs = require('fs');
@@ -13,6 +13,7 @@ const { rewriteSharedAssetReferences } = require('./lib/shared-asset-references'
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST_PATH = path.join(ROOT, 'assets', 'js', 'bundles', 'manifest.json');
+const onlyArg = process.argv.find((arg) => arg.startsWith('--only='));
 
 if (!fs.existsSync(MANIFEST_PATH)) {
   console.error('  ERROR  manifest.json not found. Run bundle.js first.');
@@ -117,7 +118,20 @@ function walkHtml(dir) {
   return results;
 }
 
-const htmlFiles = walkHtml(ROOT);
+const htmlFiles = onlyArg
+  ? onlyArg
+    .slice('--only='.length)
+    .split(',')
+    .map((relativePath) => relativePath.trim())
+    .filter(Boolean)
+    .map((relativePath) => {
+      const htmlPath = path.resolve(ROOT, relativePath);
+      if (!htmlPath.startsWith(`${ROOT}${path.sep}`) || path.extname(htmlPath) !== '.html' || !fs.existsSync(htmlPath)) {
+        throw new Error(`Invalid --only HTML path: ${relativePath}`);
+      }
+      return htmlPath;
+    })
+  : walkHtml(ROOT);
 let updatedCount = 0;
 let scriptCount = 0;
 

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -25,9 +25,9 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 <script type="application/ld+json">
@@ -162,7 +162,7 @@
   @media(max-width:520px){.main,.hero-inner,.seo-section{padding-left:16px;padding-right:16px}.card-head,.inspect-head{align-items:stretch;flex-direction:column}.head-actions{justify-content:stretch}.head-actions .mini{flex:1}.card-head input{max-width:none!important}.actions .mini,.inspect-head .mini{width:100%}}
 </style>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did my request fail with CORS?","acceptedAnswer":{"@type":"Answer","text":"Browsers block responses from APIs that do not allow your page origin. If the API is not browser-enabled, copy the generated cURL command and run it from a terminal or backend service."}},{"@type":"Question","name":"Are my API keys uploaded to AfroTools?","acceptedAnswer":{"@type":"Answer","text":"No. Requests are sent directly from your browser to the endpoint you choose. If you save environment variables, they are stored in your own browser localStorage, so avoid saving production secrets on shared devices."}},{"@type":"Question","name":"Can I use this instead of Postman?","acceptedAnswer":{"@type":"Answer","text":"Use it for quick browser checks, sandbox templates, cURL generation, classroom demos and lightweight debugging. For team workspaces, secrets vaulting and automated CI collections, a full API client is still better."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Why did my request fail with CORS?","acceptedAnswer":{"@type":"Answer","text":"Browsers block responses from APIs that do not allow your page origin. If the API is not browser-enabled, copy the generated cURL command and run it from a terminal or backend service."}},{"@type":"Question","name":"Are my API keys uploaded to AfroTools?","acceptedAnswer":{"@type":"Answer","text":"No. Credentialed requests are sent only after you confirm the exact endpoint. AfroTools blocks credentialed sends to its own domains and telemetry routes, does not proxy the request, and never stores secret values. Saved requests and code previews keep redacted placeholders only."}},{"@type":"Question","name":"Can I use this instead of Postman?","acceptedAnswer":{"@type":"Answer","text":"Use it for quick browser checks, sandbox templates, cURL generation, classroom demos and lightweight debugging. For team workspaces, secrets vaulting and automated CI collections, a full API client is still better."}}]}
 </script>
 <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
@@ -211,7 +211,7 @@
   <div class="workspace">
     <div class="stack">
       <section class="card">
-        <div class="card-head"><span class="card-title">Environment</span><div class="head-actions"><button type="button" class="mini" id="save-env">Save variables</button><button type="button" class="mini" id="clear-env">Clear saved variables</button></div></div>
+        <div class="card-head"><span class="card-title">Environment</span><div class="head-actions"><button type="button" class="mini" id="save-env">Save non-secret variables</button><button type="button" class="mini" id="clear-env">Clear variables</button></div></div>
         <div class="card-body">
           <div class="grid-3">
             <div><label for="env-name">Environment</label><select id="env-name"><option value="none">No environment</option><option value="local">Local API</option><option value="sandbox">Sandbox</option><option value="staging">Staging</option><option value="production">Production</option></select></div>
@@ -228,7 +228,7 @@
             <div><label for="var-africasTalkingUsername">atUsername</label><input id="var-africasTalkingUsername" placeholder="sandbox"></div>
             <div><label for="var-africasTalkingApiKey">atApiKey</label><input id="var-africasTalkingApiKey" type="password" placeholder="Africa's Talking key"></div>
           </div>
-          <p class="warnbox" style="margin:12px 0 0">Variables are replaced in URLs, headers and bodies with <strong>{{baseUrl}}</strong>, <strong>{{token}}</strong>, provider secrets, and African API keys. Saving variables stores them in this browser only. Do not save production secrets on shared machines.</p>
+          <p class="warnbox" style="margin:12px 0 0">Variables are replaced in URLs, headers and bodies with the <strong>baseUrl</strong> and <strong>token</strong> variable names, provider secrets, and African API keys. Only non-secret values can be saved. Credentials stay in memory and are cleared after send, cancel or page exit.</p>
         </div>
       </section>
 
@@ -365,7 +365,7 @@
   <p>Use the built-in same-origin AfroTools status endpoint for a first browser-safe test, then switch to templates for Paystack, Flutterwave, M-Pesa Daraja, MTN MoMo and Africa's Talking. Some production APIs intentionally reject browser-origin requests. That is not a tool failure. It is a security rule, and the cURL export gives you a safer terminal path for those requests.</p>
   <h2>Frequently Asked Questions</h2>
   <details class="faq-item"><summary>Why did my request fail with CORS?</summary><p>Browsers block responses from APIs that do not allow your page origin. If the API is not browser-enabled, copy the generated cURL command and run it from a terminal or backend service.</p></details>
-  <details class="faq-item"><summary>Are my API keys uploaded to AfroTools?</summary><p>No. Requests are sent directly from your browser to the endpoint you choose. If you save environment variables, they are stored in your own browser localStorage, so avoid saving production secrets on shared devices.</p></details>
+  <details class="faq-item"><summary>Are my API keys uploaded to AfroTools?</summary><p>No. Credentialed requests are sent only after you confirm the exact endpoint. AfroTools blocks credentialed sends to its own domains and telemetry routes, does not proxy the request, and never stores secret values. Saved requests and code previews keep redacted placeholders only.</p></details>
   <details class="faq-item"><summary>Can I use this instead of Postman?</summary><p>Use it for quick browser checks, sandbox templates, cURL generation, classroom demos and lightweight debugging. For team workspaces, secrets vaulting and automated CI collections, a full API client is still better.</p></details>
 </section>
 
@@ -486,8 +486,49 @@
       africasTalkingUsername: $('var-africasTalkingUsername').value || '',
       africasTalkingApiKey: $('var-africasTalkingApiKey').value || ''
     };
-    Object.keys(saved).forEach(function(k){ if (!current[k]) current[k] = saved[k]; });
+    ['baseUrl','africasTalkingUsername'].forEach(function(k){ if (!current[k] && saved[k]) current[k] = saved[k]; });
     return current;
+  }
+
+  function secretValues(req){
+    var vars = variables();
+    var values = [
+      req && req.auth && req.auth.token,
+      vars.token,
+      vars.paystackSecret,
+      vars.flutterwaveSecret,
+      vars.mpesaBasic,
+      vars.mtnSubscriptionKey,
+      vars.africasTalkingApiKey
+    ];
+    (req && req.headers || []).forEach(function(header){
+      if (isSensitiveKey(header.key)) values.push(interpolate(header.value));
+    });
+    return values.map(function(value){ return String(value || ''); }).filter(function(value){
+      return value && !hasUnresolvedVariables(value) && value !== '<REDACTED>' && value !== '[redacted]';
+    }).filter(function(value, index, all){ return all.indexOf(value) === index; });
+  }
+
+  function clearSecretFields(){
+    ['var-token','var-paystackSecret','var-flutterwaveSecret','var-mpesaBasic','var-mtnSubscriptionKey','var-africasTalkingApiKey','auth-token'].forEach(function(id){
+      var el = $(id);
+      if (el) el.value = '';
+    });
+    document.querySelectorAll('#header-rows .kv').forEach(function(row){
+      var key = row.querySelector('.kv-key');
+      var value = row.querySelector('.kv-value');
+      if (key && value && isSensitiveKey(key.value)) value.value = '';
+    });
+    if ($('curl-input')) $('curl-input').value = '';
+  }
+
+  function redactSecrets(text, values){
+    var result = String(text == null ? '' : text);
+    (values || []).sort(function(a, b){ return b.length - a.length; }).forEach(function(value){
+      if (!value) return;
+      result = result.split(value).join('<REDACTED>');
+    });
+    return result.replace(/(https?:\/\/)[^@\s/]+@/gi, '$1<REDACTED>@');
   }
 
   function interpolate(str){
@@ -592,7 +633,7 @@
   }
 
   function buildOptions(req){
-    var options = { method: req.method, headers: buildHeaders(req) };
+    var options = { method: req.method, headers: buildHeaders(req), redirect: 'manual' };
     if (['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1 && req.body) {
       options.body = interpolate(req.body);
     }
@@ -614,6 +655,87 @@
     if (/^(Bearer|Basic)\s+\S+/i.test(text)) return text.replace(/\s+\S+$/, ' [redacted]');
     if (text.length > 16 && /(?:sk_|pk_|FLW|key|token|secret|Bearer)/i.test(text)) return '[redacted]';
     return text;
+  }
+
+  function sanitizedRequest(req){
+    var safe = JSON.parse(JSON.stringify(req || {}));
+    if (safe.auth) safe.auth.token = '';
+    safe.headers = (safe.headers || []).map(function(header){
+      return {
+        key: header.key,
+        value: isSensitiveKey(header.key) ? '<REDACTED>' : redactSecrets(header.value, secretValues(req))
+      };
+    });
+    return safe;
+  }
+
+  function credentialHeaderNames(req){
+    var headers = buildHeaders(req);
+    return Object.keys(headers).filter(function(key){
+      return isSensitiveKey(key) || /^(authorization|proxy-authorization)$/i.test(key);
+    });
+  }
+
+  function normalizedTarget(req){
+    var raw = buildUrl(req);
+    var parsed;
+    try { parsed = new URL(raw); }
+    catch(e){ return {ok:false, reason:'Enter a valid absolute HTTP or HTTPS URL.'}; }
+    if (!/^https?:$/.test(parsed.protocol)) return {ok:false, reason:'Only HTTP and HTTPS endpoints are supported.'};
+    if (parsed.username || parsed.password) return {ok:false, reason:'URL user information is not allowed. Use the authorization controls.'};
+    var host = parsed.hostname.toLowerCase().replace(/\.$/, '');
+    if (host === 'afrotools.com' || host.endsWith('.afrotools.com')) {
+      return {ok:false, reason:'Credentialed requests to AfroTools domains are blocked.'};
+    }
+    if (/(^|[.-])(analytics|telemetry)([.-]|$)/i.test(host) || /\/(?:analytics|telemetry|collect|events?|track|beacon)(?:\/|$)/i.test(parsed.pathname)) {
+      return {ok:false, reason:'Credentialed requests to analytics or telemetry endpoints are blocked.'};
+    }
+    var secrets = secretValues(req);
+    var urlParts = parsed.search + parsed.hash;
+    if (secrets.some(function(secret){ return urlParts.indexOf(secret) !== -1; })) {
+      return {ok:false, reason:'Credentials cannot be inserted into a URL query or fragment.'};
+    }
+    parsed.hash = '';
+    return {
+      ok:true,
+      url:parsed.href,
+      origin:parsed.origin,
+      scheme:parsed.protocol.replace(':',''),
+      host:parsed.hostname,
+      port:parsed.port || (parsed.protocol === 'https:' ? '443' : '80'),
+      path:parsed.pathname || '/',
+      privateTarget:/^(localhost|127(?:\.\d{1,3}){3}|::1|10(?:\.\d{1,3}){3}|192\.168(?:\.\d{1,3}){2}|172\.(?:1[6-9]|2\d|3[01])(?:\.\d{1,3}){2})$/i.test(parsed.hostname)
+    };
+  }
+
+  function auditConsent(target, authType, outcome){
+    var bucket = new Date();
+    bucket.setMinutes(0, 0, 0);
+    window.__AFROTOOLS_API_CONSENT_AUDIT__ = window.__AFROTOOLS_API_CONSENT_AUDIT__ || [];
+    window.__AFROTOOLS_API_CONSENT_AUDIT__.push({
+      endpointOrigin: target && target.origin || '',
+      authType: authType || 'none',
+      outcome: outcome,
+      timestampBucket: bucket.toISOString()
+    });
+  }
+
+  function confirmCredentialSend(req, target){
+    var names = credentialHeaderNames(req);
+    if (!names.length && !req.auth.token) return true;
+    var destination = target.scheme + '://' + target.host + ':' + target.port + target.path;
+    var warning = [
+      'Send credentials to this exact endpoint?',
+      '',
+      'Destination: ' + destination,
+      'Credential header names: ' + (names.join(', ') || 'Authorization'),
+      '',
+      'Credential values will leave this browser for that endpoint only. They are not saved by AfroTools.'
+    ];
+    if (target.privateTarget) warning.push('', 'Extra warning: this is a localhost or private-network target. Confirm that you control it.');
+    var accepted = window.confirm(warning.join('\n'));
+    auditConsent(target, req.auth.type, accepted ? 'confirmed' : 'cancelled');
+    return accepted;
   }
 
   function bodyIsJson(req){
@@ -697,16 +819,19 @@
   }
 
   function curlFor(req){
-    var url = buildUrl(req);
+    var secrets = secretValues(req);
+    var url = redactSecrets(buildUrl(req), secrets);
     var headers = buildHeaders(req);
     var parts = ['curl', '-X', req.method, quote(url)];
-    Object.keys(headers).forEach(function(k){ parts.push('-H', quote(k + ': ' + headers[k])); });
+    Object.keys(headers).forEach(function(k){ parts.push('-H', quote(k + ': ' + (isSensitiveKey(k) ? '<REDACTED>' : redactSecrets(headers[k], secrets)))); });
     if (req.body && ['POST','PUT','PATCH','DELETE'].indexOf(req.method) !== -1) parts.push('-d', quote(interpolate(req.body)));
     return parts.join(' ');
   }
 
   function fetchFor(req){
-    return 'fetch(' + JSON.stringify(buildUrl(req)) + ', ' + JSON.stringify(buildOptions(req), null, 2) + ')\n  .then(function(res){ return res.text(); })\n  .then(console.log);';
+    var safe = sanitizedRequest(req);
+    var preview = 'fetch(' + JSON.stringify(buildUrl(safe)) + ', ' + JSON.stringify(buildOptions(safe), null, 2) + ')\n  .then(function(res){ return res.text(); })\n  .then(function(text){ /* inspect text in your debugger */ return text; });';
+    return redactSecrets(preview, secretValues(req));
   }
 
   function quote(s){
@@ -760,14 +885,34 @@
     var req = requestState();
     var finalUrl = buildUrl(req);
     if (!finalUrl) { toast('Enter a request URL'); return; }
+    var secrets = secretValues(req);
+    var hasCredentials = credentialHeaderNames(req).length > 0 || Boolean(req.auth.token);
+    var target = hasCredentials ? normalizedTarget(req) : null;
+    if (hasCredentials && !target.ok) {
+      auditConsent(null, req.auth.type, 'blocked');
+      clearSecretFields();
+      toast(target.reason);
+      renderPreflight();
+      return;
+    }
+    if (hasCredentials && !confirmCredentialSend(req, target)) {
+      clearSecretFields();
+      toast('Credentialed request cancelled');
+      renderPreflight();
+      return;
+    }
+    if (target) finalUrl = target.url;
     $('response-body').textContent = 'Sending request...';
     $('response-headers').textContent = '';
     $('test-results').innerHTML = '<div class="test skip">Waiting for response...</div>';
-    setResponseMeta([{text:req.method + ' ' + finalUrl, kind:'info'}]);
+    setResponseMeta([{text:req.method + ' ' + redactSecrets(finalUrl, secrets), kind:'info'}]);
 
     var start = performance.now();
     try {
       var res = await fetch(finalUrl, buildOptions(req));
+      if (res.type === 'opaqueredirect' || (res.status >= 300 && res.status < 400)) {
+        throw new Error('Redirect blocked. Re-enter and confirm the final endpoint explicitly.');
+      }
       var elapsed = Math.round(performance.now() - start);
       var text = await res.text();
       var contentType = res.headers.get('content-type') || '';
@@ -777,30 +922,32 @@
         catch(e){ body = text; }
       }
       var size = new Blob([body]).size;
-      $('response-body').textContent = body || '(empty response)';
-      $('response-headers').textContent = headersText(res.headers);
+      $('response-body').textContent = redactSecrets(body || '(empty response)', secrets);
+      $('response-headers').textContent = redactSecrets(headersText(res.headers), secrets);
       setResponseMeta([
         {text:'Status ' + res.status + ' ' + res.statusText, kind:res.ok ? 'ok' : 'err'},
         {text:elapsed + 'ms', kind:'info'},
         {text:size + ' bytes', kind:'info'},
         {text:contentType || 'unknown type', kind:'info'}
       ]);
-      runTests(req, {status:res.status, elapsed:elapsed, body:body});
+      runTests(req, {status:res.status, elapsed:elapsed, body:redactSecrets(body, secrets)});
       renderPreflight();
       pushHistory(req, res.status, elapsed);
     } catch(err) {
       var failedElapsed = Math.round(performance.now() - start);
-      $('response-body').textContent = 'Error: ' + err.message + '\n\nThis is commonly caused by CORS. If the API blocks browser requests, use Copy cURL and run the command from your terminal or backend.';
+      $('response-body').textContent = 'Error: ' + redactSecrets(err.message, secrets) + '\n\nThis is commonly caused by CORS. If the API blocks browser requests, use a redacted code preview and add credentials only in your trusted terminal or backend.';
       $('response-headers').textContent = 'No headers available.';
       setResponseMeta([{text:'Request failed', kind:'err'}, {text:failedElapsed + 'ms', kind:'info'}]);
       $('test-results').innerHTML = '<div class="test fail">Request failed before assertions could run.</div>';
       renderPreflight();
+    } finally {
+      clearSecretFields();
     }
   }
 
   function pushHistory(req, status, elapsed){
     var history = read(STORAGE.history, []);
-    history.unshift({req:req, status:status, elapsed:elapsed, at:new Date().toISOString()});
+    history.unshift({req:sanitizedRequest(req), status:status, elapsed:elapsed, at:new Date().toISOString()});
     history = history.slice(0, 12);
     write(STORAGE.history, history);
     renderHistory();
@@ -867,17 +1014,20 @@
     if (!req.url) { toast('Add a URL before saving'); return; }
     var saved = read(STORAGE.saved, []);
     saved = saved.filter(function(item){ return item.name !== req.name; });
-    saved.unshift(req);
+    saved.unshift(sanitizedRequest(req));
     write(STORAGE.saved, saved.slice(0, 20));
     renderSaved();
     toast('Request saved');
   }
 
   function saveEnv(){
-    var current = variables();
-    current.envName = $('env-name').value;
+    var current = {
+      envName: $('env-name').value,
+      baseUrl: $('var-baseUrl').value || '',
+      africasTalkingUsername: $('var-africasTalkingUsername').value || ''
+    };
     write(STORAGE.env, current);
-    toast('Environment variables saved in this browser');
+    toast('Only non-secret environment values were saved');
   }
 
   function clearEnv(){
@@ -895,13 +1045,13 @@
     var env = read(STORAGE.env, {});
     if (env.envName) $('env-name').value = env.envName;
     $('var-baseUrl').value = env.baseUrl || '';
-    $('var-token').value = env.token || '';
-    $('var-paystackSecret').value = env.paystackSecret || '';
-    $('var-flutterwaveSecret').value = env.flutterwaveSecret || '';
-    $('var-mpesaBasic').value = env.mpesaBasic || '';
-    $('var-mtnSubscriptionKey').value = env.mtnSubscriptionKey || '';
+    $('var-token').value = '';
+    $('var-paystackSecret').value = '';
+    $('var-flutterwaveSecret').value = '';
+    $('var-mpesaBasic').value = '';
+    $('var-mtnSubscriptionKey').value = '';
     $('var-africasTalkingUsername').value = env.africasTalkingUsername || '';
-    $('var-africasTalkingApiKey').value = env.africasTalkingApiKey || '';
+    $('var-africasTalkingApiKey').value = '';
   }
 
   function importCurl(){
@@ -955,13 +1105,7 @@
 
   function downloadRequestJson(){
     var req = requestState();
-    var safeReq = JSON.parse(JSON.stringify(req));
-    if (safeReq.auth && safeReq.auth.token) safeReq.auth.token = '[redacted]';
-    safeReq.headers = (safeReq.headers || []).map(function(header){
-      var key = String(header.key || '').toLowerCase();
-      var value = /authorization|api[-_]?key|secret|token/.test(key) ? '[redacted]' : header.value;
-      return {key: header.key, value: value};
-    });
+    var safeReq = sanitizedRequest(req);
     safeReq.exportedAt = new Date().toISOString();
     safeReq.note = 'AfroTools API Tester export. Verify secrets, environment variables, CORS behavior and endpoint permissions before replaying.';
     var blob = new Blob([JSON.stringify(safeReq, null, 2)], {type:'application/json'});
@@ -1021,6 +1165,7 @@
         sendRequest();
       }
     });
+    window.addEventListener('pagehide', clearSecretFields);
   }
 
   function init(){
@@ -1050,7 +1195,7 @@
   target.appendChild(div);
 })();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 </body>
 </html>

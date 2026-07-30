@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -78,8 +78,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
 <style>
 :root {
@@ -520,6 +520,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/equipment-data.js?v=01729236"></script>
+<script src="/engines/tractor-calculator-engine.js?v=b98c66c8"></script>
 <script>
 // ─────────────────────────────────────────────────────────────────────────────
 // TRACTOR LEASE VS BUY CALCULATOR
@@ -610,95 +611,23 @@ function fmt(n, sym) {
 }
 
 function calcBuy(equip, hire, price, farmHa, passes, years, contractHa) {
-  var dieselPrice = hire ? (hire.diesel_per_litre || 0) : 0;
-  var totalHaWork = (farmHa + contractHa) * passes;
-  var cap = equip.areaCapacity_ha_per_day;
-  var ploughCap = cap ? (cap.ploughing || 2) : 2;
-  // Estimate hours from farm work (capped at typical annual hours)
-  var hoursNeeded = (totalHaWork / ploughCap) * 8;
-  var hoursPerYear = Math.min(hoursNeeded, equip.operatingHours_per_year || 600);
-  hoursPerYear = Math.max(hoursPerYear, 50); // minimum floor
-
-  var annualFuel = equip.fuelConsumption_L_hr * hoursPerYear * dieselPrice;
-  var annualMaint = price * (equip.annualMaintenance_pct / 100);
-  var annualOp = annualFuel + annualMaint;
-
-  // Residual value at end of period (linear depreciation)
-  var depRate = (1 - (equip.resaleValue_pct_after_10yr || 30) / 100) / (equip.lifespan_years || 15);
-  var residual = Math.max(price * (1 - depRate * Math.min(years, equip.lifespan_years || 15)), price * 0.05);
-
-  var totalCost = price + annualOp * years - residual;
-  var ownHaYears = farmHa * passes * years;
-  var costPerHa = ownHaYears > 0 ? totalCost / ownHaYears : 0;
-  var costPerHour = hoursPerYear * years > 0 ? totalCost / (hoursPerYear * years) : 0;
-
-  return {
-    capitalRequired: price,
-    annualOp: annualOp,
-    annualFuel: annualFuel,
-    annualMaint: annualMaint,
-    totalCost: totalCost,
-    residual: residual,
-    costPerHa: costPerHa,
-    costPerHour: costPerHour,
-    hoursPerYear: hoursPerYear
-  };
+  return window.AfroTools.TractorCalculatorEngine.calculateBuy({
+    price: price, farmHa: farmHa, passes: passes, years: years, contractHa: contractHa
+  }, equip, hire);
 }
 
 function calcHire(hire, farmHa, passes) {
-  if (!hire) return null;
-  var plough = hire.tractor_ploughing_per_ha || 0;
-  var harrow = hire.tractor_harrowing_per_ha || (plough * 0.72);
-  var ridge  = hire.tractor_ridging_per_ha  || (plough * 0.80);
-  var annual = 0;
-  if (passes >= 1) annual += farmHa * plough;
-  if (passes >= 2) annual += farmHa * harrow;
-  if (passes >= 3) annual += farmHa * ridge;
-  var costPerHa = passes > 0 ? annual / farmHa : 0;
-  return {
-    capitalRequired: 0,
-    annualCost: annual,
-    costPerHa: costPerHa,
-    availability: hire.availability || 'unknown',
-    wait_time: hire.wait_time || '—',
-    providers: hire.providers || '—',
-    notes: hire.notes || ''
-  };
+  return window.AfroTools.TractorCalculatorEngine.calculateHire(hire, farmHa, passes);
 }
 
 function calcLease(equip, price, farmHa, passes, years, rate, term, downPct) {
-  var down = price * (downPct / 100);
-  var principal = price - down;
-  var n = term * 12;
-  var mr = rate / 100 / 12;
-  var monthly;
-  if (mr === 0) { monthly = principal / n; }
-  else { monthly = principal * mr * Math.pow(1 + mr, n) / (Math.pow(1 + mr, n) - 1); }
-  // If lease term < comparison period, assume renew or own the asset after
-  var totalPaid = monthly * n + down;
-  var ownHaYears = farmHa * passes * years;
-  var costPerHa = ownHaYears > 0 ? totalPaid / ownHaYears : 0;
-  // Annual cost during lease period
-  var annualDuringLease = monthly * 12;
-  return {
-    capitalRequired: down,
-    monthlyPayment: monthly,
-    annualPayment: annualDuringLease,
-    totalCost: totalPaid,
-    costPerHa: costPerHa,
-    term: term,
-    rate: rate
-  };
+  return window.AfroTools.TractorCalculatorEngine.calculateLease({
+    price: price, farmHa: farmHa, passes: passes, years: years, rate: rate, term: term, downPct: downPct
+  });
 }
 
 function breakEvenHa(buy, hire, years, passes) {
-  // At what ha/year does annual buy cost = annual hire cost?
-  if (!hire || hire.costPerHa <= 0) return null;
-  var annualBuyFixed = buy.totalCost / years;
-  // annual hire = ha × costPerHa (which already includes passes)
-  // annualBuyFixed = ha × hire.costPerHa
-  var ha = annualBuyFixed / hire.costPerHa;
-  return ha;
+  return window.AfroTools.TractorCalculatorEngine.breakEvenHa(buy, hire, years);
 }
 
 function calculate() {
@@ -718,16 +647,27 @@ function calculate() {
   var contractHa   = doContract ? (parseFloat(document.getElementById('inp-contract-ha').value)   || 0) : 0;
   var contractRate = doContract ? (parseFloat(document.getElementById('inp-contract-rate').value) || 0) : 0;
 
-  var buyR   = calcBuy(equip, country.hire, price, farmHa, passes, years, contractHa);
-  var hireR  = calcHire(country.hire, farmHa, passes);
-  var leaseR = (finType === 'lease' || finType === 'loan')
-               ? calcLease(equip, price, farmHa, passes, years, rate, term, downPct)
-               : null;
-
-  // ── Determine winner ──
-  var costs = { buy: buyR.totalCost, hire: hireR ? hireR.annualCost * years : Infinity };
-  if (leaseR) costs.lease = leaseR.totalCost;
-  var winner = Object.keys(costs).reduce(function(a,b){ return costs[a] < costs[b] ? a : b; });
+  var result = window.AfroTools.TractorCalculatorEngine.calculate({
+    countryCode: country.code,
+    equipmentKey: document.getElementById('sel-equip').value,
+    price: price,
+    farmHa: farmHa,
+    passes: passes,
+    years: years,
+    financeType: finType,
+    rate: rate,
+    term: term,
+    downPct: downPct,
+    doContract: doContract,
+    contractHa: contractHa,
+    contractRate: contractRate
+  }, EQUIPMENT_DATA);
+  var buyR = result.buy;
+  var hireR = result.hire;
+  var leaseR = result.lease;
+  var costs = result.costs;
+  var winner = result.winner;
+  window.TRACTOR_CALCULATOR_LAST_RESULT = result;
 
   // ── Show results ──
   document.getElementById('results').style.display = 'block';
@@ -1005,6 +945,6 @@ function renderFinOptions(country) {
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

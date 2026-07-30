@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:crop-yield",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-crop-yield-tool-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 243 Crop Yield Tool English invariants",
+    "engine": "node tests/crop-yield-tool-engine.test.js",
+    "engineResult": "PASS 729 Crop Yield Tool engine scenarios",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-crop-yield-tool-oracles.json node tests/fr-agriculture-crop-yield-tool.test.js",
+    "oracleResult": "PASS 243 French profiles",
+    "controller": "node scripts/migrate-fr-crop-yield-tool-shared-engine.js --check",
+    "browser": "PORT=42977 CI=1 npx playwright test tests/e2e/fr-agriculture-crop-yield-tool.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (22.2s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "crop-yield",
+    "englishRoute": "/tools/crop-yield/",
+    "frenchRoute": "/fr/tools/rendement-culture/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-crop-yield-tool-oracles.json",
+      "englishInvariants": 243,
+      "frenchProfiles": 243,
+      "preserves": ["nine crop identities including custom", "nine currency symbols", "hectare, acre and half-acre plot conversion", "crop default yields and warning threshold", "gross revenue", "optional costs, net profit and ROI", "cost-to-revenue bar"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-crop-yield-tool.spec.js",
+      "result": "2 passed (22.2s)",
+      "isolatedPort": 42977,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/tools/rendement-culture/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/crop-yield-tool-engine.js"],
+      "data": ["data/agriculture/crop-yield-tool-data.json", "data/agriculture/crop-yield-tool-data.js"],
+      "freshness": "static accepted crop defaults and presets; not live",
+      "confidence": "planning estimate requiring measured area, crop cuts, price and cost confirmation"
+    },
+    "artwork": {"imageId": "crop-yield", "file": "assets/img/tools/crop-yield.webp", "state": "present"},
+    "limitations": ["The plot conversion preserves the accepted assumption that one plot is half an acre; local plot sizes vary.", "Default yields and presets are starting assumptions, not country observations or guarantees."]
+  }]
+}

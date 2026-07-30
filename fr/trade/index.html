@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -19,10 +19,10 @@
 <meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/tool-registry.min.js?v=2bbcd15c" defer></script>
+<script src="/assets/js/components/tool-registry.min.js?v=76f9859f" defer></script>
 <script src="/assets/js/components/category-hub-card-images.js?v=12b677fb" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Commerce international et import en français","description":"Outils français pour préparer une opération import-export africaine.","url":"https://afrotools.com/fr/trade/","inLanguage":"fr","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
 <style>
 body{font-family:var(--font-body,'DM Sans',system-ui,sans-serif);background:#f8fafc;color:#111827;margin:0}
@@ -97,8 +97,21 @@ body{font-family:var(--font-body,'DM Sans',system-ui,sans-serif);background:#f8f
 <afro-footer></afro-footer>
 <script>
 function initTradeFr(){
+  var exactRoutes=new Set([
+    "/fr/tools/recherche-code-sh/","/fr/tools/suivi-zlecaf/","/fr/tools/cout-rendu/",
+    "/fr/tools/estimateur-fret/","/fr/tools/impact-fx-import/","/fr/tools/calculateur-credit-documentaire/",
+    "/fr/tools/documents-export/","/fr/tools/generateur-certificat-origine/","/fr/tools/calculateur-surestaries/",
+    "/fr/tools/calculateur-incoterms/","/fr/tools/comparateur-financement-commerce/","/fr/tools/suivi-matieres-premieres/",
+    "/fr/tools/comparateur-paiements/","/fr/tools/ecowas-levy/","/fr/tools/regles-origine-sadc/",
+    "/fr/tools/tec-eac/","/fr/tools/facture-proforma/","/fr/tools/liste-colisage/",
+    "/fr/tools/generateur-connaissement/","/fr/tools/checklist-transfert-donnees/",
+    "/fr/tools/delai-dedouanement/","/fr/tools/calculateur-de-poids-d-expedition/"
+  ]);
   var all=(window.AFRO_TOOLS||[]).filter(function(t){return t.lang==='fr'&&t.category==='trade';});
-  var live=all.filter(function(t){return t.status==='live'||t.status==='new';});
+  var live=all.filter(function(t){
+    var href=String(t.href||'').replace(/\/?$/,'/');
+    return (t.status==='live'||t.status==='new')&&exactRoutes.has(href);
+  });
   var el;
   el=document.getElementById('s-total'); if(el) el.textContent=all.length;
   el=document.getElementById('s-live'); if(el) el.textContent=live.length;
@@ -117,6 +130,6 @@ function initTradeFr(){
 }
 if(typeof onRegistryReady==='function'){onRegistryReady(initTradeFr);}else{document.addEventListener('DOMContentLoaded',function(){if(window.AFRO_TOOLS)initTradeFr();else document.addEventListener('afrotools:registry-ready',initTradeFr);});}
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

@@ -64,7 +64,7 @@ function createSandbox(initialConsent) {
 }
 
 function commands(context) {
-  return context.window.dataLayer.map((entry) => Array.from(entry));
+  return (context.window.dataLayer || []).map((entry) => Array.from(entry));
 }
 
 function run(initialConsent) {
@@ -79,18 +79,20 @@ function commandRows(context, name, detail) {
 
 const fresh = run(null);
 const freshCommands = commands(fresh);
-assert.deepStrictEqual(
-  JSON.parse(JSON.stringify(freshCommands[0].slice(0, 3))),
-  ["consent", "default", {
-    analytics_storage: "denied",
-    ad_storage: "denied",
-    ad_user_data: "denied",
-    ad_personalization: "denied",
-    wait_for_update: 500
-  }],
-  "fresh visitors must start with denied Consent Mode before configuration"
+assert.deepStrictEqual(freshCommands, [], "fresh visitors do not initialize an analytics queue before consent");
+assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 0, "GA4 is not configured before consent");
+assert.ok(
+  !fresh.inserted.some((node) => /googletagmanager/.test(node.src)),
+  "fresh visitors make no Google tag request before consent"
 );
-assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 1, "GA4 is configured exactly once");
+assert.ok(
+  fresh.inserted.some((node) => node.src === "/assets/js/components/analytics-consent-v2.js"),
+  "the explicit accept/reject consent manager is loaded"
+);
+
+fresh.setConsent("accepted");
+fresh.listeners["afrotools:cookie-consent"]({ detail: { status: "accepted" } });
+assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 1, "accept configures GA4 exactly once");
 const freshConfig = commandRows(fresh, "config", "G-D859CGF391")[0][2];
 assert.strictEqual(freshConfig.page_location, "https://afrotools.com/tools/salary-calculator/", "page URL excludes query and fragment");
 assert.strictEqual(freshConfig.page_referrer, "https://search.example/", "referrer is reduced to its origin");
@@ -98,14 +100,9 @@ assert.strictEqual(freshConfig.allow_google_signals, false, "Google Signals stay
 assert.strictEqual(freshConfig.allow_ad_personalization_signals, false, "ad personalization stays disabled");
 assert.ok(
   fresh.inserted.some((node) => node.src === "https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"),
-  "fresh denied visitors still load the Google tag"
-);
-assert.ok(
-  fresh.inserted.some((node) => node.src === "/assets/js/components/analytics-consent-v2.js"),
-  "the explicit accept/reject consent manager is loaded"
+  "accept loads the Google tag"
 );
 
-fresh.listeners["afrotools:cookie-consent"]({ detail: { status: "accepted" } });
 const acceptedUpdates = commandRows(fresh, "consent", "update");
 assert.strictEqual(acceptedUpdates.at(-1)[2].analytics_storage, "granted", "accept grants analytics storage");
 assert.strictEqual(acceptedUpdates.at(-1)[2].ad_storage, "denied", "accept never grants advertising storage");
@@ -118,7 +115,7 @@ assert.ok(
 fresh.listeners["afrotools:cookie-consent"]({ detail: { status: "declined" } });
 const declinedUpdates = commandRows(fresh, "consent", "update");
 assert.strictEqual(declinedUpdates.at(-1)[2].analytics_storage, "denied", "reject returns analytics storage to denied");
-assert.strictEqual(fresh.window["ga-disable-G-D859CGF391"], false, "legacy global disable cannot suppress denied-consent pings");
+assert.strictEqual(fresh.window["ga-disable-G-D859CGF391"], true, "revocation disables subsequent GA sends");
 assert.ok(fresh.clarityCalls.some((call) => call[0] === "consent" && call[1] === false), "revocation clears Clarity consent");
 
 fresh.window.gtag("event", "search_query", { query: "private@example.com", results_count: 2 });
@@ -137,11 +134,11 @@ assert.deepStrictEqual(JSON.parse(JSON.stringify(emittedEvents[3][2])), { tool_n
 
 const returningAccepted = run("accepted");
 assert.strictEqual(commandRows(returningAccepted, "consent", "default")[0][2].analytics_storage, "granted", "stored acceptance is applied before config");
-assert.ok(!("wait_for_update" in commandRows(returningAccepted, "consent", "default")[0][2]), "stored choice does not create an unnecessary wait");
+assert.ok(returningAccepted.inserted.some((node) => /googletagmanager/.test(node.src)), "stored acceptance loads the tag");
 
 const returningDeclined = run("declined");
-assert.strictEqual(commandRows(returningDeclined, "consent", "default")[0][2].analytics_storage, "denied", "stored rejection remains denied");
-assert.ok(returningDeclined.inserted.some((node) => /googletagmanager/.test(node.src)), "stored rejection still loads the tag for consent modeling");
+assert.deepStrictEqual(commands(returningDeclined), [], "stored rejection creates no analytics queue");
+assert.ok(!returningDeclined.inserted.some((node) => /googletagmanager/.test(node.src)), "stored rejection never loads the tag");
 
 assert.ok(managerSource.includes("Accept analytics") && managerSource.includes("Reject analytics"), "consent UI has explicit accept and reject actions");
 assert.ok(managerSource.includes("data-afro-cookie-consent-open"), "consent choices can be reopened from a visible control");
@@ -171,7 +168,7 @@ assert.ok(cookiePolicy.includes("cookieless") && privacyPolicy.includes("cookiel
 // parameter, and any campaign value that looks like personal data, is still
 // discarded before it reaches Google.
 function pageLocationFor(search) {
-  const context = createSandbox(null);
+  const context = createSandbox("accepted");
   context.window.location.search = search;
   vm.runInNewContext(lazySource, context.sandbox, { filename: "lazy-analytics.js" });
   return commandRows(context, "config", "G-D859CGF391")[0][2].page_location;

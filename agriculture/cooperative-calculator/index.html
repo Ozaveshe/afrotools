@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -111,8 +111,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
 <style>
 :root {
@@ -637,6 +637,7 @@ body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--t
 </afro-related-tools>
 <afro-footer></afro-footer>
 
+<script src="/engines/cooperative-engine.js?v=1c7bb8d6"></script>
 <script>
 var coopType = 'agri';
 var method = 'patronage';
@@ -721,59 +722,65 @@ function calcDividend() {
   var errEl = document.getElementById('calc-error');
   errEl.style.display = 'none';
 
-  var revenue  = getNum('inp-revenue');
-  var expenses = getNum('inp-expenses');
-  var members  = getNum('inp-members');
-  var myProduce    = getNum('inp-my-produce');
-  var totalProduce = getNum('inp-total-produce');
-  var myShares     = getNum('inp-my-shares');
-  var totalShares  = getNum('inp-total-shares');
-  var marketPrice  = getNum('inp-market-price');
-  var saccoRate    = getNum('inp-sacco-rate');
-
-  var rReserve  = getNum('alloc-reserve') / 100;
-  var rEdu      = getNum('alloc-edu') / 100;
-  var rDividend = getNum('alloc-dividend') / 100;
-  var rSocial   = getNum('alloc-social') / 100;
-  var rRetained = getNum('alloc-retained') / 100;
-  var totalAlloc = (rReserve + rEdu + rDividend + rSocial + rRetained) * 100;
-
-  if (!revenue) { showErr('Please enter total cooperative revenue.'); return; }
-  if (!expenses && expenses !== 0) { showErr('Please enter total expenses.'); return; }
-  if (!members) { showErr('Please enter number of members.'); return; }
-  if (Math.round(totalAlloc) !== 100) { showErr('Total surplus allocation must equal 100%.'); return; }
-
-  var surplus = revenue - expenses;
-  if (surplus < 0) { showErr('Expenses exceed revenue — no surplus to distribute. Review your inputs.'); return; }
-
-  var amtReserve  = surplus * rReserve;
-  var amtEdu      = surplus * rEdu;
-  var amtDividend = surplus * rDividend;
-  var amtSocial   = surplus * rSocial;
-  var amtRetained = surplus * rRetained;
-
-  // --- MEMBER DIVIDEND ---
-  var myDividend = 0;
-  var hybridPat = parseInt(document.getElementById('hybrid-range').value) / 100;
-  var hybridShare = 1 - hybridPat;
-
-  if (method === 'patronage') {
-    if (!totalProduce) { showErr('For patronage method, enter total produce collected by the cooperative.'); return; }
-    myDividend = myProduce / totalProduce * amtDividend;
-  } else if (method === 'shares') {
-    if (!totalShares) { showErr('For per-share method, enter total cooperative share capital.'); return; }
-    myDividend = myShares / totalShares * amtDividend;
-  } else {
-    // hybrid
-    if (!totalProduce && !totalShares) { showErr('For hybrid method, enter both total produce and total shares.'); return; }
-    var patPool   = amtDividend * hybridPat;
-    var sharePool = amtDividend * hybridShare;
-    var myPatDiv   = totalProduce ? (myProduce / totalProduce * patPool) : 0;
-    var myShareDiv = totalShares  ? (myShares / totalShares * sharePool) : 0;
-    myDividend = myPatDiv + myShareDiv;
+  var model = window.AfroTools.CooperativeEngine.calculate({
+    coopType: coopType,
+    method: method,
+    revenue: getNum('inp-revenue'),
+    expenses: getNum('inp-expenses'),
+    members: getNum('inp-members'),
+    myProduce: getNum('inp-my-produce'),
+    totalProduce: getNum('inp-total-produce'),
+    myShares: getNum('inp-my-shares'),
+    totalShares: getNum('inp-total-shares'),
+    marketPrice: getNum('inp-market-price'),
+    saccoRate: getNum('inp-sacco-rate'),
+    hybridPatronagePct: parseInt(document.getElementById('hybrid-range').value),
+    allocations: {
+      reserve: getNum('alloc-reserve'),
+      education: getNum('alloc-edu'),
+      dividend: getNum('alloc-dividend'),
+      social: getNum('alloc-social'),
+      retained: getNum('alloc-retained')
+    }
+  });
+  if (!model.ok) {
+    var errors = {
+      'missing-revenue': 'Please enter total cooperative revenue.',
+      'missing-members': 'Please enter number of members.',
+      'allocation-not-100': 'Total surplus allocation must equal 100%.',
+      'negative-surplus': 'Expenses exceed revenue — no surplus to distribute. Review your inputs.',
+      'missing-total-produce': 'For patronage method, enter total produce collected by the cooperative.',
+      'missing-total-shares': 'For per-share method, enter total cooperative share capital.',
+      'missing-hybrid-totals': 'For hybrid method, enter both total produce and total shares.'
+    };
+    showErr(errors[model.status] || 'Review your inputs.');
+    return;
   }
-
-  var avgDividend = amtDividend / members;
+  window.COOPERATIVE_LAST_RESULT = model;
+  var revenue = model.input.revenue;
+  var expenses = model.input.expenses;
+  var members = model.input.members;
+  var myProduce = model.input.myProduce;
+  var totalProduce = model.input.totalProduce;
+  var myShares = model.input.myShares;
+  var totalShares = model.input.totalShares;
+  var marketPrice = model.input.marketPrice;
+  var saccoRate = model.input.saccoRate;
+  var rReserve = model.input.allocations.reserve / 100;
+  var rEdu = model.input.allocations.education / 100;
+  var rDividend = model.input.allocations.dividend / 100;
+  var rSocial = model.input.allocations.social / 100;
+  var rRetained = model.input.allocations.retained / 100;
+  var surplus = model.surplus;
+  var amtReserve = model.amounts.reserve;
+  var amtEdu = model.amounts.education;
+  var amtDividend = model.amounts.dividend;
+  var amtSocial = model.amounts.social;
+  var amtRetained = model.amounts.retained;
+  var myDividend = model.memberDividend;
+  var hybridPat = model.hybrid.patronagePct / 100;
+  var hybridShare = model.hybrid.sharesPct / 100;
+  var avgDividend = model.averageDividend;
 
   // --- RENDER ---
   document.getElementById('results').style.display = 'block';
@@ -929,6 +936,6 @@ updateHybridLabel();
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

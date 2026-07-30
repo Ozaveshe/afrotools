@@ -1,42 +1,186 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>Fusionner et diviser des PDF | AfroTools</title>
-<meta name="description" content="Fusionnez, réorganisez, extrayez ou divisez des PDF depuis la route française préférée, puis vérifiez l’ordre des pages avant export.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fusionner et diviser des PDF en ligne | AfroTools</title>
+<meta name="description" content="Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.">
+<meta name="content-language" content="fr">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Fusionner et diviser des PDF | AfroTools">
-<meta property="og:description" content="Fusionnez, réorganisez, extrayez ou divisez des PDF, puis vérifiez l’ordre des pages avant export.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
+<meta property="og:title" content="Fusionner et diviser des PDF">
+<meta property="og:description" content="Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fusionner et diviser des PDF | AfroTools">
-<meta name="twitter:description" content="Fusionnez, réorganisez, extrayez ou divisez des PDF, puis vérifiez l’ordre des pages avant export.">
+<meta name="twitter:title" content="Merge PDF & Split PDF Online | AfroTools">
+<meta name="twitter:description" content="Merge, reorder, split ranges, extract pages, and ZIP page sets locally in your browser.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script src="/assets/js/components/fr-pdf-frame-localizer.min.js?v=2a5f2edd" defer></script>
-<script type="application/ld+json">
+<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=cec70638">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script> <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script> <style>
+  :root { --afro-green: var(--color-primary); --afro-dark: #0f172a; --afro-light: #f8fafc; }
+
+  .tool-hero { background: #f8fafc; border-bottom: 1px solid #e2e8f0; padding: 38px 0 28px; position: relative; overflow: hidden; }
+  .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
+  .breadcrumb { font-size: 0.72rem; font-weight: 800; color: #64748b; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
+  .breadcrumb a { color: #64748b; text-decoration: none; }
+  .breadcrumb span { color: var(--afro-green); }
+  h1 { font-size: clamp(1.8rem, 4vw, 2.75rem); font-weight: 800; color: #0f172a; letter-spacing: -0.02em; line-height: 1.05; margin-bottom: 10px; max-width: 760px; }
+  h1 em { color: var(--afro-green); font-style: normal; }
+  .hero-sub { font-size: 0.95rem; color: #475569; line-height: 1.65; max-width: 680px; margin-bottom: 16px; }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge { display: inline-flex; align-items: center; gap: 5px; min-height: 30px; padding: 0 11px; border-radius: 999px; font-size: 0.72rem; font-weight: 800; letter-spacing: 0.02em; }
+  .b-green { background: #eff6ff; color: #1d4ed8; border: 1px solid #bfdbfe; }
+  .job-strip { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 10px; margin-top: 18px; max-width: 860px; }
+  .job-step { background: #fff; border: 1px solid #dbe4ef; border-radius: 10px; padding: 13px 14px; }
+  .job-step strong { display: block; color: #0f172a; font-size: 0.86rem; line-height: 1.25; margin-bottom: 4px; }
+  .job-step span { display: block; color: #64748b; font-size: 0.76rem; line-height: 1.45; }
+
+  .tool-main { max-width: 980px; margin: 0 auto; padding: 28px 24px 72px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 10px; overflow: hidden; box-shadow: 0 1px 8px rgba(15,23,42,0.05); margin-bottom: 18px; }
+  .card-head { padding: 15px 22px; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; background: #f9fafb; }
+  .card-title { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.08em; text-transform: uppercase; color: #374151; }
+  .card-body { padding: 22px; }
+
+  .mode-row { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 18px; }
+  .mode-btn { min-height: 48px; padding: 12px 16px; background: #EFF6FF; border: 1.5px solid #e5e7eb; border-radius: 7px; cursor: pointer; transition: border-color 0.15s, background 0.15s, color 0.15s; font-size: 0.82rem; font-weight: 800; color: #334155; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .mode-btn:hover { border-color: var(--afro-green); }
+  .mode-btn.on { border-color: var(--afro-green); background: var(--color-primary); color: #fff; }
+
+  .file-input-wrapper { position: relative; display: inline-block; width: 100%; }
+  .file-input-wrapper input[type="file"] { position:absolute;width:1px;height:1px;opacity:0;overflow:hidden; }
+  .file-input-label { display: block; min-height: 76px; padding: 20px; background: #EFF6FF; border: 2px dashed #dbe4ef; border-radius: 8px; cursor: pointer; text-align: center; transition: border-color 0.2s, background 0.2s; font-size: 0.95rem; color: #334155; font-weight: 800; touch-action: manipulation; }
+  .file-input-label:hover { border-color: var(--afro-green); background: #EFF6FF; }
+  .file-input-label.dragover { border-color: var(--afro-green); background: rgba(0,98,204,0.1); }
+
+  .file-list { margin-top: 16px; }
+  .file-item { display: grid; grid-template-columns: auto minmax(0,1fr) auto minmax(128px,160px) auto; align-items: center; gap: 10px; padding: 12px; background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 8px; margin-bottom: 8px; cursor: move; }
+  .file-item.dragging { opacity: 0.5; }
+  .file-item-name { flex: 1; font-size: 0.85rem; color: #1e293b; font-weight: 600; }
+  .file-item-meta { font-size: 0.7rem; color: #64748b; white-space: nowrap; }
+  .file-item-status { font-size: 0.68rem; color: #64748b; font-weight: 700; }
+  .file-item-status.err { color: #b91c1c; }
+  .merge-pages-field { display:grid; gap:3px; min-width:128px; }
+  .merge-pages-field span { font-size:.64rem; color:#64748b; font-weight:800; text-transform:uppercase; letter-spacing:.04em; }
+  .merge-pages-field input { width:100%; border:1px solid #dbe3ef; border-radius:5px; padding:7px 8px; font:700 .72rem 'DM Sans',sans-serif; color:#0f172a; background:#fff; }
+  .merge-pages-field input:focus { outline:none; border-color:#60a5fa; box-shadow:0 0 0 3px rgba(96,165,250,.18); }
+  .file-item-controls { display: flex; gap: 8px; flex-wrap: wrap; }
+  .mini-btn { min-width: 44px; min-height: 44px; padding: 8px 10px; background: #fff; border: 1px solid #dbe3ef; color: #334155; border-radius: 7px; cursor: pointer; font-size: 0.74rem; font-weight: 800; touch-action: manipulation; }
+  .mini-btn:hover { border-color: #93c5fd; color: #1d4ed8; }
+  .file-item-remove { background: #EFF6FF; border: 1px solid #e5e7eb; color: #334155; padding: 6px 10px; border-radius: 4px; cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: all 0.15s; }
+  .file-item-remove:hover { background: #EFF6FF; border-color: #BFDBFE; }
+  .tool-row { display:flex; align-items:center; justify-content:space-between; gap:10px; flex-wrap:wrap; margin-top:12px; }
+  .subtle-btn { min-height:44px; border:1px solid #dbe3ef; background:#fff; color:#334155; border-radius:6px; padding:9px 12px; font-size:.74rem; font-weight:800; cursor:pointer; font-family:'DM Sans',sans-serif; touch-action: manipulation; }
+  .subtle-btn:hover { border-color:#93c5fd; color:#1d4ed8; }
+
+  .calc-btn { width: 100%; min-height: 50px; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 800; letter-spacing: 0.01em; cursor: pointer; transition: background 0.18s, box-shadow 0.18s; margin-top: 8px; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .calc-btn:hover { background: #0059B3; box-shadow: 0 6px 20px rgba(0,98,204,0.22); }
+  .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; box-shadow: none; }
+
+  .result-card { background: #f9fafb; border: 1.5px solid #e5e7eb; border-radius: 10px; padding: 20px; display: none; margin-bottom: 18px; }
+  .result-card.on { display: block; }
+  .result-text { font-size: 0.85rem; color: #1e293b; margin-bottom: 12px; font-weight: 600; }
+  .action-row { display: grid; grid-template-columns: 1fr; gap: 8px; }
+  .act-btn { padding: 12px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; display: flex; align-items: center; justify-content: center; gap: 6px; font-family: 'DM Sans', sans-serif; border: none; }
+  .act-download { background: rgba(0,98,204,0.1); border: 1.5px solid rgba(0,98,204,0.35); color: #1e40af; }
+  .act-download:hover { background: rgba(0,98,204,0.2); }
+
+  .progress-bar { width: 100%; height: 4px; background: #e5e7eb; border-radius: 2px; overflow: hidden; margin-top: 12px; }
+  .progress-fill { height: 100%; background: var(--color-primary); width: 0%; transition: width 0.3s; }
+
+  /* Split page grid */
+  .split-mode-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin: 14px 0; }
+  .split-mode-btn { min-height:44px; padding: 10px 9px; border: 1.5px solid #e5e7eb; background: #fff; color: #334155; border-radius: 7px; cursor: pointer; font-size: .72rem; font-weight: 800; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .split-mode-btn:hover { border-color: #93c5fd; }
+  .split-mode-btn.on { border-color: var(--color-primary); color: #fff; background: var(--color-primary); }
+  .split-panel { display:none; margin-top:10px; }
+  .split-panel.on { display:block; }
+  .range-field { display:flex; flex-direction:column; gap:7px; margin:10px 0; }
+  .range-field label { font-size:.72rem; font-weight:800; color:#334155; letter-spacing:.05em; text-transform:uppercase; }
+  .range-field input { width:100%; box-sizing:border-box; padding:11px 12px; border:1.5px solid #dbe3ef; border-radius:7px; font-family:'DM Sans',sans-serif; font-size:.86rem; color:#0f172a; outline:none; }
+  .range-field input:focus { border-color: var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.12); }
+  .range-help { color:#64748b; font-size:.76rem; line-height:1.55; }
+  .range-options { display:flex; gap:12px; flex-wrap:wrap; align-items:center; margin-top:8px; font-size:.78rem; color:#334155; font-weight:700; }
+  .sp-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr)); gap: 6px; margin-top: 16px; }
+  .sp-cell { position: relative; }
+  .sp-cell-thumb { border-radius: 6px; overflow: hidden; border: 2px solid #e5e7eb; background: #fff; transition: 0.2s; }
+  .sp-cell.selectable { cursor:pointer; }
+  .sp-cell.selectable .sp-cell-thumb:hover { border-color:#93c5fd; }
+  .sp-cell.selected .sp-cell-thumb { border-color:var(--color-primary); box-shadow:0 0 0 3px rgba(0,98,204,.16); }
+  .sp-cell.selected .sp-cell-label { color:#1d4ed8; }
+  .sp-cell-thumb img { width: 100%; aspect-ratio: 8.5/11; display: block; object-fit: contain; background: #f9fafb; }
+  .sp-ph { width: 100%; aspect-ratio: 8.5/11; display: flex; align-items: center; justify-content: center; font-size: 12px; color: #9ca3af; font-weight: 700; background: #f9fafb; }
+  .sp-cell-label { text-align: center; font-size: 11px; font-weight: 700; color: #4b5563; padding: 3px 0; }
+  .sp-cut { position: absolute; top: 0; right: -16px; bottom: 20px; width: 32px; min-height:44px; cursor: pointer; z-index: 5; display: flex; align-items: center; justify-content: center; border:0; background:transparent; padding:0; touch-action: manipulation; }
+  .sp-cut::before { content: ''; position: absolute; inset: 8px 14px; background: #e5e7eb; border-radius: 2px; transition: 0.2s; }
+  .sp-cut:hover::before { background: #fca5a5; }
+  .sp-cut.on::before { background: #dc2626; }
+  .sp-cut .sc-icon { width: 24px; height: 24px; border-radius: 50%; background: #f3f4f6; display: flex; align-items: center; justify-content: center; font-size: 13px; z-index: 2; transition: 0.2s; opacity: 0; }
+  .sp-cut:hover .sc-icon { opacity: 1; background: #fef2f2; color: #dc2626; }
+  .sp-cut.on .sc-icon { opacity: 1; background: #dc2626; color: #fff; }
+  .sp-info { font-size: 0.78rem; color: #4b5563; margin-top: 10px; padding: 10px 14px; background: #f9fafb; border-radius: 6px; border: 1px solid #e5e7eb; }
+
+  /* Tips section */
+  .tips-section { background: #f9fafb; border: 1px solid #e5e7eb; border-radius: 10px; padding: 20px 24px; margin-top: 8px; }
+  .tips-title { font-size: 0.72rem; font-weight: 700; color: #374151; letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 10px; }
+  .tips-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+  .tip-item { display: flex; align-items: center; gap: 8px; font-size: 0.8rem; color: #334155; font-weight: 700; padding: 10px 12px; background: #fff; border: 1px solid #e5e7eb; border-radius: 6px; }
+
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1,
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h2,
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h3 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub,:root[data-theme="dark"] .job-step span { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .job-step,:root[data-theme="dark"] .file-input-label,:root[data-theme="dark"] .tips-section,:root[data-theme="dark"] .tip-item { background:#121f33; border-color:#3a4c68; color:#eef5ff; }
+  :root[data-theme="dark"] .job-step strong,:root[data-theme="dark"] .tips-title { color:#eef5ff; }
+  :root[data-theme="dark"] .b-green { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .result-card { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .result-text { color:#eef5ff!important; }
+  :root[data-theme="dark"] .act-download { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .pdf-merge-seo details { background:#121f33!important; border-color:#3a4c68!important; }
+  :root[data-theme="dark"] .pdf-merge-seo h2,:root[data-theme="dark"] .pdf-merge-seo h3,:root[data-theme="dark"] .pdf-merge-seo summary { color:#eef5ff!important; }
+  :root[data-theme="dark"] .pdf-merge-seo p,:root[data-theme="dark"] .pdf-merge-seo > div { color:#b8c7dc!important; }
+
+  @media (max-width: 768px) {
+    .tool-hero { padding: 28px 0 22px; }
+    .job-strip { grid-template-columns: 1fr; }
+    .mode-row { grid-template-columns: 1fr; }
+    .split-mode-row { grid-template-columns: 1fr 1fr; }
+    .tips-grid { grid-template-columns: 1fr; }
+    .sp-grid { grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); }
+    .file-item { grid-template-columns:auto minmax(0,1fr); }
+    .file-item-meta,.merge-pages-field,.file-item-controls { grid-column:2; }
+    .file-item-controls .mini-btn { flex: 1 1 88px; }
+  }
+</style> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "Fusionner et diviser des PDF",
-  "description": "Fusionnez, réorganisez, extrayez ou divisez des PDF depuis la route française préférée, puis vérifiez l’ordre des pages avant export.",
+  "alternateName": "Fusionner et diviser des PDF",
+  "description": "Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.",
   "url": "https://afrotools.com/fr/tools/fusionner-diviser-pdf/",
   "inLanguage": "fr",
-  "applicationCategory": "BrowserApplication",
+  "applicationCategory": "UtilitairesApplication",
   "operatingSystem": "Web",
+  "browserRequirements": "Nécessite JavaScript et un navigateur moderne avec des API de fichiers locaux",
+  "featureList": [
+    "Fusionner plusieurs fichiers PDF",
+    "Faites glisser ou réorganisez les fichiers avec un bouton avant l'exportation",
+    "Inclure toutes les pages ou plages de pages par fichier",
+    "Diviser un PDF par points de coupe visuels",
+    "Divisé par plages de pages personnalisées",
+    "Extraire les pages sélectionnées en un seul PDF",
+    "Exportez chaque page sous forme de ZIP de PDF d'une seule page"
+  ],
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -49,28 +193,41 @@
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-merge-split.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/fr/all-tools/"},{"@type":"ListItem","position":3,"name":"Fusionner et diviser des PDF","item":"https://afrotools.com/fr/tools/fusionner-diviser-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
+</script> <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "Fusionner et diviser des PDF",
+  "url": "https://afrotools.com/fr/tools/fusionner-diviser-pdf/",
+  "description": "Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-merge-split.webp"
+}
+</script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-merge-split.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Fusionner et diviser des PDF","item":"https://afrotools.com/fr/tools/fusionner-diviser-pdf/"}],"inLanguage":"fr"}</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Combien de PDF puis-je fusionner à la fois ?","acceptedAnswer":{"@type":"Answer","text":"Il n'y a pas de limite de serveur fixe car le travail s'exécute localement. La mémoire de votre appareil est la véritable limite, c'est pourquoi les fichiers PDF numérisés volumineux ou les paquets contenant de nombreux fichiers fonctionnent généralement mieux sur un ordinateur portable que sur un téléphone plus ancien."}},{"@type":"Question","name":"Puis-je réorganiser les PDF ou ne fusionner que certaines pages ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Après avoir téléchargé vos fichiers, faites-les glisser et déposez-les dans l'ordre de votre choix, puis laissez chaque zone de page vide pour toutes les pages ou entrez des plages telles que 1-2, 5. Le PDF fusionné suit la séquence exacte que vous organisez à l'écran."}},{"@type":"Question","name":"Comment fonctionne le fractionnement ?","acceptedAnswer":{"@type":"Answer","text":"Vous pouvez diviser à des points de coupure visuels, saisir des plages personnalisées telles que 1-3, 6, 9-11, extraire les pages sélectionnées en un seul PDF ou exporter chaque page sous forme de PDF distincts dans un ZIP."}},{"@type":"Question","name":"Mes PDF sont-ils téléchargés sur un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Les opérations de fusion et de scission principales se produisent dans votre navigateur. AfroTools ne télécharge pas de PDF source pour ce flux de travail et les téléchargements locaux ne nécessitent pas de compte."}},{"@type":"Question","name":"La fusion réduit-elle la qualité de mes PDF ?","acceptedAnswer":{"@type":"Answer","text":"Le processus de fusion copie les pages PDF sélectionnées dans un nouveau fichier sans recompression intentionnelle. Ouvrez toujours la sortie dans un autre lecteur pour confirmer l'ordre des pages, les formulaires, les signatures, les signets et la taille du fichier avant de l'envoyer."}}],"inLanguage":"fr"}</script>
+<meta property="article:modified_time" content="2026-07-05">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+  body.top-level-page-ui-refresh .tool-hero h1 { color: #0f172a; }
+  body.top-level-page-ui-refresh .tool-hero h1 em { color: var(--color-primary); }
+  body.top-level-page-ui-refresh .tool-hero h2,
+  body.top-level-page-ui-refresh .tool-hero h3 { color: #0f172a; }
+</style>
+<meta property="og:image:alt" content="Fusionner et diviser des PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-merge-split","locale":"fr","englishOwner":"tools/pdf-merge-split/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"-page document.":"document d'une page.","\" alt=\"Page":"\" alt=\"Page","#merge-card .file-input-label":"#merge-card .file-input-label","#split-card .file-input-label":"#split-card .file-input-label","\u003c/div>":"\u003c/div>","\u003c/div>\u003cdiv class=\"sp-cell-label\">Page":"\u003c/div>\u003cdiv class=\"sp-cell-label\">Page","\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"up\" aria-label=\"Move up\">Up\u003c/button>\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"down\" aria-label=\"Move down\">Down\u003c/button>\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"remove\" aria-label=\"Remove\">Remove\u003c/button>":"\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"up\" aria-label=\"Monter\">Haut\u003c/button>\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"down\" aria-label=\"Descendre\">Bas\u003c/button>\u003cbutton class=\"mini-btn\" type=\"button\" data-action=\"remove\" aria-label=\"Supprimer\">Supprimer\u003c/button>","\u003cdiv class=\"sc-icon\">+\u003c/div>":"\u003cdiv class=\"sc-icon\">+\u003c/div>","\u003cdiv class=\"sp-cell-thumb\">":"\u003cdiv class=\"sp-cell-thumb\">","\u003cdiv class=\"sp-ph\">Page":"\u003cdiv class=\"sp-ph\">Page","\u003cimg src=\"":"\u003cimg src=\"","act-btn act-download":"acte-btn acte-télécharger","Add at least two PDFs to merge.":"Ajoutez au moins deux PDF à fusionner.","Add one PDF or drop it here":"Ajoutez un PDF ou déposez-le ici","Add PDFs or drop them here":"Ajoutez des PDF ou déposez-les ici","Add two or more PDFs, reorder them, and limit any file to specific pages.":"Ajoutez deux fichiers PDF ou plus, réorganisez-les et limitez n'importe quel fichier à des pages spécifiques.","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","All / 1-":"Tous / 1-","All pages":"Toutes les pages","application/pdf":"candidature/pdf","application/zip":"application/zip","Are my PDFs uploaded to a server?":"Mes PDF sont-ils téléchargés sur un serveur ?","aria-label":"aria-label","as PDF":"en PDF","B":"B","Before sharing":"Avant de partager","between pages to set split points. Pages between cuts become separate PDF files.":"entre les pages pour définir des points de partage. Les pages entre les coupes deviennent des fichiers PDF séparés.","block":"bloc","button":"bouton","button[data-action]":"bouton [données-action]","Can I reorder PDFs or merge only certain pages?":"Puis-je réorganiser les PDF ou ne fusionner que certaines pages ?","canvas":"toile","change":"changement","Check page order before downloading a combined or split PDF":"Vérifiez l’ordre des pages avant de télécharger le PDF fusionné ou divisé","Choose one job, add your files, check the page order or ranges, then download a PDF or ZIP. Core processing happens in this browser.":"Choisissez une tâche, ajoutez vos fichiers, vérifiez l'ordre ou les plages des pages, puis téléchargez un PDF ou un ZIP. Le traitement de base a lieu dans ce navigateur.","Choose the job":"Choisissez le travail","Clear list":"Vider la liste","click":"cliquez","Click page thumbnails below or type page numbers. Extracted pages download as one PDF.":"Cliquez sur les vignettes des pages ci-dessous ou saisissez les numéros de page. Les pages extraites sont téléchargées en un seul PDF.","Click the":"Cliquez sur le","Client-side":"Côté client","color:#64748b;font-size:.78rem;font-weight:800;":"couleur : #64748b ; taille de police : .78rem ; poids de police : 800 ;","Combine ranges into one PDF instead of a ZIP":"Réunir les plages dans un seul PDF au lieu d’un ZIP","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.":"Convertissez les fichiers DOCX, XLSX, XLS, CSV, le texte PDF sélectionnable et les pages PDF en PNG/JPG ZIP dans le navigateur.","Core merge and split operations happen in your browser. AfroTools does not upload source PDFs for this workflow, and local downloads do not require an account.":"Les opérations de fusion et de scission principales se produisent dans votre navigateur. AfroTools ne télécharge pas de PDF source pour ce flux de travail et les téléchargements locaux ne nécessitent pas de compte.","Could not read this PDF.":"Impossible de lire ce PDF.","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","Created":"Créé","Custom ranges":"Plages personnalisées","cuts":"coupes","CV / Resume Builder":"Générateur de CV","document":"document","Does merging reduce the quality of my PDFs?":"La fusion réduit-elle la qualité de mes PDF ?","DOMContentLoaded":"DOMContentLoaded","down":"vers le bas","Download every page ZIP":"Téléchargez chaque page ZIP","Download extracted PDF":"Télécharger le PDF extrait","Download merged PDF":"Télécharger le PDF fusionné","Download PDF or ZIP outputs directly":"Téléchargez directement les fichiers PDF ou ZIP","Download ranges ZIP":"Télécharger les gammes ZIP","Download selected pages PDF":"Télécharger les pages sélectionnées PDF","Download ZIP":"Télécharger le ZIP","Drag or button reorder files before export":"Faites glisser ou réorganisez les fichiers avec un bouton avant l'exportation","dragend":"dragende","dragging":"faire glisser","dragleave":"glisser","dragover":"drague","dragstart":"glisser-démarrer","drop":"baisse","Each click adds to your list. Use page ranges per file when needed.":"Chaque clic ajoute un fichier à la liste. Utilisez une plage de pages par fichier si nécessaire.","Each page will become its own PDF.":"Chaque page deviendra son propre PDF.","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","email-gate-modal":"email-gate-modal","ends before it starts.":"se termine avant de commencer.","Enter at least one page or range.":"Saisissez au moins une page ou une plage.","Error loading PDF:":"Erreur de chargement du PDF :","Error merging:":"Erreur de fusion :","Error splitting:":"Erreur de fractionnement :","every":"chaque","Every page":"Chaque page","Export":"Exporter","Export every page as a ZIP of single-page PDFs":"Exportez chaque page sous forme de ZIP de PDF d'une seule page","Export every page as its own one-page PDF inside a ZIP file.":"Exporter chaque page dans un PDF séparé regroupé dans un fichier ZIP.","Exported every page as":"Exporté chaque page en tant que","extract":"extrait","Extract":"Extraire","Extract pages":"Extraire des pages","Extract ranges into one PDF":"Extraire les plages dans un seul PDF","Extract selected pages into one PDF":"Extraire les pages sélectionnées en un seul PDF","Extracted":"Extrait","file-item":"élément de fichier","file-item-controls":"contrôles d'éléments de fichier","file-item-meta":"fichier-élément-méta","file-item-name":"nom-élément-fichier","File:":"Déposer:","files -> ZIP":"fichiers -> ZIP","For richer editing, continue in":"Pour une édition plus riche, continuez dans","Frequently Asked Questions":"Questions fréquentes","grid":"grille","How does splitting work?":"Comment fonctionne le fractionnement ?","How it works":"Fonctionnement","How many PDFs can I merge at once?":"Combien de PDF puis-je fusionner à la fois ?","image/jpeg":"image/jpeg","Include all pages or per-file page ranges":"Inclure toutes les pages ou plages de pages par fichier","input":"saisir","Invoice Generator":"Générateur de facture","KB":"Ko","label":"étiquette","Leave page boxes blank to include all pages":"Laissez les champs de pages vides pour inclure toutes les pages","loading":"chargement","Local-first PDF tool":"Outil PDF local","locally":"localement","MB":"Mo","merge":"fusionner","Merge & Split PDFs Online Free | AfroTools":"Fusionner et diviser des PDF en ligne gratuitement | AfroOutils","Merge a packet":"Fusionner un paquet","Merge multiple PDF files":"Fusionner plusieurs fichiers PDF","Merge PDF & Split PDF":"Fusionner un PDF et diviser un PDF","Merge PDF & Split PDF Online Free":"Fusionner des PDF et diviser des PDF en ligne gratuitement","Merge PDF and split PDF online":"Fusionner des PDF et diviser des PDF en ligne","Merge PDFs":"Fusionner des PDF","Merge PDFs or split pages":"Fusionner des PDF ou diviser des pages","Merge PDFs, reorder files, choose page ranges, split by cut points or custom ranges, extract selected pages, and export every page as a ZIP. Core processing runs locally in the browser.":"Fusionnez des PDF, réorganisez les fichiers, choisissez des plages de pages, divisez par points de coupe ou plages personnalisées, extrayez les pages sélectionnées et exportez chaque page au format ZIP. Le traitement principal s'exécute localement dans le navigateur.","merge-card":"carte de fusion","merge-pages-field":"champ de fusion de pages","Merge, range selection, split points, extraction, and ZIP exports run in this browser. AfroTools does not upload source PDFs for this workflow.":"La fusion, la sélection de plage, les points de partage, l'extraction et les exportations ZIP s'exécutent dans ce navigateur. AfroTools ne télécharge pas les PDF sources pour ce flux de travail.","Merged":"Fusionné","Merging PDFs...":"Fusionner des PDF...","Merging...":"Fusion...","Methodology":"Méthode","No Upload":"Aucun téléchargement","non-PDF file":"fichier non PDF","none":"aucun","Open the downloaded file and confirm page order, missing pages, forms, and signatures.":"Ouvrez le fichier téléchargé et confirmez l'ordre des pages, les pages manquantes, les formulaires et les signatures.","Open the output in another PDF reader and confirm page order, missing pages, bookmarks, forms, signatures, and file size.":"Ouvrez la sortie dans un autre lecteur PDF et confirmez l'ordre des pages, les pages manquantes, les signets, les formulaires, les signatures et la taille du fichier.","page":"page","Page":"Page","Page ranges and split points are interpreted from the visible controls before the export is built.":"Les plages de pages et les points de partage sont interprétés à partir des contrôles visibles avant la création de l'exportation.","page_":"page_","pages":"pages","Pages":"Pages","Pages from":"Pages de","pages into one PDF.":"pages en un seul PDF.","Pages must be between 1 and":"Les pages doivent être comprises entre 1 et","Pages to keep":"Pages à conserver","pages_":"pages_","Panel":"Panneau","PDF + ZIP outputs":"Sorties PDF + ZIP","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF error":"Erreur PDF","PDF files.":"Fichiers PDF.","PDF Format Converter":"Convertisseur de formats PDF","PDF library failed to load. Please refresh the page.":"La bibliothèque PDF n'a pas pu être chargée. Veuillez actualiser la page.","PDF Merge & Split":"Fusionner et diviser des PDF","PDF merge and split workflow":"Flux de travail de fusion et de fractionnement de PDF","PDF workflow proof":"Preuve du flux PDF","PDF Workspace":"Espace de travail PDF","PDFs into one":"PDF en un seul","Please choose a PDF file.":"Veuillez choisir un fichier PDF.","Preparing output...":"Préparation de la sortie...","Private browser PDF merge and split tool with drag reorder, per-file page ranges, custom split ranges, page extraction, and ZIP export.":"Outil de fusion et de fractionnement de PDF dans un navigateur privé avec réorganisation par glisser-déposer, plages de pages par fichier, plages de fractionnement personnalisées, extraction de pages et exportation ZIP.","Range":"Gamme","range PDF files.":"gamme de fichiers PDF.","RangeCombine":"GammeCombiner","ranges":"gammes","Ranges to create":"Plages à créer","Ranges:":"Gammes :","reading pages...":"lire des pages...","Reading PDF...":"Lecture du PDF...","ready":"prêt","Related tools":"Outils associés","remove":"retirer","Remove unreadable PDFs before merging.":"Supprimez les PDF illisibles avant de les fusionner.","Reorder files with drag, Up, or Down":"Réorganisez les fichiers par glisser-déposer ou avec Monter et Descendre","Requires JavaScript and a modern browser with local file APIs":"Nécessite JavaScript et un navigateur moderne avec des API de fichiers locaux","Reviewed 2026. Disclaimer: verify with the recipient before relying on the output. Direct local downloads do not upload your files.":"Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier au résultat. Les téléchargements locaux directs ne téléchargent pas vos fichiers.","s.":"s.","scissors":"ciseaux","Select pages to extract":"Sélectionnez les pages à extraire","Select split points first":"Choisissez d’abord les points de découpe","selectable":"sélectionnable","selected":"choisi","selected pages into one PDF.":"pages sélectionnées en un seul PDF.","Selected pages:":"Pages sélectionnées :","separate PDFs.":"fichiers PDF séparés.","Share/save actions should record workflow metadata only, not source PDF contents.":"Les actions de partage/enregistrement doivent enregistrer uniquement les métadonnées du flux de travail, et non le contenu PDF source.","Skipped":"Sauté","sp-cell":"cellule sp","sp-cut":"coupe sp","span":"portée","split":"diviser","Split a PDF by visual cut points":"Diviser un PDF par points de coupe visuels","Split after page":"Diviser après la page","Split by custom page ranges":"Divisé par plages de pages personnalisées","Split into":"Divisé en","Split one PDF":"Diviser un PDF","Split PDF":"Fractionner un PDF","Split points":"Points de découpe","Split ranges -> ZIP":"Plages divisées -> ZIP","split-card":"carte partagée","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","text":"texte","The merge process copies the selected PDF pages into a new file without intentional recompression. Always open the output in another reader to confirm page order, forms, signatures, bookmarks, and file size before sending.":"Le processus de fusion copie les pages PDF sélectionnées dans un nouveau fichier sans recompression intentionnelle. Ouvrez toujours la sortie dans un autre lecteur pour confirmer l'ordre des pages, les formulaires, les signatures, les signets et la taille du fichier avant de l'envoyer.","There is no fixed server limit because the work runs locally. Your device memory is the real limit, so large scanned PDFs or many-file packets usually work better on a laptop than on an older phone.":"Il n'y a pas de limite de serveur fixe car le travail s'exécute localement. La mémoire de votre appareil est la véritable limite, c'est pourquoi les fichiers PDF numérisés volumineux ou les paquets contenant de nombreux fichiers fonctionnent généralement mieux sur un ordinateur portable que sur un téléphone plus ancien.","to include":"inclure","Tools":"Outils","Unknown error":"Erreur inconnue","Upload a PDF first":"Importez d’abord un PDF","Use AfroTools to combine multiple PDF files into one document, reorder files before export, include only the page ranges you need, split a document at visual cut points, extract custom ranges, or export every page as a ZIP. This is built for application packs, scanned document batches, contracts, reports, and classroom packets where page order matters. Core processing happens in your browser using local JavaScript libraries, so source PDFs are not uploaded by default.":"Utilisez AfroTools pour combiner plusieurs fichiers PDF en un seul document, réorganiser les fichiers avant l'exportation, inclure uniquement les plages de pages dont vous avez besoin, diviser un document à des points de coupure visuels, extraire des plages personnalisées ou exporter chaque page au format ZIP. Ceci est conçu pour les packs de candidature, les lots de documents numérisés, les contrats, les rapports et les paquets de classe où l'ordre des pages est important. Le traitement de base s'effectue dans votre navigateur à l'aide de bibliothèques JavaScript locales. Les PDF sources ne sont donc pas téléchargés par défaut.","Use commas for separate outputs. Example:":"Utilisez des virgules pour les sorties séparées. Exemple:","Use cut points, typed ranges, selected pages, or one-page ZIP export.":"Utilisez des points de coupe, des plages saisies, des pages sélectionnées ou une exportation ZIP d'une page.","Use page numbers and ranges like 1-3, 5.":"Utilisez des numéros de page et des plages telles que 1-3, 5.","Use ranges like 1-3, 5, 8-10":"Utilisez des plages comme 1-3, 5, 8-10","use strict":"utiliser strict","Uses local PDF libraries to read page counts, copy selected pages, preserve file order, and create PDF or ZIP outputs.":"Utilise les bibliothèques PDF locales pour lire le nombre de pages, copier les pages sélectionnées, préserver l'ordre des fichiers et créer des sorties PDF ou ZIP.","UtilitiesApplication":"UtilitairesApplication","Verify before sending":"Vérifier avant d'envoyer","Web":"Web","Will create:":"Créera :","Work from duplicate files when documents include contracts, IDs, invoices, medical records, or confidential client material.":"Travaillez à partir de fichiers en double lorsque les documents comprennent des contrats, des pièces d'identité, des factures, des dossiers médicaux ou des documents clients confidentiels.","Working...":"Fonctionnement...","Yes. After uploading your files, drag and drop them into any order you like, then leave each page box blank for all pages or enter ranges such as 1-2, 5. The merged PDF follows the exact sequence you arrange on screen.":"Oui. Après avoir téléchargé vos fichiers, faites-les glisser et déposez-les dans l'ordre de votre choix, puis laissez chaque zone de page vide pour toutes les pages ou entrez des plages telles que 1-2, 5. Le PDF fusionné suit la séquence exacte que vous organisez à l'écran.","You can split at visual cut points, enter custom ranges such as 1-3, 6, 9-11, extract selected pages into one PDF, or export every page as separate PDFs in a ZIP.":"Vous pouvez diviser à des points de coupure visuels, saisir des plages personnalisées telles que 1-3, 6, 9-11, extraire les pages sélectionnées en un seul PDF ou exporter chaque page sous forme de PDF distincts dans un ZIP."}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-merge-split/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/fusionner-diviser-pdf/">
@@ -78,60 +235,225 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/hada-da-raba-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-merge-split/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/fr/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils français</a><span>/</span>Fusionner / Diviser PDF</nav>
-<div class="fr-hero">
-<h1><em>Fusionner et diviser des PDF</em></h1>
-<p>Assemblez plusieurs PDF, extrayez des pages ou préparez un dossier dans le bon ordre.</p>
-</div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparez votre fichier ou votre scénario</h2>
-  <p>Ajoutez trois notes utiles avant de lancer Fusionner et diviser des PDF. Ce brouillon reste dans votre navigateur et sert seulement à garder le contexte clair.</p>
-  <div class="fr-prep-fields">
-    <label>Fichier local<input name="localFile" type="file" accept="application/pdf,.html,.txt,.doc,.docx,image/*" aria-label="Choisir un fichier local"></label>
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
+
+<main id="main-content">
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Outils</span></div>
+    <h1>Fusionner et diviser des PDF</h1>
+    <p class="hero-sub">Fusionnez, réorganisez, extrayez ou divisez des pages PDF et exportez un PDF ou un ZIP, avec traitement local dans le navigateur.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Aucun téléchargement</span>
+      <span class="badge b-green">Côté client</span>
+      <span class="badge b-green">Sorties PDF + ZIP</span>
+    </div>
+    <div class="job-strip" aria-label="Flux de travail de fusion et de fractionnement de PDF">
+      <div class="job-step"><strong>Fusionner un paquet</strong><span>Ajoutez deux fichiers PDF ou plus, réorganisez-les et limitez n'importe quel fichier à des pages spécifiques.</span></div>
+      <div class="job-step"><strong>Diviser un PDF</strong><span>Utilisez des points de coupe, des plages saisies, des pages sélectionnées ou une exportation ZIP d'une page.</span></div>
+      <div class="job-step"><strong>Vérifier avant d'envoyer</strong><span>Ouvrez le fichier téléchargé et confirmez l'ordre des pages, les pages manquantes, les formulaires et les signatures.</span></div>
+    </div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-merge-split/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+</div>
+
+<div class="tool-main">
+  <!-- Mode Selection -->
+  <div class="card">
+    <div class="card-head"><span class="card-title">Choisissez le travail</span></div>
+    <div class="card-body">
+      <div class="mode-row">
+        <button type="button" class="mode-btn on" data-mode="merge">Fusionner des PDF</button>
+        <button type="button" class="mode-btn" data-mode="split">Fractionner un PDF</button>
+      </div>
+    </div>
   </div>
 
-  <!-- fr-pdf-proof-note:start -->
-  <p class="fr-pdf-proof-note"><strong>Méthodologie :</strong> la page prépare le contexte, puis l'outil source traite le fichier dans le navigateur selon le mode choisi. <strong>Limites :</strong> vérifiez toujours le rendu export? avant un dépôt officiel, juridique ou client. <strong>Privacy locale :</strong> les fichiers restent dans votre navigateur; no upload automatique depuis ce panneau.</p>
-  <!-- fr-pdf-proof-note:end -->
+  <!-- Merge Card -->
+  <div class="card" id="merge-card">
+    <div class="card-head"><span class="card-title">Fusionner des PDF</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="mergeFileInput" accept=".pdf" multiple>
+        <label for="mergeFileInput" class="file-input-label">
+          Ajoutez des PDF ou déposez-les ici
+          <div style="font-size:0.72rem;margin-top:4px;opacity:.65">Chaque clic ajoute un fichier à la liste. Utilisez une plage de pages par fichier si nécessaire.</div>
+        </label>
+      </div>
+      <div class="file-list" id="mergeFileList"></div>
+      <div class="tool-row">
+        <span id="mergeSummary" style="font-size:.76rem;color:#64748b;font-weight:700;">Ajoutez au moins deux PDF à fusionner.</span>
+        <button class="subtle-btn" id="clearMergeBtn" type="button" disabled>Vider la liste</button>
+      </div>
+      <button type="button" class="calc-btn" id="mergeBtn" disabled>Fusionner des PDF</button>
+    </div>
+  </div>
+
+  <!-- Split Card -->
+  <div class="card" id="split-card" style="display:none;">
+    <div class="card-head"><span class="card-title">Diviser un PDF</span></div>
+    <div class="card-body">
+      <div class="file-input-wrapper">
+        <input type="file" id="splitFileInput" accept=".pdf">
+        <label for="splitFileInput" class="file-input-label">
+          Ajoutez un PDF ou déposez-le ici
+        </label>
+      </div>
+      <div id="splitInfo" style="display:none; margin-top:12px;">
+        <div style="font-size:0.82rem;font-weight:700;color:#1e293b;">Déposer: <span id="splitFileName"></span> - <span id="splitPageCount">0</span> pages</div>
+        <div class="split-mode-row">
+          <button class="split-mode-btn on" type="button" data-split-mode="cuts">Points de découpe</button>
+          <button class="split-mode-btn" type="button" data-split-mode="ranges">Plages personnalisées</button>
+          <button class="split-mode-btn" type="button" data-split-mode="extract">Extraire des pages</button>
+          <button class="split-mode-btn" type="button" data-split-mode="every">Chaque page</button>
+        </div>
+        <div class="split-panel on" id="cutsPanel">
+          <div class="sp-info">Cliquez sur le <span style="color:#dc2626;font-weight:700">ciseaux</span> entre les pages pour définir des points de partage. Les pages entre les coupes deviennent des fichiers PDF séparés.</div>
+        </div>
+        <div class="split-panel" id="rangesPanel">
+          <div class="range-field">
+            <label for="rangeInput">Plages à créer</label>
+            <input id="rangeInput" type="text" placeholder="1-3, 4-6, 9">
+            <div class="range-help">Utilisez des virgules pour les sorties séparées. Exemple: <strong>1-2, 5, 8-10</strong>.</div>
+          </div>
+          <label class="range-options"><input aria-label="GammeCombiner" type="checkbox" id="rangeCombine"> Réunir les plages dans un seul PDF au lieu d’un ZIP</label>
+        </div>
+        <div class="split-panel" id="extractPanel">
+          <div class="range-field">
+            <label for="extractInput">Pages à conserver</label>
+            <input id="extractInput" type="text" placeholder="2, 4-5, 9">
+            <div class="range-help">Cliquez sur les vignettes des pages ci-dessous ou saisissez les numéros de page. Les pages extraites sont téléchargées en un seul PDF.</div>
+          </div>
+        </div>
+        <div class="split-panel" id="everyPanel">
+          <div class="sp-info">Exporter chaque page dans un PDF séparé regroupé dans un fichier ZIP.</div>
+        </div>
+        <div class="sp-grid" id="splitGrid"></div>
+        <div id="splitSummary" style="margin-top:10px;font-size:0.78rem;color:#4b5563;font-weight:600;"></div>
+      </div>
+      <button type="button" class="calc-btn" id="splitBtn" disabled>Choisissez d’abord les points de découpe</button>
+    </div>
+  </div>
+
+  <!-- Result Card -->
+  <div class="result-card" id="resultCard">
+    <div class="result-text" id="resultText"></div>
+    <div class="progress-bar" id="progressBar" style="display:none;">
+      <div class="progress-fill" id="progressFill"></div>
+    </div>
+    <div class="action-row" id="actionRow" style="display:none;"></div>
+  </div>
+
+  <!-- Tips -->
+  <div class="tips-section">
+    <div class="tips-title">Fonctionnement</div>
+    <div class="tips-grid">
+      <div class="tip-item">Réorganisez les fichiers par glisser-déposer ou avec Monter et Descendre</div>
+      <div class="tip-item">Laissez les champs de pages vides pour inclure toutes les pages</div>
+      <div class="tip-item">Utilisez des plages comme 1-3, 5, 8-10</div>
+      <div class="tip-item">Téléchargez directement les fichiers PDF ou ZIP</div>
+    </div>
+  </div>
+</div>
+
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-merge-split-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Preuve du flux PDF</span>
+        <h2 class="tool-verification-title" id="pdf-merge-split-verification-title">Vérifiez l’ordre des pages avant de télécharger le PDF fusionné ou divisé</h2>
+        <p class="tool-verification-lead">La fusion, la sélection de plage, les points de partage, l'extraction et les exportations ZIP s'exécutent dans ce navigateur. AfroTools ne télécharge pas les PDF sources pour ce flux de travail.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Outil PDF local</span>
+        <p class="tool-verification-note">Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier au résultat. Les téléchargements locaux directs ne téléchargent pas vos fichiers.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Méthode</h3>
+        <ul class="tool-verification-list">
+          <li>Utilise les bibliothèques PDF locales pour lire le nombre de pages, copier les pages sélectionnées, préserver l'ordre des fichiers et créer des sorties PDF ou ZIP.</li>
+          <li>Les plages de pages et les points de partage sont interprétés à partir des contrôles visibles avant la création de l'exportation.</li>
+          <li>Les actions de partage/enregistrement doivent enregistrer uniquement les métadonnées du flux de travail, et non le contenu PDF source.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Avant de partager</h3>
+        <ul class="tool-verification-list">
+          <li>Ouvrez la sortie dans un autre lecteur PDF et confirmez l'ordre des pages, les pages manquantes, les signets, les formulaires, les signatures et la taille du fichier.</li>
+          <li>Travaillez à partir de fichiers en double lorsque les documents comprennent des contrats, des pièces d'identité, des factures, des dossiers médicaux ou des documents clients confidentiels.</li>
+          <li>Pour une édition plus riche, continuez dans <a href="/fr/tools/espace-pdf/">Espace de travail PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
-<iframe src="/tools/pdf-merge-split/" class="fr-tool-frame" title="Fusionner et diviser des PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Fusionner et diviser des PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Fichier/donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.';}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-})();
-</script>
-<section class="fr-seo">
-<h2>Fusionner et diviser des PDF en français</h2>
-<p>Utilisez cette route française pour réunir des documents administratifs, factures, contrats ou rapports en un seul PDF, ou pour isoler quelques pages utiles.</p>
-<p>Le flux reprend l’outil PDF existant sans changer la logique de traitement ni les règles de téléchargement. Vérifiez l’ordre des pages avant l’export final.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Pourquoi une route combinée ?</summary><p>La route française préférée regroupe fusion, division, extraction et réorganisation légère afin d’éviter des doublons séparés.</p></details>
-<details><summary>Puis-je changer l’ordre des fichiers ?</summary><p>Oui, utilisez les contrôles de l’outil intégré pour placer les fichiers et pages dans l’ordre souhaité avant export.</p></details>
-<details><summary>La qualité est-elle modifiée ?</summary><p>La fusion et l’extraction conservent généralement les pages source. Vérifiez toujours le fichier final avant de l’envoyer.</p></details>
+</main>
+<afro-related-tools category="document-pdf" current="pdf-merge-split" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li><li><a href="/fr/tools/convertir-pdf/" data-related-tool data-id="pdf-convert" data-name="PDF Format Converter" data-category="document-pdf" data-icon="PF" data-desc="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.">Convertisseur de formats PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="pdf-merge-seo" style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Fusionner des PDF et diviser des PDF en ligne</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Utilisez AfroTools pour combiner plusieurs fichiers PDF en un seul document, réorganiser les fichiers avant l'exportation, inclure uniquement les plages de pages dont vous avez besoin, diviser un document à des points de coupure visuels, extraire des plages personnalisées ou exporter chaque page au format ZIP. Ceci est conçu pour les packs de candidature, les lots de documents numérisés, les contrats, les rapports et les paquets de classe où l'ordre des pages est important. Le traitement de base s'effectue dans votre navigateur à l'aide de bibliothèques JavaScript locales. Les PDF sources ne sont donc pas téléchargés par défaut.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Questions fréquentes</h3>
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Combien de PDF puis-je fusionner à la fois ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Il n'y a pas de limite de serveur fixe car le travail s'exécute localement. La mémoire de votre appareil est la véritable limite, c'est pourquoi les fichiers PDF numérisés volumineux ou les paquets contenant de nombreux fichiers fonctionnent généralement mieux sur un ordinateur portable que sur un téléphone plus ancien.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Puis-je réorganiser les PDF ou ne fusionner que certaines pages ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Oui. Après avoir téléchargé vos fichiers, faites-les glisser et déposez-les dans l'ordre de votre choix, puis laissez chaque zone de page vide pour toutes les pages ou entrez des plages telles que 1-2, 5. Le PDF fusionné suit la séquence exacte que vous organisez à l'écran.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Comment fonctionne le fractionnement ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Vous pouvez diviser à des points de coupure visuels, saisir des plages personnalisées telles que 1-3, 6, 9-11, extraire les pages sélectionnées en un seul PDF ou exporter chaque page sous forme de PDF distincts dans un ZIP.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Mes PDF sont-ils téléchargés sur un serveur ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Les opérations de fusion et de scission principales se produisent dans votre navigateur. AfroTools ne télécharge pas de PDF source pour ce flux de travail et les téléchargements locaux ne nécessitent pas de compte.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">La fusion réduit-elle la qualité de mes PDF ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Le processus de fusion copie les pages PDF sélectionnées dans un nouveau fichier sans recompression intentionnelle. Ouvrez toujours la sortie dans un autre lecteur pour confirmer l'ordre des pages, les formulaires, les signatures, les signets et la taille du fichier avant de l'envoyer.</p>
+    </details>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-merge-split"></afro-related-tools>
+
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-merge-split">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-merge-split">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : PDF, ZIP</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-merge-split/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
+</section>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/tools/pdf-merge-split/app.js?v=7809c2e3"></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

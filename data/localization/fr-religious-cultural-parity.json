@@ -1,0 +1,483 @@
+{
+  "schemaVersion": 1,
+  "locale": "fr",
+  "category": "religious-cultural",
+  "hub": {
+    "route": "/fr/religion-culture/",
+    "englishRoute": "/religious-cultural/",
+    "title": "Outils religion et culture",
+    "description": "22 outils locaux de planification, de calcul et de préparation, avec des limites explicites sur les avis religieux, culturels et officiels.",
+    "artwork": "/assets/img/categories/religious-cultural.webp"
+  },
+  "reviewedOn": "2026-07-27",
+  "ownership": "French Religious & Cultural parity manifest",
+  "aiContract": {
+    "routeMode": "deterministic-local",
+    "networkFallback": "none",
+    "consentRequiredForNetwork": true,
+    "sensitiveInputPolicy": "never-send",
+    "fallbackRoute": "/fr/religion-culture/"
+  },
+  "tools": [
+    {
+      "sourceId": "tithe-offering",
+      "englishRoute": "/tools/tithe-calculator/",
+      "route": "/fr/tools/calculateur-dime/",
+      "title": "Planificateur privé de dîme et d’offrande",
+      "description": "Additionnez un pourcentage, une offrande et une promesse choisis par vous, sans taux prescrit ni résultat spirituel ou financier promis.",
+      "engine": "giving",
+      "artwork": "/assets/img/tools/tithe-offering.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"reference","label":"Montant de référence","type":"number","value":1000,"min":0,"step":0.01},
+        {"id":"rate","label":"Votre pourcentage choisi","type":"number","value":10,"min":0,"max":100,"step":0.01},
+        {"id":"offering","label":"Offrande supplémentaire","type":"number","value":50,"min":0,"step":0.01},
+        {"id":"pledge","label":"Promesse totale facultative","type":"number","value":120,"min":0,"step":0.01},
+        {"id":"periods","label":"Nombre de périodes","type":"number","value":6,"min":1,"max":600,"step":1},
+        {"id":"essentials","label":"Dépenses essentielles","type":"number","value":400,"min":0,"step":0.01}
+      ],
+      "fixture": {"total":170,"remaining":430},
+      "source": "Méthode arithmétique fondée uniquement sur les choix saisis par l’utilisateur.",
+      "boundary": "Aucun taux, devoir religieux, bénéficiaire, avantage fiscal, bénédiction, prospérité ni conseil financier n’est déterminé.",
+      "confidence": "Élevée pour l’arithmétique saisie; aucune confiance revendiquée pour une obligation religieuse ou fiscale."
+    },
+    {
+      "sourceId": "lobola-calculator",
+      "englishRoute": "/tools/lobola-calculator/",
+      "route": "/fr/tools/calculateur-lobola/",
+      "title": "Calculateur de budget Lobola",
+      "description": "Préparez une enveloppe familiale modifiable pour les attentes, cadeaux, frais de cérémonie et marge.",
+      "engine": "lobola",
+      "artwork": "/assets/img/tools/lobola-calculator.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"ZAR","options":["ZAR","BWP","ZMW","SZL","LSL","NAD","USD"]},
+        {"id":"familyExpectation","label":"Attente familiale saisie","type":"number","value":1000,"min":0,"step":0.01},
+        {"id":"giftValue","label":"Cadeaux saisis","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"ceremonyCost","label":"Frais de cérémonie saisis","type":"number","value":50,"min":0,"step":0.01},
+        {"id":"buffer","label":"Marge (%)","type":"number","value":10,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":1265},
+      "source": "Budget composé exclusivement à partir des montants familiaux saisis.",
+      "boundary": "Ce résultat n’est ni un tarif officiel, ni un prix de la mariée, ni une règle culturelle universelle.",
+      "confidence": "Élevée pour les additions; le contexte et les attentes doivent être confirmés entre les familles."
+    },
+    {
+      "sourceId": "lobola-negotiation-checklist",
+      "englishRoute": "/tools/lobola-negotiation-checklist/",
+      "route": "/fr/tools/checklist-negociation-dot/",
+      "title": "Checklist de rencontre familiale Lobola",
+      "description": "Préparez les rôles, questions en attente et prochaines étapes d’une rencontre familiale respectueuse.",
+      "engine": "meetingChecklist",
+      "artwork": "/assets/img/tools/lobola-negotiation-checklist.webp",
+      "fields": [
+        {"id":"familyA","label":"Première famille ou porte-parole","type":"text","value":"Famille A"},
+        {"id":"familyB","label":"Deuxième famille ou porte-parole","type":"text","value":"Famille B"},
+        {"id":"pending","label":"Question à confirmer","type":"textarea","value":"Confirmer les cadeaux et le déplacement"},
+        {"id":"nextStep","label":"Prochaine étape","type":"textarea","value":"Valider le compte rendu avec les deux familles"}
+      ],
+      "fixture": {"contains":"Famille A"},
+      "source": "Brief de réunion construit uniquement à partir des informations saisies.",
+      "boundary": "La checklist ne définit aucune coutume obligatoire et ne remplace pas la parole des familles concernées.",
+      "confidence": "Élevée comme résumé de vos saisies; aucune autorité culturelle revendiquée."
+    },
+    {
+      "sourceId": "lobola-gift-list",
+      "englishRoute": "/tools/lobola-gift-list/",
+      "route": "/fr/tools/liste-cadeaux-dot/",
+      "title": "Liste familiale de cadeaux Lobola",
+      "description": "Créez une liste modifiable avec valeurs, responsables et statut de confirmation.",
+      "engine": "giftList",
+      "artwork": "/assets/img/tools/lobola-gift-list.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"ZAR","options":["ZAR","BWP","ZMW","SZL","LSL","NAD","USD"]},
+        {"id":"item1","label":"Premier cadeau ou poste","type":"text","value":"Couvertures"},
+        {"id":"value1","label":"Valeur du premier poste","type":"number","value":123,"min":0,"step":0.01},
+        {"id":"item2","label":"Deuxième cadeau ou poste","type":"text","value":"Transport"},
+        {"id":"value2","label":"Valeur du deuxième poste","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"item3","label":"Troisième cadeau ou poste","type":"text","value":"Accueil"},
+        {"id":"value3","label":"Valeur du troisième poste","type":"number","value":0,"min":0,"step":0.01}
+      ],
+      "fixture": {"total":123},
+      "source": "Total des lignes créées et chiffrées par l’utilisateur.",
+      "boundary": "La liste n’est pas une exigence officielle et ne suppose aucune pratique commune à toutes les familles.",
+      "confidence": "Élevée pour le total; chaque cadeau et valeur doit être confirmé localement."
+    },
+    {
+      "sourceId": "african-proverbs",
+      "englishRoute": "/tools/african-proverbs/",
+      "route": "/fr/tools/generateur-proverbes-africains/",
+      "title": "Carnet de proverbes africains",
+      "description": "Filtrez un petit jeu de références locales et préparez une note de vérification avant publication.",
+      "engine": "proverb",
+      "artwork": "/assets/img/tools/african-proverbs.webp",
+      "fields": [
+        {"id":"culture","label":"Langue ou communauté","type":"select","value":"Swahili","options":["Swahili","Yoruba","Akan","Zulu"]},
+        {"id":"purpose","label":"Usage prévu","type":"select","value":"Discussion familiale","options":["Discussion familiale","Cours","Discours","Publication"]},
+        {"id":"verification","label":"Source ou locuteur à consulter","type":"text","value":"À confirmer avec un locuteur compétent"}
+      ],
+      "fixture": {"contains":"Haraka haraka"},
+      "source": "Jeu de références éditoriales local, révisé le 27 juillet 2026; l’attribution n’est pas authentifiée.",
+      "boundary": "L’outil ne certifie ni l’origine, ni l’orthographe, ni la traduction d’un proverbe.",
+      "confidence": "Faible pour l’attribution; utile uniquement comme point de départ à vérifier."
+    },
+    {
+      "sourceId": "zakat-calculator",
+      "englishRoute": "/tools/zakat-calculator/",
+      "route": "/fr/tools/calculateur-zakat/",
+      "title": "Calculateur de zakat — estimation locale",
+      "description": "Additionnez actifs et dettes, comparez un nisab saisi et estimez 2,5 % lorsque le seuil est atteint.",
+      "engine": "zakat",
+      "artwork": "/assets/img/tools/zakat-calculator.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"cash","label":"Espèces et comptes","type":"number","value":1000000,"min":0,"step":0.01},
+        {"id":"goldGrams","label":"Or (grammes)","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"goldPrice","label":"Prix saisi par gramme d’or","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"silverGrams","label":"Argent (grammes)","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"silverPrice","label":"Prix saisi par gramme d’argent","type":"number","value":1000,"min":0,"step":0.01},
+        {"id":"inventory","label":"Stock commercial éligible","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"investments","label":"Placements saisis","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"receivables","label":"Créances recouvrables","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"debts","label":"Dettes exigibles saisies","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"nisabBasis","label":"Base de nisab choisie","type":"select","value":"silver","options":[{"value":"silver","label":"Argent — 595 g"},{"value":"gold","label":"Or — 85 g"}]}
+      ],
+      "fixture": {"nisab":595000,"zakat":25000},
+      "source": "Arithmétique de planification: seuil choisi, prix saisis et taux de 2,5 % du modèle limité.",
+      "boundary": "L’éligibilité, les actifs complexes et le choix du nisab nécessitent l’avis d’un savant qualifié.",
+      "confidence": "Élevée pour l’arithmétique; limitée pour l’application religieuse à votre situation."
+    },
+    {
+      "sourceId": "prayer-times",
+      "englishRoute": "/tools/prayer-times/",
+      "route": "/fr/tools/horaires-priere-qibla/",
+      "title": "Planificateur d’horaires de prière et Qibla",
+      "description": "Consultez des exemples de ville et notez la méthode à confirmer auprès de votre mosquée locale.",
+      "engine": "prayer",
+      "artwork": "/assets/img/tools/prayer-times.webp",
+      "fields": [
+        {"id":"city","label":"Ville d’exemple","type":"select","value":"Nairobi","options":["Nairobi","Lagos","Caire","Accra","Johannesburg","Casablanca"]},
+        {"id":"method","label":"Méthode à comparer","type":"select","value":"MWL","options":["MWL","Autorité égyptienne","Réglage local"]},
+        {"id":"date","label":"Date de planification","type":"date","value":"2026-04-27"}
+      ],
+      "fixture": {"fajr":"05:18","qibla":7},
+      "source": "Préréglages statiques de démonstration, révisés le 27 juillet 2026; aucune donnée en direct.",
+      "boundary": "Ce résultat n’est pas un horaire officiel de mosquée et ne remplace pas la méthode ou l’annonce locale.",
+      "confidence": "Faible pour une pratique réelle; uniquement une aide de comparaison."
+    },
+    {
+      "sourceId": "ramadan-timetable",
+      "englishRoute": "/tools/ramadan-timetable/",
+      "route": "/fr/tools/calendrier-ramadan/",
+      "title": "Brouillon de calendrier Ramadan",
+      "description": "Appliquez vos marges de suhoor et d’iftar à des horaires saisis pour préparer un brouillon local.",
+      "engine": "ramadan",
+      "artwork": "/assets/img/tools/ramadan-timetable.webp",
+      "fields": [
+        {"id":"startDate","label":"Première date provisoire","type":"date","value":"2026-02-19"},
+        {"id":"days","label":"Nombre de jours du brouillon","type":"number","value":30,"min":1,"max":30,"step":1},
+        {"id":"fajr","label":"Fajr local saisi","type":"time","value":"05:10"},
+        {"id":"maghrib","label":"Maghrib local saisi","type":"time","value":"18:52"},
+        {"id":"suhoorBuffer","label":"Marge avant Fajr (minutes)","type":"number","value":10,"min":0,"max":120,"step":1},
+        {"id":"iftarBuffer","label":"Marge après Maghrib (minutes)","type":"number","value":0,"min":0,"max":120,"step":1}
+      ],
+      "fixture": {"suhoor":"05:00","iftar":"18:52"},
+      "source": "Calcul à partir des horaires et marges saisis; aucune observation lunaire ni horaire en direct.",
+      "boundary": "La date de début et les horaires officiels relèvent de l’observation et des autorités locales.",
+      "confidence": "Élevée pour l’ajout ou le retrait de minutes; aucune confiance officielle sur le calendrier."
+    },
+    {
+      "sourceId": "faraid-inheritance",
+      "englishRoute": "/tools/faraid-inheritance/",
+      "route": "/fr/tools/heritage-islamique-faraid/",
+      "title": "Modèle limité d’héritage Faraid",
+      "description": "Testez un cas simple avec conjoint et enfants après déductions, puis faites vérifier chaque part.",
+      "engine": "faraid",
+      "artwork": "/assets/img/tools/faraid-inheritance.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"estate","label":"Succession brute","type":"number","value":1200000,"min":0,"step":0.01},
+        {"id":"debts","label":"Dettes","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"funeral","label":"Frais funéraires","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"bequest","label":"Legs saisi","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"spouse","label":"Conjoint dans ce modèle","type":"select","value":"wife","options":[{"value":"none","label":"Aucun"},{"value":"wife","label":"Une épouse"},{"value":"husband","label":"Un époux"}]},
+        {"id":"sons","label":"Nombre de fils","type":"number","value":1,"min":0,"max":20,"step":1},
+        {"id":"daughters","label":"Nombre de filles","type":"number","value":1,"min":0,"max":20,"step":1}
+      ],
+      "fixture": {"net":1200000,"spouseShare":150000,"sonShare":700000,"daughterShare":350000},
+      "source": "Modèle arithmétique limité au conjoint et aux enfants, figé pour les cas de test du 27 juillet 2026.",
+      "boundary": "Le modèle exclut de nombreux héritiers et règles; aucune distribution ne doit être exécutée sans savant et juriste qualifiés.",
+      "confidence": "Élevée pour le cas limité déclaré; nulle pour tout cas familial non représenté."
+    },
+    {
+      "sourceId": "hajj-budget",
+      "englishRoute": "/tools/hajj-budget/",
+      "route": "/fr/tools/budget-hajj-umrah/",
+      "title": "Budget Hajj et Omra",
+      "description": "Additionnez vos devis de forfait, vol, visa, dépenses quotidiennes, transport et marge.",
+      "engine": "travelBudget",
+      "artwork": "/assets/img/tools/hajj-budget.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"USD","options":["USD","EUR","XOF","XAF","NGN","KES","ZAR","GHS"]},
+        {"id":"travelers","label":"Voyageurs","type":"number","value":1,"min":1,"max":20,"step":1},
+        {"id":"packageCost","label":"Devis forfait par voyageur","type":"number","value":5000,"min":0,"step":0.01},
+        {"id":"flightCost","label":"Devis vol par voyageur","type":"number","value":1500,"min":0,"step":0.01},
+        {"id":"visaCost","label":"Frais visa saisis par voyageur","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"days","label":"Jours","type":"number","value":21,"min":1,"max":120,"step":1},
+        {"id":"dailySpend","label":"Dépense quotidienne par voyageur","type":"number","value":20,"min":0,"step":0.01},
+        {"id":"localTransport","label":"Transport local par voyageur","type":"number","value":200,"min":0,"step":0.01},
+        {"id":"buffer","label":"Marge (%)","type":"number","value":10,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":7942},
+      "source": "Budget fondé uniquement sur les devis et hypothèses saisis par l’utilisateur.",
+      "boundary": "Aucun forfait, visa, disponibilité, prix d’opérateur, réservation ou autorisation officielle n’est fourni.",
+      "confidence": "Élevée pour l’addition; les devis et règles doivent être actualisés auprès d’un opérateur officiel."
+    },
+    {
+      "sourceId": "islamic-finance",
+      "englishRoute": "/tools/islamic-finance/",
+      "route": "/fr/tools/finance-islamique-profit/",
+      "title": "Comparateur de coût en finance islamique",
+      "description": "Comparez le prix, l’apport, la marge saisie, les frais et la mensualité d’un modèle coût-plus.",
+      "engine": "islamicFinance",
+      "artwork": "/assets/img/tools/islamic-finance.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"assetPrice","label":"Prix de l’actif","type":"number","value":1000,"min":0,"step":0.01},
+        {"id":"deposit","label":"Apport en montant","type":"number","value":200,"min":0,"step":0.01},
+        {"id":"margin","label":"Marge coût-plus (%)","type":"number","value":10,"min":0,"max":100,"step":0.01},
+        {"id":"termMonths","label":"Durée (mois)","type":"number","value":10,"min":1,"max":600,"step":1},
+        {"id":"fees","label":"Frais saisis","type":"number","value":0,"min":0,"step":0.01}
+      ],
+      "fixture": {"monthly":88,"total":1080},
+      "source": "Comparaison arithmétique fondée sur le prix, l’apport, la marge et les frais saisis.",
+      "boundary": "L’outil n’émet aucune fatwa, approbation charia, offre bancaire, recommandation ni décision d’éligibilité.",
+      "confidence": "Élevée pour le coût total du modèle; aucune confiance religieuse ou contractuelle revendiquée."
+    },
+    {
+      "sourceId": "wedding-budget",
+      "englishRoute": "/tools/wedding-budget/",
+      "route": "/fr/tools/budget-mariage-africain/",
+      "title": "Budget de mariage africain",
+      "description": "Additionnez invités, repas, lieu, tenues, prestataires et marge à partir de vos devis.",
+      "engine": "wedding",
+      "artwork": "/assets/img/tools/wedding-budget.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"guests","label":"Invités","type":"number","value":100,"min":0,"max":100000,"step":1},
+        {"id":"foodPerGuest","label":"Repas par invité","type":"number","value":1000,"min":0,"step":0.01},
+        {"id":"venue","label":"Lieu","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"attire","label":"Tenues","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"services","label":"Autres prestataires","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"buffer","label":"Marge (%)","type":"number","value":0,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":100000},
+      "source": "Budget créé à partir des quantités et devis saisis.",
+      "boundary": "Aucun prix fournisseur, règle de cérémonie, prestation ou disponibilité en direct n’est affirmé.",
+      "confidence": "Élevée pour l’addition; dépend entièrement de la qualité de vos devis."
+    },
+    {
+      "sourceId": "naming-ceremony",
+      "englishRoute": "/tools/naming-ceremony/",
+      "route": "/fr/tools/budget-ceremonie-nommage/",
+      "title": "Budget de cérémonie de nommage",
+      "description": "Planifiez repas, lieu, cadeaux, officiant et logistique selon votre propre tradition familiale.",
+      "engine": "naming",
+      "artwork": "/assets/img/tools/naming-ceremony.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"guests","label":"Invités","type":"number","value":10,"min":0,"max":100000,"step":1},
+        {"id":"foodPerGuest","label":"Repas par invité","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"venue","label":"Lieu","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"gifts","label":"Cadeaux et fournitures","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"officiant","label":"Soutien à l’officiant saisi","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"logistics","label":"Logistique familiale","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"buffer","label":"Marge (%)","type":"number","value":0,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":1000},
+      "source": "Budget créé uniquement à partir des choix et devis du foyer.",
+      "boundary": "L’outil ne prescrit ni aqiqah, ni rite, ni cadeau, ni pratique Yoruba, Igbo, Akan ou chrétienne.",
+      "confidence": "Élevée pour l’addition; les traditions et rôles doivent être confirmés auprès de la famille."
+    },
+    {
+      "sourceId": "funeral-cost",
+      "englishRoute": "/tools/funeral-cost/",
+      "route": "/fr/tools/planification-funerailles/",
+      "title": "Planificateur de frais funéraires",
+      "description": "Séparez accueil des proches, coûts fixes, transport et marge pendant une période difficile.",
+      "engine": "funeral",
+      "artwork": "/assets/img/tools/funeral-cost.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"guests","label":"Personnes accueillies","type":"number","value":10,"min":0,"max":100000,"step":1},
+        {"id":"foodPerGuest","label":"Repas par personne","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"mortuary","label":"Mortuaire et préparation","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"burial","label":"Inhumation et cercueil saisis","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"transport","label":"Transport","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"remembrance","label":"Commémoration","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"buffer","label":"Marge (%)","type":"number","value":0,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":1000},
+      "source": "Plan arithmétique à partir des coûts saisis par la famille.",
+      "boundary": "Ce résultat n’est ni un avis juridique, religieux ou culturel, ni une estimation officielle de frais.",
+      "confidence": "Élevée pour l’addition; les obligations et prix locaux doivent être confirmés."
+    },
+    {
+      "sourceId": "baby-name-generator",
+      "englishRoute": "/tools/baby-name-generator/",
+      "route": "/fr/tools/generateur-prenom-africain/",
+      "title": "Fiche de vérification d’un prénom africain",
+      "description": "Préparez une candidature de prénom, son orthographe et les personnes à consulter sans inventer de signification.",
+      "engine": "nameReview",
+      "artwork": "/assets/img/tools/baby-name-generator.webp",
+      "fields": [
+        {"id":"candidate","label":"Prénom candidat","type":"text","value":"Ama"},
+        {"id":"culture","label":"Langue ou communauté à vérifier","type":"text","value":"Akan"},
+        {"id":"meaning","label":"Signification rapportée à vérifier","type":"text","value":"À confirmer"},
+        {"id":"reviewer","label":"Locuteur, aîné ou source à consulter","type":"text","value":"Révision familiale nécessaire"}
+      ],
+      "fixture": {"contains":"Révision familiale nécessaire"},
+      "source": "Fiche locale composée uniquement à partir des informations saisies.",
+      "boundary": "L’outil n’invente, n’authentifie et ne recommande aucun prénom, sens, genre, orthographe ou identité.",
+      "confidence": "Aucune confiance linguistique automatique; validation par un locuteur compétent nécessaire."
+    },
+    {
+      "sourceId": "traditional-calendar",
+      "englishRoute": "/tools/traditional-calendar/",
+      "route": "/fr/tools/calendrier-traditionnel/",
+      "title": "Repère de calendrier traditionnel",
+      "description": "Projetez un cycle local depuis une date et un jour de référence fournis par votre communauté.",
+      "engine": "traditionalCalendar",
+      "artwork": "/assets/img/tools/traditional-calendar.webp",
+      "fields": [
+        {"id":"date","label":"Date à examiner","type":"date","value":"2026-04-27"},
+        {"id":"referenceDate","label":"Date de référence confirmée localement","type":"date","value":"2026-04-27"},
+        {"id":"referenceIndex","label":"Jour de cycle de la référence","type":"select","value":"0","options":[{"value":"0","label":"Eke"},{"value":"1","label":"Orie"},{"value":"2","label":"Afo"},{"value":"3","label":"Nkwo"}]},
+        {"id":"localAuthority","label":"Source locale à confirmer","type":"text","value":"Calendrier de la communauté"}
+      ],
+      "fixture": {"marketDay":"Eke"},
+      "source": "Cycle arithmétique de quatre jours ancré sur la date de référence fournie par l’utilisateur.",
+      "boundary": "Ce repère n’est pas une date civile, religieuse, de palais, de marché ou d’église officielle.",
+      "confidence": "Élevée pour le décalage depuis votre référence; aucune confiance si la référence locale est erronée."
+    },
+    {
+      "sourceId": "age-calculator-african",
+      "englishRoute": "/tools/age-calculator-african/",
+      "route": "/fr/tools/calculateur-age-jour-nom/",
+      "title": "Calculateur d’âge et suggestion de jour-nom",
+      "description": "Calculez un âge civil puis affichez une suggestion Akan liée au jour de naissance, à vérifier en famille.",
+      "engine": "ageNameDay",
+      "artwork": "/assets/img/tools/age-calculator-african.webp",
+      "fields": [
+        {"id":"birthDate","label":"Date de naissance","type":"date","value":"2000-01-01"},
+        {"id":"asOfDate","label":"Date de calcul","type":"date","value":"2026-01-01"},
+        {"id":"gender","label":"Table de suggestion","type":"select","value":"female","options":[{"value":"female","label":"Féminine"},{"value":"male","label":"Masculine"}]}
+      ],
+      "fixture": {"weekday":"samedi","name":"Ama","years":26},
+      "source": "Calcul calendaire local; table Akan de jour-nom utilisée comme suggestion à vérifier.",
+      "boundary": "Le jour-nom n’est ni une identité officielle, ni une règle universelle, ni un conseil d’enregistrement.",
+      "confidence": "Élevée pour l’âge avec dates valides; limitée pour la suggestion culturelle."
+    },
+    {
+      "sourceId": "festival-calendar",
+      "englishRoute": "/tools/festival-calendar/",
+      "route": "/fr/tools/calendrier-festivals-culturels/",
+      "title": "Planificateur de festival culturel",
+      "description": "Transformez une date provisoire et une source organisatrice en checklist de voyage respectueuse.",
+      "engine": "festival",
+      "artwork": "/assets/img/tools/festival-calendar.webp",
+      "fields": [
+        {"id":"festival","label":"Festival ou événement","type":"text","value":"Événement à confirmer"},
+        {"id":"country","label":"Pays ou communauté","type":"text","value":"Pays à préciser"},
+        {"id":"provisionalDate","label":"Date provisoire","type":"date","value":"2026-08-01"},
+        {"id":"organizer","label":"Organisateur ou autorité à contacter","type":"text","value":"Comité organisateur"},
+        {"id":"respectNote","label":"Règle d’accès ou de prise d’images à confirmer","type":"textarea","value":"Demander l’autorisation avant de filmer"}
+      ],
+      "fixture": {"contains":"confirm-exact-date"},
+      "source": "Plan généré uniquement depuis la date, l’organisateur et les notes saisis.",
+      "boundary": "Aucune date, entrée, disponibilité, règle sacrée, autorisation de filmer ou condition de voyage n’est fournie en direct.",
+      "confidence": "Élevée comme checklist; aucune confiance revendiquée pour la date ou l’accès."
+    },
+    {
+      "sourceId": "aso-ebi-cost",
+      "englishRoute": "/tools/aso-ebi-cost/",
+      "route": "/fr/tools/cout-aso-ebi/",
+      "title": "Calculateur de coût Aso-Ebi",
+      "description": "Calculez tissu, couture, accessoires et remise de groupe à partir de vos devis.",
+      "engine": "asoEbi",
+      "artwork": "/assets/img/tools/aso-ebi-cost.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"people","label":"Personnes","type":"number","value":2,"min":1,"max":100000,"step":1},
+        {"id":"fabricYards","label":"Mètres ou yards par personne","type":"number","value":3,"min":0,"step":0.01},
+        {"id":"fabricPrice","label":"Prix du tissu par unité","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"tailoring","label":"Couture par personne","type":"number","value":50,"min":0,"step":0.01},
+        {"id":"accessories","label":"Accessoires par personne","type":"number","value":25,"min":0,"step":0.01},
+        {"id":"delivery","label":"Livraison du groupe","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"discount","label":"Remise (%)","type":"number","value":10,"min":0,"max":100,"step":0.1}
+      ],
+      "fixture": {"total":675},
+      "source": "Arithmétique fondée sur les quantités, devis et remise saisis.",
+      "boundary": "Aucun prix, délai, qualité de tissu, coupe, pratique culturelle ou livraison n’est garanti.",
+      "confidence": "Élevée pour l’addition; les devis et mesures restent à vérifier."
+    },
+    {
+      "sourceId": "traditional-attire",
+      "englishRoute": "/tools/traditional-attire/",
+      "route": "/fr/tools/cout-tenue-traditionnelle/",
+      "title": "Budget de tenue traditionnelle",
+      "description": "Additionnez tissu, couture, accessoires et frais urgents pour les quantités saisies.",
+      "engine": "attire",
+      "artwork": "/assets/img/tools/traditional-attire.webp",
+      "fields": [
+        {"id":"currency","label":"Devise","type":"select","value":"XOF","options":["XOF","XAF","EUR","USD","NGN","KES","ZAR","GHS"]},
+        {"id":"quantity","label":"Nombre de tenues","type":"number","value":2,"min":1,"max":100000,"step":1},
+        {"id":"fabricCost","label":"Tissu par tenue","type":"number","value":100,"min":0,"step":0.01},
+        {"id":"tailoringCost","label":"Couture par tenue","type":"number","value":50,"min":0,"step":0.01},
+        {"id":"accessories","label":"Accessoires par tenue","type":"number","value":0,"min":0,"step":0.01},
+        {"id":"rushFee","label":"Frais urgents du groupe","type":"number","value":0,"min":0,"step":0.01}
+      ],
+      "fixture": {"total":300},
+      "source": "Budget fondé uniquement sur les quantités et devis saisis.",
+      "boundary": "Aucun style, tissu, quantité, genre, pratique culturelle, prix de tailleur ou délai n’est prescrit.",
+      "confidence": "Élevée pour l’addition; les mesures, choix et devis doivent être confirmés."
+    },
+    {
+      "sourceId": "halal-compliance",
+      "englishRoute": "/tools/halal-compliance/",
+      "route": "/fr/tools/conformite-halal/",
+      "title": "Checklist de préparation documentaire halal",
+      "description": "Classez les preuves disponibles et les questions à traiter avant de contacter un organisme compétent.",
+      "engine": "halalReadiness",
+      "artwork": "/assets/img/tools/halal-compliance.webp",
+      "fields": [
+        {"id":"ingredients","label":"Liste complète des ingrédients","type":"select","value":"unknown","options":[{"value":"yes","label":"Documentée"},{"value":"no","label":"Non documentée"},{"value":"unknown","label":"À vérifier"}]},
+        {"id":"suppliers","label":"Preuves fournisseurs","type":"select","value":"unknown","options":[{"value":"yes","label":"Documentées"},{"value":"no","label":"Non documentées"},{"value":"unknown","label":"À vérifier"}]},
+        {"id":"storage","label":"Séparation et stockage","type":"select","value":"unknown","options":[{"value":"yes","label":"Documentés"},{"value":"no","label":"Non documentés"},{"value":"unknown","label":"À vérifier"}]},
+        {"id":"cleaning","label":"Procédures de nettoyage","type":"select","value":"unknown","options":[{"value":"yes","label":"Documentées"},{"value":"no","label":"Non documentées"},{"value":"unknown","label":"À vérifier"}]},
+        {"id":"labels","label":"Étiquettes et traçabilité","type":"select","value":"unknown","options":[{"value":"yes","label":"Documentées"},{"value":"no","label":"Non documentées"},{"value":"unknown","label":"À vérifier"}]},
+        {"id":"authority","label":"Organisme compétent à contacter","type":"text","value":"À identifier localement"}
+      ],
+      "fixture": {"documented":0,"followUps":5},
+      "source": "Checklist de présence documentaire; aucune base de certificateurs, frais ou délais en direct.",
+      "boundary": "Le résultat ne certifie rien, ne détermine pas le statut halal, n’émet pas de fatwa et ne choisit aucun organisme.",
+      "confidence": "Élevée pour compter les réponses; aucune confiance de conformité ou de certification."
+    },
+    {
+      "sourceId": "islamic-calendar",
+      "englishRoute": "/tools/islamic-calendar/",
+      "route": "/fr/tools/convertisseur-calendrier-islamique/",
+      "title": "Convertisseur grégorien vers calendrier islamique",
+      "description": "Obtenez une estimation tabulaire Hijri pour la planification et confirmez les observances localement.",
+      "engine": "islamicCalendar",
+      "artwork": "/assets/img/tools/islamic-calendar.webp",
+      "fields": [
+        {"id":"date","label":"Date grégorienne","type":"date","value":"2026-01-01"},
+        {"id":"adjustment","label":"Ajustement de planification (jours)","type":"number","value":0,"min":-2,"max":2,"step":1}
+      ],
+      "fixture": {"gregorian":"1 janvier 2026","boundary":"tabular-estimate"},
+      "source": "Conversion arithmétique tabulaire locale; aucune observation lunaire ni calendrier officiel en direct.",
+      "boundary": "Le résultat ne fixe aucune date de Ramadan, Eid, Hajj ou autre observance.",
+      "confidence": "Élevée pour l’algorithme tabulaire; limitée pour les calendriers fondés sur l’observation."
+    }
+  ]
+}

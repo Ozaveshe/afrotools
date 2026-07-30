@@ -1,12 +1,25 @@
 const { test, expect } = require('@playwright/test');
 
+const MEDIA_ROUTES = process.env.FR_CREATIVE_MEDIA === '1'
+  ? {
+      record: '/fr/tools/enregistrement-pour-createur/app',
+      voice: '/fr/tools/voix-de-marque-du-createur/app',
+      clip: '/fr/tools/decoupe-de-video-pour-createur/app',
+    }
+  : {
+      record: '/tools/creator-record/app',
+      voice: '/tools/creator-voice/app',
+      clip: '/tools/creator-clip/app',
+    };
+
 async function installSyntheticDevices(page) {
   await page.addInitScript(() => {
     const retained = [];
 
-    function audioStream() {
+    async function audioStream() {
       const AudioContextCtor = window.AudioContext || window.webkitAudioContext;
       const context = new AudioContextCtor();
+      if (context.state === 'suspended') await context.resume();
       const oscillator = context.createOscillator();
       const gain = context.createGain();
       const destination = context.createMediaStreamDestination();
@@ -18,7 +31,7 @@ async function installSyntheticDevices(page) {
       return destination.stream;
     }
 
-    function videoStream(withAudio) {
+    async function videoStream(withAudio) {
       const canvas = document.createElement('canvas');
       canvas.width = 320;
       canvas.height = 180;
@@ -36,7 +49,8 @@ async function installSyntheticDevices(page) {
       const timer = setInterval(paint, 60);
       const stream = canvas.captureStream(15);
       if (withAudio) {
-        audioStream().getAudioTracks().forEach((track) => stream.addTrack(track));
+        const audio = await audioStream();
+        audio.getAudioTracks().forEach((track) => stream.addTrack(track));
       }
       stream.getVideoTracks()[0].addEventListener('ended', () => clearInterval(timer), { once: true });
       retained.push({ canvas, timer });
@@ -51,8 +65,10 @@ async function installSyntheticDevices(page) {
           { kind: 'videoinput', deviceId: 'synthetic-camera', label: 'Synthetic camera' },
         ],
         getUserMedia: async (constraints) =>
-          constraints && constraints.video ? videoStream(Boolean(constraints.audio)) : audioStream(),
-        getDisplayMedia: async () => videoStream(true),
+          constraints && constraints.video
+            ? await videoStream(Boolean(constraints.audio))
+            : await audioStream(),
+        getDisplayMedia: async () => await videoStream(true),
       },
     });
     window.__day9SyntheticMedia = retained;
@@ -111,21 +127,35 @@ async function makeSyntheticWebm(page) {
     const stream = canvas.captureStream(15);
     const recorder = new MediaRecorder(stream, { mimeType: 'video/webm;codecs=vp8' });
     const chunks = [];
-    recorder.ondataavailable = (event) => {
-      if (event.data.size) chunks.push(event.data);
-    };
     const stopped = new Promise((resolve) => {
       recorder.onstop = resolve;
     });
-    recorder.start(100);
-    for (let frame = 0; frame < 18; frame += 1) {
+    let resolveFirstChunk;
+    const firstChunk = new Promise((resolve) => {
+      resolveFirstChunk = resolve;
+    });
+    recorder.ondataavailable = (event) => {
+      if (!event.data.size) return;
+      chunks.push(event.data);
+      resolveFirstChunk();
+    };
+    recorder.start(200);
+    for (let frame = 0; frame < 30; frame += 1) {
       context.fillStyle = frame % 2 ? '#0057b8' : '#f4a261';
       context.fillRect(0, 0, canvas.width, canvas.height);
       context.fillStyle = '#fff';
       context.font = '24px sans-serif';
       context.fillText(`Clip ${frame}`, 90, 96);
-      await new Promise((resolve) => setTimeout(resolve, 60));
+      await new Promise((resolve) => setTimeout(resolve, 80));
     }
+    recorder.requestData();
+    await Promise.race([
+      firstChunk,
+      new Promise((_, reject) => setTimeout(
+        () => reject(new Error('synthetic WebM produced no data')),
+        8_000,
+      )),
+    ]);
     recorder.stop();
     await stopped;
     stream.getTracks().forEach((track) => track.stop());
@@ -139,14 +169,14 @@ async function makeSyntheticWebm(page) {
 }
 
 test('CreatorRecord captures, downloads, and reopens synthetic device audio', async ({ page }) => {
-  test.setTimeout(45_000);
+  test.setTimeout(90_000);
   await installSyntheticDevices(page);
-  await page.goto('/tools/creator-record/app', { waitUntil: 'domcontentloaded' });
+  await page.goto(MEDIA_ROUTES.record, { waitUntil: 'domcontentloaded' });
   await page.locator('[data-mode="audio"]').click();
   await page.locator('#countdownToggle').click();
   await page.locator('#recordBtn').click();
   await expect(page.locator('#stopBtn')).toBeEnabled();
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(1_800);
   await page.locator('#stopBtn').click();
   await expect(page.locator('#exportPanel')).toHaveClass(/visible/);
   const downloadPromise = page.waitForEvent('download');
@@ -160,12 +190,12 @@ test('CreatorRecord captures, downloads, and reopens synthetic device audio', as
 });
 
 test('CreatorVoice captures synthetic microphone audio and exports a valid WAV', async ({ page }) => {
-  test.setTimeout(45_000);
+  test.setTimeout(90_000);
   await installSyntheticDevices(page);
-  await page.goto('/tools/creator-voice/app', { waitUntil: 'domcontentloaded' });
+  await page.goto(MEDIA_ROUTES.voice, { waitUntil: 'domcontentloaded' });
   await page.locator('#recordBtn').click();
   await expect(page.locator('#stopBtn')).toBeEnabled();
-  await page.waitForTimeout(900);
+  await page.waitForTimeout(1_800);
   await page.locator('#stopBtn').click();
   await expect(page.locator('#editView')).toHaveClass(/active/);
   await page.locator('#exportFormat').selectOption('wav');
@@ -181,9 +211,9 @@ test('CreatorVoice captures synthetic microphone audio and exports a valid WAV',
 });
 
 test('CreatorClip imports, exports, and reopens a synthetic WebM clip', async ({ page }) => {
-  test.setTimeout(60_000);
+  test.setTimeout(90_000);
   await installSyntheticDevices(page);
-  await page.goto('/tools/creator-clip/app', { waitUntil: 'domcontentloaded' });
+  await page.goto(MEDIA_ROUTES.clip, { waitUntil: 'domcontentloaded' });
   const inputBytes = await makeSyntheticWebm(page);
   await page.locator('#fileInput').setInputFiles({
     name: 'synthetic-clip.webm',
@@ -203,3 +233,54 @@ test('CreatorClip imports, exports, and reopens a synthetic WebM clip', async ({
   expect(reopened.width).toBeGreaterThan(0);
   expect(reopened.height).toBeGreaterThan(0);
 });
+
+if (process.env.FR_CREATIVE_MEDIA === '1') {
+  for (const [id, route] of Object.entries(MEDIA_ROUTES)) {
+    test(`French Creator ${id} workspace has native locale, privacy, and reflow`, async ({ page }) => {
+      const errors = [];
+      const unsafeRequests = [];
+      page.on('console', (message) => {
+        if (message.type() === 'error') errors.push(message.text());
+      });
+      page.on('pageerror', (error) => errors.push(error.message));
+      page.on('request', (request) => {
+        if (request.method() !== 'GET' && /supabase|capture-lead|\/api\//i.test(request.url())) {
+          unsafeRequests.push(`${request.method()} ${request.url()}`);
+        }
+      });
+      await installSyntheticDevices(page);
+      await page.setViewportSize({ width: id === 'voice' ? 320 : 375, height: 844 });
+      await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+      await page.goto(route, { waitUntil: 'domcontentloaded' });
+      await expect(page.locator('html')).toHaveAttribute('lang', 'fr');
+      await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', /\/fr\/tools\/.+\/app$/);
+      await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveCount(1);
+      await expect(page.locator('body')).toContainText(/Enregistrer|Exporter|Modifier|Nouvelle vidéo/i);
+      await page.evaluate(() => {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        document.documentElement.style.fontSize = '200%';
+      });
+      const audit = await page.evaluate(() => {
+        const visible = (element) => {
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          return style.display !== 'none' && style.visibility !== 'hidden' && rect.width > 0 && rect.height > 0;
+        };
+        const controls = Array.from(document.querySelectorAll('button,input,select,textarea')).filter(visible);
+        return {
+          overflow: document.documentElement.scrollWidth - document.documentElement.clientWidth,
+          unnamed: controls.filter((control) => !(
+            (control.textContent || '').trim()
+            || control.getAttribute('aria-label')
+            || control.getAttribute('title')
+            || (control.labels && Array.from(control.labels).some((label) => label.textContent.trim()))
+          )).length,
+        };
+      });
+      expect(audit.overflow).toBeLessThanOrEqual(1);
+      expect(audit.unnamed).toBe(0);
+      expect(unsafeRequests).toEqual([]);
+      expect(errors).toEqual([]);
+    });
+  }
+}

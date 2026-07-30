@@ -1,0 +1,507 @@
+{
+  "schemaVersion": 1,
+  "scope": "French parity for the 15 canonical English Sports tools",
+  "reviewedAt": "2026-07-29",
+  "live": false,
+  "confidenceScale": {
+    "A": "Formule déterministe; confiance élevée dans le calcul, sans validation du monde réel.",
+    "B": "Formule déterministe appuyée par une référence officielle datée; vérification requise avant décision.",
+    "C": "Scénario de planification avec repères statiques ou heuristiques; remplacer les repères par des preuves actuelles."
+  },
+  "tools": {
+    "betting-odds": {
+      "englishRoute": "/tools/betting-odds/",
+      "frenchRoute": "/fr/tools/cotes-paris-sportifs/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Formule mathématique; cotes et probabilité saisies au moment du calcul",
+      "cadence": "Revue annuelle de la formule et à chaque modification du moteur",
+      "state": "static-formula",
+      "live": false,
+      "sourceMode": "user-entered",
+      "confidence": {
+        "grade": "A",
+        "label": "Élevée pour l’arithmétique uniquement",
+        "rationale": "Les conversions de cotes, probabilités implicites et valeurs attendues sont déterministes; aucune confiance n’est attribuée à l’issue d’un match."
+      },
+      "assumptions": [
+        "Toutes les cotes, la mise et la probabilité personnelle proviennent de l’utilisateur.",
+        "La probabilité personnelle n’est ni vérifiée ni transformée en prédiction.",
+        "Aucune cote, marge de bookmaker, disponibilité ou issue en direct n’est consultée."
+      ],
+      "mutableBaselines": [],
+      "sources": [],
+      "sourceRationale": "Aucune source externe n’est nécessaire à la formule. Les seules données de marché sont les valeurs saisies par l’utilisateur."
+    },
+    "afcon-predictor": {
+      "englishRoute": "/tools/afcon-predictor/",
+      "frenchRoute": "/fr/tools/predicteur-can/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Archive CAN Maroc 2025 (21 décembre 2025–18 janvier 2026); pondérations internes non datées pour les scénarios 2027",
+      "cadence": "Avant chaque tournoi et après publication officielle du plateau ou du règlement",
+      "state": "archived-snapshot",
+      "live": false,
+      "sourceMode": "official-archived-plus-scenario",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour le tournoi réel; utile pour comparer des hypothèses",
+        "rationale": "Les sources CAF décrivent l’édition 2025 archivée, mais les forces de base et réglages 2027 sont des pondérations internes statiques, pas un classement actuel."
+      },
+      "assumptions": [
+        "Le plateau de 24 équipes et les forces de base du moteur servent seulement à un scénario.",
+        "Les bonus de forme, défense, public et volatilité sont saisis ou réglés par l’utilisateur.",
+        "Aucun entrant 2027, score, blessure, suspension, classement ou résultat en direct n’est affirmé."
+      ],
+      "mutableBaselines": [
+        "pondérations internes des 24 équipes",
+        "plateau et règlement du prochain tournoi"
+      ],
+      "sources": [
+        {
+          "title": "CAF — présentation officielle de la CAN Maroc 2025",
+          "url": "https://www.cafonline.com/afcon2025/news/everything-you-need-to-know-about-totalenergies-caf-africa-cup-of-nations-morocco-2025/",
+          "note": "Archive officielle publiée le 13 octobre 2025 pour les dates, le format et le plateau de l’édition Maroc 2025; elle ne prouve aucun entrant 2027.",
+          "engineTitle": "CAF AFCON Morocco 2025 overview",
+          "engineNote": "Tournament dates, format, and official competition framing.",
+          "state": "archived"
+        },
+        {
+          "title": "CAF — communiqué de la commission d’appel",
+          "url": "https://www.cafonline.com/news/caf-appeal-board-media-statement/",
+          "note": "Contexte officiel post-finale publié en mars 2026; ce communiqué n’actualise ni les pondérations du modèle ni un futur plateau.",
+          "engineTitle": "CAF Appeal Board media statement",
+          "engineNote": "Official March 2026 post-final ruling context.",
+          "state": "archived"
+        }
+      ]
+    },
+    "fantasy-football": {
+      "englishRoute": "/tools/fantasy-football/",
+      "frenchRoute": "/fr/tools/points-fantasy-football/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Barème FPL de la saison 2025/26, désormais traité comme archive",
+      "cadence": "Avant chaque nouvelle saison FPL et après toute modification officielle du barème",
+      "state": "archived-snapshot",
+      "live": false,
+      "sourceMode": "official-archived",
+      "confidence": {
+        "grade": "B",
+        "label": "Bonne pour le barème 2025/26 seulement",
+        "rationale": "Le calcul reproduit le barème officiel publié pour 2025/26; il ne doit pas être utilisé comme barème actuel sans nouvelle revue."
+      },
+      "assumptions": [
+        "Minutes, buts, passes, arrêts, cartons, bonus et contributions défensives sont saisis par l’utilisateur.",
+        "Le moteur ne connaît ni feuille de match, ni correction statistique, ni composition ou blessure en direct.",
+        "Le score reste provisoire jusqu’à confirmation par l’organisateur de la saison concernée."
+      ],
+      "mutableBaselines": [
+        "barème FPL saisonnier"
+      ],
+      "sources": [
+        {
+          "title": "Premier League — barème FPL 2025/26",
+          "url": "https://www.premierleague.com/en/news/2174909/fpl-basics-scoring",
+          "note": "Article officiel publié le 1er juillet 2025. Référence archivée pour 2025/26, pas une affirmation sur la saison actuelle.",
+          "engineTitle": "Premier League FPL scoring rules",
+          "engineNote": "2025/26 points, clean sheets, saves, cards, and defensive contributions.",
+          "state": "archived"
+        }
+      ]
+    },
+    "betting-tax": {
+      "englishRoute": "/tools/betting-tax/",
+      "frenchRoute": "/fr/tools/taxe-paris-sportifs/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Textes et annonces fiscales 2025 intégrés comme instantané de planification",
+      "cadence": "Trimestrielle et avant toute déclaration, paiement ou changement de marché",
+      "state": "archived-snapshot",
+      "live": false,
+      "sourceMode": "official-archived-plus-user-entered",
+      "confidence": {
+        "grade": "B",
+        "label": "Moyenne pour un instantané 2025; aucune valeur déclarative",
+        "rationale": "Les liens sont officiels et datés, mais les lois, bases imposables, dates d’effet et pratiques opérateur peuvent changer."
+      },
+      "assumptions": [
+        "La mise, le paiement brut, le montant reçu et les taux personnalisés viennent de l’utilisateur.",
+        "Les règles intégrées sont des instantanés de planification, pas un calcul fiscal officiel.",
+        "L’utilisateur doit vérifier la date d’effet, la base taxable, son statut et le relevé de l’opérateur."
+      ],
+      "mutableBaselines": [
+        "taux d’accise et de retenue",
+        "base taxable et date d’effet",
+        "règles par pays et opérateur"
+      ],
+      "sources": [
+        {
+          "title": "Kenya Revenue Authority — ajustement des droits d’accise, Finance Act 2025",
+          "url": "https://www.kra.go.ke/news-center/public-notices/2237-adjustment-of-excise-duty-rates-for-excisable-goods-and-services-by-the-finance-act%2C-2025",
+          "note": "Avis officiel 2025 utilisé comme instantané pour l’accise kényane; vérifier le texte et la date d’effet actuellement applicables.",
+          "engineTitle": "KRA Finance Act 2025 excise notice",
+          "engineNote": "Kenya betting and gaming excise moved to 5 percent on wallet deposits.",
+          "state": "archived"
+        },
+        {
+          "title": "Kenya Revenue Authority — tableau de retenue à la source",
+          "url": "https://kra.go.ke/individual/filing-paying/types-of-taxes/individual-withholding-tax",
+          "note": "Page officielle de référence sur la retenue kényane; son contenu doit être relu au moment d’une décision.",
+          "engineTitle": "KRA withholding tax table",
+          "engineNote": "Kenya winnings withholding tax reference.",
+          "state": "static-reference"
+        },
+        {
+          "title": "Ministère des Finances du Ghana — réformes fiscales 2025",
+          "url": "https://www.mofep.gov.gh/node/1935",
+          "note": "Annonce officielle 2025 sur l’abolition de la retenue de 10 % sur les gains de pari et de jeu; vérifier la législation actuellement en vigueur.",
+          "engineTitle": "Ghana Ministry of Finance 2025 reforms",
+          "engineNote": "Abolition of 10 percent withholding tax on bet winnings and gaming.",
+          "state": "archived"
+        }
+      ]
+    },
+    "streaming-royalties": {
+      "englishRoute": "/tools/streaming-royalties/",
+      "frenchRoute": "/fr/tools/redevances-streaming-musical/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Heuristiques statiques du moteur revues le 29 juillet 2026; aucun tarif de plateforme actuel",
+      "cadence": "Trimestrielle et à chaque modification du moteur ou du modèle de répartition d’une plateforme",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "official-methodology-plus-scenario",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour un paiement réel; utile pour une fourchette",
+        "rationale": "Spotify confirme une logique de streamshare, pas un tarif fixe par écoute. Les valeurs par plateforme du moteur sont des repères de scénario."
+      },
+      "assumptions": [
+        "Les volumes, parts, frais, avances et dépenses sont saisis par l’utilisateur.",
+        "Les montants implicites par plateforme ne sont ni des tarifs contractuels ni des paiements en direct.",
+        "Le relevé du distributeur et les contrats master, édition et collaboration priment sur le résultat."
+      ],
+      "mutableBaselines": [
+        "repères de revenu par écoute",
+        "mix territorial et d’abonnement",
+        "frais et parts contractuelles"
+      ],
+      "sources": [
+        {
+          "title": "Spotify for Artists — guide des redevances",
+          "url": "https://artists.spotify.com/en/royalties-guide",
+          "note": "Source officielle sur le modèle streamshare. Elle ne publie pas et ne valide pas un tarif fixe par écoute pour ce calculateur.",
+          "engineTitle": "Spotify for Artists royalties guide",
+          "engineNote": "Major streaming services use streamshare models rather than fixed per-stream rates.",
+          "state": "static-reference"
+        }
+      ]
+    },
+    "nollywood-box-office": {
+      "englishRoute": "/tools/nollywood-box-office/",
+      "frenchRoute": "/fr/tools/box-office-nollywood/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "FilmOne Nigeria Box Office Yearbook 2025, archive de marché",
+      "cadence": "Annuelle après publication du nouvel annuaire et avant tout financement ou accord de distribution",
+      "state": "archived-snapshot",
+      "live": false,
+      "sourceMode": "industry-archive-plus-user-entered",
+      "confidence": {
+        "grade": "C",
+        "label": "Moyenne pour l’arithmétique; faible pour une sortie réelle",
+        "rationale": "L’annuaire 2025 fournit un contexte historique, tandis que billets, entrées, accords, frais et budgets sont propres au projet."
+      },
+      "assumptions": [
+        "Budget, entrées, billet moyen, part cinéma, frais, accords et recoupement sont saisis par l’utilisateur.",
+        "Aucune entrée, recette, date de sortie ou condition contractuelle en direct n’est utilisée.",
+        "Les relevés cinéma, distributeur, plateforme et investisseur sont les preuves décisives."
+      ],
+      "mutableBaselines": [
+        "prix moyen des billets",
+        "fréquentation",
+        "parts cinéma et distribution"
+      ],
+      "sources": [
+        {
+          "title": "FilmOne — Nigeria Box Office Yearbook 2025",
+          "url": "https://yearbook.filmoneng.com/",
+          "note": "Annuaire de marché 2025 utilisé comme contexte historique; il ne constitue pas un relevé actuel du film ou du distributeur.",
+          "engineTitle": "FilmOne Nigeria Box Office Yearbook 2025",
+          "engineNote": "Nigeria and West Africa cinema market benchmark reference.",
+          "state": "archived"
+        }
+      ]
+    },
+    "dj-booking-rate": {
+      "englishRoute": "/tools/dj-booking-rate/",
+      "frenchRoute": "/fr/tools/tarif-dj/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Repères internes statiques sans date de marché; non actuels",
+      "cadence": "Trimestrielle et avant chaque devis",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour un tarif réel",
+        "rationale": "Les bases DJ par pays et les conversions implicites sont des repères internes non sourcés; le devis doit être reconstruit avec les coûts et conditions actuels."
+      },
+      "assumptions": [
+        "Le type d’événement, la durée, le public, le matériel et la logistique décrivent un scénario.",
+        "Les bases DJ par pays, coefficients d’événement et majorations ne sont pas des tarifs officiels.",
+        "Disponibilité, transport, sécurité électrique, taxes et contrat doivent être confirmés séparément."
+      ],
+      "mutableBaselines": [
+        "base DJ par pays",
+        "conversion FX implicite",
+        "matériel, transport et prime de période"
+      ],
+      "sources": [],
+      "sourceRationale": "Aucune source de marché ne couvre de façon autoritative ces devis DJ variables. Le moteur utilise des repères internes statiques et doit rester un scénario, jamais un tarif actuel."
+    },
+    "concert-budget": {
+      "englishRoute": "/tools/concert-budget/",
+      "frenchRoute": "/fr/tools/budget-concert/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Données du projet saisies au moment du calcul",
+      "cadence": "À chaque nouveau devis, contrat, plan de capacité ou exigence locale",
+      "state": "static-formula",
+      "live": false,
+      "sourceMode": "user-entered",
+      "confidence": {
+        "grade": "A",
+        "label": "Élevée pour les totaux; non évaluée pour les coûts réels",
+        "rationale": "Recettes, coûts, frais et aléas sont additionnés de façon déterministe, mais leur exactitude dépend entièrement des devis et contrats saisis."
+      },
+      "assumptions": [
+        "Capacité, présence, prix, sponsoring, coûts, frais et aléas viennent de l’utilisateur.",
+        "Un sponsoring non signé, une autorisation non accordée ou une capacité non validée ne doit pas être traité comme acquis.",
+        "Le calcul ne remplace ni plan de sécurité, licence, assurance, devis ni autorisation."
+      ],
+      "mutableBaselines": [],
+      "sources": [],
+      "sourceRationale": "Le moteur ne contient pas de prix de marché obligatoire: il additionne les hypothèses et devis saisis pour l’événement."
+    },
+    "gym-roi-business": {
+      "englishRoute": "/tools/gym-roi-business/",
+      "frenchRoute": "/fr/tools/roi-salle-sport/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Repères internes statiques par pays; non actuels",
+      "cadence": "Mensuelle pendant la planification et avant tout investissement",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour un investissement réel",
+        "rationale": "La formule d’exploitation est déterministe, mais les cotisations de référence, coûts, churn, acquisition et financement changent selon le marché et le projet."
+      },
+      "assumptions": [
+        "Membres, revenus, churn, acquisition, charges et financement sont des hypothèses commerciales.",
+        "La cotisation de référence par pays n’est pas un tarif de salle actuel.",
+        "Aucun résultat de santé, programme d’entraînement ou risque médical n’est calculé."
+      ],
+      "mutableBaselines": [
+        "cotisation de salle par pays",
+        "conversion FX implicite",
+        "loyer, énergie, équipement et financement"
+      ],
+      "sources": [],
+      "sourceRationale": "Il n’existe pas de tarif autoritatif unique pour une salle de sport. Les repères internes sont statiques et les décisions doivent utiliser devis, contrats et données locales actuels."
+    },
+    "event-ticket-revenue": {
+      "englishRoute": "/tools/event-ticket-revenue/",
+      "frenchRoute": "/fr/tools/revenus-billetterie/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Ventes, frais et coûts saisis au moment du calcul",
+      "cadence": "Après chaque modification de prix, capacité, contrat de plateforme ou politique de remboursement",
+      "state": "static-formula",
+      "live": false,
+      "sourceMode": "user-entered",
+      "confidence": {
+        "grade": "A",
+        "label": "Élevée pour l’arithmétique; dépend des contrats saisis",
+        "rationale": "Le moteur additionne les catégories puis déduit frais, remboursements et coûts; il ne vérifie aucune vente ni condition de plateforme."
+      },
+      "assumptions": [
+        "Quantités, prix, invitations, sponsoring, frais, remboursements et coûts viennent de l’utilisateur.",
+        "Aucune vente, disponibilité, taxe, capacité ou politique de remboursement en direct n’est consultée.",
+        "Les contrats de billetterie et paiement priment sur les pourcentages saisis."
+      ],
+      "mutableBaselines": [],
+      "sources": [],
+      "sourceRationale": "Le calcul est un rapprochement des données saisies. Les contrats de plateforme, de paiement et les relevés de vente sont les sources réelles à fournir par l’utilisateur."
+    },
+    "match-tickets": {
+      "englishRoute": "/tools/match-tickets/",
+      "frenchRoute": "/fr/tools/prix-billets-match/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Bases de billets et conversions internes statiques; non actuelles",
+      "cadence": "Avant chaque achat et à chaque ouverture d’une billetterie officielle",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour un prix ou un stock réel",
+        "rationale": "Les bases par pays et coefficients de demande, place et canal ne proviennent pas d’une billetterie en direct."
+      },
+      "assumptions": [
+        "Le pays, le niveau du match, la place, la demande, le canal et les extras décrivent un scénario.",
+        "Les bases de billet par pays, frais de canal et coefficients de demande ne sont pas des prix officiels.",
+        "Prix, stock, conditions d’entrée et authenticité doivent être vérifiés auprès du club ou de la billetterie officielle."
+      ],
+      "mutableBaselines": [
+        "base de billet par pays",
+        "conversion FX implicite",
+        "majoration de demande, place et canal",
+        "prix et nombre de matchs de l’abonnement"
+      ],
+      "sources": [],
+      "sourceRationale": "Aucune billetterie officielle unique ne couvre ces pays et compétitions. Le moteur fournit seulement un scénario statique et ne doit jamais être présenté comme prix ou stock actuel."
+    },
+    "sports-scholarship": {
+      "englishRoute": "/tools/sports-scholarship/",
+      "frenchRoute": "/fr/tools/eligibilite-bourse-sportive/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Pages NCAA et NAIA consultées le 29 juillet 2026; score AfroTools non officiel",
+      "cadence": "Semestrielle et avant toute candidature, paiement ou envoi de dossier",
+      "state": "static-reference",
+      "live": false,
+      "sourceMode": "official-reference-plus-scenario",
+      "confidence": {
+        "grade": "B",
+        "label": "Bonne pour organiser un dossier; aucune décision d’admissibilité",
+        "rationale": "Les organismes décrivent leurs parcours officiels, mais l’établissement et l’organisme décident sur le dossier complet; le score AfroTools est une checklist."
+      },
+      "assumptions": [
+        "Niveau sportif, notes, cours, documents, vidéo, anglais et démarches sont des indicateurs saisis.",
+        "Le score ne vérifie aucun relevé, statut amateur, identité, âge, admission, recrutement ou financement.",
+        "L’établissement, NCAA ou NAIA doit confirmer les exigences et l’admissibilité."
+      ],
+      "mutableBaselines": [
+        "exigences académiques et documentaires",
+        "calendrier et règles d’admissibilité"
+      ],
+      "sources": [
+        {
+          "title": "NCAA — exigences pour les étudiants-athlètes internationaux",
+          "url": "https://www.ncaa.org/sports/2018/5/15/international-academic-requirements.aspx",
+          "note": "Page officielle redirigée vers le parcours international NCAA. Vérifier les exigences du pays et du dossier avant candidature.",
+          "engineTitle": "NCAA international academic requirements",
+          "engineNote": "International student-athlete document and academic requirements.",
+          "state": "static-reference"
+        },
+        {
+          "title": "NCAA — exigences initiales Division I",
+          "url": "https://www.ncaa.org/sports/2013/11/25/division-i-initial-eligibility-toolkit.aspx",
+          "note": "Page officielle redirigée vers les exigences Division I. Le score AfroTools ne constitue pas une certification NCAA.",
+          "engineTitle": "NCAA Division I initial eligibility toolkit",
+          "engineNote": "Division I core courses and minimum core-course GPA.",
+          "state": "static-reference"
+        },
+        {
+          "title": "NAIA — Eligibility Center",
+          "url": "https://naia.prestosports.com/why-naia/eligibility-center",
+          "note": "Point d’entrée officiel du parcours NAIA; confirmer directement l’évaluation internationale et les exigences actuelles.",
+          "engineTitle": "NAIA Eligibility Center",
+          "engineNote": "NAIA and international record evaluation pathway.",
+          "state": "static-reference"
+        }
+      ]
+    },
+    "athlete-earnings": {
+      "englishRoute": "/tools/athlete-earnings/",
+      "frenchRoute": "/fr/tools/revenus-carriere-athlete/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Repères internes statiques de salaire, niveau et conversion; non actuels",
+      "cadence": "À chaque projet de contrat et au moins trimestriellement",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour une carrière réelle; utile pour tester des réserves",
+        "rationale": "La projection dépend de contrats, fiscalité, durée de carrière et revenus futurs inconnus; les valeurs de repli du moteur sont des scénarios statiques."
+      },
+      "assumptions": [
+        "Salaire, primes, sponsoring, croissance, frais, réserves et épargne sont des hypothèses financières.",
+        "Les repères de salaire par pays, sport et niveau ainsi que les conversions ne sont pas des offres actuelles.",
+        "La réserve d’indisponibilité est un coussin financier, jamais une probabilité de blessure, un diagnostic ou une durée de récupération."
+      ],
+      "mutableBaselines": [
+        "repères de salaire par sport et niveau",
+        "conversion FX implicite",
+        "fiscalité, frais d’agent et durée de carrière"
+      ],
+      "sources": [],
+      "sourceRationale": "Les contrats sportifs sont individuels et confidentiels. Sans contrat, fiche de paie ou conseil professionnel fournis par l’utilisateur, le moteur ne peut proposer qu’un scénario statique."
+    },
+    "gaming-pc-build": {
+      "englishRoute": "/tools/gaming-pc-build/",
+      "frenchRoute": "/fr/tools/configuration-pc-gaming/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Allocations, conversions et marges d’import internes statiques; non actuelles",
+      "cadence": "Mensuelle et avant tout achat ou importation",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour prix, stock, performance ou compatibilité",
+        "rationale": "Le moteur répartit un budget par heuristiques; il ne consulte aucun catalogue, benchmark, taux de change, taxe ou inventaire actuel."
+      },
+      "assumptions": [
+        "Budget, usage, définition, achat local ou importé, occasion et périphériques décrivent un scénario.",
+        "Les conversions FX, marges d’import, décotes et allocations de composants sont des repères internes.",
+        "Prix, compatibilité, alimentation, performances, garantie, douane et stock doivent être vérifiés avant achat."
+      ],
+      "mutableBaselines": [
+        "conversion FX implicite",
+        "marge d’importation par pays",
+        "prix et disponibilité des composants",
+        "allocation GPU, CPU et autres composants"
+      ],
+      "sources": [],
+      "sourceRationale": "Aucune source catalogue n’est intégrée. Les marchés, composants et taux changent trop vite pour présenter ces allocations comme une configuration ou un prix actuel."
+    },
+    "photo-video-pricing": {
+      "englishRoute": "/tools/photo-video-pricing/",
+      "frenchRoute": "/fr/tools/prix-photo-video/",
+      "engine": "assets/js/sports-toolkit.js",
+      "reviewedAt": "2026-07-29",
+      "asOf": "Bases photo/vidéo et conversions internes statiques; non actuelles",
+      "cadence": "Trimestrielle et avant chaque devis",
+      "state": "static-scenario",
+      "live": false,
+      "sourceMode": "scenario-only",
+      "confidence": {
+        "grade": "C",
+        "label": "Faible pour un prix réel",
+        "rationale": "Les journées de base par pays, coefficients et conversions sont des repères internes; le devis final dépend du périmètre, des droits et des coûts du prestataire."
+      },
+      "assumptions": [
+        "Tournage, montage, équipe, matériel, livrables, déplacement, urgence et droits décrivent un scénario.",
+        "Les bases par pays et coefficients de projet ou d’usage ne sont pas des tarifs professionnels officiels.",
+        "Permis, sécurité, assurance, contrat, acompte et droits doivent être confirmés séparément."
+      ],
+      "mutableBaselines": [
+        "base journalière photo/vidéo par pays",
+        "conversion FX implicite",
+        "matériel, équipe, déplacement et droits d’usage"
+      ],
+      "sources": [],
+      "sourceRationale": "Il n’existe pas de barème autoritatif unique pour ces prestations. Les repères internes sont statiques et doivent être remplacés par le coût et le périmètre actuels du prestataire."
+    }
+  }
+}

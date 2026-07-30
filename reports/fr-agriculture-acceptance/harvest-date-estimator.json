@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:harvest-date-estimator",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-harvest-date-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 30 Harvest Date English invariants",
+    "engine": "node tests/harvest-date-engine.test.js",
+    "source": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-harvest-date-oracles.json node tests/fr-agriculture-harvest-date.test.js",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id harvest-date-estimator --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42955 CI=1 npx playwright test tests/e2e/fr-agriculture-harvest-date.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (9.8s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "harvest-date-estimator",
+    "countryCode": null,
+    "englishRoute": "/agriculture/harvest-date/",
+    "frenchRoute": "/fr/agriculture/harvest-date/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-harvest-date-oracles.json",
+      "englishBrowserInvariants": 30,
+      "engineScenarios": 360,
+      "frenchProfiles": 360,
+      "preserves": [
+        "four accepted crop choices",
+        "planting-date plus entered maturity-days calculation",
+        "fractional-day behavior",
+        "calendar and leap-year rollover",
+        "low, medium and high weather-risk identity",
+        "English summary wording and date formatting",
+        "invalid and reset states"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-harvest-date.spec.js",
+      "result": "2 passed (9.8s)",
+      "isolatedPort": 42955,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport":640,"baselineCssViewport":1280,"documentOverflow":false},
+      "themes": ["light","manual-dark","system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical","og","schema-inLanguage-fr","reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/harvest-date/"
+    },
+    "exports": ["pdf","csv","json","txt","copy","share","local-save","reset"],
+    "source": {
+      "engine": ["engines/src/harvest-date-engine.js"],
+      "data": ["user-entered planting date, crop, maturity days and weather risk"],
+      "freshness": "no live weather, altitude or variety feed",
+      "confidence": "planning date only; field maturity confirmation required"
+    },
+    "artwork": {"imageId":"harvest-date-estimator","file":"assets/img/tools/harvest-date-estimator.webp","state":"present"},
+    "limitations": [
+      "The accepted runtime does not automatically adjust the entered duration for country, altitude, temperature, rainfall or variety.",
+      "Confirm maturity signs, variety duration, field conditions, labour and buyer readiness before scheduling harvest."
+    ]
+  }]
+}

@@ -1,42 +1,474 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
-  <meta charset="UTF-8">
+<meta name="afrotools-content-id" content="fr-developer:diff-checker">
+<meta name="afrotools-source-owner" content="scripts/build-french-developer-native-clones.js">
+<meta name="afrotools-source-input" content="tools/diff-checker/index.html">
+<meta name="afrotools-source-hash" content="ac0a6e81a56e69f3">
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Comparateur de texte | AfroTools</title>
-  <meta name="description" content="Comparez deux textes pour reperer les ajouts, suppressions et différences importantes.">
-  <meta property="og:title" content="Comparateur de texte | AfroTools">
-  <meta property="og:description" content="Comparez deux textes pour reperer les ajouts, suppressions et différences importantes.">
+<title>Comparateur de textes | AfroTools</title>
+<meta name="description" content="Comparez deux textes pour reperer les ajouts, suppressions et différences importantes.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<meta property="og:title" content="Vérificateur de différences | AfroTools">
+<meta property="og:description" content="Comparez le texte ou le code localement avec les surlignages au niveau des lignes et des mots, les statistiques, les options d'espaces/cas et les résultats de révision copiables.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/comparateur-texte/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/diff-checker.webp">
-  <meta property="og:url" content="https://afrotools.com/fr/tools/comparateur-texte/">
-  <meta property="og:type" content="website">
-  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-  <style>
-    .fr-tool-shell{max-width:1120px;margin:0 auto;padding:96px 20px 56px}
-    .breadcrumb{font-size:.92rem;color:#64748b;margin-bottom:18px}
-    .breadcrumb a{color:#2563eb;text-decoration:none}
-    .eyebrow{font-size:.78rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#0f766e;margin-bottom:10px}
-    .fr-tool-shell h1{font-size:clamp(2rem,5vw,3.6rem);line-height:1.05;margin:0 0 16px;color:#0f172a}
-    .lead{max-width:760px;color:#475569;font-size:1.08rem;line-height:1.7;margin:0 0 28px}
-    .tool-frame-wrap{border:1px solid #dbe4ef;border-radius:8px;overflow:hidden;background:#fff;box-shadow:0 10px 28px rgba(15,23,42,.08)}
-    .tool-frame{display:block;width:100%;min-height:820px;border:0;background:#fff}
-    .support-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:26px}
-    .support-grid section{border:1px solid #dbe4ef;border-radius:8px;padding:18px;background:#fff}
-    .support-grid h2{font-size:1rem;margin:0 0 8px;color:#111827}
-    .support-grid p{margin:0;color:#475569;line-height:1.55;font-size:.94rem}
-    @media (max-width:760px){.fr-tool-shell{padding-top:76px}.support-grid{grid-template-columns:1fr}.tool-frame{min-height:760px}}
-  </style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Comparateur de texte","applicationCategory":"BusinessApplication","operatingSystem":"Web","inLanguage":"fr","url":"https://afrotools.com/fr/tools/comparateur-texte/","description":"Comparez deux textes pour reperer les ajouts, suppressions et différences importantes.","image":"https://afrotools.com/assets/img/tools/diff-checker.webp"}</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/diff-checker.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Comparateur de texte | AfroTools">
-<meta name="twitter:description" content="Comparez deux textes pour reperer les ajouts, suppressions et différences importantes.">
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
+<meta name="twitter:title" content="Vérificateur de différences | AfroTools">
+<meta name="twitter:description" content="Vérificateur de différences de texte local gratuit avec mise en évidence au niveau des lignes et des mots, statistiques et sortie de copie.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<style>
+  :root {
+    --afro-green: var(--color-primary);
+    --afro-dark: #0f1419;
+    --afro-light: #f5f7fa;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .tool-hero::after {
+    content: '🔄';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255, 255, 255, 0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+
+  .breadcrumb a {
+    color: rgba(255, 255, 255, 0.3);
+    text-decoration: none;
+  }
+
+  .breadcrumb span {
+    color: var(--afro-green);
+  }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+
+  h1 em {
+    color: var(--afro-green);
+    font-style: normal;
+  }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255, 255, 255, 0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+    margin-bottom: 6px;
+  }
+
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+
+  .b-green {
+    background: rgba(0, 113, 227, 0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0, 113, 227, 0.38);
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 22px;
+    align-items: start;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0, 0, 0, 0.05);
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #F5F9FF;
+  }
+
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .comparison-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .f-label {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #0d2813;
+  }
+
+  .f-textarea {
+    width: 100%;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: #0d2813;
+    outline: none;
+    transition: border-color 0.18s, box-shadow 0.18s;
+    font-family: 'Courier New', monospace;
+    resize: vertical;
+    min-height: 150px;
+  }
+
+  .f-textarea:focus {
+    border-color: var(--afro-green);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.1);
+  }
+
+  .diff-options {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 12px;
+    flex-wrap: wrap;
+  }
+
+  .checkbox-option {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .checkbox-option input[type="checkbox"] {
+    width: 16px;
+    height: 16px;
+    cursor: pointer;
+  }
+
+  .checkbox-option label {
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: #244d2c;
+    cursor: pointer;
+    margin: 0;
+  }
+
+  .diff-btn {
+    padding: 8px 14px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #244d2c;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+  }
+
+  .diff-btn:hover {
+    border-color: var(--afro-green);
+  }
+
+  .diff-btn.on {
+    border-color: var(--afro-green);
+    background: var(--afro-green);
+    color: #fff;
+  }
+
+  .calc-btn {
+    width: 100%;
+    padding: 14px;
+    background: var(--afro-green);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .calc-btn:hover {
+    background: #0059B3;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 20px rgba(0, 113, 227, 0.3);
+  }
+
+  .diff-output {
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 8px;
+    padding: 12px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.85rem;
+    max-height: 400px;
+    overflow-y: auto;
+    display: none;
+  }
+
+  .diff-output.on {
+    display: block;
+  }
+
+  .diff-line {
+    padding: 4px 6px;
+    line-height: 1.4;
+    border-left: 3px solid transparent;
+  }
+
+  .diff-added {
+    background: rgba(0, 113, 227, 0.1);
+    border-left-color: var(--color-primary);
+    color: #005c3d;
+  }
+
+  .diff-removed {
+    background: rgba(220, 53, 69, 0.1);
+    border-left-color: #dc3545;
+    color: #800000;
+  }
+
+  .diff-neutral {
+    color: #244d2c;
+  }
+
+  .copy-btn {
+    width: 100%;
+    padding: 8px;
+    background: rgba(0, 113, 227, 0.1);
+    border: 1px solid rgba(0, 113, 227, 0.35);
+    color: #1a5c3a;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    margin-top: 6px;
+    transition: all 0.15s;
+    font-family: 'DM Sans', sans-serif;
+  }
+
+  .copy-btn:hover {
+    background: rgba(0, 113, 227, 0.2);
+  }
+
+  .diff-stats {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+
+  .stat-box {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    padding: 12px;
+    text-align: center;
+    font-size: 0.75rem;
+  }
+
+  .stat-number {
+    font-size: 1.3rem;
+    font-weight: 700;
+    margin-bottom: 4px;
+  }
+
+  .stat-added { color: var(--color-primary); }
+  .stat-removed { color: #dc3545; }
+  .stat-neutral { color: #244d2c; }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+    margin-top: 18px;
+  }
+
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  .info-text {
+    font-size: 0.8rem;
+    color: #244d2c;
+    line-height: 1.6;
+  }
+
+  .info-text li {
+    margin-bottom: 8px;
+  }
+
+  @media (max-width: 768px) {
+    .comparison-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .diff-options {
+      flex-direction: column;
+    }
+
+    .diff-btn {
+      width: 100%;
+    }
+
+    .diff-stats {
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
-<style data-at-trust-panel-style>
-.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Vérificateur de différences","description":"Comparez localement deux blocs de texte ou de code avec des différences au niveau de la ligne et du mot, des statistiques ajoutées/supprimées/inchangées, des options d'espacement et de casse, une copie de la sortie et une note de révision.","url":"https://afrotools.com/fr/tools/comparateur-texte/","inLanguage":"en","applicationCategory":"DéveloppeurApplication","operatingSystem":"Web","browserRequirements":"Nécessite JavaScript et un navigateur moderne","featureList":["Comparaison de texte et de code côte à côte","Mise en évidence des différences au niveau de la ligne","Mise en évidence des différences au niveau des mots","Statistiques de ligne ajoutées, supprimées et inchangées","Ignorer les espaces et ignorer les options de casse","Copier la sortie diff et la note de révision locale"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/diff-checker.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Vérificateur de différences","url":"https://afrotools.com/fr/tools/comparateur-texte/","description":"Vérificateur de différences basé sur un navigateur pour comparer du texte ou du code avec des surlignages de lignes et de mots, des statistiques, des options d'espaces/cas et une sortie copiable.","inLanguage":"en","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/diff-checker.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Comment comparer du texte avec le vérificateur de différences AfroTools","description":"Comparez localement deux blocs de texte ou de code, examinez les différences de lignes ou de mots, puis copiez la sortie de différence ou révisez la note.","step":[{"@type":"HowToStep","name":"Collez les deux versions","text":"Ajoutez le texte original à gauche et le texte modifié à droite."},{"@type":"HowToStep","name":"Choisissez les options de comparaison","text":"Basculez entre les différences de ligne et de mot et ignorez éventuellement les espaces ou les différences de casse."},{"@type":"HowToStep","name":"Réviser et copier","text":"Vérifiez les statistiques ajoutées, supprimées et inchangées, puis copiez la sortie différentielle ou une note de révision locale."}]}</script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
+<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/diff-checker.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Vérificateur de différences","item":"https://afrotools.com/fr/tools/comparateur-texte/"}]}</script>
+<meta property="article:modified_time" content="2026-03-28">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Quels types de contenus puis-je comparer ?","acceptedAnswer":{"@type":"Answer","text":"Vous pouvez comparer n'importe quel texte brut : code source dans n'importe quel langage de programmation, fichiers de configuration, données JSON, XML, CSV, documents en prose ou tout autre contenu textuel."}},{"@type":"Question","name":"À quoi sert « ignorer les espaces » ?","acceptedAnswer":{"@type":"Answer","text":"Lorsqu'il est activé, l'outil ignore les différences dans les espaces, les tabulations et les espaces de fin. Ceci est utile pour comparer du code qui peut avoir des styles d’indentation différents mais qui est par ailleurs identique."}},{"@type":"Question","name":"Y a-t-il une limite de taille pour le texte que je peux comparer ?","acceptedAnswer":{"@type":"Answer","text":"Puisque la comparaison s'exécute dans votre navigateur, aucune limite n'est imposée par le serveur. Toutefois, les textes très volumineux (plus de 50 000 lignes) peuvent ralentir le rendu. Pour les documents et fichiers de code typiques, les performances sont instantanées."}},{"@type":"Question","name":"Que signifient les couleurs dans la sortie diff ?","acceptedAnswer":{"@type":"Answer","text":"Les surlignages verts indiquent des lignes ou des mots ajoutés, les surlignages rouges indiquent le contenu supprimé et les lignes jaunes marquent les lignes qui ont été modifiées. La mise en surbrillance au niveau des mots dans les lignes montre exactement quels caractères ont changé."}},{"@type":"Question","name":"Mon texte est-il envoyé à un serveur ?","acceptedAnswer":{"@type":"Answer","text":"Non. La comparaison est effectuée côté client dans votre navigateur en utilisant JavaScript. Utilisez un navigateur et un appareil que vous contrôlez et évitez de coller des secrets, des informations d'identification, des enregistrements clients privés ou des contrats confidentiels dans des exemples partagés."}}]}</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<style>
+  .top-level-page-ui-refresh .tool-hero::after {
+    content: '+/-' !important;
+  }
+
+  .top-level-page-ui-refresh .tool-main-inner,
+  .top-level-page-ui-refresh .card,
+  .top-level-page-ui-refresh .comparison-grid,
+  .top-level-page-ui-refresh .diff-output {
+    min-width: 0;
+  }
+
+  .top-level-page-ui-refresh button,
+  .top-level-page-ui-refresh summary,
+  .top-level-page-ui-refresh .checkbox-option {
+    min-height: 44px;
+  }
+
+  .top-level-page-ui-refresh .checkbox-option input[type="checkbox"] {
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  .top-level-page-ui-refresh .f-textarea,
+  .top-level-page-ui-refresh .diff-output {
+    overflow-wrap: anywhere;
+  }
+
+  .top-level-page-ui-refresh :is(button, input, textarea, summary):focus-visible {
+    outline: 3px solid rgba(0, 113, 227, 0.35);
+    outline-offset: 2px;
+  }
+
+  @media (max-width: 560px) {
+    .top-level-page-ui-refresh .diff-options {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+  }
 </style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/comparateur-texte/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/diff-checker/">
@@ -45,94 +477,476 @@
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/diff-checker/">
 </head>
 <body class="top-level-page-ui-refresh">
-  <div id="navbar"></div>
-  <main class="fr-tool-shell">
-<section class="at-trust-panel" data-tool-verification-panel aria-label="Méthodologie, sources et limites">
-<h2>Méthodologie, sources et limites</h2>
-<div class="at-trust-grid"><div><strong>Méthodologie</strong>La page aide à préparer un calcul, une comparaison ou une vérification avec vos données avant de passer a l'outil principal.</div><div><strong>Sources</strong>Pour tout taux, barème, examen, assurance, santé, éducation ou regle pays, confirmez la source officielle ou le fournisseur avant décision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypothèses sont à valider et ne remplacent pas un avis fiscal, juridique, médical, éducatif ou professionnel.</div></div>
-<p>Dernière vérification editoriale: 2026. Utilisez le résultat comme repere de travail, puis conservez la source, la date et le contexte de votre vérification.</p>
-</section>
-<section class="fr-action-planner" data-tool-verification-panel data-fr-action-planner data-tool-name="Comparateur de texte">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
+<afro-navbar active="tools"></afro-navbar>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <span>Outils</span>
+    </div>
+    <h1>Comparateur de textes</h1>
+    <p class="hero-sub">Comparez deux textes côte à côte avec une mise en évidence des différences ligne par ligne et au niveau des mots. Statistiques en temps réel : lignes ajoutées (vertes), supprimées (rouges), inchangées. Ignorez les options d'espacement et de casse.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">Différence de mots</span>
+      <span class="badge b-green">Statistiques</span>
+      <span class="badge b-green">En temps réel</span>
+    </div>
+  </div>
 </div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/diff-checker/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthodologie:</strong> utilisez ce brief comme aide de planification. Limites 2026: contenu non officiel; hypothèses à valider avec la source, le fournisseur ou l'autorite competente avant décision financière, juridique, santé, énergie, éducation ou business.</div>
+
+<div class="tool-main" role="main">
+  <div class="tool-main-inner">
+    <!-- Input Card -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Comparer les textes (mis à jour en direct)</span>
+      </div>
+      <div class="card-body">
+        <div class="comparison-grid">
+          <div>
+            <label class="f-label" for="text1">
+              <span class="f-label-text">Texte 1 (original)</span>
+            </label>
+            <textarea class="f-textarea" id="text1" placeholder="Paste first text..."></textarea>
+          </div>
+          <div>
+            <label class="f-label">
+              <span class="f-label-text">Texte 2 (Modifié)</span>
+            </label>
+            <textarea class="f-textarea" id="text2" placeholder="Paste second text..." aria-label="Paste second text..."></textarea>
+          </div>
+        </div>
+
+        <div class="diff-options">
+          <button type="button" class="diff-btn on" data-mode="line">Différentiel de ligne</button>
+          <button type="button" class="diff-btn" data-mode="char">Différence de mots</button>
+          <button type="button" class="diff-btn" id="swapBtn" aria-label="Échanger des textes">Échanger des textes</button>
+          <div class="checkbox-option">
+            <input type="checkbox" id="ignoreWhitespace">
+            <label for="ignoreWhitespace">Ignorer les espaces</label>
+          </div>
+          <div class="checkbox-option">
+            <input type="checkbox" id="ignoreCase">
+            <label for="ignoreCase">Ignorer le cas</label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Diff Output -->
+    <div class="card">
+      <div class="card-head">
+        <span class="card-title">Résultat différentiel</span>
+      </div>
+      <div class="card-body">
+        <div class="diff-stats" id="diffStats" style="display: none;">
+          <div class="stat-box">
+            <div class="stat-number stat-added" id="statAdded">0</div>
+            <div>Lignes ajoutées</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-removed" id="statRemoved">0</div>
+            <div>Lignes supprimées</div>
+          </div>
+          <div class="stat-box">
+            <div class="stat-number stat-neutral" id="statUnchanged">0</div>
+            <div>Lignes inchangées</div>
+          </div>
+        </div>
+        <div class="diff-output" id="diffOutput"></div>
+        <div style="text-align: center; color: #6B8CAE; font-size: 0.75rem; padding: 20px;">Collez les textes ci-dessus pour voir les différences</div>
+        <button type="button" class="copy-btn" id="copyBtn" style="display: none;">Copier la sortie différentielle</button>
+        <button type="button" class="copy-btn" id="copyReviewBtn" style="display: none;">Copier la note de révision</button>
+      </div>
+    </div>
+
+    <!-- Info -->
+    <div class="info-card">
+      <div class="info-title">Comment ça marche</div>
+      <div class="info-text">
+        <strong>Différence de ligne :</strong> Affiche les lignes entières ajoutées ou supprimées
+        <div style="margin-top: 8px;"><strong>Différence de mots :</strong> Met en évidence les changements au niveau des mots dans les lignes pour une comparaison plus précise</div>
+        <ul style="margin-top:10px;">
+          <li>Vert = texte ajouté</li>
+          <li>Rouge = texte supprimé</li>
+          <li>Gris = texte inchangé</li>
+          <li>Les mises à jour s'exécutent au fur et à mesure que vous tapez</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<afro-related-tools category="developer" current="diff-checker" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/tools/json-formatter/" data-related-tool data-id="json-formatter" data-name="JSON Formatter &amp; Validator" data-category="developer" data-icon="JF" data-desc="Format, validate, repair, query and diff JSON or NDJSON. Includes schema, TypeScript and API Tester snippets.">JSON Formatter &amp; Validator</a></li><li><a href="/tools/data-converter/" data-related-tool data-id="data-converter" data-name="Data Format Converter" data-category="developer" data-icon="DF" data-desc="Convert between JSON, CSV, XML, YAML, TOML, TSV. Auto-detect, SQL INSERT generator, preview table.">Convertisseur de formats de données</a></li><li><a href="/tools/ussd-simulator/" data-related-tool data-id="ussd-simulator" data-name="USSD Code Simulator" data-category="developer" data-icon="UC" data-desc="Visual USSD menu builder for African fintech developers.">USSD Simulateur de codes</a></li><li><a href="/tools/api-tester/" data-related-tool data-id="api-tester" data-name="API Tester (Postman Lite)" data-category="developer" data-icon="AT" data-desc="REST API testing in-browser. No install needed. Pre-built Africa fintech collections.">API Testeur (Postman Lite)</a></li><li><a href="/tools/base64/" data-related-tool data-id="base64" data-name="Base64 Encoder/Decoder" data-category="developer" data-icon="BE" data-desc="Encode/decode text and files. Image-to-Base64, URL-safe mode, live encoding, stats bar. AI assist.">Base64 Encodeur/Décodeur</a></li><li><a href="/tools/hash-generator/" data-related-tool data-id="hash-generator" data-name="Hash Generator" data-category="developer" data-icon="HG" data-desc="MD5, SHA-1, SHA-256, SHA-512, SHA-3, HMAC, CRC32. All-at-once grid, checksum verify, file hashing.">Générateur de hachage</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+
+<section style="max-width:900px;margin:32px auto;padding:0 20px 40px;">
+  <h2 style="font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:14px;">Vérificateur de différences : comment ça marche</h2>
+  <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
+    <p>Le AfroTools Diff Checker vous permet de comparer deux blocs de texte ou de code côte à côte et de voir instantanément chaque différence. Collez votre texte original à gauche et la version modifiée à droite, et l'outil met en évidence les ajouts, les suppressions et les modifications avec un code couleur clair : vert pour les lignes ajoutées, rouge pour les lignes supprimées et jaune pour le contenu modifié. La comparaison au niveau des mots identifie les caractères exacts qui ont changé dans chaque ligne, ce qui facilite la détection des modifications subtiles. L'outil fournit des statistiques montrant en un coup d'œil le nombre de lignes ajoutées, supprimées et inchangées. Les options de basculement vous permettent d'ignorer les différences d'espaces ou d'effectuer des comparaisons insensibles à la casse lorsque ces différences ne sont pas pertinentes pour votre révision. Cet outil de comparaison est inestimable pour les développeurs qui examinent les modifications de code, les rédacteurs qui comparent les brouillons de documents, les traducteurs qui vérifient les révisions de texte et tous ceux qui ont besoin d'identifier rapidement ce qui a changé entre deux versions. Toutes les comparaisons s'effectuent dans votre navigateur en temps réel : aucune donnée ne quitte votre appareil.</p>
+  </div>
+  <h3 style="font-size:1rem;font-weight:700;color:#0f172a;margin:24px 0 12px;">Questions fréquentes</h3>
+
+
+<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
+</div>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Quels types de contenus puis-je comparer ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Vous pouvez comparer n'importe quel texte brut : code source dans n'importe quel langage de programmation, fichiers de configuration, données JSON, XML, CSV, documents en prose ou tout autre contenu textuel.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">À quoi sert « ignorer les espaces » ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Lorsqu'il est activé, l'outil ignore les différences dans les espaces, les tabulations et les espaces de fin. Ceci est utile pour comparer du code qui peut avoir des styles d’indentation différents mais qui est par ailleurs identique.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Y a-t-il une limite de taille pour le texte que je peux comparer ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Puisque la comparaison s'exécute dans votre navigateur, aucune limite n'est imposée par le serveur. Toutefois, les textes très volumineux (plus de 50 000 lignes) peuvent ralentir le rendu. Pour les documents et fichiers de code typiques, les performances sont instantanées.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Que signifient les couleurs dans la sortie diff ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Les surlignages verts indiquent des lignes ou des mots ajoutés, les surlignages rouges indiquent le contenu supprimé et les lignes jaunes marquent les lignes qui ont été modifiées. La mise en surbrillance au niveau des mots dans les lignes montre exactement quels caractères ont changé.</p>
+    </details>
+    <details style="background:#f8fafc;border:1px solid #e2e8f0;border-radius:8px;padding:14px 18px;">
+      <summary style="font-weight:600;font-size:0.85rem;cursor:pointer;color:#0f172a;">Mon texte est-il envoyé à un serveur ?</summary>
+      <p style="margin-top:10px;font-size:0.84rem;color:#475569;line-height:1.6;">Non. La comparaison est effectuée côté client dans votre navigateur en utilisant JavaScript. Utilisez un navigateur et un appareil que vous contrôlez et évitez de coller des secrets, des informations d'identification, des enregistrements clients privés ou des contrats confidentiels dans des exemples partagés.</p>
+    </details>
+  </div>
 </section>
-    <nav class="breadcrumb"><a href="/fr/">Accueil</a> › <a href="/fr/all-tools/">Outils</a> › Comparateur de texte</nav>
-    <p class="eyebrow">Productivité</p>
-    <h1>Comparateur de texte</h1>
-    <p class="lead">Collez deux versions d'un texte, d'un contrat, d'une note ou d'un extrait technique pour voir ce qui a change.</p>
-    <div class="tool-frame-wrap">
-      <iframe id="undefined" class="tool-frame" src="/tools/diff-checker/" title="Comparateur de texte" loading="eager"></iframe>
+
+
+<section class="faq-section quality-verification-panel" data-quality-proof="Diff Checker" aria-label="Vérification et limites du Diff Checker">
+  <h2>Vérification et limites du Diff Checker</h2>
+  <div class="landing-faq" style="display:flex;flex-direction:column;gap:8px;">
+    <details open><summary>Vérification officielle/source</summary><p>Ne collez pas de clés privées, de mots de passe, d'enregistrements clients ou de code source inédit dans un navigateur que vous ne contrôlez pas. Utilisez la comparaison comme aide à la révision, puis confirmez les modifications importantes du code, du contrat ou de la politique dans le système source.</p></details>
+    <details><summary>Chemin d’exportation ou d’enregistrement</summary><p>Utilisez les contrôles de sortie de page, copiez, imprimez, téléchargez ou enregistrez les brouillons lorsqu'ils sont disponibles, et conservez un enregistrement séparé avant de prendre des décisions concernant l'argent, les voyages, la carrière, les télécommunications ou les documents.</p></details>
+    <details><summary>Étapes suivantes associées</summary><p><a href="/tools/json-formatter/">Formateur JSON</a> &middot; <a href="/tools/regex-tester/">Testeur d'expressions régulières</a> &middot; <a href="/tools/markdown-editor/">Éditeur de démarques</a></p></details>
+  </div>
+</section>
+<section class="tool-verification-sec" data-tool-verification-panel="diff-checker">
+  <div class="container">
+    <div class="tool-verification-card">
+      <div class="tool-verification-head">
+        <div>
+          <span class="tool-verification-kicker">Vérification de révision</span>
+          <h2 class="tool-verification-title">Utiliser la sortie différentielle comme aide à la révision, pas comme approbation</h2>
+          <p class="tool-verification-lead">Comparez localement le texte original et modifié, changez de ligne ou de mot, puis copiez le résultat ou une note de révision locale.</p>
+        </div>
+        <div class="tool-verification-status">
+          <span class="tool-verification-badge">Comparaison locale</span>
+          <p class="tool-verification-note">Les deux volets sont comparés dans votre navigateur.</p>
+        </div>
+      </div>
+      <div class="tool-verification-grid">
+        <div class="tool-verification-block">
+          <h3>Que vérifier</h3>
+          <ul class="tool-verification-list">
+            <li>Méthodologie : divisez les deux entrées en unités comparables, marquez les ajouts et les suppressions, puis résumez les lignes modifiées, ajoutées, supprimées et inchangées.</li>
+            <li>Examinez les modifications apportées aux espaces uniquement, les paramètres de casse, les extraits copiés, le code généré, le libellé juridique et le texte sensible avant de les partager.</li>
+            <li>Utilisez la différence copiée comme liste de contrôle pour les réviseurs, et non comme acceptation automatique.</li>
+          </ul>
+        </div>
+        <div class="tool-verification-block">
+          <h3>Limites</h3>
+          <ul class="tool-verification-list">
+            <li>Avertissement : aide à la comparaison locale uniquement, et non une approbation de code, une ligne rouge juridique, un examen de sécurité ou une certification de traduction.</li>
+            <li>La signification sémantique, le formatage caché, les fichiers binaires et les artefacts générés peuvent nécessiter un examen séparé.</li>
+            <li>Ne collez pas de secrets, d'informations d'identification, d'enregistrements clients privés ou de contrats confidentiels dans des exemples partagés.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="tool-verification-actions">
+        <a class="tool-verification-report" href="#diffOutput">Examiner la sortie différentielle</a>
+        <p class="tool-verification-disclaimer">Note source/référence : vérifiez les modifications finales dans votre diff de contrôle de version, votre éditeur de documents, votre suite de tests ou votre flux de travail d'approbation avant de publier.</p>
+      </div>
     </div>
-    <div class="support-grid">
-      <section><h2>Révision rapide</h2><p>Reperez les modifications avant de valider une version finale.</p></section>
-      <section><h2>Documents et code</h2><p>Utile pour du texte simple, des clauses, des notes ou de petits extraits techniques.</p></section>
-      <section><h2>Contrôle humain</h2><p>Relisez toujours le résultat si le texte a une valeur juridique ou financière.</p></section>
-    </div>
-  </main>
-  <script src="/assets/js/components/navbar.min.js?v=65f906d7"></script>
-  <script>
-(function () {
-  var terms = [["Diff Checker","Comparateur de texte"],["Text Compare","Comparateur de texte"],["Original Text","Texte original"],["Modified Text","Texte modifie"],["Compare Text","Comparer les textes"],["Differences","Differences"],["Added","Ajoute"],["Removed","Supprime"],["Changed","Modifie"],["Side by side","Cote a cote"],["Developer Tools","Outils développeur"],["Business & ROI","Business et rentabilité"],["All Tools","Tous les outils"],["Tools","Outils"],["Create","Créer"],["Generate","Générer"],["Download","Télécharger"],["Copy","Copier"],["Copied","Copié"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["Output","Sortie"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Coming Soon","Bientôt disponible"],["Available now","Disponible"]];
-  terms.sort(function (a, b) { return b[0].length - a[0].length; });
-  function swapText(value) {
-    if (!value) return value;
-    var next = value;
-    terms.forEach(function (pair) {
-      next = next.split(pair[0]).join(pair[1]);
-    });
-    return next;
+  </div>
+</section>
+<afro-footer></afro-footer>
+
+<script>
+  const text1 = document.getElementById('text1');
+  const text2 = document.getElementById('text2');
+  const diffOutput = document.getElementById('diffOutput');
+  const copyBtn = document.getElementById('copyBtn');
+  const copyReviewBtn = document.getElementById('copyReviewBtn');
+  const diffModeBtns = document.querySelectorAll('[data-mode]');
+  const ignoreWhitespace = document.getElementById('ignoreWhitespace');
+  const ignoreCase = document.getElementById('ignoreCase');
+  const diffStats = document.getElementById('diffStats');
+  const statAdded = document.getElementById('statAdded');
+  const statRemoved = document.getElementById('statRemoved');
+  const statUnchanged = document.getElementById('statUnchanged');
+
+  let currentMode = 'line';
+  let lastDiffOutput = '';
+  let lastStats = { added: 0, removed: 0, unchanged: 0 };
+
+  function copyText(text, button, label) {
+    function setState(copied) {
+      button.textContent = copied ? 'Copied' : 'Copy failed';
+      setTimeout(() => button.textContent = label, 1600);
+    }
+    function fallback() {
+      const textarea = document.createElement('textarea');
+      textarea.value = text;
+      textarea.setAttribute('readonly', '');
+      textarea.style.position = 'fixed';
+      textarea.style.left = '-9999px';
+      document.body.appendChild(textarea);
+      textarea.select();
+      let copied = false;
+      try { copied = document.execCommand('copy'); } catch (_) { copied = false; }
+      textarea.remove();
+      setState(copied);
+    }
+    if (navigator.clipboard && window.isSecureContext) {
+      navigator.clipboard.writeText(text).then(() => setState(true)).catch(fallback);
+    } else {
+      fallback();
+    }
   }
-  function localize(root) {
-    if (!root) return;
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode: function (node) {
-        if (!node.nodeValue || !node.nodeValue.trim()) return NodeFilter.FILTER_REJECT;
-        var parent = node.parentElement;
-        if (parent && /^(script|style|code|pre)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
+
+  function reviewNote() {
+    const modeLabel = currentMode === 'line' ? 'Line diff' : 'Word diff';
+    return [
+      'Diff review note',
+      'Mode: ' + modeLabel,
+      'Added units: ' + lastStats.added,
+      'Removed units: ' + lastStats.removed,
+      'Unchanged units: ' + lastStats.unchanged,
+      'Ignore whitespace: ' + (ignoreWhitespace.checked ? 'yes' : 'no'),
+      'Ignore case: ' + (ignoreCase.checked ? 'yes' : 'no'),
+      'Checklist: review meaning changes, whitespace-only changes, copied snippets, generated code, legal wording and sensitive text before sharing.',
+      'Source note: confirm final changes in version control, document editor, test suite or approval workflow before publishing.'
+    ].join('\n');
+  }
+
+  diffModeBtns.forEach(btn => {
+    btn.addEventListener('click', () => {
+      diffModeBtns.forEach(b => b.classList.remove('on'));
+      btn.classList.add('on');
+      currentMode = btn.dataset.mode;
+      if (text1.value || text2.value) compareTexts();
+    });
+  });
+
+  ignoreWhitespace.addEventListener('change', compareTexts);
+  ignoreCase.addEventListener('change', compareTexts);
+
+  function normalizeText(text) {
+    let normalized = text;
+    if (ignoreCase.checked) normalized = normalized.toLowerCase();
+    if (ignoreWhitespace.checked) normalized = normalized.replace(/\s+/g, ' ');
+    return normalized;
+  }
+
+  function simpleDiff(original, modified) {
+    const origLines = original.split('\n');
+    const modLines = modified.split('\n');
+    const diff = [];
+    let added = 0, removed = 0, unchanged = 0;
+
+    for (let i = 0; i < Math.max(origLines.length, modLines.length); i++) {
+      const origLine = origLines[i] || '';
+      const modLine = modLines[i] || '';
+      const origNorm = normalizeText(origLine);
+      const modNorm = normalizeText(modLine);
+
+      if (origNorm === modNorm) {
+        diff.push({ type: 'neutral', text: origLine });
+        unchanged++;
+      } else {
+        if (origLine) {
+          diff.push({ type: 'removed', text: origLine });
+          removed++;
+        }
+        if (modLine) {
+          diff.push({ type: 'added', text: modLine });
+          added++;
+        }
       }
-    });
-    var nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(function (node) { node.nodeValue = swapText(node.nodeValue); });
-    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"],button').forEach(function (el) {
-      ['placeholder', 'aria-label', 'title', 'alt', 'value'].forEach(function (attr) {
-        if (el.hasAttribute && el.hasAttribute(attr)) el.setAttribute(attr, swapText(el.getAttribute(attr)));
-      });
-    });
+    }
+    return { diff, stats: { added, removed, unchanged } };
   }
-  function watch(root) {
-    localize(root);
-    if (!root || !root.body) return;
-    new MutationObserver(function () { localize(root); }).observe(root.body, { childList: true, subtree: true, characterData: true });
+
+  function wordDiff(original, modified) {
+    // Split by word boundaries, keeping delimiters (whitespace and punctuation)
+    const origWords = original.match(/\w+|[^\w\s]+|\s+/g) || [];
+    const modWords = modified.match(/\w+|[^\w\s]+|\s+/g) || [];
+    const diff = [];
+    let added = 0, removed = 0, unchanged = 0;
+
+    let i = 0, j = 0;
+    while (i < origWords.length || j < modWords.length) {
+      const origWord = i < origWords.length ? origWords[i] : '';
+      const modWord = j < modWords.length ? modWords[j] : '';
+
+      if (origWord === '' && i < origWords.length) { i++; continue; }
+      if (modWord === '' && j < modWords.length) { j++; continue; }
+
+      const origNorm = normalizeText(origWord);
+      const modNorm = normalizeText(modWord);
+
+      if (i >= origWords.length) {
+        diff.push({ type: 'added', text: modWord });
+        added++;
+        j++;
+      } else if (j >= modWords.length) {
+        diff.push({ type: 'removed', text: origWord });
+        removed++;
+        i++;
+      } else if (origNorm === modNorm) {
+        diff.push({ type: 'neutral', text: origWord });
+        unchanged++;
+        i++;
+        j++;
+      } else {
+        diff.push({ type: 'removed', text: origWord });
+        diff.push({ type: 'added', text: modWord });
+        removed++;
+        added++;
+        i++;
+        j++;
+      }
+    }
+    return { diff, stats: { added, removed, unchanged } };
   }
-  window.diffFrLocalizer = {
-    localizeDocument: watch,
-    localizeElement: localize
-  };
+
+  function compareTexts() {
+    const t1 = text1.value;
+    const t2 = text2.value;
+
+    if (!t1 && !t2) {
+      diffOutput.classList.remove('on');
+      diffStats.style.display = 'none';
+      copyBtn.style.display = 'none';
+      copyReviewBtn.style.display = 'none';
+      return;
+    }
+
+    let result;
+    if (currentMode === 'line') {
+      result = simpleDiff(t1, t2);
+    } else {
+      result = wordDiff(t1, t2);
+    }
+
+    const { diff, stats } = result;
+    lastStats = stats;
+
+    const html = diff.map(d => {
+      const escapedText = d.text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+      return `<div class="diff-line diff-${d.type}">${escapedText || '(empty)'}</div>`;
+    }).join('');
+
+    diffOutput.innerHTML = html;
+    lastDiffOutput = diff.map(d => `${d.type === 'added' ? '+ ' : d.type === 'removed' ? '- ' : '  '}${d.text}`).join('\n');
+
+    statAdded.textContent = stats.added;
+    statRemoved.textContent = stats.removed;
+    statUnchanged.textContent = stats.unchanged || 0;
+
+    diffOutput.classList.add('on');
+    diffStats.style.display = 'grid';
+    copyBtn.style.display = 'block';
+    copyReviewBtn.style.display = 'block';
+  }
+
+  text1.addEventListener('input', compareTexts);
+  text2.addEventListener('input', compareTexts);
+
+  copyBtn.addEventListener('click', () => copyText(lastDiffOutput, copyBtn, 'Copy Diff Output'));
+  copyReviewBtn.addEventListener('click', () => copyText(reviewNote(), copyReviewBtn, 'Copy Review Note'));
+
+  document.getElementById('swapBtn').addEventListener('click', () => {
+    const tmp = text1.value;
+    text1.value = text2.value;
+    text2.value = tmp;
+    if (text1.value || text2.value) compareTexts();
+  });
+</script>
+<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<script>
+// Save/Share buttons — manual placement needed
+(function(){
+  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
+  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
+  var div = document.createElement('div');
+  div.className = 'result-actions';
+  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
+  div.innerHTML = '<share-result-button tool-name="Diff Checker" tool-slug="diff-checker"></share-result-button>';
+  target.appendChild(div);
 })();
 </script>
-  <script>
-    document.getElementById('undefined').addEventListener('load', function () {
-      try {
-        var doc = this.contentDocument || this.contentWindow.document;
-        window.diffFrLocalizer.localizeDocument(doc);
-      } catch (error) {
-        console.warn('Localisation de l\'outil embarqué indisponible', error);
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script data-fr-native-localizer>
+(function(){
+  var terms=new Map([["The AfroTools Diff Checker lets you compare two blocks of text or code side by side and instantly see every difference. Paste your original text on the left and the modified version on the right, and the tool highlights additions, deletions, and changes with clear colour coding — green for added lines, red for removed lines, and yellow for modified content. Word-level diffing pinpoints the exact characters that changed within each line, making it easy to spot subtle edits. The tool provides statistics showing the number of added, removed, and unchanged lines at a glance. Toggle options let you ignore whitespace differences or perform case-insensitive comparisons when those differences are not relevant to your review. This diff tool is invaluable for developers reviewing code changes, writers comparing document drafts, translators checking text revisions, and anyone who needs to quickly identify what changed between two versions. All comparison happens in your browser in real time — no data leaves your device.","Le AfroTools Diff Checker vous permet de comparer deux blocs de texte ou de code côte à côte et de voir instantanément chaque différence. Collez votre texte original à gauche et la version modifiée à droite, et l'outil met en évidence les ajouts, les suppressions et les modifications avec un code couleur clair : vert pour les lignes ajoutées, rouge pour les lignes supprimées et jaune pour le contenu modifié. La comparaison au niveau des mots identifie les caractères exacts qui ont changé dans chaque ligne, ce qui facilite la détection des modifications subtiles. L'outil fournit des statistiques montrant en un coup d'œil le nombre de lignes ajoutées, supprimées et inchangées. Les options de basculement vous permettent d'ignorer les différences d'espaces ou d'effectuer des comparaisons insensibles à la casse lorsque ces différences ne sont pas pertinentes pour votre révision. Cet outil de comparaison est inestimable pour les développeurs qui examinent les modifications de code, les rédacteurs qui comparent les brouillons de documents, les traducteurs qui vérifient les révisions de texte et tous ceux qui ont besoin d'identifier rapidement ce qui a changé entre deux versions. Toutes les comparaisons s'effectuent dans votre navigateur en temps réel : aucune donnée ne quitte votre appareil."],["Do not paste private keys, passwords, customer records, or unreleased source code into a browser you do not control. Use the comparison as a review aid, then confirm important code, contract, or policy changes in the source system.","Ne collez pas de clés privées, de mots de passe, d'enregistrements clients ou de code source inédit dans un navigateur que vous ne contrôlez pas. Utilisez la comparaison comme aide à la révision, puis confirmez les modifications importantes du code, du contrat ou de la politique dans le système source."],["No. The comparison is performed client-side in your browser using JavaScript. Use a browser and device you control, and avoid pasting secrets, credentials, private customer records, or confidential contracts into shared examples.","Non. La comparaison est effectuée côté client dans votre navigateur en utilisant JavaScript. Utilisez un navigateur et un appareil que vous contrôlez et évitez de coller des secrets, des informations d'identification, des enregistrements clients privés ou des contrats confidentiels dans des exemples partagés."],["Since the comparison runs in your browser, there is no server-imposed limit. However, very large texts (over 50,000 lines) may slow down rendering. For typical documents and code files, performance is instant.","Puisque la comparaison s'exécute dans votre navigateur, aucune limite n'est imposée par le serveur. Toutefois, les textes très volumineux (plus de 50 000 lignes) peuvent ralentir le rendu. Pour les documents et fichiers de code typiques, les performances sont instantanées."],["Green highlights indicate added lines or words, red highlights show removed content, and yellow marks lines that were modified. Word-level highlighting within lines shows exactly which characters changed.","Les surlignages verts indiquent des lignes ou des mots ajoutés, les surlignages rouges indiquent le contenu supprimé et les lignes jaunes marquent les lignes qui ont été modifiées. La mise en surbrillance au niveau des mots dans les lignes montre exactement quels caractères ont changé."],["When enabled, the tool ignores differences in spaces, tabs, and trailing whitespace. This is useful when comparing code that may have different indentation styles but is otherwise identical.","Lorsqu'il est activé, l'outil ignore les différences dans les espaces, les tabulations et les espaces de fin. Ceci est utile pour comparer du code qui peut avoir des styles d’indentation différents mais qui est par ailleurs identique."],["Compare two texts side-by-side with line-by-line and word-level diff highlighting. Real-time statistics: lines added (green), removed (red), unchanged. Ignore whitespace and case options.","Comparez deux textes côte à côte avec une mise en évidence des différences ligne par ligne et au niveau des mots. Statistiques en temps réel : lignes ajoutées (vertes), supprimées (rouges), inchangées. Ignorez les options d'espacement et de casse."],["Use the page output, copy, print, download, or saved draft controls where available, and keep a separate record before acting on a money, travel, career, telecom, or document decision.","Utilisez les contrôles de sortie de page, copiez, imprimez, téléchargez ou enregistrez les brouillons lorsqu'ils sont disponibles, et conservez un enregistrement séparé avant de prendre des décisions concernant l'argent, les voyages, la carrière, les télécommunications ou les documents."],["Compare two text or code blocks locally with line and word-level diffs, added/removed/unchanged stats, whitespace and case options, copy output and a review note.","Comparez localement deux blocs de texte ou de code avec des différences au niveau de la ligne et du mot, des statistiques ajoutées/supprimées/inchangées, des options d'espacement et de casse, une copie de la sortie et une note de révision."],["You can compare any plain text — source code in any programming language, configuration files, JSON, XML, CSV data, prose documents, or any other text content.","Vous pouvez comparer n'importe quel texte brut : code source dans n'importe quel langage de programmation, fichiers de configuration, données JSON, XML, CSV, documents en prose ou tout autre contenu textuel."],["Methodology: split the two inputs into comparable units, mark additions and removals, then summarize changed, added, removed, and unchanged lines.","Méthodologie : divisez les deux entrées en unités comparables, marquez les ajouts et les suppressions, puis résumez les lignes modifiées, ajoutées, supprimées et inchangées."],["Compare text or code locally with line and word diffs, change statistics, whitespace and case options, copyable output and a concise review note.","Comparez le texte ou le code localement avec les différences de lignes et de mots, modifiez les statistiques, les options d'espacement et de casse, la sortie copiable et une note de révision concise."],["Source/reference note: verify final changes in your version-control diff, document editor, test suite, or approval workflow before publishing.","Note source/référence : vérifiez les modifications finales dans votre diff de contrôle de version, votre éditeur de documents, votre suite de tests ou votre flux de travail d'approbation avant de publier."],["Browser-based diff checker for comparing text or code with line and word highlights, statistics, whitespace/case options and copyable output.","Vérificateur de différences basé sur un navigateur pour comparer du texte ou du code avec des surlignages de lignes et de mots, des statistiques, des options d'espaces/cas et une sortie copiable."],["Compare text or code locally with line and word-level highlights, statistics, whitespace/case options and copyable review output.","Comparez le texte ou le code localement avec les surlignages au niveau des lignes et des mots, les statistiques, les options d'espaces/cas et les résultats de révision copiables."],["Review whitespace-only changes, case settings, copied snippets, generated code, legal wording, and sensitive text before sharing.","Examinez les modifications apportées aux espaces uniquement, les paramètres de casse, les extraits copiés, le code généré, le libellé juridique et le texte sensible avant de les partager."],["Disclaimer: local comparison helper only, not a code approval, legal redline, security review, or translation certification.","Avertissement : aide à la comparaison locale uniquement, et non une approbation de code, une ligne rouge juridique, un examen de sécurité ou une certification de traduction."],["Compare two text or code blocks locally, review line or word differences, then copy the diff output or review note.","Comparez localement deux blocs de texte ou de code, examinez les différences de lignes ou de mots, puis copiez la sortie de différence ou révisez la note."],["Compare original and modified text locally, switch line or word diff, then copy the result or a local review note.","Comparez localement le texte original et modifié, changez de ligne ou de mot, puis copiez le résultat ou une note de révision locale."],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["Do not paste secrets, credentials, private customer records, or confidential contracts into shared examples.","Ne collez pas de secrets, d'informations d'identification, d'enregistrements clients privés ou de contrats confidentiels dans des exemples partagés."],["Semantic meaning, hidden formatting, binary files, and generated artifacts may need separate review.","La signification sémantique, le formatage caché, les fichiers binaires et les artefacts générés peuvent nécessiter un examen séparé."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."],["Check added, removed and unchanged stats, then copy the diff output or a local review note.","Vérifiez les statistiques ajoutées, supprimées et inchangées, puis copiez la sortie différentielle ou une note de révision locale."],["Free local text diff checker with line and word-level highlighting, stats and copy output.","Vérificateur de différences de texte local gratuit avec mise en évidence au niveau des lignes et des mots, statistiques et sortie de copie."],["Switch between line and word diff, and optionally ignore whitespace or case differences.","Basculez entre les différences de ligne et de mot et ignorez éventuellement les espaces ou les différences de casse."],["Use the copied diff as a checklist for reviewers, not as automatic acceptance.","Utilisez la différence copiée comme liste de contrôle pour les réviseurs, et non comme acceptation automatique."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],["Highlights word-level changes within lines for more precise comparison","Met en évidence les changements au niveau des mots dans les lignes pour une comparaison plus précise"],["Add the original text on the left and the modified text on the right.","Ajoutez le texte original à gauche et le texte modifié à droite."],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["How to compare text with the AfroTools Diff Checker","Comment comparer du texte avec le vérificateur de différences AfroTools"],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Is there a size limit for the text I can compare?","Y a-t-il une limite de taille pour le texte que je peux comparer ?"],["Use diff output as a review aid, not approval","Utiliser la sortie différentielle comme aide à la révision, pas comme approbation"],["Added, removed and unchanged line statistics","Statistiques de ligne ajoutées, supprimées et inchangées"],["What do the colours in the diff output mean?","Que signifient les couleurs dans la sortie diff ?"],["The two panes are compared in your browser.","Les deux volets sont comparés dans votre navigateur."],["Diff Checker verification and limitations","Vérification et limites du Diff Checker"],["Ignore whitespace and ignore case options","Ignorer les espaces et ignorer les options de casse"],["Requires JavaScript and a modern browser","Nécessite JavaScript et un navigateur moderne"],["Copy diff output and local review note","Copier la sortie diff et la note de révision locale"],["Side-by-side text and code comparison","Comparaison de texte et de code côte à côte"],["Paste texts above to see differences","Collez les textes ci-dessus pour voir les différences"],["What types of content can I compare?","Quels types de contenus puis-je comparer ?"],["Shows entire lines added or removed","Affiche les lignes entières ajoutées ou supprimées"],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],["What does \"ignore whitespace\" do?","À quoi sert « ignorer les espaces » ?"],["Return plain text beginning with","Renvoyez du texte brut commençant par"],["Is my text sent to any server?","Mon texte est-il envoyé à un serveur ?"],["Compare Texts (Updated Live)","Comparer les textes (mis à jour en direct)"],["Line-level diff highlighting","Mise en évidence des différences au niveau de la ligne"],["Word-level diff highlighting","Mise en évidence des différences au niveau des mots"],["Diff Checker: How It Works","Vérificateur de différences : comment ça marche"],["Frequently Asked Questions","Foire aux questions"],["JSON Formatter & Validator","JSON Formateur et validateur"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["Choose comparison options","Choisissez les options de comparaison"],["Diff Checker | AfroTools","Vérificateur de différences | AfroTools"],["Updates run as you type","Les mises à jour s'exécutent au fur et à mesure que vous tapez"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],["Data Format Converter","Convertisseur de formats de données"],["Gray = unchanged text","Gris = texte inchangé"],["Official/source check","Vérification officielle/source"],["Paste second text...","Collez le deuxième texte..."],["Export or save path","Exporter ou enregistrer le chemin"],["Paste both versions","Collez les deux versions"],["Paste first text...","Collez le premier texte..."],["USSD Code Simulator","USSD Simulateur de codes"],["Green = added text","Vert = texte ajouté"],["Red = removed text","Rouge = texte supprimé"],["Related next steps","Étapes suivantes associées"],["Review diff output","Examiner la sortie différentielle"],["Ignore Whitespace","Ignorer les espaces"],["Text 1 (Original)","Texte 1 (original)"],["Text 2 (Modified)","Texte 2 (Modifié)"],["Accept analytics","Accepter les analyses"],["Copy Diff Output","Copier la sortie différentielle"],["Copy Review Note","Copier la note de révision"],["Local comparison","Comparaison locale"],["Reject analytics","Rejeter les analyses"],["Converted Output","Sortie convertie"],["Markdown editor","Éditeur de démarques"],["Privacy details","Détails de confidentialité"],["Review and copy","Réviser et copier"],["Unchanged Lines","Lignes inchangées"],["Developer Tools","Outils développeur"],["Download Result","Télécharger le résultat"],["Select All TLDs","Sélectionner tous les TLD"],["Cookie consent","Consentement aux cookies"],["Hash Generator","Générateur de hachage"],["JSON formatter","Formateur JSON"],["Related tools","Outils associés"],["Removed Lines","Lignes supprimées"],["What to check","Que vérifier"],["Output Format","Format de sortie"],["Import review","Vérification de l’importation"],["Diff Checker","Comparateur de textes"],["How It Works","Comment ça marche"],["Regex tester","Testeur d'expressions régulières"],["Review check","Vérification de révision"],["Input Format","Format d’entrée"],["Added Lines","Lignes ajoutées"],["Diff Result","Résultat différentiel"],["Ignore Case","Ignorer le cas"],["Load Sample","Charger un exemple"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Copy Result","Copier le résultat"],["Line Diff:","Différence de ligne :"],["Swap texts","Échanger des textes"],["Swap Texts","Échanger des textes"],["Word Diff:","Différence de mots :"],["Input Data","Données source"],["No results","Aucun résultat"],["Line Diff","Différentiel de ligne"],["Word Diff","Différence de mots"],["All Tools","Tous les outils"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["Generate","Générer"],["Download","Télécharger"],["Settings","Paramètres"],["Preview","Aperçu"],["Options","Options"],["Results","Résultats"],["Example","Exemple"],["Copied","Copié"],["Export","Exporter"],["Import","Importer"],["Result","Résultat"],["Search","Rechercher"],["Output","Sortie"],["Format","Format"],["Where:","Où :"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Saved","Enregistré"],["Share","Partager"],["Error","Erreur"],["Input","Entrée"],["Ready","Prêt"],["What:","Quoi :"],["Copy","Copier"],["Save","Enregistrer"],["File","Fichier"],["and","et"]]);
+  var exportTerms=new Map([["Diff Checker","Vérificateur de différences"],["Accept analytics","Accepter les analyses"],["Add the original text on the left and the modified text on the right.","Ajoutez le texte original à gauche et le texte modifié à droite."],["Added Lines","Lignes ajoutées"],["Added, removed and unchanged line statistics","Statistiques de ligne ajoutées, supprimées et inchangées"],["AfroTools uses optional analytics cookies. Limited cookieless measurement remains active when you reject them.","AfroTools utilise des cookies d'analyse facultatifs. Les mesures limitées sans cookies restent actives lorsque vous les refusez."],["Answer","Réponse"],["API Tester (Postman Lite)","API Testeur (Postman Lite)"],["Base64 Encoder/Decoder","Base64 Encodeur/Décodeur"],["BreadcrumbList","Fil d'ArianeListe"],["Browser-based diff checker for comparing text or code with line and word highlights, statistics, whitespace/case options and copyable output.","Vérificateur de différences basé sur un navigateur pour comparer du texte ou du code avec des surlignages de lignes et de mots, des statistiques, des options d'espaces/cas et une sortie copiable."],["Check added, removed and unchanged stats, then copy the diff output or a local review note.","Vérifiez les statistiques ajoutées, supprimées et inchangées, puis copiez la sortie différentielle ou une note de révision locale."],["Checker","Vérificateur"],["Choose comparison options","Choisissez les options de comparaison"],["Compare original and modified text locally, switch line or word diff, then copy the result or a local review note.","Comparez localement le texte original et modifié, changez de ligne ou de mot, puis copiez le résultat ou une note de révision locale."],["Compare text or code locally with line and word diffs, change statistics, whitespace and case options, copyable output and a concise review note.","Comparez le texte ou le code localement avec les différences de lignes et de mots, modifiez les statistiques, les options d'espacement et de casse, la sortie copiable et une note de révision concise."],["Compare text or code locally with line and word-level highlights, statistics, whitespace/case options and copyable review output.","Comparez le texte ou le code localement avec les surlignages au niveau des lignes et des mots, les statistiques, les options d'espaces/cas et les résultats de révision copiables."],["Compare Texts (Updated Live)","Comparer les textes (mis à jour en direct)"],["Compare two text or code blocks locally with line and word-level diffs, added/removed/unchanged stats, whitespace and case options, copy output and a review note.","Comparez localement deux blocs de texte ou de code avec des différences au niveau de la ligne et du mot, des statistiques ajoutées/supprimées/inchangées, des options d'espacement et de casse, une copie de la sortie et une note de révision."],["Compare two text or code blocks locally, review line or word differences, then copy the diff output or review note.","Comparez localement deux blocs de texte ou de code, examinez les différences de lignes ou de mots, puis copiez la sortie de différence ou révisez la note."],["Compare two texts side-by-side with line-by-line and word-level diff highlighting. Real-time statistics: lines added (green), removed (red), unchanged. Ignore whitespace and case options.","Comparez deux textes côte à côte avec une mise en évidence des différences ligne par ligne et au niveau des mots. Statistiques en temps réel : lignes ajoutées (vertes), supprimées (rouges), inchangées. Ignorez les options d'espacement et de casse."],["Cookie consent","Consentement aux cookies"],["Copy Diff Output","Copier la sortie différentielle"],["Copy diff output and local review note","Copier la sortie diff et la note de révision locale"],["Copy Review Note","Copier la note de révision"],["Data Format Converter","Convertisseur de formats de données"],["DeveloperApplication","DéveloppeurApplication"],["Diff","Différence"],["Diff Checker | AfroTools","Vérificateur de différences | AfroTools"],["Diff Checker verification and limitations","Vérification et limites du Diff Checker"],["Diff Checker: How It Works","Vérificateur de différences : comment ça marche"],["Diff Result","Résultat différentiel"],["Disclaimer: local comparison helper only, not a code approval, legal redline, security review, or translation certification.","Avertissement : aide à la comparaison locale uniquement, et non une approbation de code, une ligne rouge juridique, un examen de sécurité ou une certification de traduction."],["Do not paste private keys, passwords, customer records, or unreleased source code into a browser you do not control. Use the comparison as a review aid, then confirm important code, contract, or policy changes in the source system.","Ne collez pas de clés privées, de mots de passe, d'enregistrements clients ou de code source inédit dans un navigateur que vous ne contrôlez pas. Utilisez la comparaison comme aide à la révision, puis confirmez les modifications importantes du code, du contrat ou de la politique dans le système source."],["Do not paste secrets, credentials, private customer records, or confidential contracts into shared examples.","Ne collez pas de secrets, d'informations d'identification, d'enregistrements clients privés ou de contrats confidentiels dans des exemples partagés."],["Export or save path","Chemin d’exportation ou d’enregistrement"],["FAQPage","Page FAQ"],["Free local text diff checker with line and word-level highlighting, stats and copy output.","Vérificateur de différences de texte local gratuit avec mise en évidence au niveau des lignes et des mots, statistiques et sortie de copie."],["Frequently Asked Questions","Questions fréquentes"],["Gray = unchanged text","Gris = texte inchangé"],["Green = added text","Vert = texte ajouté"],["Green highlights indicate added lines or words, red highlights show removed content, and yellow marks lines that were modified. Word-level highlighting within lines shows exactly which characters changed.","Les surlignages verts indiquent des lignes ou des mots ajoutés, les surlignages rouges indiquent le contenu supprimé et les lignes jaunes marquent les lignes qui ont été modifiées. La mise en surbrillance au niveau des mots dans les lignes montre exactement quels caractères ont changé."],["Hash Generator","Générateur de hachage"],["Highlights word-level changes within lines for more precise comparison","Met en évidence les changements au niveau des mots dans les lignes pour une comparaison plus précise"],["How It Works","Comment ça marche"],["How to compare text with the AfroTools Diff Checker","Comment comparer du texte avec le vérificateur de différences AfroTools"],["HowTo","Comment faire"],["HowToStep","CommentÉtape"],["Ignore Case","Ignorer le cas"],["Ignore Whitespace","Ignorer les espaces"],["Ignore whitespace and ignore case options","Ignorer les espaces et ignorer les options de casse"],["Is my text sent to any server?","Mon texte est-il envoyé à un serveur ?"],["Is there a size limit for the text I can compare?","Y a-t-il une limite de taille pour le texte que je peux comparer ?"],["JSON formatter","Formateur JSON"],["JSON Formatter & Validator","JSON Formateur et validateur"],["Limitations","Limites"],["Line Diff","Différentiel de ligne"],["Line Diff:","Différence de ligne :"],["Line-level diff highlighting","Mise en évidence des différences au niveau de la ligne"],["ListItem","Élément de liste"],["Local comparison","Comparaison locale"],["Markdown editor","Éditeur de démarques"],["Methodology: split the two inputs into comparable units, mark additions and removals, then summarize changed, added, removed, and unchanged lines.","Méthodologie : divisez les deux entrées en unités comparables, marquez les ajouts et les suppressions, puis résumez les lignes modifiées, ajoutées, supprimées et inchangées."],["No. The comparison is performed client-side in your browser using JavaScript. Use a browser and device you control, and avoid pasting secrets, credentials, private customer records, or confidential contracts into shared examples.","Non. La comparaison est effectuée côté client dans votre navigateur en utilisant JavaScript. Utilisez un navigateur et un appareil que vous contrôlez et évitez de coller des secrets, des informations d'identification, des enregistrements clients privés ou des contrats confidentiels dans des exemples partagés."],["Offer","Offre"],["Official/source check","Vérification officielle/source"],["Organization","Organisation"],["Paste both versions","Collez les deux versions"],["Paste first text...","Collez le premier texte..."],["Paste second text...","Collez le deuxième texte..."],["Paste texts above to see differences","Collez les textes ci-dessus pour voir les différences"],["Privacy details","Détails de confidentialité"],["Real-time","En temps réel"],["Red = removed text","Rouge = texte supprimé"],["Regex tester","Testeur d'expressions régulières"],["Reject analytics","Rejeter les analyses"],["Related next steps","Étapes suivantes associées"],["Related tools","Outils associés"],["Removed Lines","Lignes supprimées"],["Requires JavaScript and a modern browser","Nécessite JavaScript et un navigateur moderne"],["Review and copy","Réviser et copier"],["Review check","Vérification de révision"],["Review diff output","Examiner la sortie différentielle"],["Review whitespace-only changes, case settings, copied snippets, generated code, legal wording, and sensitive text before sharing.","Examinez les modifications apportées aux espaces uniquement, les paramètres de casse, les extraits copiés, le code généré, le libellé juridique et le texte sensible avant de les partager."],["Semantic meaning, hidden formatting, binary files, and generated artifacts may need separate review.","La signification sémantique, le formatage caché, les fichiers binaires et les artefacts générés peuvent nécessiter un examen séparé."],["Shows entire lines added or removed","Affiche les lignes entières ajoutées ou supprimées"],["Side-by-side text and code comparison","Comparaison de texte et de code côte à côte"],["Since the comparison runs in your browser, there is no server-imposed limit. However, very large texts (over 50,000 lines) may slow down rendering. For typical documents and code files, performance is instant.","Puisque la comparaison s'exécute dans votre navigateur, aucune limite n'est imposée par le serveur. Toutefois, les textes très volumineux (plus de 50 000 lignes) peuvent ralentir le rendu. Pour les documents et fichiers de code typiques, les performances sont instantanées."],["Source/reference note: verify final changes in your version-control diff, document editor, test suite, or approval workflow before publishing.","Note source/référence : vérifiez les modifications finales dans votre diff de contrôle de version, votre éditeur de documents, votre suite de tests ou votre flux de travail d'approbation avant de publier."],["Statistics","Statistiques"],["Swap texts","Échanger des textes"],["Swap Texts","Échanger des textes"],["Switch between line and word diff, and optionally ignore whitespace or case differences.","Basculez entre les différences de ligne et de mot et ignorez éventuellement les espaces ou les différences de casse."],["Text 1 (Original)","Texte 1 (original)"],["Text 2 (Modified)","Texte 2 (Modifié)"],["The AfroTools Diff Checker lets you compare two blocks of text or code side by side and instantly see every difference. Paste your original text on the left and the modified version on the right, and the tool highlights additions, deletions, and changes with clear colour coding — green for added lines, red for removed lines, and yellow for modified content. Word-level diffing pinpoints the exact characters that changed within each line, making it easy to spot subtle edits. The tool provides statistics showing the number of added, removed, and unchanged lines at a glance. Toggle options let you ignore whitespace differences or perform case-insensitive comparisons when those differences are not relevant to your review. This diff tool is invaluable for developers reviewing code changes, writers comparing document drafts, translators checking text revisions, and anyone who needs to quickly identify what changed between two versions. All comparison happens in your browser in real time — no data leaves your device.","Le AfroTools Diff Checker vous permet de comparer deux blocs de texte ou de code côte à côte et de voir instantanément chaque différence. Collez votre texte original à gauche et la version modifiée à droite, et l'outil met en évidence les ajouts, les suppressions et les modifications avec un code couleur clair : vert pour les lignes ajoutées, rouge pour les lignes supprimées et jaune pour le contenu modifié. La comparaison au niveau des mots identifie les caractères exacts qui ont changé dans chaque ligne, ce qui facilite la détection des modifications subtiles. L'outil fournit des statistiques montrant en un coup d'œil le nombre de lignes ajoutées, supprimées et inchangées. Les options de basculement vous permettent d'ignorer les différences d'espaces ou d'effectuer des comparaisons insensibles à la casse lorsque ces différences ne sont pas pertinentes pour votre révision. Cet outil de comparaison est inestimable pour les développeurs qui examinent les modifications de code, les rédacteurs qui comparent les brouillons de documents, les traducteurs qui vérifient les révisions de texte et tous ceux qui ont besoin d'identifier rapidement ce qui a changé entre deux versions. Toutes les comparaisons s'effectuent dans votre navigateur en temps réel : aucune donnée ne quitte votre appareil."],["The two panes are compared in your browser.","Les deux volets sont comparés dans votre navigateur."],["Tools","Outils"],["Unchanged Lines","Lignes inchangées"],["Updates run as you type","Les mises à jour s'exécutent au fur et à mesure que vous tapez"],["Use diff output as a review aid, not approval","Utiliser la sortie différentielle comme aide à la révision, pas comme approbation"],["Use the copied diff as a checklist for reviewers, not as automatic acceptance.","Utilisez la différence copiée comme liste de contrôle pour les réviseurs, et non comme acceptation automatique."],["Use the page output, copy, print, download, or saved draft controls where available, and keep a separate record before acting on a money, travel, career, telecom, or document decision.","Utilisez les contrôles de sortie de page, copiez, imprimez, téléchargez ou enregistrez les brouillons lorsqu'ils sont disponibles, et conservez un enregistrement séparé avant de prendre des décisions concernant l'argent, les voyages, la carrière, les télécommunications ou les documents."],["USSD Code Simulator","USSD Simulateur de codes"],["WebApplication","Application Web"],["WebPage","Page Web"],["WebSite","Site Web"],["What do the colours in the diff output mean?","Que signifient les couleurs dans la sortie diff ?"],["What does \"ignore whitespace\" do?","À quoi sert « ignorer les espaces » ?"],["What to check","Que vérifier"],["What types of content can I compare?","Quels types de contenus puis-je comparer ?"],["When enabled, the tool ignores differences in spaces, tabs, and trailing whitespace. This is useful when comparing code that may have different indentation styles but is otherwise identical.","Lorsqu'il est activé, l'outil ignore les différences dans les espaces, les tabulations et les espaces de fin. Ceci est utile pour comparer du code qui peut avoir des styles d’indentation différents mais qui est par ailleurs identique."],["Word Diff","Différence de mots"],["Word Diff:","Différence de mots :"],["Word-level diff highlighting","Mise en évidence des différences au niveau des mots"],["You can compare any plain text — source code in any programming language, configuration files, JSON, XML, CSV data, prose documents, or any other text content.","Vous pouvez comparer n'importe quel texte brut : code source dans n'importe quel langage de programmation, fichiers de configuration, données JSON, XML, CSV, documents en prose ou tout autre contenu textuel."],["Developer Tools","Outils développeur"],["All Tools","Tous les outils"],["Input Format","Format d’entrée"],["Output Format","Format de sortie"],["Input Data","Données source"],["Converted Output","Sortie convertie"],["Load Sample","Charger un exemple"],["Choose File","Choisir un fichier"],["Upload File","Importer un fichier"],["Download Result","Télécharger le résultat"],["Copy Result","Copier le résultat"],["Run Query","Exécuter la requête"],["Clear All","Tout effacer"],["Generate","Générer"],["Download","Télécharger"],["Copy","Copier"],["Copied","Copié"],["Paste","Coller"],["Clear","Effacer"],["Reset","Réinitialiser"],["Save","Enregistrer"],["Saved","Enregistré"],["Share","Partager"],["Export","Exporter"],["Import","Importer"],["Preview","Aperçu"],["Settings","Paramètres"],["Options","Options"],["Results","Résultats"],["Result","Résultat"],["Error","Erreur"],["Example","Exemple"],["Search","Rechercher"],["Input","Entrée"],["Output","Sortie"],["File","Fichier"],["Format","Format"],["No results","Aucun résultat"],["Import review","Vérification de l’importation"],["Select All TLDs","Sélectionner tous les TLD"],["Select TLDs to compare:","Sélectionnez les TLD à comparer :"],["Return plain text beginning with","Renvoyez du texte brut commençant par"],["Ready","Prêt"],["What:","Quoi :"],["Where:","Où :"],["and","et"],["For validation, anchor with ^ and $ if the entire value must match.","Pour une validation complète, utilisez les ancres ^ et $ si toute la valeur doit correspondre."],["No common sensitive field names detected. Still review output before sharing.","Aucun nom courant de champ sensible détecté. Vérifiez tout de même le résultat avant de le partager."],["Query ran. Choose a challenge for scoring feedback.","Requête exécutée. Choisissez un défi pour obtenir une évaluation."],["Payment fit: confirm card, billing currency, tax/VAT and failed-payment recovery for this market.","Compatibilité de paiement : confirmez la carte, la devise de facturation, les taxes/TVA et la récupération après échec de paiement pour ce marché."],["Re-open the official pricing page.","Rouvrez la page officielle des tarifs."],["Set spend alerts or billing caps where the platform supports them.","Définissez des alertes de dépense ou des plafonds de facturation lorsque la plateforme les prend en charge."],["Keep domain registration separate from hosting when possible.","Séparez si possible l’enregistrement du domaine de l’hébergement."],["If using a VPS, plan backups, patching, firewall rules, uptime monitoring and restore tests.","Si vous utilisez un VPS, prévoyez les sauvegardes, correctifs, règles de pare-feu, la surveillance de disponibilité et les tests de restauration."]]);
+  var linePrefixes=[
+    ['Checked:','Vérifié :'],['Project type:','Type de projet :'],['Market:','Marché :'],['Ops comfort:','Aisance opérationnelle :'],
+    ['Budget:','Budget :'],['Estimated transfer:','Transfert estimé :'],['Recommended provider:','Fournisseur recommandé :'],
+    ['Entry price:','Prix d’entrée :'],['Why:','Pourquoi :'],['Risk note:','Note de risque :'],['Official source:','Source officielle :'],
+    ['Risk flags:','Indicateurs de risque :'],['Shortlist alternatives:','Autres options présélectionnées :'],['Before buying:','Avant l’achat :']
+  ];
+  function translateLine(value){
+    var leading=(value.match(/^\s*/)||[''])[0],trailing=(value.match(/\s*$/)||[''])[0],text=value.trim(),bullet='';
+    if(text.startsWith('- ')){bullet='- ';text=text.slice(2);}
+    if(terms.has(text))return leading+bullet+terms.get(text)+trailing;
+    if(bullet&&text.includes(': ')){var colon=text.indexOf(': '),label=text.slice(0,colon+1),detail=text.slice(colon+2);return leading+bullet+label+' '+(terms.get(detail)||detail)+trailing;}
+    for(var i=0;i<linePrefixes.length;i++){var pair=linePrefixes[i];if(text.startsWith(pair[0])){var remainder=text.slice(pair[0].length).trim();return leading+bullet+pair[1]+' '+(terms.get(remainder)||remainder)+trailing;}}
+    return value;
+  }
+  function swap(value){
+    var original=String(value||''), leading=(original.match(/^\s*/)||[''])[0], trailing=(original.match(/\s*$/)||[''])[0], key=original.trim().replace(/\s+/g,' ');
+    if(terms.has(key))return leading+terms.get(key)+trailing;
+    var preview=key.match(/^Previewing (.+) across (\d+) selected TLDs\. This is not a live availability check\.$/);
+    if(preview)return leading+'Aperçu de '+preview[1]+' sur '+preview[2]+' TLD sélectionnés. Il ne s’agit pas d’un contrôle de disponibilité en direct.'+trailing;
+    var sitemap=key.match(/^(\d+) same-host URLs generated\. Add lastmod only when you have actual page modified dates\.$/);
+    if(sitemap)return leading+sitemap[1]+' URL du même hôte générées. Ajoutez lastmod uniquement si vous disposez des dates réelles de modification des pages.'+trailing;
+    if(original.includes('\n'))return original.split('\n').map(translateLine).join('\n');
+    return original;
+  }
+  function localize(root){
+    if(!root)return;
+    var walker=document.createTreeWalker(root,NodeFilter.SHOW_TEXT,{acceptNode:function(node){var parent=node.parentElement;if(!node.nodeValue||!node.nodeValue.trim()||(parent&&(/^(script|style|code|pre|textarea)$/i.test(parent.tagName)||parent.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))))return NodeFilter.FILTER_REJECT;return NodeFilter.FILTER_ACCEPT;}});
+    var nodes=[];while(walker.nextNode())nodes.push(walker.currentNode);nodes.forEach(function(node){node.nodeValue=swap(node.nodeValue);});
+    root.querySelectorAll('[placeholder],[aria-label],[title],[alt],input[type="button"],input[type="submit"]').forEach(function(el){['placeholder','aria-label','title','alt','value'].forEach(function(attr){if(el.hasAttribute(attr))el.setAttribute(attr,swap(el.getAttribute(attr)));});});
+  }
+  localize(document);
+  (function localizeJsonDownloads(){
+    var NativeBlob=window.Blob;
+    var preservedKeys=new Set(['id','type','provider','country','ops','risk','supports','tags','source','url','serviceCode','home','next','variable','key','project','localPay','countries']);
+    function visit(value,key){
+      if(Array.isArray(value))return value.map(function(item){return visit(item,key);});
+      if(value&&typeof value==='object'){Object.keys(value).forEach(function(childKey){value[childKey]=visit(value[childKey],childKey);});return value;}
+      if(typeof value!=='string'||preservedKeys.has(key)||/^(?:https?:\/\/|\/)/i.test(value))return value;
+      var normalized=value.replace(/\s+/g,' ').trim();
+      return exportTerms.has(normalized)?exportTerms.get(normalized):value;
+    }
+    function FrenchBlob(parts,options){
+      var nextParts=parts;
+      if(options&&/application\/json/i.test(options.type||'')&&Array.isArray(parts)&&parts.length===1&&typeof parts[0]==='string'){
+        try{nextParts=[JSON.stringify(visit(JSON.parse(parts[0]),''),null,parts[0].includes('\n')?2:0)];}catch(_){}
       }
-    });
-  </script>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
+      return new NativeBlob(nextParts,options);
+    }
+    FrenchBlob.prototype=NativeBlob.prototype;
+    Object.setPrototypeOf(FrenchBlob,NativeBlob);
+    window.Blob=FrenchBlob;
+  })();
+  new MutationObserver(function(records){records.forEach(function(record){record.addedNodes.forEach(function(node){if(node.nodeType===1)localize(node);else if(node.nodeType===3&&node.parentElement&&!/^(script|style|code|pre|textarea)$/i.test(node.parentElement.tagName)&&!node.parentElement.closest('[data-fr-preserve],code,pre,textarea,#codeOutput,.code-text,.code-output,.generated-code,.syntax-output'))node.nodeValue=swap(node.nodeValue);});});}).observe(document.body,{childList:true,subtree:true});
+})();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
 </body>
 </html>

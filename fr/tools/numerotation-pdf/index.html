@@ -1,41 +1,738 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>Ajouter des numéros de page PDF | AfroTools</title>
-<meta name="description" content="Ajoutez des numéros de page à vos PDF gratuitement. Personnalisez la position et le style.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ajouter des numéros de page à un PDF | AfroTools</title>
+<meta name="description" content="Ajoutez des numéros de page avec le format, la position, la plage et le numéro de départ de votre choix.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Ajouter des numéros de page PDF | AfroTools">
-<meta property="og:description" content="Ajoutez des numéros de page à vos PDF gratuitement. Personnalisez la position et le style.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/numerotation-pdf/">
+<meta property="og:title" content="Numérotation PDF">
+<meta property="og:description" content="Ajoutez des numéros de page avec le format, la position, la plage et le numéro de départ de votre choix.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/numerotation-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-page-numbers.webp">
+<meta property="og:site_name" content="AfroTools">
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ajouter des numéros de page PDF | AfroTools">
-<meta name="twitter:description" content="Ajoutez des numéros de page à vos PDF gratuitement. Personnalisez la position et le style.">
+<meta name="twitter:title" content="Add Page Numbers to PDF Online | AfroTools">
+<meta name="twitter:description" content="Add page numbers to PDFs locally with skip-cover presets, page ranges, style, position, and ZIP output.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-page-numbers.webp">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<meta property="article:modified_time" content="2026-04-27">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script type="application/ld+json">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script> <style>
+  :root {
+    --pn-blue: var(--color-primary);
+    --pn-dark: #0f1419;
+    --pn-ink: #0f172a;
+    --pn-muted: #64748b;
+    --pn-soft: #eff6ff;
+    --pn-gold: #b7791f;
+    --pn-red: #b91c1c;
+  }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--pn-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+  }
+
+  .tool-hero-inner,
+  .tool-main-inner {
+    max-width: 1220px;
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .breadcrumb {
+    color: rgba(255,255,255,0.34);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .breadcrumb a {
+    color: rgba(255,255,255,0.34);
+    text-decoration: none;
+  }
+
+  .breadcrumb span,
+  h1 em {
+    color: #60a5fa;
+    font-style: normal;
+  }
+
+  h1 {
+    color: #fff;
+    font-size: clamp(1.65rem, 4vw, 2.55rem);
+    font-weight: 800;
+    letter-spacing: 0;
+    line-height: 1.08;
+    margin: 0 0 10px;
+  }
+
+  .hero-sub {
+    color: rgba(255,255,255,0.55);
+    font-size: 0.9rem;
+    line-height: 1.62;
+    max-width: 760px;
+    margin: 0 0 14px;
+  }
+
+  .hero-badges {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+  }
+
+  .badge {
+    align-items: center;
+    background: rgba(37,99,235,0.18);
+    border: 1px solid rgba(96,165,250,0.42);
+    border-radius: 4px;
+    color: #bfdbfe;
+    display: inline-flex;
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    min-height: 26px;
+    padding: 4px 11px;
+    text-transform: uppercase;
+  }
+
+  .badge.gold {
+    background: rgba(245,158,11,0.12);
+    border-color: rgba(245,158,11,0.4);
+    color: #fde68a;
+  }
+
+  .tool-main {
+    padding: 28px 0 72px;
+  }
+
+  .tool-main-inner {
+    align-items: start;
+    display: grid;
+    gap: 22px;
+    grid-template-columns: minmax(0, 1fr) 390px;
+  }
+
+  .card {
+    background: #fff;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    box-shadow: 0 1px 8px rgba(15,23,42,0.05);
+    overflow: hidden;
+  }
+
+  .card + .card {
+    margin-top: 18px;
+  }
+
+  .card-head {
+    align-items: center;
+    background: #f9fafb;
+    border-bottom: 1px solid #e5e7eb;
+    display: flex;
+    gap: 12px;
+    justify-content: space-between;
+    padding: 15px 22px;
+  }
+
+  .card-title {
+    color: #374151;
+    font-size: 0.72rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .card-kicker {
+    color: var(--pn-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+  }
+
+  .card-body {
+    padding: 22px;
+  }
+
+  .drop-zone {
+    background: var(--pn-soft);
+    border: 2px dashed #bfdbfe;
+    border-radius: 8px;
+    cursor: pointer;
+    min-height: 132px;
+    padding: 30px 18px;
+    text-align: center;
+    touch-action: manipulation;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+  }
+
+  .drop-zone:hover,
+  .drop-zone.dragover,
+  .drop-zone:focus-visible {
+    background: #fff;
+    border-color: var(--pn-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .drop-title {
+    color: #1e293b;
+    font-size: 0.95rem;
+    font-weight: 800;
+    margin-bottom: 4px;
+  }
+
+  .drop-hint {
+    color: #6b8cae;
+    font-size: 0.72rem;
+    font-weight: 700;
+  }
+
+  .hidden-input {
+    height: 1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    width: 1px;
+  }
+
+  .file-summary {
+    align-items: center;
+    background: #f8fbff;
+    border: 1px solid #dbeafe;
+    border-radius: 7px;
+    display: none;
+    gap: 12px;
+    justify-content: space-between;
+    margin-top: 12px;
+    padding: 10px 12px;
+  }
+
+  .file-summary.on {
+    display: flex;
+  }
+
+  .file-summary-text {
+    color: #1e40af;
+    font-size: 0.76rem;
+    font-weight: 800;
+  }
+
+  .file-list,
+  .result-rows {
+    display: grid;
+    gap: 8px;
+    margin-top: 10px;
+  }
+
+  .file-row,
+  .result-row {
+    align-items: center;
+    background: #f9fafb;
+    border: 1px solid #e5e7eb;
+    border-radius: 6px;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    padding: 10px 12px;
+  }
+
+  .file-info,
+  .result-info {
+    min-width: 0;
+  }
+
+  .file-name,
+  .result-name {
+    color: #1e293b;
+    font-size: 0.8rem;
+    font-weight: 800;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .file-meta,
+  .result-meta,
+  .field-hint,
+  .label-value {
+    color: var(--pn-muted);
+    font-size: 0.68rem;
+    line-height: 1.45;
+  }
+
+  .field {
+    margin-bottom: 16px;
+  }
+
+  .field:last-child {
+    margin-bottom: 0;
+  }
+
+  .label-row {
+    align-items: baseline;
+    display: flex;
+    gap: 10px;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+
+  .label-text {
+    color: #1e293b;
+    font-size: 0.75rem;
+    font-weight: 800;
+    letter-spacing: 0.04em;
+  }
+
+  .grid-2,
+  .grid-3 {
+    display: grid;
+    gap: 12px;
+  }
+
+  .grid-2 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .grid-3 {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .preset-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0 0 18px;
+  }
+
+  .preset-btn {
+    background: #f8fafc;
+    border: 1px solid #dbe4ef;
+    border-radius: 8px;
+    color: var(--pn-ink);
+    cursor: pointer;
+    display: grid;
+    gap: 4px;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 74px;
+    padding: 11px;
+    text-align: left;
+    touch-action: manipulation;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+  }
+
+  .preset-btn strong {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .preset-btn span {
+    color: var(--pn-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .preset-btn:hover,
+  .preset-btn:focus-visible {
+    background: #fff;
+    border-color: var(--pn-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .input,
+  .select {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    color: #1e293b;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.86rem;
+    font-weight: 650;
+    min-height: 44px;
+    outline: none;
+    padding: 10px 12px;
+    width: 100%;
+  }
+
+  .input:focus,
+  .select:focus {
+    border-color: var(--pn-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .position-grid {
+    display: grid;
+    gap: 8px;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .choice-btn,
+  .mini-btn {
+    background: var(--pn-soft);
+    border: 1.5px solid #dbeafe;
+    border-radius: 7px;
+    color: #1e40af;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-weight: 800;
+    touch-action: manipulation;
+    transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
+  }
+
+  .choice-btn {
+    min-height: 44px;
+    padding: 9px 8px;
+    font-size: 0.7rem;
+  }
+
+  .mini-btn {
+    min-height: 40px;
+    padding: 6px 10px;
+    font-size: 0.68rem;
+  }
+
+  .choice-btn:hover,
+  .mini-btn:hover,
+  .choice-btn:focus-visible,
+  .mini-btn:focus-visible {
+    border-color: var(--pn-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
+  .choice-btn.on {
+    background: var(--pn-blue);
+    border-color: var(--pn-blue);
+    color: #fff;
+  }
+
+  .check-option {
+    align-items: flex-start;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 7px;
+    color: #334155;
+    display: flex;
+    font-size: 0.76rem;
+    font-weight: 800;
+    gap: 9px;
+    line-height: 1.35;
+    min-height: 46px;
+    padding: 10px 11px;
+  }
+
+  .check-option input {
+    accent-color: var(--pn-blue);
+    margin-top: 2px;
+  }
+
+  .color-row {
+    align-items: center;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: 54px minmax(0, 1fr);
+  }
+
+  .color-input {
+    background: #fff;
+    border: 1.5px solid #e5e7eb;
+    border-radius: 7px;
+    cursor: pointer;
+    height: 44px;
+    width: 54px;
+  }
+
+  .slider {
+    width: 100%;
+  }
+
+  .calc-btn,
+  .act-btn {
+    background: var(--pn-blue);
+    border: 0;
+    border-radius: 7px;
+    color: #fff;
+    cursor: pointer;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.84rem;
+    font-weight: 800;
+    min-height: 44px;
+    padding: 13px 16px;
+    touch-action: manipulation;
+    transition: box-shadow 0.16s, opacity 0.16s;
+    width: 100%;
+  }
+
+  .calc-btn:hover,
+  .act-btn:hover,
+  .calc-btn:focus-visible,
+  .act-btn:focus-visible {
+    box-shadow: 0 10px 22px rgba(0,113,227,0.22);
+    outline: none;
+  }
+
+  .calc-btn:disabled,
+  .mini-btn:disabled {
+    cursor: not-allowed;
+    opacity: 0.55;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .preview-wrap {
+    align-items: center;
+    background: #f8fafc;
+    border: 1px solid #e5e7eb;
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    min-height: 300px;
+    overflow: auto;
+    padding: 12px;
+  }
+
+  .preview-canvas {
+    background: #fff;
+    box-shadow: 0 10px 24px rgba(15,23,42,0.12);
+    max-height: 520px;
+    max-width: 100%;
+  }
+
+  .preview-status {
+    color: var(--pn-muted);
+    font-size: 0.72rem;
+    font-weight: 700;
+    line-height: 1.5;
+    margin-top: 10px;
+  }
+
+  .result-card {
+    display: none;
+  }
+
+  .result-card.on {
+    display: block;
+  }
+
+  .result-text {
+    color: #1e293b;
+    font-size: 0.86rem;
+    font-weight: 800;
+    line-height: 1.55;
+  }
+
+  .progress-bar {
+    background: #e5e7eb;
+    border-radius: 999px;
+    display: none;
+    height: 6px;
+    margin-top: 12px;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .progress-bar.on {
+    display: block;
+  }
+
+  .progress-fill {
+    background: linear-gradient(90deg, var(--pn-blue), #60a5fa);
+    border-radius: inherit;
+    height: 100%;
+    transition: width 0.25s;
+    width: 0%;
+  }
+
+  .result-row.error {
+    background: #fff7f7;
+    border-color: #fecaca;
+  }
+
+  .result-row.error .result-meta {
+    color: var(--pn-red);
+  }
+
+  .result-note {
+    background: var(--pn-soft);
+    border: 1px solid #dbeafe;
+    border-radius: 6px;
+    color: #334155;
+    display: none;
+    font-size: 0.76rem;
+    font-weight: 700;
+    line-height: 1.55;
+    margin-top: 12px;
+    padding: 10px 12px;
+  }
+
+  .result-note.on {
+    display: block;
+  }
+
+  .action-row {
+    display: none;
+    gap: 8px;
+    margin-top: 14px;
+  }
+
+  .action-row.on {
+    display: grid;
+  }
+
+  .info-card {
+    background: #f8fafc;
+    border-left: 4px solid var(--pn-blue);
+    border-radius: 8px;
+    margin-top: 18px;
+    padding: 18px;
+  }
+
+  .info-card.gold {
+    background: #fffaf0;
+    border-left-color: var(--pn-gold);
+  }
+
+  .info-title {
+    color: var(--pn-ink);
+    font-size: 0.78rem;
+    font-weight: 900;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+    text-transform: uppercase;
+  }
+
+  .info-text {
+    color: #475569;
+    font-size: 0.82rem;
+    font-weight: 650;
+    line-height: 1.62;
+  }
+
+  .info-text ul {
+    margin: 10px 0 0;
+    padding-left: 18px;
+  }
+
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .label-text,
+  :root[data-theme="dark"] .label-value,
+  :root[data-theme="dark"] .info-title { color:#eef5ff; }
+  :root[data-theme="dark"] .field-hint,
+  :root[data-theme="dark"] .preview-status { color:#b8c7dc; }
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .faq-list details { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .info-card .info-text,
+  :root[data-theme="dark"] .info-card .info-text li,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .seo-section li,
+  :root[data-theme="dark"] .faq-list summary { color:#d8e4f5!important; }
+
+  .seo-section {
+    margin: 32px auto;
+    max-width: 920px;
+    padding: 0 20px 44px;
+  }
+
+  .seo-section h2,
+  .seo-section h3 {
+    color: var(--pn-ink);
+    font-weight: 800;
+    letter-spacing: 0;
+  }
+
+  .seo-section h2 {
+    font-size: 1.2rem;
+    margin: 0 0 12px;
+  }
+
+  .seo-section h3 {
+    font-size: 1rem;
+    margin: 22px 0 10px;
+  }
+
+  .seo-section p,
+  .seo-section li {
+    color: #475569;
+    font-size: 0.88rem;
+    line-height: 1.7;
+  }
+
+  .faq-list {
+    display: grid;
+    gap: 8px;
+  }
+
+  .faq-list details {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px 18px;
+  }
+
+  .faq-list summary {
+    color: var(--pn-ink);
+    cursor: pointer;
+    font-size: 0.86rem;
+    font-weight: 800;
+  }
+
+  @media (max-width: 900px) {
+    .tool-main-inner {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (max-width: 640px) {
+    .tool-hero-inner,
+    .tool-main-inner {
+      padding: 0 16px;
+    }
+
+    .grid-2,
+    .grid-3,
+    .position-grid,
+    .preset-grid {
+      grid-template-columns: 1fr;
+    }
+
+    .card-body {
+      padding: 18px;
+    }
+
+    .file-summary,
+    .file-row,
+    .result-row {
+      align-items: flex-start;
+      flex-direction: column;
+    }
+  }
+</style> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Numérotation de pages PDF",
-  "description": "Ajoutez des numéros de page à vos PDF gratuitement. Personnalisez la position et le style.",
+  "name": "Numérotation PDF",
+  "description": "Ajoutez des numéros de page avec le format, la position, la plage et le numéro de départ de votre choix.",
   "url": "https://afrotools.com/fr/tools/numerotation-pdf/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "BrowserApplication",
+  "inLanguage": "fr",
+  "applicationCategory": "UtilitairesApplication",
   "operatingSystem": "Web",
+  "browserRequirements": "Nécessite JavaScript",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -48,28 +745,16 @@
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-page-numbers.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Numérotation de pages PDF","item":"https://afrotools.com/fr/tools/numerotation-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-page-numbers.webp">
+</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Numérotation PDF","item":"https://afrotools.com/fr/tools/numerotation-pdf/"}],"inLanguage":"fr"}</script> <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Puis-je ignorer la page de garde ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Définissez Démarrer sur la page PDF sur 2 ou entrez une plage de pages commençant après la couverture. Le premier numéro imprimé peut toujours être 1."}},{"@type":"Question","name":"Puis-je ajouter des numéros de page à certaines pages seulement ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Entrez des plages de pages telles que 1-3, 8, 10-14, puis appliquez éventuellement uniquement les pages impaires ou paires à l'intérieur de cette plage."}},{"@type":"Question","name":"Puis-je créer des étiquettes de style page 001 ou annexe A ?","acceptedAnswer":{"@type":"Answer","text":"Oui. Utilisez des zéros non significatifs pour les étiquettes de style 001, des modèles de lettres pour les étiquettes de style annexe ou des champs de préfixe et de suffixe pour le texte personnalisé."}},{"@type":"Question","name":"Mon PDF sera-t-il téléversé ?","acceptedAnswer":{"@type":"Answer","text":"Non. La numérotation des pages s'exécute localement dans votre navigateur à l'aide des bibliothèques PDF chargées à partir des ressources AfroTools."}}],"inLanguage":"fr"}</script>
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="Numérotation PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-page-numbers","locale":"fr","englishOwner":"tools/pdf-page-numbers/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{".mini-btn,.choice-btn":".mini-btn,.choice-btn","\" is outside this PDF.":"\" se trouve en dehors de ce PDF.","[data-page-preset]":"[préréglage de la page de données]","[data-position]":"[position des données]","[data-position=\"":"[position-données=\"","0 B":"0B","0 deg":"0 degré","12 pt":"12 points","28 pt":"28 points","3 by 3 placement grid":"Grille de placement 3 par 3","36 pt":"36 points","A, B, C labels, top outside":"Etiquettes A, B, C, dessus extérieur","Add Page Numbers":"Ajouter les numéros de page","Add Page Numbers to PDF | Skip Cover & Ranges | AfroTools":"Ajouter des numéros de page au PDF | Couverture et cuisinières | AfroOutils","Add page numbers to PDFs locally with skip-cover presets, page ranges, start number, font, color, opacity, margins, position, preview, and batch ZIP export.":"Ajoutez localement des numéros de page aux PDF avec les préréglages de saut de couverture, les plages de pages, le numéro de début, la police, la couleur, l'opacité, les marges, la position, l'aperçu et l'exportation ZIP par lots.","Add page numbers to PDFs with skip-cover presets, page ranges, starting numbers, live preview, and batch ZIP export. Your files stay in the browser.":"Ajoutez des numéros de page aux PDF avec des préréglages de saut de couverture, des plages de pages, des numéros de départ, un aperçu en direct et une exportation ZIP par lots. Vos fichiers restent dans le navigateur.","Added page numbers to":"Numéros de page ajoutés à","Adding Numbers...":"Ajouter des nombres...","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","AfroTools adds page numbers to PDF files directly in your browser. Choose where numbering starts, which pages receive numbers, and how the text should look. You can create simple numbers, Page X of Y labels, Roman numerals, lettered appendices, or custom prefix and suffix formats.":"AfroTools ajoute des numéros de page aux fichiers PDF directement dans votre navigateur. Choisissez où commence la numérotation, quelles pages reçoivent des numéros et à quoi doit ressembler le texte. Vous pouvez créer des nombres simples, des étiquettes de page X sur Y, des chiffres romains, des annexes alphabétiques ou des formats de préfixe et de suffixe personnalisés.","All or 1-3, 5":"Tous ou 1-3, 5","All selected pages":"Toutes les pages sélectionnées","alphabetic":"alphabétique","Appendix":"Appendice","application/pdf":"candidature/pdf","application/zip":"application/zip","Applies visible page-number text to selected PDF pages using local PDF generation routines.":"Applique le texte visible du numéro de page aux pages PDF sélectionnées à l'aide de routines de génération PDF locales.","B":"B","Batch ZIP":"Code postal du lot","Before sharing":"Avant de partager","bottom":"bas","Bottom":"Bas","Bottom center, all pages, 1, 2, 3":"Bas centré, toutes les pages, 1, 2, 3","Bottom left":"En bas à gauche","Bottom right":"En bas à droite","bottom-center":"en bas au centre","bottom-right":"en bas à droite","button":"bouton","Can I add page numbers to only some pages?":"Puis-je ajouter des numéros de page à certaines pages seulement ?","Can I make Page 001 or Appendix A style labels?":"Puis-je créer des étiquettes de style page 001 ou annexe A ?","Can I skip the cover page?":"Puis-je ignorer la page de garde ?","Center":"Centre","change":"changement","Check first page, last page, skipped pages, page orientation, margins, overlap with footers, and print preview.":"Vérifiez la première page, la dernière page, les pages sautées, l'orientation de la page, les marges, le chevauchement avec les pieds de page et l'aperçu avant impression.","Check the page range and try again.":"Vérifiez la plage de pages et réessayez.","checkbox":"case à cocher","Choose at least one PDF file.":"Choisissez au moins un fichier PDF.","Choose PDF files to number":"Choisissez les fichiers PDF à numéroter","Choose PDFs to number":"Choisissez les PDF à numéroter","Clear":"Effacer","click":"cliquez","Color":"Couleur","ColorText":"CouleurTexte","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Confirm numbering placement before replacing the original":"Confirmez la position des numéros avant de remplacer l’original","could not be processed.":"n'a pas pu être traité.","Could not number this PDF.":"Impossible de numéroter ce PDF.","Courier":"Courrier","Courier Bold":"Courrier gras","CourierBold":"CourrierBold","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","Custom text":"Texte personnalisé","CV / Resume Builder":"Générateur de CV","data-page-preset":"préréglage de page de données","Designed for Real Documents":"Conçu pour les documents réels","document":"document","DOMContentLoaded":"DOMContentLoaded","Done.":"Fait.","Download PDF":"Télécharger le PDF","Download ZIP":"Télécharger le ZIP","dragleave":"glisser","dragover":"drague","drop":"baisse","Drop one or more PDF files here. Multiple files export as a ZIP.":"Déposez un ou plusieurs fichiers PDF ici. Plusieurs fichiers sont exportés au format ZIP.","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","email-gate-modal":"email-gate-modal","Enter":"Entrer","error":"erreur","Error:":"Erreur:","even":"même","Even PDF pages only":"Pages PDF paires uniquement","Exports one PDF or a batch ZIP.":"Exporte un PDF ou un lot ZIP.","file":"déposer","file-info":"informations sur le fichier","file-meta":"fichier-méta","file-name":"nom de fichier","file-row":"ligne de fichier","Font":"Fonte","For reordering before numbering, use":"Pour réorganiser avant la numérotation, utilisez","For reports with cover pages, set Start On PDF Page to 2 or 3 and keep Start Number at 1. Use leading zeros for binders, appendices, or indexed packets.":"Pour les rapports comportant des pages de garde, définissez Démarrer sur la page PDF sur 2 ou 3 et conservez le numéro de début sur 1. Utilisez des zéros non significatifs pour les classeurs, les annexes ou les paquets indexés.","Free PDF Page Numbering Tool":"Outil gratuit de numérotation des pages PDF","GB":"FR","Helvetica":"Helvétique","Helvetica Bold":"Helvetica gras","HelveticaBold":"HelveticaGras","Horizontal Margin":"Marge horizontale","inline-flex":"inline-flex","input":"saisir","Invoice Generator":"Générateur de facture","KB":"Ko","Keep the original file until the numbered copy is accepted by the recipient.":"Conservez le fichier original jusqu'à ce que la copie numérotée soit acceptée par le destinataire.","keydown":"touche enfoncée","Layout Options":"Options de mise en page","Leading Zeros":"Zéros non significatifs","Leave blank for all pages after start page.":"Laissez vide pour toutes les pages après la page de démarrage.","left":"gauche","Left":"Gauche","letters-lower":"lettres inférieures","letters-upper":"lettres supérieures","Live preview":"Aperçu en direct","loading":"chargement","Loading":"Chargement","Local processing":"Traitement local","Local-first PDF workflow":"Flux de travail PDF local d'abord","Margins use points":"Les marges utilisent des points","MB":"Mo","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Methodology":"Méthode","mini-btn":"mini-btn","Mirror left and right positions on facing pages":"Inverser les positions gauche et droite sur les pages en vis-à-vis","No files were numbered.":"Aucun dossier n'était numéroté.","No pages match the selected range, start page, and odd/even subset.":"Aucune page ne correspond à la plage sélectionnée, à la page de démarrage et au sous-ensemble impair/pair.","No pages match the selected start page and odd/even subset.":"Aucune page ne correspond à la page de démarrage sélectionnée et au sous-ensemble impair/pair.","No pages were numbered.":"Aucune page n'était numérotée.","No PDFs selected.":"Aucun PDF sélectionné.","No. Page numbering runs locally in your browser using PDF libraries loaded from AfroTools assets.":"Non. La numérotation des pages s'exécute localement dans votre navigateur à l'aide des bibliothèques PDF chargées à partir des ressources AfroTools.","non-PDF file":"fichier non PDF","none":"aucun","number":"nombre","number-of-total":"nombre-total","Numbering":"Numérotage","Numbering can include prefixes, suffixes, start offsets, font settings, color, margins, and selected page ranges.":"La numérotation peut inclure des préfixes, des suffixes, des décalages de début, des paramètres de police, des couleurs, des marges et des plages de pages sélectionnées.","Numbering is drawn onto a new PDF copy. Keep your original file if you may need to change the style later.":"La numérotation est dessinée sur une nouvelle copie PDF. Conservez votre fichier original si vous devez modifier le style ultérieurement.","Numbering limits":"Limites de numérotation","Numbering Tips":"Conseils de numérotation","Numbers":"Nombres","Odd PDF pages only":"Pages PDF impaires uniquement","opacity":"opacité","Opacity":"Opacité","Optional":"Facultatif","page":"page","Page":"Page","Page \"":"Page \"","Page 1":"Page 1","Page 1 of 10":"Page 1 sur 10","Page 1 of N, bottom right":"Page 1 sur N, en bas à droite","Page numbering failed.":"La numérotation des pages a échoué.","Page numbering runs locally and creates a new PDF copy. Placement, starting number, prefixes, suffixes, and skipped pages should be checked before the file is sent.":"La numérotation des pages s'exécute localement et crée une nouvelle copie PDF. L'emplacement, le numéro de départ, les préfixes, les suffixes et les pages ignorées doivent être vérifiés avant l'envoi du fichier.","Page Range":"Plage de pages","Page range \"":"Plage de pages \"","Page ranges":"Plages de pages","Page Ranges, Styling, and Batch Export":"Plages de pages, style et export par lot","page-number":"numéro de page","page-of-total":"page de total","pages numbered -":"pages numérotées -","pages)...":"pages)...","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF library failed to load. Please refresh the page.":"La bibliothèque PDF n'a pas pu être chargée. Veuillez actualiser la page.","PDF Merge & Split":"Fusionner et diviser des PDF","PDF Page":"Page PDF","PDF Page Manager":"Gestionnaire de pages PDF","PDF Page Numbers":"Numéros de pages PDF","PDF preview renderer failed to load. Please refresh the page.":"Le moteur de rendu d'aperçu PDF n'a pas pu se charger. Veuillez actualiser la page.","PDF Workspace":"Espace de travail PDF","PDFs are processed with local browser libraries. AfroTools does not upload your documents to number them.":"Les PDF sont traités avec les bibliothèques du navigateur local. AfroTools ne télécharge pas vos documents pour les numéroter.","Placement and Style":"Emplacement et style","position":"position","Position":"Position","Prefix":"Préfixe","Preparing page numbering...":"Préparation de la numérotation des pages...","Preview":"Aperçu","Preview failed.":"L'aperçu a échoué.","Preview shows the first numbered page.":"L'aperçu affiche la première page numérotée.","Previewing PDF page":"Aperçu de la page PDF","Private":"Privé","px DM Sans, Arial, sans-serif":"px DM Sans, Arial, sans empattement","Quick page number presets":"Préréglages de numéros de page rapides","Related tools":"Outils associés","Remove":"Supprimer","Report style":"Style rapport","Requires JavaScript":"Nécessite JavaScript","Result":"Résultat","result-info":"info-résultat","result-meta":"résultat-méta","result-name":"nom du résultat","result-row":"ligne de résultat","Reviewed 2026. Disclaimer: verify with the recipient before relying on numbered output. Direct local downloads do not upload your files.":"Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier à une sortie numérotée. Les téléchargements locaux directs ne téléchargent pas vos fichiers.","right":"droite","Right":"Droite","roman-lower":"romain-inférieur","roman-upper":"romain-supérieur","rotation":"rotation","Rotation":"Rotation","s.":"s.","selected,":"choisi,","selected.":"choisi.","Single PDF or batch ZIP":"PDF unique ou ZIP par lots","Size":"Taille","Skip cover":"Ignorer la couverture","skip-cover":"sauter-couvercle","Skipped":"Sauté","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","Standard footer":"Pied de page standard","Start Number":"Numéro de départ","Start On PDF Page":"Commencer à la page PDF","Start on PDF page 2, printed number 1":"Commencer à la page PDF 2 avec le numéro imprimé 1","Start page is outside this PDF.":"La page de démarrage se trouve en dehors de ce PDF.","Subset":"Sous-ensemble","Suffix":"Suffixe","Supports page ranges and odd or even subsets.":"Prend en charge les plages de pages et les sous-ensembles impairs ou pairs.","Template":"Modèle","Template and pages":"Modèle et pages","The output is a new numbered copy; the source PDF is not changed.":"Le résultat est une nouvelle copie numérotée ; le PDF source n'est pas modifié.","The tool is useful for contracts, legal packets, business reports, school papers, books, grant applications, tenders, manuals, and scanned PDFs that need visible page references before sharing or printing.":"L'outil est utile pour les contrats, les dossiers juridiques, les rapports commerciaux, les documents scolaires, les livres, les demandes de subvention, les appels d'offres, les manuels et les PDF numérisés qui nécessitent des références de page visibles avant de les partager ou de les imprimer.","Times":"Fois","Times Bold":"Temps gras","TimesRoman":"TempsRoman","TimesRomanBold":"TimesRomanBold","Tools":"Outils","Top":"Haut","Top left":"En haut à gauche","Top right":"En haut à droite","top-right":"en haut à droite","total.":"total.","Try a different PDF or a smaller page range.":"Essayez un autre PDF ou une plage de pages plus petite.","Upload a PDF to preview the first numbered page.":"Téléchargez un PDF pour prévisualiser la première page numérotée.","Upload PDFs":"Télécharger des PDF","Use page ranges such as 1-3, 5, start numbering after a cover page, apply odd or even page subsets, mirror left and right positions for facing pages, change font family, size, color, opacity, margins, and rotation, then download one numbered PDF or a ZIP of batch outputs.":"Utilisez des plages de pages telles que 1 à 3, 5, commencez la numérotation après une page de garde, appliquez des sous-ensembles de pages impairs ou pairs, inversez les positions gauche et droite pour les pages en regard, modifiez la famille de polices, la taille, la couleur, l'opacité, les marges et la rotation, puis téléchargez un PDF numéroté ou un ZIP de sorties par lots.","use strict":"utiliser strict","UtilitiesApplication":"UtilitairesApplication","Vertical Margin":"Marge verticale","Web":"Web","white":"blanc","Will this upload my PDF?":"Mon PDF sera-t-il téléversé ?","with":"avec","Yes. Enter page ranges such as 1-3, 8, 10-14, then optionally apply only odd or even pages inside that range.":"Oui. Entrez des plages de pages telles que 1-3, 8, 10-14, puis appliquez éventuellement uniquement les pages impaires ou paires à l'intérieur de cette plage.","Yes. Set Start On PDF Page to 2 or enter a page range that begins after the cover. The first printed number can still be 1.":"Oui. Définissez Démarrer sur la page PDF sur 2 ou entrez une plage de pages commençant après la couverture. Le premier numéro imprimé peut toujours être 1.","Yes. Use leading zeros for 001 style labels, letter templates for appendix-style labels, or prefix and suffix fields for custom text.":"Oui. Utilisez des zéros non significatifs pour les étiquettes de style 001, des modèles de lettres pour les étiquettes de style annexe ou des champs de préfixe et de suffixe pour le texte personnalisé."}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/numerotation-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-page-numbers/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/numerotation-pdf/">
@@ -77,60 +762,437 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/lambar-shafi-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-page-numbers/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>Numérotation PDF</nav>
-<div class="fr-hero">
-<h1><em>Numérotation de pages PDF</em></h1>
-<p>Ajoutez des numéros de page à vos documents PDF rapidement et facilement.</p>
-</div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparez votre fichier ou votre scénario</h2>
-  <p>Ajoutez trois notes utiles avant de lancer Numérotation de pages PDF. Ce brouillon reste dans votre navigateur et sert seulement à garder le contexte clair.</p>
-  <div class="fr-prep-fields">
-    <label>Fichier local<input name="localFile" type="file" accept="application/pdf,.html,.txt,.doc,.docx,image/*" aria-label="Choisir un fichier local"></label>
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
+
+<section class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Outils</span></div>
+    <h1>Numérotation PDF</h1>
+    <p class="hero-sub">Ajoutez des numéros de page avec le format, la position, la plage et le numéro de départ de votre choix.</p>
+    <div class="hero-badges">
+      <span class="badge">Plages de pages</span>
+      <span class="badge">Aperçu en direct</span>
+      <span class="badge gold">Code postal du lot</span>
+      <span class="badge">Traitement local</span>
+    </div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-page-numbers/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+</section>
+
+<main class="tool-main">
+  <div class="tool-main-inner">
+    <section>
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Télécharger des PDF</span>
+          <span class="card-kicker">PDF unique ou ZIP par lots</span>
+        </div>
+        <div class="card-body">
+          <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
+            <div class="drop-title">Choisissez les PDF à numéroter</div>
+            <div class="drop-hint">Déposez un ou plusieurs fichiers PDF ici. Plusieurs fichiers sont exportés au format ZIP.</div>
+            <input aria-label="Choisissez les fichiers PDF à numéroter" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
+          </div>
+          <div class="file-summary" id="fileSummary">
+            <span class="file-summary-text" id="fileSummaryText">Aucun PDF sélectionné.</span>
+            <button class="mini-btn" id="clearFilesBtn" type="button">Effacer</button>
+          </div>
+          <div class="file-list" id="fileList" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Numérotage</span>
+          <span class="card-kicker">Modèle et pages</span>
+        </div>
+        <div class="card-body">
+          <div class="preset-grid" aria-label="Préréglages de numéros de page rapides">
+            <button class="preset-btn" type="button" data-page-preset="standard"><strong>Pied de page standard</strong><span>Bas centré, toutes les pages, 1, 2, 3</span></button>
+            <button class="preset-btn" type="button" data-page-preset="skip-cover"><strong>Ignorer la couverture</strong><span>Commencer à la page PDF 2 avec le numéro imprimé 1</span></button>
+            <button class="preset-btn" type="button" data-page-preset="report"><strong>Style rapport</strong><span>Page 1 sur N, en bas à droite</span></button>
+            <button class="preset-btn" type="button" data-page-preset="appendix"><strong>Appendice</strong><span>Etiquettes A, B, C, dessus extérieur</span></button>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="templateSelect">Modèle</label></div>
+              <select class="select" id="templateSelect">
+                <option value="number">1</option>
+                <option value="page-number">Page 1</option>
+                <option value="page-of-total">Page 1 sur 10</option>
+                <option value="number-of-total">1 / 10</option>
+                <option value="roman-lower">i, ii, iii</option>
+                <option value="roman-upper">I, II, III</option>
+                <option value="letters-lower">a, b, c</option>
+                <option value="letters-upper">A, B, C</option>
+                <option value="custom">Texte personnalisé</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="startNumber">Numéro de départ</label></div>
+              <input class="input" id="startNumber" type="number" min="0" step="1" value="1">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="padLength">Zéros non significatifs</label></div>
+              <input class="input" id="padLength" type="number" min="0" max="8" step="1" value="0">
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="startPage">Commencer à la page PDF</label></div>
+              <input class="input" id="startPage" type="number" min="1" step="1" value="1">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="pageRange">Plage de pages</label></div>
+              <input class="input" id="pageRange" type="text" placeholder="Tous ou 1-3, 5">
+              <div class="field-hint">Laissez vide pour toutes les pages après la page de démarrage.</div>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="subsetSelect">Sous-ensemble</label></div>
+              <select class="select" id="subsetSelect">
+                <option value="all">Toutes les pages sélectionnées</option>
+                <option value="odd">Pages PDF impaires uniquement</option>
+                <option value="even">Pages PDF paires uniquement</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="prefixInput">Préfixe</label><span class="field-hint">Facultatif</span></div>
+              <input class="input" id="prefixInput" type="text" maxlength="32" placeholder="Page ">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="suffixInput">Suffixe</label><span class="field-hint">Facultatif</span></div>
+              <input class="input" id="suffixInput" type="text" maxlength="32" placeholder="">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Emplacement et style</span>
+          <span class="card-kicker">Les marges utilisent des points</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <div class="label-row"><span class="label-text">Position</span><span class="field-hint">Grille de placement 3 par 3</span></div>
+            <div class="position-grid" id="positionGrid">
+              <button class="choice-btn" type="button" data-position="top-left">En haut à gauche</button>
+              <button class="choice-btn" type="button" data-position="top-center">Haut</button>
+              <button class="choice-btn" type="button" data-position="top-right">En haut à droite</button>
+              <button class="choice-btn" type="button" data-position="middle-left">Gauche</button>
+              <button class="choice-btn" type="button" data-position="center">Centre</button>
+              <button class="choice-btn" type="button" data-position="middle-right">Droite</button>
+              <button class="choice-btn" type="button" data-position="bottom-left">En bas à gauche</button>
+              <button class="choice-btn on" type="button" data-position="bottom-center">Bas</button>
+              <button class="choice-btn" type="button" data-position="bottom-right">En bas à droite</button>
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="fontSelect">Fonte</label></div>
+              <select class="select" id="fontSelect">
+                <option value="Helvetica">Helvétique</option>
+                <option value="HelveticaBold">Helvetica gras</option>
+                <option value="TimesRoman">Fois</option>
+                <option value="TimesRomanBold">Temps gras</option>
+                <option value="Courier">Courrier</option>
+                <option value="CourierBold">Courrier gras</option>
+              </select>
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="fontSize">Taille</label><span class="label-value" id="fontSizeValue">12 points</span></div>
+              <input class="slider" id="fontSize" type="range" min="6" max="72" step="1" value="12">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="opacity">Opacité</label><span class="label-value" id="opacityValue">100%</span></div>
+              <input class="slider" id="opacity" type="range" min="10" max="100" step="5" value="100">
+            </div>
+          </div>
+
+          <div class="grid-3">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="marginX">Marge horizontale</label><span class="label-value" id="marginXValue">36 points</span></div>
+              <input class="slider" id="marginX" type="range" min="0" max="144" step="1" value="36">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="marginY">Marge verticale</label><span class="label-value" id="marginYValue">28 points</span></div>
+              <input class="slider" id="marginY" type="range" min="0" max="144" step="1" value="28">
+            </div>
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="rotation">Rotation</label><span class="label-value" id="rotationValue">0 degré</span></div>
+              <input class="slider" id="rotation" type="range" min="-90" max="90" step="1" value="0">
+            </div>
+          </div>
+
+          <div class="grid-2">
+            <div class="field">
+              <div class="label-row"><label class="label-text" for="colorInput">Couleur</label><span class="label-value" id="colorHex">#111827</span></div>
+              <div class="color-row">
+                <input class="color-input" id="colorInput" type="color" value="#111827">
+                <input aria-label="CouleurTexte" class="input" id="colorText" type="text" maxlength="7" value="#111827">
+              </div>
+            </div>
+            <div class="field">
+              <div class="label-row"><span class="label-text">Options de mise en page</span></div>
+              <label class="check-option"><input type="checkbox" id="facingMode"> Inverser les positions gauche et droite sur les pages en vis-à-vis</label>
+            </div>
+          </div>
+
+          <button class="calc-btn" id="numberBtn" type="button" disabled>Ajouter les numéros de page</button>
+        </div>
+      </div>
+    </section>
+
+    <aside>
+      <div class="card">
+        <div class="card-head"><span class="card-title">Aperçu</span></div>
+        <div class="card-body">
+          <div class="preview-wrap">
+            <canvas class="preview-canvas" id="previewCanvas" width="320" height="420"></canvas>
+          </div>
+          <div class="preview-status" id="previewStatus" role="status" aria-live="polite">Téléchargez un PDF pour prévisualiser la première page numérotée.</div>
+        </div>
+      </div>
+
+      <div class="card result-card" id="resultCard">
+        <div class="card-head"><span class="card-title">Résultat</span></div>
+        <div class="card-body">
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-rows" id="resultRows"></div>
+          <div class="result-note" id="resultNote"></div>
+          <div class="action-row" id="actionRow">
+            <button class="act-btn" id="downloadBtn" type="button">Télécharger le PDF</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Conseils de numérotation</div>
+        <div class="info-text">
+          Pour les rapports comportant des pages de garde, définissez Démarrer sur la page PDF sur 2 ou 3 et conservez le numéro de début sur 1. Utilisez des zéros non significatifs pour les classeurs, les annexes ou les paquets indexés.
+          <ul>
+            <li>Prend en charge les plages de pages et les sous-ensembles impairs ou pairs.</li>
+            <li>Exporte un PDF ou un lot ZIP.</li>
+            <li>L'aperçu affiche la première page numérotée.</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card gold">
+        <div class="info-title">Privé</div>
+        <div class="info-text">Les PDF sont traités avec les bibliothèques du navigateur local. AfroTools ne télécharge pas vos documents pour les numéroter.</div>
+      </div>
+    </aside>
   </div>
 
-  <!-- fr-pdf-proof-note:start -->
-  <p class="fr-pdf-proof-note"><strong>Méthodologie :</strong> la page prépare le contexte, puis l'outil source traite le fichier dans le navigateur selon le mode choisi. <strong>Limites :</strong> vérifiez toujours le rendu export? avant un dépôt officiel, juridique ou client. <strong>Privacy locale :</strong> les fichiers restent dans votre navigateur; no upload automatique depuis ce panneau.</p>
-  <!-- fr-pdf-proof-note:end -->
+</main>
+
+<section class="seo-section">
+  <h2>Outil gratuit de numérotation des pages PDF</h2>
+  <p>AfroTools ajoute des numéros de page aux fichiers PDF directement dans votre navigateur. Choisissez où commence la numérotation, quelles pages reçoivent des numéros et à quoi doit ressembler le texte. Vous pouvez créer des nombres simples, des étiquettes de page X sur Y, des chiffres romains, des annexes alphabétiques ou des formats de préfixe et de suffixe personnalisés.</p>
+  <h3>Plages de pages, style et export par lot</h3>
+  <p>Utilisez des plages de pages telles que 1 à 3, 5, commencez la numérotation après une page de garde, appliquez des sous-ensembles de pages impairs ou pairs, inversez les positions gauche et droite pour les pages en regard, modifiez la famille de polices, la taille, la couleur, l'opacité, les marges et la rotation, puis téléchargez un PDF numéroté ou un ZIP de sorties par lots.</p>
+  <h3>Conçu pour les documents réels</h3>
+  <p>L'outil est utile pour les contrats, les dossiers juridiques, les rapports commerciaux, les documents scolaires, les livres, les demandes de subvention, les appels d'offres, les manuels et les PDF numérisés qui nécessitent des références de page visibles avant de les partager ou de les imprimer.</p>
+  <div class="faq-list">
+    <details>
+      <summary>Puis-je ignorer la page de garde ?</summary>
+      <p>Oui. Définissez Démarrer sur la page PDF sur 2 ou entrez une plage de pages commençant après la couverture. Le premier numéro imprimé peut toujours être 1.</p>
+    </details>
+    <details>
+      <summary>Puis-je ajouter des numéros de page à certaines pages seulement ?</summary>
+      <p>Oui. Entrez des plages de pages telles que 1-3, 8, 10-14, puis appliquez éventuellement uniquement les pages impaires ou paires à l'intérieur de cette plage.</p>
+    </details>
+    <details>
+      <summary>Puis-je créer des étiquettes de style page 001 ou annexe A ?</summary>
+      <p>Oui. Utilisez des zéros non significatifs pour les étiquettes de style 001, des modèles de lettres pour les étiquettes de style annexe ou des champs de préfixe et de suffixe pour le texte personnalisé.</p>
+    </details>
+    <details>
+      <summary>Mon PDF sera-t-il téléversé ?</summary>
+      <p>Non. La numérotation des pages s'exécute localement dans votre navigateur à l'aide des bibliothèques PDF chargées à partir des ressources AfroTools.</p>
+    </details>
+  </div>
 </section>
-<iframe src="/tools/pdf-page-numbers/" class="fr-tool-frame" title="Numérotation de pages PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="Numérotation de pages PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Fichier/donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, un fichier ou un resultat voulu pour preparer votre resume.';}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-})();
-</script>
-<section class="fr-seo">
-<h2>Numérotation de pages PDF</h2>
-<p>L’outil de numérotation PDF d’AfroTools ajoute automatiquement des numéros de page à vos documents.</p>
-<p>Personnalisez l’emplacement, le format (1, 2, 3 ou i, ii, iii) et la page de début. Idéal pour rapports et mémoires.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Puis-je personnaliser la position des numéros ?</summary><p>Oui, en haut ou en bas de page, à gauche, au centre ou à droite.</p></details>
-<details><summary>Puis-je exclure certaines pages ?</summary><p>Oui, choisissez de ne pas numéroter la page de garde ou la table des matières.</p></details>
-<details><summary>Quels formats de numérotation sont disponibles ?</summary><p>Chiffres arabes (1, 2, 3), chiffres romains (i, ii, iii) ou lettres (a, b, c).</p></details>
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-page-numbers-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Limites de numérotation</span>
+        <h2 class="tool-verification-title" id="pdf-page-numbers-verification-title">Confirmez la position des numéros avant de remplacer l’original</h2>
+        <p class="tool-verification-lead">La numérotation des pages s'exécute localement et crée une nouvelle copie PDF. L'emplacement, le numéro de départ, les préfixes, les suffixes et les pages ignorées doivent être vérifiés avant l'envoi du fichier.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Flux de travail PDF local d'abord</span>
+        <p class="tool-verification-note">Révisé en 2026. Avertissement : vérifiez auprès du destinataire avant de vous fier à une sortie numérotée. Les téléchargements locaux directs ne téléchargent pas vos fichiers.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Méthode</h3>
+        <ul class="tool-verification-list">
+          <li>Applique le texte visible du numéro de page aux pages PDF sélectionnées à l'aide de routines de génération PDF locales.</li>
+          <li>La numérotation peut inclure des préfixes, des suffixes, des décalages de début, des paramètres de police, des couleurs, des marges et des plages de pages sélectionnées.</li>
+          <li>Le résultat est une nouvelle copie numérotée ; le PDF source n'est pas modifié.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Avant de partager</h3>
+        <ul class="tool-verification-list">
+          <li>Vérifiez la première page, la dernière page, les pages sautées, l'orientation de la page, les marges, le chevauchement avec les pieds de page et l'aperçu avant impression.</li>
+          <li>Conservez le fichier original jusqu'à ce que la copie numérotée soit acceptée par le destinataire.</li>
+          <li>Pour réorganiser avant la numérotation, utilisez <a href="/fr/tools/reorganiser-pdf/">Gestionnaire de pages PDF</a> or <a href="/fr/tools/espace-pdf/">Espace de travail PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-page-numbers"></afro-related-tools>
+<afro-related-tools category="document-pdf" current="pdf-page-numbers" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-page-numbers">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-page-numbers">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : PDF, ZIP</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-page-numbers/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
+</section>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script> <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script> <script src="/tools/pdf-page-numbers/app.js?v=f44e627c"></script> <script>
+(function(){
+  var presets = {
+    standard: {
+      templateSelect: 'number',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'Helvetica',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: false,
+      position: 'bottom-center'
+    },
+    'skip-cover': {
+      templateSelect: 'number',
+      startNumber: '1',
+      startPage: '2',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'Helvetica',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: false,
+      position: 'bottom-center'
+    },
+    report: {
+      templateSelect: 'page-of-total',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'HelveticaBold',
+      fontSize: '11',
+      opacity: '90',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#0F172A',
+      colorText: '#0F172A',
+      facingMode: false,
+      position: 'bottom-right'
+    },
+    appendix: {
+      templateSelect: 'letters-upper',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'HelveticaBold',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: true,
+      position: 'top-right'
+    }
+  };
+
+  function setControl(id, value) {
+    var control = document.getElementById(id);
+    if (!control) return;
+    if (control.type === 'checkbox') {
+      control.checked = !!value;
+    } else {
+      control.value = value;
+    }
+    control.dispatchEvent(new Event('input', { bubbles: true }));
+    control.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function applyPreset(name) {
+    var preset = presets[name];
+    if (!preset) return;
+    Object.keys(preset).forEach(function(key) {
+      if (key !== 'position') setControl(key, preset[key]);
+    });
+    var positionButton = document.querySelector('[data-position="' + preset.position + '"]');
+    if (positionButton) positionButton.click();
+  }
+
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-page-preset]');
+    if (!button) return;
+    applyPreset(button.getAttribute('data-page-preset'));
+  });
+})();
+</script> <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

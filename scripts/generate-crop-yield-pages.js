@@ -7,6 +7,7 @@
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
+const { synchronizeHtml: synchronizeAgricultureHreflang } = require('./lib/fr-agriculture-hreflang');
 
 const ROOT = path.resolve(__dirname, '..');
 const TEMPLATE_PATH = path.join(ROOT, 'agriculture/crop-yield/nigeria.html');
@@ -154,6 +155,19 @@ countries.forEach(c => {
 
   // URLs
   html = html.replace(/\/agriculture\/crop-yield\/nigeria/g, `/agriculture/crop-yield/${c.slug}`);
+  const countryArtwork = `crop-yield-${c.slug}.webp`;
+  const socialArtwork = fs.existsSync(path.join(ROOT, 'assets/img/tools', countryArtwork))
+    ? countryArtwork
+    : 'crop-yield-nigeria.webp';
+  html = html.replace(/crop-yield-nigeria\.webp/g, socialArtwork);
+  html = synchronizeAgricultureHreflang(html, {
+    english: {
+      id: `crop-yield-${c.slug}`,
+      route: `/agriculture/crop-yield/${c.slug}`,
+      file: `agriculture/crop-yield/${c.slug}.html`,
+    },
+    french: { route: `/fr/agriculture/crop-yield/${c.slug}` },
+  });
 
   // Breadcrumb
   html = html.replace(/(<span aria-current="page">)Nigeria(<\/span>)/g, `$1${c.name}$2`);
@@ -205,7 +219,8 @@ countries.forEach(c => {
     [`"position":4,"name":"${c.name}"`, 'breadcrumb JSON-LD'],
     [` ${c.name} <em>Crop Yield Estimator</em></h1>`, 'hero heading'],
     [`<span id="rCurrency">${c.currency}</span>`, 'visible currency'],
-    [`/data/agriculture/${c.dataFile}`, 'country data script']
+    [`/data/agriculture/${c.dataFile}`, 'country data script'],
+    [`/assets/img/tools/${socialArtwork}`, 'country social artwork']
   ];
   expectedIdentity.forEach(([needle, label]) => {
     if (!html.includes(needle)) throw new Error(`[CROP_OUTPUT_IDENTITY_MISMATCH] ${c.slug} is missing ${label}: ${needle}`);

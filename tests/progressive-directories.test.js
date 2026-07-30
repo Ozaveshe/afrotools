@@ -27,9 +27,9 @@ const managed = [
   ['all-tools/index.html', 24],
   ['fr/widgets/index.html', 8],
   ['fr/widgets/demo/index.html', 6],
-  ['fr/categories/index.html', 12],
+  ['fr/categories/index.html', 32],
   ['fr/developer-tools/index.html', 8],
-  ['fr/all-tools/index.html', 24]
+  ['fr/all-tools/index.html', 1000]
 ];
 
 managed.forEach(([file, minimumLinks]) => {

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' blob:; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob:; media-src 'self' data: blob:; connect-src 'self'; font-src 'self' data:; worker-src 'self' blob:; object-src 'none'; base-uri 'self'; form-action 'self'">
+  <script src="/assets/js/pages/creative/fr-creative-privacy-bootstrap.js?v=7dff2baf"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Espace Hashtag Créateur | AfroTools</title>
+  <meta name="robots" content="noindex, follow">
+  <meta name="description" content="Créez, comparez, copiez et exportez localement des jeux de hashtags adaptés à chaque plateforme.">
+  <meta property="og:title" content="Espace Hashtag Créateur | AfroTools">
+  <meta property="og:description" content="Composez des jeux de hashtags localement, avec une assistance IA facultative soumise à accord.">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/creator-hashtags.webp">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+  <link rel="stylesheet" href="/tools/creator-hashtags/style.css?v=bc1cebe6">
+  <style>
+    .cht-loading-status { text-align:center; font-size:.85rem; color:#64748b; margin-top:8px; opacity:0; transition:opacity .3s; }
+    .cht-loading-status.active { opacity:1; }
+    .cht-loading-dot { display:inline-block; animation:cht-dot-bounce .6s ease-in-out infinite; }
+    .cht-loading-dot:nth-child(2) { animation-delay:.2s; }
+    .cht-loading-dot:nth-child(3) { animation-delay:.4s; }
+    .cht-consent{display:flex;align-items:flex-start;gap:9px;margin-top:12px;color:var(--cht-muted);font-size:.82rem;line-height:1.45}.cht-consent[hidden]{display:none}.cht-consent input{margin-top:3px}.cht-history-item{display:grid;width:100%;text-align:left;color:inherit}.cht-input-field[id=generationMode]{min-height:48px}.cht-tag{font-family:inherit}
+    @keyframes cht-dot-bounce { 0%,100%{opacity:.3} 50%{opacity:1} }
+  </style>
+  <script src="/assets/js/lib/creator-profile.js?v=69df7ec4" defer></script>
+<meta property="og:url" content="https://afrotools.com/fr/tools/hashtags-createur/app">
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+<link rel="stylesheet" href="/assets/css/fr-creative-route-real-proof.css?v=dad14e8f">
+  <script src="/assets/js/pages/creative/fr-creative-route-real-reflow.js?v=c86f0290" defer></script>
+<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<link rel="canonical" href="https://afrotools.com/fr/tools/hashtags-createur/app">
+</head>
+<body class="cht-app top-level-page-ui-refresh">
+
+  <!-- HEADER (Carousel-style) -->
+  <header class="cht-app-header">
+    <a href="/fr/tools/hashtags-createur/" class="cht-app-logo">
+      <span>#</span> TagWave
+    </a>
+    <div class="cht-header-actions">
+      <button type="button" class="cht-btn-icon" id="historyBtn" title="Historique" aria-label="Ouvrir l’historique">&#128197;</button>
+    </div>
+  </header>
+
+  <!-- WORKSPACE -->
+  <div class="cht-workspace">
+
+    <!-- INPUT CARD -->
+    <div class="cht-input-card">
+      <label class="cht-input-label" for="topicInput">Quel est le sujet de la publication ?</label>
+      <textarea class="cht-input-field" id="topicInput" placeholder="Coulisses d’une séance photo de mariage à Dakar…" rows="2"></textarea>
+
+      <label class="cht-input-label" style="margin-top:16px">Plateforme</label>
+      <div class="cht-platforms" id="platformPills"></div>
+      <label class="cht-input-label" for="generationMode" style="margin-top:16px">Mode de génération</label>
+      <select class="cht-input-field" id="generationMode"><option value="local">Local et déterministe (recommandé)</option><option value="ai">Assistance IA facultative</option></select>
+      <label id="aiConsentWrap" class="cht-consent" hidden><input type="checkbox" id="aiConsent"> J’accepte d’envoyer le sujet et la plateforme sélectionnée à AfroTools AI. Le sujet exact ci-dessus quittera ce navigateur.</label>
+
+      <button type="button" class="cht-generate-btn" id="generateBtn" onclick="window._chtGenerate()">
+        <span class="cht-spinner"></span>Générer les hashtags &#127991;&#65039;
+      </button>
+      <div class="cht-loading-status" id="loadingStatus"></div>
+    </div>
+
+    <!-- REACH LEGEND -->
+    <div class="cht-legend" id="legend" style="display:none">
+      <div class="cht-legend-item"><span class="cht-legend-dot high"></span>Portée large</div>
+      <div class="cht-legend-item"><span class="cht-legend-dot mid"></span>Mid Reach (100K–1M)</div>
+      <div class="cht-legend-item"><span class="cht-legend-dot niche"></span>Niche ciblée</div>
+    </div>
+
+    <!-- OUTPUT AREA -->
+    <div class="cht-output" id="outputArea" aria-live="polite"></div>
+    <div class="cht-mix-actions" id="exportActions" hidden><button type="button" class="cht-action-btn" id="downloadTxt">Télécharger TXT</button><button type="button" class="cht-action-btn" id="downloadJson">Télécharger JSON</button></div>
+
+    <!-- MIX BUILDER (shown after generation) -->
+    <div class="cht-mix-card" id="mixCard" style="display:none">
+      <div class="cht-mix-header">
+        <div class="cht-mix-title">&#128295; COMPOSER VOTRE MÉLANGE</div>
+        <div class="cht-mix-count" id="mixCount">0 / 30 maximum</div>
+      </div>
+      <p style="font-size:13px;color:var(--cht-muted);margin-bottom:12px">Sélectionnez les hashtags ci-dessus pour composer votre mélange.</p>
+      <div class="cht-mix-tags" id="mixTags">
+        <span class="cht-mix-empty">Sélectionnez des hashtags ci-dessus.</span>
+      </div>
+      <div class="cht-mix-warn" id="mixWarn">&#9888;&#65039; Vous dépassez le nombre conseillé pour cette plateforme.</div>
+      <div class="cht-mix-actions">
+        <button type="button" class="cht-action-btn" onclick="window._chtCopyMix()">&#128203; Copier le mélange</button>
+        <button type="button" class="cht-action-btn" onclick="window._chtClearMix()">&#128465; Effacer</button>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- HISTORY PANEL -->
+  <div id="historyPanel" class="cht-history-overlay" role="dialog" aria-modal="true" aria-labelledby="historyTitle" style="display:none">
+    <div class="cht-history-panel">
+      <div class="cht-history-header">
+        <h3 id="historyTitle">Historique local</h3>
+        <button type="button" class="cht-btn-icon" id="historyClose" aria-label="Fermer l’historique">&times;</button>
+      </div>
+      <div id="historyList"></div>
+    </div>
+  </div>
+
+  <!-- TOAST -->
+  <div class="cht-toast" id="toast"></div>
+
+<script src="/engines/creator-hashtags-engine.js?v=e9dadcff"></script>
+<script src="/assets/js/pages/creative/creator-hashtags-app-controller.js?v=ca036752"></script>
+<script src="/assets/js/pages/day9-creative-expanded-safety.js?v=d0d09bc6"></script>
+  <script src="/assets/js/pages/creative/fr-creative-consent-analytics.js?v=9c65a0d9" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body>
+</html>

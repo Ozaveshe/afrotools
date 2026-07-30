@@ -1,0 +1,575 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="view-transition" content="same-origin">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AfroDraft CAO 2D | AfroTools</title>
+<meta name="description" content="Préparez et exportez un dessin technique 2D directement dans le navigateur. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+<meta name="keywords" content="free CAD software, 2D CAD online, AutoCAD alternative, browser CAD, African engineering tools, DXF editor, technical drawing, AfroDraft">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+
+<!-- Open Graph -->
+<meta property="og:title" content="AfroDraft CAO 2D | AfroTools">
+<meta property="og:description" content="Préparez et exportez un dessin technique 2D directement dans le navigateur.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/afrodraft.webp">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/ingenierie/afrodraft/">
+
+<!-- Styles -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&display=swap"></noscript>
+<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
+<link rel="stylesheet" href="/engineering/afrodraft/assets/css/templates.css?v=70dad86a">
+<style>
+  :root {
+    --color-primary: #0062CC;
+    --color-bg: #FAFAF8;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'DM Sans', system-ui, -apple-system, sans-serif; background: var(--color-bg); }
+
+  /* Preview mock */
+  .landing-hero-preview-mock {
+    background: #1a1f2e;
+    padding: 6px;
+    border-radius: 14px;
+    border: 1px solid rgba(255,255,255,.1);
+    box-shadow: 0 24px 64px rgba(0,0,0,.4);
+  }
+  .preview-toolbar {
+    display: flex; gap: 4px; padding: 6px 10px; background: #252b3b; border-radius: 8px 8px 0 0;
+  }
+  .preview-toolbar span {
+    display: inline-block; width: 8px; height: 8px; border-radius: 50%;
+  }
+  .preview-toolbar span:nth-child(1) { background: #ff5f57; }
+  .preview-toolbar span:nth-child(2) { background: #febc2e; }
+  .preview-toolbar span:nth-child(3) { background: #28c840; }
+  .preview-canvas {
+    aspect-ratio: 16/10; background: #111827; position: relative; overflow: hidden;
+    border-radius: 0 0 8px 8px;
+  }
+  .preview-canvas svg { width: 100%; height: 100%; }
+  .preview-grid line { stroke: rgba(0,98,204,.08); stroke-width: 0.5; }
+  .preview-shape { stroke: #0062CC; stroke-width: 1.5; fill: none; }
+  .preview-dim { stroke: #5AC8FA; stroke-width: 0.8; fill: none; }
+  .preview-dim-text { fill: #5AC8FA; font-size: 6px; font-family: 'DM Sans', sans-serif; }
+</style>
+
+<!-- Structured Data -->
+
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="en_US">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="AfroDraft CAO 2D | AfroTools">
+<meta name="twitter:description" content="Préparez et exportez un dessin technique 2D directement dans le navigateur.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/afrodraft.webp">
+
+<meta property="article:modified_time" content="2026-03-28">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/english-df-app-upgrades.css?v=71f122b6">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="fr-engineering:afrodraft">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/engineering/afrodraft/">
+<meta name="afrotools-ai-tool-id" content="afrodraft">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "AfroDraft CAO 2D",
+    "description": "Préparez et exportez un dessin technique 2D directement dans le navigateur.",
+    "url": "https://afrotools.com/fr/ingenierie/afrodraft/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser AfroDraft CAO 2D ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Vérifiez toutes les dimensions sur site et faites valider les plans destinés à l’exécution par un professionnel qualifié."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]</script>
+<link rel="canonical" href="https://afrotools.com/fr/ingenierie/afrodraft/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/engineering/afrodraft/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/ingenierie/afrodraft/">
+<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/afrodraft-cad/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/engineering/afrodraft/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar></afro-navbar>
+
+<div class="landing-page">
+
+  <!-- ══════ HERO ══════ -->
+  <section class="landing-hero">
+    <div class="landing-hero-inner">
+      <div class="landing-hero-text">
+        <nav class="landing-breadcrumb" aria-label="breadcrumb">
+          <a href="/">AfroTools</a>
+          <span>/</span>
+          <a href="/engineering/">Ingénierie</a>
+          <span>/</span>
+          <span>AfroDraft</span>
+        </nav>
+        <div class="landing-eyebrow">
+          <span>OUTIL PHARE</span>
+        </div>
+        <h1>AfroDraft — <em>CAO 2D professionnelle</em></h1>
+        <p class="landing-hero-sub">Charger</p>
+        <div class="landing-stats">
+          <div class="landing-stat">
+            <div class="landing-stat-lbl">Commandes</div>
+            <div class="landing-stat-val blue">155+</div>
+          </div>
+          <div class="landing-stat">
+            <div class="landing-stat-lbl">Thèmes</div>
+            <div class="landing-stat-val">4</div>
+          </div>
+          <div class="landing-stat">
+            <div class="landing-stat-lbl">Exporter</div>
+            <div class="landing-stat-val">DXF</div>
+          </div>
+          <div class="landing-stat">
+            <div class="landing-stat-lbl">Prix</div>
+            <div class="landing-stat-val blue">Gratuit</div>
+          </div>
+        </div>
+        <div class="landing-ctas">
+          <a href="/fr/ingenierie/afrodraft/app" class="landing-cta-primary">
+            Lancer AfroDraft
+            <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg>
+          </a>
+          <a href="#features" class="landing-cta-secondary">
+            Voir les fonctions
+            <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M7 3v8M3 7l4 4 4-4"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <!-- Hero preview (SVG mock of the CAD editor) -->
+      <div class="landing-hero-preview-mock">
+        <div class="preview-toolbar"><span></span><span></span><span></span></div>
+        <div class="preview-canvas">
+          <svg viewBox="0 0 320 200" xmlns="http://www.w3.org/2000/svg">
+            <!-- Grid -->
+            <g class="preview-grid">
+              <line x1="0" y1="40" x2="320" y2="40"/><line x1="0" y1="80" x2="320" y2="80"/>
+              <line x1="0" y1="120" x2="320" y2="120"/><line x1="0" y1="160" x2="320" y2="160"/>
+              <line x1="64" y1="0" x2="64" y2="200"/><line x1="128" y1="0" x2="128" y2="200"/>
+              <line x1="192" y1="0" x2="192" y2="200"/><line x1="256" y1="0" x2="256" y2="200"/>
+            </g>
+            <!-- Floor plan shapes -->
+            <rect class="preview-shape" x="60" y="40" width="200" height="120" rx="1"/>
+            <line class="preview-shape" x1="160" y1="40" x2="160" y2="160"/>
+            <line class="preview-shape" x1="60" y1="100" x2="160" y2="100"/>
+            <rect class="preview-shape" x="80" y="50" width="30" height="20" rx="1" style="stroke:#34C759;stroke-width:1;"/>
+            <rect class="preview-shape" x="120" y="50" width="30" height="20" rx="1" style="stroke:#34C759;stroke-width:1;"/>
+            <circle class="preview-shape" cx="200" cy="100" r="20" style="stroke:#FF9500;"/>
+            <!-- Dimensions -->
+            <line class="preview-dim" x1="60" y1="170" x2="260" y2="170"/>
+            <line class="preview-dim" x1="60" y1="167" x2="60" y2="173"/>
+            <line class="preview-dim" x1="260" y1="167" x2="260" y2="173"/>
+            <text class="preview-dim-text" x="148" y="180">12 000</text>
+            <line class="preview-dim" x1="50" y1="40" x2="50" y2="160"/>
+            <line class="preview-dim" x1="47" y1="40" x2="53" y2="40"/>
+            <line class="preview-dim" x1="47" y1="160" x2="53" y2="160"/>
+            <text class="preview-dim-text" x="24" y="104" transform="rotate(-90,30,104)">8 000</text>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ SAVED DRAWINGS ══════ -->
+  <section class="landing-saved landing-container" id="saved-section">
+    <div class="landing-saved-head">
+      <h2 class="landing-saved-title">Vos dessins</h2>
+      <a href="/fr/ingenierie/afrodraft/app" class="landing-saved-new">+ Nouveau dessin</a>
+    </div>
+    <div class="saved-grid" id="saved-drawings"></div>
+  </section>
+
+  <section class="landing-section landing-template-preview" id="templates">
+    <div class="landing-container">
+      <div class="landing-section-head">
+        <div class="landing-section-eyebrow">Informations et hypothèses du calcul</div>
+        <h2 class="landing-section-title">Commencez avec des dessins CAO locaux modifiables</h2>
+        <p class="landing-section-sub">Les modèles de pièce, boutique, clôture, Chantier, salle de classe et kiosque chargent dans AfroDraft des calques, géométries et cotes déterministes.</p>
+      </div>
+      <div class="landing-template-grid">
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-room">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-400 -700 7200 5600" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="6000" height="4200" stroke="#0f172a" stroke-width="90"/><path d="M3600 150V4050M150 2400H3600" stroke="#0f172a" stroke-width="45"/><path d="M900 4050H2600M4200 4050H5400" stroke="#0062cc" stroke-width="55"/><rect x="520" y="2740" width="1900" height="1100" stroke="#22c55e" stroke-width="45"/><circle cx="4575" cy="1125" r="380" stroke="#f59e0b" stroke-width="45"/><path d="M0 -560H6000M6620 0V4200" stroke="#0284c7" stroke-width="35"/></g></svg>
+          </span>
+          <strong>Plan de pièce</strong>
+          <span>Murs intérieurs, ouvertures, mobilier, noms de pièces et cotes.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-shop">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-500 -800 9300 6600" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="8000" height="5000" stroke="#0f172a" stroke-width="90"/><path d="M6000 150V4850" stroke="#0f172a" stroke-width="50"/><rect x="5400" y="700" width="450" height="2100" stroke="#f59e0b" stroke-width="45"/><rect x="6200" y="3300" width="1350" height="900" stroke="#f59e0b" stroke-width="45"/><path d="M700 3600h850M1950 3600h850M3200 3600h850M4450 3600h850" stroke="#22c55e" stroke-width="120"/><path d="M0 -650H8000M8760 0V5000" stroke="#0284c7" stroke-width="35"/></g></svg>
+          </span>
+          <strong>Plan de boutique</strong>
+          <span>Surface de vente, réserve, comptoir, rayonnages et dimensions de l’entrée.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-fence">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-2200 -2200 34500 22500" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="30000" height="18000" stroke="#ef4444" stroke-width="360"/><path d="M12000 0V2600H18000V0" stroke="#0062cc" stroke-width="300"/><g stroke="#ef4444" stroke-width="150"><circle cx="0" cy="0" r="240"/><circle cx="3000" cy="0" r="240"/><circle cx="6000" cy="0" r="240"/><circle cx="9000" cy="0" r="240"/><circle cx="21000" cy="0" r="240"/><circle cx="24000" cy="0" r="240"/><circle cx="27000" cy="0" r="240"/><circle cx="30000" cy="0" r="240"/><circle cx="0" cy="18000" r="240"/><circle cx="6000" cy="18000" r="240"/><circle cx="12000" cy="18000" r="240"/><circle cx="18000" cy="18000" r="240"/><circle cx="24000" cy="18000" r="240"/><circle cx="30000" cy="18000" r="240"/></g><path d="M0 -1400H30000M31600 0V18000" stroke="#0284c7" stroke-width="180"/></g></svg>
+          </span>
+          <strong>Plan de clôture</strong>
+          <span>Limites, espacement des poteaux, ouverture du portail et dimensions de la parcelle.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-site-plan">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-1700 -1700 28000 21500" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="24000" height="18000" stroke="#ef4444" stroke-width="260"/><rect x="4200" y="4600" width="9600" height="6800" stroke="#0f172a" stroke-width="240"/><path d="M17150 0V6200M17150 9200V18000M13800 6200h6700v3000h-6700z" stroke="#14b8a6" stroke-width="180"/><circle cx="3000" cy="14500" r="700" stroke="#22c55e" stroke-width="160"/><circle cx="20800" cy="14400" r="700" stroke="#22c55e" stroke-width="160"/><path d="M0 -1500H24000M25600 0V18000" stroke="#0284c7" stroke-width="140"/></g></svg>
+          </span>
+          <strong>Plan de Chantier simple</strong>
+          <span>Parcelle, emprise du bâtiment, voie d’accès, reculs et repères paysagers.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-classroom">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-700 -900 10500 8700" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="9000" height="7000" stroke="#0f172a" stroke-width="110"/><rect x="2400" y="6350" width="4200" height="280" stroke="#f59e0b" stroke-width="70"/><g stroke="#22c55e" stroke-width="70"><rect x="1400" y="1600" width="650" height="380"/><rect x="2650" y="1600" width="650" height="380"/><rect x="3900" y="1600" width="650" height="380"/><rect x="5150" y="1600" width="650" height="380"/><rect x="1400" y="2450" width="650" height="380"/><rect x="2650" y="2450" width="650" height="380"/><rect x="3900" y="2450" width="650" height="380"/><rect x="5150" y="2450" width="650" height="380"/><rect x="1400" y="3300" width="650" height="380"/><rect x="2650" y="3300" width="650" height="380"/><rect x="3900" y="3300" width="650" height="380"/><rect x="5150" y="3300" width="650" height="380"/></g><path d="M0 -820H9000M9900 0V7000" stroke="#0284c7" stroke-width="60"/></g></svg>
+          </span>
+          <strong>Plan de salle de classe</strong>
+          <span>Tableau, bureau de l’enseignant, tables des élèves, ouvertures et cotes.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+        <a class="landing-template-card" href="/fr/ingenierie/afrodraft/app#template-kiosk">
+          <span class="landing-template-card__drawing">
+            <svg viewBox="-500 -850 4200 3900" aria-hidden="true"><g fill="none" stroke-linecap="round" stroke-linejoin="round"><rect x="0" y="0" width="3000" height="2400" stroke="#0f172a" stroke-width="70"/><rect x="250" y="1600" width="2500" height="380" stroke="#f59e0b" stroke-width="50"/><path d="M800 0h1400M800 -180h1400M800 0v-180M2200 0v-180" stroke="#0062cc" stroke-width="45"/><rect x="230" y="420" width="520" height="900" stroke="#22c55e" stroke-width="45"/><rect x="2250" y="420" width="520" height="900" stroke="#22c55e" stroke-width="45"/><circle cx="1500" cy="1170" r="260" stroke="#f59e0b" stroke-width="45"/><path d="M0 -560H3000M3560 0V2400" stroke="#0284c7" stroke-width="35"/></g></svg>
+          </span>
+          <strong>Plan de kiosque</strong>
+          <span>Guichet de service, comptoir, étagères, équipements et dimensions compactes.</span>
+          <small>Ouvrir le modèle modifiable</small>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ FEATURES ══════ -->
+  <section class="landing-section" id="features">
+    <div class="landing-container">
+      <div class="landing-section-head">
+        <div class="landing-section-eyebrow">Fonctions</div>
+        <h2 class="landing-section-title">Tout le nécessaire pour dessiner professionnellement</h2>
+        <p class="landing-section-sub">Plus de 155 commandes dans huit catégories, de la géométrie de base à la mise en page et aux exports.</p>
+      </div>
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="feature-icon">✏️</div>
+          <div class="feature-title">Dessin</div>
+          <div class="feature-desc">Lignes, cercles, arcs, polylignes, splines, polygones, rectangles et ellipses avec saisie précise.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🔧</div>
+          <div class="feature-title">Modifier</div>
+          <div class="feature-desc">Déplacez, copiez, pivotez, redimensionnez, symétrisez, ajustez, prolongez, décalez, raccordez, chanfreinez, répétez et décomposez.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📏</div>
+          <div class="feature-title">Annoter</div>
+          <div class="feature-desc">Cotes linéaires, alignées, angulaires et radiales, avec textes, repères, hachures et tableaux.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎯</div>
+          <div class="feature-title">Précision</div>
+          <div class="feature-desc">Quinze accrochages, dont extrémité, milieu, centre et intersection, avec mode orthogonal et suivi polaire.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📚</div>
+          <div class="feature-title">Calques</div>
+          <div class="feature-desc">Gestion complète des calques : types et épaisseurs de ligne, couleurs, verrouillage, gel et visibilité.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📄</div>
+          <div class="feature-title">Mise en page</div>
+          <div class="feature-desc">Espace papier avec fenêtres, cartouches et formats de feuille pour composer une mise en page prête à imprimer.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">📤</div>
+          <div class="feature-title">Exporter</div>
+          <div class="feature-desc">Exportez directement les mises en page en DXF compatible AutoCAD, SVG, PNG et PDF.</div>
+        </div>
+        <div class="feature-card">
+          <div class="feature-icon">🎨</div>
+          <div class="feature-title">Thèmes</div>
+          <div class="feature-desc">Quatre thèmes professionnels — clair, sombre, plan bleu et contraste élevé — pour adapter l’espace de travail.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ HOW IT WORKS ══════ -->
+  <section class="landing-section">
+    <div class="landing-container">
+      <div class="landing-section-head">
+        <div class="landing-section-eyebrow">Fonctionnement</div>
+        <h2 class="landing-section-title">Du canevas vierge au dessin final</h2>
+        <p class="landing-section-sub">Quatre étapes. Aucune installation. Aucun compte requis.</p>
+      </div>
+      <div class="steps-grid">
+        <div class="step-card">
+          <div class="step-title">Lancer AfroDraft</div>
+          <div class="step-desc">Cliquez sur « Lancer » pour ouvrir l’éditeur de CAO complet dans le navigateur, sur ordinateur, tablette ou téléphone.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-title">Dessiner avec les commandes</div>
+          <div class="step-desc">Utilisez le ruban ou saisissez des commandes comme LINE, CIRCLE et RECT ; chaque fonction dispose aussi de raccourcis clavier.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-title">Annoter &amp; Dimension</div>
+          <div class="step-desc">Ajoutez cotes, textes, repères et hachures, puis organisez le dessin avec les calques.</div>
+        </div>
+        <div class="step-card">
+          <div class="step-title">Exporter en DXF ou PDF</div>
+          <div class="step-desc">Enregistrez le dessin localement ou exportez-le en DXF, SVG, PNG ou PDF prêt à imprimer.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ WHO IT'S FOR ══════ -->
+  <section class="landing-section">
+    <div class="landing-container">
+      <div class="landing-section-head">
+        <div class="landing-section-eyebrow">Public concerné</div>
+        <h2 class="landing-section-title">Informations et hypothèses du calcul</h2>
+      </div>
+      <div class="audience-grid">
+        <div class="audience-card">
+          <div class="audience-icon">🎓</div>
+          <div class="audience-text">Étudiants en ingénierie qui ne peuvent pas financer une licence AutoCAD</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">🏗️</div>
+          <div class="audience-text">Architectes dessinant des plans, élévations et coupes</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">🔩</div>
+          <div class="audience-text">Ingénieurs structure préparant les plans de poutres et poteaux</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">📐</div>
+          <div class="audience-text">Toute personne ayant besoin de dessins techniques 2D précis et professionnels</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">🏫</div>
+          <div class="audience-text">Enseignants et formateurs transmettant les bases de la CAO</div>
+        </div>
+        <div class="audience-card">
+          <div class="audience-icon">🏠</div>
+          <div class="audience-text">Architectes d’intérieur esquissant des pièces et plans de mobilier</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ FAQ ══════ -->
+  <section class="landing-section" id="faq">
+    <div class="landing-container">
+      <div class="landing-section-head">
+        <div class="landing-section-eyebrow">Informations et hypothèses du calcul</div>
+        <h2 class="landing-section-title">Questions fréquentes</h2>
+      </div>
+      <div class="landing-faq-grid">
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">AfroDraft est-il vraiment gratuit ?</div>
+          <div class="landing-faq-a">Oui, entièrement gratuit. Les 155 fonctions et plus sont accessibles sans inscription, téléchargement ni paiement afin d’offrir des outils de CAO de qualité aux étudiants et professionnels africains.</div>
+        </div>
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">Puis-je ouvrir les fichiers AfroDraft dans AutoCAD ?</div>
+          <div class="landing-faq-a">Oui. Exportez le dessin en DXF puis ouvrez-le dans AutoCAD, BricsCAD, FreeCAD ou tout logiciel de CAO compatible.</div>
+        </div>
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">Fonctionne-t-il hors connexion ?</div>
+          <div class="landing-faq-a">Après le chargement initial, AfroDraft fonctionne entièrement dans le navigateur et conserve les dessins localement sur votre appareil.</div>
+        </div>
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">Puis-je l’utiliser sur mobile ?</div>
+          <div class="landing-faq-a">AfroDraft prend en charge le tactile sur tablette et téléphone. Pour un meilleur confort, utilisez un écran d’au moins dix pouces et un stylet.</div>
+        </div>
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">Comment se compare-t-il à AutoCAD ?</div>
+          <div class="landing-faq-a">AfroDraft couvre le dessin 2D, les modifications, la cotation, les calques et les exports. Il ne remplace pas AutoCAD pour la 3D ou les processus BIM complexes, mais constitue une solution gratuite solide pour les dessins techniques 2D.</div>
+        </div>
+        <div class="landing-faq-item">
+          <div class="landing-faq-q">Où mes dessins sont-ils conservés ?</div>
+          <div class="landing-faq-a">Tous les dessins restent dans le stockage local du navigateur ; rien n’est envoyé à un serveur. Vous pouvez aussi exporter les fichiers sur votre ordinateur.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ CTA BANNER ══════ -->
+  <section class="landing-section">
+    <div class="landing-container">
+      <div class="landing-cta-banner">
+        <h2>Prêt à commencer le dessin ?</h2>
+        <p>Lancez AfroDraft et créez votre premier dessin 2D professionnel en quelques minutes, sans inscription.</p>
+        <a href="/fr/ingenierie/afrodraft/app" class="landing-cta-primary" style="font-size:1rem;padding:16px 36px;">
+          Lancer AfroDraft
+          <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9h12M11 5l4 4-4 4"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ SEO CONTENT ══════ -->
+  <section class="landing-seo">
+    <h2>Informations et hypothèses du calcul</h2>
+    <p>Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export.</p>
+
+    <h3>Why AfroDraft Exists</h3>
+    <p>Vérifiez toutes les dimensions sur site et faites valider les plans destinés à l’exécution par un professionnel qualifié.</p>
+
+    <h3>Professional-Grade Fonctions</h3>
+    <p>Créer</p>
+
+
+
+    <h3>Informations et hypothèses du calcul</h3>
+
+
+    <h3>Informations et hypothèses du calcul</h3>
+    <p>Ajouter</p>
+
+    <h3>Quatre thèmes professionnels</h3>
+    <p>Sélectionnez une option.</p>
+
+    <h3>Informations et hypothèses du calcul</h3>
+    <p>Préparez et exportez un dessin technique 2D directement dans le navigateur.</p>
+
+    <p>Créer</p>
+  </section>
+
+</div>
+
+<!-- Footer -->
+
+<section class="df-upgrade" data-df-upgrade="afrodraft">
+  <div class="df-upgrade__card">
+    <div>
+      <span class="df-upgrade__kicker">CAD Dessin brief</span>
+      <h2>Informations et hypothèses du calcul</h2>
+
+      <ul class="df-upgrade__bullets"><li>Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export.</li><li>Créer</li><li>Informations et hypothèses du calcul</li></ul>
+      <p class="df-upgrade__note"><strong>Révisé en 2026.</strong>Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export.<a href="https://www.nationalcadstandard.org/ncs6/" target="_blank" rel="noopener">Référence aux normes CAO NCS</a></p>
+    </div>
+    <form class="df-form" data-df-form="afrodraft">
+      <label>Largeur (mètres)<input name="width" type="number" value="5" min="0" step="any" aria-label="Largeur (mètres)"></label>
+      <label>Profondeur (mètres)<input name="depth" type="number" value="4" min="0" step="any" aria-label="Profondeur (mètres)"></label>
+      <label>Épaisseur du mur (mm)<input name="wall" type="number" value="150" min="0" step="any" aria-label="Épaisseur du mur (mm)"></label>
+      <label>Type d’Exporter<select name="export" aria-label="Type d’Exporter"><option value="PDF">PDF</option><option value="PNG">PNG</option><option value="DXF note">note DXF</option><option value="measurement list">liste de mesures</option></select></label>
+      <button type="submit">Créer le résumé</button>
+      <output class="df-result" data-df-result="afrodraft" data-df-base="Vérifiez toutes les dimensions sur site et faites valider les plans destinés à l’exécution par un professionnel qualifié." aria-live="polite">Vérifiez toutes les dimensions sur site et faites valider les plans destinés à l’exécution par un professionnel qualifié.</output>
+      <div class="df-actions"><button type="button" data-df-copy="afrodraft">Copier le résumé</button></div>
+    </form>
+  </div>
+</section>
+<section class="df-faq" aria-labelledby="afrodraft-faq-title">
+  <h2 id="afrodraft-faq-title">Questions fréquentes</h2>
+  <div class="df-faq__grid"><details><summary>Que dois-je vérifier ?</summary><p>Préparez et exportez un dessin technique 2D directement dans le navigateur.</p></details></div>
+</section>
+<nav class="fr-engineering-related-tools" aria-labelledby="afrodraft-related-title">
+  <h2 id="afrodraft-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/ingenierie/planificateur-etage/">Planificateur de plan d’étage</a></li>
+      <li><a href="/fr/tools/calculateur-solaire/">Calculateur solaire</a></li>
+      <li><a href="/fr/tools/plan-etage/">Estimateur de coût de construction</a></li>
+  </ul>
+</nav>
+<afro-footer></afro-footer>
+
+<!-- Scripts -->
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" type="module"></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" type="module"></script>
+<script type="module" src="/assets/js/pages/engineering-parity/fr/afrodraft-1.js?v=e73fb1ee"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/pages/fr-engineering-df-app-upgrades.js?v=a0a76258" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="afrodraft" aria-labelledby="afrodraft-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="afrodraft-fr-guide-title">AfroDraft CAO 2D : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/afrodraft.webp" alt="Illustration du parcours AfroDraft CAO 2D" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours AfroDraft CAO 2D.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Préparez et exportez un dessin technique 2D directement dans le navigateur.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Définissez les unités, tracez la géométrie, ajoutez les cotes, puis contrôlez les calques avant export.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Vérifiez toutes les dimensions sur site et faites valider les plans destinés à l’exécution par un professionnel qualifié.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/engineering/afrodraft/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/engineering/afrodraft/">https://afrotools.com/engineering/afrodraft/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="afrodraft">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"afrodraft","name":"AfroDraft CAO 2D","source":"/engineering/afrodraft/","privacy":"local-first","aiConsent":"explicit"};</script>
+</body>
+</html>

@@ -1,0 +1,8 @@
+'use strict';
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const manifest=require('../data/localization/fr-agriculture-parity-manifest.json'),ai=require('../assets/js/ai/french-route-map.generated.js'),engine=require('../engines/src/soil-ph-engine'),data=require('../data/agriculture/soil-ph-data.json');
+const{ROOT,assertNativeFrenchOutput}=require('../scripts/lib/fr-agriculture-parity-manifest');
+const row=manifest.rows.find(item=>item.english.id==='soil-ph-calculator');assert.ok(row);assertNativeFrenchOutput(manifest,[row.french.route]);
+const html=fs.readFileSync(path.join(ROOT,row.french.file),'utf8');assert.doesNotMatch(html,/<iframe\b/i);assert.doesNotMatch(html,/\bfetch\s*\(/i);assert.match(html,/<html\b[^>]*\blang="fr"/);assert.match(html,/soil-ph-data\.js/);assert.match(html,/soil-ph-engine\.js/);assert.match(html,/Exporter en PDF/);assert.match(html,/aucune saisie envoyée à un serveur/i);assert.equal(ai.routes[row.english.routeKey],row.french.routeKey);
+const profiles=[];for(const cropKey of['',...Object.keys(data.crops)])for(const ph of[3.5,4.2,4.7,5.2,5.7,6.2,6.8,7.2,7.8,8.7])for(const texture of Object.keys(data.textures)){const input={ph,cropKey,texture,depth:20,limeQuality:90,farmHa:2.75,limePrice:150},output=engine.calculate(input,data);assert.equal(output.ok,true);profiles.push({input,output})}
+const oracle={schemaVersion:1,family:'singleton:soil-ph-calculator',crops:Object.keys(data.crops).length,profiles};if(process.env.FR_AGRI_ORACLE_OUTPUT)fs.writeFileSync(path.resolve(ROOT,process.env.FR_AGRI_ORACLE_OUTPUT),JSON.stringify(oracle,null,2)+'\n','utf8');console.log(JSON.stringify({family:oracle.family,rows:1,crops:oracle.crops,profiles:profiles.length},null,2));

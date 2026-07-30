@@ -1,142 +1,271 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="due-date-tools">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Calculateur de date d'accouchement | AfroTools</title>
-<meta name="description" content="Estimez une date probable d’accouchement et les semaines de grossesse. Repère informatif à confirmer lors du suivi prénatal.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Calculateur de date d'accouchement | AfroTools">
-<meta property="og:description" content="Estimez une date probable d’accouchement à confirmer lors du suivi prénatal.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/due-date.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/date-accouchement/">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur de date d'accouchement | AfroTools">
-<meta name="twitter:description" content="Estimez une date probable d’accouchement et les semaines de grossesse. Repère informatif à confirmer lors du suivi prénatal."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;color:#7c2d12;font-size:.88rem;line-height:1.65;margin-bottom:24px}
-.fr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-.fr-link{display:block;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-decoration:none;background:#fff;color:#0f172a}.fr-link span{display:block;color:#64748b;font-size:.82rem;line-height:1.5;margin-top:4px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Estimateur de plage de dates de grossesse | AfroTools</title>
+  <meta name="description" content="Estimez la date prévue de la grossesse et la plage calendaire de 37 à 42 semaines à partir de la date des dernières règles ou du transfert d'embryon documenté du…">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#8f2d56">
+  <meta name="tool-id" content="due-date-tools">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="AfroTools">
+  <meta property="og:title" content="Estimateur de plage de dates de grossesse | AfroTools">
+  <meta property="og:description" content="Estimez la date prévue de la grossesse et la plage calendaire de 37 à 42 semaines à partir de la date des dernières règles ou du transfert d'embryon documenté du…">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/date-accouchement/">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/due-date.webp">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Estimateur de plage de dates de grossesse | AfroTools">
+  <meta name="twitter:description" content="Estimez la date prévue de la grossesse et la plage calendaire de 37 à 42 semaines à partir de la date des dernières règles ou du transfert d'embryon documenté du…">
+  <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/due-date.webp">
+  <meta property="article:modified_time" content="2026-07-26">
+  <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+  <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+  <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+  <link rel="stylesheet" href="/tools/due-date/due-date-range.css?v=6a87275f">
+  <script src="/tools/due-date/due-date-range-engine.js?v=8425afbf"></script>
+  <script src="/tools/due-date/due-date-range.js?v=972c0595" defer></script>
+<!-- tool-structured-data:auto -->
+<!-- tool-structured-data:auto -->
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calculateur de date d’accouchement",
-  "description": "Estimez une date probable d’accouchement à confirmer lors du suivi prénatal.",
-  "url": "https://afrotools.com/fr/tools/date-accouchement/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Estimateur de plage de dates de grossesse",
+    "description": "Estimez la date prévue de la grossesse et la plage calendaire de 37 à 42 semaines à partir de la date des dernières règles ou du transfert d'embryon documenté du…",
+    "url": "https://afrotools.com/fr/tools/date-accouchement/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/due-date.webp"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/due-date.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Comment est calculée la date d’accouchement ?","acceptedAnswer":{"@type":"Answer","text":"L’outil estime une date à partir des informations saisies, mais une échographie et le suivi prénatal peuvent modifier cette estimation."}},{"@type":"Question","name":"La date calculée est-elle exacte ?","acceptedAnswer":{"@type":"Answer","text":"Non. C’est une estimation. Beaucoup de naissances ont lieu avant ou après la date prévue."}},{"@type":"Question","name":"Quand consulter rapidement ?","acceptedAnswer":{"@type":"Answer","text":"Consultez rapidement en cas de saignement, douleurs importantes, fièvre, baisse des mouvements du bébé, perte de liquide ou tout symptôme inquiétant."}}]}
-</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/due-date.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
   }
-}
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Pregnancy Date Range Estimator | AfroTools":"Estimateur de plage de dates de grossesse | AfroTools","Health tools":"Outils santé","All tools":"Tous les outils","Tools":"Outils","Pregnancy date range":"Plage de dates de grossesse","Quick private estimate":"Estimation privée rapide","Pregnancy date range estimator":"Estimateur de plage de dates de grossesse","Calculate one conventional estimated due date and the wider 37- to 42-week calendar span. Use the result as a question for your maternity or fertility team, not as confirmation of pregnancy or a prediction of labour.":"Calculez une date d’échéance estimée conventionnelle et la période calendaire plus large de 37 à 42 semaines. Utilisez le résultat comme une question pour votre équipe de maternité ou de fertilité, et non comme une confirmation de grossesse ou une prédiction du travail.","No diagnosis":"Aucun diagnostic","No saved dates":"Aucune date enregistrée","Local PDF and TXT":"PDF et TXT locaux","A date estimate cannot assess symptoms":"Une estimation de date ne peut pas évaluer les symptômes","Seek prompt local maternity advice for bleeding, severe or persistent pain, severe headache or vision change, fluid leakage, breathing difficulty, or a change in your baby's usual movements. Use emergency services for a life-threatening situation.":"Demandez rapidement conseil à la maternité locale en cas de saignement, de douleur intense ou persistante, de maux de tête sévères ou de changement de vision, de fuite de liquide, de difficultés respiratoires ou de changement dans les mouvements habituels de votre bébé. Faites appel aux services d’urgence en cas de situation mettant la vie en danger.","Calculate":"Calculer","Enter the date you have":"Entrez la date à laquelle vous avez","Estimate from":"Estimation à partir de","Last menstrual period (LMP)":"Dernières règles (LMP)","For a known, usually regular cycle.":"Pour un cycle connu, généralement régulier.","Documented embryo transfer":"Transfert d'embryon documenté","Use the transfer date and embryo age from your fertility clinic.":"Utilisez la date de transfert et l’âge de l’embryon de votre clinique de fertilité.","First day of your last menstrual period":"Premier jour de vos dernières règles","This date is processed only in the current page and is not saved.":"Cette date est traitée uniquement dans la page en cours et n'est pas enregistrée.","Usual cycle length in days":"Durée habituelle du cycle en jours","The standard 280-day method is adjusted by the difference from 28 days.":"La méthode standard de 280 jours est ajustée de la différence par rapport à 28 jours.","Embryo age at transfer":"Âge de l'embryon au transfert","Day-3 embryo":"Embryon du jour 3","Day-5 embryo":"Embryon du jour 5","If your clinic uses another transfer convention, use its documented EDD instead of converting it here.":"Si votre clinique utilise une autre convention de transfert, utilisez son EDD documenté au lieu de le convertir ici.","Estimate date range":"Plage de dates estimée","Different product":"Produit différent","Need appointment dates?":"Besoin de dates de rendez-vous ?","This tool deliberately stops after the date range. Use the separate":"Cet outil s'arrête délibérément après la plage de dates. Utilisez le séparé","antenatal appointment date planner":"planificateur de rendez-vous prénatal","to map a provider-confirmed EDD to WHO contact prompts.":"pour mapper un EDD confirmé par le fournisseur aux invites de contact de l’OMS.","What is intentionally absent":"Ce qui est volontairement absent","No fetal-size or development claims.":"Aucune allégation concernant la taille ou le développement du fœtus.","No symptom interpretation or trimester tips.":"Aucune interprétation des symptômes ni conseils trimestriels.","No universal screening or treatment schedule.":"Pas de programme universel de dépistage ou de traitement.","No conception-date claim from LMP.":"Aucune réclamation concernant la date de conception de la part de LMP.","Result":"Résultat","Your estimated calendar range":"Plage estimée de votre calendrier","Review with your care team":"Révisez avec votre équipe soignante","Conventional estimated due date":"Date d’échéance estimée conventionnelle","37-week date":"rendez-vous de 37 semaines","42-week date":"rendez-vous de 42 semaines","Read the result as an estimate":"Lire le résultat comme estimation","The 37- to 42-week span is context, not a safe waiting window. A maternity team should confirm dating and tell you when to seek review.":"La période de 37 à 42 semaines est un contexte et non une fenêtre d'attente sûre. Une équipe de maternité devrait confirmer la datation et vous indiquer quand demander un examen.","Download TXT":"Télécharger le TXT","Download PDF":"Télécharger le PDF","Clear result":"Résultat clair","Privacy":"Confidentialité","Nothing is remembered":"On ne se souvient de rien","The engine runs locally. The page does not save dates to browser storage, accounts, URLs or analytics. TXT and PDF files are created only after you request them and contain the entered date, so handle them as sensitive health information.":"Le moteur tourne localement. La page n'enregistre pas les dates de stockage du navigateur, les comptes, les URL ou les analyses. Les fichiers TXT et PDF sont créés uniquement après que vous les avez demandés et contiennent la date saisie, traitez-les donc comme des informations de santé sensibles.","Source check":"Vérification à la source","Formula sources":"Sources de formules","NHS due-date calculator":"Calculateur de date d'échéance du NHS","- LMP, cycle length, 37-42 week context and scan confirmation.":"- LMP, durée du cycle, contexte de 37 à 42 semaines et confirmation du scan.","ACOG methods for estimating the due date":"Méthodes ACOG pour estimer la date d’échéance","- 280-day convention and day-3/day-5 embryo-transfer offsets.":"- Convention de 280 jours et compensations de transfert d'embryons jour 3/jour 5.","Sources checked: 26 July 2026.":"Sources vérifiées : 26 juillet 2026.","Important limits":"Limites importantes","Why not calculate from “conception date”?":"Pourquoi ne pas calculer à partir de la « date de conception » ?","Outside documented assisted reproduction, the exact fertilization date is usually uncertain. This route avoids presenting an assumed date as known.":"En dehors de la procréation assistée documentée, la date exacte de fécondation est généralement incertaine. Cet itinéraire évite de présenter une date supposée comme connue.","Can a scan change this estimate?":"Un scan peut-il modifier cette estimation ?","Yes. A maternity professional can compare menstrual history and early ultrasound dating. Use the EDD documented by your care team for clinical decisions.":"Oui. Un professionnel de la maternité peut comparer les antécédents menstruels et la datation précoce par échographie. Utilisez l’EDD documenté par votre équipe de soins pour les décisions cliniques.","Does the 42-week date mean it is safe to wait until then?":"La date de 42 semaines signifie-t-elle qu’il est prudent d’attendre jusque-là ?","No. It is only a calendar boundary. Follow your maternity team's monitoring and urgent-care instructions.":"Non, il ne s’agit que d’une limite de calendrier. Suivez les instructions de surveillance et de soins d'urgence de votre équipe de maternité.","Private, local-first calculation":"Calcul privé et local d'abord","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Estimate a pregnancy due date and 37- to 42-week calendar range from a last-period date or documented day-3/day-5 embryo transfer. Private and local.":"Estimez la date prévue de la grossesse et la plage calendaire de 37 à 42 semaines à partir de la date des dernières règles ou du transfert d'embryon documenté du jour 3/jour-5. Privé et local.","due-date-tools":"outils de date d'échéance","A quick private due-date and 37- to 42-week range estimate for review with a maternity or fertility team.":"Une date d'accouchement privée rapide et une estimation de la fourchette de 37 à 42 semaines pour examen avec une équipe de maternité ou de fertilité.","LMP or documented embryo-transfer date math, with uncertainty shown clearly.":"Mathématiques LMP ou date de transfert d'embryon documentée, avec incertitude clairement indiquée.","AfroTools home":"Accueil AfroTools","Primary":"Primaire","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Local export actions":"Actions d’export local","use strict":"utiliser strict","&& input.method !==":"&& méthode d'entrée !==",", error:":", erreur :","s 42-week boundary.":"s limite de 42 semaines.","Choose a documented day-3 or day-5 embryo transfer.":"Choisissez un transfert d’embryon documenté au jour 3 ou au jour 5.","Enter a transfer date within its 42-week pregnancy window.":"Entrez une date de transfert dans la fenêtre de grossesse de 42 semaines.","Calculated from the first day of LMP using 280 days, adjusted by":"Calculé à partir du premier jour de LMP sur 280 jours, ajusté de","-day cycle.":"-cycle de jour.","Calculated from a documented day-":"Calculé à partir d'une journée documentée-","embryo transfer using the ACOG":"transfert d'embryons à l'aide de l'ACOG","-day offset.":"-jour de décalage.",", month:":", mois :",", year:":", année :",", block:":", bloquer :",", format:":", format :","PDF downloaded locally.":"PDF téléchargé localement.","PDF could not be created. Use the TXT export instead.":"Le PDF n'a pas pu être créé. Utilisez plutôt l'exportation TXT.","Calculate a range before exporting.":"Calculez une plage avant d’exporter.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","All Tools":"Tous les outils","Health":"Santé","Dark mode":"Mode sombre","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/date-accouchement/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/due-date/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/date-accouchement/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-tarehe-ya-kujifungua/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/due-date/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Calculateur de date d'accouchement</h1>
-<p>Estimez une date probable d’accouchement et confirmez-la lors du suivi prénatal.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Calculateur de date d'accouchement. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/due-date/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/due-date/" title="Calculateur de date d'accouchement" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Calculateur de date d'accouchement";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-note"><strong>Suivi prénatal prioritaire.</strong> Cette page donne une estimation. Une échographie, les antécédents et l’avis d’une sage-femme ou d’un médecin peuvent modifier la date. En cas de symptôme inquiétant, consultez rapidement.</div>
-<div class="fr-seo">
-<h2>Date d'accouchement et suivi de grossesse</h2>
-<p>Connaître une date probable aide à organiser les rendez-vous, le budget, le transport et la préparation familiale. Cette date reste un repère, pas une garantie.</p>
-<p>Utilisez l’outil pour préparer vos questions de consultation. Les examens, l’échographie et le suivi local restent la référence pour les décisions de grossesse.</p>
-</div>
-<div class="fr-seo">
-<h2>Outils liés en français</h2>
-<div class="fr-grid"><a class="fr-link" href="/fr/tools/calendrier-vaccinal/"><strong>Calendrier vaccinal</strong><span>Repères à confirmer localement.</span></a><a class="fr-link" href="/fr/tools/cout-hospitalier/"><strong>Coût hospitalier</strong><span>Budget indicatif à vérifier auprès de l’établissement.</span></a><a class="fr-link" href="/fr/tools/apport-eau/"><strong>Apport en eau</strong><span>Repère d’hydratation prudent.</span></a></div>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Comment est calculée la date d’accouchement ?</summary><p>L’outil estime une date à partir des informations saisies, mais une échographie et le suivi prénatal peuvent modifier cette estimation.</p></details>
-<details><summary>La date calculée est-elle exacte ?</summary><p>Non. C’est une estimation. Beaucoup de naissances ont lieu avant ou après la date prévue.</p></details>
-<details><summary>Quand consulter rapidement ?</summary><p>Consultez rapidement en cas de saignement, douleurs importantes, fièvre, baisse des mouvements du bébé, perte de liquide ou tout symptôme inquiétant.</p></details>
-</div>
-</div>
-<!-- fr-score77-qa-panel:start -->
-<section class="fr-score77-qa" data-tool-verification-panel aria-label="Méthodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
-  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Méthodologie, sources et limites</h2>
-  <p style="margin:.35rem 0"><strong>Méthodologie:</strong> le résultat utilise les champs de la page, les hypothèses visibles et les règles appliquees par l'outil. Relisez le detail du calcul avant de copier, exporter ou utiliser la recommandation.</p>
-  <p style="margin:.35rem 0"><strong>Sources:</strong> contrôle 2026 à confirmer avec la source officielle, l'autorite competente, le fournisseur, l'etablissement, le clinicien ou vos documents de référence lorsque les prix, lois, taxes, dates ou conditions peuvent changer.</p>
-  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, médical, éducatif ou technique.</p>
-</section>
-<!-- fr-score77-qa-panel:end -->
-<afro-footer></afro-footer>
-<script>
-(function(){
-  const map={"Pregnancy Due Date Calculator":"Calculateur de date d’accouchement","Due Date":"Date probable","Last Period":"Dernières règles","Cycle Length":"Durée du cycle","Weeks Pregnant":"Semaines de grossesse","Trimester":"Trimestre","Calculate":"Calculer","Calculator":"Calculateur","Result":"Résultat","Results":"Résultats","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter"};
-  const frame=document.querySelector('.fr-tool-frame iframe');
-  function translate(root){if(!root)return;const walker=root.createTreeWalker(root.body||root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){let text=node.nodeValue;Object.keys(map).forEach(k=>{text=text.replace(new RegExp(k,'g'),map[k]);});node.nodeValue=text;}root.querySelectorAll('input,textarea,button,select,[placeholder],[title],[aria-label]').forEach(el=>{['placeholder','title','aria-label','value'].forEach(attr=>{const value=el.getAttribute&&el.getAttribute(attr);if(!value)return;let out=value;Object.keys(map).forEach(k=>{out=out.replace(new RegExp(k,'g'),map[k]);});if(out!==value)el.setAttribute(attr,out);});});}
-  if(frame)frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;translate(doc);new MutationObserver(()=>translate(doc)).observe(doc.body,{childList:true,subtree:true});}catch(e){}});
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<body>
+  <header class="ddv-site-header">
+    <a class="ddv-home" href="/" aria-label="Accueil AfroTools">
+      <img src="/assets/img/logo-mark.svg" width="32" height="32" alt="">
+      <span>AfroTools</span>
+    </a>
+    <nav aria-label="Primaire">
+      <a href="/health/">Outils santé</a>
+      <a href="/tools/">Tous les outils</a>
+    </nav>
+  </header>
+
+  <main>
+    <nav class="ddv-breadcrumb" aria-label="Fil d'Ariane">
+      <a href="/">AfroTools</a><span aria-hidden="true">/</span>
+      <a href="/tools/">Outils</a><span aria-hidden="true">/</span>
+      <span aria-current="page">Plage de dates de grossesse</span>
+    </nav>
+
+    <header class="ddv-hero">
+      <p class="ddv-kicker">Estimation privée rapide</p>
+      <h1>Estimateur de plage de dates de grossesse</h1>
+      <p>Calculez une date d’échéance estimée conventionnelle et la période calendaire plus large de 37 à 42 semaines. Utilisez le résultat comme une question pour votre équipe de maternité ou de fertilité, et non comme une confirmation de grossesse ou une prédiction du travail.</p>
+      <div class="ddv-badges" aria-label="Limites des outils">
+        <span>Aucun diagnostic</span><span>Aucune date enregistrée</span><span>PDF et TXT locaux</span>
+      </div>
+    </header>
+
+    <section class="ddv-safety" aria-labelledby="date-safety-title">
+      <h2 id="date-safety-title">Une estimation de date ne peut pas évaluer les symptômes</h2>
+      <p>Demandez rapidement conseil à la maternité locale en cas de saignement, de douleur intense ou persistante, de maux de tête sévères ou de changement de vision, de fuite de liquide, de difficultés respiratoires ou de changement dans les mouvements habituels de votre bébé. Faites appel aux services d’urgence en cas de situation mettant la vie en danger.</p>
+    </section>
+
+    <div class="ddv-layout">
+      <section class="ddv-card" aria-labelledby="calculator-title">
+        <p class="ddv-step">Calculer</p>
+        <h2 id="calculator-title">Entrez la date à laquelle vous avez</h2>
+        <form id="date-range-form" novalidate>
+          <fieldset class="ddv-methods">
+            <legend>Estimation à partir de</legend>
+            <label>
+              <input type="radio" name="method" value="lmp" checked>
+              <span><strong>Dernières règles (LMP)</strong><small>Pour un cycle connu, généralement régulier.</small></span>
+            </label>
+            <label>
+              <input type="radio" name="method" value="ivf">
+              <span><strong>Transfert d'embryon documenté</strong><small>Utilisez la date de transfert et l’âge de l’embryon de votre clinique de fertilité.</small></span>
+            </label>
+          </fieldset>
+
+          <div class="ddv-field">
+            <label id="estimate-date-label" for="estimate-date">Premier jour de vos dernières règles</label>
+            <input id="estimate-date" type="date" required aria-describedby="date-privacy form-error">
+            <p id="date-privacy" class="ddv-help">Cette date est traitée uniquement dans la page en cours et n'est pas enregistrée.</p>
+          </div>
+
+          <div class="ddv-field" id="cycle-length-field">
+            <label for="cycle-length">Durée habituelle du cycle en jours</label>
+            <input id="cycle-length" type="number" min="21" max="35" step="1" value="28" inputmode="numeric" aria-describedby="cycle-note">
+            <p id="cycle-note" class="ddv-help">La méthode standard de 280 jours est ajustée de la différence par rapport à 28 jours.</p>
+          </div>
+
+          <div class="ddv-field" id="embryo-age-field" hidden>
+            <label for="embryo-age">Âge de l'embryon au transfert</label>
+            <select id="embryo-age">
+              <option value="3">Embryon du jour 3</option>
+              <option value="5">Embryon du jour 5</option>
+            </select>
+            <p class="ddv-help">Si votre clinique utilise une autre convention de transfert, utilisez son EDD documenté au lieu de le convertir ici.</p>
+          </div>
+
+          <p class="ddv-error" id="form-error" role="alert"></p>
+          <button class="ddv-primary" type="submit">Plage de dates estimée</button>
+        </form>
+      </section>
+
+      <aside class="ddv-card ddv-distinct" aria-labelledby="planner-link-title">
+        <p class="ddv-step">Produit différent</p>
+        <h2 id="planner-link-title">Besoin de dates de rendez-vous ?</h2>
+        <p>Cet outil s'arrête délibérément après la plage de dates. Utilisez le séparé <a href="/fr/health/pregnancy-due-date/">planificateur de rendez-vous prénatal</a> pour mapper un EDD confirmé par le fournisseur aux invites de contact de l’OMS.</p>
+        <h3>Ce qui est volontairement absent</h3>
+        <ul>
+          <li>Aucune allégation concernant la taille ou le développement du fœtus.</li>
+          <li>Aucune interprétation des symptômes ni conseils trimestriels.</li>
+          <li>Pas de programme universel de dépistage ou de traitement.</li>
+          <li>Aucune réclamation concernant la date de conception de la part de LMP.</li>
+        </ul>
+      </aside>
+    </div>
+
+    <section class="ddv-card ddv-results" id="date-range-results" hidden aria-labelledby="results-title" aria-live="polite">
+      <div class="ddv-results-head">
+        <div>
+          <p class="ddv-step">Résultat</p>
+          <h2 id="results-title" tabindex="-1">Plage estimée de votre calendrier</h2>
+        </div>
+        <span>Révisez avec votre équipe soignante</span>
+      </div>
+
+      <div class="ddv-result-grid">
+        <article>
+          <span>Date d’échéance estimée conventionnelle</span>
+          <strong id="estimated-due-date"></strong>
+        </article>
+        <article>
+          <span>rendez-vous de 37 semaines</span>
+          <strong id="week-37-date"></strong>
+        </article>
+        <article>
+          <span>rendez-vous de 42 semaines</span>
+          <strong id="week-42-date"></strong>
+        </article>
+      </div>
+
+      <div class="ddv-interpretation">
+        <h3>Lire le résultat comme estimation</h3>
+        <p id="method-summary"></p>
+        <p>La période de 37 à 42 semaines est un contexte et non une fenêtre d'attente sûre. Une équipe de maternité devrait confirmer la datation et vous indiquer quand demander un examen.</p>
+      </div>
+
+      <div class="ddv-actions" aria-label="Actions d’export local">
+        <button id="download-txt" class="ddv-secondary" type="button">Télécharger le TXT</button>
+        <button id="download-pdf" class="ddv-secondary" type="button">Télécharger le PDF</button>
+        <button id="clear-result" class="ddv-quiet" type="button">Résultat clair</button>
+      </div>
+      <p id="export-status" class="ddv-status" role="status" aria-live="polite"></p>
+    </section>
+
+    <section class="ddv-info-grid">
+      <article class="ddv-card">
+        <p class="ddv-step">Confidentialité</p>
+        <h2>On ne se souvient de rien</h2>
+        <p>Le moteur tourne localement. La page n'enregistre pas les dates de stockage du navigateur, les comptes, les URL ou les analyses. Les fichiers TXT et PDF sont créés uniquement après que vous les avez demandés et contiennent la date saisie, traitez-les donc comme des informations de santé sensibles.</p>
+      </article>
+      <article class="ddv-card">
+        <p class="ddv-step">Vérification à la source</p>
+        <h2>Sources de formules</h2>
+        <ul class="ddv-sources">
+          <li><a href="https://www.nhs.uk/pregnancy/finding-out/due-date-calculator/" target="_blank" rel="noopener">Calculateur de date d'échéance du NHS</a> - LMP, durée du cycle, contexte de 37 à 42 semaines et confirmation du scan.</li>
+          <li><a href="https://www.acog.org/clinical/clinical-guidance/committee-opinion/articles/2017/05/methods-for-estimating-the-due-date" target="_blank" rel="noopener">Méthodes ACOG pour estimer la date d’échéance</a> - Convention de 280 jours et compensations de transfert d'embryons jour 3/jour 5.</li>
+        </ul>
+        <p class="ddv-checked">Sources vérifiées : 26 juillet 2026.</p>
+      </article>
+    </section>
+
+    <section class="ddv-card ddv-faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">Limites importantes</h2>
+      <details>
+        <summary>Pourquoi ne pas calculer à partir de la « date de conception » ?</summary>
+        <p>En dehors de la procréation assistée documentée, la date exacte de fécondation est généralement incertaine. Cet itinéraire évite de présenter une date supposée comme connue.</p>
+      </details>
+      <details>
+        <summary>Un scan peut-il modifier cette estimation ?</summary>
+        <p>Oui. Un professionnel de la maternité peut comparer les antécédents menstruels et la datation précoce par échographie. Utilisez l’EDD documenté par votre équipe de soins pour les décisions cliniques.</p>
+      </details>
+      <details>
+        <summary>La date de 42 semaines signifie-t-elle qu’il est prudent d’attendre jusque-là ?</summary>
+        <p>Non, il ne s’agit que d’une limite de calendrier. Suivez les instructions de surveillance et de soins d'urgence de votre équipe de maternité.</p>
+      </details>
+    </section>
+  <section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Estimateur de plage de dates de grossesse reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/due-date/" hreflang="en">/tools/due-date/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+
+  <footer class="ddv-site-footer">
+    <a href="/">AfroTools</a><span>Calcul privé et local d'abord</span><a href="/privacy/">Confidentialité</a>
+  </footer>
+<afro-related-tools data-ssr="1" category="health" current="due-date-tools">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

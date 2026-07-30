@@ -64,11 +64,20 @@ for (const selector of ['countries.published', 'categories.published', 'language
 assert(!/Nigeria PAYE Calculator|Suggestions, examples|Calculate →|Feature catégories|Chaque outil sous 100 Ko|Fonctionne en 2G/i.test(home), 'French homepage must not retain mixed-language legacy showcase or unsupported performance claims');
 assert(/Le pays change la juridiction/.test(home) && /La langue change l’interface/.test(home), 'French homepage must keep country and language as separate dimensions');
 
+assert(/\/assets\/css\/fr-homepage\.css/.test(home), 'French homepage must load its product-surface stylesheet');
+assert.strictEqual((home.match(/class="fr-home-category"/g) || []).length, 32, 'French homepage must expose all 32 canonical category choices');
+for (const schemaType of ['WebSite', 'SearchAction', 'Organization', 'CollectionPage']) {
+  assert(home.includes(`"@type":"${schemaType}"`), `French homepage must expose ${schemaType} structured data`);
+}
+assert(!/"@type":"FAQPage"/.test(home), 'French homepage must not publish FAQ rich-result markup');
+assert(/action="\/fr\/all-tools\/"[^>]*method="get"/.test(home) && /name="q"/.test(home), 'French homepage search must use the crawlable French directory query contract');
+
 const directory = read('fr/all-tools/index.html');
 assert(/data-registry-count="tools.locale.fr.published"/.test(directory), 'French directory headline count must use the named French registry selector');
 assert(/t\.lang === 'fr'/.test(directory) && /startsWith\('\/fr\/'\)/.test(directory), 'French directory must render only records with genuine French routes');
 assert(/<div class="tools-grid" id="toolsGrid">[\s\S]*?PROGRESSIVE_DIRECTORY_FALLBACK_START[\s\S]*?<a href="\/fr\/[^"]+"[^>]*data-directory-record/.test(directory), 'French directory must provide useful no-JavaScript navigation before hydration');
 assert(!/>All <|>Live <|>Sort:|>Health<|>Engineering<|>Trade<|>Legal<|>Language<|>Energy<|>Career</i.test(directory), 'French directory controls and category labels must not expose English UI');
+assert(/params\.get\('q'\)/.test(directory) && /input\.value\s*=\s*initialQuery/.test(directory), 'French directory must hydrate the homepage q search without dropping the user query');
 
 const prepaid = read('fr/tools/compteur-prepaye/central-african-republic/index.html');
 assert(/République centrafricaine/.test(prepaid), 'Central African Republic prepaid page must use the French country name');

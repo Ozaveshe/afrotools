@@ -1,6 +1,6 @@
 # Hausa Visible Copy Leakage Ledger
 
-Generated: 2026-07-26
+Generated: 2026-07-30
 
 This audit scans `ha/**/*.html` for visible English leakage only. It ignores scripts, styles, head metadata, JSON blobs, URLs, code/pre blocks, and accepted technical acronyms.
 
@@ -120,16 +120,16 @@ This audit scans `ha/**/*.html` for visible English leakage only. It ignores scr
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 104 | English route label marked as fallback | Bude shafin Turanci mai aiki idan kana bukatar lissafi, fayil ko cikakken ma'amala. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 113 | English route label marked as fallback | Cikakken aikin sanya lambobin shafi yana kan shafin Turanci yanzu, amma fayil yana aiki a burauza kamar sauran kayan PDF. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
 | `/ha/kayan-aiki/lambar-shafi-pdf/` | 120 | English route label marked as fallback | Shafin Turanci Cikakken aikin da aka kiyaye daga asali. | Batch 2 - Document, PDF, invoice, and Naira cleanup |
-| `/ha/kayan-aiki/lambobin-ussd/` | 101 | brand or platform name | Duba lambar ragowar kudi, bayanan intanet, katin waya, tura kudi, bashi da taimakon kwastoma. Najeriya ta bude da MTN, Airtel, Glo da 9mobile, sannan za ka iya zabar wasu kasashe daga bayanan sadarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
-| `/ha/kayan-aiki/lambobin-ussd/` | 111 | brand or platform name | misali ragowar kudi, tura kudi, MTN... | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/lambobin-ussd/` | 102 | brand or platform name | Duba lambar ragowar kudi, bayanan intanet, katin waya, tura kudi, bashi da taimakon kwastoma. Najeriya ta bude da MTN, Airtel, Glo da 9mobile, sannan za ka iya zabar wasu kasashe daga bayanan sadarwa. | Batch 2 - Telecom and USSD visible-copy cleanup |
+| `/ha/kayan-aiki/lambobin-ussd/` | 112 | brand or platform name | misali ragowar kudi, tura kudi, MTN... | Batch 2 - Telecom and USSD visible-copy cleanup |
 | `/ha/kayan-aiki/mai-fassara-hausa/` | 100 | English route label marked as fallback | Idan kana son cikakken kundin jimlolin Turanci zuwa Hausa, akwai shafin Turanci da ke da karin misalai. An nuna shi a fili domin kada a dauka dukkan tsohon shafin ya riga ya zama Hausa. | Batch 2 - Language and translation hub cleanup |
 | `/ha/kayan-aiki/neman-tallafin-karatu/` | 56 | English route label marked as fallback | Tace bukata Matakin karatu Digiri na farko Digiri na biyu Horon sana'a Gajeren kwas Fanni Kimiyya da fasaha Lafiya Kasuwanci Noma Kowane fanni Inda kake nema Nigeria Afrika Waje Shirya jerin bukata Gaskiyar neman tall... | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 96 | brand or platform name | MTN | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 97 | brand or platform name | Airtel | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 98 | brand or platform name | Glo | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 99 | brand or platform name | 9mobile | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 255 | brand or platform name | MTN Nigeria Misalin shafin kamfani don duba kunshin data da sabon farashi. Duba MTN | Batch 2 - General Hausa visible-copy cleanup |
-| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 256 | brand or platform name | Airtel Nigeria Misalin shafin kamfani don tabbatar da kunshi da farashi. Duba Airtel | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 97 | brand or platform name | MTN | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 98 | brand or platform name | Airtel | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 99 | brand or platform name | Glo | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 100 | brand or platform name | 9mobile | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 256 | brand or platform name | MTN Nigeria Misalin shafin kamfani don duba kunshin data da sabon farashi. Duba MTN | Batch 2 - General Hausa visible-copy cleanup |
+| `/ha/kayan-aiki/rajistar-layin-waya-nin/` | 257 | brand or platform name | Airtel Nigeria Misalin shafin kamfani don tabbatar da kunshi da farashi. Duba Airtel | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/ribar-kiwon-kifi/` | 24 | English route label marked as fallback | Bayanan kiwon kifi Yawan kifi Nauyin sayarwa, kg Farashi a kg Kifin da zai kai sayarwa, kashi Kudin abinci Sauran kudade Lissafa riba Abin da ke iya sauya riba Mutuwar kifi, tsadar abinci, yanayin ruwa, farashin kasuw... | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/rubuta-wasikar-aiki/` | 70 | English route label marked as fallback | Idan kana son samfurori da fitarwa zuwa PDF ko Word, bude shafin Turanci . | Batch 2 - General Hausa visible-copy cleanup |
 | `/ha/kayan-aiki/waya-ko-banki/` | 88 | English route label marked as fallback | Bude shafin Turanci | Batch 2 - General Hausa visible-copy cleanup |

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
@@ -19,8 +19,8 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Engineering Tools","item":"https://afrotools.com/engineering/"},{"@type":"ListItem","position":3,"name":"Unit Converter","item":"https://afrotools.com/tools/unit-converter/"}]}
 </script>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -245,7 +245,7 @@ html[data-theme="dark"] .african-callout{color:#d1d9e8}
   "image": "https://afrotools.com/assets/img/tools/unit-converter.webp"
 }
 </script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
 
 <meta property="og:locale" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
@@ -259,6 +259,7 @@ html[data-theme="dark"] .african-callout{color:#d1d9e8}
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What African-specific units are included?","acceptedAnswer":{"@type":"Answer","text":"The converter includes plots (Nigerian standard land measurement), morgen (South African land unit), and other units commonly used in African markets, agriculture, and real estate that you will not find in standard converters."}},{"@type":"Question","name":"How many conversion categories are available?","acceptedAnswer":{"@type":"Answer","text":"There are 20 categories: length, weight/mass, temperature, area, volume, speed, fuel economy, cooking, data storage, energy, power, pressure, time, angle, frequency, force, torque, flow rate, density, and electrical. Each includes engineering units relevant to African construction."}},{"@type":"Question","name":"Does the cooking converter handle ingredient-specific measurements?","acceptedAnswer":{"@type":"Answer","text":"Yes. The cooking category converts between cups, tablespoons, teaspoons, millilitres, fluid ounces, and other common recipe measurements, making it easy to follow recipes from different countries and measurement systems."}},{"@type":"Question","name":"Does the converter work offline?","acceptedAnswer":{"@type":"Answer","text":"Once the page has loaded, all conversions are performed locally using JavaScript with no server calls. You can continue using the converter even if your internet connection drops."}},{"@type":"Question","name":"How do I convert between metric and imperial?","acceptedAnswer":{"@type":"Answer","text":"Select the relevant category (e.g., length), choose your source unit (e.g., kilometres), and your target unit (e.g., miles). Enter a value and the conversion appears instantly. Both metric and imperial units are available in every relevant category."}}]}
 </script>
+<script src="/engines/business-roi-engine.js?v=00471c78"></script>
 <link rel="canonical" href="https://afrotools.com/tools/unit-converter/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/unit-converter/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/convertisseur-unites/">
@@ -1294,7 +1295,7 @@ function setResult(prefix, result, label) {
 // Generic linear conversion
 function cvt(prefix) {
   const { from, fromU, toU } = getVals(prefix);
-  const result = (from * fromU) / toU;
+  const result = window.BusinessRoiEngine.linearConversion({value:from,fromFactor:fromU,toFactor:toU});
   const ratio  = (fromU / toU);
   const fromName = document.getElementById(prefix + 'FromU').options[document.getElementById(prefix + 'FromU').selectedIndex].text;
   const toName   = document.getElementById(prefix + 'ToU').options[document.getElementById(prefix + 'ToU').selectedIndex].text;
@@ -1354,7 +1355,7 @@ function cvtTemp() {
   const v = parseFloat(document.getElementById('tmpFrom').value);
   const fu = document.getElementById('tmpFromU').value;
   const tu = document.getElementById('tmpToU').value;
-  const result = fromKelvin(toKelvin(v, fu), tu);
+  const result = window.BusinessRoiEngine.convertTemperature({value:v,from:fu,to:tu});
   document.getElementById('tmpTo').value = +result.toPrecision(8);
   document.getElementById('tmpFormula').textContent = `${v}°${fu} = ${+result.toPrecision(7)}°${tu}`;
 }
@@ -1481,6 +1482,6 @@ activateTab = function(tab) {
   if (t) cvt(t);
 };
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=630f8a7d"></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

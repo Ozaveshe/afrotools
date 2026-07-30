@@ -1,0 +1,68 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:vaccination-schedule",
+  "wave": "single-physical-route",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-vaccination-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 648 Vaccination English invariants across 54 countries",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-vaccination-oracles.json node tests/fr-agriculture-vaccination.test.js",
+    "oracleResult": "PASS 216 French profiles across 54 countries",
+    "generator": "node scripts/build-fr-agriculture-singleton.js --id vaccination-schedule --check",
+    "manifest": "node tests/fr-agriculture-parity-manifest.test.js",
+    "ai": "node scripts/lib/french-ai-route-map.js --check",
+    "browser": "PORT=42966 CI=1 npx playwright test tests/e2e/fr-agriculture-vaccination.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (59.5s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "vaccination-schedule",
+    "countryCode": null,
+    "englishRoute": "/agriculture/vaccination-schedule/",
+    "frenchRoute": "/fr/agriculture/vaccination-schedule/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-vaccination-oracles.json",
+      "englishInvariants": 648,
+      "countries": 54,
+      "frenchProfiles": 216,
+      "preserves": [
+        "54 unique country destinations and the current 108-card English hub presentation",
+        "country programme, regional fallback and government-campaign assumptions",
+        "cattle, small-ruminant, poultry and combined schedules",
+        "young, adult and breeding profiles",
+        "month ordering, due dates, urgency and annual dose counts",
+        "country or regional price ownership, herd cost, per-animal cost and modeled public saving"
+      ]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-vaccination.spec.js",
+      "result": "2 passed (59.5s)",
+      "isolatedPort": 42966,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "analyticsConsent": "rejected in browser proof; no external telemetry sent",
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/agriculture/vaccination-schedule/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/vaccination-engine.js#calculate"],
+      "data": ["data/agriculture/country-index.js", "data/agriculture/vaccination-data.js"],
+      "freshness": "static veterinary reference; no live campaign, vaccine availability, outbreak, price or rule feed",
+      "confidence": "consultation-preparation aid requiring validation by a licensed local veterinarian"
+    },
+    "artwork": {"imageId": "vaccination-schedule", "file": "assets/img/tools/vaccination-schedule.webp", "state": "present"},
+    "limitations": [
+      "The route is not a veterinary prescription or compliance record.",
+      "Species, age, health, pregnancy, licensed product, strain, route, dose, boosters, cold chain and local rules require veterinary confirmation.",
+      "A modeled government campaign does not prove current availability, eligibility or free provision."
+    ]
+  }]
+}

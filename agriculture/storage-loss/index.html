@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="en">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
@@ -77,8 +77,8 @@
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/agriculture.css?v=70592203">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 
 <style>
 :root{
@@ -448,7 +448,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
     <!-- TOTAL IMPACT -->
     <div class="card">
       <p class="card-title">Total Impact with PICS Bags</p>
-      <div class="impact-grid">
+      <div class="impact-grid" id="impact-grid">
         <div class="impact-stat">
           <div class="istat-val val-blue" id="imp-grain-saved">—</div>
           <div class="istat-lbl">Extra grain saved per season</div>
@@ -583,6 +583,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <afro-footer></afro-footer>
 
 <script src="/data/agriculture/storage-data.js?v=79bc240c"></script>
+<script src="/engines/storage-loss-engine.js?v=04192a17"></script>
 <script>
 (function() {
   'use strict';
@@ -670,87 +671,42 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
       return;
     }
 
-    var cropData   = STORAGE_DATA.lossRates[crop];
-    var method     = cropData.methods[methodKey];
-    var country    = STORAGE_DATA.countries[cc] || STORAGE_DATA.countries['ALL'];
-    var symbol     = country.symbol;
-    var rate       = country.rate; // local currency per USD
-
-    // Pick best hermetic method for this crop
-    var picsKey = cropData.methods.hermetic_bags_PICS ? 'hermetic_bags_PICS'
-                : cropData.methods.hermetic_bags ? 'hermetic_bags'
-                : cropData.methods.hermetic_bags_other ? 'hermetic_bags_other'
-                : null;
-    var siloKey = cropData.methods.metal_silo ? 'metal_silo' : null;
-
-    var currentLossPct = method.loss_pct;
-    var picsLossPct    = picsKey ? cropData.methods[picsKey].loss_pct : 1;
-    var siloLossPct    = siloKey ? cropData.methods[siloKey].loss_pct : 0.5;
-
-    // Adjust loss for duration (if stored longer than the "typical" period, scale loss up slightly)
-    var typicalMonths = method.period_months || 6;
-    var durationFactor = Math.min(duration / typicalMonths, 1.5);
-    var adjCurrentLoss  = Math.min(currentLossPct * durationFactor, 95);
-    var adjPicsLoss     = Math.min(picsLossPct * (duration / (picsKey ? cropData.methods[picsKey].period_months || 9 : 9)), 5);
-    var adjSiloLoss     = Math.min(siloLossPct * (duration / 12), 3);
-
-    // Grain quantities
-    var currentLossTonnes = qty * (adjCurrentLoss / 100);
-    var picsLossTonnes    = qty * (adjPicsLoss / 100);
-    var siloLossTonnes    = qty * (adjSiloLoss / 100);
-
-    // Values
-    var currentLossVal = currentLossTonnes * price;
-    var picsLossVal    = picsLossTonnes * price;
-    var siloLossVal    = siloLossTonnes * price;
-
-    // Grain saved vs current
-    var picsGrainSaved = currentLossTonnes - picsLossTonnes;
-    var siloGrainSaved = currentLossTonnes - siloLossTonnes;
-    var picsValSaved   = picsGrainSaved * price;
-    var siloValSaved   = siloGrainSaved * price;
-
-    // Technology costs
-    var bagsNeeded   = Math.ceil((qty * 1000) / 100); // 100 kg bags
-    var picsBagCost  = country.pics_bag || (2.50 * rate);
-    var picsTotalCost = bagsNeeded * picsBagCost;
-    var picsPerUseCost = picsTotalCost / 3; // reusable 3 times
-
-    // Metal silo — pick size
-    var siloCapKg = qty * 1000;
-    var siloCostLocal, siloLabel;
-    if (siloCapKg <= 500) {
-      siloCostLocal = country.silo_500kg || (100 * rate);
-      siloLabel = '500 kg silo';
-    } else if (siloCapKg <= 1000) {
-      siloCostLocal = country.silo_1000kg || (180 * rate);
-      siloLabel = '1 tonne silo';
-    } else {
-      var numSilos1t = Math.ceil(qty);
-      siloCostLocal = numSilos1t * (country.silo_1000kg || (180 * rate));
-      siloLabel = numSilos1t + ' × 1 t silos';
-    }
-    var siloAnnualCost = siloCostLocal / 15; // 15-year lifespan
-
-    // Net savings (grain saved value minus cost)
-    var picsNetSave = picsValSaved - picsPerUseCost;
-    var siloNetSave = siloValSaved - siloAnnualCost;
-
-    // ROI
-    var picsROI = picsPerUseCost > 0 ? ((picsValSaved - picsPerUseCost) / picsPerUseCost * 100) : 999;
-    var siloROI = siloAnnualCost > 0 ? ((siloValSaved - siloAnnualCost) / siloAnnualCost * 100) : 999;
-
-    // Payback (seasons to recoup one-time cost)
-    var picsPaybackSeasons = picsValSaved > 0 ? (picsTotalCost / picsValSaved).toFixed(1) : '—';
-    var siloPaybackSeasons = siloValSaved > 0 ? (siloCostLocal / siloValSaved).toFixed(1) : '—';
-
-    // Price timing benefit
-    var seasonal = STORAGE_DATA.seasonalPriceIncrease[crop] || 40;
-    var grainForSale = qty - picsLossTonnes;
-    var timingGain = grainForSale * price * (seasonal / 100);
-
-    // Total with PICS
-    var totalBenefit = picsValSaved + timingGain;
+    var model = window.AfroTools.StorageLossEngine.calculate({ crop: crop, countryCode: cc, methodKey: methodKey, quantityTonnes: qty, durationMonths: duration, pricePerTonne: price }, STORAGE_DATA);
+    if (!model.ok) { alert('Please fill in all fields before calculating.'); return; }
+    window.STORAGE_LOSS_LAST_RESULT = model;
+    var cropData = model.cropData;
+    var country = model.country;
+    var symbol = model.symbol;
+    var rate = model.rate;
+    var picsKey = model.picsKey;
+    var adjCurrentLoss = model.adjCurrentLoss;
+    var adjPicsLoss = model.adjPicsLoss;
+    var adjSiloLoss = model.adjSiloLoss;
+    var currentLossTonnes = model.currentLossTonnes;
+    var picsLossTonnes = model.picsLossTonnes;
+    var siloLossTonnes = model.siloLossTonnes;
+    var currentLossVal = model.currentLossVal;
+    var picsLossVal = model.picsLossVal;
+    var siloLossVal = model.siloLossVal;
+    var picsGrainSaved = model.picsGrainSaved;
+    var picsValSaved = model.picsValSaved;
+    var bagsNeeded = model.bagsNeeded;
+    var picsBagCost = model.picsBagCost;
+    var picsTotalCost = model.picsTotalCost;
+    var picsPerUseCost = model.picsPerUseCost;
+    var siloCostLocal = model.siloCostLocal;
+    var siloLabel = model.siloLabel;
+    var siloAnnualCost = model.siloAnnualCost;
+    var picsNetSave = model.picsNetSave;
+    var siloNetSave = model.siloNetSave;
+    var picsROI = model.picsROI;
+    var siloROI = model.siloROI;
+    var picsPaybackSeasons = model.picsPaybackSeasons;
+    var siloPaybackSeasons = model.siloPaybackSeasons;
+    var seasonal = model.seasonalPriceIncreasePct;
+    var grainForSale = model.grainForSale;
+    var timingGain = model.timingGain;
+    var totalBenefit = model.totalBenefit;
 
     // ── RENDER RESULTS ──────────────────────────────────────────────────────
 
@@ -824,6 +780,6 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);mar
 <script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
 <script>if(typeof twemoji!=="undefined")twemoji.parse(document.body,{folder:"svg",ext:".svg"});</script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

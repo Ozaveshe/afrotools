@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Calculateur de matériaux de plomberie | AfroTools</title>
+<meta name="description" content="Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre. Calcul local, hypothèses visibles et résultats exportables pour les projets africains.">
+<meta property="og:title" content="Calculateur de matériaux de plomberie | AfroTools">
+<meta property="og:description" content="Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://afrotools.com/fr/tools/materiaux-plomberie/">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur de matériaux de plomberie | AfroTools">
+<meta name="twitter:description" content="Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/energy.css?v=93e1c4c7">
+<style>
+:root { --en-accent:#78716c; --en-accent-dark:#57534e; --en-accent-light:#a8a29e; --en-accent-pale:#f5f5f4; }
+.en-tool-hero { background: linear-gradient(135deg, #44403c 0%, #78716c 50%, #a8a29e 100%) !important; }
+.bom-table { width:100%; border-collapse:collapse; font-size:.85rem; }
+.bom-table th { background:var(--en-accent-pale); color:var(--en-accent-dark); padding:.5rem .75rem; text-align:left; }
+.bom-table td { padding:.5rem .75rem; border-bottom:1px solid #e2e8f0; }
+.bom-total td { font-weight:700; background:#f0fdf4; }
+
+.qe-workflow { margin: 1.5rem 0; }
+.qe-card { background:#fff; border:1px solid #d6d3d1; border-radius:8px; padding:1.2rem; box-shadow:0 8px 24px rgba(15,23,42,.06); }
+.qe-card h2 { margin:0 0 .45rem; color:#292524; font-size:1.25rem; }
+.qe-card p { color:#57534e; line-height:1.6; margin:.35rem 0; }
+.qe-actions { display:flex; gap:.75rem; flex-wrap:wrap; margin-top:1rem; }
+.qe-actions button { border:1px solid #a8a29e; background:#fff; color:#292524; border-radius:8px; padding:.7rem 1rem; font-weight:800; cursor:pointer; font-family:inherit; }
+.qe-actions button:first-child { background:#44403c; color:#fff; border-color:#44403c; }
+.qe-actions button:focus-visible { outline:2px solid #78716c; outline-offset:2px; }
+.qe-status { min-height:1.25rem; color:#57534e; font-size:.84rem; margin:.7rem 0 0; }
+.qe-verification { margin-top:1rem; display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:.75rem; }
+.qe-verification div { background:#fafaf9; border:1px solid #e7e5e4; border-radius:8px; padding:.85rem; }
+.qe-verification strong { display:block; color:#292524; margin-bottom:.35rem; }
+.qe-verification span { color:#57534e; font-size:.86rem; line-height:1.5; }
+@media (max-width: 760px) { .qe-verification { grid-template-columns:1fr; } .qe-actions button { width:100%; } }
+
+</style>
+
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/plumbing-material.webp">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/plumbing-material.webp">
+  <link rel="stylesheet" href="/assets/css/engineering-enhancements.css?v=b4d7dd3f">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<meta name="afrotools-content-id" content="fr-engineering:plumbing-material">
+<meta name="afrotools-source-owner" content="scripts/build-french-engineering-parity.js">
+<meta name="afrotools-source-route" content="/tools/plumbing-material/">
+<meta name="afrotools-ai-tool-id" content="plumbing-material">
+<link rel="stylesheet" href="/assets/css/fr-engineering-parity.css?v=630c62a3">
+<script type="application/ld+json">[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur de matériaux de plomberie",
+    "description": "Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.",
+    "url": "https://afrotools.com/fr/tools/materiaux-plomberie/",
+    "inLanguage": "fr",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Tout navigateur moderne",
+    "isAccessibleForFree": true,
+    "featureList": [
+      "Le moteur partagé applique le type de bâtiment, les salles d’eau, le matériau et les tarifs du pays.",
+      "Calcul déterministe local",
+      "Résultat exportable lorsque le propriétaire anglais le permet"
+    ]
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Comment utiliser Calculateur de matériaux de plomberie ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Le moteur partagé applique le type de bâtiment, les salles d’eau, le matériau et les tarifs du pays."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Cette estimation remplace-t-elle une validation professionnelle ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Confirmez pression, diamètres, pentes, ventilation, qualité d’eau et prescriptions locales."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Les données sont-elles envoyées à une IA ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non par défaut. Le calcul et les exports sont locaux. Toute assistance d’IA doit être facultative et soumise à un consentement explicite."
+        }
+      }
+    ]
+  }
+]</script>
+<link rel="canonical" href="https://afrotools.com/fr/tools/materiaux-plomberie/">
+<link rel="alternate" hreflang="en" href="https://afrotools.com/tools/plumbing-material/">
+<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/materiaux-plomberie/">
+<link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/plumbing-material/">
+</head>
+<body class="top-level-page-ui-refresh">
+<afro-navbar theme="dark" active="engineering"></afro-navbar>
+<nav class="en-breadcrumb" aria-label="Breadcrumb">
+  <div class="en-container"><ol>
+    <li><a href="/">Accueil</a></li><li><a href="/engineering/">Ingénierie</a></li>
+    <li aria-current="page">Plomberie Matériau Calculateur</li>
+  </ol></div>
+</nav>
+<section class="en-tool-hero">
+  <div class="en-container">
+    <div class="en-hero-badge">Construction</div>
+    <h1>Plomberie Matériau Calculateur</h1>
+    <p>Estimer</p>
+  </div>
+</section>
+<main class="en-main">
+  <div class="en-container">
+    <div class="en-card">
+      <h2 class="en-section-title">Paramètres du projet</h2>
+      <div class="en-form-grid">
+        <div class="en-field">
+          <label class="en-label" for="pm-country">Pays</label>
+          <select class="en-select" id="pm-country">
+            <option value="NG">Nigeria (₦)</option><option value="KE">Kenya (KES)</option><option value="ZA">Afrique du Sud (ZAR)</option><option value="GH">Ghana (GHS)</option><option value="EG">Égypte (EGP)</option><option value="ET">Éthiopie (ETB)</option><option value="TZ">Tanzanie (TZS)</option><option value="UG">Ouganda (UGX)</option><option value="RW">Rwanda (RWF)</option><option value="MA">Maroc (MAD)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Type de bâtiment</label>
+          <select class="en-select" id="pm-type" aria-label="Pm Type">
+            <option value="1bed">1-Bedroom Apartment</option>
+            <option value="2bed">2-Bedroom Apartment</option>
+            <option value="3bed">3-Bedroom House</option>
+            <option value="4bed">4-Bedroom House</option>
+            <option value="duplex">Duplex (2 Nombre de niveaux)</option>
+            <option value="commercial">Commercial (per 100m²)</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Pipe Matériau</label>
+          <select class="en-select" id="pm-pipe" aria-label="Pm Pipe">
+            <option value="upvc">uPVC (most common)</option>
+            <option value="ppr">PPR (higher qualité)</option>
+            <option value="copper">Copper (premium)</option>
+            <option value="galv">Galvanised Fer à repasser</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Number of Bathrooms</label>
+          <input aria-label="Pm baths" type="number" class="en-input" id="pm-baths" value="2" min="1" max="10">
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Overhead Réservoir?</label>
+          <select class="en-select" id="pm-tank" aria-label="Pm Réservoir">
+            <option value="yes">Oui</option>
+            <option value="no">Non</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Réservoir Capacity (litres)</label>
+          <select class="en-select" id="pm-tank-size" aria-label="Pm Réservoir Diamètre">
+            <option value="500">500L</option>
+            <option value="1000" selected>1,000L</option>
+            <option value="2000">2,000L</option>
+            <option value="5000">5,000L</option>
+          </select>
+        </div>
+        <div class="en-field">
+          <label class="en-label">Include Main-d’œuvre?</label>
+          <select class="en-select" id="pm-labour" aria-label="Pm Main-d’œuvre">
+            <option value="yes">Oui</option>
+            <option value="no">Informations et hypothèses du calcul</option>
+          </select>
+        </div>
+      </div>
+      <button type="button" class="en-btn" onclick="calcPlumbing()">Calculer les matériaux & Coût</button>
+    </div>
+
+    <div class="en-results" id="pm-results">
+      <div class="en-results-hero">
+        <div class="en-results-title">Bill of Matériaux</div>
+      </div>
+      <div class="en-results-grid">
+        <div class="en-stat-card"><div class="en-stat-label">Total Matériaux Coût</div><div class="en-stat-value" id="pm-mat-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Main-d’œuvre Coût</div><div class="en-stat-value" id="pm-lab-total">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">TOTAL GÉNÉRAL</div><div class="en-stat-value" id="pm-grand">—</div></div>
+        <div class="en-stat-card"><div class="en-stat-label">Coût per Bathroom</div><div class="en-stat-value" id="pm-per-bath">—</div></div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.75rem">Bill of Matériaux</h3>
+        <div style="overflow-x:auto">
+          <table class="bom-table">
+            <thead><tr><th>Poste</th><th>Qté</th><th>Unité</th><th>Coût unitaire</th><th>Total</th></tr></thead>
+            <tbody id="pm-bom"></tbody>
+          </table>
+        </div>
+      </div>
+      <div class="en-card" style="margin-top:1.5rem">
+        <h3 style="margin-bottom:.5rem">Tips</h3>
+        <ul id="pm-tips" style="padding-left:1.25rem;margin:0;display:flex;flex-direction:column;gap:.4rem;font-size:.9rem"></ul>
+      </div>
+    </div>
+  </div>
+
+    <section class="qe-workflow" data-queued-engineering-upgrade="plumbing-material" data-tool-verification-panel data-tool-id="plumbing-material" aria-labelledby="plumbing-material-workflow-title">
+      <div class="qe-card">
+        <h2 id="plumbing-material-workflow-title">Exportable planning brief</h2>
+        <p>Charger</p>
+        <div class="qe-actions">
+          <button type="button" data-qe-copy="plumbing-material">Copier brief</button>
+          <button type="button" data-qe-download="plumbing-material" data-no-gate="true">Télécharger le TXT</button>
+        </div>
+        <p class="qe-status" id="plumbing-material-qe-status" role="status" aria-live="polite"></p>
+        <div class="qe-verification" aria-label="Plomberie Matériau Calculateur verification notes">
+          <div><strong>Source</strong><span>Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.</span></div>
+          <div><strong>Actualité</strong><span>Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.</span></div>
+          <div><strong>Méthodologie</strong><span>Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.</span></div>
+          <div><strong>Limites</strong><span>Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.</span></div>
+        </div>
+      </div>
+    </section>
+</main>
+<nav class="fr-engineering-related-tools" aria-labelledby="plumbing-material-related-title">
+  <h2 id="plumbing-material-related-title">Outils d’ingénierie associés</h2>
+  <ul>
+      <li><a href="/fr/ingenierie/afrodraft/">AfroDraft CAO 2D</a></li>
+      <li><a href="/fr/ingenierie/planificateur-etage/">Planificateur de plan d’étage</a></li>
+      <li><a href="/fr/tools/calculateur-solaire/">Calculateur solaire</a></li>
+  </ul>
+</nav>
+<afro-footer></afro-footer>
+<script src="/engines/plumbing-material-engine.js?v=eb800d7f"></script>
+<script>
+var PIPE_NAMES = { upvc:'uPVC Pipe', ppr:'PPR Pipe', copper:'Copper Pipe', galv:'Galvanised Pipe' };
+
+function fmtCur(sym, n){ return sym + Math.round(n).toLocaleString(); }
+
+function calcPlumbing(){
+  var result = window.AfroTools.PlumbingMaterialEngine.calculate({
+    country:document.getElementById('pm-country').value,
+    buildingType:document.getElementById('pm-type').value,
+    pipeType:document.getElementById('pm-pipe').value,
+    bathrooms:document.getElementById('pm-baths').value,
+    includeTank:document.getElementById('pm-tank').value === 'yes',
+    tankSize:document.getElementById('pm-tank-size').value,
+    includeLabour:document.getElementById('pm-labour').value === 'yes'
+  });
+  if (!result.ok) {
+    document.getElementById('pm-results').classList.remove('on');
+    return;
+  }
+  document.getElementById('pm-mat-total').textContent = fmtCur(result.symbol, result.materialTotal);
+  document.getElementById('pm-lab-total').textContent = result.includeLabour ? fmtCur(result.symbol, result.labourCost) : 'Not included';
+  document.getElementById('pm-grand').textContent = fmtCur(result.symbol, result.total);
+  document.getElementById('pm-per-bath').textContent = fmtCur(result.symbol, result.perBathroom);
+
+  var bom = result.bom.map(function(row) {
+    if (row.kind === 'pipe') return {item:PIPE_NAMES[row.pipeType]+' (15–32mm)',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'fittings') return {item:'Fittings (elbows, tees, valves)',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'sanitaryware') return {item:'Sanitary ware (per bathroom)',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'connection') return {item:'Pump/borehole connection pipe',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+    if (row.kind === 'tank') return {item:'Overhead Poly Réservoir ('+row.tankSize+'L)',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+    return {item:'Main-d’œuvre du plombier ('+row.labourDays+' jours)',qty:row.qty,unit:row.unit==='days'?'jours':row.unit,unit_cost:row.unitCost,total:row.total};
+  });
+
+  var tbody = document.getElementById('pm-bom');
+  tbody.innerHTML = bom.map(function(b){ return '<tr><td>'+b.item+'</td><td>'+b.qty+'</td><td>'+b.unit+'</td><td>'+fmtCur(result.symbol,b.unit_cost)+'</td><td>'+fmtCur(result.symbol,b.total)+'</td></tr>'; }).join('') + '<tr class="bom-total"><td colspan="4">TOTAL</td><td>' + fmtCur(result.symbol, result.total) + '</td></tr>';
+
+  document.getElementById('pm-tips').innerHTML = [
+    'Achetez 10 à 15 % de tuyau supplémentaire pour les chutes et les réparations futures.',
+    result.pipeType === 'galv' ? 'Galvanised pipes rust over time — PPR or uPVC Puissance recommandée : for Eau supply.' : result.pipeType === 'copper' ? 'Copper is premium but highly resistant to corrosion and long-lasting.' : 'Le PVC-U est généralement le plus économique pour les réseaux d’eau chaude et froide.',
+    'Mettez toutes les connexions sous pression avant d’enduire les murs.',
+    'Installez une vanne d’arrêt dans chaque salle d’eau afin d’isoler une panne sans couper tout le bâtiment.'
+  ].map(function(t){ return '<li>' + t + '</li>'; }).join('');
+
+  document.getElementById('pm-results').classList.add('on');
+  document.getElementById('pm-results').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+</script>
+<script>
+(function(){
+  var config = {
+    title: "Plomberie Matériau Calculateur",
+    slug: "plumbing-material",
+    resultSelector: "#pm-results",
+    primary: "#pm-grand"
+  };
+  function clean(text){ return String(text || '').replace(/\s+/g, ' ').trim(); }
+  function labelFor(field){
+    if (!field) return '';
+    if (field.id) {
+      var direct = document.querySelector('label[for="' + field.id + '"]');
+      if (direct) return clean(direct.textContent);
+    }
+    var wrap = field.closest && field.closest('.en-field');
+    var label = wrap && wrap.querySelector('label, .en-label');
+    return clean(label ? label.textContent : (field.getAttribute('aria-label') || field.id || field.name || 'Input'));
+  }
+  function valueFor(field){
+    if (!field) return '';
+    if (field.tagName && field.tagName.toLowerCase() === 'select') {
+      return clean(field.options[field.selectedIndex] ? field.options[field.selectedIndex].text : field.value);
+    }
+    return clean(field.value);
+  }
+  function captureInputs(){
+    return Array.prototype.slice.call(document.querySelectorAll('.en-field input, .en-field select')).map(function(field){
+      return '- ' + labelFor(field) + ': ' + valueFor(field);
+    }).filter(function(line){ return line.indexOf(':') !== line.length - 1; }).slice(0, 18);
+  }
+  function captureResults(){
+    var result = document.querySelector(config.resultSelector);
+    if (!result || !result.classList.contains('on')) {
+      var button = document.querySelector('button[onclick*="calc"], .en-btn');
+      if (button) button.click();
+      result = document.querySelector(config.resultSelector);
+    }
+    var primary = clean(document.querySelector(config.primary) && document.querySelector(config.primary).textContent);
+    var stats = Array.prototype.slice.call(document.querySelectorAll(config.resultSelector + ' .en-stat-card')).map(function(card){
+      var label = clean(card.querySelector('.en-stat-label') && card.querySelector('.en-stat-label').textContent);
+      var value = clean(card.querySelector('.en-stat-value') && card.querySelector('.en-stat-value').textContent);
+      return label && value ? '- ' + label + ': ' + value : '';
+    }).filter(Boolean).slice(0, 12);
+    return { primary: primary, stats: stats };
+  }
+  function buildBrief(){
+    var result = captureResults();
+    var lines = [
+      config.title + ' - AfroTools planning brief',
+      'Generated locally in this browser.',
+      '',
+      'Headline Résultat: ' + (result.primary || 'Run the Calculateur to Actualiser the Résultat.'),
+      '',
+      'Inputs:',
+      captureInputs().join('\n') || '- Non Entrées captured.',
+      '',
+      'Results:',
+      result.stats.join('\n') || '- Non Résultat values captured.',
+      '',
+      'Hypothèses and checks:',
+      '- Estimation indicative only; confirm current supplier, contractor, professional, permit, safety, and Chantier conditions before acting.',
+      '- The Calculateur does not send Paramètres du projet to a server when copying or downloading.',
+      '- Keep a quote pack with drawings, photos, measurements, and supplier terms beside this Estimer.'
+    ];
+    return lines.join('\n');
+  }
+  function status(message){
+    var el = document.getElementById(config.slug + '-qe-status');
+    if (el) el.textContent = message;
+  }
+  function copyBrief(){
+    var text = buildBrief();
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(function(){ status('Brief copied.'); }).catch(function(){ fallbackCopy(text); });
+    } else {
+      fallbackCopy(text);
+    }
+  }
+  function fallbackCopy(text){
+    var area = document.createElement('textarea');
+    area.value = text;
+    document.body.appendChild(area);
+    area.select();
+    try { document.execCommand('copy'); status('Brief selected and copied.'); }
+    catch (err) { status('Brief selected. Press Ctrl+C to Copier.'); }
+    document.body.removeChild(area);
+  }
+  function downloadBrief(){
+    var text = buildBrief();
+    var blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    var url = URL.createObjectURL(blob);
+    var link = document.createElement('a');
+    link.href = url;
+    link.download = config.slug + '-planning-brief.txt';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    status('TXT brief downloaded.');
+  }
+  document.addEventListener('click', function(event){
+    if (event.target.closest('[data-qe-copy="' + config.slug + '"]')) copyBrief();
+    if (event.target.closest('[data-qe-download="' + config.slug + '"]')) downloadBrief();
+  });
+}());
+</script>
+  <script src="/assets/js/pages/fr-engineering-toolkit-config.js?v=3fbe9c0a" defer></script>
+<script src="/assets/js/pages/fr-engineering-toolkit.js?v=d0c2df8a" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<section class="fr-engineering-native-guide" data-fr-engineering-owner="plumbing-material" aria-labelledby="plumbing-material-fr-guide-title">
+  <p class="fr-engineering-eyebrow">Parcours français natif</p>
+  <h2 id="plumbing-material-fr-guide-title">Calculateur de matériaux de plomberie : méthode, limites et confidentialité</h2>
+  <figure class="fr-engineering-owner-artwork">
+    <img src="/assets/img/tools/plumbing-material.webp" alt="Illustration du parcours Calculateur de matériaux de plomberie" width="640" height="360" loading="lazy">
+    <figcaption>Repère visuel du parcours Calculateur de matériaux de plomberie.</figcaption>
+  </figure>
+  <div class="fr-engineering-guide-grid">
+    <article><h3>Objectif</h3><p>Estimez tuyaux, raccords, appareils sanitaires, réservoir et main-d’œuvre.</p></article>
+    <article><h3>Méthode</h3><p>Procédure conseillée : Le moteur partagé applique le type de bâtiment, les salles d’eau, le matériau et les tarifs du pays.</p></article>
+    <article><h3>À vérifier</h3><p>Contrôle indispensable : Confirmez pression, diamètres, pentes, ventilation, qualité d’eau et prescriptions locales.</p></article>
+  </div>
+  <div class="fr-engineering-trust" role="note">
+    <p><strong>Calcul local et privé.</strong> Les saisies et les exports restent dans ce navigateur. Aucun contenu de projet n’est envoyé à un service d’IA sans une action volontaire et un consentement explicite indiquant les données transmises.</p>
+    <p><strong>Estimation de planification.</strong> Vérifiez les dimensions, prix, normes, autorisations et conditions de site avant toute commande ou exécution.</p>
+    <p><strong>Même méthode dans les deux langues.</strong> Vous pouvez consulter <a href="/tools/plumbing-material/">la version anglaise équivalente</a> ; les mêmes données produisent les mêmes résultats.</p>
+  </div>
+  <dl class="fr-engineering-provenance">
+    <div><dt>Version équivalente</dt><dd><a href="https://afrotools.com/tools/plumbing-material/">https://afrotools.com/tools/plumbing-material/</a></dd></div>
+    <div><dt>Fraîcheur</dt><dd><time datetime="2026-07-29">29 juillet 2026</time></dd></div>
+    <div><dt>Confiance</dt><dd>Résultats vérifiés par comparaison avec la version anglaise ; les prix et conditions de chantier restent à confirmer localement.</dd></div>
+  </dl>
+  <div class="fr-engineering-local-export">
+    <button type="button" data-fr-engineering-reset>Réinitialiser le parcours</button>
+    <label class="fr-engineering-import">
+      <span>Rouvrir un état JSON</span>
+      <input type="file" accept="application/json,.json" data-fr-engineering-import aria-label="Choisir un état JSON à rouvrir">
+    </label>
+    <button type="button" data-fr-engineering-export="plumbing-material">Exporter l’état local (JSON)</button>
+    <span data-fr-engineering-export-status role="status" aria-live="polite">Aucune donnée n’est envoyée.</span>
+    <span data-fr-engineering-runtime-status role="status" aria-live="polite"></span>
+  </div>
+  <details><summary>Cette estimation remplace-t-elle une validation professionnelle ?</summary><p>Non. Elle structure une première décision. Les documents d’exécution, notes de calcul, installations et devis doivent être contrôlés par les professionnels compétents.</p></details>
+  <details><summary>Mes données sont-elles envoyées à une IA ?</summary><p>Non par défaut. Le calcul déterministe et les exports fonctionnent localement. Toute assistance d’IA doit rester facultative, expliquer son transfert de données et demander votre consentement.</p></details>
+</section>
+<script src="/assets/js/pages/fr-engineering-export.js?v=473ab012"></script>
+<script src="/assets/js/pages/fr-engineering-acceptance.js?v=16da56ed"></script>
+<script src="/assets/js/pages/fr-engineering-reflow.js?v=1d34ad33"></script>
+<script>window.AfroToolsFrenchEngineering={"id":"plumbing-material","name":"Calculateur de matériaux de plomberie","source":"/tools/plumbing-material/","privacy":"local-first","aiConsent":"explicit"};</script>
+</body>
+</html>

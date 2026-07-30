@@ -1,142 +1,271 @@
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="vaccine-schedule">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
 <meta name="view-transition" content="same-origin">
-<title>Calendrier vaccinal indicatif | AfroTools</title>
-<meta name="description" content="Consultez des repères vaccinaux en français et confirmez toujours le calendrier auprès des recommandations locales ou d’un professionnel de santé.">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Guide des programmes de vaccination | AfroTools</title>
+<meta name="description" content="Trouvez un transfert officiel du programme de vaccination du pays et préparez un dossier de visite dans une clinique privée. Pas de planning universel, de conseils…">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Calendrier vaccinal indicatif | AfroTools">
-<meta property="og:description" content="Repères de vaccination à confirmer auprès des recommandations locales ou d’un professionnel de santé.">
+<meta property="og:title" content="Guide des programmes de vaccination | AfroTools">
+<meta property="og:description" content="Trouvez un transfert officiel du programme de vaccination du pays et préparez un dossier de visite dans une clinique privée. Pas de planning universel, de conseils…">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/vaccine-schedule.webp">
+<meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/fr/tools/calendrier-vaccinal/">
+<meta property="og:locale" content="en_US">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calendrier vaccinal indicatif | AfroTools">
-<meta name="twitter:description" content="Consultez des repères vaccinaux en français et confirmez toujours le calendrier auprès des recommandations locales ou d’un professionnel de santé."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;color:#7c2d12;font-size:.88rem;line-height:1.65;margin-bottom:24px}
-.fr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-.fr-link{display:block;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-decoration:none;background:#fff;color:#0f172a}.fr-link span{display:block;color:#64748b;font-size:.82rem;line-height:1.5;margin-top:4px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calendrier vaccinal indicatif",
-  "description": "Repères de vaccination à confirmer auprès des recommandations locales ou d’un professionnel de santé.",
-  "url": "https://afrotools.com/fr/tools/calendrier-vaccinal/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/vaccine-schedule.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce calendrier remplace-t-il les recommandations locales ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il sert de repère. Les calendriers changent selon le pays, l’âge, l’état de santé, les campagnes publiques et les vaccins disponibles."}},{"@type":"Question","name":"Que faire si un vaccin est en retard ?","acceptedAnswer":{"@type":"Answer","text":"Demandez conseil à un centre de santé, un pédiatre ou un programme local de vaccination. Ne doublez pas une dose sans avis qualifié."}},{"@type":"Question","name":"Les vaccins de voyage sont-ils inclus ?","acceptedAnswer":{"@type":"Answer","text":"L’outil peut aider à préparer une discussion, mais les exigences de voyage doivent être vérifiées auprès des autorités et d’un professionnel de santé."}}]}
-</script>
+<meta name="twitter:title" content="Guide des programmes de vaccination | AfroTools">
+<meta name="twitter:description" content="Trouvez un transfert officiel du programme de vaccination du pays et préparez un dossier de visite dans une clinique privée. Pas de planning universel, de conseils…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/vaccine-schedule.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+<meta property="article:modified_time" content="2026-07-26">
+<meta name="tool-id" content="vaccine-schedule">
+<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/tools/vaccine-schedule/vaccine-schedule-vip.css?v=b25d3695">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Guide des programmes de vaccination",
+    "description": "Trouvez un transfert officiel du programme de vaccination du pays et préparez un dossier de visite dans une clinique privée. Pas de planning universel, de conseils…",
+    "url": "https://afrotools.com/fr/tools/calendrier-vaccinal/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/vaccine-schedule.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
   }
-}
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Vaccination Programme Finder & Visit Brief | AfroTools":"Recherche de programmes de vaccination et résumé de visite | AfroTools","Skip to programme finder":"Passer à l'outil de recherche de programmes","Home":"Accueil","Health":"Santé","Vaccination programme finder":"Recherche de programme de vaccination","Country programme handoff · no universal schedule":"Transfert du programme de pays · pas de calendrier universel","Start with the official programme, then confirm at the clinic":"Commencez par le programme officiel, puis confirmez à la clinique","Choose a country and prepare a short visit brief. AfroTools does not generate dose dates, mark anyone fully vaccinated, or personalise catch-up, product, pregnancy, allergy, immune-condition, or contraindication advice.":"Choisissez un pays et préparez un bref résumé de visite. AfroTools ne génère pas de dates de dose, ne marque pas toute personne complètement vaccinée et ne personnalise pas les conseils de rattrapage, de produit, de grossesse, d'allergie, de condition immunitaire ou de contre-indication.","No birth date required":"Aucune date de naissance requise","No completion score":"Pas de note d'achèvement","Local export":"Exportation locale","Possible severe reaction after vaccination?":"Possible réaction sévère après vaccination ?","Get immediate local emergency care":"Obtenez des soins d’urgence locaux immédiats","for trouble breathing, wheezing, swelling of the face, lips or throat, collapse, seizure, blue lips, shock, or unresponsiveness. Do not use this page to assess severity, choose treatment, or decide to wait. For other concerning symptoms, contact the vaccination provider or a qualified clinician promptly.":"en cas de difficulté à respirer, de respiration sifflante, de gonflement du visage, des lèvres ou de la gorge, d'effondrement, de convulsions, de lèvres bleues, de choc ou d'insensibilité. N'utilisez pas cette page pour évaluer la gravité, choisir un traitement ou décider d'attendre. Pour d’autres symptômes préoccupants, contactez rapidement le prestataire de vaccination ou un clinicien qualifié.","Country truth":"Vérité du pays","National programmes decide products, ages, intervals and delivery routes.":"Les programmes nationaux décident des produits, des âges, des intervalles et des itinéraires de livraison.","Record truth":"Enregistrer la vérité","A card entry may need product- and dose-specific interpretation.":"Une entrée de carte peut nécessiter une interprétation spécifique au produit et à la dose.","Clinical truth":"Vérité clinique","Catch-up and contraindication decisions require a qualified provider.":"Les décisions de rattrapage et de contre-indication nécessitent un prestataire qualifié.","Private preparation worksheet":"Feuille de travail de préparation privée","Find the source and prepare your questions":"Trouvez la source et préparez vos questions","Use an age band rather than a birth date. Do not enter a name, address, medical-record number, school, clinic identifier, or contact details.":"Utilisez une tranche d’âge plutôt qu’une date de naissance. N'entrez pas de nom, d'adresse, de numéro de dossier médical, d'école, d'identifiant de clinique ou de coordonnées.","Check the selected fields":"Vérifiez les champs sélectionnés","Country or programme":"Pays ou programme","Select a country":"Sélectionnez un pays","Nigeria":"Nigéria","South Africa":"Afrique du Sud","Ethiopia":"Ethiopie","Another country":"Un autre pays","Age band on the record":"Tranche d'âge sur le disque","Select an age band":"Sélectionnez une tranche d'âge","Newborn / under 6 weeks":"Nouveau-né / moins de 6 semaines","6 weeks to under 1 year":"6 semaines à moins de 1 an","1 to 4 years":"1 à 4 ans","5 to 9 years":"5 à 9 ans","10 to 17 years":"10 à 17 ans","18 years or older":"18 ans ou plus","What needs clarification?":"Qu’est-ce qui nécessite des éclaircissements ?","Select one":"Sélectionnez-en un","Checking the next routine programme step":"Vérification de la prochaine étape du programme de routine","A dose may have been missed or delayed":"Une dose peut avoir été oubliée ou retardée","The card or product entry is unclear":"L'entrée de la carte ou du produit n'est pas claire","The record is unavailable":"L'enregistrement n'est pas disponible","A non-emergency post-vaccination concern":"Une préoccupation post-vaccination non urgente","Vaccine or product text printed on the record":"Texte du vaccin ou du produit imprimé sur le dossier","(optional)":"(facultatif)","This text is included only in the local visit brief. The tool does not interpret, match, or validate it.":"Ce texte est inclus uniquement dans le brief de visite locale. L’outil ne l’interprète pas, ne le compare pas et ne le valide pas.","Prepare official handoff":"Préparer le transfert officiel","Clear":"Effacer","Source handoff · checked 26 July 2026":"Transfert de source · vérifié le 26 juillet 2026","Official programme handoff":"Remise officielle du programme","Open WHO country-reported schedule portal":"Ouvrir le portail des calendriers déclarés par les pays de l’OMS","No schedule or completion verdict was generated":"Aucun planning ou verdict d'achèvement n'a été généré","This brief does not say which vaccine is due, whether a series should restart or continue, whether a product can be substituted, or whether vaccination is complete.":"Cette note ne précise pas quel vaccin est nécessaire, si une série doit reprendre ou se poursuivre, si un produit peut être remplacé ou si la vaccination est terminée.","Questions to take to the vaccination provider":"Questions à poser au prestataire de vaccination","Print / Save PDF":"Imprimer / Enregistrer le PDF","Download text brief":"Télécharger le texte du résumé","Both exports are created locally without an account, email, or upload.":"Les deux exportations sont créées localement sans compte, e-mail ou téléchargement.","Catch-up boundary":"Limite de rattrapage","Do not calculate missed doses here":"Ne calculez pas les doses oubliées ici","Minimum intervals, age limits, previous products, campaign doses, immune status, pregnancy, supply changes and current national rules can change the plan. Bring every available record to a qualified provider.":"Les intervalles minimums, les limites d'âge, les produits précédents, les doses de campagne, le statut immunitaire, la grossesse, les changements d'approvisionnement et les règles nationales en vigueur peuvent modifier le plan. Apportez chaque dossier disponible à un fournisseur qualifié.","Contraindication boundary":"Limite de contre-indication","Do not give or withhold a dose from this page":"Ne donnez pas ou ne retenez pas de dose sur cette page","Previous severe reactions, allergies, current illness, pregnancy, immune conditions, medicines and product ingredients need product-specific clinical review. This page cannot decide whether a vaccine should be given today.":"Les réactions graves antérieures, les allergies, la maladie actuelle, la grossesse, les problèmes immunitaires, les médicaments et les ingrédients du produit nécessitent un examen clinique spécifique au produit. Cette page ne peut pas décider si un vaccin doit être administré aujourd’hui.","Record boundary":"Limite d'enregistrement","A checklist is not a vaccination record":"Une liste de contrôle n’est pas un carnet de vaccination","Only the authorised vaccination provider and official record can document what was administered. This page never marks a person “complete,” “overdue,” “protected,” or “up to date.”":"Seuls le prestataire de vaccination autorisé et le dossier officiel peuvent documenter ce qui a été administré. Cette page ne marque jamais une personne comme « terminée », « en retard », « protégée » ou « à jour ».","Privacy":"Confidentialité","Family data stays here":"Les données familiales restent ici","This page does not request or store a birth date, name, school, clinic, address, or contact details. Selections and optional record text are not saved, put in a URL, or sent to AfroTools, AI, email, analytics, a profile, or a server.":"Cette page ne demande ni ne stocke de date de naissance, de nom, d'école, de clinique, d'adresse ou de coordonnées. Les sélections et le texte d'enregistrement facultatif ne sont pas enregistrés, placés dans une URL ou envoyés à AfroTools, à l'IA, à la messagerie électronique, aux analyses, à un profil ou à un serveur.","Source scope and freshness":"Portée et fraîcheur de la source","Why the page links out instead of copying a universal table":"Pourquoi la page renvoie-t-elle au lieu de copier un tableau universel","Checked 26 July 2026. The WHO portal describes schedules reported by countries through the WHO/UNICEF Joint Reporting Form. Country programmes can change between reporting cycles, and local supply or campaigns may differ. Confirm the live programme with the relevant ministry, authorised clinic, or vaccination provider.":"Vérifié le 26 juillet 2026. Le portail de l'OMS décrit les calendriers déclarés par les pays via le formulaire de déclaration conjoint OMS/UNICEF. Les programmes nationaux peuvent changer entre les cycles de reporting, et l'approvisionnement ou les campagnes locales peuvent différer. Confirmez le programme en direct auprès du ministère concerné, de la clinique autorisée ou du prestataire de vaccination.","WHO Immunization Data: vaccination schedules":"Données de l'OMS sur la vaccination : calendriers de vaccination","Country-reported schedule, product, target-population and delivery information.":"Informations sur le calendrier, le produit, la population cible et la livraison déclarés par pays.","WHO routine-immunization summary tables":"Tableaux récapitulatifs de la vaccination systématique de l'OMS","Global policy support for programme managers; the page reports tables as of December 2025.":"Soutien politique mondial aux gestionnaires de programmes ; la page rapporte les tableaux en date de décembre 2025.","CDC: preventing and managing adverse reactions":"CDC : prévenir et gérer les effets indésirables","Severe acute reactions require immediate emergency response; clinical providers manage product-specific precautions.":"Les réactions aiguës sévères nécessitent une intervention d’urgence immédiate ; les prestataires cliniques gèrent les précautions spécifiques aux produits.","WHO: anaphylaxis after immunization":"OMS : anaphylaxie après vaccination","Anaphylaxis can progress rapidly and is a life-threatening emergency.":"L'anaphylaxie peut progresser rapidement et constitue une urgence potentiellement mortelle.","How to use the handoff":"Comment utiliser le transfert","Bring the official record, not a reconstructed timeline":"Apportez le dossier officiel, pas une chronologie reconstituée","Open the country programme source, then take the official vaccination record to an authorised provider. Ask them to reconcile the record against the current local programme, including campaigns or school-based doses. If the record is unavailable, say so; do not recreate dates from memory and treat them as proof.":"Ouvrez la source du programme national, puis apportez le carnet de vaccination officiel à un prestataire agréé. Demandez-leur de rapprocher les données du programme local actuel, y compris les campagnes ou les doses administrées en milieu scolaire. Si le dossier n'est pas disponible, dites-le ; ne recréez pas les dates de mémoire et ne les traitez pas comme preuve.","Why does this page not calculate a due date from a birth date?":"Pourquoi cette page ne calcule-t-elle pas une date d'accouchement à partir d'une date de naissance ?","A single date calculation would ignore country revisions, product-specific minimum ages and intervals, campaign doses, previous records, contraindications and clinical context. A qualified local provider must reconcile those details.":"Un calcul sur une seule date ignorerait les révisions nationales, les âges et intervalles minimaux spécifiques aux produits, les doses de campagne, les dossiers antérieurs, les contre-indications et le contexte clinique. Un fournisseur local qualifié doit concilier ces détails.","What if the official page looks old or is unavailable?":"Que faire si la page officielle semble ancienne ou n'est pas disponible ?","Treat it as an incomplete handoff, not current truth. Use the WHO country-reported portal and contact the ministry, local clinic, or authorised provider for the current programme.":"Traitez-le comme un transfert incomplet et non comme une vérité actuelle. Utilisez le portail de l'OMS pour les pays et contactez le ministère, la clinique locale ou le prestataire agréé pour le programme en cours.","Can I use the downloaded brief as proof of vaccination?":"Puis-je utiliser le dossier téléchargé comme preuve de vaccination ?","No. It is a question sheet only. It is not a vaccination card, medical record, certificate, prescription, appointment, eligibility decision, or proof that any dose was given.":"Non, il s’agit uniquement d’une feuille de questions. Il ne s’agit pas d’un carnet de vaccination, d’un dossier médical, d’un certificat, d’une ordonnance, d’un rendez-vous, d’une décision d’éligibilité ou d’une preuve qu’une dose a été administrée.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","same-origin":"même origine","Find an official country immunisation programme handoff and prepare a private clinic visit brief. No universal schedule, catch-up advice or completion verdict.":"Trouvez un transfert officiel du programme de vaccination du pays et préparez un dossier de visite dans une clinique privée. Pas de planning universel, de conseils de rattrapage ni de verdict de réalisation.","A country-programme handoff and private visit brief without universal dose dates or catch-up calculations.":"Un transfert de programme de pays et une brève visite privée sans dates de dose universelles ni calculs de rattrapage.","Use official country programme sources and prepare questions for a vaccination visit.":"Utilisez les sources officielles du programme national et préparez des questions pour une visite de vaccination.","vaccine-schedule":"calendrier-de-vaccination","Breadcrumb":"Fil d'Ariane","Tool boundaries":"Limites des outils","Copy the record wording; do not guess":"Copiez le libellé de l'enregistrement ; ne devine pas","Vaccination safety boundaries":"Limites de sécurité de la vaccination","use strict":"utiliser strict","NPHCDA National Emergency Routine Immunization Coordination Centre":"Centre national de coordination de la vaccination de routine d’urgence de la NPHCDA","Official routine-immunization programme page. It is a programme handoff, not an embedded current dose table.":"Page officielle du programme de vaccination de routine. Il s'agit d'un transfert de programme et non d'un tableau de doses actuelles intégré.","Ministry of Health clinical guidance for community health services":"Orientations cliniques du ministère de la Santé pour les services de santé communautaire","Official 2024 clinical guidance published online in 2025. Confirm later revisions and the live programme with the Ministry or clinic.":"Directives cliniques officielles 2024 publiées en ligne en 2025. Confirmez les révisions ultérieures et le programme en direct avec le ministère ou la clinique.","Ghana Health Service national childhood immunisation schedule page":"Page du calendrier national de vaccination des enfants du Service de santé du Ghana","National Department of Health immunization programme":"Programme national de vaccination du ministère de la Santé","Official programme page. Its linked schedule material includes older dated documents, so use it as a handoff and confirm the current programme at a clinic.":"Page officielle du programme. Son calendrier lié comprend des documents plus anciens, alors utilisez-le comme transfert et confirmez le programme actuel dans une clinique.","No current country schedule page safely verified":"Aucune page de calendrier de pays actuelle n'a été vérifiée en toute sécurité",", sourceNote:":", sourceRemarque :",", programme:":", programme :",", url:":", URL :",", infant:":", nourrisson :",", message:":", message :","+ programme.country +":"+ programme.pays +","+ product +":"+ produit +",", checkedDate:":", Date de vérification :","+ result.country +":"+ résultat.pays +","+ current.country,":"+ pays.actuel,","+ current.ageBand,":"+ actuel.ageBand,","+ current.recordStatus,":"+ actuel.recordStatus,","+ current.programme,":"+ programme.actuel,","+ current.whoUrl,":"+ actuel.whoUrl,","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Download PDF":"Télécharger le PDF","Download TXT":"Télécharger le TXT","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Reset":"Réinitialiser","Calculate":"Calculer","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calendrier-vaccinal/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/vaccine-schedule/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calendrier-vaccinal/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ratiba-ya-chanjo/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/vaccine-schedule/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Calendrier vaccinal indicatif</h1>
-<p>Consultez des repères de vaccination et confirmez le calendrier adapté à votre pays, votre âge et votre situation médicale.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Calendrier vaccinal indicatif. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/vaccine-schedule/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/vaccine-schedule/" title="Calendrier vaccinal indicatif" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Calendrier vaccinal indicatif";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-note"><strong>Repère uniquement.</strong> Les calendriers vaccinaux changent selon le pays, l’âge, les antécédents, la grossesse, les voyages et les campagnes publiques. Confirmez toujours auprès d’un professionnel de santé ou d’une source officielle locale.</div>
-<div class="fr-seo">
-<h2>Programme de vaccination en Afrique</h2>
-<p>La vaccination se planifie avec un calendrier local, car les âges recommandés, les rappels et les campagnes peuvent varier. Cette page aide à préparer une vérification, pas à décider seule.</p>
-<p>Utilisez l’outil pour organiser vos questions avant une consultation, un passage au centre de santé ou une préparation de voyage. Gardez les carnets de vaccination et les recommandations officielles comme source finale.</p>
-</div>
-<div class="fr-seo">
-<h2>Outils liés en français</h2>
-<div class="fr-grid"><a class="fr-link" href="/fr/tools/date-accouchement/"><strong>Date d’accouchement</strong><span>Repère de grossesse à confirmer en suivi prénatal.</span></a><a class="fr-link" href="/fr/tools/dosage-medicament/"><strong>Dosage médicament</strong><span>Dose indicative à confirmer avant administration.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lecture prudente de valeurs de tension.</span></a></div>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Ce calendrier remplace-t-il les recommandations locales ?</summary><p>Non. Il sert de repère. Les calendriers changent selon le pays, l’âge, l’état de santé, les campagnes publiques et les vaccins disponibles.</p></details>
-<details><summary>Que faire si un vaccin est en retard ?</summary><p>Demandez conseil à un centre de santé, un pédiatre ou un programme local de vaccination. Ne doublez pas une dose sans avis qualifié.</p></details>
-<details><summary>Les vaccins de voyage sont-ils inclus ?</summary><p>L’outil peut aider à préparer une discussion, mais les exigences de voyage doivent être vérifiées auprès des autorités et d’un professionnel de santé.</p></details>
-</div>
-</div>
-<!-- fr-score77-qa-panel:start -->
-<section class="fr-score77-qa" data-tool-verification-panel aria-label="Méthodologie, sources et limites" style="max-width:900px;margin:24px auto;padding:16px 18px;border:1px solid #c7d2fe;border-radius:12px;background:linear-gradient(135deg,#eef2ff 0%,#f8fafc 100%);color:#1e293b;line-height:1.55;box-shadow:0 10px 24px rgba(15,23,42,.06)">
-  <h2 style="margin:0 0 8px;font-size:1.05rem;color:#0f172a">Méthodologie, sources et limites</h2>
-  <p style="margin:.35rem 0"><strong>Méthodologie:</strong> le résultat utilise les champs de la page, les hypothèses visibles et les règles appliquees par l'outil. Relisez le detail du calcul avant de copier, exporter ou utiliser la recommandation.</p>
-  <p style="margin:.35rem 0"><strong>Sources:</strong> contrôle 2026 à confirmer avec la source officielle, l'autorite competente, le fournisseur, l'etablissement, le clinicien ou vos documents de référence lorsque les prix, lois, taxes, dates ou conditions peuvent changer.</p>
-  <p style="margin:.35rem 0"><strong>Avertissement:</strong> estimation seulement; ce guide est non officiel et ne remplace pas un conseil professionnel, fiscal, juridique, médical, éducatif ou technique.</p>
-</section>
-<!-- fr-score77-qa-panel:end -->
+<body class="vaccine-finder-page">
+<a class="vf-skip" href="#main-content">Passer à l'outil de recherche de programmes</a>
+<afro-navbar></afro-navbar>
+<main id="main-content">
+  <header class="vf-hero">
+    <div class="vf-shell">
+      <nav class="vf-breadcrumb" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span aria-hidden="true">/</span><a href="/health/">Santé</a><span aria-hidden="true">/</span><span>Recherche de programme de vaccination</span></nav>
+      <p class="vf-eyebrow">Transfert du programme de pays · pas de calendrier universel</p>
+      <h1>Guide des programmes de vaccination</h1>
+      <p class="vf-lede">Choisissez un pays et préparez un bref résumé de visite. AfroTools ne génère pas de dates de dose, ne marque pas toute personne complètement vaccinée et ne personnalise pas les conseils de rattrapage, de produit, de grossesse, d'allergie, de condition immunitaire ou de contre-indication.</p>
+      <ul class="vf-badges" aria-label="Limites des outils"><li>Aucune date de naissance requise</li><li>Pas de note d'achèvement</li><li>Exportation locale</li></ul>
+    </div>
+  </header>
+
+  <section class="vf-emergency" aria-labelledby="emergency-title">
+    <div class="vf-shell">
+      <h2 id="emergency-title">Possible réaction sévère après vaccination ?</h2>
+      <p><strong>Obtenez des soins d’urgence locaux immédiats</strong> en cas de difficulté à respirer, de respiration sifflante, de gonflement du visage, des lèvres ou de la gorge, d'effondrement, de convulsions, de lèvres bleues, de choc ou d'insensibilité. N'utilisez pas cette page pour évaluer la gravité, choisir un traitement ou décider d'attendre. Pour d’autres symptômes préoccupants, contactez rapidement le prestataire de vaccination ou un clinicien qualifié.</p>
+    </div>
+  </section>
+
+  <section class="vf-truth">
+    <div class="vf-shell vf-truth-grid">
+      <div><strong>Vérité du pays</strong><span>Les programmes nationaux décident des produits, des âges, des intervalles et des itinéraires de livraison.</span></div>
+      <div><strong>Enregistrer la vérité</strong><span>Une entrée de carte peut nécessiter une interprétation spécifique au produit et à la dose.</span></div>
+      <div><strong>Vérité clinique</strong><span>Les décisions de rattrapage et de contre-indication nécessitent un prestataire qualifié.</span></div>
+    </div>
+  </section>
+
+  <div class="vf-shell vf-layout">
+    <section class="vf-workspace" aria-labelledby="finder-title">
+      <div class="vf-card vf-intro">
+        <p class="vf-kicker">Feuille de travail de préparation privée</p>
+        <h2 id="finder-title">Trouvez la source et préparez vos questions</h2>
+        <p>Utilisez une tranche d’âge plutôt qu’une date de naissance. N'entrez pas de nom, d'adresse, de numéro de dossier médical, d'école, d'identifiant de clinique ou de coordonnées.</p>
+      </div>
+
+      <form id="programme-form" class="vf-card" novalidate>
+        <div id="error-summary" class="vf-errors" role="alert" tabindex="-1" hidden>
+          <h2>Vérifiez les champs sélectionnés</h2>
+          <ul id="error-list"></ul>
+        </div>
+        <div class="vf-fields">
+          <div class="vf-field">
+            <label for="country">Pays ou programme</label>
+            <select id="country" name="country">
+              <option value="">Sélectionnez un pays</option>
+              <option value="NG">Nigéria</option>
+              <option value="KE">Kenya</option>
+              <option value="GH">Ghana</option>
+              <option value="ZA">Afrique du Sud</option>
+              <option value="ET">Ethiopie</option>
+              <option value="OTHER">Un autre pays</option>
+            </select>
+          </div>
+          <div class="vf-field">
+            <label for="age-band">Tranche d'âge sur le disque</label>
+            <select id="age-band" name="ageBand">
+              <option value="">Sélectionnez une tranche d'âge</option>
+              <option value="newborn">Nouveau-né / moins de 6 semaines</option>
+              <option value="infant">6 semaines à moins de 1 an</option>
+              <option value="early-childhood">1 à 4 ans</option>
+              <option value="school-age">5 à 9 ans</option>
+              <option value="adolescent">10 à 17 ans</option>
+              <option value="adult">18 ans ou plus</option>
+            </select>
+          </div>
+        </div>
+        <div class="vf-field">
+          <label for="record-status">Qu’est-ce qui nécessite des éclaircissements ?</label>
+          <select id="record-status" name="recordStatus">
+            <option value="">Sélectionnez-en un</option>
+            <option value="routine">Vérification de la prochaine étape du programme de routine</option>
+            <option value="missed">Une dose peut avoir été oubliée ou retardée</option>
+            <option value="unclear">L'entrée de la carte ou du produit n'est pas claire</option>
+            <option value="no-record">L'enregistrement n'est pas disponible</option>
+            <option value="reaction">Une préoccupation post-vaccination non urgente</option>
+          </select>
+        </div>
+        <div class="vf-field">
+          <label for="record-product">Texte du vaccin ou du produit imprimé sur le dossier <span>(facultatif)</span></label>
+          <input id="record-product" name="recordProduct" type="text" maxlength="80" autocomplete="off" placeholder="Copiez le libellé de l'enregistrement ; ne devine pas">
+          <p class="vf-hint">Ce texte est inclus uniquement dans le brief de visite locale. L’outil ne l’interprète pas, ne le compare pas et ne le valide pas.</p>
+        </div>
+        <div class="vf-actions">
+          <button class="vf-primary" type="submit">Préparer le transfert officiel</button>
+          <button class="vf-secondary" type="reset">Effacer</button>
+        </div>
+      </form>
+
+      <section id="handoff" class="vf-card vf-handoff" aria-labelledby="handoff-title" aria-live="polite" tabindex="-1" hidden>
+        <p class="vf-kicker">Transfert de source · vérifié le 26 juillet 2026</p>
+        <h2 id="handoff-title">Remise officielle du programme</h2>
+        <div id="source-status" class="vf-source-status"></div>
+        <a id="official-link" class="vf-source-link" href="#" target="_blank" rel="noopener"></a>
+        <a id="who-link" class="vf-source-link secondary" href="https://immunizationdata.who.int/global?location=&amp;topic=Vaccination-schedule" target="_blank" rel="noopener">Ouvrir le portail des calendriers déclarés par les pays de l’OMS</a>
+        <div class="vf-no-verdict">
+          <h3>Aucun planning ou verdict d'achèvement n'a été généré</h3>
+          <p>Cette note ne précise pas quel vaccin est nécessaire, si une série doit reprendre ou se poursuivre, si un produit peut être remplacé ou si la vaccination est terminée.</p>
+        </div>
+        <h3>Questions à poser au prestataire de vaccination</h3>
+        <ol id="question-list" class="vf-question-list"></ol>
+        <div class="vf-actions">
+          <button id="print-button" class="vf-primary" type="button">Imprimer / Enregistrer le PDF</button>
+          <button id="download-button" class="vf-secondary" type="button">Télécharger le texte du résumé</button>
+        </div>
+        <p class="vf-hint">Les deux exportations sont créées localement sans compte, e-mail ou téléchargement.</p>
+      </section>
+    </section>
+
+    <aside class="vf-aside" aria-label="Limites de sécurité de la vaccination">
+      <section class="vf-card">
+        <p class="vf-kicker">Limite de rattrapage</p>
+        <h2>Ne calculez pas les doses oubliées ici</h2>
+        <p>Les intervalles minimums, les limites d'âge, les produits précédents, les doses de campagne, le statut immunitaire, la grossesse, les changements d'approvisionnement et les règles nationales en vigueur peuvent modifier le plan. Apportez chaque dossier disponible à un fournisseur qualifié.</p>
+      </section>
+      <section class="vf-card">
+        <p class="vf-kicker">Limite de contre-indication</p>
+        <h2>Ne donnez pas ou ne retenez pas de dose sur cette page</h2>
+        <p>Les réactions graves antérieures, les allergies, la maladie actuelle, la grossesse, les problèmes immunitaires, les médicaments et les ingrédients du produit nécessitent un examen clinique spécifique au produit. Cette page ne peut pas décider si un vaccin doit être administré aujourd’hui.</p>
+      </section>
+      <section class="vf-card">
+        <p class="vf-kicker">Limite d'enregistrement</p>
+        <h2>Une liste de contrôle n’est pas un carnet de vaccination</h2>
+        <p>Seuls le prestataire de vaccination autorisé et le dossier officiel peuvent documenter ce qui a été administré. Cette page ne marque jamais une personne comme « terminée », « en retard », « protégée » ou « à jour ».</p>
+      </section>
+      <section class="vf-card">
+        <p class="vf-kicker">Confidentialité</p>
+        <h2>Les données familiales restent ici</h2>
+        <p>Cette page ne demande ni ne stocke de date de naissance, de nom, d'école, de clinique, d'adresse ou de coordonnées. Les sélections et le texte d'enregistrement facultatif ne sont pas enregistrés, placés dans une URL ou envoyés à AfroTools, à l'IA, à la messagerie électronique, aux analyses, à un profil ou à un serveur.</p>
+      </section>
+    </aside>
+  </div>
+
+  <section class="vf-sources">
+    <div class="vf-shell">
+      <p class="vf-kicker">Portée et fraîcheur de la source</p>
+      <h2>Pourquoi la page renvoie-t-elle au lieu de copier un tableau universel</h2>
+      <p>Vérifié le 26 juillet 2026. Le portail de l'OMS décrit les calendriers déclarés par les pays via le formulaire de déclaration conjoint OMS/UNICEF. Les programmes nationaux peuvent changer entre les cycles de reporting, et l'approvisionnement ou les campagnes locales peuvent différer. Confirmez le programme en direct auprès du ministère concerné, de la clinique autorisée ou du prestataire de vaccination.</p>
+      <div class="vf-source-grid">
+        <a href="https://immunizationdata.who.int/global?location=&amp;topic=Vaccination-schedule" target="_blank" rel="noopener"><strong>Données de l'OMS sur la vaccination : calendriers de vaccination</strong><span>Informations sur le calendrier, le produit, la population cible et la livraison déclarés par pays.</span></a>
+        <a href="https://www.who.int/teams/immunization-vaccines-and-biologicals/policies/who-recommendations-for-routine-immunization---summary-tables" target="_blank" rel="noopener"><strong>Tableaux récapitulatifs de la vaccination systématique de l'OMS</strong><span>Soutien politique mondial aux gestionnaires de programmes ; la page rapporte les tableaux en date de décembre 2025.</span></a>
+        <a href="https://www.cdc.gov/vaccines/hcp/imz-best-practices/preventing-managing-adverse-reactions.html" target="_blank" rel="noopener"><strong>CDC : prévenir et gérer les effets indésirables</strong><span>Les réactions aiguës sévères nécessitent une intervention d’urgence immédiate ; les prestataires cliniques gèrent les précautions spécifiques aux produits.</span></a>
+        <a href="https://www.who.int/publications/i/item/9789240028704" target="_blank" rel="noopener"><strong>OMS : anaphylaxie après vaccination</strong><span>L'anaphylaxie peut progresser rapidement et constitue une urgence potentiellement mortelle.</span></a>
+      </div>
+    </div>
+  </section>
+
+  <section class="vf-explainer vf-shell" aria-labelledby="explainer-title">
+    <p class="vf-kicker">Comment utiliser le transfert</p>
+    <h2 id="explainer-title">Apportez le dossier officiel, pas une chronologie reconstituée</h2>
+    <p>Ouvrez la source du programme national, puis apportez le carnet de vaccination officiel à un prestataire agréé. Demandez-leur de rapprocher les données du programme local actuel, y compris les campagnes ou les doses administrées en milieu scolaire. Si le dossier n'est pas disponible, dites-le ; ne recréez pas les dates de mémoire et ne les traitez pas comme preuve.</p>
+    <div class="vf-faq">
+      <details><summary>Pourquoi cette page ne calcule-t-elle pas une date d'accouchement à partir d'une date de naissance ?</summary><p>Un calcul sur une seule date ignorerait les révisions nationales, les âges et intervalles minimaux spécifiques aux produits, les doses de campagne, les dossiers antérieurs, les contre-indications et le contexte clinique. Un fournisseur local qualifié doit concilier ces détails.</p></details>
+      <details><summary>Que faire si la page officielle semble ancienne ou n'est pas disponible ?</summary><p>Traitez-le comme un transfert incomplet et non comme une vérité actuelle. Utilisez le portail de l'OMS pour les pays et contactez le ministère, la clinique locale ou le prestataire agréé pour le programme en cours.</p></details>
+      <details><summary>Puis-je utiliser le dossier téléchargé comme preuve de vaccination ?</summary><p>Non, il s’agit uniquement d’une feuille de questions. Il ne s’agit pas d’un carnet de vaccination, d’un dossier médical, d’un certificat, d’une ordonnance, d’un rendez-vous, d’une décision d’éligibilité ou d’une preuve qu’une dose a été administrée.</p></details>
+    </div>
+  </section>
+
+  <div class="vf-related">
+    <afro-related-tools category="health" current="vaccine-schedule" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+  </div>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Guide des programmes de vaccination reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/vaccine-schedule/" hreflang="en">/tools/vaccine-schedule/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
 <afro-footer></afro-footer>
-<script>
-(function(){
-  const map={"Vaccine Schedule":"Calendrier vaccinal","Vaccination Schedule":"Calendrier vaccinal","Country":"Pays","Age":"Âge","Child":"Enfant","Adult":"Adulte","Pregnancy":"Grossesse","Travel":"Voyage","Calculate":"Calculer","Calculator":"Calculateur","Result":"Résultat","Results":"Résultats","Recommended":"Recommandé","Due":"À faire","Overdue":"En retard","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter"};
-  const frame=document.querySelector('.fr-tool-frame iframe');
-  function translate(root){if(!root)return;const walker=root.createTreeWalker(root.body||root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){let text=node.nodeValue;Object.keys(map).forEach(k=>{text=text.replace(new RegExp(k,'g'),map[k]);});node.nodeValue=text;}root.querySelectorAll('input,textarea,button,select,[placeholder],[title],[aria-label]').forEach(el=>{['placeholder','title','aria-label','value'].forEach(attr=>{const value=el.getAttribute&&el.getAttribute(attr);if(!value)return;let out=value;Object.keys(map).forEach(k=>{out=out.replace(new RegExp(k,'g'),map[k]);});if(out!==value)el.setAttribute(attr,out);});});}
-  if(frame)frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;translate(doc);new MutationObserver(()=>translate(doc)).observe(doc.body,{childList:true,subtree:true});}catch(e){}});
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<script src="/tools/vaccine-schedule/vaccine-schedule-engine.js?v=e8a2db6b"></script>
+<script src="/tools/vaccine-schedule/vaccine-schedule-vip.js?v=a59ff1b0" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
 </body>
 </html>

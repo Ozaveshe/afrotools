@@ -67,6 +67,38 @@
       icon: "⚡"
     } ],
     PLATFORMS: e,
+    generateLocalTitles: function(topic, platform, language) {
+      var clean = String(topic || "").trim();
+      if (!clean) throw new Error("A topic is required.");
+      var lang = language === "fr" ? "fr" : "en";
+      var templates = lang === "fr" ? [
+        ["seo", clean + " : guide pratique pour commencer"],
+        ["howto", "Comment réussir " + clean + " étape par étape"],
+        ["listicle", "7 idées concrètes pour " + clean],
+        ["question", clean + " : quelle approche fonctionne vraiment ?"],
+        ["storyteller", "Ce que mon expérience de " + clean + " m’a appris"],
+        ["bold_claim", clean + " ne devrait pas être aussi compliqué"],
+        ["clickbait", "L’erreur sur " + clean + " que beaucoup ignorent"],
+        ["viral", "Avant de parler de " + clean + ", regardez ceci"]
+      ] : [
+        ["seo", clean + ": a practical guide to getting started"],
+        ["howto", "How to improve " + clean + " step by step"],
+        ["listicle", "7 practical ideas for " + clean],
+        ["question", clean + ": what approach actually works?"],
+        ["storyteller", "What my experience with " + clean + " taught me"],
+        ["bold_claim", clean + " should not be this complicated"],
+        ["clickbait", "The " + clean + " mistake too many people miss"],
+        ["viral", "Before you discuss " + clean + ", see this"]
+      ];
+      return {
+        topic: clean,
+        platform: platform || "youtube",
+        language: lang,
+        titles: templates.map(function(entry) {
+          return {style: entry[0], title: entry[1], charCount: entry[1].length};
+        })
+      };
+    },
     getCharStatus: function(n, t) {
       var r = e.find(function(e) {
         return e.id === t;

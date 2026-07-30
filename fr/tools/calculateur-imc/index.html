@@ -1,190 +1,144 @@
-<!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="view-transition" content="same-origin">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<title>Calculateur IMC | AfroTools</title>
-<meta name="description" content="Calculez votre IMC et lisez le résultat comme un repère de santé indicatif, en français.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:title" content="Calculateur IMC | AfroTools">
-<meta property="og:description" content="Calculez votre IMC et lisez le résultat comme un repère de santé indicatif, en français.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-imc/">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/bmi-calculator.webp">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Calculateur IMC | AfroTools">
-<meta name="twitter:description" content="Calculez votre IMC et lisez le résultat comme un repère de santé indicatif, en français.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bmi-calculator.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Calculateur IMC",
-  "description": "Calculez votre IMC et lisez le résultat comme un repère de santé indicatif, en français.",
-  "url": "https://afrotools.com/fr/tools/calculateur-imc/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/bmi-calculator.webp"
-}
-</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"L’IMC suffit-il pour évaluer ma santé ?","acceptedAnswer":{"@type":"Answer","text":"Non. C’est un indicateur simple, utile pour se repérer, mais il ne tient pas compte de toute la composition corporelle ni du contexte médical."}},{"@type":"Question","name":"Dois-je consulter si le résultat est élevé ou très bas ?","acceptedAnswer":{"@type":"Answer","text":"Si le résultat vous inquiète, si vous avez des symptômes ou si vous suivez un traitement, demandez l’avis d’un professionnel de santé."}}]}</script>
-
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="bmi-calc-tools"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<script>(function(){try{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light'}catch(_){}})();</script>
+<title>Calculateur d'IMC adulte | AfroTools</title>
+<meta name="description" content="Calculez localement l’IMC d’un adulte à l’aide de mesures métriques ou impériales. Affiche une bande de dépistage et ses limites ; il ne diagnostique pas l'obésité…">
+<meta property="og:title" content="Calculateur d'IMC adulte | AfroTools"><meta property="og:description" content="Calculez localement l’IMC d’un adulte à l’aide de mesures métriques ou impériales. Affiche une bande de dépistage et ses limites ; il ne diagnostique pas l'obésité…"><meta property="og:url" content="https://afrotools.com/fr/tools/calculateur-imc/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/bmi-calculator.webp">
 <style>
-body{background:#f8fafc;color:#0f172a}
-.fr-hero{background:linear-gradient(135deg,#0f172a 0%,#18304f 56%,#0f6fd6 100%);color:#fff;padding:3.5rem 1.25rem 2.5rem}
-.fr-shell{max-width:1120px;margin:0 auto}
-.fr-eyebrow{display:inline-flex;margin-bottom:.75rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#bfdbfe}
-.fr-hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.04;margin:0 0 .85rem;font-weight:800;max-width:820px}
-.fr-hero p{max-width:720px;margin:0;color:rgba(255,255,255,.84);line-height:1.72;font-size:1.02rem}
-.fr-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.2rem}
-.fr-badge{display:inline-flex;padding:.45rem .75rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);font-size:.8rem;font-weight:700}
-.fr-main{max-width:1120px;margin:0 auto;padding:1.5rem 1.25rem 3.5rem}
-.fr-card{background:#fff;border:1px solid #dbe4ee;border-radius:18px;box-shadow:0 12px 34px rgba(15,23,42,.06);overflow:hidden}
-.fr-tool-frame{min-height:680px}
-.fr-tool-frame iframe{display:block;width:100%;min-height:720px;border:0;background:#fff}
-.fr-note{margin:1rem 0 1.25rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65;font-size:.95rem}
-.fr-note strong{display:block;margin-bottom:.25rem;color:#172554}
-.fr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-top:1rem}
-.fr-link{display:block;padding:1rem;border:1px solid #dbe4ee;border-radius:14px;background:#fff;text-decoration:none;color:#0f172a}
-.fr-link:hover{border-color:#60a5fa;box-shadow:0 10px 24px rgba(15,23,42,.08)}
-.fr-link strong{display:block;margin-bottom:.3rem}
-.fr-link span{display:block;color:#64748b;font-size:.9rem;line-height:1.55}
-.fr-section{margin-top:1.35rem;padding:1.25rem;background:#fff;border:1px solid #dbe4ee;border-radius:18px}
-.fr-section h2{font-size:1.25rem;margin:0 0 .65rem;font-weight:800}
-.fr-section p,.fr-section li{color:#475569;line-height:1.78}
-.fr-section ul{padding-left:1.2rem}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:12px;background:#fff;margin:.75rem 0;overflow:hidden}
-.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.05rem;font-weight:700}
-.fr-faq summary::-webkit-details-marker{display:none}
-.fr-faq p{padding:0 1.05rem 1rem;margin:0;color:#475569;line-height:1.72}
-@media (max-width:820px){.fr-grid{grid-template-columns:1fr}.fr-tool-frame iframe{min-height:780px}.fr-hero{padding-top:2.7rem}}
+:root{color-scheme:light dark;--bg:#f7f7fc;--p:#fff;--t:#1e2333;--m:#5b6478;--l:#dcdfea;--b:#5b21b6;--s:#f3e8ff;--w:#fff7ed;--f:#f59e0b}[data-theme=dark]{--bg:#100d19;--p:#1d172b;--t:#faf7ff;--m:#cfc5de;--l:#4a405a;--b:#c4b5fd;--s:#2b1d43;--w:#382316;--f:#fbbf24}*{box-sizing:border-box}html{font:100%/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--t)}body{margin:0}a{color:var(--b)}button,input,select{font:inherit}button{min-height:44px;border:0;border-radius:.65rem;padding:.7rem 1rem;font-weight:800;cursor:pointer}.pri{background:var(--b);color:#fff}.sec{background:var(--p);color:var(--t);border:1px solid var(--l)}:focus-visible{outline:3px solid var(--f);outline-offset:3px}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--p);padding:.7rem;z-index:3}header{background:var(--p);border-bottom:1px solid var(--l)}nav{max-width:70rem;margin:auto;display:flex;justify-content:space-between;align-items:center;padding:.75rem 1rem}.brand{font-weight:900;color:var(--t);text-decoration:none}main{max-width:70rem;margin:auto;padding:clamp(1rem,4vw,3rem)}.hero{max-width:52rem}.tag{display:inline-block;background:var(--s);padding:.4rem .7rem;border-radius:2rem;font-weight:800;color:var(--b)}h1{font-size:clamp(2rem,6vw,3.5rem);line-height:1.05;margin:.6rem 0}.notice{background:var(--w);border-left:5px solid #c2410c;padding:1rem;margin:1.2rem 0}.grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem;align-items:start}.card{background:var(--p);border:1px solid var(--l);border-radius:1rem;padding:clamp(1rem,3vw,1.5rem)}label{display:block;font-weight:750;margin:.8rem 0 .3rem}input,select{width:100%;min-height:46px;border:1px solid var(--l);border-radius:.55rem;padding:.65rem;background:var(--p);color:var(--t)}.row{display:grid;grid-template-columns:1fr 1fr;gap:.75rem}.hint,.source{color:var(--m);font-size:.9rem}.actions{display:flex;flex-wrap:wrap;gap:.6rem;margin-top:1rem}.value{font-size:3rem;line-height:1;font-weight:900;color:var(--b)}footer{max-width:70rem;margin:auto;padding:1rem;color:var(--m);border-top:1px solid var(--l)}[hidden]{display:none!important}@media(max-width:720px){.grid{grid-template-columns:1fr}.actions>*{flex:1 1 100%}}@media(max-width:340px){main{padding:.7rem}.row{grid-template-columns:1fr}h1{font-size:1.8rem}.card{padding:.85rem}}@media print{header,.actions,.tag{display:none}.grid{display:block}.card{margin-bottom:1rem;border-color:#777}}
+.card,.grid>*{min-width:0}body{overflow-wrap:anywhere}[data-theme=dark] .pri{background:#5b21b6}
+</style><!-- tool-structured-data:auto -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Calculateur d'IMC adulte | AfroTools">
+<meta name="twitter:description" content="Calculez localement l’IMC d’un adulte à l’aide de mesures métriques ou impériales. Affiche une bande de dépistage et ses limites ; il ne diagnostique pas l'obésité…">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/bmi-calculator.webp">
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Calculateur d'IMC adulte",
+    "description": "Calculez localement l’IMC d’un adulte à l’aide de mesures métriques ou impériales. Affiche une bande de dépistage et ses limites ; il ne diagnostique pas l'obésité…",
+    "url": "https://afrotools.com/fr/tools/calculateur-imc/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/bmi-calculator.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Adult BMI Calculator — Metric & Imperial | AfroTools":"Calculateur d'IMC pour adultes — métrique et impérial | AfroTools","Skip to calculator":"Passer à la calculatrice","Dark mode":"Mode sombre","Quick adult screening measure":"Mesure de dépistage rapide chez les adultes","Adult BMI calculator":"Calculateur d'IMC adulte","Calculate body mass index from one height and weight reading in metric or imperial units. The result is a population screening band, not a personal health verdict.":"Calculez l'indice de masse corporelle à partir d'une lecture de taille et de poids en unités métriques ou impériales. Le résultat est un test de dépistage de la population, et non un verdict de santé personnel.","Not for diagnosis.":"Pas pour le diagnostic.","BMI cannot diagnose obesity, fitness, nutrition or health. This adult calculator is not appropriate for people under 20, pregnancy, or clinical situations where weight or body composition is altered. A qualified professional can interpret it alongside history, examination and other measures.":"L'IMC ne peut pas diagnostiquer l'obésité, la forme physique, la nutrition ou la santé. Cette calculatrice pour adultes ne convient pas aux personnes de moins de 20 ans, aux femmes enceintes ou aux situations cliniques où le poids ou la composition corporelle est modifié. Un professionnel qualifié peut l’interpréter parallèlement à l’histoire, aux examens et à d’autres mesures.","Measurements":"Mesures","Who is this calculation for?":"A qui s'adresse ce calcul ?","Choose one":"Choisissez-en un","Adult aged 20 or older":"Adulte âgé de 20 ans ou plus","Person under 20":"Personne de moins de 20 ans","Currently pregnant":"Actuellement enceinte","This route only calculates conventional adult bands for people aged 20 or older.":"Cet itinéraire calcule uniquement les tranches adultes conventionnelles pour les personnes âgées de 20 ans ou plus.","Units":"Unités","Metric (cm, kg)":"Métrique (cm, kg)","Imperial (ft, in, lb)":"Impérial (pi, po, lb)","Height (cm)":"Hauteur (cm)","Weight (kg)":"Poids (kg)","Height (feet)":"Hauteur (pieds)","Additional inches":"Pouces supplémentaires","Weight (lb)":"Poids (lb)","Calculate BMI":"Calculer l'IMC","Result":"Résultat","Confirm adult applicability and enter measurements to see the calculation and screening band.":"Confirmez l’applicabilité aux adultes et entrez les mesures pour voir la bande de calcul et de dépistage.","Download TXT":"Télécharger le TXT","Print / save PDF":"Imprimer / enregistrer en PDF","Clear":"Effacer","What the bands mean—and do not mean":"Ce que les groupes signifient – et ne veulent pas dire","WHO adult population bands are below 18.5, 18.5–24.9, 25–29.9 and 30 or above. This app labels them as screening bands and avoids diagnosis language. People with the same BMI can have different body composition and health. For better measurement-quality context, use the distinct":"Les tranches de population adulte de l’OMS sont inférieures à 18,5, 18,5-24,9, 25-29,9 et 30 ou plus. Cette application les qualifie de bandes de dépistage et évite le langage de diagnostic. Les personnes ayant le même IMC peuvent avoir une composition corporelle et un état de santé différents. Pour un meilleur contexte de qualité de mesure, utilisez le distinct","BMI Measurement Quality Worksheet":"Feuille de travail sur la qualité des mesures de l'IMC","Official sources, reviewed 26 July 2026:":"Sources officielles, consultées le 26 juillet 2026 :","CDC Adult BMI Calculator (26 June 2024)":"Calculateur d’IMC pour adultes CDC (26 juin 2024)","WHO obesity and overweight fact sheet":"Fiche d'information de l'OMS sur l'obésité et le surpoids","Private and local: measurements are not stored, sent, added to URLs or included in analytics.":"Privées et locales : les mesures ne sont pas stockées, envoyées, ajoutées aux URL ou incluses dans les analyses.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Calculate adult BMI locally using metric or imperial measurements. Shows a screening band and limitations; it does not diagnose obesity or health.":"Calculez localement l’IMC d’un adulte à l’aide de mesures métriques ou impériales. Affiche une bande de dépistage et ses limites ; il ne diagnostique pas l'obésité ou la santé.","Adult BMI Calculator — Metric & Imperial":"Calculateur d'IMC pour adultes - métrique et impérial","A quick private adult BMI screening calculation with clear limits.":"Un calcul rapide de dépistage privé de l'IMC pour adultes avec des limites claires.","use strict":"utiliser strict","This calculator is for adults aged 20 or older. Children and teenagers need an age- and sex-specific growth assessment.":"Cette calculatrice est destinée aux adultes âgés de 20 ans ou plus. Les enfants et les adolescents ont besoin d’une évaluation de leur croissance en fonction de leur âge et de leur sexe.","Adult BMI screening bands are not appropriate during pregnancy. Ask a qualified pregnancy-care professional about suitable measurements.":"Les bandes de dépistage de l'IMC pour adultes ne sont pas appropriées pendant la grossesse. Demandez à un professionnel qualifié en soins de grossesse quelles sont les mesures appropriées.","Confirm that this calculation is for an adult aged 20 or older.":"Confirmez que ce calcul concerne un adulte âgé de 20 ans ou plus.","kg ÷ metres²":"kg ÷ mètres²","Feet must be a whole number.":"Les pieds doivent être un nombre entier.","703 × pounds ÷ inches²":"703 × livres ÷ pouces²","Choose metric or imperial units.":"Choisissez des unités métriques ou impériales.","Below 18.5 screening band":"Bande de dépistage inférieure à 18,5","18.5–24.9 screening band":"Bande de dépistage 18,5–24,9","25.0–29.9 screening band":"Bande de dépistage de 25,0 à 29,9","30 or above screening band":"Bande de filtrage de 30 ou plus","This band is a population screening reference. It does not determine body fat, fitness, nutrition, disease or individual health.":"Cette bande est une référence en matière de dépistage de population. Il ne détermine pas la graisse corporelle, la condition physique, la nutrition, la maladie ou la santé individuelle.","Do not use BMI to diagnose obesity or health, set a target weight, or delay professional assessment.":"N'utilisez pas l'IMC pour diagnostiquer l'obésité ou l'état de santé, définir un poids cible ou retarder une évaluation professionnelle.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health":"Santé","Health tools":"Outils santé","Download PDF":"Télécharger le PDF","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/calculateur-imc/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/bmi-calculator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/calculateur-imc/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kikokotoo-bmi-ya-mwili/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/bmi-calculator/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-  <div class="fr-shell">
-    <span class="fr-eyebrow">Santé</span>
-    <h1>Calculateur IMC</h1>
-    <p>Saisissez poids et taille pour obtenir un repère d’indice de masse corporelle et préparer une discussion plus claire avec un professionnel de santé.</p>
-    <div class="fr-badges"><span class="fr-badge">IMC</span><span class="fr-badge">Repère indicatif</span><span class="fr-badge">Interface française</span></div>
-  </div>
-</section>
-<main class="fr-main">
-  <div class="fr-note"><strong>À utiliser comme repère</strong>L’IMC ne suffit pas à juger une situation médicale. Il ne remplace pas un avis clinique, surtout en cas de grossesse, maladie, traitement, enfant ou entraînement sportif intensif.</div>
-  <section class="fr-card fr-tool-frame" aria-label="Calculateur IMC">
-    <iframe id="fr-source-frame" src="/tools/bmi-calculator/" title="Calculateur IMC" loading="eager"></iframe>
-  </section>
-  <section class="fr-section">
-    <h2>Comprendre l’IMC sans surinterpréter</h2>
-    <p>L’outil conserve la logique du calculateur source et ajoute une lecture française plus prudente. Utilisez le résultat pour suivre une tendance, pas pour poser un diagnostic.</p><p>Pour une décision de santé, comparez aussi le tour de taille, l’historique médical, les symptômes et l’avis d’un soignant.</p>
-  </section>
-  <section class="fr-section">
-    <h2>Outils liés en français</h2>
-    <div class="fr-grid"><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lire une mesure et suivre ses valeurs.</span></a><a class="fr-link" href="/fr/tools/apport-eau/"><strong>Apport en eau</strong><span>Estimation d’hydratation prudente.</span></a><a class="fr-link" href="/fr/tools/compteur-calories/"><strong>Compteur de calories</strong><span>Repère nutritionnel général.</span></a><a class="fr-link" href="/fr/tools/cout-hospitalier/"><strong>Coût hospitalier</strong><span>Préparer un budget de soins avec prudence.</span></a></div>
-  </section>
-  <section class="fr-section fr-faq"><h2>Questions fréquentes</h2><details><summary>L’IMC suffit-il pour évaluer ma santé ?</summary><p>Non. C’est un indicateur simple, utile pour se repérer, mais il ne tient pas compte de toute la composition corporelle ni du contexte médical.</p></details><details><summary>Dois-je consulter si le résultat est élevé ou très bas ?</summary><p>Si le résultat vous inquiète, si vous avez des symptômes ou si vous suivez un traitement, demandez l’avis d’un professionnel de santé.</p></details></section>
-<section class="fr-decision-panel" data-fr-decision-planner style="max-width:1120px;margin:24px auto;padding:0 24px;">
-  <div style="background:#fff;border:1px solid #dbe4ef;border-radius:14px;padding:18px;box-shadow:0 8px 24px rgba(15,23,42,.06);">
-    <h2 style="margin:0 0 8px;color:#0f172a;font-size:1.15rem;">Préparation rapide</h2>
-    <p style="margin:0 0 14px;color:#475569;line-height:1.6;"><strong>Méthodologie:</strong> renseignez le pays, le montant et l'objectif; la page transforme ces entrées en résumé de vérification avant d'utiliser l'outil principal. Sources: calculateur de référence AfroTools, liens et hypothèses visibles sur cette page. Mise à jour 2026.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));gap:10px;">
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Pays ou devise<input data-fr-decision-country type="text" placeholder="Ex: Nigeria, NGN, XOF" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Montant ou volume<input data-fr-decision-amount type="text" placeholder="Ex: 250000" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-      <label style="display:grid;gap:5px;font-weight:800;color:#0f172a;">Objectif<input data-fr-decision-goal type="text" placeholder="Ex: comparer deux scénarios" style="width:100%;border:1px solid #cbd5e1;border-radius:10px;padding:10px;font:inherit;"></label>
-    </div>
-    <div style="display:flex;flex-wrap:wrap;gap:10px;margin-top:12px;"><button type="button" data-fr-decision-button style="border:0;border-radius:999px;background:#0f766e;color:#fff;font-weight:900;padding:10px 15px;cursor:pointer;">Créer le résumé</button><span data-fr-decision-status aria-live="polite" style="color:#64748b;align-self:center;"></span></div>
-    <output data-fr-decision-output style="display:block;margin-top:12px;border-left:4px solid #0f766e;background:#f8fafc;border-radius:10px;padding:12px;color:#334155;line-height:1.55;">Ajoutez quelques informations pour préparer votre vérification.</output>
-    <p style="margin:12px 0 0;color:#475569;line-height:1.6;"><strong>Avertissement:</strong> cette estimation générale ne remplace pas un avis juridique, fiscal, médical, financier ou professionnel. Vérifiez les sources officielles, les dates, les frais et les seuils avant de payer, signer ou déclarer.</p>
-  </div>
-</section>
-</main>
-<script>
-(function(){
-  const textMap={"Calculate":"Calculer","Calculator":"Calculateur","Weight":"Poids","Height":"Taille","Age":"Âge","Gender":"Sexe","Male":"Homme","Female":"Femme","Result":"Résultat","Results":"Résultats","Normal":"Normal","Risk":"Risque","Health":"Santé","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter","Blood Pressure":"Tension artérielle","Medication":"Médicament","Dosage":"Dosage","Hospital":"Hôpital","Cost":"Coût","Water":"Eau","Calories":"Calories","Due Date":"Date probable","Sickle Cell":"Drépanocytose","Genotype":"Génotype"};
-  const frame=document.getElementById('fr-source-frame');
-  function replaceText(node){
-    if(!node || !node.nodeValue) return;
-    let value=node.nodeValue;
-    Object.keys(textMap).forEach(function(key){
-      value=value.split(key).join(textMap[key]);
-    });
-    node.nodeValue=value;
-  }
-  function localize(){
+</head><body>
+<a class="skip" href="#main">Passer à la calculatrice</a><header><nav><a class="brand" href="/">AfroTools</a><button id="theme" class="sec" type="button" aria-pressed="false">Mode sombre</button></nav></header>
+<main id="main"><section class="hero"><span class="tag">Mesure de dépistage rapide chez les adultes</span><h1>Calculateur d'IMC adulte</h1><p>Calculez l'indice de masse corporelle à partir d'une lecture de taille et de poids en unités métriques ou impériales. Le résultat est un test de dépistage de la population, et non un verdict de santé personnel.</p><div class="notice"><strong>Pas pour le diagnostic.</strong> L'IMC ne peut pas diagnostiquer l'obésité, la forme physique, la nutrition ou la santé. Cette calculatrice pour adultes ne convient pas aux personnes de moins de 20 ans, aux femmes enceintes ou aux situations cliniques où le poids ou la composition corporelle est modifié. Un professionnel qualifié peut l’interpréter parallèlement à l’histoire, aux examens et à d’autres mesures.</div></section>
+<div class="grid"><form id="form" class="card" novalidate><h2>Mesures</h2>
+<label for="audience">A qui s'adresse ce calcul ?</label><select id="audience" name="audience" required><option value="">Choisissez-en un</option><option value="adult">Adulte âgé de 20 ans ou plus</option><option value="under20">Personne de moins de 20 ans</option><option value="pregnancy">Actuellement enceinte</option></select><p class="hint">Cet itinéraire calcule uniquement les tranches adultes conventionnelles pour les personnes âgées de 20 ans ou plus.</p>
+<label for="units">Unités</label><select id="units" name="units"><option value="metric">Métrique (cm, kg)</option><option value="imperial">Impérial (pi, po, lb)</option></select>
+<div id="metric"><label for="heightCm">Hauteur (cm)</label><input id="heightCm" name="heightCm" type="number" min="100" max="250" step=".1" inputmode="decimal"><label for="weightKg">Poids (kg)</label><input id="weightKg" name="weightKg" type="number" min="25" max="400" step=".1" inputmode="decimal"></div>
+<div id="imperial" hidden><div class="row"><div><label for="feet">Hauteur (pieds)</label><input id="feet" name="feet" type="number" min="3" max="8" step="1" inputmode="numeric"></div><div><label for="inches">Pouces supplémentaires</label><input id="inches" name="inches" type="number" min="0" max="11.9" step=".1" inputmode="decimal"></div></div><label for="pounds">Poids (lb)</label><input id="pounds" name="pounds" type="number" min="55" max="880" step=".1" inputmode="decimal"></div>
+<div id="error" role="alert"></div><button class="pri" type="submit">Calculer l'IMC</button></form>
+<section id="resultPanel" class="card" aria-live="polite" aria-labelledby="resultTitle" tabindex="-1"><h2 id="resultTitle">Résultat</h2><div id="result"><p>Confirmez l’applicabilité aux adultes et entrez les mesures pour voir la bande de calcul et de dépistage.</p></div><div class="actions"><button id="txt" class="sec" type="button" disabled>Télécharger le TXT</button><button id="print" class="sec" type="button" disabled>Imprimer / enregistrer en PDF</button><button id="clear" class="sec" type="button">Effacer</button></div></section></div>
+<section class="card"><h2>Ce que les groupes signifient – et ne veulent pas dire</h2><p>Les tranches de population adulte de l’OMS sont inférieures à 18,5, 18,5-24,9, 25-29,9 et 30 ou plus. Cette application les qualifie de bandes de dépistage et évite le langage de diagnostic. Les personnes ayant le même IMC peuvent avoir une composition corporelle et un état de santé différents. Pour un meilleur contexte de qualité de mesure, utilisez le distinct <a href="/fr/health/bmi-calculator/">Feuille de travail sur la qualité des mesures de l'IMC</a>.</p><p class="source"><strong>Sources officielles, consultées le 26 juillet 2026 :</strong> <a href="https://www.cdc.gov/bmi/adult-calculator/" rel="noopener">Calculateur d’IMC pour adultes CDC (26 juin 2024)</a>; <a href="https://www.who.int/news-room/fact-sheets/detail/obesity-and-overweight" rel="noopener">Fiche d'information de l'OMS sur l'obésité et le surpoids</a>.</p></section>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Calculateur d'IMC adulte reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/bmi-calculator/" hreflang="en">/tools/bmi-calculator/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main><footer>Privées et locales : les mesures ne sont pas stockées, envoyées, ajoutées aux URL ou incluses dans les analyses.</footer>
+<script src="/tools/bmi-calculator/bmi-engine.js?v=3700093c"></script><script>
+(()=>{
+  const f=document.getElementById('form');
+  const u=f.units;
+  const m=document.getElementById('metric');
+  const i=document.getElementById('imperial');
+  const panel=document.getElementById('resultPanel');
+  const r=document.getElementById('result');
+  const e=document.getElementById('error');
+  const t=document.getElementById('txt');
+  const p=document.getElementById('print');
+  const theme=document.getElementById('theme');
+  let last=null;
+
+  const syncUnits=()=>{const imperial=u.value==='imperial';m.hidden=imperial;i.hidden=!imperial;e.textContent=''};
+  u.addEventListener('change',syncUnits);
+  f.addEventListener('submit',event=>{
+    event.preventDefault();
     try{
-      const doc=frame.contentDocument;
-      if(!doc) return;
-      const walker=doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while((node=walker.nextNode())) replaceText(node);
-      doc.querySelectorAll('input[placeholder],textarea[placeholder],button,[aria-label],option').forEach(function(el){
-        ['placeholder','aria-label','value','title'].forEach(function(attr){
-          const value=el.getAttribute && el.getAttribute(attr);
-          if(value && textMap[value]) el.setAttribute(attr,textMap[value]);
-        });
-        if(el.childNodes && el.childNodes.length===1 && el.firstChild.nodeType===3) replaceText(el.firstChild);
-      });
-      doc.documentElement.lang='fr';
-    }catch(e){}
-  }
-  frame.addEventListener('load',function(){localize();setTimeout(localize,700);setTimeout(localize,1800);});
+      const measurements=u.value==='metric'
+        ? {units:'metric',audience:f.audience.value,heightCm:f.heightCm.value,weightKg:f.weightKg.value}
+        : {units:'imperial',audience:f.audience.value,feet:f.feet.value,inches:f.inches.value,pounds:f.pounds.value};
+      last=BmiEngine.calculate(measurements);
+      e.textContent='';
+      r.innerHTML=`<p class="value">${last.bmi.toFixed(1)}</p><h3>${last.band}</h3><p>${last.context}</p><p><strong>Calculation:</strong> ${last.working} = ${last.bmi.toFixed(3)}</p><p><strong>Converted measurements:</strong> ${last.normalized.weightKg.toFixed(2)} kg and ${last.normalized.heightCm.toFixed(1)} cm.</p><p><strong>Rounding note:</strong> ${last.boundaryNote}</p><p><strong>Warning:</strong> ${last.warning}</p>`;
+      t.disabled=p.disabled=false;
+      panel.focus();
+    }catch(error){
+      last=null;
+      e.textContent=error.message;
+      t.disabled=p.disabled=true;
+    }
+  });
+
+  const report=()=>`AfroTools adult BMI calculator\nReview date: 26 July 2026\n\nInputs\nApplicability: adult aged 20 or older\nUnits: ${u.value}\n${u.value==='metric'?`Height: ${f.heightCm.value} cm\nWeight: ${f.weightKg.value} kg`:`Height: ${f.feet.value} ft ${f.inches.value||0} in\nWeight: ${f.pounds.value} lb`}\n\nResult\nBMI: ${last.bmi.toFixed(1)} (unrounded ${last.bmi.toFixed(3)})\nScreening band: ${last.band}\nConverted measurements: ${last.normalized.weightKg.toFixed(2)} kg, ${last.normalized.heightCm.toFixed(1)} cm\n${last.context}\n${last.boundaryNote}\n\nAssumption\nAdult age 20+ population screening bands. Formula: ${last.formula}. Working: ${last.working}.\n\nWarning\n${last.warning}`;
+  t.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='adult-bmi-screening.txt';a.click();URL.revokeObjectURL(a.href)});
+  p.addEventListener('click',()=>last&&window.print());
+  document.getElementById('clear').addEventListener('click',()=>{f.reset();syncUnits();last=null;r.innerHTML='<p>Confirm adult applicability and enter measurements to see the calculation and screening band.</p>';t.disabled=p.disabled=true;f.audience.focus()});
+  const syncTheme=()=>{const dark=document.documentElement.getAttribute('data-theme')==='dark';theme.setAttribute('aria-pressed',String(dark));theme.textContent=dark?'Light mode':'Dark mode'};
+  theme.addEventListener('click',()=>{const root=document.documentElement,dark=root.getAttribute('data-theme')!=='dark';root.setAttribute('data-theme',dark?'dark':'light');root.style.colorScheme=dark?'dark':'light';syncTheme()});
+  syncTheme();
 })();
 </script>
-<afro-footer></afro-footer>
-<script>
-(function(){
-  const root = document.querySelector('[data-fr-decision-planner]');
-  if (!root) return;
-  const country = root.querySelector('[data-fr-decision-country]');
-  const amount = root.querySelector('[data-fr-decision-amount]');
-  const goal = root.querySelector('[data-fr-decision-goal]');
-  const output = root.querySelector('[data-fr-decision-output]');
-  const status = root.querySelector('[data-fr-decision-status]');
-  function render(){
-    const title = (document.querySelector('h1') || {}).innerText || 'Outil AfroTools';
-    const parts = [];
-    if (country.value.trim()) parts.push('Pays/devise: ' + country.value.trim());
-    if (amount.value.trim()) parts.push('Montant/volume: ' + amount.value.trim());
-    if (goal.value.trim()) parts.push('Objectif: ' + goal.value.trim());
-    output.textContent = parts.length ? title + ' - ' + parts.join(' | ') + '. Verifiez les hypotheses et les sources avant decision.' : 'Ajoutez quelques informations pour preparer votre verification.';
-    if (status) status.textContent = parts.length ? 'Resume pret.' : '';
-  }
-  root.querySelector('[data-fr-decision-button]')?.addEventListener('click', render);
-  [country, amount, goal].forEach(function(input){ input && input.addEventListener('input', render); });
-})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
-</body>
-</html>
+<afro-related-tools data-ssr="1" category="health" current="bmi-calc-tools">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body></html>

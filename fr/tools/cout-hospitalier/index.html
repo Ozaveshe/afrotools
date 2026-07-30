@@ -1,96 +1,67 @@
-<!DOCTYPE html>
-<html lang="fr" data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js">
-<head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<meta name="view-transition" content="same-origin">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<title>Estimateur de coût hospitalier | AfroTools</title>
-<meta name="description" content="Estimez un budget hospitalier indicatif et comparez les principaux postes de coût.">
-<meta name="robots" content="index, follow">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:title" content="Estimateur de coût hospitalier | AfroTools">
-<meta property="og:description" content="Estimez un budget hospitalier indicatif et comparez les principaux postes de coût.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/cout-hospitalier/">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/hospital-cost.webp">
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html><html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-theme="light" data-fr-health-source="hospital-cost"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Budget d'un épisode de soins hospitaliers | AfroTools</title><meta name="description" content="Ajoutez des lignes de devis d'hôpital confirmées par le prestataire, une contribution d'assurance et un tampon de planification dans votre devise. Exportation privée…"><meta name="robots" content="index,follow"><meta property="og:title" content="Budget d'un épisode de soins hospitaliers | AfroTools"><meta property="og:description" content="Ajoutez des lignes de devis d'hôpital confirmées par le prestataire, une contribution d'assurance et un tampon de planification dans votre devise. Exportation privée…"><meta property="og:url" content="https://afrotools.com/fr/tools/cout-hospitalier/"><meta property="og:type" content="website"><meta property="og:image" content="https://afrotools.com/assets/img/tools/hospital-cost.webp"><link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<style>:root{--b:#d9e1ea;--m:#536274;--s:#fff;--soft:#f4f7fb;--bad:#9b1c1c}[data-theme=dark]{--b:#344356;--m:#bdc8d5;--s:#182230;--soft:#101923;--bad:#ffb4b4}body{overflow-x:hidden}.shell{max-width:1080px;margin:auto;padding:clamp(1rem,3vw,2rem)}.crumbs{display:flex;flex-wrap:wrap;gap:.5rem;color:var(--m);margin:1rem 0}.head{max-width:820px;margin:2rem 0}.eyebrow{font-weight:800;color:var(--color-primary);text-transform:uppercase;letter-spacing:.08em}.grid{display:grid;grid-template-columns:1.15fr .85fr;gap:1.2rem;align-items:start}.card,.note{border:1px solid var(--b);background:var(--s);border-radius:var(--radius-lg);padding:clamp(1rem,3vw,1.5rem)}.row{display:grid;grid-template-columns:1fr 1fr;gap:.9rem}.field{margin-bottom:.9rem}.field label{display:block;font-weight:700;margin-bottom:.3rem}.field input{width:100%;min-height:48px}.error{color:var(--bad);font-weight:700}.big{display:block;font-size:clamp(2rem,7vw,3.4rem);font-weight:800}.breakdown{padding:0;list-style:none}.breakdown li{display:flex;justify-content:space-between;gap:1rem;border-bottom:1px solid var(--b);padding:.55rem 0}.actions{display:flex;flex-wrap:wrap;gap:.6rem}.actions button{min-height:44px}.muted,.status{color:var(--m)}.note{margin:2.5rem 0;background:var(--soft)}:focus-visible{outline:3px solid var(--color-primary);outline-offset:3px}@media(max-width:740px){.grid,.row{grid-template-columns:1fr}}@media(max-width:375px){.shell{padding:.75rem}.actions button{width:100%}}@media(prefers-reduced-motion:reduce){*{transition:none!important}}</style>
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script><script src="/tools/hospital-cost/hospital-quote-engine.js?v=724dab6f" defer></script><style>html .actions .btn.btn-secondary{color:#f8fafc!important;background:#174a78!important;border-color:#8db5d8!important}html .skip-link{position:absolute;left:-9999px;top:1rem;z-index:9999}html .skip-link:focus{left:1rem;background:var(--s);padding:.75rem;border:2px solid var(--color-primary)}</style><!-- tool-structured-data:auto -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Estimateur de coût hospitalier | AfroTools">
-<meta name="twitter:description" content="Estimez un budget hospitalier indicatif et comparez les principaux postes de coût.">
+<meta name="twitter:title" content="Budget d'un épisode de soins hospitaliers | AfroTools">
+<meta name="twitter:description" content="Ajoutez des lignes de devis d'hôpital confirmées par le prestataire, une contribution d'assurance et un tampon de planification dans votre devise. Exportation privée…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hospital-cost.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Estimateur de coût hospitalier",
-  "description": "Estimez un budget hospitalier indicatif et comparez les principaux postes de coût.",
-  "url": "https://afrotools.com/fr/tools/cout-hospitalier/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Budget d'un épisode de soins hospitaliers",
+    "description": "Ajoutez des lignes de devis d'hôpital confirmées par le prestataire, une contribution d'assurance et un tampon de planification dans votre devise. Exportation privée…",
+    "url": "https://afrotools.com/fr/tools/cout-hospitalier/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/hospital-cost.webp"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/hospital-cost.webp"
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les montants affichés sont-ils des devis ?","acceptedAnswer":{"@type":"Answer","text":"Non. Ce sont des estimations à confirmer auprès de l’établissement ou de l’assureur."}},{"@type":"Question","name":"Puis-je comparer public et privé ?","acceptedAnswer":{"@type":"Answer","text":"Oui, mais les services inclus et les délais peuvent varier fortement."}}]}</script>
-
-<style>
-body{background:#f8fafc;color:#0f172a}
-.fr-hero{background:linear-gradient(135deg,#0f172a 0%,#18304f 56%,#0f6fd6 100%);color:#fff;padding:3.5rem 1.25rem 2.5rem}
-.fr-shell{max-width:1120px;margin:0 auto}
-.fr-eyebrow{display:inline-flex;margin-bottom:.75rem;font-size:.72rem;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:#bfdbfe}
-.fr-hero h1{font-size:clamp(2rem,5vw,3.4rem);line-height:1.04;margin:0 0 .85rem;font-weight:800;max-width:820px}
-.fr-hero p{max-width:720px;margin:0;color:rgba(255,255,255,.84);line-height:1.72;font-size:1.02rem}
-.fr-badges{display:flex;flex-wrap:wrap;gap:.55rem;margin-top:1.2rem}
-.fr-badge{display:inline-flex;padding:.45rem .75rem;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(255,255,255,.08);font-size:.8rem;font-weight:700}
-.fr-main{max-width:1120px;margin:0 auto;padding:1.5rem 1.25rem 3.5rem}
-.fr-card{background:#fff;border:1px solid #dbe4ee;border-radius:18px;box-shadow:0 12px 34px rgba(15,23,42,.06);overflow:hidden}
-.fr-tool-frame{min-height:680px}
-.fr-tool-frame iframe{display:block;width:100%;min-height:720px;border:0;background:#fff}
-.fr-note{margin:1rem 0 1.25rem;padding:1rem 1.1rem;border:1px solid #bfdbfe;border-radius:14px;background:#eff6ff;color:#1e3a8a;line-height:1.65;font-size:.95rem}
-.fr-note strong{display:block;margin-bottom:.25rem;color:#172554}
-.fr-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.9rem;margin-top:1rem}
-.fr-link{display:block;padding:1rem;border:1px solid #dbe4ee;border-radius:14px;background:#fff;text-decoration:none;color:#0f172a}
-.fr-link:hover{border-color:#60a5fa;box-shadow:0 10px 24px rgba(15,23,42,.08)}
-.fr-link strong{display:block;margin-bottom:.3rem}
-.fr-link span{display:block;color:#64748b;font-size:.9rem;line-height:1.55}
-.fr-section{margin-top:1.35rem;padding:1.25rem;background:#fff;border:1px solid #dbe4ee;border-radius:18px}
-.fr-section h2{font-size:1.25rem;margin:0 0 .65rem;font-weight:800}
-.fr-section p,.fr-section li{color:#475569;line-height:1.78}
-.fr-section ul{padding-left:1.2rem}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:12px;background:#fff;margin:.75rem 0;overflow:hidden}
-.fr-faq summary{list-style:none;cursor:pointer;padding:1rem 1.05rem;font-weight:700}
-.fr-faq summary::-webkit-details-marker{display:none}
-.fr-faq p{padding:0 1.05rem 1rem;margin:0;color:#475569;line-height:1.72}
-@media (max-width:820px){.fr-grid{grid-template-columns:1fr}.fr-tool-frame iframe{min-height:780px}.fr-hero{padding-top:2.7rem}}
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
-<style data-fr-action-planner-style>
-.fr-action-planner{margin:22px 0;border:1px solid #bfdbfe;border-radius:16px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 14px 34px rgba(15,23,42,.07);padding:18px}.fr-action-planner h2{margin:0 0 6px;color:#0f172a;font-size:1.08rem}.fr-action-planner p{margin:0 0 14px;color:#475569;line-height:1.6}.fr-action-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-action-grid label{display:grid;gap:6px;font-size:.84rem;font-weight:850;color:#0f172a}.fr-action-grid input,.fr-action-grid select,.fr-action-grid textarea{width:100%;box-sizing:border-box;border:1px solid #cbd5e1;border-radius:10px;background:#fff;padding:10px 11px;font:inherit;color:#0f172a}.fr-action-grid textarea{min-height:84px;resize:vertical}.fr-action-output{display:block;margin-top:12px;border:1px solid #bfdbfe;border-radius:12px;background:#fff;padding:12px;color:#334155;line-height:1.55;min-height:56px}.fr-action-buttons{display:flex;flex-wrap:wrap;gap:9px;margin-top:12px}.fr-action-buttons a,.fr-action-buttons button{border:0;border-radius:999px;padding:10px 14px;font-weight:850;text-decoration:none;display:inline-flex;align-items:center;justify-content:center;cursor:pointer}.fr-action-buttons a{background:#0057b8;color:#fff}.fr-action-buttons button{background:#0f172a;color:#fff}.fr-action-status{font-size:.84rem;color:#64748b;align-self:center}.fr-action-method{margin-top:12px;border-left:4px solid #10b981;background:#f0fdf4;border-radius:10px;padding:10px 12px;color:#365346;font-size:.92rem;line-height:1.55}@media(max-width:640px){.fr-action-buttons a,.fr-action-buttons button{width:100%}}
-</style>
-<style data-localized-verification-style>
-.localized-verification-panel{max-width:1120px;margin:18px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:14px;background:linear-gradient(135deg,#eff6ff 0%,#fff 58%,#ecfdf5 100%);box-shadow:0 12px 28px rgba(15,23,42,.06);color:#0f172a}.localized-verification-panel h2{margin:0 0 8px;font-size:1.05rem;letter-spacing:-.01em}.localized-verification-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,210px),1fr));gap:10px}.localized-verification-grid div{border:1px solid #dbeafe;border-radius:12px;background:#fff;padding:11px;line-height:1.5;color:#475569}.localized-verification-grid strong{display:block;color:#0f172a;margin-bottom:4px}.localized-verification-panel p{margin:10px 0 0;color:#475569;line-height:1.58}@media(max-width:640px){.localized-verification-panel{margin:14px 12px;padding:14px}}
-</style>
+<script type="application/json" id="fr-health-translations">{"Hospital Quote Episode Budget | AfroTools":"Budget de l’épisode de devis d’hôpital | AfroTools","Skip to hospital budget":"Passer au budget de l'hôpital","Home":"Accueil","Health":"Santé","Hospital quote budget":"Budget devis hôpital","Written quote in · budget out":"Devis écrit dans · budget sorti","Build a hospital episode budget from your quote":"Construisez un budget d'épisode d'hôpital à partir de votre devis","Enter only prices confirmed by a facility, insurer or provider. The worksheet has no built-in hospital prices and does not identify a procedure, recommend care or predict the final bill.":"Entrez uniquement les prix confirmés par un établissement, un assureur ou un fournisseur. La feuille de calcul ne contient pas de prix hospitaliers intégrés et n’identifie pas de procédure, ne recommande pas de soins ou ne prédit pas la facture finale.","Quote details":"Détails du devis","Facility or quote reference":"Référence de l'établissement ou du devis","Quote date":"Date du devis","Currency code":"Code devise","Planning buffer (%)":"Marge de planification (%)","Provider-confirmed lines":"Lignes confirmées par le fournisseur","Facility/room":"Installation/chambre","Procedure/service quote":"Devis procédure/prestation","Tests/imaging quote":"Devis tests/imagerie","Medicines/supplies quote":"Devis médicaments/fournitures","Other confirmed costs":"Autres coûts confirmés","Confirmed insurer contribution":"Cotisation de l'assureur confirmé","Calculate episode budget":"Calculer le budget de l'épisode","Budget result":"Résultat budgétaire","Enter confirmed quote lines.":"Saisissez les lignes de devis confirmées.","Quoted gross":"Total brut du devis","Insurer contribution":"Cotisation de l'assureur","Unbuffered out-of-pocket":"Déboursé sans tampon","Planning buffer":"Tampon de planification","Download TXT":"Télécharger le TXT","Download PDF":"Télécharger le PDF","Confirm before relying on this budget":"Confirmez avant de vous fier à ce budget","Ask the facility what is excluded, how long the quote is valid, whether complications or extra days are separate, and what the insurer has authorized in writing. This is not a diagnosis, recommendation, guarantee, emergency service or clinical-outcome estimate.":"Demandez à l'établissement ce qui est exclu, combien de temps le devis est valable, si des complications ou des jours supplémentaires sont séparés et ce que l'assureur a autorisé par écrit. Il ne s’agit pas d’un diagnostic, d’une recommandation, d’une garantie, d’un service d’urgence ou d’une estimation des résultats cliniques.","Quote details remain in this page only and are not saved, placed in the URL or transmitted.":"Les détails du devis restent uniquement sur cette page et ne sont pas enregistrés, placés dans l'URL ou transmis.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Add provider-confirmed hospital quote lines, insurance contribution and a planning buffer in your currency. Local private export; no diagnosis or price database.":"Ajoutez des lignes de devis d'hôpital confirmées par le prestataire, une contribution d'assurance et un tampon de planification dans votre devise. Exportation privée locale ; pas de diagnostic ni de base de données de prix.","Hospital Quote Episode Budget — AfroTools":"Budget de l'épisode de devis d'hôpital — AfroTools","Total provider-confirmed hospital quote lines, insurance and a planning buffer in one currency.":"Lignes de devis hospitalières totales confirmées par le prestataire, assurance et tampon de planification dans une seule devise.","Breadcrumb":"Fil d'Ariane","use strict":"utiliser strict","must be between 0 and":"doit être compris entre 0 et","Insurance contribution":"Cotisation d'assurance","Buffer percent":"Pourcentage de tampon","Confirmed insurer contribution cannot exceed quoted gross.":"La contribution de l’assureur confirmé ne peut pas dépasser le montant brut indiqué.","Enter at least one positive provider-confirmed quote line.":"Saisissez au moins une ligne de devis positive confirmée par le fournisseur.","Quote date:":"Date du devis :","Quoted gross:":"Brut coté :","Confirmed insurer contribution:":"Cotisation de l'assureur confirmé :","Unbuffered out-of-pocket:":"Déboursé sans tampon :","Planning total:":"Total de planification :","Boundary: User-entered quote arithmetic only. Not a diagnosis, treatment recommendation, guaranteed bill or clinical-outcome estimate. Confirm all inclusions and authorization in writing.":"Limite : arithmétique de cotation saisie par l'utilisateur uniquement. Il ne s'agit pas d'un diagnostic, d'une recommandation de traitement, d'une facture garantie ou d'une estimation des résultats cliniques. Confirmez toutes les inclusions et autorisations par écrit.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/cout-hospitalier/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/hospital-cost/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/cout-hospitalier/">
@@ -98,84 +69,23 @@ body{background:#f8fafc;color:#0f172a}
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/kudin-asibiti/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/hospital-cost/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-  <div class="fr-shell">
-    <span class="fr-eyebrow">Santé</span>
-    <h1>Estimateur de coût hospitalier</h1>
-    <p>Préparez une fourchette de budget pour consultations, examens ou hospitalisation, avec une lecture prudente des écarts possibles.</p>
-    <div class="fr-badges"><span class="fr-badge">Budget indicatif</span><span class="fr-badge">Public et privé</span><span class="fr-badge">À confirmer localement</span></div>
-  </div>
-</section>
-<main class="fr-main">
-<section class="localized-verification-panel" data-tool-verification-panel aria-label="Méthode, sources et limites">
-<h2>Méthode, sources et prochaine action</h2>
-<div class="localized-verification-grid"><div><strong>Méthode</strong>Le résultat utilise les données saisies dans cet outil pour produire une estimation de travail, une comparaison ou une checklist.</div><div><strong>Sources à vérifier</strong>Confirmez les taux, frais, licences, documents, prix ou exigences avec l'autorite officielle, le prestataire, la banque, l'assureur, le médecin ou le conseiller concerne.</div><div><strong>Action utile</strong>Gardez la date, le pays, la devise, les hypothèses et le résultat avant de payer, signer, déclarer, voyager ou deposer un dossier.</div></div>
-<p>Ce contenu n'est pas un devis officiel, un conseil professionnel ni une validation finale. Utilisez-le comme premier repere, puis vérifiez aupres de la source responsable.</p>
-</section>
-<section class="fr-action-planner" data-fr-action-planner data-tool-name="Estimateur de coût hospitalier">
-<h2>Commencer ici</h2>
-<p>Ajoutez juste le contexte utile, puis ouvrez l'outil de fond avec un brief clair. Le résumé reste dans votre navigateur.</p>
-<div class="fr-action-grid">
-<label>Pays ou contexte<input name="scope" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Action<select name="task"><option value="planifier">Planifier l'action</option><option value="comparer">Comparer les informations</option><option value="verifier">Vérifier avant décision</option></select></label>
-<label>Données ou demande<textarea name="details" placeholder="Montant, date, fichier, phrase, objectif ou contrainte"></textarea></label>
-</div>
-<output class="fr-action-output" data-fr-action-output>Ajoutez un contexte, une action ou des données pour préparer le brief.</output>
-<div class="fr-action-buttons"><a href="/fr/tools/hospital-cost/">Ouvrir l'outil complet</a><button type="button" data-fr-action-copy>Copier le brief</button><span class="fr-action-status" data-fr-action-status aria-live="polite"></span></div>
-<div class="fr-action-method"><strong>Méthode:</strong> utilisez ce résultat comme aide de planification. Contrôle 2026: vérifiez les taux, règles, fichiers, licences ou sources officielles avant toute décision financière, juridique, santé, énergie ou business.</div>
-</section>
-  <div class="fr-note"><strong>Les prix réels varient</strong>Les tarifs changent selon la ville, l’établissement, le médecin, l’assurance, les complications et les examens ajoutés. Demandez un devis officiel avant toute décision coûteuse.</div>
-  <section class="fr-card fr-tool-frame" aria-label="Estimateur de coût hospitalier">
-    <iframe id="fr-source-frame" src="/tools/hospital-cost/" title="Estimateur de coût hospitalier" loading="eager"></iframe>
-  </section>
-  <section class="fr-section">
-    <h2>Préparer un budget de soins</h2>
-    <p>L’outil sert à anticiper les postes de dépense et à comparer des scénarios. Il ne garantit pas le prix final facturé.</p><p>Gardez une marge pour les analyses, médicaments, consommables, transport, accompagnant et suivi après sortie.</p>
-  </section>
-  <section class="fr-section">
-    <h2>Outils liés en français</h2>
-    <div class="fr-grid"><a class="fr-link" href="/fr/tools/dosage-medicament/"><strong>Dosage médicament</strong><span>Calcul indicatif par poids, à vérifier médicalement.</span></a><a class="fr-link" href="/fr/tools/date-accouchement/"><strong>Date d’accouchement</strong><span>Repère de grossesse à confirmer en suivi prénatal.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Lire une mesure et suivre ses valeurs.</span></a><a class="fr-link" href="/fr/tools/drepanocytose/"><strong>Drépanocytose</strong><span>Information génétique à confirmer par test.</span></a></div>
-  </section>
-  <section class="fr-section fr-faq"><h2>Questions fréquentes</h2><details><summary>Les montants affichés sont-ils des devis ?</summary><p>Non. Ce sont des estimations à confirmer auprès de l’établissement ou de l’assureur.</p></details><details><summary>Puis-je comparer public et privé ?</summary><p>Oui, mais les services inclus et les délais peuvent varier fortement.</p></details></section>
-</main>
-<script>
-(function(){
-  const textMap={"Calculate":"Calculer","Calculator":"Calculateur","Weight":"Poids","Height":"Taille","Age":"Âge","Gender":"Sexe","Male":"Homme","Female":"Femme","Result":"Résultat","Results":"Résultats","Normal":"Normal","Risk":"Risque","Health":"Santé","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter","Blood Pressure":"Tension artérielle","Medication":"Médicament","Dosage":"Dosage","Hospital":"Hôpital","Cost":"Coût","Water":"Eau","Calories":"Calories","Due Date":"Date probable","Sickle Cell":"Drépanocytose","Genotype":"Génotype"};
-  const frame=document.getElementById('fr-source-frame');
-  function replaceText(node){
-    if(!node || !node.nodeValue) return;
-    let value=node.nodeValue;
-    Object.keys(textMap).forEach(function(key){
-      value=value.split(key).join(textMap[key]);
-    });
-    node.nodeValue=value;
-  }
-  function localize(){
-    try{
-      const doc=frame.contentDocument;
-      if(!doc) return;
-      const walker=doc.createTreeWalker(doc.body, NodeFilter.SHOW_TEXT);
-      let node;
-      while((node=walker.nextNode())) replaceText(node);
-      doc.querySelectorAll('input[placeholder],textarea[placeholder],button,[aria-label],option').forEach(function(el){
-        ['placeholder','aria-label','value','title'].forEach(function(attr){
-          const value=el.getAttribute && el.getAttribute(attr);
-          if(value && textMap[value]) el.setAttribute(attr,textMap[value]);
-        });
-        if(el.childNodes && el.childNodes.length===1 && el.firstChild.nodeType===3) replaceText(el.firstChild);
-      });
-      doc.documentElement.lang='fr';
-    }catch(e){}
-  }
-  frame.addEventListener('load',function(){localize();setTimeout(localize,700);setTimeout(localize,1800);});
-})();
-</script>
-<afro-footer></afro-footer>
-<script data-fr-action-planner-script>
-(function(){document.querySelectorAll('[data-fr-action-planner]').forEach(function(panel){var name=panel.getAttribute('data-tool-name')||'Outil';var output=panel.querySelector('[data-fr-action-output]');var status=panel.querySelector('[data-fr-action-status]');function val(sel){var el=panel.querySelector(sel);return el&&el.value?el.value.trim():'';}function summary(){var scope=val('[name="scope"]');var task=val('[name="task"]');var details=val('[name="details"]');var parts=[];if(scope)parts.push('Contexte: '+scope);if(task)parts.push('Action: '+task);if(details)parts.push('Donnees: '+details);return parts.length?name+' - '+parts.join(' | '):'Ajoutez un contexte, une action ou des donnees pour preparer le brief.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);panel.addEventListener('change',render);var copy=panel.querySelector('[data-fr-action-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Brief copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});render();});})();
-</script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
-</body>
-</html>
+<body><a class="skip-link" href="#main">Passer au budget de l'hôpital</a><afro-navbar></afro-navbar><main id="main" class="page-shell shell"><nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>/</span><a href="/health/">Santé</a><span>/</span><span>Budget devis hôpital</span></nav><header class="head"><p class="eyebrow">Devis écrit dans · budget sorti</p><h1 class="page-title">Budget d'un épisode de soins hospitaliers</h1><p class="page-description">Entrez uniquement les prix confirmés par un établissement, un assureur ou un fournisseur. La feuille de calcul ne contient pas de prix hospitaliers intégrés et n’identifie pas de procédure, ne recommande pas de soins ou ne prédit pas la facture finale.</p></header>
+<section class="grid"><div class="card"><h2>Détails du devis</h2><form id="form" novalidate><div class="row"><div class="field"><label for="facility">Référence de l'établissement ou du devis</label><input id="facility" name="facility" maxlength="100" required></div><div class="field"><label for="date">Date du devis</label><input id="date" name="quoteDate" type="date" required></div><div class="field"><label for="currency">Code devise</label><input id="currency" name="currency" maxlength="3" value="NGN" required></div><div class="field"><label for="buffer">Marge de planification (%)</label><input id="buffer" name="bufferPercent" type="number" min="0" max="100" value="10" step=".1" required></div></div>
+<h3>Lignes confirmées par le fournisseur</h3><div class="row"><div class="field"><label for="consultation">Consultation/admission</label><input id="consultation" name="consultation" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="facility-fee">Installation/chambre</label><input id="facility-fee" name="facilityFee" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="procedure">Devis procédure/prestation</label><input id="procedure" name="procedure" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="tests">Devis tests/imagerie</label><input id="tests" name="tests" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="medicines">Devis médicaments/fournitures</label><input id="medicines" name="medicines" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="travel">Travel/lodging estimate</label><input id="travel" name="travel" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="other">Autres coûts confirmés</label><input id="other" name="other" type="number" min="0" max="10000000000" step=".01" value="0" required></div><div class="field"><label for="insurance">Cotisation de l'assureur confirmé</label><input id="insurance" name="insuranceContribution" type="number" min="0" max="10000000000" step=".01" value="0" required></div></div>
+<p id="error" class="error" role="alert" tabindex="-1" hidden></p><button class="btn btn-primary" type="submit">Calculer le budget de l'épisode</button></form></div>
+<aside class="card"><h2>Résultat budgétaire</h2><div id="empty">Saisissez les lignes de devis confirmées.</div><div id="result" hidden><output id="headline" class="big" aria-live="polite"></output><ul class="breakdown"><li><span>Total brut du devis</span><strong id="gross"></strong></li><li><span>Cotisation de l'assureur</span><strong id="insurance-out"></strong></li><li><span>Déboursé sans tampon</span><strong id="oop"></strong></li><li><span>Tampon de planification</span><strong id="buffer-out"></strong></li></ul><p id="assumptions" class="muted"></p><div class="actions"><button class="btn btn-secondary" id="txt" type="button">Télécharger le TXT</button><button class="btn btn-secondary" id="pdf" type="button">Télécharger le PDF</button></div><p id="status" class="status" role="status"></p></div></aside></section>
+<section class="note"><h2>Confirmez avant de vous fier à ce budget</h2><p>Demandez à l'établissement ce qui est exclu, combien de temps le devis est valable, si des complications ou des jours supplémentaires sont séparés et ce que l'assureur a autorisé par écrit. Il ne s’agit pas d’un diagnostic, d’une recommandation, d’une garantie, d’un service d’urgence ou d’une estimation des résultats cliniques.</p><p>Les détails du devis restent uniquement sur cette page et ne sont pas enregistrés, placés dans l'URL ou transmis.</p></section><section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Budget d'un épisode de soins hospitaliers reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/hospital-cost/" hreflang="en">/tools/hospital-cost/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+<afro-related-tools data-ssr="1" category="health" current="hospital-cost">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer><script>
+(function(){"use strict";var r=null;function m(n){return r.currency+" "+Number(n).toLocaleString(undefined,{maximumFractionDigits:2});}function report(){if(!r)return"";return["AfroTools Hospital Quote Episode Budget","Facility/reference: "+r.facility,"Quote date: "+r.quoteDate,"Currency: "+r.currency,"Quoted gross: "+m(r.gross),"Confirmed insurer contribution: "+m(r.insuranceContribution),"Unbuffered out-of-pocket: "+m(r.outOfPocket),"Planning buffer ("+r.bufferPercent+"%): "+m(r.bufferAmount),"Planning total: "+m(r.totalWithBuffer),"","Boundary: User-entered quote arithmetic only. Not a diagnosis, treatment recommendation, guaranteed bill or clinical-outcome estimate. Confirm all inclusions and authorization in writing."].join("\n");}function dl(b,n){var a=document.createElement("a"),u=URL.createObjectURL(b);a.href=u;a.download=n;document.body.appendChild(a);a.click();a.remove();setTimeout(function(){URL.revokeObjectURL(u);},0);}function st(t){document.getElementById("status").textContent=t;}document.addEventListener("DOMContentLoaded",function(){document.getElementById("date").value=new Date().toISOString().slice(0,10);document.getElementById("form").onsubmit=function(e){e.preventDefault();var er=document.getElementById("error");er.hidden=true;try{r=HospitalQuoteEngine.calculate(Object.fromEntries(new FormData(e.currentTarget).entries()));document.getElementById("empty").hidden=true;document.getElementById("result").hidden=false;document.getElementById("headline").textContent=m(r.totalWithBuffer);document.getElementById("gross").textContent=m(r.gross);document.getElementById("insurance-out").textContent="− "+m(r.insuranceContribution);document.getElementById("oop").textContent=m(r.outOfPocket);document.getElementById("buffer-out").textContent=m(r.bufferAmount);document.getElementById("assumptions").textContent="Quote dated "+r.quoteDate+"; "+r.bufferPercent+"% buffer applies after the confirmed insurer contribution."; }catch(x){er.textContent=x.message;er.hidden=false;er.focus();}};document.getElementById("txt").onclick=function(){dl(new Blob([report()],{type:"text/plain;charset=utf-8"}),"afrotools-hospital-quote-budget.txt");st("TXT downloaded locally.");};document.getElementById("pdf").onclick=function(){if(!window.jspdf)return st("PDF library unavailable. Use TXT.");var d=new jspdf.jsPDF({unit:"pt",format:"a4",compress:false}),y=48;d.splitTextToSize(report(),500).forEach(function(l){d.text(l,44,y);y+=15;});d.save("afrotools-hospital-quote-budget.pdf");st("PDF downloaded locally.");};});window.HospitalQuoteApp={buildReportText:report};})();
+</script><script>document.addEventListener("DOMContentLoaded",function(){document.getElementById("form").addEventListener("submit",function(){document.getElementById("empty").hidden=false;document.getElementById("result").hidden=true;},true);});</script>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body></html>

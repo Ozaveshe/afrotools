@@ -1,131 +1,48 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Compteur de mots | AfroTools</title>
-<meta name="description" content="Compteur de mots gratuit en ligne. Comptez mots, caractères, phrases, paragraphes avec temps de lecture estime.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Compteur de mots | AfroTools">
-<meta property="og:description" content="Compteur de mots gratuit. Mots, caractères, phrases, paragraphes et temps de lecture.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/word-counter.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/compteur-mots/">
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Compteur de mots et limite de devoir | AfroTools</title>
+<meta name="description" content="Analysez localement mots, caractères, paragraphes, durée de lecture et limite de devoir sans envoyer votre texte.">
+<meta property="og:title" content="Compteur de mots et limite de devoir"><meta property="og:description" content="Analysez localement mots, caractères, paragraphes, durée de lecture et limite de devoir sans envoyer votre texte.">
+<meta property="og:url" content="https://afrotools.com/fr/tools/compteur-mots/"><meta property="og:image" content="https://afrotools.com/assets/img/tools/word-counter.webp">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Compteur de mots | AfroTools">
-<meta name="twitter:description" content="Compteur de mots gratuit en ligne. Comptez mots, caractères, phrases, paragraphes avec temps de lecture estime.">
-<meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<meta name="twitter:title" content="Compteur de mots et limite de devoir | AfroTools">
+<meta name="twitter:description" content="Analysez localement mots, caractères, paragraphes, durée de lecture et limite de devoir sans envoyer votre texte.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/word-counter.webp">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel[data-tool-verification-panel]{overflow:hidden}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px;white-space:pre-line}.fr-method-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:12px}.fr-method-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}.fr-method-grid strong{display:block;color:#0f172a;margin-bottom:3px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
+:root{color-scheme:light dark;--ed-bg:#f4f7fb;--ed-card:#fff;--ed-text:#10213a;--ed-muted:#53647c;--ed-line:#cbd7e6;--ed-blue:#1166cc;--ed-soft:#eaf3ff}
+[data-theme="dark"]{--ed-bg:#091526;--ed-card:#122238;--ed-text:#f5f8fc;--ed-muted:#b8c7d9;--ed-line:#3b516d;--ed-blue:#7db5ff;--ed-soft:#183456}
+@media(prefers-color-scheme:dark){:root:not([data-theme="light"]){--ed-bg:#091526;--ed-card:#122238;--ed-text:#f5f8fc;--ed-muted:#b8c7d9;--ed-line:#3b516d;--ed-blue:#7db5ff;--ed-soft:#183456}}
+*{box-sizing:border-box}body{margin:0;background:var(--ed-bg);color:var(--ed-text);font-family:Inter,system-ui,sans-serif;line-height:1.55}.wrap{width:min(1120px,calc(100% - 28px));margin:auto;padding:28px 0 64px}.hero{background:#071d35;color:#fff;border-radius:24px;padding:clamp(24px,5vw,54px);box-shadow:0 20px 55px #00152b24}.hero p{color:#d6e8ff;max-width:780px}.crumb{color:#94c7ff;font-weight:800;text-transform:uppercase;letter-spacing:.08em}.grid{display:grid;grid-template-columns:minmax(0,1.35fr) minmax(280px,.65fr);gap:22px;margin-top:22px}.card{background:var(--ed-card);border:1px solid var(--ed-line);border-radius:20px;padding:24px;min-width:0}.fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}.fields label{display:grid;gap:6px;font-weight:750}.fields .full{grid-column:1/-1}input,select,textarea,button{font:inherit}input,select,textarea{width:100%;min-height:48px;border:1px solid var(--ed-line);border-radius:11px;background:var(--ed-card);color:var(--ed-text);padding:10px 12px}textarea{resize:vertical}.actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:18px}button{min-height:46px;border-radius:11px;border:1px solid var(--ed-line);padding:10px 15px;font-weight:800;cursor:pointer;background:var(--ed-card);color:var(--ed-text)}button.primary{background:#0868d7;color:#fff;border-color:#0868d7}.status{min-height:28px;margin:12px 0;color:var(--ed-muted)}.status.error{color:#b42318}.result{display:none;background:var(--ed-soft);border-radius:14px;padding:18px}.result.show{display:block}.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.metric{background:var(--ed-card);border:1px solid var(--ed-line);border-radius:12px;padding:12px}.metric span{display:block;color:var(--ed-muted);font-size:.88rem}.metric strong{display:block;overflow-wrap:anywhere}.boundary{border-left:4px solid #16834b}.boundary p,.boundary li{color:var(--ed-muted)}a{color:var(--ed-blue)}:focus-visible{outline:3px solid #ffb000;outline-offset:3px}
+@media(max-width:760px){.grid{grid-template-columns:1fr}.fields{grid-template-columns:1fr}.fields .full{grid-column:auto}.metrics{grid-template-columns:1fr}.wrap{width:min(100% - 18px,1120px)}}
+@media print{.hero,.boundary,.actions,.status{display:none}.grid{display:block}.card{border:0}.result{display:block}}
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Compteur de mots",
+  "@type": [
+    "WebApplication",
+    "EducationalApplication"
+  ],
+  "name": "Compteur de mots et limite de devoir",
   "url": "https://afrotools.com/fr/tools/compteur-mots/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "DeveloperApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
+  "inLanguage": "fr",
+  "isAccessibleForFree": true,
+  "applicationCategory": "EducationalApplication",
+  "operatingSystem": "Any modern browser",
+  "description": "Analysez localement mots, caractères, paragraphes, durée de lecture et limite de devoir sans envoyer votre texte.",
   "image": "https://afrotools.com/assets/img/tools/word-counter.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Le compteur gere-t-il toutes les langues ?","acceptedAnswer":{"@type":"Answer","text":"L'outil fonctionne avec toutes les langues utilisant des espaces comme separateurs. Pour le chinois ou le japonais, le comptage peut être approximatif."}},{"@type":"Question","name":"Le temps de lecture est-il précis ?","acceptedAnswer":{"@type":"Answer","text":"Le temps de lecture est base sur une vitesse moyenne de 200 mots par minute pour le français. C'est une estimation qui peut varier selon la complexite du texte."}},{"@type":"Question","name":"Le compteur detecte-t-il les paragraphes ?","acceptedAnswer":{"@type":"Answer","text":"Oui, l'outil detecte les paragraphes en se basant sur les sauts de ligne doubles. Les lignes vides separent les paragraphes pour un comptage précis."}}]}</script>
-<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/word-counter.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
-  }
-}
-</style>
-<style data-at-trust-panel-style>
-.at-trust-panel{max-width:960px;margin:22px auto;padding:16px 18px;border:1px solid #bfdbfe;border-radius:12px;background:#f8fbff;color:#334155;box-shadow:0 10px 24px rgba(15,23,42,.06)}.at-trust-panel h2{margin:0 0 8px;color:#0f172a;font-size:1.04rem}.at-trust-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.at-trust-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;line-height:1.48}.at-trust-grid strong{display:block;color:#0f172a;margin-bottom:3px}.at-trust-panel p{margin:10px 0 0;line-height:1.58;color:#475569}
-</style>
 <link rel="canonical" href="https://afrotools.com/fr/tools/compteur-mots/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/word-counter/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-mots/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/word-counter/">
-</head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="at-trust-panel" data-tool-verification-panel aria-label="Méthodologie, sources et limites">
-<h2>Méthodologie, sources et limites</h2>
-<div class="at-trust-grid"><div><strong>Méthodologie</strong>La page aide à préparer un calcul, une comparaison ou une vérification avec vos données avant de passer a l'outil principal.</div><div><strong>Sources</strong>Pour tout taux, barème, examen, assurance, santé, éducation ou regle pays, confirmez la source officielle ou le fournisseur avant décision.</div><div><strong>Limites 2026</strong>Ce contenu est non officiel. Les hypothèses sont à valider et ne remplacent pas un avis fiscal, juridique, médical, éducatif ou professionnel.</div></div>
-<p>Dernière vérification editoriale: 2026. Utilisez le résultat comme repere de travail, puis conservez la source, la date et le contexte de votre vérification.</p>
-</section>
-<section class="fr-hero">
-<h1>Compteur de mots</h1>
-<p>Comptez les mots, caractères, phrases et paragraphes de votre texte. Temps de lecture estime inclus.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Compteur de mots. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-method-grid"><div><strong>Méthode</strong>Le panneau prepare le contexte; l'outil source calcule mots, caractères et temps de lecture.</div><div><strong>Confidentialité</strong>Les champs du panneau restent dans le navigateur.</div><div><strong>Limite</strong>Vérifiez le résultat final avant publication ou soumission.</div></div>
-<div class="fr-prep-actions"><a href="/fr/tools/word-counter/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><button type="button" data-fr-prep-download>Télécharger TXT</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame">
-<iframe src="/tools/word-counter/" title="Compteur de mots" loading="lazy"></iframe>
-</div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Compteur de mots";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[title];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);parts.push('Verification: confirmer le resultat dans l outil source avant publication ou partage.');return parts.join('\n');}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);render();var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});var download=panel.querySelector('[data-fr-prep-download]');if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='brief-compteur-mots.txt';a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});})();
-</script>
-<div class="fr-seo">
-<h2>Compteur de mots en ligne</h2>
-<p>Le compteur de mots d'AfroTools analyse votre texte en profondeur. Obtenez le nombre de mots, caractères (avec et sans espaces), phrases et paragraphes instantanement. Le temps de lecture estime vous aide à calibrer la longueur de vos articles, emails et documents.</p>
-<p>L'outil detecte automatiquement la langue du texte pour un comptage précis des mots. Supporte le français, l'anglais, l'arabe, le swahili et toutes les langues utilisant des espaces comme separateurs de mots.</p>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Le compteur gere-t-il toutes les langues ?</summary><p>L'outil fonctionne avec toutes les langues utilisant des espaces comme separateurs. Pour les langues comme le chinois ou le japonais, le comptage peut être approximatif.</p></details>
-<details><summary>Le temps de lecture est-il précis ?</summary><p>Le temps de lecture est base sur une vitesse moyenne de 200 mots par minute pour le français. C'est une estimation qui peut varier selon la complexite du texte.</p></details>
-<details><summary>Le compteur detecte-t-il les paragraphes ?</summary><p>Oui, l'outil detecte les paragraphes en se basant sur les sauts de ligne doubles. Les lignes vides separent les paragraphes pour un comptage précis.</p></details>
-</div>
-</div>
-<afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
-</body>
-</html>
+</head><body data-education-id="word-counter">
+<main class="wrap"><section class="hero"><a class="crumb" href="/fr/education/">Éducation AfroTools</a><h1>Compteur de mots et limite de devoir</h1><p>Analysez localement mots, caractères, paragraphes, durée de lecture et limite de devoir sans envoyer votre texte.</p></section>
+<div class="grid"><section class="card"><h2>Votre scénario</h2><form data-education-form><div class="fields"><label class="full">Texte privé<textarea name="text" rows="6" required>Cette introduction présente le sujet. Elle expose ensuite la méthode et les limites du devoir.</textarea></label><label>Minimum de mots<input type="number" name="minimumWords" value="8" min="1" max="100000" step="any" required></label><label>Maximum de mots<input type="number" name="maximumWords" value="120" min="1" max="100000" step="any" required></label><label>Maximum de caractères<input type="number" name="maximumCharacters" value="1000" min="1" max="1000000" step="any" required></label></div><div class="actions"><button class="primary" type="submit">Calculer et vérifier</button><button type="reset">Réinitialiser</button></div></form><p class="status" data-education-status role="status" aria-live="polite"></p><section class="result" data-education-result aria-live="polite"><h2>Résultat du scénario</h2><div class="metrics" data-education-metrics></div><div class="actions"><button type="button" data-action="copy">Copier</button><button type="button" data-action="json">JSON</button><button type="button" data-action="csv">CSV</button><button type="button" data-action="txt">TXT</button><button type="button" data-action="pdf">PDF</button><button type="button" data-action="save">Enregistrer localement</button><button type="button" data-action="print">Imprimer</button></div></section></section>
+<aside class="card boundary"><h2>Limites et confidentialité</h2><p>Aucun compte, téléversement ni envoi à une IA. Les données saisies et les exports restent dans ce navigateur.</p><ul><li>Ce résultat est une feuille de planification, pas une décision d’admission, une bourse, une note officielle, un tarif officiel ou un conseil financier.</li><li>Les règles, dates, frais et seuils variables doivent être confirmés auprès du propriétaire officiel et de l’établissement concerné.</li><li>L’anglais et le français utilisent le même propriétaire de calcul déterministe.</li></ul><img src="/assets/img/tools/word-counter.webp" alt="" width="240" height="135" loading="lazy"></aside></div></main>
+<script type="application/json" id="education-parity-config">{"id":"word-counter","title":"Compteur de mots et limite de devoir","recipe":"word","global":"AfroTools.wordCounter","metrics":[["words","Mots"],["characters","Caractères"],["sentences","Phrases"],["paragraphs","Paragraphes"],["limitState","État de la limite"]]}</script>
+<script src="/tools/word-counter/word-counter-engine.js?v=0bb8a6a0"></script><script src="/assets/js/pages/fr-education-parity.js?v=21e18fdb"></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body></html>

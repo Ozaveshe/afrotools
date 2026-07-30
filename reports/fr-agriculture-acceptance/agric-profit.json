@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "fr-agriculture-parity",
+  "family": "singleton:agric-profit",
+  "status": "passed",
+  "date": "2026-07-28",
+  "proof": {
+    "englishFixture": "node scripts/capture-agric-profit-english-fixtures.js --check",
+    "englishFixtureResult": "PASS 384 Agric Profit English invariants",
+    "engine": "node tests/agric-profit-engine.test.js",
+    "engineResult": "PASS 3456 Agric Profit engine scenarios",
+    "oracle": "FR_AGRI_ORACLE_OUTPUT=reports/fr-agriculture-agric-profit-oracles.json node tests/fr-agriculture-agric-profit.test.js",
+    "oracleResult": "PASS 384 French profiles",
+    "controller": "node scripts/migrate-fr-agric-profit-shared-engine.js --check",
+    "browser": "PORT=42975 CI=1 npx playwright test tests/e2e/fr-agriculture-agric-profit.spec.js --project=chromium --workers=1",
+    "browserResult": "2 passed (27.1s)",
+    "worktreeSentinel": "tests/fixtures/fr-agriculture-worktree-7e83-sentinel.txt"
+  },
+  "rows": [{
+    "englishId": "agric-profit",
+    "englishRoute": "/tools/agric-profit/",
+    "frenchRoute": "/fr/tools/profit-agricole/",
+    "status": "accepted",
+    "oracle": {
+      "report": "reports/fr-agriculture-agric-profit-oracles.json",
+      "englishInvariants": 384,
+      "frenchProfiles": 384,
+      "preserves": ["16 crop identities", "8 country currencies and scaling rules", "three farming methods", "exact country-data fallback behavior", "eight cost categories", "area and seasons", "post-harvest loss", "revenue, cost, profit, ROI and break-even outputs"]
+    },
+    "browser": {
+      "suite": "tests/e2e/fr-agriculture-agric-profit.spec.js",
+      "result": "2 passed (27.1s)",
+      "isolatedPort": 42975,
+      "worktreeSentinelVerified": true,
+      "viewports": [320, 375],
+      "reflow200Percent": {"equivalentCssViewport": 640, "baselineCssViewport": 1280, "documentOverflow": false},
+      "themes": ["light", "manual-dark", "system-dark"],
+      "keyboardFocusA11y": true,
+      "consoleAndFirstPartyNetworkClean": true,
+      "seo": ["self-canonical", "og", "schema-inLanguage-fr", "reciprocal-semantic-hreflang"],
+      "aiRoute": "/fr/tools/profit-agricole/"
+    },
+    "exports": ["pdf", "csv", "json", "txt", "copy", "share", "local-save", "reset"],
+    "source": {
+      "engine": ["engines/src/agric-profit-engine.js"],
+      "data": ["data/agriculture/agric-profit-data.json", "data/agriculture/agric-profit-data.js"],
+      "freshness": "static accepted defaults; not live",
+      "confidence": "planning estimate requiring local supplier, buyer, yield and loss confirmation"
+    },
+    "artwork": {"imageId": "agric-profit", "file": "assets/img/tools/agric-profit.svg", "state": "present"},
+    "limitations": ["Fallback values scale Nigerian defaults using the accepted fixed currency factors; they are not country observations.", "The model does not provide live prices, agronomic recommendations, credit advice or guaranteed yields."]
+  }]
+}

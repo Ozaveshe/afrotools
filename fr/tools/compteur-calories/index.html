@@ -1,246 +1,131 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-theme="light" data-fr-health-source="calorie-counter-tools">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Compteur de calories (aliments africains) | AfroTools</title>
-<meta name="description" content="Estimez les calories et macronutriments de repas africains comme repère nutritionnel général. Les portions et recettes peuvent varier.">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website"><meta property="og:site_name" content="AfroTools"><meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Compteur de calories (aliments africains) | AfroTools">
-<meta property="og:description" content="Estimez calories et macronutriments de repas africains comme repère nutritionnel.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/compteur-calories/">
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Estimateur de calories pour un aliment | AfroTools</title>
+  <meta name="description" content="Adaptez l'étiquette d'un aliment ou la valeur calorique confirmée par le fournisseur à la quantité consommée. Aucune base de données alimentaire, objectif de régime…">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Estimateur de calories pour un aliment | AfroTools">
+  <meta property="og:description" content="Adaptez l'étiquette d'un aliment ou la valeur calorique confirmée par le fournisseur à la quantité consommée. Aucune base de données alimentaire, objectif de régime…">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/compteur-calories/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
+  <link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f"><link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5"><link rel="stylesheet" href="/tools/calorie-counter/calorie-estimator-vip.css?v=796cc114">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script><script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script><script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
+  <script src="/tools/calorie-counter/single-food-calorie-engine.js?v=61f76680" defer></script><script src="/tools/calorie-counter/calorie-estimator-vip.js?v=0eb19059" defer></script>
+<!-- tool-structured-data:auto -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Compteur de calories (aliments africains) | AfroTools">
-<meta name="twitter:description" content="Estimez les calories et macronutriments de repas africains comme repère nutritionnel général. Les portions et recettes peuvent varier."><meta name="robots" content="index, follow">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8"><link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script><script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628 0%,#0062CC 100%);padding:48px 0 40px;text-align:center}
-.fr-hero h1{font-size:clamp(1.5rem,4vw,2.2rem);font-weight:800;color:#fff;margin:0 auto 12px;max-width:700px}
-.fr-hero p{color:rgba(255,255,255,.65);font-size:.92rem;max-width:560px;margin:0 auto;line-height:1.6}
-.fr-wrap{max-width:800px;margin:0 auto;padding:32px 20px 64px}
-.fr-tool-frame{background:#fff;border:1px solid #e2e8f0;border-radius:12px;overflow:hidden;margin-bottom:32px}
-.fr-tool-frame iframe{width:100%;height:600px;border:none}
-.fr-seo h2{font-size:1.15rem;font-weight:700;color:#0f172a;margin-bottom:12px}
-.fr-seo p{font-size:.88rem;color:#475569;line-height:1.7;margin-bottom:16px}
-.fr-note{background:#fff7ed;border:1px solid #fed7aa;border-radius:12px;padding:14px 16px;color:#7c2d12;font-size:.88rem;line-height:1.65;margin-bottom:24px}
-.fr-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:14px}
-.fr-link{display:block;border:1px solid #e2e8f0;border-radius:12px;padding:14px;text-decoration:none;background:#fff;color:#0f172a}.fr-link span{display:block;color:#64748b;font-size:.82rem;line-height:1.5;margin-top:4px}
-.fr-faq{margin-top:28px}.fr-faq h2{font-size:1.1rem;font-weight:700;color:#0f172a;margin-bottom:16px}
-.fr-faq details{border:1px solid #e2e8f0;border-radius:8px;margin-bottom:10px;background:#fff}
-.fr-faq summary{padding:14px 18px;font-weight:600;font-size:.88rem;cursor:pointer;color:#0f172a}
-.fr-faq details p{padding:0 18px 14px;font-size:.84rem;color:#475569;line-height:1.65;margin:0}
-.fr-prep-panel{margin:0 0 20px;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}
-</style>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Compteur de calories africain",
-  "description": "Estimez calories et macronutriments de repas africains comme repère nutritionnel général.",
-  "url": "https://afrotools.com/fr/tools/compteur-calories/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/calorie-counter.webp"
-}
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Les calories sont-elles exactes ?","acceptedAnswer":{"@type":"Answer","text":"Non. Elles dépendent de la recette, de l’huile, des portions et des ingrédients. Utilisez les résultats comme repère, pas comme mesure clinique."}},{"@type":"Question","name":"Puis-je l’utiliser pour un régime médical ?","acceptedAnswer":{"@type":"Answer","text":"Pour un diabète, une grossesse, une maladie rénale, un trouble alimentaire ou un suivi médical, demandez un avis qualifié avant de changer votre alimentation."}},{"@type":"Question","name":"Pourquoi les plats varient-ils autant ?","acceptedAnswer":{"@type":"Answer","text":"Un même plat peut changer fortement selon le pays, la famille, la taille de portion et la quantité de matières grasses."}}]}
-</script>
+<meta name="twitter:title" content="Estimateur de calories pour un aliment | AfroTools">
+<meta name="twitter:description" content="Adaptez l'étiquette d'un aliment ou la valeur calorique confirmée par le fournisseur à la quantité consommée. Aucune base de données alimentaire, objectif de régime…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/calorie-counter.webp">
-<style data-mobile-control-comfort="fr-tools">
-@media (max-width: 640px) {
-  .fr-faq summary {
-    font-size: 1rem;
-    min-height: 44px;
+<script type="application/ld+json">
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Estimateur de calories pour un aliment",
+    "description": "Adaptez l'étiquette d'un aliment ou la valeur calorique confirmée par le fournisseur à la quantité consommée. Aucune base de données alimentaire, objectif de régime…",
+    "url": "https://afrotools.com/fr/tools/compteur-calories/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/calorie-counter.webp"
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
   }
-}
+]
+</script>
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
-<style data-mixed-localized-p3-batch="style">
-.mixed-p3-panel{max-width:980px;margin:1.5rem auto;padding:0 1rem}
-.mixed-p3-card{background:#fff;border:1px solid #dbeafe;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.07);padding:1.1rem;margin-bottom:1rem}
-.mixed-p3-kicker{display:block;font-size:.74rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#1d4ed8;margin-bottom:.35rem}
-.mixed-p3-card h2{font-size:1.12rem;line-height:1.25;margin:0 0 .45rem;color:#0f172a}
-.mixed-p3-card p{margin:.35rem 0;color:#475569;line-height:1.6}
-.mixed-p3-actions{display:flex;flex-wrap:wrap;gap:.65rem;align-items:center;margin-top:.85rem}
-.mixed-p3-actions button{border:0;border-radius:999px;background:#0f172a;color:#fff;font:inherit;font-weight:850;padding:.72rem 1rem;cursor:pointer}
-.mixed-p3-actions button:first-child{background:#0057b8}
-.mixed-p3-actions button:focus-visible{outline:3px solid #93c5fd;outline-offset:2px}
-.mixed-p3-status{font-size:.86rem;color:#64748b;min-height:1.2em}
-.mixed-p3-local{border-left:4px solid #16a34a;background:#f0fdf4;border-radius:10px;padding:.8rem;margin-top:.85rem;color:#365346}
-.mixed-p3-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,220px),1fr));gap:.75rem;margin-top:.85rem}
-.mixed-p3-item{border:1px solid #e2e8f0;border-radius:10px;background:#f8fafc;padding:.85rem}
-.mixed-p3-item strong{display:block;color:#0f172a;margin-bottom:.3rem}
-@media(max-width:640px){.mixed-p3-actions button{width:100%}.mixed-p3-card{padding:1rem}}
-</style>
-
+<script type="application/json" id="fr-health-translations">{"Single-Food Calorie Estimator from Label Values | AfroTools":"Estimateur de calories pour un seul aliment à partir des valeurs de l'étiquette | AfroTools","Skip to calculator":"Passer à la calculatrice","Home":"Accueil","Health":"Santé","Single-food calorie estimator":"Estimateur de calories pour un seul aliment","One food · one calculation":"Un aliment · un calcul","Scale a label calorie value to your portion":"Adaptez la valeur calorique de l'étiquette à votre portion","Enter the amount you ate and the matching calorie value printed on a label or confirmed by the provider. This route does not save a diary; for a daily log, use the":"Entrez la quantité que vous avez mangée et la valeur calorique correspondante imprimée sur une étiquette ou confirmée par le fournisseur. Cet itinéraire ne sauvegarde pas un journal ; pour un journal quotidien, utilisez le","private calorie diary":"journal privé des calories","Your values":"Vos valeurs","Food or dish":"Aliment ou plat","Amount eaten":"Quantité consommée","Unit":"Unité","grams":"grammes","servings":"portions","Label/reference amount":"Montant étiquette/référence","Calories for reference amount":"Calories pour quantité de référence","Value source and date":"Source et date de la valeur","Use the same unit for eaten and reference amounts.":"Utilisez la même unité pour les quantités consommées et de référence.","Calculate portion":"Calculer la portion","Portion result":"Résultat des portions","Enter a food and label value to calculate.":"Entrez une valeur d'aliment et d'étiquette à calculer.","Download TXT":"Télécharger le TXT","Download PDF":"Télécharger le PDF","Result meaning and limits":"Signification et limites du résultat","The calculation is amount eaten ÷ reference amount × reference calories. Recipe, preparation and serving differences can change the real value. The result is not a daily target, diet plan, nutrient analysis, diagnosis or treatment recommendation.":"Le calcul est la suivante : quantité consommée ÷ quantité de référence × calories de référence. Les différences de recette, de préparation et de service peuvent modifier la valeur réelle. Le résultat n’est pas un objectif quotidien, un plan de régime, une analyse nutritionnelle, un diagnostic ou une recommandation de traitement.","Nothing typed here is stored, placed in the URL, sent to analytics or transmitted to a server.":"Rien de ce qui est saisi ici n'est stocké, placé dans l'URL, envoyé à Analytics ou transmis à un serveur.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Scale a food label or provider-confirmed calorie value to the amount eaten. No food database, diet target, account or network upload.":"Adaptez l'étiquette d'un aliment ou la valeur calorique confirmée par le fournisseur à la quantité consommée. Aucune base de données alimentaire, objectif de régime, téléchargement de compte ou de réseau.","Single-Food Calorie Estimator — AfroTools":"Estimateur de calories pour un seul aliment — AfroTools","Scale one label or provider-confirmed calorie value to the amount eaten without saving a diary or prescribing a diet.":"Adaptez une étiquette ou une valeur calorique confirmée par le fournisseur à la quantité consommée sans tenir de journal ni prescrire de régime.","Breadcrumb":"Fil d'Ariane","Package label checked 2026-07-26":"Étiquette du colis vérifiée 2026-07-26","use strict":"utiliser strict","must be between":"doit être entre","and 100000.":"et 100 000.","+ result.unit,":"+ unité.résultat,","+ result.source,":"+ résultat.source,","Meaning: amount eaten / reference amount x reference calories. This is not a calorie target, diet prescription, diagnosis or medical advice.":"Signification : quantité consommée / quantité de référence x calories de référence. Il ne s’agit pas d’un objectif calorique, d’une prescription diététique, d’un diagnostic ou d’un avis médical.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health tools":"Outils santé","Dark mode":"Mode sombre","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Clear":"Effacer","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print / save PDF":"Imprimer / enregistrer en PDF","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/compteur-calories/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/calorie-counter/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/compteur-calories/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kihesabu-kalori/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/calorie-counter/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<section class="fr-hero">
-<h1>Compteur de calories africain</h1>
-<p>Estimez les calories et macronutriments de repas africains, avec une lecture prudente des portions et recettes.</p>
-</section>
-<div class="fr-wrap">
-<section class="fr-prep-panel" data-fr-prep aria-label="Préparation locale">
-<h2>Préparez votre saisie</h2>
-<p>Ajoutez le contexte avant de lancer Compteur de calories africain. Ce brouillon reste dans votre navigateur et vous aide à vérifier le résultat attendu.</p>
-<div class="fr-prep-fields">
-<label>Contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-<label>Données<input name="data" autocomplete="off" placeholder="Ex: texte, fichier, montant"></label>
-<label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: encoder, vérifier, calculer"></label>
-</div>
-<output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, des données ou un résultat voulu pour préparer votre résumé.</output>
-<div class="fr-prep-actions"><a href="/fr/tools/calorie-counter/">Ouvrir l'outil source</a><button type="button" data-fr-prep-copy>Copier le résumé</button><span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span></div>
-</section>
-<div class="fr-tool-frame"><iframe src="/tools/calorie-counter/" title="Compteur de calories africain" loading="lazy"></iframe></div>
-<script>
-(function(){var panel=document.querySelector('[data-fr-prep]');if(!panel)return;var title="Compteur de calories africain";var output=panel.querySelector('[data-fr-prep-output]');var status=panel.querySelector('[data-fr-prep-status]');function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}function summary(){var parts=[];var context=value('context');var data=value('data');var goal=value('goal');if(context)parts.push('Contexte: '+context);if(data)parts.push('Donnees: '+data);if(goal)parts.push('Resultat voulu: '+goal);return parts.length?title+' - '+parts.join(' | '):'Ajoutez un contexte, des donnees ou un resultat voulu pour preparer votre resume.';}function render(){output.textContent=summary();if(status)status.textContent='';}panel.addEventListener('input',render);var copy=panel.querySelector('[data-fr-prep-copy]');if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});})();
-</script>
-<div class="fr-note"><strong>Repère nutritionnel.</strong> Les valeurs varient selon la recette, la portion, l’huile, les ingrédients et la préparation. Pour un suivi médical, un diabète, une grossesse ou un trouble alimentaire, demandez un avis qualifié.</div>
-<div class="fr-seo">
-<h2>Compteur de calories pour plats africains</h2>
-<p>Les plats africains changent beaucoup selon la recette familiale, la quantité d’huile, les accompagnements et la taille de portion. Ce compteur aide à comparer des ordres de grandeur.</p>
-<p>Utilisez-le pour préparer un journal alimentaire, ajuster une portion ou discuter plus clairement avec un nutritionniste. Il ne remplace pas un plan alimentaire personnalisé.</p>
-</div>
-<div class="fr-seo">
-<h2>Outils liés en français</h2>
-<div class="fr-grid"><a class="fr-link" href="/fr/tools/apport-eau/"><strong>Apport en eau</strong><span>Repère d’hydratation selon profil et climat.</span></a><a class="fr-link" href="/fr/tools/calculateur-imc/"><strong>Calculateur IMC</strong><span>Indice corporel à interpréter avec prudence.</span></a><a class="fr-link" href="/fr/tools/tension-arterielle/"><strong>Tension artérielle</strong><span>Suivre des valeurs sans diagnostic.</span></a></div>
-</div>
-<div class="fr-faq">
-<h2>Questions fréquentes</h2>
-<details><summary>Les calories sont-elles exactes ?</summary><p>Non. Elles dépendent de la recette, de l’huile, des portions et des ingrédients. Utilisez les résultats comme repère, pas comme mesure clinique.</p></details>
-<details><summary>Puis-je l’utiliser pour un régime médical ?</summary><p>Pour un diabète, une grossesse, une maladie rénale, un trouble alimentaire ou un suivi médical, demandez un avis qualifié avant de changer votre alimentation.</p></details>
-<details><summary>Pourquoi les plats varient-ils autant ?</summary><p>Un même plat peut changer fortement selon le pays, la famille, la taille de portion et la quantité de matières grasses.</p></details>
-</div>
-</div>
-<section class="mixed-p3-panel" data-mixed-localized-p3-batch="panel" data-mixed-p3-type="health">
-  <div class="mixed-p3-card">
-    <span class="mixed-p3-kicker">Sortie utile</span>
-    <h2>Copier ou télécharger le brief</h2>
-    <p>Utilisez ce panneau après avoir prepare ou consulte l'outil. Le texte exporte reste simple à partager avec un conseiller, un proche ou une equipe.</p>
-    <div class="mixed-p3-actions">
-      <button type="button" data-mixed-p3-copy>Copier le brief</button>
-      <button type="button" data-mixed-p3-download>Télécharger TXT</button>
-      <span class="mixed-p3-status" data-mixed-p3-status aria-live="polite">Prêt à exporter.</span>
-    </div>
-    <p class="mixed-p3-local"><strong>Local-first:</strong> Saisie locale: ce panneau genere le brief dans votre navigateur. Ne collez pas de données sensibles si vous n'en avez pas besoin.</p>
-  </div>
-  <div class="mixed-p3-card" data-tool-verification-panel>
-    <span class="mixed-p3-kicker">Sources, fraîcheur et limites</span>
-    <div class="mixed-p3-grid">
-      <p class="mixed-p3-item"><strong>Source</strong>Base nutritionnelle AfroTools et valeurs indicatives de portions/recettes.</p>
-      <p class="mixed-p3-item"><strong>Freshness</strong>Contrôle 2026: les frais, règles, données, saisons et sources peuvent changer. Vérifiez avant décision.</p>
-      <p class="mixed-p3-item"><strong>Methodology</strong>Méthode: combinez le contexte saisi, le résultat de l'outil et les notes de vérification. Ce n'est pas une preuve officielle.</p>
-      <p class="mixed-p3-item"><strong>Limitations</strong>Repere nutritionnel uniquement. Ne remplace pas un professionnel de santé, surtout grossesse, diabete, maladie renale ou trouble alimentaire.</p>
-    </div>
-  </div>
-</section>
-
+<body>
+  <a class="skip-link" href="#main">Passer à la calculatrice</a><afro-navbar></afro-navbar>
+  <main id="main" class="page-shell vip-shell">
+    <nav class="crumbs" aria-label="Fil d'Ariane"><a href="/">Accueil</a><span>/</span><a href="/health/">Santé</a><span>/</span><span>Estimateur de calories pour un seul aliment</span></nav>
+    <header class="page-header"><p class="eyebrow">Un aliment · un calcul</p><h1 class="page-title">Estimateur de calories pour un aliment</h1><p class="page-description">Entrez la quantité que vous avez mangée et la valeur calorique correspondante imprimée sur une étiquette ou confirmée par le fournisseur. Cet itinéraire ne sauvegarde pas un journal ; pour un journal quotidien, utilisez le <a href="/fr/health/calorie-counter/">journal privé des calories</a>.</p></header>
+    <section class="calculator-layout">
+      <div class="card">
+        <h2>Vos valeurs</h2>
+        <form id="calorie-form" novalidate>
+          <div class="form-field"><label class="form-label" for="food-name">Aliment ou plat</label><input class="form-input" id="food-name" name="foodName" maxlength="80" required autocomplete="off"></div>
+          <div class="two-col">
+            <div class="form-field"><label class="form-label" for="amount-eaten">Quantité consommée</label><input class="form-input" id="amount-eaten" name="amountEaten" type="number" min=".1" max="100000" step=".1" inputmode="decimal" required></div>
+            <div class="form-field"><label class="form-label" for="unit">Unité</label><select class="form-select" id="unit" name="unit"><option value="g">grammes</option><option value="ml">millilitres</option><option value="serving">portions</option></select></div>
+          </div>
+          <div class="two-col">
+            <div class="form-field"><label class="form-label" for="label-amount">Montant étiquette/référence</label><input class="form-input" id="label-amount" name="labelAmount" type="number" min=".1" max="100000" step=".1" value="100" inputmode="decimal" required></div>
+            <div class="form-field"><label class="form-label" for="label-calories">Calories pour quantité de référence</label><input class="form-input" id="label-calories" name="labelCalories" type="number" min="0" max="100000" step=".1" inputmode="decimal" required></div>
+          </div>
+          <div class="form-field"><label class="form-label" for="source">Source et date de la valeur</label><input class="form-input" id="source" name="source" maxlength="120" placeholder="Étiquette du colis vérifiée 2026-07-26" required><p class="form-help">Utilisez la même unité pour les quantités consommées et de référence.</p></div>
+          <p id="form-error" class="form-error" role="alert" tabindex="-1" hidden></p>
+          <button class="btn btn-primary" type="submit">Calculer la portion</button>
+        </form>
+      </div>
+      <aside class="card result" aria-labelledby="result-title">
+        <h2 id="result-title">Résultat des portions</h2>
+        <div id="result-empty">Entrez une valeur d'aliment et d'étiquette à calculer.</div>
+        <div id="result-content" hidden>
+          <output id="calorie-result" class="big-result" aria-live="polite"></output>
+          <p id="formula-result"></p><p id="source-result"></p>
+          <div class="actions"><button class="btn btn-secondary" id="download-txt" type="button">Télécharger le TXT</button><button class="btn btn-secondary" id="download-pdf" type="button">Télécharger le PDF</button></div>
+          <p id="export-status" class="status" role="status"></p>
+        </div>
+      </aside>
+    </section>
+    <section class="section note"><h2>Signification et limites du résultat</h2><p>Le calcul est la suivante : quantité consommée ÷ quantité de référence × calories de référence. Les différences de recette, de préparation et de service peuvent modifier la valeur réelle. Le résultat n’est pas un objectif quotidien, un plan de régime, une analyse nutritionnelle, un diagnostic ou une recommandation de traitement.</p><p>Rien de ce qui est saisi ici n'est stocké, placé dans l'URL, envoyé à Analytics ou transmis à un serveur.</p></section>
+  <section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Estimateur de calories pour un aliment reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/calorie-counter/" hreflang="en">/tools/calorie-counter/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+<afro-related-tools data-ssr="1" category="health" current="calorie-counter-tools">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
-<script>
-(function(){
-  const map={"Calorie Counter":"Compteur de calories","Calories":"Calories","Protein":"Protéines","Carbs":"Glucides","Fat":"Lipides","Fiber":"Fibres","Food":"Aliment","Meal":"Repas","Add Food":"Ajouter un aliment","Daily Total":"Total journalier","Calculate":"Calculer","Calculator":"Calculateur","Result":"Résultat","Results":"Résultats","Save":"Enregistrer","Download":"Télécharger","Share":"Partager","Export":"Exporter"};
-  const frame=document.querySelector('.fr-tool-frame iframe');
-  function translate(root){if(!root)return;const walker=root.createTreeWalker(root.body||root,NodeFilter.SHOW_TEXT);let node;while((node=walker.nextNode())){let text=node.nodeValue;Object.keys(map).forEach(k=>{text=text.replace(new RegExp(k,'g'),map[k]);});node.nodeValue=text;}root.querySelectorAll('input,textarea,button,select,[placeholder],[title],[aria-label]').forEach(el=>{['placeholder','title','aria-label','value'].forEach(attr=>{const value=el.getAttribute&&el.getAttribute(attr);if(!value)return;let out=value;Object.keys(map).forEach(k=>{out=out.replace(new RegExp(k,'g'),map[k]);});if(out!==value)el.setAttribute(attr,out);});});}
-  if(frame)frame.addEventListener('load',()=>{try{const doc=frame.contentDocument;translate(doc);new MutationObserver(()=>translate(doc)).observe(doc.body,{childList:true,subtree:true});}catch(e){}});
-})();
-</script>
-<script data-mixed-localized-p3-batch="script">
-(function(){
-  'use strict';
-  var labels = {"title":"Compteur de calories africain","fallback":"Ajoutez un contexte ou utilisez l outil avant de partager le brief.","copied":"Brief copie.","downloaded":"Brief telecharge."};
-  function clean(value){ return (value || '').replace(/\s+/g, ' ').trim(); }
-  function fieldLines(){
-    return Array.prototype.slice.call(document.querySelectorAll('label')).map(function(label){
-      var id = label.getAttribute('for');
-      var field = id ? document.getElementById(id) : label.querySelector('input,select,textarea');
-      if (!field) return '';
-      var value = field.options ? field.options[field.selectedIndex].text : field.value;
-      value = clean(value);
-      if (!value) return '';
-      return clean(label.textContent) + ': ' + value;
-    }).filter(Boolean).slice(0, 12);
-  }
-  function visibleResult(){
-    var selectors = ['#result', '.result.on', '.mr-results.on', '[aria-live="polite"]', 'output'];
-    var out = [];
-    selectors.forEach(function(selector){
-      document.querySelectorAll(selector).forEach(function(node){
-        var value = clean(node.innerText || node.textContent);
-        if (value && out.indexOf(value) === -1) out.push(value);
-      });
-    });
-    return out.join('\n').slice(0, 2400);
-  }
-  function summary(){
-    var lines = ['AfroTools - ' + labels.title, 'Generated locally in this browser.', ''];
-    var fields = fieldLines();
-    if (fields.length) lines.push('Inputs:\n' + fields.join('\n'));
-    var result = visibleResult();
-    lines.push('', 'Result / brief:', result || labels.fallback);
-    lines.push('', 'Verification: confirm sources, dates, fees, health/safety details or official requirements before acting.');
-    return lines.join('\n');
-  }
-  function setStatus(value){
-    var status = document.querySelector('[data-mixed-p3-status]');
-    if (status) status.textContent = value;
-  }
-  function saveFile(value){
-    var blob = new Blob([value], { type: 'text/plain;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = labels.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '') + '-afrotools-brief.txt';
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
-  }
-  document.addEventListener('click', function(event){
-    var copy = event.target.closest('[data-mixed-p3-copy]');
-    var download = event.target.closest('[data-mixed-p3-download]');
-    if (!copy && !download) return;
-    var value = summary();
-    if (copy) {
-      if (navigator.clipboard && navigator.clipboard.writeText) {
-        navigator.clipboard.writeText(value).then(function(){ setStatus(labels.copied); }).catch(function(){ setStatus(value); });
-      } else {
-        setStatus(value);
-      }
-    }
-    if (download) {
-      saveFile(value);
-      setStatus(labels.downloaded);
-    }
-  });
-})();
-</script>
-
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
-</body>
-</html>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
+</body></html>

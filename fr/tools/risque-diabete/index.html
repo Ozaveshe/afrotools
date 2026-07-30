@@ -1,443 +1,229 @@
-<!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<!-- French Health parity owner: scripts/build-french-health-parity.js; English engine preserved. -->
+<!doctype html>
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr" data-fr-health-source="diabetes-risk">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1.0">
-<meta name="view-transition" content="same-origin">
-<title>Évaluation du risque de diabète | AfroTools</title>
-<meta name="description" content="Estimez prudemment le risque de diabète de type 2 avec IMC, tour de taille, antécédents, tension, activité, symptômes et prochaines étapes.">
-<meta name="robots" content="index, follow">
-<meta name="tool-id" content="risque-diabete-fr">
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="AfroTools">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:title" content="Évaluation du risque de diabète | AfroTools">
-<meta property="og:description" content="Questionnaire local et prudent pour repérer les facteurs de risque, signes d'alerte et prochaines étapes à discuter avec un professionnel de santé.">
-<meta property="og:image" content="https://afrotools.com/assets/img/tools/diabetes-risk.webp">
-<meta property="og:url" content="https://afrotools.com/fr/tools/risque-diabete/">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <script>(function(){try{var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;document.documentElement.setAttribute('data-theme',d?'dark':'light');document.documentElement.style.colorScheme=d?'dark':'light'}catch(_){}})();</script>
+  <title>Outil de préparation au dépistage du prédiabète | AfroTools</title>
+  <meta name="description" content="Utilisez un score de dépistage du prédiabète local et privé adapté aux CDC/ADA pour décider s'il convient de demander un test sanguin. Contexte de dépistage…">
+  <meta name="robots" content="index,follow">
+  <meta property="og:title" content="Outil de préparation au dépistage du prédiabète | AfroTools">
+  <meta property="og:description" content="Utilisez un score de dépistage du prédiabète local et privé adapté aux CDC/ADA pour décider s'il convient de demander un test sanguin. Contexte de dépistage…">
+  <meta property="og:url" content="https://afrotools.com/fr/tools/risque-diabete/">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://afrotools.com/assets/img/tools/diabetes-risk.webp">
+  <style>
+    :root{color-scheme:light dark;--bg:#f5f7fb;--panel:#fff;--text:#172033;--muted:#536079;--line:#d8deea;--brand:#075985;--brand2:#0c4a6e;--soft:#e0f2fe;--warn:#fff7ed;--warn-line:#c2410c;--focus:#f59e0b;--good:#166534}
+    [data-theme="dark"]{--bg:#0b1220;--panel:#131d2e;--text:#f4f7fb;--muted:#bac5d6;--line:#34435a;--brand:#38bdf8;--brand2:#7dd3fc;--soft:#102d42;--warn:#332214;--warn-line:#fb923c;--focus:#fbbf24}
+    *{box-sizing:border-box}html{font:100%/1.55 system-ui,-apple-system,"Segoe UI",sans-serif;background:var(--bg);color:var(--text)}body{margin:0}a{color:var(--brand2)}button,input,select{font:inherit}button,.button{min-height:44px;border:0;border-radius:.65rem;padding:.7rem 1rem;font-weight:750;cursor:pointer}.primary{background:var(--brand);color:#fff}.secondary{background:var(--panel);color:var(--text);border:1px solid var(--line)}:focus-visible{outline:3px solid var(--focus);outline-offset:3px}.skip{position:absolute;left:-999px}.skip:focus{left:1rem;top:1rem;background:var(--panel);padding:.75rem;z-index:5}.top{border-bottom:1px solid var(--line);background:var(--panel)}.top-inner{max-width:72rem;margin:auto;display:flex;align-items:center;justify-content:space-between;padding:.75rem 1rem}.brand{font-weight:900;text-decoration:none;color:var(--text)}main{max-width:72rem;margin:auto;padding:clamp(1rem,4vw,3rem)}.hero{max-width:50rem}.eyebrow{font-weight:800;color:var(--brand);text-transform:uppercase;letter-spacing:.08em;font-size:.78rem}h1{font-size:clamp(2rem,6vw,3.6rem);line-height:1.05;margin:.4rem 0 1rem}h2{line-height:1.2}.privacy{display:inline-flex;gap:.4rem;align-items:center;background:var(--soft);padding:.45rem .7rem;border-radius:99rem;font-weight:700}.alert{border-left:5px solid var(--warn-line);background:var(--warn);padding:1rem;margin:1.25rem 0}.grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(18rem,.8fr);gap:1.25rem;align-items:start}.card{background:var(--panel);border:1px solid var(--line);border-radius:1rem;padding:clamp(1rem,3vw,1.5rem);box-shadow:0 12px 30px rgba(15,23,42,.06)}fieldset{border:0;padding:0;margin:0 0 1rem}legend,label{font-weight:750}label{display:block;margin-bottom:.35rem}.hint{color:var(--muted);font-size:.92rem;margin:.2rem 0 .75rem}input,select{width:100%;min-height:46px;padding:.65rem;border:1px solid var(--line);border-radius:.55rem;background:var(--panel);color:var(--text)}.checks{display:grid;gap:.7rem}.check{display:flex;gap:.65rem;align-items:start;font-weight:600}.check input{width:1.15rem;min-height:1.15rem;margin-top:.25rem}.actions{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1rem}.result{min-height:12rem}.score{font-size:3rem;font-weight:900;color:var(--brand);line-height:1}.next-step{border:1px solid var(--line);border-left:5px solid var(--brand);border-radius:.5rem;padding:.8rem;background:var(--soft)}.breakdown{padding-left:1.2rem}.source{font-size:.9rem;color:var(--muted)}.foot{max-width:72rem;margin:auto;padding:1rem;border-top:1px solid var(--line);color:var(--muted)}@media(max-width:760px){.grid{grid-template-columns:1fr}.actions>*{flex:1 1 100%}}@media(max-width:340px){main{padding:.75rem}.card{padding:.85rem}h1{font-size:1.8rem}}@media print{.top,.actions,.privacy{display:none}body,html{background:#fff;color:#000}.grid{display:block}.card{box-shadow:none;margin-bottom:1rem}.result{break-inside:avoid}}@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important}}
+    .check{align-items:center!important;min-height:44px}.check input{margin:0!important}.card,.grid>*{min-width:0}body{overflow-wrap:anywhere}.privacy{max-width:100%;white-space:normal}[data-theme=dark] .primary{background:#075985}
+  </style>
+<!-- tool-structured-data:auto -->
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Évaluation du risque de diabète | AfroTools">
-<meta name="twitter:description" content="Estimez prudemment le risque de diabète de type 2 avec IMC, tour de taille, antécédents, tension, activité, symptômes et prochaines étapes.">
+<meta name="twitter:title" content="Outil de préparation au dépistage du prédiabète | AfroTools">
+<meta name="twitter:description" content="Utilisez un score de dépistage du prédiabète local et privé adapté aux CDC/ADA pour décider s'il convient de demander un test sanguin. Contexte de dépistage…">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/diabetes-risk.webp">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
+<link rel="stylesheet" href="/assets/fonts/typography.css?v=2f0aa84f">
 <script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  "name": "Évaluation du risque de diabète",
-  "description": "Outil français d'estimation prudente du risque de diabète de type 2, avec facteurs de risque, signes d'alerte, limites médicales et prochaines étapes.",
-  "url": "https://afrotools.com/fr/tools/risque-diabete/",
-  "inLanguage": "fr",
-  "applicationCategory": "HealthApplication",
-  "operatingSystem": "Web",
-  "browserRequirements": "JavaScript requis",
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
+[
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    "name": "Outil de préparation au dépistage du prédiabète",
+    "description": "Utilisez un score de dépistage du prédiabète local et privé adapté aux CDC/ADA pour décider s'il convient de demander un test sanguin. Contexte de dépistage…",
+    "url": "https://afrotools.com/fr/tools/risque-diabete/",
+    "inLanguage": "fr",
+    "applicationCategory": "HealthApplication",
+    "operatingSystem": "Web",
+    "isAccessibleForFree": true,
+    "offers": {
+      "@type": "Offer",
+      "price": "0",
+      "priceCurrency": "USD"
+    },
+    "provider": {
+      "@type": "Organization",
+      "name": "AfroTools",
+      "url": "https://afrotools.com/"
+    },
+    "image": "https://afrotools.com/assets/img/tools/diabetes-risk.webp"
   },
-  "author": {
-    "@type": "Organization",
-    "name": "AfroTools",
-    "url": "https://afrotools.com/"
-  },
-  "image": "https://afrotools.com/assets/img/tools/diabetes-risk.webp"
-}
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "inLanguage": "fr",
+    "mainEntity": [
+      {
+        "@type": "Question",
+        "name": "Cet outil pose-t-il un diagnostic ou recommande-t-il un traitement ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Non. Il organise des informations ou effectue un calcul limité. Un professionnel de santé qualifié, un laboratoire, une pharmacie ou un service d'urgence reste l'autorité pour toute décision médicale."
+        }
+      },
+      {
+        "@type": "Question",
+        "name": "Que faire si la situation semble urgente ou si le résultat m'inquiète ?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "N'attendez pas le résultat de cet outil. Contactez le service d'urgence, la maternité, le centre antipoison, la clinique ou l'autorité de santé publique disponible dans votre pays selon la situation."
+        }
+      }
+    ]
+  }
+]
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Ce résultat diagnostique-t-il un diabète ?","acceptedAnswer":{"@type":"Answer","text":"Non. Il s'agit d'une estimation indicative du risque de diabète de type 2. Seul un professionnel de santé peut interpréter des tests comme la glycémie ou l'HbA1c."}},{"@type":"Question","name":"Quand faut-il consulter rapidement ?","acceptedAnswer":{"@type":"Answer","text":"Consultez rapidement en cas de soif intense, urines fréquentes, perte de poids inexpliquée, vision floue, fatigue marquée, plaie qui guérit mal, confusion ou malaise."}},{"@type":"Question","name":"Les données sont-elles envoyées à AfroTools ?","acceptedAnswer":{"@type":"Answer","text":"Non. Le calcul se fait localement dans le navigateur et le résumé n'est copié ou exporté que si l'utilisateur le demande."}}]}</script>
-<style>
-*{box-sizing:border-box}
-body{margin:0;font-family:"DM Sans",system-ui,-apple-system,sans-serif;background:#f6f8fb;color:#0f172a;line-height:1.6}
-a{color:inherit}
-.wrap{max-width:1180px;margin:0 auto;padding:0 18px}
-.hero{background:linear-gradient(135deg,#08111f 0%,#12315c 55%,#047857 100%);color:#fff;padding:78px 0 42px}
-.crumb{font-size:.86rem;color:rgba(255,255,255,.76);margin-bottom:14px}
-.crumb a{color:#fff;text-decoration:none}
-.eyebrow{display:inline-flex;align-items:center;margin-bottom:12px;padding:7px 11px;border:1px solid rgba(255,255,255,.18);border-radius:999px;background:rgba(255,255,255,.08);font-size:.76rem;font-weight:900;letter-spacing:.08em;text-transform:uppercase}
-.hero-grid{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(300px,.7fr);gap:28px;align-items:center}
-h1{max-width:840px;margin:0;font-size:clamp(2rem,4.7vw,3.55rem);line-height:1.04;font-weight:900;letter-spacing:0}
-.lead{max-width:860px;margin:16px 0 0;color:rgba(255,255,255,.86);font-size:1.06rem}
-.hero-card{background:#fff;color:#0f172a;border-radius:14px;padding:20px;border:1px solid rgba(255,255,255,.18);box-shadow:0 24px 60px rgba(0,0,0,.22)}
-.hero-card strong{display:block;font-size:1.12rem}
-.hero-card p{margin:8px 0 0;color:#475569}
-.badges{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
-.badge{display:inline-flex;padding:5px 10px;border-radius:999px;background:#dcfce7;color:#166534;font-size:.74rem;font-weight:900}
-.main{padding:24px 0 38px}
-.layout{display:grid;grid-template-columns:minmax(0,1.08fr) minmax(330px,.72fr);gap:20px;align-items:start}
-.card,.note{background:#fff;border:1px solid #dbe4ee;border-radius:14px;box-shadow:0 12px 28px rgba(15,23,42,.06)}
-.card{padding:20px}
-.note{padding:18px}
-.card h2,.note h2{margin:0 0 12px;color:#0f172a;font-size:1.22rem;line-height:1.25}
-.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:13px}
-.field{min-width:0}
-.field label{display:block;margin:0 0 6px;font-size:.92rem;font-weight:850;color:#1e293b}
-.field input,.field select,.field textarea{width:100%;min-height:44px;border:1px solid #cbd5e1;border-radius:10px;background:#fff;color:#0f172a;padding:11px 12px;font:inherit}
-.field textarea{min-height:86px;resize:vertical}
-.field input:focus,.field select:focus,.field textarea:focus{outline:3px solid rgba(4,120,87,.22);border-color:#047857}
-.help{display:block;margin-top:4px;color:#64748b;font-size:.78rem;line-height:1.45}
-.checks{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:6px}
-.check{display:flex;gap:8px;align-items:flex-start;border:1px solid #e2e8f0;border-radius:10px;padding:10px;background:#f8fafc;color:#334155}
-.check input{margin-top:4px}
-.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
-.btn{border:0;border-radius:10px;min-height:44px;padding:11px 14px;background:#047857;color:#fff;font-weight:900;cursor:pointer}
-.btn.secondary{background:#e2e8f0;color:#0f172a}
-.btn.ghost{background:#fff;color:#0f172a;border:1px solid #cbd5e1}
-.result{position:sticky;top:88px}
-.metrics{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-bottom:12px}
-.metric{background:#f8fafc;border:1px solid #e2e8f0;border-radius:12px;padding:12px;min-width:0}
-.metric b{display:block;font-size:1.06rem;line-height:1.3;word-break:break-word}
-.metric span{display:block;margin-top:4px;color:#64748b;font-size:.78rem}
-.alert{border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:12px;margin:12px 0;line-height:1.55}
-.alert.warn{border-color:#fed7aa;background:#fff7ed;color:#7c2d12}
-.alert.bad{border-color:#fecaca;background:#fef2f2;color:#7f1d1d}
-.output{min-height:220px;white-space:pre-wrap;overflow:auto;background:#0f172a;color:#e2e8f0;border-radius:12px;padding:14px;font-family:ui-monospace,SFMono-Regular,Consolas,monospace;font-size:.88rem;line-height:1.55;word-break:break-word}
-.copyline{margin-top:10px;color:#64748b;font-size:.86rem;min-height:20px}
-.section{margin-top:18px}
-.table-wrap{overflow-x:auto;border:1px solid #e2e8f0;border-radius:12px;background:#fff}
-.table{width:100%;border-collapse:collapse;min-width:760px}
-.table th,.table td{text-align:left;vertical-align:top;padding:11px 12px;border-bottom:1px solid #e2e8f0}
-.table th{background:#f8fafc;color:#334155;font-size:.78rem;letter-spacing:.05em;text-transform:uppercase}
-.table tr:last-child td{border-bottom:0}
-.steps{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
-.step{border:1px solid #e2e8f0;border-radius:12px;padding:12px;background:#fff}
-.step strong{display:block;margin-bottom:5px;color:#0f172a}
-.step span{display:block;color:#64748b;font-size:.86rem;line-height:1.45}
-.list{margin:0;padding-left:18px;color:#475569;line-height:1.65}
-.small{margin:0;color:#64748b;font-size:.91rem;line-height:1.65}
-.links{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
-.links a{display:block;text-decoration:none;border:1px solid #dbe4ee;border-radius:10px;padding:11px 12px;background:#fff;color:#1d4ed8;font-weight:850}
-@media(max-width:900px){.hero{padding-top:70px}.hero-grid,.layout,.grid,.metrics,.steps,.links,.checks{grid-template-columns:1fr}.result{position:static}.card,.note{padding:16px}.table{min-width:720px}}
+<style data-fr-health-parity-style>
+.fr-health-safety{max-width:1080px;margin:24px auto;padding:18px;border:1px solid #bae6fd;border-radius:14px;background:#f8fbff;color:#334155;line-height:1.65}
+.fr-health-safety h2{margin:0 0 10px;color:#0f172a;font-size:1.25rem}.fr-health-safety p{margin:.55rem 0}.fr-health-safety a{color:#0057b8;font-weight:700}
+[data-theme="dark"] .fr-health-safety{background:#0f1f36;border-color:#1d4ed8;color:#bfdbfe}[data-theme="dark"] .fr-health-safety h2{color:#f8fafc}
+@media(max-width:640px){.fr-health-safety{margin:18px 12px;padding:15px}.fr-health-safety p{overflow-wrap:anywhere}}
 </style>
+<script type="application/json" id="fr-health-translations">{"Prediabetes Screening Conversation Tool | AfroTools":"Outil de conversation sur le dépistage du prédiabète | AfroTools","Skip to tool":"Passer à l'outil","Dark mode":"Mode sombre","Screening context only":"Contexte de dépistage uniquement","Prediabetes screening conversation tool":"Outil de conversation sur le dépistage du prédiabète","Estimate a recognised screening score to decide whether to ask a qualified health worker for a blood glucose test. This cannot diagnose, rule out, or predict when diabetes will develop.":"Estimez un score de dépistage reconnu pour décider s’il convient de demander un test de glycémie à un agent de santé qualifié. Cela ne peut pas diagnostiquer, exclure ou prédire le moment où le diabète se développera.","Private by design: nothing is saved or sent":"Privé par conception : rien n’est enregistré ni envoyé","Symptoms or pregnancy?":"Symptômes ou grossesse ?","Do not use this score to wait. Seek clinical assessment for marked thirst, frequent urination, unexplained weight loss, blurred vision, severe weakness, vomiting, altered breathing, or concerns during pregnancy.":"N'utilisez pas ce score pour attendre. Demandez une évaluation clinique en cas de soif marquée, de mictions fréquentes, de perte de poids inexpliquée, de vision floue, de faiblesse grave, de vomissements, de respiration altérée ou de problèmes pendant la grossesse.","Your screening inputs":"Vos entrées de dépistage","For adults. The original CDC/ADA score uses sex as a statistical input; it is not a statement about identity or individual biology.":"Pour adultes. Le score original du CDC/ADA utilise le sexe comme entrée statistique ; il ne s’agit pas d’une déclaration sur l’identité ou la biologie individuelle.","Age in years":"Âge en années","Sex used by the source score":"Sexe utilisé par le score source","Choose one":"Choisissez-en un","Female":"Femme","Male":"Mâle","Height (cm)":"Hauteur (cm)","Weight (kg)":"Poids (kg)","Source-score questions":"Questions sur le score source","Apply the source score's lower BMI threshold for Asian American adults":"Appliquer le seuil d'IMC inférieur du score source aux adultes américains d'origine asiatique","This source-score adjustment changes the first BMI point from 25 to 23. It does not add an ethnicity point.":"Cet ajustement du score source modifie le premier point d’IMC de 25 à 23. Il n’ajoute pas de point d’origine ethnique.","Previously diagnosed with gestational diabetes":"Ayant déjà reçu un diagnostic de diabète gestationnel","This question is scored only when “Female” is selected in the source-score sex field.":"Cette question est notée uniquement lorsque « Femme » est sélectionné dans le champ sexe du score source.","Parent or sibling has diabetes":"Un parent ou un frère ou une sœur souffre de diabète","Previously diagnosed with high blood pressure":"Avoir déjà reçu un diagnostic d'hypertension artérielle","Not physically active":"Pas physiquement actif","Reasons not to rely on a low score":"Raisons de ne pas se fier à un score faible","Possible diabetes symptoms now":"Symptômes possibles du diabète maintenant","Currently pregnant":"Actuellement enceinte","Previous abnormal glucose result":"Résultat de glycémie anormal antérieur","Calculate screening score":"Calculer le score de dépistage","Your screening result":"Votre résultat de dépistage","Complete the inputs to see the score, assumptions and next-step conversation.":"Complétez les entrées pour voir le score, les hypothèses et la conversation suivante.","Download TXT":"Télécharger le TXT","Print / save PDF":"Imprimer / enregistrer en PDF","Clear":"Effacer","How the score works":"Comment fonctionne la partition","Age, source-score sex, prior gestational diabetes, close family history, diagnosed high blood pressure, activity and a weight category are added. The metric version maps BMI 25–29.9 to 1 point, 30–39.9 to 2 points and 40+ to 3 points, with the source score's optional lower 23 BMI threshold for Asian American adults. Symptoms, current pregnancy and a previous abnormal glucose result override low-score reassurance. A total of 5 or more is a prompt for confirmatory blood testing—not a diagnosis.":"L'âge, le sexe du score source, les antécédents de diabète gestationnel, les antécédents familiaux proches, l'hypertension artérielle diagnostiquée, l'activité et une catégorie de poids sont ajoutés. La version métrique mappe l'IMC 25-29,9 à 1 point, 30-39,9 à 2 points et 40+ à 3 points, avec le seuil d'IMC inférieur facultatif de 23 du score source pour les adultes américains d'origine asiatique. Les symptômes, la grossesse en cours et un résultat de glycémie anormal antérieur l'emportent sur la réassurance d'un score faible. Un total de 5 ou plus constitue une invitation à une analyse de sang de confirmation et non un diagnostic.","Official sources, reviewed 26 July 2026:":"Sources officielles, consultées le 26 juillet 2026 :","CDC: how the risk test is scored":"CDC : comment le test de risque est noté","CDC: diabetes testing":"CDC : tests de diabète","WHO diabetes fact sheet (14 November 2024)":"Fiche d'information de l'OMS sur le diabète (14 novembre 2024)","Educational screening context only. No account, email, analytics payload, URL state or network request receives your answers.":"Contexte de dépistage éducatif uniquement. Aucun compte, e-mail, charge utile d'analyse, état d'URL ou demande de réseau ne reçoit vos réponses.","Related tools":"Outils associés","Medical Report Interpreter":"Interprète de rapports médicaux","Haemoglobin Result Verification Guide":"Guide de vérification des résultats d'hémoglobine","Provider-Quote Childbirth Budget":"Budget d'accouchement devis du fournisseur","Exact Medicine Quote Comparator":"Comparateur de devis de médicaments exacts","Blood Component Compatibility Reference":"Référence de compatibilité des composants sanguins","Birth Options Question Builder":"Générateur de questions sur les options de naissance","Use a local, private CDC/ADA-adapted prediabetes screening score to decide whether to ask for a blood test. Screening context only—not a diagnosis.":"Utilisez un score de dépistage du prédiabète local et privé adapté aux CDC/ADA pour décider s'il convient de demander un test sanguin. Contexte de dépistage uniquement – ​​pas un diagnostic.","Prediabetes Screening Conversation Tool":"Outil de conversation sur le dépistage du prédiabète","A private screening conversation aid. Only a blood test and qualified clinician can diagnose prediabetes or diabetes.":"Une aide à la conversation de projection privée. Seul un test sanguin et un clinicien qualifié peuvent diagnostiquer le prédiabète ou le diabète.","use strict":"utiliser strict","Choose the sex used by the source score.":"Choisissez le sexe utilisé par la partition source.","Source-score sex":"Sexe source-score","Prior gestational diabetes":"Diabète gestationnel antérieur","Parent or sibling with diabetes":"Parent ou frère ou sœur diabétique","Diagnosed high blood pressure":"Hypertension artérielle diagnostiquée","Weight band":"Bande de poids","Pregnancy uses a separate clinical testing pathway. Ask your pregnancy-care team about the appropriate timing and test.":"La grossesse utilise une voie de test clinique distincte. Renseignez-vous auprès de votre équipe de soins de grossesse sur le moment et le test appropriés.","A previous abnormal glucose result needs follow-up with a qualified health professional, regardless of this score.":"Un résultat de glycémie anormal antérieur nécessite un suivi auprès d'un professionnel de santé qualifié, quel que soit ce score.","Do not rely on the score alone":"Ne vous fiez pas uniquement au score","Blood-test conversation recommended":"Conversation sur une prise de sang recommandée","Below the source score threshold — not a rule-out":"En dessous du seuil de score source – ce n’est pas une exclusion","This score is below 5, but it cannot rule out prediabetes or diabetes. Risk can still exist and only appropriate testing can answer the question.":"Ce score est inférieur à 5, mais il ne peut exclure un prédiabète ou un diabète. Le risque peut toujours exister et seuls des tests appropriés peuvent répondre à la question.","This score is not a diagnosis, does not measure blood glucose and must not be used to delay testing, pregnancy care or urgent assessment.":"Ce score ne constitue pas un diagnostic, ne mesure pas la glycémie et ne doit pas être utilisé pour retarder les tests, les soins de grossesse ou une évaluation urgente.","Include this point only if gestational diabetes was previously diagnosed.":"Incluez ce point uniquement si le diabète gestationnel a déjà été diagnostiqué.","Select “Female” in the source-score field before this question can contribute a point.":"Sélectionnez « Femme » dans le champ source-score avant que cette question puisse apporter un point.","AfroTools":"AfroTools","Health & Wellness":"Santé et bien-être","Home":"Accueil","Tools":"Outils","All tools":"Tous les outils","All Tools":"Tous les outils","Health":"Santé","Health tools":"Outils santé","Download PDF":"Télécharger le PDF","Upload image":"Importer une image","Upload PDF":"Importer un PDF","Upload and privacy boundaries":"Importation et limites de confidentialité","No upload by default":"Aucun téléversement par défaut","Can I upload a photo of my lab report?":"Puis-je importer une photo de mon rapport de laboratoire ?","&#x1FA78; CBC":"&#x1FA78; NFS","Reset":"Réinitialiser","Calculate":"Calculer","Privacy":"Confidentialité","Sources":"Sources","Related AfroTools":"Outils AfroTools associés","Frequently Asked Questions":"Questions fréquentes","Do not wait for this tool.":"N'attendez pas le résultat de cet outil.","Do not wait for this checklist.":"N'attendez pas la fin de cette liste de contrôle.","Educational use only — not a diagnosis or medical advice.":"Usage éducatif uniquement — ni diagnostic ni avis médical.","This tool does not diagnose, treat, confirm health, or replace professional medical advice.":"Cet outil ne pose aucun diagnostic, ne traite pas, ne confirme pas un état de santé et ne remplace pas l'avis d'un professionnel de santé.","No diagnosis":"Aucun diagnostic","No upload":"Aucun téléversement","No account":"Aucun compte requis","Runs in this browser":"Fonctionne dans ce navigateur","Save on this device":"Enregistrer sur cet appareil","Print or save as PDF":"Imprimer ou enregistrer en PDF","Light mode":"Mode clair","Quoted gross":"Total brut du devis","Buffer":"Marge de sécurité","Why:":"Pourquoi :","Warning:":"Avertissement :","Complete the checklist. A negative or low-concern result cannot rule out malaria.":"Remplissez la liste de contrôle. Un résultat négatif ou apparemment peu préoccupant ne permet pas d'exclure le paludisme.","Clinic Visit & Follow-up Cost Planner | AfroTools":"Budget de consultation et de suivi | AfroTools"}</script><script src="/assets/js/pages/french-health-parity-runtime.js?v=0f6d4cd5" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/risque-diabete/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/diabetes-risk/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/risque-diabete/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/hatari-ya-kisukari/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/diabetes-risk/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="tools"></afro-navbar>
-<main>
+<body>
+<a class="skip" href="#main">Passer à l'outil</a>
+<header class="top"><div class="top-inner"><a class="brand" href="/">AfroTools</a><button id="theme" class="secondary" type="button" aria-pressed="false">Mode sombre</button></div></header>
+<main id="main">
   <section class="hero">
-    <div class="wrap hero-grid">
-      <div>
-        <nav class="crumb" aria-label="Fil d'Ariane"><a href="/fr/">AfroTools</a> / <a href="/fr/all-tools/">Outils</a> / Risque de diabète</nav>
-        <div class="eyebrow">Santé, prévention et dépistage</div>
-        <h1>Évaluez votre risque de diabète sans le confondre avec un diagnostic.</h1>
-        <p class="lead">Renseignez vos facteurs de risque, repérez les signaux qui justifient un avis médical, puis exportez un résumé à apporter à un professionnel de santé. Le calcul reste local dans votre navigateur.</p>
-      </div>
-      <aside class="hero-card" aria-label="Limite médicale">
-        <strong>Ce résultat ne remplace pas une glycémie, une HbA1c'ou une consultation.</strong>
-        <p>Un score élevé signifie qu'il est raisonnable de demander un dépistage. Un score faible n'exclut pas un diabète si des symptômes sont présents.</p>
-        <div class="badges"><span class="badge">Local</span><span class="badge">Non diagnostique</span><span class="badge">Prévention</span></div>
-      </aside>
-    </div>
+    <p class="eyebrow">Contexte de dépistage uniquement</p>
+    <h1>Outil de préparation au dépistage du prédiabète</h1>
+    <p>Estimez un score de dépistage reconnu pour décider s’il convient de demander un test de glycémie à un agent de santé qualifié. Cela ne peut pas diagnostiquer, exclure ou prédire le moment où le diabète se développera.</p>
+    <p class="privacy">Privé par conception : rien n’est enregistré ni envoyé</p>
+    <div class="alert"><strong>Symptômes ou grossesse ?</strong> N'utilisez pas ce score pour attendre. Demandez une évaluation clinique en cas de soif marquée, de mictions fréquentes, de perte de poids inexpliquée, de vision floue, de faiblesse grave, de vomissements, de respiration altérée ou de problèmes pendant la grossesse.</div>
   </section>
-
-  <div class="wrap main">
-    <div class="layout">
-      <section class="card" aria-labelledby="input-title">
-        <h2 id="input-title">Questionnaire de risque</h2>
-        <form id="riskForm">
-          <div class="grid">
-            <div class="field"><label for="age">Âge</label><input id="age" type="number" min="18" max="110" step="1" value="42" inputmode="numeric"></div>
-            <div class="field"><label for="sex">Situation biologique utile au score</label><select id="sex"><option value="female">Femme</option><option value="male">Homme</option><option value="other">Autre ou préfère ne pas dire</option></select></div>
-            <div class="field"><label for="height">Taille (cm)</label><input id="height" type="number" min="100" max="230" step="any" value="170" inputmode="decimal"></div>
-            <div class="field"><label for="weight">Poids (kg)</label><input id="weight" type="number" min="25" max="260" step="any" value="86" inputmode="decimal"></div>
-            <div class="field"><label for="waist">Tour de taille (cm)</label><input id="waist" type="number" min="40" max="220" step="any" value="98" inputmode="decimal"><span class="help">Mesurez au niveau du nombril, sans serrer.</span></div>
-            <div class="field"><label for="activity">Activité physique par semaine</label><select id="activity"><option value="high">150 min ou plus</option><option value="medium">60 à 149 min</option><option value="low">Moins de 60 min</option></select></div>
-            <div class="field"><label for="family">Antécédent familial de diabète</label><select id="family"><option value="none">Aucun connu</option><option value="second">Grand-parent, oncle, tante</option><option value="first">Parent, frère, sœur ou enfant</option></select></div>
-            <div class="field"><label for="bp">Tension ou traitement antihypertenseur</label><select id="bp"><option value="no">Non</option><option value="borderline">Tension parfois élevée</option><option value="yes">Diagnostic ou traitement</option></select></div>
-            <div class="field"><label for="glucose">Glycémie élevée ou prédiabète déjà signalé</label><select id="glucose"><option value="no">Non</option><option value="unknown">Je ne sais pas</option><option value="yes">Oui</option></select></div>
-            <div class="field"><label for="gestational">Diabète de grossesse ou bébé de plus de 4 kg</label><select id="gestational"><option value="no">Non ou non applicable</option><option value="unknown">Je ne sais pas</option><option value="yes">Oui</option></select></div>
-            <div class="field"><label for="smoking">Tabac</label><select id="smoking"><option value="no">Non</option><option value="past">Ancien fumeur</option><option value="yes">Fumeur actuel</option></select></div>
-            <div class="field"><label for="food">Boissons sucrées ou aliments très transformés</label><select id="food"><option value="rare">Rarement</option><option value="sometimes">Plusieurs fois par semaine</option><option value="often">Presque tous les jours</option></select></div>
-          </div>
-          <h2 style="margin-top:18px">Signes d'alerte éventuels</h2>
-          <div class="checks">
-            <label class="check"><input type="checkbox" id="symptomThirst"> Soif intense ou bouche très sèche</label>
-            <label class="check"><input type="checkbox" id="symptomUrine"> Urines très fréquentes, surtout la nuit</label>
-            <label class="check"><input type="checkbox" id="symptomWeight"> Perte de poids inexpliquée</label>
-            <label class="check"><input type="checkbox" id="symptomVision"> Vision floue, fatigue marquée ou plaies qui guérissent mal</label>
-          </div>
-          <div class="field" style="margin-top:13px"><label for="notes">Notes personnelles pour la consultation</label><textarea id="notes">Je veux savoir si un dépistage par glycémie ou HbA1c est indiqué.</textarea></div>
-          <div class="actions">
-            <button class="btn" type="submit">Calculer le risque</button>
-            <button class="btn secondary" id="copySummary" type="button">Copier le résumé</button>
-            <button class="btn ghost" id="downloadSummary" type="button">Exporter le résumé</button>
-            <button class="btn ghost" id="sampleBtn" type="button">Charger un exemple</button>
-            <button class="btn ghost" id="resetBtn" type="button">Réinitialiser</button>
-          </div>
-          <div class="copyline" id="copyStatus" aria-live="polite"></div>
-        </form>
-      </section>
-
-      <aside class="card result" aria-labelledby="result-title">
-        <h2 id="result-title">Résultat indicatif</h2>
-        <div class="metrics" aria-live="polite">
-          <div class="metric"><b id="riskScore">0/100</b><span>Score de risque</span></div>
-          <div class="metric"><b id="riskBand">À calculer</b><span>Plage indicative</span></div>
-          <div class="metric"><b id="bmiOut">0</b><span>IMC</span></div>
-          <div class="metric"><b id="urgentOut">Non</b><span>Avis rapide ?</span></div>
-        </div>
-        <div class="alert" id="recommendation">Renseignez vos données pour obtenir une lecture prudente.</div>
-        <div class="output" id="summaryOutput" tabindex="0" aria-label="Résumé santé exportable"></div>
-      </aside>
-    </div>
-
-    <section class="card section" aria-labelledby="factor-title">
-      <h2 id="factor-title">Facteurs qui influencent le score</h2>
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th>Facteur</th><th>Lecture</th><th>Pourquoi cela compte</th><th>Action utile</th></tr></thead>
-          <tbody id="factorRows"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card section" aria-labelledby="range-title">
-      <h2 id="range-title">Plages de résultat et incertitude</h2>
-      <div class="table-wrap">
-        <table class="table">
-          <thead><tr><th>Plage</th><th>Lecture prudente</th><th>Prochaine étape</th><th>Incertitude</th></tr></thead>
-          <tbody id="rangeRows"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section class="card section" aria-labelledby="steps-title">
-      <h2 id="steps-title">Prochaines étapes</h2>
-      <div class="steps" id="workflowSteps"></div>
-    </section>
-
-    <section class="layout section">
-      <article class="note">
-        <h2>Quand demander de l'aide rapidement</h2>
-        <ul class="list">
-          <li>Soif intense, urines très fréquentes, perte de poids inexpliquée ou vision floue.</li>
-          <li>Fatigue importante, plaie qui guérit mal, infection répétée, vomissements, confusion ou malaise.</li>
-          <li>Grossesse, enfant, personne âgée fragile ou maladie chronique avec symptômes.</li>
-          <li>Glycémie très élevée mesurée, ou symptômes avec déshydratation: demandez un avis médical sans attendre.</li>
-        </ul>
-      </article>
-      <article class="note">
-        <h2>Méthodologie</h2>
-        <p class="small">Le score additionne des facteurs connus de risque de diabète de type 2: âge, IMC, tour de taille, activité physique, antécédent familial, tension artérielle, antécédent de glycémie élevée, diabète de grossesse, tabac et habitudes alimentaires. Les symptômes n'augmentent pas seulement le score: ils déclenchent surtout une recommandation d'avis médical rapide. Les seuils sont volontairement prudents et ne remplacent pas un test biologique.</p>
-      </article>
-    </section>
-
-    <section class="layout section">
-      <article class="note">
-        <h2>Sources et fraîcheur</h2>
-        <p class="small">Dernière revue: 18 mai 2026. Références utilisées: <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes">fiche OMS sur le diabète</a>, <a href="https://www.cdc.gov/diabetes/risk-factors/">facteurs de risque du CDC</a>, <a href="https://www.niddk.nih.gov/health-information/professionals/clinical-tools-patient-management/diabetes/game-plan-preventing-type-2-diabetes/prediabetes-screening-how-why/risk-factors-diabetes">facteurs de risque NIDDK</a> et <a href="https://diabetesatlas.org/">Atlas de la Fédération internationale du diabète</a>. Les recommandations locales de dépistage peuvent varier selon le pays, l'âge, la grossesse, l'accès aux soins et les maladies associées.</p>
-      </article>
-      <article class="note">
-        <h2>Confidentialité et avertissement médical</h2>
-        <p class="small">Calcul local dans votre navigateur: AfroTools ne reçoit pas vos réponses. Cette page fournit une information générale et une estimation seulement. Elle ne pose pas de diagnostic, ne remplace pas une consultation, et ne doit pas retarder une prise en charge si vous avez des symptômes ou une inquiétude médicale.</p>
-      </article>
-    </section>
-
-    <section class="card section" aria-labelledby="links-title">
-      <h2 id="links-title">Outils santé liés</h2>
-      <div class="links">
-        <a href="/fr/tools/ratio-taille-hanches/">Ratio taille-hanches</a>
-        <a href="/fr/tools/compteur-calories/">Compteur de calories</a>
-        <a href="/fr/tools/calculateur-imc/">Calculateur IMC</a>
-        <a href="/fr/tools/tension-arterielle/">Tension artérielle</a>
-        <a href="/fr/tools/rapport-medical/">Comprendre un résultat médical</a>
-        <a href="/fr/tools/apport-eau/">Hydratation</a>
-        <a href="/fr/tools/dosage-medicament/">Dosage médicament</a>
-        <a href="/fr/health/">Autres outils santé</a>
+  <div class="grid">
+    <form id="screenForm" class="card" novalidate>
+      <h2>Vos entrées de dépistage</h2>
+      <p>Pour adultes. Le score original du CDC/ADA utilise le sexe comme entrée statistique ; il ne s’agit pas d’une déclaration sur l’identité ou la biologie individuelle.</p>
+      <label for="age">Âge en années</label><input id="age" name="age" type="number" min="18" max="120" inputmode="numeric" required>
+      <label for="sex">Sexe utilisé par le score source</label><select id="sex" name="sex" required><option value="">Choisissez-en un</option><option value="female">Femme</option><option value="male">Mâle</option></select>
+      <label for="height">Hauteur (cm)</label><input id="height" name="height" type="number" min="100" max="250" step=".1" inputmode="decimal" required>
+      <label for="weight">Poids (kg)</label><input id="weight" name="weight" type="number" min="25" max="400" step=".1" inputmode="decimal" required>
+      <fieldset class="checks"><legend>Questions sur le score source</legend>
+        <label class="check"><input id="asianAmericanThreshold" name="asianAmericanThreshold" type="checkbox"> Appliquer le seuil d'IMC inférieur du score source aux adultes américains d'origine asiatique</label>
+        <p class="hint">Cet ajustement du score source modifie le premier point d’IMC de 25 à 23. Il n’ajoute pas de point d’origine ethnique.</p>
+        <label class="check"><input id="gestational" name="gestational" type="checkbox"> Ayant déjà reçu un diagnostic de diabète gestationnel</label>
+        <p id="gestationalHint" class="hint">Cette question est notée uniquement lorsque « Femme » est sélectionné dans le champ sexe du score source.</p>
+        <label class="check"><input id="family" name="family" type="checkbox"> Un parent ou un frère ou une sœur souffre de diabète</label>
+        <label class="check"><input id="pressure" name="pressure" type="checkbox"> Avoir déjà reçu un diagnostic d'hypertension artérielle</label>
+        <label class="check"><input id="inactive" name="inactive" type="checkbox"> Pas physiquement actif</label>
+      </fieldset>
+      <fieldset class="checks"><legend>Raisons de ne pas se fier à un score faible</legend>
+        <label class="check"><input id="symptoms" name="symptoms" type="checkbox"> Symptômes possibles du diabète maintenant</label>
+        <label class="check"><input id="pregnant" name="pregnant" type="checkbox"> Actuellement enceinte</label>
+        <label class="check"><input id="previousAbnormal" name="previousAbnormal" type="checkbox"> Résultat de glycémie anormal antérieur</label>
+      </fieldset>
+      <div id="formError" role="alert"></div>
+      <button class="primary" type="submit">Calculer le score de dépistage</button>
+    </form>
+    <section id="resultPanel" class="card result" aria-labelledby="resultTitle" aria-live="polite" tabindex="-1">
+      <h2 id="resultTitle">Votre résultat de dépistage</h2>
+      <div id="result"><p>Complétez les entrées pour voir le score, les hypothèses et la conversation suivante.</p></div>
+      <div class="actions">
+        <button id="txt" class="secondary" type="button" disabled>Télécharger le TXT</button>
+        <button id="print" class="secondary" type="button" disabled>Imprimer / enregistrer en PDF</button>
+        <button id="clear" class="secondary" type="button">Effacer</button>
       </div>
     </section>
   </div>
-</main>
-<afro-footer></afro-footer>
+  <section class="card">
+    <h2>Comment fonctionne la partition</h2>
+    <p>L'âge, le sexe du score source, les antécédents de diabète gestationnel, les antécédents familiaux proches, l'hypertension artérielle diagnostiquée, l'activité et une catégorie de poids sont ajoutés. La version métrique mappe l'IMC 25-29,9 à 1 point, 30-39,9 à 2 points et 40+ à 3 points, avec le seuil d'IMC inférieur facultatif de 23 du score source pour les adultes américains d'origine asiatique. Les symptômes, la grossesse en cours et un résultat de glycémie anormal antérieur l'emportent sur la réassurance d'un score faible. Un total de 5 ou plus constitue une invitation à une analyse de sang de confirmation et non un diagnostic.</p>
+    <p class="source"><strong>Sources officielles, consultées le 26 juillet 2026 :</strong> <a href="https://www.cdc.gov/diabetes/widgets/risktest/how-your-test-is-scored.html" rel="noopener">CDC : comment le test de risque est noté</a>; <a href="https://www.cdc.gov/diabetes/diabetes-testing/index.html" rel="noopener">CDC : tests de diabète</a>; <a href="https://www.who.int/news-room/fact-sheets/detail/diabetes" rel="noopener">Fiche d'information de l'OMS sur le diabète (14 novembre 2024)</a>.</p>
+  </section>
+<section class="fr-health-safety" data-fr-health-safety data-tool-verification-panel aria-labelledby="fr-health-safety-title"><h2 id="fr-health-safety-title">Méthode, sécurité et confidentialité</h2><p><strong>Portée :</strong> Outil de préparation au dépistage du prédiabète reprend le moteur de calcul vérifié de la page anglaise, avec une interface et des résultats en français. Il ne pose aucun diagnostic, ne prescrit aucun traitement et ne remplace jamais un professionnel de santé ou un service d'urgence.</p><p><strong>Confidentialité :</strong> les données de santé saisies restent dans ce navigateur pour le parcours principal. Les exports sont créés localement. Toute fonction réseau facultative doit demander un consentement explicite et montrer les données envoyées.</p><p><strong>Vérification :</strong> confirmez les résultats, dates, doses, analyses, tarifs et consignes avec le professionnel, laboratoire, pharmacien, établissement ou programme national compétent. Consultez aussi <a href="https://www.who.int/fr/health-topics" rel="noopener">les dossiers de santé de l'OMS</a>.</p><p class="fr-health-source-note">Moteur de référence : <a href="/tools/diabetes-risk/" hreflang="en">/tools/diabetes-risk/</a>. Sources et limites propres à l'application indiquées sur cette page.</p></section></main>
+<footer class="foot">Contexte de dépistage éducatif uniquement. Aucun compte, e-mail, charge utile d'analyse, état d'URL ou demande de réseau ne reçoit vos réponses.</footer>
+<script src="/tools/diabetes-risk/diabetes-risk-engine.js?v=fdce6490"></script>
 <script>
-(function(){
-  const $ = (id) => document.getElementById(id);
-  let currentSummary = "";
-  function num(id){ return Math.max(0, Number($(id).value || 0)); }
-  function checked(id){ return $(id).checked; }
-  function bmi(){
-    const h = num("height") / 100;
-    return h ? num("weight") / (h * h) : 0;
-  }
-  function waistRisk(){
-    const waist = num("waist");
-    const sex = $("sex").value;
-    if (sex === "male") return waist >= 102 ? 14 : waist >= 94 ? 8 : 0;
-    if (sex === "female") return waist >= 88 ? 14 : waist >= 80 ? 8 : 0;
-    return waist >= 94 ? 12 : waist >= 84 ? 7 : 0;
-  }
-  function symptomCount(){
-    return ["symptomThirst","symptomUrine","symptomWeight","symptomVision"].filter(checked).length;
-  }
-  function calculate(){
-    const points = [];
-    const age = num("age");
-    const imc = bmi();
-    points.push(["Âge", age >= 65 ? 14 : age >= 45 ? 10 : age >= 35 ? 5 : 0, age + " ans", "Le risque augmente généralement avec l'âge.", "Demander un dépistage périodique si d'autres facteurs existent."]);
-    points.push(["IMC", imc >= 35 ? 18 : imc >= 30 ? 14 : imc >= 25 ? 8 : 0, imc.toFixed(1), "Le surpoids, surtout abdominal, augmente le risque.", "Discuter d'un objectif réaliste de poids et d'activité."]);
-    points.push(["Tour de taille", waistRisk(), num("waist") + " cm", "La graisse abdominale est un signal métabolique important.", "Mesurer à nouveau et suivre l'évolution."]);
-    points.push(["Activité physique", $("activity").value === "low" ? 12 : $("activity").value === "medium" ? 6 : 0, $("activity").selectedOptions[0].textContent, "L'inactivité est un facteur modifiable.", "Viser une progression sûre, même par petites marches."]);
-    points.push(["Famille", $("family").value === "first" ? 14 : $("family").value === "second" ? 7 : 0, $("family").selectedOptions[0].textContent, "Un antécédent familial augmente la probabilité.", "Mentionner cet antécédent au soignant."]);
-    points.push(["Tension", $("bp").value === "yes" ? 12 : $("bp").value === "borderline" ? 6 : 0, $("bp").selectedOptions[0].textContent, "Hypertension et diabète partagent des risques cardiovasculaires.", "Contrôler la tension et suivre le traitement si prescrit."]);
-    points.push(["Glycémie passée", $("glucose").value === "yes" ? 18 : $("glucose").value === "unknown" ? 4 : 0, $("glucose").selectedOptions[0].textContent, "Un prédiabète antérieur justifie un suivi.", "Demander glycémie ou HbA1c selon l'avis médical."]);
-    points.push(["Grossesse", $("gestational").value === "yes" ? 12 : $("gestational").value === "unknown" ? 2 : 0, $("gestational").selectedOptions[0].textContent, "Le diabète de grossesse augmente le risque futur.", "Signaler cet antécédent lors du dépistage."]);
-    points.push(["Tabac", $("smoking").value === "yes" ? 6 : $("smoking").value === "past" ? 2 : 0, $("smoking").selectedOptions[0].textContent, "Le tabac aggrave le risque cardiovasculaire global.", "Demander un soutien au sevrage si nécessaire."]);
-    points.push(["Alimentation", $("food").value === "often" ? 8 : $("food").value === "sometimes" ? 4 : 0, $("food").selectedOptions[0].textContent, "Les boissons sucrées et aliments ultra-transformés favorisent la prise de poids.", "Remplacer progressivement par eau, repas simples et portions adaptées."]);
-    const raw = points.reduce((sum, item) => sum + item[1], 0);
-    const symptoms = symptomCount();
-    const score = Math.min(100, Math.round(raw + symptoms * 8));
-    const urgent = symptoms >= 2 || checked("symptomWeight") || (symptoms >= 1 && $("glucose").value === "yes");
-    return { points, imc, raw, symptoms, score, urgent };
-  }
-  function band(score){
-    if (score >= 70) return "Élevé";
-    if (score >= 45) return "Modéré";
-    if (score >= 22) return "À surveiller";
-    return "Bas";
-  }
-  function renderFactors(data){
-    $("factorRows").innerHTML = data.points.map((row) => "<tr><td>"+row[0]+"</td><td>"+row[2]+"<br>"+row[1]+" point(s)</td><td>"+row[3]+"</td><td>"+row[4]+"</td></tr>").join("");
-  }
-  function renderRanges(){
-    const rows = [
-      ["0 à 21", "Risque bas selon les réponses", "Maintenir activité, alimentation simple et dépistage selon âge ou avis médical.", "Un score bas n'exclut pas un diabète si des symptômes existent."],
-      ["22 à 44", "Risque à surveiller", "Réduire les facteurs modifiables et envisager un dépistage lors du prochain contact médical.", "Le tour de taille, la tension ou l'historique familial peuvent peser fortement."],
-      ["45 à 69", "Risque modéré", "Planifier un dépistage et discuter d'un plan d'activité, poids, alimentation et tension.", "Les seuils ne remplacent pas les tests biologiques."],
-      ["70 à 100", "Risque élevé", "Demander un avis médical et un dépistage, surtout si plusieurs facteurs sont présents.", "La confirmation dépend d'une glycémie, HbA1c ou autre test demandé par un soignant."]
-    ];
-    $("rangeRows").innerHTML = rows.map((row) => "<tr><td>"+row[0]+"</td><td>"+row[1]+"</td><td>"+row[2]+"</td><td>"+row[3]+"</td></tr>").join("");
-  }
-  function renderSteps(data){
-    const steps = data.urgent ? [
-      ["1. Ne pas attendre", "Demander un avis médical rapidement à cause des signes d'alerte."],
-      ["2. Préparer les notes", "Exporter le résumé et noter les symptômes, leur durée et les mesures déjà faites."],
-      ["3. Tester si indiqué", "Le soignant pourra proposer glycémie, HbA1c ou autre test adapté."],
-      ["4. Suivre", "Respecter les consignes, surtout en cas de malaise, grossesse ou maladie chronique."]
-    ] : [
-      ["1. Lire le score", "Identifier les facteurs modifiables: activité, poids, alimentation, tabac."],
-      ["2. Planifier", "Choisir une action réaliste cette semaine et un contrôle de santé."],
-      ["3. Dépister", "Demander un test si le risque est modéré ou élevé, ou selon l'âge."],
-      ["4. Revoir", "Refaire l'évaluation après changement durable ou nouveau résultat médical."]
-    ];
-    $("workflowSteps").innerHTML = steps.map((step) => "<article class=\"step\"><strong>"+step[0]+"</strong><span>"+step[1]+"</span></article>").join("");
-  }
-  function buildSummary(data){
-    return [
-      "Résumé AfroTools - risque de diabète",
-      "Score indicatif: " + data.score + "/100",
-      "Plage: " + band(data.score),
-      "IMC: " + data.imc.toFixed(1),
-      "Tour de taille: " + num("waist") + " cm",
-      "Signes d'alerte cochés: " + data.symptoms,
-      "Avis rapide recommandé: " + (data.urgent ? "oui" : "non selon les réponses"),
-      "",
-      "Principaux facteurs:",
-      data.points.filter((row) => row[1] > 0).map((row) => "- " + row[0] + ": " + row[2] + " (" + row[1] + " point(s))").join("\n") || "- Aucun facteur majeur saisi",
-      "",
-      "Notes personnelles: " + $("notes").value.trim(),
-      "",
-      "Avertissement: estimation seulement, non diagnostique. Confirmer avec un professionnel de santé et des tests adaptés."
-    ].join("\n");
-  }
-  function update(event){
-    if (event) event.preventDefault();
-    const data = calculate();
-    $("riskScore").textContent = data.score + "/100";
-    $("riskBand").textContent = band(data.score);
-    $("bmiOut").textContent = data.imc.toFixed(1);
-    $("urgentOut").textContent = data.urgent ? "Oui" : "Non";
-    const box = $("recommendation");
-    if (data.urgent) {
-      box.className = "alert bad";
-      box.textContent = "Des signes d'alerte sont cochés. Demandez un avis médical rapidement, surtout si les symptômes sont récents, intenses ou associés à un malaise.";
-    } else if (data.score >= 70) {
-      box.className = "alert bad";
-      box.textContent = "Risque indicatif élevé. Planifiez un dépistage et discutez des facteurs modifiables avec un professionnel de santé.";
-    } else if (data.score >= 45) {
-      box.className = "alert warn";
-      box.textContent = "Risque indicatif modéré. Un dépistage peut être pertinent, surtout avec antécédents familiaux, tension ou surpoids abdominal.";
-    } else {
-      box.className = "alert";
-      box.textContent = "Risque indicatif plus bas selon vos réponses. Continuez la prévention et consultez si des symptômes apparaissent.";
-    }
-    renderFactors(data);
-    renderRanges();
-    renderSteps(data);
-    currentSummary = buildSummary(data);
-    $("summaryOutput").textContent = currentSummary;
-    $("copyStatus").textContent = "";
-  }
-  async function copySummary(){
-    if (!currentSummary) update();
-    try {
-      await navigator.clipboard.writeText(currentSummary);
-      $("copyStatus").textContent = "Résumé copié.";
-    } catch (error) {
-      $("copyStatus").textContent = "Copie directe indisponible. Sélectionnez le texte du résumé.";
-    }
-  }
-  function downloadSummary(){
-    if (!currentSummary) update();
-    const blob = new Blob([currentSummary], { type:"text/plain;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "afrotools-risque-diabete.txt";
-    document.body.appendChild(link);
-    link.click();
-    link.remove();
-    URL.revokeObjectURL(url);
-    $("copyStatus").textContent = "Résumé prêt à exporter.";
-  }
-  function sample(){
-    $("age").value = "56";
-    $("sex").value = "female";
-    $("height").value = "164";
-    $("weight").value = "91";
-    $("waist").value = "104";
-    $("activity").value = "low";
-    $("family").value = "first";
-    $("bp").value = "yes";
-    $("glucose").value = "unknown";
-    $("gestational").value = "yes";
-    $("smoking").value = "no";
-    $("food").value = "often";
-    $("symptomThirst").checked = true;
-    $("symptomUrine").checked = true;
-    $("symptomWeight").checked = false;
-    $("symptomVision").checked = false;
-    $("notes").value = "Soif et urines nocturnes depuis plusieurs semaines; je souhaite demander glycémie ou HbA1c.";
-    update();
-  }
-  function reset(){
-    $("riskForm").reset();
-    ["symptomThirst","symptomUrine","symptomWeight","symptomVision"].forEach((id) => $(id).checked = false);
-    update();
-  }
-  $("riskForm").addEventListener("submit", update);
-  Array.from($("riskForm").elements).forEach((field) => {
-    field.addEventListener("input", update);
-    field.addEventListener("change", update);
+(() => {
+  const form=document.getElementById('screenForm');
+  const panel=document.getElementById('resultPanel');
+  const out=document.getElementById('result');
+  const err=document.getElementById('formError');
+  const txt=document.getElementById('txt');
+  const print=document.getElementById('print');
+  const theme=document.getElementById('theme');
+  let last=null;
+
+  const values=()=>({
+    age:Number(form.age.value),
+    sex:form.sex.value,
+    heightCm:Number(form.height.value),
+    weightKg:Number(form.weight.value),
+    asianAmericanThreshold:form.asianAmericanThreshold.checked,
+    gestational:form.gestational.checked,
+    familyHistory:form.family.checked,
+    highBloodPressure:form.pressure.checked,
+    inactive:form.inactive.checked,
+    symptoms:form.symptoms.checked,
+    pregnant:form.pregnant.checked,
+    previousAbnormal:form.previousAbnormal.checked
   });
-  $("copySummary").addEventListener("click", copySummary);
-  $("downloadSummary").addEventListener("click", downloadSummary);
-  $("sampleBtn").addEventListener("click", sample);
-  $("resetBtn").addEventListener("click", reset);
-  update();
+
+  const syncGestationalQuestion=()=>{
+    const applies=form.sex.value==='female';
+    form.gestational.disabled=!applies;
+    if(!applies) form.gestational.checked=false;
+    document.getElementById('gestationalHint').textContent=applies
+      ? 'Include this point only if gestational diabetes was previously diagnosed.'
+      : 'Select “Female” in the source-score field before this question can contribute a point.';
+  };
+  form.sex.addEventListener('change',syncGestationalQuestion);
+  syncGestationalQuestion();
+
+  form.addEventListener('submit',e=>{
+    e.preventDefault();
+    try{
+      last=window.DiabetesRiskEngine.score(values());
+      err.textContent='';
+      const priority=last.priorityReasons.length
+        ? `<div class="next-step"><strong>What takes priority:</strong> ${last.priorityReasons.join(' ')}</div>`
+        : `<div class="next-step"><strong>Next step:</strong> ${last.message}</div>`;
+      out.innerHTML=`<p class="score">${last.total}/10</p><h3>${last.band}</h3>${priority}<h3>Score breakdown</h3><ul class="breakdown">${last.breakdown.map(x=>`<li>${x.label}: ${x.points}</li>`).join('')}</ul><p><strong>Calculated BMI:</strong> ${last.bmi.toFixed(1)}. The first BMI point used ${last.lowerBmiThreshold} as its source-score threshold.</p><p><strong>Warning:</strong> ${last.warning}</p>`;
+      txt.disabled=print.disabled=false;
+      panel.focus();
+    }catch(ex){
+      last=null;
+      err.textContent=ex.message;
+      txt.disabled=print.disabled=true;
+      err.focus?.();
+    }
+  });
+  const report=()=>`AfroTools prediabetes screening conversation tool\nReview date: 26 July 2026\n\nInputs\nAge: ${form.age.value}\nSource-score sex: ${form.sex.value}\nHeight: ${form.height.value} cm\nWeight: ${form.weight.value} kg\nLower Asian American BMI threshold selected: ${form.asianAmericanThreshold.checked?'yes':'no'}\nGestational diabetes diagnosis: ${form.gestational.checked?'yes':'no'}\nParent/sibling with diabetes: ${form.family.checked?'yes':'no'}\nHigh blood pressure diagnosis: ${form.pressure.checked?'yes':'no'}\nNot physically active: ${form.inactive.checked?'yes':'no'}\nPossible symptoms now: ${form.symptoms.checked?'yes':'no'}\nCurrently pregnant: ${form.pregnant.checked?'yes':'no'}\nPrevious abnormal glucose result: ${form.previousAbnormal.checked?'yes':'no'}\n\nResult\nScore: ${last.total}/10\nBand: ${last.band}\nCalculated BMI: ${last.bmi.toFixed(1)}\n${last.message}\n\nAssumptions\nCDC/ADA source score with metric BMI bands and its optional lower 23 BMI threshold for Asian American adults. Adult screening context only.\n\nWarning\n${last.warning}\nOnly a blood test interpreted by a qualified health professional can diagnose prediabetes or diabetes.`;
+  txt.addEventListener('click',()=>{if(!last)return;const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([report()],{type:'text/plain'}));a.download='prediabetes-screening-context.txt';a.click();URL.revokeObjectURL(a.href)});
+  print.addEventListener('click',()=>last&&window.print());
+  document.getElementById('clear').addEventListener('click',()=>{form.reset();syncGestationalQuestion();last=null;out.innerHTML='<p>Complete the inputs to see the score, assumptions and next-step conversation.</p>';err.textContent='';txt.disabled=print.disabled=true;form.age.focus()});
+  const syncThemeButton=()=>{
+    const dark=document.documentElement.getAttribute('data-theme')==='dark';
+    theme.setAttribute('aria-pressed',String(dark));
+    theme.textContent=dark?'Light mode':'Dark mode';
+  };
+  theme.addEventListener('click',()=>{
+    const root=document.documentElement;
+    const dark=root.getAttribute('data-theme')!=='dark';
+    root.setAttribute('data-theme',dark?'dark':'light');
+    root.style.colorScheme=dark?'dark':'light';
+    syncThemeButton();
+  });
+  syncThemeButton();
 })();
 </script>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+<afro-related-tools data-ssr="1" category="health" current="diabetes-risk">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/rapport-medical/" data-related-tool data-id="medical-report" data-name="Interprète de rapports médicaux" data-category="health" data-icon="MR" data-desc="Parse common numeric lab markers locally, prioritise ranges printed on the report, review clearly labelled fallback cont">Interprète de rapports médicaux</a></li><li><a href="/fr/tools/verificateur-genotype/" data-related-tool data-id="genotype-checker" data-name="Guide de vérification des résultats d'hémoglobine" data-category="health" data-icon="HR" data-desc="Review one reported haemoglobin result, record its method, date and confirmation status, and prepare laboratory or genet">Guide de vérification des résultats d'hémoglobine</a></li><li><a href="/fr/tools/cout-accouchement/" data-related-tool data-id="childbirth-cost" data-name="Budget d'accouchement devis du fournisseur" data-category="health" data-icon="PQ" data-desc="Total dated provider, payer and household figures you enter; no built-in prices, coverage promise or care recommendation">Budget d'accouchement devis du fournisseur</a></li><li><a href="/fr/tools/comparateur-prix-medicaments/" data-related-tool data-id="drug-price-compare" data-name="Comparateur de devis de médicaments exacts" data-category="health" data-icon="EM" data-desc="Compare two current pharmacy quotes for the same exact medicine name, strength and dosage form. No substitution or thera">Comparateur de devis de médicaments exacts</a></li><li><a href="/fr/tools/compatibilite-groupe-sanguin/" data-related-tool data-id="blood-group" data-name="Référence de compatibilité des composants sanguins" data-category="health" data-icon="BC" data-desc="Compare basic ABO/Rh red-cell and plasma reference patterns, understand platelet-selection boundaries, and prepare hospi">Référence de compatibilité des composants sanguins</a></li><li><a href="/fr/tools/cout-cesarienne-voie-basse/" data-related-tool data-id="csection-vs-natural" data-name="Générateur de questions sur les options de naissance" data-category="health" data-icon="BO" data-desc="Build a private, neutral question card for discussing vaginal and caesarean birth; no medical or cost ranking.">Générateur de questions sur les options de naissance</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
 </body>
 </html>

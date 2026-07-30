@@ -41,7 +41,7 @@ for (const route of routes)
       page.getByRole("button", { name: route.button, exact: true }),
     ).toBeVisible();
     await expect(page.locator(".kmv-answer")).toContainText("50");
-    await expect(page.locator("[data-tool-verification-panel]")).toHaveAttribute(
+    await expect(page.locator("[data-tool-verification-panel]").first()).toHaveAttribute(
       "data-tool-id",
       "km-vat",
     );

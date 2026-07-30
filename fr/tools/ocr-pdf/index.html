@@ -1,41 +1,521 @@
 <!DOCTYPE html>
-<html data-chat-bundle="/assets/js/bundles/chat.88bd45ff.min.js" lang="fr">
+<html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="fr">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="view-transition" content="same-origin">
-<title>OCR PDF — Reconnaissance de texte | AfroTools</title>
-<meta name="description" content="OCR PDF gratuit en ligne. Convertissez des PDF scannés en texte recherchable.">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>OCR PDF en français dans le navigateur | AfroTools</title>
+<meta name="description" content="Extrayez le texte de PDF numérisés avec OCR français ou multilingue, relisez le résultat et exportez-le localement.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="OCR PDF — Reconnaissance de texte | AfroTools">
-<meta property="og:description" content="OCR PDF gratuit en ligne. Convertissez des PDF scannés en texte recherchable.">
-<meta property="og:url" content="https://afrotools.com/fr/tools/ocr-pdf/">
+<meta property="og:title" content="OCR PDF">
+<meta property="og:description" content="Extrayez le texte de PDF numérisés avec OCR français ou multilingue, relisez le résultat et exportez-le localement.">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
+<meta property="og:url" content="https://afrotools.com/fr/tools/ocr-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-ocr.webp">
+<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="OCR PDF — Reconnaissance de texte | AfroTools">
-<meta name="twitter:description" content="OCR PDF gratuit en ligne. Convertissez des PDF scannés en texte recherchable.">
+<meta name="twitter:title" content="OCR PDF Online Free | AfroTools">
+<meta name="twitter:description" content="Extract text from scanned PDFs and images locally with OCR confidence checks.">
+<meta name="robots" content="index, follow">
+<meta name="author" content="AfroTools">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-<script src="/assets/js/components/navbar.min.js?v=65f906d7" defer></script>
-<script src="/assets/js/components/footer.min.js?v=fb81e3cd" defer></script>
-<script src="/assets/js/bundles/core.8401f4c6.min.js" defer></script>
-<script type="application/ld+json">
+<link rel="stylesheet" href="/assets/css/document-pdf-tool-focus.css?v=cec70638">
+<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script> <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script> <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script> <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script> <script src="/assets/vendor/tesseract/tesseract.min.js?v=762c4256"></script> <style>
+  :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
+
+  .tool-hero {
+    background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%);
+    padding: 44px 0 36px;
+    position: relative;
+    overflow: hidden;
+  }
+  .tool-hero::after {
+    content: '';
+    position: absolute;
+    right: 5%;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 8rem;
+    opacity: 0.06;
+    pointer-events: none;
+  }
+  .tool-hero-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    position: relative;
+  }
+  .breadcrumb {
+    font-size: 0.72rem;
+    font-weight: 500;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
+  .breadcrumb span { color: var(--afro-blue); }
+
+  h1 {
+    font-size: clamp(1.6rem, 4vw, 2.4rem);
+    font-weight: 800;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+    margin-bottom: 10px;
+  }
+  h1 em { color: var(--afro-blue); font-style: normal; }
+
+  .hero-sub {
+    font-size: 0.88rem;
+    color: rgba(255,255,255,0.45);
+    line-height: 1.6;
+    max-width: 560px;
+    margin-bottom: 14px;
+  }
+  .hero-badges { display: flex; flex-wrap: wrap; gap: 7px; }
+  .badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    padding: 4px 11px;
+    border-radius: 4px;
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+  }
+  .b-green {
+    background: rgba(0,113,227,0.18);
+    color: var(--color-primary);
+    border: 1px solid rgba(0,113,227,0.38);
+  }
+
+  .tool-main { padding: 28px 0 72px; }
+  .tool-main-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 24px;
+    display: grid;
+    grid-template-columns: 1fr 360px;
+    gap: 22px;
+    align-items: start;
+  }
+  .tool-main-inner > *,
+  .card,
+  .card-body,
+  .field,
+  .file-info { min-width: 0; }
+
+  .card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+  }
+  .card + .card { margin-top: 18px; }
+  .card-head {
+    padding: 15px 22px;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+  }
+  .card-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #0a4018;
+  }
+  .card-body { padding: 22px; }
+
+  .file-input-label {
+    display: block;
+    padding: 36px 24px;
+    background: #EFF6FF;
+    border: 2px dashed #BFDBFE;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    transition: all 0.2s;
+    font-size: 0.9rem;
+    color: #334155;
+    font-weight: 600;
+    min-height: 112px;
+    touch-action: manipulation;
+  }
+  .file-input-label:hover {
+    border-color: var(--afro-blue);
+    background: #EFF6FF;
+  }
+  .file-input-label.dragover {
+    border-color: var(--afro-blue);
+    background: rgba(0,113,227,0.1);
+  }
+  .file-input-label .drop-icon { display: none; }
+  .file-input-label .drop-hint {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+    font-weight: 500;
+    margin-top: 6px;
+  }
+
+  input[type="file"] { display: none; }
+
+  .file-info {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: #EFF6FF;
+    border-radius: 6px;
+    font-size: 0.78rem;
+    color: #334155;
+    font-weight: 600;
+    display: none;
+    align-items: center;
+    gap: 8px;
+  }
+  .file-info.on { display: flex; }
+  .file-info .file-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .file-info .file-remove {
+    background: none;
+    border: none;
+    color: #dc2626;
+    cursor: pointer;
+    font-size: 0.72rem;
+    font-weight: 700;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    padding: 0 8px;
+  }
+
+  .field { margin-bottom: 18px; }
+  .field:last-child { margin-bottom: 0; }
+  .f-label-text {
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #1e293b;
+    margin-bottom: 6px;
+    display: block;
+  }
+  .f-input {
+    box-sizing: border-box;
+    max-width: 100%;
+    min-width: 0;
+    width: 100%;
+    min-height: 44px;
+    padding: 11px 13px;
+    background: #EFF6FF;
+    border: 1.5px solid #BFDBFE;
+    border-radius: 7px;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #1e293b;
+    outline: none;
+    transition: border-color 0.18s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .f-input:focus {
+    border-color: var(--afro-blue);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+  }
+
+  .calc-btn {
+    width: 100%;
+    min-height: 48px;
+    padding: 14px;
+    background: var(--afro-blue);
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 700;
+    letter-spacing: 0.03em;
+    cursor: pointer;
+    transition: background 0.18s, box-shadow 0.18s, opacity 0.18s;
+    margin-top: 8px;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+  .calc-btn:hover {
+    background: #0059B3;
+    box-shadow: 0 6px 20px rgba(0,113,227,0.3);
+  }
+  .calc-btn:disabled {
+    background: #BFDBFE;
+    cursor: not-allowed;
+    transform: none;
+    box-shadow: none;
+  }
+
+  .progress-section { margin-top: 16px; display: none; }
+  .progress-section.on { display: block; }
+  .progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #DBEAFE;
+    border-radius: 4px;
+    overflow: hidden;
+    margin-bottom: 8px;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--afro-blue), #3b82f6);
+    width: 0%;
+    transition: width 0.3s;
+    border-radius: 4px;
+  }
+  .progress-text {
+    font-size: 0.72rem;
+    color: #6B8CAE;
+    text-align: center;
+    font-weight: 600;
+  }
+
+  .status-line {
+    min-height: 20px;
+    margin-top: 10px;
+    color: #475569;
+    font-size: 0.78rem;
+    line-height: 1.45;
+  }
+  .status-line.error { color: #b91c1c; font-weight: 700; }
+
+  .result-card {
+    background: #fff;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 1px 8px rgba(0,0,0,0.05);
+    display: none;
+  }
+  .result-card.on { display: block; }
+
+  .page-tabs {
+    display: flex;
+    gap: 0;
+    overflow-x: auto;
+    border-bottom: 1px solid #EFF6FF;
+    background: #F5F9FF;
+    padding: 0 22px;
+  }
+  .page-tab {
+    min-height: 44px;
+    padding: 10px 16px;
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.04em;
+    color: #6B8CAE;
+    cursor: pointer;
+    border: none;
+    background: none;
+    border-bottom: 2px solid transparent;
+    transition: all 0.15s;
+    white-space: nowrap;
+    font-family: 'DM Sans', sans-serif;
+    touch-action: manipulation;
+  }
+  .page-tab:hover { color: var(--afro-blue); }
+  .page-tab.active {
+    color: var(--afro-blue);
+    border-bottom-color: var(--afro-blue);
+  }
+
+  .extracted-text {
+    background: #F8FAFC;
+    border: 1px solid #DBEAFE;
+    border-radius: 6px;
+    padding: 16px;
+    font-size: 0.84rem;
+    color: #1e293b;
+    line-height: 1.7;
+    min-height: 160px;
+    max-height: 400px;
+    overflow-y: auto;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    font-family: 'DM Sans', monospace;
+  }
+
+  .ocr-summary {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 12px;
+  }
+  .ocr-summary div {
+    border: 1px solid #DBEAFE;
+    border-radius: 8px;
+    background: #F8FAFC;
+    padding: 10px;
+    min-width: 0;
+  }
+  .ocr-summary span {
+    display: block;
+    color: #64748b;
+    font-size: 0.66rem;
+    font-weight: 800;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    margin-bottom: 4px;
+  }
+  .ocr-summary strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.88rem;
+    line-height: 1.2;
+  }
+  .ocr-warning {
+    display: none;
+    margin: 0 0 12px;
+    padding: 10px 12px;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    background: #FFFBEB;
+    color: #92400E;
+    font-size: 0.78rem;
+    line-height: 1.5;
+    font-weight: 650;
+  }
+  .ocr-warning.on { display: block; }
+
+  .action-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 14px;
+  }
+  .act-btn {
+    min-height: 44px;
+    padding: 10px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    border: 1.5px solid rgba(0,113,227,0.35);
+    font-family: 'DM Sans', sans-serif;
+    background: rgba(0,113,227,0.1);
+    color: #1a5c3a;
+    touch-action: manipulation;
+  }
+  .act-btn:hover { background: rgba(0,113,227,0.2); }
+  .action-row .act-share-image { display: none !important; }
+
+  .sidebar { display: flex; flex-direction: column; gap: 16px; }
+
+  .info-card {
+    background: #F5F9FF;
+    border: 1px solid #DBEAFE;
+    border-radius: 10px;
+    padding: 16px;
+  }
+  .info-title {
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #0a4018;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+  .info-text {
+    font-size: 0.8rem;
+    color: #334155;
+    line-height: 1.6;
+  }
+  .info-text li { margin-bottom: 6px; }
+  .info-text ul { margin: 0; padding-left: 16px; }
+
+  .note-box {
+    background: #FFFBEB;
+    border: 1px solid #FDE68A;
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-size: 0.76rem;
+    color: #92400E;
+    line-height: 1.5;
+    font-weight: 500;
+  }
+
+  .seo-section {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 48px 24px 32px;
+  }
+  .seo-section h2 {
+    font-size: 1.3rem;
+    font-weight: 800;
+    color: #1e293b;
+    margin-bottom: 14px;
+    letter-spacing: -0.01em;
+  }
+  .seo-section p {
+    font-size: 0.88rem;
+    color: #3c5a45;
+    line-height: 1.7;
+    margin-bottom: 14px;
+    max-width: 800px;
+  }
+  .seo-section h3 {
+    font-size: 1rem;
+    font-weight: 700;
+    color: #1e293b;
+    margin: 20px 0 8px;
+  }
+
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .f-label-text,
+  :root[data-theme="dark"] .info-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3 { color:#eef5ff; }
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .extracted-text,
+  :root[data-theme="dark"] .ocr-summary div,
+  :root[data-theme="dark"] .page-tabs { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .info-text,
+  :root[data-theme="dark"] .info-text li,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .extracted-text,
+  :root[data-theme="dark"] .ocr-summary strong { color:#d8e4f5; }
+  :root[data-theme="dark"] .ocr-summary span,
+  :root[data-theme="dark"] .status-line { color:#b8c7dc; }
+
+  @media (max-width: 768px) {
+    .tool-main-inner { grid-template-columns: 1fr; }
+    .action-row { grid-template-columns: 1fr; }
+    .ocr-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .page-tabs { padding: 0 14px; }
+    .card-body { padding: 18px; }
+  }
+
+  @media (max-width: 460px) {
+    .ocr-summary { grid-template-columns: 1fr; }
+    .tool-main-inner,
+    .tool-hero-inner,
+    .seo-section { padding-inline: 16px; }
+  }
+</style> <script type="application/ld+json">
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   "name": "OCR PDF",
-  "description": "OCR PDF gratuit en ligne. Convertissez des PDF scannés en texte recherchable.",
+  "description": "Extrayez le texte de PDF numérisés avec OCR français ou multilingue, relisez le résultat et exportez-le localement.",
   "url": "https://afrotools.com/fr/tools/ocr-pdf/",
-  "inLanguage": "https://afrotools.com/fr/",
-  "applicationCategory": "BrowserApplication",
+  "inLanguage": "fr",
+  "applicationCategory": "UtilitairesApplication",
   "operatingSystem": "Web",
+  "browserRequirements": "Nécessite JavaScript et WebAssembly",
   "offers": {
     "@type": "Offer",
     "price": "0",
@@ -48,91 +528,689 @@
   },
   "image": "https://afrotools.com/assets/img/tools/pdf-ocr.webp"
 }
-</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"OCR PDF","item":"https://afrotools.com/fr/tools/ocr-pdf/"}]}
-</script>
-<style>
-.fr-hero{background:linear-gradient(135deg,#0A1628,#1a1f2e);padding:48px 24px 36px;text-align:center}
-.fr-hero h1{font-family:'Instrument Serif',serif;font-size:clamp(1.6rem,4vw,2.6rem);color:#fff;margin:0 0 12px;line-height:1.15}
-.fr-hero h1 em{color:var(--color-primary);font-style:normal}
-.fr-hero p{color:rgba(255,255,255,.55);font-size:.95rem;max-width:540px;margin:0 auto;line-height:1.6}
-.fr-tool-frame{width:100%;min-height:80vh;border:0;display:block}
-.fr-seo{max-width:860px;margin:48px auto;padding:0 24px;color:#374151;line-height:1.8;font-family:var(--font-body)}
-.fr-seo h2{font-size:1.4rem;font-weight:800;color:var(--color-text);margin-bottom:14px;font-family:var(--font-display)}
-.fr-seo details{margin-bottom:10px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px}
-.fr-seo summary{font-weight:600;color:var(--color-text);cursor:pointer}
-.fr-seo details p{margin-top:8px}
-.fr-crumb{max-width:1200px;margin:0 auto;padding:10px 24px 0;font-size:12px;color:#9ca3af}
-.fr-crumb a{color:#9ca3af;text-decoration:none}.fr-crumb a:hover{color:var(--color-primary)}.fr-crumb span{margin:0 5px}
-.fr-prep-panel{max-width:940px;margin:20px auto 0;padding:18px 20px;border:1px solid #bfdbfe;border-radius:12px;background:linear-gradient(135deg,#eff6ff 0%,#f8fafc 100%);box-shadow:0 10px 26px rgba(15,23,42,.06)}
-.fr-prep-panel h2{font-size:1.05rem;margin:0 0 6px;color:#0f172a;font-family:var(--font-display)}.fr-prep-panel p{margin:0 0 14px;color:#475569;line-height:1.55}.fr-prep-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,190px),1fr));gap:10px}.fr-prep-fields label{display:grid;gap:5px;font-size:.82rem;font-weight:800;color:#0f172a}.fr-prep-fields input,.fr-prep-fields select{width:100%;border:1px solid #cbd5e1;border-radius:8px;padding:10px 11px;font:inherit;background:#fff}.fr-prep-output{display:block;margin-top:12px;border:1px solid #cbd5e1;border-radius:8px;background:#fff;color:#334155;padding:12px;line-height:1.5;min-height:48px;white-space:pre-line}.fr-prep-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}.fr-prep-actions a,.fr-prep-actions button{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:10px 14px;font-weight:800;text-decoration:none;border:0;cursor:pointer}.fr-prep-actions a{background:#0057b8;color:#fff}.fr-prep-actions button{background:#0f172a;color:#fff}.fr-prep-status{font-size:.82rem;color:#64748b;align-self:center}.fr-privacy-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,180px),1fr));gap:10px;margin-top:12px}.fr-privacy-grid div{border:1px solid #dbeafe;background:#fff;border-radius:10px;padding:10px;color:#334155;line-height:1.45}.fr-privacy-grid strong{display:block;color:#0f172a;margin-bottom:3px}
-</style>
+</script> <script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  "name": "OCR PDF",
+  "url": "https://afrotools.com/fr/tools/ocr-pdf/",
+  "description": "Extrayez le texte de PDF numérisés avec OCR français ou multilingue, relisez le résultat et exportez-le localement.",
+  "inLanguage": "fr",
+  "isPartOf": {
+    "@type": "WebSite",
+    "name": "AfroTools",
+    "url": "https://afrotools.com/"
+  },
+  "image": "https://afrotools.com/assets/img/tools/pdf-ocr.webp"
+}
+</script> <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script>
+<meta property="og:locale" content="fr_FR">
+<meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-ocr.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Outils","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"OCR PDF","item":"https://afrotools.com/fr/tools/ocr-pdf/"}],"inLanguage":"fr"}</script>
+<meta property="article:modified_time" content="2026-03-28">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="content-language" content="fr">
+<meta property="og:image:alt" content="OCR PDF">
+<link rel="stylesheet" href="/assets/css/fr-document-pdf-parity.css?v=9ebb943c">
+<script>window.__AFROTOOLS_FR_DOCUMENT_PDF__={"id":"pdf-ocr","locale":"fr","englishOwner":"tools/pdf-ocr/index.html","localFirstDownloads":true,"observeDynamic":true,"refreshOnInteraction":false,"routeMap":{"/tools/pdf-workspace":"/fr/tools/espace-pdf/","/tools/pdf-workspace/":"/fr/tools/espace-pdf/","/tools/pdf-merge-split":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-merge-split/":"/fr/tools/fusionner-diviser-pdf/","/tools/pdf-compress":"/fr/tools/compresser-pdf/","/tools/pdf-compress/":"/fr/tools/compresser-pdf/","/tools/pdf-image-convert":"/fr/tools/pdf-en-image/","/tools/pdf-image-convert/":"/fr/tools/pdf-en-image/","/tools/pdf-watermark":"/fr/tools/filigrane-pdf/","/tools/pdf-watermark/":"/fr/tools/filigrane-pdf/","/tools/pdf-password":"/fr/tools/proteger-pdf/","/tools/pdf-password/":"/fr/tools/proteger-pdf/","/tools/pdf-page-numbers":"/fr/tools/numerotation-pdf/","/tools/pdf-page-numbers/":"/fr/tools/numerotation-pdf/","/tools/pdf-sign":"/fr/tools/signer-pdf/","/tools/pdf-sign/":"/fr/tools/signer-pdf/","/tools/pdf-ocr":"/fr/tools/ocr-pdf/","/tools/pdf-ocr/":"/fr/tools/ocr-pdf/","/tools/pdf-form-filler":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-form-filler/":"/fr/tools/remplir-formulaire-pdf/","/tools/pdf-redact":"/fr/tools/caviarder-pdf/","/tools/pdf-redact/":"/fr/tools/caviarder-pdf/","/tools/pdf-header-footer":"/fr/tools/entete-pied-pdf/","/tools/pdf-header-footer/":"/fr/tools/entete-pied-pdf/","/tools/pdf-editor":"/fr/tools/editeur-pdf/","/tools/pdf-editor/":"/fr/tools/editeur-pdf/","/tools/pdf-convert":"/fr/tools/convertir-pdf/","/tools/pdf-convert/":"/fr/tools/convertir-pdf/","/tools/pdf-reorder":"/fr/tools/reorganiser-pdf/","/tools/pdf-reorder/":"/fr/tools/reorganiser-pdf/","/tools/pdf-chat":"/fr/tools/chat-pdf/","/tools/pdf-chat/":"/fr/tools/chat-pdf/","/tools/pdf-translate":"/fr/tools/traduire-pdf/","/tools/pdf-translate/":"/fr/tools/traduire-pdf/","/tools/pdf-compare":"/fr/tools/comparer-pdf/","/tools/pdf-compare/":"/fr/tools/comparer-pdf/","/tools/pdf-to-audio":"/fr/tools/pdf-en-audio/","/tools/pdf-to-audio/":"/fr/tools/pdf-en-audio/","/tools/pdf-bates":"/fr/tools/numerotation-bates-pdf/","/tools/pdf-bates/":"/fr/tools/numerotation-bates-pdf/","/tools/html-to-pdf":"/fr/tools/html-en-pdf/","/tools/html-to-pdf/":"/fr/tools/html-en-pdf/","/tools/pdf-find-replace":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-find-replace/":"/fr/tools/rechercher-remplacer-pdf/","/tools/pdf-repair":"/fr/tools/reparer-pdf/","/tools/pdf-repair/":"/fr/tools/reparer-pdf/","/tools/pdf-workflow":"/fr/tools/flux-pdf/","/tools/pdf-workflow/":"/fr/tools/flux-pdf/","/tools/cv-builder":"/fr/tools/generateur-cv/","/tools/cv-builder/":"/fr/tools/generateur-cv/","/tools/invoice-generator":"/fr/tools/generateur-factures/","/tools/invoice-generator/":"/fr/tools/generateur-factures/","/tools/cover-letter-generator":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/":"/fr/tools/generateur-lettre-motivation/","/tools/cover-letter-generator/app":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app/":"/fr/tools/generateur-lettre-motivation/app","/tools/cover-letter-generator/app.html":"/fr/tools/generateur-lettre-motivation/app","/tools/meeting-minutes":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/":"/fr/tools/compte-rendu-reunion/","/tools/meeting-minutes/app":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app/":"/fr/tools/compte-rendu-reunion/app","/tools/meeting-minutes/app.html":"/fr/tools/compte-rendu-reunion/app","/tools/receipt-generator":"/fr/tools/generateur-recu/","/tools/receipt-generator/":"/fr/tools/generateur-recu/","/tools/business-plan":"/fr/tools/plan-affaires/","/tools/business-plan/":"/fr/tools/plan-affaires/","/tools/business-plan/app":"/fr/tools/plan-affaires/app","/tools/business-plan/app/":"/fr/tools/plan-affaires/app","/tools/business-plan/app.html":"/fr/tools/plan-affaires/app","/document-pdf":"/fr/document-pdf/","/document-pdf/":"/fr/document-pdf/","/tools/freelance-invoice":"/fr/tools/facture-freelance/","/tools/freelance-invoice/":"/fr/tools/facture-freelance/"},"exact":{"_ocr.txt":"_ocr.txt","-- other image formats":"-- autres formats d'images","-- photos of documents":"-- photos de documents","-- scanned or image-based":"-- numérisé ou basé sur une image","--- Page":"--- Page",". Reconnect to local assets or try a smaller, clearer file.":". Reconnectez-vous aux ressources locales ou essayez un fichier plus petit et plus clair.","(No text detected in this image)":"(Aucun texte détecté dans cette image)","(No text detected on this page)":"(Aucun texte détecté sur cette page)","1 page processed":"1 page traitée","5 Languages":"5 langues","active":"actif","Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.":"Modèles prêts pour l’Afrique. Conforme au NYSC/NSS/KCSE. Modèles premium.","AfroTools OCR PDF is a free, browser-based tool that extracts text from scanned PDFs and document images. It uses local Tesseract.js assets to recognize text in your browser, then shows page-by-page text, word count, and confidence signals.":"AfroTools OCR PDF est un outil gratuit basé sur un navigateur qui extrait le texte des PDF numérisés et des images de documents. Il utilise les ressources Tesseract.js locales pour reconnaître le texte dans votre navigateur, puis affiche le texte page par page, le nombre de mots et les signaux de confiance.","All Pages":"Toutes les pages","application/pdf":"candidature/pdf","Arabic":"arabe","aria-selected":"air sélectionné","aria-valuenow":"aria-valuemaintenant","Avoid storing raw OCR text in shared notes when documents include IDs, medical records, contracts, invoices, or school records.":"Évitez de stocker du texte OCR brut dans des notes partagées lorsque les documents comprennent des pièces d'identité, des dossiers médicaux, des contrats, des factures ou des dossiers scolaires.","B":"B","Before sharing":"Avant de partager","Built for a global audience, this tool supports five languages: English, French, Arabic, Swahili, and Portuguese. Select the matching language before extraction for the most accurate results.":"Conçu pour un public mondial, cet outil prend en charge cinq langues : anglais, français, arabe, swahili et portugais. Sélectionnez la langue correspondante avant l’extraction pour obtenir les résultats les plus précis.","button":"bouton","change":"changement","Check extracted text before copying or downloading it":"Vérifiez le texte extrait avant de le copier ou de le télécharger","Choose or drop a scanned PDF or document image":"Choisissez ou déposez un PDF numérisé ou une image de document","Clean, high-contrast documents work best":"Les documents nets et contrastés fonctionnent mieux","click":"cliquez","Compare names, dates, numbers, legal wording, totals, and table rows against the original document.":"Comparez les noms, les dates, les chiffres, le libellé légal, les totaux et les lignes du tableau avec le document original.","Completed":"Complété","Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.":"Compressez des PDF avec des modes ZIP propres, équilibrés, solides, de taille cible personnalisée et par lots. Traitement uniquement par navigateur.","Confidence":"Confiance","Copied":"Copié","copy":"copie","Copy visible text":"Copier le texte visible","Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.":"Créez des factures africaines avec TVA, détails de paiement, solde dû, clients/articles enregistrés, liens de partage et exportation PDF.","CV / Resume Builder":"Générateur de CV","Document language":"Langue du document","Done!":"Fait!","Download TXT":"Télécharger le TXT","dragleave":"glisser","dragover":"drague","drop":"baisse","Each PDF page is rendered as an image":"Chaque page PDF est rendue sous forme d'image","Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt":"Modifiez localement des PDF avec du texte, des images, des signatures, des tampons, des formes, des surbrillances, du voile blanc, des dessins, des annulations, des aperçus et des mises à plat.","English":"Anglais","Ensure text is not rotated or skewed":"Assurez-vous que le texte n’est pas pivoté ou incliné","error":"erreur","Error:":"Erreur:","Extract copyable text from scanned PDFs and document images. Choose the document language, review page-level confidence, then copy or download a TXT file.":"Extrayez le texte copiable des PDF numérisés et des images de documents. Choisissez la langue du document, vérifiez la fiabilité au niveau de la page, puis copiez ou téléchargez un fichier TXT.","Extract text from scanned PDFs and document images locally in the browser with OCR page tabs, confidence checks, copy, and TXT download.":"Extrayez le texte des PDF numérisés et des images de documents localement dans le navigateur avec les onglets de page OCR, les contrôles de confiance, la copie et le téléchargement TXT.","Extract text from scanned PDFs and images with browser-based OCR, page-by-page text tabs, confidence checks, and local TXT export.":"Extrayez le texte des PDF et des images numérisés grâce à l'OCR basé sur un navigateur, aux onglets de texte page par page, aux contrôles de confiance et à l'exportation TXT locale.","Extract Text with OCR":"Extraire le texte par OCR","Extracted Text":"Texte extrait","false":"FAUX","File too large. Please use files under 50 MB.":"Fichier trop volumineux. Veuillez utiliser des fichiers de moins de 50 Mo.","flex":"fléchir","For page cleanup or export prep, continue in":"Pour le nettoyage de la page ou la préparation de l'exportation, continuez dans","Free OCR PDF Tool -- Extract Text from Scanned Documents":"Outil OCR PDF gratuit — Extraire le texte de documents numérisés","French (Francais)":"Français (Français)","How It Works":"Fonctionnement","image/":"image/","image/png":"image/png","initializing api":"initialisation de l'API","Initializing OCR engine...":"Initialisation du moteur OCR...","Initializing OCR...":"Initialisation de l'OCR...","initializing tesseract":"initialisation du tesseract","Invoice Generator":"Générateur de facture","KB":"Ko","Language":"Langue","Language data loaded!":"Données de langue chargées !","Language selection guides recognition; it does not guarantee perfect spelling, table structure, or reading order.":"La sélection de la langue guide la reconnaissance ; cela ne garantit pas une orthographe parfaite, une structure de tableau ou un ordre de lecture parfait.","loaded language traineddata":"données d'entraînement linguistiques chargées","loading language traineddata":"chargement des données d'apprentissage du langage","Loading local language data...":"Chargement des données en langue locale...","Loading OCR core...":"Chargement du noyau OCR...","Loading PDF...":"Chargement du PDF...","loading tesseract core":"chargement du noyau tesseract","Local OCR":"ROC locale","Local-first OCR workflow":"Flux de travail OCR local d'abord","Low-confidence OCR result. Review names, dates, numbers, and legal wording against the original file.":"Résultat OCR de faible confiance. Examinez les noms, les dates, les numéros et la formulation légale par rapport au fichier original.","MB":"Mo","Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only":"Fusionnez, réorganisez, choisissez des plages de pages, divisez par plages, extrayez les pages sélectionnées ou exportez chaque page au format ZIP. Navigateur uniquement","Methodology":"Méthode","Multi-Language Support":"Prise en charge multilingue","No usable text was detected. Try a sharper scan, higher contrast, or a different language.":"Aucun texte utilisable n'a été détecté. Essayez une numérisation plus nette, un contraste plus élevé ou une autre langue.","none":"aucun","Note:":"Note:","number":"nombre","OCR (Optical Character Recognition) converts images of text into machine-readable text. When you scan a document, the resulting PDF often contains page images rather than selectable text. This tool analyzes those images and extracts text you can review, copy, search inside the result box, or download as a TXT file.":"OCR (Optical Character Recognition) convertit les images de texte en texte lisible par machine. Lorsque vous numérisez un document, le PDF résultant contient souvent des images de page plutôt que du texte sélectionnable. Cet outil analyse ces images et extrait le texte que vous pouvez consulter, copier, rechercher dans la zone de résultats ou télécharger sous forme de fichier TXT.","OCR can still miss tables, handwriting, or rotated text. Review important details before sharing.":"L'OCR peut toujours manquer des tableaux, de l'écriture manuscrite ou du texte pivoté. Passez en revue les détails importants avant de partager.","OCR complete. Review the confidence and compare important details with the original.":"ROC terminée. Passez en revue la confiance et comparez les détails importants avec l’original.","OCR could not start offline because a local runtime asset was unavailable.":"L'OCR n'a pas pu démarrer hors ligne car une ressource d'exécution locale n'était pas disponible.","OCR could not start offline. Reconnect, reload the local OCR assets, and try again; your file was not uploaded.":"L'OCR n'a pas pu démarrer hors ligne. Reconnectez-vous, rechargez les ressources OCR locales et réessayez ; votre fichier n'a pas été téléchargé.","OCR engine initialization timed out. Check your connection to the local assets, then retry.":"L'initialisation du moteur OCR a expiré. Vérifiez votre connexion aux ressources locales, puis réessayez.","OCR Error:":"Erreur ROC :","OCR failed. Try a smaller file, a clearer scan, or refresh and try again.":"L'OCR a échoué. Essayez un fichier plus petit, une analyse plus claire ou actualisez et réessayez.","OCR is running locally in this browser. Keep this tab open.":"L'OCR s'exécute localement dans ce navigateur. Gardez cet onglet ouvert.","OCR limits":"Limites de l'OCR","OCR on":"ROC activé","OCR on large PDFs can take several minutes. The OCR engine and language data load from AfroTools local assets. Processing happens entirely in your browser -- your files and extracted text are never uploaded by this tool.":"L'OCR sur des PDF volumineux peut prendre plusieurs minutes. Le moteur OCR et les données linguistiques se chargent à partir des ressources locales d'AfroTools. Le traitement s'effectue entièrement dans votre navigateur : vos fichiers et le texte extrait ne sont jamais téléchargés par cet outil.","OCR PDF":"PDF ROC","OCR PDF | Extract Text from Scanned Documents | AfroTools":"ROC PDF | Extraire le texte des documents numérisés | AfroOutils","OCR PDF Online":"ROC PDF en ligne","OCR processing failed":"Échec du traitement OCR","OCR progress":"Progression de l'OCR","OCR recognition timed out on page":"La reconnaissance OCR a expiré sur la page","OCR recognition timed out. Reconnect to local assets or try a smaller, clearer image.":"La reconnaissance OCR a expiré. Reconnectez-vous aux ressources locales ou essayez une image plus petite et plus claire.","OCR result pages":"Pages de résultats OCR","OCR result summary":"Résumé des résultats de l'OCR","OCR runs in this browser with local Tesseract assets where supported. Accuracy depends on scan quality, language, layout, rotation, handwriting, and image contrast.":"L'OCR s'exécute dans ce navigateur avec les ressources Tesseract locales lorsqu'elles sont prises en charge. La précision dépend de la qualité de la numérisation, de la langue, de la mise en page, de la rotation, de l'écriture manuscrite et du contraste de l'image.","OCR Settings":"Paramètres ROC","ocr-result":"résultat ocr","Online":"En ligne","page":"page","Page":"Page","Page confidence":"Confiance des pages","page-tab":"onglet page","page-tab active":"onglet de page actif","Pages":"Pages","pages processed":"pages traitées","PDF and images":"PDF et images","PDF Compressor":"Compresseur PDF","PDF Editor":"Éditeur PDF","PDF Merge & Split":"Fusionner et diviser des PDF","PDF OCR":"ROC PDF","PDF preview library failed to load. Please refresh the page.":"La bibliothèque d'aperçu PDF n'a pas pu être chargée. Veuillez actualiser la page.","PDF Workspace":"Espace de travail PDF","Please upload a PDF or image file.":"Veuillez télécharger un fichier PDF ou image.","Portuguese (Portugues)":"Portugais (Portugais)","Preparing OCR engine...":"Préparation du moteur OCR...","Preparing...":"Préparation...","Privacy First":"La confidentialité d'abord","Processing":"Traitement en cours","Reading image...":"Lecture de l'image...","Ready to OCR. Choose the language that matches the document.":"Prêt pour l'OCR. Choisissez la langue qui correspond au document.","recognizing text":"reconnaître du texte","Related tools":"Outils associés","Remove":"Supprimer","Rendering":"Rendu","Renders supported PDF or image pages locally, then passes page images to the browser OCR engine.":"Restitue localement les pages PDF ou d'images prises en charge, puis transmet les images de page au moteur OCR du navigateur.","Requires JavaScript and WebAssembly":"Nécessite JavaScript et WebAssembly","Review":"Revoir","Review confidence, then copy or download text":"Vérifiez la confiance, puis copiez ou téléchargez le texte","Reviewed 2026. Disclaimer: verify with the original document before relying on extracted text. Direct local TXT downloads do not upload your files.":"Révisé en 2026. Avertissement : vérifiez avec le document original avant de vous fier au texte extrait. Les téléchargements TXT locaux directs ne téléchargent pas vos fichiers.","role":"rôle","Running OCR on image...":"Exécution de l'OCR sur l'image...","Select the correct language":"Sélectionnez la bonne langue","Select the document language":"Sélectionnez la langue du document","smooth":"lisse","Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.":"Divisez, fusionnez, réorganisez, faites pivoter, compressez, ajoutez des numéros de page. Les fichiers ne quittent jamais votre navigateur.","start":"commencer","Supported Formats":"Formats pris en charge","Supports PDF, PNG, JPG, WEBP, BMP, TIFF":"Prend en charge les formats PDF, PNG, JPG, WEBP, BMP, TIFF","Swahili":"Swahili","Tesseract.js OCR extracts text":"Tesseract.js OCR extrait le texte","Text export should be treated as extracted content, not an official transcript or certified accessibility file.":"L'exportation de texte doit être traitée comme un contenu extrait, et non comme une transcription officielle ou un fichier d'accessibilité certifié.","text/plain;charset=utf-8":"texte/plain;charset=utf-8","textarea":"zone de texte","Tips for Better Results":"Conseils pour de meilleurs résultats","Tools":"Outils","true":"vrai","Unlike many online OCR tools that upload files to remote servers, AfroTools OCR PDF processes the document locally in your browser using WebAssembly-powered Tesseract.js. Your sensitive documents and extracted text stay on your device unless you choose to copy or download them.":"Contrairement à de nombreux outils OCR en ligne qui téléchargent des fichiers sur des serveurs distants, AfroTools OCR PDF traite le document localement dans votre navigateur à l'aide de Tesseract.js basé sur WebAssembly. Vos documents sensibles et le texte extrait restent sur votre appareil, sauf si vous choisissez de les copier ou de les télécharger.","Upload a scanned PDF or image":"Téléchargez un PDF ou une image numérisée","Upload File":"Télécharger le fichier","Use high-resolution scans (300+ DPI)":"Utilisez des numérisations haute résolution (300+ DPI)","UtilitiesApplication":"UtilitairesApplication","Web":"Web","What is PDF OCR?":"Qu’est-ce que l’OCR PDF ?","Words":"Mots"}};</script>
+<script src="/assets/js/lib/fr-document-pdf-localizer.js?v=25fb500f" defer></script>
+<script src="/assets/js/pages/fr-document-pdf-export-localization.js?v=02c30fae" defer></script>
 <link rel="canonical" href="https://afrotools.com/fr/tools/ocr-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-ocr/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/ocr-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/ocr-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-ocr/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body class="fr-document-pdf-native top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<nav class="fr-crumb"><a href="/">Accueil</a><span>/</span><a href="/fr/all-tools/">Outils</a><span>/</span>OCR PDF</nav>
-<div class="fr-hero">
-<h1><em>OCR PDF</em></h1>
-<p>Convertissez des PDF scannés en texte recherchable par reconnaissance optique de caractères.</p>
+
+<div class="tool-hero">
+  <div class="tool-hero-inner">
+    <div class="breadcrumb">
+      <a href="/">AfroTools</a> / <a href="/tools/">Outils</a> / <span>ROC PDF</span>
+    </div>
+    <h1>OCR PDF</h1>
+    <p class="hero-sub">Extrayez le texte de PDF numérisés avec OCR français ou multilingue, relisez le résultat et exportez-le localement.</p>
+    <div class="hero-badges">
+      <span class="badge b-green">ROC locale</span>
+      <span class="badge b-green">Confiance des pages</span>
+      <span class="badge b-green">5 langues</span>
+      <span class="badge b-green">PDF et images</span>
+    </div>
+  </div>
 </div>
-<section class="fr-prep-panel" data-fr-prep data-tool-verification-panel aria-label="Préparation locale">
-  <h2>Préparer votre PDF localement</h2>
-  <p>Ajoutez votre fichier et le résultat attendu avant d'ouvrir l'outil complet. Les noms de fichiers servent seulement au brief local; aucun PDF n'est envoy? par ce panneau.</p>
-  <div class="fr-prep-fields">
-    <label>Pays ou contexte<input name="context" autocomplete="off" placeholder="Ex: Sénégal, client, projet"></label>
-    <label>Fichier ou données<input name="data" autocomplete="off" placeholder="Ex: contrat PDF, 250 lignes"></label>
-    <label>Résultat voulu<input name="goal" autocomplete="off" placeholder="Ex: signer, compresser, vérifier"></label>
-    <label>PDF local<input name="pdfFiles" type="file" accept="application/pdf" multiple data-fr-pdf-files></label>
+
+<main class="tool-main">
+  <div class="tool-main-inner">
+    <div>
+      <!-- Upload -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Télécharger le fichier</span>
+        </div>
+        <div class="card-body">
+          <input type="file" id="fileInput" accept=".pdf,image/*">
+          <label for="fileInput" class="file-input-label" id="dropZone">
+            Choisissez ou déposez un PDF numérisé ou une image de document
+            <span class="drop-hint">Prend en charge les formats PDF, PNG, JPG, WEBP, BMP, TIFF</span>
+          </label>
+          <div class="file-info" id="fileInfo">
+            <span class="file-name" id="fileName"></span>
+            <button type="button" class="file-remove" id="fileRemove">Supprimer</button>
+          </div>
+          <div class="status-line" id="fileStatus" role="status" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <!-- Settings -->
+      <div class="card">
+        <div class="card-head">
+          <span class="card-title">Paramètres ROC</span>
+        </div>
+        <div class="card-body">
+          <div class="field">
+            <label class="f-label-text" for="languageSelect">Langue du document</label>
+            <select class="f-input" id="languageSelect">
+              <option value="eng">Anglais</option>
+              <option value="fra">Français (Français)</option>
+              <option value="ara">arabe</option>
+              <option value="swa">Swahili</option>
+              <option value="por">Portugais (Portugais)</option>
+            </select>
+          </div>
+
+          <button type="button" class="calc-btn" id="extractBtn" disabled>Extraire le texte par OCR</button>
+
+          <div class="progress-section" id="progressSection">
+            <div class="progress-bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" aria-label="Progression de l'OCR">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <div class="progress-text" id="progressText" role="status" aria-live="polite">Préparation...</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="result-card" id="resultCard">
+        <div class="card-head" style="display:flex;align-items:center;justify-content:space-between;">
+          <span class="card-title">Texte extrait</span>
+          <span id="pageCount" style="font-size:0.7rem;color:#6B8CAE;font-weight:600;"></span>
+        </div>
+        <div class="page-tabs" id="pageTabs" role="tablist" aria-label="Pages de résultats OCR"></div>
+        <div class="card-body">
+          <div class="ocr-summary" id="ocrSummary" aria-label="Résumé des résultats de l'OCR">
+            <div><span>Pages</span><strong id="summaryPages">-</strong></div>
+            <div><span>Mots</span><strong id="summaryWords">-</strong></div>
+            <div><span>Confiance</span><strong id="summaryConfidence">-</strong></div>
+            <div><span>Langue</span><strong id="summaryLanguage">-</strong></div>
+          </div>
+          <div class="ocr-warning" id="ocrWarning" role="status" aria-live="polite"></div>
+          <div class="extracted-text" id="extractedText"></div>
+          <div class="action-row">
+            <button type="button" class="act-btn" id="copyBtn">Copier le texte visible</button>
+            <button type="button" class="act-btn" id="downloadBtn">Télécharger le TXT</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div class="sidebar">
+      <div class="info-card">
+        <div class="info-title">Fonctionnement</div>
+        <div class="info-text">
+          <ul>
+            <li>Téléchargez un PDF ou une image numérisée</li>
+            <li>Sélectionnez la langue du document</li>
+            <li>Chaque page PDF est rendue sous forme d'image</li>
+            <li>Tesseract.js OCR extrait le texte</li>
+            <li>Vérifiez la confiance, puis copiez ou téléchargez le texte</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Formats pris en charge</div>
+        <div class="info-text">
+          <ul>
+            <li><strong>PDF</strong> -- numérisé ou basé sur une image</li>
+            <li><strong>PNG, JPG, JPEG</strong> -- photos de documents</li>
+            <li><strong>WEBP, BMP, TIFF</strong> -- autres formats d'images</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <strong>Note:</strong> L'OCR sur des PDF volumineux peut prendre plusieurs minutes. Le moteur OCR et les données linguistiques se chargent à partir des ressources locales d'AfroTools. Le traitement s'effectue entièrement dans votre navigateur : vos fichiers et le texte extrait ne sont jamais téléchargés par cet outil.
+      </div>
+
+      <div class="info-card">
+        <div class="info-title">Conseils pour de meilleurs résultats</div>
+        <div class="info-text">
+          <ul>
+            <li>Utilisez des numérisations haute résolution (300+ DPI)</li>
+            <li>Assurez-vous que le texte n’est pas pivoté ou incliné</li>
+            <li>Sélectionnez la bonne langue</li>
+            <li>Les documents nets et contrastés fonctionnent mieux</li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </div>
-  <output class="fr-prep-output" data-fr-prep-output>Ajoutez un contexte, un fichier ou un résultat voulu pour préparer votre résumé.</output>
-  <div class="fr-privacy-grid"><div><strong>Fichier local</strong>Le panneau lit seulement le nom du PDF pour préparer votre checklist.</div><div><strong>Téléchargement</strong>L'outil source génère un nouveau PDF ? récupérer sur votre appareil.</div><div><strong>Confidentialit?</strong>Ne téléversez pas de document sensible sans vérifier l'outil ouvert.</div></div>
-  <div class="fr-prep-actions">
-    <a href="/fr/tools/pdf-ocr/">Ouvrir l'outil source</a>
-    <button type="button" data-fr-prep-copy>Copier le résumé</button>
-    <button type="button" data-fr-prep-download>Télécharger TXT</button>
-    <span class="fr-prep-status" data-fr-prep-status aria-live="polite"></span>
+</main>
+
+<!-- SEO Content -->
+<div class="seo-section">
+  <h2>Outil OCR PDF gratuit — Extraire le texte de documents numérisés</h2>
+  <p>
+    AfroTools OCR PDF est un outil gratuit basé sur un navigateur qui extrait le texte des PDF numérisés et des images de documents. Il utilise les ressources Tesseract.js locales pour reconnaître le texte dans votre navigateur, puis affiche le texte page par page, le nombre de mots et les signaux de confiance.
+  </p>
+  <h3>Qu’est-ce que l’OCR PDF ?</h3>
+  <p>
+    OCR (Optical Character Recognition) convertit les images de texte en texte lisible par machine. Lorsque vous numérisez un document, le PDF résultant contient souvent des images de page plutôt que du texte sélectionnable. Cet outil analyse ces images et extrait le texte que vous pouvez consulter, copier, rechercher dans la zone de résultats ou télécharger sous forme de fichier TXT.
+  </p>
+  <h3>Prise en charge multilingue</h3>
+  <p>
+    Conçu pour un public mondial, cet outil prend en charge cinq langues : anglais, français, arabe, swahili et portugais. Sélectionnez la langue correspondante avant l’extraction pour obtenir les résultats les plus précis.
+  </p>
+  <h3>La confidentialité d'abord</h3>
+  <p>
+    Contrairement à de nombreux outils OCR en ligne qui téléchargent des fichiers sur des serveurs distants, AfroTools OCR PDF traite le document localement dans votre navigateur à l'aide de Tesseract.js basé sur WebAssembly. Vos documents sensibles et le texte extrait restent sur votre appareil, sauf si vous choisissez de les copier ou de les télécharger.
+  </p>
+</div>
+
+
+
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-ocr-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Limites de l'OCR</span>
+        <h2 class="tool-verification-title" id="pdf-ocr-verification-title">Vérifiez le texte extrait avant de le copier ou de le télécharger</h2>
+        <p class="tool-verification-lead">L'OCR s'exécute dans ce navigateur avec les ressources Tesseract locales lorsqu'elles sont prises en charge. La précision dépend de la qualité de la numérisation, de la langue, de la mise en page, de la rotation, de l'écriture manuscrite et du contraste de l'image.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Flux de travail OCR local d'abord</span>
+        <p class="tool-verification-note">Révisé en 2026. Avertissement : vérifiez avec le document original avant de vous fier au texte extrait. Les téléchargements TXT locaux directs ne téléchargent pas vos fichiers.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Méthode</h3>
+        <ul class="tool-verification-list">
+          <li>Restitue localement les pages PDF ou d'images prises en charge, puis transmet les images de page au moteur OCR du navigateur.</li>
+          <li>La sélection de la langue guide la reconnaissance ; cela ne garantit pas une orthographe parfaite, une structure de tableau ou un ordre de lecture parfait.</li>
+          <li>L'exportation de texte doit être traitée comme un contenu extrait, et non comme une transcription officielle ou un fichier d'accessibilité certifié.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Avant de partager</h3>
+        <ul class="tool-verification-list">
+          <li>Comparez les noms, les dates, les chiffres, le libellé légal, les totaux et les lignes du tableau avec le document original.</li>
+          <li>Évitez de stocker du texte OCR brut dans des notes partagées lorsque les documents comprennent des pièces d'identité, des dossiers médicaux, des contrats, des factures ou des dossiers scolaires.</li>
+          <li>Pour le nettoyage de la page ou la préparation de l'exportation, continuez dans <a href="/fr/tools/espace-pdf/">Espace de travail PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
   </div>
 </section>
-<iframe src="/tools/pdf-ocr/" class="fr-tool-frame" title="OCR PDF" loading="lazy" allow="clipboard-write"></iframe>
-<script>
-(function(){
-  var panel=document.querySelector('[data-fr-prep]');
-  if(!panel)return;
-  var title="OCR PDF";
-  var output=panel.querySelector('[data-fr-prep-output]');
-  var status=panel.querySelector('[data-fr-prep-status]');
-  function value(name){var el=panel.querySelector('[name="'+name+'"]');return el&&el.value?el.value.trim():'';}
-  function files(){var el=panel.querySelector('[data-fr-pdf-files]');return el&&el.files&&el.files.length?Array.from(el.files).map(function(f){return f.name;}).join(', '):'aucun PDF selectionne';}
-  function summary(){return [title,'Contexte: '+(value('context')||'a preciser'),'Fichier/donnees: '+(value('data')||'a preciser'),'PDF local: '+files(),'Resultat voulu: '+(value('goal')||'a preciser'),'Checklist: verifier pages, qualite du rendu, nom du fichier de sortie et conservation locale avant partage.'].join('\n');}
-  function render(){output.textContent=summary();if(status)status.textContent='';}
-  panel.addEventListener('input',render);
-  panel.addEventListener('change',render);
-  render();
-  var copy=panel.querySelector('[data-fr-prep-copy]');
-  if(copy)copy.addEventListener('click',function(){var text=summary();if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(text).then(function(){if(status)status.textContent='Resume copie.';}).catch(function(){if(status)status.textContent=text;});}else if(status){status.textContent=text;}});
-  var download=panel.querySelector('[data-fr-prep-download]');
-  if(download)download.addEventListener('click',function(){var blob=new Blob([summary()],{type:'text/plain;charset=utf-8'});var a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download="checklist-ocr-pdf.txt";a.click();URL.revokeObjectURL(a.href);if(status)status.textContent='TXT telecharge.';});
-})();
-</script>
-<section class="fr-seo">
-<h2>OCR PDF</h2>
-<p>L’outil OCR PDF d’AfroTools transforme vos documents scannés en PDF recherchables. Le texte des images devient sélectionnable.</p>
-<p>Utile pour numériser des documents administratifs ou des archives. Prend en charge le français, l’anglais et l’arabe.</p>
-<h3 style="font-size:1.15rem;font-weight:700;margin:28px 0 10px;color:var(--color-text)">Questions fréquentes</h3>
-<details><summary>Quelles langues sont prises en charge ?</summary><p>Français, anglais, arabe, portugais et d’autres langues africaines.</p></details>
-<details><summary>Le résultat est-il modifiable ?</summary><p>Le texte reconnu devient sélectionnable et recherchable dans le PDF.</p></details>
-<details><summary>Quelle est la précision de l’OCR ?</summary><p>Les documents clairs donnent d’excellents résultats, généralement supérieurs à 95%.</p></details>
+<afro-related-tools category="document-pdf" current="pdf-ocr" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Outils associés">
+<h2 class="seo-links-title">Outils associés</h2>
+<ul class="seo-links-list"><li><a href="/fr/tools/generateur-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">Générateur de CV</a></li><li><a href="/fr/tools/generateur-factures/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Générateur de facture</a></li><li><a href="/fr/tools/editeur-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Éditeur PDF</a></li><li><a href="/fr/tools/fusionner-diviser-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Fusionner et diviser des PDF</a></li><li><a href="/fr/tools/espace-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Espace de travail PDF</a></li><li><a href="/fr/tools/compresser-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">Compresseur PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-newsletter-cta></afro-newsletter-cta>
+
+<section class="fr-parity-proof" aria-labelledby="fr-parity-pdf-ocr">
+  <div class="fr-parity-proof__inner">
+    <div>
+      <span class="fr-parity-proof__badge">Traitement local et privé</span>
+      <h2 id="fr-parity-pdf-ocr">Vérifier le résultat avant de le partager</h2>
+      <p>Le traitement principal reste local dans ce navigateur. Aucun fichier source n’est envoyé par ce flux.</p>
+      <p>Conservez le fichier original et rouvrez chaque export dans une autre application avant de le partager ou de le déposer.</p>
+    </div>
+    <div>
+      <h3>Contrat de sortie</h3>
+      <ul>
+        <li>Formats prévus : TXT</li>
+        <li>Source fonctionnelle : <a href="/tools/pdf-ocr/" hreflang="en">outil anglais accepté</a></li>
+        <li>Revue de parité : 28 juillet 2026</li>
+      </ul>
+    </div>
+  </div>
 </section>
-<afro-related-tools category="document-pdf" current="pdf-ocr"></afro-related-tools>
 <afro-footer></afro-footer>
-<script src="/assets/js/lazy-analytics.js?v=630f8a7d" defer></script>
+
+<!-- Hidden canvas for rendering -->
+<canvas id="renderCanvas" style="display:none;"></canvas>
+
+<script type="module">
+const pdfjsLib = window.pdfjsLib;
+if (!pdfjsLib) throw new Error('PDF preview library failed to load. Please refresh the page.');
+pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
+
+// DOM refs
+const fileInput = document.getElementById('fileInput');
+const dropZone = document.getElementById('dropZone');
+const fileInfo = document.getElementById('fileInfo');
+const fileName = document.getElementById('fileName');
+const fileRemove = document.getElementById('fileRemove');
+const fileStatus = document.getElementById('fileStatus');
+const languageSelect = document.getElementById('languageSelect');
+const extractBtn = document.getElementById('extractBtn');
+const progressSection = document.getElementById('progressSection');
+const progressBar = progressSection.querySelector('.progress-bar');
+const progressFill = document.getElementById('progressFill');
+const progressText = document.getElementById('progressText');
+const resultCard = document.getElementById('resultCard');
+const pageTabs = document.getElementById('pageTabs');
+const extractedTextDiv = document.getElementById('extractedText');
+const pageCount = document.getElementById('pageCount');
+const summaryPages = document.getElementById('summaryPages');
+const summaryWords = document.getElementById('summaryWords');
+const summaryConfidence = document.getElementById('summaryConfidence');
+const summaryLanguage = document.getElementById('summaryLanguage');
+const ocrWarning = document.getElementById('ocrWarning');
+const copyBtn = document.getElementById('copyBtn');
+const downloadBtn = document.getElementById('downloadBtn');
+const renderCanvas = document.getElementById('renderCanvas');
+
+let currentFile = null;
+let allPagesText = []; // array of { page, text, confidence }
+let fullText = '';
+
+function setFileStatus(message, isError) {
+  fileStatus.textContent = message || '';
+  fileStatus.classList.toggle('error', !!isError);
+}
+
+function resetResults() {
+  resultCard.classList.remove('on');
+  pageTabs.innerHTML = '';
+  pageCount.textContent = '';
+  extractedTextDiv.textContent = '';
+  ocrWarning.classList.remove('on');
+  ocrWarning.textContent = '';
+}
+
+function getLanguageLabel() {
+  return languageSelect.options[languageSelect.selectedIndex]?.textContent || languageSelect.value;
+}
+
+function normalizeConfidence(value) {
+  const number = Number(value);
+  return Number.isFinite(number) ? Math.max(0, Math.min(100, number)) : null;
+}
+
+function getWordCount(text) {
+  const words = String(text || '').replace(/--- Page \d+ ---/g, '').trim().match(/\S+/g);
+  return words ? words.length : 0;
+}
+
+function getAverageConfidence() {
+  const values = allPagesText.map(page => page.confidence).filter(value => Number.isFinite(value));
+  if (!values.length) return null;
+  return values.reduce((sum, value) => sum + value, 0) / values.length;
+}
+
+function updateResultSummary() {
+  const wordCount = getWordCount(fullText);
+  const averageConfidence = getAverageConfidence();
+  summaryPages.textContent = String(allPagesText.length || 0);
+  summaryWords.textContent = wordCount.toLocaleString();
+  summaryConfidence.textContent = averageConfidence == null ? 'Review' : Math.round(averageConfidence) + '%';
+  summaryLanguage.textContent = getLanguageLabel().replace(/\s*\(.+\)\s*$/, '');
+
+  if (!wordCount) {
+    ocrWarning.textContent = 'No usable text was detected. Try a sharper scan, higher contrast, or a different language.';
+    ocrWarning.classList.add('on');
+  } else if (averageConfidence != null && averageConfidence < 70) {
+    ocrWarning.textContent = 'Low-confidence OCR result. Review names, dates, numbers, and legal wording against the original file.';
+    ocrWarning.classList.add('on');
+  } else {
+    ocrWarning.textContent = 'OCR can still miss tables, handwriting, or rotated text. Review important details before sharing.';
+    ocrWarning.classList.add('on');
+  }
+}
+
+// File handling
+function handleFile(file) {
+  if (!file) return;
+  const maxSize = 50 * 1024 * 1024; // 50MB
+  if (file.size > maxSize) {
+    setFileStatus('File too large. Please use files under 50 MB.', true);
+    fileInput.value = '';
+    return;
+  }
+  const isPdf = file.type === 'application/pdf' || file.name.toLowerCase().endsWith('.pdf');
+  const isImage = file.type.startsWith('image/');
+  if (!isPdf && !isImage) {
+    setFileStatus('Please upload a PDF or image file.', true);
+    fileInput.value = '';
+    return;
+  }
+  currentFile = file;
+  fileName.textContent = file.name + ' (' + formatSize(file.size) + ')';
+  fileInfo.classList.add('on');
+  extractBtn.disabled = false;
+  setFileStatus('Ready to OCR. Choose the language that matches the document.', false);
+  resetResults();
+}
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(1) + ' KB';
+  return (bytes / (1024 * 1024)).toFixed(1) + ' MB';
+}
+
+fileInput.addEventListener('change', (e) => {
+  handleFile(e.target.files[0]);
+});
+
+dropZone.addEventListener('dragover', (e) => {
+  e.preventDefault();
+  dropZone.classList.add('dragover');
+});
+dropZone.addEventListener('dragleave', () => {
+  dropZone.classList.remove('dragover');
+});
+dropZone.addEventListener('drop', (e) => {
+  e.preventDefault();
+  dropZone.classList.remove('dragover');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    handleFile(file);
+    // Update the file input
+    const dt = new DataTransfer();
+    dt.items.add(file);
+    fileInput.files = dt.files;
+  }
+});
+
+fileRemove.addEventListener('click', () => {
+  currentFile = null;
+  fileInput.value = '';
+  fileInfo.classList.remove('on');
+  extractBtn.disabled = true;
+  setFileStatus('', false);
+  resetResults();
+  progressSection.classList.remove('on');
+});
+
+// Progress helpers
+function showProgress(pct, text) {
+  const safePct = Math.max(0, Math.min(100, Math.round(pct)));
+  progressSection.classList.add('on');
+  progressFill.style.width = safePct + '%';
+  progressBar.setAttribute('aria-valuenow', String(safePct));
+  progressText.textContent = text;
+}
+function hideProgress() {
+  progressSection.classList.remove('on');
+  progressFill.style.width = '0%';
+  progressBar.setAttribute('aria-valuenow', '0');
+}
+
+function withTimeout(promise, timeoutMs, message) {
+  let timer;
+  return Promise.race([
+    promise,
+    new Promise((resolve, reject) => {
+      timer = setTimeout(() => reject(new Error(message)), timeoutMs);
+    })
+  ]).finally(() => clearTimeout(timer));
+}
+
+// Render a single PDF page to canvas and return data URL
+async function renderPdfPage(pdfDoc, pageNum) {
+  const page = await pdfDoc.getPage(pageNum);
+  // Scale 1.5 balances speed vs accuracy (2.0 can be very slow on large pages)
+  var scale = 1.5;
+  var viewport = page.getViewport({ scale });
+  // Cap canvas size to prevent memory issues on large pages
+  if (viewport.width > 3000 || viewport.height > 3000) {
+    scale = Math.min(3000 / (viewport.width / scale), 3000 / (viewport.height / scale));
+    viewport = page.getViewport({ scale });
+  }
+  renderCanvas.width = viewport.width;
+  renderCanvas.height = viewport.height;
+  const ctx = renderCanvas.getContext('2d');
+  ctx.clearRect(0, 0, renderCanvas.width, renderCanvas.height);
+  await page.render({ canvasContext: ctx, viewport }).promise;
+  return renderCanvas.toDataURL('image/png');
+}
+
+// Main OCR extraction
+extractBtn.addEventListener('click', async () => {
+  if (!currentFile) return;
+  extractBtn.disabled = true;
+  resetResults();
+  setFileStatus('OCR is running locally in this browser. Keep this tab open.', false);
+  allPagesText = [];
+  fullText = '';
+
+  const language = languageSelect.value;
+  const isPdf = currentFile.type === 'application/pdf' || currentFile.name.toLowerCase().endsWith('.pdf');
+  let worker = null;
+
+  try {
+    showProgress(3, 'Initializing OCR engine...');
+
+    // Create Tesseract worker with detailed progress
+    const workerPromise = Tesseract.createWorker(language, 1, {
+      workerPath: '/assets/vendor/tesseract/worker.min.js?v=65249fe4',
+      corePath: '/assets/vendor/tesseract/core',
+      langPath: '/assets/vendor/tesseract/lang',
+      workerBlobURL: false,
+      gzip: true,
+      logger: (m) => {
+        if (m.status === 'loading tesseract core') {
+          showProgress(5, 'Loading OCR core...');
+        } else if (m.status === 'initializing tesseract') {
+          showProgress(6, 'Initializing OCR...');
+        } else if (m.status === 'loading language traineddata') {
+          var pct = typeof m.progress === 'number' ? Math.round(m.progress * 100) : 0;
+          showProgress(6 + pct * 0.04, 'Loading local language data... ' + pct + '%');
+        } else if (m.status === 'loaded language traineddata') {
+          showProgress(10, 'Language data loaded!');
+        } else if (m.status === 'initializing api') {
+          showProgress(11, 'Preparing OCR engine...');
+        } else if (m.status === 'recognizing text' && typeof m.progress === 'number') {
+          // per-page progress handled in the loop
+        }
+      }
+    });
+    try {
+      worker = await withTimeout(workerPromise, 30000, 'OCR engine initialization timed out. Check your connection to the local assets, then retry.');
+    } catch (workerError) {
+      workerPromise.then((lateWorker) => lateWorker.terminate()).catch(() => {});
+      throw workerError;
+    }
+
+    if (isPdf) {
+      // Load PDF
+      showProgress(10, 'Loading PDF...');
+      const arrayBuffer = await currentFile.arrayBuffer();
+      const pdfDoc = await pdfjsLib.getDocument({ data: arrayBuffer }).promise;
+      const totalPages = pdfDoc.numPages;
+
+      showProgress(15, 'Processing ' + totalPages + ' page' + (totalPages > 1 ? 's' : '') + '...');
+
+      for (let i = 1; i <= totalPages; i++) {
+        const pageLabel = 'Page ' + i + ' of ' + totalPages;
+        const basePct = 15 + ((i - 1) / totalPages) * 80;
+
+        showProgress(basePct, 'Rendering ' + pageLabel + '...');
+        const imgData = await renderPdfPage(pdfDoc, i);
+
+        showProgress(basePct + 20 / totalPages, 'OCR on ' + pageLabel + '...');
+        const result = await withTimeout(worker.recognize(imgData), 45000, 'OCR recognition timed out on page ' + i + '. Reconnect to local assets or try a smaller, clearer file.');
+        const text = result.data.text.trim();
+        const confidence = normalizeConfidence(result.data.confidence);
+
+        allPagesText.push({ page: i, text: text || '(No text detected on this page)', confidence });
+
+        showProgress(15 + (i / totalPages) * 80, 'Completed ' + pageLabel);
+      }
+    } else {
+      // Image file
+      showProgress(20, 'Reading image...');
+      const dataUrl = await readFileAsDataURL(currentFile);
+
+      showProgress(40, 'Running OCR on image...');
+      const result = await withTimeout(worker.recognize(dataUrl), 45000, 'OCR recognition timed out. Reconnect to local assets or try a smaller, clearer image.');
+      const text = result.data.text.trim();
+      const confidence = normalizeConfidence(result.data.confidence);
+      allPagesText.push({ page: 1, text: text || '(No text detected in this image)', confidence });
+    }
+
+    await worker.terminate();
+    worker = null;
+
+    // Build full text
+    if (allPagesText.length === 1) {
+      fullText = allPagesText[0].text;
+    } else {
+      fullText = allPagesText.map(p => '--- Page ' + p.page + ' ---\n' + p.text).join('\n\n');
+    }
+
+    showProgress(100, 'Done!');
+
+    setTimeout(() => {
+      hideProgress();
+      displayResults();
+      setFileStatus('OCR complete. Review the confidence and compare important details with the original.', false);
+      extractBtn.disabled = false;
+    }, 600);
+
+  } catch (err) {
+    console.error('OCR Error:', err);
+    const isOffline = navigator.onLine === false;
+    const errorMessage = isOffline
+      ? 'OCR could not start offline because a local runtime asset was unavailable.'
+      : (err.message || 'OCR processing failed');
+    showProgress(0, 'Error: ' + errorMessage);
+    progressFill.style.width = '0%';
+    progressBar.setAttribute('aria-valuenow', '0');
+    setFileStatus(
+      isOffline
+        ? 'OCR could not start offline. Reconnect, reload the local OCR assets, and try again; your file was not uploaded.'
+        : 'OCR failed. Try a smaller file, a clearer scan, or refresh and try again.',
+      true
+    );
+    extractBtn.disabled = false;
+    if (worker) {
+      try { await worker.terminate(); } catch (terminateErr) {}
+    }
+  }
+});
+
+function readFileAsDataURL(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+// Display results with page tabs
+function displayResults() {
+  resultCard.classList.add('on');
+  pageTabs.innerHTML = '';
+  updateResultSummary();
+
+  if (allPagesText.length > 1) {
+    // "All" tab
+    const allTab = document.createElement('button');
+    allTab.className = 'page-tab active';
+    allTab.type = 'button';
+    allTab.setAttribute('role', 'tab');
+    allTab.setAttribute('aria-selected', 'true');
+    allTab.textContent = 'All Pages';
+    allTab.addEventListener('click', () => {
+      setActiveTab(allTab);
+      extractedTextDiv.textContent = fullText;
+    });
+    pageTabs.appendChild(allTab);
+
+    // Individual page tabs
+    allPagesText.forEach((p) => {
+      const tab = document.createElement('button');
+      tab.className = 'page-tab';
+      tab.type = 'button';
+      tab.setAttribute('role', 'tab');
+      tab.setAttribute('aria-selected', 'false');
+      const confidence = Number.isFinite(p.confidence) ? ' · ' + Math.round(p.confidence) + '%' : '';
+      tab.textContent = 'Page ' + p.page + confidence;
+      tab.addEventListener('click', () => {
+        setActiveTab(tab);
+        extractedTextDiv.textContent = p.text;
+      });
+      pageTabs.appendChild(tab);
+    });
+
+    pageCount.textContent = allPagesText.length + ' pages processed';
+    pageTabs.style.display = 'flex';
+  } else {
+    pageCount.textContent = '1 page processed';
+    pageTabs.style.display = 'none';
+  }
+
+  extractedTextDiv.textContent = fullText;
+
+  // Scroll to results
+  resultCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function setActiveTab(activeTab) {
+  pageTabs.querySelectorAll('.page-tab').forEach((tab) => {
+    tab.classList.remove('active');
+    tab.setAttribute('aria-selected', 'false');
+  });
+  activeTab.classList.add('active');
+  activeTab.setAttribute('aria-selected', 'true');
+}
+
+// Copy
+copyBtn.addEventListener('click', () => {
+  const textToCopy = extractedTextDiv.textContent;
+  if (!textToCopy) return;
+  navigator.clipboard.writeText(textToCopy).then(() => {
+    copyBtn.textContent = 'Copied';
+    setTimeout(() => { copyBtn.textContent = 'Copy visible text'; }, 2000);
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = textToCopy;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    copyBtn.textContent = 'Copied';
+    setTimeout(() => { copyBtn.textContent = 'Copy visible text'; }, 2000);
+  });
+});
+
+// Download as .txt
+downloadBtn.addEventListener('click', () => {
+  if (!fullText) return;
+  const blob = new Blob([fullText], { type: 'text/plain;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement('a');
+  link.href = url;
+  const baseName = currentFile ? currentFile.name.replace(/\.[^.]+$/, '') : 'ocr-result';
+  link.download = baseName + '_ocr.txt';
+  link.click();
+  setTimeout(() => URL.revokeObjectURL(url), 5000);
+});
+</script> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script> <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script> <script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script> <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script> <script src="/assets/js/pages/document-pdf-tool-focus.js?v=1def0859" defer></script>
 </body>
 </html>

@@ -1,0 +1,231 @@
+{
+  "schemaVersion": 1,
+  "frozenAt": "2026-07-29",
+  "englishOwner": "assets/js/pages/insurance-assumption-workflow.js",
+  "datasetFloor": "2026-03-29",
+  "reviewCadenceDays": 60,
+  "policyBoundary": {
+    "inputs": "All monetary values, rates, dates, policy windows and warning signals are user-entered.",
+    "outputs": "Arithmetic planning scenarios only.",
+    "prohibitedClaims": [
+      "binding quote",
+      "policy issuance",
+      "coverage decision",
+      "eligibility decision",
+      "insurer availability",
+      "claim validity",
+      "fraud finding",
+      "official advice"
+    ]
+  },
+  "modes": {
+    "quote": "subtotal = exposure * rate / 100 + fixed; total = subtotal * (1 + contingency / 100)",
+    "compare": "known cost = entered annual premium + entered excess scenario; limits remain separate",
+    "need": "gross need = annual needs * years + debts + education + other; gap = max(0, gross need - available)",
+    "contribution": "employee = basis * employee rate / 100 * periods; employer = basis * employer rate / 100 * periods",
+    "claim": "remaining days = entered policy window - whole days between incident and planned notification",
+    "warning": "count selected review signals without making a fraud finding"
+  },
+  "oracleFixtures": {
+    "quote": {
+      "input": { "exposure": 10000, "rate": 2, "fixed": 50, "contingency": 10 },
+      "expected": { "subtotal": 250, "total": 275 }
+    },
+    "compare": {
+      "input": { "aPremium": 100, "aExcess": 20, "aLimit": 1000, "bPremium": 90, "bExcess": 50, "bLimit": 1200 },
+      "expected": { "aKnownCost": 120, "bKnownCost": 140, "lower": "a" }
+    },
+    "need": {
+      "input": { "annual": 1000, "years": 5, "debts": 500, "education": 250, "other": 100, "available": 850 },
+      "expected": { "grossNeed": 5850, "gap": 5000 }
+    },
+    "contribution": {
+      "input": { "base": 1000, "employee": 2, "employer": 3, "months": 12 },
+      "expected": { "employeeTotal": 240, "employerTotal": 360, "combined": 600 }
+    },
+    "claim": {
+      "input": { "incident": "2026-07-01", "planned": "2026-07-06", "windowDays": 14 },
+      "expected": { "elapsed": 5, "remaining": 9 }
+    },
+    "warning": {
+      "input": { "checked": 2 },
+      "expected": { "checked": 2 }
+    }
+  },
+  "apps": [
+    {
+      "id": "car-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/car-insurance/",
+      "frenchRoute": "/fr/tools/assurance-auto/",
+      "title": "Planificateur d’assurance auto",
+      "description": "Préparez un scénario de devis auto avec la valeur exposée, votre taux, vos frais et votre marge de prudence, sans prime en direct.",
+      "exposureLabel": "Valeur du véhicule ou montant à assurer",
+      "rateLabel": "Taux annuel fourni par votre devis (%)",
+      "fixedLabel": "Frais fixes indiqués dans votre devis",
+      "riskPrompt": "Vérifiez l’usage déclaré, les conducteurs autorisés, la franchise, la valeur assurée, les exclusions et la zone de circulation."
+    },
+    {
+      "id": "health-insurance-compare",
+      "mode": "compare",
+      "englishRoute": "/tools/health-insurance-compare/",
+      "frenchRoute": "/fr/tools/comparateur-assurance-sante/",
+      "title": "Comparateur d’assurance santé",
+      "description": "Comparez deux formules à partir des primes, franchises et plafonds que vous avez reçus, sans classement d’assureurs.",
+      "riskPrompt": "Comparez aussi le réseau de soins, les délais de carence, les exclusions, les autorisations préalables et le reste à charge."
+    },
+    {
+      "id": "life-insurance-calc",
+      "mode": "need",
+      "englishRoute": "/tools/life-insurance-calc/",
+      "frenchRoute": "/fr/tools/assurance-vie/",
+      "title": "Planificateur de besoin d’assurance vie",
+      "description": "Estimez un besoin de protection du foyer à partir de vos charges, dettes et ressources, sans recommandation de contrat.",
+      "riskPrompt": "Revoyez les bénéficiaires, les dettes, les besoins d’éducation, la durée de protection et les exclusions avec un professionnel autorisé."
+    },
+    {
+      "id": "funeral-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/funeral-insurance/",
+      "frenchRoute": "/fr/tools/assurance-obseques/",
+      "title": "Planificateur d’assurance obsèques",
+      "description": "Construisez un scénario de couverture obsèques avec vos propres montants et taux, sans devis ni promesse de règlement.",
+      "exposureLabel": "Budget obsèques ou capital souhaité",
+      "rateLabel": "Taux annuel fourni par le produit (%)",
+      "fixedLabel": "Frais fixes annoncés",
+      "riskPrompt": "Vérifiez le délai de carence, les exclusions, l’âge limite, les bénéficiaires, les pièces exigées et le mode de règlement."
+    },
+    {
+      "id": "motor-third-party",
+      "mode": "quote",
+      "englishRoute": "/tools/motor-third-party/",
+      "frenchRoute": "/fr/tools/prime-responsabilite-auto/",
+      "title": "Scénario de responsabilité civile auto",
+      "description": "Appliquez uniquement un tarif ou taux que vous avez vérifié à votre véhicule, sans décider si la garantie est obligatoire.",
+      "exposureLabel": "Valeur ou base tarifaire vérifiée",
+      "rateLabel": "Taux réglementaire ou devis saisi (%)",
+      "fixedLabel": "Tarif fixe ou frais saisis",
+      "riskPrompt": "Confirmez l’obligation, le tarif, les plafonds, le certificat et les sanctions auprès du régulateur ou de l’autorité compétente."
+    },
+    {
+      "id": "business-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/business-insurance/",
+      "frenchRoute": "/fr/tools/assurance-entreprise/",
+      "title": "Planificateur d’assurance entreprise",
+      "description": "Modelez une exposition d’entreprise à partir d’un taux et de frais saisis, sans décider des garanties adaptées.",
+      "exposureLabel": "Actifs, stock, revenus ou exposition déclarée",
+      "rateLabel": "Taux annuel fourni par le devis (%)",
+      "fixedLabel": "Frais fixes du devis",
+      "riskPrompt": "Inventoriez les locaux, le stock, l’interruption d’activité, la responsabilité, les salariés, les véhicules et les limites par sinistre."
+    },
+    {
+      "id": "travel-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/travel-insurance/",
+      "frenchRoute": "/fr/tools/assurance-voyage/",
+      "title": "Planificateur d’assurance voyage",
+      "description": "Préparez un scénario de coût de couverture voyage avec vos propres données, sans confirmer l’éligibilité ni la validité du contrat.",
+      "exposureLabel": "Coût du voyage ou capital à couvrir",
+      "rateLabel": "Taux du devis voyage (%)",
+      "fixedLabel": "Frais fixes du devis",
+      "riskPrompt": "Vérifiez destination, durée, âge, conditions préexistantes, évacuation médicale, annulation, bagages et activités exclues."
+    },
+    {
+      "id": "workers-comp",
+      "mode": "contribution",
+      "englishRoute": "/tools/workers-comp/",
+      "frenchRoute": "/fr/tools/indemnisation-accident-travail/",
+      "title": "Feuille de cotisation accidents du travail",
+      "description": "Appliquez des taux salarié et employeur que vous avez vérifiés à une masse salariale saisie, sans inventer de contribution.",
+      "riskPrompt": "Confirmez la classification de risque, l’assiette, les plafonds, la part employeur et les obligations de déclaration auprès de l’organisme compétent."
+    },
+    {
+      "id": "health-contribution",
+      "mode": "contribution",
+      "englishRoute": "/tools/health-contribution/",
+      "frenchRoute": "/fr/tools/contribution-sante/",
+      "title": "Feuille de contribution santé",
+      "description": "Calculez une contribution à partir d’une assiette et de parts salarié/employeur explicitement saisies, sans taux prérempli.",
+      "riskPrompt": "N’inventez jamais une part employeur : saisissez zéro si aucune part publiée ne vous a été confirmée, puis vérifiez assiette, minimum et plafond."
+    },
+    {
+      "id": "claim-tracker",
+      "mode": "claim",
+      "englishRoute": "/tools/claim-tracker/",
+      "frenchRoute": "/fr/tools/suivi-sinistre-assurance/",
+      "title": "Planificateur de déclaration de sinistre",
+      "description": "Comparez la date du sinistre et votre date de déclaration prévue au délai indiqué dans votre contrat, sans décider de la recevabilité.",
+      "riskPrompt": "Préservez les preuves, contactez rapidement l’assureur et confirmez le canal, les pièces, les délais et les mesures d’urgence prévus au contrat."
+    },
+    {
+      "id": "crop-insurance-calc",
+      "mode": "quote",
+      "englishRoute": "/tools/crop-insurance-calc/",
+      "frenchRoute": "/fr/tools/assurance-recolte/",
+      "title": "Planificateur d’assurance récolte",
+      "description": "Modelez une exposition agricole et un taux saisi sans prévoir le rendement, l’éligibilité au produit ni l’indemnisation.",
+      "exposureLabel": "Valeur de production ou capital déclaré",
+      "rateLabel": "Taux du devis agricole (%)",
+      "fixedLabel": "Frais fixes du produit",
+      "riskPrompt": "Vérifiez la culture, la zone, le péril couvert, l’indice ou constat, la franchise, les dates de souscription et les preuves de perte."
+    },
+    {
+      "id": "fire-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/fire-insurance/",
+      "frenchRoute": "/fr/tools/assurance-incendie/",
+      "title": "Planificateur d’assurance incendie",
+      "description": "Préparez un scénario de couverture incendie à partir d’une valeur et d’un taux saisis, sans évaluation immobilière ni devis.",
+      "exposureLabel": "Valeur déclarée du bâtiment, matériel ou stock",
+      "rateLabel": "Taux annuel fourni par le devis (%)",
+      "fixedLabel": "Frais fixes du devis",
+      "riskPrompt": "Vérifiez la valeur de reconstruction, les stocks, l’électricité, les protections incendie, les exclusions, la franchise et la règle proportionnelle."
+    },
+    {
+      "id": "insurance-fraud-checker",
+      "mode": "warning",
+      "englishRoute": "/tools/insurance-fraud-checker/",
+      "frenchRoute": "/fr/tools/signaux-fraude-assurance/",
+      "title": "Checklist de signaux d’alerte assurance",
+      "description": "Consignez des incohérences à vérifier sans accuser une personne ni conclure à une fraude.",
+      "riskPrompt": "Conservez les documents, vérifiez la licence et le numéro de contrat par un canal indépendant, puis signalez seulement des faits à l’organisme compétent."
+    },
+    {
+      "id": "marine-insurance",
+      "mode": "quote",
+      "englishRoute": "/tools/marine-insurance/",
+      "frenchRoute": "/fr/tools/assurance-maritime-cargo/",
+      "title": "Planificateur d’assurance transport maritime",
+      "description": "Modelez une exposition cargo à partir de la valeur, du taux et des frais saisis, sans garantie de couverture ni de règlement.",
+      "exposureLabel": "Valeur CIF ou exposition cargo déclarée",
+      "rateLabel": "Taux du devis maritime (%)",
+      "fixedLabel": "Frais fixes du devis",
+      "riskPrompt": "Vérifiez marchandises, emballage, trajet, Incoterm, risques de guerre, avarie, franchise, certificat et procédure de constat."
+    },
+    {
+      "id": "microinsurance",
+      "mode": "quote",
+      "englishRoute": "/tools/microinsurance/",
+      "frenchRoute": "/fr/tools/prime-microassurance/",
+      "title": "Planificateur de microassurance",
+      "description": "Comparez un capital, un taux et des frais que vous avez reçus, sans inventer de produit, d’assureur ou d’éligibilité.",
+      "exposureLabel": "Capital ou exposition déclarée",
+      "rateLabel": "Taux du produit communiqué (%)",
+      "fixedLabel": "Frais fixes communiqués",
+      "riskPrompt": "Vérifiez l’assureur, le canal de paiement, la preuve de couverture, la période, les exclusions, les bénéficiaires et la procédure de réclamation."
+    },
+    {
+      "id": "professional-indemnity",
+      "mode": "quote",
+      "englishRoute": "/tools/professional-indemnity/",
+      "frenchRoute": "/fr/tools/assurance-responsabilite-professionnelle/",
+      "title": "Planificateur de responsabilité professionnelle",
+      "description": "Modelez une exposition professionnelle avec un taux et des frais saisis, sans décider du plafond adéquat ni présenter un devis.",
+      "exposureLabel": "Chiffre d’affaires, honoraires ou plafond envisagé",
+      "rateLabel": "Taux annuel fourni par le devis (%)",
+      "fixedLabel": "Frais fixes du devis",
+      "riskPrompt": "Vérifiez l’activité déclarée, les territoires, la rétroactivité, les sous-traitants, les exclusions, la base réclamation et le plafond agrégé."
+    }
+  ]
+}

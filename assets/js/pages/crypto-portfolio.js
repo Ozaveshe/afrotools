@@ -60,6 +60,11 @@
   var market = null;
   var calculation = null;
   var importReturnFocus = null;
+  var fallbackAssets = [
+    { id: 'bitcoin', name: 'Bitcoin', symbol: 'BTC' },
+    { id: 'ethereum', name: 'Ethereum', symbol: 'ETH' },
+    { id: 'tether', name: 'Tether', symbol: 'USDT' }
+  ];
   var els = {};
   root.querySelectorAll('[data-el]').forEach(function (el) { els[el.dataset.el] = el; });
 
@@ -99,7 +104,9 @@
     els.asset.replaceChildren();
     var placeholder = document.createElement('option');
     placeholder.value = ''; placeholder.textContent = words.choose; els.asset.appendChild(placeholder);
-    marketAssets().forEach(function (asset) {
+    var assets = marketAssets();
+    if (!assets.length) assets = fallbackAssets;
+    assets.forEach(function (asset) {
       var option = document.createElement('option');
       option.value = asset.id; option.textContent = asset.name + ' (' + asset.symbol + ')';
       els.asset.appendChild(option);
@@ -205,6 +212,15 @@
 
   els.form.addEventListener('submit', function (event) {
     event.preventDefault();
+    if (!market || !market.ok) {
+      var selected = els.asset.options[els.asset.selectedIndex];
+      status(
+        words.unavailable + ' ' + portfolio.currency + ' · '
+          + (selected ? selected.textContent : words.choose) + '.',
+        'error'
+      );
+      return;
+    }
     var asset = market && market.ok ? market.rows[els.asset.value] : null;
     var lot = engine.normalizeLot({
       assetId: asset && asset.id, symbol: asset && asset.symbol, name: asset && asset.name,
