@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 581 |
-| **Accepted** | **5** |
+| **Accepted** | **16** |
 
 ## Category reconciliation
 
@@ -45,7 +45,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | HR & Payroll | 6 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Insurance | 16 | 0 | 14 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
-| Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
 | Mortgage & Property | 66 | 0 | 55 | 0 | 0 | 0 | 0 | 0 | 11 | 0 |
 | Personal Finance | 5 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
@@ -683,14 +683,14 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Nigeria CAC Registration Cost | Mortgage & Property | `/tools/cac-cost` | Localized shell candidate | `/sw/zana/gharama-za-cac-nigeria` | No |
 | SA CIPC Registration Cost | Mortgage & Property | `/tools/cipc-cost` | Localized shell candidate | `/sw/zana/gharama-za-cipc-afrika-kusini` | No |
 | Staff Cost Planner | Finance, Tax & Market Data | `/tools/staff-cost` | Missing | None | No |
-| Swahili Phrasebook & Optional Translator | Language & Translation | `/tools/swahili-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiswahili` | No |
-| Yoruba Phrasebook & Optional Translator | Language & Translation | `/tools/yoruba-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiyoruba` | No |
-| Hausa Draft Phrasebook & Optional Translator | Language & Translation | `/tools/hausa-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kihausa` | No |
-| Igbo Draft Phrasebook & Optional Translator | Language & Translation | `/tools/igbo-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiigbo` | No |
-| Amharic Draft Phrasebook & Optional Translator | Language & Translation | `/tools/amharic-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiamhari` | No |
-| isiZulu Draft Phrasebook & Optional Translator | Language & Translation | `/tools/zulu-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kizulu` | No |
-| Arabic-Indic Digit Shape Converter | Language & Translation | `/tools/arabic-numerals` | Localized shell candidate | `/sw/zana/nambari-za-kiarabu` | No |
-| Latin-to-African Script Mapping | Language & Translation | `/tools/transliterate` | Localized shell candidate | `/sw/zana/transliteration-ya-maandishi` | No |
+| Swahili Phrasebook & Optional Translator | Language & Translation | `/tools/swahili-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiswahili` | Yes |
+| Yoruba Phrasebook & Optional Translator | Language & Translation | `/tools/yoruba-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiyoruba` | Yes |
+| Hausa Draft Phrasebook & Optional Translator | Language & Translation | `/tools/hausa-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kihausa` | Yes |
+| Igbo Draft Phrasebook & Optional Translator | Language & Translation | `/tools/igbo-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiigbo` | Yes |
+| Amharic Draft Phrasebook & Optional Translator | Language & Translation | `/tools/amharic-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiamhari` | Yes |
+| isiZulu Draft Phrasebook & Optional Translator | Language & Translation | `/tools/zulu-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kizulu` | Yes |
+| Arabic-Indic Digit Shape Converter | Language & Translation | `/tools/arabic-numerals` | Localized shell candidate | `/sw/zana/nambari-za-kiarabu` | Yes |
+| Latin-to-African Script Mapping | Language & Translation | `/tools/transliterate` | Localized shell candidate | `/sw/zana/transliteration-ya-maandishi` | Yes |
 | AfroDraft 2D CAD | Engineering & Construction | `/engineering/afrodraft` | Localized shell candidate | `/sw/zana/afrodraft-cad` | No |
 | AfroPlan Floor Planner | Engineering & Construction | `/engineering/floor-planner` | Localized shell candidate | `/sw/zana/mpangaji-ramani-ya-sakafu` | No |
 | Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | Missing | None | No |
@@ -795,9 +795,9 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Market Stall Daily Profit Planner | VAT & Business Tax | `/tools/market-stall-profit` | Localized shell candidate | `/sw/zana/faida-ya-kibanda-sokoni` | No |
 | SQL Formatter & Validator | Developer Tools | `/tools/sql-formatter` | Localized shell candidate | `/sw/zana/kirekebisha-sql` | No |
 | SEO Meta Tag Generator | Developer Tools | `/tools/meta-tag-generator` | English fallback | `/sw/zana/kizalishaji-meta-tags` | No |
-| Nigerian Pidgin Learning Phrasebook | Language & Translation | `/tools/pidgin-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-pidgin-ya-nigeria` | No |
-| French for Africa Phrasebook | Language & Translation | `/tools/french-african` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kifaransa-afrika` | No |
-| African Name Provenance Review | Language & Translation | `/tools/african-name-meaning` | Localized shell candidate | `/sw/zana/maana-ya-majina-ya-afrika` | No |
+| Nigerian Pidgin Learning Phrasebook | Language & Translation | `/tools/pidgin-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-pidgin-ya-nigeria` | Yes |
+| French for Africa Phrasebook | Language & Translation | `/tools/french-african` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kifaransa-afrika` | Yes |
+| African Name Provenance Review | Language & Translation | `/tools/african-name-meaning` | Localized shell candidate | `/sw/zana/maana-ya-majina-ya-afrika` | Yes |
 | AfroAtlas — Africa Resource Explorer | Uniquely African | `/tools/afroatlas` | Localized shell candidate | `/sw/zana/afroatlas` | No |
 | AfroPoints — Earn Money Contributing Data | Uniquely African | `/tools/afropoints` | Localized shell candidate | `/sw/zana/afropoints` | No |
 | AfroKitchen — African Recipes | Uniquely African | `/tools/afrokitchen` | Localized shell candidate | `/sw/zana/jikoni` | No |

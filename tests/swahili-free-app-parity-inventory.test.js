@@ -9,15 +9,20 @@ const report = JSON.parse(fs.readFileSync(
   path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.json'),
   'utf8'
 ));
+const acceptance = JSON.parse(fs.readFileSync(
+  path.join(ROOT, 'data', 'audits', 'swahili-free-app-acceptance.json'),
+  'utf8'
+));
+const acceptedEvidenceCount = acceptance.entries.filter((entry) => entry.status === 'accepted').length;
 
 assert.strictEqual(report.totals.canonicalPublishedEnglishRows, 1258);
 assert.strictEqual(report.totals.excludedPaidRows, 1);
 assert.strictEqual(report.totals.englishFreeApps, 1257);
 assert.strictEqual(report.rows.length, 1257);
 assert.strictEqual(report.categories.length, 32);
-assert.strictEqual(report.totals.accepted, 5);
-assert.strictEqual(report.totals.remainingUnaccepted, 1252);
-assert.strictEqual(report.rows.filter((row) => row.accepted).length, 5);
+assert.strictEqual(report.totals.accepted, acceptedEvidenceCount);
+assert.strictEqual(report.totals.remainingUnaccepted, 1257 - acceptedEvidenceCount);
+assert.strictEqual(report.rows.filter((row) => row.accepted).length, acceptedEvidenceCount);
 assert.ok(report.rows.filter((row) => row.accepted).every((row) => row.acceptanceEvidence));
 assert.ok(report.rows.filter((row) => !row.accepted).every((row) => row.acceptanceEvidence === null));
 
@@ -41,4 +46,6 @@ assert.strictEqual(
 );
 assert.strictEqual(kenyaPaye.accepted, true);
 
-console.log('Swahili free-app parity inventory contract passed: 1,257 rows, 5 accepted.');
+console.log(
+  `Swahili free-app parity inventory contract passed: 1,257 rows, ${acceptedEvidenceCount} accepted.`
+);
