@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 462 |
-| **Accepted** | **193** |
+| **Accepted** | **199** |
 
 ## Category reconciliation
 
@@ -54,7 +54,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Small Business & SME | 28 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 11 | 0 |
 | Sports & Entertainment | 15 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 9 | 0 |
 | Telecom & Mobile | 14 | 0 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Trade & Import | 22 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
+| Trade & Import | 22 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 2 | 6 |
 | Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
 | Travel & Tourism | 9 | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 5 | 0 |
 | Uniquely African | 34 | 0 | 21 | 1 | 0 | 0 | 0 | 0 | 12 | 0 |
@@ -972,9 +972,9 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | ECOWAS Trade Levy Calculator | Trade & Import | `/tools/ecowas-levy` | Localized shell candidate | `/sw/zana/tozo-ya-ecowas` | No |
 | SADC Rules of Origin Checker | Trade & Import | `/tools/sadc-roo` | Missing | None | No |
 | EAC Common External Tariff | Trade & Import | `/tools/eac-cet` | Localized shell candidate | `/sw/zana/ushuru-wa-pamoja-wa-eac` | No |
-| Proforma Invoice Generator | Trade & Import | `/tools/proforma-invoice` | Localized shell candidate | `/sw/zana/ankara-proforma` | No |
-| Packing List Generator | Trade & Import | `/tools/packing-list` | Localized shell candidate | `/sw/zana/orodha-ya-kupakia` | No |
-| Bill of Lading Template | Trade & Import | `/tools/bol-generator` | Localized shell candidate | `/sw/zana/bill-of-lading` | No |
+| Proforma Invoice Generator | Trade & Import | `/tools/proforma-invoice` | Localized shell candidate | `/sw/zana/ankara-proforma` | Yes |
+| Packing List Generator | Trade & Import | `/tools/packing-list` | Localized shell candidate | `/sw/zana/orodha-ya-kupakia` | Yes |
+| Bill of Lading Template | Trade & Import | `/tools/bol-generator` | Localized shell candidate | `/sw/zana/bill-of-lading` | Yes |
 | Passport Application Checklist | Government & Civic | `/tools/passport-checklist` | Localized shell candidate | `/sw/zana/mwongozo-pasipoti` | Yes |
 | African Visa Requirement Checker | Government & Civic | `/tools/visa-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-visa` | Yes |
 | National ID Registration Guide | Government & Civic | `/tools/national-id-guide` | Localized shell candidate | `/sw/zana/mwongozo-kitambulisho-taifa` | Yes |
@@ -1309,9 +1309,9 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Athlete Career Earnings Calculator Africa | Sports & Entertainment | `/tools/athlete-earnings` | Localized shell candidate | `/sw/zana/mapato-ya-mwanariadha` | No |
 | Gaming PC Build Calculator Africa | Sports & Entertainment | `/tools/gaming-pc-build` | Missing | None | No |
 | Photography and Videography Pricing Tool Africa | Sports & Entertainment | `/tools/photo-video-pricing` | Missing | None | No |
-| Cross-Border Data Transfer Checklist — Africa 2024 | Trade & Import | `/tools/cross-border-data` | Localized shell candidate | `/sw/zana/uhamishaji-data-mpaka` | No |
-| Customs Clearance Time Estimator Africa | Trade & Import | `/tools/customs-time` | Localized shell candidate | `/sw/zana/muda-wa-kupitisha-forodha` | No |
-| Shipping Weight / Volumetric Weight Calculator | Trade & Import | `/tools/shipping-weight` | Localized shell candidate | `/sw/zana/uzito-wa-usafirishaji` | No |
+| Cross-Border Data Transfer Checklist — Africa 2024 | Trade & Import | `/tools/cross-border-data` | Localized shell candidate | `/sw/zana/uhamishaji-data-mpaka` | Yes |
+| Customs Clearance Time Estimator Africa | Trade & Import | `/tools/customs-time` | Localized shell candidate | `/sw/zana/muda-wa-kupitisha-forodha` | Yes |
+| Shipping Weight / Volumetric Weight Calculator | Trade & Import | `/tools/shipping-weight` | Localized shell candidate | `/sw/zana/uzito-wa-usafirishaji` | Yes |
 | Fleet Fuel Budget Calculator Africa | Transport & Logistics | `/tools/fleet-fuel` | Localized shell candidate | `/sw/zana/gharama-mafuta-ya-fleet` | No |
 | Last-Mile Delivery Cost Optimizer Africa | Transport & Logistics | `/tools/last-mile-delivery` | Localized shell candidate | `/sw/zana/gharama-last-mile-delivery` | No |
 | Parking Fee Calculator Africa — Lagos, Nairobi, Accra | Transport & Logistics | `/tools/parking-fee` | Localized shell candidate | `/sw/zana/ada-za-maegesho` | No |
