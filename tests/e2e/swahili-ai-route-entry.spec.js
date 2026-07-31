@@ -6,6 +6,12 @@ test("accepted explicit tool requests open the verified Swahili owner", async ({
   await expect(page.locator("html")).toHaveAttribute("lang", "sw");
 });
 
+test("newly accepted crypto address requests open the native Swahili validator", async ({ page }) => {
+  await page.goto("/sw/ai/?tool=crypto-address");
+  await expect(page).toHaveURL(/\/sw\/crypto\/address-validator\/\?source=sw-ai-tool$/);
+  await expect(page.locator("html")).toHaveAttribute("lang", "sw");
+});
+
 test("blocked explicit tool requests stay fail closed in Swahili search", async ({ page }) => {
   await page.goto("/sw/ai/?tool=bi-paye");
   await expect(page).toHaveURL(/\/sw\/ai\/\?tool=bi-paye$/);
