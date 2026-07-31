@@ -1,11 +1,20 @@
 "use strict";
 
 const assert = require("assert");
-const { buildArtifacts } = require("../scripts/build-sw-agriculture-parity-stop-receipt");
+const fs = require("node:fs");
+const path = require("node:path");
 
-const artifacts = buildArtifacts();
-const receipt = JSON.parse(artifacts["reports/sw-agriculture-parity-stop-receipt-2026-07-31.json"]);
-const artwork = JSON.parse(artifacts["reports/sw-agriculture-missing-artwork-queue.json"]);
+// This receipt freezes the programme's pre-implementation checkpoint. Rebuilding
+// it from the current inventory would rewrite history as families earn acceptance.
+const root = path.resolve(__dirname, "..");
+const receipt = JSON.parse(fs.readFileSync(
+  path.join(root, "reports/sw-agriculture-parity-stop-receipt-2026-07-31.json"),
+  "utf8"
+));
+const artwork = JSON.parse(fs.readFileSync(
+  path.join(root, "reports/sw-agriculture-missing-artwork-queue.json"),
+  "utf8"
+));
 
 assert.equal(receipt.outcome, "stopped-at-english-engine-extraction-boundary");
 assert.equal(receipt.counts.inScopeRows, 447);
