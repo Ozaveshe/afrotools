@@ -1,0 +1,61 @@
+{
+  "date": "2026-07-31",
+  "baseline": "c2cc2dd9fae286f17289255a7ac0f0c5b0c3ba4d",
+  "branch": "codex/sw-paye-26-completion-20260731",
+  "scope": "exact 26 PAYE IDs previously blocked in the Swahili free-app acceptance ledger",
+  "accepted": 23,
+  "blocked": 3,
+  "blockedRoutes": [
+    {
+      "englishId": "bi-paye",
+      "swahiliRoute": "/sw/burundi/kikokotoo-kodi-mshahara/",
+      "expectedEnglish": {
+        "tax": 84600,
+        "net": 397400,
+        "employeeSocial": 18000,
+        "employerCost": 529400
+      },
+      "observedSwahili": {
+        "tax": 84000,
+        "net": 396000,
+        "employeeSocial": 20000,
+        "employerCost": 530000
+      },
+      "blocker": "The English owner uses separate capped pension and occupational-risk bases; the Swahili owner still uses the older uncapped 4% and 6% model."
+    },
+    {
+      "englishId": "rw-paye",
+      "swahiliRoute": "/sw/rwanda/kikokotoo-kodi-mshahara/",
+      "expectedEnglish": {
+        "tax": 48600,
+        "net": 232500,
+        "employeeSocial": 18000,
+        "employerCost": 318900
+      },
+      "observedSwahili": {
+        "tax": 69500,
+        "net": 215500,
+        "employeeSocial": 15000,
+        "employerCost": 315900
+      },
+      "blocker": "The English owner uses the current 2025/26 four-band table and 6% RSSB contribution; the Swahili owner still uses the older three-band table and 5% contribution."
+    },
+    {
+      "englishId": "ug-paye",
+      "swahiliRoute": "/sw/uganda/kikokotoo-kodi-mshahara/",
+      "expectedEnglish": {
+        "tax": 488250,
+        "net": 1411750,
+        "employeeSocial": 100000,
+        "employerCost": 2200000
+      },
+      "observedSwahili": {
+        "tax": 458250,
+        "net": 1433416.6666666665,
+        "employeeSocial": 100000,
+        "employerCost": 2200000
+      },
+      "blocker": "The Swahili owner deducts NSSF before PAYE and adds a generic LST amount; the English owner taxes gross pay and applies the district LST basis separately."
+    }
+  ]
+}

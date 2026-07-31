@@ -103,7 +103,7 @@
 <!-- HERO -->
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumb" aria-label="Njia ya kurudi">
       <a href="/">Mwanzo</a> / <a href="/sw/botswana/">🇧🇼 Botswana</a> / <span>Kikokotoo cha PAYE</span>
     </nav>
     <h1>Kikokotoo cha Kodi ya Mshahara<br><em>Botswana 2025/26</em></h1>
@@ -145,7 +145,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">P120,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="30000" max="2000000" step="10000" value="120000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="30000" max="2000000" step="10000" value="120000" oninput="onSlider(this)">
             <div class="slider-limits"><span>P30,000</span><span>P2,000,000</span></div>
           </div>
 
@@ -154,7 +154,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwaka</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">P</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="120,000" min="0" step="10000" value="120000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="120,000" min="0" step="10000" value="120000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -497,7 +497,7 @@ function calcAnnualPAYE(annualIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
+    headline: 'Mshahara Wangu Halisi',
     mainValue: fmt(RESULT.monthlyNet || RESULT.net) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
@@ -543,7 +543,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
   } else if (type === 'bar') {
     const bands = R.bandBreakdown.filter(b => b.tax > 0);
     if (!bands.length) return;
-    CHART = new Chart(canvas, { type: 'bar', data: { labels: bands.map(b => (b.rate*100)+'%'), datasets: [{ label:'Tax (P)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'P'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } } });
+    CHART = new Chart(canvas, { type: 'bar', data: { labels: bands.map(b => (b.rate*100)+'%'), datasets: [{ label:'Kodi (P)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'P'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } } });
   } else if (type === 'employer') {
     CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Halisi','Kodi ya PAYE','Michango ya Mwajiri'], datasets: [{ label:'Kiasi', data: [R.netAnnual, R.annualPAYE, R.employerCost], backgroundColor: AfroChartColors.doughnut.slice(0,3), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'P'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
@@ -575,7 +575,8 @@ function generatePdf() {
   <h2>Sehemu ya 3 — Msingi wa kisheria na vyanzo</h2>
   <p>BURS · Sheria ya Kodi ya Mapato ya Botswana · viwango vya PAYE vya 2025/26. Botswana haina mchango wa lazima wa hifadhi ya jamii wa mwajiri katika modeli hii.</p>
   <div class="notice">Makadirio ya kupanga tu. Huu si waraka rasmi wa BURS wala ushauri wa kodi. Thibitisha viwango, misamaha, na wajibu wa uwasilishaji na BURS au mshauri wa kodi mwenye sifa.</div>
-</main></body></html>`;
+</main>
+</body></html>`;
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
   const url = URL.createObjectURL(blob);
   const w = window.open(url,'_blank');
@@ -670,7 +671,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -732,5 +733,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

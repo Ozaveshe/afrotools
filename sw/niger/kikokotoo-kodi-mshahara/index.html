@@ -105,7 +105,7 @@
   <div class="tool-hero-inner">
     <nav class="breadcrumb" aria-label="Njia ya kurudi"><a href="/sw/">Nyumbani</a> / <a href="/sw/niger/">&#127475;&#127466; Nijeri</a> / <span>Kikokotoo cha Kodi ya Mshahara</span></nav>
     <h1>Kodi ya Mshahara<br><em>Nijeri 2025/26</em></h1>
-    <p class="tool-hero-sub">Mabanda ya kodi ya DGI 0%&#8211;35%, CNSS usalama wa jamii (5.25% mwajiriwa). Hesabu ya kila mwezi per mabanda tisa.</p>
+    <p class="tool-hero-sub">Mabanda ya kodi ya DGI 0%&#8211;35%, CNSS usalama wa jamii (5.25% mwajiriwa). Hesabu ya kila mwezi kwa kutumia mabanda tisa.</p>
     <div class="hero-badges"><span class="badge b-gold">&#10022; Mshauri wa AI Umejumuishwa</span><span class="badge b-green">DGI 2025/26</span><span class="badge b-blue">CNSS 5.25%</span><span class="badge b-grey">XOF &middot; Faranga ya CFA</span></div>
     <p class="hero-meta">Imethibitishwa mwisho: Januari 2026 &middot; Chanzo: DGI Nijeri</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Tazama pia: <a href="/sw/zana/kikokotoo-vat/" style="color:#0062CC;font-weight:600;">Kikokotoo cha VAT cha Niger</a></p>
@@ -115,7 +115,7 @@
 <!-- UPDATE BAR -->
 <div class="amendment-bar">
   <div class="amendment-bar-inner">
-    <p><strong>Muhtasari:</strong> Mabanda ya kodi ya DGI 0%&#8211;35%, CNSS usalama wa jamii (5.25% mwajiriwa). Hesabu ya kila mwezi per mabanda tisa.</p>
+    <p><strong>Muhtasari:</strong> Mabanda ya kodi ya DGI 0%&#8211;35%, CNSS usalama wa jamii (5.25% mwajiriwa). Hesabu ya kila mwezi kwa kutumia mabanda tisa.</p>
   </div>
 </div>
 
@@ -128,7 +128,7 @@
       <div class="card">
         <div class="card-head">
           <span class="card-title">Weka Taarifa Zako</span>
-          <span class="card-sub">Franc CFA · XOF</span>
+          <span class="card-sub">Faranga ya CFA · XOF</span>
         </div>
         <div class="card-body">
 
@@ -136,8 +136,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Mpango wa Ajira</span><span class="f-hint">Mfumo wa kawaida wa CNSS au mtumishi wa umma aliyepangiwa</span></div>
             <div class="sector-row">
-              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Mfanyakazi wa Mishahara</button>
-              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Mtumishi wa Umma Aliyepangiwa</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSekta('private',this)">Mfanyakazi wa Mishahara</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSekta('public',this)">Mtumishi wa Umma Aliyepangiwa</button>
             </div>
           </div>
 
@@ -147,7 +147,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">XOF 1,500,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>XOF 100,000</span><span>XOF 20,000,000</span></div>
           </div>
 
@@ -156,7 +156,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">XOF</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -492,14 +492,14 @@ const fmt = n => 'XOF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-GB');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
+function setSekta(s, btn) {
   SECTOR = s;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
   const nssfTog = document.querySelector('[data-tog="nssf"]');
   document.getElementById('nssfLabel').textContent = 'CNSS (5.25%)';
   nssfTog.querySelector('.tog-rate').textContent = s === 'public'
-    ? '0% employee; 10.15% employer-only detached case'
+    ? '0% ya mfanyakazi; 10.15% ya mwajiri pekee kwa mtumishi aliyehamishwa'
     : '5.25% ya pensheni ya mfanyakazi — kikomo cha msingi XOF 500,000';
   const note = document.getElementById('schemeNote');
   if (note) {
@@ -695,7 +695,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   RESULT = {
     gross, monthly: gross, social, socialRate, socialBase, socialCap: monthlyCap, empSocial, empSocialRate,
-    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    monthlyPAYE, bandBreakdown, isSecondary, sekta: SECTOR,
     sdl, wcf, empSocial,
     totalEmployeeMakato, netMonthly, effectiveRate,
     annualGhafi: annual(gross), annualNet: annual(netMonthly),
@@ -710,7 +710,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi + michango ya kijamii ya mwajiri ${fmt(empSocial)}/mwezi (${pct(empSocialRate)} on capped XOF 500,000 base). No SDL or WCF in Niger.`;
+  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi + michango ya kijamii ya mwajiri ${fmt(empSocial)}/mwezi (${pct(empSocialRate)} kwa msingi wenye kikomo cha XOF 500,000). Hakuna SDL wala WCF nchini Nijeri.`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -726,7 +726,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
+    headline: 'Mshahara Wangu Halisi',
     mainValue: fmt(RESULT.netMonthly) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
@@ -764,7 +764,7 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Makato</div>
-      ${R.social > 0 ? row(`CNSS retirement (${pct(R.socialRate)}, capped at ${fmt(R.socialCap)})`, fmt(social), 'c-red') : ''}
+      ${R.social > 0 ? row(`Pensheni ya CNSS (${pct(R.socialRate)}, kikomo ${fmt(R.socialCap)})`, fmt(social), 'c-red') : ''}
       ${R.isSecondary
         ? `<div style="background:rgba(220,100,0,.06);border:1px solid rgba(220,100,0,.2);border-radius:5px;padding:8px 12px;font-size:.78rem;color:#7a3800;line-height:1.5;margin:6px 0">⚠ Ajira ya pili: 30% ya moja kwa moja imetumika kwenye ghafi yote — hakuna bendi isiyotozwa kodi na hakuna punguzo la CNSS kwa madhumuni ya IRPP.</div>`
         : row(`Mapato halisi yanayotozwa kodi${lbl}`, fmt(isAnnual ? R.annualGross - R.annualSocial : R.gross - R.social), 'c-mut')
@@ -836,7 +836,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
       type: 'bar',
       data: {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (XOF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (XOF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -844,7 +844,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Halisi', 'PAYE', 'CNSS ya Mfanyakazi', 'Employer Social'],
+        labels: ['Halisi', 'PAYE', 'CNSS ya Mfanyakazi', 'Michango ya Kijamii ya Mwajiri'],
         datasets: [{ label:'XOF', data:[R.netMonthly, R.monthlyPAYE, R.social, R.empSocial], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -926,7 +926,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwezi wa Mshahara Halisi</div>
   <table>
-    ${R.social > 0 ? `<tr><td>CNSS (employee)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${R.social > 0 ? `<tr><td>CNSS (mfanyakazi)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     <tr><td>Kodi ya Mapato ya PAYE</td><td class="num red">(XOF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Jumla ya Makato ya Mwezi</td><td class="num red">(XOF ${Math.round(R.totalEmployeeMakato).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
@@ -960,7 +960,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -1006,10 +1005,10 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Niger IRPP analysis (2025/26, DGI):
+  const prompt = `Niger uchambuzi wa IRPP (2025/26, DGI):
 - Ghafi ya mwezi: XOF ${Math.round(R.gross).toLocaleString()}
 - Scheme: ${R.sector === 'private' ? 'Mfano wa CNSS wa mfanyakazi wa mishahara' : 'Mfano wa mtumishi wa umma aliyepangiwa'}
-- CNSS employee (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mwezi
+- CNSS ya mfanyakazi (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mwezi
 - Mapato yanayotozwa kodi baada ya CNSS: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - IRPP ya Mwezi: XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: XOF ${Math.round(R.netMonthly).toLocaleString()}
@@ -1024,11 +1023,11 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya IRPP 2) Njia mbili maalum za 
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Niger IRPP — DGI progressive tax na CNSS payroll charges, including yenye kikomo salary-worker contributions na the detached-civil-servant employer-only case. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Niger IRPP — kodi ya hatua ya DGI na tozo za mishahara za CNSS, ikijumuisha michango yenye kikomo ya mfanyakazi na hali ya mwajiri pekee kwa mtumishi wa umma aliyehamishwa. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1062,7 +1061,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Niger IRPP/DGI/CNSS. Mtumiaji: ${R.sector === 'private' ? 'salary-worker CNSS case' : 'detached civil-servant case'}, ghafi XOF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XOF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Niger IRPP/DGI/CNSS. Mtumiaji: ${R.sector === 'private' ? 'hali ya mfanyakazi wa mshahara wa CNSS' : 'hali ya mtumishi wa umma aliyehamishwa'}, ghafi XOF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XOF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1104,7 +1103,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1166,5 +1165,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

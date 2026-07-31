@@ -20,7 +20,7 @@
 <meta name="robots"             content="index, follow">
 <meta name="author"             content="AfroTools">
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mabanda ya kodi Chad ni yapi?","acceptedAnswer":{"@type":"Answer","text":"Chad inatumia mabanda ya kodi ya mapato: 0% hadi XAF 0; 10% kwa XAF 1-800,000/mwaka; 20% kwa XAF 800,001-2,000,000; 30% kwa XAF 2,000,001-5,000,000; 40% zaidi ya XAF 5,000,000 kwa mwaka."}},{"@type":"Question","name":"CNPS Chad ni nini?","acceptedAnswer":{"@type":"Answer","text":"CNPS (Caisse Nationale de Prévoyance Sociale) Chad: mfanyakazi analipa 3.5% ya mshahara ghafi kwa mafao ya uzee, mwajiri analipa 16.5%."}},{"@type":"Question","name":"XAF ni sarafu gani?","acceptedAnswer":{"@type":"Answer","text":"XAF (Franc CFA ya Afrika ya Kati) inatumika na nchi 6 za CEMAC: Chad, Kongo, Gabon, Kamerun, CAR, na Guinea ya Ikweta. Imeshikamana na Euro."}}]}
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Mabanda ya kodi Chad ni yapi?","acceptedAnswer":{"@type":"Answer","text":"Chad inatumia mabanda ya kodi ya mapato: 0% hadi XAF 0; 10% kwa XAF 1-800,000/mwaka; 20% kwa XAF 800,001-2,000,000; 30% kwa XAF 2,000,001-5,000,000; 40% zaidi ya XAF 5,000,000 kwa mwaka."}},{"@type":"Question","name":"CNPS Chad ni nini?","acceptedAnswer":{"@type":"Answer","text":"CNPS (Caisse Nationale de Prévoyance Sociale) Chad: mfanyakazi analipa 3.5% ya mshahara ghafi kwa mafao ya uzee, mwajiri analipa 16.5%."}},{"@type":"Question","name":"XAF ni sarafu gani?","acceptedAnswer":{"@type":"Answer","text":"XAF (Faranga ya CFA ya Afrika ya Kati) inatumika na nchi 6 za CEMAC: Chad, Kongo, Gabon, Kamerun, CAR, na Guinea ya Ikweta. Imeshikamana na Euro."}}]}
 </script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -118,7 +118,7 @@
     <p class="tool-hero-sub">Mabanda ya kodi ya mapato 10%&#8211;40%, CNPS 3.5% (mfanyakazi) + 16.5% (mwajiri). Faranga ya CFA ya Afrika ya Kati (XAF).</p>
     <div class="hero-badges"><span class="badge b-gold">&#10022; Mshauri wa AI</span>
       <span class="badge b-green">Chadi 2025/26</span>
-      <span class="badge b-grey">XAF &middot; Franc CFA CEMAC</span></div>
+      <span class="badge b-grey">XAF &middot; Faranga ya CFA CEMAC</span></div>
     <p class="hero-meta">Imethibitishwa mwisho: Machi 2026</p>
     <p style="font-size:0.8rem;color:#64748b;margin-top:8px;">Tazama pia: <a href="/sw/zana/kikokotoo-vat/" style="color:#0062CC;font-weight:600;">Kikokotoo cha VAT cha Chad</a></p>
   </div>
@@ -148,8 +148,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Sekta</span><span class="f-hint">Huamua mfuko wa hifadhi ya jamii</span></div>
             <div class="sector-row">
-              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Binafsi (CNPS)</button>
-              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Umma (CNPS)</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSekta('private',this)">Binafsi (CNPS)</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSekta('public',this)">Umma (CNPS)</button>
             </div>
           </div>
 
@@ -159,7 +159,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">XAF 500,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>XAF 50,000</span><span>XAF 5,000,000</span></div>
           </div>
 
@@ -168,7 +168,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">XAF</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="100000" min="0" step="10000" value="500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -498,7 +498,7 @@ const fmt = n => 'XAF\u00A0' + Math.round(Math.abs(n)).toLocaleString('fr-TD');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
+function setSekta(s, btn) {
   SECTOR = s;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
@@ -662,7 +662,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   RESULT = {
     gross, monthly: gross, social, socialRate, empSocial,
-    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    monthlyPAYE, bandBreakdown, isSecondary, sekta: SECTOR,
     empSocial,
     totalEmployeeMakato, netMonthly, effectiveRate,
     annualGhafi: annual(gross), annualNet: annual(netMonthly),
@@ -693,7 +693,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
+    headline: 'Mshahara Wangu Halisi',
     mainValue: fmt(RESULT.netMonthly) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
@@ -928,7 +928,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -974,10 +973,10 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Chad PAYE analysis (2025/26, DGI):
+  const prompt = `Chad uchambuzi wa PAYE (2025/26, DGI):
 - Ghafi ya mwezi: XAF ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Binafsi (CNPS)' : 'Umma (CNPS)'}
-- CNPS employee (${pct(R.socialRate)}): XAF ${Math.round(R.social).toLocaleString()}/mwezi
+- Sekta: ${R.sector === 'private' ? 'Binafsi (CNPS)' : 'Umma (CNPS)'}
+- CNPS ya mfanyakazi (${pct(R.socialRate)}): XAF ${Math.round(R.social).toLocaleString()}/mwezi
 - Mapato yanayotozwa kodi baada ya CNPS: XAF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - IRPP ya Mwezi (PAYE): XAF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: XAF ${Math.round(R.netMonthly).toLocaleString()}
@@ -992,11 +991,11 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya IRPP 2) Njia mbili maalum za 
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Chad PAYE — DGI IRPP progressive tax, CNPS (3.5% ya mfanyakazi / 16.5% employer), Code Général des Impôts. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Chad PAYE — kodi ya hatua ya DGI IRPP, CNPS (3.5% ya mfanyakazi / 16.5% ya mwajiri), Code Général des Impôts. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1030,7 +1029,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Chad. Mtumiaji: ${R.sector} sector, ghafi XAF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XAF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Chad. Mtumiaji: ${R.sector} sekta, ghafi XAF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XAF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1069,7 +1068,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1131,5 +1130,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

@@ -103,7 +103,7 @@
 <!-- HERO -->
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumb" aria-label="Njia ya kurudi">
       <a href="/sw/">Mwanzo</a> / <a href="/sw/zambia/">🇿🇲 Zambia</a> / <span>Kikokotoo cha PAYE</span>
     </nav>
     <h1>Kikokotoo cha Kodi ya Mshahara<br><em>Zambia 2025/26</em></h1>
@@ -111,7 +111,7 @@
     <div class="hero-badges">
       <span class="badge b-gold">✦ Inajumuisha Mshauri wa AI</span>
       <span class="badge b-green">ZRA 2025/26 Imethibitishwa</span>
-      <span class="badge b-blue">NAPSA · Capped</span>
+      <span class="badge b-blue">NAPSA · Yenye kikomo</span>
       <span class="badge b-grey">ZMW · Kwacha ya Zambia</span>
     </div>
     <p class="hero-meta">Ilithibitishwa mwisho: Julai 2025 · Chanzo: ZRA (zra.org.zm) · Sheria ya Kodi ya Mapato · Sheria ya NAPSA</p>
@@ -145,7 +145,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">K 150,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="150000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="50000" max="5000000" step="10000" value="150000" oninput="onSlider(this)">
             <div class="slider-limits"><span>K 50,000</span><span>K 5,000,000</span></div>
           </div>
 
@@ -154,7 +154,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwaka</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">K</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="150,000" min="0" step="10000" value="150000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="150,000" min="0" step="10000" value="150000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -756,7 +756,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (K)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (K)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'K'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -879,7 +879,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -925,9 +924,9 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Zambia PAYE analysis (2025/26, ZRA):
+  const prompt = `Zambia uchambuzi wa PAYE (2025/26, ZRA):
 - Ghafi ya mwaka: K${Math.round(R.gross).toLocaleString()}
-- NAPSA employee (5%, yenye kikomo K20,498.40): K${Math.round(R.napsa).toLocaleString()}/mwaka
+- NAPSA ya mfanyakazi (5%, yenye kikomo K20,498.40): K${Math.round(R.napsa).toLocaleString()}/mwaka
 - Mapato yanayotozwa PAYE: K${Math.round(R.gross).toLocaleString()}/mwaka
 - PAYE ya Mwaka: K${Math.round(R.annualPAYE).toLocaleString()}
 - Halisi ya mwaka: K${Math.round(R.netAnnual).toLocaleString()}
@@ -941,11 +940,11 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya PAYE 2) Hoja mbili za vitendo
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Zambian PAYE — ZRA progressive tax, NAPSA with capping, Sheria ya Kodi ya Mapato. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika PAYE ya Zambia — kodi ya hatua ya ZRA na NAPSA yenye kikomo, Sheria ya Kodi ya Mapato. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1018,7 +1017,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1080,5 +1079,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

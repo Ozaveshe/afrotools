@@ -135,8 +135,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Sekta ya Ajira</span><span class="f-hint">Huamua aina ya mfuko wa pensheni</span></div>
             <div class="sector-row">
-              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Sekta Binafsi</button>
-              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Sekta ya Umma</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSekta('private',this)">Sekta Binafsi</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSekta('public',this)">Sekta ya Umma</button>
             </div>
           </div>
 
@@ -146,7 +146,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">ETB 5,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="500" max="200000" step="500" value="5000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="500" max="200000" step="500" value="5000" oninput="onSlider(this)">
             <div class="slider-limits"><span>ETB 500</span><span>ETB 200,000</span></div>
           </div>
 
@@ -155,7 +155,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">ETB</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="5,000" min="0" step="500" value="5000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="5,000" min="0" step="500" value="5000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -283,7 +283,7 @@
         <div class="bands-body">
           <div class="band-row"><span class="band-range">Pensheni ya Mfanyakazi (sekta zote)</span><span class="band-rate">7% ya mshahara ghafi</span></div>
           <div class="band-row"><span class="band-range">Pensheni ya mwajiri (sekta zote)</span><span class="band-rate">11% ya mshahara ghafi (gharama tofauti)</span></div>
-          <div class="band-row"><span class="band-range">Jumla ya Mchango wa Pensheni</span><span class="band-rate">18% (7% employee + 11% employer)</span></div>
+          <div class="band-row"><span class="band-range">Jumla ya Mchango wa Pensheni</span><span class="band-rate">18% (7% mfanyakazi + 11% mwajiri)</span></div>
           <p class="band-note">Michango ya mfuko wa pensheni ni ya lazima. Mchango wa mfanyakazi unapunguzwa kikamilifu kutoka mapato yanayotozwa kodi kabla ya hesabu ya PAYE. Wasilisha ifikapo tarehe 10 ya mwezi unaofuata. Kwa mujibu wa Tangazo 1395/2025, ETB 2,000 za kwanza kwa mwezi za mapato yanayotozwa kodi zina msamaha.</p>
         </div>
       </div>
@@ -439,7 +439,7 @@
 <script>
 // ══════════════════════════════════════════════════════════════════
 //  ETHIOPIA PAYE CALCULATOR 2025/26
-//  ERCA Progressive Kodi ya Mwezi · Employee Pension 7% (Tax-Deductible) · Employer 11%
+//  ERCA Progressive Kodi ya Mwezi · Pensheni ya Mfanyakazi 7% (Tax-Deductible) · Employer 11%
 //  Chanzo: Tangazo la Kodi ya Mapato No. 1395/2025 · Pension Contribution Regulations
 // ══════════════════════════════════════════════════════════════════
 
@@ -454,7 +454,7 @@ const fmt = n => 'ETB\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-ET');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
+function setSekta(s, btn) {
   SECTOR = s;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
@@ -601,7 +601,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   RESULT = {
     gross, monthly: gross, pension, pensionRate, empPension,
-    monthlyPAYE, bandBreakdown, sector: SECTOR,
+    monthlyPAYE, bandBreakdown, sekta: SECTOR,
     totalEmployeeMakato, netMonthly, effectiveRate,
     annualGhafi: annual(gross), annualNet: annual(netMonthly),
     annualKodi: annual(monthlyPAYE), annualPension: annual(pension),
@@ -615,7 +615,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Gross + Employer Pension ${fmt(empPension)}/mwezi (11%).`;
+  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi pamoja na pensheni ya mwajiri ${fmt(empPension)}/mwezi (11%).`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -646,7 +646,7 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Makato</div>
-      ${R.pension > 0 ? row(`Pension Fund (${pct(R.pensionRate)})`, fmt(pension), 'c-red') : ''}
+      ${R.pension > 0 ? row(`Mfuko wa Pensheni (${pct(R.pensionRate)})`, fmt(pension), 'c-red') : ''}
       ${row(`Mapato halisi yanayotozwa kodi${lbl}`, fmt(isAnnual ? R.annualGross - R.annualPension : R.gross - R.pension), 'c-mut')}
     </div>
     <div class="res-section">
@@ -703,7 +703,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Halisi', 'Kodi ya PAYE', 'Pension Fund'],
+        labels: ['Halisi', 'Kodi ya PAYE', 'Mfuko wa Pensheni'],
         datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.pension], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -715,7 +715,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (ETB)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (ETB)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -723,7 +723,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Halisi', 'PAYE', 'Emp Pension', 'Employee Pension'],
+        labels: ['Halisi', 'PAYE', 'Pensheni ya Mwajiri', 'Pensheni ya Mfanyakazi'],
         datasets: [{ label:'ETB', data:[R.netMonthly, R.monthlyPAYE, R.empPension, R.pension], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'ETB'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:9,weight:'600'}}} } }
@@ -821,7 +821,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 5 — Msingi wa Kisheria na Vyanzo</div>
   <table>
     <tr><td style="width:30%"><span class="src">ITP 1395/2025</span>Tangazo la Kodi ya Mapato</td><td style="color:#6b7280;font-size:8pt">PAYE ya hatua kwa mapato ya ajira. Mabanda sita ya kila mwezi (0%–35%). Kizingiti kisichotozwa kodi ETB 2,000/mwezi. Pension mchango fully unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi.</td></tr>
-    <tr><td><span class="src">Kanuni za Pensheni</span>Mfuko wa Pensheni wa Mfanyakazi</td><td style="color:#6b7280;font-size:8pt">Jumla 18% of salary: 7% employee + 11% employer. Wasilisha ifikapo tarehe 10 ya mwezi unaofuata.</td></tr>
+    <tr><td><span class="src">Kanuni za Pensheni</span>Mfuko wa Pensheni wa Mfanyakazi</td><td style="color:#6b7280;font-size:8pt">Jumla ni 18% ya mshahara: 7% ya mfanyakazi na 11% ya mwajiri. Wasilisha ifikapo tarehe 10 ya mwezi unaofuata.</td></tr>
     <tr><td><span class="src">Proc. 1395/2025</span>Inasubiri 2025/26</td><td style="color:#6b7280;font-size:8pt">Mei introduce ETB 2,000/mwezi minimum taxable threshold starting Julai 2025. Status under implementation review.</td></tr>
   </table>
 </div>
@@ -838,7 +838,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -884,15 +883,15 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Ethiopia PAYE analysis (2025/26, ERCA):
+  const prompt = `Ethiopia uchambuzi wa PAYE (2025/26, ERCA):
 - Ghafi ya mwezi: ETB ${Math.round(R.gross).toLocaleString()}
-- Sector: ${R.sector === 'private' ? 'Binafsi' : 'Umma'}
-- Pension Fund employee (${pct(R.pensionRate)}): ETB ${Math.round(R.pension).toLocaleString()}/mwezi
-- Mapato yanayotozwa kodi baada ya pensheni deduction: ETB ${Math.round(R.gross - R.pension).toLocaleString()}/mwezi
+- Sekta: ${R.sector === 'private' ? 'Binafsi' : 'Umma'}
+- Mfuko wa Pensheni wa mfanyakazi (${pct(R.pensionRate)}): ETB ${Math.round(R.pension).toLocaleString()}/mwezi
+- Mapato yanayotozwa kodi baada ya punguzo la pensheni: ETB ${Math.round(R.gross - R.pension).toLocaleString()}/mwezi
 - PAYE ya mwezi: ETB ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: ETB ${Math.round(R.netMonthly).toLocaleString()}
 - Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
-- Mwajiri Pension (11%): ETB ${Math.round(R.empPension).toLocaleString()}/mwezi
+- Pensheni ya Mwajiri (11%): ETB ${Math.round(R.empPension).toLocaleString()}/mwezi
 - jumla gharama ya mwajiri: ETB ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
 Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya PAYE 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Bila markdown, nyota, au alama za orodha.`;
@@ -901,11 +900,11 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya PAYE 2) Njia mbili maalum za 
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Ethiopian PAYE — ERCA progressive tax (Proclamation 1395/2025, 6 bands 0%–35%, Kizingiti kisichotozwa kodi ETB 2000/mwezi), Pension Fund 7%. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika PAYE ya Ethiopia — kodi ya hatua ya ERCA (Proclamation 1395/2025, 6 bands 0%–35%, Kizingiti kisichotozwa kodi ETB 2000/mwezi), Mfuko wa Pensheni 7%. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -939,7 +938,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Ethiopia. Mtumiaji: ${R.sector} sector, ghafi ETB ${Math.round(R.gross).toLocaleString()}/mwezi, halisi ETB ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Ethiopia. Mtumiaji: ${R.sector} sekta, ghafi ETB ${Math.round(R.gross).toLocaleString()}/mwezi, halisi ETB ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -981,7 +980,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1043,5 +1042,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

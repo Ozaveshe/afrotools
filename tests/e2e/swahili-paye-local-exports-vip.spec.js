@@ -1,40 +1,16 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
+const CONTRACT = require('../../data/localization/sw-paye-26-parity.json');
 
-const COUNTRIES = [
-  'angola',
-  'botswana',
-  'burkina-faso',
-  'burundi',
-  'cameroon',
-  'central-african-republic',
-  'chad',
-  'cote-divoire',
-  'egypt',
-  'equatorial-guinea',
-  'eswatini',
-  'ethiopia',
-  'gabon',
-  'guinea',
-  'lesotho',
-  'malawi',
-  'mali',
-  'mauritius',
-  'niger',
-  'rwanda',
-  'senegal',
-  'seychelles',
-  'tanzania',
-  'uganda',
-  'zambia',
-  'zimbabwe',
-];
+const ENTRIES = CONTRACT.entries;
 
-for (const country of COUNTRIES) {
+for (const entry of ENTRIES) {
+  const country = entry.countrySlug;
   test(`${country} PAYE calculates and exports locally at mobile width`, async ({ page, context }) => {
     const errors = [];
     const mutations = [];
     const aiPayloads = [];
+    const failedLocalResources = [];
     let acceptNextConfirm = false;
     page.on('pageerror', (error) => errors.push(error.message));
     page.on('console', (message) => {
@@ -51,6 +27,11 @@ for (const country of COUNTRIES) {
     page.on('request', (request) => {
       if (!['GET', 'HEAD', 'OPTIONS'].includes(request.method())) {
         mutations.push(`${request.method()} ${request.url()}`);
+      }
+    });
+    page.on('requestfailed', (request) => {
+      if (/^http:\/\/127\.0\.0\.1:\d+\//.test(request.url())) {
+        failedLocalResources.push(`${request.url()} ${request.failure()?.errorText || ''}`.trim());
       }
     });
     await page.route('**/.netlify/functions/ai-advisor', async (route) => {
@@ -98,6 +79,7 @@ for (const country of COUNTRIES) {
 
     const gross = page.locator('#grossSalary');
     await expect(gross).toBeVisible();
+    await expect(gross).toHaveAccessibleName(/.+/);
     await gross.focus();
     await expect(gross).toBeFocused();
     const calculate = page.locator('button.calc-btn[onclick*="calculate"]').first();
@@ -107,11 +89,7 @@ for (const country of COUNTRIES) {
     await calculate.click();
     expect(await page.evaluate(() => window.RESULT == null)).toBe(true);
 
-    const max = Number(await gross.getAttribute('max'));
-    const sample = Number.isFinite(max) && max > 0
-      ? Math.max(1, Math.round(max * 0.2))
-      : 100000;
-    await gross.fill(String(sample));
+    await gross.fill(String(entry.input));
 
     await calculate.click();
     await expect(page.locator('#resultsCard, .results-card').first()).toBeVisible();
@@ -119,6 +97,31 @@ for (const country of COUNTRIES) {
       Object.values(window.RESULT || {}).filter((value) => Number.isFinite(value))
     ));
     expect(numericOutputs.length).toBeGreaterThanOrEqual(3);
+    const expected = entry.englishParity ? entry.expected : entry.observedSwahili;
+    for (const [label, resultField] of Object.entries(entry.fields)) {
+      if (!(label in expected)) continue;
+      const actual = await page.evaluate((fieldNames) => {
+        for (const field of fieldNames.split('|')) {
+          if (Number.isFinite(window.RESULT?.[field])) return window.RESULT[field];
+        }
+        return undefined;
+      }, resultField);
+      expect(actual, `${entry.englishId} ${label} (${resultField})`).toBeCloseTo(expected[label], 5);
+    }
+    await expect(page.locator('body')).not.toContainText(
+      /My Mshahara Halisi|Tax Before Rebate|Tax Rebate|PAYE analysis|IUTS analysis|IRPP analysis|ITS analysis|Family parts|Family status|Dependent children|chargeable income estimate|Gross → Net|Net → Gross|Monthly Take-Home Pay|Annual Take-Home Pay| per mabanda|divorced|widowed/i,
+    );
+    const unnamedControls = await page.locator(
+      '#inputCard input:not([type="hidden"]), #inputCard select, #inputCard textarea, #inputCard button',
+    ).evaluateAll((controls) => controls.filter((control) => {
+      if (control.hidden || control.disabled) return false;
+      const text = (control.textContent || '').trim();
+      const aria = control.getAttribute('aria-label') || control.getAttribute('aria-labelledby');
+      const id = control.id;
+      const label = id ? document.querySelector(`label[for="${CSS.escape(id)}"]`) : null;
+      return !text && !aria && !label && !control.getAttribute('title');
+    }).map((control) => `${control.tagName.toLowerCase()}#${control.id || ''}`));
+    expect(unnamedControls).toEqual([]);
 
     const overflow = await page.evaluate(() => ({
       root: document.documentElement.scrollWidth - document.documentElement.clientWidth,
@@ -199,6 +202,18 @@ for (const country of COUNTRIES) {
       document.documentElement.setAttribute('data-theme', 'light');
     });
     await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await page.evaluate(() => {
+      document.documentElement.removeAttribute('data-theme');
+      localStorage.removeItem('afrotools-theme');
+    });
+    await page.emulateMedia({ colorScheme: 'dark' });
+    expect(await page.evaluate(() => ({
+      darkPreference: matchMedia('(prefers-color-scheme: dark)').matches,
+      background: getComputedStyle(document.body).backgroundColor,
+    }))).toEqual(expect.objectContaining({
+      darkPreference: true,
+      background: expect.stringMatching(/^(?:rgb|rgba)\(/),
+    }));
 
     await page.setViewportSize({ width: 375, height: 760 });
     const overflow375 = await page.evaluate(() => (
@@ -217,6 +232,7 @@ for (const country of COUNTRIES) {
     expect(mutations[0]).toMatch(
       /^POST http:\/\/127\.0\.0\.1:\d+\/\.netlify\/functions\/ai-advisor$/,
     );
+    expect(failedLocalResources).toEqual([]);
     expect(errors).toEqual([]);
   });
 }

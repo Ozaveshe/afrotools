@@ -138,7 +138,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">EGP 300,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="20000" max="2000000" step="1000" value="300000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="20000" max="2000000" step="1000" value="300000" oninput="onSlider(this)">
             <div class="slider-limits"><span>EGP 20,000</span><span>EGP 2,000,000</span></div>
           </div>
 
@@ -150,7 +150,7 @@
             </div>
             <div class="f-wrap">
               <span class="f-prefix">EGP</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="1000" value="300000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="300,000" min="0" step="1000" value="300000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -289,7 +289,7 @@
           <div class="band-row"><span class="band-range">EGP 400,001 – 1,200,000</span><span class="band-rate">25%</span></div>
           <div class="band-row"><span class="band-range">Zaidi ya EGP 1,200,000</span><span class="band-rate">27.5%</span></div>
           <p class="band-note">Hutumika kwa mapato halisi yanayotozwa kodi baada ya msamaha wa binafsi wa EGP 20,000, NOSI, na makato mengine.</p>
-          <div class="band-warn">⚠ <strong>Bracket exclusion rule:</strong> High earners progressively lose access to lower bands. Zaidi ya EGP 600,000 the 0% band is lost. Zaidi ya EGP 1,200,000 only the 25%/27.5% bands apply. This is unique to Egypt — most tools ignore it.</div>
+          <div class="band-warn">⚠ <strong>Bracket exclusion rule:</strong> Wenye mapato ya juu hupoteza mabanda ya chini hatua kwa hatua. Zaidi ya EGP 600,000 bendi ya 0% huondolewa. Zaidi ya EGP 1,200,000 mabanda ya 25% na 27.5% pekee hutumika. Hii ni kanuni maalum ya Misri ambayo vikokotoo vingi huikosa.</div>
         </div>
       </div>
 
@@ -406,7 +406,7 @@
           <h3 style="font-size:0.96rem;font-weight:800;color:#0f172a;line-height:1.4;margin-bottom:0.6rem;">NOSI — Hifadhi ya Jamii ya Misri</h3>
         </div>
         <div class="ng-guide-card">
-          <p style="font-size:0.85rem;color:#475569;line-height:1.72;margin-bottom:0;">National Organization for Social Insurance (NOSI) ni mfumo wa hifadhi ya jamii wa Misri. Mwajiriwa anachangia 11% ya mshahara unaohakikishwa (insurable salary), wakati mwajiri anachangia 18.75%. Kiwango cha juu cha mshahara unaohakikishwa ni EGP 14,500 kwa mwezi (minimum EGP 2,300). Mchango wa NOSI wa mwajiriwa unafutwa kutoka kwa kipato kinachotozwa kodi kabla ya kuhesabu ETA.</p>
+          <p style="font-size:0.85rem;color:#475569;line-height:1.72;margin-bottom:0;">NOSI (National Organization for Social Insurance) ni mfumo wa hifadhi ya jamii wa Misri. Mwajiriwa anachangia 11% ya mshahara unaohakikishwa (mshahara unaokatiwa bima), wakati mwajiri anachangia 18.75%. Kiwango cha juu cha mshahara unaohakikishwa ni EGP 14,500 kwa mwezi (kiwango cha chini EGP 2,300). Mchango wa NOSI wa mwajiriwa unafutwa kutoka kwa kipato kinachotozwa kodi kabla ya kuhesabu ETA.</p>
         </div>
       </div>
       <div class="ng-guide-col">
@@ -472,7 +472,7 @@
 //  EGYPT SALARY TAX CALCULATOR 2025
 //  ETA Progressive Tax · NOSI Social Insurance · Bima ya Afya
 //  Personal Exemption EGP 20,000 · Bracket Exclusion Rule
-//  Chanzo: Income Tax Law No. 91 of 2005 as amended by Sheria Na. 7 ya 2024
+//  Chanzo: Kodi ya Mapato Law No. 91 of 2005 as amended by Sheria Na. 7 ya 2024
 //          ETA (eta.gov.eg) · NOSI (nosi.gov.eg)
 // ══════════════════════════════════════════════════════════════════
 
@@ -610,7 +610,7 @@ function calcTax(nati) {
   // Msamaha wa binafsi
   const personalExemption = isOn('disabled') ? 30000 : 20000;
 
-  // NOSI: 11% of insurable salary, cap EGP 14,500/mwezi = EGP 174,000/mwaka
+  // NOSI: 11% of mshahara unaokatiwa bima, cap EGP 14,500/mwezi = EGP 174,000/mwaka
   const nosiBase   = isOn('nosi') ? Math.min(gross, 174000) : 0;
   const nosi       = nosiBase * 0.11;
 
@@ -653,7 +653,7 @@ function calcTax(nati) {
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
 
   const strip = document.getElementById('employerStrip');
-  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(totalEmployerCost / 12)}/mwezi</strong><br>Gross + NOSI ${fmt(employerNosi / 12)}/mwezi + health ins. ${fmt(employerHealth / 12)}/mwezi.`;
+  strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(totalEmployerCost / 12)}/mwezi</strong><br>Ghafi pamoja na NOSI ${fmt(employerNosi / 12)}/mwezi na bima ya afya ${fmt(employerHealth / 12)}/mwezi.`;
   strip.classList.add('on');
 
   document.getElementById('resultsCard').classList.add('on');
@@ -679,15 +679,15 @@ function renderRows(r, period) {
       ${row('Msamaha wa binafsi' + (r.personalExemption > 20000 ? ' (ulemavu — mara 1.5)' : ''), fmt(r.personalExemption / d), 'c-grn')}
       ${r.nosi > 0    ? row('NOSI ya bima ya jamii (11%, kikomo EGP 14,500/mwezi)', fmt(r.nosi / d), 'c-red') : ''}
       ${r.health > 0  ? row('Bima ya afya (1%, no cap)', fmt(r.health / d), 'c-red') : ''}
-      ${row('Net Taxable Income (NATI)', fmt(r.nati / d), 'c-mut')}
+      ${row('Mapato Halisi Yanayotozwa Kodi (NATI)', fmt(r.nati / d), 'c-mut')}
     </div>
     <div class="res-section">
-      <div class="res-section-title">Income Tax (ETA)</div>
+      <div class="res-section-title">Income Kodi (ETA)</div>
       ${r.isExempt
         ? `<div style="background:rgba(206,17,38,0.05);border:1px solid rgba(206,17,38,0.2);border-radius:6px;padding:10px 13px;font-size:0.78rem;color:#8b0000;line-height:1.5">✓ NATI chini ya EGP 40,000 — katika bendi ya 0%, no income tax due.</div>`
-        : row('Kodi ya mapato (progressive, ETA)', fmt(r.tax / d), 'c-red')
+        : row('Kodi ya mapato (hatua, ETA)', fmt(r.tax / d), 'c-red')
       }
-      ${r.hasExclusion && !r.isExempt ? `<div class="exclusion-box">⚠ Bracket exclusion applied: your NATI (${fmt(r.nati)}/mwaka) exceeds EGP ${r.nati > 1200000 ? '1,200,000' : r.nati > 1000000 ? '1,000,000' : r.nati > 900000 ? '900,000' : r.nati > 800000 ? '800,000' : r.nati > 700000 ? '700,000' : '600,000'} — ${r.excludedBands.length} lower bracket${r.excludedBands.length > 1 ? 's have' : ' has'} been removed. Extra tax vs. standard progressive: ${fmt(r.exclusionExtra)}. Most calculators miss this.</div>` : ''}
+      ${r.hasExclusion && !r.isExempt ? `<div class="exclusion-box">⚠ Utaratibu wa kuondoa bendi umetumika: your NATI (${fmt(r.nati)}/mwaka) exceeds EGP ${r.nati > 1200000 ? '1,200,000' : r.nati > 1000000 ? '1,000,000' : r.nati > 900000 ? '900,000' : r.nati > 800000 ? '800,000' : r.nati > 700000 ? '700,000' : '600,000'} — ${r.excludedBands.length} lower bracket${r.excludedBands.length > 1 ? 's have' : ' has'} been removed. Kodi ya ziada dhidi ya hesabu ya kawaida ya hatua: ${fmt(r.exclusionExtra)}. Vikokotoo vingi huikosa kanuni hii.</div>` : ''}
     </div>
     <div class="res-section">
       ${row('Jumla ya Makato', fmt(r.totalMakato / d), 'c-red')}
@@ -739,7 +739,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Halisi', 'Income Tax', 'NOSI', 'Bima ya Afya'],
+        labels: ['Halisi', 'Kodi ya Mapato', 'NOSI', 'Bima ya Afya'],
         datasets: [{ data: [R.netAnnual, R.tax, R.nosi, R.health], backgroundColor: AfroChartColors.doughnut.slice(0, 4), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive: true, maintainAspectRatio: false, cutout: '65%', plugins: { legend: { position: 'bottom', labels: { usePointStyle: true, pointStyle: 'circle', font: { size: 11, weight: '600', family: "'Inter',sans-serif" }, padding: 14, color: '#64748B' } }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8, padding: 12 } } }
@@ -751,7 +751,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate * 100) + '%'),
-        datasets: [{ label: 'Tax (EGP)', data: bands.map(b => b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius: 6 }]
+        datasets: [{ label: 'Kodi (EGP)', data: bands.map(b => b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius: 6 }]
       },
       options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'EGP'+(v/1000).toFixed(0)+'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText, font: { size: 10 } } } } }
     });
@@ -759,7 +759,7 @@ function renderChart(type){if(typeof Chart==='undefined')return;
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Halisi', 'Income Tax', 'Emp NOSI', 'Empr NOSI', 'Empr Health'],
+        labels: ['Halisi', 'Kodi ya Mapato', 'Emp NOSI', 'Empr NOSI', 'Empr Health'],
         datasets: [{ label: 'EGP', data: [R.netAnnual, R.tax, R.nosi, R.employerNosi, R.employerHealth], backgroundColor: AfroChartColors.doughnut.slice(0, 5), borderRadius: 5 }]
       },
       options: { responsive: true, maintainAspectRatio: false, indexAxis: 'y', plugins: { legend: { display: false }, tooltip: { backgroundColor: AfroChartColors.tooltipBg, titleColor: '#fff', bodyColor: '#fff', cornerRadius: 8 } }, scales: { x: { ticks: { callback: v => 'EGP'+(v/1000).toFixed(0)+'k', color: AfroChartColors.tickText }, grid: { color: AfroChartColors.grid } }, y: { ticks: { color: AfroChartColors.tickText, font: { size: 9 } } } } }
@@ -841,7 +841,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     ${R.exclusionExtra > 0 ? `<tr><td style="color:#7f1d1d;padding-left:14px">Marekebisho ya kuondoa bendi (${R.excludedBands.length} bendi zimeondolewa)</td><td class="num red">EGP ${Math.round(R.exclusionExtra).toLocaleString()}</td></tr>` : ''}
     <tr class="total"><td>Jumla ya Kodi ya Mapato</td><td class="num red">${R.isExempt ? 'Nil' : '(EGP ' + Math.round(R.tax).toLocaleString() + ')'}</td></tr>
   </table>
-  ${R.hasExclusion ? `<div class="notice">⚠ <strong>Utaratibu wa kuondoa bendi umetumika:</strong> NATI ya EGP ${Math.round(R.nati).toLocaleString()} inatumia kanuni ya mabanda ya Misri — ${R.excludedBands.length} bendi za chini za kodi zimeondolewa. Extra tax vs. hesabu ya kawaida ya hatua: EGP ${Math.round(R.exclusionExtra).toLocaleString()}. Vikokotoo vingi vya mshahara hukosa kanuni hii na kupunguza kiasi halisi cha wajibu wa kodi.</div>` : ''}
+  ${R.hasExclusion ? `<div class="notice">⚠ <strong>Utaratibu wa kuondoa bendi umetumika:</strong> NATI ya EGP ${Math.round(R.nati).toLocaleString()} inatumia kanuni ya mabanda ya Misri — ${R.excludedBands.length} bendi za chini za kodi zimeondolewa. Kodi ya ziada dhidi ya hesabu ya kawaida ya hatua: EGP ${Math.round(R.exclusionExtra).toLocaleString()}. Vikokotoo vingi vya mshahara hukosa kanuni hii na kupunguza kiasi halisi cha wajibu wa kodi.</div>` : ''}
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mshahara Halisi</div>
   <table>
@@ -882,7 +882,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </div>
 
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html], { type: 'text/html;charset=utf-8' });
@@ -1053,7 +1052,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1115,5 +1114,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>
