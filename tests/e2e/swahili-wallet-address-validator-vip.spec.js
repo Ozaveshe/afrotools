@@ -255,3 +255,16 @@ test('SEO, reciprocal hreflang and artwork identify the physical Swahili owner',
   expect(artwork).toBe('https://afrotools.com/assets/img/tools/crypto-address.webp');
   expect(fs.existsSync(path.join(ROOT, 'assets/img/tools/crypto-address.webp'))).toBe(true);
 });
+
+test('Swahili crypto hub and all-tools search discover the native app', async ({ page }) => {
+  await page.goto('/sw/mshahara-na-kodi/crypto/', { waitUntil: 'domcontentloaded' });
+  await page.fill('#hub-search', 'anwani');
+  const hubLink = page.locator('a[href="/sw/crypto/address-validator/"]').first();
+  await expect(hubLink).toBeVisible();
+  await expect(hubLink).not.toContainText('Kiingereza');
+
+  await page.goto('/sw/zana-zote/?q=anwani%20ya%20pochi', { waitUntil: 'domcontentloaded' });
+  const searchLink = page.locator('#search-results-grid a[href="/sw/crypto/address-validator/"]').first();
+  await expect(searchLink).toBeVisible();
+  await expect(searchLink).toContainText('Kihakiki cha Muundo wa Anwani ya Pochi');
+});

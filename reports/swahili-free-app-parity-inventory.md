@@ -11,16 +11,16 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1076 |
-| Swahili coverage records | 1073 |
-| Native candidates | 123 |
+| Swahili physical HTML pages | 1077 |
+| Swahili coverage records | 1074 |
+| Native candidates | 124 |
 | Localized shell candidates | 654 |
 | English fallbacks | 17 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 463 |
+| Missing | 462 |
 | **Accepted** | **192** |
 
 ## Category reconciliation
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 0 | 33 | 0 | 0 | 0 | 0 | 0 | 9 | 0 |
 | Energy & Utilities | 20 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Engineering & Construction | 26 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Finance, Tax & Market Data | 132 | 4 | 84 | 3 | 0 | 0 | 0 | 0 | 41 | 28 |
+| Finance, Tax & Market Data | 132 | 5 | 84 | 3 | 0 | 0 | 0 | 0 | 40 | 28 |
 | Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 0 | 29 | 0 | 0 | 0 | 0 | 0 | 13 | 0 |
@@ -828,7 +828,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Crypto Profit or Loss Worksheet | Finance, Tax & Market Data | `/crypto/profit-calculator` | Missing | None | No |
 | Crypto Mining Operating Margin Worksheet | Finance, Tax & Market Data | `/crypto/mining-calculator` | Missing | None | No |
 | Crypto Scam Red-Flag Checklist & Evidence Pack | Finance, Tax & Market Data | `/crypto/scam-checker` | Missing | None | No |
-| Wallet Address Format Validator | Finance, Tax & Market Data | `/crypto/address-validator` | Missing | None | No |
+| Wallet Address Format Validator | Finance, Tax & Market Data | `/crypto/address-validator` | Native candidate | `/sw/crypto/address-validator` | No |
 | Exchange Due-Diligence Workbook | Finance, Tax & Market Data | `/crypto/exchange-ratings` | Missing | None | No |
 | Contract Address Evidence Check | Finance, Tax & Market Data | `/crypto/contract-scanner` | Missing | None | No |
 | Crypto Concepts & Wallet Safety Quiz | Finance, Tax & Market Data | `/crypto/quiz` | Missing | None | No |
