@@ -11,23 +11,23 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1027 |
-| Swahili coverage records | 1024 |
-| Native candidates | 74 |
+| Swahili physical HTML pages | 1076 |
+| Swahili coverage records | 1073 |
+| Native candidates | 123 |
 | Localized shell candidates | 649 |
 | English fallbacks | 22 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 512 |
-| **Accepted** | **114** |
+| Missing | 463 |
+| **Accepted** | **169** |
 
 ## Category reconciliation
 
 | Category | Apps | Native | Shell | English fallback | Iframe | Bridge | Alias | Unclassified | Missing | Accepted |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Agriculture | 447 | 65 | 18 | 0 | 0 | 0 | 0 | 0 | 364 | 56 |
+| Agriculture | 447 | 114 | 18 | 0 | 0 | 0 | 0 | 0 | 315 | 111 |
 | Business & ROI | 12 | 0 | 10 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Career & Development | 4 | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Climate & Environment | 13 | 0 | 12 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -317,7 +317,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Crop Planting Calendar | Agriculture | `/tools/planting-calendar` | Localized shell candidate | `/sw/zana/kalenda-ya-kupanda-mazao` | No |
 | Fertilizer & Yield Calculator | Agriculture | `/tools/fertilizer-calc` | Missing | None | No |
 | Crop Yield Estimator | Agriculture | `/agriculture/crop-yield` | Native candidate | `/sw/zana/makisio-ya-mavuno` | Yes |
-| Fertilizer Calculator (NPK) | Agriculture | `/agriculture/fertilizer` | Localized shell candidate | `/sw/zana/kikokotoo-mbolea` | No |
+| Fertilizer Calculator (NPK) | Agriculture | `/agriculture/fertilizer` | Localized shell candidate | `/sw/zana/kikokotoo-mbolea` | Yes |
 | Irrigation Water Calculator | Agriculture | `/agriculture/irrigation` | Localized shell candidate | `/sw/zana/kikokotoo-umwagiliaji` | No |
 | Farm Profit/Loss Calculator | Agriculture | `/agriculture/farm-profit` | Localized shell candidate | `/sw/zana/faida-na-hasara-ya-shamba` | No |
 | Smallholder Farm Budget Planner | Agriculture | `/agriculture/farm-budget` | Missing | None | No |
@@ -432,60 +432,60 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Uganda Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/uganda` | Native candidate | `/sw/kilimo/mavuno/uganda` | Yes |
 | Zambia Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zambia` | Native candidate | `/sw/kilimo/mavuno/zambia` | Yes |
 | Zimbabwe Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/zimbabwe` | Native candidate | `/sw/kilimo/mavuno/zimbabwe` | Yes |
-| Algeria Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/algeria` | Missing | None | No |
-| Angola Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/angola` | Missing | None | No |
-| Benin Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/benin` | Missing | None | No |
-| Botswana Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/botswana` | Missing | None | No |
-| Burkina Faso Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/burkina-faso` | Missing | None | No |
-| Burundi Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/burundi` | Native candidate | `/sw/kilimo/mbolea/burundi` | No |
-| Cabo Verde Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cabo-verde` | Missing | None | No |
-| Cameroon Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cameroon` | Missing | None | No |
-| Central African Republic Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/central-african-republic` | Missing | None | No |
-| Chad Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/chad` | Missing | None | No |
-| Comoros Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/comoros` | Missing | None | No |
-| Congo-Brazzaville Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/congo-brazzaville` | Missing | None | No |
-| Côte d'Ivoire Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cote-d-ivoire` | Missing | None | No |
-| Djibouti Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/djibouti` | Missing | None | No |
-| DR Congo Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/dr-congo` | Missing | None | No |
-| Egypt Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/egypt` | Missing | None | No |
-| Equatorial Guinea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/equatorial-guinea` | Missing | None | No |
-| Eritrea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/eritrea` | Missing | None | No |
-| Eswatini Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/eswatini` | Missing | None | No |
-| Ethiopia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/ethiopia` | Missing | None | No |
-| Gabon Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/gabon` | Missing | None | No |
-| Gambia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/gambia` | Missing | None | No |
-| Ghana Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/ghana` | Missing | None | No |
-| Guinea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/guinea` | Missing | None | No |
-| Guinea-Bissau Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/guinea-bissau` | Missing | None | No |
-| Kenya Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/kenya` | Native candidate | `/sw/kilimo/mbolea/kenya` | No |
-| Lesotho Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/lesotho` | Missing | None | No |
-| Liberia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/liberia` | Missing | None | No |
-| Libya Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/libya` | Missing | None | No |
-| Madagascar Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/madagascar` | Missing | None | No |
-| Malawi Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/malawi` | Missing | None | No |
-| Mali Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mali` | Missing | None | No |
-| Mauritania Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mauritania` | Missing | None | No |
-| Mauritius Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mauritius` | Missing | None | No |
-| Morocco Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/morocco` | Missing | None | No |
-| Mozambique Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mozambique` | Missing | None | No |
-| Namibia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/namibia` | Missing | None | No |
-| Niger Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/niger` | Missing | None | No |
-| Nigeria Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/nigeria` | Missing | None | No |
-| Rwanda Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/rwanda` | Native candidate | `/sw/kilimo/mbolea/rwanda` | No |
-| São Tomé & Príncipe Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sao-tome-and-principe` | Missing | None | No |
-| Senegal Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/senegal` | Missing | None | No |
-| Seychelles Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/seychelles` | Missing | None | No |
-| Sierra Leone Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sierra-leone` | Missing | None | No |
-| Somalia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/somalia` | Missing | None | No |
-| South Africa Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/south-africa` | Missing | None | No |
-| South Sudan Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/south-sudan` | Missing | None | No |
-| Sudan Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sudan` | Missing | None | No |
-| Tanzania Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/tanzania` | Native candidate | `/sw/kilimo/mbolea/tanzania` | No |
-| Togo Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/togo` | Missing | None | No |
-| Tunisia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/tunisia` | Missing | None | No |
-| Uganda Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/uganda` | Native candidate | `/sw/kilimo/mbolea/uganda` | No |
-| Zambia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zambia` | Missing | None | No |
-| Zimbabwe Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zimbabwe` | Missing | None | No |
+| Algeria Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/algeria` | Native candidate | `/sw/kilimo/mbolea/algeria` | Yes |
+| Angola Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/angola` | Native candidate | `/sw/kilimo/mbolea/angola` | Yes |
+| Benin Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/benin` | Native candidate | `/sw/kilimo/mbolea/benin` | Yes |
+| Botswana Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/botswana` | Native candidate | `/sw/kilimo/mbolea/botswana` | Yes |
+| Burkina Faso Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/burkina-faso` | Native candidate | `/sw/kilimo/mbolea/burkina-faso` | Yes |
+| Burundi Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/burundi` | Native candidate | `/sw/kilimo/mbolea/burundi` | Yes |
+| Cabo Verde Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cabo-verde` | Native candidate | `/sw/kilimo/mbolea/cape-verde` | Yes |
+| Cameroon Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cameroon` | Native candidate | `/sw/kilimo/mbolea/cameroon` | Yes |
+| Central African Republic Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/central-african-republic` | Native candidate | `/sw/kilimo/mbolea/central-african-republic` | Yes |
+| Chad Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/chad` | Native candidate | `/sw/kilimo/mbolea/chad` | Yes |
+| Comoros Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/comoros` | Native candidate | `/sw/kilimo/mbolea/comoros` | Yes |
+| Congo-Brazzaville Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/congo-brazzaville` | Native candidate | `/sw/kilimo/mbolea/congo` | Yes |
+| Côte d'Ivoire Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/cote-d-ivoire` | Native candidate | `/sw/kilimo/mbolea/cote-divoire` | Yes |
+| Djibouti Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/djibouti` | Native candidate | `/sw/kilimo/mbolea/djibouti` | Yes |
+| DR Congo Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/dr-congo` | Native candidate | `/sw/kilimo/mbolea/dr-congo` | Yes |
+| Egypt Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/egypt` | Native candidate | `/sw/kilimo/mbolea/egypt` | Yes |
+| Equatorial Guinea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/equatorial-guinea` | Native candidate | `/sw/kilimo/mbolea/equatorial-guinea` | Yes |
+| Eritrea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/eritrea` | Native candidate | `/sw/kilimo/mbolea/eritrea` | Yes |
+| Eswatini Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/eswatini` | Native candidate | `/sw/kilimo/mbolea/eswatini` | Yes |
+| Ethiopia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/ethiopia` | Native candidate | `/sw/kilimo/mbolea/ethiopia` | Yes |
+| Gabon Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/gabon` | Native candidate | `/sw/kilimo/mbolea/gabon` | Yes |
+| Gambia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/gambia` | Native candidate | `/sw/kilimo/mbolea/gambia` | Yes |
+| Ghana Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/ghana` | Native candidate | `/sw/kilimo/mbolea/ghana` | Yes |
+| Guinea Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/guinea` | Native candidate | `/sw/kilimo/mbolea/guinea` | Yes |
+| Guinea-Bissau Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/guinea-bissau` | Native candidate | `/sw/kilimo/mbolea/guinea-bissau` | Yes |
+| Kenya Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/kenya` | Native candidate | `/sw/kilimo/mbolea/kenya` | Yes |
+| Lesotho Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/lesotho` | Native candidate | `/sw/kilimo/mbolea/lesotho` | Yes |
+| Liberia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/liberia` | Native candidate | `/sw/kilimo/mbolea/liberia` | Yes |
+| Libya Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/libya` | Native candidate | `/sw/kilimo/mbolea/libya` | Yes |
+| Madagascar Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/madagascar` | Native candidate | `/sw/kilimo/mbolea/madagascar` | Yes |
+| Malawi Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/malawi` | Native candidate | `/sw/kilimo/mbolea/malawi` | Yes |
+| Mali Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mali` | Native candidate | `/sw/kilimo/mbolea/mali` | Yes |
+| Mauritania Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mauritania` | Native candidate | `/sw/kilimo/mbolea/mauritania` | Yes |
+| Mauritius Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mauritius` | Native candidate | `/sw/kilimo/mbolea/mauritius` | Yes |
+| Morocco Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/morocco` | Native candidate | `/sw/kilimo/mbolea/morocco` | Yes |
+| Mozambique Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/mozambique` | Native candidate | `/sw/kilimo/mbolea/mozambique` | Yes |
+| Namibia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/namibia` | Native candidate | `/sw/kilimo/mbolea/namibia` | Yes |
+| Niger Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/niger` | Native candidate | `/sw/kilimo/mbolea/niger` | Yes |
+| Nigeria Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/nigeria` | Native candidate | `/sw/kilimo/mbolea/nigeria` | Yes |
+| Rwanda Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/rwanda` | Native candidate | `/sw/kilimo/mbolea/rwanda` | Yes |
+| São Tomé & Príncipe Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sao-tome-and-principe` | Native candidate | `/sw/kilimo/mbolea/sao-tome` | Yes |
+| Senegal Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/senegal` | Native candidate | `/sw/kilimo/mbolea/senegal` | Yes |
+| Seychelles Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/seychelles` | Native candidate | `/sw/kilimo/mbolea/seychelles` | Yes |
+| Sierra Leone Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sierra-leone` | Native candidate | `/sw/kilimo/mbolea/sierra-leone` | Yes |
+| Somalia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/somalia` | Native candidate | `/sw/kilimo/mbolea/somalia` | Yes |
+| South Africa Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/south-africa` | Native candidate | `/sw/kilimo/mbolea/south-africa` | Yes |
+| South Sudan Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/south-sudan` | Native candidate | `/sw/kilimo/mbolea/south-sudan` | Yes |
+| Sudan Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/sudan` | Native candidate | `/sw/kilimo/mbolea/sudan` | Yes |
+| Tanzania Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/tanzania` | Native candidate | `/sw/kilimo/mbolea/tanzania` | Yes |
+| Togo Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/togo` | Native candidate | `/sw/kilimo/mbolea/togo` | Yes |
+| Tunisia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/tunisia` | Native candidate | `/sw/kilimo/mbolea/tunisia` | Yes |
+| Uganda Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/uganda` | Native candidate | `/sw/kilimo/mbolea/uganda` | Yes |
+| Zambia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zambia` | Native candidate | `/sw/kilimo/mbolea/zambia` | Yes |
+| Zimbabwe Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zimbabwe` | Native candidate | `/sw/kilimo/mbolea/zimbabwe` | Yes |
 | Algeria Irrigation Calculator | Agriculture | `/agriculture/irrigation/algeria` | Missing | None | No |
 | Angola Irrigation Calculator | Agriculture | `/agriculture/irrigation/angola` | Missing | None | No |
 | Benin Irrigation Calculator | Agriculture | `/agriculture/irrigation/benin` | Missing | None | No |

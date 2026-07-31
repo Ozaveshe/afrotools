@@ -14,7 +14,25 @@ const PROOF = Object.freeze({
     browserSpec: 'tests/e2e/sw-agriculture-crop-yield.spec.js',
     engineTest: 'tests/sw-agriculture-crop-yield.test.js',
     sourceOwner: 'scripts/build-sw-agriculture-family.js --family crop-yield --check',
-    receipt: 'reports/sw-agriculture-acceptance/crop-yield.json'
+    receipt: 'reports/sw-agriculture-acceptance/crop-yield.json',
+    sharedEngine: 'engines/src/crop-yield-engine.js',
+    countryData: 'data/agriculture/{country-code}-agri-data.js',
+    countryWorkflow: row => (
+      `${row.country.code} country data drives crop, region, soil, season, yield and revenue outputs through the shared Crop Yield engine`
+    )
+  },
+  fertilizer: {
+    expectedRows: 55,
+    browserSpec: 'tests/e2e/sw-agriculture-fertilizer-family.spec.js',
+    engineTest: 'tests/sw-agriculture-fertilizer-parity.test.js',
+    sourceOwner: 'scripts/build-sw-agriculture-family.js --family fertilizer --check',
+    receipt: 'reports/sw-agriculture-acceptance/fertilizer.json',
+    sharedEngine: 'engines/src/fertilizer-engine.js',
+    countryData: 'data/agriculture/{country-code}-agri-data.js',
+    externalReceipt: true,
+    countryWorkflow: row => (
+      `${row.country.code} country data drives crop, soil, farm-size, nutrient, recommendation and cost outputs through the shared Fertilizer engine`
+    )
   }
 });
 
@@ -55,8 +73,8 @@ function entry(row, proof) {
       engineTest: proof.engineTest,
       sourceOwner: proof.sourceOwner,
       workflow: hub
-        ? 'Native Swahili discovery hub exposes the exact 54 reviewed Crop Yield country applications'
-        : `${row.country.code} country data drives crop, region, soil, season, yield and revenue outputs through the shared Crop Yield engine`,
+        ? `Native Swahili discovery hub exposes the exact 54 reviewed ${row.family} country applications`
+        : proof.countryWorkflow(row),
       export: hub
         ? 'Discovery hub has no result export action'
         : 'JSON, TXT and CSV downloads reopened; PDF signature and parsed content verified'
@@ -74,6 +92,16 @@ function run(options) {
   }
   for (const required of [proof.browserSpec, proof.engineTest]) {
     if (!fs.existsSync(path.join(ROOT, required))) throw new Error(`Missing proof file ${required}.`);
+  }
+  if (proof.externalReceipt) {
+    const receipt = JSON.parse(fs.readFileSync(path.join(ROOT, proof.receipt), 'utf8'));
+    const accepted = receipt.proof && receipt.proof.browserAcceptedRows;
+    const passedRows = Array.isArray(receipt.rows)
+      ? receipt.rows.filter(row => row.familyReceiptState === 'passed-local-proof').length
+      : 0;
+    if (accepted !== proof.expectedRows || passedRows !== proof.expectedRows) {
+      throw new Error(`${proof.receipt} does not prove all ${proof.expectedRows} rows.`);
+    }
   }
 
   const ledger = JSON.parse(fs.readFileSync(LEDGER, 'utf8'));
@@ -97,8 +125,8 @@ function run(options) {
     },
     owners: {
       generator: proof.sourceOwner,
-      sharedEngine: 'engines/src/crop-yield-engine.js',
-      countryData: 'data/agriculture/{country-code}-agri-data.js',
+      sharedEngine: proof.sharedEngine,
+      countryData: proof.countryData,
       cropDatabase: 'data/agriculture/crop-database.js',
       scopedAiRoutes: 'data/localization/sw-agriculture-parity-manifest.json'
     },
@@ -147,7 +175,9 @@ function run(options) {
   };
 
   writeOrCheck(LEDGER, ledger, options.check);
-  writeOrCheck(path.join(ROOT, proof.receipt), receipt, options.check);
+  if (!proof.externalReceipt) {
+    writeOrCheck(path.join(ROOT, proof.receipt), receipt, options.check);
+  }
   console.log(JSON.stringify({
     family: options.family,
     accepted: rows.length,
