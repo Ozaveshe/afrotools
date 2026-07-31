@@ -1,0 +1,44 @@
+{
+  "schemaVersion": 1,
+  "lane": "swahili-finance-hr-personal-finance-remainder",
+  "policy": "Only routes listed here may bypass the generic remainder parity generator. Each row must name a maintained native page, the exact shared English engine and controller, and route-specific automated proof.",
+  "rows": [
+    {
+      "englishId": "crypto-address",
+      "englishRoute": "/crypto/address-validator",
+      "swahiliRoute": "/sw/crypto/address-validator",
+      "sourceOwner": "sw/crypto/address-validator/index.html",
+      "engineOwner": "assets/js/engines/wallet-address-validator.js",
+      "controllerOwner": "assets/js/pages/wallet-address-validator.js",
+      "localeOwners": {
+        "en": "crypto/address-validator/index.html",
+        "fr": "fr/crypto/address-validator/index.html",
+        "sw": "sw/crypto/address-validator/index.html"
+      },
+      "reciprocalRoutes": {
+        "en": "/crypto/address-validator/",
+        "fr": "/fr/crypto/address-validator/",
+        "sw": "/sw/crypto/address-validator/",
+        "x-default": "/crypto/address-validator/"
+      },
+      "discoveryOwner": {
+        "file": "assets/js/components/tool-registry.js",
+        "id": "crypto-address-sw",
+        "sourceId": "crypto-address"
+      },
+      "acceptanceStatus": "accepted",
+      "advertisedNativeFormats": [
+        "clipboard-text"
+      ],
+      "aiContextOwner": "data/ai/tool-context/crypto-address.json",
+      "sharedAiRoutingOwner": "coordinator",
+      "proof": {
+        "engine": "tests/wallet-address-validator-engine.test.js",
+        "contract": "tests/wallet-address-validator-contract.test.js",
+        "browser": "tests/e2e/swahili-wallet-address-validator-vip.spec.js",
+        "aiContext": "tests/wallet-address-validator-contract.test.js",
+        "metadataAndDiscovery": "tests/wallet-address-validator-contract.test.js"
+      }
+    }
+  ]
+}
