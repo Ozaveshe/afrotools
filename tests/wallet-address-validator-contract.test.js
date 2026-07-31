@@ -76,7 +76,7 @@ test('native Swahili owner keeps the English controls and real export while remo
   assert.match(html, /walletCopy/);
   assert.match(html, /wallet-address-validator\.js/);
   assert.match(html, /wallet-address-validator\.js\?v=b0e4cb9a/);
-  assert.doesNotMatch(html, /swahili-finance-remainder-parity|data-sw-finance-json-export|data-sw-finance-ai-consent|lazy-analytics/i);
+  assert.doesNotMatch(html, /swahili-finance-remainder-parity|data-sw-finance-json-export|data-sw-finance-ai-consent/i);
   assert.doesNotMatch(html, /Private, local validation|Choose the intended network|Check an address|Validation receipt|Checks performed|What this cannot prove|Related tools/i);
 });
 
@@ -118,9 +118,13 @@ test('candidate receipt contains only the accepted crypto-address row', () => {
   assert.equal(Object.hasOwn(receipt, 'blockedEnglishIds'), false);
 });
 
-test('native Swahili owner does not load analytics or shared AI routing', () => {
+test('native Swahili owner keeps consent-aware analytics and does not load shared AI routing', () => {
   const html = read('sw/crypto/address-validator/index.html');
-  assert.doesNotMatch(html, /lazy-analytics|intent-router|swahili-route-map|data-sw-finance-ai-consent/i);
+  assert.equal(
+    (html.match(/<script src="\/assets\/js\/lazy-analytics\.js\?v=249c230c" defer><\/script>/g) || []).length,
+    1
+  );
+  assert.doesNotMatch(html, /intent-router|swahili-route-map|data-sw-finance-ai-consent/i);
   assert.match(html, /wallet-address-validator\.js\?v=b0e4cb9a/);
 });
 
