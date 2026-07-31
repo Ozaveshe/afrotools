@@ -18,7 +18,7 @@
   var i18nApi = null;
   var guardrailsApi = null;
   var frenchRouteMapApi = null;
-  var swahiliAgricultureRouteMapApi = null;
+  var swahiliRouteMapApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
@@ -41,15 +41,15 @@
       frenchRouteMapApi = null;
     }
     try {
-      swahiliAgricultureRouteMapApi = require("./swahili-agriculture-route-map.generated.js");
+      swahiliRouteMapApi = require("./swahili-route-map.generated.js");
     } catch (err) {
-      swahiliAgricultureRouteMapApi = null;
+      swahiliRouteMapApi = null;
     }
   }
   if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
   if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
   if (!frenchRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = globalThis.AfroToolsAIFrenchRouteMap;
-  if (!swahiliAgricultureRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAISwahiliAgricultureRouteMap) swahiliAgricultureRouteMapApi = globalThis.AfroToolsAISwahiliAgricultureRouteMap;
+  if (!swahiliRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAISwahiliRouteMap) swahiliRouteMapApi = globalThis.AfroToolsAISwahiliRouteMap;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -901,17 +901,41 @@
     var locale = requestedLocale(options);
     if (locale === "sw") {
       var swahiliCopy = Object.assign({}, decision);
-      var swahiliRoutes = swahiliAgricultureRouteMapApi && swahiliAgricultureRouteMapApi.routes || {};
+      var swahiliRoutes = swahiliRouteMapApi && swahiliRouteMapApi.routes || {};
       var swahiliEnglishRoute = normalizeRouteKey(swahiliCopy.selectedRoute);
       var swahiliRoute = swahiliRoutes[swahiliEnglishRoute];
-      if (!swahiliRoute) return decision;
       var swahiliMeta = Object.assign({}, swahiliCopy._meta || {});
-      swahiliCopy.selectedRoute = swahiliRoute + routeQuery(swahiliCopy.selectedRoute);
+      if (swahiliRoute) {
+        swahiliCopy.selectedRoute = swahiliRoute + routeQuery(swahiliCopy.selectedRoute);
+        swahiliMeta.localeRoute = {
+          locale: "sw",
+          status: "mapped",
+          source: swahiliRouteMapApi.source || "swahili_acceptance_ledger"
+        };
+        swahiliCopy._meta = swahiliMeta;
+        return swahiliCopy;
+      }
+      var swahiliRequestedToolId = swahiliCopy.selectedToolId;
+      swahiliCopy.selectedToolId = SEARCH_FALLBACK.id;
+      swahiliCopy.selectedRoute = ((swahiliRouteMapApi && swahiliRouteMapApi.fallbackRoute) || "/sw/zana-zote/") + "?source=ask";
+      swahiliCopy.confidence = Math.min(Number(swahiliCopy.confidence || 0.2), 0.2);
+      swahiliCopy.reasonShort = "Njia ya Kiswahili iliyothibitishwa bado haijachapishwa kwa zana hii.";
+      swahiliCopy.extractedInputs = {};
+      swahiliCopy.missingInputs = [];
+      swahiliCopy.clarificationQuestion = "Tafuta zana ya Kiswahili iliyokaguliwa kwenye orodha ya zana.";
+      swahiliCopy.safetyDomain = "none";
+      swahiliCopy.highStakesNotice = "";
+      swahiliCopy.privacyMode = "browser_local";
+      swahiliCopy.canPrefill = false;
+      swahiliCopy.handoffPlan = buildHandoffPlan(SEARCH_FALLBACK, []);
+      swahiliCopy.handoffPlan.launchLabel = "Fungua zana za Kiswahili";
+      swahiliCopy.exportPlan = buildExportPlan(SEARCH_FALLBACK, "none");
+      swahiliCopy.suggestedNextActions = ["Fungua zana za Kiswahili", "Taja nchi na kazi", "Chagua njia iliyothibitishwa"];
       swahiliMeta.localeRoute = {
         locale: "sw",
-        status: "mapped",
-        family: "fertilizer",
-        source: swahiliAgricultureRouteMapApi.source || "swahili_agriculture_manifest"
+        status: "unavailable",
+        requestedToolId: swahiliRequestedToolId,
+        source: swahiliRouteMapApi && swahiliRouteMapApi.source || "missing_route_map"
       };
       swahiliCopy._meta = swahiliMeta;
       return swahiliCopy;
