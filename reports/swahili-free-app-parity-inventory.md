@@ -14,14 +14,14 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Swahili physical HTML pages | 1076 |
 | Swahili coverage records | 1073 |
 | Native candidates | 123 |
-| Localized shell candidates | 649 |
-| English fallbacks | 22 |
+| Localized shell candidates | 654 |
+| English fallbacks | 17 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 463 |
-| **Accepted** | **169** |
+| **Accepted** | **192** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 0 | 33 | 0 | 0 | 0 | 0 | 0 | 9 | 0 |
 | Energy & Utilities | 20 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Engineering & Construction | 26 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Finance, Tax & Market Data | 132 | 4 | 79 | 8 | 0 | 0 | 0 | 0 | 41 | 5 |
+| Finance, Tax & Market Data | 132 | 4 | 84 | 3 | 0 | 0 | 0 | 0 | 41 | 28 |
 | Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 0 | 29 | 0 | 0 | 0 | 0 | 0 | 13 | 0 |
@@ -85,42 +85,42 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | AI Business Planner | Finance, Tax & Market Data | `/tools/business-planner` | Localized shell candidate | `/sw/zana/mpangaji-wa-biashara-ai` | No |
 | Ghana PAYE + SSNIT | Finance, Tax & Market Data | `/ghana/gh-paye` | Localized shell candidate | `/sw/ghana/kikokotoo-kodi-mshahara` | No |
 | South Africa PAYE Calculator | Finance, Tax & Market Data | `/south-africa/za-paye` | Localized shell candidate | `/sw/south-africa/kikokotoo-kodi-mshahara` | No |
-| Egypt Income Tax | Finance, Tax & Market Data | `/egypt/eg-paye` | Localized shell candidate | `/sw/egypt/kikokotoo-kodi-mshahara` | No |
-| TRA PAYE Calculator Tanzania | Finance, Tax & Market Data | `/tanzania/tz-paye` | Localized shell candidate | `/sw/tanzania/kikokotoo-kodi-mshahara` | No |
+| Egypt Income Tax | Finance, Tax & Market Data | `/egypt/eg-paye` | Localized shell candidate | `/sw/egypt/kikokotoo-kodi-mshahara` | Yes |
+| TRA PAYE Calculator Tanzania | Finance, Tax & Market Data | `/tanzania/tz-paye` | Localized shell candidate | `/sw/tanzania/kikokotoo-kodi-mshahara` | Yes |
 | Uganda PAYE Calculator | Finance, Tax & Market Data | `/uganda/ug-paye` | Localized shell candidate | `/sw/uganda/kikokotoo-kodi-mshahara` | No |
 | Rwanda PAYE Calculator | Finance, Tax & Market Data | `/rwanda/rw-paye` | Localized shell candidate | `/sw/rwanda/kikokotoo-kodi-mshahara` | No |
-| Ethiopia PAYE Calculator | Finance, Tax & Market Data | `/ethiopia/et-paye` | Localized shell candidate | `/sw/ethiopia/kikokotoo-kodi-mshahara` | No |
-| Senegal PAYE Calculator | Finance, Tax & Market Data | `/senegal/sn-paye` | Localized shell candidate | `/sw/senegal/kikokotoo-kodi-mshahara` | No |
-| Côte d'Ivoire PAYE | Finance, Tax & Market Data | `/cote-divoire/ci-paye` | English fallback | `/sw/cote-divoire/kikokotoo-kodi-mshahara` | No |
-| Cameroon PAYE Calculator | Finance, Tax & Market Data | `/cameroon/cm-paye` | English fallback | `/sw/cameroon/kikokotoo-kodi-mshahara` | No |
+| Ethiopia PAYE Calculator | Finance, Tax & Market Data | `/ethiopia/et-paye` | Localized shell candidate | `/sw/ethiopia/kikokotoo-kodi-mshahara` | Yes |
+| Senegal PAYE Calculator | Finance, Tax & Market Data | `/senegal/sn-paye` | Localized shell candidate | `/sw/senegal/kikokotoo-kodi-mshahara` | Yes |
+| Côte d'Ivoire PAYE | Finance, Tax & Market Data | `/cote-divoire/ci-paye` | Localized shell candidate | `/sw/cote-divoire/kikokotoo-kodi-mshahara` | Yes |
+| Cameroon PAYE Calculator | Finance, Tax & Market Data | `/cameroon/cm-paye` | Localized shell candidate | `/sw/cameroon/kikokotoo-kodi-mshahara` | Yes |
 | Morocco PAYE Calculator | Finance, Tax & Market Data | `/morocco/ma-paye` | Localized shell candidate | `/sw/morocco/kikokotoo-kodi-mshahara` | No |
 | Algeria PAYE Calculator | Finance, Tax & Market Data | `/algeria/dz-paye` | Localized shell candidate | `/sw/algeria/kikokotoo-kodi-mshahara` | No |
 | Tunisia PAYE Calculator | Finance, Tax & Market Data | `/tunisia/tn-paye` | Localized shell candidate | `/sw/tunisia/kikokotoo-kodi-mshahara` | No |
 | Libya PAYE Calculator | Finance, Tax & Market Data | `/libya/ly-paye` | Localized shell candidate | `/sw/libya/kikokotoo-kodi-mshahara` | No |
 | Sudan PAYE Calculator | Finance, Tax & Market Data | `/sudan/sd-paye` | Localized shell candidate | `/sw/sudan/kikokotoo-kodi-mshahara` | No |
-| Angola PAYE Calculator | Finance, Tax & Market Data | `/angola/ao-paye` | Localized shell candidate | `/sw/angola/kikokotoo-kodi-mshahara` | No |
+| Angola PAYE Calculator | Finance, Tax & Market Data | `/angola/ao-paye` | Localized shell candidate | `/sw/angola/kikokotoo-kodi-mshahara` | Yes |
 | Mozambique PAYE Calculator | Finance, Tax & Market Data | `/mozambique/mz-paye` | Localized shell candidate | `/sw/mozambique/kikokotoo-kodi-mshahara` | No |
-| Zambia PAYE Calculator | Finance, Tax & Market Data | `/zambia/zm-paye` | Localized shell candidate | `/sw/zambia/kikokotoo-kodi-mshahara` | No |
-| Zimbabwe PAYE Calculator | Finance, Tax & Market Data | `/zimbabwe/zw-paye` | Localized shell candidate | `/sw/zimbabwe/kikokotoo-kodi-mshahara` | No |
-| Botswana PAYE Calculator | Finance, Tax & Market Data | `/botswana/bw-paye` | Localized shell candidate | `/sw/botswana/kikokotoo-kodi-mshahara` | No |
+| Zambia PAYE Calculator | Finance, Tax & Market Data | `/zambia/zm-paye` | Localized shell candidate | `/sw/zambia/kikokotoo-kodi-mshahara` | Yes |
+| Zimbabwe PAYE Calculator | Finance, Tax & Market Data | `/zimbabwe/zw-paye` | Localized shell candidate | `/sw/zimbabwe/kikokotoo-kodi-mshahara` | Yes |
+| Botswana PAYE Calculator | Finance, Tax & Market Data | `/botswana/bw-paye` | Localized shell candidate | `/sw/botswana/kikokotoo-kodi-mshahara` | Yes |
 | Namibia PAYE Calculator | Finance, Tax & Market Data | `/namibia/na-paye` | Localized shell candidate | `/sw/namibia/kikokotoo-kodi-mshahara` | No |
-| Eswatini PAYE Calculator | Finance, Tax & Market Data | `/eswatini/sz-paye` | Localized shell candidate | `/sw/eswatini/kikokotoo-kodi-mshahara` | No |
-| Lesotho PAYE Calculator | Finance, Tax & Market Data | `/lesotho/ls-paye` | Localized shell candidate | `/sw/lesotho/kikokotoo-kodi-mshahara` | No |
-| Malawi PAYE Calculator | Finance, Tax & Market Data | `/malawi/mw-paye` | Localized shell candidate | `/sw/malawi/kikokotoo-kodi-mshahara` | No |
+| Eswatini PAYE Calculator | Finance, Tax & Market Data | `/eswatini/sz-paye` | Localized shell candidate | `/sw/eswatini/kikokotoo-kodi-mshahara` | Yes |
+| Lesotho PAYE Calculator | Finance, Tax & Market Data | `/lesotho/ls-paye` | Localized shell candidate | `/sw/lesotho/kikokotoo-kodi-mshahara` | Yes |
+| Malawi PAYE Calculator | Finance, Tax & Market Data | `/malawi/mw-paye` | Localized shell candidate | `/sw/malawi/kikokotoo-kodi-mshahara` | Yes |
 | Madagascar PAYE Calculator | Finance, Tax & Market Data | `/madagascar/mg-paye` | Localized shell candidate | `/sw/madagascar/kikokotoo-kodi-mshahara` | No |
-| Mauritius PAYE Calculator | Finance, Tax & Market Data | `/mauritius/mu-paye` | Localized shell candidate | `/sw/mauritius/kikokotoo-kodi-mshahara` | No |
-| Seychelles PAYE Calculator | Finance, Tax & Market Data | `/seychelles/sc-paye` | Localized shell candidate | `/sw/seychelles/kikokotoo-kodi-mshahara` | No |
+| Mauritius PAYE Calculator | Finance, Tax & Market Data | `/mauritius/mu-paye` | Localized shell candidate | `/sw/mauritius/kikokotoo-kodi-mshahara` | Yes |
+| Seychelles PAYE Calculator | Finance, Tax & Market Data | `/seychelles/sc-paye` | Localized shell candidate | `/sw/seychelles/kikokotoo-kodi-mshahara` | Yes |
 | Burundi PAYE Calculator | Finance, Tax & Market Data | `/burundi/bi-paye` | Localized shell candidate | `/sw/burundi/kikokotoo-kodi-mshahara` | No |
 | DR Congo PAYE Calculator | Finance, Tax & Market Data | `/dr-congo/cd-paye` | Localized shell candidate | `/sw/dr-congo/kikokotoo-kodi-mshahara` | No |
 | Republic of Congo PAYE | Finance, Tax & Market Data | `/congo/cg-paye` | Localized shell candidate | `/sw/congo/kikokotoo-kodi-mshahara` | No |
-| Gabon PAYE Calculator | Finance, Tax & Market Data | `/gabon/ga-paye` | Localized shell candidate | `/sw/gabon/kikokotoo-kodi-mshahara` | No |
-| Equatorial Guinea PAYE | Finance, Tax & Market Data | `/eq-guinea/gq-paye` | English fallback | `/sw/equatorial-guinea/kikokotoo-kodi-mshahara` | No |
-| Central African Republic PAYE | Finance, Tax & Market Data | `/car/cf-paye` | Localized shell candidate | `/sw/central-african-republic/kikokotoo-kodi-mshahara` | No |
-| Chad PAYE Calculator | Finance, Tax & Market Data | `/chad/td-paye` | Localized shell candidate | `/sw/chad/kikokotoo-kodi-mshahara` | No |
-| Niger PAYE Calculator | Finance, Tax & Market Data | `/niger/ne-paye` | Localized shell candidate | `/sw/niger/kikokotoo-kodi-mshahara` | No |
-| Mali PAYE Calculator | Finance, Tax & Market Data | `/mali/ml-paye` | English fallback | `/sw/mali/kikokotoo-kodi-mshahara` | No |
-| Burkina Faso PAYE | Finance, Tax & Market Data | `/burkina-faso/bf-paye` | Localized shell candidate | `/sw/burkina-faso/kikokotoo-kodi-mshahara` | No |
-| Guinea PAYE Calculator | Finance, Tax & Market Data | `/guinea/gn-paye` | English fallback | `/sw/guinea/kikokotoo-kodi-mshahara` | No |
+| Gabon PAYE Calculator | Finance, Tax & Market Data | `/gabon/ga-paye` | Localized shell candidate | `/sw/gabon/kikokotoo-kodi-mshahara` | Yes |
+| Equatorial Guinea PAYE | Finance, Tax & Market Data | `/eq-guinea/gq-paye` | Localized shell candidate | `/sw/equatorial-guinea/kikokotoo-kodi-mshahara` | Yes |
+| Central African Republic PAYE | Finance, Tax & Market Data | `/car/cf-paye` | Localized shell candidate | `/sw/central-african-republic/kikokotoo-kodi-mshahara` | Yes |
+| Chad PAYE Calculator | Finance, Tax & Market Data | `/chad/td-paye` | Localized shell candidate | `/sw/chad/kikokotoo-kodi-mshahara` | Yes |
+| Niger PAYE Calculator | Finance, Tax & Market Data | `/niger/ne-paye` | Localized shell candidate | `/sw/niger/kikokotoo-kodi-mshahara` | Yes |
+| Mali PAYE Calculator | Finance, Tax & Market Data | `/mali/ml-paye` | Localized shell candidate | `/sw/mali/kikokotoo-kodi-mshahara` | Yes |
+| Burkina Faso PAYE | Finance, Tax & Market Data | `/burkina-faso/bf-paye` | Localized shell candidate | `/sw/burkina-faso/kikokotoo-kodi-mshahara` | Yes |
+| Guinea PAYE Calculator | Finance, Tax & Market Data | `/guinea/gn-paye` | Localized shell candidate | `/sw/guinea/kikokotoo-kodi-mshahara` | Yes |
 | Guinea-Bissau PAYE | Finance, Tax & Market Data | `/guinea-bissau/gw-paye` | Localized shell candidate | `/sw/guinea-bissau/kikokotoo-kodi-mshahara` | No |
 | Sierra Leone PAYE | Finance, Tax & Market Data | `/sierra-leone/sl-paye` | English fallback | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | No |
 | Liberia PAYE Calculator | Finance, Tax & Market Data | `/liberia/lr-paye` | English fallback | `/sw/liberia/kikokotoo-kodi-mshahara` | No |
