@@ -7,10 +7,6 @@ const path = require('node:path');
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(ROOT, 'data/localization/sw-agriculture-parity-manifest.json');
 const { alternateEntries } = require('./lib/fr-agriculture-hreflang');
-const HAUSA_NIGERIA_CROP_YIELD = Object.freeze({
-  route: '/ha/noma/amfanin-gona-najeriya/',
-  file: 'ha/noma/amfanin-gona-najeriya/index.html'
-});
 const CONTRACTS = Object.freeze({
   'crop-yield': require('./lib/sw-agriculture-family-contracts/crop-yield'),
   fertilizer: require('./lib/sw-agriculture-family-contracts/fertilizer')
@@ -54,8 +50,12 @@ function synchronizeFrench(content, row) {
   return synchronizeAlternates(content, row, row.french.file);
 }
 
-function synchronizeHausa(content, row) {
-  return synchronizeAlternates(content, row, HAUSA_NIGERIA_CROP_YIELD.file);
+function routeToFile(route) {
+  return `${String(route).replace(/^\/+|\/+$/g, '')}/index.html`;
+}
+
+function synchronizeHausa(content, row, relativeFile) {
+  return synchronizeAlternates(content, row, relativeFile);
 }
 
 function writeOrCheck(file, content, check) {
@@ -96,10 +96,16 @@ function run(options) {
     const frenchFile = path.join(ROOT, row.french.file);
     const french = fs.readFileSync(frenchFile, 'utf8');
     writeOrCheck(frenchFile, synchronizeFrench(french, row), options.check);
-    if (row.english.id === 'crop-yield-nigeria') {
-      const hausaFile = path.join(ROOT, HAUSA_NIGERIA_CROP_YIELD.file);
+    const hausaAlternate = alternateEntries(row).find(entry => entry.hreflang === 'ha');
+    if (hausaAlternate) {
+      const hausaRelativeFile = routeToFile(hausaAlternate.route);
+      const hausaFile = path.join(ROOT, hausaRelativeFile);
       const hausa = fs.readFileSync(hausaFile, 'utf8');
-      writeOrCheck(hausaFile, synchronizeHausa(hausa, row), options.check);
+      writeOrCheck(
+        hausaFile,
+        synchronizeHausa(hausa, row, hausaRelativeFile),
+        options.check
+      );
     }
   }
 
