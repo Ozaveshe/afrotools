@@ -522,6 +522,17 @@
       currentTotal: 'Jumla ya sasa', overUpTo: 'kwa hadi', months: 'miezi',
       consolidationTotal: 'jumla ya kuunganisha', over: 'kwa', including: 'ikijumuisha',
       financedFee: 'ya ada iliyofadhiliwa', sameTerm: 'Muda sawa', longer: 'zaidi', shorter: 'pungufu'
+    },
+    'bond-yield': {
+      invalid: 'Weka thamani chanya ya uso na bei, kuponi kati ya 0% na 1,000%, na muda unaotoa idadi kamili ya vipindi vya kuponi.',
+      coupon: 'Kuponi', price: 'Bei', ofFace: 'ya thamani ya uso', periods: 'vipindi'
+    },
+    'money-market': {
+      invalid: 'Weka kiasi zaidi ya sifuri na viwango vya mwaka zaidi ya -100% na visivyozidi 1,000%.',
+      totalValue: 'Thamani yote', period: 'Kipindi', days: 'siku', fund: 'Mfuko wa soko la fedha', annualEffective: 'halisi kwa mwaka',
+      deposit: 'Amana ya muda', simpleAnnual: 'rahisi kwa mwaka', summary: 'Ulinganisho wa soko la fedha', estimatedReturn: 'ya mapato ya MMF kwa',
+      daily: 'ongezeko la siku', weekly: 'mapato ya siku 7', difference: 'tofauti dhidi ya amana ya muda',
+      verify: 'Hakiki factsheet ya sasa ya mfuko, ada, ukwasi, kodi na hali ya udhibiti kabla ya kuwekeza.', copied: 'Imenakiliwa', copy: 'Nakili muhtasari wa ulinganisho'
     }
   };
 
@@ -535,6 +546,10 @@
 
   function isSwahili() {
     return locale() === 'sw';
+  }
+
+  function isSwahili() {
+    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'sw';
   }
 
   function text(toolId, key, englishFallback) {
