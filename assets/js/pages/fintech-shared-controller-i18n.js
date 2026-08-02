@@ -441,6 +441,43 @@
       mixTip: 'Usifungue mkopo ili kubadilisha orodha hii pekee. Hakikisha aina za akaunti ulizo nazo zimeripotiwa kwa usahihi.',
       inquiriesTip: 'Kagua maombi ya hivi karibuni na uliza kuhusu uchunguzi wowote usioufahamu.',
       strongTip: 'Majibu ya kujikagua yanaonekana thabiti. Ripoti rasmi bado inaweza kuwa na makosa au kutumia vipengele tofauti.'
+    },
+    'loan-shark-compare': {
+      invalid: 'Weka kiasi cha mkopo zaidi ya sifuri, riba tambarare ya mwezi kati ya 0% na 100%, na riba ya benki kwa mwaka kati ya 0% na 1,000%.',
+      sameTotal: 'Ofa ulizoingiza zina jumla sawa ya kulipa',
+      flatCosts: 'Ofa ya riba tambarare inagharimu',
+      reducingCosts: 'Ofa ya salio linalopungua inagharimu',
+      moreOver: 'zaidi kwa muda wa',
+      months: 'miezi',
+      monthly: 'Kwa mwezi',
+      totalInterest: 'Riba yote',
+      effectiveAnnual: 'Kiwango halisi cha mwaka',
+      same: 'Sawa',
+      notFinite: 'Haiwezi kukokotolewa'
+    },
+    'microfinance-loan': {
+      invalid: 'Weka mkopo zaidi ya sifuri, riba ya mwezi kati ya 0% na 100%, ada chini ya kiasi cha mkopo, na riba ya kulinganisha kati ya 0% na 1,000%.',
+      flat: 'Riba tambarare',
+      reducing: 'Salio linalopungua',
+      payments: 'malipo',
+      netProceeds: 'Kiasi halisi unachopokea',
+      same: 'Sawa',
+      more: 'zaidi',
+      less: 'pungufu'
+    },
+    'digital-lending': {
+      offer: 'Ofa',
+      invalid: 'Weka kiasi zaidi ya sifuri, muda wa siku 1 hadi 3,650, na jumla za kulipa zisizopungua kiasi ulichopokea.',
+      lowest: 'JUMLA NDOGO ZAIDI'
+    },
+    'bnpl-calc': {
+      invalid: 'Weka bei zaidi ya sifuri, malipo kamili 2 hadi 24, na ada ya jumla kati ya 0% na 100%.',
+      invalidCheckout: 'Malipo ya mwanzo ni makubwa sawa na bei ya bidhaa, kwa hiyo APR yenye kikomo haiwezi kukokotolewa. Punguza ada au chagua malipo ya kwanza baada ya mwezi mmoja.',
+      totalPayable: 'Jumla ya kulipa',
+      cashPrice: 'Bei taslimu',
+      installment: 'Malipo',
+      now: 'Sasa',
+      month: 'Mwezi'
     }
   };
 
