@@ -1,6 +1,33 @@
 (function (global) {
   'use strict';
 
+  var SW_STRINGS = {
+    'fixed-deposit': {
+      invalid: 'Weka mtaji ulio juu ya sifuri, pamoja na riba ya mwaka na kodi ya zuio kati ya 0% na 100%.',
+      principal: 'Mtaji',
+      netInterest: 'Riba halisi',
+      month: 'Mwezi'
+    },
+    'tbill-calc': {
+      invalid: 'Weka thamani ya ukomavu iliyo juu ya sifuri, pamoja na kiwango kilichotajwa na kodi ya zuio kati ya 0% na 100%.',
+      invalidDiscount: 'Masharti haya ya kiwango cha punguzo yanatoa bei ya ununuzi ya sifuri au hasi. Kagua kiwango na aina yake.',
+      faceValue: 'Thamani ya ukomavu',
+      youPay: 'Bei unayolipa'
+    },
+    'real-return': {
+      invalid: 'Weka kiasi kilicho juu ya sifuri, pamoja na faida ya kawaida na mfumuko wa bei iliyo juu ya -100%.',
+      yearShort: 'mwaka',
+      yearsShort: 'miaka',
+      nominal: 'Faida ya kawaida',
+      inflation: 'Mfumuko wa bei',
+      negative: 'Katika hali hii ya viwango visivyobadilika, faida halisi ni hasi; kiasi kinachokadiriwa kinapoteza uwezo wa kununua. Kagua kodi, ada na kipimo cha mfumuko kabla ya kutumia matokeo.',
+      positiveStart: 'Faida yako halisi ni chanya kwa',
+      positiveMiddle: 'Uwezo wako wa kununua unaongezeka. Baada ya',
+      positiveEnd: 'itakuwa na uwezo wa kununua wa',
+      today: 'kwa thamani ya leo'
+    }
+  };
+
   var STRINGS = {
     'mobile-vs-bank': {
       invalid: 'Saisissez un montant supérieur à zéro et des frais compris entre 0 % et 100 %.',
