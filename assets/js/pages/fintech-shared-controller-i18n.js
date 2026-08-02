@@ -537,6 +537,25 @@
     'invoice-factoring': {
       invalid:'Weka ankara zaidi ya sifuri, kiwango cha advance kati ya 0% na 100%, ada zisizo hasi na siku 1 hadi 3,650.',
       invalidFees:'Jumla ya ada lazima iwe chini ya thamani ya ankara.',dayFacility:'siku za ufadhili',nonRecourse:'mfumo bila recourse',recourse:'mfumo wenye recourse',invoice:'Ankara',advance:'Advance',fees:'Ada',reserveRelease:'Reserve inayotolewa',totalReceived:'Jumla inayopokelewa',annualizedProxy:'Kadirio la gharama ya mwaka',compare:'Linganisha ofa hii na njia nyingine kwa kiasi na muda sawa.',feeExceeds:'Ada inazidi reserve kwa',askDeduction:'Uliza kama sehemu itakatwa kwenye advance.',reserveCovers:'Reserve inaweza kufidia ada za makadirio iwapo mdaiwa atalipa kwa wakati.',decision:'Hatua za uamuzi',askReserve:'Uliza reserve itatolewa lini na kama mdaiwa lazima ajulishwe.',compareAlternatives:'Linganisha na overdraft, mkopo wa msambazaji, punguzo la mteja au kusubiri malipo.',localStatus:'Hali ya factoring imekokotolewa kwenye kivinjari. Hakuna data ya ankara iliyotumwa.',copied:'Muhtasari umenakiliwa.',downloaded:'Faili ya CSV imepakuliwa.',estimate:'Kadirio la factoring ya ankara',grossAdvance:'advance ghafi',totalFee:'Jumla ya ada',costProxy:'Kadirio la gharama ya mwaka',summaryPrefix:'Kadirio la factoring: ankara',summaryAdvance:'advance ghafi',summaryFee:'jumla ya ada',summaryReserve:'reserve inayotolewa',summaryReceived:'jumla inayopokelewa',summaryCost:'kadirio la gharama ya mwaka',verify:'Hakiki recourse, taarifa kwa mdaiwa, muda wa ada, kutolewa kwa reserve, adhabu na kodi kabla ya kusaini.'
+    },
+    'payment-gateway': {
+      invalid: 'Weka thamani ya muamala zaidi ya sifuri na idadi kamili ya miamala ya mwezi isiyopungua 1.',
+      invalidQuote: 'Weka jina la kila ofa, asilimia kati ya 0% na 100%, na ada tambarare pamoja na kikomo visivyo hasi.',
+      lowest: 'ofa uliyoingiza yenye gharama ndogo zaidi',
+      monthlyFees: 'Ada za mwezi',
+      effectiveRate: 'Kiwango halisi'
+    },
+    'merchant-fees': {
+      invalidAmounts: 'Mauzo ya mwezi na thamani ya wastani ya muamala lazima ziwe zaidi ya sifuri.',
+      invalidMix: 'Mgawanyo wa malipo lazima uwe jumla ya 100%. Jumla ya sasa:',
+      invalidRates: 'Kila kiwango cha ada lazima kiwe kati ya 0% na 100%.',
+      on: 'Kwenye', monthlyRevenue: 'ya mapato ya mwezi', blendedRate: 'kiwango cha ada kilichochanganywa',
+      card: 'Kadi au POS', mobileMoney: 'Pesa kwa simu', bankTransfer: 'Uhamisho wa benki', cash: 'Taslimu',
+      method: 'Njia', volume: 'Kiasi', mix: 'Mgawanyo', fees: 'Ada', effectiveRate: 'Kiwango halisi', total: 'JUMLA'
+    },
+    'pos-fees': {
+      invalid: 'Kagua masharti ya ada na kiasi: namba haziwezi kuwa hasi, sehemu ya kadi lazima iwe zaidi ya 0% na isizidi 100%, na siku za kazi ziwe 1 hadi 31.',
+      on: 'Kwenye', monthlyVolume: 'ya kiasi cha kadi kwa mwezi', cardAcceptance: 'ya malipo kwa kadi'
     }
   };
 
