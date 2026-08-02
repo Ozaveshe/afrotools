@@ -533,6 +533,10 @@
       deposit: 'Amana ya muda', simpleAnnual: 'rahisi kwa mwaka', summary: 'Ulinganisho wa soko la fedha', estimatedReturn: 'ya mapato ya MMF kwa',
       daily: 'ongezeko la siku', weekly: 'mapato ya siku 7', difference: 'tofauti dhidi ya amana ya muda',
       verify: 'Hakiki factsheet ya sasa ya mfuko, ada, ukwasi, kodi na hali ya udhibiti kabla ya kuwekeza.', copied: 'Imenakiliwa', copy: 'Nakili muhtasari wa ulinganisho'
+    },
+    'invoice-factoring': {
+      invalid:'Weka ankara zaidi ya sifuri, kiwango cha advance kati ya 0% na 100%, ada zisizo hasi na siku 1 hadi 3,650.',
+      invalidFees:'Jumla ya ada lazima iwe chini ya thamani ya ankara.',dayFacility:'siku za ufadhili',nonRecourse:'mfumo bila recourse',recourse:'mfumo wenye recourse',invoice:'Ankara',advance:'Advance',fees:'Ada',reserveRelease:'Reserve inayotolewa',totalReceived:'Jumla inayopokelewa',annualizedProxy:'Kadirio la gharama ya mwaka',compare:'Linganisha ofa hii na njia nyingine kwa kiasi na muda sawa.',feeExceeds:'Ada inazidi reserve kwa',askDeduction:'Uliza kama sehemu itakatwa kwenye advance.',reserveCovers:'Reserve inaweza kufidia ada za makadirio iwapo mdaiwa atalipa kwa wakati.',decision:'Hatua za uamuzi',askReserve:'Uliza reserve itatolewa lini na kama mdaiwa lazima ajulishwe.',compareAlternatives:'Linganisha na overdraft, mkopo wa msambazaji, punguzo la mteja au kusubiri malipo.',localStatus:'Hali ya factoring imekokotolewa kwenye kivinjari. Hakuna data ya ankara iliyotumwa.',copied:'Muhtasari umenakiliwa.',downloaded:'Faili ya CSV imepakuliwa.',estimate:'Kadirio la factoring ya ankara',grossAdvance:'advance ghafi',totalFee:'Jumla ya ada',costProxy:'Kadirio la gharama ya mwaka',summaryPrefix:'Kadirio la factoring: ankara',summaryAdvance:'advance ghafi',summaryFee:'jumla ya ada',summaryReserve:'reserve inayotolewa',summaryReceived:'jumla inayopokelewa',summaryCost:'kadirio la gharama ya mwaka',verify:'Hakiki recourse, taarifa kwa mdaiwa, muda wa ada, kutolewa kwa reserve, adhabu na kodi kabla ya kusaini.'
     }
   };
 
@@ -546,10 +550,6 @@
 
   function isSwahili() {
     return locale() === 'sw';
-  }
-
-  function isSwahili() {
-    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'sw';
   }
 
   function text(toolId, key, englishFallback) {
