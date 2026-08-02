@@ -613,6 +613,26 @@
       atRate: 'Kwa kiwango halisi cha mwaka ulichoingiza cha',
       planEnds: 'mpango wa michango unafikia',
       bankEnds: 'Michango ileile ya mwisho wa mwezi kwa kiwango cha benki ulichoingiza inafikia'
+    },
+    'dca-calc': {
+      invalid: 'Weka michango isiyo hasi na angalau kiasi kimoja zaidi ya sifuri, pamoja na faida ya mwaka zaidi ya -100% na isiyozidi 1,000%.',
+      totalInvested: 'Jumla iliyowekezwa', over: 'Kwa', years: 'miaka',
+      lowerScenario: 'Hali ya chini', enteredScenario: 'Hali uliyoingiza', higherScenario: 'Hali ya juu'
+    },
+    'dividend-yield': {
+      invalid: 'Weka bei ya hisa zaidi ya sifuri, pamoja na gawio na idadi ya hisa zisizo hasi.',
+      invalidEps: 'Mapato kwa kila hisa lazima yaachwe wazi au yawe zaidi ya sifuri.',
+      invalidRates: 'Kagua asilimia: kodi lazima iwe 0% hadi 100%, na viwango vingine viwe zaidi ya -100% na visizidi 1,000%.',
+      afterTax: 'Mavuno baada ya kodi ya', enteredTax: ' uliyoingiza', notAvailable: 'Haipatikani', years: 'miaka',
+      verdictPrefix: 'Mavuno ya gawio baada ya kodi ni', points: 'pointi za asilimia', above: 'juu ya', below: 'chini ya',
+      verdictSuffix: 'mavuno ya ulinganisho uliyoingiza. Hesabu hii haifanyi hatari kuwa sawa wala kupendekeza chaguo.'
+    },
+    'net-worth': {
+      itemName: 'Jina la kipengele', amount: 'Kiasi cha kipengele', remove: 'Ondoa kipengele',
+      invalid: 'Kila kiasi cha mali na deni lazima kiwe sifuri au zaidi.',
+      empty: 'Weka angalau kiasi kimoja cha mali au deni.', assets: 'Mali', liabilities: 'Madeni',
+      ratioPrefix: 'Madeni ni', ratioSuffix: 'ya mali uliyoingiza. Uwiano huu ni maelezo, si alama ya afya ya kifedha.',
+      noAssets: 'Hakuna mali iliyoingizwa; uwiano wa madeni kwa mali hauna maana.'
     }
   };
 
