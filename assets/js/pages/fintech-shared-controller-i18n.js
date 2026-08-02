@@ -478,19 +478,70 @@
       installment: 'Malipo',
       now: 'Sasa',
       month: 'Mwezi'
+    },
+    'emergency-fund': {
+      invalid: 'Weka gharama muhimu zilizo zaidi ya sifuri, miezi kamili 1 hadi 24, akiba isiyo hasi, mfumuko wa bei wa 0% hadi 100%, na miaka kamili 0 hadi 10.',
+      goalReached: 'Lengo limefikiwa',
+      months: 'miezi',
+      addSaving: 'Ongeza akiba ya kila mwezi',
+      expenses: 'miezi ya gharama',
+      monthly: 'Kwa mwezi',
+      inflationAdjusted: 'Lengo baada ya mfumuko wa bei',
+      year: 'mwaka',
+      years: 'miaka'
+    },
+    'debt-snowball': {
+      debt: 'Deni', debtName: 'Jina la deni', debtBalance: 'Salio la deni',
+      minimumPayment: 'Malipo ya chini kwa mwezi', annualRate: 'Riba kwa mwaka',
+      removeDebt: 'Ondoa deni',
+      invalidDebt: 'Kila deni linahitaji salio na malipo ya chini yaliyo zaidi ya sifuri, pamoja na riba ya mwaka kati ya 0% na 1,000%.',
+      addDebt: 'Ongeza angalau deni moja lenye salio chanya.',
+      invalidExtra: 'Malipo ya ziada kwa mwezi lazima yawe sifuri au zaidi.',
+      months: 'miezi', years: 'miaka',
+      notRepaid: 'Halijalipwa ndani ya miezi 600',
+      modelledInterest: 'Riba ya makadirio', modelledTotal: 'Jumla ya makadirio iliyolipwa',
+      planNotRepaid: 'Angalau mpango mmoja haukulipa madeni ndani ya miezi 600.',
+      increaseBudget: 'Ongeza bajeti ya malipo au kagua riba na malipo ya chini.',
+      avalancheSaves: 'Avalanche inaokoa',
+      scheduledAssumption: 'katika makadirio haya. Ulinganisho hudhani kila malipo yaliyopangwa yanafanywa.',
+      sameInterest: 'Riba ya makadirio ni sawa',
+      displayedPrecision: 'kwa usahihi unaoonyeshwa kwa taarifa hizi.',
+      notRepaidShort: 'Halijalipwa'
+    },
+    'loan-consolidation': {
+      loan: 'Mkopo', balance: 'Salio', monthlyPayment: 'Malipo kwa mwezi',
+      annualRate: 'Riba kwa mwaka (%)', loanBalance: 'salio',
+      loanPayment: 'malipo kwa mwezi', loanRate: 'riba kwa mwaka', remove: 'Ondoa mkopo',
+      addOne: 'Ongeza angalau mkopo mmoja wa sasa.',
+      invalidLoan: 'Kila mkopo wa sasa unahitaji salio na malipo chanya, pamoja na riba ya mwaka kati ya 0% na 1,000%.',
+      invalidAmortization: 'Kila malipo ya sasa lazima yafidie riba ya mwezi na kulipa mkopo ndani ya miezi 600.',
+      invalidOffer: 'Kagua riba, muda na ada ya kuunganisha. Riba lazima iwe 0% hadi 1,000% na ada 0% hadi 100%.',
+      lower: 'Jumla ya makadirio ya malipo ni ndogo',
+      higher: 'Jumla ya makadirio ya malipo ni kubwa',
+      equal: 'Jumla ya makadirio ya malipo ni sawa',
+      currentTotal: 'Jumla ya sasa', overUpTo: 'kwa hadi', months: 'miezi',
+      consolidationTotal: 'jumla ya kuunganisha', over: 'kwa', including: 'ikijumuisha',
+      financedFee: 'ya ada iliyofadhiliwa', sameTerm: 'Muda sawa', longer: 'zaidi', shorter: 'pungufu'
     }
   };
 
+  function locale() {
+    return String(document.documentElement.lang || '').toLowerCase().split('-')[0];
+  }
+
   function isFrench() {
-    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'fr';
+    return locale() === 'fr';
   }
 
   function isSwahili() {
-    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'sw';
+    return locale() === 'sw';
   }
 
   function text(toolId, key, englishFallback) {
-    var routeStrings = isFrench() ? (STRINGS[toolId] || {}) : (isSwahili() ? (SW_STRINGS[toolId] || {}) : {});
+    var routeStrings;
+    if (locale() === 'fr') routeStrings = STRINGS[toolId] || {};
+    else if (locale() === 'sw') routeStrings = SW_STRINGS[toolId] || {};
+    else return englishFallback;
     return Object.prototype.hasOwnProperty.call(routeStrings, key) ? routeStrings[key] : englishFallback;
   }
 
