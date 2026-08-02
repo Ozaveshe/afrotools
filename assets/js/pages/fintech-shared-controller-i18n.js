@@ -415,6 +415,32 @@
       total: 'Jumla',
       people: 'watu',
       ofTotal: 'ya jumla'
+    },
+    'sacco-calc': {
+      invalid: 'Weka mchango chanya wa mwezi, viwango kutoka 0% hadi 100%, na kizidishi cha mkopo kutoka 0 hadi 20.',
+      year: 'mwaka',
+      years: 'miaka',
+      contributions: 'michango ya mwisho wa mwezi'
+    },
+    'credit-score': {
+      invalid: 'Chagua thamani halali kutoka 0 hadi 100 kwa kila kipengele kati ya vitano.',
+      strongProfile: 'Wasifu thabiti wa kujikagua',
+      mixedProfile: 'Wasifu mchanganyiko wa kujikagua',
+      reviewProfile: 'Vipengele vinahitaji uhakiki',
+      paymentHistory: 'Historia ya malipo',
+      utilization: 'Matumizi ya kikomo cha mkopo',
+      historyAge: 'Umri wa historia ya mkopo',
+      creditMix: 'Mchanganyiko wa mikopo',
+      newInquiries: 'Maombi mapya ya mkopo',
+      strong: 'Thabiti',
+      mixed: 'Mchanganyiko',
+      review: 'Kagua',
+      paymentTip: 'Kagua tarehe za mwisho, rekodi za malipo na madeni yaliyochelewa kwenye ripoti yako rasmi.',
+      utilizationTip: 'Linganisha salio na vikomo kwenye ripoti ya sasa dhidi ya rekodi zako.',
+      ageTip: 'Historia fupi si kosa yenyewe; hakikisha akaunti za zamani zinazostahili hazijaachwa kwenye ripoti.',
+      mixTip: 'Usifungue mkopo ili kubadilisha orodha hii pekee. Hakikisha aina za akaunti ulizo nazo zimeripotiwa kwa usahihi.',
+      inquiriesTip: 'Kagua maombi ya hivi karibuni na uliza kuhusu uchunguzi wowote usioufahamu.',
+      strongTip: 'Majibu ya kujikagua yanaonekana thabiti. Ripoti rasmi bado inaweza kuwa na makosa au kutumia vipengele tofauti.'
     }
   };
 
