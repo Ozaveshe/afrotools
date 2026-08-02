@@ -600,6 +600,19 @@
       versus: 'dhidi ya punguzo la', planning: 'Huu ni ulinganisho wa kupanga, si agizo la malipo.',
       terms: 'Masharti', discount: 'Punguzo', implied: 'Riba ya mwaka inayodokezwa', action: 'Hatua',
       earlyAdvantage: 'Kulipa mapema kuna faida ya makadirio', netAdvantage: 'Kulipa tarehe ya mwisho kuna faida ya makadirio'
+    },
+    'thrift-calc': {
+      invalid: 'Weka wanachama 2–100, nafasi iliyo ndani ya kundi, mchango chanya, na viwango vya mwaka visivyo hasi.',
+      atMonth: 'Mwezi wa',
+      of: 'kati ya',
+      groupTotal: 'Jumla ya kundi',
+      months: 'miezi',
+      rotation: 'Mzunguko usio na ada: unachangia',
+      overCycle: 'katika mzunguko mzima na unapokea fungu lilelile kwa thamani ya kawaida mwezi wa',
+      timing: 'Nafasi hubadilisha muda wa kupokea, si faida ya kawaida.',
+      atRate: 'Kwa kiwango halisi cha mwaka ulichoingiza cha',
+      planEnds: 'mpango wa michango unafikia',
+      bankEnds: 'Michango ileile ya mwisho wa mwezi kwa kiwango cha benki ulichoingiza inafikia'
     }
   };
 
