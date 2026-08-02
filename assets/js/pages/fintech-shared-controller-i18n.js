@@ -583,6 +583,23 @@
     'pos-fees': {
       invalid: 'Kagua masharti ya ada na kiasi: namba haziwezi kuwa hasi, sehemu ya kadi lazima iwe zaidi ya 0% na isizidi 100%, na siku za kazi ziwe 1 hadi 31.',
       on: 'Kwenye', monthlyVolume: 'ya kiasi cha kadi kwa mwezi', cardAcceptance: 'ya malipo kwa kadi'
+    },
+    'asset-finance': {
+      invalid: 'Weka bei chanya, amana chini ya 100%, riba kati ya 0% na 1,000%, na jumla ya amana pamoja na balloon isiyozidi 100% ya bei.',
+      financed: 'Kiasi kilichofadhiliwa', over: 'kwa', months: 'miezi', none: 'Hakuna'
+    },
+    'trade-credit': {
+      invalid: 'Weka ankara chanya, tarehe ya mwisho baada ya tarehe ya punguzo, punguzo chini ya 100%, na riba ya kukopa pamoja na ujazo zisizo hasi.',
+      days: 'siku', payEarly: 'Gharama ndogo ya makadirio: lipa mapema',
+      earlySub: 'Punguzo linalookolewa linazidi gharama ya kukopa ya makadirio kwa',
+      earlyVerdict: 'Kwa masharti uliyoingiza, kulipa mapema kuna faida halisi ya',
+      perInvoice: 'kwa ankara baada ya', borrowingCost: 'ya gharama ya kukopa ya makadirio. Hakiki ada za mkopeshaji, ukwasi na masharti ya msambazaji.',
+      payNet: 'Gharama ndogo ya makadirio: lipa tarehe ya mwisho',
+      netSub: 'Gharama ya kukopa ya makadirio si ndogo kuliko punguzo',
+      netVerdict: 'Kwa masharti uliyoingiza, kukopa ili kulipa mapema kunagharimu',
+      versus: 'dhidi ya punguzo la', planning: 'Huu ni ulinganisho wa kupanga, si agizo la malipo.',
+      terms: 'Masharti', discount: 'Punguzo', implied: 'Riba ya mwaka inayodokezwa', action: 'Hatua',
+      earlyAdvantage: 'Kulipa mapema kuna faida ya makadirio', netAdvantage: 'Kulipa tarehe ya mwisho kuna faida ya makadirio'
     }
   };
 
