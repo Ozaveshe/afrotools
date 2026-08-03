@@ -4,6 +4,7 @@
 const crypto = require('crypto');
 const fs = require('fs');
 const path = require('path');
+const { analyticsVersion, canonicalLoaderTag } = require('./inject-analytics-loader');
 
 const root = path.resolve(__dirname, '..');
 const write = process.argv.includes('--write');
@@ -12,6 +13,7 @@ const frenchManifestPath = path.join(root, 'data', 'localization', 'fr-blog-mani
 const contentManifestPath = path.join(root, 'data', 'content', 'blog-article-manifest.json');
 const reportPath = path.join(root, 'reports', 'blog-seo-opportunities-fr-wave1-2026-08.md');
 const data = JSON.parse(fs.readFileSync(dataPath, 'utf8'));
+const analyticsLoader = canonicalLoaderTag(analyticsVersion());
 
 const clusterMeta = {
   paie: { label: 'Paie et coût employeur', cat: 'tax' },
@@ -28,6 +30,27 @@ function esc(value) {
     .replace(/</g, '&lt;')
     .replace(/>/g, '&gt;')
     .replace(/"/g, '&quot;');
+}
+
+function normalizeBuildOwnedArticleHtml(html) {
+  let normalized = String(html)
+    .replace(/\r\n/g, '\n')
+    .replace(/\s+data-chat-bundle="[^"]*"/, '')
+    .replace(/\?v=[a-f0-9]{8}(?=["'])/g, '')
+    .replace(/^[ \t]*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>[ \t]*\n?/gm, '');
+
+  const routeLinks = [];
+  normalized = normalized.replace(/^[ \t]*<link rel="(?:canonical|alternate)"[^>]*>[ \t]*\n?/gm, (link) => {
+    routeLinks.push(link.trim());
+    return '';
+  });
+
+  if (routeLinks.length) {
+    const routeLinkBlock = `${routeLinks.join('\n')}\n`;
+    normalized = normalized.replace(/(<meta name="author"[^>]*>\n)/, `$1${routeLinkBlock}`);
+  }
+
+  return normalized.replace(/\n{3,}/g, '\n\n');
 }
 
 function contentId(record) {
@@ -158,6 +181,7 @@ function renderArticle(record) {
 <div class="article-featured-img"><div class="article-featured-img-inner"><img width="600" height="400" src="/assets/img/tools/${record.image}.webp" alt="${esc(record.title)}" loading="eager"></div></div>
 <main class="article-layout"><nav class="article-toc" aria-label="Sommaire"><div class="article-toc-title">Dans ce guide</div><ol><li><a href="#reponse-rapide">Réponse rapide</a></li><li><a href="#donnees">Données</a></li><li><a href="#methode">Méthode</a></li><li><a href="#detail-1">Analyse détaillée</a></li><li><a href="#sources">Sources</a></li><li><a href="#faq">Questions</a></li></ol></nav><article class="article-body">${body}</article></main>
 <afro-footer></afro-footer><script src="/blog/assets/js/blog-reading.js" defer></script>
+${analyticsLoader}
 </body></html>
 `;
 }
@@ -203,7 +227,7 @@ for (const record of data.articles) {
   const outputPath = path.join(root, 'fr', 'blog', record.slug, 'index.html');
   const expected = renderArticle(record);
   const current = fs.existsSync(outputPath) ? fs.readFileSync(outputPath, 'utf8') : '';
-  if (current !== expected) {
+  if (normalizeBuildOwnedArticleHtml(current) !== normalizeBuildOwnedArticleHtml(expected)) {
     mismatches += 1;
     if (write) {
       fs.mkdirSync(path.dirname(outputPath), { recursive: true });
