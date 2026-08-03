@@ -80,8 +80,8 @@ function familyIndex() {
 
 function buildManifest() {
   const inventory = JSON.parse(fs.readFileSync(INVENTORY, 'utf8'));
-  const sourceRows = inventory.rows.filter(row => row.categoryKey === 'ecommerce' && !row.accepted);
-  if (sourceRows.length !== 63) throw new Error(`Expected 63 unaccepted Ecommerce rows, found ${sourceRows.length}.`);
+  const sourceRows = inventory.rows.filter(row => row.categoryKey === 'ecommerce');
+  if (sourceRows.length !== 63) throw new Error(`Expected 63 Ecommerce rows, found ${sourceRows.length}.`);
 
   const families = familyIndex();
   if (families.size !== 63) throw new Error(`Expected 63 no-overlap family assignments, found ${families.size}.`);
@@ -96,7 +96,7 @@ function buildManifest() {
       throw new Error(`Missing mapped Swahili file for ${row.englishId}.`);
     }
     const owners = ownerContract(englishFile);
-    const accepted = family === ACCEPTED_FAMILY;
+    const accepted = row.accepted === true;
     return {
       family,
       english: {
@@ -128,7 +128,7 @@ function buildManifest() {
         englishContext: `data/ai/tool-context/${row.englishId}.json`,
         scopedRouteOwner: 'data/localization/sw-ecommerce-parity-manifest.json',
         scopedRoute: routeKey(row.primarySwahiliRoute),
-        state: row.primarySwahiliRoute ? 'manifest-mapped-central-fail-closed' : 'missing-swahili-route'
+        state: row.primarySwahiliRoute ? (accepted ? 'central-accepted' : 'manifest-mapped-central-fail-closed') : 'missing-swahili-route'
       },
       acceptance: {
         state: accepted ? 'accepted-scoped' : 'pending',
@@ -145,13 +145,13 @@ function buildManifest() {
     programme: 'swahili-free-app-parity-ecommerce',
     locale: 'sw',
     coordinatorBaseSha: '8354e321ff34caf60a33a3393cd0dcddfb00c023',
-    source: 'reports/swahili-free-app-parity-inventory.json#categoryKey=ecommerce&accepted=false',
+    source: 'reports/swahili-free-app-parity-inventory.json#categoryKey=ecommerce',
     constraints: {
       exactRows: 63,
       noOverlap: true,
       noGenericRuntimeReplacement: true,
       acceptanceIsFailClosed: true,
-      centralAcceptanceLedgerOutOfScope: true
+      centralAcceptanceLedgerOutOfScope: false
     },
     families: Object.entries(FAMILY_IDS).map(([id, ids]) => ({ id, rowCount: ids.length, englishIds: ids })),
     rows

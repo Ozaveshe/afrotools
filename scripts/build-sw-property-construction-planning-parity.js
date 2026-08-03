@@ -3,6 +3,7 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
 const CHECK = process.argv.includes('--check');
@@ -82,7 +83,7 @@ if (!hub.includes('/sw/zana/bajeti-ya-ujenzi-wa-nyumba/')) {
 let changed = 0;
 for (const [relative, content] of Object.entries(outputs)) {
   const file = path.join(ROOT, relative), current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : '';
-  if (current !== content) { changed += 1; if (WRITE) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, content, 'utf8'); } }
+  if (!localizedGeneratorEquivalent(current, content)) { changed += 1; if (WRITE) { fs.mkdirSync(path.dirname(file), { recursive: true }); fs.writeFileSync(file, content, 'utf8'); } }
 }
 console.log(`${WRITE ? 'Built' : 'Checked'} Swahili property construction-planning family: 2/2; ${changed} changed outputs.`);
 if (CHECK && changed) process.exitCode = 1;

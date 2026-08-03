@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 
 const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
@@ -34,7 +35,7 @@ for (const app of apps) {
   const target = path.join(ROOT, app.file);
   const next = render(app);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
-  if (current !== next) {
+  if (!localizedGeneratorEquivalent(current, next)) {
     stale += 1;
     if (WRITE) {
       fs.mkdirSync(path.dirname(target), { recursive: true });

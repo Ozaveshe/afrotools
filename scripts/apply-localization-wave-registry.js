@@ -13,6 +13,7 @@ const {
 const ROOT = path.resolve(__dirname, "..");
 const REGISTRY = path.join(ROOT, "assets", "js", "components", "tool-registry.js");
 const WAVE = require("../data/localization/coverage-wave-2026-07.json");
+const SW_ACCEPTANCE = require("../data/audits/swahili-free-app-acceptance.json");
 const START = "  // LOCALIZATION_COVERAGE_WAVE_2026_07_START";
 const END = "  // LOCALIZATION_COVERAGE_WAVE_2026_07_END";
 const WRITE = process.argv.includes("--write");
@@ -90,20 +91,47 @@ function registryRow(entry, locale, tools) {
   return `  { ${fields.join(", ")} },`;
 }
 
+function registryRowFromTool(tool) {
+  const fields = Object.entries(tool).map(([key, value]) => `${key}: ${js(value)}`);
+  return `  { ${fields.join(", ")} },`;
+}
+
+const acceptedSwahiliRoutes = new Set(
+  SW_ACCEPTANCE.entries
+    .filter((entry) => entry.status === "accepted")
+    .map((entry) => `${String(entry.swahiliRoute).replace(/\/$/, "")}/`)
+);
+
 function build() {
   const original = fs.readFileSync(REGISTRY, "utf8");
+  const originalTools = loadTools(original);
   const source = stripBlock(original);
   const tools = loadTools(source);
   const frenchEntries = [...WAVE.french, ...(WAVE.nativeFrench || [])];
+  const generatedSwahiliHrefs = new Set();
+  const swahiliRows = WAVE.swahili
+    .filter((entry) => !tools.some((tool) => tool.lang === "sw" && tool.href === `/sw/zana/${entry.swSlug}/`))
+    .map((entry) => {
+      const href = `/sw/zana/${entry.swSlug}/`;
+      generatedSwahiliHrefs.add(href);
+      if (!acceptedSwahiliRoutes.has(href)) return registryRow(entry, "sw", tools);
+      const accepted = originalTools.find((tool) => tool.lang === "sw" && tool.href === href);
+      if (!accepted) throw new Error(`Accepted Swahili registry row is missing: ${href}`);
+      return registryRowFromTool(accepted);
+    });
+  const acceptedExtraRows = originalTools
+    .filter((tool) => tool.lang === "sw" && acceptedSwahiliRoutes.has(tool.href))
+    .filter((tool) => !tools.some((sourceTool) => sourceTool.lang === "sw" && sourceTool.href === tool.href))
+    .filter((tool) => !generatedSwahiliHrefs.has(tool.href))
+    .map(registryRowFromTool);
   const rows = [
     START,
     "  // Generated from data/localization/coverage-wave-2026-07.json. Re-run this script after changing the manifest.",
     ...frenchEntries
       .filter((entry) => entry.registryManaged !== false)
       .map((entry) => registryRow(entry, "fr", tools)),
-    ...WAVE.swahili
-      .filter((entry) => !tools.some((tool) => tool.lang === "sw" && tool.href === `/sw/zana/${entry.swSlug}/`))
-      .map((entry) => registryRow(entry, "sw", tools)),
+    ...swahiliRows,
+    ...acceptedExtraRows,
     END,
   ].join("\n");
 

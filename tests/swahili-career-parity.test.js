@@ -223,11 +223,11 @@ test('canonical, artwork, and English/French/Swahili hreflang are fully reciproc
   }
 });
 
-test('central acceptance and generated AI remain fail-closed for coordinator review', () => {
+test('central acceptance and generated AI include the coordinator-approved career routes', () => {
   const acceptance = JSON.parse(read('data/audits/swahili-free-app-acceptance.json'));
   const aiMap = require('../assets/js/ai/swahili-route-map.generated');
   for (const app of APPS) {
-    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), false);
-    assert.equal(Object.hasOwn(aiMap.ids, app.id), false);
+    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), true);
+    assert.equal(aiMap.ids[app.id], app.route);
   }
 });

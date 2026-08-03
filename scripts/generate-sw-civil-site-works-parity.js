@@ -5,6 +5,7 @@ const fs = require('fs');
 const path = require('path');
 const manifest = require('../data/localization/sw-civil-site-works-parity-manifest.json');
 const { writeFileSyncWithRetry } = require('./lib/safe-write');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
@@ -107,10 +108,10 @@ function writeTarget(relativePath, content) {
   const target = path.join(ROOT, relativePath);
   const current = fs.existsSync(target) ? fs.readFileSync(target, 'utf8') : '';
   if (CHECK) {
-    if (current !== content) throw new Error(`Swahili civil site-works output is stale: ${relativePath}`);
+    if (!localizedGeneratorEquivalent(current, content)) throw new Error(`Swahili civil site-works output is stale: ${relativePath}`);
     return;
   }
-  if (current === content) return;
+  if (localizedGeneratorEquivalent(current, content)) return;
   fs.mkdirSync(path.dirname(target), { recursive: true });
   writeFileSyncWithRetry(target, content, 'utf8');
 }

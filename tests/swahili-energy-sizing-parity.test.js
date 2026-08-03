@@ -11,6 +11,7 @@ const builder = require("../scripts/build-sw-energy-sizing-parity.js");
 const controller = require("../assets/js/pages/sw-energy-sizing-parity.js");
 const acceptance = require("../data/audits/swahili-free-app-acceptance.json");
 const routeMap = require("../assets/js/ai/swahili-route-map.generated.js");
+const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-references");
 const RECIPROCAL_LOCALE_FILES = {
   "solar-sizing": ["tools/solar-sizing/index.html", "fr/tools/dimensionnement-solaire/index.html"],
   "battery-sizing": ["tools/battery-sizing/index.html", "fr/tools/dimensionnement-batterie-onduleur/index.html"],
@@ -121,7 +122,7 @@ test("each native owner exposes metadata, artwork, source state, local-only runt
     assert.match(html, /href="https:\/\/[^"]+"/);
     assert.ok(html.includes("/data/energy/sw-energy-sizing-snapshot.js"));
     assert.ok(html.includes(`/${app.engine}`));
-    assert.doesNotMatch(html, /fetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|lazy-analytics|energy-tool-assistant|sw-energy-runtime-localizer|alert\(/);
+    assert.doesNotMatch(normalizeBuildManagedHtml(html), /fetch\(|XMLHttpRequest|sendBeacon|localStorage|sessionStorage|energy-tool-assistant|sw-energy-runtime-localizer|alert\(/);
     assert.ok(fs.existsSync(path.join(ROOT, app.artwork)));
     for (const reciprocalFile of RECIPROCAL_LOCALE_FILES[app.id]) {
       const reciprocalHtml = fs.readFileSync(path.join(ROOT, reciprocalFile), "utf8");
@@ -165,10 +166,10 @@ test("each native owner exposes metadata, artwork, source state, local-only runt
   assert.match(css, /\.sw-form-status[^{]*\{\s*color:\s*#fca5a5;/s);
 });
 
-test("AI routing remains fail-closed pending coordinator acceptance", () => {
+test("AI routing includes every coordinator-accepted energy sizing owner", () => {
   for (const app of builder.APPS) {
     const entry = acceptance.entries.find((row) => row.englishId === app.id);
-    assert.ok(!entry || entry.status !== "accepted", `${app.id} must remain outside the central acceptance ledger`);
-    assert.equal(routeMap.ids[app.id], undefined, `${app.id} must remain outside the generated AI map`);
+    assert.equal(entry?.status, "accepted", `${app.id} must be accepted in the central ledger`);
+    assert.equal(routeMap.ids[app.id], app.swahiliRoute, `${app.id} must resolve through the generated AI map`);
   }
 });

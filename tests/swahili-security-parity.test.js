@@ -24,7 +24,7 @@ test('all seven Security routes are native local-first apps with source boundari
     assert.match(html, new RegExp(`data-sw-security-app="${app.id}"`));
     assert.match(html, /assets\/js\/pages\/sw-security-parity\.js/);
     assert.match(html, /data-local-only="true"/);
-    assert.match(html, /Chanzo, freshness na confidence/i);
+    assert.match(html, /Chanzo, uhalisia wa muda na uhakika/i);
     assert.match(html, /Imekaguliwa:\s*<\/strong>\s*2026-08-02/i);
     assert.match(html, /ridhaa ya wazi/i);
     assert.match(html, new RegExp(`assets/img/tools/${app.image}`));
@@ -142,11 +142,11 @@ test('canonical, OG artwork, and English/French/Swahili hreflang are fully recip
   }
 });
 
-test('central acceptance and generated AI coverage remain fail-closed', () => {
+test('central acceptance and generated AI coverage include the approved security routes', () => {
   const acceptance = JSON.parse(read('data/audits/swahili-free-app-acceptance.json'));
   const aiMap = require('../assets/js/ai/swahili-route-map.generated');
   for (const app of APPS) {
-    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), false);
-    assert.equal(Object.hasOwn(aiMap.ids, app.id), false);
+    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), true);
+    assert.equal(aiMap.ids[app.id], app.route);
   }
 });

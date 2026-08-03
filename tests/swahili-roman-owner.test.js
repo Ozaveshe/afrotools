@@ -147,8 +147,8 @@ assert(read("data/registry/locale-coverage-policy.json").includes('"route": "/sw
 const acceptance = JSON.parse(read("data/audits/swahili-free-app-acceptance.json"));
 assert.strictEqual(
   acceptance.entries.some((entry) => entry.englishId === "roman-numerals"),
-  false,
-  "Coordinator acceptance remains untouched"
+  true,
+  "Coordinator acceptance records the independently verified Roman owner"
 );
 
 const receipt = JSON.parse(read("reports/swahili-roman-numerals-route-receipt.json"));

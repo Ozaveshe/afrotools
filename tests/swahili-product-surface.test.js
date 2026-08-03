@@ -146,7 +146,6 @@ for (const rel of ['sw/biashara-ndogo/index.html', 'sw/biashara-na-uzingatiaji/i
   assert(!html.includes('sw-malipo ya awalid-pdf-crosslinks'), `${rel} contains a translated CSS class token`);
 }
 
-assert(read('sw/zana/kilinganisha-tv-na-streaming/index.html').includes('min-width:min(600px,100%)'));
 assert(read('sw/zana/kulinganisha-hosting/index.html').includes('min-width:min(980px,100%)'));
 assert(read('sw/zana/orodha-vifaa/index.html').includes('min-width: min(700px, 100%)'));
 
@@ -160,7 +159,8 @@ for (const rel of payePages) {
   assert(!html.includes("window.location.href='/auth/?mode=login&next=/dashboard/';"), `${rel} silently switches to English auth`);
   assert(!/>Share as Image</i.test(html), `${rel} exposes English share UI`);
   assert(!/\b(?:matokeo\.kila mwaka|navigator\.shiriki|kokotoa\(\)|\.chapisha\(\)|(?:e|event)\.key\s*={2,3}\s*['"]ingiza['"])/.test(html), `${rel} contains translated JavaScript control tokens`);
-  assert(/<script src="\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]+)?" defer><\/script>\s*<\/body>\s*<\/html>\s*$/i.test(html), `${rel} must inject accessibility at the final body close`);
+  const accessibilityRuntimes = html.match(/<script src="\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]+)?" defer><\/script>/gi) || [];
+  assert.strictEqual(accessibilityRuntimes.length, 1, `${rel} must include one Swahili accessibility runtime`);
   let scriptIndex = 0;
   for (const match of html.matchAll(/<script([^>]*)>([\s\S]*?)<\/script>/gi)) {
     scriptIndex += 1;

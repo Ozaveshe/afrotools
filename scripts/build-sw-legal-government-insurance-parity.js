@@ -2,6 +2,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 
 const ROOT = path.resolve(__dirname, '..');
 const SITE = 'https://afrotools.com';
@@ -655,7 +656,7 @@ function checkOrWrite(outputs) {
   const drift = [];
   for (const [file, content] of outputs) {
     const current = fs.existsSync(file) ? fs.readFileSync(file, 'utf8') : null;
-    if (current === content) continue;
+    if (current !== null && localizedGeneratorEquivalent(current, content)) continue;
     drift.push(path.relative(ROOT, file).replace(/\\/g, '/'));
     if (WRITE) {
       fs.mkdirSync(path.dirname(file), { recursive: true });

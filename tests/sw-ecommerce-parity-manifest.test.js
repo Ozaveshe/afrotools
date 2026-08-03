@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const test = require('node:test');
 const { buildManifest } = require('../scripts/build-sw-ecommerce-parity-manifest');
 
-test('Swahili Ecommerce manifest owns exactly 63 unaccepted rows without overlap', () => {
+test('Swahili Ecommerce manifest owns exactly 63 rows with coordinator acceptance reconciled', () => {
   const manifest = buildManifest();
   assert.equal(manifest.rows.length, 63);
   assert.equal(new Set(manifest.rows.map(row => row.english.id)).size, 63);

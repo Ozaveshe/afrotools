@@ -3,6 +3,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { localizedGeneratorEquivalent } = require('./lib/localized-generator-equivalence');
 
 const ROOT = path.resolve(__dirname, '..');
 const CHECK = process.argv.includes('--check');
@@ -120,7 +121,7 @@ function main() {
   let failures = 0;
   PAGES.forEach((page) => {
     const target = path.join(ROOT, page.file); const expected = render(page);
-    if (CHECK) { if (!fs.existsSync(target) || fs.readFileSync(target,'utf8') !== expected) { console.error(`STALE ${page.file}`); failures += 1; } }
+    if (CHECK) { if (!fs.existsSync(target) || !localizedGeneratorEquivalent(fs.readFileSync(target,'utf8'), expected)) { console.error(`STALE ${page.file}`); failures += 1; } }
     else { fs.mkdirSync(path.dirname(target), { recursive: true }); fs.writeFileSync(target, expected); }
   });
   if (failures) process.exitCode = 1; else console.log(`Swahili Personal Finance pages ${CHECK ? 'verified' : 'written'}: ${PAGES.length}`);

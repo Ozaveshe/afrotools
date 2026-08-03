@@ -4,7 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('fs');
 const path = require('path');
 const test = require('node:test');
-const { normalizeBuildManagedHtml } = require('../scripts/lib/shared-asset-references');
+const { normalizeLocalizedGeneratorHtml } = require('../scripts/lib/localized-generator-equivalence');
 const vm = require('vm');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -34,9 +34,9 @@ function jsonLd(html) {
 }
 
 function normalizePublishedHtml(html) {
-  return normalizeBuildManagedHtml(html)
+  return normalizeLocalizedGeneratorHtml(html
     .replace(/\s*<meta\b[^>]*name=["']twitter:image["'][^>]*>\s*/gi, '\n')
-    .replace(/<\/main>\s*<afro-footer>/g, '</main>\n<afro-footer>');
+    .replace(/<\/main>\s*<afro-footer>/g, '</main>\n<afro-footer>'));
 }
 
 test('Insurance contract freezes the exact 16-app denominator and six formula modes', () => {

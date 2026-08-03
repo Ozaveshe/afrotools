@@ -7,7 +7,7 @@ const vm = require("vm");
 
 const ROOT = path.resolve(__dirname, "..");
 const { PAGES, ROUTES, REGISTRY_IDS, render } = require("../scripts/lib/french-security-page.js");
-const { normalizeBuildManagedHtml } = require("../scripts/lib/shared-asset-references");
+const { normalizeLocalizedGeneratorHtml } = require("../scripts/lib/localized-generator-equivalence");
 const { FRENCH_TOOL_SLUG_TO_ENGLISH_TOOL } = require("../scripts/lib/french-tool-route-map.js");
 
 const IDS = Object.keys(PAGES);
@@ -107,8 +107,8 @@ for (const id of IDS) {
   const route = `/fr/tools/${slug}/`;
   const html = read(`fr/tools/${slug}/index.html`);
   assert.strictEqual(
-    normalizeBuildManagedHtml(html),
-    normalizeBuildManagedHtml(render({ enSlug: id, frSlug: slug })),
+    normalizeLocalizedGeneratorHtml(html),
+    normalizeLocalizedGeneratorHtml(render({ enSlug: id, frSlug: slug })),
     `${slug} exactly matches its dedicated generator owner`
   );
   const row = frenchSecurityRows.find((item) => item.sourceId === id);

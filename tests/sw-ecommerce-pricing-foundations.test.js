@@ -72,16 +72,16 @@ test('canonical, OG, artwork and reciprocal hreflang contracts are complete', ()
   }
 });
 
-test('scoped AI routes are mapped while the prohibited central map remains fail closed', () => {
+test('coordinator-accepted pricing routes are present in the central Swahili AI map', () => {
   for (const [id, expected] of Object.entries(EXPECTED)) {
     const row = manifest.rows.find(item => item.english.id === id);
     const context = JSON.parse(read(`data/ai/tool-context/${id}.json`));
     assert.equal(context.toolKey, id);
     assert.equal(row.aiRouting.englishContext, `data/ai/tool-context/${id}.json`);
     assert.equal(row.aiRouting.scopedRoute, expected.swahili);
-    assert.equal(row.aiRouting.state, 'manifest-mapped-central-fail-closed');
-    assert.equal(swRouteMap.ids[id], undefined);
-    assert.equal(swAiEntry.resolveToolRoute(id, swRouteMap), null);
+    assert.equal(row.aiRouting.state, 'central-accepted');
+    assert.equal(swRouteMap.ids[id], expected.swahili);
+    assert.equal(swAiEntry.resolveToolRoute(id, swRouteMap), expected.swahili);
   }
 });
 
@@ -93,7 +93,7 @@ test('controllers remain local, deterministic and sponsor independent', () => {
   }
 });
 
-test('acceptance receipt closes only this family and preserves the proof boundary', () => {
+test('family receipt preserves the independent proof used by coordinator acceptance', () => {
   assert.equal(receipt.coordinatorBaseSha, manifest.coordinatorBaseSha);
   assert.equal(receipt.acceptedRows, 3);
   assert.equal(receipt.remainingRows, 60);

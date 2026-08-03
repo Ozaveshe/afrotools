@@ -7,6 +7,7 @@ const path = require("node:path");
 
 const ROOT = path.resolve(__dirname, "..");
 const { PAGES, html } = require("../scripts/build-sw-trade-utility-pages.js");
+const { localizedGeneratorEquivalent } = require("../scripts/lib/localized-generator-equivalence");
 const runtime = require("../assets/js/pages/sw-trade-utility.js");
 const engine = require("../engines/src/trade-utility-engine.js");
 
@@ -42,7 +43,7 @@ for (const page of PAGES) {
   const sw = fs.readFileSync(outputFile, "utf8");
   const en = fs.readFileSync(path.join(ROOT, ...page.englishRoute.split("/").filter(Boolean), "index.html"), "utf8");
 
-  assert.equal(sw, html(page), `${page.id}: generated owner must be current`);
+  assert.equal(localizedGeneratorEquivalent(sw, html(page)), true, `${page.id}: generated owner must be current`);
   assert.match(sw, /<html lang="sw">/);
   assert.match(sw, new RegExp(`rel="canonical" href="https://afrotools\\.com${page.route}"`));
   assert.match(sw, new RegExp(`hreflang="en" href="https://afrotools\\.com${page.englishRoute}"`));

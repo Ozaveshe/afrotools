@@ -9,9 +9,9 @@ function finite(value){if(typeof value==='number')return Number.isFinite(value);
 function schemaTypes(html){return Array.from(html.matchAll(/<script type="application\/ld\+json">([\s\S]*?)<\/script>/g),match=>JSON.parse(match[1])['@type']);}
 function visibleText(html){return html.replace(/<script\b[\s\S]*?<\/script>/gi,' ').replace(/<style\b[\s\S]*?<\/style>/gi,' ').replace(/<code\b[\s\S]*?<\/code>/gi,' ').replace(/<[^>]+>/g,' ').replace(/\s+/g,' ');}
 
-test('manifest owns exactly the two missing, unaccepted Engineering building-shell rows',()=>{
+test('manifest owns exactly the two coordinator-accepted Engineering building-shell rows',()=>{
   assert.equal(manifest.coordinatorBase,'8354e321ff34caf60a33a3393cd0dcddfb00c023');assert.equal(manifest.scopeCount,2);assert.deepEqual(manifest.apps.map(app=>app.id),['scaffolding-calc','window-door-sizing']);
-  for(const app of manifest.apps){const row=inventory.rows.find(candidate=>candidate.englishId===app.id);assert.ok(row);assert.equal(row.categoryKey,'engineering');assert.equal(row.state,'missing');assert.equal(row.accepted,false);assert.equal(row.englishRoute+'/',app.englishRoute);}
+  for(const app of manifest.apps){const row=inventory.rows.find(candidate=>candidate.englishId===app.id);assert.ok(row);assert.equal(row.categoryKey,'engineering');assert.equal(row.state,'native-candidate');assert.equal(row.accepted,true);assert.equal(row.englishRoute+'/',app.englishRoute);}
 });
 
 test('maintained source/public engines satisfy exact primary, boundary and invalid oracles without NaN',()=>{

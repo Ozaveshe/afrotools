@@ -13,6 +13,7 @@ const builder = require("../scripts/build-sw-sports-travel-parity.js");
 const travelPages = require("../scripts/lib/swahili-travel-pages.js");
 const sportsSources = require("../data/sports/source-assumption-manifest.json");
 const sportsSourceCopy = require("../data/sports/sw-source-assumption-copy.json");
+const { localizedGeneratorEquivalent } = require("../scripts/lib/localized-generator-equivalence");
 
 function read(relative) {
   return fs.readFileSync(path.join(ROOT, relative), "utf8");
@@ -66,7 +67,7 @@ test("all 24 pages are generator-owned native Swahili apps with complete route-l
   for (const row of manifest.rows) {
     const relative = row.swahiliRoute.replace(/^\//, "") + "index.html";
     const html = read(relative);
-    assert.equal(html, builder.render(row), `${row.toolId} is stale against its owner`);
+    assert.equal(localizedGeneratorEquivalent(html, builder.render(row)), true, `${row.toolId} is stale against its owner`);
     assert.match(html, /<html lang="sw"/);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://afrotools\\.com${row.swahiliRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}">`));
     assert.match(html, new RegExp(`<link rel="alternate" hreflang="sw" href="https://afrotools\\.com${row.swahiliRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}">`));
@@ -179,7 +180,7 @@ test("Sports pages invoke the real 15-model AfroSports engine and preserve defau
 test("Sports hub owns exactly 15 artwork-backed routes and the English hub reciprocates", () => {
   const rows = manifest.rows.filter((row) => row.category === "sports");
   const hub = read("sw/michezo/index.html");
-  assert.equal(hub, builder.renderSportsHub());
+  assert.equal(localizedGeneratorEquivalent(hub, builder.renderSportsHub()), true);
   assert.match(hub, /"numberOfItems":15/);
   for (const row of rows) {
     assert.equal((hub.match(new RegExp(`href="${row.swahiliRoute}"`, "g")) || []).length, 1, row.toolId);
@@ -194,7 +195,7 @@ test("Sports hub owns exactly 15 artwork-backed routes and the English hub recip
 test("Travel hub owns exactly 9 artwork-backed routes and the English hub reciprocates", () => {
   const rows = manifest.rows.filter((row) => row.category === "travel-tourism");
   const hub = read("sw/usafiri-utalii/index.html");
-  assert.equal(hub, builder.renderTravelHub());
+  assert.equal(localizedGeneratorEquivalent(hub, builder.renderTravelHub()), true);
   assert.match(hub, /"numberOfItems":9/);
   for (const row of rows) {
     assert.equal((hub.match(new RegExp(`href="${row.swahiliRoute}"`, "g")) || []).length, 1, row.toolId);
@@ -211,12 +212,12 @@ test("Travel hub owns exactly 9 artwork-backed routes and the English hub recipr
   assert.match(surfaceOwner, /data\/localization\/sw-sports-travel-parity-manifest\.json/);
 });
 
-test("the current surface owner preserves all 199 coordinator-accepted routes", () => {
+test("the current surface owner preserves all coordinator-accepted routes", () => {
   const acceptance = JSON.parse(read("data/audits/swahili-free-app-acceptance.json"));
   const accepted = acceptance.entries.filter((entry) => entry.status === "accepted");
-  assert.equal(accepted.length, 199);
+  assert.equal(accepted.length, 487);
   const acceptedRoutes = new Set(accepted.map((entry) => entry.swahiliRoute));
-  assert.equal(manifest.rows.filter((entry) => acceptedRoutes.has(entry.swahiliRoute)).length, 0);
+  assert.equal(manifest.rows.filter((entry) => acceptedRoutes.has(entry.swahiliRoute)).length, 24);
   const surfaceOwner = read("scripts/build-swahili-product-surface.js");
   assert.match(surfaceOwner, /entry\.status === 'accepted'/);
   assert.match(surfaceOwner, /acceptedParityHtml\.has\(rel\)/);

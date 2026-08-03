@@ -217,11 +217,11 @@ test('registry and locale policy classify exactly two native Swahili Diaspora co
   }
 });
 
-test('acceptance and AI stay fail-closed for coordinator review', () => {
+test('acceptance and AI include the coordinator-approved diaspora routes', () => {
   const acceptance = JSON.parse(read('data/audits/swahili-free-app-acceptance.json'));
   const aiMap = require('../assets/js/ai/swahili-route-map.generated');
   for (const app of APPS) {
-    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), false);
-    assert.equal(Object.hasOwn(aiMap.ids, app.id), false);
+    assert.equal(acceptance.entries.some((entry) => entry.englishId === app.id && entry.status === 'accepted'), true);
+    assert.equal(aiMap.ids[app.id], app.swahiliRoute);
   }
 });

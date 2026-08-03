@@ -226,7 +226,7 @@ function repairHomeLandmarks() {
 
 function ensureAccessibilityRuntime(rel) {
   const canonicalScript = '<script src="/assets/js/lib/sw-accessibility.js" defer></script>';
-  const runtimePattern = /^[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gim;
+  const runtimePattern = /[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gi;
   let html = read(rel);
   const existingScripts = html.match(runtimePattern) || [];
   // SEO and analytics post-processing may place another deferred script after
@@ -710,7 +710,6 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   ensureAccessibilityRuntime(rel);
 }
 

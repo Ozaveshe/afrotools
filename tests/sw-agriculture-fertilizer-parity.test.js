@@ -134,5 +134,6 @@ test("Swahili fertilizer AI routing stays local and requires no model consent", 
   assert.equal(decision.privacyMode, "browser_local");
   assert.equal(decision.handoffPlan.consentRequiredForModel, false);
   assert.equal(decision._meta.localeRoute.status, "mapped");
-  assert.equal(decision._meta.localeRoute.family, "fertilizer");
+  const routeMap = require("../assets/js/ai/swahili-route-map.generated.js");
+  assert.equal(routeMap.ids[decision.selectedToolId], hub.swahili.routeKey);
 });
