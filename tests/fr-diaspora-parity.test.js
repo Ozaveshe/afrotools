@@ -15,8 +15,8 @@ const { normalizeBuildManagedHtml } = require('../scripts/lib/shared-asset-refer
 
 const ROOT = path.resolve(__dirname, '..');
 const ENGLISH_BASELINE = Object.freeze({
-  immigration: 'd76252018cfb0e0e48c0875902ec302504b2ddab1da7ccb8ee36e70e41f1a3cb',
-  visa: '143da4d867b41a90b01bb269b7da381dd446e77261b148e1d8844cb8484ead2f',
+  immigration: '686add5d36233b6c7226f9503948a60d1dc9ed2c3e0fe962c62fc1ca95d5bc95',
+  visa: '912b6b336d29a39053c33b0b9f35e852e333249574017933923b36ea1b972034',
 });
 const FRENCH_VISA_ALTERNATE = '<link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/suivi-de-demande-de-visa/">\n';
 

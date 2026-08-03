@@ -21,7 +21,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -88,7 +88,6 @@
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <link rel="canonical" href="https://afrotools.com/sw/eswatini/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/eswatini/sz-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/eswatini/sz-paye">
@@ -101,7 +100,7 @@
 
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumb" aria-label="Njia ya kurudi">
       <a href="/">Mwanzo</a> / <a href="/sw/eswatini/">🇸🇿 Eswatini</a> / <span>Kikokotoo cha PAYE</span>
     </nav>
     <h1>Kikokotoo cha Kodi ya Mshahara<br><em>Eswatini 2025/26</em></h1>
@@ -138,7 +137,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">E600,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="50000" max="3000000" step="50000" value="600000" oninput="onSlider(this)">
             <div class="slider-limits"><span>E50,000</span><span>E3,000,000</span></div>
           </div>
 
@@ -146,7 +145,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwaka</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">E</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="600,000" min="0" step="50000" value="600000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -163,7 +162,7 @@
             <div class="toggles">
               <div class="tog on" data-tog="snpf" onclick="togItem(this)">
                 <div class="tog-box"><svg width="9" height="7" viewBox="0 0 9 7" fill="none"><polyline points="1,3.5 3.5,6 8,1" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
-                <div><div class="tog-label">ENPF Pension</div><div class="tog-rate">5% ya mfanyakazi (capped E215/mwezi)</div></div>
+                <div><div class="tog-label">Pensheni ya ENPF</div><div class="tog-rate">5% ya mfanyakazi (kikomo E215/mwezi)</div></div>
               </div>
             </div>
             <p class="f-note">Mchango wa ENPF wa mfanyakazi (5% kwa mwaka, wenye kikomo cha E215 kwa mwezi) unakubaliwa kama punguzo kutoka mapato yanayotozwa kodi kabla ya ERA PAYE kuhesabiwa. ENPF ya mwajiri (5%) ni gharama ya ziada kwa mwajiri.</p>
@@ -206,7 +205,7 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
@@ -243,7 +242,7 @@
           <span class="ai-head-by">AI ya hiari · mtoa huduma anahitajika</span>
         </div>
         <div class="ai-body">
-          <p class="ai-status" id="aiStatus">Kokotoa mshahara wako kwanza — nitachambua your ERA PAYE position and kueleza ENPF and rebate implications for Eswatini.</p>
+          <p class="ai-status" id="aiStatus">Kokotoa mshahara wako kwanza — nitachambua hali yako ya PAYE ya ERA na kueleza athari za ENPF na punguzo la kodi nchini Eswatini.</p>
           <div class="ai-response" id="aiResp"></div>
           <button type="button" class="ai-btn" id="aiBtn" onclick="getAI()" disabled>Kokotoa kwanza ili kufungua →</button>
           <div class="ai-chat" id="aiChat">
@@ -312,36 +311,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Pakua Muhtasari wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya Eswatini vikibadilika.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="Eswatini">
-        <input type="hidden" name="country_code" value="SZ">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="sz-paye">
-        <input type="hidden" name="currency"     value="SZL">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">✕</button>
-      <div class="big-check">✅</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <p>Bofya <strong>Hifadhi kama PDF</strong> kwenye dirisha la kuchapisha.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
     </div>
   </div>
 </div>
@@ -589,7 +558,6 @@ function calcAnnualPAYE(annualTaxableIncome) {
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
 
   document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
@@ -604,7 +572,7 @@ function calcAnnualPAYE(annualTaxableIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
+    headline: 'Mshahara Wangu Halisi',
     mainValue: fmt(RESULT.monthlyNet || RESULT.netAnnual / 12) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
@@ -640,13 +608,13 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Makato</div>
-      ${snpf > 0 ? row(`ENPF Pension (5%, capped)${lbl}`, fmt(snpf), 'c-red') : ''}
-      ${row(`Taxable Income${lbl}`, fmt(gross - snpf), 'c-mut')}
+      ${snpf > 0 ? row(`Pensheni ya ENPF (5%, yenye kikomo)${lbl}`, fmt(snpf), 'c-red') : ''}
+      ${row(`Mapato Yanayotozwa Kodi${lbl}`, fmt(gross - snpf), 'c-mut')}
     </div>
     <div class="res-section">
       <div class="res-section-title">ERA PAYE</div>
-      ${row(`Tax Before Rebate${lbl}`, fmt(isMonthly ? (R.annualTax + R.taxRebate) / 12 : (R.annualTax + R.taxRebate)), 'c-mut')}
-      ${row(`Tax Rebate (E8,200)${lbl}`, fmt(isMonthly ? R.taxRebate/12 : R.taxRebate), 'c-grn')}
+      ${row(`Kodi Kabla ya Punguzo${lbl}`, fmt(isMonthly ? (R.annualTax + R.taxRebate) / 12 : (R.annualTax + R.taxRebate)), 'c-mut')}
+      ${row(`Punguzo la Kodi (E8,200)${lbl}`, fmt(isMonthly ? R.taxRebate/12 : R.taxRebate), 'c-grn')}
       ${row(`Kodi ya PAYE${lbl}`, fmt(tax), 'c-red')}
     </div>
     <div class="res-section">
@@ -686,7 +654,7 @@ function setChart(type, btn) {
   renderChart(type);
 }
 
-function renderChart(type) {
+function renderChart(type){if(typeof Chart==='undefined')return;
   if (!RESULT) return;
   const R = RESULT;
   const canvas = document.getElementById('mainChart');
@@ -696,7 +664,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Halisi', 'Kodi ya PAYE', 'ENPF Pension'],
+        labels: ['Halisi', 'Kodi ya PAYE', 'Pensheni ya ENPF'],
         datasets: [{ data: [R.netAnnual, R.annualTax, R.snpf], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -708,42 +676,26 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (E)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (E)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'E'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#e8f1f7'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
   } else if (type === 'employer') {
-    CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Halisi','Kodi ya PAYE','ENPF (Employee)','ENPF (Employer)'], datasets: [{ label:'Kiasi', data: [R.netAnnual, R.annualTax, R.snpf, R.employerENPF], backgroundColor: AfroChartColors.doughnut.slice(0,4), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'E'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
+    CHART = new Chart(canvas, { type: 'bar', data: { labels: ['Halisi','Kodi ya PAYE','ENPF (Mfanyakazi)','ENPF (Mwajiri)'], datasets: [{ label:'Kiasi', data: [R.netAnnual, R.annualTax, R.snpf, R.employerENPF], backgroundColor: AfroChartColors.doughnut.slice(0,4), borderRadius:5 }] }, options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'E'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } } });
   }
-}
-
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Eswatini',country_code:'SZ',tool:'paye',tool_id:'sz-paye',currency:'SZL',gross_salary:RESULT.gross}).toString() });
-  } catch(e){}
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
 }
 
 function generatePdf() {
   if (!RESULT) return;
   const R = RESULT;
-  const dateStr = new Date().toLocaleDateString('en-SZ',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr = new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo = 'AFT-SZ-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">Kiwango ${((b.rate*100))}% kwa E${Math.round(b.income).toLocaleString()}</td><td class="num red">(E${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Eswatini PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#003DA5 0%,#001b52 100%);padding:28px 36px 22px;color:#fff}
@@ -772,11 +724,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Eswatini PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/eswatini/sz-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/eswatini/kikokotoo-kodi-mshahara</div>
   <div class="badge">ERA 2025/26</div>
 </div>
 <div class="body">
@@ -790,30 +742,30 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">kiwango halisi</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Sehemu ya 1 — Annual Income</div>
+  <div class="sec-head">Sehemu ya 1 — Mapato ya Mwaka</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwaka</td><td class="num">E${Math.round(R.gross).toLocaleString()}</td></tr>
-    ${R.snpf > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">ENPF Pension (5%, capped E215/mwezi)</td><td class="num red">(E${Math.round(R.snpf).toLocaleString()})</td></tr>` : ''}
-    ${R.snpf > 0 ? `<tr><td style="font-weight:600">Taxable Income</td><td class="num muted">E${Math.round(R.gross - R.snpf).toLocaleString()}</td></tr>` : ''}
+    ${R.snpf > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">Pensheni ya ENPF (5%, yenye kikomo E215/mwezi)</td><td class="num red">(E${Math.round(R.snpf).toLocaleString()})</td></tr>` : ''}
+    ${R.snpf > 0 ? `<tr><td style="font-weight:600">Mapato Yanayotozwa Kodi</td><td class="num muted">E${Math.round(R.gross - R.snpf).toLocaleString()}</td></tr>` : ''}
   </table>
 
   <div class="sec-head">Sehemu ya 2 — ERA Hesabu ya PAYE (2025/26)</div>
   <table>
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato katika bendi ya 0% — hakuna PAYE inayodaiwa</td></tr>'}
-    <tr><td style="padding-left:14px;color:#4b5563">Tax Before Rebate</td><td class="num red">E${Math.round(R.annualTax + R.taxRebate).toLocaleString()}</td></tr>
-    <tr><td style="padding-left:14px;color:#4b5563">Less: Tax Rebate (E8,200)</td><td class="num green">E${Math.round(R.taxRebate).toLocaleString()}</td></tr>
+    <tr><td style="padding-left:14px;color:#4b5563">Kodi Kabla ya Punguzo</td><td class="num red">E${Math.round(R.annualTax + R.taxRebate).toLocaleString()}</td></tr>
+    <tr><td style="padding-left:14px;color:#4b5563">Ondoa: Punguzo la Kodi (E8,200)</td><td class="num green">E${Math.round(R.taxRebate).toLocaleString()}</td></tr>
     <tr class="total"><td>PAYE ya Mwaka</td><td class="num red">E${Math.round(R.annualTax).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwaka wa Mshahara Halisi</div>
   <table>
-    ${R.snpf > 0 ? `<tr><td>ENPF Pension (employee)</td><td class="num red">(E${Math.round(R.snpf).toLocaleString()})</td></tr>` : ''}
+    ${R.snpf > 0 ? `<tr><td>Pensheni ya ENPF (mfanyakazi)</td><td class="num red">(E${Math.round(R.snpf).toLocaleString()})</td></tr>` : ''}
     <tr><td>ERA PAYE tax</td><td class="num red">(E${Math.round(R.annualTax).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#1D4ED8;font-weight:800">Mshahara Halisi kwa Mwaka</td><td class="num green">E${Math.round(R.netAnnual).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#1D4ED8;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">E${Math.round(R.netAnnual/12).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Sehemu ya 4 — Legal Basis</div>
+  <div class="sec-head">Sehemu ya 4 — Kisheria Basis</div>
   <table>
     <tr><td style="width:30%"><span class="src">ERA 2025</span>Eswatini PAYE</td><td style="color:#6b7280;font-size:8pt">Kodi ya hatua imehesabiwa kwa mwaka kwa mapato yanayotozwa kodi (ghafi ukiondoa ENPF). Punguzo la kodi la E8,200 hutumika baada ya hesabu ya kodi. ENPF ina kikomo cha E215/mwezi (kiwango cha juu E2,580/mwaka).</td></tr>
   </table>
@@ -825,7 +777,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na ERA (era.org.sz) au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -833,7 +785,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <script>window._grossToNet=function(g){var d=isOn('snpf')?Math.min(g*0.05,215*12):0;var raw=calcAnnualPAYE(Math.max(0,g-d)).tax;var tax=Math.max(0,raw-8200);return g-(d+tax);};<\/script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -847,9 +798,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Eswatini: Gross E${Math.round(RESULT.gross).toLocaleString()}/mwaka → Halisi E${Math.round(RESULT.netAnnual).toLocaleString()}/mwaka (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/eswatini/sz-paye`;
+  const text = `Muhtasari wa PAYE wa Eswatini: Ghafi E${Math.round(RESULT.gross).toLocaleString()}/mwaka → Halisi E${Math.round(RESULT.netAnnual).toLocaleString()}/mwaka (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/eswatini/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Eswatini PAYE',text,url:'https://afrotools.com/eswatini/sz-paye'});
+    navigator.share({title:'PAYE Yangu ya Eswatini',text,url:'https://afrotools.com/sw/eswatini/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('szShareBtn');
@@ -858,7 +809,16 @@ function shareResult() {
   }
 }
 
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -868,25 +828,25 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Eswatini PAYE analysis (2025/26, ERA):
+  const prompt = `Eswatini uchambuzi wa PAYE (2025/26, ERA):
 - Ghafi ya mwaka: E${Math.round(R.gross).toLocaleString()}
-- ENPF deduction (5%, capped): E${Math.round(R.snpf).toLocaleString()}
+- Punguzo la ENPF (5%, yenye kikomo): E${Math.round(R.snpf).toLocaleString()}
 - Mapato yanayotozwa kodi: E${Math.round(R.gross - R.snpf).toLocaleString()}
-- PAYE ya Mwaka (after E8,200 rebate): E${Math.round(R.annualTax).toLocaleString()}
+- PAYE ya Mwaka (baada ya E8,200 rebate): E${Math.round(R.annualTax).toLocaleString()}
 - Halisi ya mwaka: E${Math.round(R.netAnnual).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
 
-Toa: 1) Summary of ERA position 2) Two tax reduction strategies (ENPF cap, rebate optimization) 3) Jambo moja muhimu la uzingatiaji 4) One common mistake. Chini ya maneno 150. Jibu kwa Kiswahili. Bila markdown.`;
+Toa: 1) Muhtasari wa ERA position 2) Njia mbili za kisheria za kupunguza kodi (ENPF cap, rebate optimization) 3) Jambo moja muhimu la uzingatiaji 4) Kosa moja la kawaida. Chini ya maneno 150. Jibu kwa Kiswahili. Bila markdown.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Eswatini PAYE — ERA progressive tax, ENPF pension, tax rebate. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Eswatini PAYE — kodi ya hatua ya ERA, pensheni ya ENPF na punguzo la kodi. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -904,6 +864,7 @@ Toa: 1) Summary of ERA position 2) Two tax reduction strategies (ENPF cap, rebat
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg = input.value.trim();
   if(!msg||!RESULT) return;
@@ -919,7 +880,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Eswatini. User: gross E${Math.round(R.gross).toLocaleString()}/mwaka, halisi E${Math.round(R.netAnnual).toLocaleString()}/mwaka, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Eswatini. Mtumiaji: ghafi E${Math.round(R.gross).toLocaleString()}/mwaka, halisi E${Math.round(R.netAnnual).toLocaleString()}/mwaka, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -953,7 +914,7 @@ async function sendChat() {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1015,5 +976,42 @@ async function sendChat() {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

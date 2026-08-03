@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -89,7 +89,6 @@
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Burkina Faso","item":"https://afrotools.com/sw/burkina-faso/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/burkina-faso/kikokotoo-kodi-mshahara/"}]}</script>
 <link rel="canonical" href="https://afrotools.com/sw/burkina-faso/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/burkina-faso/bf-paye">
@@ -132,7 +131,7 @@
       <div class="card">
         <div class="card-head">
           <span class="card-title">Weka Taarifa Zako</span>
-          <span class="card-sub">CFA Franc UEMOA · XOF</span>
+          <span class="card-sub">Faranga ya CFA UEMOA · XOF</span>
         </div>
         <div class="card-body">
 
@@ -140,8 +139,8 @@
           <div class="field">
             <div class="f-label"><span class="f-label-text">Mpango wa Ajira</span><span class="f-hint">Mfano wa kawaida wa mfanyakazi wa CNSS</span></div>
             <div class="sector-row">
-              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSector('private',this)">Mfanyakazi wa CNSS</button>
-              <button type="button" class="sec-btn" id="btnPublic" onclick="setSector('public',this)">Maelezo ya Utumishi wa Umma</button>
+              <button type="button" class="sec-btn on" id="btnPrivate" onclick="setSekta('private',this)">Mfanyakazi wa CNSS</button>
+              <button type="button" class="sec-btn" id="btnPublic" onclick="setSekta('public',this)">Maelezo ya Utumishi wa Umma</button>
             </div>
           </div>
 
@@ -151,7 +150,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">XOF 1,500,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="100000" max="20000000" step="50000" value="1500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>XOF 100,000</span><span>XOF 20,000,000</span></div>
           </div>
 
@@ -160,7 +159,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Kabla ya makato yoyote</span></div>
             <div class="f-wrap">
               <span class="f-prefix">XOF</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="1,500,000" min="0" step="50000" value="1500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -226,7 +225,7 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
@@ -358,35 +357,6 @@
 <!-- FAQ -->
 
 <!-- PDF MODAL -->
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Pakua Muhtasari wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya &#127463;&#127467; Burkina Faso vikibadilika.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="Burkina Faso">
-        <input type="hidden" name="country_code" value="BF">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="bu-paye">
-        <input type="hidden" name="currency"     value="XOF">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">✕</button>
-      <div class="big-check">✅</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <p>Bofya <strong>Hifadhi kama PDF</strong> kwenye dirisha la kuchapisha.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
-    </div>
-  </div>
-</div>
 
 <!-- SAVE TOOL CTA -->
 <section class="ng-save-sec">
@@ -522,7 +492,7 @@ const fmt = n => 'XOF\u00A0' + Math.round(Math.abs(n)).toLocaleString('en-GB');
 const pct = r => { const v = r * 100; return (v % 1 === 0 ? v.toFixed(0) : parseFloat(v.toFixed(2)).toString()) + '%'; };
 
 // ── SECTOR SELECTOR ───────────────────────────────────────────
-function setSector(s, btn) {
+function setSekta(s, btn) {
   SECTOR = s;
   document.querySelectorAll('.sec-btn').forEach(b => b.classList.remove('on'));
   btn.classList.add('on');
@@ -703,7 +673,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
 
   RESULT = {
     gross, monthly: gross, social, socialRate, socialBase, socialCap: 800000, empSocial,
-    monthlyPAYE, bandBreakdown, isSecondary, sector: SECTOR,
+    monthlyPAYE, bandBreakdown, isSecondary, sekta: SECTOR,
     sdl, wcf, empSocial,
     totalEmployeeMakato, netMonthly, effectiveRate,
     annualGhafi: annual(gross), annualNet: annual(netMonthly),
@@ -716,7 +686,6 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   document.getElementById('resContent').innerHTML       = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
 
   const strip = document.getElementById('employerStrip');
   strip.innerHTML = `<strong>Jumla ya Gharama ya Mwajiri: ${fmt(RESULT.totalEmployerCostMonthly)}/mwezi</strong><br>Ghafi + CNSS ya mwajiri ${fmt(empSocial)}/mwezi (16% kwenye msingi wenye kikomo wa XOF 800,000).`;
@@ -735,7 +704,7 @@ function calcMonthlyPAYE(monthlyTaxableIncome) {
   });
   var _shareBtn = document.querySelector('share-result-button');
   if (_shareBtn) _shareBtn.setResult({
-    headline: 'My Mshahara Halisi',
+    headline: 'Mshahara Wangu Halisi',
     mainValue: fmt(RESULT.netMonthly) + '/mwezi',
     subValues: [
       { label: 'Ghafi', value: fmt(RESULT.gross) + '/mwezi' },
@@ -823,7 +792,7 @@ function setChart(type, btn) {
   renderChart(type);
 }
 
-function renderChart(type) {
+function renderChart(type){if(typeof Chart==='undefined')return;
   if (!RESULT) return;
   const R = RESULT;
   const canvas = document.getElementById('mainChart');
@@ -833,7 +802,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Halisi', 'IUTS Tax', 'CNSS'],
+        labels: ['Halisi', 'Kodi ya IUTS', 'CNSS'],
         datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.social], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -845,7 +814,7 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => b.isFlat ? '30% flat' : (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (XOF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (XOF)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'XOF'+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid: { color: AfroChartColors.grid} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -862,33 +831,17 @@ function renderChart(type) {
 }
 
 // ── PDF MODAL ─────────────────────────────────────────────────
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Burkina Faso',country_code:'BF',tool:'paye',tool_id:'bf-paye',currency:'XOF',gross_salary:RESULT.gross}).toString() });
-  } catch(e){}
-  document.getElementById('modalForm').style.display  = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
-}
-
 function generatePdf() {
   if (!RESULT) return;
   const R      = RESULT;
-  const dateStr= new Date().toLocaleDateString('en-GB',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr= new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo  = 'AFT-BF-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
-    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Rate ' + (b.rate*100) + '% on XOF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XOF ${Math.round(b.tax).toLocaleString()})</td></tr>`
+    `<tr><td style="padding-left:14px;color:#4b5563">${b.isFlat ? '30% ya moja kwa moja (ajira ya pili)' : 'Kiwango ' + (b.rate*100) + '% kwa XOF ' + Math.round(b.income).toLocaleString()}</td><td class="num red">(XOF ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>Burkina Faso Kikokotoo cha PAYE 2026 | AfroTools</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#0a1929 0%,#0d2040 100%);padding:28px 36px 22px;color:#fff}
@@ -917,11 +870,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Burkina Faso IUTS<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/burkina-faso/bf-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/burkina-faso/kikokotoo-kodi-mshahara</div>
   <div class="badge">DGI 2025/26 · Loi de Finances 2024/25</div>
 </div>
 <div class="body">
@@ -938,20 +891,20 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 1 — Mapato ya Mwezi na Makato</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwezi</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
-${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS mchango wa mfanyakazi (${pct(R.socialRate)}, capped at XOF ${Math.round(R.socialCap).toLocaleString()} base)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS mchango wa mfanyakazi (${pct(R.socialRate)}, yenye kikomo cha XOF ${Math.round(R.socialCap).toLocaleString()} msingi)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     ${!R.isSecondary ? `<tr><td style="font-weight:600">Mapato ya Mwezi Yanayotozwa Kodi</td><td class="num muted">XOF ${Math.round(R.gross - R.social).toLocaleString()}</td></tr>` : ''}
   </table>
 
   <div class="sec-head">Sehemu ya 2 — Hesabu ya IUTS (DGI 2025/26)</div>
   <table>
-    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Secondary employment — flat 30% applied to gross XOF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
+    ${R.isSecondary ? `<tr><td colspan="2" style="color:#7a3800;padding:8px 4px">⚠ Ajira ya pili — 30% tambarare imetumika kwenye ghafi XOF ${Math.round(R.gross).toLocaleString()}</td></tr>` : ''}
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato yako yako kwenye bendi ya 0% — hakuna IUTS inayodaiwa</td></tr>'}
     <tr class="total"><td>IUTS ya Mwezi</td><td class="num red">XOF ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwezi wa Mshahara Halisi</div>
   <table>
-    ${R.social > 0 ? `<tr><td>CNSS (employee)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
+    ${R.social > 0 ? `<tr><td>CNSS (mfanyakazi)</td><td class="num red">(XOF ${Math.round(R.social).toLocaleString()})</td></tr>` : ''}
     <tr><td>Kodi ya Mapato ya PAYE</td><td class="num red">(XOF ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr><td style="font-weight:700">Jumla ya Makato ya Mwezi</td><td class="num red">(XOF ${Math.round(R.totalEmployeeMakato).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#2563EB;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">XOF ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
@@ -961,7 +914,7 @@ ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS mchango w
   <div class="sec-head">Sehemu ya 4 — Gharama ya Mwajiri (Mwezi)</div>
   <table>
     <tr><td>Mshahara ghafi wa mfanyakazi</td><td class="num">XOF ${Math.round(R.gross).toLocaleString()}</td></tr>
-<tr><td>CNSS ya Mwajiri (16% on capped base)</td><td class="num red">XOF ${Math.round(R.empSocial).toLocaleString()}</td></tr>
+<tr><td>CNSS ya Mwajiri (16% kwa msingi wenye kikomo)</td><td class="num red">XOF ${Math.round(R.empSocial).toLocaleString()}</td></tr>
     <tr class="total"><td style="font-weight:800">Jumla ya Gharama ya Mwajiri kwa Mwezi</td><td class="num red">XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}</td></tr>
   </table>
 
@@ -978,14 +931,13 @@ ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS mchango w
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na DGI au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
 
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -1000,9 +952,9 @@ ${R.social > 0 ? `<tr><td style="padding-left:14px;color:#4b5563">CNSS mchango w
 // ── shiriki ─────────────────────────────────────────────────────
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Burkina Faso: Gross XOF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XOF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/burkina-faso/bf-paye`;
+  const text = `Muhtasari wa PAYE wa Burkina Faso: Ghafi XOF ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi XOF ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/burkina-faso/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Burkina Faso PAYE',text,url:'https://afrotools.com/burkina-faso/bf-paye'});
+    navigator.share({title:'PAYE Yangu ya Burkina Faso',text,url:'https://afrotools.com/sw/burkina-faso/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('tzShareBtn');
@@ -1012,7 +964,16 @@ function shareResult() {
 }
 
 // ── AI ADVISOR ────────────────────────────────────────────────
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R   = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -1022,28 +983,28 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Burkina Faso IUTS analysis (2025/26, DGI):
+  const prompt = `Burkina Faso uchambuzi wa IUTS (2025/26, DGI):
 - Ghafi ya mwezi: XOF ${Math.round(R.gross).toLocaleString()}
-- Scheme: ${R.sector === 'private' ? 'Mfano wa kawaida wa mfanyakazi wa CNSS' : 'Civil-service note selected; calculation still uses Mfano wa kawaida wa mfanyakazi wa CNSS'}
-- CNSS employee (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mwezi
-- Mapato yanayotozwa kodi after CNSS: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
+- Scheme: ${R.sector === 'private' ? 'Mfano wa kawaida wa mfanyakazi wa CNSS' : 'Maelezo ya utumishi wa umma yamechaguliwa; hesabu bado inatumia mfano wa kawaida wa mfanyakazi wa CNSS'}
+- CNSS ya mfanyakazi (${pct(R.socialRate)}): XOF ${Math.round(R.social).toLocaleString()}/mwezi
+- Mapato yanayotozwa kodi baada ya CNSS: XOF ${Math.round(R.gross - R.social).toLocaleString()}/mwezi
 - IUTS ya Mwezi: XOF ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: XOF ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
-- Secondary employment: ${R.isSecondary ? 'YES — flat 30% applied' : 'No'}
-- jumla employer cost: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
+- Ajira ya pili: ${R.isSecondary ? 'YES — 30% tambarare imetumika' : 'Hapana'}
+- jumla gharama ya mwajiri: XOF ${Math.round(R.totalEmployerCostMonthly).toLocaleString()}/mwezi
 
-Toa: 1) Muhtasari wa wazi kwa Kiswahili of IUTS position 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. No markdown, no asterisks, no bullet symbols.`;
+Toa: 1) Muhtasari wa wazi kwa Kiswahili wa hali ya IUTS 2) Njia mbili maalum za kisheria za kupunguza kodi. Chini ya maneno 200. Bila markdown, nyota, au alama za orodha.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Burkina Faso IUTS — DGI progressive tax, CNSS 5.5% with capped contribution base, Code Général des Impôts 2025. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown wala nyota.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Burkina Faso IUTS — kodi ya hatua ya DGI, CNSS 5.5% yenye msingi wa mchango ulio na kikomo, Code Général des Impôts 2025. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown wala nyota.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -1061,6 +1022,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of IUTS position 2) Njia mbili maalum za
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg   = input.value.trim();
   if(!msg||!RESULT) return;
@@ -1076,7 +1038,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Burkina Faso IUTS/DGI. User: ${R.sector === 'private' ? 'Mfano wa kawaida wa mfanyakazi wa CNSS' : 'civil-service note selected; CNSS employee base calculation used'}, gross XOF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XOF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Burkina Faso IUTS/DGI. Mtumiaji: ${R.sector === 'private' ? 'Mfano wa kawaida wa mfanyakazi wa CNSS' : 'maelezo ya utumishi wa umma yamechaguliwa; msingi wa hesabu wa CNSS ya mfanyakazi umetumika'}, ghafi XOF ${Math.round(R.gross).toLocaleString()}/mwezi, halisi XOF ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -1117,7 +1079,7 @@ window._grossToNet = function(g) {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1179,5 +1141,42 @@ window._grossToNet = function(g) {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

@@ -1,0 +1,138 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "sw-health-waist-hip-ratio-clean-respin-2026-08-02",
+  "generatedAt": "2026-08-02T00:00:00Z",
+  "baseSha": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "category": "health",
+  "englishId": "waist-hip-ratio",
+  "englishRoute": "/tools/waist-hip-ratio/",
+  "frenchRoute": "/fr/tools/ratio-taille-hanches/",
+  "swahiliRoute": "/sw/zana/uwiano-wa-kiuno-na-nyonga/",
+  "acceptanceState": "repair-candidate-unaccepted",
+  "acceptanceReason": "Complete app-specific product proof is supplied; coordinator acceptance and generated outputs remain untouched.",
+  "sourceOwner": "sw/zana/uwiano-wa-kiuno-na-nyonga/index.html + assets/js/pages/sw-waist-hip-ratio.js + tools/waist-hip-ratio/waist-hip-engine.js",
+  "engineContract": {
+    "path": "tools/waist-hip-ratio/waist-hip-engine.js",
+    "localeNeutral": true,
+    "unchangedFromBase": true,
+    "oracle": {
+      "input": "adult; centimetres; waist 84 and 86; hip 100 and 102; women reference",
+      "meanWaist": 85,
+      "meanHip": 101,
+      "ratio": 0.8415841584158416,
+      "low": 0.8235294117647058,
+      "high": 0.86,
+      "waistDifference": 2,
+      "hipDifference": 2,
+      "referenceApplied": true,
+      "referenceLabel": "Below the selected 0.85 population reference",
+      "boundary": "repeat-reading interval crosses 0.85"
+    },
+    "boundaries": [
+      "centimetres allow 30-250 inclusive and inches allow 12-100 inclusive",
+      "repeat waist and hip are independently optional",
+      "adult women reference is 0.85 and adult men reference is 0.90",
+      "selected reference is suppressed for pregnancy or abdominal change, under-18 and uncertain contexts",
+      "a one-reading result reports no repeatability assessment",
+      "repeat interval crossing and near-threshold states are explicit"
+    ]
+  },
+  "clinicalBoundary": [
+    "measurement and population-context result only",
+    "does not diagnose obesity, body fat, diabetes, cardiovascular disease or overall health",
+    "below-reference values do not rule out health concerns",
+    "pregnancy, recent abdominal surgery, ascites, oedema, body-shape variation and technique may make a reference inappropriate",
+    "clinical and urgent decisions require an appropriately qualified professional"
+  ],
+  "sourceFreshnessConfidence": {
+    "officialSources": [
+      "https://www.who.int/publications/i/item/9789241501491",
+      "https://www.who.int/teams/noncommunicable-diseases/surveillance/systems-tools/steps/manuals"
+    ],
+    "sourceReviewDate": "2026-08-02",
+    "referencePublicationYear": 2011,
+    "calculationConfidence": "high for arithmetic from entered measurements",
+    "interpretationConfidence": "limited because population cut-points are not an individual diagnosis or universal threshold"
+  },
+  "exports": {
+    "englishOriginals": ["txt", "print-pdf"],
+    "swahiliParity": ["txt", "print-pdf"],
+    "reopenProof": ["TXT decoded and asserted", "PDF parsed with pdf-parse and asserted"]
+  },
+  "privacy": {
+    "localFirst": true,
+    "networkSend": false,
+    "sensitiveDataStorageWrite": false,
+    "siteShellStorageProbeMayRun": true,
+    "privateMeasurementMarkerEntered": true,
+    "rawMarkerAbsentFromRequests": true,
+    "aiPresent": false,
+    "aiConsent": "not-applicable-no-ai-path"
+  },
+  "browserProof": [
+    "exact visible expected values and threshold-crossing note",
+    "route-specific invalid, limit and applicability states",
+    "immediate invalid and stale-result clearing",
+    "TXT reopened and PDF parsed",
+    "320px and 375px no-overflow",
+    "200% reflow",
+    "light, manual-dark and system-dark computed control contrast",
+    "keyboard submit and visible focus",
+    "visible labels and live status",
+    "console, pageerror and local-resource clean",
+    "800x450 route artwork loaded"
+  ],
+  "seoProof": [
+    "canonical, OG and Twitter metadata",
+    "translated WebApplication, WebPage, BreadcrumbList, FAQPage and HowTo schema",
+    "EN, FR and SW reciprocal hreflang"
+  ],
+  "verification": {
+    "passed": [
+      "node --test tests/swahili-waist-hip-ratio-owner.test.js (4/4)",
+      "PORT=4206 playwright test tests/e2e/swahili-waist-hip-ratio-owner.spec.js --project=chromium --reporter=line (1/1)",
+      "npm run validate:hreflang",
+      "npm run check-links",
+      "node tests/ai-consent-server.test.js",
+      "npm run test:sw-parity",
+      "node scripts/validate-registry.js (0 errors; 3 carried warnings)",
+      "npm run lint",
+      "npm run type-check",
+      "git diff --check"
+    ],
+    "computedContrastThresholds": {
+      "controlTextAndPlaceholder": "at least 4.5:1",
+      "controlBoundary": "at least 3:1",
+      "focusIndicator": "at least 3:1",
+      "themes": ["light", "manual-dark", "system-dark"],
+      "controls": ["select and options", "number input and placeholder", "primary button", "enabled export", "disabled export"]
+    },
+    "expectedCoordinatorDeferred": [
+      "npm run sw:parity:check reports the prohibited parity inventory stale; npm run test:sw-parity passes the unchanged 1,257-row inventory contract",
+      "npm run registry:check reports canonical registry JSON/report, counts, index and sw/index stale; npm run test:registry reports the expected 3,717 versus 3,718 search-index count until coordinator regeneration",
+      "npm run sw:surface:check reports 122 stale coordinator-owned surfaces; these outputs were not regenerated",
+      "npm run source-registry:check reports data/source-registry.json stale on the exact base lineage and it was not regenerated",
+      "build:i18n:validate was not used because its localization pre-step may write another locale; direct hreflang validation is used"
+    ]
+  },
+  "coordinatorGenerationCommands": [
+    "npm run sw:parity:build",
+    "node scripts/minify.js --only=tool-registry.js",
+    "npm run registry:build",
+    "node scripts/build-search-index.js"
+  ],
+  "prohibitedChanges": [
+    "central acceptance ledger",
+    "central AI router or map",
+    "parity inventory",
+    "generated locale coverage",
+    "canonical registry or report",
+    "minified registry",
+    "registry counts",
+    "search indexes",
+    "Swahili hub or index",
+    "sitemap",
+    "dist",
+    "deployment"
+  ]
+}

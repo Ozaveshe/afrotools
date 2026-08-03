@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "family": "sw-building-shell-parity",
+  "coordinatorBase": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "inventorySource": "reports/swahili-free-app-parity-inventory.json",
+  "scopeCount": 2,
+  "planningBoundary": "Makadirio ya kupanga pekee. Si usanifu wa kiunzi, cheti cha mzigo, ukaguzi wa usalama, ratiba ya milango na madirisha ya mbunifu, idhini ya kanuni, mchoro wa utengenezaji, BOQ, bei hai au nukuu iliyohakikishwa.",
+  "engineHistory": {
+    "lastSourceChange": "2026-07-30",
+    "commit": "ba2589068db44d22a85a93576cf228eb0ee75948",
+    "meaning": "Historia ya faili katika hazina; si uthibitisho wa sasa wa bei za soko."
+  },
+  "apps": [
+    {
+      "id": "scaffolding-calc",
+      "englishRoute": "/tools/scaffolding-calc/",
+      "englishFile": "tools/scaffolding-calc/index.html",
+      "frenchRoute": "/fr/tools/calculateur-echafaudage/",
+      "frenchFile": "fr/tools/calculateur-echafaudage/index.html",
+      "swRoute": "/sw/zana/kikokotoo-cha-kiunzi/",
+      "swFile": "sw/zana/kikokotoo-cha-kiunzi/index.html",
+      "engineSource": "engines/src/scaffolding-engine.js",
+      "enginePublic": "/engines/scaffolding-engine.js",
+      "engineGlobal": "ScaffoldingEngine",
+      "imageId": "scaffolding-calc",
+      "imageWidth": 600,
+      "imageHeight": 450,
+      "title": "Kikokotoo cha Kiunzi",
+      "shortTitle": "Kiunzi",
+      "description": "Kadiria eneo la kiunzi, mirija, mbao, viungio, kazi na gharama ya kukodi au kununua kwa dhana za nchi.",
+      "ownerDisclosures": [
+        "Chaguo za mirija na viungio pamoja na mfumo wa Kwikstage hutumia hesabu ileile ya chuma katika injini inayodumishwa.",
+        "Wiki ni ingizo linalohitajika na injini hata katika hali ya kununua, ingawa hazibadilishi gharama ya ununuzi.",
+        "Ununuzi wa mianzi hauna kiwango katika injini; hali hiyo lazima ikataliwe badala ya kuonyesha sifuri.",
+        "Ukodishaji wa mianzi hauna kiwango kwa ZA, EG na MA; hali hizo lazima zionyeshe kutopatikana badala ya bei ya sifuri."
+      ],
+      "oracle": {
+        "inputs": { "country": "TZ", "perimeter": 60, "height": 9, "type": "tube_coupler", "mode": "rent", "weeks": 8, "includeLabour": true },
+        "expected": { "area": 540, "tubes": 360, "boards": 300, "couplers": 900, "materialCost": 33312000, "labourCost": 16200000, "total": 49512000, "materialCostPerM2": 7711.111111111111 }
+      },
+      "boundaryOracle": {
+        "inputs": { "country": "KE", "perimeter": 4, "height": 2, "type": "bamboo", "mode": "rent", "weeks": 1, "includeLabour": false },
+        "expected": { "area": 8, "tubes": 6, "boards": 4, "couplers": 15, "materialCost": 480, "labourCost": 0, "total": 480, "materialCostPerM2": 60 }
+      },
+      "unavailableOracles": [
+        { "reason": "bamboo-buy-unavailable", "inputs": { "country": "TZ", "perimeter": 60, "height": 9, "type": "bamboo", "mode": "buy", "weeks": 8, "includeLabour": false } },
+        { "reason": "bamboo-rent-rate-unavailable", "inputs": { "country": "ZA", "perimeter": 60, "height": 9, "type": "bamboo", "mode": "rent", "weeks": 8, "includeLabour": false } }
+      ]
+    },
+    {
+      "id": "window-door-sizing",
+      "englishRoute": "/tools/window-door-sizing/",
+      "englishFile": "tools/window-door-sizing/index.html",
+      "frenchRoute": "/fr/tools/dimensionnement-fenetres-portes/",
+      "frenchFile": "fr/tools/dimensionnement-fenetres-portes/index.html",
+      "swRoute": "/sw/zana/vipimo-vya-madirisha-na-milango/",
+      "swFile": "sw/zana/vipimo-vya-madirisha-na-milango/index.html",
+      "engineSource": "engines/src/window-door-sizing-engine.js",
+      "enginePublic": "/engines/window-door-sizing-engine.js",
+      "engineGlobal": "WindowDoorSizingEngine",
+      "imageId": "window-door-sizing",
+      "imageWidth": 800,
+      "imageHeight": 450,
+      "title": "Mwongozo wa Vipimo vya Madirisha na Milango",
+      "shortTitle": "Madirisha na milango",
+      "description": "Kadiria idadi na vipimo vya madirisha na milango, mwanga, uingizaji hewa, ratiba ya vifaa na gharama za kupanga.",
+      "ownerDisclosures": [
+        "Aina ya jengo huhifadhiwa kwenye ripoti lakini injini ya sasa haitumii chaguo hilo kubadili fomula.",
+        "Ukaguzi wa uingizaji hewa ni lengo la kupanga la asilimia 5, si uamuzi wa kanuni au idhini."
+      ],
+      "oracle": {
+        "inputs": { "country": "TZ", "buildingType": "residential", "rooms": 4, "roomArea": 16, "externalDoors": 2, "internalDoors": 5, "windowMaterial": "aluminium", "windowType": "louvre", "externalMaterial": "timber_solid", "internalMaterial": "panel_timber" },
+        "expected": { "windowsPerRoom": 3, "totalWindows": 12, "totalGlazingArea": 8.64, "requiredVentilationArea": 3.2, "actualVentilationArea": 4.32, "ventilationMeetsTarget": true, "windowCost": 4800000, "externalDoorCost": 1480000, "internalDoorCost": 1725000, "hardwareCost": 960600, "total": 8965600 }
+      },
+      "boundaryOracle": {
+        "inputs": { "country": "KE", "buildingType": "office", "rooms": 1, "roomArea": 4, "externalDoors": 0, "internalDoors": 0, "windowMaterial": "steel", "windowType": "fixed", "externalMaterial": "steel_security", "internalMaterial": "flush_hdf" },
+        "expected": { "windowsPerRoom": 1, "totalWindows": 1, "totalGlazingArea": 1.8, "requiredVentilationArea": 0.2, "actualVentilationArea": 0, "ventilationMeetsTarget": false, "windowCost": 22000, "externalDoorCost": 0, "internalDoorCost": 0, "hardwareCost": 2640, "total": 24640 }
+      }
+    }
+  ]
+}

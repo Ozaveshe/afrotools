@@ -1,0 +1,93 @@
+{
+  "schemaVersion": 1,
+  "createdAt": "2026-08-02",
+  "family": "personal-finance",
+  "locale": "sw",
+  "coordinatorBase": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "manifest": "data/localization/sw-personal-finance-parity-manifest.json",
+  "noOverlap": {
+    "acceptedLedgerRowsChecked": 199,
+    "overlapCount": 0
+  },
+  "candidateOutcome": {
+    "acceptCount": 5,
+    "blockCount": 0,
+    "acceptIds": [
+      "50-30-20-budget",
+      "album-budget",
+      "film-budget",
+      "security-emergency-fund",
+      "side-hustle-ranker"
+    ],
+    "blockIds": []
+  },
+  "appProof": [
+    {
+      "englishId": "50-30-20-budget",
+      "swahiliRoute": "/sw/zana/bajeti-50-30-20/",
+      "oracle": "600000 income -> needs 300000, wants 180000, savings 120000, unallocated 50000",
+      "invalid": "zero income clears the result and disables TXT, JSON and print",
+      "parsedExports": "TXT and JSON contain the exact targets; JSON reopens inputs; printed PDF text contains 600,000"
+    },
+    {
+      "englishId": "album-budget",
+      "swahiliRoute": "/sw/zana/bajeti-ya-albamu/",
+      "oracle": "5-track EP -> production 355000, visuals 200000, marketing 110000, total 665000, per-track 133000, break-even 665000",
+      "invalid": "zero tracks clears the result and disables every export",
+      "parsedExports": "TXT and JSON contain all production groups and exact values; JSON reopens inputs; printed PDF text contains 665,000"
+    },
+    {
+      "englishId": "film-budget",
+      "swahiliRoute": "/sw/zana/bajeti-ya-filamu/",
+      "oracle": "10000000 budget over 20 days with 20/50/20/10 allocation -> per-day 500000, required 11000000, gap 5000000",
+      "invalid": "a 90 percent department total clears the result, focuses the allocation group and disables every export",
+      "parsedExports": "TXT and JSON contain every department, contingency and gap; JSON reopens inputs; printed PDF text contains 10,000,000"
+    },
+    {
+      "englishId": "security-emergency-fund",
+      "swahiliRoute": "/sw/zana/mfuko-wa-dharura-wa-usalama/",
+      "oracle": "250000 monthly essentials for 3 months plus 100000 one-off -> target 850000, gap 650000, 13 months",
+      "invalid": "zero essential expenses clears the result and disables every export",
+      "parsedExports": "TXT and JSON contain target, three tiers, gap and timeline; JSON reopens inputs; printed PDF text contains 850,000"
+    },
+    {
+      "englishId": "side-hustle-ranker",
+      "swahiliRoute": "/sw/zana/orodha-ya-side-hustle/",
+      "oracle": "writing, 10 hours and low capital -> freelance writing 100, social media management 100, then deterministic tie order",
+      "invalid": "zero weekly hours clears the result and disables every export",
+      "parsedExports": "TXT and JSON contain the five ranked ids and scores; JSON reopens inputs; printed PDF text contains the first ranked activity"
+    }
+  ],
+  "crossCuttingProof": {
+    "responsive": ["320px", "375px", "320px at 200 percent root font size"],
+    "themes": ["system-light", "system-dark", "light", "dark", "computed visible text at least 4.5:1", "computed control borders and focus indicators at least 3:1"],
+    "accessibility": ["visible labels", "keyboard submit", "settled computed focus contrast", "visible theme-selector focus", "visible import action with the clipped file input removed from direct tab order", "invalid-field focus", "live status", "non-text control contrast"],
+    "privacy": "No user field is sent through fetch, XHR, beacon, WebSocket, analytics, AI or Supabase; draft and exports stay local",
+    "sources": "Each page displays its calculation rule, source, 18 July 2026 review date, confidence and a no-live-rate disclaimer; side-hustle discloses its circular internal source and Screen Australia availability fails closed",
+    "countryParity": "Exact English-owner country values and order: 15, 11, 5 and 14; side-hustle has no country selector",
+    "language": "Visible page, result and TXT copy uses native modern Kiswahili with only accepted acronyms and proper nouns retained",
+    "seo": "Canonical, Open Graph, SoftwareApplication schema, exact artwork and reciprocal en/fr/sw/x-default hreflang validated",
+    "artworkQueue": []
+  },
+  "tests": [
+    { "command": "node --test tests/sw-personal-finance-parity.test.js", "status": "pass", "result": "11/11 including owner country-set and visible-language/source assertions" },
+    { "command": "npx playwright test --config=tests/sw-personal-finance.playwright.config.js --trace=off", "status": "pass", "result": "5/5 physical app specs including the import tab-order contract and settled theme-selector boundary/focus contrast in light, dark, system-light and system-dark" },
+    { "command": "npm run validate:hreflang", "status": "pass", "result": "5276 reciprocal equivalence groups" },
+    { "command": "npm run test:privacy-ai-consent", "status": "pass", "result": "server consent check and 3/3 browser specs" },
+    { "command": "npm run sw:ai-routes:check", "status": "pass", "result": "199 coordinator-owned accepted routes unchanged" },
+    { "command": "npm run lint", "status": "pass" },
+    { "command": "npm run type-check", "status": "pass" },
+    { "command": "npm run check-links", "status": "pass", "result": "133191 links, no broken internal links" },
+    { "command": "npm run audit", "status": "pass", "result": "candidate routes present; two unrelated carried missing-page rows reported" },
+    { "command": "npm run build:i18n:validate", "status": "scoped-warning", "result": "localization source checks passed; prohibited broad generated coverage artifacts remain stale and were not regenerated" }
+  ],
+  "excluded": [
+    "data/audits/swahili-free-app-acceptance.json",
+    "shared Swahili AI route map",
+    "master ledger",
+    "sitemaps",
+    "dist and deploy output"
+  ],
+  "deletionCount": 0,
+  "coordinatorAction": "Review this source-owned candidate, then update the central acceptance ledger and regenerate the shared Swahili AI route map from accepted rows."
+}

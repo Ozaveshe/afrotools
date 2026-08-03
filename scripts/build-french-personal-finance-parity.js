@@ -135,6 +135,7 @@ ${field('netPerStream', 'Votre recette nette estimée par stream', { min: 0, ste
   {
     app: 'budget-film',
     englishId: 'film-budget',
+    swRoute: '/sw/zana/bajeti-ya-filamu/',
     route: '/fr/tools/budget-film/',
     file: 'fr/tools/budget-film/index.html',
     title: 'Répartition du budget d’un film en Afrique | AfroTools',
@@ -169,6 +170,7 @@ ${field('marketingPct', 'Marketing et livraison', { min: 0, max: 100, step: 'any
   {
     app: 'fonds-urgence-securite',
     englishId: 'security-emergency-fund',
+    swRoute: '/sw/zana/mfuko-wa-dharura-wa-usalama/',
     route: '/fr/tools/fonds-d-urgence-et-de-securite/',
     file: 'fr/tools/fonds-d-urgence-et-de-securite/index.html',
     title: 'Calculateur de fonds d’urgence et de sécurité | AfroTools',

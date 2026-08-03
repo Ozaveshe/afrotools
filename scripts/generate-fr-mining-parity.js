@@ -14,6 +14,7 @@ const apps = [
     id: 'diamond-valuation',
     slug: 'evaluation-diamant',
     englishRoute: '/tools/diamond-valuation/',
+    swRoute: '/sw/zana/thamani-ya-almasi/',
     title: 'Évaluation indicative d’un diamant',
     shortTitle: 'Évaluation de diamant',
     description: 'Estimez une valeur indicative à partir du carat, d’un prix de référence récent et des 4C, puis comparez détail, gros, assurance et revente.',
@@ -52,6 +53,7 @@ const apps = [
     id: 'oil-well-production',
     slug: 'production-puits-petrole',
     englishRoute: '/tools/oil-well-production/',
+    swRoute: '/sw/zana/uzalishaji-wa-kisima-cha-mafuta/',
     title: 'Planificateur de production d’un puits pétrolier',
     shortTitle: 'Production d’un puits',
     description: 'Modélisez un débit radial de Darcy, une production annuelle et un revenu net indicatif à partir de vos propres paramètres de réservoir et de prix.',
@@ -84,6 +86,7 @@ const apps = [
     id: 'oil-gas-revenue',
     slug: 'partage-revenus-petrole-gaz',
     englishRoute: '/tools/oil-gas-revenue/',
+    swRoute: '/sw/zana/mgawanyo-wa-mapato-ya-mafuta-na-gesi/',
     title: 'Partage des revenus pétroliers et gaziers',
     shortTitle: 'Partage pétrole et gaz',
     description: 'Modélisez une cascade PSC avec redevance, cost oil, profit oil, part du contractant, part de l’État et impôt, selon vos propres clauses.',
@@ -114,6 +117,7 @@ const apps = [
     id: 'mining-license-fee',
     slug: 'cout-licence-miniere',
     englishRoute: '/tools/mining-license-fee/',
+    swRoute: '/sw/zana/gharama-ya-leseni-ya-madini/',
     title: 'Planificateur du coût d’une licence minière',
     shortTitle: 'Coût de licence minière',
     description: 'Additionnez frais initiaux, frais annuels, superficie et durée avec les mêmes données intégrées que l’outil anglais, sans traiter une valeur manquante comme zéro.',
@@ -145,6 +149,7 @@ const apps = [
     id: 'mining-royalty',
     slug: 'redevance-miniere',
     englishRoute: '/tools/mining-royalty/',
+    swRoute: '/sw/zana/mrahaba-wa-madini/',
     title: 'Calculateur de redevance minière',
     shortTitle: 'Redevance minière',
     description: 'Estimez la redevance et le produit net dans 18 juridictions à partir de la valeur brute, du minéral et d’un taux intégré ou effectif à reconfirmer.',
@@ -169,6 +174,7 @@ const apps = [
     id: 'artisanal-mining-income',
     slug: 'revenu-minier-artisanal',
     englishRoute: '/tools/artisanal-mining-income/',
+    swRoute: '/sw/zana/mapato-ya-uchimbaji-mdogo/',
     title: 'Planificateur de revenu minier artisanal',
     shortTitle: 'Revenu minier artisanal',
     description: 'Comparez revenu au prix d’un acheteur agréé, revenu informel, charges et partage par mineur à partir de vos propres prix et quantités.',
@@ -225,6 +231,7 @@ function jsonLd(value) {
 function commonHead(app) {
   const canonical = `https://afrotools.com/fr/tools/${app.slug}/`;
   const english = `https://afrotools.com${app.englishRoute}`;
+  const swahili = `https://afrotools.com${app.swRoute}`;
   return `<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${app.title} | Calcul local gratuit | AfroTools</title>
@@ -232,6 +239,7 @@ function commonHead(app) {
 <link rel="canonical" href="${canonical}">
 <link rel="alternate" hreflang="fr" href="${canonical}">
 <link rel="alternate" hreflang="en" href="${english}">
+<link rel="alternate" hreflang="sw" href="${swahili}">
 <link rel="alternate" hreflang="x-default" href="${english}">
 <meta property="og:title" content="${app.title} | AfroTools">
 <meta property="og:description" content="${app.description}">

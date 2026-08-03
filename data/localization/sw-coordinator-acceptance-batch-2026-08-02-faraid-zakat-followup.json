@@ -1,0 +1,60 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 2,
+  "preservedBlockedEntries": 3,
+  "candidates": [
+    {
+      "id": "religious-cultural-faraid",
+      "commit": "f52e6847157a3fd438a70d20603d9bd5715807eb",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-faraid.spec.js",
+          "engineTest": "tests/sw-faraid.test.js",
+          "workflow": "The native owner proves deductions, one-third bequest cap, fixed shares, 2:1 residue, blocked siblings, Umariyyat and awl cases, plus route-specific invalid boundaries and stale clearing.",
+          "export": "The advertised local TXT and print/PDF workflows were downloaded or printed, parsed, and checked against the current calculation; no account or network gate was introduced."
+        }
+      },
+      "artifacts": [
+        { "path": "tests/sw-faraid.test.js", "requiredText": "manifest owns exactly one native Swahili Faraid route" }
+      ],
+      "rowSources": [
+        { "rows": [
+          { "englishId": "faraid-inheritance", "swahiliRoute": "/sw/zana/urithi-wa-faraid/" }
+        ] }
+      ]
+    },
+    {
+      "id": "religious-cultural-zakat",
+      "commit": "0996fec7e1ee9df6504b3b1d5994eb19076c5055",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-zakat.spec.js",
+          "engineTest": "tests/sw-zakat.test.js",
+          "workflow": "The native owner proves asset aggregation, debt netting, gold, silver and custom nisab boundaries, hawl gating, zero-floor behavior, invalid values and stale-result clearing.",
+          "export": "The local JSON and print/PDF outputs were reopened or parsed and matched the current route calculation without account, upload or network dependency."
+        }
+      },
+      "artifacts": [
+        { "path": "tests/sw-zakat.test.js", "requiredText": "sw-zakat.test.js passed: 14 assertions" }
+      ],
+      "rowSources": [
+        { "rows": [
+          { "englishId": "zakat-calculator", "swahiliRoute": "/sw/zana/kikokotoo-zakat/" }
+        ] }
+      ]
+    }
+  ]
+}

@@ -2627,7 +2627,20 @@
     }
   }
 
-  setTimeout(function() {
+  function _isExplicitLocalOnlySurface() {
+    try {
+      var policy = document.querySelector('meta[name="afrotools-network-policy"]');
+      return !!(
+        policy
+        && String(policy.getAttribute('content') || '').trim().toLowerCase() === 'local-only'
+        && policy.getAttribute('data-source-owner')
+      );
+    } catch (err) {
+      return false;
+    }
+  }
+
+  if (!_isExplicitLocalOnlySurface()) setTimeout(function() {
     function _authLS(src, cb) {
       if (document.querySelector('script[src*="' + src.split('/').pop() + '"]')) { if (cb) cb(); return; }
       var s = document.createElement('script');
@@ -2733,7 +2746,7 @@
   });
 
   /* Auth: load afro-auth.js (consolidated Supabase auth) */
-  setTimeout(function() { _idle(function() {
+  if (!_isExplicitLocalOnlySurface()) setTimeout(function() { _idle(function() {
     if (window._afroAuthLoaded) return;
     if (!document.getElementById('afro-auth-js')) {
       var s = document.createElement('script'); s.id = 'afro-auth-js';

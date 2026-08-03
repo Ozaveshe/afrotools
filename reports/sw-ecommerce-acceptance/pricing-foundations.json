@@ -1,0 +1,149 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-ecommerce",
+  "family": "pricing-foundations",
+  "coordinatorBaseSha": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "branch": "codex/sw-ecommerce-free-app-family-01",
+  "acceptedRows": 3,
+  "remainingRows": 60,
+  "englishIds": [
+    "profit-margin",
+    "markup-calc",
+    "discount-calc"
+  ],
+  "swahiliRoutes": [
+    "/sw/zana/kikokotoo-margin-ya-faida/",
+    "/sw/zana/kikokotoo-markup/",
+    "/sw/zana/kikokotoo-discount/"
+  ],
+  "sourceOwnership": {
+    "profit-margin": [
+      "assets/js/engines/profit-margin.js",
+      "assets/js/pages/profit-margin-vip.js"
+    ],
+    "markup-calc": [
+      "assets/js/engines/markup-selling-price.js",
+      "assets/js/pages/markup-calc-vip.js"
+    ],
+    "discount-calc": [
+      "assets/js/engines/discount-planner.js",
+      "assets/js/pages/discount-planner.js",
+      "assets/js/lib/local-vat-pdf.js"
+    ]
+  },
+  "proof": {
+    "manifest": {
+      "command": "node scripts/build-sw-ecommerce-parity-manifest.js --check",
+      "result": "pass",
+      "rows": 63,
+      "families": 13,
+      "overlap": 0
+    },
+    "contracts": {
+      "command": "node --test tests/profit-margin-engine.test.js tests/markup-selling-price-engine.test.js tests/discount-planner.test.js tests/discount-planner-contract.test.js tests/sw-ecommerce-parity-manifest.test.js tests/sw-ecommerce-pricing-foundations.test.js",
+      "result": "pass",
+      "passed": 31
+    },
+    "staticAcceptance": {
+      "command": "node --test tests/sw-ecommerce-parity-manifest.test.js tests/sw-ecommerce-pricing-foundations.test.js",
+      "result": "pass",
+      "passed": 8
+    },
+    "scopedBrowser": {
+      "command": "$env:PORT='4192'; $env:AFROTOOLS_TEST_DISABLE_ANALYTICS='1'; npx playwright test tests/e2e/sw-ecommerce-pricing-foundations.spec.js --project=chromium --workers=1",
+      "result": "pass",
+      "passed": 5,
+      "coverage": [
+        "320px",
+        "375px",
+        "200-percent-text",
+        "system-light-and-dark",
+        "manual-dark",
+        "keyboard-focus",
+        "labels-and-live-status",
+        "computed-text-boundary-and-focus-contrast-in-light-dark-system-light-system-dark",
+        "console-and-local-resource-errors",
+        "no-network-writes"
+      ]
+    },
+    "computedContrastMinima": {
+      "requirements": {
+        "normalText": 4.5,
+        "controlBoundary": 3,
+        "focusIndicator": 3
+      },
+      "profit-margin": {
+        "text": 5.98,
+        "controlBoundary": 4.76,
+        "focusIndicator": 5.98
+      },
+      "markup-calc": {
+        "text": 5.47,
+        "controlBoundary": 4.76,
+        "focusIndicator": 5.98
+      },
+      "discount-calc": {
+        "text": 6.71,
+        "controlBoundary": 4.76,
+        "focusIndicator": 5.98
+      }
+    },
+    "exports": {
+      "result": "pass",
+      "reopened": [
+        "profit-margin PDF and CSV",
+        "markup result PDF and CSV",
+        "markup batch CSV",
+        "discount copy, print, PDF, CSV and JSON"
+      ]
+    },
+    "legacyBrowser": {
+      "result": "pass",
+      "passed": 33,
+      "commands": [
+        "$env:PORT='4194'; $env:AFROTOOLS_TEST_DISABLE_ANALYTICS='1'; npx playwright test tests/e2e/profit-margin-vip.spec.js --project=chromium --workers=1",
+        "$env:PORT='4195'; $env:AFROTOOLS_TEST_DISABLE_ANALYTICS='1'; npx playwright test tests/e2e/markup-selling-price-vip.spec.js --project=chromium --workers=1",
+        "$env:PORT='4196'; $env:AFROTOOLS_TEST_DISABLE_ANALYTICS='1'; npx playwright test tests/e2e/discount-planner-vip.spec.js --project=chromium --workers=1"
+      ],
+      "note": "Profit Margin passed 9 of 9, Markup passed 9 of 9, and Discount passed 15 of 15 serially on isolated ports."
+    },
+    "repositoryGates": {
+      "lint": "pass",
+      "typeCheck": "pass",
+      "buildI18nValidate": "pass: 10853 pages",
+      "hreflang": "pass: 5276 equivalence groups and 31070 relationships",
+      "links": "pass: 133190 links across 11072 HTML files"
+    }
+  },
+  "metadata": {
+    "canonical": "pass",
+    "openGraph": "pass",
+    "artwork": "pass",
+    "reciprocalHreflang": "pass"
+  },
+  "privacyAndIndependence": {
+    "localOnly": true,
+    "networkWritesObserved": 0,
+    "rawInputAnalytics": false,
+    "aiNetworkCall": false,
+    "sponsorIndependent": true
+  },
+  "aiRouting": {
+    "scopedManifestMapping": "pass",
+    "englishContexts": "pass",
+    "centralSwahiliRouteMap": "intentionally-fail-closed-pending-coordinator-integration",
+    "centralFilesChanged": false
+  },
+  "excluded": [
+    "central acceptance ledger",
+    "central AI route map",
+    "master inventory",
+    "sitemaps",
+    "dist",
+    "deploy",
+    "push",
+    "pull request",
+    "merge"
+  ],
+  "status": "accepted-scoped"
+}

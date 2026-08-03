@@ -18,6 +18,7 @@
   var i18nApi = null;
   var guardrailsApi = null;
   var frenchRouteMapApi = null;
+  var swahiliRouteMapApi = null;
   if (typeof require === "function") {
     try {
       manifestApi = require("./tool-manifest.js");
@@ -39,10 +40,16 @@
     } catch (err) {
       frenchRouteMapApi = null;
     }
+    try {
+      swahiliRouteMapApi = require("./swahili-route-map.generated.js");
+    } catch (err) {
+      swahiliRouteMapApi = null;
+    }
   }
   if (!i18nApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAII18n) i18nApi = globalThis.AfroToolsAII18n;
   if (!guardrailsApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIGuardrails) guardrailsApi = globalThis.AfroToolsAIGuardrails;
   if (!frenchRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAIFrenchRouteMap) frenchRouteMapApi = globalThis.AfroToolsAIFrenchRouteMap;
+  if (!swahiliRouteMapApi && typeof globalThis !== "undefined" && globalThis.AfroToolsAISwahiliRouteMap) swahiliRouteMapApi = globalThis.AfroToolsAISwahiliRouteMap;
 
   var OUTPUT_SCHEMA = {
     schemaVersion: 1,
@@ -226,7 +233,7 @@
     rule("agriculture", "farm-profit-calculator", ["farm profit", "farm roi", "farm margin", "profitable", "profitability", "break even", "break-even"], ["finance"]),
     rule("agriculture", "crop-yield-estimator", ["crop yield", "yield estimate", "harvest yield", "farm yield", "maize yield", "rice yield", "maize farm", "rice farm", "cassava farm", "tomato farm", "rendement culture", "rendement mais", "rendement du mais", "estimer la recolte"], ["none"]),
     rule("agriculture", "farm-budget", ["farm budget", "farm costs", "farm expenses"], ["finance"]),
-    rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea"], ["finance"]),
+    rule("agriculture", "fertilizer-calculator", ["fertilizer", "fertiliser", "npk", "urea", "mbolea"], ["finance"]),
     rule("agriculture", "input-prices", ["input prices", "seed prices", "fertilizer prices", "agrochemical prices"], ["finance"]),
     rule("agriculture", "seed-rate-calculator", ["seed rate", "seeding rate", "how much seed"], ["finance"]),
     rule("agriculture", "irrigation-calculator", ["irrigation", "water pump", "drip irrigation"], ["none"]),
@@ -891,7 +898,49 @@
   }
 
   function localizeSelectedRoute(decision, options) {
-    if (requestedLocale(options) !== "fr") return decision;
+    var locale = requestedLocale(options);
+    if (locale === "sw") {
+      var swahiliCopy = Object.assign({}, decision);
+      var swahiliRoutes = swahiliRouteMapApi && swahiliRouteMapApi.routes || {};
+      var swahiliEnglishRoute = normalizeRouteKey(swahiliCopy.selectedRoute);
+      var swahiliRoute = swahiliRoutes[swahiliEnglishRoute];
+      var swahiliMeta = Object.assign({}, swahiliCopy._meta || {});
+      if (swahiliRoute) {
+        swahiliCopy.selectedRoute = swahiliRoute + routeQuery(swahiliCopy.selectedRoute);
+        swahiliMeta.localeRoute = {
+          locale: "sw",
+          status: "mapped",
+          source: swahiliRouteMapApi.source || "swahili_acceptance_ledger"
+        };
+        swahiliCopy._meta = swahiliMeta;
+        return swahiliCopy;
+      }
+      var swahiliRequestedToolId = swahiliCopy.selectedToolId;
+      swahiliCopy.selectedToolId = SEARCH_FALLBACK.id;
+      swahiliCopy.selectedRoute = ((swahiliRouteMapApi && swahiliRouteMapApi.fallbackRoute) || "/sw/zana-zote/") + "?source=ask";
+      swahiliCopy.confidence = Math.min(Number(swahiliCopy.confidence || 0.2), 0.2);
+      swahiliCopy.reasonShort = "Njia ya Kiswahili iliyothibitishwa bado haijachapishwa kwa zana hii.";
+      swahiliCopy.extractedInputs = {};
+      swahiliCopy.missingInputs = [];
+      swahiliCopy.clarificationQuestion = "Tafuta zana ya Kiswahili iliyokaguliwa kwenye orodha ya zana.";
+      swahiliCopy.safetyDomain = "none";
+      swahiliCopy.highStakesNotice = "";
+      swahiliCopy.privacyMode = "browser_local";
+      swahiliCopy.canPrefill = false;
+      swahiliCopy.handoffPlan = buildHandoffPlan(SEARCH_FALLBACK, []);
+      swahiliCopy.handoffPlan.launchLabel = "Fungua zana za Kiswahili";
+      swahiliCopy.exportPlan = buildExportPlan(SEARCH_FALLBACK, "none");
+      swahiliCopy.suggestedNextActions = ["Fungua zana za Kiswahili", "Taja nchi na kazi", "Chagua njia iliyothibitishwa"];
+      swahiliMeta.localeRoute = {
+        locale: "sw",
+        status: "unavailable",
+        requestedToolId: swahiliRequestedToolId,
+        source: swahiliRouteMapApi && swahiliRouteMapApi.source || "missing_route_map"
+      };
+      swahiliCopy._meta = swahiliMeta;
+      return swahiliCopy;
+    }
+    if (locale !== "fr") return decision;
     var copy = Object.assign({}, decision);
     var routes = Object.assign({}, frenchRouteMapApi && frenchRouteMapApi.routes || {}, {
       "/tools/stock-portfolio/": "/fr/tools/suivi-portefeuille-actions/",

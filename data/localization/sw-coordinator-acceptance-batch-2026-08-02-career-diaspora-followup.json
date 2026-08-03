@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 6,
+  "preservedBlockedEntries": 3,
+  "candidates": [
+    {
+      "id": "career-native-parity",
+      "commit": "5cf74950be009ac43337b319c03c6198c97b8c34",
+      "expectedRoutes": 4,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 4,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-career-parity.spec.js",
+          "engineTest": "tests/swahili-career-parity.test.js",
+          "workflow": "All four Career owners reproduce their English formulas and selected-factor oracles, reject invalid input, clear stale results, and reopen saved/imported plans.",
+          "export": "TXT and JSON outputs were parsed; JSON was reopened in a fresh workflow and the restored state reproduced the accepted result."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-career-parity-candidate-receipt.md",
+          "requiredText": "Local candidate result: 4 accepted, 0 product-blocked"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "career-growth", "swahiliRoute": "/sw/zana/ukuaji-wa-kazi/" },
+            { "englishId": "career-switch", "swahiliRoute": "/sw/zana/kubadili-kazi/" },
+            { "englishId": "retirement-readiness", "swahiliRoute": "/sw/zana/utayari-wa-kustaafu/" },
+            { "englishId": "salary-negotiation", "swahiliRoute": "/sw/zana/majadiliano-ya-mshahara/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "diaspora-native-parity",
+      "commit": "686a6196e22a963f64608303ee1699659b949080",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-diaspora-parity.spec.js",
+          "engineTest": "tests/swahili-diaspora-parity.test.js",
+          "workflow": "Immigration Points preserves the selected-factor English oracle; Visa Tracker uses only user-entered official ranges and refuses invented status or dates.",
+          "export": "Both routes restored the English Print/save-PDF capability; browser print lifecycle fired and the generated PDF was parsed and reopened with route-specific content."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-diaspora-parity-candidate-receipt.md",
+          "requiredText": "Local candidate result: 2 accepted, 0 product-blocked"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "immigration-points", "swahiliRoute": "/sw/zana/kikokotoo-pointi-za-uhamiaji/" },
+            { "englishId": "visa-tracker", "swahiliRoute": "/sw/zana/kifuatiliaji-ombi-la-visa/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

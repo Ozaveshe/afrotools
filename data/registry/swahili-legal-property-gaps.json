@@ -1,0 +1,3771 @@
+{
+  "schemaVersion": 1,
+  "owner": "scripts/build-sw-legal-government-insurance-parity.js",
+  "count": 13,
+  "rows": [
+    {
+      "rowNumber": 5,
+      "englishId": "tenancy-deposit",
+      "englishName": "Tenancy Deposit Calculator",
+      "englishRoute": "/tools/tenancy-deposit",
+      "englishFile": "tools/tenancy-deposit/index.html",
+      "frenchRoute": "/fr/tools/caution-locative",
+      "frenchFile": "fr/tools/caution-locative/index.html",
+      "name": "Kikokotoo cha amana na gharama za kuhamia",
+      "description": "Jumlisha pango la mbele, amana, ada ya wakala, ada ya mkataba na huduma kwa maingizo yako; thibitisha sheria na masharti ya eneo kabla ya kulipa.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "tenancy-deposit",
+      "workflowControl": "Kokotoa gharama za kuhamia",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Nchi",
+          "type": "select",
+          "options": [
+            [
+              "ng",
+              "Nigeria"
+            ],
+            [
+              "ke",
+              "Kenya"
+            ],
+            [
+              "za",
+              "Afrika Kusini"
+            ],
+            [
+              "gh",
+              "Ghana"
+            ]
+          ],
+          "initialValue": "ng",
+          "testFixtureValue": "ng"
+        },
+        {
+          "name": "rent",
+          "label": "Pango la mwezi",
+          "type": "number",
+          "options": [],
+          "initialValue": "500000",
+          "testFixtureValue": "500000"
+        },
+        {
+          "name": "advanceMonths",
+          "label": "Miezi ya pango la mbele",
+          "type": "select",
+          "options": [
+            [
+              "12",
+              "Miezi 12"
+            ],
+            [
+              "6",
+              "Miezi 6"
+            ],
+            [
+              "3",
+              "Miezi 3"
+            ],
+            [
+              "2",
+              "Miezi 2"
+            ],
+            [
+              "1",
+              "Mwezi 1"
+            ]
+          ],
+          "initialValue": "12",
+          "testFixtureValue": "12"
+        },
+        {
+          "name": "depositMonths",
+          "label": "Miezi ya amana",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna"
+            ],
+            [
+              "1",
+              "Mwezi 1"
+            ],
+            [
+              "2",
+              "Miezi 2"
+            ],
+            [
+              "3",
+              "Miezi 3"
+            ]
+          ],
+          "initialValue": "1",
+          "testFixtureValue": "1"
+        },
+        {
+          "name": "agentFee",
+          "label": "Ada ya wakala (%)",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna wakala"
+            ],
+            [
+              "5",
+              "5%"
+            ],
+            [
+              "10",
+              "10%"
+            ],
+            [
+              "15",
+              "15%"
+            ],
+            [
+              "8.33",
+              "Pango la mwezi 1 (8.33%)"
+            ]
+          ],
+          "initialValue": "10",
+          "testFixtureValue": "10"
+        },
+        {
+          "name": "legalFee",
+          "label": "Ada ya mkataba au wakili",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna"
+            ],
+            [
+              "5",
+              "5% ya pango la mwaka"
+            ],
+            [
+              "10",
+              "10% ya pango la mwaka"
+            ],
+            [
+              "flat50000",
+              "Kiasi maalumu cha eneo"
+            ]
+          ],
+          "initialValue": "5",
+          "testFixtureValue": "5"
+        },
+        {
+          "name": "serviceCharge",
+          "label": "Ada ya huduma kwa mwezi",
+          "type": "number",
+          "options": [],
+          "initialValue": "0",
+          "testFixtureValue": "0"
+        }
+      ],
+      "sourceBoundary": "Caution locative est lié à « État de Lagos — ressources officielles et Tenancy Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/mortgage-property-english-owner.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "mortgage-property-english-owner",
+      "imageId": "tenancy-deposit",
+      "imageUrl": "/assets/img/tools/tenancy-deposit.webp",
+      "artworkAlt": "Repère visuel de l’outil « Caution locative »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://lagosstate.gov.ng/resources/",
+        "label": "Jimbo la Lagos — rasilimali rasmi na Tenancy Law",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Caution locative est lié à « État de Lagos — ressources officielles et Tenancy Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "calculator-shared-engine",
+        "sourceSha256BeforeExtraction": "a0059d93bb0026b91f80c72bc39962f7a2e2d5a8e0bf8a0da8da4d5ace3632c7",
+        "actionSelector": "button[onclick=\"calculate()\"]",
+        "outputSelector": "#resultCard",
+        "inputFixture": {
+          "country": "ng",
+          "rent": "500000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "1000"
+        },
+        "outputSha256": "7bb29d78e3e63cb7b31d9aeb8602d20bac5db9a00a11ea9c30100eeb80eb0ef8",
+        "semanticAnchors": [],
+        "outputExcerpt": "TOTAL MOVE-IN COST BREAKDOWN ITEM AMOUNT Advance Rent (12 months) ₦6,000,000 Security Deposit (1 month) ₦500,000 Agent / Commission Fee (10%) ₦600,000 Agreement / Legal Fee ₦300,000 Service Charge (12 months) ₦12,000 Total Move-In Cost ₦7,412,000 Monthly Rent ₦500,000/mo Total as Multiple of Monthly Rent 14.8x"
+      },
+      "aiFrenchRoute": "/fr/tools/caution-locative/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/tenancy-deposit",
+          "file": "tools/tenancy-deposit/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/tenancy-deposit/index.html:272"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/tenancy-deposit/index.html:287"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/tenancy-deposit/index.html:288"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/tenancy-deposit/index.html:289"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/tenancy-deposit/index.html:400"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/caution-locative",
+          "file": "fr/tools/caution-locative/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"country\"]",
+              "label": "Pays",
+              "value": "ng",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"rent\"]",
+              "label": "Loyer mensuel",
+              "value": "500000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"advanceMonths\"]",
+              "label": "Mois d’avance",
+              "value": "12",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"depositMonths\"]",
+              "label": "Mois de dépôt",
+              "value": "1",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"agentFee\"]",
+              "label": "Commission de l’agent (%)",
+              "value": "10",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"legalFee\"]",
+              "label": "Frais juridiques",
+              "value": "annual-five",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"serviceCharge\"]",
+              "label": "Charge mensuelle de service",
+              "value": "1000",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer le coût d’entrée",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"avance\"]",
+              "label": "avance",
+              "value": "6000000"
+            },
+            {
+              "selector": "[data-result-field=\"depot\"]",
+              "label": "depot",
+              "value": "500000"
+            },
+            {
+              "selector": "[data-result-field=\"honorairesAgent\"]",
+              "label": "honorairesAgent",
+              "value": "600000"
+            },
+            {
+              "selector": "[data-result-field=\"fraisJuridiques\"]",
+              "label": "fraisJuridiques",
+              "value": "300000"
+            },
+            {
+              "selector": "[data-result-field=\"chargesService\"]",
+              "label": "chargesService",
+              "value": "12000"
+            },
+            {
+              "selector": "[data-result-field=\"coutEntree\"]",
+              "label": "coutEntree",
+              "value": "7412000"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "NGN"
+            }
+          ],
+          "expectedSummary": "Coût total d’entrée : NGN 7 412 000; avance NGN 6 000 000; dépôt NGN 500 000."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/amana-ya-upangaji/",
+      "clearStaleOnInput": true,
+      "parserValidPdf": true,
+      "countryPresets": {
+        "ng": {
+          "rent": "500000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "0"
+        },
+        "ke": {
+          "rent": "50000",
+          "advanceMonths": "1",
+          "depositMonths": "1",
+          "agentFee": "8.33",
+          "legalFee": "0",
+          "serviceCharge": "0"
+        },
+        "za": {
+          "rent": "12000",
+          "advanceMonths": "1",
+          "depositMonths": "2",
+          "agentFee": "0",
+          "legalFee": "0",
+          "serviceCharge": "0"
+        },
+        "gh": {
+          "rent": "3000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "0"
+        }
+      },
+      "jurisdictionSources": {
+        "ng": {
+          "jurisdiction": "Nigeria — Jimbo la Lagos",
+          "availability": "official-source",
+          "url": "https://lagosstate.gov.ng/resources/",
+          "label": "Jimbo la Lagos — rasilimali rasmi na Tenancy Law",
+          "checkedAt": "2026-07-29",
+          "confidence": "Chanzo hiki kinahusu Nigeria, Jimbo la Lagos pekee. Hesabu ni thabiti kwa maingizo; thibitisha masharti na sheria ya sasa kabla ya kulipa."
+        },
+        "ke": {
+          "jurisdiction": "Kenya",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Kenya — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Kenya. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        },
+        "za": {
+          "jurisdiction": "Afrika Kusini",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Afrika Kusini — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Afrika Kusini. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        },
+        "gh": {
+          "jurisdiction": "Ghana",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Ghana — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Ghana. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        }
+      },
+      "resultIntro": "Kikokotoo cha amana na gharama za kuhamia: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "avance": "Pango la mbele",
+        "depot": "Amana",
+        "honorairesAgent": "Ada ya wakala",
+        "fraisJuridiques": "Ada ya mkataba au wakili",
+        "chargesService": "Ada ya huduma",
+        "coutEntree": "Jumla ya gharama za kuhamia",
+        "devise": "Sarafu"
+      }
+    },
+    {
+      "rowNumber": 13,
+      "englishId": "rent-affordability",
+      "englishName": "Rent Affordability Calculator",
+      "englishRoute": "/tools/rent-affordability",
+      "englishFile": "tools/rent-affordability/index.html",
+      "frenchRoute": "/fr/tools/capacite-loyer",
+      "frenchFile": "fr/tools/capacite-loyer/index.html",
+      "name": "Kikokotoo cha uwezo wa kulipa pango",
+      "description": "Linganisha pango uliloingiza na kikomo chako cha bajeti, kisha panga pango la mbele bila kudai kiwango cha lazima au uamuzi wa mwenye nyumba.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "rent-affordability",
+      "workflowControl": "Kokotoa kwa maingizo yangu",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Sarafu",
+          "type": "text",
+          "required": true,
+          "options": [],
+          "initialValue": "sarafu yako",
+          "testFixtureValue": "XOF"
+        },
+        {
+          "name": "income",
+          "label": "Mapato halisi ya mwezi",
+          "type": "number",
+          "min": "0.01",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "5000"
+        },
+        {
+          "name": "rent",
+          "label": "Pango la mwezi",
+          "type": "number",
+          "min": "0",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "1200"
+        },
+        {
+          "name": "ratio",
+          "label": "Kikomo cha bajeti (%)",
+          "type": "number",
+          "min": "0",
+          "max": "100",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "30"
+        },
+        {
+          "name": "advance",
+          "label": "Miezi ya pango la mbele",
+          "type": "number",
+          "min": "0",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "2"
+        }
+      ],
+      "sourceBoundary": "Capacité de loyer est lié à « UN-Habitat — cadre de mesure de l’accessibilité du logement »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "rent-affordability",
+      "imageUrl": "/assets/img/tools/rent-affordability.webp",
+      "artworkAlt": "Repère visuel de l’outil « Capacité de loyer »",
+      "artworkExists": true,
+      "source": {
+        "url": "",
+        "label": "UN-Habitat — kiungo cha chanzo cha nje hakipatikani; uthibitishaji wa mkono unahitajika",
+        "availability": "unavailable",
+        "checkedAt": "2026-08-02",
+        "confidence": "Hesabu ni thabiti kwa maingizo yako. Chanzo cha UN-Habitat kilirudisha 403 wakati wa ukaguzi; usichukulie uwiano kama kiwango kilichothibitishwa, cha kisheria, cha benki au cha kila mahali."
+      },
+      "sourceNote": "Capacité de loyer est lié à « UN-Habitat — cadre de mesure de l’accessibilité du logement »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/capacite-loyer/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/rent-affordability",
+          "file": "tools/rent-affordability/index.html",
+          "actions": [],
+          "evidence": "Physical English owner exposes no export, print, copy or download control; this contract is still required because the French owner advertises local exports."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/capacite-loyer",
+          "file": "fr/tools/capacite-loyer/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"currency\"]",
+              "label": "Devise",
+              "value": "XOF",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"income\"]",
+              "label": "Revenu net mensuel",
+              "value": "5000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"rent\"]",
+              "label": "Loyer mensuel",
+              "value": "1200",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"ratio\"]",
+              "label": "Ratio budgétaire (%)",
+              "value": "30",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"advance\"]",
+              "label": "Mois de loyer d’avance",
+              "value": "2",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer avec mes hypothèses",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"loyer\"]",
+              "label": "loyer",
+              "value": "1200"
+            },
+            {
+              "selector": "[data-result-field=\"plafond\"]",
+              "label": "plafond",
+              "value": "1500"
+            },
+            {
+              "selector": "[data-result-field=\"avance\"]",
+              "label": "avance",
+              "value": "2400"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "XOF"
+            }
+          ],
+          "expectedSummary": "Loyer saisi : XOF 1 200; plafond budgétaire : XOF 1 500; avance : XOF 2 400."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/uwezo-wa-kulipa-pango/",
+      "clearStaleOnInput": true,
+      "parserValidPdf": true,
+      "resultIntro": "Kikokotoo cha uwezo wa kulipa pango: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "loyer": "Pango uliloingiza",
+        "plafond": "Kikomo cha bajeti",
+        "avance": "Pango la mbele",
+        "devise": "Sarafu"
+      }
+    },
+    {
+      "rowNumber": 6,
+      "englishId": "leave-days",
+      "englishName": "Statutory Leave Days Calculator",
+      "englishRoute": "/tools/leave-days",
+      "englishFile": "tools/leave-days/index.html",
+      "frenchRoute": "/fr/tools/calculateur-conges",
+      "frenchFile": "fr/tools/calculateur-conges/index.html",
+      "name": "Mwongozo wa siku za likizo za kisheria",
+      "description": "Chagua nchi na uandae ukaguzi wa haki za likizo bila kudai kiwango, ustahiki au uamuzi rasmi.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "reference",
+      "engineMode": "leave-days",
+      "workflowControl": "Onyesha maeneo ya kuthibitisha",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Nchi",
+          "type": "select",
+          "fixtureValue": "NG",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Senegal"
+            ],
+            [
+              "CI",
+              "Côte d'Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrika Kusini"
+            ]
+          ]
+        }
+      ],
+      "sourceBoundary": "Calculateur de congés est lié à « ILO NATLEX labour-law database »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "english-dom-oracle",
+      "imageId": "leave-days",
+      "imageUrl": "/assets/img/tools/leave-days.webp",
+      "artworkAlt": "Repère visuel de l’outil « Calculateur de congés »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://natlex.ilo.org/?p_lang=en",
+        "label": "ILO NATLEX labour-law database",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Calculateur de congés est lié à « ILO NATLEX labour-law database »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "reference-english-dom-oracle",
+        "sourceSha256BeforeExtraction": "3bbb4279d15b537a6d828bbda82f06832d3f5007e424488de21ac02677f8f108",
+        "actionSelector": "button[onclick=\"showLeave()\"]",
+        "outputSelector": "#results",
+        "inputFixture": {
+          "country": "NG"
+        },
+        "outputSha256": "e328b2f4b276b7c94da53ca5a6f130042a8c15e6774f4d39b0ae1f75826f8cbf",
+        "semanticAnchors": [],
+        "outputExcerpt": "NIGERIA — STATUTORY LEAVE ENTITLEMENTS 🏖️ ANNUAL LEAVE 6 working days Minimum after 12 months continuous service. Most employers offer 15-25 days. 🤒 SICK LEAVE 12 days Up to 12 working days with full pay per year, subject to medical certificate. 🤰 MATERNITY LEAVE 12 weeks At least 50% pay. Must have 6+ months servic"
+      },
+      "aiFrenchRoute": "/fr/tools/calculateur-conges/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/leave-days",
+          "file": "tools/leave-days/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/leave-days/index.html:264"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/leave-days/index.html:279"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/leave-days/index.html:280"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/leave-days/index.html:281"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=a[name=\"Kenya Employment Act 2007\"]",
+              "label": "Kenya Employment Act 2007",
+              "evidence": "tools/leave-days/index.html:336"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/leave-days/index.html:392"
+            }
+          ],
+          "evidence": "Physical English owner exposes 6 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/calculateur-conges",
+          "file": "fr/tools/calculateur-conges/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/calculateur-conges/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/calculateur-conges/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/calculateur-conges/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/calculateur-conges/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/calculateur-conges/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-reference-state",
+          "inputs": [
+            {
+              "selector": "[name=\"country\"]",
+              "label": "Pays",
+              "value": "NG",
+              "type": "select"
+            }
+          ],
+          "workflowControl": "Afficher les droits légaux",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"pays\"]",
+              "label": "pays",
+              "value": "Nigeria"
+            },
+            {
+              "selector": "[data-result-field=\"droitsAnnuels\"]",
+              "label": "droitsAnnuels",
+              "value": "minimum légal à vérifier"
+            },
+            {
+              "selector": "[data-result-field=\"congeMaladie\"]",
+              "label": "congeMaladie",
+              "value": "règle nationale à vérifier"
+            },
+            {
+              "selector": "[data-result-field=\"congeMaternite\"]",
+              "label": "congeMaternite",
+              "value": "règle nationale à vérifier"
+            },
+            {
+              "selector": "[data-result-field=\"joursFeries\"]",
+              "label": "joursFeries",
+              "value": "calendrier officiel à vérifier"
+            }
+          ],
+          "expectedSummary": "Fiche des congés légaux pour Nigeria : droits annuels, maladie, maternité, paternité et jours fériés à vérifier auprès de la source officielle."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/siku-za-likizo-za-kisheria/",
+      "resultIntro": "Mwongozo wa siku za likizo za kisheria: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "pays": "Nchi",
+        "droitsAnnuels": "Likizo ya mwaka",
+        "congeMaladie": "Likizo ya ugonjwa",
+        "congeMaternite": "Likizo ya uzazi",
+        "joursFeries": "Sikukuu za umma"
+      }
+    },
+    {
+      "rowNumber": 8,
+      "englishId": "stamp-duty",
+      "englishName": "Stamp Tariff Calculator",
+      "englishRoute": "/tools/stamp-duty",
+      "englishFile": "tools/stamp-duty/index.html",
+      "frenchRoute": "/fr/tools/droits-enregistrement",
+      "frenchFile": "fr/tools/droits-enregistrement/index.html",
+      "name": "Kikokotoo cha ushuru wa stampu",
+      "description": "Kokotoa makisio kwa thamani, kiwango na ada ulizoingiza; hakuna kiwango cha kisheria kinachopakiwa.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "stamp-duty",
+      "workflowControl": "Kokotoa kwa makisio yangu",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Sarafu",
+          "type": "text",
+          "fixtureValue": "XOF",
+          "options": []
+        },
+        {
+          "name": "value",
+          "label": "Thamani ya muamala",
+          "type": "number",
+          "fixtureValue": "100000",
+          "options": []
+        },
+        {
+          "name": "rate",
+          "label": "Kiwango ulichoingiza (%)",
+          "type": "number",
+          "fixtureValue": "2.5",
+          "options": []
+        },
+        {
+          "name": "fixed",
+          "label": "Ada isiyobadilika",
+          "type": "number",
+          "fixtureValue": "500",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Droits d'enregistrement est lié à « FIRS — Nigeria stamp duty & property taxes »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "stamp-duty",
+      "imageUrl": "/assets/img/tools/stamp-duty.webp",
+      "artworkAlt": "Repère visuel de l’outil « Droits d'enregistrement »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.firs.gov.ng/",
+        "label": "FIRS — Nigeria stamp duty & property taxes",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Droits d'enregistrement est lié à « FIRS — Nigeria stamp duty & property taxes »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/droits-enregistrement/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/stamp-duty",
+          "file": "tools/stamp-duty/index.html",
+          "actions": [],
+          "evidence": "Physical English owner exposes no export, print, copy or download control; this contract is still required because the French owner advertises local exports."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/droits-enregistrement",
+          "file": "fr/tools/droits-enregistrement/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/droits-enregistrement/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/droits-enregistrement/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/droits-enregistrement/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/droits-enregistrement/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/droits-enregistrement/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"currency\"]",
+              "label": "Devise",
+              "value": "XOF",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"value\"]",
+              "label": "Valeur de la transaction",
+              "value": "100000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"rate\"]",
+              "label": "Taux saisi (%)",
+              "value": "2.5",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"fixed\"]",
+              "label": "Frais fixes",
+              "value": "500",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer avec mes hypothèses",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"total\"]",
+              "label": "total",
+              "value": "3000"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "XOF"
+            }
+          ],
+          "expectedSummary": "Droits estimés à partir de vos hypothèses : XOF 3 000."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/kikokotoo-ushuru-wa-stampu/",
+      "resultIntro": "Kikokotoo cha ushuru wa stampu: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "total": "Jumla ya makisio",
+        "devise": "Sarafu"
+      }
+    },
+    {
+      "rowNumber": 15,
+      "englishId": "rent-intelligence",
+      "englishName": "Rent Intelligence",
+      "englishRoute": "/tools/rent-intelligence",
+      "englishFile": "tools/rent-intelligence/index.html",
+      "frenchRoute": "/fr/tools/intelligence-loyer",
+      "frenchFile": "fr/tools/intelligence-loyer/index.html",
+      "name": "Kichujio cha taarifa za soko la pango",
+      "description": "Chuja rekodi zilizoidhinishwa bila kuunda bei ya pango, upatikanaji au tathmini ya soko.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "reference",
+      "engineMode": "rent-intelligence",
+      "workflowControl": "Chuja rekodi zilizothibitishwa",
+      "fields": [
+        {
+          "name": "countryCode",
+          "label": "Nchi",
+          "type": "select",
+          "fixtureValue": "DZ",
+          "options": [
+            [
+              "DZ",
+              "Algeria"
+            ],
+            [
+              "NG",
+              "Nigeria"
+            ]
+          ]
+        },
+        {
+          "name": "city",
+          "label": "Jiji",
+          "type": "text",
+          "fixtureValue": "Synthetic mdCity",
+          "options": []
+        },
+        {
+          "name": "propertyType",
+          "label": "Aina ya mali",
+          "type": "text",
+          "fixtureValue": "Synthetic mdPropertyType",
+          "options": []
+        },
+        {
+          "name": "bedrooms",
+          "label": "Vyumba vya kulala",
+          "type": "text",
+          "fixtureValue": "Synthetic mdBedrooms",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Intelligence loyer est lié à « South Africa deeds registry information »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "english-dom-oracle",
+      "imageId": "rent-intelligence",
+      "imageUrl": "/assets/img/tools/rent-intelligence.webp",
+      "artworkAlt": "Repère visuel de l’outil « Intelligence loyer »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information",
+        "label": "South Africa deeds registry information",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Intelligence loyer est lié à « South Africa deeds registry information »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "reference-english-dom-oracle",
+        "sourceSha256BeforeExtraction": "5a2b7f7018a2c9ca397c332384860db0d3e893bb85c088fb83a411076e66eb2a",
+        "actionSelector": null,
+        "outputSelector": "body",
+        "inputFixture": {
+          "mdCountry": "DZ",
+          "mdCity": "Synthetic mdCity",
+          "mdPropertyType": "Synthetic mdPropertyType",
+          "mdBedrooms": "Synthetic mdBedrooms",
+          "mdReportCountry": "DZ",
+          "mdReportCity": "Synthetic mdReportCity",
+          "mdReportNeighborhood": "Synthetic mdReportNeighborhood",
+          "mdReportCurrency": "NGN",
+          "mdReportMerchant": "Synthetic mdReportMerchant",
+          "mdSourceType": "self_observed",
+          "mdProofUrl": "Synthetic mdProofUrl"
+        },
+        "outputSha256": "79eaf9bc4fcae92eba23e97cfb0e92ff03e2b79b91cc4b905016dab59261322a",
+        "semanticAnchors": [],
+        "outputExcerpt": "AfroTools/AfroPoints/Rent Intelligence RENT INTELLIGENCE Rent Intelligence Monitor live rent asks, deposits, lease terms, and vacancy patterns by city and neighborhood, with manual review on every publishable listing. Neighborhood rent asks Deposit tracking Manual review protected VERIFIED RENT LISTINGS Only approved r"
+      },
+      "aiFrenchRoute": "/fr/tools/intelligence-loyer/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/rent-intelligence",
+          "file": "tools/rent-intelligence/index.html",
+          "actions": [
+            {
+              "format": "image",
+              "selector": "#mdProofUrl",
+              "label": "image action",
+              "evidence": "tools/rent-intelligence/index.html:96"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/rent-intelligence/index.html:140"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/rent-intelligence/index.html:155"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/rent-intelligence/index.html:156"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/rent-intelligence/index.html:157"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/rent-intelligence/index.html:268"
+            },
+            {
+              "format": "pdf",
+              "selector": "#contract-gen",
+              "label": "Contract Generator",
+              "evidence": "tools/rent-intelligence/index.html:277"
+            }
+          ],
+          "evidence": "Physical English owner exposes 7 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/intelligence-loyer",
+          "file": "fr/tools/intelligence-loyer/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/intelligence-loyer/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/intelligence-loyer/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/intelligence-loyer/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/intelligence-loyer/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/intelligence-loyer/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-reference-state",
+          "inputs": [
+            {
+              "selector": "[name=\"countryCode\"]",
+              "label": "Pays",
+              "value": "DZ",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"city\"]",
+              "label": "Ville",
+              "value": "Synthetic mdCity",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"propertyType\"]",
+              "label": "Type de bien",
+              "value": "Synthetic mdPropertyType",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"bedrooms\"]",
+              "label": "Chambres",
+              "value": "Synthetic mdBedrooms",
+              "type": "text"
+            }
+          ],
+          "workflowControl": "Filtrer les loyers vérifiés",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"pays\"]",
+              "label": "pays",
+              "value": "Algérie"
+            },
+            {
+              "selector": "[data-result-field=\"ville\"]",
+              "label": "ville",
+              "value": "Synthetic mdCity"
+            },
+            {
+              "selector": "[data-result-field=\"typeBien\"]",
+              "label": "typeBien",
+              "value": "Synthetic mdPropertyType"
+            },
+            {
+              "selector": "[data-result-field=\"chambres\"]",
+              "label": "chambres",
+              "value": "Synthetic mdBedrooms"
+            },
+            {
+              "selector": "[data-result-field=\"annoncesVerifiees\"]",
+              "label": "annoncesVerifiees",
+              "value": "0"
+            }
+          ],
+          "expectedSummary": "Veille locative filtrée : seuls les loyers vérifiés et approuvés sont publiés; aucun loyer vérifié n’est injecté dans ce scénario de démonstration."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/taarifa-za-soko-la-pango/",
+      "resultIntro": "Kichujio cha taarifa za soko la pango: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "pays": "Nchi",
+        "ville": "Jiji",
+        "typeBien": "Aina ya mali",
+        "chambres": "Vyumba",
+        "annoncesVerifiees": "Rekodi zilizothibitishwa"
+      }
+    },
+    {
+      "rowNumber": 16,
+      "englishId": "lease-risk-check",
+      "englishName": "Lease Risk Check",
+      "englishRoute": "/tools/lease-risk-check",
+      "englishFile": "tools/lease-risk-check/index.html",
+      "frenchRoute": "/fr/tools/verification-risque-bail",
+      "frenchFile": "fr/tools/verification-risque-bail/index.html",
+      "name": "Ukaguzi wa ishara za hatari za upangaji",
+      "description": "Chuja ishara zilizoidhinishwa bila kumhukumu mpangaji, mwenye nyumba au mkataba.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "checklist",
+      "engineMode": "lease-risk-check",
+      "workflowControl": "Chuja ishara zilizoidhinishwa",
+      "fields": [
+        {
+          "name": "countryCode",
+          "label": "Nchi ya taarifa",
+          "type": "select",
+          "fixtureValue": "DZ",
+          "options": [
+            [
+              "DZ",
+              "Algeria"
+            ],
+            [
+              "NG",
+              "Nigeria"
+            ]
+          ]
+        },
+        {
+          "name": "city",
+          "label": "Jiji",
+          "type": "text",
+          "fixtureValue": "Synthetic mdCity",
+          "options": []
+        },
+        {
+          "name": "minimumRisk",
+          "label": "Kiwango cha chini cha hatari",
+          "type": "text",
+          "fixtureValue": "Synthetic mdMinRisk",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Risque bail location est lié à « South Africa deeds registry information »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "english-dom-oracle",
+      "imageId": "lease-risk-check",
+      "imageUrl": "/assets/img/tools/lease-risk-check.webp",
+      "artworkAlt": "Repère visuel de l’outil « Risque bail location »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.gov.za/services/services-residents/place-live/get-deeds-registry-information",
+        "label": "South Africa deeds registry information",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Risque bail location est lié à « South Africa deeds registry information »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "checklist-english-dom-oracle",
+        "sourceSha256BeforeExtraction": "a9774e597dd7b689f34a82bed7ea0e4402d237d6ff8392f9d9b580e568b1723e",
+        "actionSelector": null,
+        "outputSelector": "#mdSummary",
+        "inputFixture": {
+          "mdCountry": "DZ",
+          "mdCity": "Synthetic mdCity",
+          "mdMinRisk": "Synthetic mdMinRisk",
+          "mdReportCountry": "DZ",
+          "mdReportCity": "Synthetic mdReportCity",
+          "mdReportNeighborhood": "Synthetic mdReportNeighborhood",
+          "mdReportCurrency": "NGN",
+          "mdSourceType": "self_observed",
+          "mdProofUrl": "Synthetic mdProofUrl"
+        },
+        "outputSha256": "df15d74353e7fb7752d28b44fb22b4d353f15fe960296d22ca8bbe82e2e5cdff",
+        "semanticAnchors": [],
+        "outputExcerpt": "0 Published risk reports 0 High-risk records NG First launch market"
+      },
+      "aiFrenchRoute": "/fr/tools/verification-risque-bail/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/lease-risk-check",
+          "file": "tools/lease-risk-check/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/lease-risk-check/index.html:138"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/lease-risk-check/index.html:153"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/lease-risk-check/index.html:154"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/lease-risk-check/index.html:155"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/lease-risk-check/index.html:266"
+            },
+            {
+              "format": "pdf",
+              "selector": "#contract-gen",
+              "label": "Contract Generator",
+              "evidence": "tools/lease-risk-check/index.html:275"
+            }
+          ],
+          "evidence": "Physical English owner exposes 6 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/verification-risque-bail",
+          "file": "fr/tools/verification-risque-bail/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/verification-risque-bail/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/verification-risque-bail/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/verification-risque-bail/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/verification-risque-bail/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/verification-risque-bail/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-checklist",
+          "inputs": [
+            {
+              "selector": "[name=\"countryCode\"]",
+              "label": "Pays du signal",
+              "value": "DZ",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"city\"]",
+              "label": "Ville",
+              "value": "Synthetic mdCity",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"minimumRisk\"]",
+              "label": "Niveau de risque minimal",
+              "value": "Synthetic mdMinRisk",
+              "type": "text"
+            }
+          ],
+          "workflowControl": "Filtrer les signaux approuvés",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"pays\"]",
+              "label": "pays",
+              "value": "Algérie"
+            },
+            {
+              "selector": "[data-result-field=\"ville\"]",
+              "label": "ville",
+              "value": "Synthetic mdCity"
+            },
+            {
+              "selector": "[data-result-field=\"risqueMinimum\"]",
+              "label": "risqueMinimum",
+              "value": "Synthetic mdMinRisk"
+            },
+            {
+              "selector": "[data-result-field=\"signauxPublies\"]",
+              "label": "signauxPublies",
+              "value": "0"
+            },
+            {
+              "selector": "[data-result-field=\"statut\"]",
+              "label": "statut",
+              "value": "aucun signal approuvé"
+            }
+          ],
+          "expectedSummary": "Recherche des signaux de risque locatif : aucun signal publié pour ce filtre de démonstration; seuls les rapports approuvés sont affichés."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/ukaguzi-wa-hatari-za-mkataba-wa-pango/",
+      "resultIntro": "Ukaguzi wa ishara za hatari za upangaji: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "pays": "Nchi",
+        "ville": "Jiji",
+        "risqueMinimum": "Hatari ya chini",
+        "signauxPublies": "Ishara zilizochapishwa",
+        "statut": "Hali"
+      }
+    },
+    {
+      "rowNumber": 17,
+      "englishId": "rental-agreement",
+      "englishName": "Rental Agreement Generator",
+      "englishRoute": "/tools/rental-agreement",
+      "englishFile": "tools/rental-agreement/index.html",
+      "frenchRoute": "/fr/tools/contrat-location",
+      "frenchFile": "fr/tools/contrat-location/index.html",
+      "name": "Kizalishaji cha rasimu ya mkataba wa upangaji",
+      "description": "Tengeneza rasimu ya ndani ya upangaji kwa mapitio ya wahusika na mwanasheria; si mkataba uliothibitishwa.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "document",
+      "engineMode": "rental-agreement",
+      "workflowControl": "Tengeneza rasimu ya upangaji",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Sarafu",
+          "type": "text",
+          "fixtureValue": "XOF",
+          "options": []
+        },
+        {
+          "name": "landlord",
+          "label": "Jina la mwenye nyumba",
+          "type": "text",
+          "fixtureValue": "Awa Test",
+          "options": []
+        },
+        {
+          "name": "tenant",
+          "label": "Jina la mpangaji",
+          "type": "text",
+          "fixtureValue": "Moussa Test",
+          "options": []
+        },
+        {
+          "name": "address",
+          "label": "Anwani ya mali",
+          "type": "text",
+          "fixtureValue": "12 rue Exemple",
+          "options": []
+        },
+        {
+          "name": "start",
+          "label": "Tarehe ya kuanza",
+          "type": "date",
+          "fixtureValue": "2026-08-01",
+          "options": []
+        },
+        {
+          "name": "duration",
+          "label": "Muda (miezi)",
+          "type": "number",
+          "fixtureValue": "12",
+          "options": []
+        },
+        {
+          "name": "rent",
+          "label": "Pango",
+          "type": "number",
+          "fixtureValue": "1000",
+          "options": []
+        },
+        {
+          "name": "deposit",
+          "label": "Amana",
+          "type": "number",
+          "fixtureValue": "2000",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Contrat de location est lié à « Lagos State — services fonciers, recherche de titre et ressources de location »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "rental-agreement",
+      "imageUrl": "/assets/img/tools/rental-agreement.webp",
+      "artworkAlt": "Repère visuel de l’outil « Contrat de location »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://lagosstate.gov.ng/",
+        "label": "Lagos State — services fonciers, recherche de titre et ressources de location",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Contrat de location est lié à « Lagos State — services fonciers, recherche de titre et ressources de location »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/contrat-location/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/rental-agreement",
+          "file": "tools/rental-agreement/index.html",
+          "actions": [
+            {
+              "format": "txt",
+              "selector": "role=button[name=\"Download TXT review draft\"]",
+              "label": "Download TXT review draft",
+              "evidence": "tools/rental-agreement/index.html:68"
+            }
+          ],
+          "evidence": "Physical English owner exposes 1 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/contrat-location",
+          "file": "fr/tools/contrat-location/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/contrat-location/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/contrat-location/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/contrat-location/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/contrat-location/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/contrat-location/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-document",
+          "inputs": [
+            {
+              "selector": "[name=\"currency\"]",
+              "label": "Devise",
+              "value": "XOF",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"landlord\"]",
+              "label": "Nom du bailleur",
+              "value": "Awa Test",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"tenant\"]",
+              "label": "Nom du locataire",
+              "value": "Moussa Test",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"address\"]",
+              "label": "Adresse du bien",
+              "value": "12 rue Exemple",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"start\"]",
+              "label": "Date de début",
+              "value": "2026-08-01",
+              "type": "date"
+            },
+            {
+              "selector": "[name=\"duration\"]",
+              "label": "Durée (mois)",
+              "value": "12",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"rent\"]",
+              "label": "Loyer",
+              "value": "1000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"deposit\"]",
+              "label": "Dépôt",
+              "value": "2000",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Générer le projet de location",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"bailleur\"]",
+              "label": "bailleur",
+              "value": "Awa Test"
+            },
+            {
+              "selector": "[data-result-field=\"locataire\"]",
+              "label": "locataire",
+              "value": "Moussa Test"
+            },
+            {
+              "selector": "[data-result-field=\"dateDebut\"]",
+              "label": "dateDebut",
+              "value": "2026-08-01"
+            },
+            {
+              "selector": "[data-result-field=\"dureeMois\"]",
+              "label": "dureeMois",
+              "value": "12"
+            },
+            {
+              "selector": "[data-result-field=\"loyer\"]",
+              "label": "loyer",
+              "value": "1000"
+            },
+            {
+              "selector": "[data-result-field=\"depot\"]",
+              "label": "depot",
+              "value": "2000"
+            }
+          ],
+          "expectedSummary": "Projet de bail — bailleur : Awa Test; locataire : Moussa Test; bien : 12 rue Exemple; début : 2026-08-01; durée : 12 mois; loyer : XOF 1 000; dépôt : XOF 2 000."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/kizalishaji-mkataba-wa-kupangisha/",
+      "resultIntro": "Kizalishaji cha rasimu ya mkataba wa upangaji: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "bailleur": "Mwenye nyumba",
+        "locataire": "Mpangaji",
+        "dateDebut": "Tarehe ya kuanza",
+        "dureeMois": "Miezi",
+        "loyer": "Pango",
+        "depot": "Amana"
+      }
+    },
+    {
+      "rowNumber": 22,
+      "englishId": "survey-cost",
+      "englishName": "Land Survey Cost Estimator",
+      "englishRoute": "/tools/survey-cost",
+      "englishFile": "tools/survey-cost/index.html",
+      "frenchRoute": "/fr/tools/cout-geometre",
+      "frenchFile": "fr/tools/cout-geometre/index.html",
+      "name": "Kikokotoo cha gharama za upimaji ardhi",
+      "description": "Kadiria gharama kwa eneo, bei ya kipimo, ada na akiba ulizoingiza; si quotation ya mpimaji.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "survey-cost",
+      "workflowControl": "Kokotoa makisio yangu",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Sarafu",
+          "type": "text",
+          "fixtureValue": "XOF",
+          "options": []
+        },
+        {
+          "name": "quantity",
+          "label": "Eneo au kiasi",
+          "type": "number",
+          "fixtureValue": "10",
+          "options": []
+        },
+        {
+          "name": "unitCost",
+          "label": "Gharama kwa kipimo",
+          "type": "number",
+          "fixtureValue": "100",
+          "options": []
+        },
+        {
+          "name": "fixed",
+          "label": "Ada isiyobadilika",
+          "type": "number",
+          "fixtureValue": "50",
+          "options": []
+        },
+        {
+          "name": "contingency",
+          "label": "Akiba ya tahadhari (%)",
+          "type": "number",
+          "fixtureValue": "10",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Coût geometre est lié à « SURCON — réglementation de la profession de géomètre au Nigeria »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "survey-cost",
+      "imageUrl": "/assets/img/tools/survey-cost.webp",
+      "artworkAlt": "Repère visuel de l’outil « Coût geometre »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://surcon.gov.ng/",
+        "label": "SURCON — réglementation de la profession de géomètre au Nigeria",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Coût geometre est lié à « SURCON — réglementation de la profession de géomètre au Nigeria »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/cout-geometre/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/survey-cost",
+          "file": "tools/survey-cost/index.html",
+          "actions": [],
+          "evidence": "Physical English owner exposes no export, print, copy or download control; this contract is still required because the French owner advertises local exports."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/cout-geometre",
+          "file": "fr/tools/cout-geometre/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/cout-geometre/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/cout-geometre/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/cout-geometre/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/cout-geometre/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/cout-geometre/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"currency\"]",
+              "label": "Devise",
+              "value": "XOF",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"quantity\"]",
+              "label": "Quantité ou surface",
+              "value": "10",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"unitCost\"]",
+              "label": "Coût unitaire",
+              "value": "100",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"fixed\"]",
+              "label": "Coûts fixes",
+              "value": "50",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"contingency\"]",
+              "label": "Imprévus (%)",
+              "value": "10",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer avec mes hypothèses",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"coutTotal\"]",
+              "label": "coutTotal",
+              "value": "1155"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "XOF"
+            }
+          ],
+          "expectedSummary": "Scénario de coût : XOF 1 155."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/gharama-za-upimaji-ardhi/",
+      "resultIntro": "Kikokotoo cha gharama za upimaji ardhi: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "coutTotal": "Jumla ya makisio",
+        "devise": "Sarafu"
+      }
+    },
+    {
+      "rowNumber": 27,
+      "englishId": "plot-converter",
+      "englishName": "Plot Size Converter",
+      "englishRoute": "/tools/plot-converter",
+      "englishFile": "tools/plot-converter/index.html",
+      "frenchRoute": "/fr/tools/convertisseur-parcelle",
+      "frenchFile": "fr/tools/convertisseur-parcelle/index.html",
+      "name": "Kigeuzi cha eneo la kiwanja",
+      "description": "Geuza mita za mraba, hekta, ekari na futi za mraba kwa hesabu ya ndani.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "plot-converter",
+      "workflowControl": "Geuza eneo",
+      "fields": [
+        {
+          "name": "value",
+          "label": "Thamani",
+          "type": "number",
+          "fixtureValue": "1",
+          "options": []
+        },
+        {
+          "name": "from",
+          "label": "Kipimo cha mwanzo",
+          "type": "select",
+          "fixtureValue": "hectare",
+          "options": [
+            [
+              "sqm",
+              "m²"
+            ],
+            [
+              "hectare",
+              "hectare"
+            ],
+            [
+              "acre",
+              "acre"
+            ],
+            [
+              "sqft",
+              "futi ya mraba"
+            ]
+          ]
+        },
+        {
+          "name": "to",
+          "label": "Kipimo cha mwisho",
+          "type": "select",
+          "fixtureValue": "sqm",
+          "options": [
+            [
+              "sqm",
+              "m²"
+            ],
+            [
+              "hectare",
+              "hectare"
+            ],
+            [
+              "acre",
+              "acre"
+            ],
+            [
+              "sqft",
+              "futi ya mraba"
+            ]
+          ]
+        }
+      ],
+      "sourceBoundary": "Convertisseur de parcelle est lié à « NIST — unités SI et conversions de surface »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "plot-converter",
+      "imageUrl": "/assets/img/tools/plot-converter.webp",
+      "artworkAlt": "Repère visuel de l’outil « Convertisseur de parcelle »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.nist.gov/pml/owm/metric-si/unit-conversion",
+        "label": "NIST — unités SI et conversions de surface",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Convertisseur de parcelle est lié à « NIST — unités SI et conversions de surface »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/convertisseur-parcelle/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/plot-converter",
+          "file": "tools/plot-converter/index.html",
+          "actions": [],
+          "evidence": "Physical English owner exposes no export, print, copy or download control; this contract is still required because the French owner advertises local exports."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/convertisseur-parcelle",
+          "file": "fr/tools/convertisseur-parcelle/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/convertisseur-parcelle/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/convertisseur-parcelle/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/convertisseur-parcelle/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/convertisseur-parcelle/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/convertisseur-parcelle/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"value\"]",
+              "label": "Valeur",
+              "value": "1",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"from\"]",
+              "label": "Unité de départ",
+              "value": "hectare",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"to\"]",
+              "label": "Unité d’arrivée",
+              "value": "sqm",
+              "type": "select"
+            }
+          ],
+          "workflowControl": "Calculer avec mes hypothèses",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"valeurSaisie\"]",
+              "label": "valeurSaisie",
+              "value": "1"
+            },
+            {
+              "selector": "[data-result-field=\"uniteDepart\"]",
+              "label": "uniteDepart",
+              "value": "hectare"
+            },
+            {
+              "selector": "[data-result-field=\"valeurConvertie\"]",
+              "label": "valeurConvertie",
+              "value": "10000"
+            },
+            {
+              "selector": "[data-result-field=\"uniteArrivee\"]",
+              "label": "uniteArrivee",
+              "value": "m²"
+            }
+          ],
+          "expectedSummary": "1 hectare = 10 000 m²."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/kigeuzi-cha-eneo-la-kiwanja/",
+      "resultIntro": "Kigeuzi cha eneo la kiwanja: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "valeurSaisie": "Thamani uliyoingiza",
+        "uniteDepart": "Kipimo cha mwanzo",
+        "valeurConvertie": "Thamani iliyogeuzwa",
+        "uniteArrivee": "Kipimo cha mwisho"
+      }
+    },
+    {
+      "rowNumber": 31,
+      "englishId": "ng-nhf",
+      "englishName": "Africa Housing Fund Calculator",
+      "englishRoute": "/tools/ng-nhf",
+      "englishFile": "tools/ng-nhf/index.html",
+      "frenchRoute": "/fr/tools/ng-nhf",
+      "frenchFile": "fr/tools/ng-nhf/index.html",
+      "name": "Kikokotoo cha NHF Nigeria",
+      "description": "Kadiria mchango na mkopo wa NHF kwa viwango vya injini ya Kiingereza, kisha thibitisha kwa FMBN au PML.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "ng-nhf",
+      "workflowControl": "Kokotoa mchango na mkopo",
+      "fields": [
+        {
+          "name": "basic",
+          "label": "Mshahara wa msingi kwa mwezi (NGN)",
+          "type": "number",
+          "fixtureValue": "350000",
+          "options": []
+        },
+        {
+          "name": "yearsContributed",
+          "label": "Miaka ya michango",
+          "type": "number",
+          "fixtureValue": "5",
+          "options": []
+        },
+        {
+          "name": "loan",
+          "label": "Kiasi cha mkopo (NGN)",
+          "type": "number",
+          "fixtureValue": "15000000",
+          "options": []
+        },
+        {
+          "name": "tenure",
+          "label": "Muda wa mkopo (miaka)",
+          "type": "number",
+          "fixtureValue": "15",
+          "options": []
+        },
+        {
+          "name": "gross",
+          "label": "Mshahara ghafi kwa mwezi (NGN)",
+          "type": "number",
+          "fixtureValue": "500000",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Calculateur NHF Nigeria est lié à « Federal Mortgage Bank of Nigeria — National Housing Fund »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/mortgage-property-english-owner.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "mortgage-property-english-owner",
+      "imageId": "ng-nhf",
+      "imageUrl": "/assets/img/tools/ng-nhf.webp",
+      "artworkAlt": "Repère visuel de l’outil « Calculateur NHF Nigeria »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.fmbn.gov.ng/National%20Housing%20Fund/nhf.php",
+        "label": "Federal Mortgage Bank of Nigeria — National Housing Fund",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Calculateur NHF Nigeria est lié à « Federal Mortgage Bank of Nigeria — National Housing Fund »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "calculator-shared-engine",
+        "sourceSha256BeforeExtraction": "3fb6ee8ea32d71efdd9b12440baf92077c198d62b59bd69a033cdbdbd0783597",
+        "actionSelector": "button[onclick=\"calculate()\"]",
+        "outputSelector": "#resultCard",
+        "inputFixture": {
+          "countrySelect": "NG",
+          "inBasic": "350000",
+          "inYears": "5",
+          "inLoan": "15000000",
+          "inTenure": "15",
+          "inGross": "500000",
+          "affordIncome": "500000",
+          "affordCountry": "NG",
+          "amortLoan": "15000000",
+          "amortRate": "6.0",
+          "amortTenure": "15",
+          "amortCurrency": "₦",
+          "aiInput": "Synthetic aiInput"
+        },
+        "outputSha256": "a594c2304c0289c8ef31afc2b84965efd97bc87ae65089247cc7b0e9afb042f9",
+        "semanticAnchors": [],
+        "outputExcerpt": "CALCULATION RESULTS ₦8,750/mo NHF CONTRIBUTION (2.5%) ₦105,000 ANNUAL CONTRIBUTION ₦525,000 TOTAL CONTRIBUTED (5 YRS) ₦15.0M LOAN AMOUNT ₦126,579/mo MONTHLY REPAYMENT @ 6% ₦7.8M TOTAL INTEREST ₦22.8M TOTAL REPAYMENT YES AFFORDABLE? (33% OF GROSS) NHF contribution is tax-deductible. Maximum loan: ₦50.0M. Minimum 6 month"
+      },
+      "aiFrenchRoute": "/fr/tools/ng-nhf/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/ng-nhf",
+          "file": "tools/ng-nhf/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/ng-nhf/index.html:505"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/ng-nhf/index.html:520"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/ng-nhf/index.html:521"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/ng-nhf/index.html:522"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/ng-nhf/index.html:633"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/ng-nhf",
+          "file": "fr/tools/ng-nhf/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/ng-nhf/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/ng-nhf/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/ng-nhf/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/ng-nhf/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/ng-nhf/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"basic\"]",
+              "label": "Salaire mensuel de base (NGN)",
+              "value": "350000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"yearsContributed\"]",
+              "label": "Années de contribution",
+              "value": "5",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"loan\"]",
+              "label": "Montant du prêt (NGN)",
+              "value": "15000000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"tenure\"]",
+              "label": "Durée du prêt (années)",
+              "value": "15",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"gross\"]",
+              "label": "Salaire mensuel brut (NGN)",
+              "value": "500000",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer la contribution et le prêt",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"contributionMensuelleNGN\"]",
+              "label": "contributionMensuelleNGN",
+              "value": "8750"
+            },
+            {
+              "selector": "[data-result-field=\"contributionAnnuelleNGN\"]",
+              "label": "contributionAnnuelleNGN",
+              "value": "105000"
+            },
+            {
+              "selector": "[data-result-field=\"totalContribueNGN\"]",
+              "label": "totalContribueNGN",
+              "value": "525000"
+            },
+            {
+              "selector": "[data-result-field=\"mensualiteNGN\"]",
+              "label": "mensualiteNGN",
+              "value": "126578.52420726935"
+            },
+            {
+              "selector": "[data-result-field=\"interetsTotauxNGN\"]",
+              "label": "interetsTotauxNGN",
+              "value": "7784134.357308485"
+            },
+            {
+              "selector": "[data-result-field=\"abordable\"]",
+              "label": "abordable",
+              "value": "Oui"
+            }
+          ],
+          "expectedSummary": "NHF Nigeria : contribution mensuelle NGN 8 750; mensualité NGN 126 578,52."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/kikokotoo-nhf-nigeria/",
+      "resultIntro": "Kikokotoo cha NHF Nigeria: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "contributionMensuelleNGN": "Mchango wa mwezi (NGN)",
+        "contributionAnnuelleNGN": "Mchango wa mwaka (NGN)",
+        "totalContribueNGN": "Michango yote (NGN)",
+        "mensualiteNGN": "Malipo ya mwezi (NGN)",
+        "interetsTotauxNGN": "Riba yote (NGN)",
+        "abordable": "Ndani ya kikomo cha makisio"
+      }
+    },
+    {
+      "rowNumber": 35,
+      "englishId": "ip-rights-africa",
+      "englishName": "African IP Rights Guide",
+      "englishRoute": "/tools/ip-rights-africa",
+      "englishFile": "tools/ip-rights-africa/index.html",
+      "frenchRoute": "/fr/tools/propriete-intellectuelle",
+      "frenchFile": "fr/tools/propriete-intellectuelle/index.html",
+      "name": "Mpangaji wa haki miliki Afrika",
+      "description": "Panga maswali ya alama ya biashara, uvumbuzi, kazi bunifu au siri bila kudai usajili au ulinzi.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "reference",
+      "engineMode": "ip-rights-africa",
+      "workflowControl": "Tengeneza mpango wa ukaguzi",
+      "fields": [
+        {
+          "name": "assetType",
+          "label": "Mali bunifu ya kulinda",
+          "type": "select",
+          "fixtureValue": "brand",
+          "options": [
+            [
+              "brand",
+              "Alama ya biashara na jina"
+            ],
+            [
+              "invention",
+              "Uvumbuzi"
+            ],
+            [
+              "work",
+              "Kazi bunifu"
+            ],
+            [
+              "knowhow",
+              "Maarifa ya biashara"
+            ]
+          ]
+        },
+        {
+          "name": "markets",
+          "label": "Eneo la ulinzi",
+          "type": "select",
+          "fixtureValue": "national",
+          "options": [
+            [
+              "national",
+              "Nchi moja"
+            ],
+            [
+              "regional",
+              "Nchi kadhaa za Afrika"
+            ],
+            [
+              "global",
+              "Kimataifa"
+            ]
+          ]
+        },
+        {
+          "name": "publicDisclosure",
+          "label": "Tayari imewekwa wazi kwa umma",
+          "type": "select",
+          "fixtureValue": "no",
+          "options": [
+            [
+              "yes",
+              "Ndiyo"
+            ],
+            [
+              "no",
+              "Hapana"
+            ]
+          ]
+        }
+      ],
+      "sourceBoundary": "Propriété intellectuelle Afrique est lié à « ARIPO trademarks »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "english-dom-oracle",
+      "imageId": "ip-rights-africa",
+      "imageUrl": "/assets/img/tools/ip-rights-africa.webp",
+      "artworkAlt": "Repère visuel de l’outil « Propriété intellectuelle Afrique »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.aripo.org/ip-services/trademarks",
+        "label": "ARIPO trademarks",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Propriété intellectuelle Afrique est lié à « ARIPO trademarks »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "reference-english-dom-oracle",
+        "sourceSha256BeforeExtraction": "8fc0a51d5dfac72c4dfa865e09c43cffbc1e61862468a15fff2041af6b40a5da",
+        "actionSelector": null,
+        "outputSelector": "#tmSteps",
+        "inputFixture": {
+          "country": "NG"
+        },
+        "outputSha256": "08608230a1886cd8b4921d2278aeef1e82c91b44232aa4ec27fb2de9e8296c14",
+        "semanticAnchors": [],
+        "outputExcerpt": "Conduct trademark search at the Registry File application with the Trademarks Registry Examination by Registry examiner Publication in Trademarks Journal 30-day opposition period Certificate of registration issued"
+      },
+      "aiFrenchRoute": "/fr/tools/propriete-intellectuelle/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/ip-rights-africa",
+          "file": "tools/ip-rights-africa/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/ip-rights-africa/index.html:194"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/ip-rights-africa/index.html:209"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/ip-rights-africa/index.html:210"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/ip-rights-africa/index.html:211"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/ip-rights-africa/index.html:322"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/propriete-intellectuelle",
+          "file": "fr/tools/propriete-intellectuelle/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/propriete-intellectuelle/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/propriete-intellectuelle/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/propriete-intellectuelle/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/propriete-intellectuelle/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/propriete-intellectuelle/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-reference-state",
+          "inputs": [
+            {
+              "selector": "[name=\"assetType\"]",
+              "label": "Actif à protéger",
+              "value": "brand",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"markets\"]",
+              "label": "Portée",
+              "value": "national",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"publicDisclosure\"]",
+              "label": "Déjà rendu public",
+              "value": "no",
+              "type": "select"
+            }
+          ],
+          "workflowControl": "Construire le plan de protection",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"actif\"]",
+              "label": "actif",
+              "value": "Marque et nom"
+            },
+            {
+              "selector": "[data-result-field=\"voiePrioritaire\"]",
+              "label": "voiePrioritaire",
+              "value": "marque"
+            },
+            {
+              "selector": "[data-result-field=\"portee\"]",
+              "label": "portee",
+              "value": "Un pays"
+            },
+            {
+              "selector": "[data-result-field=\"divulgationPublique\"]",
+              "label": "divulgationPublique",
+              "value": "Non"
+            },
+            {
+              "selector": "[data-result-field=\"urgence\"]",
+              "label": "urgence",
+              "value": "normale"
+            }
+          ],
+          "expectedSummary": "Plan PI : marque; portée Un pays; divulgation publique non déclarée."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/haki-miliki-afrika/",
+      "resultIntro": "Mpangaji wa haki miliki Afrika: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "actif": "Mali",
+        "voiePrioritaire": "Njia ya kipaumbele",
+        "portee": "Eneo",
+        "divulgationPublique": "Imewekwa wazi",
+        "urgence": "Kipaumbele"
+      }
+    },
+    {
+      "rowNumber": 57,
+      "englishId": "inheritance-tax",
+      "englishName": "Inheritance Tax Calculator Africa 2026 — Estate & Death Duty",
+      "englishRoute": "/tools/inheritance-tax",
+      "englishFile": "tools/inheritance-tax/index.html",
+      "frenchRoute": "/fr/tools/inheritance-tax",
+      "frenchFile": "fr/tools/inheritance-tax/index.html",
+      "name": "Kikokotoo cha makisio ya urithi",
+      "description": "Kadiria kwa injini iliyopo na uelewe kwamba kodi, probate, deni na haki hutegemea mamlaka na kesi.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "inheritance-tax",
+      "workflowControl": "Kokotoa makisio ya urithi",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Nchi",
+          "type": "select",
+          "fixtureValue": "NG",
+          "options": [
+            [
+              "NG",
+              "Nigeria"
+            ],
+            [
+              "SN",
+              "Senegal"
+            ],
+            [
+              "CI",
+              "Côte d'Ivoire"
+            ],
+            [
+              "ZA",
+              "Afrika Kusini"
+            ]
+          ]
+        },
+        {
+          "name": "estateValue",
+          "label": "Thamani ghafi ya mali",
+          "type": "number",
+          "fixtureValue": "1000",
+          "options": []
+        },
+        {
+          "name": "relationship",
+          "label": "Uhusiano na marehemu",
+          "type": "select",
+          "fixtureValue": "spouse",
+          "options": [
+            [
+              "spouse",
+              "Mwenzi"
+            ],
+            [
+              "child",
+              "Mtoto"
+            ],
+            [
+              "other",
+              "Ndugu mwingine"
+            ],
+            [
+              "nonrelative",
+              "Asiye ndugu"
+            ]
+          ]
+        },
+        {
+          "name": "debts",
+          "label": "Madeni na dhima",
+          "type": "number",
+          "fixtureValue": "1000",
+          "options": []
+        },
+        {
+          "name": "funeralExpenses",
+          "label": "Gharama za mazishi",
+          "type": "number",
+          "fixtureValue": "1000",
+          "options": []
+        }
+      ],
+      "sourceBoundary": "Calculateur de droits de succession est lié à « Lagos State Law Reform Commission — Administration of Estates Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/mortgage-property-english-owner.js",
+        "/data/legal/country-legal-index.js",
+        "/engines/legal-engine.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "mortgage-property-english-owner",
+      "imageId": "inheritance-tax",
+      "imageUrl": "/assets/img/tools/inheritance-tax.webp",
+      "artworkAlt": "Repère visuel de l’outil « Calculateur de droits de succession »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://lawrecom.lg.gov.ng/2015-laws.html",
+        "label": "Lagos State Law Reform Commission — Administration of Estates Law",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Calculateur de droits de succession est lié à « Lagos State Law Reform Commission — Administration of Estates Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "calculator-shared-engine",
+        "sourceSha256BeforeExtraction": "d2a77cef4c38b2aa8f9c1918572c5a1d58027e080a22204ac93c2978d0323108",
+        "actionSelector": "button[onclick=\"calcInheritance()\"]",
+        "outputSelector": "#inhResults",
+        "inputFixture": {
+          "selCountry": "NG",
+          "estateValue": "1000",
+          "relationship": "spouse",
+          "debts": "1000",
+          "funeralExp": "1000"
+        },
+        "outputSha256": "4175599dc4c6e649cf2d3701fb89b8dcfcddfa3a2040ceb66d0b27db56e5f219",
+        "semanticAnchors": [],
+        "outputExcerpt": "INHERITANCE TAX AMOUNT ₦0 — No Tax! Nigeria — No inheritance tax ₦1,000 Gross Estate ₦0 Net Estate ₦0 Tax Payable ₦0 Net After All Costs Estate Calculation Summary Item Amount Gross Estate Value ₦1,000 Less: Debts & Liabilities (₦1,000) Less: Funeral Expenses (₦1,000) Net Estate ₦0 Inheritance / Estate Tax ₦0 Estimated"
+      },
+      "aiFrenchRoute": "/fr/tools/inheritance-tax/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/inheritance-tax",
+          "file": "tools/inheritance-tax/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/inheritance-tax/index.html:215"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/inheritance-tax/index.html:230"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/inheritance-tax/index.html:231"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/inheritance-tax/index.html:232"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/inheritance-tax/index.html:342"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/inheritance-tax",
+          "file": "fr/tools/inheritance-tax/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/inheritance-tax/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/inheritance-tax/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/inheritance-tax/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/inheritance-tax/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/inheritance-tax/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"country\"]",
+              "label": "Pays",
+              "value": "NG",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"estateValue\"]",
+              "label": "Valeur brute de la succession",
+              "value": "1000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"relationship\"]",
+              "label": "Lien avec le défunt",
+              "value": "spouse",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"debts\"]",
+              "label": "Dettes et passifs",
+              "value": "1000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"funeralExpenses\"]",
+              "label": "Frais funéraires",
+              "value": "1000",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer les droits saisis",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"pays\"]",
+              "label": "pays",
+              "value": "Nigeria"
+            },
+            {
+              "selector": "[data-result-field=\"successionBrute\"]",
+              "label": "successionBrute",
+              "value": "1000"
+            },
+            {
+              "selector": "[data-result-field=\"successionNette\"]",
+              "label": "successionNette",
+              "value": "0"
+            },
+            {
+              "selector": "[data-result-field=\"lien\"]",
+              "label": "lien",
+              "value": "Conjoint"
+            },
+            {
+              "selector": "[data-result-field=\"droitsEstimes\"]",
+              "label": "droitsEstimes",
+              "value": "0"
+            },
+            {
+              "selector": "[data-result-field=\"fraisSuccession\"]",
+              "label": "fraisSuccession",
+              "value": "0"
+            },
+            {
+              "selector": "[data-result-field=\"netApresFrais\"]",
+              "label": "netApresFrais",
+              "value": "0"
+            }
+          ],
+          "expectedSummary": "Succession nette : ₦ 0; droits estimés ₦ 0; frais de succession ₦ 0."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/kikokotoo-kodi-ya-urithi/",
+      "resultIntro": "Kikokotoo cha makisio ya urithi: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "pays": "Nchi",
+        "successionBrute": "Mali ghafi",
+        "successionNette": "Mali halisi",
+        "lien": "Uhusiano",
+        "droitsEstimes": "Kodi ya makisio",
+        "fraisSuccession": "Gharama za probate",
+        "netApresFrais": "Salio baada ya gharama"
+      }
+    },
+    {
+      "rowNumber": 58,
+      "englishId": "ip-protection",
+      "englishName": "IP Protection Guide — Intellectual Property in Africa",
+      "englishRoute": "/tools/ip-protection",
+      "englishFile": "tools/ip-protection/index.html",
+      "frenchRoute": "/fr/tools/guide-protection-pi",
+      "frenchFile": "fr/tools/guide-protection-pi/index.html",
+      "name": "Mpango wa ulinzi wa mali bunifu",
+      "description": "Panga utafutaji, ushahidi wa umiliki na njia ya uwasilishaji bila kuahidi uhalali au idhini.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "reference",
+      "engineMode": "ip-protection",
+      "workflowControl": "Tengeneza mkakati wa ukaguzi",
+      "fields": [
+        {
+          "name": "asset",
+          "label": "Mali bunifu",
+          "type": "select",
+          "fixtureValue": "brand",
+          "options": [
+            [
+              "brand",
+              "Alama ya biashara"
+            ],
+            [
+              "invention",
+              "Uvumbuzi"
+            ],
+            [
+              "content",
+              "Maudhui"
+            ],
+            [
+              "secret",
+              "Siri ya biashara"
+            ]
+          ]
+        },
+        {
+          "name": "exposure",
+          "label": "Imewekwa wazi kwa umma",
+          "type": "select",
+          "fixtureValue": "no",
+          "options": [
+            [
+              "yes",
+              "Ndiyo"
+            ],
+            [
+              "no",
+              "Hapana"
+            ]
+          ]
+        },
+        {
+          "name": "markets",
+          "label": "Masoko yanayolengwa",
+          "type": "text",
+          "fixtureValue": "Sénégal et Côte d’Ivoire",
+          "options": []
+        },
+        {
+          "name": "ownershipDocs",
+          "label": "Ushahidi wa umiliki upo",
+          "type": "select",
+          "fixtureValue": "yes",
+          "options": [
+            [
+              "yes",
+              "Ndiyo"
+            ],
+            [
+              "no",
+              "Hapana"
+            ]
+          ]
+        }
+      ],
+      "sourceBoundary": "Protection PI est lié à « ARIPO trademarks »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/data/legal/country-legal-index.js",
+        "/engines/legal-engine.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "english-dom-oracle",
+      "imageId": "ip-protection",
+      "imageUrl": "/assets/img/tools/ip-protection.webp",
+      "artworkAlt": "Repère visuel de l’outil « Protection PI »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://www.aripo.org/ip-services/trademarks",
+        "label": "ARIPO trademarks",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Protection PI est lié à « ARIPO trademarks »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "reference-english-dom-oracle",
+        "sourceSha256BeforeExtraction": "9230b7f3e8de41e2c59fb42d20c4930f7ea1a15fcc31dcc05bbea5b8e371b6f6",
+        "actionSelector": null,
+        "outputSelector": "body",
+        "inputFixture": {},
+        "outputSha256": "47825caaebcebbb6b915f4f06b09045c483a0ca012b37131f396a8b3fbe2597f",
+        "semanticAnchors": [],
+        "outputExcerpt": "Home › Legal & Compliance › IP Protection Guide IP Protection Guide for Africa A complete guide to protecting your intellectual property across Africa: the 4 types of IP, how regional bodies ARIPO and OAPI work, Nice Classification, registration timelines, and practical protection strategies. Full Guide Pan-African IP "
+      },
+      "aiFrenchRoute": "/fr/tools/guide-protection-pi/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/ip-protection",
+          "file": "tools/ip-protection/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/ip-protection/index.html:243"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/ip-protection/index.html:258"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/ip-protection/index.html:259"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/ip-protection/index.html:260"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/ip-protection/index.html:371"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/guide-protection-pi",
+          "file": "fr/tools/guide-protection-pi/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/guide-protection-pi/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/guide-protection-pi/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/guide-protection-pi/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/guide-protection-pi/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/guide-protection-pi/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-reference-state",
+          "inputs": [
+            {
+              "selector": "[name=\"asset\"]",
+              "label": "Actif",
+              "value": "brand",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"exposure\"]",
+              "label": "Divulgation publique",
+              "value": "no",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"markets\"]",
+              "label": "Marchés visés",
+              "value": "Sénégal et Côte d’Ivoire",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"ownershipDocs\"]",
+              "label": "Preuves de propriété disponibles",
+              "value": "yes",
+              "type": "select"
+            }
+          ],
+          "workflowControl": "Construire la stratégie PI",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"actif\"]",
+              "label": "actif",
+              "value": "Marque"
+            },
+            {
+              "selector": "[data-result-field=\"marches\"]",
+              "label": "marches",
+              "value": "Sénégal et Côte d’Ivoire"
+            },
+            {
+              "selector": "[data-result-field=\"divulgation\"]",
+              "label": "divulgation",
+              "value": "Non"
+            },
+            {
+              "selector": "[data-result-field=\"preuvesPropriete\"]",
+              "label": "preuvesPropriete",
+              "value": "Oui"
+            },
+            {
+              "selector": "[data-result-field=\"actionPrioritaire\"]",
+              "label": "actionPrioritaire",
+              "value": "recherche et dépôt de marque"
+            }
+          ],
+          "expectedSummary": "Stratégie PI : recherche et dépôt de marque pour Sénégal et Côte d’Ivoire; divulgation Non; preuves de propriété Oui."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/mpango-wa-ulinzi-wa-mali-bunifu/",
+      "resultIntro": "Mpango wa ulinzi wa mali bunifu: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "actif": "Mali",
+        "marches": "Masoko",
+        "divulgation": "Imewekwa wazi",
+        "preuvesPropriete": "Ushahidi wa umiliki",
+        "actionPrioritaire": "Hatua ya kipaumbele"
+      }
+    }
+  ]
+}

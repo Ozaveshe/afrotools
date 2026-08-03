@@ -29,7 +29,7 @@
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/calculator.min.css?v=47ed0a43">
-<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
@@ -88,7 +88,6 @@
 .skip-link:focus{position:fixed;top:12px;left:12px;width:auto;height:auto;padding:10px 18px;background:#0062CC;color:#fff;font-weight:700;font-size:.9rem;border-radius:8px;z-index:9999;text-decoration:none;outline:none;}
 @media print{.tool-hero,.regime-bar,.regime-notice,.regime-helper{display:none!important;}#inputCard,.employer-card{display:none!important;}.results-card{display:block!important;break-inside:avoid;border:1px solid #ddd!important;box-shadow:none!important;background:#fff!important;}.action-row,.chart-tabs{display:none!important;}.tool-main,.tool-page main{padding-top:0!important;}}
 </style>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Malawi","item":"https://afrotools.com/sw/malawi/"},{"@type":"ListItem","position":4,"name":"Kikokotoo cha Kodi ya Mshahara","item":"https://afrotools.com/sw/malawi/kikokotoo-kodi-mshahara/"}]}</script>
 <link rel="canonical" href="https://afrotools.com/sw/malawi/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/malawi/mw-paye">
@@ -102,7 +101,7 @@
 
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <nav class="breadcrumb" aria-label="Breadcrumb">
+    <nav class="breadcrumb" aria-label="Njia ya kurudi">
       <a href="/sw/">Mwanzo</a> / <a href="/sw/malawi/">🇲🇼 Malawi</a> / <span>Kikokotoo cha PAYE</span>
     </nav>
     <h1>Kikokotoo cha Kodi ya Mshahara<br><em>Malawi 2025/26</em></h1>
@@ -139,7 +138,7 @@
               <span class="slider-label">Mshahara Ghafi wa Mwaka</span>
               <span class="slider-val" id="sliderVal">MWK 500,000</span>
             </div>
-            <input aria-label="SalarySlider" type="range" id="salarySlider" min="50000" max="10000000" step="25000" value="500000" oninput="onSlider(this)">
+            <input aria-label="Kitelezeshi cha Mshahara" type="range" id="salarySlider" min="50000" max="10000000" step="25000" value="500000" oninput="onSlider(this)">
             <div class="slider-limits"><span>MWK 50,000</span><span>MWK 10,000,000</span></div>
           </div>
 
@@ -147,7 +146,7 @@
             <div class="f-label"><span class="f-label-text">Au andika kiasi halisi cha mwezi</span><span class="f-hint">Mshahara ghafi wa mwezi kabla ya kodi</span></div>
             <div class="f-wrap">
               <span class="f-prefix">MWK</span>
-              <input aria-label="GrossSalary" type="number" class="f-input" id="grossSalary" placeholder="500,000" min="0" step="25000" value="500000" oninput="onInput(this)">
+              <input aria-label="Mshahara Ghafi" type="number" class="f-input" id="grossSalary" placeholder="500,000" min="0" step="25000" value="500000" oninput="onInput(this)">
             </div>
           </div>
           <!-- Quick Presets -->
@@ -196,7 +195,7 @@
         </div>
 
         <div class="action-row">
-          <button type="button" class="act-btn act-pdf" onclick="openPdfModal()">
+          <button type="button" class="act-btn act-pdf" onclick="generatePdf()" data-no-gate="true">
             <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
             Pakua PDF
           </button>
@@ -302,36 +301,6 @@
         </div>
       </div>
 
-    </div>
-  </div>
-</div>
-
-<div class="modal-bg" id="pdfModal">
-  <div class="modal">
-    <div id="modalForm">
-      <h3>📄 Pakua Muhtasari wako wa PAYE</h3>
-      <p>Ingiza barua pepe yako ili upate PDF yenye maelezo — tutakujulisha viwango vya kodi vya Malawi vikibadilika.</p>
-      <form name="pdf-leads" data-netlify="true" netlify-honeypot="bot-field" id="leadForm" onsubmit="submitPdf(event)">
-        <input type="hidden" name="form-name" value="pdf-leads">
-      <p style="display:none"><input aria-label="Bot field" name="bot-field"></p>
-        <input type="hidden" name="country"      value="Malawi">
-        <input type="hidden" name="country_code" value="MW">
-        <input type="hidden" name="tool"         value="paye">
-        <input type="hidden" name="tool_id"      value="mw-paye">
-        <input type="hidden" name="currency"     value="MWK">
-        <input type="hidden" name="gross_salary" id="hiddenGross" value="">
-        <input aria-label="Jina lako (hiari)" class="modal-input" type="text"  name="name"  id="pdfName"  placeholder="Jina lako (hiari)" autocomplete="name">
-        <input aria-label="Barua pepe yako" class="modal-input" type="email" name="email" id="pdfEmail" placeholder="Barua pepe yako" autocomplete="email" required>
-        <button class="modal-submit" type="submit">Pata PDF Yangu →</button>
-      </form>
-      <button type="button" class="modal-cancel" onclick="closePdfModal()">Hapana, asante</button>
-    </div>
-    <div class="modal-success" id="modalSuccess">
-      <button type="button" onclick="closePdfModal()" style="position:absolute;top:14px;right:16px;background:none;border:none;font-size:1.3rem;cursor:pointer;color:#9ca3af;line-height:1;" aria-label="Funga">✕</button>
-      <div class="big-check">✅</div>
-      <h4>PDF inafunguliwa sasa</h4>
-      <p>Bofya <strong>Hifadhi kama PDF</strong> kwenye dirisha la kuchapisha.</p>
-      <button type="button" class="modal-submit" onclick="closePdfModal()" style="margin-top:14px">Sawa &rarr;</button>
     </div>
   </div>
 </div>
@@ -578,7 +547,6 @@ function calcMonthlyPAYE(monthlyGross) {
   document.getElementById('resContent').innerHTML = renderRows(RESULT, PERIOD);
   document.getElementById('effRateDisplay').textContent = pct(effectiveRate);
   setTimeout(() => { document.getElementById('rateFill').style.width = Math.min(effectiveRate * 200, 100) + '%'; }, 80);
-  document.getElementById('hiddenGross').value = gross;
 
   document.getElementById('resultsCard').classList.add('on');
   // Save/Share/Benchmark wiring
@@ -610,12 +578,12 @@ function calcMonthlyPAYE(monthlyGross) {
   if (empStrip) {
     empStrip.classList.add('on');
     var d = PERIOD === 'monthly' ? 12 : 1;
-    empStrip.innerHTML = '<strong>Jumla ya Gharama ya Mwajiri: MWK\u00A0' + Math.round(RESULT.totalEmployerCost / d).toLocaleString('en-MW') + '/' + (PERIOD==='monthly'?'mo':'yr') + '</strong><br>Gross salary plus mandatory employer pension contribution of 10%.';
+    empStrip.innerHTML = '<strong>Jumla ya Gharama ya Mwajiri: MWK\u00A0' + Math.round(RESULT.totalEmployerCost / d).toLocaleString('en-MW') + '/' + (PERIOD==='monthly'?'mwezi':'mwaka') + '</strong><br>Mshahara ghafi pamoja na mchango wa lazima wa pensheni wa mwajiri wa 10%.';
   }
 
   document.getElementById('aiBtn').disabled = false;
   document.getElementById('aiBtn').textContent = 'Pata Uchambuzi wa AI →';
-  document.getElementById('aiStatus').textContent = `Ghafi: ${fmt(gross)}/mwezi · Halisi: ${fmt(netMonthly)}/mwezi · PAYE: ${fmt(monthlyPAYE)}/mwezi · Pension: ${fmt(employeePension)}/mwezi · Kiwango halisi: ${pct(effectiveRate)}`;
+  document.getElementById('aiStatus').textContent = `Ghafi: ${fmt(gross)}/mwezi · Halisi: ${fmt(netMonthly)}/mwezi · PAYE: ${fmt(monthlyPAYE)}/mwezi · Pensheni: ${fmt(employeePension)}/mwezi · Kiwango halisi: ${pct(effectiveRate)}`;
 }
 
 function renderRows(R, period) {
@@ -635,7 +603,7 @@ function renderRows(R, period) {
     </div>
     <div class="res-section">
       <div class="res-section-title">Makato</div>
-      ${row(`Employee pension (5%)${lbl}`, fmt(pension), 'c-red')}
+      ${row(`Pensheni ya mfanyakazi (5%)${lbl}`, fmt(pension), 'c-red')}
       ${row(`Mapato yanayotozwa kodi${lbl}`, fmt(taxable), 'c-mut')}
     </div>
     <div class="res-section">
@@ -679,7 +647,7 @@ function setChart(type, btn) {
   renderChart(type);
 }
 
-function renderChart(type) {
+function renderChart(type){if(typeof Chart==='undefined')return;
   if (!RESULT) return;
   const R = RESULT;
   const canvas = document.getElementById('mainChart');
@@ -689,7 +657,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'doughnut',
       data: {
-        labels: ['Halisi', 'Kodi ya PAYE', 'Employee Pension'],
+        labels: ['Halisi', 'Kodi ya PAYE', 'Pensheni ya Mfanyakazi'],
         datasets: [{ data: [R.netMonthly, R.monthlyPAYE, R.employeePension], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderWidth: 2, borderColor: '#fff' }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ position:'bottom', labels:{ font:{size:11,weight:'600'}, padding:12 } } } }
@@ -701,7 +669,7 @@ function renderChart(type) {
       type: 'bar',
       data: {
         labels: bands.map(b => (b.rate*100)+'%'),
-        datasets: [{ label:'Tax (MWK)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
+        datasets: [{ label:'Kodi (MWK)', data: bands.map(b=>b.tax), backgroundColor: AfroChartColors.series.slice(0, bands.length), borderRadius:5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, plugins:{ legend:{display:false} }, scales:{ y:{ ticks:{callback:v=>'MWK '+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:'#f2e5e7'} }, x:{ticks:{font:{size:10,weight:'600'}}} } }
     });
@@ -709,7 +677,7 @@ function renderChart(type) {
     CHART = new Chart(canvas, {
       type: 'bar',
       data: {
-        labels: ['Halisi', 'Kodi ya PAYE', 'Employer Pension'],
+        labels: ['Halisi', 'Kodi ya PAYE', 'Pensheni ya Mwajiri'],
         datasets: [{ label: 'Kiasi', data: [R.netMonthly, R.monthlyPAYE, R.employerPension], backgroundColor: AfroChartColors.doughnut.slice(0, 3), borderRadius: 5 }]
       },
       options: { responsive:true, maintainAspectRatio:false, indexAxis:'y', plugins:{ legend:{display:false} }, scales:{ x:{ ticks:{callback:v=>'MWK '+(v/1000).toFixed(0)+'k',font:{size:10,weight:'600'}},grid:{color:AfroChartColors.grid} }, y:{ticks:{font:{size:10,weight:'600'}}} } }
@@ -717,33 +685,17 @@ function renderChart(type) {
   }
 }
 
-function openPdfModal()  { if(!RESULT) return; document.getElementById('pdfModal').classList.add('on'); document.getElementById('modalForm').style.display='block'; document.getElementById('modalSuccess').style.display='none'; }
-function closePdfModal() { document.getElementById('pdfModal').classList.remove('on'); }
-document.getElementById('pdfModal').addEventListener('click', e => { if(e.target===document.getElementById('pdfModal')) closePdfModal(); });
-
-async function submitPdf(e) {
-  e.preventDefault();
-  const email = document.getElementById('pdfEmail').value;
-  if (!email) return;
-  try {
-    await fetch('/', { method:'POST', headers:{'Content-Type':'application/x-www-form-urlencoded'}, body: new URLSearchParams({'form-name':'pdf-leads',email,country:'Malawi',country_code:'MW',tool:'paye',tool_id:'mw-paye',currency:'MWK',gross_salary:RESULT.gross}).toString() });
-  } catch(e){}
-  document.getElementById('modalForm').style.display = 'none';
-  document.getElementById('modalSuccess').style.display = 'block';
-  generatePdf();
-}
-
 function generatePdf() {
   if (!RESULT) return;
   const R = RESULT;
-  const dateStr = new Date().toLocaleDateString('en-MW',{day:'numeric',month:'long',year:'numeric'});
+  const dateStr = new Date().toLocaleDateString('sw-TZ',{day:'numeric',month:'long',year:'numeric'});
   const refNo = 'AFT-MW-PAYE-' + Date.now().toString(36).toUpperCase().slice(-6);
 
   const bandRows = R.bandBreakdown.filter(b => b.tax > 0).map(b =>
     `<tr><td style="padding-left:14px;color:#4b5563">Kiwango ${((b.rate*100))}% kwa MWK ${Math.round(b.income).toLocaleString()}</td><td class="num red">(MWK ${Math.round(b.tax).toLocaleString()})</td></tr>`
   ).join('');
 
-  const html = `<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8">
+  const html = `<!DOCTYPE html><html lang="sw"><head><meta charset="UTF-8">
 <title>AfroTools Malawi PAYE — ${refNo}</title>
 <style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Inter',Arial,sans-serif;background:#fff;color:#111827;font-size:9pt;line-height:1.5}@page{size:A4;margin:0}
 .cover{background:linear-gradient(135deg,#000000 0%,#2d1a1f 100%);padding:28px 36px 22px;color:#fff}
@@ -772,11 +724,11 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 </head><body>
 <div class="cover">
   <div class="cover-top">
-    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Africa's Everything Platform</div></div>
+    <div><div class="brand">AFRO<b>TOOLS</b></div><div class="brand-sub">Jukwaa la Zana za Afrika</div></div>
     <div><div class="ref-label">Marejeo</div><div class="ref-val">${refNo}</div></div>
   </div>
   <div class="doc-title">Malawi PAYE<br><span>Muhtasari 2025/26</span></div>
-  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/malawi/mw-paye</div>
+  <div class="doc-meta">Imetengenezwa ${dateStr} · afrotools.com/sw/malawi/kikokotoo-kodi-mshahara</div>
   <div class="badge">MRA 2025/26</div>
 </div>
 <div class="body">
@@ -790,7 +742,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
     <div class="shi"><div class="sh-lbl">kiwango halisi</div><div class="sh-val red">${pct(R.effectiveRate)}</div></div>
   </div>
 
-  <div class="sec-head">Sehemu ya 1 — Monthly Income</div>
+  <div class="sec-head">Sehemu ya 1 — Mapato ya Mwezi</div>
   <table>
     <tr><td>Mshahara Ghafi wa Mwezi</td><td class="num">MWK ${Math.round(R.gross).toLocaleString()}</td></tr>
   </table>
@@ -798,21 +750,21 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
   <div class="sec-head">Sehemu ya 2 — Hesabu ya PAYE (MRA 2025/26)</div>
   <table>
     ${bandRows || '<tr><td colspan="2" style="color:#94A3B8;padding-left:14px">Mapato katika bendi ya 0% — hakuna PAYE inayodaiwa</td></tr>'}
-    <tr><td style="padding-left:14px;color:#4b5563">Employee pension (5%)</td><td class="num red">MWK ${Math.round(R.employeePension).toLocaleString()}</td></tr>
+    <tr><td style="padding-left:14px;color:#4b5563">Pensheni ya mfanyakazi (5%)</td><td class="num red">MWK ${Math.round(R.employeePension).toLocaleString()}</td></tr>
     <tr class="total"><td>PAYE ya mwezi</td><td class="num red">MWK ${Math.round(R.monthlyPAYE).toLocaleString()}</td></tr>
   </table>
 
   <div class="sec-head">Sehemu ya 3 — Muhtasari wa Mwezi wa Mshahara Halisi</div>
   <table>
-    <tr><td>Employee pension</td><td class="num red">(MWK ${Math.round(R.employeePension).toLocaleString()})</td></tr>
+    <tr><td>Pensheni ya mfanyakazi</td><td class="num red">(MWK ${Math.round(R.employeePension).toLocaleString()})</td></tr>
     <tr><td>Kodi ya Mapato ya PAYE</td><td class="num red">(MWK ${Math.round(R.monthlyPAYE).toLocaleString()})</td></tr>
     <tr class="total"><td style="color:#0062CC;font-weight:800">Mshahara Halisi kwa Mwezi</td><td class="num green">MWK ${Math.round(R.netMonthly).toLocaleString()}</td></tr>
     <tr class="total"><td style="color:#0062CC;font-weight:800">Mshahara Halisi kwa Mwaka</td><td class="num green">MWK ${Math.round(R.annualNet).toLocaleString()}</td></tr>
   </table>
 
-  <div class="sec-head">Sehemu ya 4 — Legal Basis</div>
+  <div class="sec-head">Sehemu ya 4 — Kisheria Basis</div>
   <table>
-    <tr><td style="width:30%"><span class="src">Sheria ya Kodi ya Mapato</span>Malawi PAYE</td><td style="color:#6b7280;font-size:8pt">Four progressive bands effective Januari 2026: 0% on first MWK 170,000; 30% on MWK 170,001–1,570,000; 35% on MWK 1,570,001–10,000,000; 40% above MWK 10,000,000. This calculator also models the standard 5% ya mfanyakazi pension deduction and 10% employer pension contribution under Malawi's pension framework.</td></tr>
+    <tr><td style="width:30%"><span class="src">Sheria ya Kodi ya Mapato</span>Malawi PAYE</td><td style="color:#6b7280;font-size:8pt">Mabanda manne ya hatua yanatumika kuanzia Januari 2026: 0% kwa MWK 170,000 za kwanza; 30% kwa MWK 170,001–1,570,000; 35% kwa MWK 1,570,001–10,000,000; na 40% zaidi ya MWK 10,000,000. Kikokotoo hiki pia kinakadiria punguzo la kawaida la pensheni la mfanyakazi la 5% na mchango wa pensheni wa mwajiri wa 10% chini ya mfumo wa pensheni wa Malawi.</td></tr>
   </table>
 </div>
 <div style="background:#f9fafb;border-top:1px solid #e5e7eb;padding:14px 36px">
@@ -822,7 +774,7 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
       <div style="font-size:6.5pt;color:#9ca3af;max-width:440px;line-height:1.4;margin-top:4px">Kwa taarifa tu. Si ushauri rasmi wa kodi. Thibitisha na MRA (mra.mw) au mshauri wa kodi aliyesajiliwa.</div>
     </div>
     <div style="text-align:right;font-size:7pt;color:#9ca3af;white-space:nowrap;margin-left:20px">
-      <div>Ref: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
+      <div>Kumb: ${refNo}</div><div style="margin-top:2px">${dateStr}</div><div style="margin-top:2px">afrotools.com</div>
     </div>
   </div>
 </div>
@@ -830,7 +782,6 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 <script>window._grossToNet=function(g){var pension=g*0.05;return g-(pension+calcMonthlyPAYE(Math.max(0,g-pension)).tax);};<\/script>
 <script src="/assets/js/components/salary-benchmark-widget.js?v=1c8b8361" defer><\/script>
 <script defer src="/assets/js/lazy-analytics.js?v=249c230c"><\/script>
-
 </body></html>`;
 
   const blob = new Blob([html],{type:'text/html;charset=utf-8'});
@@ -844,9 +795,9 @@ tr.total td{border-top:1.5px solid #d1d5db;padding-top:7px;font-weight:800;font-
 
 function shareResult() {
   if (!RESULT) return;
-  const text = `Muhtasari wa PAYE wa Malawi: Gross MWK ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi MWK ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/malawi/mw-paye`;
+  const text = `Muhtasari wa PAYE wa Malawi: Ghafi MWK ${Math.round(RESULT.gross).toLocaleString()}/mwezi → Halisi MWK ${Math.round(RESULT.netMonthly).toLocaleString()}/mwezi (${pct(RESULT.effectiveRate)} kiwango halisi). Imehesabiwa kwenye afrotools.com/sw/malawi/kikokotoo-kodi-mshahara`;
   if (navigator.share) {
-    navigator.share({title:'My Malawi PAYE',text,url:'https://afrotools.com/malawi/mw-paye'});
+    navigator.share({title:'PAYE Yangu ya Malawi',text,url:'https://afrotools.com/sw/malawi/kikokotoo-kodi-mshahara/'});
   } else if (navigator.clipboard) {
     navigator.clipboard.writeText(text);
     const btn = document.getElementById('mwShareBtn');
@@ -855,7 +806,16 @@ function shareResult() {
   }
 }
 
+let SW_AI_CONSENTED = false;
+function ensureSwAiConsent(){
+  if(SW_AI_CONSENTED) return true;
+  const accepted = window.confirm('Msaidizi wa AI ni wa hiari. Ukikubali, kiasi cha mshahara ghafi, mshahara halisi, kodi, michango ya kijamii na swali lako vitatumwa kwa seva za AfroTools na mtoa huduma wa AI. Usijumuishe jina, barua pepe, namba ya simu, namba ya kodi, akaunti ya benki au taarifa nyingine zinazokutambulisha. Endelea?');
+  if(accepted) SW_AI_CONSENTED = true;
+  return accepted;
+}
+
 async function getAI() {
+  if (!ensureSwAiConsent()) return;
   if (!RESULT) return;
   const R = RESULT;
   const btn = document.getElementById('aiBtn');
@@ -865,24 +825,24 @@ async function getAI() {
   respEl.style.display = 'block'; respEl.className = 'ai-response typing'; respEl.textContent = '';
   document.getElementById('aiStatus').style.display = 'none';
 
-  const prompt = `Malawi PAYE analysis (2025/26, MRA):
+  const prompt = `Malawi uchambuzi wa PAYE (2025/26, MRA):
 - Ghafi ya mwezi: MWK ${Math.round(R.gross).toLocaleString()}
-- Employee pension (5%): MWK ${Math.round(R.employeePension).toLocaleString()}
+- Pensheni ya mfanyakazi (5%): MWK ${Math.round(R.employeePension).toLocaleString()}
 - PAYE ya mwezi: MWK ${Math.round(R.monthlyPAYE).toLocaleString()}
 - Halisi ya mwezi: MWK ${Math.round(R.netMonthly).toLocaleString()}
-- Effective tax rate: ${pct(R.effectiveRate)}
+- Kiwango halisi cha kodi: ${pct(R.effectiveRate)}
 
-Toa: 1) Muhtasari wa wazi kwa Kiswahili of Malawi PAYE position 2) Two specific payroll or pension points that affect taxable income 3) Jambo moja muhimu la uzingatiaji to know 4) One common mistake. Chini ya maneno 150. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
+Toa: 1) Muhtasari wazi kwa Kiswahili wa hali ya PAYE ya Malawi 2) Hoja mbili mahususi za mishahara au pensheni zinazoathiri mapato yanayotozwa kodi 3) Jambo moja muhimu la uzingatiaji 4) Kosa moja la kawaida. Chini ya maneno 150. Jibu kwa Kiswahili. Bila markdown wala nyota.`;
 
   try {
     const res = await fetch('/.netlify/functions/ai-advisor', {
       method:'POST', headers:{'Content-Type':'application/json'},
       body: JSON.stringify({
-        system:'You are AfroTools Mshauri wa Kodi wa AI specialising in Malawi PAYE — MRA progressive tax. Be concise, specific, practical. Jibu kwa Kiswahili. Bila markdown.',
+        system:'Wewe ni Mshauri wa Kodi wa AI anayebobea katika Malawi PAYE — kodi ya hatua ya MRA. Jibu kwa ufupi, kwa usahihi na kwa vitendo. Jibu kwa Kiswahili. Bila markdown.',
         messages:[{role:'user',content:prompt}]
       })
     });
-    if(!res.ok) throw new hitilafu('HTTP '+res.status);
+    if(!res.ok) throw new Error('HTTP '+res.status);
     const data = await res.json();
     const text = data.text || 'Imeshindikana kutengeneza uchambuzi.';
     respEl.className = 'ai-response'; respEl.textContent = '';
@@ -900,6 +860,7 @@ Toa: 1) Muhtasari wa wazi kwa Kiswahili of Malawi PAYE position 2) Two specific 
 }
 
 async function sendChat() {
+  if (!ensureSwAiConsent()) return;
   const input = document.getElementById('chatIn');
   const msg = input.value.trim();
   if(!msg||!RESULT) return;
@@ -915,7 +876,7 @@ async function sendChat() {
     const res = await fetch('/.netlify/functions/ai-advisor',{
       method:'POST',headers:{'Content-Type':'application/json'},
       body:JSON.stringify({
-        system:`AfroTools Mshauri wa Kodi wa AI, Malawi. User: gross MWK ${Math.round(R.gross).toLocaleString()}/mwezi, halisi MWK ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Concise. Jibu kwa Kiswahili. Bila markdown.`,
+        system:`AfroTools Mshauri wa Kodi wa AI, Malawi. Mtumiaji: ghafi MWK ${Math.round(R.gross).toLocaleString()}/mwezi, halisi MWK ${Math.round(R.netMonthly).toLocaleString()}/mwezi, kiwango halisi ${pct(R.effectiveRate)}. Jibu kwa ufupi. Jibu kwa Kiswahili. Bila markdown.`,
         messages:CHAT_HISTORY
       })
     });
@@ -949,7 +910,7 @@ async function sendChat() {
     var favs=getFavs(),idx=favs.indexOf(TOOL_ID);
     if(idx>-1){favs.splice(idx,1);}else{
       if(!isPro()&&favs.length>=LIMIT){
-        showSaveToast('Bure accounts can save up to '+LIMIT+' tools. Upgrade to Pro for unlimited saves.');
+        showSaveToast('Akaunti za bure zinaweza kuhifadhi hadi '+LIMIT+' zana. Boresha hadi Pro ili uhifadhi bila kikomo.');
         return;
       }
       favs.push(TOOL_ID);
@@ -1011,5 +972,42 @@ async function sendChat() {
 </script>
 <script src="/assets/js/lazy-analytics.js?v=249c230c" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+<script data-sw-paye-mode-localizer>
+(function () {
+  "use strict";
+  const replacements = new Map([
+    ["Gross → Net", "Ghafi → Halisi"],
+    ["Net → Gross", "Halisi → Ghafi"],
+    ["Monthly Take-Home Pay", "Mshahara Halisi wa Mwezi"],
+    ["Annual Take-Home Pay", "Mshahara Halisi wa Mwaka"],
+    ["Required Monthly Gross", "Mshahara Ghafi wa Mwezi Unaohitajika"],
+    ["Required Annual Gross", "Mshahara Ghafi wa Mwaka Unaohitajika"],
+    ["Desired Monthly Take-Home", "Mshahara Halisi wa Mwezi Unaolengwa"],
+    ["Desired take-home amount", "Kiasi cha Mshahara Halisi Kinacholengwa"]
+  ]);
+  function localizeModeCopy() {
+    document.querySelectorAll(".mode-toggle .mode-btn, #resLabel, .res-hero-label, .slider-label, .f-label-text")
+      .forEach(function (element) {
+        const current = (element.textContent || "").trim();
+        if (replacements.has(current)) element.textContent = replacements.get(current);
+      });
+    const grossLine = document.getElementById("resGross") || document.querySelector(".res-hero-gross");
+    if (grossLine && /Gross:|Take-home:/.test(grossLine.textContent || "")) {
+      grossLine.textContent = grossLine.textContent
+        .replace(/Gross:/g, "Ghafi:")
+        .replace(/Take-home:/g, "Halisi:")
+        .replace(/\/month/g, "/mwezi")
+        .replace(/\/year/g, "/mwaka");
+    }
+  }
+  document.addEventListener("DOMContentLoaded", localizeModeCopy);
+  new MutationObserver(localizeModeCopy).observe(document.documentElement, {
+    childList: true,
+    subtree: true,
+    characterData: true
+  });
+  setTimeout(localizeModeCopy, 150);
+}());
+</script>
 </body>
 </html>

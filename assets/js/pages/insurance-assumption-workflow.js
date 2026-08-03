@@ -133,10 +133,11 @@
   var form = workflowRoot.querySelector('form');
   var output = workflowRoot.querySelector('[data-result]');
   var mode = workflowRoot.dataset.mode;
-  var locale = workflowRoot.dataset.locale === 'fr' ? 'fr' : 'en';
+  var requestedLocale = workflowRoot.dataset.locale;
+  var locale = requestedLocale === 'fr' || requestedLocale === 'sw' ? requestedLocale : 'en';
   var currencySelect = form.elements.currency;
   var defaultCurrency = workflowRoot.dataset.currency || (locale === 'fr' ? 'XOF' : 'your currency');
-  var money = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en', { maximumFractionDigits: 2 });
+  var money = new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : (locale === 'sw' ? 'sw-KE' : 'en'), { maximumFractionDigits: 2 });
   var lastResult = null;
 
   var copy = {
@@ -171,6 +172,22 @@
       exportFirst: 'Complétez la feuille avant d’exporter.',
       reset: 'Feuille réinitialisée.',
       print: 'Utilisez la boîte de dialogue d’impression pour enregistrer un PDF local.'
+    },
+    sw: {
+      errors: {
+        need_invalid: 'Weka kiasi kisichopungua sifuri na angalau mwaka mmoja.',
+        compare_invalid: 'Weka gharama zisizopungua sifuri na kikomo cha mwaka kinachozidi sifuri kwa mipango yote miwili.',
+        contribution_invalid: 'Weka idadi chanya ya vipindi na viwango vya asilimia 0 hadi 100.',
+        claim_invalid: 'Weka tarehe zote mbili na muda chanya wa kutoa taarifa ulio kwenye mkataba wako.',
+        claim_date_order: 'Tarehe ya taarifa uliyopanga haiwezi kuwa kabla ya tarehe ya tukio.',
+        warning_invalid: 'Kagua ishara za tahadhari ulizochagua.',
+        quote_invalid: 'Weka thamani inayozidi sifuri na viwango vya asilimia 0 hadi 100.'
+      },
+      copied: 'Muhtasari umenakiliwa.',
+      copyFailed: 'Kunakili hakupatikani. Chagua maandishi ya matokeo mwenyewe.',
+      exportFirst: 'Kamilisha karatasi ya kazi kabla ya kupakua.',
+      reset: 'Karatasi ya kazi imewekwa upya.',
+      print: 'Tumia kisanduku cha kuchapisha cha kivinjari kuhifadhi PDF ya ndani.'
     }
   };
 
@@ -246,6 +263,43 @@
   }
 
   function renderResult(result) {
+    if (locale === 'sw') {
+      if (result.mode === 'need') {
+        return 'Pengo la mipango: ' + format(result.gap) + '. Mahitaji yote ' +
+          format(result.grossNeed) + ' ukiondoa rasilimali zilizopo ' + format(result.available) +
+          '. Hili si pendekezo la mkataba wala bei rasmi.';
+      }
+      if (result.mode === 'compare') {
+        var lowerSw = result.lower === 'equal'
+          ? 'Makisio ya gharama zinazojulikana yanafanana.'
+          : (result.lower === 'a'
+            ? 'Mpango A una jumla ndogo ya malipo na kiasi cha kujilipia ulichoingiza.'
+            : 'Mpango B una jumla ndogo ya malipo na kiasi cha kujilipia ulichoingiza.');
+        return 'Mpango A: gharama inayojulikana ' + format(result.aKnownCost) + ', kikomo ulichoingiza ' +
+          format(result.aLimit) + '. Mpango B: gharama inayojulikana ' + format(result.bKnownCost) +
+          ', kikomo ulichoingiza ' + format(result.bLimit) + '. ' + lowerSw +
+          ' Ulinzi, vizuizi, mtandao wa huduma na muda wa kusubiri vinaweza kuwa muhimu zaidi kuliko bei; hili si pendekezo.';
+      }
+      if (result.mode === 'contribution') {
+        return 'Kwa makisio uliyoingiza tu: mfanyakazi ' + format(result.employeeTotal) +
+          ', mwajiri ' + format(result.employerTotal) + ', jumla ' + format(result.combined) +
+          '. Thibitisha msingi na viwango vya sasa kwa mamlaka inayohusika.';
+      }
+      if (result.mode === 'claim') {
+        return 'Muda wa mkataba ulioweka: siku ' + result.windowDays + '. Taarifa imepangwa siku ya ' +
+          result.elapsed + '. Hali ya makisio: ' +
+          (result.remaining >= 0
+            ? 'zimebaki siku ' + result.remaining
+            : 'imezidi muda ulioweka kwa siku ' + Math.abs(result.remaining)) +
+          '. Wasiliana na kampuni ya bima mapema; zana hii haiamui uhalali wa dai.';
+      }
+      if (result.mode === 'warning') {
+        return 'Umechagua ishara ' + result.checked +
+          ' za kukagua. Hili si hitimisho la udanganyifu. Hifadhi ushahidi, thibitisha wakala na mkataba kwa mdhibiti au kampuni ya bima, kisha ripoti kupitia njia rasmi.';
+      }
+      return 'Jumla ya makisio: ' + format(result.total) + ' (' + format(result.subtotal) +
+        ' kabla ya akiba ya tahadhari). Viwango na gharama zote zimetoka kwako; hii si premium ya moja kwa moja, bei rasmi, tathmini, uamuzi wa kustahiki au uamuzi wa ulinzi.';
+    }
     if (locale === 'fr') {
       if (result.mode === 'need') {
         return 'Besoin de planification : ' + format(result.gap) + '. Besoins bruts ' +
@@ -322,8 +376,20 @@
   }
 
   function run() {
-    if (!form.reportValidity()) return null;
+    if (!form.reportValidity()) {
+      lastResult = null;
+      say(copy[locale].errors[mode + '_invalid'] || copy[locale].errors.quote_invalid);
+      Array.prototype.forEach.call(workflowRoot.querySelectorAll('[data-export]'), function (button) {
+        button.disabled = true;
+      });
+      return null;
+    }
     var input = collectInput();
+    if (locale === 'sw' && mode === 'warning' && input.checked === 0) {
+      lastResult = null;
+      say(copy[locale].errors.warning_invalid);
+      return null;
+    }
     var result = engine.calculate(mode, input);
     if (!result.ok) {
       lastResult = null;
@@ -340,7 +406,9 @@
       result: result,
       boundary: locale === 'fr'
         ? 'Estimation de planification uniquement ; aucun devis, contrat, garantie, éligibilité ou conseil officiel.'
-        : 'Planning estimate only; no quote, policy, coverage, eligibility or official advice.'
+        : (locale === 'sw'
+          ? 'Makisio ya mipango tu; si bei rasmi, mkataba, ulinzi, uamuzi wa kustahiki wala ushauri rasmi.'
+          : 'Planning estimate only; no quote, policy, coverage, eligibility or official advice.')
     };
     say(renderResult(result));
     Array.prototype.forEach.call(workflowRoot.querySelectorAll('[data-export]'), function (button) {
@@ -422,8 +490,12 @@
       ? (age > 60
         ? 'Données anciennes pour un domaine à risque élevé : le plancher du jeu a ' + age + ' jours (cadence de révision de 60 jours).'
         : 'Le plancher du jeu a ' + age + ' jours.')
-      : (age > 60
-        ? 'Stale for high-risk figures: dataset floor is ' + age + ' days old (60-day review cadence).'
-        : 'Dataset floor is ' + age + ' days old.');
+      : (locale === 'sw'
+        ? (age > 60
+          ? 'Data ni ya zamani kwa eneo lenye hatari kubwa: tarehe ya msingi ina siku ' + age + ' (ukaguzi kila siku 60).'
+          : 'Tarehe ya msingi ya data ina siku ' + age + '.')
+        : (age > 60
+          ? 'Stale for high-risk figures: dataset floor is ' + age + ' days old (60-day review cadence).'
+          : 'Dataset floor is ' + age + ' days old.'));
   }
 }(typeof globalThis !== 'undefined' ? globalThis : this));

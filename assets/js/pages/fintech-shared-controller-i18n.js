@@ -392,18 +392,48 @@
     }
   };
 
+  var SW_STRINGS = {
+    'b2b-payment': {
+      invalid: 'Weka kiasi chanya cha kutuma na idadi kamili ya malipo ya mwezi kutoka 1 hadi 1,000.',
+      invalidQuote: 'Weka jina la kila ofa, asilimia za ada na FX kutoka 0% hadi 100%, ada tambarare isiyo hasi, na muda wa kupokelewa kutoka siku 0 hadi 365.',
+      perTransaction: 'Kwa muamala',
+      effectiveRate: 'Kiwango halisi',
+      settlement: 'Muda wa kupokelewa',
+      transferFee: 'Ada ya uhamisho',
+      days: 'siku'
+    },
+    'bill-split': {
+      person: 'Mtu',
+      name: 'jina',
+      percentage: 'asilimia',
+      remove: 'Ondoa mtu',
+      invalid: 'Weka bili yenye thamani zaidi ya sifuri na ada ya ziada kutoka 0% hadi 100%.',
+      keepTwo: 'Baki na angalau watu wawili katika mgawanyo.',
+      customInvalid: 'Kila asilimia maalum lazima iwe kutoka 0% hadi 100%, na jumla iwe 100% kamili.',
+      equalShare: 'Kwa kila mtu (mgawanyo sawa)',
+      averageShare: 'Wastani wa sehemu',
+      total: 'Jumla',
+      people: 'watu',
+      ofTotal: 'ya jumla'
+    }
+  };
+
   function isFrench() {
     return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'fr';
   }
 
+  function isSwahili() {
+    return String(document.documentElement.lang || '').toLowerCase().split('-')[0] === 'sw';
+  }
+
   function text(toolId, key, englishFallback) {
-    if (!isFrench()) return englishFallback;
-    var routeStrings = STRINGS[toolId] || {};
+    var routeStrings = isFrench() ? (STRINGS[toolId] || {}) : (isSwahili() ? (SW_STRINGS[toolId] || {}) : {});
     return Object.prototype.hasOwnProperty.call(routeStrings, key) ? routeStrings[key] : englishFallback;
   }
 
   global.AfroToolsFintechI18n = {
     isFrench: isFrench,
+    isSwahili: isSwahili,
     text: text
   };
 }(window));

@@ -16,7 +16,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
 :root{--afro-blue:var(--color-primary);--afro-dark:#0f1419}
@@ -277,22 +277,10 @@ details[open] summary svg{transform:rotate(180deg)}details summary::-webkit-deta
 
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/web-text-codecs.js?v=b92bb720"></script>
 <script>
 let mode='encode';
-const namedEntities={
-  '&':'&amp;',
-  '<':'&lt;',
-  '>':'&gt;',
-  '"':'&quot;',
-  "'":'&apos;',
-  '\u00a0':'&nbsp;',
-  '\u00a9':'&copy;',
-  '\u00ae':'&reg;',
-  '\u2122':'&trade;',
-  '\u20ac':'&euro;',
-  '\u00a3':'&pound;',
-  '\u2014':'&mdash;'
-};
+const codecs=window.AfroToolsWebTextCodecs;
 function setMode(m){
   mode=m;
   document.querySelectorAll('.tab-btn').forEach((b,i)=>{
@@ -312,21 +300,11 @@ function setMode(m){
 
 function encodeHTML(str){
   const style=document.getElementById('encodeStyle').value;
-  return Array.from(str).map(function(ch){
-    const code=ch.codePointAt(0);
-    const mustEncode=/[&<>"']/.test(ch);
-    const common=Object.prototype.hasOwnProperty.call(namedEntities,ch);
-    if(style==='named') return common ? namedEntities[ch] : ch;
-    if(style==='decimal') return (mustEncode||code>127) ? '&#'+code+';' : ch;
-    if(style==='hex') return (mustEncode||code>127) ? '&#x'+code.toString(16).toUpperCase()+';' : ch;
-    return ch;
-  }).join('');
+  return codecs.html.encode(str,style);
 }
 
 function decodeHTML(str){
-  const el=document.createElement('textarea');
-  el.innerHTML=str;
-  return el.value;
+  return codecs.html.decode(str,document);
 }
 
 function convert(){

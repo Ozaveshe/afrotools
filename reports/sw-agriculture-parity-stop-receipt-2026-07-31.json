@@ -1,0 +1,5497 @@
+{
+  "schemaVersion": 1,
+  "programme": "sw-agriculture-free-app-parity",
+  "reviewedAt": "2026-07-31",
+  "checkpoint": {
+    "branch": "codex/sw-parity-coordinator-20260730",
+    "sha": "99898076a0329200e8f47c2e80a41a079b0df8b3"
+  },
+  "scope": {
+    "categoryKey": "agriculture",
+    "expectedRows": 447,
+    "inventorySource": "reports/swahili-free-app-parity-inventory.json",
+    "acceptanceSource": "data/audits/swahili-free-app-acceptance.json",
+    "engineOwnershipSource": "data/localization/fr-agriculture-parity-manifest.json",
+    "stopRule": "Stop at any architecture boundary requiring English engine extraction."
+  },
+  "outcome": "stopped-at-english-engine-extraction-boundary",
+  "counts": {
+    "inScopeRows": 447,
+    "acceptedAtCheckpoint": 0,
+    "acceptedThisLane": 0,
+    "architectureBlockedRows": 1,
+    "pausedByMandatoryStop": 446,
+    "mappedCandidates": 33,
+    "missingSwahiliOwners": 414,
+    "baselineStates": {
+      "localized-shell-candidate": 18,
+      "missing": 414,
+      "native-candidate": 15
+    },
+    "artworkPresent": 447,
+    "artworkMissing": 0
+  },
+  "acceptanceDecision": {
+    "fileChanged": false,
+    "reason": "No Agriculture row completed the required app-specific browser, export, privacy, accessibility, metadata and source evidence before the mandatory architecture stop."
+  },
+  "validation": [
+    {
+      "command": "npm run sw:parity:check",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:sw-parity",
+      "status": "passed"
+    },
+    {
+      "command": "npm run sw:surface:check",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:sw-surface",
+      "status": "passed"
+    },
+    {
+      "command": "npm run test:day6-category",
+      "status": "passed"
+    },
+    {
+      "command": "npm run agriculture:discovery:check",
+      "status": "failed-baseline",
+      "detail": "Agriculture static directory is missing or stale. The lane changed no Agriculture product or discovery source/output."
+    },
+    {
+      "command": "npm run agriculture:taxonomy",
+      "status": "passed",
+      "detail": "447/447 assigned; zero duplicate or missing assignments."
+    },
+    {
+      "command": "npm run build:i18n:validate",
+      "status": "passed"
+    },
+    {
+      "command": "npm run validate:hreflang",
+      "status": "passed"
+    },
+    {
+      "command": "node tests/sw-agriculture-parity-architecture-stop.test.js",
+      "status": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "architectureBlockers": [
+    {
+      "englishId": "vaccination-schedule",
+      "englishRoute": "/agriculture/vaccination-schedule",
+      "englishFile": "agriculture/vaccination-schedule/index.html",
+      "manifestEngineOwners": [
+        "agriculture/vaccination-schedule/index.html#inline-controller"
+      ],
+      "inspectedEngineCandidates": [
+        {
+          "file": "engines/src/vaccination-engine.js",
+          "exists": true,
+          "domFree": false,
+          "domEvidence": [
+            "engines/src/vaccination-engine.js:290",
+            "engines/src/vaccination-engine.js:311",
+            "engines/src/vaccination-engine.js:315",
+            "engines/src/vaccination-engine.js:327",
+            "engines/src/vaccination-engine.js:331",
+            "engines/src/vaccination-engine.js:351",
+            "engines/src/vaccination-engine.js:355",
+            "engines/src/vaccination-engine.js:364"
+          ]
+        }
+      ],
+      "reason": "The in-scope English owner is an inline controller and the available shared engine contains DOM rendering. A compliant Swahili owner requires English engine extraction before localization.",
+      "requiredResolution": [
+        "Extract calculation and validation into a readable DOM-free source engine.",
+        "Keep DOM rendering in page controllers outside the engine.",
+        "Migrate and prove the English owner against the extracted engine before generating the Swahili owner."
+      ]
+    }
+  ],
+  "nonBlockingEngineReconciliation": [
+    {
+      "englishId": "poultry-roi-calculator",
+      "manifestOwner": "agriculture/poultry-roi/index.html#inline-controller",
+      "existingSharedEngine": "engines/src/poultry-roi-engine.js",
+      "domFree": true,
+      "evidence": [
+        "tests/fr-agriculture-poultry-roi.test.js",
+        "scripts/lib/fr-agriculture-singleton-contracts/poultry-roi-calculator.js"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "englishId": "planting-calendar",
+      "englishRoute": "/tools/planting-calendar",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kalenda-ya-kupanda-mazao",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/planting-calendar-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/planting-calendar-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-calc",
+      "englishRoute": "/tools/fertilizer-calc",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-calc-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-calc-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-estimator",
+      "englishRoute": "/agriculture/crop-yield",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/makisio-ya-mavuno",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-calculator",
+      "englishRoute": "/agriculture/fertilizer",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kikokotoo-mbolea",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-calculator",
+      "englishRoute": "/agriculture/irrigation",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kikokotoo-umwagiliaji",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-calculator",
+      "englishRoute": "/agriculture/farm-profit",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/faida-na-hasara-ya-shamba",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-budget",
+      "englishRoute": "/agriculture/farm-budget",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-budget-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-budget-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-calculator",
+      "englishRoute": "/agriculture/seed-rate",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kikokotoo-idadi-ya-mbegu",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "poultry-roi-calculator",
+      "englishRoute": "/agriculture/poultry-roi",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/faida-ya-ufugaji-kuku",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "agriculture/poultry-roi/index.html#inline-controller"
+      ],
+      "existingDomFreeEngine": "engines/src/poultry-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "pesticide-dosage-calculator",
+      "englishRoute": "/agriculture/pesticide-dosage",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/pesticide-dosage-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/pesticide-dosage-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "soil-ph-calculator",
+      "englishRoute": "/agriculture/soil-ph",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/soil-ph-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/soil-ph-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-size-converter",
+      "englishRoute": "/agriculture/farm-size-converter",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-size-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-size-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "harvest-date-estimator",
+      "englishRoute": "/agriculture/harvest-date",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/makisio-tarehe-ya-mavuno",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/harvest-date-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/harvest-date-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "coffee-calculator",
+      "englishRoute": "/agriculture/coffee-calculator",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/coffee-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/coffee-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cocoa-tracker",
+      "englishRoute": "/agriculture/cocoa-tracker",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cocoa-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cocoa-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-roi",
+      "englishRoute": "/agriculture/fish-farming",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/faida-ya-ufugaji-samaki",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-nigeria",
+      "englishRoute": "/agriculture/fish-farming/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-kenya",
+      "englishRoute": "/agriculture/fish-farming/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-south-africa",
+      "englishRoute": "/agriculture/fish-farming/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-ghana",
+      "englishRoute": "/agriculture/fish-farming/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-egypt",
+      "englishRoute": "/agriculture/fish-farming/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-ethiopia",
+      "englishRoute": "/agriculture/fish-farming/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-tanzania",
+      "englishRoute": "/agriculture/fish-farming/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-uganda",
+      "englishRoute": "/agriculture/fish-farming/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-rwanda",
+      "englishRoute": "/agriculture/fish-farming/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-cote-d-ivoire",
+      "englishRoute": "/agriculture/fish-farming/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-cameroon",
+      "englishRoute": "/agriculture/fish-farming/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-senegal",
+      "englishRoute": "/agriculture/fish-farming/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-morocco",
+      "englishRoute": "/agriculture/fish-farming/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-tunisia",
+      "englishRoute": "/agriculture/fish-farming/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fish-farming-angola",
+      "englishRoute": "/agriculture/fish-farming/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/aquaculture-roi-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/aquaculture-roi-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-cost-estimator",
+      "englishRoute": "/agriculture/greenhouse",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/gharama-za-greenhouse",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-nigeria",
+      "englishRoute": "/agriculture/greenhouse/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-kenya",
+      "englishRoute": "/agriculture/greenhouse/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-south-africa",
+      "englishRoute": "/agriculture/greenhouse/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-ghana",
+      "englishRoute": "/agriculture/greenhouse/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-egypt",
+      "englishRoute": "/agriculture/greenhouse/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-ethiopia",
+      "englishRoute": "/agriculture/greenhouse/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-tanzania",
+      "englishRoute": "/agriculture/greenhouse/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-uganda",
+      "englishRoute": "/agriculture/greenhouse/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-rwanda",
+      "englishRoute": "/agriculture/greenhouse/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-cote-d-ivoire",
+      "englishRoute": "/agriculture/greenhouse/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-cameroon",
+      "englishRoute": "/agriculture/greenhouse/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-senegal",
+      "englishRoute": "/agriculture/greenhouse/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-morocco",
+      "englishRoute": "/agriculture/greenhouse/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-tunisia",
+      "englishRoute": "/agriculture/greenhouse/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "greenhouse-angola",
+      "englishRoute": "/agriculture/greenhouse/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/greenhouse-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/greenhouse-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-calculator",
+      "englishRoute": "/agriculture/cassava-processing",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/faida-ya-usindikaji-mihogo",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-nigeria",
+      "englishRoute": "/agriculture/cassava-processing/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-ghana",
+      "englishRoute": "/agriculture/cassava-processing/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-tanzania",
+      "englishRoute": "/agriculture/cassava-processing/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-mozambique",
+      "englishRoute": "/agriculture/cassava-processing/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-dr-congo",
+      "englishRoute": "/agriculture/cassava-processing/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-cameroon",
+      "englishRoute": "/agriculture/cassava-processing/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-cote-d-ivoire",
+      "englishRoute": "/agriculture/cassava-processing/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-angola",
+      "englishRoute": "/agriculture/cassava-processing/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-uganda",
+      "englishRoute": "/agriculture/cassava-processing/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-malawi",
+      "englishRoute": "/agriculture/cassava-processing/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-sierra-leone",
+      "englishRoute": "/agriculture/cassava-processing/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-benin",
+      "englishRoute": "/agriculture/cassava-processing/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-madagascar",
+      "englishRoute": "/agriculture/cassava-processing/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-guinea",
+      "englishRoute": "/agriculture/cassava-processing/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cassava-processing-togo",
+      "englishRoute": "/agriculture/cassava-processing/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cassava-processing-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cassava-processing-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "storage-loss",
+      "englishRoute": "/agriculture/storage-loss",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/storage-loss-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/storage-loss-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-algeria",
+      "englishRoute": "/agriculture/crop-yield/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-angola",
+      "englishRoute": "/agriculture/crop-yield/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-benin",
+      "englishRoute": "/agriculture/crop-yield/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-botswana",
+      "englishRoute": "/agriculture/crop-yield/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-burkina-faso",
+      "englishRoute": "/agriculture/crop-yield/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-burundi",
+      "englishRoute": "/agriculture/crop-yield/burundi",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mavuno/burundi",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-cabo-verde",
+      "englishRoute": "/agriculture/crop-yield/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-cameroon",
+      "englishRoute": "/agriculture/crop-yield/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-central-african-republic",
+      "englishRoute": "/agriculture/crop-yield/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-chad",
+      "englishRoute": "/agriculture/crop-yield/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-comoros",
+      "englishRoute": "/agriculture/crop-yield/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-congo-brazzaville",
+      "englishRoute": "/agriculture/crop-yield/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-cote-d-ivoire",
+      "englishRoute": "/agriculture/crop-yield/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-djibouti",
+      "englishRoute": "/agriculture/crop-yield/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-dr-congo",
+      "englishRoute": "/agriculture/crop-yield/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-egypt",
+      "englishRoute": "/agriculture/crop-yield/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-equatorial-guinea",
+      "englishRoute": "/agriculture/crop-yield/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-eritrea",
+      "englishRoute": "/agriculture/crop-yield/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-eswatini",
+      "englishRoute": "/agriculture/crop-yield/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-ethiopia",
+      "englishRoute": "/agriculture/crop-yield/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-gabon",
+      "englishRoute": "/agriculture/crop-yield/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-gambia",
+      "englishRoute": "/agriculture/crop-yield/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-ghana",
+      "englishRoute": "/agriculture/crop-yield/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-guinea",
+      "englishRoute": "/agriculture/crop-yield/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-guinea-bissau",
+      "englishRoute": "/agriculture/crop-yield/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-kenya",
+      "englishRoute": "/agriculture/crop-yield/kenya",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mavuno/kenya",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-lesotho",
+      "englishRoute": "/agriculture/crop-yield/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-liberia",
+      "englishRoute": "/agriculture/crop-yield/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-libya",
+      "englishRoute": "/agriculture/crop-yield/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-madagascar",
+      "englishRoute": "/agriculture/crop-yield/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-malawi",
+      "englishRoute": "/agriculture/crop-yield/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-mali",
+      "englishRoute": "/agriculture/crop-yield/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-mauritania",
+      "englishRoute": "/agriculture/crop-yield/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-mauritius",
+      "englishRoute": "/agriculture/crop-yield/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-morocco",
+      "englishRoute": "/agriculture/crop-yield/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-mozambique",
+      "englishRoute": "/agriculture/crop-yield/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-namibia",
+      "englishRoute": "/agriculture/crop-yield/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-niger",
+      "englishRoute": "/agriculture/crop-yield/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-nigeria",
+      "englishRoute": "/agriculture/crop-yield/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-rwanda",
+      "englishRoute": "/agriculture/crop-yield/rwanda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mavuno/rwanda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-sao-tome-and-principe",
+      "englishRoute": "/agriculture/crop-yield/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-senegal",
+      "englishRoute": "/agriculture/crop-yield/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-seychelles",
+      "englishRoute": "/agriculture/crop-yield/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-sierra-leone",
+      "englishRoute": "/agriculture/crop-yield/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-somalia",
+      "englishRoute": "/agriculture/crop-yield/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-south-africa",
+      "englishRoute": "/agriculture/crop-yield/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-south-sudan",
+      "englishRoute": "/agriculture/crop-yield/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-sudan",
+      "englishRoute": "/agriculture/crop-yield/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-tanzania",
+      "englishRoute": "/agriculture/crop-yield/tanzania",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mavuno/tanzania",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-togo",
+      "englishRoute": "/agriculture/crop-yield/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-tunisia",
+      "englishRoute": "/agriculture/crop-yield/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-uganda",
+      "englishRoute": "/agriculture/crop-yield/uganda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mavuno/uganda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-zambia",
+      "englishRoute": "/agriculture/crop-yield/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield-zimbabwe",
+      "englishRoute": "/agriculture/crop-yield/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-algeria",
+      "englishRoute": "/agriculture/fertilizer/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-angola",
+      "englishRoute": "/agriculture/fertilizer/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-benin",
+      "englishRoute": "/agriculture/fertilizer/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-botswana",
+      "englishRoute": "/agriculture/fertilizer/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-burkina-faso",
+      "englishRoute": "/agriculture/fertilizer/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-burundi",
+      "englishRoute": "/agriculture/fertilizer/burundi",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mbolea/burundi",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-cabo-verde",
+      "englishRoute": "/agriculture/fertilizer/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-cameroon",
+      "englishRoute": "/agriculture/fertilizer/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-central-african-republic",
+      "englishRoute": "/agriculture/fertilizer/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-chad",
+      "englishRoute": "/agriculture/fertilizer/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-comoros",
+      "englishRoute": "/agriculture/fertilizer/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-congo-brazzaville",
+      "englishRoute": "/agriculture/fertilizer/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-cote-d-ivoire",
+      "englishRoute": "/agriculture/fertilizer/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-djibouti",
+      "englishRoute": "/agriculture/fertilizer/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-dr-congo",
+      "englishRoute": "/agriculture/fertilizer/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-egypt",
+      "englishRoute": "/agriculture/fertilizer/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-equatorial-guinea",
+      "englishRoute": "/agriculture/fertilizer/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-eritrea",
+      "englishRoute": "/agriculture/fertilizer/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-eswatini",
+      "englishRoute": "/agriculture/fertilizer/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-ethiopia",
+      "englishRoute": "/agriculture/fertilizer/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-gabon",
+      "englishRoute": "/agriculture/fertilizer/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-gambia",
+      "englishRoute": "/agriculture/fertilizer/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-ghana",
+      "englishRoute": "/agriculture/fertilizer/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-guinea",
+      "englishRoute": "/agriculture/fertilizer/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-guinea-bissau",
+      "englishRoute": "/agriculture/fertilizer/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-kenya",
+      "englishRoute": "/agriculture/fertilizer/kenya",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mbolea/kenya",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-lesotho",
+      "englishRoute": "/agriculture/fertilizer/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-liberia",
+      "englishRoute": "/agriculture/fertilizer/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-libya",
+      "englishRoute": "/agriculture/fertilizer/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-madagascar",
+      "englishRoute": "/agriculture/fertilizer/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-malawi",
+      "englishRoute": "/agriculture/fertilizer/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-mali",
+      "englishRoute": "/agriculture/fertilizer/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-mauritania",
+      "englishRoute": "/agriculture/fertilizer/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-mauritius",
+      "englishRoute": "/agriculture/fertilizer/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-morocco",
+      "englishRoute": "/agriculture/fertilizer/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-mozambique",
+      "englishRoute": "/agriculture/fertilizer/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-namibia",
+      "englishRoute": "/agriculture/fertilizer/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-niger",
+      "englishRoute": "/agriculture/fertilizer/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-nigeria",
+      "englishRoute": "/agriculture/fertilizer/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-rwanda",
+      "englishRoute": "/agriculture/fertilizer/rwanda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mbolea/rwanda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-sao-tome-and-principe",
+      "englishRoute": "/agriculture/fertilizer/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-senegal",
+      "englishRoute": "/agriculture/fertilizer/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-seychelles",
+      "englishRoute": "/agriculture/fertilizer/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-sierra-leone",
+      "englishRoute": "/agriculture/fertilizer/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-somalia",
+      "englishRoute": "/agriculture/fertilizer/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-south-africa",
+      "englishRoute": "/agriculture/fertilizer/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-south-sudan",
+      "englishRoute": "/agriculture/fertilizer/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-sudan",
+      "englishRoute": "/agriculture/fertilizer/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-tanzania",
+      "englishRoute": "/agriculture/fertilizer/tanzania",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mbolea/tanzania",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-togo",
+      "englishRoute": "/agriculture/fertilizer/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-tunisia",
+      "englishRoute": "/agriculture/fertilizer/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-uganda",
+      "englishRoute": "/agriculture/fertilizer/uganda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/mbolea/uganda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-zambia",
+      "englishRoute": "/agriculture/fertilizer/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "fertilizer-zimbabwe",
+      "englishRoute": "/agriculture/fertilizer/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/fertilizer-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/fertilizer-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-algeria",
+      "englishRoute": "/agriculture/irrigation/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-angola",
+      "englishRoute": "/agriculture/irrigation/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-benin",
+      "englishRoute": "/agriculture/irrigation/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-botswana",
+      "englishRoute": "/agriculture/irrigation/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-burkina-faso",
+      "englishRoute": "/agriculture/irrigation/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-burundi",
+      "englishRoute": "/agriculture/irrigation/burundi",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/umwagiliaji/burundi",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-cabo-verde",
+      "englishRoute": "/agriculture/irrigation/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-cameroon",
+      "englishRoute": "/agriculture/irrigation/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-central-african-republic",
+      "englishRoute": "/agriculture/irrigation/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-chad",
+      "englishRoute": "/agriculture/irrigation/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-comoros",
+      "englishRoute": "/agriculture/irrigation/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-congo-brazzaville",
+      "englishRoute": "/agriculture/irrigation/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-cote-d-ivoire",
+      "englishRoute": "/agriculture/irrigation/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-djibouti",
+      "englishRoute": "/agriculture/irrigation/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-dr-congo",
+      "englishRoute": "/agriculture/irrigation/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-egypt",
+      "englishRoute": "/agriculture/irrigation/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-equatorial-guinea",
+      "englishRoute": "/agriculture/irrigation/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-eritrea",
+      "englishRoute": "/agriculture/irrigation/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-eswatini",
+      "englishRoute": "/agriculture/irrigation/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-ethiopia",
+      "englishRoute": "/agriculture/irrigation/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-gabon",
+      "englishRoute": "/agriculture/irrigation/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-gambia",
+      "englishRoute": "/agriculture/irrigation/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-ghana",
+      "englishRoute": "/agriculture/irrigation/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-guinea",
+      "englishRoute": "/agriculture/irrigation/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-guinea-bissau",
+      "englishRoute": "/agriculture/irrigation/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-kenya",
+      "englishRoute": "/agriculture/irrigation/kenya",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/umwagiliaji/kenya",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-lesotho",
+      "englishRoute": "/agriculture/irrigation/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-liberia",
+      "englishRoute": "/agriculture/irrigation/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-libya",
+      "englishRoute": "/agriculture/irrigation/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-madagascar",
+      "englishRoute": "/agriculture/irrigation/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-malawi",
+      "englishRoute": "/agriculture/irrigation/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-mali",
+      "englishRoute": "/agriculture/irrigation/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-mauritania",
+      "englishRoute": "/agriculture/irrigation/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-mauritius",
+      "englishRoute": "/agriculture/irrigation/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-morocco",
+      "englishRoute": "/agriculture/irrigation/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-mozambique",
+      "englishRoute": "/agriculture/irrigation/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-namibia",
+      "englishRoute": "/agriculture/irrigation/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-niger",
+      "englishRoute": "/agriculture/irrigation/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-nigeria",
+      "englishRoute": "/agriculture/irrigation/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-rwanda",
+      "englishRoute": "/agriculture/irrigation/rwanda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/umwagiliaji/rwanda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-sao-tome-and-principe",
+      "englishRoute": "/agriculture/irrigation/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-senegal",
+      "englishRoute": "/agriculture/irrigation/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-seychelles",
+      "englishRoute": "/agriculture/irrigation/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-sierra-leone",
+      "englishRoute": "/agriculture/irrigation/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-somalia",
+      "englishRoute": "/agriculture/irrigation/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-south-africa",
+      "englishRoute": "/agriculture/irrigation/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-south-sudan",
+      "englishRoute": "/agriculture/irrigation/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-sudan",
+      "englishRoute": "/agriculture/irrigation/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-tanzania",
+      "englishRoute": "/agriculture/irrigation/tanzania",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/umwagiliaji/tanzania",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-togo",
+      "englishRoute": "/agriculture/irrigation/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-tunisia",
+      "englishRoute": "/agriculture/irrigation/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-uganda",
+      "englishRoute": "/agriculture/irrigation/uganda",
+      "baselineState": "native-candidate",
+      "baselineSwahiliRoute": "/sw/kilimo/umwagiliaji/uganda",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-zambia",
+      "englishRoute": "/agriculture/irrigation/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "irrigation-zimbabwe",
+      "englishRoute": "/agriculture/irrigation/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/irrigation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/irrigation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-algeria",
+      "englishRoute": "/agriculture/farm-profit/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-angola",
+      "englishRoute": "/agriculture/farm-profit/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-benin",
+      "englishRoute": "/agriculture/farm-profit/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-botswana",
+      "englishRoute": "/agriculture/farm-profit/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-burkina-faso",
+      "englishRoute": "/agriculture/farm-profit/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-burundi",
+      "englishRoute": "/agriculture/farm-profit/burundi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-cabo-verde",
+      "englishRoute": "/agriculture/farm-profit/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-cameroon",
+      "englishRoute": "/agriculture/farm-profit/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-central-african-republic",
+      "englishRoute": "/agriculture/farm-profit/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-chad",
+      "englishRoute": "/agriculture/farm-profit/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-comoros",
+      "englishRoute": "/agriculture/farm-profit/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-congo-brazzaville",
+      "englishRoute": "/agriculture/farm-profit/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-cote-d-ivoire",
+      "englishRoute": "/agriculture/farm-profit/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-djibouti",
+      "englishRoute": "/agriculture/farm-profit/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-dr-congo",
+      "englishRoute": "/agriculture/farm-profit/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-egypt",
+      "englishRoute": "/agriculture/farm-profit/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-equatorial-guinea",
+      "englishRoute": "/agriculture/farm-profit/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-eritrea",
+      "englishRoute": "/agriculture/farm-profit/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-eswatini",
+      "englishRoute": "/agriculture/farm-profit/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-ethiopia",
+      "englishRoute": "/agriculture/farm-profit/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-gabon",
+      "englishRoute": "/agriculture/farm-profit/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-gambia",
+      "englishRoute": "/agriculture/farm-profit/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-ghana",
+      "englishRoute": "/agriculture/farm-profit/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-guinea-bissau",
+      "englishRoute": "/agriculture/farm-profit/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-guinea",
+      "englishRoute": "/agriculture/farm-profit/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-kenya",
+      "englishRoute": "/agriculture/farm-profit/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-lesotho",
+      "englishRoute": "/agriculture/farm-profit/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-liberia",
+      "englishRoute": "/agriculture/farm-profit/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-libya",
+      "englishRoute": "/agriculture/farm-profit/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-madagascar",
+      "englishRoute": "/agriculture/farm-profit/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-malawi",
+      "englishRoute": "/agriculture/farm-profit/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-mali",
+      "englishRoute": "/agriculture/farm-profit/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-mauritania",
+      "englishRoute": "/agriculture/farm-profit/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-mauritius",
+      "englishRoute": "/agriculture/farm-profit/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-morocco",
+      "englishRoute": "/agriculture/farm-profit/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-mozambique",
+      "englishRoute": "/agriculture/farm-profit/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-namibia",
+      "englishRoute": "/agriculture/farm-profit/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-niger",
+      "englishRoute": "/agriculture/farm-profit/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-nigeria",
+      "englishRoute": "/agriculture/farm-profit/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-rwanda",
+      "englishRoute": "/agriculture/farm-profit/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-sao-tome-and-principe",
+      "englishRoute": "/agriculture/farm-profit/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-senegal",
+      "englishRoute": "/agriculture/farm-profit/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-seychelles",
+      "englishRoute": "/agriculture/farm-profit/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-sierra-leone",
+      "englishRoute": "/agriculture/farm-profit/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-somalia",
+      "englishRoute": "/agriculture/farm-profit/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-south-africa",
+      "englishRoute": "/agriculture/farm-profit/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-south-sudan",
+      "englishRoute": "/agriculture/farm-profit/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-sudan",
+      "englishRoute": "/agriculture/farm-profit/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-tanzania",
+      "englishRoute": "/agriculture/farm-profit/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-togo",
+      "englishRoute": "/agriculture/farm-profit/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-tunisia",
+      "englishRoute": "/agriculture/farm-profit/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-uganda",
+      "englishRoute": "/agriculture/farm-profit/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-zambia",
+      "englishRoute": "/agriculture/farm-profit/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-profit-zimbabwe",
+      "englishRoute": "/agriculture/farm-profit/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ng",
+      "englishRoute": "/agriculture/seed-rate/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-gh",
+      "englishRoute": "/agriculture/seed-rate/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ci",
+      "englishRoute": "/agriculture/seed-rate/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-sn",
+      "englishRoute": "/agriculture/seed-rate/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ml",
+      "englishRoute": "/agriculture/seed-rate/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-bf",
+      "englishRoute": "/agriculture/seed-rate/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ne",
+      "englishRoute": "/agriculture/seed-rate/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-gn",
+      "englishRoute": "/agriculture/seed-rate/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-bj",
+      "englishRoute": "/agriculture/seed-rate/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-tg",
+      "englishRoute": "/agriculture/seed-rate/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-sl",
+      "englishRoute": "/agriculture/seed-rate/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-lr",
+      "englishRoute": "/agriculture/seed-rate/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-mr",
+      "englishRoute": "/agriculture/seed-rate/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-gm",
+      "englishRoute": "/agriculture/seed-rate/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-gw",
+      "englishRoute": "/agriculture/seed-rate/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-cv",
+      "englishRoute": "/agriculture/seed-rate/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ke",
+      "englishRoute": "/agriculture/seed-rate/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-et",
+      "englishRoute": "/agriculture/seed-rate/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-tz",
+      "englishRoute": "/agriculture/seed-rate/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ug",
+      "englishRoute": "/agriculture/seed-rate/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-rw",
+      "englishRoute": "/agriculture/seed-rate/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-bi",
+      "englishRoute": "/agriculture/seed-rate/burundi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-so",
+      "englishRoute": "/agriculture/seed-rate/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-dj",
+      "englishRoute": "/agriculture/seed-rate/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-er",
+      "englishRoute": "/agriculture/seed-rate/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ss",
+      "englishRoute": "/agriculture/seed-rate/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-cd",
+      "englishRoute": "/agriculture/seed-rate/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-cm",
+      "englishRoute": "/agriculture/seed-rate/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-cg",
+      "englishRoute": "/agriculture/seed-rate/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ga",
+      "englishRoute": "/agriculture/seed-rate/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-gq",
+      "englishRoute": "/agriculture/seed-rate/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-cf",
+      "englishRoute": "/agriculture/seed-rate/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-td",
+      "englishRoute": "/agriculture/seed-rate/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-st",
+      "englishRoute": "/agriculture/seed-rate/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-za",
+      "englishRoute": "/agriculture/seed-rate/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-mz",
+      "englishRoute": "/agriculture/seed-rate/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-zm",
+      "englishRoute": "/agriculture/seed-rate/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-zw",
+      "englishRoute": "/agriculture/seed-rate/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-mw",
+      "englishRoute": "/agriculture/seed-rate/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ao",
+      "englishRoute": "/agriculture/seed-rate/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-na",
+      "englishRoute": "/agriculture/seed-rate/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-bw",
+      "englishRoute": "/agriculture/seed-rate/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ls",
+      "englishRoute": "/agriculture/seed-rate/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-sz",
+      "englishRoute": "/agriculture/seed-rate/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-eg",
+      "englishRoute": "/agriculture/seed-rate/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ma",
+      "englishRoute": "/agriculture/seed-rate/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-dz",
+      "englishRoute": "/agriculture/seed-rate/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-tn",
+      "englishRoute": "/agriculture/seed-rate/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-ly",
+      "englishRoute": "/agriculture/seed-rate/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-sd",
+      "englishRoute": "/agriculture/seed-rate/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-mg",
+      "englishRoute": "/agriculture/seed-rate/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-mu",
+      "englishRoute": "/agriculture/seed-rate/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-sc",
+      "englishRoute": "/agriculture/seed-rate/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "seed-rate-km",
+      "englishRoute": "/agriculture/seed-rate/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/seed-rate-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/seed-rate-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-rotation-planner",
+      "englishRoute": "/agriculture/crop-rotation",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-rotation-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-rotation-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "vaccination-schedule",
+      "englishRoute": "/agriculture/vaccination-schedule",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "agriculture/vaccination-schedule/index.html#inline-controller"
+      ],
+      "existingDomFreeEngine": null,
+      "disposition": "architecture-blocked"
+    },
+    {
+      "englishId": "livestock-feed-calculator",
+      "englishRoute": "/agriculture/livestock-feed",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kikokotoo-chakula-cha-mifugo",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-nigeria",
+      "englishRoute": "/agriculture/livestock-feed/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-kenya",
+      "englishRoute": "/agriculture/livestock-feed/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-south-africa",
+      "englishRoute": "/agriculture/livestock-feed/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-ghana",
+      "englishRoute": "/agriculture/livestock-feed/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-egypt",
+      "englishRoute": "/agriculture/livestock-feed/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-ethiopia",
+      "englishRoute": "/agriculture/livestock-feed/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-tanzania",
+      "englishRoute": "/agriculture/livestock-feed/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-uganda",
+      "englishRoute": "/agriculture/livestock-feed/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-rwanda",
+      "englishRoute": "/agriculture/livestock-feed/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-cote-d-ivoire",
+      "englishRoute": "/agriculture/livestock-feed/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-cameroon",
+      "englishRoute": "/agriculture/livestock-feed/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-senegal",
+      "englishRoute": "/agriculture/livestock-feed/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-morocco",
+      "englishRoute": "/agriculture/livestock-feed/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-tunisia",
+      "englishRoute": "/agriculture/livestock-feed/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "livestock-feed-angola",
+      "englishRoute": "/agriculture/livestock-feed/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/livestock-feed-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/livestock-feed-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "commodity-prices",
+      "englishRoute": "/agriculture/commodity-prices",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/commodity-price-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/commodity-price-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "cooperative-calculator",
+      "englishRoute": "/agriculture/cooperative-calculator",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/cooperative-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/cooperative-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "warehouse-receipt",
+      "englishRoute": "/agriculture/warehouse-receipt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/warehouse-receipt-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/warehouse-receipt-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "agric-profit",
+      "englishRoute": "/tools/agric-profit",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/faida-ya-kilimo",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/agric-profit-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/agric-profit-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-yield",
+      "englishRoute": "/tools/crop-yield",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/mavuno-ya-mazao",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-yield-tool-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-yield-tool-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "export-docs",
+      "englishRoute": "/agriculture/export-docs",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/nyaraka-za-usafirishaji-mazao",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/export-docs-directory-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/export-docs-directory-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "tractor-calculator",
+      "englishRoute": "/agriculture/tractor-calculator",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/tractor-calculator-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/tractor-calculator-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "crop-insurance",
+      "englishRoute": "/agriculture/crop-insurance",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/crop-insurance-hub-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/crop-insurance-hub-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-calculator",
+      "englishRoute": "/agriculture/farm-payroll",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/mishahara-ya-wafanyakazi-wa-shamba",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-nigeria",
+      "englishRoute": "/agriculture/farm-payroll/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-kenya",
+      "englishRoute": "/agriculture/farm-payroll/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-south-africa",
+      "englishRoute": "/agriculture/farm-payroll/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-ghana",
+      "englishRoute": "/agriculture/farm-payroll/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-ethiopia",
+      "englishRoute": "/agriculture/farm-payroll/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-egypt",
+      "englishRoute": "/agriculture/farm-payroll/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-tanzania",
+      "englishRoute": "/agriculture/farm-payroll/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-cote-d-ivoire",
+      "englishRoute": "/agriculture/farm-payroll/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-cameroon",
+      "englishRoute": "/agriculture/farm-payroll/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-senegal",
+      "englishRoute": "/agriculture/farm-payroll/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-morocco",
+      "englishRoute": "/agriculture/farm-payroll/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-algeria",
+      "englishRoute": "/agriculture/farm-payroll/algeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-uganda",
+      "englishRoute": "/agriculture/farm-payroll/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-mozambique",
+      "englishRoute": "/agriculture/farm-payroll/mozambique",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-zimbabwe",
+      "englishRoute": "/agriculture/farm-payroll/zimbabwe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-zambia",
+      "englishRoute": "/agriculture/farm-payroll/zambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-malawi",
+      "englishRoute": "/agriculture/farm-payroll/malawi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-dr-congo",
+      "englishRoute": "/agriculture/farm-payroll/dr-congo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-angola",
+      "englishRoute": "/agriculture/farm-payroll/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-rwanda",
+      "englishRoute": "/agriculture/farm-payroll/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-mali",
+      "englishRoute": "/agriculture/farm-payroll/mali",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-burkina-faso",
+      "englishRoute": "/agriculture/farm-payroll/burkina-faso",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-tunisia",
+      "englishRoute": "/agriculture/farm-payroll/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-madagascar",
+      "englishRoute": "/agriculture/farm-payroll/madagascar",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-benin",
+      "englishRoute": "/agriculture/farm-payroll/benin",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-gabon",
+      "englishRoute": "/agriculture/farm-payroll/gabon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-togo",
+      "englishRoute": "/agriculture/farm-payroll/togo",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-niger",
+      "englishRoute": "/agriculture/farm-payroll/niger",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-guinea",
+      "englishRoute": "/agriculture/farm-payroll/guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-namibia",
+      "englishRoute": "/agriculture/farm-payroll/namibia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-botswana",
+      "englishRoute": "/agriculture/farm-payroll/botswana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-mauritius",
+      "englishRoute": "/agriculture/farm-payroll/mauritius",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-burundi",
+      "englishRoute": "/agriculture/farm-payroll/burundi",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-sierra-leone",
+      "englishRoute": "/agriculture/farm-payroll/sierra-leone",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-liberia",
+      "englishRoute": "/agriculture/farm-payroll/liberia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-congo-brazzaville",
+      "englishRoute": "/agriculture/farm-payroll/congo-brazzaville",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-chad",
+      "englishRoute": "/agriculture/farm-payroll/chad",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-eswatini",
+      "englishRoute": "/agriculture/farm-payroll/eswatini",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-lesotho",
+      "englishRoute": "/agriculture/farm-payroll/lesotho",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-cabo-verde",
+      "englishRoute": "/agriculture/farm-payroll/cabo-verde",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-equatorial-guinea",
+      "englishRoute": "/agriculture/farm-payroll/equatorial-guinea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-central-african-republic",
+      "englishRoute": "/agriculture/farm-payroll/central-african-republic",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-gambia",
+      "englishRoute": "/agriculture/farm-payroll/gambia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-mauritania",
+      "englishRoute": "/agriculture/farm-payroll/mauritania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-guinea-bissau",
+      "englishRoute": "/agriculture/farm-payroll/guinea-bissau",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-djibouti",
+      "englishRoute": "/agriculture/farm-payroll/djibouti",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-eritrea",
+      "englishRoute": "/agriculture/farm-payroll/eritrea",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-south-sudan",
+      "englishRoute": "/agriculture/farm-payroll/south-sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-somalia",
+      "englishRoute": "/agriculture/farm-payroll/somalia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-sudan",
+      "englishRoute": "/agriculture/farm-payroll/sudan",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-libya",
+      "englishRoute": "/agriculture/farm-payroll/libya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-sao-tome-and-principe",
+      "englishRoute": "/agriculture/farm-payroll/sao-tome-and-principe",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-seychelles",
+      "englishRoute": "/agriculture/farm-payroll/seychelles",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-payroll-comoros",
+      "englishRoute": "/agriculture/farm-payroll/comoros",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-payroll-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-payroll-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices",
+      "englishRoute": "/agriculture/input-prices",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/kilinganisha-bei-za-pembejeo",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-nigeria",
+      "englishRoute": "/agriculture/input-prices/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-kenya",
+      "englishRoute": "/agriculture/input-prices/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-south-africa",
+      "englishRoute": "/agriculture/input-prices/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-ghana",
+      "englishRoute": "/agriculture/input-prices/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-egypt",
+      "englishRoute": "/agriculture/input-prices/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-ethiopia",
+      "englishRoute": "/agriculture/input-prices/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-tanzania",
+      "englishRoute": "/agriculture/input-prices/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-uganda",
+      "englishRoute": "/agriculture/input-prices/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-rwanda",
+      "englishRoute": "/agriculture/input-prices/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-cote-d-ivoire",
+      "englishRoute": "/agriculture/input-prices/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-cameroon",
+      "englishRoute": "/agriculture/input-prices/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-senegal",
+      "englishRoute": "/agriculture/input-prices/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-morocco",
+      "englishRoute": "/agriculture/input-prices/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-tunisia",
+      "englishRoute": "/agriculture/input-prices/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "input-prices-angola",
+      "englishRoute": "/agriculture/input-prices/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/input-prices-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/input-prices-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-hub",
+      "englishRoute": "/agriculture/farm-loans",
+      "baselineState": "localized-shell-candidate",
+      "baselineSwahiliRoute": "/sw/zana/ustahiki-wa-mkopo-wa-shamba",
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-nigeria",
+      "englishRoute": "/agriculture/farm-loans/nigeria",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-kenya",
+      "englishRoute": "/agriculture/farm-loans/kenya",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-south-africa",
+      "englishRoute": "/agriculture/farm-loans/south-africa",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-ghana",
+      "englishRoute": "/agriculture/farm-loans/ghana",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-egypt",
+      "englishRoute": "/agriculture/farm-loans/egypt",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-ethiopia",
+      "englishRoute": "/agriculture/farm-loans/ethiopia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-tanzania",
+      "englishRoute": "/agriculture/farm-loans/tanzania",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-uganda",
+      "englishRoute": "/agriculture/farm-loans/uganda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-rwanda",
+      "englishRoute": "/agriculture/farm-loans/rwanda",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-cote-d-ivoire",
+      "englishRoute": "/agriculture/farm-loans/cote-d-ivoire",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-cameroon",
+      "englishRoute": "/agriculture/farm-loans/cameroon",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-senegal",
+      "englishRoute": "/agriculture/farm-loans/senegal",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-morocco",
+      "englishRoute": "/agriculture/farm-loans/morocco",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-tunisia",
+      "englishRoute": "/agriculture/farm-loans/tunisia",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    },
+    {
+      "englishId": "farm-loans-angola",
+      "englishRoute": "/agriculture/farm-loans/angola",
+      "baselineState": "missing",
+      "baselineSwahiliRoute": null,
+      "acceptedAtCheckpoint": false,
+      "engineOwners": [
+        "engines/src/farm-loan-engine.js"
+      ],
+      "existingDomFreeEngine": "engines/src/farm-loan-engine.js",
+      "disposition": "paused-by-mandatory-stop"
+    }
+  ]
+}

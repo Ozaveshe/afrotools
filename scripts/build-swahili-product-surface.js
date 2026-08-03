@@ -44,6 +44,31 @@ function filePath(rel) { return path.join(ROOT, rel); }
 function read(rel) { return fs.readFileSync(filePath(rel), 'utf8'); }
 function readJson(rel) { return JSON.parse(read(rel)); }
 function normalize(value) { return String(value).normalize('NFC').replace(/\r\n/g, '\n'); }
+function routeToHtml(route) {
+  return `${String(route).replace(/^\//, '').replace(/\/?$/, '/')}index.html`;
+}
+const acceptedParityHtml = new Set(
+  readJson('data/audits/swahili-free-app-acceptance.json').entries
+    .filter((entry) => entry.status === 'accepted')
+    .map((entry) => routeToHtml(entry.swahiliRoute))
+);
+const sportsTravelParityHtml = new Set(
+  readJson('data/localization/sw-sports-travel-parity-manifest.json').rows
+    .map((row) => routeToHtml(row.swahiliRoute))
+    .concat([
+      'sw/michezo/index.html',
+      'sw/usafiri-utalii/index.html'
+    ])
+);
+function ownedByScopedParity(rel) {
+  if (acceptedParityHtml.has(rel) || sportsTravelParityHtml.has(rel)) return true;
+  if (!rel.startsWith('sw/') || !fs.existsSync(filePath(rel))) return false;
+  const html = read(rel);
+  return [
+    'scripts/build-sw-legal-government-insurance-parity.js',
+    'scripts/build-sw-web-text-codecs-family.js'
+  ].some((owner) => html.includes(owner));
+}
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;
   return html.replace(/<\/body>(\s*<\/html>\s*)$/i, '<script defer src="/assets/js/lazy-analytics.js"></script>\n</body>$1');
@@ -94,7 +119,10 @@ function output(rel, value) {
     const hash = sourceHash(normalized);
     const contentId = `sw-surface:${rel.replace(/\/index\.html$|\.html$/g, '').replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '')}`;
     normalized = normalized.replace('<head>', `<head><meta name="afrotools-sw-source-hash" content="${hash}"><meta name="afrotools-content-id" content="${contentId}"><meta name="afrotools-source-owner" content="scripts/build-swahili-product-surface.js">`);
-    if (!WRITE && current.includes(`name="afrotools-sw-source-hash" content="${hash}"`)) return;
+    // A full build adds hashed assets, route metadata and analytics after this
+    // source generator runs. Preserve that valid post-processing whenever the
+    // source hash still matches, including in --write mode.
+    if (current.includes(`name="afrotools-sw-source-hash" content="${hash}"`)) return;
   }
   if (current === normalized) return;
   if (!WRITE) {
@@ -198,7 +226,7 @@ function repairHomeLandmarks() {
 
 function ensureAccessibilityRuntime(rel) {
   const canonicalScript = '<script src="/assets/js/lib/sw-accessibility.js" defer></script>';
-  const runtimePattern = /^[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gim;
+  const runtimePattern = /[ \t]*<script\b[^>]*\bsrc=["']\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?["'][^>]*><\/script>[ \t]*\r?\n?/gi;
   let html = read(rel);
   const existingScripts = html.match(runtimePattern) || [];
   // SEO and analytics post-processing may place another deferred script after
@@ -214,6 +242,48 @@ function ensureAccessibilityRuntime(rel) {
     return;
   }
   html = html.replace(/<\/body>(\s*<\/html>\s*)$/i, `  ${script}\n</body>$1`);
+  output(rel, html);
+}
+
+function repairTransliterationLandmarks() {
+  const rel = 'sw/zana/transliteration-ya-maandishi/index.html';
+  let html = read(rel);
+  if (!/<main\b[^>]*\bid=["']main["']/i.test(html)) {
+    const verificationMatch = html.match(
+      /<section class="localized-verification-panel"[\s\S]*?<\/section>\s*/i
+    );
+    const verification = verificationMatch ? verificationMatch[0].trim() : '';
+    if (verification) html = html.replace(verificationMatch[0], '');
+    html = html.replace(
+      /(<afro-navbar\b[^>]*><\/afro-navbar>)/i,
+      '$1\n<main id="main">'
+    );
+    if (verification) {
+      html = html.replace(
+        /(<section class="hero"[\s\S]*?<\/section>)/i,
+        `$1\n${verification}`
+      );
+    }
+    html = html.replace(
+      /(<afro-related-tools\b)/i,
+      '</main>\n$1'
+    );
+  }
+  html = html
+    .replace(
+      /<title>[^<]*<\/title>/i,
+      '<title>Ubadilishaji wa mifumo ya uandishi ya Afrika | AfroTools</title>'
+    )
+    .replace(
+      /<section class="hero"><h1>[\s\S]*?<\/h1>/i,
+      '<section class="hero"><h1>Ubadilishaji wa mifumo ya uandishi ya Afrika</h1>'
+    );
+  if (!html.includes('data-sw-language-parity-reflow')) {
+    html = html.replace(
+      '</head>',
+      '<style data-sw-language-parity-reflow>main,.container,.card,.form-group,.output-box,.script-info,.script-card{min-width:0;max-width:100%}.card p,.card td,.card th,.script-card,.output-box{overflow-wrap:anywhere}@media(max-width:640px){.container{padding:1rem}.card{padding:1rem}[style*="grid-template-columns:1fr 1fr"]{grid-template-columns:minmax(0,1fr)!important}.char-grid{grid-template-columns:repeat(auto-fill,minmax(42px,1fr))}}</style>\n</head>'
+    );
+  }
   output(rel, html);
 }
 
@@ -424,9 +494,118 @@ const scriptLanguageRepairs = [
   [/\b([A-Za-z_$][\w$]*)\.kila mwezi\b/g, '$1.monthly'],
   [/\bnavigator\.shiriki\b/g, 'navigator.share']
 ];
+
+const languageParityRoutes = [
+  'sw/zana/mtafsiri-wa-kiswahili/index.html',
+  'sw/zana/mtafsiri-wa-kiyoruba/index.html',
+  'sw/zana/mtafsiri-wa-kihausa/index.html',
+  'sw/zana/mtafsiri-wa-kiigbo/index.html',
+  'sw/zana/mtafsiri-wa-kiamhari/index.html',
+  'sw/zana/mtafsiri-wa-kizulu/index.html',
+  'sw/zana/nambari-za-kiarabu/index.html',
+  'sw/zana/transliteration-ya-maandishi/index.html',
+  'sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html',
+  'sw/zana/mtafsiri-wa-kifaransa-afrika/index.html',
+  'sw/zana/maana-ya-majina-ya-afrika/index.html'
+];
+
+const languageParityArtwork = new Map([
+  ['sw/zana/nambari-za-kiarabu/index.html', 'arabic-calc.webp'],
+  ['sw/zana/transliteration-ya-maandishi/index.html', 'transliterate.webp'],
+  ['sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html', 'pidgin-translator.webp'],
+  ['sw/zana/mtafsiri-wa-kifaransa-afrika/index.html', 'french-african.webp']
+]);
+
+function repairLanguageArtwork(rel, fileName) {
+  const imageUrl = `https://afrotools.com/assets/img/tools/${fileName}`;
+  repair(rel, [
+    [
+      /(<meta property="og:image" content=")https:\/\/afrotools\.com\/assets\/img\/og-default\.png(")/i,
+      `$1${imageUrl}$2`
+    ],
+    [
+      /(<meta name="twitter:image" content=")https:\/\/afrotools\.com\/assets\/img\/og-default\.png(")/i,
+      `$1${imageUrl}$2`
+    ]
+  ]);
+}
+
+const languageParityVisibleRepairs = [
+  [/\bbrief\b/gi, 'muhtasari'],
+  [/\bmobile money\b/gi, 'pesa kwa simu'],
+  [/\bcertified translation\b/gi, 'tafsiri iliyoidhinishwa'],
+  [/\bnative speaker\b/gi, 'mzungumzaji wa lugha hiyo'],
+  [/\bsource page\b/gi, 'ukurasa wa chanzo'],
+  [/\bprofessional\b/gi, 'mtaalamu'],
+  [/\bimmigration\b/gi, 'uhamiaji'],
+  [/\bmedical\b/gi, 'afya'],
+  [/\blegal\b/gi, 'kisheria'],
+  [/\btranslation\b/gi, 'tafsiri'],
+  [/\btranslator\b/gi, 'mtafsiri'],
+  [/\btransliteration\b/gi, 'ubadilishaji wa mfumo wa maandishi'],
+  [/\bromanization\b/gi, 'uandishi kwa herufi za Kilatini'],
+  [/\bpronunciation\b/gi, 'matamshi'],
+  [/\bname meaning\b/gi, 'maana ya jina'],
+  [/\bscript\b/gi, 'mfumo wa maandishi'],
+  [/\bLatin\b/gi, 'Kilatini']
+];
+
+const pidginVisibleRepairs = [
+  ['Learn Naija Like a Local', 'Jifunze Nigerian Pidgin kwa matumizi ya kila siku'],
+  ['Learn Naija', 'Jifunze Nigerian Pidgin'],
+  ['Like a Local', 'kwa matumizi ya kila siku'],
+  [/Master Nigerian Pidgin with flashcards, live (?:translation|tafsiri), and 200\+ real misemo used by 100 million\+ speakers across West Africa\./gi, 'Jifunze Nigerian Pidgin kwa kadi za mazoezi, tafsiri ya hiari na misemo 200+ inayotumika Afrika Magharibi.'],
+  ['Phrases', 'Misemo'],
+  ['Speakers', 'Wazungumzaji'],
+  ['Learn', 'Jifunze'],
+  ['Translate', 'Tafsiri'],
+  ['Phrasebook', 'Kamusi ya misemo'],
+  ['Flashcard Mode', 'Mazoezi ya kadi'],
+  ['How do you say this in Pidgin?', 'Unasemaje sentensi hii kwa Pidgin?'],
+  ['Tap to reveal answer', 'Gusa ili kuona jibu'],
+  ['Skip', 'Ruka'],
+  ['I Knew It', 'Nimeijua'],
+  [/\bLive (?:Translator|mtafsiri)\b/gi, 'Mtafsiri wa hiari mtandaoni'],
+  ['English', 'Kiingereza'],
+  ['Swap languages', 'Badilisha mwelekeo wa lugha'],
+  ['Nakili translation', 'Nakili tafsiri']
+];
+
+const transliterationVisibleRepairs = [
+  ['Badilisha maandishi ya Latin kwenda mifumo ya Ge\'ez, Tifinagh, N\'Ko na Vai kwa mazoezi ya mfumo wa maandishi, matamshi na elimu ya lugha.', 'Badilisha maandishi ya Kilatini kwenda mifumo ya Ge\'ez, Tifinagh, N\'Ko na Vai kwa mazoezi ya uandishi, matamshi na elimu ya lugha.'],
+  ['Badilisha mfumo wa maandishi', 'Badilisha mfumo wa uandishi'],
+  ['Maandishi ya Latin', 'Maandishi ya Kilatini'],
+  ['Matokeo ya mfumo wa maandishi', 'Matokeo ya mfumo wa uandishi'],
+  ['Character Map — Click to Insert', 'Ramani ya herufi — bofya ili kuingiza'],
+  ['Mwongozo wa keyboard', 'Mwongozo wa kibodi'],
+  ['Consonant mapping', 'Ulinganishaji wa konsonanti'],
+  ['Key mapping', 'Ulinganishaji wa vitufe'],
+  ['Syllable mapping', 'Ulinganishaji wa silabi'],
+  ['Type', 'Andika'],
+  ['Notes', 'Maelezo'],
+  ['Add vowel:', 'Ongeza irabu:'],
+  ['Type "sh" before vowel:', 'Andika "sh" kabla ya irabu:'],
+  ['Standalone vowels use Ethiopic base vowel characters', 'Irabu zinazojitegemea hutumia herufi za msingi za irabu za Ethiopic'],
+  ['N\'Ko maps consonant+vowel pairs:', 'N\'Ko hubadilisha jozi za konsonanti na irabu:'],
+  ['Standalone vowels:', 'Irabu zinazojitegemea:'],
+  ['N\'Ko is written right-to-left.', 'N\'Ko huandikwa kutoka kulia kwenda kushoto.'],
+  ['African Writing Systems', 'Mifumo ya uandishi ya Afrika'],
+  ['Used for Amharic, Tigrinya. 2,000+ years old. 230+ characters.', 'Hutumika kwa Kiamhari na Kitigrinya. Una historia ya zaidi ya miaka 2,000 na herufi 230+.'],
+  ['Used for Amazigh/Berber. 3,000+ years old. Official in Morocco.', 'Hutumika kwa Amazigh/Berber. Una historia ya zaidi ya miaka 3,000 na ni rasmi nchini Morocco.'],
+  ['Created 1949 for Manding languages. Right-to-left. Used in West Africa.', 'Ulibuniwa mwaka 1949 kwa lugha za Manding. Huandikwa kulia kwenda kushoto na hutumika Afrika Magharibi.'],
+  ['Created c.1830s in Liberia. One kati ya few African-invented syllabaries.', 'Ulibuniwa karibu miaka ya 1830 nchini Liberia. Ni mojawapo ya mifumo michache ya silabi iliyobuniwa Afrika.']
+];
+
+const languageAccessibilityRepairs = [
+  ['aria-label="Lang Filter"', 'aria-label="Chuja kwa lugha"'],
+  ['aria-label="Gender Filter"', 'aria-label="Chuja kwa jinsia"'],
+  ['aria-label="Suggest Gender"', 'aria-label="Chagua jinsia kwa mapendekezo"'],
+  ['aria-label="ingizo Format"', 'aria-label="Muundo wa kuingiza"'],
+  ['aria-label="Direction"', 'aria-label="Mwelekeo wa ubadilishaji"']
+];
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   repair(rel, staticUiTransforms.concat(runtimeTransforms));
   repairScriptBoundaries(rel);
 }
@@ -475,10 +654,38 @@ output('sw/vault/index.html', bridgePage('vault'));
 // Run visible-copy cleanup after route-specific repairs so a single build is idempotent.
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
+  if (GENERATED_HTML.has(rel) || ownedByScopedParity(rel)) continue;
   repairVisibleLanguage(rel, visibleLanguageTransforms);
   repairScriptLanguage(rel, scriptLanguageRepairs);
 }
+
+// The language-app parity lane is deliberately narrow. These are the exact
+// eleven English free-app counterparts owned by the Swahili language category.
+// Phrase data remains bilingual by design; only Swahili UI, help copy and
+// accessibility labels are normalized here.
+for (const rel of languageParityRoutes) {
+  repairVisibleLanguage(rel, languageParityVisibleRepairs);
+  repair(rel, languageAccessibilityRepairs);
+}
+for (const [rel, fileName] of languageParityArtwork) {
+  repairLanguageArtwork(rel, fileName);
+}
+repairVisibleLanguage(
+  'sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html',
+  pidginVisibleRepairs
+);
+repairScriptLanguage(
+  'sw/zana/mtafsiri-wa-pidgin-ya-nigeria/index.html',
+  [
+    [/'English'/g, "'Kiingereza'"],
+    [/'Tafsiri →'/g, "'Tafsiri →'"]
+  ]
+);
+repairVisibleLanguage(
+  'sw/zana/transliteration-ya-maandishi/index.html',
+  transliterationVisibleRepairs
+);
+repairTransliterationLandmarks();
 
 // A historic visible-copy pass translated part of this CSS token. Keep the
 // stable class name in generated output; classes are implementation data, not
@@ -503,7 +710,6 @@ repair('sw/zana/orodha-vifaa/index.html', [
 
 for (const file of allHtml(path.join(ROOT, 'sw'))) {
   const rel = path.relative(ROOT, file).replace(/\\/g, '/');
-  if (GENERATED_HTML.has(rel)) continue;
   ensureAccessibilityRuntime(rel);
 }
 

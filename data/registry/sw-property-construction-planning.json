@@ -1,0 +1,205 @@
+{
+  "schemaVersion": 1,
+  "owner": "scripts/build-sw-property-construction-planning-parity.js",
+  "count": 2,
+  "rows": [
+    {
+      "englishId": "building-materials",
+      "englishRoute": "/tools/building-materials/",
+      "frenchRoute": "/fr/tools/materiaux-construction/",
+      "swahiliRoute": "/sw/zana/gharama-vifaa-vya-ujenzi/",
+      "name": "Kikokotoo cha gharama za vifaa vya ujenzi",
+      "description": "Kadiria gharama ya vifaa kutoka kiasi, bei ya kipimo, gharama zisizobadilika na akiba ulizoingiza; hakuna bei ya saruji, tofali, chuma au kifaa inayopakiwa.",
+      "intro": "Hesabu hii hutumia kiasi, bei ya kipimo, gharama zisizobadilika na akiba yako.",
+      "artworkWidth": 800,
+      "artworkHeight": 450,
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Jina la sarafu",
+          "type": "text",
+          "sourceDefault": "your currency",
+          "initialValue": "sarafu yako",
+          "required": true
+        },
+        {
+          "name": "quantity",
+          "label": "Kiasi au eneo",
+          "type": "number",
+          "initialValue": "",
+          "min": "0.01",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "unitCost",
+          "label": "Gharama kwa kipimo",
+          "type": "number",
+          "initialValue": "",
+          "min": "0.01",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "fixed",
+          "label": "Gharama zisizobadilika",
+          "type": "number",
+          "initialValue": "",
+          "min": "0",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "contingency",
+          "label": "Akiba ya dharura (%)",
+          "type": "number",
+          "initialValue": "",
+          "min": "0",
+          "max": "100",
+          "step": "any",
+          "required": true
+        }
+      ],
+      "results": [
+        {
+          "key": "total",
+          "label": "Jumla ya makisio",
+          "format": "money"
+        }
+      ],
+      "formula": "jumla = (kiasi × gharamaKwaKipimo + gharamaZisizobadilika) × (1 + akiba ÷ 100)",
+      "fixture": {
+        "currency": "KES",
+        "quantity": "10",
+        "unitCost": "100",
+        "fixed": "50",
+        "contingency": "10"
+      },
+      "expected": {
+        "total": 1155
+      },
+      "source": {
+        "url": "https://www.statssa.gov.za/?page_id=2528",
+        "label": "Stats SA — Construction Material Price Indices, sources and methods (2026)",
+        "role": "official-south-africa-index-context-only",
+        "availability": "available",
+        "checkedAt": "2026-08-02",
+        "jurisdiction": "Mfululizo rasmi wa takwimu za Afrika Kusini pekee; si bei ya mradi, bei ya kipimo, BOQ, nukuu ya mkandarasi au mamlaka ya nchi nyingine.",
+        "freshness": "Weka upya kiasi, bei ya kipimo, gharama zisizobadilika na akiba kutoka nukuu za sasa za eneo na tarehe ya mradi wako.",
+        "confidence": {
+          "calculation": "Juu kwa hesabu kutoka maingizo yanayoonekana.",
+          "applicability": "Chini kwa bajeti halisi ya mradi; inategemea ubora, tarehe, eneo, vipimo na nukuu ulizoingiza."
+        },
+        "suppliesUnitPrices": false
+      },
+      "sharedEngine": "property-assumption",
+      "exports": [
+        "copy",
+        "txt",
+        "json",
+        "pdf",
+        "print"
+      ],
+      "privacy": "local-only-no-storage-no-ai-no-account"
+    },
+    {
+      "englishId": "construction-budget",
+      "englishRoute": "/tools/construction-budget/",
+      "frenchRoute": "/fr/tools/budget-construction/",
+      "swahiliRoute": "/sw/zana/bajeti-ya-ujenzi-wa-nyumba/",
+      "name": "Mpangaji wa bajeti ya ujenzi wa nyumba",
+      "description": "Jenga makisio ya bajeti kutoka kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba ulizoingiza; hakuna gharama ya nchi au daraja la ubora linalodhaniwa.",
+      "intro": "Hesabu hii hutumia kiasi, gharama kwa kipimo, gharama zisizobadilika na akiba yako.",
+      "artworkWidth": 800,
+      "artworkHeight": 450,
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Jina la sarafu",
+          "type": "text",
+          "sourceDefault": "your currency",
+          "initialValue": "sarafu yako",
+          "required": true
+        },
+        {
+          "name": "quantity",
+          "label": "Kiasi au eneo",
+          "type": "number",
+          "initialValue": "",
+          "min": "0.01",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "unitCost",
+          "label": "Gharama kwa kipimo",
+          "type": "number",
+          "initialValue": "",
+          "min": "0.01",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "fixed",
+          "label": "Gharama zisizobadilika",
+          "type": "number",
+          "initialValue": "",
+          "min": "0",
+          "step": "any",
+          "required": true
+        },
+        {
+          "name": "contingency",
+          "label": "Akiba ya dharura (%)",
+          "type": "number",
+          "initialValue": "",
+          "min": "0",
+          "max": "100",
+          "step": "any",
+          "required": true
+        }
+      ],
+      "results": [
+        {
+          "key": "total",
+          "label": "Jumla ya makisio",
+          "format": "money"
+        }
+      ],
+      "formula": "jumla = (kiasi × gharamaKwaKipimo + gharamaZisizobadilika) × (1 + akiba ÷ 100)",
+      "fixture": {
+        "currency": "KES",
+        "quantity": "10",
+        "unitCost": "100",
+        "fixed": "50",
+        "contingency": "10"
+      },
+      "expected": {
+        "total": 1155
+      },
+      "source": {
+        "url": "https://www.statssa.gov.za/?page_id=2528",
+        "label": "Stats SA — Construction Material Price Indices, sources and methods (2026)",
+        "role": "official-south-africa-index-context-only",
+        "availability": "available",
+        "checkedAt": "2026-08-02",
+        "jurisdiction": "Mfululizo rasmi wa takwimu za Afrika Kusini pekee; si bei ya mradi, bei ya kipimo, BOQ, nukuu ya mkandarasi au mamlaka ya nchi nyingine.",
+        "freshness": "Weka upya kiasi, bei ya kipimo, gharama zisizobadilika na akiba kutoka nukuu za sasa za eneo na tarehe ya mradi wako.",
+        "confidence": {
+          "calculation": "Juu kwa hesabu kutoka maingizo yanayoonekana.",
+          "applicability": "Chini kwa bajeti halisi ya mradi; inategemea ubora, tarehe, eneo, vipimo na nukuu ulizoingiza."
+        },
+        "suppliesUnitPrices": false
+      },
+      "sharedEngine": "property-assumption",
+      "exports": [
+        "copy",
+        "txt",
+        "json",
+        "pdf",
+        "print"
+      ],
+      "privacy": "local-only-no-storage-no-ai-no-account"
+    }
+  ]
+}

@@ -1,0 +1,251 @@
+{
+  "schemaVersion": 1,
+  "lane": "Swahili Engineering, Energy, Climate, and Mining parity",
+  "selectedFamily": "Energy sizing trio",
+  "sourceOfTruth": {
+    "pages": "hand-authored Swahili owners",
+    "formulas": [
+      "engines/solar-sizing-engine.js",
+      "engines/battery-sizing-engine.js",
+      "engines/backup-duration-engine.js"
+    ],
+    "data": "generated static Swahili snapshot from data/energy/country-energy-index.js",
+    "controller": "assets/js/pages/sw-energy-sizing-parity.js"
+  },
+  "reconciliation": [
+    {
+      "category": "Engineering & Construction",
+      "categoryKey": "engineering",
+      "englishFreeApps": 26,
+      "native-candidate": 0,
+      "localized-shell-candidate": 20,
+      "english-fallback": 0,
+      "english-iframe": 0,
+      "bridge-handoff": 0,
+      "alias-utility": 0,
+      "unclassified-candidate": 0,
+      "missing": 6,
+      "accepted": 0
+    },
+    {
+      "category": "Energy & Utilities",
+      "categoryKey": "energy",
+      "englishFreeApps": 20,
+      "native-candidate": 0,
+      "localized-shell-candidate": 16,
+      "english-fallback": 4,
+      "english-iframe": 0,
+      "bridge-handoff": 0,
+      "alias-utility": 0,
+      "unclassified-candidate": 0,
+      "missing": 0,
+      "accepted": 0
+    },
+    {
+      "category": "Climate & Environment",
+      "categoryKey": "climate",
+      "englishFreeApps": 13,
+      "native-candidate": 0,
+      "localized-shell-candidate": 12,
+      "english-fallback": 1,
+      "english-iframe": 0,
+      "bridge-handoff": 0,
+      "alias-utility": 0,
+      "unclassified-candidate": 0,
+      "missing": 0,
+      "accepted": 0
+    },
+    {
+      "category": "Mining & Extractives",
+      "categoryKey": "mining",
+      "englishFreeApps": 6,
+      "native-candidate": 0,
+      "localized-shell-candidate": 0,
+      "english-fallback": 0,
+      "english-iframe": 0,
+      "bridge-handoff": 0,
+      "alias-utility": 0,
+      "unclassified-candidate": 0,
+      "missing": 6,
+      "accepted": 0
+    }
+  ],
+  "adversarialRepair": {
+    "coordinatorParent": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+    "verifierRepairParent": "65698f498915406178714d0b182f5a1c028e6598",
+    "repairedRouteCount": 3,
+    "localizedSnapshotCountryCount": 54,
+    "validation": {
+      "nativeCheckValidityAndReportValidity": true,
+      "solarHoursPerDay": {
+        "min": 0.5,
+        "max": 24,
+        "step": 0.5
+      },
+      "solarQuantity": {
+        "min": 1,
+        "max": 1000,
+        "step": 1,
+        "integerOnly": true
+      },
+      "correctedErrorClearing": [
+        "solar-sizing",
+        "battery-sizing",
+        "backup-duration"
+      ],
+      "staleResultAndCopyClearing": [
+        "solar-sizing",
+        "battery-sizing",
+        "backup-duration"
+      ]
+    },
+    "sourceUrls": [
+      {
+        "id": "global-solar-atlas",
+        "labelSw": "Global Solar Atlas — ramani ya rasilimali ya jua",
+        "url": "https://globalsolaratlas.info/map",
+        "verifies": [
+          "peak_sun_hours"
+        ]
+      },
+      {
+        "id": "world-bank-official-exchange-rate",
+        "labelSw": "World Bank — Official exchange rate (PA.NUS.FCRF)",
+        "url": "https://data.worldbank.org/indicator/PA.NUS.FCRF",
+        "verifies": [
+          "exchange_rate_reference"
+        ]
+      }
+    ],
+    "solarCostAssumptions": {
+      "panelsUsdPerKw": 300,
+      "batteriesUsdPerKwh": 200,
+      "inverterUsdPerKva": 150,
+      "installationShareOfEquipment": 0.2,
+      "localCurrencyMethod": "modeled USD total multiplied by the March 2026 snapshot USD rate",
+      "claimBoundary": "planning estimate; not live pricing or a supplier quote"
+    },
+    "batteryCostAssumptions": {
+      "modelBattery": "12V 200Ah",
+      "lithiumUsdPerBattery": 300,
+      "leadAcidUsdPerBattery": 100,
+      "inverterUsdPerKva": 180,
+      "batteryCountMethod": "whole batteries derived from series and parallel configuration for system voltage and required Ah",
+      "systemCostMethod": "modeled battery cost plus modeled inverter cost",
+      "localCurrencyMethod": "modeled USD total multiplied by the March 2026 snapshot USD rate",
+      "provenance": "implicit constants in the shared English battery-sizing engine",
+      "freshness": "hardware constants are embedded, non-live assumptions; exchange rate is a low-confidence March 2026 snapshot when stale",
+      "claimBoundary": "planning estimate; not market data, a design, professional advice, live pricing, or a supplier quote"
+    },
+    "focusContrast": {
+      "minimumRequired": 3,
+      "lightRing": "#9a3412",
+      "lightAdjacentColor": "#ffffff",
+      "lightComputedRatio": 7.31,
+      "darkRing": "#b45309",
+      "darkAdjacentColor": "#172033",
+      "darkComputedRatio": 3.24,
+      "browserMethod": "sequential Tab focus plus computed outline and adjacent background colors",
+      "visibleTextMethod": "computed foreground and effective background for every visible direct-text node in source, assumption, error, result, and export regions",
+      "sourceText": {
+        "lightForeground": "#334155",
+        "lightBackground": "#fff7ed",
+        "lightComputedRatio": 9.75,
+        "darkForeground": "#cbd5e1",
+        "darkBackground": "#172033",
+        "darkComputedRatio": 10.96,
+        "minimumRequired": "strictly greater than 4.5"
+      }
+    },
+    "browserProof": {
+      "tests": 6,
+      "viewportWidthsPx": [
+        320,
+        375
+      ],
+      "textReflowPercent": 200,
+      "exportReopenAndParse": "clipboard text read again after page reload",
+      "themes": [
+        "light",
+        "dark"
+      ],
+      "consoleAndResourceErrors": "zero expected",
+      "calculationAndCopyNetwork": "zero fetch, XHR, API, or external analytics transmissions expected"
+    }
+  },
+  "implementedRoutes": [
+    {
+      "id": "solar-sizing",
+      "englishRegistryId": "solar-sizing",
+      "swahiliRegistryId": "zana-ukubwa-wa-mfumo-wa-solar-sw",
+      "swahiliRegistrySourceId": null,
+      "englishRoute": "/tools/solar-sizing/",
+      "swahiliRoute": "/sw/zana/ukubwa-wa-mfumo-wa-solar/",
+      "file": "sw/zana/ukubwa-wa-mfumo-wa-solar/index.html",
+      "engine": "engines/solar-sizing-engine.js",
+      "artwork": "assets/img/tools/solar-sizing.webp",
+      "artworkWidth": 800,
+      "artworkHeight": 450,
+      "hubRoute": "/sw/nishati-na-huduma/",
+      "hubLinkStatus": "linked",
+      "registryOwnershipStatus": "english_and_swahili_rows_present",
+      "registrySourceIdNote": "Swahili registry row has no sourceId; canonical English pairing is reconciled by route inventory and reciprocal hreflang",
+      "acceptanceLedgerStatus": "blocked_pending_coordinator",
+      "aiRouteStatus": "blocked_fail_closed",
+      "engineSha256": "7e31c525ef4dac69a0c985bf259abbfe75e3dcfd55c5cca1af827d59d2e3fdaa",
+      "artworkSha256": "5bb4ba2747322e424813cbb41f7b4305e6c888e99905541115c25cb90c26dcc8"
+    },
+    {
+      "id": "battery-sizing",
+      "englishRegistryId": "battery-sizing",
+      "swahiliRegistryId": "zana-ukubwa-wa-betri-na-inverter-sw-wave8",
+      "swahiliRegistrySourceId": "battery-inverter-size",
+      "englishRoute": "/tools/battery-sizing/",
+      "swahiliRoute": "/sw/zana/ukubwa-wa-betri-na-inverter/",
+      "file": "sw/zana/ukubwa-wa-betri-na-inverter/index.html",
+      "engine": "engines/battery-sizing-engine.js",
+      "artwork": "assets/img/tools/battery-sizing.webp",
+      "artworkWidth": 800,
+      "artworkHeight": 450,
+      "hubRoute": "/sw/nishati-na-huduma/",
+      "hubLinkStatus": "linked",
+      "registryOwnershipStatus": "english_and_swahili_rows_present",
+      "registrySourceIdNote": "legacy Swahili registry sourceId retained; canonical English pairing is reconciled by route inventory and reciprocal hreflang",
+      "acceptanceLedgerStatus": "blocked_pending_coordinator",
+      "aiRouteStatus": "blocked_fail_closed",
+      "engineSha256": "da2c48b4e77635c9992049bb0da8cc844cc3127f5fe55b2b82e476c32f4ccbbc",
+      "artworkSha256": "20f4d44b1f80a49ca00bc52e6d78b114f11defd11a1e427e463798924f3a6a37"
+    },
+    {
+      "id": "backup-duration",
+      "englishRegistryId": "backup-duration",
+      "swahiliRegistryId": "zana-muda-wa-backup-ya-betri-sw",
+      "swahiliRegistrySourceId": null,
+      "englishRoute": "/tools/backup-duration/",
+      "swahiliRoute": "/sw/zana/muda-wa-backup-ya-betri/",
+      "file": "sw/zana/muda-wa-backup-ya-betri/index.html",
+      "engine": "engines/backup-duration-engine.js",
+      "artwork": "assets/img/tools/backup-duration.webp",
+      "artworkWidth": 800,
+      "artworkHeight": 450,
+      "hubRoute": "/sw/nishati-na-huduma/",
+      "hubLinkStatus": "linked",
+      "registryOwnershipStatus": "english_and_swahili_rows_present",
+      "registrySourceIdNote": "Swahili registry row has no sourceId; canonical English pairing is reconciled by route inventory and reciprocal hreflang",
+      "acceptanceLedgerStatus": "blocked_pending_coordinator",
+      "aiRouteStatus": "blocked_fail_closed",
+      "engineSha256": "9ccdde540a70861838bd3e90cf384f5d1c1f36ac45983b69e2ec59460494235d",
+      "artworkSha256": "1a81d9fb28f3ad1f4005d546ea661c840e9734e3b564e1fc71b79dd09106e2c8"
+    }
+  ],
+  "boundaries": {
+    "sharedEngineChanged": false,
+    "crossLocaleRuntimeChanged": false,
+    "acceptanceLedgerChanged": false,
+    "generatedAiRouteMapChanged": false,
+    "masterLedgerChanged": false,
+    "sitemapChanged": false,
+    "deployPerformed": false,
+    "networkDuringCalculationOrCopy": false
+  }
+}
