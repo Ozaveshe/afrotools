@@ -4,10 +4,10 @@ As of: 2026-08-03
 
 ## Inventory
 
-- Total artifacts: 734
-- High risk: 521
+- Total artifacts: 737
+- High risk: 523
 - Medium risk: 98
-- Low risk: 115
+- Low risk: 116
 
 ## Traceability
 
