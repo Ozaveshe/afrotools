@@ -1,19 +1,20 @@
 # AfroTools Blog Strategy 2026
 
-Updated: 2026-07-13
+Updated: 2026-08-02
 
 This strategy covers the static, repo-backed main blog under `/blog/`. AfroStream creator news is a separate live Supabase-backed publishing surface and should not be mixed into this plan.
 
 ## Current Snapshot
 
-Latest local checks on 2026-07-13:
+Latest local checks on 2026-08-02:
 
-- `npm run blog:editorial:audit`: 217 blog routes, 215 articles, 2 redirects, 0 errors, and 3 carried long-title warnings.
-- `npm run blog:feed:check`: RSS current, 40 items, latest `public-tender-document-checklist-africa`.
-- `npm run blog:verify`: 215 publishable articles, 205 English hub cards, and 40 RSS items.
-- `node scripts/audit-blog-content.js`: 215 publishable posts, 205 English hub cards, 0 default article images, and 0 fact-heavy posts without outbound sources. Redirect shells are excluded from article-quality scoring.
+- `npm run blog:editorial:audit`: 225 blog routes, 223 articles, 2 redirects, 0 errors, 0 warnings, and 63 source-review notes.
+- `npm run blog:feed:check`: RSS current, 40 items, latest `ghana-motor-insurance-claim-checklist-2026`.
+- `npm run blog:verify`: 223 publishable articles, 213 English hub cards, and 40 RSS items.
+- `node scripts/audit-blog-content.js`: 223 publishable posts, 0 default article images, 0 fact-heavy posts without outbound sources, 0 articles under 800 body words, and an average article-body length of 2,107 words.
+- Shared article navigation is centralized through `blog/assets/js/blog-reading.js`, with an automatic table of contents, reading progress, and an accessible copy-link action on all 213 English articles.
 
-The dedicated-image backlog remains at 0. The three remaining title warnings are carried review items outside this recovery batch. The main unresolved queue is freshness review: 215 time-sensitive articles, including 105 that likely need official-source review before factual edits.
+The dedicated-image backlog remains at 0. The main unresolved queue is freshness proof: 114 articles have sources but no explicit source-review date, 115 likely require official-source review, and 76 need a stronger direct tool handoff. The content audit now recognizes 86 articles with explicit source-review dates without treating a generic publication date as review evidence.
 
 The blog is structurally healthy. The strategy gap is no longer "publish enough." It is:
 
@@ -182,6 +183,44 @@ Default weekly mix for the static blog:
 The AM and PM content automations must run the editorial, content, and feed audits before choosing the static item. A substantive source, freshness, metadata, depth, internal-link, or tool-handoff refresh counts as the batch's static item. Create a new article only when no higher-impact gap fits that automation lane.
 
 Daily cadence can still be used during campaigns, but only after the source and quality bar is met. The blog is large enough that maintenance and cluster depth now matter more than raw post count.
+
+## Ruthless SEO Operating System
+
+The blog should optimize for useful search ownership and completed tool workflows, not article count. Apply these rules every week:
+
+1. Refresh or consolidate before creating. If AfroTools already has a page serving the same intent, improve that page and preserve its URL.
+2. Publish only when the query has a distinct job, a credible source path, and a live AfroTools handoff.
+3. Give every source-sensitive article an explicit source-review date. A publication date is not evidence that its sources were checked.
+4. Put the primary tool link in the first practical section, then add at least two useful guide links.
+5. Score opportunities with real Search Console or Bing query exports when available. Do not invent search volume or keyword difficulty.
+6. Review performance after 90 days. Improve pages with impressions but weak clicks, consolidate overlapping pages, and retire pages that have neither demand nor product value.
+7. Build one cluster at a time. Ship the hub or strongest guide first, then narrowly differentiated country or task spokes.
+
+The current opportunity briefs are in `data/content/blog-seo-opportunity-briefs-2026-08.json`, with a human-readable execution queue in `reports/blog-seo-opportunities-2026-08.md`. Their rank is a qualitative opportunity score based on SERP crowding, product fit, sourceability, cannibalization risk, and maintenance cost. It is not a claim of measured search volume or guaranteed ranking difficulty.
+
+### August 2026 content explosion wave
+
+The first intensive wave is implemented as 20 differentiated search jobs, not 20 country-name swaps. Its source of truth is `data/content/blog-content-explosion-2026-08.json`; `scripts/build-blog-content-explosion.js` owns the article pages, hub cards, and manifest records.
+
+The wave covers five connected clusters:
+
+- Property and tenancy: Kenya land transfer, Nigeria title verification, and Kenya/Ghana tenancy checks.
+- Getting paid: Nigeria invoice reminders, WhatsApp reminders, overdue email sequences, and a final reminder letter.
+- Employee payroll literacy: Tanzania, Uganda, Rwanda, and Zambia payslip deductions.
+- Passport administration: Nigeria, Kenya, Ghana, and Uganda renewal packets.
+- Household energy and family planning: Ghana/Kenya funeral budgets, Nigeria generator fuel cost, and Kenya battery sizing.
+
+Each page must remain at or above the dedicated quality contract: 1,100 article-body words, a unique keyword, a direct tool handoff, two useful article links, three source links, dated source review, Article schema, FAQ schema, and no em dashes. Run `npm run test:blog-explosion` and `npm run blog:explosion:check` before feed or manifest checks.
+
+### August 2026 content explosion wave two
+
+The second intensive wave adds 30 more articles across six distinct task clusters: business records, agriculture inputs, construction and energy, trade and logistics, events, and government records. It deliberately excludes a proposed Kenya maize seed-rate article because that job would compete with the existing seed-rate guide.
+
+The source of truth is `data/content/blog-content-explosion-wave2-2026-08.json`. It records the primary keyword, intent, qualitative opportunity score, cannibalisation note, live tool handoff, article-specific method, stress test, internal links and primary sources. `scripts/build-blog-content-explosion-wave2.js` owns the 30 pages, blog-hub cards, article-manifest records and `reports/blog-seo-opportunities-wave2-2026-08.md`.
+
+Wave-two scores are prioritisation evidence, not paid keyword difficulty or volume. No sanitised Search Console export or paid volume dataset was available, so the method uses sampled result crowding, existing-library overlap, tool fit, source quality and freshness burden. Replace qualitative scores with real query data when a safe export becomes available.
+
+The wave-two quality contract is stricter than wave one: exactly 30 unique jobs, five per cluster, at least 1,400 article-body words, titles no longer than 60 characters, meta descriptions between 120 and 160 characters, at least three named sources, two to four related links, dated source review, Article/Breadcrumb/FAQ schema, a registry-backed tool link, a real WebP image and no em dashes or mojibake. Run `npm run test:blog-explosion-wave2` and `npm run blog:explosion:wave2:check` before the shared platform, feed, sitemap and editorial gates.
 
 ## Article Brief Template
 

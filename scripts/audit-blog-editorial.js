@@ -54,6 +54,20 @@ function stripTags(html) {
     .trim();
 }
 
+function extractArticleBody(html) {
+  const candidates = [
+    /<article\b[^>]*class=["'][^"']*\barticle-body\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/i,
+    /<div\b[^>]*class=["'][^"']*\barticle-body\b[^"']*["'][^>]*>([\s\S]*?)<\/main>/i,
+    /<article\b[^>]*class=["'][^"']*\bblog-post\b[^"']*["'][^>]*>([\s\S]*?)<\/article>/i,
+    /<main\b[^>]*>([\s\S]*?)<\/main>/i,
+  ];
+  for (const pattern of candidates) {
+    const match = html.match(pattern);
+    if (match) return match[1];
+  }
+  return html;
+}
+
 function parseAttrs(tag) {
   const attrs = {};
   const pattern = /([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/g;
@@ -124,7 +138,7 @@ function classifyFreshness(title, slug, text) {
 
 function auditArticle(slug, file) {
   const html = read(file);
-  const text = stripTags(html);
+  const text = stripTags(extractArticleBody(html));
   const words = text ? text.split(/\s+/).filter(Boolean).length : 0;
   const title = getTitle(html);
   const description = getMeta(html, 'description');
@@ -191,7 +205,7 @@ function auditArticle(slug, file) {
   if (canonical && canonical !== expectedCanonical(slug)) addIssue(article, 'warn', 'canonical-mismatch', `Expected ${expectedCanonical(slug)}.`);
   if (/noindex/i.test(robots)) addIssue(article, 'warn', 'article-noindex', 'Article page is marked noindex.');
   if (h1Count !== 1) addIssue(article, 'warn', 'h1-count', `Expected one H1, found ${h1Count}.`);
-  if (words < 800) addIssue(article, 'warn', 'thin-content', `Article has ${words} visible words.`);
+  if (words < 800) addIssue(article, 'warn', 'thin-content', `Article body has ${words} visible words.`);
   if (!jsonLdBlocks.length) addIssue(article, 'error', 'missing-jsonld', 'Missing Article JSON-LD.');
   if (missingAlt > 0) addIssue(article, 'error', 'missing-image-alt', `${missingAlt} image(s) missing alt text.`);
   if (article.consumerCopyHits.length) addIssue(article, 'warn', 'consumer-copy-risk', `Consumer-facing copy risk: ${article.consumerCopyHits.join(', ')}.`);

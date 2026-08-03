@@ -1,45 +1,51 @@
 # Blog Audit
 
-Generated: 2026-07-13T03:33:03.183Z
+Generated: 2026-08-03T01:47:10.775Z
 
 ## Summary
-- Posts audited: 215
-- Hub cards: 205 (0 still using default imagery before cleanup)
+- Posts audited: 273
+- Hub cards: 263 (0 still using default imagery before cleanup)
 - Posts using default images: 0
 - Posts with no external sources on fact-heavy topics: 0
 - Posts with obvious encoding issues: 0
-- Average quality score: 94.7/100
-- Average word count: 650
-- Average AI-pattern hits: 0.2
+- Thin article bodies under 800 words: 0
+- Posts without a tool handoff: 85
+- Posts with fewer than two related blog links: 0
+- Fact-heavy posts with dated source review: 94
+- Fact-heavy posts with sources but no proven review date: 114
+- Average quality score: 90.4/100
+- Average word count: 1977
+- Average AI-pattern hits: 0.4
 
 ## Category Counts
-- tax: 63
-- business: 48
-- tools: 42
+- tax: 71
+- tools: 67
+- business: 66
 - data: 29
 - currency: 23
+- culture: 7
 
 ## Highest-Priority Posts
-- dollar-to-cedi-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- dollar-to-naira-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- dollar-to-rand-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- dollar-to-shilling-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- euro-to-naira-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- pound-to-naira-rate-today: score 94, priority 4, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- cheapest-bank-accounts-africa: score 90, priority 1, defaultImage=false, missingSources=false, aiHits=2, badEncoding=0
-- complete-guide-nigeria-income-tax-2026: score 90, priority 1, defaultImage=false, missingSources=false, aiHits=2, badEncoding=0
-- fire-early-retirement-africa: score 90, priority 1, defaultImage=false, missingSources=false, aiHits=2, badEncoding=0
-- how-much-rent-afford-lagos-2026: score 90, priority 1, defaultImage=false, missingSources=false, aiHits=2, badEncoding=0
-- how-to-buy-bitcoin-nigeria-2026: score 90, priority 1, defaultImage=false, missingSources=false, aiHits=2, badEncoding=0
-- best-countries-business-africa-2026: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- boq-construction-nigeria-2026: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- crypto-scam-red-flags-africa: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- flutterwave-vs-paystack-fees: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- free-json-formatter-developer-tools: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=0, badEncoding=0
-- hawala-remittance: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- how-to-choose-business-name-africa: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- japa-guide-nigeria-canada-2026: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=1, badEncoding=0
-- kenya-shilling-words: score 92, priority 1, defaultImage=false, missingSources=false, aiHits=4, badEncoding=0
+- how-much-rent-afford-lagos-2026: score 71, priority 6, words=2123, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- register-business-nigeria-cac-2026: score 74, priority 6, words=3197, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- uif-calculator-south-africa-2026: score 74, priority 6, words=2729, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- rwanda-vat-guide-2026: score 76, priority 6, words=2184, toolLinks=0, blogLinks=8, sourceState=sources-present-date-unproven
+- south-africa-vat-registration-2026: score 76, priority 6, words=2015, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- seed-rate-planting-density-africa-2026: score 78, priority 6, words=1816, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- tanzania-vat-guide-2026: score 79, priority 6, words=1861, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- eswatini-employer-payroll-compliance-2026: score 80, priority 6, words=2251, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- vat-registration-kenya-2026: score 81, priority 6, words=2137, toolLinks=0, blogLinks=11, sourceState=sources-present-date-unproven
+- uganda-paye-tax-2026-27: score 82, priority 6, words=2215, toolLinks=0, blogLinks=8, sourceState=sources-present-date-unproven
+- tanzania-employer-payroll-compliance-2026: score 83, priority 6, words=2084, toolLinks=0, blogLinks=9, sourceState=sources-present-date-unproven
+- tax-updates-2026: score 76, priority 5, words=4105, toolLinks=0, blogLinks=8, sourceState=sources-present-date-unproven
+- nysc-allowance-financial-guide-2026: score 80, priority 5, words=2596, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- how-to-buy-bitcoin-nigeria-2026: score 81, priority 5, words=3251, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- how-to-choose-business-name-africa: score 81, priority 5, words=2766, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- waec-result-guide-2026: score 81, priority 5, words=2250, toolLinks=0, blogLinks=7, sourceState=sources-present-date-unproven
+- bareme-irpp-cote-divoire: score 82, priority 5, words=3515, toolLinks=0, blogLinks=8, sourceState=sources-present-date-unproven
+- calculer-salaire-net-senegal: score 82, priority 5, words=3525, toolLinks=0, blogLinks=9, sourceState=sources-present-date-unproven
+- cotisations-cnps-cote-divoire: score 82, priority 5, words=3687, toolLinks=0, blogLinks=5, sourceState=sources-present-date-unproven
+- creation-entreprise-senegal-couts: score 82, priority 5, words=4307, toolLinks=0, blogLinks=6, sourceState=sources-present-date-unproven
 
 ## Notes
 - "Missing sources" means a fact-heavy post had no outbound sources at all. It does not automatically mean the content is wrong, but it does mean trust is weaker.

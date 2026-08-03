@@ -155,6 +155,28 @@ function extractLinks(raw) {
   return links;
 }
 
+function extractReviewDate(raw) {
+  const patterns = [
+    /<strong>(?:official sources?|primary sources?|sources?)\s+(?:reviewed|checked|verified):<\/strong>\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
+    /(?:sources?|primary sources?|official sources?)\s+(?:were\s+)?(?:reviewed|checked|verified)(?:\s+on|\s+against)?\s*<strong>([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})<\/strong>/i,
+    /(?:last reviewed|source check|sources checked on|editorial review)[: ,]+\s*(?:<strong>)?([A-Z][a-z]+\s+\d{1,2},\s+20\d{2})/i,
+  ];
+  for (const pattern of patterns) {
+    const match = raw.match(pattern);
+    if (!match) continue;
+    const parsed = new Date(`${match[1]} UTC`);
+    if (!Number.isNaN(parsed.getTime())) return parsed.toISOString().slice(0, 10);
+  }
+  return '';
+}
+
+function countLongSentences(text) {
+  return text
+    .split(/[.!?]+(?:\s+|$)/)
+    .filter((sentence) => wordCount(sentence) > 40)
+    .length;
+}
+
 function isExternalLink(href) {
   return /^https?:\/\//i.test(href) && !/afrotools\.com/i.test(href);
 }
@@ -170,7 +192,8 @@ function slugToTopic(slug, title) {
 
 function extractBodyHtml(raw) {
   const candidates = [
-    /<(?:article|div)\b[^>]*class="[^"]*\barticle-body\b[^"]*"[^>]*>([\s\S]*?)<\/(?:article|div)>/i,
+    /<article\b[^>]*class="[^"]*\barticle-body\b[^"]*"[^>]*>([\s\S]*?)<\/article>/i,
+    /<div\b[^>]*class="[^"]*\barticle-body\b[^"]*"[^>]*>([\s\S]*?)<\/main>/i,
     /<article\b[^>]*class="[^"]*\bcar-import-section\b[^"]*"[^>]*>([\s\S]*?)<\/article>/i,
     /<article\b[^>]*class="[^"]*\bblog-post\b[^"]*"[^>]*>([\s\S]*?)<\/article>/i,
     /<main\b[^>]*>([\s\S]*?)<\/main>/i,
@@ -242,6 +265,9 @@ function parsePost(filePath) {
   const declaredReadTime = extractReadTime(raw);
   const links = extractLinks(raw);
   const externalLinks = links.filter(isExternalLink);
+  const internalLinks = links.filter((href) => /^\//.test(href));
+  const toolLinks = internalLinks.filter((href) => /^\/tools\//.test(href));
+  const blogLinks = internalLinks.filter((href) => /^\/blog\//.test(href));
   const officialLinks = countOfficialLinks(externalLinks);
   const aiHits = countMatches(bodyText, AI_TERMS);
   const hedgeHits = countMatches(bodyText, HEDGING_TERMS);
@@ -254,6 +280,24 @@ function parsePost(filePath) {
   const staleRisk = /\btoday\b/i.test(slug) || /\btoday\b/i.test(title);
   const missingSources = !isRedirect && factHeavy && officialLinks === 0 && externalLinks.length === 0;
   const readTimeMismatch = declaredReadTime > 0 ? Math.abs(declaredReadTime - expectedReadTime) : 0;
+  const sourceReviewDate = extractReviewDate(raw);
+  const reviewAgeDays = sourceReviewDate
+    ? Math.floor((Date.now() - new Date(`${sourceReviewDate}T00:00:00Z`).getTime()) / 86400000)
+    : null;
+  const sourceReviewState = !factHeavy
+    ? 'not-required-by-audit'
+    : !externalLinks.length
+      ? 'missing-sources'
+      : !sourceReviewDate
+        ? 'sources-present-date-unproven'
+        : reviewAgeDays > 120
+          ? 'review-date-stale'
+          : 'dated-source-review';
+  const punctuationSpacingHits = (bodyHtml.match(/(?:<\/strong>|\b20\d{2})\s+,/g) || []).length;
+  const longSentenceCount = countLongSentences(bodyText);
+  const thinContent = !isRedirect && words < 800;
+  const weakToolHandoff = !isRedirect && toolLinks.length === 0;
+  const weakRelatedLinks = !isRedirect && blogLinks.length < 2;
 
   let qualityScore = 100;
   qualityScore -= Math.min(aiHits * 2, 20);
@@ -263,6 +307,11 @@ function parsePost(filePath) {
   qualityScore -= missingSources ? 14 : 0;
   qualityScore -= staleRisk && officialLinks === 0 ? 10 : 0;
   qualityScore -= readTimeMismatch >= 4 ? 6 : 0;
+  qualityScore -= thinContent ? 18 : 0;
+  qualityScore -= weakToolHandoff ? 10 : 0;
+  qualityScore -= weakRelatedLinks ? 6 : 0;
+  qualityScore -= Math.min(punctuationSpacingHits * 2, 8);
+  qualityScore -= Math.min(longSentenceCount, 8);
   qualityScore = Math.max(0, qualityScore);
 
   let priority = 0;
@@ -272,6 +321,11 @@ function parsePost(filePath) {
   priority += badEncodingHits > 0 ? 3 : 0;
   priority += aiHits >= 8 ? 2 : aiHits >= 4 ? 1 : 0;
   priority += readTimeMismatch >= 4 ? 1 : 0;
+  priority += thinContent ? 4 : 0;
+  priority += weakToolHandoff ? 3 : 0;
+  priority += weakRelatedLinks ? 2 : 0;
+  priority += punctuationSpacingHits > 0 ? 2 : 0;
+  priority += sourceReviewState === 'review-date-stale' || sourceReviewState === 'sources-present-date-unproven' ? 2 : 0;
 
   return {
     path: relativePath,
@@ -287,7 +341,18 @@ function parsePost(filePath) {
     expectedReadTime,
     readTimeMismatch,
     externalLinks: externalLinks.length,
+    internalLinks: internalLinks.length,
+    toolLinks: toolLinks.length,
+    blogLinks: blogLinks.length,
     officialLinks,
+    sourceReviewDate,
+    reviewAgeDays,
+    sourceReviewState,
+    thinContent,
+    weakToolHandoff,
+    weakRelatedLinks,
+    punctuationSpacingHits,
+    longSentenceCount,
     aiHits,
     hedgeHits,
     badEncodingHits,
@@ -323,6 +388,11 @@ function buildMarkdown(summary) {
   lines.push(`- Posts using default images: ${summary.defaultImagePosts}`);
   lines.push(`- Posts with no external sources on fact-heavy topics: ${summary.missingSourcesPosts}`);
   lines.push(`- Posts with obvious encoding issues: ${summary.badEncodingPosts}`);
+  lines.push(`- Thin article bodies under 800 words: ${summary.thinContentPosts}`);
+  lines.push(`- Posts without a tool handoff: ${summary.weakToolHandoffPosts}`);
+  lines.push(`- Posts with fewer than two related blog links: ${summary.weakRelatedLinkPosts}`);
+  lines.push(`- Fact-heavy posts with dated source review: ${summary.datedSourceReviewPosts}`);
+  lines.push(`- Fact-heavy posts with sources but no proven review date: ${summary.unprovenSourceDatePosts}`);
   lines.push(`- Average quality score: ${summary.averageQualityScore.toFixed(1)}/100`);
   lines.push(`- Average word count: ${Math.round(summary.averageWordCount)}`);
   lines.push(`- Average AI-pattern hits: ${summary.averageAiHits.toFixed(1)}`);
@@ -336,7 +406,7 @@ function buildMarkdown(summary) {
   lines.push('');
   lines.push('## Highest-Priority Posts');
   summary.topPriority.forEach((post) => {
-    lines.push(`- ${post.slug}: score ${post.qualityScore}, priority ${post.priority}, defaultImage=${post.defaultImage}, missingSources=${post.missingSources}, aiHits=${post.aiHits}, badEncoding=${post.badEncodingHits}`);
+    lines.push(`- ${post.slug}: score ${post.qualityScore}, priority ${post.priority}, words=${post.wordCount}, toolLinks=${post.toolLinks}, blogLinks=${post.blogLinks}, sourceState=${post.sourceReviewState}`);
   });
   lines.push('');
   lines.push('## Notes');
@@ -364,6 +434,11 @@ function main() {
     defaultImagePosts: posts.filter((post) => post.defaultImage).length,
     missingSourcesPosts: posts.filter((post) => post.missingSources).length,
     badEncodingPosts: posts.filter((post) => post.badEncodingHits > 0).length,
+    thinContentPosts: posts.filter((post) => post.thinContent).length,
+    weakToolHandoffPosts: posts.filter((post) => post.weakToolHandoff).length,
+    weakRelatedLinkPosts: posts.filter((post) => post.weakRelatedLinks).length,
+    datedSourceReviewPosts: posts.filter((post) => post.sourceReviewState === 'dated-source-review').length,
+    unprovenSourceDatePosts: posts.filter((post) => post.sourceReviewState === 'sources-present-date-unproven').length,
     staleRiskPosts: posts.filter((post) => post.staleRisk).length,
     averageQualityScore: average(posts.map((post) => post.qualityScore)),
     averageWordCount: average(posts.map((post) => post.wordCount)),

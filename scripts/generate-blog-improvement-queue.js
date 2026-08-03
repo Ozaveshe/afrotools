@@ -8,8 +8,6 @@ const CONTENT_AUDIT = path.join(ROOT, 'output', 'blog-audit.json');
 const EDITORIAL_AUDIT = path.join(ROOT, 'reports', 'blog-editorial-audit.json');
 const OUTPUT_JSON = path.join(ROOT, 'reports', 'blog-content-improvement-queue.json');
 const OUTPUT_MD = path.join(ROOT, 'reports', 'blog-content-improvement-queue.md');
-const CURRENT_REVIEW_DATES = ['June 18, 2026', 'June 17, 2026'];
-const CURRENT_REVIEW_DATES_SW = ['18 Juni 2026', '17 Juni 2026'];
 
 function readJson(file) {
   return JSON.parse(fs.readFileSync(file, 'utf8'));
@@ -28,37 +26,26 @@ function priorityFor(article, contentPost, issues) {
   if (issues.some((issue) => issue.severity === 'error')) score += 50;
   if (issues.some((issue) => issue.severity === 'warn')) score += 20;
   if (contentPost && contentPost.qualityScore < 85) score += 15;
+  if (contentPost && contentPost.thinContent) score += 30;
+  if (contentPost && contentPost.weakToolHandoff) score += 20;
+  if (contentPost && contentPost.weakRelatedLinks) score += 10;
+  if (contentPost && contentPost.punctuationSpacingHits) score += 10;
   return score;
-}
-
-function hasCurrentSourceReview(article) {
-  const html = fs.readFileSync(path.join(ROOT, article.file), 'utf8');
-  const reviewPatterns = CURRENT_REVIEW_DATES.flatMap((date) => {
-    const escapedDate = date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    return [
-      new RegExp(`Source check[: ,]+\\s*${escapedDate}`, 'i'),
-      new RegExp(`Sources Checked on\\s*${escapedDate}`, 'i'),
-      new RegExp(`Editorial review,\\s*${escapedDate}`, 'i'),
-      new RegExp(`Last reviewed:\\s*${escapedDate}`, 'i'),
-      new RegExp(`Primary sources reviewed[^<]*${escapedDate}`, 'i')
-    ];
-  });
-  CURRENT_REVIEW_DATES_SW.forEach((date) => {
-    const escapedDate = date.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-    reviewPatterns.push(new RegExp(`Vyanzo rasmi vimekaguliwa[^<]*${escapedDate}`, 'i'));
-  });
-  return reviewPatterns.some((pattern) => pattern.test(html));
 }
 
 function actionsFor(article, contentPost, issues) {
   const actions = [];
-  const currentSourceReview = hasCurrentSourceReview(article);
+  const currentSourceReview = contentPost && contentPost.sourceReviewState === 'dated-source-review';
   if (issues.some((issue) => issue.id === 'long-title')) actions.push('Shorten title metadata');
   if (contentPost && contentPost.defaultImage) actions.push('Replace default article/social image');
   if (contentPost && contentPost.missingSources) actions.push('Add source path or noindex redirect handling');
   if (article.freshness && article.freshness.officialSourceLikelyNeeded && !currentSourceReview) actions.push('Official-source refresh');
   else if (article.freshness && !currentSourceReview) actions.push('Freshness review');
   if (contentPost && contentPost.qualityScore < 85) actions.push('Content-depth and internal-link review');
+  if (contentPost && contentPost.thinContent) actions.push('Expand article body to satisfy search intent');
+  if (contentPost && contentPost.weakToolHandoff) actions.push('Add primary tool handoff');
+  if (contentPost && contentPost.weakRelatedLinks) actions.push('Add two useful related guides');
+  if (contentPost && contentPost.punctuationSpacingHits) actions.push('Fix punctuation spacing');
   if (!actions.length) actions.push('Monitor');
   return actions;
 }
@@ -126,6 +113,10 @@ function main() {
         title: article.title,
         wordCount: article.wordCount,
         qualityScore: contentPost ? contentPost.qualityScore : null,
+        bodyWordCount: contentPost ? contentPost.wordCount : null,
+        toolLinks: contentPost ? contentPost.toolLinks : null,
+        blogLinks: contentPost ? contentPost.blogLinks : null,
+        sourceReviewState: contentPost ? contentPost.sourceReviewState : null,
         priority: priorityFor(article, contentPost, issues),
         actions,
         issueIds: issues.map(issueKey)
