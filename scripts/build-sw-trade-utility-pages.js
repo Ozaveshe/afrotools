@@ -75,7 +75,8 @@ function html(page) {
     applicationCategory: "BusinessApplication",
     operatingSystem: "Web",
     inLanguage: "sw",
-    isAccessibleForFree: true
+    isAccessibleForFree: true,
+    image: `https://afrotools.com/assets/img/tools/${page.id}.webp`
   });
   return `<!doctype html>
 <html lang="sw">

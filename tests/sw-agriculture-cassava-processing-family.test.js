@@ -117,7 +117,7 @@ for (const [index, row] of countries.entries()) {
   }, expected, `${code} route formula drift`);
   assert.strictEqual(result.sym, country.symbol);
   assert.ok(comparisons.length > 0);
-  assert.match(html, /^<!DOCTYPE html>\s*<html lang="sw"/);
+  assert.match(html, /^<!DOCTYPE html>\s*<html\b[^>]*\blang="sw"/);
   assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(html, /\b(?:Calculate|Reset|Download|Share|Save|Privacy|Freshness|Confidence|Results?)\b/);
   assert.doesNotMatch(html, /&amp;amp;|Tomato planning parameters/);

@@ -53,12 +53,12 @@ test('source owner regenerates both native pages without drift', () => {
   execFileSync(process.execPath, ['scripts/generate-sw-civil-site-works-parity.js', '--check'], { cwd: ROOT, stdio: 'pipe' });
   for (const app of manifest.apps) {
     const html = read(app.swFile);
-    assert.match(html, /<html lang="sw">/);
+    assert.match(html, /<html\b[^>]*\blang="sw"[^>]*>/);
     assert.match(html, new RegExp(`data-civil-tool="${app.id}"`));
     assert.doesNotMatch(html, /<iframe|fetch\([^)]*tools\//i);
     const visibleText = html.replace(/<script[\s\S]*?<\/script>/gi, ' ').replace(/<style[\s\S]*?<\/style>/gi, ' ').replace(/<[^>]+>/g, ' ');
     assert.doesNotMatch(visibleText, /\b(?:Calculate|Download|Export|Source|Freshness|Confidence|Planning estimate)\b/i);
-    assert.match(html, new RegExp(`<script src="${app.enginePublic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));
+    assert.match(html, new RegExp(`<script src="${app.enginePublic.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}(?:\\?v=[a-f0-9]{8})?"`));
     assert.match(html, /data-civil-export="copy" disabled>Nakili matokeo/);
     assert.match(html, /data-civil-export="json" disabled>Pakua JSON/);
     assert.match(html, /data-civil-export="txt" disabled>Pakua TXT/);

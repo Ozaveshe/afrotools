@@ -57,7 +57,7 @@ test('Swahili Farm Profit owns exactly 55 native routes with one 54-country hub'
   assert.ok(hub);
   const html = fs.readFileSync(path.join(ROOT, hub.swahili.file), 'utf8');
   assert.equal((html.match(/<li><a href="\/sw\/kilimo\/faida-ya-shamba\//g) || []).length, 54);
-  assert.match(html, /<html lang="sw"/);
+  assert.match(html, /<html\b[^>]*\blang="sw"/);
   assert.match(html, /data-ai-routing="farm-profit-calculator"/);
   assert.match(html, /data-ai-consent="required-before-model-send"/);
   assert.doesNotMatch(html, /<iframe\b|window\.__FR_AGRI_PAGE__|english-html-fetch/i);
@@ -132,7 +132,7 @@ test('all Farm Profit routes preserve the exact shared engine, data, sources and
       assert.ok(irrigation.CROP_NAMES[crop.id], `${code} lacks a Swahili crop label for ${crop.id}.`);
     });
 
-    assert.match(swahili, /<html lang="sw"/);
+    assert.match(swahili, /<html\b[^>]*\blang="sw"/);
     assert.match(swahili, /\/engines\/farm-profit-engine\.js/);
     assert.ok(swahili.includes(`/data/agriculture/${code.toLowerCase()}-agri-data.js`));
     assert.match(swahili, /data-result-action data-action="share" disabled/);

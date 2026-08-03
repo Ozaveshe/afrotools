@@ -126,7 +126,7 @@ test('every page has the complete app-specific field matrix, exports, privacy an
     const html = read(app.file);
     const english = read(`tools/${app.id}/index.html`);
     const french = read(app.frFile);
-    assert.match(html, /<html lang="sw">/);
+    assert.match(html, /<html\b[^>]*\blang="sw"[^>]*>/);
     assert.match(html, new RegExp(`data-app="${app.id}"`));
     for (const field of app.fields) assert.match(html, new RegExp(`name="${field}"`), `${app.id}:${field}`);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://afrotools.com${app.route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}"`));

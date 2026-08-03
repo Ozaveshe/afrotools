@@ -40,7 +40,7 @@ test('Swahili Irrigation owns exactly 55 native routes with one 54-country hub',
   assert.ok(hub);
   const html = fs.readFileSync(path.join(ROOT, hub.swahili.file), 'utf8');
   assert.equal((html.match(/<li><a href="\/sw\/kilimo\/umwagiliaji\//g) || []).length, 54);
-  assert.match(html, /<html lang="sw"/);
+  assert.match(html, /<html\b[^>]*\blang="sw"/);
   assert.match(html, /<a class="skip-link skip-main-link" href="#contenu">Ruka hadi maudhui<\/a>/);
   assert.match(html, /data-ai-routing="irrigation-calculator"/);
   assert.match(html, /data-ai-consent="required-before-model-send"/);
@@ -159,7 +159,7 @@ test('all country routes preserve exact engine, country data, sources, artwork a
       methodBoundaries.map((result) => result.monthVolume_m3).sort((left, right) => right - left)
     );
 
-    assert.match(swahili, /<html lang="sw"/);
+    assert.match(swahili, /<html\b[^>]*\blang="sw"/);
     assert.match(swahili, /\/engines\/irrigation-engine\.js/);
     assert.ok(swahili.includes(`/data/agriculture/${code.toLowerCase()}-agri-data.js`));
     assert.ok(swahili.includes(`content="${code}"`));

@@ -44,7 +44,7 @@ for (const page of PAGES) {
   const en = fs.readFileSync(path.join(ROOT, ...page.englishRoute.split("/").filter(Boolean), "index.html"), "utf8");
 
   assert.equal(localizedGeneratorEquivalent(sw, html(page)), true, `${page.id}: generated owner must be current`);
-  assert.match(sw, /<html lang="sw">/);
+  assert.match(sw, /<html\b[^>]*\blang="sw"[^>]*>/);
   assert.match(sw, new RegExp(`rel="canonical" href="https://afrotools\\.com${page.route}"`));
   assert.match(sw, new RegExp(`hreflang="en" href="https://afrotools\\.com${page.englishRoute}"`));
   assert.match(sw, new RegExp(`hreflang="fr" href="https://afrotools\\.com${page.frenchRoute}"`));

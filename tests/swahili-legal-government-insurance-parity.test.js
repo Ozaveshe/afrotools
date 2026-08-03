@@ -6,7 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const vm = require('node:vm');
-const pdfParse = require('pdf-parse');
+const pdfJs = require('pdf-parse/lib/pdf.js/v1.10.100/build/pdf.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const CATEGORY_KEYS = new Set(['legal', 'government', 'insurance']);
@@ -182,7 +182,7 @@ test('tenant-planning family has exact route-owned calculations and discovery co
     assert.match(html, /--sw-mp-control-border:#64748b/);
     assert.match(html, /--sw-mp-control-border:#76869c/);
     assert.match(html, /outline:3px solid var\(--sw-mp-focus\)!important/);
-    assert.match(html, /<script src="\/assets\/js\/supabase\.min\.js"><\/script>/);
+    assert.match(html, /<script src="\/assets\/js\/supabase\.min\.js(?:\?v=[a-f0-9]{8})?"><\/script>/);
     assert.doesNotMatch(html, /\bswpCalc\s*\(/, `${englishId} generic shell`);
     assert.equal(
       registry.filter((row) => row.lang === 'sw'
@@ -335,15 +335,17 @@ test('the registry delta adds exactly two rows and preserves all 11 coordinator 
   }
 });
 
-test('Swahili local PDF wraps long text and reopens through pdf-parse inside page bounds', async () => {
+test('Swahili local PDF wraps long text and reopens through PDF.js inside page bounds', async () => {
   const pdf = require('../assets/js/lib/swahili-local-pdf.js');
   const longLine = `Chanzo: ${'Mpango wa upangaji wa nyumba unaohitaji uthibitisho wa mamlaka na mtaalamu. '.repeat(3)}`;
   const plan = pdf.layout('Ripoti ya kupanga pango', [longLine]);
   const bytes = Buffer.from(await pdf.create('Ripoti ya kupanga pango', [longLine]));
-  const parsed = await pdfParse(new Uint8Array(bytes));
+  const parsed = await pdfJs.getDocument({ data: new Uint8Array(bytes) }).promise;
+  const parsedPage = await parsed.getPage(1);
+  const parsedText = (await parsedPage.getTextContent()).items.map((item) => item.str).join(' ');
 
-  assert.equal(parsed.numpages, 1);
-  assert.match(parsed.text, /Ripoti ya kupanga pango/);
+  assert.equal(parsed.numPages, 1);
+  assert.match(parsedText, /Ripoti ya kupanga pango/);
   assert.ok(plan.rows.length > 2, 'long line must wrap');
   for (const row of plan.rows) {
     assert.ok(row.x >= plan.page.margin);
@@ -354,6 +356,7 @@ test('Swahili local PDF wraps long text and reopens through pdf-parse inside pag
       row.text
     );
   }
+  if (parsed.destroy) await parsed.destroy();
 });
 
 test('Government and Insurance shared engines reject invalid state and compute fixtures', () => {

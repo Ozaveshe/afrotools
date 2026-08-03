@@ -45,7 +45,7 @@ test("Swahili fertilizer manifest owns exactly 55 native physical routes", () =>
 
   const hubHtml = fs.readFileSync(path.join(ROOT, hub.swahili.file), "utf8");
   assert.equal((hubHtml.match(/<li><a href="\/sw\/kilimo\/mbolea\//g) || []).length, 54);
-  assert.match(hubHtml, /<html lang="sw"/);
+  assert.match(hubHtml, /<html\b[^>]*\blang="sw"/);
   assert.match(hubHtml, /hreflang="sw"/);
   assert.doesNotMatch(hubHtml, /<iframe\b|\bfetch\s*\(/i);
 });
@@ -57,7 +57,7 @@ for (const row of countryRows) {
     const english = fs.readFileSync(path.join(ROOT, row.english.file), "utf8");
     const artwork = path.join(ROOT, row.artwork.file);
 
-    assert.match(html, /<html lang="sw"/);
+    assert.match(html, /<html\b[^>]*\blang="sw"/);
     assert.match(html, /window\.__SW_AGRI_PAGE__/);
     assert.match(html, new RegExp(`/data/agriculture/${code.toLowerCase()}-agri-data\\.js`));
     assert.match(html, /\/data\/agriculture\/crop-database\.js/);

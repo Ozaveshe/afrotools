@@ -30,7 +30,7 @@ test('each locale owner loads the exact shared engine and controller', () => {
   for (const owner of owners) {
     const engineName = path.basename(owner.engineOwner);
     const controllerName = path.basename(owner.controllerOwner);
-    const controllerHash = crypto.createHash('sha256')
+    const controllerHash = crypto.createHash('md5')
       .update(fs.readFileSync(path.join(root, owner.controllerOwner)))
       .digest('hex')
       .slice(0, 8);
@@ -177,8 +177,12 @@ test('every bank-charge consumer uses current controller and contrast-safe style
     .map((file) => file.replace(/\\/g, '/'))
     .sort();
   assert.deepEqual(consumers, expected);
+  const controllerHash = crypto.createHash('md5')
+    .update(read('assets/js/pages/bank-charge-offer-vip.js').replace(/\r\n?/g, '\n'))
+    .digest('hex')
+    .slice(0, 8);
   for (const file of consumers) {
-    assert.match(read(file), /\/assets\/js\/pages\/bank-charge-offer-vip\.js\?v=5b979c57/);
+    assert.match(read(file), new RegExp(`/assets/js/pages/bank-charge-offer-vip\\.js\\?v=${controllerHash}`));
   }
   const stylesheet = read('assets/css/bank-charge-offer-vip.css');
   const stylesheetHash = crypto.createHash('md5').update(stylesheet).digest('hex').slice(0, 8);

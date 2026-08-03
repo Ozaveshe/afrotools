@@ -98,7 +98,7 @@ test('accessible official Stats SA source is South-Africa context only and suppl
 test('both routes are native Swahili products with exactly five local exports', () => {
   for (const row of manifest.rows) {
     const page = html(row);
-    assert.match(page, /<html lang="sw">/);
+    assert.match(page, /<html\b[^>]*\blang="sw"[^>]*>/);
     assert.match(page, /data-sw-property-construction-app/);
     assert.doesNotMatch(page, /iframe|English fallback|translated shell/i);
     for (const action of ['copy', 'txt', 'json', 'pdf', 'print']) {

@@ -68,7 +68,7 @@ test("all 24 pages are generator-owned native Swahili apps with complete route-l
     const relative = row.swahiliRoute.replace(/^\//, "") + "index.html";
     const html = read(relative);
     assert.equal(localizedGeneratorEquivalent(html, builder.render(row)), true, `${row.toolId} is stale against its owner`);
-    assert.match(html, /<html lang="sw"/);
+    assert.match(html, /<html\b[^>]*\blang="sw"/);
     assert.match(html, new RegExp(`<link rel="canonical" href="https://afrotools\\.com${row.swahiliRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}">`));
     assert.match(html, new RegExp(`<link rel="alternate" hreflang="sw" href="https://afrotools\\.com${row.swahiliRoute.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}">`));
     assert.match(html, /<link rel="alternate" hreflang="x-default"/);

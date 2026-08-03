@@ -56,7 +56,7 @@ test('Swahili Seed Rate owns exactly 55 native physical routes', () => {
   assert.ok(hub);
   const html = fs.readFileSync(path.join(ROOT, hub.swahili.file), 'utf8');
   assert.equal((html.match(/<li><a href="\/sw\/kilimo\/kiwango-cha-mbegu\//g) || []).length, 54);
-  assert.match(html, /<html lang="sw"/);
+  assert.match(html, /<html\b[^>]*\blang="sw"/);
   assert.match(html, /data-seed-rate-family/);
   assert.match(html, /--seed-control-border:#63758a/);
   assert.match(html, /--seed-focus:#075eb8/);
@@ -77,7 +77,7 @@ for (const row of countryRows) {
     const html = fs.readFileSync(path.join(ROOT, row.swahili.file), 'utf8');
     const english = fs.readFileSync(path.join(ROOT, row.english.file), 'utf8');
     const french = fs.readFileSync(path.join(ROOT, row.french.file), 'utf8');
-    assert.match(html, /<html lang="sw"/);
+    assert.match(html, /<html\b[^>]*\blang="sw"/);
     assert.match(html, /data-seed-rate-family/);
     assert.match(html, /--seed-control-border:#8297b0/);
     assert.match(html, /--seed-focus:#75b8ff/);

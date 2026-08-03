@@ -127,7 +127,7 @@ for (const [index, row] of countries.entries()) {
   assert.deepStrictEqual(comparable(actual), comparable({ ...expected, country: data.countries[code] }), `${code} formula drift`);
   assert.strictEqual(engine.calculate({ ...input, countryCode: 'XX' }), null);
   assert.strictEqual(engine.calculate({ ...input, crop: '__invalid__' }), null);
-  assert.match(html, /^<!DOCTYPE html>\s*<html lang="sw"/);
+  assert.match(html, /^<!DOCTYPE html>\s*<html\b[^>]*\blang="sw"/);
   assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(html, /&amp;amp;|â|Ã|Data sources:|For planning purposes|All prices|\b(?:Calculate|Reset|Download|Share|Save|Privacy|Freshness|Confidence|Results?)\b/);
   assert.match(html, new RegExp(`<meta name="afrotools-country-id" content="${code}">`));

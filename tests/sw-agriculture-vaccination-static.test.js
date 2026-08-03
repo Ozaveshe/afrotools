@@ -12,7 +12,7 @@ const file = path.join(ROOT, row.swahili.file);
 
 test('Swahili vaccination owner is native, source-owned and engine-shared', () => {
   const html = fs.readFileSync(file, 'utf8');
-  assert.match(html, /<html lang="sw"/);
+  assert.match(html, /<html\b[^>]*\blang="sw"/);
   assert.match(html, /window\.__SW_AGRI_PAGE__/);
   assert.match(html, /\/engines\/vaccination-engine\.js/);
   assert.match(html, /validateInput/);

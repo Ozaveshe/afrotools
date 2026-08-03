@@ -32,7 +32,7 @@ test('Crop Yield owns one Swahili hub and 54 country applications', () => {
 test('all Crop Yield routes are native Swahili, source-owned and route-correct', () => {
   for (const row of rows) {
     const html = fs.readFileSync(path.join(ROOT, row.swahili.file), 'utf8');
-    assert.match(html, /<html lang="sw"/);
+    assert.match(html, /<html\b[^>]*\blang="sw"/);
     assert.match(html, new RegExp(`https://afrotools.com${row.swahili.route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}`));
     assert.match(html, new RegExp(row.artwork.file.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')));
     assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(|window\.__FR_AGRI_PAGE__|content-language" content="fr"/i);

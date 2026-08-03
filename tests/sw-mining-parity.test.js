@@ -59,7 +59,7 @@ test('route-specific invalid and boundary states fail closed', () => {
 test('six generated routes have native metadata, reciprocal hreflang, artwork, schema and product fields', () => {
   for (const app of manifest.apps) {
     const html = read(app.swRoute);
-    assert.match(html,/<html lang="sw">/);
+    assert.match(html,/<html\b[^>]*\blang="sw"[^>]*>/);
     assert.match(html,new RegExp(`<body[^>]+data-mining-tool="${app.id}"`));
     assert.match(html,new RegExp(`https://afrotools.com/assets/img/tools/${app.imageId}\\.webp`));
     assert.ok(fs.statSync(path.join(ROOT,'assets/img/tools',`${app.imageId}.webp`)).size > 50000);
