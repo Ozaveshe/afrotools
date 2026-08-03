@@ -13,6 +13,159 @@ const SW_LEGAL_OUTPUT = path.join(ROOT, 'data', 'registry', 'swahili-legal-prope
 const PARITY_INVENTORY = path.join(ROOT, 'reports', 'swahili-free-app-parity-inventory.json');
 
 const LEGAL = {
+  'tenancy-deposit': {
+    route: '/sw/zana/amana-ya-upangaji/',
+    name: 'Kikokotoo cha amana na gharama za kuhamia',
+    description: 'Jumlisha pango la mbele, amana, ada ya wakala, ada ya mkataba na huduma kwa maingizo yako; thibitisha sheria na masharti ya eneo kabla ya kulipa.',
+    sourceLabel: 'Jimbo la Lagos — rasilimali rasmi na Tenancy Law',
+    clearStaleOnInput: true,
+    parserValidPdf: true,
+    control: 'Kokotoa gharama za kuhamia',
+    initialValues: {
+      country: 'ng',
+      rent: '500000',
+      advanceMonths: '12',
+      depositMonths: '1',
+      agentFee: '10',
+      legalFee: '5',
+      serviceCharge: '0'
+    },
+    testValues: {
+      country: 'ng',
+      rent: '500000',
+      advanceMonths: '12',
+      depositMonths: '1',
+      agentFee: '10',
+      legalFee: '5',
+      serviceCharge: '0'
+    },
+    countryPresets: {
+      ng: { rent: '500000', advanceMonths: '12', depositMonths: '1', agentFee: '10', legalFee: '5', serviceCharge: '0' },
+      ke: { rent: '50000', advanceMonths: '1', depositMonths: '1', agentFee: '8.33', legalFee: '0', serviceCharge: '0' },
+      za: { rent: '12000', advanceMonths: '1', depositMonths: '2', agentFee: '0', legalFee: '0', serviceCharge: '0' },
+      gh: { rent: '3000', advanceMonths: '12', depositMonths: '1', agentFee: '10', legalFee: '5', serviceCharge: '0' }
+    },
+    jurisdictionSources: {
+      ng: {
+        jurisdiction: 'Nigeria — Jimbo la Lagos',
+        availability: 'official-source',
+        url: 'https://lagosstate.gov.ng/resources/',
+        label: 'Jimbo la Lagos — rasilimali rasmi na Tenancy Law',
+        checkedAt: '2026-07-29',
+        confidence: 'Chanzo hiki kinahusu Nigeria, Jimbo la Lagos pekee. Hesabu ni thabiti kwa maingizo; thibitisha masharti na sheria ya sasa kabla ya kulipa.'
+      },
+      ke: {
+        jurisdiction: 'Kenya',
+        availability: 'planning-default',
+        url: '',
+        label: 'Kenya — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa',
+        checkedAt: '',
+        confidence: 'Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Kenya. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo.'
+      },
+      za: {
+        jurisdiction: 'Afrika Kusini',
+        availability: 'planning-default',
+        url: '',
+        label: 'Afrika Kusini — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa',
+        checkedAt: '',
+        confidence: 'Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Afrika Kusini. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo.'
+      },
+      gh: {
+        jurisdiction: 'Ghana',
+        availability: 'planning-default',
+        url: '',
+        label: 'Ghana — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa',
+        checkedAt: '',
+        confidence: 'Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Ghana. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo.'
+      }
+    },
+    fieldOverrides: {
+      advanceMonths: {
+        type: 'select',
+        options: [['12', 'Miezi 12'], ['6', 'Miezi 6'], ['3', 'Miezi 3'], ['2', 'Miezi 2'], ['1', 'Mwezi 1']]
+      },
+      depositMonths: {
+        type: 'select',
+        options: [['0', 'Hakuna'], ['1', 'Mwezi 1'], ['2', 'Miezi 2'], ['3', 'Miezi 3']]
+      },
+      agentFee: {
+        type: 'select',
+        options: [['0', 'Hakuna wakala'], ['5', '5%'], ['10', '10%'], ['15', '15%'], ['8.33', 'Pango la mwezi 1 (8.33%)']]
+      },
+      legalFee: {
+        type: 'select',
+        options: [['0', 'Hakuna'], ['5', '5% ya pango la mwaka'], ['10', '10% ya pango la mwaka'], ['flat50000', 'Kiasi maalumu cha eneo']]
+      }
+    },
+    labels: {
+      country: 'Nchi',
+      rent: 'Pango la mwezi',
+      advanceMonths: 'Miezi ya pango la mbele',
+      depositMonths: 'Miezi ya amana',
+      agentFee: 'Ada ya wakala (%)',
+      legalFee: 'Ada ya mkataba au wakili',
+      serviceCharge: 'Ada ya huduma kwa mwezi'
+    },
+    result: {
+      avance: 'Pango la mbele',
+      depot: 'Amana',
+      honorairesAgent: 'Ada ya wakala',
+      fraisJuridiques: 'Ada ya mkataba au wakili',
+      chargesService: 'Ada ya huduma',
+      coutEntree: 'Jumla ya gharama za kuhamia',
+      devise: 'Sarafu'
+    }
+  },
+  'rent-affordability': {
+    route: '/sw/zana/uwezo-wa-kulipa-pango/',
+    name: 'Kikokotoo cha uwezo wa kulipa pango',
+    description: 'Linganisha pango uliloingiza na kikomo chako cha bajeti, kisha panga pango la mbele bila kudai kiwango cha lazima au uamuzi wa mwenye nyumba.',
+    sourceLabel: 'UN-Habitat — mfumo wa kupima uwezo wa kumudu makazi',
+    clearStaleOnInput: true,
+    parserValidPdf: true,
+    control: 'Kokotoa kwa maingizo yangu',
+    initialValues: {
+      currency: 'sarafu yako',
+      income: '',
+      rent: '',
+      ratio: '',
+      advance: ''
+    },
+    testValues: {
+      currency: 'XOF',
+      income: '5000',
+      rent: '1200',
+      ratio: '30',
+      advance: '2'
+    },
+    fieldOverrides: {
+      currency: { required: true },
+      income: { min: '0.01', step: 'any', required: true },
+      rent: { min: '0', step: 'any', required: true },
+      ratio: { min: '0', max: '100', step: 'any', required: true },
+      advance: { min: '0', step: 'any', required: true }
+    },
+    source: {
+      url: '',
+      label: 'UN-Habitat — kiungo cha chanzo cha nje hakipatikani; uthibitishaji wa mkono unahitajika',
+      availability: 'unavailable',
+      checkedAt: '2026-08-02',
+      confidence: 'Hesabu ni thabiti kwa maingizo yako. Chanzo cha UN-Habitat kilirudisha 403 wakati wa ukaguzi; usichukulie uwiano kama kiwango kilichothibitishwa, cha kisheria, cha benki au cha kila mahali.'
+    },
+    labels: {
+      currency: 'Sarafu',
+      income: 'Mapato halisi ya mwezi',
+      rent: 'Pango la mwezi',
+      ratio: 'Kikomo cha bajeti (%)',
+      advance: 'Miezi ya pango la mbele'
+    },
+    result: {
+      loyer: 'Pango uliloingiza',
+      plafond: 'Kikomo cha bajeti',
+      avance: 'Pango la mbele',
+      devise: 'Sarafu'
+    }
+  },
   'leave-days': {
     route: '/sw/zana/siku-za-likizo-za-kisheria/',
     name: 'Mwongozo wa siku za likizo za kisheria',
@@ -124,7 +277,9 @@ const SW_OPTIONS = {
   'Marque et nom': 'Alama ya biashara na jina', 'Invention': 'Uvumbuzi', 'Œuvre créative': 'Kazi bunifu',
   'Savoir-faire': 'Maarifa ya biashara', 'Un pays': 'Nchi moja', 'Plusieurs pays africains': 'Nchi kadhaa za Afrika',
   'International': 'Kimataifa', 'Marque': 'Alama ya biashara', 'Contenu': 'Maudhui',
-  'Secret commercial': 'Siri ya biashara', 'pied carré': 'futi ya mraba'
+  'Secret commercial': 'Siri ya biashara', 'pied carré': 'futi ya mraba',
+  'Aucun': 'Hakuna', '5 % du loyer annuel': '5% ya pango la mwaka',
+  '10 % du loyer annuel': '10% ya pango la mwaka', 'Forfait local': 'Ada ya kudumu ya eneo'
 };
 const SW_COPY_OVERRIDES = {
   'kenya-dpa': {
@@ -133,6 +288,8 @@ const SW_COPY_OVERRIDES = {
   }
 };
 const RECIPROCAL_LOCALE_OWNERS = {
+  'tenancy-deposit': ['/fr/tools/caution-locative/'],
+  'rent-affordability': ['/fr/tools/capacite-loyer/'],
   'leave-days': ['/fr/tools/calculateur-conges/'],
   'stamp-duty': ['/fr/tools/droits-enregistrement/'],
   'rent-intelligence': ['/fr/tools/intelligence-loyer/'],
@@ -172,22 +329,40 @@ function legalContracts() {
   return Object.entries(LEGAL).map(([id, sw]) => {
     const owner = french.rows.find((row) => row.englishId === id);
     if (!owner) throw new Error(`Missing legal owner contract: ${id}`);
+    const fields = owner.fields.map((field) => {
+      const override = (sw.fieldOverrides && sw.fieldOverrides[field.name]) || {};
+      const localized = {
+        ...field,
+        ...override,
+        label: sw.labels[field.name] || `Sehemu ya ${field.name}`,
+        options: (override.options || field.options || []).map((option) => [
+          option[0],
+          SW_OPTIONS[option[1]] || option[1]
+        ])
+      };
+      if (sw.initialValues && Object.prototype.hasOwnProperty.call(sw.initialValues, field.name)) {
+        localized.initialValue = sw.initialValues[field.name];
+        localized.testFixtureValue = sw.testValues[field.name];
+        delete localized.fixtureValue;
+      }
+      return localized;
+    });
     return {
       ...owner,
       name: sw.name,
       description: sw.description,
       swahiliRoute: sw.route,
+      ...(sw.clearStaleOnInput ? { clearStaleOnInput: true } : {}),
+      ...(sw.parserValidPdf ? { parserValidPdf: true } : {}),
+      ...(sw.countryPresets ? { countryPresets: sw.countryPresets } : {}),
+      ...(sw.jurisdictionSources ? { jurisdictionSources: sw.jurisdictionSources } : {}),
       workflowControl: sw.control,
       resultIntro: `${sw.name}: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.`,
-      fields: owner.fields.map((field) => ({
-        ...field,
-        label: sw.labels[field.name] || `Sehemu ya ${field.name}`,
-        options: (field.options || []).map((option) => [option[0], SW_OPTIONS[option[1]] || option[1]])
-      })),
+      fields,
       resultLabels: sw.result,
-      source: {
+      source: sw.source || {
         url: owner.source && owner.source.url,
-        label: owner.source && owner.source.title ? owner.source.title : 'Chanzo rasmi au ukaguzi wa mtaalamu unahitajika',
+        label: sw.sourceLabel || (owner.source && owner.source.title ? owner.source.title : 'Chanzo rasmi au ukaguzi wa mtaalamu unahitajika'),
         checkedAt: owner.source && owner.source.checkedAt,
         confidence: 'Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu.'
       }
@@ -231,6 +406,37 @@ function head(app, category, imageId) {
   <script type="application/ld+json">${safeJson(schema)}</script>`;
 }
 
+function ownedSourcePanel(contract) {
+  const source = (contract.jurisdictionSources && contract.jurisdictionSources.ng) || contract.source;
+  const availability = source.availability === 'official-source'
+    ? 'Chanzo rasmi kimeunganishwa kwa mamlaka hii pekee.'
+    : source.availability === 'planning-default'
+      ? 'Thamani hizi ni za kupanga tu; hakuna chanzo rasmi kilichounganishwa kwa mamlaka hii.'
+      : 'Kiungo cha chanzo cha nje hakipatikani; uthibitishaji wa mkono unahitajika.';
+  return `<aside class="mp-card mp-source" data-tool-verification-panel><h2>Chanzo, uhalali na mipaka</h2>
+        <p data-source-jurisdiction${source.jurisdiction ? '' : ' hidden'}><strong>Mamlaka iliyochaguliwa:</strong> <span>${esc(source.jurisdiction || '')}</span></p>
+        <p><a data-source-link href="${esc(source.url || '#')}" target="_blank" rel="noopener noreferrer"${source.url ? '' : ' hidden'}>${esc(source.label)}</a><span data-source-label${source.url ? ' hidden' : ''}>${esc(source.label)}</span></p>
+        <p data-source-availability data-source-state="${esc(source.availability || 'unavailable')}">${esc(availability)}</p>
+        <p data-source-checked><strong>Tarehe ya ukaguzi:</strong> <span>${esc(source.checkedAt || 'Haijathibitishwa')}</span></p>
+        <p data-source-confidence>${esc(source.confidence)}</p>
+        <p><strong>Muhimu:</strong> si ushauri wa kisheria, uwasilishaji rasmi, uthibitisho wa hati, haki, ada, idhini au matokeo.</p></aside>`;
+}
+
+function ownedControlContrastCss() {
+  return `  <style>
+    [data-result][hidden],[data-export-bar][hidden]{display:none!important}
+    .mp-page{--sw-mp-control-bg:#ffffff;--sw-mp-control-text:#172033;--sw-mp-control-border:#64748b;--sw-mp-focus:#111827;--sw-mp-primary:#0f766e}
+    .mp-page .mp-hero h1{color:var(--mp-text)}
+    body.mp-page .mp-card .mp-fields input,body.mp-page .mp-card .mp-fields select{border:2px solid var(--sw-mp-control-border)!important;background:var(--sw-mp-control-bg)!important;color:var(--sw-mp-control-text)!important;-webkit-text-fill-color:var(--sw-mp-control-text)!important;opacity:1!important}
+    body.mp-page .mp-card .mp-fields select option{background:var(--sw-mp-control-bg)!important;color:var(--sw-mp-control-text)!important}
+    body.mp-page .mp-card .mp-actions button,body.mp-page .mp-card .mp-export-bar button{border:2px solid var(--sw-mp-control-border)!important;background:var(--sw-mp-control-bg)!important;color:var(--sw-mp-control-text)!important;-webkit-text-fill-color:var(--sw-mp-control-text)!important;opacity:1!important}
+    body.mp-page .mp-card .mp-actions button[type="submit"],body.mp-page .mp-card .mp-actions button[type="submit"]:hover,body.mp-page .mp-card .mp-actions button[type="submit"]:active{border-color:var(--sw-mp-primary)!important;background:var(--sw-mp-primary)!important;color:#fff!important;-webkit-text-fill-color:#fff!important}
+    body.mp-page .mp-card .mp-actions button:focus-visible,body.mp-page .mp-card .mp-export-bar button:focus-visible,body.mp-page .mp-card .mp-fields input:focus-visible,body.mp-page .mp-card .mp-fields select:focus-visible{outline:3px solid var(--sw-mp-focus)!important;outline-offset:3px!important;box-shadow:none!important}
+    html[data-theme="dark"] .mp-page,body.theme-dark.mp-page{--sw-mp-control-bg:#111b2d;--sw-mp-control-text:#f8fafc;--sw-mp-control-border:#76869c;--sw-mp-focus:#fde047;--sw-mp-primary:#0f766e}
+    @media(prefers-color-scheme:dark){html:not([data-theme="light"]) .mp-page{--sw-mp-control-bg:#111b2d;--sw-mp-control-text:#f8fafc;--sw-mp-control-border:#76869c;--sw-mp-focus:#fde047;--sw-mp-primary:#0f766e}}
+  </style>\n`;
+}
+
 function legalPage(contract) {
   const app = {
     name: contract.name,
@@ -249,7 +455,7 @@ function legalPage(contract) {
   <link rel="stylesheet" href="/assets/css/tokens.min.css">
   <link rel="stylesheet" href="/assets/css/global.min.css">
   <link rel="stylesheet" href="/assets/css/french-mortgage-property.css">
-</head><body>
+${contract.clearStaleOnInput ? `${ownedControlContrastCss()}  <script src="/assets/js/supabase.min.js"></script>\n` : ''}</head><body${contract.parserValidPdf ? ' class="mp-page"' : ''}>
   <a class="mp-skip" href="#sw-gap-form">Ruka hadi kwenye zana</a>
   <afro-navbar active="legal"></afro-navbar>
   <main class="mp-shell" data-sw-legal-property-app data-english-id="${esc(contract.englishId)}">
@@ -263,16 +469,16 @@ function legalPage(contract) {
       <section class="mp-result" data-result tabindex="-1" aria-live="polite" hidden></section>
       <div class="mp-export-bar" data-export-bar hidden aria-label="Vipakuliwa vya ndani"><button type="button" data-action="copy">Nakili</button><button type="button" data-action="txt">Pakua TXT</button><button type="button" data-action="json">Pakua JSON</button><button type="button" data-action="pdf">Pakua PDF</button><button type="button" data-action="print">Chapisha</button></div>
       <p class="mp-privacy"><strong>Faragha:</strong> maingizo, hesabu na vipakuliwa vinabaki kwenye kivinjari. Hakuna akaunti, barua pepe, AI wala kutumwa kwa data kunakohitajika.</p></article>
-      <aside class="mp-card mp-source" data-tool-verification-panel><h2>Chanzo, uhalali na mipaka</h2>
+      ${contract.parserValidPdf ? ownedSourcePanel(contract) : `<aside class="mp-card mp-source" data-tool-verification-panel><h2>Chanzo, uhalali na mipaka</h2>
         <p><a href="${esc(contract.source.url || contract.englishRoute)}" target="_blank" rel="noopener noreferrer">${esc(contract.source.label)}</a></p>
         <p><strong>Tarehe ya ukaguzi:</strong> ${esc(contract.source.checkedAt || 'Haijathibitishwa')}</p>
         <p>${esc(contract.source.confidence)}</p>
-        <p><strong>Muhimu:</strong> si ushauri wa kisheria, uwasilishaji rasmi, uthibitisho wa hati, haki, ada, idhini au matokeo.</p></aside></section>
+        <p><strong>Muhimu:</strong> si ushauri wa kisheria, uwasilishaji rasmi, uthibitisho wa hati, haki, ada, idhini au matokeo.</p></aside>`}</section>
   </main><afro-footer></afro-footer>
   <script src="/assets/js/components/navbar.min.js" defer></script><script src="/assets/js/components/footer.min.js" defer></script>
   <script src="/engines/legal-engine.js"></script><script src="/assets/js/engines/property-assumption.js"></script>
   <script src="/assets/js/lib/french-mortgage-property-presentation.js"></script><script src="/assets/js/engines/mortgage-property-english-owner.js"></script>
-  <script src="/assets/js/engines/french-mortgage-property.js"></script><script src="/assets/js/pages/sw-legal-property-gap-app.js" defer></script>
+  <script src="/assets/js/engines/french-mortgage-property.js"></script>${contract.parserValidPdf ? '<script src="/assets/vendor/pdf-lib/pdf-lib.min.js"></script><script src="/assets/js/lib/swahili-local-pdf.js"></script>' : ''}<script src="/assets/js/pages/sw-legal-property-gap-app.js" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js" defer></script><script src="/assets/js/lazy-analytics.js" defer></script>
 </body></html>\n`;
 }
@@ -508,7 +714,7 @@ function main() {
     }
   }
   const drift = checkOrWrite(outputs);
-  process.stdout.write(`${WRITE ? 'Built' : 'Checked'} Swahili Legal/Government/Insurance maintained owners: ${legalRows.length + govRows.length + insuranceRows.length}/42; ${drift.length} changed outputs.\n`);
+  process.stdout.write(`${WRITE ? 'Built' : 'Checked'} Swahili Legal/Government/Insurance maintained owners: ${legalRows.length + govRows.length + insuranceRows.length}/44; ${drift.length} changed outputs.\n`);
 }
 
 if (require.main === module) main();

@@ -1,0 +1,476 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 12,
+  "expectedAcceptedRoutes": 170,
+  "preservedBlockedEntries": 3,
+  "policy": "The listed commits were independently approved. The recorder must still fail closed on receipt assertions, inventory identity, central-ledger overlap, duplicate IDs or routes, and missing physical lang=sw owners. Registry presence is never acceptance evidence.",
+  "candidates": [
+    {
+      "id": "developer-four-app-repair",
+      "commit": "1a5bed7d1270bd51c9a83ed6c9ab236472a385d4",
+      "expectedRoutes": 4,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 4,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-four-app-rejection-regressions.spec.js",
+          "engineTest": "tests/e2e/sw-four-app-rejection-regressions.spec.js",
+          "workflow": "Four route-owned developer workflows passed the independent rejection-regression review for Base64, structured data conversion, hashing and Markdown editing without changing the coordinator-owned ledger.",
+          "export": "The scoped browser receipt exercised the routes' local copy or download paths and their rejection and stale-state boundaries without promoting registry presence as acceptance."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "tests/e2e/sw-four-app-rejection-regressions.spec.js",
+          "format": "text",
+          "requiredText": "const scopedRoutes"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "base64", "swahiliRoute": "/sw/zana/base64/" },
+            { "englishId": "data-converter", "swahiliRoute": "/sw/zana/kubadilisha-data/" },
+            { "englishId": "hash-generator", "swahiliRoute": "/sw/zana/kizalishaji-hash/" },
+            { "englishId": "markdown-editor", "swahiliRoute": "/sw/zana/kihariri-markdown/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "energy-sizing-trio",
+      "commit": "cdf0ede0af2a472a48d90ac8b511dc641188658c",
+      "expectedRoutes": 3,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 3,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-energy-sizing-parity.spec.js",
+          "engineTest": "tests/swahili-energy-sizing-parity.test.js",
+          "workflow": "Solar sizing, battery and inverter sizing, and backup-duration workflows passed exact shared-engine, validation, source-boundary, responsive, theme, accessibility and no-network proof.",
+          "export": "Each accepted energy route's advertised local copy receipt was copied and reopened after the deterministic calculation; invalid or changed input cleared stale portable output."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-energy-sizing-parity-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/adversarialRepair/repairedRouteCount", "equals": 3 },
+            { "pointer": "/boundaries/acceptanceLedgerChanged", "equals": false }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/sw-energy-sizing-parity-receipt.json",
+          "rowsPointer": "/implementedRoutes",
+          "idPointer": "/id",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "ecommerce-pricing-foundations",
+      "commit": "f6cfa4c8c8b29bb1af8f578cea9597b3477996ad",
+      "expectedRoutes": 3,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 3,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-ecommerce-pricing-foundations.spec.js",
+          "engineTest": "tests/sw-ecommerce-pricing-foundations.test.js",
+          "workflow": "Profit margin, markup and discount pricing foundations passed exact deterministic calculations, invalid-state clearing, privacy, responsive, theme, keyboard, metadata and independent browser proof.",
+          "export": "All advertised pricing exports named by the accepted scoped receipt were parsed or reopened locally, with stale exports disabled after invalid or changed input."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-ecommerce-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorBaseSha", "equals": "8354e321ff34caf60a33a3393cd0dcddfb00c023" }
+          ]
+        },
+        {
+          "path": "reports/sw-ecommerce-acceptance/pricing-foundations.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/acceptedRows", "equals": 3 },
+            { "pointer": "/status", "equals": "accepted-scoped" }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/sw-ecommerce-acceptance/pricing-foundations.json",
+          "idsPointer": "/englishIds",
+          "routesPointer": "/swahiliRoutes"
+        }
+      ]
+    },
+    {
+      "id": "mortgage-property-tenant-planning",
+      "commit": "2206b1c697dde5cefd773335744ed840dda21ce7",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-mortgage-property-tenant-family.spec.js",
+          "engineTest": "tests/swahili-legal-government-insurance-parity.test.js",
+          "workflow": "Tenancy-deposit and rent-affordability calculations passed exact English-owner constraints, fail-closed inputs, source boundaries, accessibility, mobile reflow, themes and independent route proof.",
+          "export": "Copy, TXT, JSON, parsed PDF and browser print paths were exercised locally; invalid or changed input removed stale results and export eligibility."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-mortgage-property-tenant-family-clean-respin-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/scope/scopedAccepted", "equals": 2 },
+            { "pointer": "/scope/scopedBlocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/sw-mortgage-property-tenant-family-clean-respin-receipt.json",
+          "rowsPointer": "/routes",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliOwner/route",
+          "statusPointer": "/localParityStatus",
+          "acceptedValues": ["accepted"]
+        }
+      ]
+    },
+    {
+      "id": "agriculture-irrigation-farm-profit",
+      "commit": "f5c2178921dd8ac9b7bdf691aa814183987feaf4",
+      "expectedRoutes": 110,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 110,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-agriculture-irrigation-family.spec.js",
+          "engineTest": "tests/sw-agriculture-irrigation-family.test.js",
+          "workflow": "The exact 55-route irrigation family and 55-route farm-profit family passed route-specific engine oracles, invalid boundaries, source and confidence disclosure, local privacy, responsive, theme, keyboard and console-clean proof.",
+          "export": "Every applicable family route reopened its advertised JSON, TXT, CSV and PDF evidence locally; family hubs explicitly recorded that result export was not applicable."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-agriculture-acceptance/irrigation.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 55 },
+            { "pointer": "/blocked", "equals": 0 }
+          ]
+        },
+        {
+          "path": "reports/sw-agriculture-acceptance/farm-profit.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 55 },
+            { "pointer": "/blocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/sw-agriculture-acceptance/irrigation.json",
+          "rowsPointer": "/rows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute",
+          "statusPointer": "/status",
+          "acceptedValues": ["accepted"]
+        },
+        {
+          "path": "reports/sw-agriculture-acceptance/farm-profit.json",
+          "rowsPointer": "/rows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute",
+          "statusPointer": "/status",
+          "acceptedValues": ["accepted"]
+        }
+      ]
+    },
+    {
+      "id": "roman-numerals",
+      "commit": "ac4684b87ac04a77858d9a2f4bad1cef0d8c6053",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-roman-owner.spec.js",
+          "engineTest": "tests/swahili-roman-owner.test.js",
+          "workflow": "Roman numeral single, batch, quiz, swap, invalid and boundary oracles passed after the clean rejection-repair respin, including clipboard rejection, stale-state, contrast and English-owner parity.",
+          "export": "The route's three advertised portable outputs were reopened locally and clipboard rejection failed safely without page or console errors."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-roman-numerals-route-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/englishId", "equals": "roman-numerals" },
+            { "pointer": "/cleanBaseParent", "equals": "8354e321ff34caf60a33a3393cd0dcddfb00c023" }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "roman-numerals", "swahiliRoute": "/sw/zana/namba-za-kirumi/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finance-savings-credit-fees",
+      "commit": "7c30f4ffd982d18af55500ce086134fc90c9afb4",
+      "expectedRoutes": 3,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 3,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-finance-savings-credit-fees.spec.js",
+          "engineTest": "tests/swahili-savings-credit-fees-contract.test.js",
+          "workflow": "Savings goal, car loan and bank-charge comparison passed exact deterministic values, zero and invalid boundaries, stale-result clearing, local privacy, accessibility, themes, metadata and independent browser proof.",
+          "export": "Every advertised native output was parsed or reopened and generic assurance JSON was explicitly excluded from acceptance."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-finance-savings-credit-fees-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/accepted", "equals": 3 },
+            { "pointer": "/totals/blocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/swahili-finance-savings-credit-fees-receipt.json",
+          "rowsPointer": "/acceptedRows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute",
+          "statusPointer": "/status",
+          "acceptedValues": ["accepted"]
+        }
+      ]
+    },
+    {
+      "id": "mining-native-family",
+      "commit": "7a2f09f0f72fddb6f0a7fa54b6c25495fa6d1883",
+      "expectedRoutes": 6,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 6,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-mining-parity.spec.js",
+          "engineTest": "tests/sw-mining-parity.test.js",
+          "workflow": "Six route-owned mining workflows passed exact shared-engine calculation, user-input and jurisdiction boundaries, conservative source claims, accessibility, responsive, theme and no-network proof.",
+          "export": "The independently reviewed Mining receipt verified each route's advertised local portable result path and fail-closed invalid-state behavior."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-mining-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorBase", "equals": "8354e321ff34caf60a33a3393cd0dcddfb00c023" }
+          ]
+        },
+        {
+          "path": "reports/sw-mining-parity-candidate-receipt-2026-08-02.md",
+          "format": "text",
+          "requiredText": "6/6"
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-mining-parity-manifest.json",
+          "rowsPointer": "/apps",
+          "idPointer": "/id",
+          "routePointer": "/swRoute"
+        }
+      ]
+    },
+    {
+      "id": "security-native-family",
+      "commit": "ad0becf8ba2c3f072ee3237f61c6b0ee27ac2eb3",
+      "expectedRoutes": 7,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 7,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-security-parity.spec.js",
+          "engineTest": "tests/swahili-security-parity.test.js",
+          "workflow": "Seven native security planning and assessment routes passed their exact route calculations or scoring, invalid and stale-state behavior, source boundaries, privacy, responsive, theme, keyboard and contrast proof.",
+          "export": "The candidate receipt exercised the routes' advertised local JSON, text, copy or print outputs as applicable, with no hidden network transmission or acceptance by registry implication."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-security-parity-candidate-receipt.md",
+          "format": "text",
+          "requiredText": "7 candidate-accepted, 0 product-blocked"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "cctv-cost", "swahiliRoute": "/sw/zana/gharama-za-cctv/" },
+            { "englishId": "cybersecurity-assessment", "swahiliRoute": "/sw/zana/tathmini-ya-usalama-wa-kidijitali/" },
+            { "englishId": "data-breach-cost", "swahiliRoute": "/sw/zana/gharama-ya-uvujaji-wa-data/" },
+            { "englishId": "fire-safety-checklist", "swahiliRoute": "/sw/zana/ukaguzi-wa-usalama-wa-moto/" },
+            { "englishId": "home-security-cost", "swahiliRoute": "/sw/zana/gharama-za-usalama-wa-nyumbani/" },
+            { "englishId": "password-strength", "swahiliRoute": "/sw/zana/nguvu-ya-nenosiri/" },
+            { "englishId": "phishing-quiz", "swahiliRoute": "/sw/zana/jaribio-la-kutambua-hadaa/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "developer-web-text-codecs",
+      "commit": "23ac489e1c16e7283130c71b3215433efaa70257",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-web-text-codecs-family.spec.js",
+          "engineTest": "tests/sw-web-text-codecs-engine.test.js",
+          "workflow": "URL encoding and HTML entity workflows passed exact shared-codec behavior, diagnostics, local history or safe preview boundaries, privacy, accessibility, responsive and dark-theme proof.",
+          "export": "The two route-owned workflows reopened their advertised local output, including the HTML-entity TXT export, while all non-GET and AI network paths remained rejected."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-web-text-codecs-family.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactRowCount", "equals": 2 }
+          ]
+        },
+        {
+          "path": "reports/sw-web-text-codecs-parity-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/counts/candidateReady", "equals": 2 },
+            { "pointer": "/counts/blockedRows", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-web-text-codecs-family.json",
+          "rowsPointer": "/rows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "sports-travel-native-family",
+      "commit": "935e2ce8c12a7cb36e9a53887609e4d87b85c380",
+      "expectedRoutes": 24,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 24,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-sports-travel-parity.spec.js",
+          "engineTest": "tests/sw-sports-travel-parity.test.js",
+          "workflow": "All 15 Sports and 9 Travel route-owned workflows passed route-specific invalid and exact valid oracles, keyboard import, responsive, theme, privacy, source, metadata and console-clean proof.",
+          "export": "All 24 JSON files were reopened through keyboard file import and all nine advertised Travel PDFs were parsed and checked for pagination, text bounds and final-page privacy content."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-sports-travel-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/scope/total", "equals": 24 }
+          ]
+        },
+        {
+          "path": "reports/swahili-sports-travel-parity-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/acceptance/accepted", "equals": 24 },
+            { "pointer": "/acceptance/blocked", "equals": 0 },
+            { "pointer": "/blocker", "equals": null }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-sports-travel-parity-manifest.json",
+          "rowsPointer": "/rows",
+          "idPointer": "/toolId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    },
+    {
+      "id": "personal-finance-accessibility-repair",
+      "commit": "265fc7a1c802d1edfaf662e2e9e0d869a2e1209a",
+      "expectedRoutes": 5,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 5,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-personal-finance-parity.spec.js",
+          "engineTest": "tests/sw-personal-finance-parity.test.js",
+          "workflow": "Five personal-finance workflows passed exact English-owner oracles, invalid-state clearing, source and country parity, mobile reflow, settled theme focus contrast, labels, live status and local privacy proof.",
+          "export": "TXT and JSON outputs were parsed, JSON inputs reopened, and printed PDF text checked for exact values; invalid input disabled every advertised export."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-personal-finance-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorBase", "equals": "8354e321ff34caf60a33a3393cd0dcddfb00c023" }
+          ]
+        },
+        {
+          "path": "data/localization/sw-personal-finance-parity-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/candidateOutcome/acceptCount", "equals": 5 },
+            { "pointer": "/candidateOutcome/blockCount", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-personal-finance-parity-receipt.json",
+          "rowsPointer": "/appProof",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    }
+  ]
+}

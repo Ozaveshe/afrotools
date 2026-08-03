@@ -8,8 +8,23 @@ const ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(ROOT, 'data/localization/sw-agriculture-parity-manifest.json');
 const { alternateEntries } = require('./lib/fr-agriculture-hreflang');
 const CONTRACTS = Object.freeze({
+  'cassava-processing': require('./lib/sw-agriculture-family-contracts/cassava-processing'),
   'crop-yield': require('./lib/sw-agriculture-family-contracts/crop-yield'),
-  fertilizer: require('./lib/sw-agriculture-family-contracts/fertilizer')
+  fertilizer: require('./lib/sw-agriculture-family-contracts/fertilizer'),
+  greenhouse: require('./lib/sw-agriculture-family-contracts/greenhouse'),
+  irrigation: require('./lib/sw-agriculture-family-contracts/irrigation'),
+  'farm-profit': require('./lib/sw-agriculture-family-contracts/farm-profit'),
+  'seed-rate': require('./lib/sw-agriculture-family-contracts/seed-rate')
+});
+
+const FAMILY_SIZES = Object.freeze({
+  'cassava-processing': { rows: 16, countries: 15 },
+  'crop-yield': { rows: 55, countries: 54 },
+  fertilizer: { rows: 55, countries: 54 },
+  greenhouse: { rows: 16, countries: 15 },
+  irrigation: { rows: 55, countries: 54 },
+  'farm-profit': { rows: 55, countries: 54 },
+  'seed-rate': { rows: 55, countries: 54 }
 });
 
 function parseArgs(argv) {
@@ -74,11 +89,11 @@ function run(options) {
   const rows = manifest.rows.filter(row => row.family === options.family);
   if (!rows.length) throw new Error(`No rows selected for ${options.family}.`);
   const countryRows = rows.filter(row => row.country);
-  if (options.family === 'crop-yield' && (rows.length !== 55 || countryRows.length !== 54)) {
-    throw new Error(`Crop Yield requires 55 rows and 54 countries; found ${rows.length}/${countryRows.length}.`);
-  }
-  if (options.family === 'fertilizer' && (rows.length !== 55 || countryRows.length !== 54)) {
-    throw new Error(`Fertilizer requires 55 rows and 54 countries; found ${rows.length}/${countryRows.length}.`);
+  const expected = FAMILY_SIZES[options.family];
+  if (!expected || rows.length !== expected.rows || countryRows.length !== expected.countries) {
+    throw new Error(
+      `${options.family} requires ${expected && expected.rows} rows and ${expected && expected.countries} countries; found ${rows.length}/${countryRows.length}.`
+    );
   }
   const countries = JSON.parse(
     fs.readFileSync(path.join(ROOT, 'data/registry/countries.json'), 'utf8')
@@ -128,6 +143,7 @@ if (require.main === module) {
 
 module.exports = {
   CONTRACTS,
+  FAMILY_SIZES,
   alternateBlock,
   parseArgs,
   run,

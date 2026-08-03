@@ -32,7 +32,7 @@ function renderSwahiliAgriculturePage(options) {
     french: row.swahili,
     country: row.country ? {
       ...row.country,
-      frenchName: row.country.swahiliName || row.country.frenchName
+      frenchName: options.countryName || row.country.swahiliName || row.country.frenchName
     } : null
   };
   let html = renderFrenchAgriculturePage({
@@ -65,7 +65,8 @@ function renderSwahiliAgriculturePage(options) {
     ['Fil dâ€™Ariane', 'Njia ya ukurasa'],
     ['Fil d’Ariane', 'Njia ya ukurasa'],
     ['Accueil', 'Mwanzo'],
-    ['Agriculture', 'Kilimo'],
+    ['"name":"Agriculture"', '"name":"Kilimo"'],
+    ['>Agriculture</a>', '>Kilimo</a>'],
     ['Tous les outils', 'Zana zote'],
     ['Assistant', 'Msaidizi'],
     ['ThÃ¨me sombre', 'Mandhari meusi'],

@@ -1,0 +1,94 @@
+"use strict";
+const fs = require("fs");
+const path = require("path");
+const ROOT = path.resolve(__dirname, "..");
+const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-faraid.json"), "utf8"));
+const target = path.join(ROOT, manifest.route.replace(/^\//, ""), "index.html");
+const check = process.argv.includes("--check");
+const json = value => JSON.stringify(value).replace(/</g, "\\u003c");
+
+function render() {
+  const canonical = `https://afrotools.com${manifest.route}`;
+  const source = `https://afrotools.com${manifest.sourceRoute}`;
+  const french = `https://afrotools.com${manifest.frenchRoute}`;
+  const sources = manifest.sources.map(item => `<li><a href="${item.href}" rel="noopener">${item.label}</a></li>`).join("");
+  const appSchema = { "@context": "https://schema.org", "@type": "WebApplication", name: manifest.title, description: manifest.description, url: canonical, applicationCategory: "LifestyleApplication", operatingSystem: "Kivinjari", inLanguage: "sw", isAccessibleForFree: true, offers: { "@type": "Offer", price: "0", priceCurrency: "USD" } };
+  const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [
+    { "@type": "Question", name: "Je, matokeo haya ni fatwa au uamuzi wa kisheria?", acceptedAnswer: { "@type": "Answer", text: "Hapana. Ni makadirio yenye mipaka kwa kupanga mazungumzo. Msomi mwenye sifa na mwanasheria wa eneo lazima wathibitishe warithi, mafungu na mchakato kabla ya kugawa mali." } },
+    { "@type": "Question", name: "Wasia wa asiye mrithi unashughulikiwaje?", acceptedAnswer: { "@type": "Answer", text: "Modeli huweka kikomo cha theluthi moja baada ya madeni na gharama za mazishi au mirathi, kisha huonya pale kiasi kilichoombwa kinapozidi kikomo hicho." } }
+  ] };
+  return `<!doctype html>
+<html lang="sw" data-theme-choice="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta http-equiv="content-language" content="sw">
+  <title>${manifest.metaTitle}</title>
+  <meta name="description" content="${manifest.description}">
+  <meta name="robots" content="index,follow">
+  <meta name="afrotools:source-page" content="${manifest.sourceRoute}">
+  <meta name="afrotools:source-owner" content="${manifest.id}">
+  <link rel="canonical" href="${canonical}">
+  <link rel="alternate" hreflang="en" href="${source}">
+  <link rel="alternate" hreflang="fr" href="${french}">
+  <link rel="alternate" hreflang="sw" href="${canonical}">
+  <link rel="alternate" hreflang="x-default" href="${source}">
+  <meta property="og:type" content="website">
+  <meta property="og:locale" content="sw_KE">
+  <meta property="og:title" content="${manifest.metaTitle}">
+  <meta property="og:description" content="${manifest.description}">
+  <meta property="og:url" content="${canonical}">
+  <meta property="og:image" content="https://afrotools.com${manifest.artwork}">
+  <meta property="og:image:alt" content="Mchoro wa ${manifest.title}">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="${manifest.metaTitle}">
+  <meta name="twitter:description" content="${manifest.description}">
+  <meta name="twitter:image" content="https://afrotools.com${manifest.artwork}">
+  <link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+  <link rel="stylesheet" href="/assets/css/sw-faraid.css?v=20260802a11y">
+  <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
+  <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+  <script type="application/ld+json">${json(appSchema)}</script>
+  <script type="application/ld+json">${json(faqSchema)}</script>
+</head><body class="faraid-page" data-source-id="faraid-inheritance">
+<a class="faraid-skip" href="#zana">Ruka hadi kikokotoo</a><afro-navbar></afro-navbar>
+<header class="faraid-hero"><div class="faraid-shell faraid-hero-grid"><div>
+  <nav class="faraid-breadcrumb" aria-label="Njia ya ukurasa"><a href="/sw/">AfroTools Kiswahili</a><span aria-hidden="true">/</span><a href="/sw/dini-na-utamaduni/">Dini na Utamaduni</a><span aria-hidden="true">/</span><span>${manifest.title}</span></nav>
+  <span class="faraid-kicker">Makadirio yenye mipaka • mapitio ya msomi na sheria</span><h1>${manifest.title}</h1>
+  <p>Panga hali za kawaida za mwenzi, wazazi, watoto na ndugu kamili. Zana hukata madeni, gharama za mazishi au mirathi na wasia halali kwanza, kisha huonyesha mafungu, salio na maonyo ya warithi waliozuiwa.</p>
+  <div class="faraid-hero-actions"><a class="btn btn-primary" href="#zana">Anza kukokotoa</a><a class="btn" href="#vyanzo">Soma vyanzo na mipaka</a></div>
+</div><img class="faraid-art" src="${manifest.artwork}" alt="Mchoro wa ${manifest.title}" width="1200" height="900"></div></header>
+<main id="zana" class="faraid-main"><div class="faraid-shell"><div class="faraid-workbench">
+<section class="faraid-panel" aria-labelledby="faraid-input-title"><h2 id="faraid-input-title">Ingiza mali na warithi</h2><p>Tumia sarafu moja. Modeli hii ya kupanga inashughulikia hali za kawaida za mafungu na salio kwa warithi walioonyeshwa pekee.</p>
+<form id="faraid-form" novalidate><div class="faraid-fields">
+<div class="faraid-field"><label for="currency">Sarafu</label><select id="currency" name="currency" aria-describedby="error-currency"><option value="NGN">NGN — Naira ya Nigeria</option><option value="GHS">GHS — Cedi ya Ghana</option><option value="KES" selected>KES — Shilingi ya Kenya</option><option value="ZAR">ZAR — Randi ya Afrika Kusini</option><option value="EGP">EGP — Pauni ya Misri</option><option value="USD">USD — Dola ya Marekani</option><option value="GBP">GBP — Pauni Sterling</option></select><span class="faraid-error" id="error-currency" hidden></span></div>
+<div class="faraid-field"><label for="estate">Mali ghafi</label><input id="estate" name="estate" type="number" min="0" step="0.01" inputmode="decimal" value="12000000" aria-describedby="error-estate"><span class="faraid-error" id="error-estate" hidden></span></div>
+<div class="faraid-field"><label for="debts">Madeni na dhima zilizothibitishwa</label><input id="debts" name="debts" type="number" min="0" step="0.01" inputmode="decimal" value="1500000" aria-describedby="error-debts"><span class="faraid-error" id="error-debts" hidden></span></div>
+<div class="faraid-field"><label for="funeral">Gharama za mazishi na mirathi</label><input id="funeral" name="funeral" type="number" min="0" step="0.01" inputmode="decimal" value="500000" aria-describedby="error-funeral"><span class="faraid-error" id="error-funeral" hidden></span></div>
+<div class="faraid-field"><label for="bequest">Wasia kwa asiye mrithi</label><input id="bequest" name="bequest" type="number" min="0" step="0.01" inputmode="decimal" value="0" aria-describedby="bequest-help error-bequest"><span class="faraid-hint" id="bequest-help">Huwekwa kikomo cha theluthi moja baada ya madeni na gharama.</span><span class="faraid-error" id="error-bequest" hidden></span></div>
+<div class="faraid-field"><label for="spouse">Mwenzi aliyebaki</label><select id="spouse" name="spouse" aria-describedby="error-spouse"><option value="wife" selected>Mke au wake</option><option value="husband">Mume</option><option value="none">Hakuna mwenzi</option></select><span class="faraid-error" id="error-spouse" hidden></span></div>
+<div class="faraid-field"><label for="wives">Idadi ya wake</label><input id="wives" name="wives" type="number" min="1" max="4" step="1" inputmode="numeric" value="1" aria-describedby="error-wives"><span class="faraid-error" id="error-wives" hidden></span></div>
+<div class="faraid-field"><label for="sons">Wana</label><input id="sons" name="sons" type="number" min="0" max="100" step="1" inputmode="numeric" value="2" aria-describedby="error-sons"><span class="faraid-error" id="error-sons" hidden></span></div>
+<div class="faraid-field"><label for="daughters">Mabinti</label><input id="daughters" name="daughters" type="number" min="0" max="100" step="1" inputmode="numeric" value="1" aria-describedby="error-daughters"><span class="faraid-error" id="error-daughters" hidden></span></div>
+<div class="faraid-field"><label for="brothers">Kaka kamili</label><input id="brothers" name="brothers" type="number" min="0" max="100" step="1" inputmode="numeric" value="0" aria-describedby="error-brothers"><span class="faraid-error" id="error-brothers" hidden></span></div>
+<div class="faraid-field"><label for="sisters">Dada kamili</label><input id="sisters" name="sisters" type="number" min="0" max="100" step="1" inputmode="numeric" value="0" aria-describedby="error-sisters"><span class="faraid-error" id="error-sisters" hidden></span></div>
+<div class="faraid-field-full faraid-check"><input id="father" name="father" type="checkbox" checked><label for="father">Baba yuko hai</label></div><div class="faraid-field-full faraid-check"><input id="mother" name="mother" type="checkbox" checked><label for="mother">Mama yuko hai</label></div><div class="faraid-field-full faraid-check"><input id="limitedCase" name="limitedCase" type="checkbox" checked><label for="limitedCase">Ninaelewa hii ni modeli yenye mipaka; warithi na hali tata lazima zipitiwe na msomi na mwanasheria.</label></div>
+</div><div class="faraid-actions"><button class="btn btn-primary" type="submit">Hesabu mafungu</button><button class="btn" id="faraid-copy" type="button" data-faraid-export disabled>Nakili matokeo</button><button class="btn" id="faraid-csv" type="button" data-faraid-export disabled>Pakua CSV</button><button class="btn" id="faraid-print" type="button" data-faraid-export disabled>Chapisha</button></div><p id="faraid-status" class="faraid-status" role="status" aria-live="polite" tabindex="-1">Ingiza au hakiki thamani, kisha uhesabu.</p></form></section>
+<section class="faraid-panel" aria-labelledby="faraid-result-title"><h2 id="faraid-result-title">Makadirio ya mgawanyo</h2><div class="faraid-metrics"><div class="faraid-metric"><span>Mali halisi</span><strong id="faraid-net">—</strong></div><div class="faraid-metric"><span>Warithi wa modeli</span><strong id="faraid-heirs">—</strong></div><div class="faraid-metric"><span>Kiasi kilichogawiwa</span><strong id="faraid-allocated">—</strong></div><div class="faraid-metric"><span>Salio lisilogawiwa</span><strong id="faraid-unallocated">—</strong></div><div class="faraid-metric"><span>Hali ya mapitio</span><strong id="faraid-review">—</strong></div></div><p id="faraid-notice" class="faraid-notice">Matokeo yatatokea baada ya kuhesabu.</p>
+<div class="faraid-table-wrap"><table class="faraid-table"><caption>Mafungu ya Faraid ya warithi walioingizwa</caption><thead><tr><th scope="col">Mrithi</th><th scope="col">Msingi</th><th scope="col">Fungu</th><th scope="col">Kiasi kwa kila mrithi</th></tr></thead><tbody id="faraid-share-rows"><tr><td colspan="4">Hakuna fungu la modeli bado.</td></tr></tbody></table></div><div class="faraid-lists"><section class="faraid-list"><h3>Maonyo na mipaka</h3><ul id="faraid-warnings"><li>Hesabu kwanza ili kuona maonyo.</li></ul></section><section class="faraid-list"><h3>Hatua zinazofuata</h3><ul id="faraid-next-steps"><li>Thibitisha warithi na nyaraka kabla ya kugawa mali.</li></ul></section></div></section>
+</div><div class="faraid-info-grid" id="vyanzo"><section class="faraid-info"><h2>Njia ya hesabu</h2><ul><li>Anza na mali ghafi, kisha ondoa madeni, gharama za mazishi au mirathi na wasia halali wa asiye mrithi unaowekwa kikomo cha theluthi moja.</li><li>Tumia mafungu yaliyowekwa kwa mwenzi, mama, baba na mabinti pale hali iliyoingizwa inaruhusu modeli ya tahadhari.</li><li>Gawa salio kwa wana na mabinti kwa uwiano wa 2:1; hali salama za kaka na dada kamili pia hutumia 2:1.</li><li>Onya kuhusu ndugu waliozuiwa, awl, radd au salio lisilogawiwa, Umariyyat na hali zisizo katika modeli.</li></ul></section>
+<section class="faraid-info"><h2>Mipaka na ufaragha</h2><p><strong>Ilipitiwa mara ya mwisho: ${manifest.reviewed}.</strong> Zana haijumuishi babu/nyanya, wajukuu kupitia watoto waliokufa, ndugu wa upande mmoja, watoto wa kuasili, warithi waliopotea, kodi ya mirathi, mali ya ndoa, kila undani wa madhehebu au sheria zote za nchi.</p><p class="faraid-source-note">Taarifa hubaki kwenye kivinjari hiki pekee. Rasimu huhifadhiwa ndani ya kifaa kwa <code>localStorage</code>; kikokotoo hakitumi majina, mali au matokeo kwa seva. CSV, nakala na chapisho hutengenezwa ndani ya kivinjari.</p></section>
+<section class="faraid-info"><h2>Vyanzo na uthibitishaji</h2><p>Muktadha wa mafungu unatokana na mwongozo wa urithi katika Surah An-Nisa 4:11, 4:12 na 4:176, pamoja na dhana za Faraid kama mafungu yaliyowekwa, salio, kuzuia, awl na radd.</p><ul>${sources}</ul></section><section class="faraid-info"><h2>Tahadhari muhimu</h2><p>Zana hii ni ya elimu na kupanga pekee. Si fatwa, si ushauri wa kisheria, na si mbadala wa msomi mwenye sifa, mwanasheria, msimamizi wa mirathi, mahakama au mamlaka ya probate ya eneo. Thibitisha warithi, madeni, wasia, warithi waliozuiwa na sheria kabla ya kugawa mali.</p><p><a href="/sw/dini-na-utamaduni/">Rudi Dini na Utamaduni</a> · <a href="/sw/zana/kikokotoo-zakat/">Kikokotoo Zakat</a> · <a href="/sw/zana/fedha-za-kiislamu/">Fedha za Kiislamu</a></p></section></div>
+</div></main><footer class="faraid-footer"><div class="faraid-shell"><a href="/sw/">AfroTools Kiswahili</a> · <a href="/sw/dini-na-utamaduni/">Dini na Utamaduni</a></div></footer><afro-footer></afro-footer>
+<script src="/assets/js/engines/sw-faraid.js?v=20260802"></script><script src="/assets/js/pages/sw-faraid.js?v=20260802"></script></body></html>\n`;
+}
+const output = render();
+const current = fs.existsSync(target) ? fs.readFileSync(target, "utf8") : "";
+if (check) {
+  if (current !== output) { console.error(JSON.stringify({ ok: false, stale: [path.relative(ROOT, target).replace(/\\/g, "/")] }, null, 2)); process.exit(1); }
+  console.log(JSON.stringify({ ok: true, routes: 1, changed: [] }, null, 2));
+} else {
+  fs.mkdirSync(path.dirname(target), { recursive: true });
+  if (current !== output) fs.writeFileSync(target, output);
+  console.log(JSON.stringify({ ok: true, routes: 1, changed: current === output ? [] : [path.relative(ROOT, target).replace(/\\/g, "/")] }, null, 2));
+}

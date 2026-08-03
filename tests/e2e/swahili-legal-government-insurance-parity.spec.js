@@ -207,7 +207,7 @@ for (const row of maintained) {
 }
 
 test(reconciledOnly
-  ? 'reconciled denominator is exactly 19 browser-proven owners'
-  : 'maintained denominator is 11 legal gaps + 15 government + 16 insurance', () => {
-  expect(maintained).toHaveLength(reconciledOnly ? 19 : 42);
+  ? 'reconciled denominator is exactly 21 browser-proven owners'
+  : 'maintained denominator is 13 legal gaps + 15 government + 16 insurance', () => {
+  expect(maintained).toHaveLength(reconciledOnly ? 21 : 44);
 });

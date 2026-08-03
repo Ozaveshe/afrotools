@@ -5,11 +5,20 @@ const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
 const { buildManifest } = require('../scripts/build-sw-agriculture-parity-manifest');
+const acceptanceLedger = require('../data/audits/swahili-free-app-acceptance.json');
 
 const ROOT = path.resolve(__dirname, '..');
 
 test('Swahili Agriculture manifest owns the exact 447-row English scope', () => {
   const manifest = buildManifest();
+  const acceptedAgricultureIds = acceptanceLedger.entries
+    .filter(entry => entry.categoryKey === 'agriculture' && entry.status === 'accepted')
+    .map(entry => entry.englishId)
+    .sort();
+  const manifestAcceptedIds = manifest.rows
+    .filter(row => row.acceptance.state === 'accepted')
+    .map(row => row.english.id)
+    .sort();
   assert.equal(manifest.rows.length, 447);
   assert.equal(new Set(manifest.rows.map(row => row.english.routeKey)).size, 447);
   assert.equal(new Set(manifest.rows.map(row => row.swahili.routeKey)).size, 447);
@@ -18,7 +27,7 @@ test('Swahili Agriculture manifest owns the exact 447-row English scope', () => 
     manifest.rows.find(row => row.english.id === 'crop-yield-kenya').country.swahiliName,
     'Kenya'
   );
-  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'accepted').length, 56);
+  assert.deepEqual(manifestAcceptedIds, acceptedAgricultureIds);
   assert.equal(
     manifest.rows.find(row => row.english.id === 'vaccination-schedule').acceptance.state,
     'accepted'

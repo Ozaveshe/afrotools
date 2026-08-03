@@ -1,0 +1,107 @@
+{
+  "schemaVersion": 1,
+  "family": "sw-civil-site-works-parity",
+  "coordinatorBase": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "inventorySource": "reports/swahili-free-app-parity-inventory.json",
+  "scopeCount": 2,
+  "excludedAcceptedEnergyIds": [
+    "solar-sizing",
+    "battery-sizing",
+    "backup-duration"
+  ],
+  "planningBoundary": "Makadirio ya kupanga pekee. Jedwali la gharama ni dhana tuli za injini ya Kiingereza; si bei hai, bei rasmi, BOQ, zabuni, usanifu wa uhandisi au nukuu iliyohakikishwa.",
+  "engineReview": {
+    "asOf": "2026-07-30",
+    "confidence": "chini-kwa-ununuzi",
+    "basis": "Tarehe ya mabadiliko ya mwisho ya injini katika hazina; haithibitishi upya bei za soko."
+  },
+  "apps": [
+    {
+      "id": "site-clearance",
+      "inventoryEnglishId": "site-clearance",
+      "englishRoute": "/tools/site-clearing/",
+      "frenchRoute": "/fr/tools/estimateur-du-cout-de-preparation-d-un-terrain/",
+      "englishFile": "tools/site-clearing/index.html",
+      "swRoute": "/sw/zana/utayarishaji-wa-eneo/",
+      "swFile": "sw/zana/utayarishaji-wa-eneo/index.html",
+      "engineSource": "engines/src/site-clearing-engine.js",
+      "enginePublic": "/engines/site-clearing-engine.js",
+      "engineGlobal": "SiteClearingEngine",
+      "imageId": "site-clearance",
+      "imageWidth": 800,
+      "imageHeight": 450,
+      "title": "Kikadiriaji cha Gharama ya Kutayarisha Eneo",
+      "shortTitle": "Utayarishaji wa eneo",
+      "description": "Kadiria gharama ya kusafisha uoto, kukata miti, kuondoa udongo wa juu, kubomoa na kuondoa taka kwa dhana za nchi zilizojengwa ndani ya injini.",
+      "units": ["eneo: m²", "kina cha udongo wa juu: 0.225 m", "ujazo: m³", "muda: siku"],
+      "oracle": {
+        "inputs": {
+          "country": "TZ",
+          "area": 1200,
+          "trees": 4,
+          "terrain": "gentle",
+          "vegetation": "medium",
+          "removeTopsoil": true,
+          "demolition": "small",
+          "waste": "chip"
+        },
+        "expected": {
+          "vegetationCost": 16500000,
+          "treeCost": 300000,
+          "topsoilVolume": 270,
+          "topsoilCost": 8640000,
+          "demolitionCost": 2250000,
+          "wasteVolume": 60,
+          "wasteCost": 420000,
+          "total": 28110000,
+          "costPerM2": 23425,
+          "days": 7
+        }
+      }
+    },
+    {
+      "id": "road-construction-cost",
+      "inventoryEnglishId": "road-construction-cost",
+      "englishRoute": "/tools/road-construction-cost/",
+      "frenchRoute": "/fr/tools/estimateur-du-cout-de-construction-routiere/",
+      "englishFile": "tools/road-construction-cost/index.html",
+      "swRoute": "/sw/zana/gharama-ya-ujenzi-wa-barabara/",
+      "swFile": "sw/zana/gharama-ya-ujenzi-wa-barabara/index.html",
+      "engineSource": "engines/src/road-construction-cost-engine.js",
+      "enginePublic": "/engines/road-construction-cost-engine.js",
+      "engineGlobal": "RoadConstructionCostEngine",
+      "imageId": "road-construction-cost",
+      "imageWidth": 600,
+      "imageHeight": 450,
+      "title": "Kikadiriaji cha Gharama ya Ujenzi wa Barabara",
+      "shortTitle": "Ujenzi wa barabara",
+      "description": "Kadiria gharama kwa kilomita na bajeti ya barabara kwa upana, uso, ardhi, mazingira, mifereji na taa kwa dhana za nchi zilizojengwa ndani ya injini.",
+      "units": ["urefu: km", "upana: m", "gharama: sarafu ya nchi", "taa: gharama kwa km"],
+      "oracle": {
+        "inputs": {
+          "country": "TZ",
+          "length": 2.5,
+          "width": "7.3",
+          "surface": "asphalt",
+          "terrain": "rolling",
+          "location": "peri_urban",
+          "includeDrainage": true,
+          "includeLighting": true
+        },
+        "expected": {
+          "baseCostPerKm": 587125000,
+          "roadCost": 1467812500,
+          "drainageCost": 293562500,
+          "lightingCost": 112500000,
+          "total": 1873875000,
+          "comparison": {
+            "gravel": 109037500,
+            "asphalt": 587125000,
+            "concrete": 1040050000,
+            "interlocking": 469700000
+          }
+        }
+      }
+    }
+  ]
+}

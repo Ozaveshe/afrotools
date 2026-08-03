@@ -11,60 +11,60 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1077 |
-| Swahili coverage records | 1074 |
-| Native candidates | 124 |
-| Localized shell candidates | 654 |
-| English fallbacks | 17 |
+| Swahili physical HTML pages | 1300 |
+| Swahili coverage records | 1297 |
+| Native candidates | 346 |
+| Localized shell candidates | 653 |
+| English fallbacks | 16 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 462 |
-| **Accepted** | **199** |
+| Missing | 242 |
+| **Accepted** | **487** |
 
 ## Category reconciliation
 
 | Category | Apps | Native | Shell | English fallback | Iframe | Bridge | Alias | Unclassified | Missing | Accepted |
 |---|---:|---:|---:|---:|---:|---:|---:|---:|---:|---:|
-| Agriculture | 447 | 114 | 18 | 0 | 0 | 0 | 0 | 0 | 315 | 111 |
+| Agriculture | 447 | 301 | 18 | 0 | 0 | 0 | 0 | 0 | 128 | 308 |
 | Business & ROI | 12 | 0 | 10 | 2 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Career & Development | 4 | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Career & Development | 4 | 4 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 4 |
 | Climate & Environment | 13 | 0 | 12 | 1 | 0 | 0 | 0 | 0 | 0 | 0 |
 | Creative Economy | 46 | 0 | 41 | 0 | 0 | 0 | 0 | 0 | 5 | 0 |
-| Developer Tools | 32 | 0 | 28 | 3 | 0 | 0 | 0 | 0 | 1 | 0 |
-| Diaspora | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
+| Developer Tools | 32 | 0 | 29 | 2 | 0 | 0 | 0 | 0 | 1 | 6 |
+| Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
 | Document & PDF | 32 | 2 | 25 | 3 | 0 | 0 | 0 | 0 | 2 | 0 |
-| Education | 42 | 0 | 33 | 0 | 0 | 0 | 0 | 0 | 9 | 0 |
-| Energy & Utilities | 20 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 0 |
-| Engineering & Construction | 26 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Finance, Tax & Market Data | 132 | 5 | 84 | 3 | 0 | 0 | 0 | 0 | 40 | 29 |
-| Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
+| Education | 42 | 1 | 33 | 0 | 0 | 0 | 0 | 0 | 8 | 1 |
+| Energy & Utilities | 20 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 3 |
+| Engineering & Construction | 26 | 4 | 20 | 0 | 0 | 0 | 0 | 0 | 2 | 4 |
+| Finance, Tax & Market Data | 132 | 5 | 84 | 3 | 0 | 0 | 0 | 0 | 40 | 32 |
+| Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 2 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
-| Health & Wellness | 42 | 0 | 29 | 0 | 0 | 0 | 0 | 0 | 13 | 0 |
+| Health & Wellness | 42 | 1 | 28 | 0 | 0 | 0 | 0 | 0 | 13 | 1 |
 | HR & Payroll | 6 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
-| Mining & Extractives | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 6 | 0 |
-| Mortgage & Property | 66 | 0 | 66 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
-| Personal Finance | 5 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
-| Religious & Cultural | 22 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 3 | 0 |
-| Security & Safety | 7 | 0 | 3 | 0 | 0 | 0 | 0 | 0 | 4 | 0 |
+| Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
+| Mortgage & Property | 66 | 0 | 66 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
+| Personal Finance | 5 | 0 | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 5 |
+| Religious & Cultural | 22 | 2 | 17 | 0 | 0 | 0 | 0 | 0 | 3 | 2 |
+| Security & Safety | 7 | 7 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 7 |
 | Small Business & SME | 28 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 11 | 0 |
-| Sports & Entertainment | 15 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 9 | 0 |
-| Telecom & Mobile | 14 | 0 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
+| Sports & Entertainment | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
+| Telecom & Mobile | 14 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 | Trade & Import | 22 | 0 | 20 | 0 | 0 | 0 | 0 | 0 | 2 | 6 |
 | Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
-| Travel & Tourism | 9 | 0 | 4 | 0 | 0 | 0 | 0 | 0 | 5 | 0 |
+| Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 34 | 0 | 21 | 1 | 0 | 0 | 0 | 0 | 12 | 0 |
-| VAT & Business Tax | 63 | 3 | 58 | 0 | 0 | 0 | 0 | 0 | 2 | 0 |
+| VAT & Business Tax | 63 | 3 | 58 | 0 | 0 | 0 | 0 | 0 | 2 | 3 |
 
 ## Ambiguous ownership
 
 - Swahili routes with conflicting owner evidence: 6
 - English apps with multiple live Swahili owner candidates: 63
-- Swahili registry source IDs outside the free denominator: 25
+- Swahili registry source IDs outside the free denominator: 24
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
@@ -227,17 +227,17 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Certificate Generator | Image & Design | `/tools/certificate-maker` | Localized shell candidate | `/sw/zana/kitengeneza-cheti` | No |
 | AI Flyer & Poster Studio | Image & Design | `/tools/flyer-maker` | Localized shell candidate | `/sw/zana/kitengeneza-flyer` | No |
 | JSON Formatter & Validator | Developer Tools | `/tools/json-formatter` | Localized shell candidate | `/sw/zana/kirekebisha-json` | No |
-| Data Format Converter | Developer Tools | `/tools/data-converter` | Localized shell candidate | `/sw/zana/kubadilisha-data` | No |
-| Hash Generator | Developer Tools | `/tools/hash-generator` | Localized shell candidate | `/sw/zana/kizalishaji-hash` | No |
-| Base64 Encoder/Decoder | Developer Tools | `/tools/base64` | Localized shell candidate | `/sw/zana/base64` | No |
+| Data Format Converter | Developer Tools | `/tools/data-converter` | Localized shell candidate | `/sw/zana/kubadilisha-data` | Yes |
+| Hash Generator | Developer Tools | `/tools/hash-generator` | Localized shell candidate | `/sw/zana/kizalishaji-hash` | Yes |
+| Base64 Encoder/Decoder | Developer Tools | `/tools/base64` | Localized shell candidate | `/sw/zana/base64` | Yes |
 | Regex Tester | Developer Tools | `/tools/regex-tester` | Localized shell candidate | `/sw/zana/kijaribu-regex` | No |
 | Cron Expression Builder | Developer Tools | `/tools/cron-builder` | Localized shell candidate | `/sw/zana/cron` | No |
 | JWT Decoder | Developer Tools | `/tools/jwt-decoder` | Localized shell candidate | `/sw/zana/kisimbuzi-jwt` | No |
-| URL Encoder/Decoder | Developer Tools | `/tools/url-encoder` | English fallback | `/sw/zana/kusimba-url` | No |
+| URL Encoder/Decoder | Developer Tools | `/tools/url-encoder` | Localized shell candidate | `/sw/zana/kusimba-url` | Yes |
 | UUID Generator | Developer Tools | `/tools/uuid-generator` | Localized shell candidate | `/sw/zana/kizalishaji-uuid` | No |
-| HTML Entity Encoder | Developer Tools | `/tools/html-entities` | Localized shell candidate | `/sw/zana/alama-za-html` | No |
+| HTML Entity Encoder | Developer Tools | `/tools/html-entities` | Localized shell candidate | `/sw/zana/alama-za-html` | Yes |
 | Text/Code Diff Checker | Developer Tools | `/tools/diff-checker` | Localized shell candidate | `/sw/zana/kilinganisha-maandishi` | No |
-| Markdown Editor | Developer Tools | `/tools/markdown-editor` | Localized shell candidate | `/sw/zana/kihariri-markdown` | No |
+| Markdown Editor | Developer Tools | `/tools/markdown-editor` | Localized shell candidate | `/sw/zana/kihariri-markdown` | Yes |
 | WCAG Contrast Checker | Developer Tools | `/tools/color-contrast` | Localized shell candidate | `/sw/zana/ukaguzi-contrast` | No |
 | USSD Code Simulator | Developer Tools | `/tools/ussd-simulator` | English fallback | `/sw/zana/kiigaji-ussd` | No |
 | API Tester (Postman Lite) | Developer Tools | `/tools/api-tester` | Localized shell candidate | `/sw/zana/kijaribu-api` | No |
@@ -260,7 +260,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Exact Number Base Converter | Education | `/tools/binary-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-mfumo-wa-jozi` | No |
 | Descriptive Statistics Calculator | Education | `/tools/statistics-calc` | Missing | None | No |
 | Exact Fraction Calculator | Education | `/tools/fraction-calc` | Missing | None | No |
-| Roman Numeral Converter | Education | `/tools/roman-numerals` | Missing | None | No |
+| Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/sw/zana/namba-za-kirumi` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Missing | None | No |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Missing | None | No |
 | Mobile Money Fee Checker | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | No |
@@ -318,10 +318,10 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Fertilizer & Yield Calculator | Agriculture | `/tools/fertilizer-calc` | Missing | None | No |
 | Crop Yield Estimator | Agriculture | `/agriculture/crop-yield` | Native candidate | `/sw/zana/makisio-ya-mavuno` | Yes |
 | Fertilizer Calculator (NPK) | Agriculture | `/agriculture/fertilizer` | Localized shell candidate | `/sw/zana/kikokotoo-mbolea` | Yes |
-| Irrigation Water Calculator | Agriculture | `/agriculture/irrigation` | Localized shell candidate | `/sw/zana/kikokotoo-umwagiliaji` | No |
-| Farm Profit/Loss Calculator | Agriculture | `/agriculture/farm-profit` | Localized shell candidate | `/sw/zana/faida-na-hasara-ya-shamba` | No |
+| Irrigation Water Calculator | Agriculture | `/agriculture/irrigation` | Localized shell candidate | `/sw/zana/kikokotoo-umwagiliaji` | Yes |
+| Farm Profit/Loss Calculator | Agriculture | `/agriculture/farm-profit` | Localized shell candidate | `/sw/zana/faida-na-hasara-ya-shamba` | Yes |
 | Smallholder Farm Budget Planner | Agriculture | `/agriculture/farm-budget` | Missing | None | No |
-| Seed Rate Calculator | Agriculture | `/agriculture/seed-rate` | Localized shell candidate | `/sw/zana/kikokotoo-idadi-ya-mbegu` | No |
+| Seed Rate Calculator | Agriculture | `/agriculture/seed-rate` | Localized shell candidate | `/sw/zana/kikokotoo-idadi-ya-mbegu` | Yes |
 | Poultry Farm ROI Calculator | Agriculture | `/agriculture/poultry-roi` | Localized shell candidate | `/sw/zana/faida-ya-ufugaji-kuku` | No |
 | Pesticide Dosage Calculator | Agriculture | `/agriculture/pesticide-dosage` | Missing | None | No |
 | Soil pH Calculator | Agriculture | `/agriculture/soil-ph` | Missing | None | No |
@@ -345,38 +345,38 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Morocco Fish Farming ROI | Agriculture | `/agriculture/fish-farming/morocco` | Missing | None | No |
 | Tunisia Fish Farming ROI | Agriculture | `/agriculture/fish-farming/tunisia` | Missing | None | No |
 | Angola Fish Farming ROI | Agriculture | `/agriculture/fish-farming/angola` | Missing | None | No |
-| Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse` | Localized shell candidate | `/sw/zana/gharama-za-greenhouse` | No |
-| Nigeria Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/nigeria` | Missing | None | No |
-| Kenya Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/kenya` | Missing | None | No |
-| South Africa Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/south-africa` | Missing | None | No |
-| Ghana Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/ghana` | Missing | None | No |
-| Egypt Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/egypt` | Missing | None | No |
-| Ethiopia Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/ethiopia` | Missing | None | No |
-| Tanzania Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/tanzania` | Missing | None | No |
-| Uganda Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/uganda` | Missing | None | No |
-| Rwanda Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/rwanda` | Missing | None | No |
-| Côte d'Ivoire Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/cote-d-ivoire` | Missing | None | No |
-| Cameroon Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/cameroon` | Missing | None | No |
-| Senegal Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/senegal` | Missing | None | No |
-| Morocco Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/morocco` | Missing | None | No |
-| Tunisia Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/tunisia` | Missing | None | No |
-| Angola Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/angola` | Missing | None | No |
-| Cassava Processing Profit Calculator | Agriculture | `/agriculture/cassava-processing` | Localized shell candidate | `/sw/zana/faida-ya-usindikaji-mihogo` | No |
-| Nigeria Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/nigeria` | Missing | None | No |
-| Ghana Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/ghana` | Missing | None | No |
-| Tanzania Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/tanzania` | Missing | None | No |
-| Mozambique Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/mozambique` | Missing | None | No |
-| DR Congo Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/dr-congo` | Missing | None | No |
-| Cameroon Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/cameroon` | Missing | None | No |
-| Côte d'Ivoire Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/cote-d-ivoire` | Missing | None | No |
-| Angola Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/angola` | Missing | None | No |
-| Uganda Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/uganda` | Missing | None | No |
-| Malawi Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/malawi` | Missing | None | No |
-| Sierra Leone Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/sierra-leone` | Missing | None | No |
-| Benin Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/benin` | Missing | None | No |
-| Madagascar Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/madagascar` | Missing | None | No |
-| Guinea Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/guinea` | Missing | None | No |
-| Togo Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/togo` | Missing | None | No |
+| Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse` | Localized shell candidate | `/sw/zana/gharama-za-greenhouse` | Yes |
+| Nigeria Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/nigeria` | Native candidate | `/sw/kilimo/greenhouse/nigeria` | Yes |
+| Kenya Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/kenya` | Native candidate | `/sw/kilimo/greenhouse/kenya` | Yes |
+| South Africa Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/south-africa` | Native candidate | `/sw/kilimo/greenhouse/south-africa` | Yes |
+| Ghana Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/ghana` | Native candidate | `/sw/kilimo/greenhouse/ghana` | Yes |
+| Egypt Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/egypt` | Native candidate | `/sw/kilimo/greenhouse/egypt` | Yes |
+| Ethiopia Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/ethiopia` | Native candidate | `/sw/kilimo/greenhouse/ethiopia` | Yes |
+| Tanzania Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/tanzania` | Native candidate | `/sw/kilimo/greenhouse/tanzania` | Yes |
+| Uganda Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/uganda` | Native candidate | `/sw/kilimo/greenhouse/uganda` | Yes |
+| Rwanda Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/rwanda` | Native candidate | `/sw/kilimo/greenhouse/rwanda` | Yes |
+| Côte d'Ivoire Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/cote-d-ivoire` | Native candidate | `/sw/kilimo/greenhouse/cote-divoire` | Yes |
+| Cameroon Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/cameroon` | Native candidate | `/sw/kilimo/greenhouse/cameroon` | Yes |
+| Senegal Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/senegal` | Native candidate | `/sw/kilimo/greenhouse/senegal` | Yes |
+| Morocco Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/morocco` | Native candidate | `/sw/kilimo/greenhouse/morocco` | Yes |
+| Tunisia Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/tunisia` | Native candidate | `/sw/kilimo/greenhouse/tunisia` | Yes |
+| Angola Greenhouse Cost Estimator | Agriculture | `/agriculture/greenhouse/angola` | Native candidate | `/sw/kilimo/greenhouse/angola` | Yes |
+| Cassava Processing Profit Calculator | Agriculture | `/agriculture/cassava-processing` | Localized shell candidate | `/sw/zana/faida-ya-usindikaji-mihogo` | Yes |
+| Nigeria Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/nigeria` | Native candidate | `/sw/kilimo/usindikaji-mihogo/nigeria` | Yes |
+| Ghana Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/ghana` | Native candidate | `/sw/kilimo/usindikaji-mihogo/ghana` | Yes |
+| Tanzania Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/tanzania` | Native candidate | `/sw/kilimo/usindikaji-mihogo/tanzania` | Yes |
+| Mozambique Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/mozambique` | Native candidate | `/sw/kilimo/usindikaji-mihogo/mozambique` | Yes |
+| DR Congo Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/dr-congo` | Native candidate | `/sw/kilimo/usindikaji-mihogo/dr-congo` | Yes |
+| Cameroon Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/cameroon` | Native candidate | `/sw/kilimo/usindikaji-mihogo/cameroon` | Yes |
+| Côte d'Ivoire Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/cote-d-ivoire` | Native candidate | `/sw/kilimo/usindikaji-mihogo/cote-divoire` | Yes |
+| Angola Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/angola` | Native candidate | `/sw/kilimo/usindikaji-mihogo/angola` | Yes |
+| Uganda Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/uganda` | Native candidate | `/sw/kilimo/usindikaji-mihogo/uganda` | Yes |
+| Malawi Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/malawi` | Native candidate | `/sw/kilimo/usindikaji-mihogo/malawi` | Yes |
+| Sierra Leone Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/sierra-leone` | Native candidate | `/sw/kilimo/usindikaji-mihogo/sierra-leone` | Yes |
+| Benin Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/benin` | Native candidate | `/sw/kilimo/usindikaji-mihogo/benin` | Yes |
+| Madagascar Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/madagascar` | Native candidate | `/sw/kilimo/usindikaji-mihogo/madagascar` | Yes |
+| Guinea Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/guinea` | Native candidate | `/sw/kilimo/usindikaji-mihogo/guinea` | Yes |
+| Togo Cassava Processing Profit | Agriculture | `/agriculture/cassava-processing/togo` | Native candidate | `/sw/kilimo/usindikaji-mihogo/togo` | Yes |
 | Grain Storage Loss Calculator | Agriculture | `/agriculture/storage-loss` | Missing | None | No |
 | Algeria Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/algeria` | Native candidate | `/sw/kilimo/mavuno/algeria` | Yes |
 | Angola Crop Yield Estimator | Agriculture | `/agriculture/crop-yield/angola` | Native candidate | `/sw/kilimo/mavuno/angola` | Yes |
@@ -486,168 +486,168 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Uganda Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/uganda` | Native candidate | `/sw/kilimo/mbolea/uganda` | Yes |
 | Zambia Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zambia` | Native candidate | `/sw/kilimo/mbolea/zambia` | Yes |
 | Zimbabwe Fertilizer Calculator | Agriculture | `/agriculture/fertilizer/zimbabwe` | Native candidate | `/sw/kilimo/mbolea/zimbabwe` | Yes |
-| Algeria Irrigation Calculator | Agriculture | `/agriculture/irrigation/algeria` | Missing | None | No |
-| Angola Irrigation Calculator | Agriculture | `/agriculture/irrigation/angola` | Missing | None | No |
-| Benin Irrigation Calculator | Agriculture | `/agriculture/irrigation/benin` | Missing | None | No |
-| Botswana Irrigation Calculator | Agriculture | `/agriculture/irrigation/botswana` | Missing | None | No |
-| Burkina Faso Irrigation Calculator | Agriculture | `/agriculture/irrigation/burkina-faso` | Missing | None | No |
-| Burundi Irrigation Calculator | Agriculture | `/agriculture/irrigation/burundi` | Native candidate | `/sw/kilimo/umwagiliaji/burundi` | No |
-| Cabo Verde Irrigation Calculator | Agriculture | `/agriculture/irrigation/cabo-verde` | Missing | None | No |
-| Cameroon Irrigation Calculator | Agriculture | `/agriculture/irrigation/cameroon` | Missing | None | No |
-| Central African Republic Irrigation Calculator | Agriculture | `/agriculture/irrigation/central-african-republic` | Missing | None | No |
-| Chad Irrigation Calculator | Agriculture | `/agriculture/irrigation/chad` | Missing | None | No |
-| Comoros Irrigation Calculator | Agriculture | `/agriculture/irrigation/comoros` | Missing | None | No |
-| Congo-Brazzaville Irrigation Calculator | Agriculture | `/agriculture/irrigation/congo-brazzaville` | Missing | None | No |
-| Côte d'Ivoire Irrigation Calculator | Agriculture | `/agriculture/irrigation/cote-d-ivoire` | Missing | None | No |
-| Djibouti Irrigation Calculator | Agriculture | `/agriculture/irrigation/djibouti` | Missing | None | No |
-| DR Congo Irrigation Calculator | Agriculture | `/agriculture/irrigation/dr-congo` | Missing | None | No |
-| Egypt Irrigation Calculator | Agriculture | `/agriculture/irrigation/egypt` | Missing | None | No |
-| Equatorial Guinea Irrigation Calculator | Agriculture | `/agriculture/irrigation/equatorial-guinea` | Missing | None | No |
-| Eritrea Irrigation Calculator | Agriculture | `/agriculture/irrigation/eritrea` | Missing | None | No |
-| Eswatini Irrigation Calculator | Agriculture | `/agriculture/irrigation/eswatini` | Missing | None | No |
-| Ethiopia Irrigation Calculator | Agriculture | `/agriculture/irrigation/ethiopia` | Missing | None | No |
-| Gabon Irrigation Calculator | Agriculture | `/agriculture/irrigation/gabon` | Missing | None | No |
-| Gambia Irrigation Calculator | Agriculture | `/agriculture/irrigation/gambia` | Missing | None | No |
-| Ghana Irrigation Calculator | Agriculture | `/agriculture/irrigation/ghana` | Missing | None | No |
-| Guinea Irrigation Calculator | Agriculture | `/agriculture/irrigation/guinea` | Missing | None | No |
-| Guinea-Bissau Irrigation Calculator | Agriculture | `/agriculture/irrigation/guinea-bissau` | Missing | None | No |
-| Kenya Irrigation Calculator | Agriculture | `/agriculture/irrigation/kenya` | Native candidate | `/sw/kilimo/umwagiliaji/kenya` | No |
-| Lesotho Irrigation Calculator | Agriculture | `/agriculture/irrigation/lesotho` | Missing | None | No |
-| Liberia Irrigation Calculator | Agriculture | `/agriculture/irrigation/liberia` | Missing | None | No |
-| Libya Irrigation Calculator | Agriculture | `/agriculture/irrigation/libya` | Missing | None | No |
-| Madagascar Irrigation Calculator | Agriculture | `/agriculture/irrigation/madagascar` | Missing | None | No |
-| Malawi Irrigation Calculator | Agriculture | `/agriculture/irrigation/malawi` | Missing | None | No |
-| Mali Irrigation Calculator | Agriculture | `/agriculture/irrigation/mali` | Missing | None | No |
-| Mauritania Irrigation Calculator | Agriculture | `/agriculture/irrigation/mauritania` | Missing | None | No |
-| Mauritius Irrigation Calculator | Agriculture | `/agriculture/irrigation/mauritius` | Missing | None | No |
-| Morocco Irrigation Calculator | Agriculture | `/agriculture/irrigation/morocco` | Missing | None | No |
-| Mozambique Irrigation Calculator | Agriculture | `/agriculture/irrigation/mozambique` | Missing | None | No |
-| Namibia Irrigation Calculator | Agriculture | `/agriculture/irrigation/namibia` | Missing | None | No |
-| Niger Irrigation Calculator | Agriculture | `/agriculture/irrigation/niger` | Missing | None | No |
-| Nigeria Irrigation Calculator | Agriculture | `/agriculture/irrigation/nigeria` | Missing | None | No |
-| Rwanda Irrigation Calculator | Agriculture | `/agriculture/irrigation/rwanda` | Native candidate | `/sw/kilimo/umwagiliaji/rwanda` | No |
-| São Tomé & Príncipe Irrigation Calculator | Agriculture | `/agriculture/irrigation/sao-tome-and-principe` | Missing | None | No |
-| Senegal Irrigation Calculator | Agriculture | `/agriculture/irrigation/senegal` | Missing | None | No |
-| Seychelles Irrigation Calculator | Agriculture | `/agriculture/irrigation/seychelles` | Missing | None | No |
-| Sierra Leone Irrigation Calculator | Agriculture | `/agriculture/irrigation/sierra-leone` | Missing | None | No |
-| Somalia Irrigation Calculator | Agriculture | `/agriculture/irrigation/somalia` | Missing | None | No |
-| South Africa Irrigation Calculator | Agriculture | `/agriculture/irrigation/south-africa` | Missing | None | No |
-| South Sudan Irrigation Calculator | Agriculture | `/agriculture/irrigation/south-sudan` | Missing | None | No |
-| Sudan Irrigation Calculator | Agriculture | `/agriculture/irrigation/sudan` | Missing | None | No |
-| Tanzania Irrigation Calculator | Agriculture | `/agriculture/irrigation/tanzania` | Native candidate | `/sw/kilimo/umwagiliaji/tanzania` | No |
-| Togo Irrigation Calculator | Agriculture | `/agriculture/irrigation/togo` | Missing | None | No |
-| Tunisia Irrigation Calculator | Agriculture | `/agriculture/irrigation/tunisia` | Missing | None | No |
-| Uganda Irrigation Calculator | Agriculture | `/agriculture/irrigation/uganda` | Native candidate | `/sw/kilimo/umwagiliaji/uganda` | No |
-| Zambia Irrigation Calculator | Agriculture | `/agriculture/irrigation/zambia` | Missing | None | No |
-| Zimbabwe Irrigation Calculator | Agriculture | `/agriculture/irrigation/zimbabwe` | Missing | None | No |
-| Algeria Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/algeria` | Missing | None | No |
-| Angola Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/angola` | Missing | None | No |
-| Benin Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/benin` | Missing | None | No |
-| Botswana Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/botswana` | Missing | None | No |
-| Burkina Faso Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/burkina-faso` | Missing | None | No |
-| Burundi Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/burundi` | Missing | None | No |
-| Cabo Verde Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cabo-verde` | Missing | None | No |
-| Cameroon Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cameroon` | Missing | None | No |
-| Central African Republic Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/central-african-republic` | Missing | None | No |
-| Chad Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/chad` | Missing | None | No |
-| Comoros Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/comoros` | Missing | None | No |
-| Congo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/congo-brazzaville` | Missing | None | No |
-| Cote d'Ivoire Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cote-d-ivoire` | Missing | None | No |
-| Djibouti Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/djibouti` | Missing | None | No |
-| DR Congo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/dr-congo` | Missing | None | No |
-| Egypt Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/egypt` | Missing | None | No |
-| Equatorial Guinea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/equatorial-guinea` | Missing | None | No |
-| Eritrea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/eritrea` | Missing | None | No |
-| Eswatini Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/eswatini` | Missing | None | No |
-| Ethiopia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/ethiopia` | Missing | None | No |
-| Gabon Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/gabon` | Missing | None | No |
-| Gambia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/gambia` | Missing | None | No |
-| Ghana Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/ghana` | Missing | None | No |
-| Guinea-Bissau Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/guinea-bissau` | Missing | None | No |
-| Guinea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/guinea` | Missing | None | No |
-| Kenya Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/kenya` | Missing | None | No |
-| Lesotho Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/lesotho` | Missing | None | No |
-| Liberia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/liberia` | Missing | None | No |
-| Libya Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/libya` | Missing | None | No |
-| Madagascar Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/madagascar` | Missing | None | No |
-| Malawi Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/malawi` | Missing | None | No |
-| Mali Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mali` | Missing | None | No |
-| Mauritania Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mauritania` | Missing | None | No |
-| Mauritius Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mauritius` | Missing | None | No |
-| Morocco Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/morocco` | Missing | None | No |
-| Mozambique Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mozambique` | Missing | None | No |
-| Namibia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/namibia` | Missing | None | No |
-| Niger Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/niger` | Missing | None | No |
-| Nigeria Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/nigeria` | Missing | None | No |
-| Rwanda Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/rwanda` | Missing | None | No |
-| Sao Tome Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sao-tome-and-principe` | Missing | None | No |
-| Senegal Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/senegal` | Missing | None | No |
-| Seychelles Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/seychelles` | Missing | None | No |
-| Sierra Leone Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sierra-leone` | Missing | None | No |
-| Somalia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/somalia` | Missing | None | No |
-| South Africa Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/south-africa` | Missing | None | No |
-| South Sudan Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/south-sudan` | Missing | None | No |
-| Sudan Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sudan` | Missing | None | No |
-| Tanzania Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/tanzania` | Missing | None | No |
-| Togo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/togo` | Missing | None | No |
-| Tunisia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/tunisia` | Missing | None | No |
-| Uganda Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/uganda` | Missing | None | No |
-| Zambia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/zambia` | Missing | None | No |
-| Zimbabwe Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/zimbabwe` | Missing | None | No |
-| Nigeria Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/nigeria` | Missing | None | No |
-| Ghana Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/ghana` | Missing | None | No |
-| Cote d'Ivoire Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cote-d-ivoire` | Missing | None | No |
-| Senegal Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/senegal` | Missing | None | No |
-| Mali Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mali` | Missing | None | No |
-| Burkina Faso Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/burkina-faso` | Missing | None | No |
-| Niger Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/niger` | Missing | None | No |
-| Guinea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/guinea` | Missing | None | No |
-| Benin Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/benin` | Missing | None | No |
-| Togo Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/togo` | Missing | None | No |
-| Sierra Leone Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sierra-leone` | Missing | None | No |
-| Liberia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/liberia` | Missing | None | No |
-| Mauritania Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mauritania` | Missing | None | No |
-| Gambia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/gambia` | Missing | None | No |
-| Guinea-Bissau Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/guinea-bissau` | Missing | None | No |
-| Cabo Verde Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cabo-verde` | Missing | None | No |
-| Kenya Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/kenya` | Missing | None | No |
-| Ethiopia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/ethiopia` | Missing | None | No |
-| Tanzania Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/tanzania` | Missing | None | No |
-| Uganda Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/uganda` | Missing | None | No |
-| Rwanda Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/rwanda` | Missing | None | No |
-| Burundi Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/burundi` | Missing | None | No |
-| Somalia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/somalia` | Missing | None | No |
-| Djibouti Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/djibouti` | Missing | None | No |
-| Eritrea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/eritrea` | Missing | None | No |
-| South Sudan Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/south-sudan` | Missing | None | No |
-| DR Congo Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/dr-congo` | Missing | None | No |
-| Cameroon Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cameroon` | Missing | None | No |
-| Congo (Brazzaville) Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/congo-brazzaville` | Missing | None | No |
-| Gabon Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/gabon` | Missing | None | No |
-| Equatorial Guinea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/equatorial-guinea` | Missing | None | No |
-| Central African Republic Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/central-african-republic` | Missing | None | No |
-| Chad Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/chad` | Missing | None | No |
-| Sao Tome and Principe Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sao-tome-and-principe` | Missing | None | No |
-| South Africa Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/south-africa` | Missing | None | No |
-| Mozambique Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mozambique` | Missing | None | No |
-| Zambia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/zambia` | Missing | None | No |
-| Zimbabwe Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/zimbabwe` | Missing | None | No |
-| Malawi Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/malawi` | Missing | None | No |
-| Angola Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/angola` | Missing | None | No |
-| Namibia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/namibia` | Missing | None | No |
-| Botswana Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/botswana` | Missing | None | No |
-| Lesotho Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/lesotho` | Missing | None | No |
-| Eswatini Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/eswatini` | Missing | None | No |
-| Egypt Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/egypt` | Missing | None | No |
-| Morocco Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/morocco` | Missing | None | No |
-| Algeria Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/algeria` | Missing | None | No |
-| Tunisia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/tunisia` | Missing | None | No |
-| Libya Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/libya` | Missing | None | No |
-| Sudan Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sudan` | Missing | None | No |
-| Madagascar Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/madagascar` | Missing | None | No |
-| Mauritius Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mauritius` | Missing | None | No |
-| Seychelles Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/seychelles` | Missing | None | No |
-| Comoros Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/comoros` | Missing | None | No |
+| Algeria Irrigation Calculator | Agriculture | `/agriculture/irrigation/algeria` | Native candidate | `/sw/kilimo/umwagiliaji/algeria` | Yes |
+| Angola Irrigation Calculator | Agriculture | `/agriculture/irrigation/angola` | Native candidate | `/sw/kilimo/umwagiliaji/angola` | Yes |
+| Benin Irrigation Calculator | Agriculture | `/agriculture/irrigation/benin` | Native candidate | `/sw/kilimo/umwagiliaji/benin` | Yes |
+| Botswana Irrigation Calculator | Agriculture | `/agriculture/irrigation/botswana` | Native candidate | `/sw/kilimo/umwagiliaji/botswana` | Yes |
+| Burkina Faso Irrigation Calculator | Agriculture | `/agriculture/irrigation/burkina-faso` | Native candidate | `/sw/kilimo/umwagiliaji/burkina-faso` | Yes |
+| Burundi Irrigation Calculator | Agriculture | `/agriculture/irrigation/burundi` | Native candidate | `/sw/kilimo/umwagiliaji/burundi` | Yes |
+| Cabo Verde Irrigation Calculator | Agriculture | `/agriculture/irrigation/cabo-verde` | Native candidate | `/sw/kilimo/umwagiliaji/cape-verde` | Yes |
+| Cameroon Irrigation Calculator | Agriculture | `/agriculture/irrigation/cameroon` | Native candidate | `/sw/kilimo/umwagiliaji/cameroon` | Yes |
+| Central African Republic Irrigation Calculator | Agriculture | `/agriculture/irrigation/central-african-republic` | Native candidate | `/sw/kilimo/umwagiliaji/central-african-republic` | Yes |
+| Chad Irrigation Calculator | Agriculture | `/agriculture/irrigation/chad` | Native candidate | `/sw/kilimo/umwagiliaji/chad` | Yes |
+| Comoros Irrigation Calculator | Agriculture | `/agriculture/irrigation/comoros` | Native candidate | `/sw/kilimo/umwagiliaji/comoros` | Yes |
+| Congo-Brazzaville Irrigation Calculator | Agriculture | `/agriculture/irrigation/congo-brazzaville` | Native candidate | `/sw/kilimo/umwagiliaji/congo` | Yes |
+| Côte d'Ivoire Irrigation Calculator | Agriculture | `/agriculture/irrigation/cote-d-ivoire` | Native candidate | `/sw/kilimo/umwagiliaji/cote-divoire` | Yes |
+| Djibouti Irrigation Calculator | Agriculture | `/agriculture/irrigation/djibouti` | Native candidate | `/sw/kilimo/umwagiliaji/djibouti` | Yes |
+| DR Congo Irrigation Calculator | Agriculture | `/agriculture/irrigation/dr-congo` | Native candidate | `/sw/kilimo/umwagiliaji/dr-congo` | Yes |
+| Egypt Irrigation Calculator | Agriculture | `/agriculture/irrigation/egypt` | Native candidate | `/sw/kilimo/umwagiliaji/egypt` | Yes |
+| Equatorial Guinea Irrigation Calculator | Agriculture | `/agriculture/irrigation/equatorial-guinea` | Native candidate | `/sw/kilimo/umwagiliaji/equatorial-guinea` | Yes |
+| Eritrea Irrigation Calculator | Agriculture | `/agriculture/irrigation/eritrea` | Native candidate | `/sw/kilimo/umwagiliaji/eritrea` | Yes |
+| Eswatini Irrigation Calculator | Agriculture | `/agriculture/irrigation/eswatini` | Native candidate | `/sw/kilimo/umwagiliaji/eswatini` | Yes |
+| Ethiopia Irrigation Calculator | Agriculture | `/agriculture/irrigation/ethiopia` | Native candidate | `/sw/kilimo/umwagiliaji/ethiopia` | Yes |
+| Gabon Irrigation Calculator | Agriculture | `/agriculture/irrigation/gabon` | Native candidate | `/sw/kilimo/umwagiliaji/gabon` | Yes |
+| Gambia Irrigation Calculator | Agriculture | `/agriculture/irrigation/gambia` | Native candidate | `/sw/kilimo/umwagiliaji/gambia` | Yes |
+| Ghana Irrigation Calculator | Agriculture | `/agriculture/irrigation/ghana` | Native candidate | `/sw/kilimo/umwagiliaji/ghana` | Yes |
+| Guinea Irrigation Calculator | Agriculture | `/agriculture/irrigation/guinea` | Native candidate | `/sw/kilimo/umwagiliaji/guinea` | Yes |
+| Guinea-Bissau Irrigation Calculator | Agriculture | `/agriculture/irrigation/guinea-bissau` | Native candidate | `/sw/kilimo/umwagiliaji/guinea-bissau` | Yes |
+| Kenya Irrigation Calculator | Agriculture | `/agriculture/irrigation/kenya` | Native candidate | `/sw/kilimo/umwagiliaji/kenya` | Yes |
+| Lesotho Irrigation Calculator | Agriculture | `/agriculture/irrigation/lesotho` | Native candidate | `/sw/kilimo/umwagiliaji/lesotho` | Yes |
+| Liberia Irrigation Calculator | Agriculture | `/agriculture/irrigation/liberia` | Native candidate | `/sw/kilimo/umwagiliaji/liberia` | Yes |
+| Libya Irrigation Calculator | Agriculture | `/agriculture/irrigation/libya` | Native candidate | `/sw/kilimo/umwagiliaji/libya` | Yes |
+| Madagascar Irrigation Calculator | Agriculture | `/agriculture/irrigation/madagascar` | Native candidate | `/sw/kilimo/umwagiliaji/madagascar` | Yes |
+| Malawi Irrigation Calculator | Agriculture | `/agriculture/irrigation/malawi` | Native candidate | `/sw/kilimo/umwagiliaji/malawi` | Yes |
+| Mali Irrigation Calculator | Agriculture | `/agriculture/irrigation/mali` | Native candidate | `/sw/kilimo/umwagiliaji/mali` | Yes |
+| Mauritania Irrigation Calculator | Agriculture | `/agriculture/irrigation/mauritania` | Native candidate | `/sw/kilimo/umwagiliaji/mauritania` | Yes |
+| Mauritius Irrigation Calculator | Agriculture | `/agriculture/irrigation/mauritius` | Native candidate | `/sw/kilimo/umwagiliaji/mauritius` | Yes |
+| Morocco Irrigation Calculator | Agriculture | `/agriculture/irrigation/morocco` | Native candidate | `/sw/kilimo/umwagiliaji/morocco` | Yes |
+| Mozambique Irrigation Calculator | Agriculture | `/agriculture/irrigation/mozambique` | Native candidate | `/sw/kilimo/umwagiliaji/mozambique` | Yes |
+| Namibia Irrigation Calculator | Agriculture | `/agriculture/irrigation/namibia` | Native candidate | `/sw/kilimo/umwagiliaji/namibia` | Yes |
+| Niger Irrigation Calculator | Agriculture | `/agriculture/irrigation/niger` | Native candidate | `/sw/kilimo/umwagiliaji/niger` | Yes |
+| Nigeria Irrigation Calculator | Agriculture | `/agriculture/irrigation/nigeria` | Native candidate | `/sw/kilimo/umwagiliaji/nigeria` | Yes |
+| Rwanda Irrigation Calculator | Agriculture | `/agriculture/irrigation/rwanda` | Native candidate | `/sw/kilimo/umwagiliaji/rwanda` | Yes |
+| São Tomé & Príncipe Irrigation Calculator | Agriculture | `/agriculture/irrigation/sao-tome-and-principe` | Native candidate | `/sw/kilimo/umwagiliaji/sao-tome` | Yes |
+| Senegal Irrigation Calculator | Agriculture | `/agriculture/irrigation/senegal` | Native candidate | `/sw/kilimo/umwagiliaji/senegal` | Yes |
+| Seychelles Irrigation Calculator | Agriculture | `/agriculture/irrigation/seychelles` | Native candidate | `/sw/kilimo/umwagiliaji/seychelles` | Yes |
+| Sierra Leone Irrigation Calculator | Agriculture | `/agriculture/irrigation/sierra-leone` | Native candidate | `/sw/kilimo/umwagiliaji/sierra-leone` | Yes |
+| Somalia Irrigation Calculator | Agriculture | `/agriculture/irrigation/somalia` | Native candidate | `/sw/kilimo/umwagiliaji/somalia` | Yes |
+| South Africa Irrigation Calculator | Agriculture | `/agriculture/irrigation/south-africa` | Native candidate | `/sw/kilimo/umwagiliaji/south-africa` | Yes |
+| South Sudan Irrigation Calculator | Agriculture | `/agriculture/irrigation/south-sudan` | Native candidate | `/sw/kilimo/umwagiliaji/south-sudan` | Yes |
+| Sudan Irrigation Calculator | Agriculture | `/agriculture/irrigation/sudan` | Native candidate | `/sw/kilimo/umwagiliaji/sudan` | Yes |
+| Tanzania Irrigation Calculator | Agriculture | `/agriculture/irrigation/tanzania` | Native candidate | `/sw/kilimo/umwagiliaji/tanzania` | Yes |
+| Togo Irrigation Calculator | Agriculture | `/agriculture/irrigation/togo` | Native candidate | `/sw/kilimo/umwagiliaji/togo` | Yes |
+| Tunisia Irrigation Calculator | Agriculture | `/agriculture/irrigation/tunisia` | Native candidate | `/sw/kilimo/umwagiliaji/tunisia` | Yes |
+| Uganda Irrigation Calculator | Agriculture | `/agriculture/irrigation/uganda` | Native candidate | `/sw/kilimo/umwagiliaji/uganda` | Yes |
+| Zambia Irrigation Calculator | Agriculture | `/agriculture/irrigation/zambia` | Native candidate | `/sw/kilimo/umwagiliaji/zambia` | Yes |
+| Zimbabwe Irrigation Calculator | Agriculture | `/agriculture/irrigation/zimbabwe` | Native candidate | `/sw/kilimo/umwagiliaji/zimbabwe` | Yes |
+| Algeria Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/algeria` | Native candidate | `/sw/kilimo/faida-ya-shamba/algeria` | Yes |
+| Angola Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/angola` | Native candidate | `/sw/kilimo/faida-ya-shamba/angola` | Yes |
+| Benin Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/benin` | Native candidate | `/sw/kilimo/faida-ya-shamba/benin` | Yes |
+| Botswana Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/botswana` | Native candidate | `/sw/kilimo/faida-ya-shamba/botswana` | Yes |
+| Burkina Faso Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/burkina-faso` | Native candidate | `/sw/kilimo/faida-ya-shamba/burkina-faso` | Yes |
+| Burundi Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/burundi` | Native candidate | `/sw/kilimo/faida-ya-shamba/burundi` | Yes |
+| Cabo Verde Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cabo-verde` | Native candidate | `/sw/kilimo/faida-ya-shamba/cape-verde` | Yes |
+| Cameroon Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cameroon` | Native candidate | `/sw/kilimo/faida-ya-shamba/cameroon` | Yes |
+| Central African Republic Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/central-african-republic` | Native candidate | `/sw/kilimo/faida-ya-shamba/central-african-republic` | Yes |
+| Chad Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/chad` | Native candidate | `/sw/kilimo/faida-ya-shamba/chad` | Yes |
+| Comoros Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/comoros` | Native candidate | `/sw/kilimo/faida-ya-shamba/comoros` | Yes |
+| Congo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/congo-brazzaville` | Native candidate | `/sw/kilimo/faida-ya-shamba/congo` | Yes |
+| Cote d'Ivoire Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/cote-d-ivoire` | Native candidate | `/sw/kilimo/faida-ya-shamba/cote-divoire` | Yes |
+| Djibouti Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/djibouti` | Native candidate | `/sw/kilimo/faida-ya-shamba/djibouti` | Yes |
+| DR Congo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/dr-congo` | Native candidate | `/sw/kilimo/faida-ya-shamba/dr-congo` | Yes |
+| Egypt Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/egypt` | Native candidate | `/sw/kilimo/faida-ya-shamba/egypt` | Yes |
+| Equatorial Guinea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/equatorial-guinea` | Native candidate | `/sw/kilimo/faida-ya-shamba/equatorial-guinea` | Yes |
+| Eritrea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/eritrea` | Native candidate | `/sw/kilimo/faida-ya-shamba/eritrea` | Yes |
+| Eswatini Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/eswatini` | Native candidate | `/sw/kilimo/faida-ya-shamba/eswatini` | Yes |
+| Ethiopia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/ethiopia` | Native candidate | `/sw/kilimo/faida-ya-shamba/ethiopia` | Yes |
+| Gabon Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/gabon` | Native candidate | `/sw/kilimo/faida-ya-shamba/gabon` | Yes |
+| Gambia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/gambia` | Native candidate | `/sw/kilimo/faida-ya-shamba/gambia` | Yes |
+| Ghana Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/ghana` | Native candidate | `/sw/kilimo/faida-ya-shamba/ghana` | Yes |
+| Guinea-Bissau Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/guinea-bissau` | Native candidate | `/sw/kilimo/faida-ya-shamba/guinea-bissau` | Yes |
+| Guinea Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/guinea` | Native candidate | `/sw/kilimo/faida-ya-shamba/guinea` | Yes |
+| Kenya Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/kenya` | Native candidate | `/sw/kilimo/faida-ya-shamba/kenya` | Yes |
+| Lesotho Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/lesotho` | Native candidate | `/sw/kilimo/faida-ya-shamba/lesotho` | Yes |
+| Liberia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/liberia` | Native candidate | `/sw/kilimo/faida-ya-shamba/liberia` | Yes |
+| Libya Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/libya` | Native candidate | `/sw/kilimo/faida-ya-shamba/libya` | Yes |
+| Madagascar Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/madagascar` | Native candidate | `/sw/kilimo/faida-ya-shamba/madagascar` | Yes |
+| Malawi Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/malawi` | Native candidate | `/sw/kilimo/faida-ya-shamba/malawi` | Yes |
+| Mali Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mali` | Native candidate | `/sw/kilimo/faida-ya-shamba/mali` | Yes |
+| Mauritania Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mauritania` | Native candidate | `/sw/kilimo/faida-ya-shamba/mauritania` | Yes |
+| Mauritius Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mauritius` | Native candidate | `/sw/kilimo/faida-ya-shamba/mauritius` | Yes |
+| Morocco Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/morocco` | Native candidate | `/sw/kilimo/faida-ya-shamba/morocco` | Yes |
+| Mozambique Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/mozambique` | Native candidate | `/sw/kilimo/faida-ya-shamba/mozambique` | Yes |
+| Namibia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/namibia` | Native candidate | `/sw/kilimo/faida-ya-shamba/namibia` | Yes |
+| Niger Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/niger` | Native candidate | `/sw/kilimo/faida-ya-shamba/niger` | Yes |
+| Nigeria Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/nigeria` | Native candidate | `/sw/kilimo/faida-ya-shamba/nigeria` | Yes |
+| Rwanda Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/rwanda` | Native candidate | `/sw/kilimo/faida-ya-shamba/rwanda` | Yes |
+| Sao Tome Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sao-tome-and-principe` | Native candidate | `/sw/kilimo/faida-ya-shamba/sao-tome` | Yes |
+| Senegal Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/senegal` | Native candidate | `/sw/kilimo/faida-ya-shamba/senegal` | Yes |
+| Seychelles Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/seychelles` | Native candidate | `/sw/kilimo/faida-ya-shamba/seychelles` | Yes |
+| Sierra Leone Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sierra-leone` | Native candidate | `/sw/kilimo/faida-ya-shamba/sierra-leone` | Yes |
+| Somalia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/somalia` | Native candidate | `/sw/kilimo/faida-ya-shamba/somalia` | Yes |
+| South Africa Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/south-africa` | Native candidate | `/sw/kilimo/faida-ya-shamba/south-africa` | Yes |
+| South Sudan Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/south-sudan` | Native candidate | `/sw/kilimo/faida-ya-shamba/south-sudan` | Yes |
+| Sudan Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/sudan` | Native candidate | `/sw/kilimo/faida-ya-shamba/sudan` | Yes |
+| Tanzania Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/tanzania` | Native candidate | `/sw/kilimo/faida-ya-shamba/tanzania` | Yes |
+| Togo Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/togo` | Native candidate | `/sw/kilimo/faida-ya-shamba/togo` | Yes |
+| Tunisia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/tunisia` | Native candidate | `/sw/kilimo/faida-ya-shamba/tunisia` | Yes |
+| Uganda Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/uganda` | Native candidate | `/sw/kilimo/faida-ya-shamba/uganda` | Yes |
+| Zambia Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/zambia` | Native candidate | `/sw/kilimo/faida-ya-shamba/zambia` | Yes |
+| Zimbabwe Farm Profit Calculator | Agriculture | `/agriculture/farm-profit/zimbabwe` | Native candidate | `/sw/kilimo/faida-ya-shamba/zimbabwe` | Yes |
+| Nigeria Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/nigeria` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/nigeria` | Yes |
+| Ghana Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/ghana` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/ghana` | Yes |
+| Cote d'Ivoire Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cote-d-ivoire` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/cote-divoire` | Yes |
+| Senegal Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/senegal` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/senegal` | Yes |
+| Mali Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mali` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/mali` | Yes |
+| Burkina Faso Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/burkina-faso` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/burkina-faso` | Yes |
+| Niger Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/niger` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/niger` | Yes |
+| Guinea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/guinea` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/guinea` | Yes |
+| Benin Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/benin` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/benin` | Yes |
+| Togo Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/togo` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/togo` | Yes |
+| Sierra Leone Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sierra-leone` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/sierra-leone` | Yes |
+| Liberia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/liberia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/liberia` | Yes |
+| Mauritania Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mauritania` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/mauritania` | Yes |
+| Gambia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/gambia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/gambia` | Yes |
+| Guinea-Bissau Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/guinea-bissau` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/guinea-bissau` | Yes |
+| Cabo Verde Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cabo-verde` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/cape-verde` | Yes |
+| Kenya Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/kenya` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/kenya` | Yes |
+| Ethiopia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/ethiopia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/ethiopia` | Yes |
+| Tanzania Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/tanzania` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/tanzania` | Yes |
+| Uganda Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/uganda` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/uganda` | Yes |
+| Rwanda Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/rwanda` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/rwanda` | Yes |
+| Burundi Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/burundi` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/burundi` | Yes |
+| Somalia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/somalia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/somalia` | Yes |
+| Djibouti Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/djibouti` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/djibouti` | Yes |
+| Eritrea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/eritrea` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/eritrea` | Yes |
+| South Sudan Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/south-sudan` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/south-sudan` | Yes |
+| DR Congo Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/dr-congo` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/dr-congo` | Yes |
+| Cameroon Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/cameroon` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/cameroon` | Yes |
+| Congo (Brazzaville) Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/congo-brazzaville` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/congo` | Yes |
+| Gabon Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/gabon` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/gabon` | Yes |
+| Equatorial Guinea Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/equatorial-guinea` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/equatorial-guinea` | Yes |
+| Central African Republic Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/central-african-republic` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/central-african-republic` | Yes |
+| Chad Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/chad` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/chad` | Yes |
+| Sao Tome and Principe Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sao-tome-and-principe` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/sao-tome` | Yes |
+| South Africa Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/south-africa` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/south-africa` | Yes |
+| Mozambique Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mozambique` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/mozambique` | Yes |
+| Zambia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/zambia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/zambia` | Yes |
+| Zimbabwe Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/zimbabwe` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/zimbabwe` | Yes |
+| Malawi Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/malawi` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/malawi` | Yes |
+| Angola Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/angola` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/angola` | Yes |
+| Namibia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/namibia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/namibia` | Yes |
+| Botswana Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/botswana` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/botswana` | Yes |
+| Lesotho Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/lesotho` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/lesotho` | Yes |
+| Eswatini Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/eswatini` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/eswatini` | Yes |
+| Egypt Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/egypt` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/egypt` | Yes |
+| Morocco Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/morocco` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/morocco` | Yes |
+| Algeria Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/algeria` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/algeria` | Yes |
+| Tunisia Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/tunisia` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/tunisia` | Yes |
+| Libya Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/libya` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/libya` | Yes |
+| Sudan Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/sudan` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/sudan` | Yes |
+| Madagascar Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/madagascar` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/madagascar` | Yes |
+| Mauritius Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/mauritius` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/mauritius` | Yes |
+| Seychelles Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/seychelles` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/seychelles` | Yes |
+| Comoros Seed Rate Calculator | Agriculture | `/agriculture/seed-rate/comoros` | Native candidate | `/sw/kilimo/kiwango-cha-mbegu/comoros` | Yes |
 | Crop Rotation Planner | Agriculture | `/agriculture/crop-rotation` | Missing | None | No |
 | Livestock Vaccination Schedule | Agriculture | `/agriculture/vaccination-schedule` | Localized shell candidate | `/sw/zana/ratiba-ya-chanjo-za-mifugo` | Yes |
 | Livestock Feed Calculator | Agriculture | `/agriculture/livestock-feed` | Localized shell candidate | `/sw/zana/kikokotoo-chakula-cha-mifugo` | No |
@@ -673,12 +673,12 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Cycle Window Estimator | Health & Wellness | `/tools/ovulation-calc` | Localized shell candidate | `/sw/zana/kikokotoo-ovulation` | No |
 | Medication Dose Arithmetic Reference | Health & Wellness | `/tools/drug-dosage` | Localized shell candidate | `/sw/zana/kikokotoo-dozi-ya-dawa` | No |
 | Drinking-Water Test Result Worksheet | Health & Wellness | `/tools/water-quality` | Localized shell candidate | `/sw/zana/usalama-wa-maji` | No |
-| Profit Margin Calculator | VAT & Business Tax | `/tools/profit-margin` | Localized shell candidate | `/sw/zana/kikokotoo-margin-ya-faida` | No |
-| Markup & Selling Price Calculator | VAT & Business Tax | `/tools/markup-calc` | Localized shell candidate | `/sw/zana/kikokotoo-markup` | No |
+| Profit Margin Calculator | VAT & Business Tax | `/tools/profit-margin` | Localized shell candidate | `/sw/zana/kikokotoo-margin-ya-faida` | Yes |
+| Markup & Selling Price Calculator | VAT & Business Tax | `/tools/markup-calc` | Localized shell candidate | `/sw/zana/kikokotoo-markup` | Yes |
 | Break-Even Calculator | VAT & Business Tax | `/tools/break-even` | Localized shell candidate | `/sw/zana/kikokotoo-break-even` | No |
 | Inventory Calculator & Tracker | VAT & Business Tax | `/tools/inventory` | Localized shell candidate | `/sw/zana/kifuatiliaji-inventory` | No |
 | Shipping Cost & Chargeable Weight Planner | VAT & Business Tax | `/tools/shipping-calc` | Localized shell candidate | `/sw/zana/gharama-usafirishaji` | No |
-| Discount Calculator | VAT & Business Tax | `/tools/discount-calc` | Localized shell candidate | `/sw/zana/kikokotoo-discount` | No |
+| Discount Calculator | VAT & Business Tax | `/tools/discount-calc` | Localized shell candidate | `/sw/zana/kikokotoo-discount` | Yes |
 | African Business Name Shortlist Workshop | VAT & Business Tax | `/tools/business-name-gen` | Localized shell candidate | `/sw/zana/kitengeneza-jina-la-biashara` | No |
 | Nigeria CAC Registration Cost | Mortgage & Property | `/tools/cac-cost` | Localized shell candidate | `/sw/zana/gharama-za-cac-nigeria` | No |
 | SA CIPC Registration Cost | Mortgage & Property | `/tools/cipc-cost` | Localized shell candidate | `/sw/zana/gharama-za-cipc-afrika-kusini` | No |
@@ -707,7 +707,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Rebar Calculator | Engineering & Construction | `/tools/rebar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-nondo` | No |
 | POPIA/NDPR Compliance Checker | Mortgage & Property | `/tools/data-compliance` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ulinzi-wa-data` | No |
 | Contract Generator | Mortgage & Property | `/tools/contract-generator` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba` | No |
-| Tenancy Deposit Calculator | Mortgage & Property | `/tools/tenancy-deposit` | Localized shell candidate | `/sw/zana/amana-ya-upangaji` | No |
+| Tenancy Deposit Calculator | Mortgage & Property | `/tools/tenancy-deposit` | Localized shell candidate | `/sw/zana/amana-ya-upangaji` | Yes |
 | Statutory Leave Days Calculator | Mortgage & Property | `/tools/leave-days` | Localized shell candidate | `/sw/zana/siku-za-likizo-za-kisheria` | Yes |
 | Pension Projection Calculator | Finance, Tax & Market Data | `/tools/pension-proj` | Missing | None | No |
 | African Central Bank Rates | Finance, Tax & Market Data | `/tools/interest-rate-ref` | Missing | None | No |
@@ -739,14 +739,14 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Rental Yield Calculator | Mortgage & Property | `/tools/rental-yield` | Localized shell candidate | `/sw/zana/faida-kupangisha` | No |
 | Land Title Verification Checklist | Mortgage & Property | `/tools/land-title-check` | Localized shell candidate | `/sw/zana/ukaguzi-wa-hati-ya-ardhi` | No |
 | Property Valuation Estimator | Mortgage & Property | `/tools/property-valuation` | Localized shell candidate | `/sw/zana/thamani-ya-mali-isiyohamishika` | No |
-| Rent Affordability Calculator | Mortgage & Property | `/tools/rent-affordability` | Localized shell candidate | `/sw/zana/uwezo-wa-kulipa-pango` | No |
+| Rent Affordability Calculator | Mortgage & Property | `/tools/rent-affordability` | Localized shell candidate | `/sw/zana/uwezo-wa-kulipa-pango` | Yes |
 | Tenant Screening Checklist | Mortgage & Property | `/tools/tenant-screening` | Localized shell candidate | `/sw/zana/uchunguzi-wa-mpangaji` | No |
 | Rent Intelligence | Mortgage & Property | `/tools/rent-intelligence` | Localized shell candidate | `/sw/zana/taarifa-za-soko-la-pango` | Yes |
 | Lease Risk Check | Mortgage & Property | `/tools/lease-risk-check` | Localized shell candidate | `/sw/zana/ukaguzi-wa-hatari-za-mkataba-wa-pango` | Yes |
 | Rental Agreement Generator | Mortgage & Property | `/tools/rental-agreement` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba-wa-kupangisha` | Yes |
 | Property Management Fee Calculator | Mortgage & Property | `/tools/property-mgmt-fees` | Localized shell candidate | `/sw/zana/ada-usimamizi-wa-mali` | No |
-| Building Material Cost Estimator | Mortgage & Property | `/tools/building-materials` | Localized shell candidate | `/sw/zana/gharama-vifaa-vya-ujenzi` | No |
-| House Construction Budget Planner | Mortgage & Property | `/tools/construction-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-ujenzi-wa-nyumba` | No |
+| Building Material Cost Estimator | Mortgage & Property | `/tools/building-materials` | Localized shell candidate | `/sw/zana/gharama-vifaa-vya-ujenzi` | Yes |
+| House Construction Budget Planner | Mortgage & Property | `/tools/construction-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-ujenzi-wa-nyumba` | Yes |
 | Property Development Feasibility Calculator | Mortgage & Property | `/tools/dev-feasibility` | Localized shell candidate | `/sw/zana/uwezekano-wa-ujenzi` | No |
 | Land Survey Cost Estimator | Mortgage & Property | `/tools/survey-cost` | Localized shell candidate | `/sw/zana/gharama-za-upimaji-ardhi` | Yes |
 | Property Capital Gains Tax Calculator | Mortgage & Property | `/tools/property-cgt` | Localized shell candidate | `/sw/zana/kodi-ya-faida-ya-mali` | No |
@@ -759,10 +759,10 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Off-Plan vs Ready Property Comparator | Mortgage & Property | `/tools/offplan-vs-ready` | Localized shell candidate | `/sw/zana/mradi-wa-ramani-dhidi-ya-nyumba-tayari` | No |
 | Retirement Scenario Planner | Finance, Tax & Market Data | `/tools/retirement-planner` | Localized shell candidate | `/sw/zana/mpango-wa-kustaafu-mapema` | No |
 | Side-Income Tax Reserve Planner | Finance, Tax & Market Data | `/tools/side-hustle-tax` | Missing | None | No |
-| Bank Charge Offer Comparator | Finance, Tax & Market Data | `/tools/bank-charges` | Localized shell candidate | `/sw/zana/ada-za-benki` | No |
+| Bank Charge Offer Comparator | Finance, Tax & Market Data | `/tools/bank-charges` | Localized shell candidate | `/sw/zana/ada-za-benki` | Yes |
 | Inflation Scenario Calculator | Finance, Tax & Market Data | `/tools/inflation-calc` | Missing | None | No |
-| Savings Goal Planner | Finance, Tax & Market Data | `/tools/savings-goal` | Localized shell candidate | `/sw/zana/lengo-la-akiba` | No |
-| Car Loan Cost Planner | Finance, Tax & Market Data | `/tools/car-loan` | Localized shell candidate | `/sw/zana/mkopo-wa-gari` | No |
+| Savings Goal Planner | Finance, Tax & Market Data | `/tools/savings-goal` | Localized shell candidate | `/sw/zana/lengo-la-akiba` | Yes |
+| Car Loan Cost Planner | Finance, Tax & Market Data | `/tools/car-loan` | Localized shell candidate | `/sw/zana/mkopo-wa-gari` | Yes |
 | Student Loan Repayment Planner | Finance, Tax & Market Data | `/tools/student-loan` | Missing | None | No |
 | Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | Yes |
 | Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Missing | None | No |
@@ -775,7 +775,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Kenya Stamp Duty Calculator | Finance, Tax & Market Data | `/tools/ke-stamp-duty` | Missing | None | No |
 | Private Fluid Intake Log | Health & Wellness | `/tools/water-intake` | Localized shell candidate | `/sw/zana/kikokotoo-maji-ya-kunywa` | No |
 | Vaccination Programme Finder | Health & Wellness | `/tools/vaccine-schedule` | Localized shell candidate | `/sw/zana/ratiba-ya-chanjo` | No |
-| Waist-to-Hip Ratio Measurement Tool | Health & Wellness | `/tools/waist-hip-ratio` | Localized shell candidate | `/sw/zana/uwiano-wa-kiuno-na-nyonga` | No |
+| Waist-to-Hip Ratio Measurement Tool | Health & Wellness | `/tools/waist-hip-ratio` | Native candidate | `/sw/zana/uwiano-wa-kiuno-na-nyonga` | Yes |
 | Blood Pressure Measurement Check | Health & Wellness | `/tools/blood-pressure` | Localized shell candidate | `/sw/zana/shinikizo-la-damu` | No |
 | Hospital Quote Episode Budget | Health & Wellness | `/tools/hospital-cost` | Localized shell candidate | `/sw/zana/gharama-za-hospitali` | No |
 | Clinic Visit & Follow-up Cost Planner | Health & Wellness | `/tools/clinic-costs` | Localized shell candidate | `/sw/zana/gharama-za-kliniki` | No |
@@ -848,10 +848,10 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Fence Cost Calculator | Engineering & Construction | `/tools/fence-cost` | Localized shell candidate | `/sw/zana/gharama-ya-uzio` | No |
 | Swimming Pool Cost Estimator | Engineering & Construction | `/tools/swimming-pool-cost` | Localized shell candidate | `/sw/zana/gharama-ya-dimbwi-la-kuogelea` | No |
 | Architectural Drawing Fee Calculator | Engineering & Construction | `/tools/architectural-fee` | Localized shell candidate | `/sw/zana/ada-za-ramani-za-usanifu` | No |
-| Site Clearing Cost Estimator | Engineering & Construction | `/tools/site-clearing` | Missing | None | No |
-| Road Construction Cost Estimator | Engineering & Construction | `/tools/road-construction-cost` | Missing | None | No |
-| Scaffolding Calculator | Engineering & Construction | `/tools/scaffolding-calc` | Missing | None | No |
-| Window & Door Sizing Guide | Engineering & Construction | `/tools/window-door-sizing` | Missing | None | No |
+| Site Clearing Cost Estimator | Engineering & Construction | `/tools/site-clearing` | Native candidate | `/sw/zana/utayarishaji-wa-eneo` | Yes |
+| Road Construction Cost Estimator | Engineering & Construction | `/tools/road-construction-cost` | Native candidate | `/sw/zana/gharama-ya-ujenzi-wa-barabara` | Yes |
+| Scaffolding Calculator | Engineering & Construction | `/tools/scaffolding-calc` | Native candidate | `/sw/zana/kikokotoo-cha-kiunzi` | Yes |
+| Window & Door Sizing Guide | Engineering & Construction | `/tools/window-door-sizing` | Native candidate | `/sw/zana/vipimo-vya-madirisha-na-milango` | Yes |
 | Plumbing Material Calculator | Engineering & Construction | `/tools/plumbing-material` | Missing | None | No |
 | HS Code Lookup | Trade & Import | `/tools/hs-code-lookup` | Localized shell candidate | `/sw/zana/utafutaji-msimbo-hs` | No |
 | African Business Idea Evidence Explorer | VAT & Business Tax | `/tools/idea-board` | Missing | None | No |
@@ -962,12 +962,12 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Incoterms 2020 Calculator | Trade & Import | `/tools/incoterms-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-incoterms` | No |
 | Trade Finance Cost Comparator | Trade & Import | `/tools/trade-finance-comparator` | Localized shell candidate | `/sw/zana/kilinganisha-fedha-za-biashara` | No |
 | Commodity Trade Tracker | Trade & Import | `/tools/commodity-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-bidhaa` | No |
-| Diamond Valuation Planner | Mining & Extractives | `/tools/diamond-valuation` | Missing | None | No |
-| Oil Well Production Planner | Mining & Extractives | `/tools/oil-well-production` | Missing | None | No |
-| Oil & Gas Revenue Split | Mining & Extractives | `/tools/oil-gas-revenue` | Missing | None | No |
-| Mining Licence Cost Planner | Mining & Extractives | `/tools/mining-license-fee` | Missing | None | No |
-| Mining Royalty Calculator | Mining & Extractives | `/tools/mining-royalty` | Missing | None | No |
-| Artisanal Mining Income Planner | Mining & Extractives | `/tools/artisanal-mining-income` | Missing | None | No |
+| Diamond Valuation Planner | Mining & Extractives | `/tools/diamond-valuation` | Localized shell candidate | `/sw/zana/thamani-ya-almasi` | Yes |
+| Oil Well Production Planner | Mining & Extractives | `/tools/oil-well-production` | Localized shell candidate | `/sw/zana/uzalishaji-wa-kisima-cha-mafuta` | Yes |
+| Oil & Gas Revenue Split | Mining & Extractives | `/tools/oil-gas-revenue` | Localized shell candidate | `/sw/zana/mgawanyo-wa-mapato-ya-mafuta-na-gesi` | Yes |
+| Mining Licence Cost Planner | Mining & Extractives | `/tools/mining-license-fee` | Localized shell candidate | `/sw/zana/gharama-ya-leseni-ya-madini` | Yes |
+| Mining Royalty Calculator | Mining & Extractives | `/tools/mining-royalty` | Localized shell candidate | `/sw/zana/mrahaba-wa-madini` | Yes |
+| Artisanal Mining Income Planner | Mining & Extractives | `/tools/artisanal-mining-income` | Localized shell candidate | `/sw/zana/mapato-ya-uchimbaji-mdogo` | Yes |
 | B2B Payment Fee Comparator | Trade & Import | `/tools/payment-comparator` | Missing | None | No |
 | ECOWAS Trade Levy Calculator | Trade & Import | `/tools/ecowas-levy` | Localized shell candidate | `/sw/zana/tozo-ya-ecowas` | No |
 | SADC Rules of Origin Checker | Trade & Import | `/tools/sadc-roo` | Missing | None | No |
@@ -1049,20 +1049,20 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | POPIA Compliance Checker | Mortgage & Property | `/tools/popia-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-popia-afrika-kusini` | No |
 | Child Support Calculator | Mortgage & Property | `/tools/child-support` | Localized shell candidate | `/sw/zana/matunzo-ya-mtoto` | No |
 | Court Fee Calculator | Mortgage & Property | `/tools/court-fees` | Localized shell candidate | `/sw/zana/ada-za-mahakama` | No |
-| Data Plan Comparator | Telecom & Mobile | `/telecom/data-plan-compare` | Localized shell candidate | `/sw/zana/kilinganisha-vifurushi-vya-data` | No |
-| USSD Code Directory | Telecom & Mobile | `/telecom/ussd-directory` | Localized shell candidate | `/sw/zana/saraka-ya-misimbo-ussd` | No |
-| Roaming Cost Calculator | Telecom & Mobile | `/telecom/roaming-cost` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-za-roaming` | No |
-| Starlink vs Local ISP | Telecom & Mobile | `/telecom/starlink-compare` | Localized shell candidate | `/sw/zana/starlink-dhidi-ya-isp-za-ndani` | No |
-| DStv/GOtv Comparator | Telecom & Mobile | `/telecom/tv-compare` | Localized shell candidate | `/sw/zana/kilinganisha-tv-na-streaming` | No |
-| Data Usage Calculator | Telecom & Mobile | `/telecom/data-usage-calc` | Localized shell candidate | `/sw/zana/kikokotoo-matumizi-ya-data` | No |
-| Airtime to Cash Value | Telecom & Mobile | `/telecom/airtime-value` | Localized shell candidate | `/sw/zana/thamani-ya-vocha-ya-simu` | No |
-| Number Portability Guide | Telecom & Mobile | `/telecom/number-portability` | Localized shell candidate | `/sw/zana/mwongozo-kuhamisha-namba` | No |
-| SIM Registration Checker | Telecom & Mobile | `/telecom/sim-registration` | Localized shell candidate | `/sw/zana/ukaguzi-usajili-wa-sim` | No |
-| Internet Speed vs Cost | Telecom & Mobile | `/telecom/internet-compare` | Localized shell candidate | `/sw/zana/kilinganisha-intaneti` | No |
-| Fiber vs LTE vs 5G | Telecom & Mobile | `/telecom/fiber-lte-5g` | Localized shell candidate | `/sw/zana/fiber-dhidi-ya-lte-na-5g` | No |
-| Business Internet Calculator | Telecom & Mobile | `/telecom/business-internet` | Localized shell candidate | `/sw/zana/kikokotoo-intaneti-ya-biashara` | No |
-| Bulk SMS Pricing Calculator | Telecom & Mobile | `/telecom/bulk-sms-pricing` | Localized shell candidate | `/sw/zana/kikokotoo-bei-ya-sms-nyingi` | No |
-| WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Localized shell candidate | `/sw/zana/whatsapp-business-dhidi-ya-sms` | No |
+| Data Plan Comparator | Telecom & Mobile | `/telecom/data-plan-compare` | Native candidate | `/sw/zana/kilinganisha-vifurushi-vya-data` | Yes |
+| USSD Code Directory | Telecom & Mobile | `/telecom/ussd-directory` | Native candidate | `/sw/zana/saraka-ya-misimbo-ussd` | Yes |
+| Roaming Cost Calculator | Telecom & Mobile | `/telecom/roaming-cost` | Native candidate | `/sw/zana/kikokotoo-gharama-za-roaming` | Yes |
+| Starlink vs Local ISP | Telecom & Mobile | `/telecom/starlink-compare` | Native candidate | `/sw/zana/starlink-dhidi-ya-isp-za-ndani` | Yes |
+| DStv/GOtv Comparator | Telecom & Mobile | `/telecom/tv-compare` | Native candidate | `/sw/zana/kilinganisha-tv-na-streaming` | Yes |
+| Data Usage Calculator | Telecom & Mobile | `/telecom/data-usage-calc` | Native candidate | `/sw/zana/kikokotoo-matumizi-ya-data` | Yes |
+| Airtime to Cash Value | Telecom & Mobile | `/telecom/airtime-value` | Native candidate | `/sw/zana/thamani-ya-vocha-ya-simu` | Yes |
+| Number Portability Guide | Telecom & Mobile | `/telecom/number-portability` | Native candidate | `/sw/zana/mwongozo-kuhamisha-namba` | Yes |
+| SIM Registration Checker | Telecom & Mobile | `/telecom/sim-registration` | Native candidate | `/sw/zana/ukaguzi-usajili-wa-sim` | Yes |
+| Internet Speed vs Cost | Telecom & Mobile | `/telecom/internet-compare` | Native candidate | `/sw/zana/kilinganisha-intaneti` | Yes |
+| Fiber vs LTE vs 5G | Telecom & Mobile | `/telecom/fiber-lte-5g` | Native candidate | `/sw/zana/fiber-dhidi-ya-lte-na-5g` | Yes |
+| Business Internet Calculator | Telecom & Mobile | `/telecom/business-internet` | Native candidate | `/sw/zana/kikokotoo-intaneti-ya-biashara` | Yes |
+| Bulk SMS Pricing Calculator | Telecom & Mobile | `/telecom/bulk-sms-pricing` | Native candidate | `/sw/zana/kikokotoo-bei-ya-sms-nyingi` | Yes |
+| WhatsApp Business vs SMS | Telecom & Mobile | `/telecom/whatsapp-vs-sms` | Native candidate | `/sw/zana/whatsapp-business-dhidi-ya-sms` | Yes |
 | Electricity Tariff Calculator | Energy & Utilities | `/tools/electricity-tariff` | Localized shell candidate | `/sw/zana/kikokotoo-tariff-ya-umeme` | No |
 | Solar Panel ROI Calculator | Energy & Utilities | `/tools/solar-roi` | Localized shell candidate | `/sw/zana/faida-ya-solar` | No |
 | Prepaid Meter Calculator | Energy & Utilities | `/tools/prepaid-meter` | Localized shell candidate | `/sw/zana/kikokotoo-luku-ya-umeme` | No |
@@ -1072,11 +1072,11 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Gas / LPG Cost Calculator | Energy & Utilities | `/tools/gas-lpg-cost` | Localized shell candidate | `/sw/zana/gharama-za-gesi-lpg` | No |
 | PayGo Solar Calculator | Energy & Utilities | `/tools/paygo-solar` | Localized shell candidate | `/sw/zana/paygo-solar` | No |
 | Outage Cost (Business) | Energy & Utilities | `/tools/outage-cost` | Localized shell candidate | `/sw/zana/gharama-ya-kukatika-umeme` | No |
-| Solar Sizing Calculator | Energy & Utilities | `/tools/solar-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-mfumo-wa-solar` | No |
-| Battery & Inverter Sizing | Energy & Utilities | `/tools/battery-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-betri-na-inverter` | No |
+| Solar Sizing Calculator | Energy & Utilities | `/tools/solar-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-mfumo-wa-solar` | Yes |
+| Battery & Inverter Sizing | Energy & Utilities | `/tools/battery-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-betri-na-inverter` | Yes |
 | Home Energy Audit | Energy & Utilities | `/tools/energy-audit` | English fallback | `/sw/zana/ukaguzi-wa-nishati-nyumbani` | No |
 | Appliance Power Calculator | Energy & Utilities | `/tools/appliance-power` | English fallback | `/sw/zana/matumizi-ya-umeme-ya-vifaa` | No |
-| Backup Duration Calculator | Energy & Utilities | `/tools/backup-duration` | Localized shell candidate | `/sw/zana/muda-wa-backup-ya-betri` | No |
+| Backup Duration Calculator | Energy & Utilities | `/tools/backup-duration` | Localized shell candidate | `/sw/zana/muda-wa-backup-ya-betri` | Yes |
 | Diesel vs Solar Farm | Energy & Utilities | `/tools/diesel-vs-solar-farm` | Localized shell candidate | `/sw/zana/dizeli-dhidi-ya-solar-shambani` | No |
 | Mini-Grid Feasibility Calculator | Energy & Utilities | `/tools/mini-grid-feasibility` | Localized shell candidate | `/sw/zana/uwezekano-wa-mini-grid` | No |
 | Carbon Footprint (Energy) | Energy & Utilities | `/tools/carbon-footprint-energy` | Localized shell candidate | `/sw/zana/alama-ya-kaboni-ya-nishati` | No |
@@ -1106,10 +1106,10 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | AfroPrices — Compare Prices Across Africa | Uniquely African | `/tools/afroprices` | Localized shell candidate | `/sw/zana/afroprices` | No |
 | Ankara / Kente Pattern Cost Calculator — Africa | Uniquely African | `/tools/ankara-kente-cost` | Localized shell candidate | `/sw/zana/gharama-ya-ankara-na-kente` | No |
 | Fabric & Material Cost Calculator — Africa | Uniquely African | `/tools/fabric-cost` | Missing | None | No |
-| Career Growth Trajectory Calculator | Career & Development | `/tools/career-growth` | Localized shell candidate | `/sw/zana/ukuaji-wa-kazi` | No |
-| Career Switch Financial Impact Calculator Africa | Career & Development | `/tools/career-switch` | Localized shell candidate | `/sw/zana/kubadili-kazi` | No |
-| Retirement Readiness Score | Career & Development | `/tools/retirement-readiness` | Localized shell candidate | `/sw/zana/utayari-wa-kustaafu` | No |
-| Salary Negotiation Calculator Africa — Market Rates & Counter-Offer | Career & Development | `/tools/salary-negotiation` | Localized shell candidate | `/sw/zana/majadiliano-ya-mshahara` | No |
+| Career Growth Trajectory Calculator | Career & Development | `/tools/career-growth` | Native candidate | `/sw/zana/ukuaji-wa-kazi` | Yes |
+| Career Switch Financial Impact Calculator Africa | Career & Development | `/tools/career-switch` | Native candidate | `/sw/zana/kubadili-kazi` | Yes |
+| Retirement Readiness Score | Career & Development | `/tools/retirement-readiness` | Native candidate | `/sw/zana/utayari-wa-kustaafu` | Yes |
+| Salary Negotiation Calculator Africa — Market Rates & Counter-Offer | Career & Development | `/tools/salary-negotiation` | Native candidate | `/sw/zana/majadiliano-ya-mshahara` | Yes |
 | Drought Risk Assessment for Africa | Climate & Environment | `/tools/drought-risk` | Localized shell candidate | `/sw/zana/hatari-ya-ukame` | No |
 | Water Scarcity Calculator for Africa | Climate & Environment | `/tools/water-scarcity` | Localized shell candidate | `/sw/zana/upungufu-wa-maji` | No |
 | Rainfall Pattern Tracker for Africa | Climate & Environment | `/tools/rainfall-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-mvua` | No |
@@ -1177,8 +1177,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Hosting Cost Comparator for African Developers | Developer Tools | `/tools/hosting-compare` | Localized shell candidate | `/sw/zana/kulinganisha-hosting` | No |
 | PWA Manifest Generator — Web App Manifest for African Devs | Developer Tools | `/tools/pwa-manifest` | Localized shell candidate | `/sw/zana/kizalishaji-pwa-manifest` | No |
 | USSD Flow Builder — Visual USSD Menu Designer | Developer Tools | `/tools/ussd-flow-builder` | Localized shell candidate | `/sw/zana/mjenzi-mtiririko-ussd` | No |
-| Immigration Points Calculator — Canada CRS, Australia Points, UK Skilled Worker | Diaspora | `/tools/immigration-points` | Missing | None | No |
-| Visa Application Tracker — UK, Canada, Australia, USA, UAE | Diaspora | `/tools/visa-tracker` | Missing | None | No |
+| Immigration Points Calculator — Canada CRS, Australia Points, UK Skilled Worker | Diaspora | `/tools/immigration-points` | Native candidate | `/sw/zana/kikokotoo-pointi-za-uhamiaji` | Yes |
+| Visa Application Tracker — UK, Canada, Australia, USA, UAE | Diaspora | `/tools/visa-tracker` | Native candidate | `/sw/zana/kifuatiliaji-ombi-la-visa` | Yes |
 | Document & PDF Tools for Africa | Document & PDF | `/document-pdf` | Native candidate | `/sw/hati-na-pdf` | No |
 | Freelance Invoice Generator | Document & PDF | `/tools/freelance-invoice` | Localized shell candidate | `/sw/zana/ankara-ya-freelancer` | No |
 | Boarding School Full-Cost Planner | Education | `/tools/boarding-school` | Localized shell candidate | `/sw/zana/gharama-ya-shule-ya-bweni` | No |
@@ -1191,8 +1191,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Plagiarism Percentage Self-Check Tool | Education | `/tools/plagiarism-pct` | Missing | None | No |
 | Tutoring Rate Calculator Africa 2026 | Education | `/tools/tutoring-rate` | Missing | None | No |
 | Asset Finance Calculator — Africa | Fintech & Banking | `/tools/asset-finance` | Localized shell candidate | `/sw/zana/ufadhili-wa-mali` | No |
-| Cross-Border B2B Payment Comparator — Africa | Fintech & Banking | `/tools/b2b-payment` | Localized shell candidate | `/sw/zana/malipo-ya-biashara-kwa-biashara` | No |
-| Bill Split Calculator — Africa | Fintech & Banking | `/tools/bill-split` | Localized shell candidate | `/sw/zana/kigawanya-bili-na-bakshishi` | No |
+| Cross-Border B2B Payment Comparator — Africa | Fintech & Banking | `/tools/b2b-payment` | Localized shell candidate | `/sw/zana/malipo-ya-biashara-kwa-biashara` | Yes |
+| Bill Split Calculator — Africa | Fintech & Banking | `/tools/bill-split` | Localized shell candidate | `/sw/zana/kigawanya-bili-na-bakshishi` | Yes |
 | Government Bond Yield Calculator — Africa | Fintech & Banking | `/tools/bond-yield` | Localized shell candidate | `/sw/zana/mavuno-ya-hatifungani` | No |
 | Credit Score Explainer & Simulator — Africa | Fintech & Banking | `/tools/credit-score` | Localized shell candidate | `/sw/zana/alama-ya-mkopo` | No |
 | Dollar-Cost Averaging Calculator | Fintech & Banking | `/tools/dca-calc` | Localized shell candidate | `/sw/zana/ununuzi-wa-mara-kwa-mara` | No |
@@ -1247,15 +1247,15 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | TIN Registration Guide — Tax Identification Numbers Africa | Mortgage & Property | `/tools/tin-guide` | Localized shell candidate | `/sw/zana/mwongozo-tin` | No |
 | Trademark Registration Guide — Africa | Mortgage & Property | `/tools/trademark-registration` | Localized shell candidate | `/sw/zana/usajili-wa-alama-ya-biashara` | No |
 | Company Winding-Up Checklist — 16 African Countries | Mortgage & Property | `/tools/winding-up` | Localized shell candidate | `/sw/zana/kufunga-kampuni` | No |
-| 50/30/20 Budget Calculator for Africa — Needs, Wants & Savings | Personal Finance | `/tools/50-30-20-budget` | Localized shell candidate | `/sw/zana/bajeti-50-30-20` | No |
-| Album / EP Release Budget Calculator — Africa | Personal Finance | `/tools/album-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-albamu` | No |
-| Film / Movie Budget Breakdown Tool — Nollywood & Africa | Personal Finance | `/tools/film-budget` | Missing | None | No |
-| Security Emergency Fund | Personal Finance | `/tools/security-emergency-fund` | Missing | None | No |
-| African Side Hustle Profitability Ranker — Top 5 for Your Profile | Personal Finance | `/tools/side-hustle-ranker` | Localized shell candidate | `/sw/zana/orodha-ya-side-hustle` | No |
-| Zakat Calculator | Religious & Cultural | `/tools/zakat-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-zakat` | No |
+| 50/30/20 Budget Calculator for Africa — Needs, Wants & Savings | Personal Finance | `/tools/50-30-20-budget` | Localized shell candidate | `/sw/zana/bajeti-50-30-20` | Yes |
+| Album / EP Release Budget Calculator — Africa | Personal Finance | `/tools/album-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-albamu` | Yes |
+| Film / Movie Budget Breakdown Tool — Nollywood & Africa | Personal Finance | `/tools/film-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-filamu` | Yes |
+| Security Emergency Fund | Personal Finance | `/tools/security-emergency-fund` | Localized shell candidate | `/sw/zana/mfuko-wa-dharura-wa-usalama` | Yes |
+| African Side Hustle Profitability Ranker — Top 5 for Your Profile | Personal Finance | `/tools/side-hustle-ranker` | Localized shell candidate | `/sw/zana/orodha-ya-side-hustle` | Yes |
+| Zakat Calculator | Religious & Cultural | `/tools/zakat-calculator` | Native candidate | `/sw/zana/kikokotoo-zakat` | Yes |
 | Prayer Times and Qibla Planner | Religious & Cultural | `/tools/prayer-times` | Localized shell candidate | `/sw/zana/nyakati-za-swala-na-qibla` | No |
 | Ramadan Timetable Generator | Religious & Cultural | `/tools/ramadan-timetable` | Localized shell candidate | `/sw/zana/ratiba-ya-ramadhani` | No |
-| Islamic Inheritance Faraid Calculator | Religious & Cultural | `/tools/faraid-inheritance` | Localized shell candidate | `/sw/zana/urithi-wa-faraid` | No |
+| Islamic Inheritance Faraid Calculator | Religious & Cultural | `/tools/faraid-inheritance` | Native candidate | `/sw/zana/urithi-wa-faraid` | Yes |
 | Hajj and Umrah Budget Calculator | Religious & Cultural | `/tools/hajj-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-hajj-na-umrah` | No |
 | Islamic Finance Profit Rate Calculator | Religious & Cultural | `/tools/islamic-finance` | Localized shell candidate | `/sw/zana/fedha-za-kiislamu` | No |
 | African Wedding Budget Planner | Religious & Cultural | `/tools/wedding-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-harusi` | No |
@@ -1269,13 +1269,13 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Traditional Attire Cost Calculator | Religious & Cultural | `/tools/traditional-attire` | Localized shell candidate | `/sw/zana/gharama-za-mavazi-ya-kimila` | No |
 | Halal Business Compliance Checker — Africa | Religious & Cultural | `/tools/halal-compliance` | Localized shell candidate | `/sw/zana/ukaguzi-wa-halal` | No |
 | Islamic Calendar Converter — Gregorian to Hijri | Religious & Cultural | `/tools/islamic-calendar` | Localized shell candidate | `/sw/zana/kalenda-ya-kiislamu` | No |
-| CCTV System Cost Calculator — Africa | Security & Safety | `/tools/cctv-cost` | Localized shell candidate | `/sw/zana/gharama-za-cctv` | No |
-| Cybersecurity Risk Assessment Tool — Africa | Security & Safety | `/tools/cybersecurity-assessment` | Localized shell candidate | `/sw/zana/tathmini-ya-usalama-wa-kidijitali` | No |
-| Data Breach Cost Calculator — Africa | Security & Safety | `/tools/data-breach-cost` | Localized shell candidate | `/sw/zana/gharama-ya-uvujaji-wa-data` | No |
-| Fire Safety Compliance Checker — Africa | Security & Safety | `/tools/fire-safety-checklist` | Missing | None | No |
-| Home Security Cost Estimator — Africa | Security & Safety | `/tools/home-security-cost` | Missing | None | No |
-| Password Strength Checker — 100% Client-Side | Security & Safety | `/tools/password-strength` | Missing | None | No |
-| Phishing Detection Quiz — Africa | Security & Safety | `/tools/phishing-quiz` | Missing | None | No |
+| CCTV System Cost Calculator — Africa | Security & Safety | `/tools/cctv-cost` | Native candidate | `/sw/zana/gharama-za-cctv` | Yes |
+| Cybersecurity Risk Assessment Tool — Africa | Security & Safety | `/tools/cybersecurity-assessment` | Native candidate | `/sw/zana/tathmini-ya-usalama-wa-kidijitali` | Yes |
+| Data Breach Cost Calculator — Africa | Security & Safety | `/tools/data-breach-cost` | Native candidate | `/sw/zana/gharama-ya-uvujaji-wa-data` | Yes |
+| Fire Safety Compliance Checker — Africa | Security & Safety | `/tools/fire-safety-checklist` | Native candidate | `/sw/zana/ukaguzi-wa-usalama-wa-moto` | Yes |
+| Home Security Cost Estimator — Africa | Security & Safety | `/tools/home-security-cost` | Native candidate | `/sw/zana/gharama-za-usalama-wa-nyumbani` | Yes |
+| Password Strength Checker — 100% Client-Side | Security & Safety | `/tools/password-strength` | Native candidate | `/sw/zana/nguvu-ya-nenosiri` | Yes |
+| Phishing Detection Quiz — Africa | Security & Safety | `/tools/phishing-quiz` | Native candidate | `/sw/zana/jaribio-la-kutambua-hadaa` | Yes |
 | Brand Collaboration ROI Calculator — Africa | Small Business & SME | `/tools/brand-collab-roi` | Localized shell candidate | `/sw/zana/roi-ya-brand-collab` | No |
 | Business Continuity Plan Generator — Africa | Small Business & SME | `/tools/business-continuity` | Localized shell candidate | `/sw/zana/mwendelezo-wa-biashara` | No |
 | Event Decoration Cost Calculator — Africa | Small Business & SME | `/tools/event-decoration-cost` | Missing | None | No |
@@ -1294,21 +1294,21 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Quality Control Sampling Calculator | Small Business & SME | `/tools/quality-sampling` | Missing | None | No |
 | Tailoring & Sewing Pricing Calculator — Africa | Small Business & SME | `/tools/tailoring-pricing` | Missing | None | No |
 | YouTube Revenue Estimator — African Audience | Small Business & SME | `/tools/youtube-revenue` | Missing | None | No |
-| Football Betting Odds Calculator - Value, Profit, Implied Probability | Sports & Entertainment | `/tools/betting-odds` | Localized shell candidate | `/sw/zana/uwezekano-wa-kamari` | No |
-| AFCON Tournament Predictor - 2025 Review and 2027 Planning | Sports & Entertainment | `/tools/afcon-predictor` | Localized shell candidate | `/sw/zana/utabiri-wa-afcon` | No |
-| Fantasy Football Points Calculator - FPL 2025/26 | Sports & Entertainment | `/tools/fantasy-football` | Missing | None | No |
-| Sports Betting Tax Calculator Africa | Sports & Entertainment | `/tools/betting-tax` | Localized shell candidate | `/sw/zana/kodi-ya-kamari` | No |
-| Music Streaming Royalty Calculator Africa | Sports & Entertainment | `/tools/streaming-royalties` | Missing | None | No |
-| Nollywood Box Office Estimator | Sports & Entertainment | `/tools/nollywood-box-office` | Missing | None | No |
-| DJ Booking Rate Calculator Africa | Sports & Entertainment | `/tools/dj-booking-rate` | Localized shell candidate | `/sw/zana/bei-ya-dj` | No |
-| Concert and Festival Budget Planner | Sports & Entertainment | `/tools/concert-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-tamasha` | No |
-| Gym and Fitness Center ROI Calculator | Sports & Entertainment | `/tools/gym-roi-business` | Missing | None | No |
-| Event Ticket Revenue Calculator | Sports & Entertainment | `/tools/event-ticket-revenue` | Missing | None | No |
-| Match Ticket Price Comparator Africa | Sports & Entertainment | `/tools/match-tickets` | Missing | None | No |
-| Sports Scholarship Eligibility Checker | Sports & Entertainment | `/tools/sports-scholarship` | Missing | None | No |
-| Athlete Career Earnings Calculator Africa | Sports & Entertainment | `/tools/athlete-earnings` | Localized shell candidate | `/sw/zana/mapato-ya-mwanariadha` | No |
-| Gaming PC Build Calculator Africa | Sports & Entertainment | `/tools/gaming-pc-build` | Missing | None | No |
-| Photography and Videography Pricing Tool Africa | Sports & Entertainment | `/tools/photo-video-pricing` | Missing | None | No |
+| Football Betting Odds Calculator - Value, Profit, Implied Probability | Sports & Entertainment | `/tools/betting-odds` | Localized shell candidate | `/sw/zana/uwezekano-wa-kamari` | Yes |
+| AFCON Tournament Predictor - 2025 Review and 2027 Planning | Sports & Entertainment | `/tools/afcon-predictor` | Localized shell candidate | `/sw/zana/utabiri-wa-afcon` | Yes |
+| Fantasy Football Points Calculator - FPL 2025/26 | Sports & Entertainment | `/tools/fantasy-football` | Localized shell candidate | `/sw/zana/alama-za-fantasy-football` | Yes |
+| Sports Betting Tax Calculator Africa | Sports & Entertainment | `/tools/betting-tax` | Localized shell candidate | `/sw/zana/kodi-ya-kamari` | Yes |
+| Music Streaming Royalty Calculator Africa | Sports & Entertainment | `/tools/streaming-royalties` | Localized shell candidate | `/sw/zana/mirabaha-ya-utiririshaji-muziki` | Yes |
+| Nollywood Box Office Estimator | Sports & Entertainment | `/tools/nollywood-box-office` | Localized shell candidate | `/sw/zana/makisio-mapato-sinema-nollywood` | Yes |
+| DJ Booking Rate Calculator Africa | Sports & Entertainment | `/tools/dj-booking-rate` | Localized shell candidate | `/sw/zana/bei-ya-dj` | Yes |
+| Concert and Festival Budget Planner | Sports & Entertainment | `/tools/concert-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-tamasha` | Yes |
+| Gym and Fitness Center ROI Calculator | Sports & Entertainment | `/tools/gym-roi-business` | Localized shell candidate | `/sw/zana/faida-ya-biashara-ya-gym` | Yes |
+| Event Ticket Revenue Calculator | Sports & Entertainment | `/tools/event-ticket-revenue` | Localized shell candidate | `/sw/zana/mapato-ya-tiketi-za-tukio` | Yes |
+| Match Ticket Price Comparator Africa | Sports & Entertainment | `/tools/match-tickets` | Localized shell candidate | `/sw/zana/ulinganisho-bei-ya-tiketi-za-mechi` | Yes |
+| Sports Scholarship Eligibility Checker | Sports & Entertainment | `/tools/sports-scholarship` | Localized shell candidate | `/sw/zana/ustahiki-ufadhili-wa-michezo` | Yes |
+| Athlete Career Earnings Calculator Africa | Sports & Entertainment | `/tools/athlete-earnings` | Localized shell candidate | `/sw/zana/mapato-ya-mwanariadha` | Yes |
+| Gaming PC Build Calculator Africa | Sports & Entertainment | `/tools/gaming-pc-build` | Localized shell candidate | `/sw/zana/gharama-ya-kompyuta-ya-michezo` | Yes |
+| Photography and Videography Pricing Tool Africa | Sports & Entertainment | `/tools/photo-video-pricing` | Localized shell candidate | `/sw/zana/bei-ya-picha-na-video` | Yes |
 | Cross-Border Data Transfer Checklist — Africa 2024 | Trade & Import | `/tools/cross-border-data` | Localized shell candidate | `/sw/zana/uhamishaji-data-mpaka` | Yes |
 | Customs Clearance Time Estimator Africa | Trade & Import | `/tools/customs-time` | Localized shell candidate | `/sw/zana/muda-wa-kupitisha-forodha` | Yes |
 | Shipping Weight / Volumetric Weight Calculator | Trade & Import | `/tools/shipping-weight` | Localized shell candidate | `/sw/zana/uzito-wa-usafirishaji` | Yes |
@@ -1320,12 +1320,12 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Truck Load Optimizer Africa | Transport & Logistics | `/tools/truck-load` | Localized shell candidate | `/sw/zana/kupakia-lori` | No |
 | Vehicle Operating Cost Calculator Africa | Transport & Logistics | `/tools/vehicle-operating-cost` | Localized shell candidate | `/sw/zana/gharama-uendeshaji-gari` | No |
 | Vehicle Tracker ROI Calculator — Africa | Transport & Logistics | `/tools/vehicle-tracker-roi` | Localized shell candidate | `/sw/zana/faida-ya-tracker-ya-gari` | No |
-| Africa Domestic Flight Price Tracker | Travel & Tourism | `/tools/africa-flight` | Localized shell candidate | `/sw/zana/safari-za-ndege-afrika` | No |
-| Airbnb vs Hotel Comparator Africa — Lagos, Nairobi, Cape Town | Travel & Tourism | `/tools/airbnb-vs-hotel` | Localized shell candidate | `/sw/zana/airbnb-dhidi-ya-hoteli` | No |
-| Airport Transfer Cost Comparator — Lagos, Nairobi, Accra, Johannesburg | Travel & Tourism | `/tools/airport-transfer` | Localized shell candidate | `/sw/zana/usafiri-wa-uwanja-wa-ndege` | No |
-| African Beach Holiday Budget Planner — Zanzibar, Seychelles, Diani | Travel & Tourism | `/tools/beach-holiday-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-likizo-ufukweni` | No |
-| African Festival & Event Travel Budget Calculator | Travel & Tourism | `/tools/festival-travel-budget` | Missing | None | No |
-| Hotel Star Rating Price Guide Africa — Lagos, Nairobi, Accra | Travel & Tourism | `/tools/hotel-star-guide` | Missing | None | No |
-| African Safari Cost Calculator — Budget to Luxury | Travel & Tourism | `/tools/safari-cost` | Missing | None | No |
-| Travel Packing List Generator for Africa — Safari, Beach, Business | Travel & Tourism | `/tools/travel-packing-list` | Missing | None | No |
-| Travel Vaccination Cost & Schedule for Africa | Travel & Tourism | `/tools/travel-vaccination-cost` | Missing | None | No |
+| Africa Domestic Flight Price Tracker | Travel & Tourism | `/tools/africa-flight` | Localized shell candidate | `/sw/zana/safari-za-ndege-afrika` | Yes |
+| Airbnb vs Hotel Comparator Africa — Lagos, Nairobi, Cape Town | Travel & Tourism | `/tools/airbnb-vs-hotel` | Localized shell candidate | `/sw/zana/airbnb-dhidi-ya-hoteli` | Yes |
+| Airport Transfer Cost Comparator — Lagos, Nairobi, Accra, Johannesburg | Travel & Tourism | `/tools/airport-transfer` | Localized shell candidate | `/sw/zana/usafiri-wa-uwanja-wa-ndege` | Yes |
+| African Beach Holiday Budget Planner — Zanzibar, Seychelles, Diani | Travel & Tourism | `/tools/beach-holiday-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-likizo-ufukweni` | Yes |
+| African Festival & Event Travel Budget Calculator | Travel & Tourism | `/tools/festival-travel-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-safari-ya-tamasha` | Yes |
+| Hotel Star Rating Price Guide Africa — Lagos, Nairobi, Accra | Travel & Tourism | `/tools/hotel-star-guide` | Localized shell candidate | `/sw/zana/mwongozo-bei-ya-hoteli-kwa-nyota` | Yes |
+| African Safari Cost Calculator — Budget to Luxury | Travel & Tourism | `/tools/safari-cost` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-ya-safari` | Yes |
+| Travel Packing List Generator for Africa — Safari, Beach, Business | Travel & Tourism | `/tools/travel-packing-list` | Localized shell candidate | `/sw/zana/orodha-ya-vifaa-vya-safari` | Yes |
+| Travel Vaccination Cost & Schedule for Africa | Travel & Tourism | `/tools/travel-vaccination-cost` | Localized shell candidate | `/sw/zana/gharama-na-ratiba-ya-chanjo-za-safari` | Yes |

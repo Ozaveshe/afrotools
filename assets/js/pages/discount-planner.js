@@ -22,7 +22,7 @@
       faq1: "Do 20% and 10% equal 30% off?", faq1a: "No. Sequential discounts produce 28% off because the second discount applies to the reduced price.",
       faq2: "Does AfroTools provide the tax rate?", faq2a: "No. Tax is optional and entirely user-entered. The tool does not choose a VAT rate or determine whether tax applies.",
       faq3: "What do exports contain?", faq3a: "A valid current result can be copied or exported as formula-safe CSV, JSON, text-readable PDF, or a local print view.",
-      pdfTitle: "Discount Scenario", scope: "User-input planning scenario only. No supplied tax rate, retailer offer, price feed or currency conversion."
+      pdfTitle: "Discount Scenario", pdfUnavailable: "PDF library unavailable.", scope: "User-input planning scenario only. No supplied tax rate, retailer offer, price feed or currency conversion."
     },
     fr: {
       title: "Construire un scénario de remise", help: "Comparez jusqu’à cinq remises successives. Le pourcentage de taxe facultatif est votre scénario après remise, jamais un taux de TVA ou de taxe fourni par AfroTools.",
@@ -39,7 +39,7 @@
       faq1: "20 % et 10 % donnent-ils 30 % ?", faq1a: "Non. Deux remises successives donnent 28 %, car la seconde s’applique au prix déjà réduit.",
       faq2: "AfroTools fournit-il le taux de taxe ?", faq2a: "Non. La taxe est facultative et entièrement saisie par vous. L’outil ne choisit aucun taux de TVA et ne décide pas si une taxe s’applique.",
       faq3: "Que contiennent les exports ?", faq3a: "Un résultat valide peut être copié ou exporté en CSV protégé, JSON, PDF textuel lisible, ou imprimé localement.",
-      pdfTitle: "Scénario de remise", scope: "Scénario de planification fondé sur vos données. Aucun taux fiscal, offre commerciale, flux de prix ou conversion de devise n’est fourni."
+      pdfTitle: "Scénario de remise", pdfUnavailable: "La bibliothèque PDF n’est pas disponible.", scope: "Scénario de planification fondé sur vos données. Aucun taux fiscal, offre commerciale, flux de prix ou conversion de devise n’est fourni."
     },
     sw: {
       title: "Jenga hali ya punguzo", help: "Linganisha hadi mapunguzo matano yanayofuatana. Asilimia ya kodi ya hiari ni hali yako baada ya punguzo, si kiwango cha VAT au kodi kinachotolewa na AfroTools.",
@@ -56,7 +56,7 @@
       faq1: "Je, 20% na 10% ni punguzo la 30%?", faq1a: "Hapana. Mapunguzo yanayofuatana hutoa 28%, kwa sababu la pili hutumika kwenye bei iliyopunguzwa.",
       faq2: "AfroTools inatoa kiwango cha kodi?", faq2a: "Hapana. Kodi ni ya hiari na unaingiza mwenyewe. Zana haichagui kiwango cha VAT wala kuamua kama kodi inatumika.",
       faq3: "Faili zina nini?", faq3a: "Matokeo sahihi yanaweza kunakiliwa au kupakuliwa kama CSV salama, JSON, PDF inayosomeka, au kuchapishwa.",
-      pdfTitle: "Mpango wa punguzo", scope: "Hali ya kupanga kwa taarifa zako tu. Hakuna kiwango cha kodi, ofa ya duka, bei hai au ubadilishaji wa sarafu."
+      pdfTitle: "Mpango wa punguzo", pdfUnavailable: "Maktaba ya PDF haipatikani.", scope: "Hali ya kupanga kwa taarifa zako tu. Hakuna kiwango cha kodi, ofa ya duka, bei hai au ubadilishaji wa sarafu."
     }
   };
   var c = COPY[locale] || COPY.en;
@@ -205,7 +205,7 @@
   }
   function exportPdf() {
     if (!window.AfroTools || !window.AfroTools.localVatPdf) {
-      el("dcpStatus").textContent = "PDF library unavailable.";
+      el("dcpStatus").textContent = c.pdfUnavailable;
       return;
     }
     window.AfroTools.localVatPdf({

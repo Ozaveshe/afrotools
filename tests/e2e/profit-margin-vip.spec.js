@@ -44,8 +44,8 @@ test('profit margin supports mobile, 200% zoom, dark modes and keyboard', async 
 });
 test('profit margin exports parseable PDF and CSV', async ({ page }) => {
   await page.goto('/tools/profit-margin/');await page.locator('#pmUnit').fill('USD');await page.locator('#pmRevenue').fill('150');await page.locator('#pmCogs').fill('100');await page.locator('#pmForm button[type=submit]').click();
-  let pending=page.waitForEvent('download');await page.locator('#pmPdf').click();let download=await pending;let buffer=fs.readFileSync(await download.path());expect(buffer.subarray(0,5).toString()).toBe('%PDF-');let parsed=await pdfParse(buffer);expect(parsed.text).toContain('Profit margin calculator');expect(parsed.text).toContain('Gross margin: 33.33%');expect(parsed.text).toContain('Markup: 50%');
-  pending=page.waitForEvent('download');await page.locator('#pmCsv').click();download=await pending;const csv=fs.readFileSync(await download.path(),'utf8');expect(csv).toContain('"Gross margin","33.33%"');expect(csv).toContain('"Markup","50%"');
+  let pending=page.waitForEvent('download');await page.locator('#pmPdf').click();let download=await pending;let buffer=fs.readFileSync(await download.path());expect(buffer.subarray(0,5).toString()).toBe('%PDF-');let parsed=await pdfParse(buffer);expect(parsed.text).toContain('Profit margin calculator');expect(parsed.text).toContain('Gross margin: 33.33%');expect(parsed.text).toContain('Markup on COGS: 50%');
+  pending=page.waitForEvent('download');await page.locator('#pmCsv').click();download=await pending;const csv=fs.readFileSync(await download.path(),'utf8');expect(csv).toContain('"Gross margin","33.33%"');expect(csv).toContain('"Markup on COGS","50%"');
 });
 test('dedicated widget uses the same engine contract', async ({ page }) => {
   await page.goto('/widgets/iframe/financial-profit-margin');await page.locator('#aw-unit').fill('USD');await page.locator('#aw-revenue').fill('150');await page.locator('#aw-cogs').fill('100');await page.locator('#aw-calc').click();

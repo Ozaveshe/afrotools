@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 2,
+  "preservedBlockedEntries": 3,
+  "candidates": [
+    {
+      "id": "fintech-payment-allocation",
+      "commit": "e46d82386dc9a02c75b9317f73d9dd297cd414dd",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-fintech-payment-allocation.spec.js",
+          "engineTest": "tests/sw-fintech-payment-allocation.test.js",
+          "workflow": "B2B Payment preserves three quote comparisons and exact fee, FX, settlement and timing outputs; Bill Split preserves equal and custom percentage flows, cent allocation, dynamic people controls and stale-state validation.",
+          "export": "Neither paired English owner advertises an export, save, copy, share or download action, so no export capability is missing."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "tests/sw-fintech-payment-allocation.test.js",
+          "requiredText": "authoritative 1,257-row inventory and 2/2 accepted route contracts passed"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            {
+              "englishId": "b2b-payment",
+              "swahiliRoute": "/sw/zana/malipo-ya-biashara-kwa-biashara/"
+            },
+            {
+              "englishId": "bill-split",
+              "swahiliRoute": "/sw/zana/kigawanya-bili-na-bakshishi/"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

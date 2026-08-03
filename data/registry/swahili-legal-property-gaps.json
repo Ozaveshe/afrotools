@@ -1,8 +1,758 @@
 {
   "schemaVersion": 1,
   "owner": "scripts/build-sw-legal-government-insurance-parity.js",
-  "count": 11,
+  "count": 13,
   "rows": [
+    {
+      "rowNumber": 5,
+      "englishId": "tenancy-deposit",
+      "englishName": "Tenancy Deposit Calculator",
+      "englishRoute": "/tools/tenancy-deposit",
+      "englishFile": "tools/tenancy-deposit/index.html",
+      "frenchRoute": "/fr/tools/caution-locative",
+      "frenchFile": "fr/tools/caution-locative/index.html",
+      "name": "Kikokotoo cha amana na gharama za kuhamia",
+      "description": "Jumlisha pango la mbele, amana, ada ya wakala, ada ya mkataba na huduma kwa maingizo yako; thibitisha sheria na masharti ya eneo kabla ya kulipa.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "tenancy-deposit",
+      "workflowControl": "Kokotoa gharama za kuhamia",
+      "fields": [
+        {
+          "name": "country",
+          "label": "Nchi",
+          "type": "select",
+          "options": [
+            [
+              "ng",
+              "Nigeria"
+            ],
+            [
+              "ke",
+              "Kenya"
+            ],
+            [
+              "za",
+              "Afrika Kusini"
+            ],
+            [
+              "gh",
+              "Ghana"
+            ]
+          ],
+          "initialValue": "ng",
+          "testFixtureValue": "ng"
+        },
+        {
+          "name": "rent",
+          "label": "Pango la mwezi",
+          "type": "number",
+          "options": [],
+          "initialValue": "500000",
+          "testFixtureValue": "500000"
+        },
+        {
+          "name": "advanceMonths",
+          "label": "Miezi ya pango la mbele",
+          "type": "select",
+          "options": [
+            [
+              "12",
+              "Miezi 12"
+            ],
+            [
+              "6",
+              "Miezi 6"
+            ],
+            [
+              "3",
+              "Miezi 3"
+            ],
+            [
+              "2",
+              "Miezi 2"
+            ],
+            [
+              "1",
+              "Mwezi 1"
+            ]
+          ],
+          "initialValue": "12",
+          "testFixtureValue": "12"
+        },
+        {
+          "name": "depositMonths",
+          "label": "Miezi ya amana",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna"
+            ],
+            [
+              "1",
+              "Mwezi 1"
+            ],
+            [
+              "2",
+              "Miezi 2"
+            ],
+            [
+              "3",
+              "Miezi 3"
+            ]
+          ],
+          "initialValue": "1",
+          "testFixtureValue": "1"
+        },
+        {
+          "name": "agentFee",
+          "label": "Ada ya wakala (%)",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna wakala"
+            ],
+            [
+              "5",
+              "5%"
+            ],
+            [
+              "10",
+              "10%"
+            ],
+            [
+              "15",
+              "15%"
+            ],
+            [
+              "8.33",
+              "Pango la mwezi 1 (8.33%)"
+            ]
+          ],
+          "initialValue": "10",
+          "testFixtureValue": "10"
+        },
+        {
+          "name": "legalFee",
+          "label": "Ada ya mkataba au wakili",
+          "type": "select",
+          "options": [
+            [
+              "0",
+              "Hakuna"
+            ],
+            [
+              "5",
+              "5% ya pango la mwaka"
+            ],
+            [
+              "10",
+              "10% ya pango la mwaka"
+            ],
+            [
+              "flat50000",
+              "Kiasi maalumu cha eneo"
+            ]
+          ],
+          "initialValue": "5",
+          "testFixtureValue": "5"
+        },
+        {
+          "name": "serviceCharge",
+          "label": "Ada ya huduma kwa mwezi",
+          "type": "number",
+          "options": [],
+          "initialValue": "0",
+          "testFixtureValue": "0"
+        }
+      ],
+      "sourceBoundary": "Caution locative est lié à « État de Lagos — ressources officielles et Tenancy Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/mortgage-property-english-owner.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "mortgage-property-english-owner",
+      "imageId": "tenancy-deposit",
+      "imageUrl": "/assets/img/tools/tenancy-deposit.webp",
+      "artworkAlt": "Repère visuel de l’outil « Caution locative »",
+      "artworkExists": true,
+      "source": {
+        "url": "https://lagosstate.gov.ng/resources/",
+        "label": "Jimbo la Lagos — rasilimali rasmi na Tenancy Law",
+        "checkedAt": "2026-07-29",
+        "confidence": "Hesabu ni thabiti kwa maingizo; matumizi halisi lazima yathibitishwe kwa mamlaka au mtaalamu."
+      },
+      "sourceNote": "Caution locative est lié à « État de Lagos — ressources officielles et Tenancy Law »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": {
+        "ownershipKind": "calculator-shared-engine",
+        "sourceSha256BeforeExtraction": "a0059d93bb0026b91f80c72bc39962f7a2e2d5a8e0bf8a0da8da4d5ace3632c7",
+        "actionSelector": "button[onclick=\"calculate()\"]",
+        "outputSelector": "#resultCard",
+        "inputFixture": {
+          "country": "ng",
+          "rent": "500000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "1000"
+        },
+        "outputSha256": "7bb29d78e3e63cb7b31d9aeb8602d20bac5db9a00a11ea9c30100eeb80eb0ef8",
+        "semanticAnchors": [],
+        "outputExcerpt": "TOTAL MOVE-IN COST BREAKDOWN ITEM AMOUNT Advance Rent (12 months) ₦6,000,000 Security Deposit (1 month) ₦500,000 Agent / Commission Fee (10%) ₦600,000 Agreement / Legal Fee ₦300,000 Service Charge (12 months) ₦12,000 Total Move-In Cost ₦7,412,000 Monthly Rent ₦500,000/mo Total as Multiple of Monthly Rent 14.8x"
+      },
+      "aiFrenchRoute": "/fr/tools/caution-locative/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/tenancy-deposit",
+          "file": "tools/tenancy-deposit/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Build handoff note\"]",
+              "label": "Build handoff note",
+              "evidence": "tools/tenancy-deposit/index.html:272"
+            },
+            {
+              "format": "pdf",
+              "selector": "role=button[name=\"Email checklist + unlock PDF\"]",
+              "label": "Email checklist + unlock PDF",
+              "evidence": "tools/tenancy-deposit/index.html:287"
+            },
+            {
+              "format": "print",
+              "selector": "role=button[name=\"Print or save PDF\"]",
+              "label": "Print or save PDF",
+              "evidence": "tools/tenancy-deposit/index.html:288"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy handoff note\"]",
+              "label": "Copy handoff note",
+              "evidence": "tools/tenancy-deposit/index.html:289"
+            },
+            {
+              "format": "copy",
+              "selector": "role=button[name=\"Copy review pack\"]",
+              "label": "Copy review pack",
+              "evidence": "tools/tenancy-deposit/index.html:400"
+            }
+          ],
+          "evidence": "Physical English owner exposes 5 export, print, copy or download control(s)."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/caution-locative",
+          "file": "fr/tools/caution-locative/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/caution-locative/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"country\"]",
+              "label": "Pays",
+              "value": "ng",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"rent\"]",
+              "label": "Loyer mensuel",
+              "value": "500000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"advanceMonths\"]",
+              "label": "Mois d’avance",
+              "value": "12",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"depositMonths\"]",
+              "label": "Mois de dépôt",
+              "value": "1",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"agentFee\"]",
+              "label": "Commission de l’agent (%)",
+              "value": "10",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"legalFee\"]",
+              "label": "Frais juridiques",
+              "value": "annual-five",
+              "type": "select"
+            },
+            {
+              "selector": "[name=\"serviceCharge\"]",
+              "label": "Charge mensuelle de service",
+              "value": "1000",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer le coût d’entrée",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"avance\"]",
+              "label": "avance",
+              "value": "6000000"
+            },
+            {
+              "selector": "[data-result-field=\"depot\"]",
+              "label": "depot",
+              "value": "500000"
+            },
+            {
+              "selector": "[data-result-field=\"honorairesAgent\"]",
+              "label": "honorairesAgent",
+              "value": "600000"
+            },
+            {
+              "selector": "[data-result-field=\"fraisJuridiques\"]",
+              "label": "fraisJuridiques",
+              "value": "300000"
+            },
+            {
+              "selector": "[data-result-field=\"chargesService\"]",
+              "label": "chargesService",
+              "value": "12000"
+            },
+            {
+              "selector": "[data-result-field=\"coutEntree\"]",
+              "label": "coutEntree",
+              "value": "7412000"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "NGN"
+            }
+          ],
+          "expectedSummary": "Coût total d’entrée : NGN 7 412 000; avance NGN 6 000 000; dépôt NGN 500 000."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/amana-ya-upangaji/",
+      "clearStaleOnInput": true,
+      "parserValidPdf": true,
+      "countryPresets": {
+        "ng": {
+          "rent": "500000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "0"
+        },
+        "ke": {
+          "rent": "50000",
+          "advanceMonths": "1",
+          "depositMonths": "1",
+          "agentFee": "8.33",
+          "legalFee": "0",
+          "serviceCharge": "0"
+        },
+        "za": {
+          "rent": "12000",
+          "advanceMonths": "1",
+          "depositMonths": "2",
+          "agentFee": "0",
+          "legalFee": "0",
+          "serviceCharge": "0"
+        },
+        "gh": {
+          "rent": "3000",
+          "advanceMonths": "12",
+          "depositMonths": "1",
+          "agentFee": "10",
+          "legalFee": "5",
+          "serviceCharge": "0"
+        }
+      },
+      "jurisdictionSources": {
+        "ng": {
+          "jurisdiction": "Nigeria — Jimbo la Lagos",
+          "availability": "official-source",
+          "url": "https://lagosstate.gov.ng/resources/",
+          "label": "Jimbo la Lagos — rasilimali rasmi na Tenancy Law",
+          "checkedAt": "2026-07-29",
+          "confidence": "Chanzo hiki kinahusu Nigeria, Jimbo la Lagos pekee. Hesabu ni thabiti kwa maingizo; thibitisha masharti na sheria ya sasa kabla ya kulipa."
+        },
+        "ke": {
+          "jurisdiction": "Kenya",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Kenya — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Kenya. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        },
+        "za": {
+          "jurisdiction": "Afrika Kusini",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Afrika Kusini — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Afrika Kusini. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        },
+        "gh": {
+          "jurisdiction": "Ghana",
+          "availability": "planning-default",
+          "url": "",
+          "label": "Ghana — thamani za mwanzo za kupanga; hakuna chanzo rasmi kilichounganishwa",
+          "checkedAt": "",
+          "confidence": "Hizi ni thamani za mwanzo za kupanga, si ada, desturi au sheria rasmi ya Ghana. Thibitisha mwenyewe kwa mamlaka au mtaalamu wa eneo."
+        }
+      },
+      "resultIntro": "Kikokotoo cha amana na gharama za kuhamia: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "avance": "Pango la mbele",
+        "depot": "Amana",
+        "honorairesAgent": "Ada ya wakala",
+        "fraisJuridiques": "Ada ya mkataba au wakili",
+        "chargesService": "Ada ya huduma",
+        "coutEntree": "Jumla ya gharama za kuhamia",
+        "devise": "Sarafu"
+      }
+    },
+    {
+      "rowNumber": 13,
+      "englishId": "rent-affordability",
+      "englishName": "Rent Affordability Calculator",
+      "englishRoute": "/tools/rent-affordability",
+      "englishFile": "tools/rent-affordability/index.html",
+      "frenchRoute": "/fr/tools/capacite-loyer",
+      "frenchFile": "fr/tools/capacite-loyer/index.html",
+      "name": "Kikokotoo cha uwezo wa kulipa pango",
+      "description": "Linganisha pango uliloingiza na kikomo chako cha bajeti, kisha panga pango la mbele bila kudai kiwango cha lazima au uamuzi wa mwenye nyumba.",
+      "categoryGroup": "legal",
+      "baselineState": "native-candidate",
+      "workflowKind": "calculation",
+      "engineMode": "rent-affordability",
+      "workflowControl": "Kokotoa kwa maingizo yangu",
+      "fields": [
+        {
+          "name": "currency",
+          "label": "Sarafu",
+          "type": "text",
+          "required": true,
+          "options": [],
+          "initialValue": "sarafu yako",
+          "testFixtureValue": "XOF"
+        },
+        {
+          "name": "income",
+          "label": "Mapato halisi ya mwezi",
+          "type": "number",
+          "min": "0.01",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "5000"
+        },
+        {
+          "name": "rent",
+          "label": "Pango la mwezi",
+          "type": "number",
+          "min": "0",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "1200"
+        },
+        {
+          "name": "ratio",
+          "label": "Kikomo cha bajeti (%)",
+          "type": "number",
+          "min": "0",
+          "max": "100",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "30"
+        },
+        {
+          "name": "advance",
+          "label": "Miezi ya pango la mbele",
+          "type": "number",
+          "min": "0",
+          "step": "any",
+          "required": true,
+          "options": [],
+          "initialValue": "",
+          "testFixtureValue": "2"
+        }
+      ],
+      "sourceBoundary": "Capacité de loyer est lié à « UN-Habitat — cadre de mesure de l’accessibilité du logement »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "implementationOwners": [
+        "/assets/js/engines/property-assumption.js",
+        "/assets/js/lib/french-mortgage-property-presentation.js",
+        "/assets/js/engines/french-mortgage-property.js",
+        "/assets/js/pages/french-mortgage-property-app.js"
+      ],
+      "sharedEngine": "property-assumption",
+      "imageId": "rent-affordability",
+      "imageUrl": "/assets/img/tools/rent-affordability.webp",
+      "artworkAlt": "Repère visuel de l’outil « Capacité de loyer »",
+      "artworkExists": true,
+      "source": {
+        "url": "",
+        "label": "UN-Habitat — kiungo cha chanzo cha nje hakipatikani; uthibitishaji wa mkono unahitajika",
+        "availability": "unavailable",
+        "checkedAt": "2026-08-02",
+        "confidence": "Hesabu ni thabiti kwa maingizo yako. Chanzo cha UN-Habitat kilirudisha 403 wakati wa ukaguzi; usichukulie uwiano kama kiwango kilichothibitishwa, cha kisheria, cha benki au cha kila mahali."
+      },
+      "sourceNote": "Capacité de loyer est lié à « UN-Habitat — cadre de mesure de l’accessibilité du logement »; les hypothèses et la confiance ci-dessous définissent exactement la limite de cette route.",
+      "sourceCheckedAt": "2026-07-29",
+      "englishOracle": null,
+      "aiFrenchRoute": "/fr/tools/capacite-loyer/",
+      "nativeRuntime": true,
+      "exportContract": {
+        "classification": "required",
+        "englishOwner": {
+          "route": "/tools/rent-affordability",
+          "file": "tools/rent-affordability/index.html",
+          "actions": [],
+          "evidence": "Physical English owner exposes no export, print, copy or download control; this contract is still required because the French owner advertises local exports."
+        },
+        "frenchOwner": {
+          "route": "/fr/tools/capacite-loyer",
+          "file": "fr/tools/capacite-loyer/index.html",
+          "actions": [
+            {
+              "format": "copy",
+              "selector": "button[data-action=\"copy\"]",
+              "label": "Copier le résumé",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "txt",
+              "selector": "button[data-action=\"txt\"]",
+              "label": "Télécharger TXT",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "json",
+              "selector": "button[data-action=\"json\"]",
+              "label": "Télécharger JSON",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "pdf",
+              "selector": "button[data-action=\"pdf\"]",
+              "label": "Télécharger PDF",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            },
+            {
+              "format": "print",
+              "selector": "button[data-action=\"print\"]",
+              "label": "Imprimer / enregistrer en PDF",
+              "evidence": "fr/tools/capacite-loyer/index.html:export-bar"
+            }
+          ],
+          "formats": [
+            "copy",
+            "txt",
+            "json",
+            "pdf",
+            "print"
+          ]
+        },
+        "fixture": {
+          "strategy": "synthetic-calculation",
+          "inputs": [
+            {
+              "selector": "[name=\"currency\"]",
+              "label": "Devise",
+              "value": "XOF",
+              "type": "text"
+            },
+            {
+              "selector": "[name=\"income\"]",
+              "label": "Revenu net mensuel",
+              "value": "5000",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"rent\"]",
+              "label": "Loyer mensuel",
+              "value": "1200",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"ratio\"]",
+              "label": "Ratio budgétaire (%)",
+              "value": "30",
+              "type": "number"
+            },
+            {
+              "selector": "[name=\"advance\"]",
+              "label": "Mois de loyer d’avance",
+              "value": "2",
+              "type": "number"
+            }
+          ],
+          "workflowControl": "Calculer avec mes hypothèses",
+          "workflowControlSelector": "[data-workflow-control]",
+          "workflowOwnerSelector": "[data-fr-mortgage-property-app]",
+          "workflowControlOwnedByCalculator": true,
+          "interactionType": "click",
+          "resultSelector": "[data-result]",
+          "expectedResults": [
+            {
+              "selector": "[data-result-field=\"loyer\"]",
+              "label": "loyer",
+              "value": "1200"
+            },
+            {
+              "selector": "[data-result-field=\"plafond\"]",
+              "label": "plafond",
+              "value": "1500"
+            },
+            {
+              "selector": "[data-result-field=\"avance\"]",
+              "label": "avance",
+              "value": "2400"
+            },
+            {
+              "selector": "[data-result-field=\"devise\"]",
+              "label": "devise",
+              "value": "XOF"
+            }
+          ],
+          "expectedSummary": "Loyer saisi : XOF 1 200; plafond budgétaire : XOF 1 500; avance : XOF 2 400."
+        },
+        "oracles": [
+          {
+            "format": "copy",
+            "parser": "clipboard exact UTF-8 French summary",
+            "status": "pending"
+          },
+          {
+            "format": "txt",
+            "parser": "UTF-8/BOM decode plus fixture input/result assertions",
+            "status": "pending"
+          },
+          {
+            "format": "json",
+            "parser": "JSON.parse plus schema, fixture and sensitive-state assertions",
+            "status": "pending"
+          },
+          {
+            "format": "pdf",
+            "parser": "%PDF signature, EOF, xref and reopened content stream assertions",
+            "status": "pending"
+          },
+          {
+            "format": "print",
+            "parser": "window.print interception plus French print DOM fixture assertions",
+            "status": "pending"
+          }
+        ],
+        "privacyGate": {
+          "localOnly": true,
+          "accountOrEmailGate": false,
+          "fixtureValueNetworkLeak": null
+        },
+        "finalStatus": "pending-browser-proof"
+      },
+      "swahiliRoute": "/sw/zana/uwezo-wa-kulipa-pango/",
+      "clearStaleOnInput": true,
+      "parserValidPdf": true,
+      "resultIntro": "Kikokotoo cha uwezo wa kulipa pango: matokeo yametolewa na injini ileile ya mmiliki wa Kiingereza kwa maingizo yaliyo hapa.",
+      "resultLabels": {
+        "loyer": "Pango uliloingiza",
+        "plafond": "Kikomo cha bajeti",
+        "avance": "Pango la mbele",
+        "devise": "Sarafu"
+      }
+    },
     {
       "rowNumber": 6,
       "englishId": "leave-days",

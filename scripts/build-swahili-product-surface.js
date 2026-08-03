@@ -44,10 +44,30 @@ function filePath(rel) { return path.join(ROOT, rel); }
 function read(rel) { return fs.readFileSync(filePath(rel), 'utf8'); }
 function readJson(rel) { return JSON.parse(read(rel)); }
 function normalize(value) { return String(value).normalize('NFC').replace(/\r\n/g, '\n'); }
+function routeToHtml(route) {
+  return `${String(route).replace(/^\//, '').replace(/\/?$/, '/')}index.html`;
+}
+const acceptedParityHtml = new Set(
+  readJson('data/audits/swahili-free-app-acceptance.json').entries
+    .filter((entry) => entry.status === 'accepted')
+    .map((entry) => routeToHtml(entry.swahiliRoute))
+);
+const sportsTravelParityHtml = new Set(
+  readJson('data/localization/sw-sports-travel-parity-manifest.json').rows
+    .map((row) => routeToHtml(row.swahiliRoute))
+    .concat([
+      'sw/michezo/index.html',
+      'sw/usafiri-utalii/index.html'
+    ])
+);
 function ownedByScopedParity(rel) {
-  return rel.startsWith('sw/')
-    && fs.existsSync(filePath(rel))
-    && read(rel).includes('scripts/build-sw-legal-government-insurance-parity.js');
+  if (acceptedParityHtml.has(rel) || sportsTravelParityHtml.has(rel)) return true;
+  if (!rel.startsWith('sw/') || !fs.existsSync(filePath(rel))) return false;
+  const html = read(rel);
+  return [
+    'scripts/build-sw-legal-government-insurance-parity.js',
+    'scripts/build-sw-web-text-codecs-family.js'
+  ].some((owner) => html.includes(owner));
 }
 function withAnalyticsLoader(html) {
   if (html.includes('/assets/js/lazy-analytics.js')) return html;

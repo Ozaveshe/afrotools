@@ -1,0 +1,85 @@
+{
+  "englishId": "roman-numerals",
+  "categoryKey": "education",
+  "englishRoute": "/tools/roman-numerals/",
+  "swahiliRoute": "/sw/zana/namba-za-kirumi/",
+  "state": "repair-candidate-unaccepted",
+  "coordinatorAcceptanceEdited": false,
+  "cleanBaseParent": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
+  "verifiedAt": "2026-08-02",
+  "supersedesRejectedCommits": [
+    "8f32388c7997499e1ccbe9d4604e9834bc8787da",
+    "b3535f755a8e37503322dd3e0f695af4e37b4c61"
+  ],
+  "sourceOwner": "sw/zana/namba-za-kirumi/index.html + assets/js/pages/sw-roman-numerals.js + tools/roman-numerals/roman-numerals-engine.js",
+  "oracles": {
+    "single": ["49 = XLIX", "2024 = MMXXIV", "CMXLIV = 944", "3999 = MMMCMXCIX"],
+    "batch": ["49 -> XLIX", "MMXXIV -> 2024", "IL -> invalid"],
+    "quiz": [
+      "difficulty ranges match English: 1-99, 1-499, 1-3999, 1000-3999",
+      "random decimal-to-Roman and Roman-to-decimal directions",
+      "skip preserves score and total",
+      "correct and wrong answers update score, total and streak",
+      "checked answers lock until next or skip"
+    ],
+    "swap": ["49 = XLIX", "swap to XLIX = 49", "swap back to 49 = XLIX"],
+    "invalid": ["0", "4000", "IIII", "IL", "12.5", "non-Roman letters"],
+    "boundary": ["range 1-3999", "batch limit 200 rows"]
+  },
+  "exportsReopened": ["single TXT", "single print PDF via pdf-parse", "batch TXT"],
+  "rejectionRepairs": {
+    "clipboard": "Rejected Clipboard API falls back safely and reports a manual-copy status when execCommand is blocked; no unhandled rejection, pageerror or console error.",
+    "singleStaleState": "Editing IL to 49 immediately clears the old validation message and aria-invalid before reconversion.",
+    "batchStaleState": "Typing after an empty-batch submission immediately clears the old error and keeps exports disabled until reconversion.",
+    "controlContrast": "Source-owned input, select, textarea, primary-button and secondary-button palettes override late global theme CSS; computed text and placeholder/option contrast is at least 4.5:1 and control boundaries/focus are at least 3:1 in light, manual dark and system dark, including disabled and hover states.",
+    "englishOwnerParity": "Difficulty, random question and direction, skip, score, total, streak, answer lock, next-question flow and Swap direction are present.",
+    "visibleLocalization": "English related-tools and sticky newsletter components are omitted; the localized global footer remains."
+  },
+  "discovery": {
+    "sourceRegistryRow": "assets/js/components/tool-registry.js#roman-numerals-sw",
+    "coveragePolicyOwner": "data/registry/locale-coverage-policy.json#/overrides",
+    "runtimeGeneratedOutputsCommitted": false,
+    "reason": "Coordinator owns canonical, minified, count, search, parity and locale-coverage regeneration after acceptance."
+  },
+  "coordinatorGenerationCommands": [
+    "npm run sw:parity:build",
+    "node scripts/minify.js --only=tool-registry.js",
+    "npm run registry:build",
+    "node scripts/build-search-index.js"
+  ],
+  "proof": {
+    "sourceTest": "tests/swahili-roman-owner.test.js",
+    "browserTest": "tests/e2e/swahili-roman-owner.spec.js",
+    "viewports": [320, 375],
+    "reflowPercent": 200,
+    "themes": ["light", "manual-dark", "system-dark"],
+    "computedControlContrast": "PASS: input/select/textarea/primary button/secondary button; normal, placeholder, option, hover, disabled and focus states; text >=4.5:1 and boundaries/focus >=3:1",
+    "keyboard": true,
+    "accessibility": true,
+    "privateMarkerNoNetwork": true,
+    "consoleErrors": 0,
+    "resource404s": 0,
+    "clipboardRejectionPageErrors": 0,
+    "clipboardRejectionConsoleErrors": 0,
+    "artwork": "/assets/img/tools/roman-numerals.svg",
+    "reciprocalLocales": ["en", "fr", "sw", "x-default"],
+    "sourceReviewed": "2026-07-31",
+    "confidence": "high within modern conventional notation for whole numbers 1-3999",
+    "coordinatorStatus": "unaccepted pending independent review"
+  },
+  "tests": {
+    "sourceOwner": "PASS: node tests/swahili-roman-owner.test.js",
+    "browserOwner": "PASS: 1/1 tests/e2e/swahili-roman-owner.spec.js",
+    "parityContract": "PASS: npm run test:sw-parity; 1,257 rows and 199 coordinator-accepted rows remain internally valid",
+    "parityFreshness": "FAIL-CLOSED/DEFERRED: npm run sw:parity:check reports the coordinator-owned inventory stale after this new source route; do not commit that generated JSON before coordinator acceptance and regeneration",
+    "sourceRegistry": "PASS: source registry parses with 3723 rows; exact Roman row executed and asserted; route file resolves",
+    "registryAudit": "PASS with coordinator-base notices for job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 only",
+    "privacyAiConsent": "PASS: 3/3 browser tests plus server consent test",
+    "hreflang": "PASS: 31076 relationships; 5276 reciprocal groups",
+    "links": "PASS: 133197 internal links across 11073 HTML files",
+    "seoReport": "REPORT: zero missing canonical, title, description or hreflang violations; coordinator-base auto-fix candidates remain outside scope",
+    "generatedRegistryChecks": "DEFERRED: canonical/minified/count/search/coverage outputs intentionally left to coordinator regeneration",
+    "lint": "PASS: 49 JavaScript files",
+    "diffCheck": "PASS"
+  }
+}

@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kizalishaji Hash | MD5, SHA na HMAC | AfroTools</title>
-<meta name="description" content="Tengeneza hash za MD5, SHA-256, SHA-512 na HMAC kwa maandishi au faili. Tumia kwa checksum na uhakiki, si kuhifadhi password bila mtaalamu.">
+<title>Kizalishaji Hashi | MD5, SHA-3, HMAC na PBKDF2 | AfroTools</title>
+<meta name="description" content="Tengeneza MD5, SHA-1, SHA-2, FIPS SHA-3, HMAC-SHA256 na PBKDF2-HMAC-SHA256 kwa maandishi au faili ndani ya kivinjari.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kizalishaji Hash | MD5, SHA na HMAC | AfroTools">
-<meta property="og:description" content="Tengeneza hash za MD5, SHA-256, SHA-512 na HMAC kwa maandishi au faili. Tumia kwa checksum na uhakiki, si kuhifadhi password bila mtaalamu.">
+<meta property="og:title" content="Kizalishaji Hashi | MD5, SHA-3, HMAC na PBKDF2 | AfroTools">
+<meta property="og:description" content="Tengeneza na uhakiki hashi za maandishi au faili, FIPS SHA-3, HMAC na PBKDF2 ndani ya kivinjari.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/kizalishaji-hash/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kizalishaji Hash | MD5, SHA na HMAC | AfroTools">
-<meta name="twitter:description" content="Tengeneza hash za MD5, SHA-256, SHA-512 na HMAC kwa maandishi au faili. Tumia kwa checksum na uhakiki, si kuhifadhi password bila mtaalamu.">
+<meta name="twitter:title" content="Kizalishaji Hashi | MD5, SHA-3, HMAC na PBKDF2 | AfroTools">
+<meta name="twitter:description" content="Tengeneza na uhakiki hashi za maandishi au faili, FIPS SHA-3, HMAC na PBKDF2 ndani ya kivinjari.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -23,6 +23,7 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
 <script src="/assets/js/components/navbar.min.js?v=b9df7b05" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
@@ -30,6 +31,35 @@
     --afro-green: var(--color-primary);
     --afro-dark: #0f1419;
     --afro-light: #f5f7fa;
+  }
+
+  .security-notes {
+    background: #fff;
+    border: 1px solid #dbe7f3;
+    border-radius: 12px;
+    margin-top: 18px;
+    overflow: hidden;
+  }
+
+  .security-notes .card-head { border-bottom-color: #dbe7f3; }
+  .security-list { display: grid; gap: 10px; }
+  .security-item {
+    background: #f8fbff;
+    border: 1px solid #e5edf6;
+    border-radius: 10px;
+    padding: 12px;
+  }
+  .security-item strong {
+    display: block;
+    color: #0f172a;
+    font-size: 0.82rem;
+    margin-bottom: 4px;
+  }
+  .security-item span {
+    color: #475569;
+    display: block;
+    font-size: 0.76rem;
+    line-height: 1.55;
   }
 
   .tool-hero {
@@ -134,6 +164,8 @@
     gap: 22px;
     align-items: start;
   }
+
+  .tool-main-inner > * { min-width: 0; }
 
   .card {
     background: #fff;
@@ -778,12 +810,28 @@
     .encoding-row {
       flex-wrap: wrap;
     }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .tab-btn {
+      min-width: 0;
+      padding: 10px 8px;
+    }
+
+    .card-head {
+      flex-wrap: wrap;
+      gap: 10px;
+    }
   }
 </style>
 <script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="sw_KE">
+<meta property="og:locale:alternate" content="en_US">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/hash-generator.webp">
 <meta property="article:modified_time" content="2026-03-28">
@@ -791,9 +839,9 @@
 {
   "@context": "https://schema.org",
   "@type": "WebApplication",
-  "name": "Kizalishaji Hash",
+  "name": "Kizalishaji Hashi",
   "url": "https://afrotools.com/sw/zana/kizalishaji-hash/",
-  "description": "Tengeneza hash za MD5, SHA-256, SHA-512 na HMAC kwa maandishi au faili. Tumia kwa checksum na uhakiki, si kuhifadhi password bila mtaalamu.",
+  "description": "Tengeneza MD5, SHA-1, SHA-2, FIPS SHA-3, HMAC-SHA256 na PBKDF2-HMAC-SHA256 kwa maandishi au faili ndani ya kivinjari.",
   "inLanguage": "sw",
   "isPartOf": {
     "@type": "WebSite",
@@ -805,8 +853,8 @@
   "image": "https://afrotools.com/assets/img/tools/hash-generator.webp"
 }
 </script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kizalishaji Hash","item":"https://afrotools.com/sw/zana/kizalishaji-hash/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kizalishaji Hash hutuma data kwenye server?","acceptedAnswer":{"@type":"Answer","text":"Fuata tabia ya source page: utilities nyingi hufanya kazi kwenye browser, lakini API, hosting, domain au provider workflows zinaweza kutegemea endpoints au data ya provider. Usitumie secrets za production bila tahadhari."}},{"@type":"Question","name":"Matokeo haya ni dhamana ya production?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Tumia matokeo kama msaada wa planning, debugging au generation. Hakiki security, privacy, hosting, SEO, domain, PWA na USSD requirements na provider au mtaalamu kabla ya launch."}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Zana za Developer","item":"https://afrotools.com/sw/zana-za-developer/"},{"@type":"ListItem","position":4,"name":"Kizalishaji Hashi","item":"https://afrotools.com/sw/zana/kizalishaji-hash/"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Kizalishaji Hash hutuma data kwenye seva?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Maandishi, faili, HMAC na PBKDF2 huchakatwa ndani ya kivinjari baada ya maktaba za ukurasa kupakia."}},{"@type":"Question","name":"SHA3 hapa ni Keccak au kiwango cha FIPS?","acceptedAnswer":{"@type":"Answer","text":"Ni SHA-3 ya FIPS 202. Zana hutumia utekelezaji maalumu wa SHA3-256 na SHA3-512, si hali ya Keccak ya CryptoJS."}},{"@type":"Question","name":"PBKDF2 hutumia algoriti gani?","acceptedAnswer":{"@type":"Answer","text":"PBKDF2 hutumia HMAC-SHA256 kwa chumvi, idadi ya marudio na ukubwa wa ufunguo unaochagua."}},{"@type":"Question","name":"Checksum inayolingana inathibitisha nini?","acceptedAnswer":{"@type":"Answer","text":"Inathibitisha baiti kufanana na thamani inayotarajiwa; haithibitishi kuwa chanzo cha faili kinaaminika."}}]}</script>
 <link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kizalishaji-hash/">
@@ -821,15 +869,15 @@
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <span>Kizalishaji Hash</span>
+      <a href="/">AfroTools</a> / <span>Kizalishaji Hashi</span>
     </div>
-    <h1>Kizalishaji <em>Hash</em></h1>
-    <p class="hero-sub">Tengeneza hash kama MD5, SHA-256, SHA-512 na HMAC. Hash ni alama ya kidijitali ya kuangalia uadilifu wa data; si ushauri kamili wa security.</p>
+    <h1>Kizalishaji <em>Hashi</em></h1>
+    <p class="hero-sub">Tengeneza MD5, SHA-1, SHA-2, FIPS SHA-3, HMAC-SHA256 na PBKDF2-HMAC-SHA256. Hashi husaidia kukagua uadilifu; haiwezi kurejeshwa kuwa data ya awali.</p>
     <div class="hero-badges">
-      <span class="badge b-green">10 Algorithms</span>
-      <span class="badge b-green">Faili Hashing</span>
+      <span class="badge b-green">Algoriti 10</span>
+      <span class="badge b-green">Hashi za faili</span>
       <span class="badge b-green">HMAC</span>
-      <span class="badge b-green">Checksum Verify</span>
+      <span class="badge b-green">Ukaguzi wa checksum</span>
     </div>
   </div>
 </div>
@@ -841,15 +889,15 @@
       <div class="tabs">
         <button type="button" class="tab-btn active" data-tab="text-tab">Maandishi</button>
         <button type="button" class="tab-btn" data-tab="file-tab">Faili</button>
-        <button type="button" class="tab-btn" data-tab="verify-tab">Verify</button>
-        <button type="button" class="tab-btn" data-tab="compare-tab">Compare</button>
+        <button type="button" class="tab-btn" data-tab="verify-tab">Hakiki</button>
+        <button type="button" class="tab-btn" data-tab="compare-tab">Linganisha</button>
       </div>
 
       <!-- TEXT TAB -->
       <div id="text-tab" class="tab-panel active">
         <div class="card">
           <div class="card-head">
-            <span class="card-title">Maandishi Kizalishaji Hash</span>
+            <span class="card-title">Hashi za maandishi</span>
             <div class="encoding-row">
               <button type="button" class="enc-btn active" data-enc="hex">Hex</button>
               <button type="button" class="enc-btn" data-enc="base64">Base64</button>
@@ -858,37 +906,38 @@
           </div>
           <div class="card-body">
             <div class="field">
-              <label class="f-label" for="textInput"><span class="f-label-text">Weka text to hash</span></label>
-              <textarea class="f-textarea" id="textInput" placeholder="Andika au bandika maandishi hapa..."></textarea>
+              <label class="f-label" for="textInput"><span class="f-label-text">Maandishi ya kutengenezea hashi</span></label>
+              <textarea class="f-textarea" id="textInput" placeholder="Andika au bandika maandishi hapa..." aria-label="Maandishi ya kutengenezea hashi"></textarea>
             </div>
             <div class="field">
               <label class="hmac-toggle">
-                <input aria-label="HmacToggle" type="checkbox" id="hmacToggle"> Enable HMAC (secret key)
+                <input aria-label="Washa HMAC" type="checkbox" id="hmacToggle"> Washa HMAC (ufunguo wa siri)
               </label>
               <div class="hmac-row" id="hmacRow">
                 <input aria-label="ingiza HMAC secret key" type="password" class="f-input" id="hmacKey" placeholder="ingiza HMAC secret key" style="margin-top:8px">
-                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Used for HMAC-SHA256 calculation</div>
+                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Hutumika hapa kwenye HMAC-SHA256 pekee; epuka siri za uzalishaji kwenye kifaa cha pamoja.</div>
               </div>
               <label class="hmac-toggle" style="margin-top:10px">
-                <input aria-label="Pbkdf2Toggle" type="checkbox" id="pbkdf2Toggle"> Enable PBKDF2 key derivation
+                <input aria-label="Washa PBKDF2" type="checkbox" id="pbkdf2Toggle"> Washa utoaji wa ufunguo wa PBKDF2
               </label>
-              <div class="hmac-row" id="pbkdf2Row" style="display:none">
-                <input aria-label="Salt (or leave blank for random)" type="text" class="f-input" id="pbkdf2Salt" placeholder="Salt (or leave blank for random)" style="margin-top:8px">
+              <form class="hmac-row" id="pbkdf2Form" style="display:none" novalidate>
+                <input aria-label="Chumvi ya PBKDF2" type="text" class="f-input" id="pbkdf2Salt" placeholder="Chumvi; acha wazi itengenezwe nasibu" style="margin-top:8px">
                 <div style="display:flex;gap:8px;margin-top:8px;align-items:center">
-                  <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Iterations:</label>
-                  <input aria-label="Pbkdf2Iters" type="number" class="f-input" id="pbkdf2Iters" value="100000" min="1000" max="1000000" style="max-width:140px">
-                  <label style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Key size:</label>
-                  <select class="f-select" id="pbkdf2KeySize" style="max-width:100px" aria-label="Pbkdf2Key Size">
+                  <label for="pbkdf2Iters" style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Marudio:</label>
+                  <input aria-label="Idadi ya marudio ya PBKDF2" type="number" class="f-input" id="pbkdf2Iters" value="100000" min="1" max="1000000" step="1" required style="max-width:140px">
+                  <label for="pbkdf2KeySize" style="font-size:0.68rem;font-weight:600;color:#0d2813;white-space:nowrap">Ukubwa wa ufunguo:</label>
+                  <select class="f-select" id="pbkdf2KeySize" style="max-width:100px" aria-label="Ukubwa wa ufunguo wa PBKDF2">
                     <option value="256">256-bit</option>
                     <option value="512">512-bit</option>
                     <option value="128">128-bit</option>
                   </select>
                 </div>
-                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">PBKDF2-SHA256 key derivation (password hashing)</div>
-              </div>
+                <div style="font-size:0.68rem;color:#6B8CAE;margin-top:4px">Utoaji wa ufunguo wa PBKDF2-HMAC-SHA256.</div>
+              </form>
             </div>
-            <div class="loading-spinner" id="textLoading">Generating hashes...</div>
-            <div id="textResults"></div>
+            <div class="loading-spinner" id="textLoading">Inatengeneza hashi...</div>
+            <div id="textResults" role="status" aria-live="polite" aria-atomic="true"></div>
+            <div id="hashStatus" role="status" aria-live="polite" aria-atomic="true" style="position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0"></div>
           </div>
         </div>
       </div>
@@ -897,21 +946,21 @@
       <div id="file-tab" class="tab-panel">
         <div class="card">
           <div class="card-head">
-            <span class="card-title">Faili Kizalishaji Hash</span>
+            <span class="card-title">Hashi za faili</span>
           </div>
           <div class="card-body">
-            <div class="drop-zone" id="dropZone">
+            <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="fileInput">
               <div class="drop-zone-icon">📁</div>
               <div class="drop-zone-text">Dondosha faili hapa au bofya kupakia</div>
-              <div class="drop-zone-sub">Any file type supported</div>
+              <div class="drop-zone-sub">Aina yoyote ya faili inakubaliwa</div>
             </div>
-            <input aria-label="FileInput" type="file" id="fileInput" style="display:none">
+            <input aria-label="Chagua faili la kutengenezea hashi" type="file" id="fileInput" style="display:none">
             <div class="file-info" id="fileInfo"></div>
             <div class="progress-bar" id="progressBar">
               <div class="progress-fill" id="progressFill"></div>
             </div>
-            <div class="loading-spinner" id="fileLoading">Processing file...</div>
-            <div id="fileResults"></div>
+            <div class="loading-spinner" id="fileLoading">Inachakata faili...</div>
+            <div id="fileResults" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
       </div>
@@ -920,20 +969,20 @@
       <div id="verify-tab" class="tab-panel">
         <div class="card">
           <div class="card-head">
-            <span class="card-title">Checksum Verify</span>
+            <span class="card-title">Hakiki checksum</span>
           </div>
           <div class="card-body">
             <div class="field">
-              <label class="f-label"><span class="f-label-text">Known Hash / Checksum</span></label>
+              <label class="f-label" for="verifyHash"><span class="f-label-text">Hashi au checksum inayotarajiwa</span></label>
               <input aria-label="Bandika hash inayotarajiwa hapa" type="text" class="f-input" id="verifyHash" placeholder="Bandika hash inayotarajiwa hapa...">
-              <div class="algo-detected" id="algoDetected"></div>
+              <div class="algo-detected" id="algoDetected" role="status" aria-live="polite" aria-atomic="true"></div>
             </div>
             <div class="field">
-              <label class="f-label"><span class="f-label-text">Maandishi to Verify</span></label>
+              <label class="f-label" for="verifyText"><span class="f-label-text">Maandishi ya kuhakiki</span></label>
               <textarea class="f-textarea" id="verifyText" placeholder="Weka maandishi ya kukagua dhidi ya hash..." style="min-height:80px" aria-label="Weka maandishi ya kukagua dhidi ya hash..."></textarea>
             </div>
-            <button type="button" class="calc-btn" id="verifyBtn">Verify Checksum</button>
-            <div class="verify-result" id="verifyResult"></div>
+            <button type="button" class="calc-btn" id="verifyBtn">Hakiki checksum</button>
+            <div class="verify-result" id="verifyResult" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
       </div>
@@ -942,39 +991,34 @@
       <div id="compare-tab" class="tab-panel">
         <div class="card">
           <div class="card-head">
-            <span class="card-title">Compare Hashes</span>
+            <span class="card-title">Linganisha hashi</span>
           </div>
           <div class="card-body">
             <div class="compare-grid">
               <div class="field">
-                <label class="f-label"><span class="f-label-text">First Hash</span></label>
-                <textarea class="f-textarea" id="hash1" placeholder="Paste first hash..." style="min-height:80px" aria-label="Paste first hash..."></textarea>
+                <label class="f-label" for="hash1"><span class="f-label-text">Hashi ya kwanza</span></label>
+                <textarea class="f-textarea" id="hash1" placeholder="Bandika hashi ya kwanza..." style="min-height:80px" aria-label="Hashi ya kwanza"></textarea>
               </div>
               <div class="field">
-                <label class="f-label"><span class="f-label-text">Second Hash</span></label>
-                <textarea class="f-textarea" id="hash2" placeholder="Paste second hash..." style="min-height:80px" aria-label="Paste second hash..."></textarea>
+                <label class="f-label" for="hash2"><span class="f-label-text">Hashi ya pili</span></label>
+                <textarea class="f-textarea" id="hash2" placeholder="Bandika hashi ya pili..." style="min-height:80px" aria-label="Hashi ya pili"></textarea>
               </div>
             </div>
-            <div class="verify-result" id="compareResult"></div>
+            <div class="verify-result" id="compareResult" role="status" aria-live="polite" aria-atomic="true"></div>
           </div>
         </div>
       </div>
 
-      <!-- AI Panel -->
-      <button type="button" class="ai-toggle-btn" id="aiToggleBtn">✦ Ask AI about Hashing</button>
-      <div class="ai-panel" id="aiPanel">
+      <div class="security-notes" aria-labelledby="hash-guidance-title">
+        <div class="card-head">
+          <span class="card-title" id="hash-guidance-title">Mwongozo wa algoriti</span>
+        </div>
         <div class="card-body">
-          <div class="ai-suggestions" id="aiSuggestions">
-            <button type="button" class="ai-suggest-btn" data-q="Which hash algorithm should I use for password storage?">Best for passwords?</button>
-            <button type="button" class="ai-suggest-btn" data-q="Is MD5 still safe for file checksums?">Is MD5 safe?</button>
-            <button type="button" class="ai-suggest-btn" data-q="What is the difference between SHA-256 and SHA-3?">SHA-256 vs SHA-3?</button>
+          <div class="security-list">
+            <div class="security-item"><strong>Ukaguzi wa uadilifu</strong><span>Tumia SHA-256 au SHA-512 kwa ukaguzi wa kisasa. MD5 na SHA-1 ni za urithi na si za matumizi ya usalama.</span></div>
+            <div class="security-item"><strong>Siri hubaki ndani</strong><span>Maandishi, faili, HMAC na PBKDF2 huchakatwa kwenye kivinjari. Tumia siri za majaribio kwenye vifaa vya pamoja.</span></div>
+            <div class="security-item"><strong>Thibitisha thamani inayotarajiwa</strong><span>Checksum inayolingana huthibitisha baiti kufanana; haithibitishi kuwa chanzo kinaaminika.</span></div>
           </div>
-          <div class="ai-messages" id="aiMessages"></div>
-          <div class="ai-input-row">
-            <input aria-label="Ask about hashing" type="text" class="ai-input" id="aiInput" placeholder="Ask about hashing..." maxlength="300">
-            <button type="button" class="ai-send-btn" id="aiSendBtn">Tuma</button>
-          </div>
-          <div class="ai-powered">Optional AI · provider inahitajika</div>
         </div>
       </div>
     </div>
@@ -982,35 +1026,35 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="info-card">
-        <div class="info-title">Hash Urefu Reference</div>
-        <div class="ref-row"><span class="ref-algo">MD5</span><span class="ref-len">32 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA-1</span><span class="ref-len">40 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA-256</span><span class="ref-len">64 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA-384</span><span class="ref-len">96 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA-512</span><span class="ref-len">128 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA3-256</span><span class="ref-len">64 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">SHA3-512</span><span class="ref-len">128 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">HMAC-SHA256</span><span class="ref-len">64 chars</span></div>
-        <div class="ref-row"><span class="ref-algo">CRC32</span><span class="ref-len">8 chars</span></div>
+        <div class="info-title">Urefu wa hashi</div>
+        <div class="ref-row"><span class="ref-algo">MD5</span><span class="ref-len">herufi 32</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-1</span><span class="ref-len">herufi 40</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-256</span><span class="ref-len">herufi 64</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-384</span><span class="ref-len">herufi 96</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA-512</span><span class="ref-len">herufi 128</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA3-256</span><span class="ref-len">herufi 64</span></div>
+        <div class="ref-row"><span class="ref-algo">SHA3-512</span><span class="ref-len">herufi 128</span></div>
+        <div class="ref-row"><span class="ref-algo">HMAC-SHA256</span><span class="ref-len">herufi 64</span></div>
+        <div class="ref-row"><span class="ref-algo">CRC32</span><span class="ref-len">herufi 8</span></div>
       </div>
 
       <div class="info-card">
         <div class="info-title">Matumizi ya kawaida</div>
         <div class="info-text" style="font-size:0.75rem">
-          <div>&#8226; Nenosiri verification</div>
-          <div style="margin-top:6px">&#8226; Faili integrity checks</div>
-          <div style="margin-top:6px">&#8226; Digital signatures</div>
-          <div style="margin-top:6px">&#8226; Data deduplication</div>
-          <div style="margin-top:6px">&#8226; Blockchain &amp; crypto</div>
-          <div style="margin-top:6px">&#8226; API authentication (HMAC)</div>
-          <div style="margin-top:6px">&#8226; Software distribution</div>
+          <div>&#8226; Ukaguzi wa nywila</div>
+          <div style="margin-top:6px">&#8226; Uadilifu wa faili</div>
+          <div style="margin-top:6px">&#8226; Sahihi za kidijitali</div>
+          <div style="margin-top:6px">&#8226; Kuondoa nakala za data</div>
+          <div style="margin-top:6px">&#8226; Blockchain na kripto</div>
+          <div style="margin-top:6px">&#8226; Uthibitishaji wa API kwa HMAC</div>
+          <div style="margin-top:6px">&#8226; Usambazaji wa programu</div>
         </div>
       </div>
 
       <div class="info-card">
-        <div class="info-title">matokeo Encodings</div>
+        <div class="info-title">Usimbaji wa matokeo</div>
         <div class="info-text" style="font-size:0.75rem">
-          <div><strong>Hex:</strong> 0-9, a-f (default)</div>
+          <div><strong>Hex:</strong> 0-9, a-f (chaguo-msingi)</div>
           <div style="margin-top:6px"><strong>Base64:</strong> A-Z, a-z, 0-9, +, /</div>
           <div style="margin-top:6px"><strong>Binary:</strong> 0 na 1</div>
         </div>
@@ -1019,10 +1063,10 @@
   </div>
 </div>
 
-<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kizalishaji Hash kwa Kiswahili.</strong> Tengeneza hashes na checksums kwa maandishi au faili. Kumbuka hashing si encryption, na usalama hutegemea algorithm na matumizi sahihi. <span>Kwa security, API, hosting, SEO, PWA, USSD au domain decisions, hakiki source matokeo, provider docs na production environment kabla ya launch.</span></div></section>
+<section class="sw-dev-product-note" style="max-width:1120px;margin:22px auto;padding:0 24px;"><div style="border:1px solid #bfdbfe;background:#eff6ff;color:#1e3a8a;border-radius:12px;padding:18px 20px;line-height:1.65;"><strong>Kizalishaji Hashi kwa Kiswahili.</strong> Tengeneza hashi na checksum za maandishi au faili. Hashi si usimbaji fiche, na usalama hutegemea algoriti na matumizi yake. <span>Thibitisha checksum inayotarajiwa kutoka chanzo rasmi kabla ya kuamini faili.</span></div></section>
 <section style="max-width:900px;margin:32px auto;padding:0 20px;">
   <div style="font-size:0.88rem;color:#475569;line-height:1.7;margin-bottom:24px;">
-    <p>Kizalishaji hiki hutengeneza hash kutoka maandishi au faili kwa algorithms kama MD5, SHA-1, SHA-256, SHA-384 na SHA-512. Hash husaidia kuhakiki faili, checksum na uadilifu wa data. Kwa password storage au security ya production, tumia mtaalamu na viwango vya shirika lako. Uchakataji hufanyika kwenye kivinjari pale source page inavyounga mkono.</p>
+    <p>Kizalishaji hiki hutengeneza hashi za maandishi na faili kwa MD5, SHA-1, SHA-256, SHA-384, SHA-512 na FIPS SHA-3. Pia kina HMAC-SHA256, PBKDF2-HMAC-SHA256, ukaguzi wa checksum na ulinganisho wa hashi. Maandishi na faili hayapakiwi AfroTools; huchakatwa ndani ya kivinjari baada ya maktaba za ukurasa kupakia.</p>
   </div>
 </section>
 <!-- FAQ Section -->
@@ -1035,7 +1079,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        MD5 hutoa hash ya 128-bit (characters 32) na ni ya haraka lakini imevunjwa kwa matumizi ya usalama. SHA-256 hutengeneza hash ya 256-bit, yaani characters 64, na ni sehemu ya familia ya SHA-2 inayotumika kwenye security applications, digital signatures na blockchain. Kwa matumizi yoyote nyeti ya usalama, SHA-256 au zaidi inapendekezwa.
+        MD5 hutoa hashi ya biti 128 (herufi 32) na ni ya haraka, lakini imevunjwa kwa matumizi ya usalama. SHA-256 hutoa hashi ya biti 256 (herufi 64) na ni sehemu ya familia ya SHA-2. Tumia SHA-256 au zaidi kwa ukaguzi wa kisasa.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1053,16 +1097,16 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        HMAC (Hash-based Message Authentication Code) huunganisha hash na secret key ili kutoa uhakika wa data na uthibitisho kwa pamoja. Tumia HMAC unapohitaji kuthibitisha kuwa ujumbe umetumwa na mhusika maalumu na haujachezewa, kama kwenye uthibitisho wa API, ukaguzi wa webhook na utengenezaji wa token salama.
+        HMAC huunganisha hashi na ufunguo wa siri ili kutoa uhakika wa uadilifu na uthibitishaji. Hutumika kwenye uthibitishaji wa API na ukaguzi wa webhook. Epuka siri za uzalishaji kwenye kifaa cha pamoja.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
       <summary style="padding:14px 18px;font-size:.88rem;font-weight:600;color:#111;cursor:pointer;font-family:'DM Sans',sans-serif;list-style:none;display:flex;justify-content:space-between;align-items:center">
-        File hashing hufanyaje kazi?
+        Kutengeneza hashi ya faili hufanyaje kazi?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        File hashing husoma binary content ya faili na kuitumia kwenye algorithm ya hash ili kutoa string yenye urefu maalumu. Hash hii hufanya kazi kama fingerprint ya kidijitali. Hata bit moja ya faili ikibadilika, hash hubadilika kabisa. Hutumika mara nyingi kuthibitisha upakuaji wa faili, kugundua uchezewaji na kulinganisha faili.
+        Zana husoma baiti za faili na kuzipitisha kwenye algoriti ya hashi ili kutoa alama yenye urefu maalumu. Baiti moja ikibadilika, hashi hubadilika. Hii husaidia kuthibitisha upakuaji, kugundua mabadiliko na kulinganisha faili.
       </div>
     </details>
     <details style="border:1px solid #e5e7eb;border-radius:10px;margin-bottom:8px;background:#fff">
@@ -1071,7 +1115,7 @@
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
       <div style="padding:0 18px 14px;font-size:.84rem;color:#4b5563;line-height:1.7;font-family:'DM Sans',sans-serif">
-        SHA-2 (ikiwemo SHA-256 na SHA-512) na SHA-3 zote ni viwango salama vya hash vilivyotolewa na NIST. SHA-2 hutumia muundo wa Merkle-Damgard huku SHA-3 ikitumia muundo wa sponge (Keccak). SHA-3 iliundwa kama mbadala endapo SHA-2 itavunjwa, lakini zote mbili kwa sasa zinachukuliwa kuwa salama. SHA-2 inatumika zaidi.
+        SHA-2 na SHA-3 zote ni viwango vya NIST. Zana hii hutumia SHA3-256 na SHA3-512 za FIPS 202 kupitia maktaba maalumu ya SHA-3; haitumii hali ya Keccak inayotolewa na CryptoJS.SHA3. SHA-2 bado inatumika zaidi.
       </div>
     </details>
   </div>
@@ -1082,16 +1126,14 @@
 <afro-related-tools category="developer" current="hash-generator"></afro-related-tools>
 <afro-footer></afro-footer>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.1.1/crypto-js.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/crypto-js@4.2.0/crypto-js.min.js" defer></script>
+<script src="https://cdn.jsdelivr.net/npm/jssha@3.3.2/dist/sha3.min.js" defer></script>
 <script>
 (function() {
   'use strict';
 
   // State
   let currentEncoding = 'hex';
-  let aiExchanges = 0;
-  const MAX_AI_EXCHANGES = 3;
-  let aiHistory = [];
 
   // Utility: CRC32
   function crc32(str) {
@@ -1106,12 +1148,106 @@
   }
 
   // Toast
-  function showToast(msg) {
+  function showToast(msg, isError) {
     var t = document.createElement('div');
     t.className = 'toast';
+    t.setAttribute('role', isError ? 'alert' : 'status');
+    t.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+    t.setAttribute('aria-atomic', 'true');
     t.textContent = msg;
     document.body.appendChild(t);
     setTimeout(function() { t.remove(); }, 2000);
+  }
+
+  function setHashStatus(message, isError) {
+    var status = document.getElementById('hashStatus');
+    if (status.textContent === message && status.getAttribute('role') === (isError ? 'alert' : 'status')) return;
+    status.setAttribute('role', isError ? 'alert' : 'status');
+    status.setAttribute('aria-live', isError ? 'assertive' : 'polite');
+    status.textContent = message;
+  }
+
+  function clearVerifyResult() {
+    var result = document.getElementById('verifyResult');
+    result.className = 'verify-result';
+    result.textContent = '';
+  }
+
+  function clearInvalidPBKDF2State(message) {
+    document.getElementById('textResults').innerHTML = '';
+    document.getElementById('textLoading').classList.remove('visible');
+    clearVerifyResult();
+    setHashStatus(message, true);
+  }
+
+  function validatePBKDF2(reportError) {
+    if (!document.getElementById('pbkdf2Toggle').checked) return true;
+    var form = document.getElementById('pbkdf2Form');
+    var input = document.getElementById('pbkdf2Iters');
+    var raw = input.value.trim();
+    var iterations = Number(raw);
+    var validInteger = raw !== '' && Number.isFinite(iterations) && Number.isInteger(iterations) &&
+      iterations >= 1 && iterations <= 1000000;
+    input.setCustomValidity(validInteger ? '' : 'Weka idadi kamili ya marudio kati ya 1 na 1,000,000.');
+    var valid = form.checkValidity() && validInteger;
+    if (!valid) {
+      clearInvalidPBKDF2State(input.validationMessage || 'Idadi ya marudio ya PBKDF2 si sahihi.');
+      if (reportError) input.reportValidity();
+      return false;
+    }
+    input.setCustomValidity('');
+    return true;
+  }
+
+  function safeCopy(text) {
+    if (navigator.clipboard && window.isSecureContext) {
+      return navigator.clipboard.writeText(text).then(function() { return true; }).catch(function() {
+        return fallbackCopy(text);
+      });
+    }
+    return Promise.resolve(fallbackCopy(text));
+  }
+
+  function fallbackCopy(text) {
+    var textarea = document.createElement('textarea');
+    textarea.value = text;
+    textarea.setAttribute('readonly', '');
+    textarea.style.position = 'fixed';
+    textarea.style.left = '-9999px';
+    document.body.appendChild(textarea);
+    textarea.focus();
+    textarea.select();
+    var copied = false;
+    try {
+      copied = document.execCommand('copy');
+    } catch (e) {
+      copied = false;
+    }
+    textarea.remove();
+    return copied;
+  }
+
+  function arrayBufferToWordArray(buffer) {
+    var bytes = new Uint8Array(buffer);
+    var words = [];
+    for (var i = 0; i < bytes.length; i++) {
+      words[i >>> 2] |= bytes[i] << (24 - (i % 4) * 8);
+    }
+    return CryptoJS.lib.WordArray.create(words, bytes.length);
+  }
+
+  function sha3Text(input, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'TEXT', { encoding: 'UTF8' });
+    shaObj.update(input);
+    return shaObj.getHash('HEX');
+  }
+
+  function sha3ArrayBuffer(buffer, variant) {
+    if (typeof jsSHA === 'undefined') return null;
+    var shaObj = new jsSHA(variant, 'ARRAYBUFFER');
+    shaObj.update(buffer);
+    return shaObj.getHash('HEX');
   }
 
   // Encoding converters
@@ -1134,10 +1270,11 @@
 
   // Generate all hashes from text
   function generateHashes(input) {
-    if (typeof CryptoJS === 'undefined') {
-      showToast('Hashing library still loading, please try again');
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      showToast('Maktaba za hashi bado zinapakia; jaribu tena', true);
       return null;
     }
+    if (!validatePBKDF2(false)) return null;
     var hmacKey = document.getElementById('hmacKey').value;
     try {
       return {
@@ -1146,28 +1283,35 @@
         'SHA-256': CryptoJS.SHA256(input).toString(),
         'SHA-384': CryptoJS.SHA384(input).toString(),
         'SHA-512': CryptoJS.SHA512(input).toString(),
-        'SHA3-256': CryptoJS.SHA3(input, { outputLength: 256 }).toString(),
-        'SHA3-512': CryptoJS.SHA3(input, { outputLength: 512 }).toString(),
+        'SHA3-256': sha3Text(input, 'SHA3-256'),
+        'SHA3-512': sha3Text(input, 'SHA3-512'),
         'HMAC-SHA256': hmacKey ? CryptoJS.HmacSHA256(input, hmacKey).toString() : null,
         'CRC32': crc32(input),
         'PBKDF2': (function() {
           if (!document.getElementById('pbkdf2Toggle').checked) return null;
           var salt = document.getElementById('pbkdf2Salt').value || CryptoJS.lib.WordArray.random(16).toString();
-          var iters = parseInt(document.getElementById('pbkdf2Iters').value) || 100000;
-          var keySize = (parseInt(document.getElementById('pbkdf2KeySize').value) || 256) / 32;
+          var iters = Number(document.getElementById('pbkdf2Iters').value);
+          var keyBits = Number(document.getElementById('pbkdf2KeySize').value);
+          if (![128, 256, 512].includes(keyBits)) throw new Error('Ukubwa wa ufunguo wa PBKDF2 si sahihi');
+          var keySize = keyBits / 32;
           if (!document.getElementById('pbkdf2Salt').value) document.getElementById('pbkdf2Salt').value = salt;
-          return CryptoJS.PBKDF2(input, salt, { keySize: keySize, iterations: iters }).toString();
+          return CryptoJS.PBKDF2(input, salt, {
+            keySize: keySize,
+            iterations: iters,
+            hasher: CryptoJS.algo.SHA256
+          }).toString();
         })()
       };
     } catch (e) {
-      showToast('Error generating hashes');
+      clearInvalidPBKDF2State('Hitilafu imetokea wakati wa kutengeneza hashi');
+      showToast('Hitilafu imetokea wakati wa kutengeneza hashi', true);
       return null;
     }
   }
 
   // Generate file hashes
-  function generateFileHashes(wordArray) {
-    if (typeof CryptoJS === 'undefined') return null;
+  function generateFileHashes(wordArray, buffer) {
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') return null;
     try {
       return {
         'MD5': CryptoJS.MD5(wordArray).toString(),
@@ -1175,11 +1319,11 @@
         'SHA-256': CryptoJS.SHA256(wordArray).toString(),
         'SHA-384': CryptoJS.SHA384(wordArray).toString(),
         'SHA-512': CryptoJS.SHA512(wordArray).toString(),
-        'SHA3-256': CryptoJS.SHA3(wordArray, { outputLength: 256 }).toString(),
-        'SHA3-512': CryptoJS.SHA3(wordArray, { outputLength: 512 }).toString()
+        'SHA3-256': sha3ArrayBuffer(buffer, 'SHA3-256'),
+        'SHA3-512': sha3ArrayBuffer(buffer, 'SHA3-512')
       };
     } catch (e) {
-      showToast('Error hashing file');
+      showToast('Faili halikuweza kutengenezewa hashi', true);
       return null;
     }
   }
@@ -1199,7 +1343,7 @@
       var display = isCrc ? hexVal : encodeHash(hexVal, enc);
       var charCount = display.replace(/ /g, '').length;
       html += '<div class="hash-item">';
-      html += '<div class="hash-item-head"><span class="hash-algo">' + algo + '</span><span class="hash-meta">' + charCount + ' chars</span></div>';
+      html += '<div class="hash-item-head"><span class="hash-algo">' + algo + '</span><span class="hash-meta">herufi ' + charCount + '</span></div>';
       html += '<div class="hash-value" data-hex="' + hexVal + '">' + display + '</div>';
       html += '<button type="button" class="copy-btn" data-val="' + display.replace(/"/g, '&quot;') + '">Nakili</button>';
       html += '</div>';
@@ -1210,14 +1354,16 @@
       html += '<button type="button" class="copy-all-btn" id="copyAll_' + containerId + '">Nakili hashi zote</button>';
     }
     container.innerHTML = html;
+    setHashStatus('Hashi ' + entries.filter(function(entry) { return entry[1] !== null; }).length + ' zimetengenezwa.', false);
 
     // Copy individual
     container.querySelectorAll('.copy-btn').forEach(function(btn) {
       btn.addEventListener('click', function() {
-        navigator.clipboard.writeText(btn.dataset.val);
-        btn.textContent = 'Copied!';
-        showToast('Hash copied!');
-        setTimeout(function() { btn.textContent = 'Copy'; }, 1500);
+        safeCopy(btn.dataset.val).then(function(copied) {
+          btn.textContent = copied ? 'Imenakiliwa!' : 'Imeshindikana';
+          showToast(copied ? 'Hashi imenakiliwa' : 'Kunakili kumeshindikana', !copied);
+          setTimeout(function() { btn.textContent = 'Nakili'; }, 1500);
+        });
       });
     });
 
@@ -1225,10 +1371,11 @@
     var copyAllBtn = document.getElementById('copyAll_' + containerId);
     if (copyAllBtn) {
       copyAllBtn.addEventListener('click', function() {
-        navigator.clipboard.writeText(allText);
-        copyAllBtn.textContent = 'Copied All!';
-        showToast('All hashes copied!');
-        setTimeout(function() { copyAllBtn.textContent = 'Copy All Hashes'; }, 1500);
+        safeCopy(allText).then(function(copied) {
+          copyAllBtn.textContent = copied ? 'Zimenakiliwa!' : 'Imeshindikana';
+          showToast(copied ? 'Hashi zote zimenakiliwa' : 'Kunakili kumeshindikana', !copied);
+          setTimeout(function() { copyAllBtn.textContent = 'Nakili hashi zote'; }, 1500);
+        });
       });
     }
   }
@@ -1244,8 +1391,19 @@
       var copyBtn = el.parentElement.querySelector('.copy-btn');
       if (copyBtn) copyBtn.dataset.val = display;
       var meta = el.parentElement.querySelector('.hash-meta');
-      if (meta) meta.textContent = display.replace(/ /g, '').length + ' chars';
+      if (meta) meta.textContent = 'herufi ' + display.replace(/ /g, '').length;
     });
+  }
+
+  function refreshTextHashes() {
+    var input = document.getElementById('textInput').value;
+    var results = document.getElementById('textResults');
+    results.innerHTML = '';
+    clearVerifyResult();
+    if (!input) { setHashStatus('', false); return; }
+    if (!validatePBKDF2(false)) return;
+    var hashes = generateHashes(input);
+    if (hashes) renderResults(hashes, 'textResults');
   }
 
   // Tab switching
@@ -1272,21 +1430,13 @@
   // HMAC toggle
   document.getElementById('hmacToggle').addEventListener('change', function() {
     document.getElementById('hmacRow').classList.toggle('visible', this.checked);
-    var input = document.getElementById('textInput').value;
-    if (input) {
-      var h = generateHashes(input);
-      if (h) renderResults(h, 'textResults');
-    }
+    refreshTextHashes();
   });
 
   // PBKDF2 toggle
   document.getElementById('pbkdf2Toggle').addEventListener('change', function() {
-    document.getElementById('pbkdf2Row').style.display = this.checked ? 'block' : 'none';
-    var input = document.getElementById('textInput').value;
-    if (input) {
-      var h = generateHashes(input);
-      if (h) renderResults(h, 'textResults');
-    }
+    document.getElementById('pbkdf2Form').style.display = this.checked ? 'block' : 'none';
+    refreshTextHashes();
   });
 
   // Text hashing (live)
@@ -1294,8 +1444,9 @@
   document.getElementById('textInput').addEventListener('input', function() {
     clearTimeout(textTimeout);
     var input = this.value;
+    document.getElementById('textResults').innerHTML = '';
     if (!input) {
-      document.getElementById('textResults').innerHTML = '';
+      document.getElementById('textLoading').classList.remove('visible');
       return;
     }
     document.getElementById('textLoading').classList.add('visible');
@@ -1307,16 +1458,34 @@
   });
 
   document.getElementById('hmacKey').addEventListener('input', function() {
-    var input = document.getElementById('textInput').value;
-    if (input) {
-      var h = generateHashes(input);
-      if (h) renderResults(h, 'textResults');
-    }
+    refreshTextHashes();
+  });
+
+  ['pbkdf2Salt', 'pbkdf2Iters', 'pbkdf2KeySize'].forEach(function(id) {
+    var control = document.getElementById(id);
+    control.addEventListener(id === 'pbkdf2KeySize' ? 'change' : 'input', refreshTextHashes);
+  });
+  document.getElementById('pbkdf2Iters').addEventListener('blur', function() {
+    validatePBKDF2(true);
+  });
+  document.getElementById('pbkdf2Form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    if (validatePBKDF2(true)) refreshTextHashes();
   });
 
   // File hashing with drag-and-drop
   var dropZone = document.getElementById('dropZone');
   var fileInput = document.getElementById('fileInput');
+  var fileRequestId = 0;
+
+  function clearFileState() {
+    document.getElementById('fileResults').innerHTML = '';
+    document.getElementById('fileInfo').textContent = '';
+    document.getElementById('fileInfo').classList.remove('visible');
+    document.getElementById('fileLoading').classList.remove('visible');
+    document.getElementById('progressBar').classList.remove('visible');
+    document.getElementById('progressFill').style.width = '0%';
+  }
 
   ['dragenter', 'dragover'].forEach(function(evt) {
     dropZone.addEventListener(evt, function(e) {
@@ -1333,6 +1502,7 @@
   });
 
   dropZone.addEventListener('drop', function(e) {
+    clearFileState();
     var files = e.dataTransfer.files;
     if (files.length) {
       fileInput.files = files;
@@ -1341,16 +1511,29 @@
   });
 
   dropZone.addEventListener('click', function() { fileInput.click(); });
+  dropZone.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      fileInput.click();
+    }
+  });
   fileInput.addEventListener('change', function() {
+    clearFileState();
     if (this.files.length) handleFile(this.files[0]);
   });
 
   function handleFile(file) {
+    var requestId = ++fileRequestId;
+    clearFileState();
     var info = document.getElementById('fileInfo');
     var sizeStr = file.size < 1048576
       ? (file.size / 1024).toFixed(2) + ' KB'
       : (file.size / 1048576).toFixed(2) + ' MB';
-    info.innerHTML = '<strong>' + file.name + '</strong> (' + sizeStr + ')';
+    info.replaceChildren();
+    var fileName = document.createElement('strong');
+    fileName.textContent = file.name;
+    info.appendChild(fileName);
+    info.appendChild(document.createTextNode(' (' + sizeStr + ')'));
     info.classList.add('visible');
 
     var progressBar = document.getElementById('progressBar');
@@ -1368,13 +1551,21 @@
       }
     };
     reader.onload = function() {
+      if (requestId !== fileRequestId) return;
       progressFill.style.width = '100%';
-      var wordArray = CryptoJS.lib.WordArray.create(new Uint8Array(reader.result));
-      var h = generateFileHashes(wordArray);
+      var wordArray = arrayBufferToWordArray(reader.result);
+      var h = generateFileHashes(wordArray, reader.result);
       if (h) renderResults(h, 'fileResults');
       document.getElementById('fileLoading').classList.remove('visible');
       setTimeout(function() { progressBar.classList.remove('visible'); }, 800);
     };
+    reader.onerror = function() {
+      if (requestId !== fileRequestId) return;
+      fileInput.value = '';
+      clearFileState();
+      showToast('Faili halikuweza kusomwa', true);
+    };
+    reader.onabort = reader.onerror;
     reader.readAsArrayBuffer(file);
   }
 
@@ -1394,11 +1585,16 @@
   }
 
   document.getElementById('verifyHash').addEventListener('input', function() {
+    clearVerifyResult();
     var hash = this.value.trim();
     var detected = document.getElementById('algoDetected');
     if (!hash) { detected.textContent = ''; return; }
     var algo = detectAlgorithm(hash);
-    detected.textContent = algo ? 'Detected: ' + algo : 'Unknown hash length (' + hash.length + ' chars)';
+    detected.textContent = algo ? 'Imetambuliwa: ' + algo : 'Urefu wa hashi hautambuliki (herufi ' + hash.length + ')';
+  });
+
+  document.getElementById('verifyText').addEventListener('input', function() {
+    clearVerifyResult();
   });
 
   document.getElementById('verifyBtn').addEventListener('click', function() {
@@ -1407,12 +1603,14 @@
     var result = document.getElementById('verifyResult');
 
     if (!knownHash || !text) {
-      showToast('Enter both a hash and text to verify');
+      clearVerifyResult();
+      showToast('Weka hashi na maandishi ya kuhakiki', true);
       return;
     }
 
-    if (typeof CryptoJS === 'undefined') {
-      showToast('Hashing library still loading');
+    if (typeof CryptoJS === 'undefined' || typeof jsSHA === 'undefined') {
+      clearVerifyResult();
+      showToast('Maktaba za hashi bado zinapakia', true);
       return;
     }
 
@@ -1431,10 +1629,10 @@
     result.classList.add('visible');
     if (matched) {
       result.className = 'verify-result visible match';
-      result.innerHTML = '&#10003; Checksum Match (' + matchedAlgo + ')';
+      result.textContent = '\u2713 Checksum inalingana (' + matchedAlgo + ')';
     } else {
       result.className = 'verify-result visible nomatch';
-      result.innerHTML = '&#10007; No Match Found';
+      result.textContent = '\u2717 Hakuna inayolingana';
     }
   });
 
@@ -1443,82 +1641,16 @@
     var h1 = document.getElementById('hash1').value.trim().toLowerCase();
     var h2 = document.getElementById('hash2').value.trim().toLowerCase();
     var result = document.getElementById('compareResult');
-    if (!h1 || !h2) { result.classList.remove('visible'); return; }
+    if (!h1 || !h2) { result.className = 'verify-result'; result.textContent = ''; return; }
     var match = h1 === h2;
     result.classList.add('visible');
     result.className = 'verify-result visible ' + (match ? 'match' : 'nomatch');
-    result.innerHTML = match ? '&#10003; Hashes Match' : '&#10007; Hashes Do Not Match';
+    result.textContent = match ? '\u2713 Hashi zinalingana' : '\u2717 Hashi hazilingani';
   }
 
   document.getElementById('hash1').addEventListener('input', compareHashes);
   document.getElementById('hash2').addEventListener('input', compareHashes);
 
-  // AI Panel
-  document.getElementById('aiToggleBtn').addEventListener('click', function() {
-    document.getElementById('aiPanel').classList.toggle('visible');
-  });
-
-  document.querySelectorAll('.ai-suggest-btn').forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      document.getElementById('aiInput').value = btn.dataset.q;
-      sendAiMessage();
-    });
-  });
-
-  document.getElementById('aiSendBtn').addEventListener('click', sendAiMessage);
-  document.getElementById('aiInput').addEventListener('keydown', function(e) {
-    if (e.key === 'Enter') sendAiMessage();
-  });
-
-  function sendAiMessage() {
-    var input = document.getElementById('aiInput');
-    var msg = input.value.trim();
-    if (!msg) return;
-    if (aiExchanges >= MAX_AI_EXCHANGES) {
-      showToast('Maximum ' + MAX_AI_EXCHANGES + ' questions per session');
-      return;
-    }
-
-    var messages = document.getElementById('aiMessages');
-    messages.innerHTML += '<div class="ai-msg user">' + escapeHtml(msg) + '</div>';
-    input.value = '';
-    document.getElementById('aiSendBtn').disabled = true;
-
-    // Hide suggestions after first use
-    document.getElementById('aiSuggestions').style.display = 'none';
-
-    aiHistory.push({ role: 'user', content: msg });
-
-    fetch('/.netlify/functions/ai-advisor', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        tool: 'hash-generator',
-        message: msg,
-        history: aiHistory,
-        maxTokens: 500
-      })
-    })
-    .then(function(r) { return r.json(); })
-    .then(function(data) {
-      var reply = data.reply || data.message || 'Sorry, I could not get a response.';
-      aiHistory.push({ role: 'assistant', content: reply });
-      messages.innerHTML += '<div class="ai-msg assistant">' + escapeHtml(reply) + '</div>';
-      messages.scrollTop = messages.scrollHeight;
-      aiExchanges++;
-      document.getElementById('aiSendBtn').disabled = false;
-    })
-    .catch(function() {
-      messages.innerHTML += '<div class="ai-msg assistant">Sorry, something went wrong. Please try again.</div>';
-      document.getElementById('aiSendBtn').disabled = false;
-    });
-  }
-
-  function escapeHtml(str) {
-    var div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  }
 })();
 </script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>

@@ -9,6 +9,7 @@
   var output = root.querySelector('[data-result]');
   var status = root.querySelector('[data-status]');
   var exports = root.querySelector('[data-export-bar]');
+  var sourcePanel = root.querySelector('[data-tool-verification-panel]');
   var contract = null;
   var lastInput = null;
   var lastResult = null;
@@ -26,23 +27,25 @@
 
   function fieldMarkup(field) {
     var id = 'sw-gap-' + field.name;
+    var required = field.required === false ? '' : ' required';
     if (field.type === 'checkbox') {
       return '<label class="mp-check" for="' + id + '"><input id="' + id + '" name="' +
         escapeHtml(field.name) + '" type="checkbox"><span>' + escapeHtml(field.label) + '</span></label>';
     }
     if (field.type === 'select') {
       return '<label for="' + id + '"><span>' + escapeHtml(field.label) + '</span><select id="' + id +
-        '" name="' + escapeHtml(field.name) + '" required>' + (field.options || []).map(function (option) {
+        '" name="' + escapeHtml(field.name) + '"' + required + '>' + (field.options || []).map(function (option) {
           return '<option value="' + escapeHtml(option[0]) + '">' + escapeHtml(option[1]) + '</option>';
         }).join('') + '</select></label>';
     }
     var attributes = field.type === 'number'
       ? ' inputmode="decimal" step="' + escapeHtml(field.step == null ? 'any' : field.step) +
-        '" min="' + escapeHtml(field.min == null ? 0 : field.min) + '"'
+        '" min="' + escapeHtml(field.min == null ? 0 : field.min) + '"' +
+        (field.max == null ? '' : ' max="' + escapeHtml(field.max) + '"')
       : field.type === 'date' ? '' : ' autocomplete="off"';
     return '<label for="' + id + '"><span>' + escapeHtml(field.label) + '</span><input id="' + id +
       '" name="' + escapeHtml(field.name) + '" type="' + escapeHtml(field.type) + '"' + attributes +
-      ' required></label>';
+      required + '></label>';
   }
 
   function collect() {
@@ -77,22 +80,75 @@
     return translated;
   }
 
+  function disclosureContext(input) {
+    if (!contract || !contract.parserValidPdf) return null;
+    if (contract.jurisdictionSources) {
+      return contract.jurisdictionSources[(input && input.country) || form.elements.country.value] || null;
+    }
+    return contract.source || null;
+  }
+
+  function availabilityText(source) {
+    if (source.availability === 'official-source') {
+      return 'Chanzo rasmi kimeunganishwa kwa mamlaka hii pekee.';
+    }
+    if (source.availability === 'planning-default') {
+      return 'Thamani hizi ni za kupanga tu; hakuna chanzo rasmi kilichounganishwa kwa mamlaka hii.';
+    }
+    return 'Kiungo cha chanzo cha nje hakipatikani; uthibitishaji wa mkono unahitajika.';
+  }
+
+  function updateSourcePanel(input) {
+    var source = disclosureContext(input);
+    if (!source || !sourcePanel || !sourcePanel.querySelector('[data-source-availability]')) return;
+    var jurisdiction = sourcePanel.querySelector('[data-source-jurisdiction]');
+    var jurisdictionValue = jurisdiction && jurisdiction.querySelector('span');
+    var link = sourcePanel.querySelector('[data-source-link]');
+    var label = sourcePanel.querySelector('[data-source-label]');
+    var availability = sourcePanel.querySelector('[data-source-availability]');
+    var checked = sourcePanel.querySelector('[data-source-checked] span');
+    var confidence = sourcePanel.querySelector('[data-source-confidence]');
+    if (jurisdiction) jurisdiction.hidden = !source.jurisdiction;
+    if (jurisdictionValue) jurisdictionValue.textContent = source.jurisdiction || '';
+    if (link) {
+      link.hidden = !source.url;
+      link.textContent = source.label;
+      link.setAttribute('href', source.url || '#');
+    }
+    if (label) {
+      label.hidden = Boolean(source.url);
+      label.textContent = source.label;
+    }
+    availability.setAttribute('data-source-state', source.availability || 'unavailable');
+    availability.textContent = availabilityText(source);
+    if (checked) checked.textContent = source.checkedAt || 'Haijathibitishwa';
+    if (confidence) confidence.textContent = source.confidence;
+  }
+
   function render(result) {
     lastResult = result;
     var translated = resultData(result);
+    var disclosure = disclosureContext(lastInput);
+    var disclosureMarkup = disclosure
+      ? '<div class="mp-result-source" data-result-source>' +
+        (disclosure.jurisdiction ? '<p><strong>Mamlaka iliyochaguliwa:</strong> ' + escapeHtml(disclosure.jurisdiction) + '</p>' : '') +
+        '<p><strong>Hali ya chanzo:</strong> ' + escapeHtml(availabilityText(disclosure)) + '</p>' +
+        '<p><strong>Uhakika wa chanzo:</strong> ' + escapeHtml(disclosure.confidence) + '</p></div>'
+      : '';
     output.hidden = false;
     output.innerHTML = '<p class="mp-result-label">Matokeo ya ndani</p><p data-result-summary>' +
       escapeHtml(contract.resultIntro) + '</p><dl>' +
       Object.keys(translated).map(function (key) {
         return '<div><dt>' + escapeHtml(key) + '</dt><dd>' + escapeHtml(translated[key]) + '</dd></div>';
-      }).join('') + '</dl><p class="mp-result-boundary">' +
+      }).join('') + '</dl>' + disclosureMarkup + '<p class="mp-result-boundary">' +
       'Haya ni makadirio au rasimu ya kupanga tu. Thibitisha ada, sheria, haki, masharti, muda na uamuzi kwa mamlaka rasmi au mtaalamu mwenye sifa.</p>';
     exports.hidden = false;
     output.focus();
   }
 
   function serializable() {
-    return {
+    var disclosure = disclosureContext(lastInput);
+    var data = {
       schemaVersion: 1,
       lugha: 'sw',
       zana: contract.name,
@@ -100,16 +156,28 @@
       swahiliRoute: contract.swahiliRoute,
       inputs: lastInput,
       result: resultData(lastResult),
-      source: contract.source,
+      source: disclosure || contract.source,
       boundary: 'Makadirio au rasimu ya kupanga tu; si ushauri wa kisheria, uwasilishaji rasmi, idhini, haki iliyohakikishwa au uamuzi wa mamlaka.'
     };
+    if (disclosure && disclosure.jurisdiction) data.jurisdiction = disclosure.jurisdiction;
+    return data;
   }
 
   function lines() {
     var data = serializable();
     var items = ['Zana: ' + data.zana, 'Njia: ' + data.swahiliRoute];
     Object.keys(data.result).forEach(function (key) { items.push(key + ': ' + data.result[key]); });
-    items.push('Chanzo: ' + data.source.label, data.boundary);
+    if (contract.parserValidPdf) {
+      if (data.jurisdiction) items.push('Mamlaka iliyochaguliwa: ' + data.jurisdiction);
+      items.push(
+        'Chanzo: ' + data.source.label,
+        'Hali ya chanzo: ' + availabilityText(data.source),
+        'Uhakika wa chanzo: ' + data.source.confidence
+      );
+    } else {
+      items.push('Chanzo: ' + data.source.label);
+    }
+    items.push(data.boundary);
     return items;
   }
 
@@ -129,6 +197,28 @@
     if (lastResult) return true;
     say('Kamilisha mtiririko kwanza kabla ya kupakua.', true);
     return false;
+  }
+
+  function initialValue(field) {
+    if (Object.prototype.hasOwnProperty.call(field, 'initialValue')) return field.initialValue;
+    return field.fixtureValue;
+  }
+
+  function applyInitialValues() {
+    contract.fields.forEach(function (field) {
+      var control = form.elements[field.name];
+      var value = initialValue(field);
+      if (field.type === 'checkbox') control.checked = value === true || value === 'true';
+      else control.value = value == null ? '' : value;
+    });
+  }
+
+  function applyCountryPreset(country) {
+    var preset = contract && contract.countryPresets && contract.countryPresets[country];
+    if (!preset) return;
+    Object.keys(preset).forEach(function (name) {
+      if (form.elements[name]) form.elements[name].value = preset[name];
+    });
   }
 
   form.addEventListener('submit', function (event) {
@@ -159,13 +249,32 @@
     say('Matokeo yamesasishwa kwenye kivinjari hiki.');
   });
 
-  root.addEventListener('click', function (event) {
+  form.addEventListener('input', function () {
+    if (!contract || !contract.clearStaleOnInput || !lastResult) return;
+    lastInput = null;
+    lastResult = null;
+    output.hidden = true;
+    output.innerHTML = '';
+    exports.hidden = true;
+    say('Maingizo yamebadilika. Kokotoa tena ili kupata matokeo mapya.');
+  });
+
+  form.addEventListener('change', function (event) {
+    if (!contract || event.target.name !== 'country') return;
+    applyCountryPreset(event.target.value);
+    updateSourcePanel({ country: event.target.value });
+  });
+
+  root.addEventListener('click', async function (event) {
     var button = event.target.closest('[data-action]');
     if (!button) return;
     var action = button.getAttribute('data-action');
     if (action === 'reset') {
       form.reset();
+      applyInitialValues();
+      updateSourcePanel();
       output.hidden = true;
+      output.innerHTML = '';
       exports.hidden = true;
       lastInput = null;
       lastResult = null;
@@ -185,7 +294,9 @@
     } else if (action === 'json' && requireResult()) {
       download(JSON.stringify(serializable(), null, 2) + '\n', 'application/json;charset=utf-8', englishId + '-sw.json');
     } else if (action === 'pdf' && requireResult()) {
-      var pdf = window.AfroTools.FrenchMortgagePropertyEngine.createPdf(contract.name, lines());
+      var pdf = contract.parserValidPdf && window.AfroTools.SwahiliLocalPdf
+        ? await window.AfroTools.SwahiliLocalPdf.create(contract.name, lines())
+        : window.AfroTools.FrenchMortgagePropertyEngine.createPdf(contract.name, lines());
       download(pdf, 'application/pdf', englishId + '-sw.pdf');
     } else if (action === 'print' && requireResult()) {
       window.print();
@@ -201,11 +312,8 @@
       contract = manifest.rows.find(function (row) { return row.englishId === englishId; });
       if (!contract) throw new Error('contract');
       fieldsRoot.innerHTML = contract.fields.map(fieldMarkup).join('');
-      contract.fields.forEach(function (field) {
-        var control = form.elements[field.name];
-        if (field.type === 'checkbox') control.checked = field.fixtureValue === 'true';
-        else control.value = field.fixtureValue;
-      });
+      applyInitialValues();
+      updateSourcePanel();
       root.querySelector('[data-workflow-control]').textContent = contract.workflowControl;
       root.setAttribute('data-workflow-ready', 'true');
       say('Mtiririko wa ndani uko tayari. Data haiondoki kwenye kivinjari.');

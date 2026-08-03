@@ -457,8 +457,10 @@
 
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/web-text-codecs.js"></script>
 <script>
 (function(){
+  var codecs = window.AfroToolsWebTextCodecs;
   var historyKey = 'afrotools.urlWorkbench.history.v1';
   var apiTesterKey = 'afrotools.apiTester.saved.v1';
   var parsedUrl = null;
@@ -493,12 +495,10 @@
     });
   }
   function fixedEncodeURIComponent(value){
-    return encodeURIComponent(value).replace(/[!'()*]/g, function(ch){
-      return '%' + ch.charCodeAt(0).toString(16).toUpperCase();
-    });
+    return codecs.url.encodeRfc3986(value);
   }
   function safeDecode(value){
-    try { return decodeURIComponent(String(value).replace(/\+/g, ' ')); }
+    try { return codecs.url.decodeFormValue(value); }
     catch(err) { return 'Decode error: ' + err.message; }
   }
   function parseInput(){
@@ -693,11 +693,11 @@
     function set(id, fn){
       try { $(id).textContent = fn(); } catch(err) { $(id).textContent = 'Error: ' + err.message; }
     }
-    set('encodeUriOut', function(){ return encodeURI(value); });
-    set('encodeComponentOut', function(){ return encodeURIComponent(value); });
+    set('encodeUriOut', function(){ return codecs.url.encodeUri(value); });
+    set('encodeComponentOut', function(){ return codecs.url.encodeComponent(value); });
     set('rfcOut', function(){ return fixedEncodeURIComponent(value); });
-    set('formOut', function(){ return encodeURIComponent(value).replace(/%20/g, '+'); });
-    set('decodeOut', function(){ return decodeURIComponent(value.replace(/\+/g, ' ')); });
+    set('formOut', function(){ return codecs.url.encodeFormValue(value); });
+    set('decodeOut', function(){ return codecs.url.decodeFormValue(value); });
   }
   function saveHistory(){
     if (!parsedUrl || parsedUrl.error) return;
