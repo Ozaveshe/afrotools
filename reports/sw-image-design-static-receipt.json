@@ -1,0 +1,156 @@
+{
+  "schemaVersion": 1,
+  "programme": "sw-image-design-parity",
+  "baseCommit": "f7036c210c34146d58b43d0a2a5d4c023cb91694",
+  "verdict": "BROWSER PENDING",
+  "exactScope": {
+    "englishRows": 19,
+    "staticCandidates": 3,
+    "blocked": 16,
+    "centrallyAccepted": 0
+  },
+  "staticCandidates": [
+    {
+      "id": "color-picker",
+      "route": "/sw/zana/kichagua-rangi/",
+      "sourceOwner": "scripts/build-sw-image-color-family.js",
+      "blocker": "Re-run conversions, invalid clearing, clipboard fallback, CSS/Tailwind download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base."
+    },
+    {
+      "id": "watermark-bulk",
+      "route": "/sw/zana/watermark-nyingi/",
+      "sourceOwner": "sw/zana/watermark-nyingi/index.html",
+      "blocker": "Re-run multi-file input, preview mutation, invalid clearing, current/batch downloads, decoded dimensions, 320/375px, 200% reflow, themes, keyboard/focus, console, and no-network checks."
+    },
+    {
+      "id": "colour-palette",
+      "route": "/sw/zana/paleti-ya-rangi/",
+      "sourceOwner": "scripts/build-sw-image-color-family.js",
+      "blocker": "Re-run category filtering, copy fallback, CSS/JSON download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base."
+    }
+  ],
+  "blocked": [
+    {
+      "id": "image-compress",
+      "route": "/sw/zana/kubana-picha/",
+      "status": "blocked-feature-parity",
+      "blocker": "The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract."
+    },
+    {
+      "id": "image-resize",
+      "route": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
+      "status": "blocked-feature-parity",
+      "blocker": "The Swahili inline owner does not reuse image-resize-studio.js or reproduce English presets, batch behavior, validation, and export receipts."
+    },
+    {
+      "id": "qr-generator",
+      "route": "/sw/zana/kitengeneza-qr/",
+      "status": "blocked-export-parity",
+      "blocker": "QR generation is local, but the route lacks the English PNG/SVG download and reopen contract and full payload validation."
+    },
+    {
+      "id": "background-remover",
+      "route": "/sw/zana/kiondoa-mandharinyuma/",
+      "status": "blocked-english-fallback",
+      "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
+    },
+    {
+      "id": "passport-photo",
+      "route": "/sw/zana/picha-ya-pasipoti/",
+      "status": "blocked-feature-parity",
+      "blocker": "The Swahili canvas owner is narrower than passport-photo-studio.js and lacks the English crop, preset, sheet, validation, and export proof surface."
+    },
+    {
+      "id": "image-crop",
+      "route": "/sw/zana/kukata-picha/",
+      "status": "blocked-feature-parity",
+      "blocker": "The route uses an independent inline crop implementation rather than the English image-crop-studio.js contract and omits equivalent interactive crop and export behavior."
+    },
+    {
+      "id": "favicon-generator",
+      "route": "/sw/zana/kizalishaji-favicon/",
+      "status": "blocked-missing-route",
+      "blocker": "No physical Swahili route or native favicon/ZIP owner exists on the coordinator base."
+    },
+    {
+      "id": "image-to-text",
+      "route": "/sw/zana/kutoa-maandishi-kwenye-picha/",
+      "status": "blocked-feature-parity",
+      "blocker": "The route performs local OCR but does not reuse the English local OCR/studio owners or reproduce their source, language, clearing, and export contracts."
+    },
+    {
+      "id": "meme-generator",
+      "route": "/sw/zana/kitengeneza-meme/",
+      "status": "blocked-missing-route",
+      "blocker": "No physical Swahili route or native meme canvas/export owner exists on the coordinator base."
+    },
+    {
+      "id": "logo-maker",
+      "route": "/sw/zana/kitengeneza-logo/",
+      "status": "blocked-feature-parity",
+      "blocker": "The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract."
+    },
+    {
+      "id": "image-filters",
+      "route": "/sw/zana/filters-za-picha/",
+      "status": "blocked-feature-parity",
+      "blocker": "The reduced inline owner does not reuse image-filters-studio.js or reproduce English batch, preset, ZIP, manifest, and export behavior."
+    },
+    {
+      "id": "social-card",
+      "route": "/sw/zana/kadi-ya-mitandao/",
+      "status": "blocked-feature-parity",
+      "blocker": "The route has a local canvas draft but not the English social-card-studio.js templates, dimensions, validation, and export contract."
+    },
+    {
+      "id": "certificate-maker",
+      "route": "/sw/zana/kitengeneza-cheti/",
+      "status": "blocked-english-fallback",
+      "blocker": "The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists."
+    },
+    {
+      "id": "flyer-maker",
+      "route": "/sw/zana/kitengeneza-flyer/",
+      "status": "blocked-feature-parity",
+      "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior."
+    },
+    {
+      "id": "thumbnail-maker",
+      "route": "/sw/zana/kitengeneza-thumbnail/",
+      "status": "blocked-missing-route",
+      "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base."
+    },
+    {
+      "id": "image-format-convert",
+      "route": "/sw/zana/kubadilisha-format-ya-picha/",
+      "status": "blocked-codec-parity",
+      "blocker": "The reduced inline owner does not reuse image-format-convert-studio.js or reproduce English batch, browser-codec fail-closed, ZIP manifest, and reopen behavior."
+    }
+  ],
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR, OCR and social-card legacy dependencies were changed from CDNs to committed local vendor assets, but those rows remain blocked on product parity.",
+  "artwork": {
+    "required": 19,
+    "present": 19,
+    "missing": 0
+  },
+  "browser": {
+    "status": "not-run-by-instruction",
+    "owner": "Health lane",
+    "requiredForAcceptance": true
+  },
+  "validation": {
+    "focusedStatic": "pass",
+    "colorFamilyOwner": "pass",
+    "colorFamilyAudit": "pass",
+    "freeAppInventory": "pass: 1,257 rows / 770 accepted globally; Image & Design remains 0 accepted",
+    "localization": "pass: 11,256 pages",
+    "hreflang": "pass: 33,248 relationships / 5,340 groups",
+    "internalLinks": "pass: 138,213 links across 11,475 HTML files",
+    "lint": "pass",
+    "typeCheck": "pass",
+    "artworkIndex": "pass",
+    "canonicalRegistry": "carried baseline drift; not regenerated because broad generated outputs are prohibited"
+  },
+  "prohibitedSurfacesChanged": [],
+  "acceptanceLedgerChanged": false
+}
