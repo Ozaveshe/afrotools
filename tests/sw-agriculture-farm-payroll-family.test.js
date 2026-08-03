@@ -56,8 +56,8 @@ for (const row of rows) {
   );
   assert.doesNotMatch(sw, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(sw, /&amp;amp;|\brejea ya [A-Z]{2}\b|\bexports\b/i);
-  assert.match(sw, /<html lang="sw"/);
-  assert.match(sw, /"inLanguage":"sw"/);
+  assert.match(sw, /<html\b[^>]*\blang="sw"/);
+  assert.match(sw, /"inLanguage"\s*:\s*"sw"/);
   assert.match(sw, new RegExp(`<code>${row.english.id}</code>`));
   assert.match(sw, /Kiwango cha uhakika/);
   assert.match(sw, /picha tuli ya utafiti wa 2024/);

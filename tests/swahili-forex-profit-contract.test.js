@@ -71,7 +71,7 @@ test('all locale consumers use current source-owned engine, controller and style
 
 test('native page is Swahili, source-dated, private, accessible and free of the rejected shell language', () => {
   const html=read(owner.localeOwners.sw);
-  assert.match(html,/<html lang="sw">/); assert.match(html,/22 Julai 2026/); assert.match(html,/Hakuna kutuma kwa AI/); assert.match(html,/Pakua CSV/); assert.match(html,/Pakua JSON/); assert.match(html,/Pakua PDF/);
+  assert.match(html,/<html\b[^>]*\blang="sw"[^>]*>/); assert.match(html,/22 Julai 2026/); assert.match(html,/Hakuna kutuma kwa AI/); assert.match(html,/Pakua CSV/); assert.match(html,/Pakua JSON/); assert.match(html,/Pakua PDF/);
   for(const phrase of ['Private in your browser','Buy or sell','Local PDF and data exports','Exposure in base','Statement note','Formula and units','Decision boundary','login']) assert.doesNotMatch(html,new RegExp(escapeRegex(phrase),'i'));
   assert.doesNotMatch(html,/Fungua zana kamili ya Kiingereza|Hali ya lugha|sw-wave-|<iframe/i);
   for(const id of ['fx-base','fx-quote','fx-reporting','fx-direction','fx-entry','fx-exit','fx-units','fx-pip','fx-conversion','fx-costs','fx-note']) assert.match(html,new RegExp(`<label\\b[^>]*for="${id}"`));

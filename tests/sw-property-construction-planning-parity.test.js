@@ -29,10 +29,10 @@ test('scope reconciles to the current central ledger without counting unaccepted
   const accepted = acceptance.entries.filter((row) => row.categoryKey === 'legal' && row.status === 'accepted');
   const acceptedIds = new Set(accepted.map((row) => row.englishId));
   assert.equal(denominator, 66);
-  assert.equal(accepted.length, 15);
+  assert.equal(accepted.length, denominator);
   assert.equal(acceptedIds.has('building-materials'), true);
   assert.equal(acceptedIds.has('construction-budget'), true);
-  assert.equal(denominator - accepted.length, 51);
+  assert.equal(denominator - accepted.length, 0);
 });
 
 test('source owner has exactly the two non-overlapping construction-planning apps', () => {

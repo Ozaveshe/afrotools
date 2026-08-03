@@ -127,7 +127,7 @@ for (const [index, row] of countries.entries()) {
   assert.ok(result.ok, `${code} engine error`);
   const actual = JSON.parse(JSON.stringify({ dmi: result.dmi, req: result.req, prov: result.prov, balance: result.balance, ration: result.ration.map(item => ({ id: item.id, freshKg: item.freshKg, dmKg: item.dmKg, cp_g: item.cp_g, tdn_g: item.tdn_g, cost: item.cost })), costs: result.costs, currency: result.currency }));
   assert.deepStrictEqual(actual, expected, `${code} formula drift`);
-  assert.match(html, /^<!DOCTYPE html>\s*<html lang="sw"/);
+  assert.match(html, /^<!DOCTYPE html>\s*<html\b[^>]*\blang="sw"/);
   assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(html, /&amp;amp;|â|Ã|\b(?:Calculate|Reset|Download|Share|Save|Privacy|Freshness|Confidence|Results?)\b/);
   assert.match(html, new RegExp(`<meta name="afrotools-country-id" content="${code}">`));

@@ -59,7 +59,7 @@ const reportRows = [];
 
 for (const row of rows) {
   const html = fs.readFileSync(path.join(ROOT, row.swahili.file), 'utf8');
-  assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i); assert.match(html, /Kiwango cha uhakika/); assert.match(html, new RegExp(`<code>${row.english.id}</code>`));
+  assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i); assert.match(html, /Kiwango cha uhakika/); assert.match(html, new RegExp(`<meta name="tool-id" content="${row.english.id}">`));
   assert.equal(fs.existsSync(path.join(ROOT, row.artwork.file)), true, `Missing artwork for ${row.english.id}.`);
   for (const alternate of alternateEntries(row)) assert(html.includes(`hreflang="${alternate.hreflang}" href="https://afrotools.com${alternate.route}"`));
   const visible = html.replace(/<script[\s\S]*?<\/script>/gi, '').replace(/<style[\s\S]*?<\/style>/gi, '').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ');

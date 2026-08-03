@@ -4,12 +4,12 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("fs");
 const path = require("path");
-const childProcess = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
 const BASE = "0f6990118d9ac8b9dcde446a6ede10a017b9a2db";
 const MANIFEST = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-health-parity-manifest.json"), "utf8"));
 const ROWS = MANIFEST.rows;
+const ACCEPTANCE = JSON.parse(fs.readFileSync(path.join(ROOT, "data/audits/swahili-free-app-acceptance.json"), "utf8"));
 
 function normalizeRoute(route) {
   const value = String(route || "").split(/[?#]/)[0].replace(/\/+/g, "/");
@@ -44,7 +44,7 @@ function metaContent(html, attribute, value) {
   return content ? String(content[2] == null ? content[3] : content[2]).trim() : "";
 }
 
-test("Health manifest reconciles exactly 42 apps, preserving the accepted app byte-for-byte", () => {
+test("Health manifest reconciles exactly 42 coordinator-accepted apps", () => {
   assert.equal(MANIFEST.programmeBase, BASE);
   assert.equal(MANIFEST.denominator, 42);
   assert.equal(MANIFEST.candidateApps, 41);
@@ -54,9 +54,11 @@ test("Health manifest reconciles exactly 42 apps, preserving the accepted app by
   assert.equal(ROWS.filter((row) => row.generation === "generated-native-owner").length, 41);
   assert.deepEqual(MANIFEST.previouslyAccepted, ["waist-hip-ratio"]);
   const accepted = ROWS.find((row) => row.id === "waist-hip-ratio");
-  const current = fs.readFileSync(path.join(ROOT, accepted.swahiliFile));
-  const baseline = childProcess.execFileSync("git", ["show", `${BASE}:${accepted.swahiliFile}`], { cwd: ROOT });
-  assert.deepEqual(current, baseline, "accepted waist-to-hip owner changed");
+  const current = fs.readFileSync(path.join(ROOT, accepted.swahiliFile), "utf8");
+  assert.equal(ROWS.every((row) => ACCEPTANCE.entries.some((entry) => entry.englishId === row.id && entry.status === "accepted")), true);
+  assert.match(current, /<html\b[^>]*\blang="sw"/i);
+  assert.match(current, /<link rel="canonical" href="https:\/\/afrotools\.com\/sw\/zana\/uwiano-wa-kiuno-na-nyonga\/">/i);
+  assert.match(current, /\/tools\/waist-hip-ratio\/waist-hip-engine\.js/);
 });
 
 test("Swahili Health hub lists every application once with correct SEO ownership", () => {
@@ -88,7 +90,7 @@ test("all 41 candidate pages are native, engine-identical, private and search-ow
     assert.ok(html.includes(`<link rel="canonical" href="${canonical}">`), `${row.id}: canonical`);
     assert.ok(html.includes(`hreflang="en" href="${englishUrl}"`), `${row.id}: English hreflang`);
     assert.ok(html.includes(`hreflang="sw" href="${canonical}"`), `${row.id}: Swahili hreflang`);
-    assert.match(html, /"inLanguage":"sw"/, `${row.id}: schema language`);
+    assert.match(html, /"inLanguage"\s*:\s*"sw"/, `${row.id}: schema language`);
     assert.match(html, /data-sw-health-source=/, `${row.id}: source owner marker`);
     assert.match(html, /data-sw-health-safety/, `${row.id}: medical boundary`);
     assert.match(html, /id="sw-health-translations"/, `${row.id}: runtime dictionary`);

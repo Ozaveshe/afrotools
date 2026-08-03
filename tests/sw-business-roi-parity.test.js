@@ -54,15 +54,15 @@ for (const route of manifest.routes) {
   const html = fs.readFileSync(file, "utf8");
   const canonical = `https://afrotools.com${route.swahili}`;
   assert.match(html, /^<!doctype html>/i, `${route.id}: HTML document`);
-  assert.match(html, /<html lang="sw"/, `${route.id}: language`);
+  assert.match(html, /<html\b[^>]*\blang="sw"/, `${route.id}: language`);
   assert.match(html, new RegExp(`<link rel="canonical" href="${esc(canonical)}">`), `${route.id}: canonical`);
   assert.match(html, new RegExp(`hreflang="en" href="https://afrotools\\.com${esc(route.english)}"`), `${route.id}: English alternate`);
   assert.match(html, new RegExp(`hreflang="fr" href="https://afrotools\\.com${esc(route.french)}"`), `${route.id}: French alternate`);
   assert.match(html, new RegExp(`property="og:image" content="https://afrotools\\.com/${esc(route.artwork)}"`), `${route.id}: artwork OG`);
   assert.match(html, /"inLanguage":"sw"/, `${route.id}: Sw schema`);
   assert.match(html, /window\.AfroLocalOnly=true/, `${route.id}: local-only contract`);
-  assert.match(html, /src="\/engines\/business-roi-engine\.js"/, `${route.id}: shared engine`);
-  assert.match(html, /src="\/assets\/js\/pages\/sw-business-roi-parity\.js"/, `${route.id}: native runtime`);
+  assert.match(html, /src="\/engines\/business-roi-engine\.js(?:\?[^"\s]*)?"/, `${route.id}: shared engine`);
+  assert.match(html, /src="\/assets\/js\/pages\/sw-business-roi-parity\.js(?:\?[^"\s]*)?"/, `${route.id}: native runtime`);
   assert.match(html, /data-export="pdf"/, `${route.id}: PDF export`);
   assert.match(html, /data-export="csv"/, `${route.id}: CSV export`);
   assert.match(html, /data-export="json"/, `${route.id}: JSON export`);
@@ -88,7 +88,7 @@ for (const route of manifest.routes) {
 }
 
 const hub = fs.readFileSync(routeFile(manifest.hub.route), "utf8");
-assert.match(hub, /<html lang="sw"/);
+assert.match(hub, /<html\b[^>]*\blang="sw"/);
 assert.match(hub, /"numberOfItems":12/);
 assert.match(hub, /href="\/sw\/ai\/"/);
 assert.strictEqual((hub.match(/data-business-card=/g) || []).length, 12);

@@ -88,6 +88,9 @@ function removeBalancedDivById(html, id, file) {
 
 function transform(file, country) {
   const original = fs.readFileSync(file, 'utf8');
+  if (/<meta name="sw-paye-source-owner" content="scripts\/build-sw-paye-exact-three\.js">/.test(original)) {
+    return { original, html: original };
+  }
   if (!/function\s+generatePdf\s*\(/.test(original)) {
     fail('Missing existing local generatePdf() implementation', file);
   }

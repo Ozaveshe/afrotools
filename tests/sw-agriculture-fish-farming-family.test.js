@@ -165,7 +165,7 @@ for (const [index, row] of countries.entries()) {
 
   assert.ok(!actual.error, `${code} engine error: ${actual.error}`);
   assert.deepStrictEqual(comparable(actual), comparable(expected), `${code} formula drift`);
-  assert.match(html, /^<!DOCTYPE html>\s*<html lang="sw"/);
+  assert.match(html, /^<!DOCTYPE html>\s*<html\b[^>]*\blang="sw"/);
   assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(html, /&amp;amp;|â|Ã|Data sources:|Costs reflect|\b(?:Calculate|Reset|Download|Share|Save|Privacy|Freshness|Confidence|Results?)\b/);
   for (const meta of ['afrotools-country-id', 'afrotools-source-jurisdiction', 'afrotools-formula-jurisdiction']) {

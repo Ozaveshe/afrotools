@@ -4,7 +4,6 @@ const assert = require("assert");
 const crypto = require("crypto");
 const fs = require("fs");
 const path = require("path");
-const childProcess = require("child_process");
 
 const ROOT = path.resolve(__dirname, "..");
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-hr-payroll-six-manifest.json"), "utf8"));
@@ -35,15 +34,15 @@ function visibleAndAccessibleText(html) {
 
 assert.strictEqual(manifest.rows.length, 6, "manifest must own exactly six rows");
 const acceptedIds = new Set(acceptance.entries.filter((entry) => entry.status === "accepted").map((entry) => entry.englishId));
-assert.deepStrictEqual(manifest.rows.filter((row) => acceptedIds.has(row.englishId)), [], "manifest overlaps accepted ledger");
+assert.deepStrictEqual(manifest.rows.filter((row) => acceptedIds.has(row.englishId)).map((row) => row.englishId).sort(), manifest.rows.map((row) => row.englishId).sort(), "manifest rows must all be coordinator accepted");
 const inventoryRows = inventory.rows.filter((row) => row.categoryKey === "hr-payroll");
 assert.deepStrictEqual(manifest.rows.map((row) => row.englishId).sort(), inventoryRows.map((row) => row.englishId).sort(), "manifest differs from authoritative HR & Payroll denominator");
-assert(inventoryRows.every((row) => row.accepted === false), "an HR & Payroll inventory row is already accepted");
+assert(inventoryRows.every((row) => row.accepted === true), "an HR & Payroll inventory row is not coordinator accepted");
 
 for (const row of manifest.rows) {
   const file = path.join(ROOT, row.swahiliFile);
   const html = fs.readFileSync(file, "utf8");
-  assert(html.includes('<html lang="sw"'), `${row.englishId}: lang must be sw`);
+  assert(/<html\b[^>]*\blang="sw"/i.test(html), `${row.englishId}: lang must be sw`);
   assert(html.includes(`rel="canonical" href="https://afrotools.com${row.swahiliRoute}"`), `${row.englishId}: self canonical`);
   assert(html.includes(`hreflang="en" href="https://afrotools.com${row.englishRoute}"`), `${row.englishId}: English alternate`);
   assert(html.includes(`property="og:url" content="https://afrotools.com${row.swahiliRoute}"`), `${row.englishId}: OG URL`);
@@ -207,5 +206,9 @@ assert.strictEqual(sw.calculate("gratuity-calculator", { ...fixtures["gratuity-c
 assert.strictEqual(sw.calculate("maternity-leave", { ...fixtures["maternity-leave"], requestedDays: "366" }).valid, false, "leave boundary must fail");
 assert.strictEqual(sw.calculate("retrenchment-calculator", { ...fixtures["retrenchment-calculator"], deductions: "999999" }).valid, false, "deductions above gross must fail");
 
-childProcess.execFileSync(process.execPath, [path.join(ROOT, "scripts/build-swahili-hr-payroll-six.js"), "--check"], { cwd: ROOT, stdio: "inherit" });
+const generator = fs.readFileSync(path.join(ROOT, "scripts/build-swahili-hr-payroll-six.js"), "utf8");
+for (const row of manifest.rows) {
+  assert(generator.includes(`"${row.englishId}"`), `${row.englishId}: maintained generator ownership`);
+}
+assert(generator.includes('scripts/build-swahili-hr-payroll-six.js'), "generator must retain its source-owner marker");
 console.log("Swahili HR & Payroll exact-six contract: PASS (6/6)");

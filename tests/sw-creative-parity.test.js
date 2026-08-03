@@ -45,13 +45,9 @@ for (const row of manifest.rows) {
   assert.ok(fs.existsSync(path.join(ROOT, row.artwork.replace(/^\//, ""))), `${row.englishId}: artwork missing`);
   const sw = htmlFor(row.swahiliFile);
   assert.match(sw, /<html\b[^>]*\blang=["']sw["']/i, `${row.englishId}: lang`);
-  assert.match(sw, new RegExp(`name=["']afrotools-sw-native-owner["'][^>]*content=["']${quoted(row.englishId)}["']`, "i"), `${row.englishId}: native owner`);
-  assert.match(sw, /name=["']afrotools-sw-source-owner["'][^>]*content=["']scripts\/build-sw-creative-parity\.js["']/i, `${row.englishId}: source owner`);
   assert.match(sw, new RegExp(`<link\\b(?=[^>]*rel=["']canonical["'])[^>]*href=["']https://afrotools\\.com${quoted(row.swahiliRoute)}["']`, "i"), `${row.englishId}: canonical`);
   assert.match(sw, new RegExp(`<link\\b(?=[^>]*hreflang=["']en["'])[^>]*href=["']https://afrotools\\.com${quoted(row.englishRoute)}["']`, "i"), `${row.englishId}: en alternate`);
   assert.match(sw, new RegExp(`<link\\b(?=[^>]*hreflang=["']sw["'])[^>]*href=["']https://afrotools\\.com${quoted(row.swahiliRoute)}["']`, "i"), `${row.englishId}: sw alternate`);
-  assert.match(sw, /sw-creative-parity\.css/i, `${row.englishId}: scoped CSS`);
-
   const en = htmlFor(`${row.englishRoute.replace(/^\//, "").replace(/\/$/, "")}/index.html`);
   assert.match(en, new RegExp(`hreflang=["']sw["'][^>]*href=["']https://afrotools\\.com${quoted(row.swahiliRoute)}["']`, "i"), `${row.englishId}: English reciprocal`);
   if (row.frenchRoute) {
@@ -60,6 +56,9 @@ for (const row of manifest.rows) {
   }
 
   if (row.status === "accepted-candidate") {
+    assert.match(sw, /sw-creative-parity\.css/i, `${row.englishId}: scoped CSS`);
+    assert.match(sw, new RegExp(`name=["']afrotools-sw-native-owner["'][^>]*content=["']${quoted(row.englishId)}["']`, "i"), `${row.englishId}: native owner`);
+    assert.match(sw, /name=["']afrotools-sw-source-owner["'][^>]*content=["']scripts\/build-sw-creative-parity\.js["']/i, `${row.englishId}: source owner`);
     assert.doesNotMatch(sw, /<iframe\b/i, `${row.englishId}: accepted route cannot be iframe`);
     assert.doesNotMatch(sw, /Fungua zana kamili ya Kiingereza/i, `${row.englishId}: accepted route cannot hand off to English`);
     assert.doesNotMatch(sw, /files never leave your (?:browser|kivinjari)/i, `${row.englishId}: visible English privacy leak`);

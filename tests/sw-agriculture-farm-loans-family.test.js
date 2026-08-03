@@ -226,7 +226,7 @@ for (const row of countries) {
   assert.strictEqual(actual.length, data[code].programs.length);
   assert.ok(actual.some(result => result.eligible), `${code} valid profile has no matching program`);
   assert.ok(constrainedActual.some(result => !result.eligible), `${code} constrained profile has no blockers`);
-  assert.match(html, /^<!DOCTYPE html>\s*<html lang="sw"/);
+  assert.match(html, /^<!DOCTYPE html>\s*<html\b[^>]*\blang="sw"/);
   assert.doesNotMatch(html, /<iframe\b|\bfetch\s*\(/i);
   assert.doesNotMatch(html, /&amp;amp;|ÃƒÂ¢|ÃƒÆ’|\b(?:Calculate|Reset|Download|Share|Save|Privacy|Freshness|Confidence|Results?|Eligibility)\b/);
   assert.match(html, new RegExp(`<meta name="afrotools-country-id" content="${code}">`));
