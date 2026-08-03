@@ -68,8 +68,8 @@ const runtime = source('ha/assets/ha-surface.js');
 assert.match(runtime, /\["cvUpload","haPdfProbe"\]/, 'local-only file metadata controls must be wired');
 assert.ok(runtime.includes('data-ha-copy') && runtime.includes('navigator.clipboard'), 'known inert copy controls must be repaired centrally');
 
-const cookie = source('assets/js/components/cookie-consent.js');
-assert.ok(cookie.includes('Izinin kukis') && cookie.includes('Manufar sirri'), 'cookie consent must have Hausa UI copy');
+const cookie = source('assets/js/components/analytics-consent-v2.js');
+assert.ok(cookie.includes('Izinin kukis') && cookie.includes('Bayanan sirri'), 'analytics consent must have Hausa UI copy');
 
 const assistant = source('assets/js/components/site-assistant.js');
 assert.ok(assistant.includes('UI_COPY_HA'), 'site assistant must expose Hausa UI copy');

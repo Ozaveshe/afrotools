@@ -79,11 +79,24 @@ function commandRows(context, name, detail) {
 
 const fresh = run(null);
 const freshCommands = commands(fresh);
-assert.deepStrictEqual(freshCommands, [], "fresh visitors do not initialize an analytics queue before consent");
-assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 0, "GA4 is not configured before consent");
+assert.deepStrictEqual(
+  JSON.parse(JSON.stringify(freshCommands[0].slice(0, 3))),
+  ["consent", "default", {
+    analytics_storage: "denied",
+    ad_storage: "denied",
+    ad_user_data: "denied",
+    ad_personalization: "denied",
+    wait_for_update: 500
+  }],
+  "fresh visitors start with denied Consent Mode before GA configuration"
+);
+assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 1, "GA4 is configured exactly once before a choice");
+const initialConfig = commandRows(fresh, "config", "G-D859CGF391")[0][2];
+assert.strictEqual(initialConfig.page_location, "https://afrotools.com/tools/salary-calculator/", "page URL excludes query and fragment");
+assert.strictEqual(initialConfig.page_referrer, "https://search.example/", "referrer is reduced to its origin");
 assert.ok(
-  !fresh.inserted.some((node) => /googletagmanager/.test(node.src)),
-  "fresh visitors make no Google tag request before consent"
+  fresh.inserted.some((node) => node.src === "https://www.googletagmanager.com/gtag/js?id=G-D859CGF391"),
+  "fresh denied visitors load the Google tag for cookieless measurement"
 );
 assert.ok(
   fresh.inserted.some((node) => node.src === "/assets/js/components/analytics-consent-v2.js"),
@@ -92,7 +105,7 @@ assert.ok(
 
 fresh.setConsent("accepted");
 fresh.listeners["afrotools:cookie-consent"]({ detail: { status: "accepted" } });
-assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 1, "accept configures GA4 exactly once");
+assert.strictEqual(commandRows(fresh, "config", "G-D859CGF391").length, 1, "accept does not duplicate GA4 configuration");
 const freshConfig = commandRows(fresh, "config", "G-D859CGF391")[0][2];
 assert.strictEqual(freshConfig.page_location, "https://afrotools.com/tools/salary-calculator/", "page URL excludes query and fragment");
 assert.strictEqual(freshConfig.page_referrer, "https://search.example/", "referrer is reduced to its origin");
@@ -115,7 +128,7 @@ assert.ok(
 fresh.listeners["afrotools:cookie-consent"]({ detail: { status: "declined" } });
 const declinedUpdates = commandRows(fresh, "consent", "update");
 assert.strictEqual(declinedUpdates.at(-1)[2].analytics_storage, "denied", "reject returns analytics storage to denied");
-assert.strictEqual(fresh.window["ga-disable-G-D859CGF391"], true, "revocation disables subsequent GA sends");
+assert.strictEqual(fresh.window["ga-disable-G-D859CGF391"], false, "legacy global disable cannot suppress denied-state pings");
 assert.ok(fresh.clarityCalls.some((call) => call[0] === "consent" && call[1] === false), "revocation clears Clarity consent");
 
 fresh.window.gtag("event", "search_query", { query: "private@example.com", results_count: 2 });
@@ -137,10 +150,11 @@ assert.strictEqual(commandRows(returningAccepted, "consent", "default")[0][2].an
 assert.ok(returningAccepted.inserted.some((node) => /googletagmanager/.test(node.src)), "stored acceptance loads the tag");
 
 const returningDeclined = run("declined");
-assert.deepStrictEqual(commands(returningDeclined), [], "stored rejection creates no analytics queue");
-assert.ok(!returningDeclined.inserted.some((node) => /googletagmanager/.test(node.src)), "stored rejection never loads the tag");
+assert.strictEqual(commandRows(returningDeclined, "consent", "default")[0][2].analytics_storage, "denied", "stored rejection remains denied");
+assert.ok(returningDeclined.inserted.some((node) => /googletagmanager/.test(node.src)), "stored rejection still loads the tag for consent modeling");
 
 assert.ok(managerSource.includes("Accept analytics") && managerSource.includes("Reject analytics"), "consent UI has explicit accept and reject actions");
+assert.ok(managerSource.includes("cookieless measurement"), "consent UI accurately discloses denied-state measurement");
 assert.ok(managerSource.includes("data-afro-cookie-consent-open"), "consent choices can be reopened from a visible control");
 assert.ok(!lazySource.includes("G-8W6LCTFSK2"), "SalaryPadi measurement id is not present in AfroTools analytics");
 assert.strictEqual((lazySource.match(/G-D859CGF391/g) || []).length, 1, "AfroTools uses one measurement id constant");

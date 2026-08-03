@@ -289,7 +289,7 @@ fetch('/netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'ap
 function sendChat(){var input=document.getElementById('chatIn'),msg=input.value.trim();if(!msg)return;input.value='';document.getElementById('chatMsgs').innerHTML+='<div class="chat-msg user">'+msg+'</div>';CHAT_HISTORY.push({role:'user',content:msg});
 fetch('/netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'paye',country:'Congo',prompt:msg,history:CHAT_HISTORY})}).then(function(res){return res.json();}).then(function(data){var reply=data.response||'Hitilafu ilitokea.';document.getElementById('chatMsgs').innerHTML+='<div class="chat-msg ai">'+reply+'</div>';CHAT_HISTORY.push({role:'assistant',content:reply});});}
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/lazy-analytics.js?v=ff0eb111" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>
 </html>

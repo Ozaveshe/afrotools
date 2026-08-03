@@ -95,7 +95,7 @@ function fmtMobile(n,s){return s+' '+Math.round(n).toLocaleString('en');}
 function compareMobile(){var code=document.getElementById('mmCountry').value,d=FEE[code],amt=parseFloat(document.getElementById('mmAmount').value)||0,type=document.getElementById('mmType').value;if(!amt){alert('Tafadhali ingiza kiasi sahihi.');return;}var rows=[];selectedMobile.forEach(function(k){var bands=(d[k][type]||d[k].send),fee=feeFor(bands,amt);rows.push({k:k,name:MP[k].name,fee:fee});});rows.sort(function(a,b){return a.fee-b.fee;});var cheapest=rows[0],worst=rows[rows.length-1];document.getElementById('mmCheapest').textContent=cheapest.name+' - '+fmtMobile(cheapest.fee,d.sym);document.getElementById('mmSaving').textContent=fmtMobile(worst.fee-cheapest.fee,d.sym);document.getElementById('mmInfo').textContent=d.name;document.getElementById('mmRows').innerHTML=rows.map(function(r,i){return '<tr class="'+(i===0?'best':'')+'"><td><strong>'+r.name+'</strong></td><td>'+fmtMobile(r.fee,d.sym)+'</td><td>'+((r.fee/amt)*100).toFixed(2)+'%</td><td>'+fmtMobile(Math.max(amt-r.fee,0),d.sym)+'</td></tr>';}).join('');document.getElementById('mmResult').classList.add('on');}
 initMobile();compareMobile();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/lazy-analytics.js?v=ff0eb111" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>
 </html>

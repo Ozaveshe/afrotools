@@ -108,7 +108,7 @@ const navbar = read('assets/js/components/navbar.js');
 const footer = read('assets/js/components/footer.js');
 const assistant = read('assets/js/components/site-assistant.js');
 const favorite = read('assets/js/favorites-widget.js');
-const consent = read('assets/js/components/cookie-consent.js');
+const consent = read('assets/js/components/analytics-consent-v2.js');
 assert(navbar.includes('/sw/bei/'));
 assert(navbar.includes('/sw/dashboard/'));
 assert(navbar.includes('/sw/auth/'));

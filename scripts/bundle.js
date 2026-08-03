@@ -29,7 +29,6 @@ const BUNDLE_DEFS = {
     'assets/js/lib/toast.js',
     'assets/js/lib/dark-mode.js',
     'assets/js/lib/a11y.js',
-    'assets/js/components/cookie-consent.js',
     'assets/js/components/ai-consent.js',
     'assets/js/ai/prefill-adapters.js',
     'assets/js/ai/prefill-consumer.js',
@@ -52,6 +51,7 @@ const BUNDLE_DEFS = {
 
 const LEGACY_BUNDLE_ALIASES = {
   core: [
+    'core.0f3c2059.min.js',
     'core.fdd629ac.min.js',
     'core.a778d1f9.min.js',
     'core.8bd20673.min.js',

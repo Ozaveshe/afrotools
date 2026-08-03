@@ -4,7 +4,6 @@
   var MEASUREMENT_ID = 'G-D859CGF391';
   var CONSENT_KEY = 'afrotools_cookie_consent';
   var MANAGER_SRC = '/assets/js/components/analytics-consent-v2.js';
-  var configured = false;
 
   function readConsent() {
     try {
@@ -14,13 +13,21 @@
     }
   }
 
-  function consentState(status) {
-    return {
+  function consentState(status, waitForChoice) {
+    var state = {
       analytics_storage: status === 'accepted' ? 'granted' : 'denied',
       ad_storage: 'denied',
       ad_user_data: 'denied',
       ad_personalization: 'denied',
     };
+    if (waitForChoice) state.wait_for_update = 500;
+    return state;
+  }
+
+  function keepConsentModeActive() {
+    // Consent Mode, rather than the legacy ga-disable switch, controls whether
+    // GA can use storage. Keeping this false allows denied-state cookieless pings.
+    window['ga-disable-' + MEASUREMENT_ID] = false;
   }
 
   function filteredCampaignQuery(value) {
@@ -65,7 +72,7 @@
     Object.keys(params).forEach(function (key) {
       var value = params[key];
       if (piiKey.test(key)) return;
-      if (key === 'query') {
+      if (key === 'query' || key === 'search_term') {
         sanitized.query_length = String(value || '').length;
       } else if (key === 'error_message') {
         sanitized.error_message_length = String(value || '').length;
@@ -94,23 +101,12 @@
     };
   }
 
-  function syncClarity(status) {
-    if (typeof window.clarity !== 'function') return;
-    var accepted = status === 'accepted';
-    window.clarity('consentv2', {
-      ad_Storage: 'denied',
-      analytics_Storage: accepted ? 'granted' : 'denied',
-    });
-    if (!accepted) window.clarity('consent', false);
-  }
-
-  function configureAnalytics() {
-    if (configured || window.__afroAnalyticsConfigured) return;
-    configured = true;
+  function configureAnalytics(status) {
+    if (window.__afroAnalyticsConfigured) return;
     window.__afroAnalyticsConfigured = true;
-    window['ga-disable-' + MEASUREMENT_ID] = false;
+    keepConsentModeActive();
     installGtagBoundary();
-    window.gtag('consent', 'default', consentState('accepted'));
+    window.gtag('consent', 'default', consentState(status, !status));
 
     var tag = document.createElement('script');
     tag.async = true;
@@ -125,20 +121,23 @@
     });
   }
 
+  function syncClarity(status) {
+    if (typeof window.clarity !== 'function') return;
+    var accepted = status === 'accepted';
+    window.clarity('consentv2', {
+      ad_Storage: 'denied',
+      analytics_Storage: accepted ? 'granted' : 'denied',
+    });
+    if (!accepted) window.clarity('consent', false);
+  }
+
   function applyConsent(status) {
-    if (status === 'accepted') {
-      configureAnalytics();
-      window['ga-disable-' + MEASUREMENT_ID] = false;
-      window.gtag('consent', 'update', consentState(status));
-    } else if (status === 'declined' || status === 'rejected') {
-      window['ga-disable-' + MEASUREMENT_ID] = true;
-      if (configured && typeof window.gtag === 'function') {
-        window.gtag('consent', 'update', consentState(status));
-      }
-    } else {
-      return;
-    }
+    if (status !== 'accepted' && status !== 'declined' && status !== 'rejected') return;
+    window.gtag('consent', 'update', consentState(status, false));
+    keepConsentModeActive();
+    window.setTimeout(keepConsentModeActive, 0);
     syncClarity(status);
+    window.setTimeout(function () { syncClarity(status); }, 0);
   }
 
   function loadConsentManager() {
@@ -152,6 +151,10 @@
     document.head.appendChild(script);
   }
 
+  var status = readConsent();
+  configureAnalytics(status);
+  loadConsentManager();
+
   window.addEventListener('afrotools:cookie-consent', function (event) {
     applyConsent(event && event.detail && event.detail.status);
   });
@@ -161,7 +164,4 @@
   window.addEventListener('load', function () {
     window.setTimeout(function () { syncClarity(readConsent()); }, 1600);
   }, { once: true });
-
-  loadConsentManager();
-  if (readConsent() === 'accepted') configureAnalytics();
 }(window, document));

@@ -4,8 +4,8 @@ function dataLayerCommands(page) {
   return page.evaluate(() => (window.dataLayer || []).map((entry) => Array.from(entry)));
 }
 
-test('GA4 remains absent until explicit consent and supports later consent changes', async ({ browser }) => {
-  const context = await browser.newContext();
+test('GA4 uses denied-by-default Consent Mode and supports explicit consent changes', async ({ browser }) => {
+  const context = await browser.newContext({ viewport: { width: 375, height: 812 } });
   const page = await context.newPage();
   let googleTagLoads = 0;
 
@@ -20,16 +20,28 @@ test('GA4 remains absent until explicit consent and supports later consent chang
   await expect(page.locator('#afro-cookie-consent')).toHaveAttribute('aria-label', 'Cookie consent');
   await expect(page.getByRole('button', { name: 'Accept analytics' })).toBeVisible();
   await expect(page.getByRole('button', { name: 'Reject analytics' })).toBeVisible();
-  await expect.poll(() => googleTagLoads).toBe(0);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= window.innerWidth)).toBe(true);
+  await expect.poll(() => googleTagLoads).toBe(1);
 
   let commands = await dataLayerCommands(page);
-  expect(commands).toEqual([]);
+  const initialDefault = commands.find((row) => row[0] === 'consent' && row[1] === 'default');
+  const initialConfig = commands.filter((row) => row[0] === 'config' && row[1] === 'G-D859CGF391');
+  expect(initialDefault[2]).toMatchObject({
+    analytics_storage: 'denied',
+    ad_storage: 'denied',
+    ad_user_data: 'denied',
+    ad_personalization: 'denied'
+  });
+  expect(initialConfig).toHaveLength(1);
+  expect(JSON.stringify(initialConfig)).not.toContain('private@example.com');
 
   await page.getByRole('button', { name: 'Reject analytics' }).click();
   await expect(page.locator('#afro-cookie-consent')).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => localStorage.getItem('afrotools_cookie_consent'))).toBe('declined');
-  await expect.poll(() => googleTagLoads).toBe(0);
-  expect(await dataLayerCommands(page)).toEqual([]);
+  await expect.poll(() => googleTagLoads).toBe(1);
+  commands = await dataLayerCommands(page);
+  expect(commands.filter((row) => row[0] === 'config' && row[1] === 'G-D859CGF391')).toHaveLength(1);
+  expect(await page.evaluate(() => window['ga-disable-G-D859CGF391'])).toBe(false);
 
   await page.getByRole('button', { name: 'Manage analytics choice' }).click();
   await expect(page.locator('#afro-cookie-consent')).toContainText('Current choice: analytics cookies rejected.');
@@ -59,6 +71,21 @@ test('GA4 remains absent until explicit consent and supports later consent chang
   await context.close();
 });
 
+test('delayed core bundle cannot create a competing legacy consent banner', async ({ page }) => {
+  await page.route('https://www.googletagmanager.com/**', (route) => route.fulfill({
+    status: 200,
+    contentType: 'application/javascript',
+    body: 'window.__fakeGoogleTagLoaded = true;'
+  }));
+  await page.route('https://www.google-analytics.com/**', (route) => route.fulfill({ status: 204, body: '' }));
+
+  await page.goto('/nigeria/ng-salary-tax', { waitUntil: 'domcontentloaded' });
+  await expect(page.getByRole('button', { name: 'Accept analytics' })).toBeVisible();
+  await expect.poll(() => page.locator('script[src*="/assets/js/bundles/core."]').count()).toBeGreaterThan(0);
+  await expect(page.locator('#afro-cookie-consent')).toHaveCount(1);
+  await expect(page.getByRole('button', { name: 'Reject analytics' })).toHaveCount(1);
+});
+
 test('French Agriculture theme storage changes only after an explicit selection', async ({ page }) => {
   const configuredOrigin = new URL(
     process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173',
@@ -86,6 +113,14 @@ test('French Agriculture theme storage changes only after an explicit selection'
       await route.continue();
       return;
     }
+    if (url.hostname === 'www.googletagmanager.com') {
+      await route.fulfill({ status: 200, contentType: 'application/javascript', body: 'window.__fakeGoogleTagLoaded = true;' });
+      return;
+    }
+    if (url.hostname === 'www.google-analytics.com' || url.hostname.endsWith('.google-analytics.com')) {
+      await route.fulfill({ status: 204, body: '' });
+      return;
+    }
     offOriginRequests.push({
       method: request.method(),
       url: request.url(),
@@ -101,6 +136,11 @@ test('French Agriculture theme storage changes only after an explicit selection'
   await expect.poll(() => page.evaluate(() => Boolean(window.AfroTools?.darkMode))).toBe(true);
   expect(await page.evaluate(() => window.__THEME_STORAGE_AUDIT__)).toEqual([]);
   expect(await page.evaluate(() => localStorage.getItem('aft_theme'))).toBeNull();
+  expect(await page.evaluate(() => {
+    const command = (window.dataLayer || []).map((entry) => Array.from(entry))
+      .find((entry) => entry[0] === 'consent' && entry[1] === 'default');
+    return command && command[2].analytics_storage;
+  })).toBe('denied');
   expect(offOriginRequests).toEqual([]);
 
   expect(await page.evaluate(() => {

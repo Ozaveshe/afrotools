@@ -84,7 +84,7 @@ const PLATFORMS=[
 function compareMarket(){var price=parseFloat(document.getElementById('mkPrice').value)||0,cat=document.getElementById('mkCategory').value,sel=document.getElementById('mkCurrency'),sym=sel.options[sel.selectedIndex].getAttribute('data-sym');var rows=PLATFORMS.map(function(p){var comm=p.commission[cat]!==undefined?p.commission[cat]:p.commission.general,commAmt=price*comm/100,payAmt=price*p.payment/100,net=price-commAmt-payAmt;return {p:p,comm:comm,net:net};}).sort(function(a,b){return b.net-a.net;});document.getElementById('mkBest').textContent=rows[0].p.name;document.getElementById('mkBestAmt').textContent=sym+Math.round(rows[0].net).toLocaleString('en');document.getElementById('mkRows').innerHTML=rows.map(function(r,i){return '<tr class="'+(i===0?'best':'')+'"><td><strong>'+r.p.name+'</strong></td><td>'+r.p.country+'</td><td>'+r.p.listing+'</td><td>'+r.comm+'%</td><td>'+r.p.payment+'%</td><td>'+sym+Math.round(r.net).toLocaleString('en')+'</td></tr>';}).join('');}
 compareMarket();
 </script>
-<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
+<script src="/assets/js/lazy-analytics.js?v=ff0eb111" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>
 </html>

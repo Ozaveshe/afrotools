@@ -7,7 +7,7 @@ const vm = require("vm");
 
 const ROOT = path.join(__dirname, "..");
 const claritySource = fs.readFileSync(path.join(ROOT, "assets", "js", "lib", "clarity.js"), "utf8");
-const cookieConsentSource = fs.readFileSync(path.join(ROOT, "assets", "js", "components", "cookie-consent.js"), "utf8");
+const analyticsConsentSource = fs.readFileSync(path.join(ROOT, "assets", "js", "components", "analytics-consent-v2.js"), "utf8");
 const bundleSource = fs.readFileSync(path.join(ROOT, "scripts", "bundle.js"), "utf8");
 const headersSource = fs.readFileSync(path.join(ROOT, "_headers"), "utf8");
 
@@ -113,10 +113,12 @@ accepted.listeners.load();
 assert.strictEqual(accepted.inserted.length, 1, "Existing accepted consent injects Clarity on load");
 
 assert.ok(bundleSource.includes("'assets/js/lib/clarity.js'"), "Core bundle includes the Clarity loader");
+assert.ok(!bundleSource.includes("'assets/js/components/cookie-consent.js'"), "Core bundle excludes the retired competing consent banner");
+assert.ok(bundleSource.includes("'core.0f3c2059.min.js'"), "Previously deployed core bundle remains a compatibility alias");
 assert.ok(bundleSource.includes("'core.52693c87.min.js'"), "Current core bundle alias is preserved for existing pages");
 assert.ok(
-  cookieConsentSource.includes('window.dispatchEvent(new CustomEvent("afrotools:cookie-consent"'),
-  "Cookie consent banner dispatches the event that wakes the Clarity loader"
+  analyticsConsentSource.includes("new CustomEvent('afrotools:cookie-consent'"),
+  "Canonical analytics consent manager dispatches the event that wakes the Clarity loader"
 );
 assertDirectiveAllows("default-src", ["https://*.clarity.ms", "https://c.bing.com"]);
 assertDirectiveAllows("script-src", ["https://www.clarity.ms", "https://*.clarity.ms"]);
