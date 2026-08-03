@@ -22,8 +22,8 @@ const routes = [
   {
     name: "sw",
     path: "/sw/algeria/kikokotoo-vat/",
-    calc: "Kokotoa VAT ya Algeria",
-    pdf: "Algeria",
+    calc: "Kokotoa VAT ya Aljeria",
+    pdf: "Aljeria",
     reduced: "kifungu cha 23",
     ifu: "hawahusiki",
   },

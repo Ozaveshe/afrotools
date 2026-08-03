@@ -46,11 +46,16 @@
         disclaimer: "Makadirio ya muamala wa kiwango cha kawaida pekee. Thibitisha matibabu, muda wa kodi, ankara na wajibu wa uwasilishaji na ZIMRA au mshauri mwenye sifa."
       }
     }[locale];
+    var pdfCopy = {
+      en: { subject: "Zimbabwe standard VAT planning estimate at 15.5%", meta: "Official standard rate: 15.5% | Currency: ", source: "Sources reviewed 2026-07-23: ZIMRA Notice 07/2026, Finance Act 7/2025 s34, RBZ ZWG statement", mode: "VAT calculation mode", result: "VAT result" },
+      fr: { subject: "Estimation de TVA normale du Zimbabwe à 15,5 %", meta: "Taux normal officiel : 15,5 % | Devise : ", source: "Sources vérifiées le 2026-07-23 : avis ZIMRA 07/2026, loi de finances 7/2025 art. 34 et communiqué RBZ ZWG", mode: "Mode de calcul de la TVA", result: "Résultat de TVA" },
+      sw: { subject: "Makadirio ya VAT ya kawaida ya Zimbabwe kwa 15.5%", meta: "Kiwango rasmi cha kawaida: 15.5% | Sarafu: ", source: "Vyanzo vimekaguliwa 2026-07-23: Taarifa ya ZIMRA 07/2026, Finance Act 7/2025 kifungu 34 na taarifa ya RBZ kuhusu ZWG", mode: "Hali ya kukokotoa VAT", result: "Matokeo ya VAT" }
+    }[locale];
     var main = document.querySelector("main");
     if (!main) return;
     main.id = "main-content"; main.tabIndex = -1;
     main.innerHTML = '<div class="gnv-shell"><section class="gnv-hero"><div class="gnv-kicker">' + copy.kicker + '</div><h1>' + copy.title + '</h1><p class="gnv-lede">' + copy.lead + '</p></section><div class="gnv-grid">' +
-      '<form class="gnv-card" id="zwVatForm"><div class="gnv-switch" role="group" aria-label="VAT calculation mode"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="zwVatCurrency">' + copy.currency + '</label><select class="gnv-input" id="zwVatCurrency" name="currency"><option value="ZWG">ZWG (ZiG)</option><option value="USD">USD</option></select><label class="gnv-field" for="zwVatAmount">' + copy.amount + '</label><input class="gnv-input" id="zwVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="zwVatError"></p><section class="gnv-result" id="zwVatResult" aria-label="VAT result"><dl><dt>' + copy.net + '</dt><dd id="zwVatNet"></dd><dt>' + copy.vat + '</dt><dd id="zwVatTax"></dd><dt>' + copy.gross + '</dt><dd id="zwVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="zwVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="zwVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="zwVatStatus" role="status" aria-live="polite"></div></form>' +
+      '<form class="gnv-card" id="zwVatForm"><div class="gnv-switch" role="group" aria-label="' + pdfCopy.mode + '"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="zwVatCurrency">' + copy.currency + '</label><select class="gnv-input" id="zwVatCurrency" name="currency"><option value="ZWG">ZWG (ZiG)</option><option value="USD">USD</option></select><label class="gnv-field" for="zwVatAmount">' + copy.amount + '</label><input class="gnv-input" id="zwVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="zwVatError"></p><section class="gnv-result" id="zwVatResult" aria-label="' + pdfCopy.result + '"><dl><dt>' + copy.net + '</dt><dd id="zwVatNet"></dd><dt>' + copy.vat + '</dt><dd id="zwVatTax"></dd><dt>' + copy.gross + '</dt><dd id="zwVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="zwVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="zwVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="zwVatStatus" role="status" aria-live="polite"></div></form>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="zw-vat"><h2>' + copy.rules + '</h2><ul class="gnv-list"><li>' + copy.r1 + '</li><li>' + copy.r2 + '</li><li>' + copy.r3 + '</li><li>' + copy.r4 + '</li></ul><h2>' + copy.sources + '</h2><p class="gnv-note"><a href="https://www.zimra.co.zw/public-notices?download=4441%3Apublic-notice-07-of-2026-change-of-vat-rate-on-submission-of-return-category-a">' + copy.notice + '</a><br><a href="https://zimra.co.zw/domestic-taxes/vat/mechanics-of-vat">' + copy.mechanics + '</a><br><a href="https://zimlii.org/akn/zw/act/2025/7/eng%402025-12-29">' + copy.act + '</a><br><a href="https://www.rbz.co.zw/documents/press/2024/July/PRESS_STATEMENT_ON_ZiG_CURRENCY_CODE.pdf">' + copy.rbz + '</a></p><p class="gnv-note">' + copy.disclaimer + '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Zimbabwe%20VAT%20calculation%20error">' + copy.report + '</a></p></aside></div></div>';
     var state = { mode: "add", result: null };
     function byId(id) { return document.getElementById(id); }
@@ -91,13 +96,13 @@
     byId("zwVatPdf").onclick = function () {
       if (!state.result || !window.jspdf) return;
       var pdf = new window.jspdf.jsPDF();
-      pdf.setProperties({ title: copy.title, subject: "Zimbabwe standard VAT planning estimate at 15.5%" });
-      pdf.text(copy.title, 20, 20); pdf.text("Official standard rate: 15.5% | Currency: " + state.result.currency, 20, 32);
+      pdf.setProperties({ title: copy.title, subject: pdfCopy.subject });
+      pdf.text(copy.title, 20, 20); pdf.text(pdfCopy.meta + state.result.currency, 20, 32);
       pdf.text(copy.net + ": " + money(state.result.net, state.result.currency), 20, 48);
       pdf.text(copy.vat + ": " + money(state.result.vat, state.result.currency), 20, 59);
       pdf.text(copy.gross + ": " + money(state.result.gross, state.result.currency), 20, 70);
       pdf.text(pdf.splitTextToSize(copy.disclaimer, 170), 20, 88);
-      pdf.text("Sources reviewed 2026-07-23: ZIMRA Notice 07/2026, Finance Act 7/2025 s34, RBZ ZWG statement", 20, 116);
+      pdf.text(pdfCopy.source, 20, 116);
       pdf.save("zimbabwe-vat-15-5-percent-estimate.pdf"); byId("zwVatStatus").textContent = copy.pdf + ".";
     };
     calculate();

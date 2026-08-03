@@ -195,14 +195,21 @@ function buildDesired({ root, manifest, inventory, ledger, mode = "check" }) {
     ledgerIds.add(entry.englishId);
   }
   const blockedBefore = ledger.entries.filter((entry) => entry.status === "blocked").map(clone);
-  if (blockedBefore.length !== manifest.preservedBlockedEntries) {
-    fail(`central ledger must contain exactly ${manifest.preservedBlockedEntries} blocked entries, found ${blockedBefore.length}.`);
+  const resolvedBlockedEntries = manifest.resolvedBlockedEntries || 0;
+  const expectedBlockedBefore = manifest.preservedBlockedEntries + (mode === "write" ? resolvedBlockedEntries : 0);
+  if (!Number.isInteger(manifest.preservedBlockedEntries) || manifest.preservedBlockedEntries < 0
+      || !Number.isInteger(resolvedBlockedEntries) || resolvedBlockedEntries < 0) {
+    fail("blocked-entry counts must be non-negative integers.");
+  }
+  if (blockedBefore.length !== expectedBlockedBefore) {
+    fail(`central ledger must contain exactly ${expectedBlockedBefore} blocked entries, found ${blockedBefore.length}.`);
   }
 
   const candidateIds = new Set();
   const candidateRoutes = new Set();
   const desiredEntries = [];
   const entriesToAppend = [];
+  const blockedReplacements = new Map();
   let routeTotal = 0;
 
   for (const candidate of manifest.candidates) {
@@ -267,7 +274,12 @@ function buildDesired({ root, manifest, inventory, ledger, mode = "check" }) {
       };
       if (ledgerIds.has(englishId)) {
         const existing = ledger.entries.find((entry) => entry.englishId === englishId);
-        if (mode !== "check" || JSON.stringify(existing) !== JSON.stringify(desiredEntry)) {
+        if (mode === "write" && existing.status === "blocked" && candidate.approval.resolvesBlocked === true) {
+          if (normalizeRoute(existing.swahiliRoute) !== swahiliRoute) {
+            fail(`${englishId} blocked route does not match the accepted physical owner.`);
+          }
+          blockedReplacements.set(englishId, desiredEntry);
+        } else if (mode !== "check" || JSON.stringify(existing) !== JSON.stringify(desiredEntry)) {
           fail(`candidate ID already exists in the central ledger: ${englishId}.`);
         }
       } else {
@@ -281,13 +293,19 @@ function buildDesired({ root, manifest, inventory, ledger, mode = "check" }) {
     fail(`batch must contain exactly ${manifest.expectedAcceptedRoutes} routes, found ${routeTotal}.`);
   }
 
+  if (mode === "write" && blockedReplacements.size !== resolvedBlockedEntries) {
+    fail(`batch must resolve exactly ${resolvedBlockedEntries} blocked entries, found ${blockedReplacements.size}.`);
+  }
   const desired = clone(ledger);
+  desired.entries = desired.entries.map((entry) => blockedReplacements.get(entry.englishId) || entry);
   desired.entries.push(...entriesToAppend);
   const blockedAfter = desired.entries.filter((entry) => entry.status === "blocked");
-  if (JSON.stringify(blockedAfter) !== JSON.stringify(blockedBefore)) {
-    fail("the existing blocked entries would not be preserved exactly.");
+  const blockedExpectedAfter = blockedBefore.filter((entry) => !blockedReplacements.has(entry.englishId));
+  if (blockedAfter.length !== manifest.preservedBlockedEntries
+      || JSON.stringify(blockedAfter) !== JSON.stringify(blockedExpectedAfter)) {
+    fail("the unresolved blocked entries would not be preserved exactly.");
   }
-  return { desired, desiredEntries, blockedBefore };
+  return { desired, desiredEntries, blockedBefore, blockedAfter, blockedResolved: blockedReplacements.size };
 }
 
 function runRecorder(options = {}) {
@@ -300,7 +318,7 @@ function runRecorder(options = {}) {
   const ledgerRead = readJson(ledgerPath, "central acceptance ledger");
   const mode = options.mode || "check";
   if (!['check', 'write'].includes(mode)) fail(`unsupported mode: ${mode}.`);
-  const { desired, desiredEntries, blockedBefore } = buildDesired({
+  const { desired, desiredEntries, blockedAfter, blockedResolved } = buildDesired({
     root,
     manifest,
     inventory,
@@ -318,7 +336,8 @@ function runRecorder(options = {}) {
   return {
     mode,
     acceptedRoutes: desiredEntries.length,
-    blockedPreserved: blockedBefore.length,
+    blockedPreserved: blockedAfter.length,
+    blockedResolved,
     ledgerPath,
   };
 }
@@ -346,7 +365,7 @@ if (require.main === module) {
   try {
     const result = runRecorder(cliArgs(process.argv.slice(2)));
     console.log(
-      `${result.mode === "write" ? "Recorded" : "Verified"} ${result.acceptedRoutes} accepted Swahili routes; preserved ${result.blockedPreserved} blocked entries.`,
+      `${result.mode === "write" ? "Recorded" : "Verified"} ${result.acceptedRoutes} accepted Swahili routes; preserved ${result.blockedPreserved} and resolved ${result.blockedResolved} blocked entries.`,
     );
   } catch (error) {
     console.error(error.message);

@@ -3,9 +3,9 @@
 
 const fs = require('node:fs');
 const path = require('node:path');
+const { buildReport } = require('./build-swahili-free-app-parity-inventory');
 
 const ROOT = path.resolve(__dirname, '..');
-const INVENTORY = path.join(ROOT, 'reports/swahili-free-app-parity-inventory.json');
 const OUTPUT = path.join(ROOT, 'data/localization/sw-ecommerce-parity-manifest.json');
 const ACCEPTED_FAMILY = 'pricing-foundations';
 const ACCEPTANCE_RECEIPT = 'reports/sw-ecommerce-acceptance/pricing-foundations.json';
@@ -79,7 +79,7 @@ function familyIndex() {
 }
 
 function buildManifest() {
-  const inventory = JSON.parse(fs.readFileSync(INVENTORY, 'utf8'));
+  const inventory = buildReport();
   const sourceRows = inventory.rows.filter(row => row.categoryKey === 'ecommerce');
   if (sourceRows.length !== 63) throw new Error(`Expected 63 Ecommerce rows, found ${sourceRows.length}.`);
 
@@ -145,13 +145,13 @@ function buildManifest() {
     programme: 'swahili-free-app-parity-ecommerce',
     locale: 'sw',
     coordinatorBaseSha: '8354e321ff34caf60a33a3393cd0dcddfb00c023',
-    source: 'reports/swahili-free-app-parity-inventory.json#categoryKey=ecommerce',
+    source: 'scripts/build-swahili-free-app-parity-inventory.js#buildReport/categoryKey=ecommerce',
     constraints: {
       exactRows: 63,
       noOverlap: true,
       noGenericRuntimeReplacement: true,
       acceptanceIsFailClosed: true,
-      centralAcceptanceLedgerOutOfScope: false
+      centralAcceptanceLedgerOutOfScope: true
     },
     families: Object.entries(FAMILY_IDS).map(([id, ids]) => ({ id, rowCount: ids.length, englishIds: ids })),
     rows

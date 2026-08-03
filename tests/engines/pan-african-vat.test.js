@@ -53,28 +53,67 @@ const statusCounts = Object.values(pack.countries).reduce((counts, country) => {
   return counts;
 }, {});
 assert.deepStrictEqual(statusCounts, {
-  'authority-bound-planning-preset': 15,
-  'authority-source-gap': 36,
+  'authority-bound-planning-preset': 21,
+  'authority-source-gap': 30,
   'unverified-no-vat-claim': 3
 });
 assert.strictEqual(pack.datasetReviewed, sourceLedger.datasetReviewed, 'pack review date follows the source ledger');
-const authorityBoundCodes = sourceLedger.sources.map((source) => source.country).sort();
+const authorityBoundCodes = sourceLedger.sources
+  .map((source) => source.country)
+  .filter((code) => code !== 'AO')
+  .sort();
 const presetCodes = Object.entries(pack.countries)
   .filter(([, country]) => country.status === 'authority-bound-planning-preset')
   .map(([code]) => code)
   .sort();
-assert.deepStrictEqual(presetCodes, authorityBoundCodes, 'presets exist only for authority-bound ledger rows');
+assert.deepStrictEqual(presetCodes, authorityBoundCodes, 'presets exist only for ledger rows with a rate-proving authority URL');
+const expectedPresetRates = {
+  BI: 18, BJ: 18, BW: 14, DZ: 19, EG: 14, ET: 15, GH: 20,
+  KE: 16, MA: 20, MU: 15, NA: 15, NG: 7.5, RW: 18, SD: 17,
+  SZ: 15, TD: 19.25, TZ: 18, UG: 18, ZA: 15, ZM: 16, ZW: 15
+};
+assert.deepStrictEqual(
+  Object.fromEntries(presetCodes.map((code) => [code, pack.countries[code].standardRate])),
+  expectedPresetRates,
+  'every authority-bound country code has its exact reviewed rate'
+);
 for (const source of sourceLedger.sources) {
+  if (source.country === 'AO') {
+    assert.strictEqual(pack.countries.AO.status, 'authority-source-gap', 'AO generic authority homepage must fail closed');
+    assert.strictEqual(Object.prototype.hasOwnProperty.call(pack.countries.AO, 'standardRate'), false, 'AO gap has no promoted rate');
+    assert.strictEqual(Object.prototype.hasOwnProperty.call(pack.countries.AO, 'source'), false, 'AO gap does not expose a generic authority page as rate proof');
+    continue;
+  }
   assert.strictEqual(pack.countries[source.country].source.url, source.url, `${source.country} source URL matches ledger`);
+}
+
+const repairedPresets = {
+  BI: { rate: 18, reviewedOn: '2026-07-23', url: 'https://www.obr.bi/images/PDF/VULGARISATION_DES_LOIS_FISCALES_final.pdf' },
+  BJ: { rate: 18, reviewedOn: '2026-08-02', url: 'https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf' },
+  DZ: { rate: 19, reviewedOn: '2026-07-22', url: 'https://www.mfdgi.gov.dz/fr/professionnels/services-pro/regime-reel/la-taxe-sur-la-valeur-ajoutee' },
+  SD: { rate: 17, reviewedOn: '2026-07-23', url: 'https://tax.gov.sd/en/newsen/' },
+  SZ: { rate: 15, reviewedOn: '2026-07-22', url: 'https://www.ers.org.sz/VAT/Eswatini' },
+  TD: { rate: 19.25, reviewedOn: '2026-07-22', url: 'https://www.finances.gouv.td/index.php/le-ministere/le-ministre/item/download/404_2503d5c174528169afd3a9cd827c3cb0' }
+};
+for (const [code, expected] of Object.entries(repairedPresets)) {
+  const preset = engine.getCountryPreset(pack, code);
+  assert.strictEqual(preset.ok, true, `${code} has an authority-bound preset`);
+  assert.strictEqual(preset.rate, expected.rate, `${code} exact standard rate`);
+  assert.strictEqual(preset.reviewedOn, expected.reviewedOn, `${code} source-specific review date`);
+  assert.strictEqual(preset.source.url, expected.url, `${code} exact authority URL`);
+  const added = engine.calculateSingle({ amount: 1000, rate: preset.rate, mode: 'add' });
+  assert.strictEqual(added.ok, true, `${code} preset calculates`);
+  assert.strictEqual(added.display.vat, expected.rate * 10, `${code} exact VAT for 1000`);
+  assert.strictEqual(added.display.total, 1000 + expected.rate * 10, `${code} exact total for 1000`);
 }
 
 const nigeria = engine.getCountryPreset(pack, 'ng');
 assert.strictEqual(nigeria.ok, true);
 assert.strictEqual(nigeria.rate, 7.5);
-assert.strictEqual(nigeria.source.url, 'https://www.firs.gov.ng/');
-assert.strictEqual(nigeria.reviewedOn, '2026-05-03');
+assert.strictEqual(nigeria.source.url, 'https://nass.gov.ng/documents/download/11249');
+assert.strictEqual(nigeria.reviewedOn, '2026-08-02');
 
-for (const code of ['GW', 'SO', 'ER', 'LY']) {
+for (const code of ['AO', 'GW', 'SO', 'ER', 'LY']) {
   const missing = engine.getCountryPreset(pack, code);
   assert.strictEqual(missing.ok, false, `${code} must not silently receive a preset`);
   assert.match(missing.error, /Enter the rate from your authority notice/);

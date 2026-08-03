@@ -40,9 +40,24 @@
       rate: state.rateKind === "scenario" ? custom.value : undefined,
     };
   }
+  function clearMainResult() {
+    ["ugvResultMain", "ugvNet", "ugvVat", "ugvGross", "ugvRateUsed"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("ugvResultNote").textContent = "";
+    byId("ugvResult").classList.remove("on");
+  }
+  function clearInvoiceResult() {
+    ["ugvInvoiceNet", "ugvInvoiceVat", "ugvInvoiceGross"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("ugvInvoiceOutput").classList.remove("on");
+  }
   function calculate() {
     try {
       state.result = engine.calculate(input());
+      amount.setAttribute("aria-invalid", "false");
+      custom.setAttribute("aria-invalid", "false");
       error.textContent = "";
       byId("ugvResultMain").textContent = money(
         state.mode === "add" ? state.result.gross : state.result.net,
@@ -72,7 +87,9 @@
       status.textContent = text("calculated", "Uganda VAT estimate updated.");
     } catch (caught) {
       state.result = null;
-      byId("ugvResult").classList.remove("on");
+      clearMainResult();
+      amount.setAttribute("aria-invalid", String(amount.value === "" || Number(amount.value) < 0));
+      custom.setAttribute("aria-invalid", String(state.rateKind === "scenario"));
       error.textContent = text(
         "invalid",
         "Enter a non-negative amount and a rate from 0% to 100%.",
@@ -138,12 +155,16 @@
         input(),
       );
       byId("ugvInvoiceError").textContent = "";
+      byId("ugvInvoiceQty").setAttribute("aria-invalid", "false");
+      byId("ugvInvoiceUnit").setAttribute("aria-invalid", "false");
       byId("ugvInvoiceNet").textContent = money(invoice.net);
       byId("ugvInvoiceVat").textContent = money(invoice.vat);
       byId("ugvInvoiceGross").textContent = money(invoice.gross);
       byId("ugvInvoiceOutput").classList.add("on");
     } catch (caught) {
-      byId("ugvInvoiceOutput").classList.remove("on");
+      clearInvoiceResult();
+      byId("ugvInvoiceQty").setAttribute("aria-invalid", String(byId("ugvInvoiceQty").value === "" || Number(byId("ugvInvoiceQty").value) < 0));
+      byId("ugvInvoiceUnit").setAttribute("aria-invalid", String(byId("ugvInvoiceUnit").value === "" || Number(byId("ugvInvoiceUnit").value) < 0));
       byId("ugvInvoiceError").textContent = text(
         "invalidInvoice",
         "Enter a non-negative quantity and unit price.",
@@ -210,7 +231,7 @@
     doc.text(
       text(
         "pdfSource",
-        "URA VAT guidance and Value Added Tax Act schedules; reviewed 22 July 2026.",
+        "URA VAT guidance and Value Added Tax Act schedules; reviewed 2 August 2026.",
       ),
       48,
       82,

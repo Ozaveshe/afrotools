@@ -5,6 +5,8 @@
   --ugv-text: #211d16;
   --ugv-muted: #625c51;
   --ugv-line: #ded6c5;
+  --ugv-control-line: #6d675c;
+  --ugv-focus: #005b38;
   --ugv-green: #a32532;
   --ugv-deep: #171711;
   --ugv-gold: #f4c542;
@@ -18,6 +20,8 @@
   --ugv-text: #f1f6f2;
   --ugv-muted: #adb8af;
   --ugv-line: #2c4031;
+  --ugv-control-line: #9db1a2;
+  --ugv-focus: #a7f3d0;
   --ugv-green: #ff8490;
   --ugv-deep: #06150e;
   --ugv-gold: #ffd766;
@@ -155,6 +159,11 @@
   gap: 22px;
   align-items: start;
 }
+.ugv-grid,
+.ugv-stack,
+.ugv-card {
+  min-width: 0;
+}
 .ugv-stack {
   display: grid;
   gap: 18px;
@@ -233,18 +242,24 @@
 .ugv-select {
   width: 100%;
   min-height: 48px;
-  border: 1px solid var(--ugv-line);
+  border: 1px solid var(--ugv-control-line);
   background: var(--ugv-bg);
   color: var(--ugv-text);
   border-radius: 11px;
   padding: 11px 12px;
   font: inherit;
 }
+html[data-theme="dark"] body.ugv-page input.ugv-input,
+html[data-theme="dark"] body.ugv-page select.ugv-select {
+  border-color: var(--ugv-control-line) !important;
+  background: var(--ugv-bg) !important;
+  color: var(--ugv-text) !important;
+}
 .ugv-input:focus,
 .ugv-select:focus,
 .ugv-page button:focus-visible,
 .ugv-page a:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--ugv-green) 40%, transparent);
+  outline: 3px solid var(--ugv-focus);
   outline-offset: 2px;
 }
 .ugv-scenario {
@@ -459,6 +474,16 @@
   }
   .ugv-result-row {
     font-size: 0.82rem;
+    flex-wrap: wrap;
+  }
+  .ugv-result-main {
+    font-size: clamp(1.25rem, 10vw, 2rem);
+    overflow-wrap: anywhere;
+  }
+  .ugv-card h2,
+  .ugv-card h3,
+  .ugv-result-row strong {
+    overflow-wrap: anywhere;
   }
 }
 @media (prefers-reduced-motion: reduce) {

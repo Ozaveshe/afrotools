@@ -3,13 +3,13 @@
   "programme": "swahili-free-app-parity-ecommerce",
   "locale": "sw",
   "coordinatorBaseSha": "8354e321ff34caf60a33a3393cd0dcddfb00c023",
-  "source": "reports/swahili-free-app-parity-inventory.json#categoryKey=ecommerce",
+  "source": "scripts/build-swahili-free-app-parity-inventory.js#buildReport/categoryKey=ecommerce",
   "constraints": {
     "exactRows": 63,
     "noOverlap": true,
     "noGenericRuntimeReplacement": true,
     "acceptanceIsFailClosed": true,
-    "centralAcceptanceLedgerOutOfScope": false
+    "centralAcceptanceLedgerOutOfScope": true
   },
   "families": [
     {
@@ -228,6 +228,7 @@
         "maintainedRuntimeOwners": [
           "assets/js/engines/ng-vat.js",
           "assets/js/pages/nigeria-vat-vip.js",
+          "assets/js/supabase.min.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -242,6 +243,7 @@
           "assets/js/pages/nigeria-vat-vip.js"
         ],
         "sharedLibraries": [
+          "assets/js/supabase.min.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -772,6 +774,7 @@
         "maintainedRuntimeOwners": [
           "assets/js/engines/dz-vat.js",
           "assets/js/pages/algeria-vat-vip.js",
+          "assets/js/supabase.min.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -786,6 +789,7 @@
           "assets/js/pages/algeria-vat-vip.js"
         ],
         "sharedLibraries": [
+          "assets/js/supabase.min.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -892,15 +896,13 @@
         "maintainedRuntimeOwners": [
           "assets/js/engines/bj-vat.js",
           "assets/js/pages/vat-ui-refinement.js",
-          "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js",
           "assets/js/lib/chart-config.js",
           "assets/js/afro-history.js",
           "assets/js/components/save-result-button.js",
           "assets/js/components/share-card-generator.js",
           "assets/js/components/share-button.js",
           "assets/js/lib/source-confidence.js",
-          "assets/js/share-image-inject.js",
-          "assets/js/lib/auto-email-gate.js"
+          "assets/js/share-image-inject.js"
         ]
       },
       "owners": {
@@ -914,15 +916,13 @@
           "assets/js/pages/vat-ui-refinement.js"
         ],
         "sharedLibraries": [
-          "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js",
           "assets/js/lib/chart-config.js",
           "assets/js/afro-history.js",
           "assets/js/components/save-result-button.js",
           "assets/js/components/share-card-generator.js",
           "assets/js/components/share-button.js",
           "assets/js/lib/source-confidence.js",
-          "assets/js/share-image-inject.js",
-          "assets/js/lib/auto-email-gate.js"
+          "assets/js/share-image-inject.js"
         ]
       },
       "productContract": {
@@ -2160,6 +2160,7 @@
         "maintainedRuntimeOwners": [
           "assets/js/engines/lr-vat.js",
           "assets/js/pages/liberia-vat-vip.js",
+          "assets/js/pages/liberia-mali-vat-pdf-provenance.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -2171,7 +2172,8 @@
           "assets/js/engines/lr-vat.js"
         ],
         "englishController": [
-          "assets/js/pages/liberia-vat-vip.js"
+          "assets/js/pages/liberia-vat-vip.js",
+          "assets/js/pages/liberia-mali-vat-pdf-provenance.js"
         ],
         "sharedLibraries": [
           "assets/js/lib/source-confidence.js"
@@ -2340,6 +2342,7 @@
         "maintainedRuntimeOwners": [
           "assets/js/engines/ml-vat.js",
           "assets/js/pages/mali-vat-vip.js",
+          "assets/js/pages/liberia-mali-vat-pdf-provenance.js",
           "assets/js/lib/source-confidence.js"
         ]
       },
@@ -2351,7 +2354,8 @@
           "assets/js/engines/ml-vat.js"
         ],
         "englishController": [
-          "assets/js/pages/mali-vat-vip.js"
+          "assets/js/pages/mali-vat-vip.js",
+          "assets/js/pages/liberia-mali-vat-pdf-provenance.js"
         ],
         "sharedLibraries": [
           "assets/js/lib/source-confidence.js"
@@ -3869,11 +3873,14 @@
         "file": "tools/idea-board/index.html"
       },
       "swahili": {
-        "route": null,
-        "file": null,
-        "inventoryState": "missing",
-        "ownerState": "missing",
-        "maintainedRuntimeOwners": []
+        "route": "/sw/zana/kichunguzi-ushahidi-wa-mawazo/",
+        "file": "sw/zana/kichunguzi-ushahidi-wa-mawazo/index.html",
+        "inventoryState": "unclassified-candidate",
+        "ownerState": "mapped-unaccepted",
+        "maintainedRuntimeOwners": [
+          "assets/js/engines/idea-evidence-explorer.js",
+          "assets/js/pages/idea-evidence-explorer.js"
+        ]
       },
       "owners": {
         "englishPage": [
@@ -3903,8 +3910,8 @@
       "aiRouting": {
         "englishContext": "data/ai/tool-context/idea-board.json",
         "scopedRouteOwner": "data/localization/sw-ecommerce-parity-manifest.json",
-        "scopedRoute": null,
-        "state": "missing-swahili-route"
+        "scopedRoute": "/sw/zana/kichunguzi-ushahidi-wa-mawazo/",
+        "state": "manifest-mapped-central-fail-closed"
       },
       "acceptance": {
         "state": "pending",
@@ -3923,11 +3930,14 @@
         "file": "tools/paystack-calculator/index.html"
       },
       "swahili": {
-        "route": null,
-        "file": null,
-        "inventoryState": "missing",
-        "ownerState": "missing",
-        "maintainedRuntimeOwners": []
+        "route": "/sw/zana/mpangaji-ada-za-paystack/",
+        "file": "sw/zana/mpangaji-ada-za-paystack/index.html",
+        "inventoryState": "unclassified-candidate",
+        "ownerState": "mapped-unaccepted",
+        "maintainedRuntimeOwners": [
+          "assets/js/engines/paystack-fee-planner.js",
+          "assets/js/pages/paystack-fee-planner.js"
+        ]
       },
       "owners": {
         "englishPage": [
@@ -3957,8 +3967,8 @@
       "aiRouting": {
         "englishContext": "data/ai/tool-context/paystack-calculator.json",
         "scopedRouteOwner": "data/localization/sw-ecommerce-parity-manifest.json",
-        "scopedRoute": null,
-        "state": "missing-swahili-route"
+        "scopedRoute": "/sw/zana/mpangaji-ada-za-paystack/",
+        "state": "manifest-mapped-central-fail-closed"
       },
       "acceptance": {
         "state": "pending",

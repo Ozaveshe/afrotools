@@ -4,7 +4,8 @@
   var engine = window.AfroTools && window.AfroTools.IdeaEvidenceExplorer;
   if (!root || !engine) return;
 
-  var locale = root.dataset.locale === "fr" ? "fr" : "en";
+  var requestedLocale = root.dataset.locale;
+  var locale = requestedLocale === "fr" || requestedLocale === "sw" ? requestedLocale : "en";
   var STORE = "afrotools:idea-evidence-shortlist:v1";
   var currentRows = [];
   var shortlist = [];
@@ -26,7 +27,7 @@
     beauty:["Beauty and personal care","Beauté et soins"], logistics:["Warehousing and supply chain","Logistique"], waste:["Waste and recycling","Déchets et recyclage"],
     telecom:["Telecommunications","Télécommunications"]
   };
-  var t = {
+  var dictionary = {
     en:{
       title:"Explore submitted business-idea evidence", intro:"Filter the available records, inspect their assumptions and compare up to six ideas locally. Cost, revenue and break-even values are submitted planning estimates—not verified returns, prices or guarantees.",
       privacy:"Search requests use the AfroTools public idea dataset. Your shortlist stays only in this browser after you explicitly add an idea. Nothing is sent to an AI service.",
@@ -59,7 +60,24 @@
       tableIdea:"Idée", tableCountry:"Pays", tableSector:"Secteur", source:"Source et fraîcheur", scope:"Les fiches contiennent des estimations de planification soumises. AfroTools n’a pas vérifié la rentabilité, la demande, les coûts, le délai d’équilibre ni l’adéquation réglementaire.",
       links:"Continuer avec prudence", draft:"Transformer la sélection en brouillon de business plan", registration:"Préparer l’immatriculation et les licences"
     }
-  }[locale];
+  };
+  dictionary.sw = {
+    title:"Chunguza ushahidi wa mawazo ya biashara", intro:"Chuja rekodi zilizopo, kagua makadirio yake na linganisha hadi mawazo sita ndani ya kivinjari. Gharama, mapato na muda wa kufikia usawa ni makadirio yaliyowasilishwa—si faida, bei au dhamana zilizothibitishwa.",
+    privacy:"Utafutaji huuliza mkusanyiko wa umma wa AfroTools. Orodha yako fupi hukaa katika kivinjari hiki baada ya kuongeza wazo kwa hiari. Hakuna maandishi yanayotumwa kwa huduma ya AI.",
+    country:"Nchi", sector:"Sekta", allSectors:"Sekta zote", risk:"Kiwango cha hatari", allRisks:"Viwango vyote", budget:"Makadirio ya juu ya gharama ya kuanza", search:"Jina la wazo", sort:"Panga rekodi",
+    fastest:"Muda mfupi zaidi wa kufikia usawa", lowest:"Gharama ndogo zaidi ya kuanza", revenue:"Mapato makubwa zaidi ya mwezi", newest:"Rekodi mpya zaidi",
+    find:"Tafuta rekodi za ushahidi", retry:"Jaribu tena", initial:"Chagua vichujio kisha utafute. Hakuna ombi la data linalofanywa kabla ya uamuzi wako.", loading:"Inapakia rekodi za ushahidi…", offline:"Inaonekana huna mtandao. Unganisha kisha ujaribu tena.", timeout:"Huduma ya data haikujibu kwa wakati. Jaribu tena ukiwa na muunganisho thabiti.",
+    error:"Rekodi za ushahidi hazipatikani. Hakuna matokeo yaliyobuniwa. Jaribu tena baadaye.", empty:"Hakuna rekodi iliyosawazishwa inayolingana na vichujio hivi.", found:"rekodi zilizosawazishwa zinaonyeshwa kwenye ukurasa huu", reported:"ulinganifu ulioripotiwa kabla ya usawazishaji", changed:"Vichujio vimebadilika. Tafuta tena.",
+    estimate:"Makadirio ya mpango yaliyowasilishwa", unavailable:"Haijatolewa", startup:"Gharama ya kuanza", monthly:"Mapato ya mwezi", breakeven:"Kufikia usawa", months:"miezi", details:"Kagua ushahidi", add:"Ongeza kwenye orodha ya ndani", remove:"Ondoa",
+    sourceYes:"Chanzo kimetolewa", sourceNo:"Chanzo hakijatolewa", confidence:"Uhakika", asOf:"Hadi", updated:"Rekodi ilisasishwa", description:"Maelezo", rationale:"Sababu ya eneo", model:"Mfumo wa mapato", risks:"Hatari zilizowasilishwa", cities:"Miji iliyopendekezwa",
+    close:"Funga maelezo", shortlist:"Orodha fupi na ulinganisho wa ndani", shortlistIntro:"Ongeza hadi rekodi sita kwa hiari. Chaguo hizi zinaweza kuwa nyeti kibiashara; zifute kabla ya kuacha kifaa cha pamoja.",
+    shortlistEmpty:"Hakuna wazo lililoongezwa.", maximum:"Orodha fupi imewekewa kikomo cha mawazo sita.", saved:"Orodha imehifadhiwa katika kivinjari hiki pekee.", cleared:"Orodha ya ndani imefutwa.", corrupt:"Orodha iliyohifadhiwa haisomeki au ina schema nyingine. Ifute au ingiza nakala halali.",
+    backup:"Pakua nakala ya JSON", import:"Ingiza nakala ya JSON", clear:"Futa orodha", copy:"Nakili ulinganisho", txt:"Pakua TXT", csv:"Pakua CSV", json:"Pakua JSON kamili", pdf:"Pakua PDF", print:"Chapisha",
+    imported:"Nakala imeingizwa na kuhifadhiwa kwa hiari katika kivinjari hiki.", importBad:"Faili hiyo si nakala halali ya Kichunguzi cha Ushahidi wa Mawazo.", copied:"Ulinganisho umenakiliwa.", pdfBad:"PDF haipatikani. Tumia Chapisha.",
+    tableIdea:"Wazo", tableCountry:"Nchi", tableSector:"Sekta", source:"Chanzo na uhalisia", scope:"Rekodi zina makadirio ya mpango yaliyowasilishwa. AfroTools haijathibitisha faida, mahitaji, gharama, muda wa kufikia usawa wala kufaa kisheria.",
+    links:"Endelea kwa tahadhari", draft:"Geuza ushahidi uliochagua kuwa rasimu ya mpango wa biashara", registration:"Kagua usajili na mipango ya leseni"
+  };
+  var t = dictionary[locale] || dictionary.en;
 
   function el(tag, attrs, value) {
     var node = document.createElement(tag);
@@ -80,7 +98,10 @@
     var prefix = currency ? currency + " " : "";
     return pair.max == null || pair.min === pair.max ? prefix + formatter.format(pair.min) : prefix + formatter.format(pair.min) + " – " + formatter.format(pair.max);
   }
-  function sectorLabel(value) { return sectorNames[value] ? sectorNames[value][locale === "fr" ? 1 : 0] : value; }
+  function sectorLabel(value) {
+    var sw = {transportation:"Usafiri",agriculture:"Kilimo",food:"Chakula na vinywaji",technology:"Teknolojia",retail:"Rejareja na biashara mtandao",fintech:"Huduma za kifedha",construction:"Ujenzi na mali",health:"Afya na ustawi",education:"Elimu na mafunzo",energy:"Nishati na huduma",fashion:"Mitindo na nguo",tourism:"Utalii na ukarimu",media:"Vyombo vya habari na ubunifu",manufacturing:"Utengenezaji",services:"Huduma za kitaalamu",mining:"Madini na rasilimali",beauty:"Urembo na utunzaji",logistics:"Maghala na ugavi",waste:"Taka na urejelezaji",telecom:"Mawasiliano"};
+    return locale === "sw" ? (sw[value] || value) : sectorNames[value] ? sectorNames[value][locale === "fr" ? 1 : 0] : value;
+  }
   function formatDate(value) { return value ? new Intl.DateTimeFormat(locale,{dateStyle:"medium"}).format(new Date(value)) : t.unavailable; }
   function status(message, state) {
     var node = root.querySelector("[data-status]");
@@ -98,7 +119,7 @@
     var form=el("form",{class:"iee-search","data-search-form":"",novalidate:""});
     var country=el("select",{name:"country",id:"iee-country"});countries.forEach(function(c){country.append(option(c[0],c[1]))});
     var sector=el("select",{name:"sector",id:"iee-sector"});sector.append(option("",t.allSectors));engine.SECTORS.forEach(function(s){sector.append(option(s,sectorLabel(s)))});
-    var risk=el("select",{name:"risk",id:"iee-risk"});risk.append(option("",t.allRisks),option("low","Low / Faible"),option("medium","Medium / Moyen"),option("high","High / Élevé"));
+    var risk=el("select",{name:"risk",id:"iee-risk"});risk.append(option("",t.allRisks),option("low",locale==="sw"?"Ndogo":"Low / Faible"),option("medium",locale==="sw"?"Wastani":"Medium / Moyen"),option("high",locale==="sw"?"Kubwa":"High / Élevé"));
     var budget=el("input",{name:"budget",id:"iee-budget",type:"number",inputmode:"decimal",min:"0",max:String(engine.MAX_AMOUNT),step:"0.01"});
     var search=el("input",{name:"query",id:"iee-query",type:"search",maxlength:"100",autocomplete:"off"});
     var sort=el("select",{name:"sort",id:"iee-sort"});sort.append(option("breakeven",t.fastest),option("cost",t.lowest),option("revenue",t.revenue),option("newest",t.newest));

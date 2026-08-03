@@ -1,156 +1,206 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="sw">
 <head>
-<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Kizalishaji cha Barua ya Ombi la Kazi — Kiswahili &amp; Kiingereza | AfroTools</title>
-<meta name="description" content="Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Violezo vya kitaalamu kwa sekta za teknolojia, fedha, afya, elimu, na zaidi. Pakua PDF bure bila usajili.">
-<meta property="og:title" content="Kizalishaji cha Barua ya Ombi la Kazi — AfroTools">
-<meta property="og:description" content="Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Violezo vya kitaalamu, usafirishaji wa PDF. Bure kabisa.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Barua ya Maombi | AfroTools</title>
+<meta name="description" content="Andaa barua ya ombi la kazi ndani ya kivinjari na pakua PDF, DOC, TXT au JSON bila kutuma taarifa zako.">
+<link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"></noscript>
+<meta property="og:title" content="Barua ya Maombi | AfroTools">
+<meta property="og:description" content="Andaa barua ya ombi la kazi ndani ya kivinjari na pakua PDF, DOC, TXT au JSON bila kutuma taarifa zako.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cover-letter.webp">
+<meta property="og:image:width" content="600">
+<meta property="og:image:height" content="400">
 <meta property="og:url" content="https://afrotools.com/sw/zana/barua-ombi/">
-<meta property="og:type" content="website">
-<meta property="og:locale" content="sw_KE">
-<meta property="og:locale:alternate" content="en_US">
+<meta property="og:locale" content="sw_TZ">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kizalishaji cha Barua ya Ombi la Kazi — AfroTools">
-<meta name="twitter:description" content="Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Bure kabisa, hakuna usajili.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-29">
-
-<!-- Design System -->
-<link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/tool-landing.css?v=09fede9d">
-
-<!-- Components -->
-<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
-<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-
-<!-- Fonts -->
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800;900&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript>
-
-<script src="/assets/js/lib/save-state.global.js?v=ff7c4414"></script>
+<meta name="twitter:title" content="Barua ya Maombi | AfroTools">
+<meta name="twitter:description" content="Andaa barua ya ombi la kazi ndani ya kivinjari na pakua PDF, DOC, TXT au JSON bila kutuma taarifa zako.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cover-letter.webp">
+<meta property="article:modified_time" content="2026-05-23">
+<script src="/assets/js/lib/save-state-classic.js?v=015b323f"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c" defer></script>
 <style>
-  :root{--color-primary:#0062CC;--color-bg:#FAFAF8}
-  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-  body{font-family:'DM Sans',system-ui,sans-serif;background:var(--color-bg)}
-
-  /* ── Builder Card ── */
-  .bl-wrap{max-width:1080px;margin:0 auto;padding:0 24px 64px;display:grid;grid-template-columns:1fr 1fr;gap:28px}
-  @media(max-width:720px){.bl-wrap{grid-template-columns:1fr}}
-  .bl-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden}
-  .bl-head{padding:20px 24px;border-bottom:1px solid #e5e7eb;background:#f9fafb}
-  .bl-head h2{font-size:1rem;font-weight:800;color:#111;margin-bottom:2px}
-  .bl-head p{font-size:.78rem;color:#6b7280}
-  .bl-body{padding:24px}
-  .bl-field{margin-bottom:16px}
-  .bl-label{display:block;font-size:.8rem;font-weight:700;color:#374151;margin-bottom:5px}
-  .bl-req{color:#ef4444;margin-left:2px}
-  .bl-input,.bl-select,.bl-textarea{width:100%;padding:10px 13px;border:1px solid #e5e7eb;border-radius:8px;font-family:'DM Sans',sans-serif;font-size:.85rem;color:#111;background:#fff;transition:.15s;outline:none}
-  .bl-input:focus,.bl-select:focus,.bl-textarea:focus{border-color:var(--color-primary);box-shadow:0 0 0 3px rgba(0,98,204,.1)}
-  .bl-textarea{resize:vertical;min-height:90px;line-height:1.6}
-  .bl-row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-  @media(max-width:480px){.bl-row{grid-template-columns:1fr}}
-  .bl-actions{display:flex;gap:10px;flex-wrap:wrap;padding:0 24px 24px}
-  .bl-btn-p{background:linear-gradient(135deg,#0062CC,#0055D4);color:#fff;border:none;padding:12px 24px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:700;cursor:pointer;display:inline-flex;align-items:center;gap:7px;transition:.15s;box-shadow:0 4px 14px rgba(0,98,204,.3)}
-  .bl-btn-p:hover{background:#0059B3;box-shadow:0 4px 14px rgba(0,98,204,.4)}
-  .bl-btn-s{background:#f3f4f6;color:#374151;border:none;padding:12px 20px;border-radius:9px;font-family:'DM Sans',sans-serif;font-size:.88rem;font-weight:600;cursor:pointer;transition:.15s}
-  .bl-btn-s:hover{background:#e5e7eb}
-
-  /* ── Preview Card ── */
-  .pr-card{background:#fff;border:1px solid #e5e7eb;border-radius:16px;overflow:hidden;display:flex;flex-direction:column}
-  .pr-head{padding:16px 20px;border-bottom:1px solid #e5e7eb;background:#f9fafb;display:flex;align-items:center;justify-content:space-between}
-  .pr-head h2{font-size:.9rem;font-weight:800;color:#111}
-  .pr-actions{display:flex;gap:8px}
-  .pr-btn{background:transparent;border:1px solid #e5e7eb;color:#374151;padding:6px 12px;border-radius:6px;font-size:.75rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:.15s}
-  .pr-btn:hover{background:#f3f4f6}
-  .pr-btn-dl{background:linear-gradient(135deg,#0062CC,#0055D4);color:#fff;border-color:transparent;box-shadow:0 2px 8px rgba(0,98,204,.3)}
-  .pr-btn-dl:hover{background:#0059B3}
-  .pr-body{padding:28px;flex:1;min-height:400px;font-size:.78rem;line-height:1.75;color:#374151;background:#fafafa;overflow-y:auto}
-  .pr-body.empty{display:flex;align-items:center;justify-content:center;color:#9ca3af;font-size:.85rem;text-align:center;flex-direction:column;gap:8px}
-  .letter-output{background:#fff;padding:32px;border:1px solid #e5e7eb;border-radius:8px;font-size:.82rem;line-height:1.8;color:#111;box-shadow:0 2px 12px rgba(0,0,0,.06)}
-  .letter-output p{margin-bottom:14px}
-  .letter-output .l-header{margin-bottom:24px;padding-bottom:16px;border-bottom:2px solid var(--color-primary)}
-  .letter-output .l-name{font-size:1rem;font-weight:800;color:#111;margin-bottom:2px}
-  .letter-output .l-contact{font-size:.72rem;color:#6b7280}
-  .letter-output .l-date{margin-bottom:16px;color:#6b7280;font-size:.78rem}
-  .letter-output .l-company{margin-bottom:16px}
-  .letter-output .l-company strong{display:block;font-weight:700;color:#111}
-  .letter-output .l-salutation{font-weight:700;margin-bottom:12px}
-  .letter-output .l-closing{margin-top:24px}
-
-  /* ── Templates ── */
-  .tpl-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px;padding:0 24px 20px}
-  .tpl-item{border:2px solid #e5e7eb;border-radius:10px;padding:12px;cursor:pointer;transition:.2s;text-align:center;background:#fff}
-  .tpl-item:hover{border-color:var(--color-primary)}
-  .tpl-item.active{border-color:var(--color-primary);background:#EFF6FF}
-  .tpl-item-icon{font-size:22px;margin-bottom:6px}
-  .tpl-item-name{font-size:.72rem;font-weight:700;color:#374151}
-
-  /* ── Saved ── */
-  .saved-section{max-width:1080px;margin:0 auto;padding:0 24px 32px}
-  .saved-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px}
-  .saved-head h2{font-size:.95rem;font-weight:800;color:#111}
-  .saved-new{background:var(--color-primary);color:#fff;padding:7px 16px;border-radius:7px;font-size:.78rem;font-weight:700;text-decoration:none;display:inline-flex;align-items:center;gap:5px;transition:.15s}
-  .saved-new:hover{background:#0059B3}
-  .saved-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:10px}
-  .saved-card{background:#fff;border:1.5px solid #e5e7eb;border-radius:10px;padding:14px;cursor:pointer;transition:border-color .15s}
-  .saved-card:hover{border-color:var(--color-primary)}
-  .saved-card-title{font-size:.82rem;font-weight:700;color:#111;margin-bottom:3px}
-  .saved-card-meta{font-size:.7rem;color:#6b7280}
-  .saved-card-del{font-size:.65rem;color:#ef4444;font-weight:700;background:none;border:none;cursor:pointer;margin-top:6px}
+*,*::before,*::after{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:'DM Sans',system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#f6f7f3;color:#111827;min-height:100vh}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer;min-height:44px}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
+.topbar{position:sticky;top:0;z-index:20;display:flex;align-items:center;gap:14px;padding:12px clamp(14px,2vw,28px);background:rgba(255,255,255,.94);border-bottom:1px solid #e5e7eb;backdrop-filter:blur(14px)}
+.topbar a{display:inline-flex;align-items:center;min-height:44px;color:#4b5563;text-decoration:none;font-size:.88rem;font-weight:700}
+.topbar-title{font-size:.98rem;font-weight:800;margin-right:auto}
+.topbar-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.btn{border:1px solid #d1d5db;background:#fff;color:#111827;border-radius:8px;padding:9px 12px;font-size:.83rem;font-weight:800;line-height:1;min-height:44px}
+.btn:hover,.btn:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none}
+.btn-primary{background:#0b63ce;color:#fff;border-color:#0b63ce}
+.btn-primary:hover,.btn-primary:focus-visible{background:#084eaa;color:#fff}
+.btn-soft{background:#eef5ff;color:#0b63ce;border-color:#bfdbfe}
+.btn-danger{color:#b91c1c;border-color:#fecaca}
+.app-shell{--workbench-height:clamp(660px,calc(100vh - 300px),790px);width:min(1500px,100%);margin:0 auto;padding:18px clamp(12px,2vw,28px) 32px}
+.hero-strip{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:16px;align-items:end;margin-bottom:16px}
+.eyebrow{margin:0 0 5px;color:#0b63ce;font-size:.72rem;font-weight:900;text-transform:uppercase}
+.hero-strip h1{margin:0;font-size:clamp(1.45rem,2.4vw,2.4rem);letter-spacing:0;line-height:1.05}
+.hero-strip p{margin:8px 0 0;color:#4b5563;max-width:760px;line-height:1.55}
+.status-line{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.pill{display:inline-flex;align-items:center;gap:6px;border:1px solid #dbeafe;background:#fff;color:#1f2937;border-radius:999px;padding:8px 10px;font-size:.76rem;font-weight:800}
+.pill-button{cursor:pointer;min-height:44px}
+.pill-button:hover,.pill-button:focus-visible{border-color:#0b63ce;color:#0b63ce;outline:none;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.workflow-progress{margin:0 0 16px}
+.workflow-progress ol{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px;list-style:none;margin:0;padding:0}
+.progress-step{display:grid;grid-template-columns:auto 1fr;gap:7px 9px;align-items:center;min-height:78px;border:1px solid #e5e7eb;border-radius:8px;background:#fff;padding:11px;box-shadow:0 14px 34px rgba(15,23,42,.06)}
+.progress-step span{display:grid;place-items:center;width:27px;height:27px;border-radius:999px;background:#e5e7eb;color:#475569;font-size:.78rem;font-weight:900}
+.progress-step strong{font-size:.84rem;color:#111827;line-height:1.15}
+.progress-step small{grid-column:2;color:#6b7280;font-size:.72rem;line-height:1.35}
+.progress-step[data-state=done]{border-color:#bbf7d0;background:#f0fdf4}
+.progress-step[data-state=done] span{background:#16a34a;color:#fff}
+.progress-step[data-state=current]{border-color:#fed7aa;box-shadow:0 14px 34px rgba(249,115,22,.14)}
+.progress-step[data-state=current] span{background:#f97316;color:#fff}
+.workspace{display:grid;grid-template-columns:minmax(320px,390px) minmax(280px,330px) minmax(520px,1fr);grid-template-areas:"inputs insights draft";gap:16px;align-items:stretch}
+.panel,.preview-card,.insights-card{min-height:0;background:#fff;border:1px solid #e5e7eb;border-radius:8px;box-shadow:0 18px 48px rgba(15,23,42,.08)}
+.panel{grid-area:inputs;padding:18px;height:var(--workbench-height);overflow:auto}
+.preview-card{grid-area:draft;height:var(--workbench-height);display:flex;flex-direction:column}
+.insights-card{grid-area:insights}
+.panel-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:14px}
+.panel h2,.preview-card h2,.insights-card h2{margin:0;font-size:1.02rem;line-height:1.2}
+.panel h3{font-size:.86rem;margin:18px 0 10px;text-transform:uppercase;color:#374151}
+.stage-tabs{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;margin:4px 0 16px;padding:5px;border:1px solid #e5e7eb;border-radius:8px;background:#f9fafb}
+.stage-tab{border:0;border-radius:8px;background:transparent;color:#4b5563;padding:9px 7px;min-height:44px;font-size:.78rem;font-weight:900;line-height:1.15}
+.stage-tab[aria-selected=true]{background:#fff;color:#111827;box-shadow:0 7px 18px rgba(15,23,42,.1)}
+.flow-stage{border-top:1px solid #e5e7eb;margin-top:16px;padding-top:16px}
+.flow-stage:first-of-type{border-top:0;margin-top:0;padding-top:0}
+.stage-heading{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:12px}
+.stage-heading h3{margin:0;font-size:.92rem;color:#111827;text-transform:none;letter-spacing:0}
+.stage-heading p{margin:4px 0 0;color:#6b7280;font-size:.8rem;line-height:1.45}
+.stage-badge{flex:0 0 auto;border:1px solid #fed7aa;background:#fff7ed;color:#9a3412;border-radius:999px;padding:5px 8px;font-size:.68rem;font-weight:900;text-transform:uppercase}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.field{display:flex;flex-direction:column;gap:5px;margin-bottom:10px}
+.field>span:first-child{font-size:.74rem;font-weight:800;color:#4b5563;text-transform:uppercase}
+.field input,.field select,.field textarea{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.88rem;line-height:1.35}
+.field textarea{min-height:86px;resize:vertical}
+.field input:focus,.field select:focus,.field textarea:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.12)}
+.field.full{grid-column:1/-1}
+.helper{margin:-4px 0 10px;color:#6b7280;font-size:.78rem;line-height:1.45}
+.field-help{display:block;margin:0;color:#6b7280;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:500}
+.field-tip{display:block;border-left:3px solid #fdba74;background:#fff7ed;color:#7c2d12;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.42;text-transform:none;letter-spacing:0;font-weight:600}
+.upload-placeholder{border:1px dashed #cbd5e1;border-radius:8px;background:#f8fafc;padding:12px;margin:2px 0 12px;color:#4b5563;font-size:.8rem;line-height:1.45}
+.upload-placeholder button{margin-top:8px}
+.ai-assist-panel{border:1px solid #bfdbfe;background:#f8fbff;border-radius:8px;padding:14px;margin-top:16px}
+.ai-assist-panel:target{box-shadow:0 0 0 3px rgba(11,99,206,.15),0 18px 44px rgba(11,99,206,.14)}
+.ai-assist-head{display:flex;justify-content:space-between;gap:12px;align-items:flex-start;margin-bottom:10px}
+.ai-assist-head h3{margin:0;font-size:.94rem;color:#111827;text-transform:none;letter-spacing:0}
+.ai-assist-head p{margin:5px 0 0;color:#4b5563;font-size:.78rem;line-height:1.45}
+.ai-assist-note{border-left:3px solid #0b63ce;background:#eef5ff;color:#1e3a8a;border-radius:8px;padding:8px 10px;font-size:.76rem;line-height:1.45;margin:8px 0 10px}
+.ai-consent-row{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;min-height:44px;margin:8px 0 10px;color:#374151;font-size:.78rem;line-height:1.45;cursor:pointer}
+.ai-consent-row input{width:22px;height:22px;margin-top:1px}
+.ai-assist-preview,.ai-assist-output{width:100%;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:10px 11px;font-size:.78rem;line-height:1.5;resize:vertical}
+.ai-assist-preview{min-height:136px;font-family:ui-monospace,SFMono-Regular,Consolas,'Liberation Mono',monospace}
+.ai-assist-output{min-height:160px}
+.ai-assist-actions{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.ai-status{min-height:20px;margin:8px 0 0;color:#4b5563;font-size:.78rem;font-weight:700}
+.ai-status.is-error{color:#b91c1c}
+.ai-status.is-good{color:#166534}
+.segmented{display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 12px}
+.template-option{border:1px solid #d1d5db;background:#fff;border-radius:8px;padding:9px 10px;font-size:.78rem;font-weight:800;color:#374151}
+.template-option[aria-pressed="true"]{border-color:#0b63ce;background:#eef5ff;color:#0b63ce}
+.mobile-stage-actions{display:none}
+.desktop-actions{display:flex}
+.btn:disabled,.btn[aria-disabled=true]{opacity:.58;cursor:not-allowed}
+#afro-theme-fallback-toggle{min-height:44px!important}
+.preview-card{overflow:hidden}
+.preview-top{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:16px 18px;border-bottom:1px solid #e5e7eb;background:#fbfcff}
+.preview-tools{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.export-review{display:grid;grid-template-columns:auto 1fr;gap:9px;align-items:start;margin:12px 16px 0;padding:11px 12px;border:1px solid #bfdbfe;border-radius:8px;background:#f8fbff;color:#334155;font-size:.78rem;font-weight:700;line-height:1.45;cursor:pointer}
+.export-review input{width:20px;height:20px;margin:1px 0 0;accent-color:#0b63ce}
+.export-review-status{grid-column:1/-1;margin:0;color:#475569;font-size:.76rem;font-weight:700}
+.letter-editor{display:grid;grid-template-columns:1fr;gap:0;min-height:0;flex:1;overflow:auto}
+.letter-text-wrap{padding:16px;border-bottom:1px solid #e5e7eb;background:#f9fafb}
+#letterText{width:100%;min-height:285px;resize:vertical;border:1px solid #d1d5db;border-radius:8px;background:#fff;color:#111827;padding:16px;line-height:1.66;font-family:Georgia,'Times New Roman',serif;font-size:14px}
+#letterText:focus{outline:none;border-color:#0b63ce;box-shadow:0 0 0 3px rgba(11,99,206,.1)}
+.paper-wrap{min-width:0;padding:18px;background:#eceff3;overflow:auto}
+.paper{width:100%;min-height:420px;background:#fff;border:1px solid #d1d5db;box-shadow:0 12px 30px rgba(15,23,42,.14);padding:34px 32px;color:#1f2937;font-family:Georgia,'Times New Roman',serif;font-size:13px;line-height:1.62}
+.paper p{margin:0 0 13px;white-space:pre-wrap}
+.paper .paper-name{font-weight:700;font-size:15px;margin-bottom:2px}
+.paper .paper-muted{font-family:'DM Sans',system-ui,sans-serif;color:#6b7280;font-size:10px;border-top:1px solid #e5e7eb;margin-top:24px;padding-top:8px}
+.insights-card{height:var(--workbench-height);padding:0;position:static;overflow:hidden;display:flex;flex-direction:column}
+.readiness-summary{padding:14px 16px;background:linear-gradient(180deg,#f8fbff,#f8fafc);border-bottom:1px solid #e5e7eb}
+.readiness-summary h2{font-size:.98rem}
+.readiness-details{min-height:0;overflow:auto;padding:12px;display:grid;gap:12px}
+.readiness-section{min-width:0}
+.readiness-section-head{display:flex;align-items:flex-end;justify-content:space-between;gap:10px;margin-bottom:7px}
+.readiness-section h3{margin:0;font-size:.82rem;color:#111827}
+.readiness-section p{margin:3px 0 0;color:#6b7280;font-size:.72rem;line-height:1.4}
+.score-ring{display:grid;grid-template-columns:72px minmax(0,1fr);gap:10px;align-items:center;margin:10px 0 0}
+.score-number{display:grid;place-items:center;width:72px;height:72px;border-radius:50%;background:conic-gradient(#0b63ce var(--score-deg,0deg),#e5e7eb 0deg);position:relative;font-weight:900;color:#0b63ce}
+.score-number::before{content:"";position:absolute;inset:7px;background:#fff;border-radius:50%}
+.score-number span{position:relative;font-size:1.15rem}
+.score-copy{font-size:.76rem;color:#4b5563;line-height:1.42}
+.checks{display:grid;grid-template-columns:1fr;gap:7px;margin:0}
+.check{border:1px solid #e5e7eb;border-radius:8px;padding:7px 8px;font-size:.72rem;line-height:1.32;color:#374151;background:#fff}
+.check strong{display:flex;align-items:center;gap:6px;margin-bottom:2px;font-size:.72rem;color:#1f2937}
+.check strong::before{display:inline-flex;align-items:center;justify-content:center;min-width:22px;height:16px;border-radius:999px;font-size:.54rem;font-weight:900}
+.check.good{border-color:#bbf7d0;background:#f4fdf7}
+.check.good strong::before{content:"OK";background:#dcfce7;color:#166534}
+.check.warn{border-color:#fde68a;background:#fff9eb}
+.check.warn strong::before{content:"FIX";background:#fef3c7;color:#92400e}
+.chip-row{display:flex;gap:6px;flex-wrap:wrap;margin:7px 0 10px}
+.chip{border:1px solid #d1d5db;background:#f9fafb;border-radius:999px;padding:4px 7px;font-size:.68rem;font-weight:800;color:#374151}
+.chip.hit{border-color:#bbf7d0;background:#f0fdf4;color:#166534}
+.chip.miss{border-color:#fecaca;background:#fef2f2;color:#991b1b}
+.ai-jump-card{border:1px solid #bfdbfe;background:#f8fbff;border-radius:8px;padding:10px;margin:8px 0}
+.ai-jump-card h3{margin:0 0 5px;font-size:.84rem;color:#111827}
+.ai-jump-card p{margin:0 0 9px;color:#4b5563;font-size:.72rem;line-height:1.42}
+.ai-jump-card .btn{width:100%;justify-content:center}
+.saved-list{display:grid;gap:8px;max-height:120px;overflow:auto;margin-top:10px}
+.saved-item{border:1px solid #e5e7eb;border-radius:8px;padding:10px;background:#fbfcff}
+.saved-title{font-size:.82rem;font-weight:900;margin-bottom:4px}
+.saved-meta{font-size:.72rem;color:#6b7280;margin-bottom:8px}
+.saved-actions{display:flex;gap:6px;flex-wrap:wrap}
+.empty-state{border:1px dashed #cfd8e3;background:#f8fafc;border-radius:8px;padding:12px;color:#6b7280;font-size:.8rem;line-height:1.45;margin:8px 0 12px}
+[hidden]{display:none!important}
+.toast{position:fixed;left:50%;bottom:20px;z-index:60;transform:translateX(-50%) translateY(30px);opacity:0;pointer-events:none;background:#111827;color:#fff;border-radius:999px;padding:11px 14px;font-size:.84rem;font-weight:800;box-shadow:0 16px 40px rgba(0,0,0,.25);transition:.18s}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.import-input{display:none}
+@media print{body{background:#fff}.topbar,.hero-strip,.workflow-progress,.panel,.insights-card,.preview-top,.export-review,.letter-text-wrap{display:none}.app-shell{padding:0}.workspace{display:block}.preview-card{border:0;box-shadow:none}.letter-editor{display:block;min-height:auto}.paper-wrap{padding:0;background:#fff}.paper{border:0;box-shadow:none;width:auto;min-height:auto;padding:34px 42px}}
+:root[data-theme=dark] body{background:#0b1120;color:#e5edf8}
+:root[data-theme=dark] .topbar,:root[data-theme=dark] .panel,:root[data-theme=dark] .preview-card,:root[data-theme=dark] .insights-card,:root[data-theme=dark] .progress-step,:root[data-theme=dark] .saved-item{background:#101a2b;border-color:#294164;color:#e5edf8}
+:root[data-theme=dark] .preview-top,:root[data-theme=dark] .letter-text-wrap,:root[data-theme=dark] .readiness-summary,:root[data-theme=dark] .stage-tabs,:root[data-theme=dark] .flow-stage,:root[data-theme=dark] .readiness-section,:root[data-theme=dark] .mobile-stage-actions{background:#152238;border-color:#294164}
+:root[data-theme=dark] .field input,:root[data-theme=dark] .field select,:root[data-theme=dark] .field textarea,:root[data-theme=dark] #letterText,:root[data-theme=dark] .ai-assist-preview,:root[data-theme=dark] .ai-assist-output{background:#0b1423;border-color:#35527b;color:#f1f5f9;-webkit-text-fill-color:#f1f5f9}
+:root[data-theme=dark] .field>span:first-child,:root[data-theme=dark] .panel h2,:root[data-theme=dark] .panel h3,:root[data-theme=dark] .preview-card h2,:root[data-theme=dark] .insights-card h2,:root[data-theme=dark] .readiness-section h3,:root[data-theme=dark] .stage-heading h3,:root[data-theme=dark] .progress-step strong,:root[data-theme=dark] .topbar-title{color:#f1f5f9}
+:root[data-theme=dark] .field-help,:root[data-theme=dark] .helper,:root[data-theme=dark] .stage-heading p,:root[data-theme=dark] .readiness-section p,:root[data-theme=dark] .score-copy,:root[data-theme=dark] .progress-step small,:root[data-theme=dark] .hero-strip p{color:#b7c5d8}
+:root[data-theme=dark] .export-review,:root[data-theme=dark] .ai-assist-panel,:root[data-theme=dark] .ai-jump-card,:root[data-theme=dark] .empty-state,:root[data-theme=dark] .upload-placeholder{background:#101d31;border-color:#35527b;color:#dbeafe}
+:root[data-theme=dark] .export-review-status{color:#b7c5d8}
+:root[data-theme=dark] .check{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme=dark] .check strong{color:#f1f5f9}
+:root[data-theme=dark] .check.good{background:#10271f;border-color:#2f6f50}
+:root[data-theme=dark] .check.warn{background:#2b2515;border-color:#7c6723}
+:root[data-theme=dark] .paper{background:#fff;color:#1f2937;border-color:#cbd5e1}
+@media(max-width:1320px){#letterText{min-height:300px}}
+@media(max-width:1180px){.app-shell{--workbench-height:clamp(620px,calc(100vh - 290px),760px)}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress ol{grid-template-columns:repeat(3,minmax(0,1fr))}.workspace{grid-template-columns:minmax(300px,390px) minmax(0,1fr);grid-template-areas:"inputs draft" "insights draft";align-items:start}.insights-card{height:auto;min-height:360px}.readiness-details{overflow:visible}.checks{grid-template-columns:repeat(auto-fit,minmax(160px,1fr))}}
+@media(max-width:900px){.app-shell{--workbench-height:auto}.topbar{position:static;align-items:flex-start;flex-wrap:wrap}.topbar-title{width:100%;order:2}.topbar-actions{width:100%;order:3}.btn{flex:1 1 auto;min-height:44px}.hero-strip{grid-template-columns:1fr}.status-line{justify-content:flex-start}.workflow-progress{position:sticky;top:0;z-index:18;background:linear-gradient(180deg,#f6f7f3 78%,rgba(246,247,243,0));padding-top:8px}.workflow-progress ol{display:flex;overflow-x:auto;padding-bottom:8px;scroll-snap-type:x mandatory}.progress-step{min-width:180px;scroll-snap-align:start}.workspace{grid-template-columns:1fr;grid-template-areas:"inputs" "insights" "draft"}.panel,.preview-card,.insights-card{height:auto}.panel{max-height:none}.form-grid{grid-template-columns:1fr}.flow-stage,.insights-card,.preview-card{display:none}.app-shell[data-stage=profile] .flow-stage[data-stage-panel=profile],.app-shell[data-stage=job] .flow-stage[data-stage-panel=job],.app-shell[data-stage=draft] .flow-stage[data-stage-panel=draft]{display:block}.app-shell[data-stage=job] .insights-card{display:flex}.app-shell[data-stage=draft] .preview-card{display:flex}.stage-tabs{position:sticky;top:92px;z-index:10}.mobile-stage-actions{display:flex;position:sticky;bottom:12px;z-index:12;background:rgba(255,255,255,.94);backdrop-filter:blur(8px);border:1px solid #e5e7eb;border-radius:8px;padding:8px;margin-top:16px;box-shadow:0 18px 35px rgba(15,23,42,.16)}.mobile-stage-actions .btn{flex:1}.desktop-actions{display:none}.letter-editor{min-height:auto}.paper{min-width:0;padding:26px 20px}.preview-top{align-items:flex-start;flex-direction:column}.preview-tools{justify-content:flex-start}.readiness-details{padding:16px}.checks{grid-template-columns:1fr}#afro-theme-fallback-toggle{display:none!important}}
 </style>
-
-<!-- Structured Data: WebApplication -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kizalishaji cha Barua ya Ombi la Kazi — AfroTools","description":"Tengeneza barua ya ombi la kazi kwa Kiswahili au Kiingereza. Violezo vya kitaalamu, usafirishaji wa PDF. Bure kabisa.","url":"https://afrotools.com/sw/zana/barua-ombi/","inLanguage":"https://afrotools.com/sw/","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Inahitaji JavaScript","ofas":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-
-<!-- Structured Data: BreadcrumbList -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana (Kiswahili)","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Barua ya Ombi la Kazi","item":"https://afrotools.com/sw/zana/barua-ombi/"}]}</script>
-
-<!-- Structured Data: FAQPage -->
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  "mainEntity": [
-    {
-      "@type": "Question",
-      "name": "Je, kizalishaji cha barua ya ombi ni bure?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo, bure kabisa. Hakuna usajili unaohitajika, hakuna vikwazo, na hakuna alama za maji kwenye usafirishaji wa PDF."}
-    },
-    {
-      "@type": "Question",
-      "name": "Je, ninaweza kuandika barua kwa Kiswahili?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo. Chagua kiolezo cha Kiswahili na jaza maelezo yako kwa Kiswahili. Zana itazalisha barua ya kitaalamu kwa lugha ya Kiswahili."}
-    },
-    {
-      "@type": "Question",
-      "name": "Je, ninaweza kuhifadhi barua zangu nyingi?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo. Hifadhi barua nyingi za maombi ndani ya kivinjari chako. Kila moja imehifadhiwa na inaweza kupakiwa na kuhaririwa wakati wowote."}
-    },
-    {
-      "@type": "Question",
-      "name": "Je, data yangu ni faragha?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo, 100% faragha. Kila kitu kinafanya kazi kwenye kivinjari chako. Maelezo yako ya kibinafsi, historia ya kazi, na barua zilizozalishwa hazitumwi kwa seva yoyote."}
-    },
-    {
-      "@type": "Question",
-      "name": "Je, ninaweza kuhariri maandishi yaliyozalishwa?",
-      "acceptedAnswer": {"@type": "Answer", "text": "Kabisa. Kizalishaji huunda mwanzo, na unaweza kuhariri kila neno kwenye eneo la hakikisho kabla ya kusafirisha."}
-    }
-  ]
-}
+<script>
+window.addEventListener('unhandledrejection', function (event) {
+  var reason = event.reason;
+  var message = reason && reason.message ? reason.message : String(reason || '');
+  if (message.indexOf('Transition was skipped') !== -1) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
 </script>
+<script>(function(){try{var t=localStorage.getItem('aft_theme');var d=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches;var a=(t==='dark'||t==='light')?t:(d?'dark':'light');document.documentElement.setAttribute('data-theme',a);document.documentElement.setAttribute('data-theme-choice',(t==='dark'||t==='light')?t:'auto');document.documentElement.style.colorScheme=a;}catch(_){}})();</script>
+<link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<script src="/assets/js/lib/dark-mode.js?v=1e97021c" defer></script>
+<meta name="afrotools-content-id" content="sw-document-pdf:cover-letter">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Barua ya Maombi","description":"Andaa barua ya ombi la kazi ndani ya kivinjari na pakua PDF, DOC, TXT au JSON bila kutuma taarifa zako.","url":"https://afrotools.com/sw/zana/barua-ombi/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/cover-letter.webp"}</script>
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/barua-ombi/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cover-letter-generator/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-lettre-motivation/">
@@ -158,614 +208,442 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/rubuta-wasikar-aiki/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cover-letter-generator/">
 </head>
-<body class="top-level-page-ui-refresh">
-<afro-navbar active="document-pdf"></afro-navbar>
-<div class="landing-page">
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
+<h1 class="sr-only">Jenereta ya Barua ya Jalada kwa maombi ya kazi ya Kiafrika</h1>
+<div class="topbar">
+  <a href="index.html" aria-label="Rudi kwenye ukurasa wa kutua wa barua ya jalada">Nyuma</a>
+  <div class="topbar-title">Jenereta ya Barua ya Jalada</div>
+  <div class="topbar-actions">
+    <button class="btn" type="button" data-action="copy">Nakili</button>
+    <button class="btn" type="button" data-action="save">Hifadhi</button>
+    <a class="btn btn-soft" href="#job-match">Angalia mechi ya kazi</a>
+    <button class="btn btn-soft" type="button" data-ai-assist-open>Msaada wa AI</button>
+    <button class="btn btn-primary" type="button" data-action="pdf">Pakua PDF</button>
+  </div>
+</div>
 
-  <!-- Hero -->
-  <section class="landing-hero">
-    <div class="landing-hero-inner">
-      <div class="landing-hero-text">
-        <nav class="landing-breadcrumb" aria-label="Mkondo wa kurasa">
-          <a href="/">AfroTools</a><span>/</span>
-          <a href="/sw/">Kiswahili</a><span>/</span>
-          <span>Barua ya Ombi la Kazi</span>
-        </nav>
-        <div class="landing-eyebrow">NYARAKA</div>
-        <h1>Kizalishaji cha <em>Barua ya Ombi la Kazi</em></h1>
-        <p class="landing-hero-sub">Andika barua ya ombi la kazi yenye ujasiri kwa dakika chache. Chagua kiolezo cha sekta yako, jaza maelezo yako, na safirisha PDF iliyopakiwa tayari kutuma na maombi yako.</p>
-        <div class="landing-stats">
-          <div class="landing-stat"><div class="landing-stat-lbl">Violezo</div><div class="landing-stat-val blue">8</div></div>
-          <div class="landing-stat"><div class="landing-stat-lbl">Sekta</div><div class="landing-stat-val">6+</div></div>
-          <div class="landing-stat"><div class="landing-stat-lbl">Safirisha</div><div class="landing-stat-val">PDF</div></div>
-          <div class="landing-stat"><div class="landing-stat-lbl">Bei</div><div class="landing-stat-val blue">Bure</div></div>
-        </div>
-        <div class="landing-ctas">
-          <a href="#mjenzi" class="landing-cta-primary">Unda Barua Sasa <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
-          <a href="#vipengele" class="landing-cta-secondary">Angalia Vipengele</a>
-        </div>
-      </div>
-      <div class="landing-hero-preview" style="background:#1a1f2e;padding:24px;border-radius:14px;">
-        <div style="font-size:.7rem;font-weight:800;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:12px;">Mfano</div>
-        <div style="background:rgba(255,255,255,.06);border-radius:8px;padding:16px;font-size:.7rem;color:rgba(255,255,255,.7);line-height:1.7;">
-          <div style="font-weight:700;color:#fff;margin-bottom:8px;">Mheshimiwa Meneja wa Kuajiri,</div>
-          <div style="margin-bottom:8px;">Naandika kuonyesha nia yangu ya nafasi ya <span style="color:#5AC8FA;">Mhandisi wa Programu</span> katika <span style="color:#34C759;">Safaricom</span>. Kwa uzoefu wa miaka 4 katika maendeleo ya programu...</div>
-          <div style="color:rgba(255,255,255,.4);font-style:italic;">...iliyobinafsishwa kwa nafasi na kampuni yako maalum</div>
-        </div>
-      </div>
+<main class="app-shell" data-stage="profile">
+  <section class="hero-strip" aria-labelledby="app-title">
+    <div>
+      <p class="eyebrow">Mjenzi wa maombi ya kibinafsi</p>
+      <h2 id="app-title">Unda barua ya kibinafsi, inayolingana na kazi.</h2>
+      <p>Jenereta ya barua ya jalada isiyolipishwa ya Afrika-kwanza, ya ndani-ya kwanza. Rekebisha barua yako kulingana na maelezo ya kazi, angalia maneno muhimu ambayo hayapo, boresha utayari wako na usafirishaji kwa faragha bila akaunti.</p>
+    </div>
+    <div class="status-line" aria-label="Muhtasari wa kipengele">
+      <span class="pill">Bure</span>
+      <span class="pill">Hakuna akaunti</span>
+      <span class="pill">Hakuna alama ya maji</span>
+      <span class="pill">Mtaa-kwanza</span>
+      <button class="pill pill-button" type="button" data-ai-assist-open>AI Saidia mwandishi wa kunakili</button>
+      <span class="pill">PDF/DOC/TXT/JSON</span>
     </div>
   </section>
 
-  <!-- Saved Letters -->
-  <div class="saved-section" id="saved-section">
-    <div class="saved-head">
-      <h2>Barua Zako Zilizohifadhiwa</h2>
-      <a href="#mjenzi" class="saved-new">+ Barua Mpya</a>
-    </div>
-    <div class="saved-grid" id="saved-letters"></div>
-  </div>
-
-  <!-- Template Selector -->
-  <div style="max-width:1080px;margin:0 auto;padding:0 24px 8px">
-    <h2 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:12px">Chagua Kiolezo</h2>
-  </div>
-  <div class="tpl-grid" id="tpl-grid" style="max-width:1080px;margin:0 auto" role="radiogroup" aria-label="Violezo vya barua ya ombi">
-    <div class="tpl-item active" data-tpl="professional" role="radio" aria-checked="true" tabindex="0">
-      <div class="tpl-item-icon">👔</div>
-      <div class="tpl-item-name">Kitaalamu</div>
-    </div>
-    <div class="tpl-item" data-tpl="tech" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">💻</div>
-      <div class="tpl-item-name">Teknolojia</div>
-    </div>
-    <div class="tpl-item" data-tpl="finance" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">🏦</div>
-      <div class="tpl-item-name">Fedha</div>
-    </div>
-    <div class="tpl-item" data-tpl="healthcare" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">🏥</div>
-      <div class="tpl-item-name">Afya</div>
-    </div>
-    <div class="tpl-item" data-tpl="education" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">🎓</div>
-      <div class="tpl-item-name">Elimu</div>
-    </div>
-    <div class="tpl-item" data-tpl="engineering" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">⚙️</div>
-      <div class="tpl-item-name">Uhandisi</div>
-    </div>
-    <div class="tpl-item" data-tpl="creative" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">🎨</div>
-      <div class="tpl-item-name">Ubunifu</div>
-    </div>
-    <div class="tpl-item" data-tpl="general" role="radio" aria-checked="false" tabindex="0">
-      <div class="tpl-item-icon">📄</div>
-      <div class="tpl-item-name">Jumla</div>
-    </div>
-  </div>
-
-  <!-- Builder -->
-  <section id="mjenzi" style="max-width:1080px;margin:20px auto 0;padding:0 24px">
-    <h2 style="font-size:1rem;font-weight:800;color:#111;margin-bottom:16px">Jaza Maelezo Yako</h2>
+  <section class="workflow-progress" aria-label="Maendeleo ya maombi">
+    <ol>
+      <li class="progress-step" data-progress-step="profile"><span>1</span><strong>Wasifu umekamilika</strong><small>Ongeza maelezo ya mawasiliano na muktadha wa CV.</small></li>
+      <li class="progress-step" data-progress-step="job"><span>2</span><strong>Maelezo ya kazi yameongezwa</strong><small>Bandika maelezo ya jukumu ili kulinganisha.</small></li>
+      <li class="progress-step" data-progress-step="proof"><span>3</span><strong>Pointi za uthibitisho zimeongezwa</strong><small>Onyesha ushahidi, ujuzi, na motisha.</small></li>
+      <li class="progress-step" data-progress-step="draft"><span>4</span><strong>Rasimu iko tayari</strong><small>Unda au uhariri barua yako.</small></li>
+      <li class="progress-step" data-progress-step="export"><span>5</span><strong>Hamisha tayari</strong><small>Hifadhi, nakili, chapisha au pakua.</small></li>
+    </ol>
   </section>
-  <div class="bl-wrap" id="bl-wrap">
 
-    <!-- LEFT: Form -->
-    <div class="bl-card">
-      <div class="bl-head">
-        <h2>Maelezo Yako</h2>
-        <p>Maelezo Binafsi na ya Nafasi</p>
+  <div class="workspace">
+    <section class="panel" aria-labelledby="builder-title">
+      <div class="panel-head">
+        <div>
+          <p class="eyebrow">Kijenzi</p>
+          <h2 id="builder-title">Maelezo ya maombi</h2>
+        </div>
+        <button class="btn btn-soft" type="button" data-action="rebuild">Unda barua ya jalada</button>
       </div>
-      <div class="bl-body">
 
-        <div class="bl-row">
-          <div class="bl-field">
-            <label class="bl-label" for="bl-fname">Jina la Kwanza <span class="bl-req">*</span></label>
-            <input class="bl-input" id="bl-fname" type="text" placeholder="mf., Amina" required>
+      <div class="stage-tabs" role="tablist" aria-label="Mtiririko wa barua ya jalada">
+        <button class="stage-tab" id="tab-profile" type="button" role="tab" aria-controls="stage-profile" aria-selected="true" data-stage-target="profile">1. Wasifu na wasifu</button>
+        <button class="stage-tab" id="tab-job" type="button" role="tab" aria-controls="stage-job" aria-selected="false" data-stage-target="job">2. Kazi & mechi</button>
+        <button class="stage-tab" id="tab-draft" type="button" role="tab" aria-controls="stage-draft" aria-selected="false" data-stage-target="draft">3. Rasimu & usafirishaji</button>
+      </div>
+
+      <div class="flow-stage" id="stage-profile" role="tabpanel" aria-labelledby="tab-profile" data-stage-panel="profile">
+        <div class="stage-heading">
+          <div>
+            <h3>Wasifu wa mgombea</h3>
+            <p>Anza na maelezo ya mawasiliano yaliyo tayari kuajiri na muhtasari mfupi wa CV.</p>
           </div>
-          <div class="bl-field">
-            <label class="bl-label" for="bl-lname">Jina la Familia <span class="bl-req">*</span></label>
-            <input class="bl-input" id="bl-lname" type="text" placeholder="mf., Wanjiku" required>
+          <span class="stage-badge">Hatua ya 1</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Jina kamili</span><input id="fullName" autocomplete="name" placeholder="Adaeze Okonkwo" aria-describedby="fullNameHelp"><span class="field-help" id="fullNameHelp">Tumia jina lile lile lililoonyeshwa kwenye CV yako na wasifu wa programu.</span></label>
+          <label class="field"><span>Barua pepe</span><input id="email" type="email" autocomplete="email" placeholder="adaeze@email.com" aria-describedby="emailHelp"><span class="field-help" id="emailHelp">Tumia kikasha cha kitaalamu unachoangalia mara kwa mara wakati wa kukodisha.</span></label>
+          <label class="field"><span>Simu</span><input id="phone" autocomplete="tel" placeholder="+234 801 234 5678" aria-describedby="phoneHelp"><span class="field-help" id="phoneHelp">Jumuisha msimbo wa nchi yako unapotuma maombi katika masoko yote.</span></label>
+          <label class="field"><span>Mahali</span><input id="city" autocomplete="address-level2" placeholder="Lagos, Nigeria" aria-describedby="cityHelp"><span class="field-help" id="cityHelp">Jiji na nchi huwasaidia waajiri kuelewa ufaafu na upatikanaji wa soko.</span></label>
+          <label class="field full"><span>LinkedIn au kwingineko</span><input id="portfolio" placeholder="linkedin.com/in/adaeze au kiungo cha kwingineko" aria-describedby="portfolioHelp"><span class="field-help" id="portfolioHelp">Ongeza kiungo kimoja safi kinachohifadhi nakala za matumizi yako au sampuli za kazi.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>Endelea/CV</h3>
+            <p>Bandika muhtasari wenye nguvu zaidi au usuli unaotaka kuonyeshwa kwenye herufi.</p>
           </div>
         </div>
+        <label class="field full"><span>Rejea muhtasari au usuli</span><textarea id="resumeSummary" placeholder="Bandika muhtasari mfupi wa wasifu au majukumu muhimu unayotaka barua itafakari." aria-describedby="resumeSummaryHelp"></textarea><span class="field-help" id="resumeSummaryHelp">Ingizo nzuri hutaja kazi yako, tasnia, zana, mafanikio na masoko yanayotolewa.</span><span class="field-tip">Boresha uga huu: "Operesheni zinahusishwa na miaka 4 kusaidia timu za fintech nchini Nigeria na Ghana, ikijumuisha usuluhishi, ufuatiliaji wa wauzaji na utatuzi wa masuala ya wateja."</span></label>
+        <div class="upload-placeholder">
+          <strong>Usaidizi wa kupakia CV umepangwa.</strong> Kwa sasa, bandika muhtasari wa CV husika au nukta za vitone hapo juu ili jenereta zisalie ndani kabisa katika kivinjari chako.
+          <button class="btn" type="button" disabled aria-disabled="true">Pakia CV baadaye</button>
+        </div>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="job">Inayofuata: Kazi & mechi</button></div>
+      </div>
 
-        <div class="bl-row">
-          <div class="bl-field">
-            <label class="bl-label" for="bl-email">Barua pepe</label>
-            <input class="bl-input" id="bl-email" type="email" placeholder="amina@email.com">
+      <div class="flow-stage" id="stage-job" role="tabpanel" aria-labelledby="tab-job" data-stage-panel="job">
+        <div class="stage-heading">
+          <div>
+            <h3>Kazi inayolengwa</h3>
+            <p>Tumia chapisho halisi la kazi ili ukaguzi wa maneno muhimu na utayari wa bao ubaki muhimu.</p>
           </div>
-          <div class="bl-field">
-            <label class="bl-label" for="bl-phone">Nambari ya Simu</label>
-            <input class="bl-input" id="bl-phone" type="tel" placeholder="+254 700 000 000">
+          <span class="stage-badge">Hatua ya 2</span>
+        </div>
+        <div class="form-grid">
+          <label class="field"><span>Jina la kazi</span><input id="jobTitle" placeholder="Meneja wa Bidhaa" aria-describedby="jobTitleHelp"><span class="field-help" id="jobTitleHelp">Linganisha mada kutoka kwa tangazo, ikijumuisha kiwango ikiwa imeorodheshwa.</span></label>
+          <label class="field"><span>Kampuni</span><input id="company" placeholder="Safaricom" aria-describedby="companyHelp"><span class="field-help" id="companyHelp">Tumia jina la mwajiri kama vile tangazo la jukumu linavyoonyesha.</span></label>
+          <label class="field"><span>Meneja wa kuajiri</span><input id="hiringManager" placeholder="Bi Njeri Kamau" aria-describedby="hiringManagerHelp"><span class="field-help" id="hiringManagerHelp">Hiari. Ongeza jina tu wakati una uhakika kuwa ni sahihi.</span></label>
+          <label class="field"><span>Chanzo cha maombi</span><input id="source" placeholder="LinkedIn, rufaa, tovuti ya kampuni" aria-describedby="sourceHelp"><span class="field-help" id="sourceHelp">Hii inaweza kusaidia barua kurejelea kituo cha rufaa au cha kuchapisha kawaida.</span></label>
+          <label class="field full"><span>Soko au nchi</span><select id="market" aria-describedby="marketHelp"></select><span class="field-help" id="marketHelp">Chagua soko lililo karibu zaidi na jukumu ili mwongozo uonyeshe kanuni za uajiri wa ndani.</span></label>
+          <label class="field full"><span>Maelezo ya kazi</span><textarea id="jobDescription" placeholder="Bandika chapisho la kazi. Kikagua kitalinganisha barua yako na maneno muhimu ya jukumu." aria-describedby="jobDescriptionHelp"></textarea><span class="field-help" id="jobDescriptionHelp">Bandika majukumu, mahitaji, zana, na sifa. Ondoa madokezo ya waajiri binafsi kabla ya kushiriki kifaa.</span><span class="field-tip">Boresha uga huu: bandika tangazo kamili, kisha uweke mahitaji ya jukumu, zana kuu, mahitaji ya lugha na sheria za eneo.</span></label>
+        </div>
+
+        <div class="stage-heading">
+          <div>
+            <h3>Pointi za uthibitisho</h3>
+            <p>Ushahidi mahususi huimarisha rasimu na kuboresha ubora wa mechi.</p>
           </div>
         </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-position">Nafasi Inayoombiwa <span class="bl-req">*</span></label>
-          <input class="bl-input" id="bl-position" type="text" placeholder="mf., Mhandisi wa Programu Mkuu">
+        <div class="form-grid">
+          <label class="field"><span>Miaka ya uzoefu</span><input id="years" type="number" min="0" max="60" value="3" aria-describedby="yearsHelp"><span class="field-help" id="yearsHelp">Tumia uzoefu unaofaa, sio kila mwaka ulifanya kazi.</span></label>
+          <label class="field"><span>Ujuzi wa juu</span><input id="skills" placeholder="Uendeshaji, Excel, stakeholder management" aria-describedby="skillsHelp"><span class="field-help" id="skillsHelp">Orodhesha ujuzi kutoka kwa chapisho la kazi ambalo unaweza kuthibitisha kwa uaminifu.</span></label>
+          <label class="field full"><span>Mafanikio husika</span><textarea id="achievement" placeholder="Aliongoza timu ya watu 5 kupunguza muda wa maridhiano kwa asilimia 35 katika matawi 12." aria-describedby="achievementHelp"></textarea><span class="field-help" id="achievementHelp">Tumia matokeo yanayoweza kupimika, upeo au wajibu madhubuti.</span><span class="field-tip">Boresha uga huu: "Imepunguza muda wa upatanisho wa kila mwezi kwa 35% katika matawi 12 kwa kuunda upya kifuatiliaji cha ukaguzi cha Excel."</span></label>
+          <label class="field full"><span>Kwa nini kampuni hii?</span><textarea id="whyCompany" placeholder="Upanuzi wa kampuni kote Afrika Mashariki unalingana na uzoefu wangu wa kuongeza shughuli za wateja." aria-describedby="whyCompanyHelp"></textarea><span class="field-help" id="whyCompanyHelp">Unganisha dhamira ya mwajiri, bidhaa, soko au hatua ya ukuaji kwenye historia yako.</span></label>
+          <label class="field"><span>Upatikanaji</span><input id="availability" placeholder="Mara moja, siku 30, baada ya taarifa" aria-describedby="availabilityHelp"><span class="field-help" id="availabilityHelp">Taja muda wa notisi au utayari wa kuhama pale tu inaposaidia.</span></label>
+          <label class="field"><span>Rufaa</span><input id="referral" placeholder="Jina au muunganisho, hiari" aria-describedby="referralHelp"><span class="field-help" id="referralHelp">Ongeza rufaa ikiwa tu mtu huyo amekubali au muunganisho unafaa.</span></label>
+          <label class="field full"><span>Mabadiliko ya kazi au alama ya pengo</span><textarea id="contextNote" placeholder="Eleza kwa ufupi mpito, pengo, uhamisho, au mapumziko ya masomo ikiwa inasaidia programu." aria-describedby="contextNoteHelp"></textarea><span class="field-help" id="contextNoteHelp">Weka hili fupi na chanya. Zingatia utayari, sio kuomba msamaha.</span><span class="field-tip">Boresha uga huu: "Baada ya kukamilisha cheti cha uchanganuzi wa data, ninalenga majukumu ya uendeshaji ambapo ninaweza kuchanganya uzoefu wa usaidizi wa tawi na ujuzi wa kuripoti."</span></label>
         </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-company">Kampuni <span class="bl-req">*</span></label>
-          <input class="bl-input" id="bl-company" type="text" placeholder="mf., Safaricom, Flutterwave, MTN">
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-experience">Uzoefu (Miaka)</label>
-          <select class="bl-select" id="bl-experience">
-            <option value="">Chagua uzoefu</option>
-            <option value="0">Mhitimu mpya (chini ya mwaka 1)</option>
-            <option value="1">Mwaka 1-2</option>
-            <option value="3">Miaka 3-5</option>
-            <option value="6">Miaka 6-9</option>
-            <option value="10">Miaka 10+</option>
-          </select>
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-skills">Ujuzi Mkuu <span class="bl-req">*</span></label>
-          <input class="bl-input" id="bl-skills" type="text" placeholder="mf., JavaScript, usimamizi wa mradi, mauzo">
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-achievement">Mafanikio Muhimu</label>
-          <input class="bl-input" id="bl-achievement" type="text" placeholder="mf., Niliongeza mauzo kwa 40% kwa mwaka mmoja">
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-motivation">Kwa Nini Kampuni Hii? <span class="bl-req">*</span></label>
-          <textarea class="bl-textarea" id="bl-motivation" placeholder="Eleza kwa nini unataka kufanya kazi na kampuni hii hasa..." rows="3"></textarea>
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-lang">Lugha ya Barua</label>
-          <select class="bl-select" id="bl-lang">
-            <option value="sw">Kiswahili</option>
-            <option value="en">English</option>
-          </select>
-        </div>
-
-        <div class="bl-field">
-          <label class="bl-label" for="bl-tone">Mtindo</label>
-          <select class="bl-select" id="bl-tone">
-            <option value="professional">Rasmi (Kitaalamu)</option>
-            <option value="modern">Kisasa</option>
-            <option value="creative">Ubunifu</option>
-            <option value="minimal">Rahisi</option>
-          </select>
-        </div>
-
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-next-stage="draft">Inayofuata: Rasimu na usafirishaji</button></div>
       </div>
-      <div class="bl-actions">
-        <button class="bl-btn-p" id="bl-generate" type="button">✨ Tengeneza Barua</button>
-        <button class="bl-btn-s" id="bl-reset" type="button">Futa</button>
-      </div>
-    </div>
 
-    <!-- RIGHT: Preview -->
-    <div class="pr-card">
-      <div class="pr-head">
-        <h2>Hakikisho la Barua</h2>
-        <div class="pr-actions">
-          <button class="pr-btn" id="pr-copy" type="button">📋 Nakili</button>
-          <button class="pr-btn" id="pr-print" type="button">🖨️ Chapisha</button>
-          <button class="pr-btn pr-btn-dl" id="pr-pdf" type="button">📥 Pakua PDF</button>
+      <div class="flow-stage" id="stage-draft" role="tabpanel" aria-labelledby="tab-draft" data-stage-panel="draft">
+        <div class="stage-heading">
+          <div>
+            <h3>Mipangilio ya kizazi</h3>
+            <p>Chagua muundo, toni na urefu kabla ya kuunda au kuonyesha upya rasimu.</p>
+          </div>
+          <span class="stage-badge">Hatua ya 3</span>
         </div>
+        <div class="form-grid">
+          <label class="field"><span>Kiolezo</span><select id="templateId" aria-describedby="templateHelp"></select><span class="field-help" id="templateHelp">Chagua muundo unaolingana na aina ya jukumu na ukuu.</span></label>
+          <label class="field"><span>Toni</span><select id="toneId" aria-describedby="toneHelp"></select><span class="field-help" id="toneHelp">Tumia mtaalamu wa joto kwa majukumu mengi; chagua moja kwa moja kwa skrini fupi za waajiri.</span></label>
+          <label class="field full"><span>Urefu</span><select id="lengthId" aria-describedby="lengthHelp"></select><span class="field-help" id="lengthHelp">Fupi ni bora kwa maombi ya barua pepe; kawaida hufanya kazi kwa upakiaji mwingi wa lango.</span></label>
+        </div>
+        <div class="actions-row desktop-actions">
+          <button class="btn btn-primary" type="button" data-action="rebuild">Unda barua ya jalada</button>
+          <a class="btn btn-soft" href="#preview-title">Kagua rasimu</a>
+        </div>
+        <section class="ai-assist-panel" id="ai-assist" aria-labelledby="ai-assist-title">
+          <div class="ai-assist-head">
+            <div>
+              <h3 id="ai-assist-title">Hiari AI Copywriter & Mshauri</h3>
+              <p>Tengeneza au uboreshe barua, tafuta mapungufu ya uthibitisho, au andika ujumbe wa waajiri baada ya kukagua mzigo kamili wa malipo.</p>
+            </div>
+            <span class="stage-badge">Jijumuishe</span>
+          </div>
+          <p class="ai-assist-note">Hutumia ombi 1 la Usaidizi wa AI baada ya jibu lililofaulu. Kagua mzigo wa malipo kwanza, kisha uidhinishe kabla CV yoyote, maelezo ya kazi au maandishi ya rasimu kutumwa.</p>
+          <label class="field full"><span>Jukumu la AI</span><select id="aiAssistAction" aria-describedby="aiAssistActionHelp">
+            <option value="generate-letter">Tengeneza barua ya jalada yenye nguvu zaidi inayolengwa</option>
+            <option value="improve-draft">Boresha rasimu ya sasa</option>
+            <option value="missing-proof">Tafuta maneno muhimu yanayokosekana na vidokezo vya uthibitisho</option>
+            <option value="recruiter-email">Andika barua pepe ya waajiri</option>
+            <option value="linkedin-message">Andika ujumbe wa LinkedIn</option>
+            <option value="follow-up-email">Andika barua pepe ya ufuatiliaji</option>
+            <option value="interview-points">Unda vidokezo vya mazungumzo ya mahojiano</option>
+          </select><span class="field-help" id="aiAssistActionHelp">Chagua kazi moja inayolenga ili mkopo utoe matokeo muhimu.</span></label>
+          <label class="ai-consent-row" for="aiAssistConsent">
+            <input id="aiAssistConsent" type="checkbox">
+            <span>Ninaelewa kuwa mzigo ulioonyeshwa hapa chini utatumwa kwa AfroTools AI kwa ombi hili moja. Usitumie data halisi ya faragha isipokuwa kama uko vizuri kuituma.</span>
+          </label>
+          <label class="field full"><span>Onyesho la kukagua upakiaji</span><textarea class="ai-assist-preview" id="aiAssistPayloadPreview" readonly aria-describedby="aiAssistPayloadHelp"></textarea><span class="field-help" id="aiAssistPayloadHelp">Haya ndiyo maandishi kamili yatakayotumwa. Imejengwa upya kutoka kwa uga kwenye ukurasa huu na inakaa ndani hadi utakapoendesha AI Assist.</span></label>
+          <div class="ai-assist-actions">
+            <button class="btn btn-soft" type="button" id="aiAssistRefresh">Kagua mzigo</button>
+            <button class="btn btn-primary" type="button" id="aiAssistRun">Endesha Msaada wa AI</button>
+            <button class="btn" type="button" id="aiAssistApply">Omba kwa rasimu</button>
+            <button class="btn" type="button" id="aiAssistCopy">Nakili matokeo ya AI</button>
+          </div>
+          <label class="field full"><span>Matokeo ya AI</span><textarea class="ai-assist-output" id="aiAssistOutput" spellcheck="true" aria-describedby="aiAssistOutputHelp"></textarea><span class="field-help" id="aiAssistOutputHelp">Uboreshaji wa barua ya jalada unaweza kujaza rasimu kiotomatiki. Ujumbe na sehemu za mazungumzo hubaki hapa kwa ukaguzi na nakala.</span></label>
+          <div class="ai-status" id="aiAssistStatus" role="status" aria-live="polite"></div>
+        </section>
+        <div class="mobile-stage-actions"><button class="btn btn-primary" type="button" data-action="rebuild">Unda barua ya jalada</button></div>
       </div>
-      <div class="pr-body empty" id="pr-body">
-        <div style="font-size:32px;opacity:.3">✉️</div>
-        <p>Barua yako itaonekana hapa.<br>Jaza fomu na ubonyeze "Tengeneza Barua".</p>
-      </div>
-    </div>
+    </section>
 
-  </div><!-- /bl-wrap -->
+    <aside class="insights-card" id="job-match" aria-labelledby="insights-title">
+      <div class="readiness-summary">
+        <p class="eyebrow">Ukaguzi wa ubora</p>
+        <h2 id="insights-title">Utayari wa maombi</h2>
+        <div class="score-ring">
+          <div class="score-number" id="scoreRing"><span id="scoreValue">0</span></div>
+          <div class="score-copy" id="scoreCopy">Ongeza jukumu lako lengwa na alama za uthibitisho ili kuanza kufunga.</div>
+        </div>
+        <div class="empty-state" id="readinessEmpty">Utayari utaonekana mara tu unapoongeza kazi unayolenga, pointi za uthibitisho na rasimu.</div>
+      </div>
 
-  <!-- Features Section -->
-  <section class="landing-section" id="vipengele">
-    <div class="landing-container">
-      <div class="landing-section-head">
-        <div class="landing-section-eyebrow">Vipengele</div>
-        <h2 class="landing-section-title">Kila Kitu Unachohitaji kwa Ombi Linalofanikiwa</h2>
-      </div>
-      <div class="features-grid">
-        <div class="feature-card"><div class="feature-icon">📝</div><div class="feature-title">Mjenzi Ulioongozwa</div><div class="feature-desc">Hatua kwa hatua zana hukusanya maelezo yako, uzoefu, na kazi unayoombia.</div></div>
-        <div class="feature-card"><div class="feature-icon">🏢</div><div class="feature-title">Violezo vya Sekta</div><div class="feature-desc">Violezo vilivyoundwa kwa Teknolojia, Fedha, Afya, Elimu, Uhandisi, na Jumla.</div></div>
-        <div class="feature-card"><div class="feature-icon">🌍</div><div class="feature-title">Kiswahili &amp; Kiingereza</div><div class="feature-desc">Chagua lugha ya barua yako — Kiswahili kwa waajiri wa ndani au Kiingereza kwa kimataifa.</div></div>
-        <div class="feature-card"><div class="feature-icon">🎨</div><div class="feature-title">Mitindo Minne</div><div class="feature-desc">Chagua kutoka Kitaalamu, Kisasa, Ubunifu, au Rahisi kulingana na kazi unayoombia.</div></div>
-        <div class="feature-card"><div class="feature-icon">📄</div><div class="feature-title">Safirisha PDF</div><div class="feature-desc">Bonyeza mara moja kupata PDF safi, iliyopangwa vizuri tayari kutumwa.</div></div>
-        <div class="feature-card"><div class="feature-icon">💾</div><div class="feature-title">Hifadhi na Tumia Tena</div><div class="feature-desc">Hifadhi barua nyingi kwa maombi tofauti. Pakia na zihariri wakati wowote.</div></div>
-        <div class="feature-card"><div class="feature-icon">📱</div><div class="feature-title">Inafanya Kazi Kila Mahali</div><div class="feature-desc">Jibu kamili. Andika barua yako ya ombi kwenye simu, kompyuta kibao, au kompyuta ya mezani.</div></div>
-        <div class="feature-card"><div class="feature-icon">🔒</div><div class="feature-title">Faragha 100%</div><div class="feature-desc">Data yako inabaki kwenye kivinjari chako. Hakuna kinachopakiwa kwa seva yoyote.</div></div>
-      </div>
-    </div>
-  </section>
+      <div class="readiness-details">
+        <section class="readiness-section" aria-label="Hundi za utayari">
+          <div class="readiness-section-head">
+            <div>
+              <h3>Hundi</h3>
+              <p>Futa mapengo muhimu kabla ya kusafirisha nje.</p>
+            </div>
+          </div>
+          <div class="checks" id="checksList"></div>
+        </section>
 
-  <!-- Steps -->
-  <section class="landing-section">
-    <div class="landing-container">
-      <div class="landing-section-head">
-        <div class="landing-section-eyebrow">Jinsi Inavyofanya Kazi</div>
-        <h2 class="landing-section-title">Unda Barua Yako ya Ombi kwa Hatua 4</h2>
-      </div>
-      <div class="steps-grid">
-        <div class="step-card"><div class="step-title">Chagua Kiolezo</div><div class="step-desc">Chagua kiolezo cha sekta kinachofanana na kazi unayoitarajia.</div></div>
-        <div class="step-card"><div class="step-title">Jaza Maelezo</div><div class="step-desc">Ingiza jina lako, uzoefu, kampuni, na nafasi unayoombia.</div></div>
-        <div class="step-card"><div class="step-title">Tazama na Hariri</div><div class="step-desc">Angalia barua iliyozalishwa na ufanye mabadiliko yoyote kwenye maandishi.</div></div>
-        <div class="step-card"><div class="step-title">Safirisha PDF</div><div class="step-desc">Pakua barua yako ya ombi iliyopakiwa vizuri kama PDF tayari kuchapishwa.</div></div>
-      </div>
-    </div>
-  </section>
+        <section class="readiness-section" aria-labelledby="role-keywords-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="role-keywords-title">Maneno muhimu ya jukumu</h3>
+              <p>Masharti yanayolingana na yanayokosekana kutoka kwa maelezo ya kazi yaliyobandikwa.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="keywordsEmpty">Bandika maelezo ya kazi ili kuona maneno muhimu ya jukumu na maneno yanayokosekana.</div>
+          <div class="chip-row" id="keywordChips"></div>
+        </section>
 
-  <!-- FAQ -->
-  <section class="landing-section" id="maswali">
-    <div class="landing-container">
-      <div class="landing-section-head">
-        <div class="landing-section-eyebrow">Maswali</div>
-        <h2 class="landing-section-title">Maswali Yanayoulizwa Mara kwa Mara</h2>
+        <div class="ai-jump-card" aria-labelledby="ai-jump-title">
+          <h3 id="ai-jump-title">Je, unahitaji rasimu kali zaidi?</h3>
+          <p>Fungua mwandishi wa nakala wa AI ili kuandika upya barua, kupata uthibitisho unaokosekana, au rasimu ya ufuatiliaji wa waajiri. Hakuna kitu kinachotumwa hadi ukague na ukubali.</p>
+          <button class="btn btn-primary" type="button" data-ai-assist-open>Fungua Msaada wa AI</button>
+        </div>
+
+        <section class="readiness-section" aria-labelledby="saved-letters-title">
+          <div class="readiness-section-head">
+            <div>
+              <h3 id="saved-letters-title">Barua zilizohifadhiwa</h3>
+              <p>Rasimu za ndani kutoka kwa kivinjari hiki.</p>
+            </div>
+          </div>
+          <div class="empty-state" id="savedEmpty">Rasimu zilizohifadhiwa kutoka kwa kivinjari hiki zitaonekana hapa. Zinasalia kwenye kifaa hiki isipokuwa utazihamisha.</div>
+          <div class="saved-list" id="savedList"></div>
+        </section>
       </div>
-      <div class="landing-faq-grid">
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, kizalishaji hiki ni bure kweli kweli?</div>
-          <div class="landing-faq-a">Ndiyo, bure kabisa. Hakuna usajili, hakuna vikwazo, hakuna alama za maji kwenye usafirishaji wa PDF.</div>
+    </aside>
+
+    <section class="preview-card" aria-labelledby="preview-title">
+      <div class="preview-top">
+        <div>
+          <p class="eyebrow">Rasimu</p>
+          <h2 id="preview-title">Barua inayoweza kuhaririwa</h2>
         </div>
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, ninaweza kuandika barua yangu kwa Kiswahili?</div>
-          <div class="landing-faq-a">Ndiyo. Chagua "Kiswahili" kwenye menyu ya lugha, na zana itazalisha barua ya kitaalamu kwa Kiswahili, inayofaa kwa maombi ya kazi Tanzania, Kenya, Uganda, na nchi nyingine za Afrika Mashariki.</div>
-        </div>
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, ninaweza kuhifadhi barua zangu nyingi?</div>
-          <div class="landing-faq-a">Ndiyo. Hifadhi barua nyingi za maombi kwenye kivinjari chako. Kila moja inaweza kupakiwa na kuhaririwa wakati wowote.</div>
-        </div>
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, sekta zipi zinaauniwa?</div>
-          <div class="landing-faq-a">Tuna violezo kwa Teknolojia, Fedha na Benki, Afya, Elimu, Uhandisi na Ujenzi, na kiolezo cha Jumla kinachofanya kazi kwa sekta yoyote.</div>
-        </div>
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, data yangu ni faragha?</div>
-          <div class="landing-faq-a">Ndiyo, 100% faragha. Kila kitu kinafanya kazi kwenye kivinjari chako. Maelezo yako ya kibinafsi na barua zilizozalishwa hazitumwi kwa seva yoyote.</div>
-        </div>
-        <div class="landing-faq-item">
-          <div class="landing-faq-q">Je, ninaweza kuhariri maandishi yaliyozalishwa?</div>
-          <div class="landing-faq-a">Kabisa. Kizalishaji huunda mwanzo mzuri, na unaweza kuhariri kila neno kwenye eneo la hakikisho kabla ya kusafirisha.</div>
+        <div class="preview-tools">
+          <button class="btn" type="button" data-action="word">Neno</button>
+          <button class="btn" type="button" data-action="txt">TXT</button>
+          <button class="btn" type="button" data-action="json">Hamisha JSON</button>
+          <button class="btn" type="button" data-action="import">Leta</button>
+          <button class="btn" type="button" data-action="print">Chapisha</button>
+          <input aria-label="Leta barua ya jalada iliyohifadhiwa ya JSON" class="import-input" id="importInput" type="file" accept="application/json,.json">
         </div>
       </div>
-    </div>
-  </section>
-
-  <!-- CTA Banner -->
-  <section class="landing-section">
-    <div class="landing-container">
-      <div class="landing-cta-banner">
-        <h2>Andika Barua Yako ya Ombi Sasa Hivi</h2>
-        <p>Violezo vya kitaalamu, mjenzi ulioongozwa, safirisha PDF. Bure kabisa.</p>
-        <a href="#mjenzi" class="landing-cta-primary" style="font-size:1rem;padding:16px 36px;">Anza Kuandika</a>
+      <label class="export-review" for="exportReviewConfirm">
+        <input id="exportReviewConfirm" type="checkbox">
+        <span>Nilikagua mpokeaji, kampuni, jukumu, ushahidi, maelezo ya mawasiliano, tahajia na onyesho la kuchungulia la mwisho la barua kabla ya kusafirisha.</span>
+        <span class="export-review-status" id="exportReviewStatus" role="status" aria-live="polite">Unda na uhakiki barua kamili kabla ya kupakua au kuchapisha.</span>
+      </label>
+      <div class="letter-editor">
+        <div class="letter-text-wrap">
+          <label class="field full" style="margin:0">
+            <span>Maandishi ya barua</span>
+            <textarea id="letterText" spellcheck="true" data-testid="letter-text"></textarea>
+          </label>
+          <p class="helper" id="editState">Hariri kwa uhuru. Bofya Unda barua ya jalada ikiwa unataka fomu itengeneze rasimu upya.</p>
+          <div class="empty-state" id="draftEmpty">Bado hakuna rasimu. Kamilisha wasifu, maelezo ya kazi na vidokezo vya uthibitisho, kisha uchague Unda barua ya jalada.</div>
+        </div>
+        <div class="paper-wrap" aria-label="Chapisha onyesho la kukagua">
+          <article class="paper" id="paperPreview"></article>
+        </div>
       </div>
-    </div>
-  </section>
-
-  <!-- SEO Content -->
-  <section class="landing-seo">
-    <h2>Mtengenezaji wa Barua ya Ombi la Kazi kwa Lugha ya Kiswahili</h2>
-    <p>Barua nzuri ya ombi la kazi inaweza kuleta tofauti kati ya kupata mahojiano na kupuuzwa. Lakini kuandika barua ya kuvutia, ya kitaalamu kutoka mwanzo ni ya muda mrefu na yenye msongo wa mawazo, hasa unapoomba nafasi nyingi. Kizalishaji cha Barua ya Ombi la Kazi cha AfroTools hurahisisha mchakato huu kwa violezo vya maalum vya sekta na mjenzi ulioongozwa ambao hubadilisha uzoefu wako kuwa maneno mazuri ya kitaalamu kwa Kiswahili au Kiingereza.</p>
-
-    <h3>Kwa Nini Violezo Vina Umuhimu</h3>
-    <p>Sekta tofauti zinatarajia sauti na maudhui tofauti katika barua za maombi. Kampuni ya teknolojia inataka kusikia kuhusu ujuzi wako wa kiufundi na miradi yako. Benki inataka kuona umakini na uelewa wa kanuni. Hospitali inathamini huruma na lugha inayozingatia mgonjwa. Violezo vyetu vimoundwa kwa matarajio ya kila sekta, kukupa mwanzo imara ambao unaweza kuubinafsi.</p>
-
-    <h3>Iliyoundwa kwa Masoko ya Kazi ya Afrika Mashariki</h3>
-    <p>Iwe unoomba nafasi kwa Safaricom Nairobi, Stanbic Bank Kampala, Tanzania Breweries Dar es Salaam, au ofisi ya shirika la kimataifa Afrika Mashariki, barua yako ya ombi lazima ikiakisi viwango vya kitaalamu vya ndani huku ikifikia matarajio ya ubora wa kimataifa. Violezo vyetu vinaoanisha vyote viwili, kukusaidia kuwasilisha wewe mwenyewe bora kwa mwajiri yeyote barani au nje ya nchi.</p>
-
-    <h3>Vidokezo vya Kuandika Barua ya Ombi Yenye Nguvu kwa Afrika Mashariki</h3>
-    <p>Weka barua yako mfupi — kurasa moja ni bora. Anza kwa sentensi yenye nguvu inayoeleza moja kwa moja kwa nini unaomba nafasi hii. Eleza jinsi ujuzi na uzoefu wako unavyolingana na mahitaji maalum ya nafasi, na kutoa mfano mahususi wa mafanikio yako. Maliza kwa ombi wazi la mahojiano. Kwa maombi ya kazi Tanzania na Kenya, ni kawaida kujumuisha simu yako moja kwa moja kwenye mwili wa barua, si kwenye safu ya anwani tu.</p>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="landing-section" style="padding-top:0">
-    <div class="landing-container">
-      <div class="landing-section-head">
-        <div class="landing-section-eyebrow">Zana Zaidi</div>
-        <h2 class="landing-section-title">Zana Zinazohusiana</h2>
-      </div>
-      <div style="display:flex;gap:12px;flex-wrap:wrap">
-        <a href="/sw/zana/mjenzi-cv/" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e5e7eb;padding:10px 18px;border-radius:9px;color:#374151;text-decoration:none;font-size:.85rem;font-weight:600;transition:.15s" onmouseover="this.style.borderColor='#0062CC'" onmouseout="this.style.borderColor='#e5e7eb'">📄 Mjenzi wa CV</a>
-        <a href="/sw/zana/nafasi-pdf/" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e5e7eb;padding:10px 18px;border-radius:9px;color:#374151;text-decoration:none;font-size:.85rem;font-weight:600;transition:.15s" onmouseover="this.style.borderColor='#0062CC'" onmouseout="this.style.borderColor='#e5e7eb'">🗂️ Nafasi ya Kazi ya PDF</a>
-        <a href="/sw/zana/kizalishaji-ankara/" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e5e7eb;padding:10px 18px;border-radius:9px;color:#374151;text-decoration:none;font-size:.85rem;font-weight:600;transition:.15s" onmouseover="this.style.borderColor='#0062CC'" onmouseout="this.style.borderColor='#e5e7eb'">🧾 Kizalishaji cha Ankara</a>
-        <a href="/sw/mshahara-na-kodi/" style="display:inline-flex;align-items:center;gap:8px;background:#fff;border:1px solid #e5e7eb;padding:10px 18px;border-radius:9px;color:#374151;text-decoration:none;font-size:.85rem;font-weight:600;transition:.15s" onmouseover="this.style.borderColor='#0062CC'" onmouseout="this.style.borderColor='#e5e7eb'">💰 Kikokotozi cha Kodi ya PAYE</a>
-      </div>
-    </div>
-  </section>
-
-</div><!-- /landing-page -->
-
-<!-- sw-career-workplace-docs -->
-<section id="kazi-na-ajira" style="padding:34px 20px;background:#f8fafc;border-top:1px solid #e5e7eb">
-  <div style="max-width:1040px;margin:0 auto">
-    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#0f766e;font-weight:900;margin-bottom:8px">Kazi</div>
-    <h2 style="font-size:1.45rem;line-height:1.15;letter-spacing:-.02em;margin:0 0 8px;color:#0f172a">Kazi, CV na mshahara</h2>
-    <p style="margin:0 0 16px;color:#526071;line-height:1.65">Tumia barua ya ombi pamoja na CV, maandalizi ya mahojiano, ofa evaluation na majadiliano ya mshahara ili kutuma maombi yenye ushahidi.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"><a href="/sw/kazi-na-ajira/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Kazi na ajira</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">CV, ofas, interviews, negotiation, kazi ya freelance na workplace docs.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/mjenzi-cv/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mjenzi wa CV</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Andaa CV/resume inayosomeka na waajiri.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/barua-ombi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Barua ya ombi</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Andika cover letter kwa role unayoomba.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="https://africa-tools.com/sw/zana/tathmini-ya-ofa-ya-kazi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Tathmini ya ofa</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Linganisha ofa, net value na risk.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/majadiliano-ya-mshahara/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Majadiliano ya mshahara</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Panga counter-ofa kwa ushahidi.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/mkataba-wa-ajira/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mkataba wa ajira</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Checklist ya contract kabla ya kusaini.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/mshahara-na-kodi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mshahara na PAYE</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Kokotoa salary, PAYE na employment tools.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/elimu/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Elimu</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Mitihani, udhamini na njia za kazi.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a></div>
+    </section>
   </div>
-</section>
-<!-- /sw-career-workplace-docs -->
+</main>
 
-<section class="sw-career-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya kazi na HR:</strong> CV, interview, offer, HR, payslip, overtime, leave na contract ni maneno ya soko la ajira. Zana hizi husaidia kupanga na kuandika rasimu; hazitoi haki rasmi, ushauri wa kisheria, matokeo ya ajira au tafsiri ya sheria ya kazi. Hakiki na mwajiri, HR, wakili au mamlaka husika.</div></section>
-<afro-footer></afro-footer>
-
-<script src="/assets/js/components/navbar.min.js?v=6ff46cac" type="module"></script>
-<script src="/assets/js/components/footer.min.js?v=506bb75a" type="module"></script>
-
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script src="/assets/js/pages/cover-letter-generator.js?v=14ca1cc2" defer></script>
 <script>
-/* ════════════════════════════════════════════════════════
-   Barua ya Ombi la Kazi — Kizalishaji cha Kiswahili
-   Wraps the same template engine logic as the English page
-   ════════════════════════════════════════════════════════ */
 (function(){
-'use strict';
-
-/* ── Template data ── */
-var TEMPLATES = {
-  professional: {
-    sw: {
-      salutation: 'Mheshimiwa Meneja wa Kuajiri',
-      opening:    'Naandika kwa heshima kubwa kuonyesha nia yangu ya nafasi ya {position} katika {company}.',
-      body:       'Kwa miaka {experience} ya uzoefu katika {skills}, nimekuza ujuzi imara unaoniwezesha kuchangia moja kwa moja malengo ya shirika lako. {achievement}',
-      motivation: 'Ninachagua {company} kwa sababu {motivation}',
-      closing:    'Nitafurahi sana kupata fursa ya kujadili jinsi naweza kuchangia mafanikio ya {company}. Tafadhali nipigie simu au niandikia barua pepe ili tupange mazungumzo.',
-      valediction:'Wako kwa heshima,'
-    },
-    en: {
-      salutation: 'Dear Hiring Manager',
-      opening:    'I am writing to express my strong interest in the {position} position at {company}.',
-      body:       'With {experience} years of experience in {skills}, I have developed a robust skill set that would allow me to contribute directly to your organization\'s objectives. {achievement}',
-      motivation: 'I am particularly drawn to {company} because {motivation}',
-      closing:    'I would welcome the opportunity to discuss how I can contribute to {company}\'s continued success. Please feel free to contact me to arrange a conversation.',
-      valediction:'Yours sincerely,'
-    }
-  }
-};
-
-/* Experience label map */
-var EXP_MAP = {
-  '0':'chini ya mwaka 1', '1':'miaka 1-2', '3':'miaka 3-5', '6':'miaka 6-9', '10':'miaka 10+'
-};
-var EXP_MAP_EN = {
-  '0':'less than 1 year', '1':'1-2 years', '3':'3-5 years', '6':'6-9 years', '10':'10+ years'
-};
-
-/* Current template */
-var curTpl = 'professional';
-var curLang = 'sw';
-
-/* ── Template selector ── */
-document.querySelectorAll('.tpl-item').forEach(function(el){
-  el.addEventListener('click', function(){
-    document.querySelectorAll('.tpl-item').forEach(function(t){ t.classList.remove('active'); t.setAttribute('aria-checked','false'); });
-    el.classList.add('active');
-    el.setAttribute('aria-checked','true');
-    curTpl = el.dataset.tpl || 'professional';
-  });
-  el.addEventListener('keydown', function(e){
-    if(e.key === 'Enter' || e.key === ' '){ e.preventDefault(); el.click(); }
-  });
-});
-
-/* ── Generate ── */
-document.getElementById('bl-generate').addEventListener('click', generate);
-
-function generate(){
-  var fname = val('bl-fname');
-  var lname = val('bl-lname');
-  var email = val('bl-email');
-  var phone = val('bl-phone');
-  var position = val('bl-position');
-  var company = val('bl-company');
-  var expVal = val('bl-experience');
-  var skills = val('bl-skills');
-  var achievement = val('bl-achievement');
-  var motivation = val('bl-motivation');
-  curLang = val('bl-lang') || 'sw';
-  var tone = val('bl-tone') || 'professional';
-
-  if(!fname || !lname){
-    alert(curLang === 'sw' ? 'Tafadhali ingiza jina lako.' : 'Please enter your name.'); return;
-  }
-  if(!position){
-    alert(curLang === 'sw' ? 'Tafadhali ingiza nafasi unayoombia.' : 'Please enter the position you are applying for.'); return;
-  }
-  if(!company){
-    alert(curLang === 'sw' ? 'Tafadhali ingiza jina la kampuni.' : 'Please enter the company name.'); return;
-  }
-  if(!skills){
-    alert(curLang === 'sw' ? 'Tafadhali ingiza ujuzi wako mkuu.' : 'Please enter your key skills.'); return;
-  }
-
-  var tplData = (TEMPLATES[curTpl] || TEMPLATES.professional)[curLang] || TEMPLATES.professional.sw;
-  var expLabel = curLang === 'sw'
-    ? (EXP_MAP[expVal] || expVal || 'muda')
-    : (EXP_MAP_EN[expVal] || expVal || 'several');
-
-  var achStr = achievement
-    ? (curLang === 'sw' ? 'Kwa mfano, ' + achievement + '.' : 'For instance, ' + achievement + '.')
-    : '';
-
-  var motivStr = motivation || (curLang === 'sw' ? 'mnajulikana kwa utaalamu na thamani za ubunifu' : 'you are known for excellence and innovative values');
-
-  function fill(str){
-    return str
-      .replace(/{position}/g, position)
-      .replace(/{company}/g, company)
-      .replace(/{experience}/g, expLabel)
-      .replace(/{skills}/g, skills)
-      .replace(/{achievement}/g, achStr)
-      .replace(/{motivation}/g, motivStr);
-  }
-
-  var today = new Date().toLocaleDateString(curLang === 'sw' ? 'sw-KE' : 'en-GB', {day:'numeric',month:'long',year:'numeric'});
-  var fullName = fname + ' ' + lname;
-  var contactLine = [email, phone].filter(Boolean).join(' | ');
-
-  var html = '<div class="letter-output" id="letter-content">' +
-    '<div class="l-header">' +
-      '<div class="l-name">' + esc(fullName) + '</div>' +
-      (contactLine ? '<div class="l-contact">' + esc(contactLine) + '</div>' : '') +
-    '</div>' +
-    '<div class="l-date">' + today + '</div>' +
-    '<div class="l-company">' +
-      '<strong>' + esc(position) + '</strong>' +
-      esc(company) +
-    '</div>' +
-    '<p class="l-salutation">' + fill(tplData.salutation) + ',</p>' +
-    '<p>' + fill(tplData.opening) + '</p>' +
-    '<p>' + fill(tplData.body) + '</p>' +
-    '<p>' + fill(tplData.motivation) + '.</p>' +
-    '<p>' + fill(tplData.closing) + '</p>' +
-    '<div class="l-closing">' +
-      '<p>' + tplData.valediction + '</p>' +
-      '<p style="margin-top:12px;font-weight:700;">' + esc(fullName) + '</p>' +
-    '</div>' +
-  '</div>';
-
-  var body = document.getElementById('pr-body');
-  body.classList.remove('empty');
-  body.innerHTML = html;
-
-  /* Scroll to preview on mobile */
-  if(window.innerWidth < 720){
-    body.closest('.pr-card').scrollIntoView({behavior:'smooth',block:'start'});
-  }
-}
-
-/* ── Copy ── */
-document.getElementById('pr-copy').addEventListener('click', function(){
-  var el = document.getElementById('letter-content');
-  if(!el){ alert(curLang === 'sw' ? 'Tengeneza barua kwanza.' : 'Generate a letter first.'); return; }
-  var txt = el.innerText || el.textContent;
-  if(navigator.clipboard){
-    navigator.clipboard.writeText(txt).then(function(){
-      alert(curLang === 'sw' ? 'Barua imenakiliwa!' : 'Letter copied!');
+  var stages=["profile","job","draft"];
+  var progress=["profile","job","proof","draft","export"];
+  function id(name){return document.getElementById(name)}
+  function value(name){var field=id(name);return field?String(field.value||"").trim():""}
+  function hasText(name,min){return value(name).length>=(min||1)}
+  function scheduleProgress(){window.clearTimeout(scheduleProgress.timer);scheduleProgress.timer=window.setTimeout(updateProgress,80)}
+  function setStage(stage,focusPanel){
+    if(stages.indexOf(stage)===-1)stage="profile";
+    var shell=document.querySelector(".app-shell");
+    if(!shell)return;
+    shell.setAttribute("data-stage",stage);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      var active=button.getAttribute("data-stage-target")===stage;
+      button.setAttribute("aria-selected",active?"true":"false");
+      button.setAttribute("tabindex",active?"0":"-1");
     });
-  } else {
-    var ta = document.createElement('textarea');
-    ta.value = txt; document.body.appendChild(ta); ta.select(); document.execCommand('copy'); document.body.removeChild(ta);
-    alert(curLang === 'sw' ? 'Barua imenakiliwa!' : 'Letter copied!');
-  }
-});
-
-/* ── Print ── */
-document.getElementById('pr-print').addEventListener('click', function(){
-  var el = document.getElementById('letter-content');
-  if(!el){ alert(curLang === 'sw' ? 'Tengeneza barua kwanza.' : 'Generate a letter first.'); return; }
-  var w = window.open('','_blank');
-  w.document.write('<html><head><title>Barua ya Ombi</title><style>body{font-family:Arial,sans-serif;margin:40px;font-size:13px;line-height:1.7;color:#111}.l-header{margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid #0062CC}.l-name{font-size:16px;font-weight:700}.l-contact{font-size:11px;color:#666}.l-date{margin-bottom:14px;color:#666;font-size:12px}.l-company strong{font-weight:700}.l-salutation{font-weight:700;margin-bottom:10px}p{margin-bottom:12px}.l-closing{margin-top:24px}</style></head><body>');
-  w.document.write(el.innerHTML);
-  w.document.write('</body></html>');
-  w.document.close(); w.focus(); w.print();
-});
-
-/* ── PDF pakua ── */
-document.getElementById('pr-pdf').addEventListener('click', function(){
-  var el = document.getElementById('letter-content');
-  if(!el){ alert(curLang === 'sw' ? 'Tengeneza barua kwanza.' : 'Generate a letter first.'); return; }
-  if(typeof window.loadPdfLibs !== 'undefined'){
-    window.loadPdfLibs().then(function(){
-      if(window.html2canvas && window.jspdf){
-        html2canvas(el,{scale:2,useCORS:true}).then(function(canvas){
-          var pdf = new jspdf.jsPDF({orientation:'portrait',unit:'mm',format:'a4'});
-          var imgData = canvas.toDataURL('image/jpeg',0.95);
-          var w = 210, h = (canvas.height * w) / canvas.width;
-          if(h > 297){ h = 297; }
-          pdf.addImage(imgData,'JPEG',0,0,w,h);
-          pdf.hifadhi('barua-ya-ombi.pdf');
-        });
-      }
-    }).catch(function(){ printFallback(el); });
-  } else {
-    printFallback(el);
-  }
-});
-
-function printFallback(el){
-  var w = window.open('','_blank');
-  w.document.write('<html><head><title>Barua ya Ombi</title><style>body{font-family:Arial,sans-serif;margin:30px;font-size:13px;line-height:1.7}@media print{body{margin:0 20px}}</style></head><body>');
-  w.document.write(el.innerHTML);
-  w.document.write('<script>window.onload=function(){window.print();window.close();}<\/script></body></html>');
-  w.document.close();
-}
-
-/* ── Reset ── */
-document.getElementById('bl-reset').addEventListener('click', function(){
-  ['bl-fname','bl-lname','bl-email','bl-phone','bl-position','bl-company','bl-skills','bl-achievement','bl-motivation'].forEach(function(id){
-    var el = document.getElementById(id);
-    if(el) el.value = '';
-  });
-  var body = document.getElementById('pr-body');
-  body.classList.add('empty');
-  body.innerHTML = '<div style="font-size:32px;opacity:.3">✉️</div><p>Barua yako itaonekana hapa.<br>Jaza fomu na ubonyeze "Tengeneza Barua".</p>';
-});
-
-/* ── Saved letters (load from save-state) ── */
-if(typeof SaveState !== 'undefined'){
-  (function(){
-    var ss = new SaveState('cover-letter', {maxFree:20});
-    var grid = document.getElementById('saved-letters');
-    var section = document.getElementById('saved-section');
-    function esc2(s){ return s?String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'):''; }
-    function ago(ts){ var s=Math.floor((Date.now()-ts)/1000); if(s<60)return'dakika chache zilizopita'; if(s<3600)return Math.floor(s/60)+'dk zilizopita'; var d=Math.floor(s/86400); return d+'siku zilizopita'; }
-    function render(){
-      var items = ss.getAll();
-      if(!items.length){ section.style.display='none'; return; }
-      section.style.display='';
-      grid.innerHTML = items.map(function(it){
-        var d = it.data || {};
-        return '<div class="saved-card" onclick="loadSaved(\''+it.id+'\')" tabindex="0">'+
-          '<div class="saved-card-title">'+esc2(it.title)+'</div>'+
-          (d.company?'<div class="saved-card-meta">'+esc2(d.company)+'</div>':'')+
-          '<div class="saved-card-meta">'+ago(it.updatedAt)+'</div>'+
-          '<button type="button" class="saved-card-del" onclick="event.stopPropagation();delSaved(\''+it.id+'\')">Futa</button>'+
-        '</div>';
-      }).join('');
+    if(focusPanel){
+      var panel=document.querySelector('[data-stage-panel="'+stage+'"]');
+      var focusable=panel&&panel.querySelector("input,select,textarea,button,a");
+      if(focusable)focusable.focus({preventScroll:true});
+      if(panel)panel.scrollIntoView({block:"start",behavior:"smooth"});
     }
-    window.delSaved = function(id){ if(confirm('Futa barua hii?')){ ss.delete(id); render(); } };
-    window.loadSaved = function(id){
-      var item = ss.getAll().find(function(x){ return x.x === id || x.id === id; });
-      if(item && item.data){
-        var d = item.data;
-        ['fname','lname','email','phone','position','company','skills','achievement','motivation'].forEach(function(k){
-          var el = document.getElementById('bl-'+k);
-          if(el && d[k] !== undefined) el.value = d[k];
-        });
-        document.getElementById('bl-lang').value = d.lang || 'sw';
-        document.getElementById('bl-tone').value = d.tone || 'professional';
-        document.getElementById('bl-experience').value = d.experience || '';
-        generate();
+    updateProgress();
+  }
+  function scoreValue(){
+    var score=parseInt((id("scoreValue")||{}).textContent||"0",10);
+    return Number.isFinite(score)?score:0;
+  }
+  function draftIsReady(){
+    var text=value("letterText");
+    return text.length>160&&!/your organization|the advertised role|Your Name/i.test(text);
+  }
+  function updateProgress(){
+    var profileComplete=hasText("fullName")&&(hasText("email")||hasText("phone"))&&hasText("resumeSummary",24);
+    var jobAdded=hasText("jobDescription",40);
+    var proofAdded=hasText("skills")&&hasText("achievement",25)&&hasText("whyCompany",25);
+    var draftReady=draftIsReady();
+    var exportReady=draftReady&&scoreValue()>=65;
+    var status={profile:profileComplete,job:jobAdded,proof:proofAdded,draft:draftReady,export:exportReady};
+    var firstPending=progress.find(function(step){return !status[step]})||"export";
+    progress.forEach(function(step){
+      var item=document.querySelector('[data-progress-step="'+step+'"]');
+      if(!item)return;
+      item.setAttribute("data-state",status[step]?"done":step===firstPending?"current":"pending");
+      item.setAttribute("aria-current",step===firstPending?"step":"false");
+    });
+    toggleEmptyStates({jobAdded:jobAdded,proofAdded:proofAdded,draftReady:draftReady});
+  }
+  function toggleEmptyStates(state){
+    var draftEmpty=id("draftEmpty");
+    if(draftEmpty)draftEmpty.hidden=state.draftReady;
+    var readinessEmpty=id("readinessEmpty");
+    if(readinessEmpty)readinessEmpty.hidden=state.jobAdded||state.proofAdded||state.draftReady;
+    var keywordsEmpty=id("keywordsEmpty");
+    if(keywordsEmpty)keywordsEmpty.hidden=hasText("jobDescription",40);
+    var keywordChips=id("keywordChips");
+    if(keywordChips)keywordChips.hidden=!hasText("jobDescription",40);
+    var savedEmpty=id("savedEmpty");
+    var savedList=id("savedList");
+    if(savedEmpty&&savedList){
+      var hasSaved=Boolean(savedList.querySelector(".saved-item"));
+      savedEmpty.hidden=hasSaved;
+      savedList.hidden=!hasSaved&&/No saved letters yet/i.test(savedList.textContent||"");
+    }
+  }
+  function openAiAssist(){
+    setStage("draft",false);
+    window.setTimeout(function(){
+      var panel=id("ai-assist");
+      var action=id("aiAssistAction");
+      if(panel){
+        var scroller=panel.closest(".panel");
+        if(scroller)scroller.scrollTo({top:Math.max(0,panel.offsetTop-scroller.offsetTop-12),behavior:"smooth"});
+        panel.scrollIntoView({block:"nearest",behavior:"smooth"});
       }
-    };
-    render();
-  })();
-}
-
-/* ── Helpers ── */
-function val(id){ var el = document.getElementById(id); return el ? el.value.trim() : ''; }
-function esc(s){ return s ? String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;') : ''; }
-
-/* Load PDF libs lazily */
-window.loadPdfLibs = window.loadPdfLibs || function(){
-  return new Promise(function(res,rej){
-    var s1 = document.createElement('script'); s1.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'; s1.onload=function(){
-      var s2 = document.createElement('script'); s2.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js'; s2.onload=res; s2.onerror=rej; document.head.appendChild(s2);
-    }; s1.onerror=rej; document.head.appendChild(s1);
-  });
-};
-
+      if(action)action.focus();
+      if(window.history&&window.history.replaceState)window.history.replaceState(null,"","#ai-assist");
+    },80);
+  }
+  function initWorkflow(){
+    setStage((document.querySelector(".app-shell")||{}).getAttribute("data-stage")||"profile",false);
+    document.querySelectorAll("[data-stage-target]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-stage-target"),true)});
+      button.addEventListener("keydown",function(event){
+        var current=stages.indexOf(button.getAttribute("data-stage-target"));
+        var next=current;
+        if(event.key==="ArrowRight")next=(current+1)%stages.length;
+        if(event.key==="ArrowLeft")next=(current+stages.length-1)%stages.length;
+        if(event.key==="Home")next=0;
+        if(event.key==="End")next=stages.length-1;
+        if(next!==current){event.preventDefault();setStage(stages[next],true)}
+      });
+    });
+    document.querySelectorAll("[data-next-stage]").forEach(function(button){
+      button.addEventListener("click",function(){setStage(button.getAttribute("data-next-stage"),true)});
+    });
+    document.querySelectorAll('a[href="#job-match"]').forEach(function(link){
+      link.addEventListener("click",function(){setStage("job",false);window.setTimeout(function(){var match=id("job-match");if(match)match.scrollIntoView({block:"start",behavior:"smooth"})},60)});
+    });
+    document.querySelectorAll("[data-ai-assist-open]").forEach(function(button){
+      button.addEventListener("click",openAiAssist);
+    });
+    document.addEventListener("input",scheduleProgress,true);
+    document.addEventListener("change",scheduleProgress,true);
+    document.addEventListener("click",function(event){
+      if(event.target.closest("[data-action],[data-load],[data-delete]"))scheduleProgress();
+    },true);
+    var savedList=id("savedList");
+    if(savedList&&window.MutationObserver)new MutationObserver(scheduleProgress).observe(savedList,{childList:true,subtree:true});
+    window.setTimeout(updateProgress,120);
+    window.setTimeout(updateProgress,500);
+  }
+  if(document.readyState==="loading")document.addEventListener("DOMContentLoaded",initWorkflow);else initWorkflow();
 })();
 </script>
-
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-
+<script src="/assets/js/pages/cover-letter-ai-assist.js?v=b9d820e8" defer></script>
+<script>
+(function(){
+  var review=document.getElementById('exportReviewConfirm');
+  var status=document.getElementById('exportReviewStatus');
+  var exportActions=['pdf','word','txt','json','print'];
+  function draftReady(){
+    var text=String((document.getElementById('letterText')||{}).value||'').trim();
+    return text.length>=160&&!/Your Name|your organization|the advertised role/i.test(text);
+  }
+  function requireReview(event){
+    var action=event.target&&event.target.closest&&event.target.closest('[data-action]');
+    if(!action||exportActions.indexOf(action.getAttribute('data-action'))===-1)return;
+    if(!draftReady()){
+      event.preventDefault();
+      event.stopImmediatePropagation();
+      if(status)status.textContent='Complete the named recipient, role, company, and letter content before export.';
+      var letter=document.getElementById('letterText');
+      if(letter)letter.focus();
+      return;
+    }
+    if(review&&review.checked)return;
+    event.preventDefault();
+    event.stopImmediatePropagation();
+    if(status)status.textContent='Review the final letter preview and confirm it before export.';
+    if(review)review.focus();
+  }
+  function invalidate(event){
+    if(!review||event.target===review||!review.checked)return;
+    if(event.target&&event.target.closest&&event.target.closest('.app-shell')){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    }
+  }
+  document.addEventListener('click',requireReview,true);
+  document.addEventListener('input',invalidate,true);
+  document.addEventListener('change',invalidate,true);
+  document.addEventListener('click',function(event){
+    if(!review||!review.checked||!event.target||!event.target.closest)return;
+    var action=event.target.closest('[data-action="rebuild"],[data-load],[data-delete],#aiAssistApply');
+    if(!action)return;
+    setTimeout(function(){
+      review.checked=false;
+      if(status)status.textContent='Letter changed. Review the final preview again before export.';
+    },0);
+  },true);
+})();
+</script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"cover-letter","name":"Barua ya Maombi","downloadContract":"sensitive-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

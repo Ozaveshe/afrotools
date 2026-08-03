@@ -9,7 +9,7 @@
   "use strict";
 
   var STANDARD_RATE = 18;
-  var REVIEWED_ON = "2026-07-22";
+  var REVIEWED_ON = "2026-08-02";
 
   function number(value, label) {
     if (value === "" || value === null || typeof value === "undefined") {
@@ -106,7 +106,7 @@
       return {
         treatment: "standard",
         rate: STANDARD_RATE,
-        source: "Benin CGI 2023, article 241: VAT is fixed at 18%",
+        source: "Benin CGI 2026, article 241: VAT is fixed at 18%",
       };
     }
     if (key === "confirmed-export") {

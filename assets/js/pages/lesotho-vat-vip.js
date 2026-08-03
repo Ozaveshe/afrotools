@@ -167,6 +167,15 @@
       '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Lesotho%20VAT%20calculation%20error">' +
       t.report +
       "</a></p></aside></div></div>";
+    document.getElementById("lsvResult").setAttribute("aria-label", lang === "sw" ? "Matokeo ya VAT" : lang === "fr" ? "Résultats TVA" : "VAT results");
+    var basePdfDisclaimer = t.disclaimer;
+    document.getElementById("lsvPdf").addEventListener("click", function () {
+      t.disclaimer = basePdfDisclaimer + " " + {
+        en: "Sources reviewed 2026-07-22: RSL tax rates, VAT registration guidance and current publications.",
+        fr: "Sources vérifiées le 2026-07-22 : taux fiscaux, guide d'immatriculation TVA et publications actuelles de la RSL.",
+        sw: "Vyanzo vimekaguliwa 2026-07-22: Viwango vya kodi, mwongozo wa usajili wa VAT na machapisho ya sasa ya RSL."
+      }[lang];
+    }, true);
     var state = { mode: "add", result: null };
     function id(x) {
       return document.getElementById(x);

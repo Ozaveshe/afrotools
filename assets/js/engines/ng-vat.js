@@ -9,7 +9,7 @@
   'use strict';
 
   var STANDARD_RATE = 7.5;
-  var REVIEWED_ON = '2026-07-22';
+  var REVIEWED_ON = '2026-08-02';
   var ZERO_RATED = [
     'basic-food', 'medical-products-services', 'education-materials-tuition',
     'listed-agriculture', 'listed-electricity', 'non-oil-exports',
@@ -75,9 +75,9 @@
   }
 
   function classify(key) {
-    if (key === 'standard') return { treatment: 'standard', rate: STANDARD_RATE, section: 'NTA 2025 s148' };
-    if (ZERO_RATED.indexOf(key) !== -1) return { treatment: 'zero-rated', rate: 0, section: 'NTA 2025 s187' };
-    if (EXEMPT.indexOf(key) !== -1) return { treatment: 'exempt', rate: null, section: 'NTA 2025 s186' };
+    if (key === 'standard') return { treatment: 'standard', rate: STANDARD_RATE, section: 'NTA 2025 s147' };
+    if (ZERO_RATED.indexOf(key) !== -1) return { treatment: 'zero-rated', rate: 0, section: 'NTA 2025 s186' };
+    if (EXEMPT.indexOf(key) !== -1) return { treatment: 'exempt', rate: null, section: 'NTA 2025 s185' };
     return { treatment: 'review', rate: null, section: 'Confirm with NRS or a qualified adviser' };
   }
 

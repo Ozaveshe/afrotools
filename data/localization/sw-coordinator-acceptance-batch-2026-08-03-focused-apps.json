@@ -1,0 +1,121 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 3,
+  "expectedAcceptedRoutes": 8,
+  "preservedBlockedEntries": 3,
+  "candidates": [
+    {
+      "id": "hajj-budget-resume",
+      "commit": "8c62c53c77371ebcc7858c8ed39f388bf1a09bcb",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-hajj-budget.spec.js",
+          "engineTest": "tests/sw-hajj-budget.test.js",
+          "workflow": "Both English-owner Hajj and Umrah budget workflows passed exact formula, boundary, stale-state, privacy, source, accessibility, theme and responsive proof on the integrated coordinator tree.",
+          "export": "Clipboard, JSON download and import, local save and reopen, parsed PDF and print were exercised and reopened where applicable."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-hajj-budget.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/sourceId", "equals": "hajj-budget" },
+            { "pointer": "/route", "equals": "/sw/zana/bajeti-ya-hajj-na-umrah/" },
+            { "pointer": "/runtime/networkMode", "equals": "local-only" }
+          ]
+        },
+        {
+          "path": "reports/sw-hajj-budget-parity-evidence.md",
+          "format": "text",
+          "requiredText": "Acceptance result: **1/1 locally accepted**"
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "hajj-budget", "swahiliRoute": "/sw/zana/bajeti-ya-hajj-na-umrah/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "course-load-resume",
+      "commit": "6a8f657932f26463eb1dcce90bdc63a5dad57c91",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-course-load-owner.spec.js",
+          "engineTest": "tests/swahili-course-load-owner.test.js",
+          "workflow": "The dynamic course-load and credit-audit workflow passed the unchanged English engine oracle, invalid and stale-state clearing, privacy, four themes, axe, keyboard and true 200% post-result reflow on the integrated coordinator tree.",
+          "export": "Clipboard, reopened UTF-8 TXT and parsed print-to-PDF outputs passed with the calculated course plan."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-course-load-route-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/baseSha", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/englishId", "equals": "course-load" },
+            { "pointer": "/swahiliRoute", "equals": "/sw/zana/mzigo-wa-masomo/" },
+            { "pointer": "/privacy/localFirst", "equals": true }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "course-load", "swahiliRoute": "/sw/zana/mzigo-wa-masomo/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "hr-payroll-six-repair",
+      "commit": "ef68f811625873c788a0d8e0422b7267228275af",
+      "expectedRoutes": 6,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 6,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-hr-payroll-six.spec.js",
+          "engineTest": "tests/sw-hr-payroll-six.test.js",
+          "workflow": "All six HR and Payroll apps passed English-owner calculations, invalid and stale-state clearing, delayed-auth local-only privacy proof, sources, four themes, contrast, keyboard and true 200% reflow on the integrated coordinator tree.",
+          "export": "Each applicable app passed clipboard plus parsed TXT, JSON and PDF outputs; the hub remained discovery-only and is not counted as an app."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-hr-payroll-six-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorSha", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/constraints/exactRowCount", "equals": 6 },
+            { "pointer": "/constraints/centralAcceptanceLedgerOwnedByCoordinator", "equals": true }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-hr-payroll-six-manifest.json",
+          "rowsPointer": "/rows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    }
+  ]
+}

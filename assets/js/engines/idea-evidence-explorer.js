@@ -169,7 +169,7 @@
     return {
       schemaVersion:SCHEMA_VERSION,
       tool:"idea-board",
-      locale:locale === "fr" ? "fr" : "en",
+      locale:["en","fr","sw"].indexOf(locale) >= 0 ? locale : "en",
       savedAt:new Date().toISOString(),
       items:normalizeRows((rows || []).map(normalizedToRaw)).slice(0, 6)
     };

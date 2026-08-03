@@ -1,0 +1,105 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 4,
+  "preservedBlockedEntries": 0,
+  "candidates": [
+    {
+      "id": "finance-compound-and-investment-return",
+      "commit": "41b36cdb6251f8ab6b5e905dc8ecb3b952314ac4",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-compound-interest-vip.spec.js",
+          "engineTest": "tests/swahili-investment-return-contract.test.js",
+          "workflow": "Compound Interest and Investment Return passed the maintained shared-engine oracles, invalid and stale-state clearing, local-only consent boundary, four settled themes, contrast-safe theme transitions, keyboard access and true 200% reflow on the integrated coordinator tree.",
+          "export": "Compound Interest reopened TXT and parsed PDF; Investment Return reopened clipboard text, CSV and parsed PDF with the exact current result."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-finance-compound-interest-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/baseSha", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/totals/accepted", "equals": 1 },
+            { "pointer": "/totals/blocked", "equals": 0 }
+          ]
+        },
+        {
+          "path": "reports/swahili-finance-investment-return-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/baseSha", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/totals/accepted", "equals": 1 },
+            { "pointer": "/totals/blocked", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/swahili-finance-compound-interest-receipt.json",
+          "rowsPointer": "/acceptedRows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute",
+          "statusPointer": "/status",
+          "acceptedValues": ["accepted"]
+        },
+        {
+          "path": "reports/swahili-finance-investment-return-receipt.json",
+          "rowsPointer": "/acceptedRows",
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute",
+          "statusPointer": "/status",
+          "acceptedValues": ["accepted"]
+        }
+      ]
+    },
+    {
+      "id": "water-sanitation-two",
+      "commit": "ce61d32fa9d1d23bd6c89a65867c1c7d44c1b074",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-water-sanitation-parity.spec.js",
+          "engineTest": "tests/sw-water-sanitation-parity.test.js",
+          "workflow": "Septic Tank and Plumbing Material passed maintained-engine primary and boundary oracles, invalid and stale-state clearing, local-only privacy, source boundaries, four themes, keyboard access and zero-overflow 320/375px reflow at true 200% text on the integrated coordinator tree.",
+          "export": "Both apps reopened copied text plus parsed JSON and TXT; JSON restore recalculated through the current maintained engine."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-water-sanitation-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorBase", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/scopeCount", "equals": 2 }
+          ]
+        },
+        {
+          "path": "reports/sw-water-sanitation-parity-receipt-2026-08-02.md",
+          "format": "text",
+          "requiredText": "Candidate ACCEPT: 2"
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-water-sanitation-parity-manifest.json",
+          "rowsPointer": "/apps",
+          "idPointer": "/id",
+          "routePointer": "/swRoute"
+        }
+      ]
+    }
+  ]
+}

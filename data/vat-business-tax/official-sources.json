@@ -44,14 +44,15 @@
     {
       "id": "rev-ng",
       "country": "NG",
-      "authority": "FIRS (Federal Inland Revenue Service)",
-      "title": "FIRS — Nigeria federal tax authority",
-      "url": "https://www.firs.gov.ng/",
+      "authority": "Nigeria Revenue Service (NRS)",
+      "title": "Nigeria Tax Act 2025 and NRS VAT guidance",
+      "url": "https://nass.gov.ng/documents/download/11249",
+      "supportingUrls": "https://www.nrs.gov.ng/tax-information/value-added-tax https://www.nrs.gov.ng/uploads/NIGERIA_TAX_ADMINISTRATION_ACT_2025_8c945071a7.pdf https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/",
       "sourceType": "revenue-authority",
       "watch": "availability-and-content",
-      "fields": ["vatRate", "registrationThreshold"],
+      "fields": ["vatRate", "taxableValue", "classification", "administration"],
       "tools": ["vat-calculator", "ng-vat"],
-      "notes": "Standard VAT 7.5% (raised from 5% by the Finance Act 2019). Read the current FIRS VAT guidance / gazette before changing the rate, threshold, zero-rating or exemption list — 2026 reforms expanded food zero-rating."
+      "notes": "Nigeria Tax Act 2025 section 147 sets the standard VAT rate at 7.5%; section 148 governs taxable-supply value; section 185 lists exempt supplies; and section 186 lists zero-rated supplies. The calculator does not infer registration, filing, recovery or invoice classification. Reviewed 2026-08-02."
     },
     {
       "id": "rev-ke",
@@ -109,25 +110,31 @@
       "id": "rev-rw",
       "country": "RW",
       "authority": "RRA (Rwanda Revenue Authority)",
-      "title": "RRA — Rwanda revenue authority",
-      "url": "https://www.rra.gov.rw/",
-      "sourceType": "revenue-authority",
+      "title": "RRA — VAT rates, registration and current law",
+      "url": "https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax/penalties-and-interest",
+      "supportingUrls": [
+        "https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax/default-title-1",
+        "https://www.rlrc.gov.rw/fileadmin/user_upload/RLRC/Laws_of_Rwanda_v2/Domestic_laws/Laws_in_force/8._Taxation/8.2._Value_Added_Taxes/8.2.1._Value_Added_Tax__Law_n___49_of_2023.pdf",
+        "https://www.rra.gov.rw/fileadmin/user_upload/Law_amending_the_2023_VAT_law___May_2025.pdf",
+        "https://www.rra.gov.rw/fileadmin/user_upload/Law_n___020_2023_of_31.03.2023_on_tax_procedures.pdf"
+      ],
+      "sourceType": "revenue-authority-guidance",
       "watch": "availability-and-content",
-      "fields": ["vatRate", "registrationThreshold"],
+      "fields": ["vatRate", "registrationThreshold", "classification", "invoicing"],
       "tools": ["vat-calculator", "rw-vat"],
-      "notes": "Standard VAT is 18% under Law 049/2023 Article 4. Registration applies strictly above RWF 20M in the previous fiscal year or strictly above RWF 5M in the preceding quarter, with current RRA guidance requiring action within seven days. Article 7 zero-rating and Article 8 exemptions must be confirmed against Law 009/2025 amendments; no broad category is inferred. Reviewed 2026-07-22."
+      "notes": "Direct RRA guidance and Law 049/2023 Article 4 confirm the 18% standard rate. Tax Procedures Law 020/2023 Article 11 and RRA registration guidance require registration only when taxable turnover strictly exceeds RWF 20 million in the previous fiscal year or RWF 5 million in the preceding quarter, within seven days after that period unless all activities are exempt. Article 7 zero-rating and Article 8 exemptions, as amended by Law 009/2025, require exact statutory confirmation; no product label is inferred. VAT-registered taxpayers must use an electronic invoicing system. Reviewed 2026-08-02."
     },
     {
       "id": "rev-ug",
       "country": "UG",
       "authority": "URA (Uganda Revenue Authority)",
-      "title": "URA — Uganda revenue authority",
-      "url": "https://www.ura.go.ug/",
-      "sourceType": "revenue-authority",
+      "title": "URA — Value Added Tax (VAT)",
+      "url": "https://ura.go.ug/en/value-added-tax-vat/",
+      "sourceType": "revenue-authority-guidance",
       "watch": "availability-and-content",
       "fields": ["vatRate", "registrationThreshold"],
       "tools": ["vat-calculator", "ug-vat"],
-      "notes": "Standard VAT 18%. Confirm the rate and the UGX 150M registration threshold against the VAT Act and the current Finance Act."
+      "notes": "Direct URA VAT guidance states that the standard rate is 18% and compulsory registration applies only when taxable sales exceeded UGX 37.5 million during the past three calendar months or are expected to exceed it during the next three calendar months. UGX 150 million remains the annual reference for voluntary registration. Second Schedule exemptions, Third Schedule zero-rating and section 5 VAT withholding remain confirmation-only. Reviewed 2026-08-02."
     },
     {
       "id": "rev-eg",
@@ -166,7 +173,7 @@
       "watch": "availability-and-content",
       "fields": ["vatRate", "taxpayerRegime", "classification", "filing"],
       "tools": ["vat-calculator", "dz-vat"],
-      "notes": "DGI guidance updated 23 February 2026 confirms the 19% normal rate, limits the 9% rate to article 23 TCA operations and points exemptions to articles 8-13. Real and simplified regimes are VAT-relevant; DGI says IFU taxpayers are not concerned by VAT and invoice TTC. No generic VAT-registration threshold is modeled. Reviewed 2026-07-22."
+      "notes": "DGI guidance updated 23 February 2026 confirms the 19% normal rate, limits the 9% rate to article 23 TCA operations and points exemptions to articles 8-13. Real and simplified regimes are VAT-relevant; DGI says IFU taxpayers are not concerned by VAT and invoice TTC. No generic VAT-registration threshold is modeled. Reviewed 2026-08-02."
     },
     {
       "id": "rev-ao",
@@ -188,9 +195,10 @@
       "id": "rev-bj",
       "country": "BJ",
       "authority": "DGI Benin (Direction Generale des Impots)",
-      "title": "DGI Benin - official General Tax Code and VAT guide",
-      "url": "https://api.impots.bj/media/63c7b8d3eef3c_Benin-CGI-2023-officiel.pdf",
+      "title": "DGI Benin - Code General des Impots 2026",
+      "url": "https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf",
       "supportingUrls": [
+        "https://api.impots.bj/media/63c7b8d3eef3c_Benin-CGI-2023-officiel.pdf",
         "https://api.impots.bj/media/619276da1364b_CE%20QUE%20VOUS%20DEVEZ%20SAVOIR%20SUR%20LA%20TVA.pdf",
         "https://budgetbenin.bj/loi-de-finances-gestion-2026/"
       ],
@@ -203,7 +211,7 @@
         "filing"
       ],
       "tools": ["vat-calculator", "bj-vat"],
-      "notes": "CGI Article 241 fixes the standard rate at 18%. The DGI guide supports the export zero-rate convention. Article 229 classification, the current Article 228 threshold set by ministerial order, and Article 259 declaration and payment by the 10th require current confirmation. Reviewed 2026-07-22."
+      "notes": "The official 2026 CGI, updated by the 2026 finance law, fixes the standard VAT rate at 18% in Article 241. The DGI guide supports the export zero-rate convention. Article 229 classification, the current Article 228 threshold set by ministerial order, and Article 259 declaration and payment by the 10th require current confirmation. Reviewed 2026-08-02."
     },
     {
       "id": "rev-et",

@@ -5,6 +5,8 @@
   --ir-text: #102033;
   --ir-muted: #53657a;
   --ir-line: #d6e0eb;
+  --ir-input-line: #737373;
+  --ir-focus: #0369a1;
   --ir-accent: #075985;
   --ir-accent-strong: #0c4a6e;
   --ir-positive: #047857;
@@ -18,11 +20,45 @@ html[data-theme="dark"] {
   --ir-text: #f3f7fb;
   --ir-muted: #a8b6c7;
   --ir-line: #2a3a4f;
+  --ir-input-line: #737373;
+  --ir-focus: #7dd3fc;
   --ir-accent: #7dd3fc;
   --ir-accent-strong: #bae6fd;
   --ir-positive: #6ee7b7;
   --ir-negative: #fda29b;
   --ir-shadow: none;
+}
+html[data-theme="light"] {
+  --ir-bg: #f4f7fb;
+  --ir-surface: #ffffff;
+  --ir-soft: #eef5ff;
+  --ir-text: #102033;
+  --ir-muted: #53657a;
+  --ir-line: #d6e0eb;
+  --ir-input-line: #737373;
+  --ir-focus: #0369a1;
+  --ir-accent: #075985;
+  --ir-accent-strong: #0c4a6e;
+  --ir-positive: #047857;
+  --ir-negative: #b42318;
+  --ir-shadow: 0 18px 45px rgba(15, 35, 58, .08);
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ir-bg: #08111f;
+    --ir-surface: #121c2b;
+    --ir-soft: #13243a;
+    --ir-text: #f3f7fb;
+    --ir-muted: #a8b6c7;
+    --ir-line: #2a3a4f;
+    --ir-input-line: #737373;
+    --ir-focus: #7dd3fc;
+    --ir-accent: #7dd3fc;
+    --ir-accent-strong: #bae6fd;
+    --ir-positive: #6ee7b7;
+    --ir-negative: #fda29b;
+    --ir-shadow: none;
+  }
 }
 html { overflow-x: hidden; }
 body.ir-page { margin: 0; overflow-x: hidden; background: var(--ir-bg); color: var(--ir-text); }
@@ -31,7 +67,7 @@ body.ir-page { margin: 0; overflow-x: hidden; background: var(--ir-bg); color: v
 .ir-shell { width: min(1180px, calc(100% - 32px)); margin: 0 auto; padding: 34px 0 70px; }
 .ir-hero { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(260px, .7fr); gap: 24px; align-items: end; padding: 32px; border: 1px solid var(--ir-line); border-radius: 22px; background: var(--ir-surface); box-shadow: var(--ir-shadow); }
 .ir-kicker { margin: 0 0 8px; color: var(--ir-accent); font-size: .78rem; font-weight: 850; letter-spacing: .1em; text-transform: uppercase; }
-.ir-hero h1 { max-width: 760px; margin: 0; font-size: clamp(2rem, 5vw, 4.4rem); line-height: .98; letter-spacing: -.055em; }
+.ir-hero h1 { max-width: 760px; margin: 0; color: var(--ir-text); font-size: clamp(2rem, 5vw, 4.4rem); line-height: .98; letter-spacing: -.055em; }
 .ir-lede { max-width: 720px; margin: 18px 0 0; color: var(--ir-muted); font-size: 1.05rem; line-height: 1.65; }
 .ir-hero-note { padding: 20px; border-radius: 16px; background: var(--ir-soft); }
 .ir-hero-note strong { display: block; margin-bottom: 6px; color: var(--ir-accent-strong); }
@@ -49,12 +85,17 @@ body.ir-page { margin: 0; overflow-x: hidden; background: var(--ir-bg); color: v
 .ir-field-wide { grid-column: 1 / -1; }
 .ir-field label { display: block; margin-bottom: 6px; font-size: .78rem; font-weight: 800; }
 .ir-field small { display: block; margin-top: 5px; color: var(--ir-muted); font-size: .72rem; line-height: 1.4; }
-.ir-field input, .ir-field select { width: 100%; min-width: 0; min-height: 48px; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--ir-line); border-radius: 9px; background: var(--ir-bg); color: var(--ir-text); font: inherit; }
+.ir-field input, .ir-field select { width: 100%; min-width: 0; min-height: 48px; box-sizing: border-box; padding: 10px 12px; border: 1px solid var(--ir-input-line); border-color: var(--ir-input-line) !important; border-radius: 9px; background: var(--ir-bg); color: var(--ir-text); font: inherit; }
+html body.ir-page .ir-card .ir-field input,
+html body.ir-page .ir-card .ir-field select { border-color: var(--ir-input-line) !important; }
 .ir-actions { grid-column: 1 / -1; display: flex; flex-wrap: wrap; gap: 10px; }
 .ir-button { min-height: 46px; padding: 10px 15px; border: 1px solid var(--ir-line); border-radius: 9px; background: var(--ir-surface); color: var(--ir-accent-strong); font: inherit; font-weight: 850; cursor: pointer; }
 .ir-button-primary { border-color: var(--ir-accent-strong); background: var(--ir-accent-strong); color: #fff; }
-html[data-theme="dark"] .ir-button-primary { color: #07121d; }
-.ir-field input:focus-visible, .ir-field select:focus-visible, .ir-button:focus-visible, .ir-source a:focus-visible, summary:focus-visible { outline: 3px solid #38bdf8; outline-offset: 3px; }
+html[data-theme="dark"] body.ir-page .ir-button-primary { border-color: #bae6fd; background: #bae6fd; color: #07121d; }
+.ir-field input, .ir-field select, .ir-button { transition: none; }
+.ir-button:disabled { opacity: .48; cursor: not-allowed; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) body.ir-page .ir-button-primary { border-color: #bae6fd; background: #bae6fd; color: #07121d; } }
+.ir-field input:focus-visible, .ir-field select:focus-visible, .ir-button:focus-visible, .ir-source a:focus-visible, .ir-final:focus-visible, summary:focus-visible { outline: 3px solid var(--ir-focus); outline-offset: 3px; }
 .ir-status { min-height: 22px; margin: 14px 0 0; color: var(--ir-negative); font-weight: 750; }
 .ir-positive { color: var(--ir-positive); }
 .ir-negative { color: var(--ir-negative); }

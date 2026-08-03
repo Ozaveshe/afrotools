@@ -233,8 +233,8 @@ function ledgerAppliesTo(source, tools) {
   return unique(scopes.length ? scopes : ['other']);
 }
 
-function buildRegistry() {
-  const today = new Date().toISOString().slice(0, 10);
+function buildRegistry(asOf) {
+  const today = asOf || new Date().toISOString().slice(0, 10);
   const existing = readJson(SOURCE_PATH);
   const formulas = readJson(FORMULA_PATH).formulas;
   const toolVerification = readJson(TOOL_VERIFICATION_PATH);
@@ -1471,12 +1471,77 @@ function syncTelecomSourceRegistry(checkOnly) {
   console.log('Updated Telecom source-registry entry without changing unrelated source records.');
 }
 
+function syncSelectedSourceRegistry(checkOnly, sourceIds, asOf) {
+  const current = readJson(SOURCE_PATH);
+  const built = buildRegistry(asOf);
+  const expectedById = new Map(
+    built.registry.sources
+      .filter(function (entry) {
+        return sourceIds.includes(entry.id);
+      })
+      .map(function (entry) {
+        return [entry.id, entry];
+      }),
+  );
+  const missing = sourceIds.filter(function (sourceId) {
+    return !expectedById.has(sourceId);
+  });
+  if (missing.length) throw new Error('Unknown generated source ids: ' + missing.join(', '));
+
+  const actual = current.sources
+    .filter(function (entry) {
+      return sourceIds.includes(entry.id);
+    })
+    .sort(function (a, b) {
+      return a.id.localeCompare(b.id);
+    });
+  const expected = sourceIds.map(function (sourceId) {
+    return expectedById.get(sourceId);
+  });
+
+  if (checkOnly) {
+    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+      console.error('Selected source-registry entries are stale: ' + sourceIds.join(', ') + '.');
+      process.exit(1);
+    }
+    console.log('Selected source-registry entries are current: ' + sourceIds.join(', ') + '.');
+    return;
+  }
+
+  const sources = current.sources
+    .filter(function (entry) {
+      return !sourceIds.includes(entry.id);
+    })
+    .concat(expected)
+    .sort(function (a, b) {
+      return a.id.localeCompare(b.id);
+    });
+  atomicWriteJson(SOURCE_PATH, Object.assign({}, current, { updatedAt: asOf, sources }));
+  console.log('Updated selected source-registry entries without changing unrelated source records: ' + sourceIds.join(', ') + '.');
+}
+
 function main() {
+  const asOfArg = process.argv.find(function (arg) {
+    return arg.startsWith('--as-of=');
+  });
+  const asOf = asOfArg ? asOfArg.slice('--as-of='.length) : new Date().toISOString().slice(0, 10);
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(asOf)) throw new Error('--as-of must use YYYY-MM-DD');
+  const onlySourceIdsArg = process.argv.find(function (arg) {
+    return arg.startsWith('--only-source-ids=');
+  });
+  if (onlySourceIdsArg) {
+    const sourceIds = unique(onlySourceIdsArg.slice('--only-source-ids='.length).split(',').map(function (sourceId) {
+      return sourceId.trim();
+    }).filter(Boolean)).sort();
+    if (!sourceIds.length) throw new Error('--only-source-ids requires at least one source id');
+    syncSelectedSourceRegistry(process.argv.includes('--check'), sourceIds, asOf);
+    return;
+  }
   if (process.argv.includes('--telecom-only')) {
     syncTelecomSourceRegistry(process.argv.includes('--check'));
     return;
   }
-  const built = buildRegistry();
+  const built = buildRegistry(asOf);
   if (built.registry.sources.length < 100) throw new Error('Source registry target not met: ' + built.registry.sources.length + ' entries.');
   if (process.argv.includes('--check')) {
     const current = readJson(SOURCE_PATH);
@@ -1494,4 +1559,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { atomicWriteJson, buildRegistry, buildTelecomSnapshotEntry, dateOnly, freshnessStatus, normalizedRoute, syncTelecomSourceRegistry };
+module.exports = { atomicWriteJson, buildRegistry, buildTelecomSnapshotEntry, dateOnly, freshnessStatus, normalizedRoute, syncSelectedSourceRegistry, syncTelecomSourceRegistry };

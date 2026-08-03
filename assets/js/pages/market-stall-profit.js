@@ -60,6 +60,35 @@
       transport: "Usafiri", fee: "Ada ya soko", example: "mf. Nyanya"
     }
   }[locale];
+  var exportCopy = {
+    en: {
+      item: "Item", unitCost: "Unit cost", unitPrice: "Unit price", unitsSold: "Units sold", unitsLost: "Units lost",
+      soldCost: "Sold-stock cost", lossCost: "Stock-loss cost", metric: "Metric", value: "Value", scope: "Scope",
+      engine: "Engine version", currency: "Currency", formula: "Formula", breakEven: "Break-even", assumptions: "Assumptions",
+      items: "Items", revenue: "revenue", sold: "sold-stock cost", loss: "stock-loss cost",
+      formulaText: "net daily profit = revenue - sold-stock cost - stock-loss cost - operating expenses",
+      breakEvenText: "(stock-loss cost + operating expenses) / contribution ratio",
+      assumptionsText: "same product mix; repeated market day; display currency only."
+    },
+    fr: {
+      item: "Article", unitCost: "Coût unitaire", unitPrice: "Prix unitaire", unitsSold: "Unités vendues", unitsLost: "Unités perdues",
+      soldCost: "Coût du stock vendu", lossCost: "Coût du stock perdu", metric: "Mesure", value: "Valeur", scope: "Périmètre",
+      engine: "Version du moteur", currency: "Devise", formula: "Formule", breakEven: "Seuil de rentabilité", assumptions: "Hypothèses",
+      items: "Articles", revenue: "chiffre d’affaires", sold: "coût du stock vendu", loss: "coût du stock perdu",
+      formulaText: "profit net journalier = chiffre d’affaires - coût du stock vendu - coût du stock perdu - dépenses d’exploitation",
+      breakEvenText: "(coût du stock perdu + dépenses d’exploitation) / taux de contribution",
+      assumptionsText: "même assortiment; journée de marché répétée; devise d’affichage uniquement."
+    },
+    sw: {
+      item: "Bidhaa", unitCost: "Gharama ya kipimo", unitPrice: "Bei ya kipimo", unitsSold: "Vipimo vilivyouzwa", unitsLost: "Vipimo vilivyopotea",
+      soldCost: "Gharama ya bidhaa zilizouzwa", lossCost: "Gharama ya bidhaa zilizopotea", metric: "Kipimo", value: "Thamani", scope: "Upeo",
+      engine: "Toleo la injini", currency: "Sarafu", formula: "Fomula", breakEven: "Kiwango cha kutofanya hasara", assumptions: "Makadirio",
+      items: "Bidhaa", revenue: "mapato", sold: "gharama ya bidhaa zilizouzwa", loss: "gharama ya bidhaa zilizopotea",
+      formulaText: "faida halisi ya siku = mapato - gharama ya bidhaa zilizouzwa - gharama ya bidhaa zilizopotea - gharama za uendeshaji",
+      breakEvenText: "(gharama ya bidhaa zilizopotea + gharama za uendeshaji) / uwiano wa mchango",
+      assumptionsText: "mchanganyiko uleule wa bidhaa; siku ya soko inayorudiwa; sarafu ni ya kuonyesha pekee."
+    }
+  }[locale];
   var current = null;
   var currentStamp = "";
   var itemSeq = 0;
@@ -171,7 +200,7 @@
   }
   function payload() {
     return { title: document.title, generatedAt: new Date().toISOString(), engineVersion: current.version, scope: copy.scope, inputs: current.inputs, items: current.items, expenses: current.expenses, outputs: current.outputs, formulas: {
-      revenue: "unit selling price × units sold", soldStockCost: "unit cost × units sold", stockLossCost: "unit cost × units lost", netDailyProfit: "revenue − sold-stock cost − stock-loss cost − operating expenses", breakEvenRevenue: "(stock-loss cost + operating expenses) ÷ contribution ratio"
+      revenue: exportCopy.unitPrice + " × " + exportCopy.unitsSold, soldStockCost: exportCopy.unitCost + " × " + exportCopy.unitsSold, stockLossCost: exportCopy.unitCost + " × " + exportCopy.unitsLost, netDailyProfit: exportCopy.formulaText, breakEvenRevenue: exportCopy.breakEvenText
     }, assumptions: current.assumptions };
   }
   function summaryText() {
@@ -184,9 +213,9 @@
     var url = URL.createObjectURL(new Blob([content], { type: type })); var a = el("a", { href: url, download: name }); document.body.append(a); a.click(); a.remove(); setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
   }
   function csv() {
-    var rows = [["Item", "Unit cost", "Unit price", "Units sold", "Units lost", "Revenue", "Sold-stock cost", "Stock-loss cost", "Gross contribution"]];
+    var rows = [[exportCopy.item, exportCopy.unitCost, exportCopy.unitPrice, exportCopy.unitsSold, exportCopy.unitsLost, copy.revenue, exportCopy.soldCost, exportCopy.lossCost, copy.gross]];
     current.items.forEach(function (x) { rows.push([x.name, x.unitCost, x.unitPrice, x.unitsSold, x.unitsLost, x.revenue, x.soldStockCost, x.stockLossCost, x.grossContribution]); });
-    rows.push([], ["Metric", "Value"], ["Scope", copy.scope], ["Engine version", current.version], ["Currency", current.inputs.currency], ["Net daily profit", current.outputs.netDailyProfit], ["Net margin %", current.outputs.netMarginPct], ["Same-mix break-even revenue", current.outputs.breakEvenRevenue], ["Monthly scenario days", current.inputs.marketDays], ["Monthly net profit", current.outputs.monthlyScenario.netProfit], ["Formula", "net daily profit = revenue - sold-stock cost - stock-loss cost - operating expenses"]);
+    rows.push([], [exportCopy.metric, exportCopy.value], [exportCopy.scope, copy.scope], [exportCopy.engine, current.version], [exportCopy.currency, current.inputs.currency], [copy.profit, current.outputs.netDailyProfit], [copy.margin + " %", current.outputs.netMarginPct], [copy.breakEven, current.outputs.breakEvenRevenue], [copy.days, current.inputs.marketDays], [copy.monthly, current.outputs.monthlyScenario.netProfit], [exportCopy.formula, exportCopy.formulaText]);
     download("market-stall-profit.csv", "text/csv;charset=utf-8", "\ufeff" + rows.map(function (r) { return r.map(safeCsv).join(","); }).join("\n"));
   }
   function historyRead() {
@@ -240,14 +269,14 @@
     else if (action === "save") saveHistory();
     else if (action === "pdf") {
       if (!window.jspdf || !window.jspdf.jsPDF) { root.querySelector("[data-result-status]").textContent = copy.pdfFallback; return; }
-      var pdfText = summaryText() + "\nEngine: " + current.version +
-        "\nFormula: net daily profit = revenue - sold-stock cost - stock-loss cost - operating expenses" +
-        "\nBreak-even: (stock-loss cost + operating expenses) / contribution ratio" +
-        "\nAssumptions: same product mix; repeated market day; display currency only." +
-        "\n\nItems\n" + current.items.map(function (x) {
-          return x.name + ": revenue " + money(x.revenue, current.inputs.currency) +
-            ", sold-stock cost " + money(x.soldStockCost, current.inputs.currency) +
-            ", stock-loss cost " + money(x.stockLossCost, current.inputs.currency);
+      var pdfText = summaryText() + "\n" + exportCopy.engine + ": " + current.version +
+        "\n" + exportCopy.formula + ": " + exportCopy.formulaText +
+        "\n" + exportCopy.breakEven + ": " + exportCopy.breakEvenText +
+        "\n" + exportCopy.assumptions + ": " + exportCopy.assumptionsText +
+        "\n\n" + exportCopy.items + "\n" + current.items.map(function (x) {
+          return x.name + ": " + exportCopy.revenue + " " + money(x.revenue, current.inputs.currency) +
+            ", " + exportCopy.sold + " " + money(x.soldStockCost, current.inputs.currency) +
+            ", " + exportCopy.loss + " " + money(x.stockLossCost, current.inputs.currency);
         }).join("\n");
       var doc = new window.jspdf.jsPDF(); var lines = doc.splitTextToSize(pdfText, 175); doc.text(lines, 18, 20); doc.save("market-stall-profit.pdf");
     }

@@ -25,9 +25,24 @@
     return { amount: amount.value, mode: state.mode, rateKind: state.rateKind,
       rate: state.rateKind === "scenario" ? custom.value : undefined };
   }
+  function clearMainResult() {
+    ["dzvMain", "dzvNet", "dzvVat", "dzvGross", "dzvRate"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("dzvResultNote").textContent = "";
+    byId("dzvResult").classList.remove("on");
+  }
+  function clearInvoiceResult() {
+    ["dzvInvoiceNet", "dzvInvoiceVat", "dzvInvoiceGross"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("dzvInvoiceResult").classList.remove("on");
+  }
   function calculate() {
     try {
       state.result = engine.calculate(currentInput());
+      amount.setAttribute("aria-invalid", "false");
+      custom.setAttribute("aria-invalid", "false");
       error.textContent = "";
       byId("dzvMain").textContent = money(state.mode === "add" ? state.result.gross : state.result.net);
       byId("dzvNet").textContent = money(state.result.net);
@@ -44,7 +59,9 @@
       status.textContent = text("calculated", "Algeria VAT estimate updated.");
     } catch (caught) {
       state.result = null;
-      byId("dzvResult").classList.remove("on");
+      clearMainResult();
+      amount.setAttribute("aria-invalid", String(Number(amount.value) < 0 || amount.value === ""));
+      custom.setAttribute("aria-invalid", String(state.rateKind === "scenario"));
       error.textContent = text("invalid", "Enter a non-negative amount and a rate from 0% to 100%.");
       status.textContent = error.textContent;
     }
@@ -68,12 +85,16 @@
       var invoice = engine.calculateInvoice([{ description: byId("dzvDescription").value,
         quantity: byId("dzvQuantity").value, unitPrice: byId("dzvUnitPrice").value }], currentInput());
       byId("dzvInvoiceError").textContent = "";
+      byId("dzvQuantity").setAttribute("aria-invalid", "false");
+      byId("dzvUnitPrice").setAttribute("aria-invalid", "false");
       byId("dzvInvoiceNet").textContent = money(invoice.net);
       byId("dzvInvoiceVat").textContent = money(invoice.vat);
       byId("dzvInvoiceGross").textContent = money(invoice.gross);
       byId("dzvInvoiceResult").classList.add("on");
     } catch (caught) {
-      byId("dzvInvoiceResult").classList.remove("on");
+      clearInvoiceResult();
+      byId("dzvQuantity").setAttribute("aria-invalid", String(byId("dzvQuantity").value === "" || Number(byId("dzvQuantity").value) < 0));
+      byId("dzvUnitPrice").setAttribute("aria-invalid", String(byId("dzvUnitPrice").value === "" || Number(byId("dzvUnitPrice").value) < 0));
       byId("dzvInvoiceError").textContent = text("invalidInvoice", "Enter a non-negative quantity and unit price.");
     }
   });
@@ -105,7 +126,7 @@
     doc.setFont("helvetica", "bold"); doc.setFontSize(20);
     doc.text(text("pdfTitle", "Algeria VAT planning estimate"), 48, 62);
     doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-    doc.text(text("pdfSource", "DGI Algeria VAT guidance and 2026 TCA Code; reviewed 22 July 2026."), 48, 82);
+    doc.text(text("pdfSource", "DGI Algeria VAT guidance and 2026 TCA Code; reviewed 2 August 2026."), 48, 82);
     rows = [[text("pdfMode", "Mode"), state.mode === "add" ? text("addVat", "Add VAT") : text("extractVat", "Extract VAT")],
       [text("net", "Amount before VAT"), "DZD " + state.result.net.toFixed(2)],
       [text("vat", "VAT"), "DZD " + state.result.vat.toFixed(2)],

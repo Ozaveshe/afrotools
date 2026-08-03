@@ -4,22 +4,20 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Namba za Kurasa za PDF - Weka kurasa na muundo | AfroTools</title>
-<meta name="description" content="Ongeza namba za kurasa kwenye PDF kwa Kiswahili. Chagua mahali, ukurasa wa kuanza, muundo na mtindo wa maandishi.">
+<title>Namba za Kurasa za PDF | AfroTools</title>
+<meta name="description" content="Tumia Namba za Kurasa za PDF ndani ya kivinjari, kagua matokeo na upakue faili bila kutuma hati zako mtandaoni.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Namba za Kurasa za PDF - Weka kurasa na muundo | AfroTools">
-<meta property="og:description" content="Ongeza namba za kurasa kwenye PDF kwa Kiswahili. Chagua mahali, ukurasa wa kuanza, muundo na mtindo wa maandishi.">
+<meta property="og:title" content="Namba za Kurasa za PDF | AfroTools">
+<meta property="og:description" content="Tumia Namba za Kurasa za PDF ndani ya kivinjari, kagua matokeo na upakue faili bila kutuma hati zako mtandaoni.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/namba-za-kurasa-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-page-numbers.webp">
 <meta property="og:site_name" content="AfroTools">
-
-
-<meta property="og:locale" content="en_US">
+<meta property="og:locale" content="sw_TZ">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Namba za Kurasa za PDF - Weka kurasa na muundo | AfroTools">
-<meta name="twitter:description" content="Ongeza namba za kurasa kwenye PDF kwa Kiswahili. Chagua mahali, ukurasa wa kuanza, muundo na mtindo wa maandishi.">
+<meta name="twitter:title" content="Namba za Kurasa za PDF | AfroTools">
+<meta name="twitter:description" content="Tumia Namba za Kurasa za PDF ndani ya kivinjari, kagua matokeo na upakue faili bila kutuma hati zako mtandaoni.">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-page-numbers.webp">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
@@ -32,8 +30,6 @@
 <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
-<script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
 <style>
   :root {
     --pn-blue: var(--color-primary);
@@ -177,8 +173,10 @@
     border: 2px dashed #bfdbfe;
     border-radius: 8px;
     cursor: pointer;
+    min-height: 132px;
     padding: 30px 18px;
     text-align: center;
+    touch-action: manipulation;
     transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
   }
 
@@ -314,6 +312,49 @@
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
 
+  .preset-grid {
+    display: grid;
+    gap: 10px;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    margin: 0 0 18px;
+  }
+
+  .preset-btn {
+    background: #f8fafc;
+    border: 1px solid #dbe4ef;
+    border-radius: 8px;
+    color: var(--pn-ink);
+    cursor: pointer;
+    display: grid;
+    gap: 4px;
+    font-family: 'DM Sans', sans-serif;
+    min-height: 74px;
+    padding: 11px;
+    text-align: left;
+    touch-action: manipulation;
+    transition: background 0.16s, border-color 0.16s, box-shadow 0.16s;
+  }
+
+  .preset-btn strong {
+    font-size: 0.8rem;
+    line-height: 1.2;
+  }
+
+  .preset-btn span {
+    color: var(--pn-muted);
+    font-size: 0.68rem;
+    font-weight: 700;
+    line-height: 1.35;
+  }
+
+  .preset-btn:hover,
+  .preset-btn:focus-visible {
+    background: #fff;
+    border-color: var(--pn-blue);
+    box-shadow: 0 0 0 3px rgba(0,113,227,0.1);
+    outline: none;
+  }
+
   .input,
   .select {
     background: #fff;
@@ -323,7 +364,7 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 0.86rem;
     font-weight: 650;
-    min-height: 42px;
+    min-height: 44px;
     outline: none;
     padding: 10px 12px;
     width: 100%;
@@ -350,17 +391,18 @@
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     font-weight: 800;
+    touch-action: manipulation;
     transition: border-color 0.16s, background 0.16s, color 0.16s, box-shadow 0.16s;
   }
 
   .choice-btn {
-    min-height: 42px;
+    min-height: 44px;
     padding: 9px 8px;
     font-size: 0.7rem;
   }
 
   .mini-btn {
-    min-height: 32px;
+    min-height: 40px;
     padding: 6px 10px;
     font-size: 0.68rem;
   }
@@ -412,7 +454,7 @@
     border: 1.5px solid #e5e7eb;
     border-radius: 7px;
     cursor: pointer;
-    height: 42px;
+    height: 44px;
     width: 54px;
   }
 
@@ -430,8 +472,10 @@
     font-family: 'DM Sans', sans-serif;
     font-size: 0.84rem;
     font-weight: 800;
+    min-height: 44px;
     padding: 13px 16px;
-    transition: transform 0.16s, box-shadow 0.16s, opacity 0.16s;
+    touch-action: manipulation;
+    transition: box-shadow 0.16s, opacity 0.16s;
     width: 100%;
   }
 
@@ -441,7 +485,6 @@
   .act-btn:focus-visible {
     box-shadow: 0 10px 22px rgba(0,113,227,0.22);
     outline: none;
-    transform: translateY(-1px);
   }
 
   .calc-btn:disabled,
@@ -586,6 +629,23 @@
     padding-left: 18px;
   }
 
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .label-text,
+  :root[data-theme="dark"] .label-value,
+  :root[data-theme="dark"] .info-title { color:#eef5ff; }
+  :root[data-theme="dark"] .field-hint,
+  :root[data-theme="dark"] .preview-status { color:#b8c7dc; }
+  :root[data-theme="dark"] .info-card,
+  :root[data-theme="dark"] .faq-list details { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .info-card .info-text,
+  :root[data-theme="dark"] .info-card .info-text li,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .seo-section li,
+  :root[data-theme="dark"] .faq-list summary { color:#d8e4f5!important; }
+
   .seo-section {
     margin: 32px auto;
     max-width: 920px;
@@ -649,7 +709,8 @@
 
     .grid-2,
     .grid-3,
-    .position-grid {
+    .position-grid,
+    .preset-grid {
       grid-template-columns: 1fr;
     }
 
@@ -665,11 +726,15 @@
     }
   }
 </style>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Namba za Kurasa za PDF","description":"Ongeza namba za kurasa kwenye PDF kwa Kiswahili. Chagua mahali, ukurasa wa kuanza, muundo na mtindo wa maandishi.","url":"https://afrotools.com/sw/zana/namba-za-kurasa-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Namba za Kurasa za PDF","item":"https://afrotools.com/sw/zana/namba-za-kurasa-pdf/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, faili zangu zinabaki salama?","acceptedAnswer":{"@type":"Answer","text":"Tumia zana hizi kwa tahadhari ya faragha na hakiki faili kabla ya kushiriki. Ukurasa unategemea tabia ya zana ya Kiingereza na usindikaji wa kivinjari."}},{"@type":"Question","name":"Je, PDF iliyotengenezwa ni hati rasmi ya kisheria?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Matokeo ni kwa maandalizi na mpangilio wa nyaraka. Kwa saini, mikataba, fomu rasmi au ushahidi wa kisheria, hakiki na mtaalamu au mamlaka husika."}}]}</script>
-<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Namba za Kurasa za PDF","description":"Tumia Namba za Kurasa za PDF ndani ya kivinjari, kagua matokeo na upakue faili bila kutuma hati zako mtandaoni.","url":"https://afrotools.com/sw/zana/namba-za-kurasa-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-page-numbers.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nyumbani","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Namba za Kurasa za PDF","item":"https://afrotools.com/sw/zana/namba-za-kurasa-pdf/"}]}</script>
+
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="sw-document-pdf:pdf-page-numbers">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/namba-za-kurasa-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-page-numbers/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/numerotation-pdf/">
@@ -677,20 +742,19 @@
 <link rel="alternate" hreflang="ha" href="https://afrotools.com/ha/kayan-aiki/lambar-shafi-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-page-numbers/">
 </head>
-<body class="top-level-page-ui-refresh">
-<!-- sw-document-pdf-workspace: pdf-page-numbers -->
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
 <section class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>Namba za Kurasa za PDF</h1>
-    <p class="hero-sub">Tengeneza PDF yenye namba za kurasa kwa ripoti, maombi, tender na nyaraka za biashara.</p>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Zana</span></div>
+    <h1>Ukurasa wa PDF <em>Nambari</em></h1>
+    <p class="hero-sub">Ongeza nambari za ukurasa kwenye PDF ukitumia mipangilio ya awali ya jalada la kuruka, safu za kurasa, nambari za kuanzia, onyesho la kukagua moja kwa moja, na usafirishaji wa ZIP batch. Faili zako hukaa kwenye kivinjari.</p>
     <div class="hero-badges">
       <span class="badge">Masafa ya kurasa</span>
-      <span class="badge">Live mwonekano wa awali</span>
+      <span class="badge">Hakikisho la moja kwa moja</span>
       <span class="badge gold">Batch ZIP</span>
-      <span class="badge">Local processing</span>
+      <span class="badge">Usindikaji wa ndani</span>
     </div>
   </div>
 </section>
@@ -700,17 +764,17 @@
     <section>
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Pakia PDFs</span>
-          <span class="card-kicker">Single PDF or batch ZIP</span>
+          <span class="card-title">Pakia PDF</span>
+          <span class="card-kicker">PDF moja au ZIP bechi</span>
         </div>
         <div class="card-body">
           <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-controls="pdfFileInput">
-            <div class="drop-title">Chagua PDFs to number</div>
-            <div class="drop-hint">Drop one or more PDF files here. Multiple files export as a ZIP.</div>
-            <input aria-label="PdfFileInput" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
+            <div class="drop-title">Chagua PDF to number</div>
+            <div class="drop-hint">Dondosha faili moja au zaidi za PDF hapa. Faili nyingi huhamishwa kama ZIP.</div>
+            <input aria-label="Chagua faili za PDF ili nambari" class="hidden-input" id="pdfFileInput" type="file" accept="application/pdf,.pdf" multiple>
           </div>
           <div class="file-summary" id="fileSummary">
-            <span class="file-summary-text" id="fileSummaryText">No PDFs selected.</span>
+            <span class="file-summary-text" id="fileSummaryText">Hakuna PDF zilizochaguliwa.</span>
             <button class="mini-btn" id="clearFilesBtn" type="button">Futa</button>
           </div>
           <div class="file-list" id="fileList" aria-live="polite"></div>
@@ -719,62 +783,69 @@
 
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Numbering</span>
-          <span class="card-kicker">Kiolezo na kurasa</span>
+          <span class="card-title">Kuweka nambari</span>
+          <span class="card-kicker">Kigezo na kurasa</span>
         </div>
         <div class="card-body">
+          <div class="preset-grid" aria-label="Uwekaji mapema wa nambari za ukurasa">
+            <button class="preset-btn" type="button" data-page-preset="standard"><strong>Kawaida footer</strong><span>Katikati ya chini, kurasa zote, 1, 2, 3</span></button>
+            <button class="preset-btn" type="button" data-page-preset="skip-cover"><strong>Ruka jalada</strong><span>Anza kwenye ukurasa wa 2 wa PDF, nambari iliyochapishwa 1</span></button>
+            <button class="preset-btn" type="button" data-page-preset="report"><strong>Mtindo wa ripoti</strong><span>Ukurasa wa 1 wa N, chini kulia</span></button>
+            <button class="preset-btn" type="button" data-page-preset="appendix"><strong>Nyongeza</strong><span>A, B, C lebo, juu nje</span></button>
+          </div>
+
           <div class="grid-3">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="templateSelect">Template</label></div>
+              <div class="label-row"><label class="label-text" for="templateSelect">Kiolezo</label></div>
               <select class="select" id="templateSelect">
                 <option value="number">1</option>
-                <option value="page-number">Ukurasa 1</option>
-                <option value="page-of-jumla">Ukurasa 1 of 10</option>
+                <option value="page-number">Ukurasa wa 1</option>
+                <option value="page-of-jumla">Ukurasa wa 1 kati ya 10</option>
                 <option value="number-of-jumla">1 / 10</option>
                 <option value="roman-lower">i, ii, iii</option>
                 <option value="roman-upper">I, II, III</option>
                 <option value="letters-lower">a, b, c</option>
                 <option value="letters-upper">A, B, C</option>
-                <option value="custom">Custom text</option>
+                <option value="custom">Maandishi maalum</option>
               </select>
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="startNumber">Start Number</label></div>
-              <input aria-label="Line item quantity" class="input" id="startNumber" type="number" min="0" step="1" value="1">
+              <div class="label-row"><label class="label-text" for="startNumber">Nambari ya Kuanza</label></div>
+              <input class="input" id="startNumber" type="number" min="0" step="1" value="1">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="padLength">Leading Zeros</label></div>
+              <div class="label-row"><label class="label-text" for="padLength">Ziro zinazoongoza</label></div>
               <input class="input" id="padLength" type="number" min="0" max="8" step="1" value="0">
             </div>
           </div>
 
           <div class="grid-3">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="startPage">Start On PDF Ukurasa</label></div>
-              <input aria-label="Line item quantity" class="input" id="startPage" type="number" min="1" step="1" value="1">
+              <div class="label-row"><label class="label-text" for="startPage">Anza Kwenye Ukurasa wa PDF</label></div>
+              <input class="input" id="startPage" type="number" min="1" step="1" value="1">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="pageRange">Ukurasa Range</label></div>
-              <input class="input" id="pageRange" type="text" placeholder="All or 1-3, 5">
-              <div class="field-hint">Leave blank for all pages after start page.</div>
+              <div class="label-row"><label class="label-text" for="pageRange">Masafa ya Ukurasa</label></div>
+              <input class="input" id="pageRange" type="text" placeholder="Wote au 1-3, 5">
+              <div class="field-hint">Acha wazi kwa kurasa zote baada ya ukurasa wa kuanza.</div>
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="subsetSelect">Subset</label></div>
+              <div class="label-row"><label class="label-text" for="subsetSelect">Seti ndogo</label></div>
               <select class="select" id="subsetSelect">
-                <option value="all">All selected pages</option>
-                <option value="odd">Odd PDF pages only</option>
-                <option value="even">Even PDF pages only</option>
+                <option value="all">Kurasa zote zilizochaguliwa</option>
+                <option value="odd">Kurasa za PDF pekee</option>
+                <option value="even">Hata kurasa za PDF pekee</option>
               </select>
             </div>
           </div>
 
           <div class="grid-2">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="prefixInput">Prefix</label><span class="field-hint">Optional</span></div>
+              <div class="label-row"><label class="label-text" for="prefixInput">Kiambishi awali</label><span class="field-hint">Hiari</span></div>
               <input class="input" id="prefixInput" type="text" maxlength="32" placeholder="Ukurasa ">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="suffixInput">Suffix</label><span class="field-hint">Optional</span></div>
+              <div class="label-row"><label class="label-text" for="suffixInput">Kiambishi tamati</label><span class="field-hint">Hiari</span></div>
               <input class="input" id="suffixInput" type="text" maxlength="32" placeholder="">
             </div>
           </div>
@@ -783,32 +854,32 @@
 
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Mahali na Mtindo</span>
-          <span class="card-kicker">Kingo hutumia pointi</span>
+          <span class="card-title">Uwekaji na Mtindo</span>
+          <span class="card-kicker">Pembezoni hutumia pointi</span>
         </div>
         <div class="card-body">
           <div class="field">
-            <div class="label-row"><span class="label-text">Position</span><span class="field-hint">3 by 3 placement grid</span></div>
+            <div class="label-row"><span class="label-text">Nafasi</span><span class="field-hint">Gridi ya uwekaji 3 kwa 3</span></div>
             <div class="position-grid" id="positionGrid">
-              <button class="choice-btn" type="button" data-position="top-left">Top left</button>
-              <button class="choice-btn" type="button" data-position="top-center">Top</button>
-              <button class="choice-btn" type="button" data-position="top-right">Top right</button>
-              <button class="choice-btn" type="button" data-position="middle-left">Left</button>
-              <button class="choice-btn" type="button" data-position="center">Center</button>
-              <button class="choice-btn" type="button" data-position="middle-right">Right</button>
-              <button class="choice-btn" type="button" data-position="bottom-left">Bottom left</button>
-              <button class="choice-btn on" type="button" data-position="bottom-center">Bottom</button>
-              <button class="choice-btn" type="button" data-position="bottom-right">Bottom right</button>
+              <button class="choice-btn" type="button" data-position="top-left">Juu kushoto</button>
+              <button class="choice-btn" type="button" data-position="top-center">Juu</button>
+              <button class="choice-btn" type="button" data-position="top-right">Juu kulia</button>
+              <button class="choice-btn" type="button" data-position="middle-left">Kushoto</button>
+              <button class="choice-btn" type="button" data-position="center">Kituo</button>
+              <button class="choice-btn" type="button" data-position="middle-right">Sawa</button>
+              <button class="choice-btn" type="button" data-position="bottom-left">Chini kushoto</button>
+              <button class="choice-btn on" type="button" data-position="bottom-center">Chini</button>
+              <button class="choice-btn" type="button" data-position="bottom-right">Chini kulia</button>
             </div>
           </div>
 
           <div class="grid-3">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="fontSelect">Font</label></div>
+              <div class="label-row"><label class="label-text" for="fontSelect">Fonti</label></div>
               <select class="select" id="fontSelect">
                 <option value="Helvetica">Helvetica</option>
                 <option value="HelveticaBold">Helvetica Bold</option>
-                <option value="TimesRoman">Times</option>
+                <option value="TimesRoman">Nyakati</option>
                 <option value="TimesRomanBold">Times Bold</option>
                 <option value="Courier">Courier</option>
                 <option value="CourierBold">Courier Bold</option>
@@ -819,135 +890,287 @@
               <input class="slider" id="fontSize" type="range" min="6" max="72" step="1" value="12">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="opacity">Opacity</label><span class="label-value" id="opacityValue">100%</span></div>
+              <div class="label-row"><label class="label-text" for="opacity">Uwazi</label><span class="label-value" id="opacityValue">100%</span></div>
               <input class="slider" id="opacity" type="range" min="10" max="100" step="5" value="100">
             </div>
           </div>
 
           <div class="grid-3">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="marginX">Horizontal Margin</label><span class="label-value" id="marginXValue">36 pt</span></div>
+              <div class="label-row"><label class="label-text" for="marginX">Pambizo ya Mlalo</label><span class="label-value" id="marginXValue">36 p</span></div>
               <input class="slider" id="marginX" type="range" min="0" max="144" step="1" value="36">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="marginY">Vertical Margin</label><span class="label-value" id="marginYValue">28 pt</span></div>
+              <div class="label-row"><label class="label-text" for="marginY">Pambizo Wima</label><span class="label-value" id="marginYValue">28 p</span></div>
               <input class="slider" id="marginY" type="range" min="0" max="144" step="1" value="28">
             </div>
             <div class="field">
-              <div class="label-row"><label class="label-text" for="rotation">Rotation</label><span class="label-value" id="rotationValue">0 deg</span></div>
+              <div class="label-row"><label class="label-text" for="rotation">Mzunguko</label><span class="label-value" id="rotationValue">0 deg</span></div>
               <input class="slider" id="rotation" type="range" min="-90" max="90" step="1" value="0">
             </div>
           </div>
 
           <div class="grid-2">
             <div class="field">
-              <div class="label-row"><label class="label-text" for="colorInput">Color</label><span class="label-value" id="colorHex">#111827</span></div>
+              <div class="label-row"><label class="label-text" for="colorInput">Rangi</label><span class="label-value" id="colorHex">#111827</span></div>
               <div class="color-row">
                 <input class="color-input" id="colorInput" type="color" value="#111827">
-                <input aria-label="ColorText" class="input" id="colorText" type="text" maxlength="7" value="#111827">
+                <input aria-label="Maandishi ya Rangi" class="input" id="colorText" type="text" maxlength="7" value="#111827">
               </div>
             </div>
             <div class="field">
-              <div class="label-row"><span class="label-text">Layout Chaguo</span></div>
-              <label class="check-option"><input aria-label="FacingMode" type="checkbox" id="facingMode"> Badilisha kushoto na kulia kwenye kurasa zinazokabiliana</label>
+              <div class="label-row"><span class="label-text">Chaguzi za Mpangilio</span></div>
+              <label class="check-option"><input type="checkbox" id="facingMode"> Onyesha nafasi za kushoto na kulia kwenye kurasa zinazotazamana</label>
             </div>
           </div>
 
-          <button class="calc-btn" id="numberBtn" type="button" disabled>Add Ukurasa Numbers</button>
+          <button class="calc-btn" id="numberBtn" type="button" disabled>Ongeza Nambari za Ukurasa</button>
         </div>
       </div>
     </section>
 
     <aside>
       <div class="card">
-        <div class="card-head"><span class="card-title">Onyesho la awali</span></div>
+        <div class="card-head"><span class="card-title">Hakiki</span></div>
         <div class="card-body">
           <div class="preview-wrap">
             <canvas class="preview-canvas" id="previewCanvas" width="320" height="420"></canvas>
           </div>
-          <div class="preview-status" id="previewStatus">Pakia PDF kuona onyesho la ukurasa wa kwanza wenye namba.</div>
+          <div class="preview-status" id="previewStatus" role="status" aria-live="polite">Pakia PDF ili kuhakiki ukurasa wa kwanza wenye nambari.</div>
         </div>
       </div>
 
       <div class="card result-card" id="resultCard">
         <div class="card-head"><span class="card-title">Matokeo</span></div>
         <div class="card-body">
-          <div class="result-text" id="resultText"></div>
-          <div class="progress-bar" id="progressBar"><div class="progress-fill" id="progressFill"></div></div>
+          <div class="result-text" id="resultText" role="status" aria-live="polite"></div>
+          <div class="progress-bar" id="progressBar" aria-hidden="true"><div class="progress-fill" id="progressFill"></div></div>
           <div class="result-rows" id="resultRows"></div>
           <div class="result-note" id="resultNote"></div>
           <div class="action-row" id="actionRow">
             <button class="act-btn" id="downloadBtn" type="button">Pakua PDF</button>
-            <share-result-button tool-name="PDF Ukurasa Numbers" tool-slug="pdf-page-numbers"></share-result-button>
           </div>
         </div>
       </div>
 
       <div class="info-card">
-        <div class="info-title">Numbering Tips</div>
+        <div class="info-title">Vidokezo vya Kuhesabu</div>
         <div class="info-text">
-          Kwa ripoti zenye jalada, weka 'Anzia Ukurasa wa PDF' kuwa 2 au 3 na uache 'Namba ya Kuanzia' kuwa 1. Tumia sufuri za mwanzoni kwa mafaili ya ofisi, viambatisho au vifurushi vyenye orodha.
+          Kwa ripoti zilizo na kurasa za jalada, weka Ukurasa wa Anza Kwenye PDF hadi 2 au 3 na uweke Nambari ya Kuanza katika 1. Tumia sufuri zinazoongoza kwa viunganishi, viambatisho au pakiti zilizowekwa faharasa.
           <ul>
-            <li>Inaunga mkono safu za kurasa na kurasa witiri au shufwa.</li>
-            <li>Hamishas one PDF or a batch ZIP.</li>
-            <li>Onyesho la awali linaonyesha ukurasa wa kwanza wenye namba.</li>
+            <li>Inaauni safu za kurasa na vikundi vidogo au visivyo vya kawaida.</li>
+            <li>Husafirisha PDF moja au ZIP bechi.</li>
+            <li>Onyesho la kukagua linaonyesha ukurasa wa kwanza wenye nambari.</li>
           </ul>
         </div>
       </div>
 
       <div class="info-card gold">
-        <div class="info-title">Faragha</div>
-        <div class="info-text">PDF huchakatwa kwa maktaba za kivinjari chako. AfroTools haipakii nyaraka zako popote ili kuziwekea namba.</div>
+        <div class="info-title">Binafsi</div>
+        <div class="info-text">PDF huchakatwa na maktaba za kivinjari za ndani. AfroTools haipakii hati zako ili kuzihesabu.</div>
       </div>
     </aside>
   </div>
+
 </main>
 
 <section class="seo-section">
-  <h2>Free Namba za Kurasa za PDF Tool</h2>
-  <p>AfroTools huweka namba za kurasa kwenye faili za PDF moja kwa moja kwenye kivinjari chako. Chagua namba zianzie wapi, kurasa zipi ziwekewe namba, na maandishi yaonekaneje. Unaweza kutengeneza namba za kawaida, lebo za 'Ukurasa X kati ya Y', namba za Kirumi, viambatisho vya herufi, au miundo maalumu ya kiambishi awali na tamati.</p>
-  <h3>Safu za Kurasa, Mitindo na Uhamishaji wa Pamoja</h3>
-  <p>Tumia safu za kurasa kama 1-3, 5, anzisha namba baada ya jalada, chagua kurasa witiri au shufwa pekee, badilisha nafasi za kushoto na kulia kwa kurasa zinazokabiliana, badilisha fonti, ukubwa, rangi, uwazi, kingo na mzunguko, kisha upakue PDF moja yenye namba au ZIP ya matokeo mengi.</p>
-  <h3>Designed for Real Documents</h3>
-  <p>Zana hii inafaa kwa mikataba, mafaili ya kisheria, ripoti za biashara, kazi za shule, vitabu, maombi ya ruzuku, zabuni, miongozo na PDF zilizoskaniwa zinazohitaji namba za kurasa kabla ya kushirikiwa au kuchapishwa.</p>
+  <h2>Zana ya Bure ya Kuhesabu Ukurasa wa PDF</h2>
+  <p>AfroTools huongeza nambari za ukurasa kwenye faili za PDF moja kwa moja kwenye kivinjari chako. Chagua mahali ambapo nambari zinaanzia, kurasa zipi zitapokea nambari, na jinsi maandishi yanapaswa kuonekana. Unaweza kuunda nambari rahisi, lebo za Ukurasa X wa Y, nambari za Kirumi, viambatisho vyenye herufi, au miundo ya kiambishi awali na viambishi tamati maalum.</p>
+  <h3>Masafa ya Ukurasa, Mitindo, na Usafirishaji wa Bechi</h3>
+  <p>Tumia safu za kurasa kama vile 1-3, 5, anza kuweka nambari baada ya ukurasa wa jalada, weka viseti vidogo au hata vya ukurasa, kioo nafasi za kushoto na kulia kwa kurasa zinazotazamana, badilisha familia ya fonti, saizi, rangi, uwazi, pambizo, na mzunguko, kisha upakue PDF yenye nambari moja au ZIP ya matokeo ya bechi.</p>
+  <h3>Designed for Real Hatis</h3>
+  <p>Zana hii ni muhimu kwa kandarasi, pakiti za kisheria, ripoti za biashara, karatasi za shule, vitabu, maombi ya ruzuku, zabuni, miongozo, na PDF zilizochanganuliwa ambazo zinahitaji marejeleo ya ukurasa inayoonekana kabla ya kushiriki au kuchapisha.</p>
   <div class="faq-list">
     <details>
-      <summary>Naweza kuruka ukurasa wa jalada?</summary>
-      <p>Ndiyo. Weka 'Anzia Ukurasa wa PDF' kuwa 2 au weka safu ya kurasa inayoanza baada ya jalada. Namba ya kwanza inayochapishwa inaweza kubaki 1.</p>
+      <summary>Je, ninaweza kuruka ukurasa wa jalada?</summary>
+      <p>Ndiyo. Weka Anza Kwenye Ukurasa wa PDF hadi 2 au ingiza safu ya kurasa inayoanza baada ya jalada. Nambari ya kwanza iliyochapishwa bado inaweza kuwa 1.</p>
     </details>
     <details>
-      <summary>Naweza kuweka namba kwenye baadhi ya kurasa tu?</summary>
-      <p>Ndiyo. Weka safu za kurasa kama 1-3, 8, 10-14, kisha ukipenda chagua kurasa witiri au shufwa pekee ndani ya safu hiyo.</p>
+      <summary>Je, ninaweza kuongeza nambari za ukurasa kwa baadhi ya kurasa pekee?</summary>
+      <p>Ndiyo. Ingiza safu za kurasa kama vile 1-3, 8, 10-14, kisha kwa hiari tumia kurasa zisizo za kawaida au hata zilizo ndani ya safu hiyo.</p>
     </details>
     <details>
-      <summary>Naweza kutengeneza lebo za mtindo wa Ukurasa 001 au Kiambatisho A?</summary>
-      <p>Ndiyo. Tumia sufuri za mwanzoni kwa lebo za mtindo wa 001, violezo vya herufi kwa lebo za viambatisho, au sehemu za kiambishi awali na tamati kwa maandishi maalumu.</p>
+      <summary>Je, ninaweza kutengeneza lebo za mtindo wa Ukurasa 001 au Kiambatisho A?</summary>
+      <p>Ndiyo. Tumia sufuri kuu kwa lebo za mtindo wa 001, violezo vya herufi kwa lebo za mtindo wa viambatisho, au sehemu za kiambishi awali na kiambishi tamati kwa maandishi maalum.</p>
     </details>
     <details>
-      <summary>Je, hii itapakia PDF yangu mtandaoni?</summary>
-      <p>Hapana. Uwekaji wa namba hufanyika ndani ya kivinjari chako kwa maktaba za PDF zinazopakiwa kutoka AfroTools.</p>
+      <summary>Je, hii itapakia PDF yangu?</summary>
+      <p>Hapana. Uwekaji nambari za kurasa huendeshwa ndani ya kivinjari chako kwa kutumia maktaba za PDF zilizopakiwa kutoka kwa vipengee vya AfroTools.</p>
     </details>
   </div>
 </section>
 
-
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-page-numbers-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Vikomo vya nambari</span>
+        <h2 class="tool-verification-title" id="pdf-page-numbers-verification-title">Thibitisha uwekaji wa nambari kabla ya kubadilisha ya asili</h2>
+        <p class="tool-verification-lead">Kuweka nambari za ukurasa huendeshwa ndani ya kifaa na kuunda nakala mpya ya PDF. Uwekaji, nambari ya kuanzia, viambishi awali, viambishi tamati, na kurasa zilizorukwa zinapaswa kuangaliwa kabla ya faili kutumwa.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Mtiririko wa kazi wa PDF wa ndani-kwanza</span>
+        <p class="tool-verification-note">Imekaguliwa 2026. Kanusho: thibitisha na mpokeaji kabla ya kutegemea matokeo yaliyo na nambari. Vipakuliwa vya moja kwa moja vya ndani havipakii faili zako.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Mbinu</h3>
+        <ul class="tool-verification-list">
+          <li>Hutumia maandishi ya nambari ya ukurasa inayoonekana kwa kurasa za PDF zilizochaguliwa kwa kutumia taratibu za uundaji wa ndani wa PDF.</li>
+          <li>Kuweka nambari kunaweza kujumuisha viambishi awali, viambishi tamati, viamilisho vya kuanzia, mipangilio ya fonti, rangi, pambizo na safu za kurasa zilizochaguliwa.</li>
+          <li>Pato ni nakala mpya yenye nambari; chanzo cha PDF hakijabadilishwa.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Kabla ya kushiriki</h3>
+        <ul class="tool-verification-list">
+          <li>Angalia ukurasa wa kwanza, ukurasa wa mwisho, kurasa zilizorukwa, mwelekeo wa ukurasa, pambizo, kuingiliana na vijachini, na onyesho la kuchungulia la uchapishaji.</li>
+          <li>Weka faili asili hadi nakala iliyohesabiwa ikubaliwe na mpokeaji.</li>
+          <li>Kwa kupanga upya kabla ya kuweka nambari, tumia <a href="/sw/zana/kupanga-kurasa-pdf/">Kidhibiti cha Ukurasa wa PDF</a> or <a href="/sw/zana/nafasi-pdf/">Nafasi ya kazi ya PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="document-pdf" current="pdf-page-numbers" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
+<h2 class="seo-links-title">Zana zinazohusiana</h2>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Kijenzi</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Jenereta ya ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Mhariri wa PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Unganisha na Ugawanye PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Nafasi ya kazi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<section class="sw-docpdf-related" style="max-width:1100px;margin:32px auto;padding:0 24px;"><div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:22px;"><p style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;margin:0 0 8px;">Angalia pia</p><h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin:0 0 10px;">Hati, PDF na mtiririko wa kazi</h2><p style="font-size:.9rem;color:#4b5563;line-height:1.65;margin:0 0 14px;">Tumia zana hizi kama maandalizi ya nyaraka. Kwa saini, mikataba, fomu rasmi, faragha au hati za kisheria, hakiki na mtaalamu au mamlaka husika kabla ya kuwasilisha.</p><div style="display:flex;flex-wrap:wrap;gap:10px;"><a href="/sw/hati-na-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Hati na PDF</a><a href="/sw/zana/kituo-cha-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Kituo cha PDF</a><a href="/sw/zana/kizalishaji-ankara/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Ankara</a><a href="/sw/zana/mjenzi-cv/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Mjenzi CV</a><a href="/sw/picha-na-design/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Picha na design</a></div></div></section>
 <afro-footer></afro-footer>
 
 <script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
 <script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
 <script src="/tools/pdf-page-numbers/app.js?v=f44e627c"></script>
+<script>
+(function(){
+  var presets = {
+    standard: {
+      templateSelect: 'number',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'Helvetica',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: false,
+      position: 'bottom-center'
+    },
+    'skip-cover': {
+      templateSelect: 'number',
+      startNumber: '1',
+      startPage: '2',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'Helvetica',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: false,
+      position: 'bottom-center'
+    },
+    report: {
+      templateSelect: 'page-of-total',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'HelveticaBold',
+      fontSize: '11',
+      opacity: '90',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#0F172A',
+      colorText: '#0F172A',
+      facingMode: false,
+      position: 'bottom-right'
+    },
+    appendix: {
+      templateSelect: 'letters-upper',
+      startNumber: '1',
+      startPage: '1',
+      pageRange: '',
+      subsetSelect: 'all',
+      prefixInput: '',
+      suffixInput: '',
+      fontSelect: 'HelveticaBold',
+      fontSize: '12',
+      opacity: '100',
+      marginX: '36',
+      marginY: '28',
+      rotation: '0',
+      colorInput: '#111827',
+      colorText: '#111827',
+      facingMode: true,
+      position: 'top-right'
+    }
+  };
+
+  function setControl(id, value) {
+    var control = document.getElementById(id);
+    if (!control) return;
+    if (control.type === 'checkbox') {
+      control.checked = !!value;
+    } else {
+      control.value = value;
+    }
+    control.dispatchEvent(new Event('input', { bubbles: true }));
+    control.dispatchEvent(new Event('change', { bubbles: true }));
+  }
+
+  function applyPreset(name) {
+    var preset = presets[name];
+    if (!preset) return;
+    Object.keys(preset).forEach(function(key) {
+      if (key !== 'position') setControl(key, preset[key]);
+    });
+    var positionButton = document.querySelector('[data-position="' + preset.position + '"]');
+    if (positionButton) positionButton.click();
+  }
+
+  document.addEventListener('click', function(event) {
+    var button = event.target.closest('[data-page-preset]');
+    if (!button) return;
+    applyPreset(button.getAttribute('data-page-preset'));
+  });
+})();
+</script>
 <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script>
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<script>
-(function(){var dict={"Home":"Mwanzo","Document & PDF":"Hati na PDF","PDF Workspace":"Nafasi ya Kazi ya PDF","Your PDF Workspace":"Nafasi yako ya Kazi ya PDF","Drop a PDF here to get started":"Dondosha PDF hapa ili kuanza","Drop a PDF here":"Dondosha PDF hapa","click to browse":"bofya kuchagua faili","Upload a PDF":"Pakia PDF","Upload PDF":"Pakia PDF","Choose PDF":"Chagua PDF","Choose file":"Chagua faili","No file chosen":"Hakuna faili iliyochaguliwa","Private":"Faragha","No Upload":"Hakuna kupakia","No upload":"Hakuna kupakia","Client-side":"Ndani ya kivinjari","No limits":"Hakuna kikomo","Instant":"Haraka","Works offline":"Hufanya kazi bila mtandao","Files never leave your browser":"Faili hazitoki kwenye kivinjari chako","Your files never leave your browser":"Faili zako hazitoki kwenye kivinjari chako","Open":"Fungua","Download":"Pakua","Download PDF":"Pakua PDF","Export":"Hamisha","Save":"Hifadhi","Cancel":"Ghairi","Close":"Funga","Remove":"Ondoa","Delete":"Futa","Preview":"Onyesho la awali","Result":"Matokeo","Results":"Matokeo","Settings":"Mipangilio","Options":"Chaguo","File":"Faili","Files":"Faili","Page":"Ukurasa","Pages":"Kurasa","Page range":"Masafa ya kurasa","Page ranges":"Masafa ya kurasa","Selected pages":"Kurasa zilizochaguliwa","All pages":"Kurasa zote","Start page":"Ukurasa wa kuanza","End page":"Ukurasa wa mwisho","Rotate":"Zungusha","Reorder":"Panga upya","Merge":"Unganisha","Split":"Gawanya","Compress":"Bana","Convert":"Badilisha","Watermark":"Watermark","Password":"Nenosiri","Sign":"Saini","Signature":"Saini","Redact":"Ficha taarifa","Header":"Kichwa","Footer":"Kijachini","Text":"Maandishi","Image":"Picha","Quality":"Ubora","Size":"Ukubwa","Original size":"Ukubwa wa awali","New size":"Ukubwa mpya","Compression Level":"Kiwango cha kubana","Low":"Chini","Medium":"Kati","High":"Juu","Strong":"Kubwa","Balanced":"Wastani","Lossless":"Bila kupoteza ubora","Processing":"Inachakata","Processing...":"Inachakata...","Processed":"Imechakatwa","Done":"Imekamilika","Error":"Hitilafu","Try again":"Jaribu tena","Reset":"Weka upya","Clear":"Futa","Add files":"Ongeza faili","Add file":"Ongeza faili","Add text":"Ongeza maandishi","Add image":"Ongeza picha","Add signature":"Ongeza saini","Draw":"Chora","Type":"Andika","Upload":"Pakia","Upload files":"Pakia faili","Drag and drop":"Buruta na dondosha","or click to browse":"au bofya kuchagua","Extract":"Toa","Extract text":"Toa maandishi","Text extraction":"Kutoa maandishi","Form Filler":"Kujaza Fomu","Fill form":"Jaza fomu","Page Numbering":"Namba za Kurasa","Page numbers":"Namba za kurasa","PDF Merge & Split":"Unganisha na Gawanya PDF","PDF Compressor":"Kubana PDF","PDF Watermark Tool":"Watermark PDF","PDF Password Protect":"Linda PDF kwa Nenosiri","PDF Page Numbering":"Namba za Kurasa za PDF","PDF eSignature Tool":"Kusaini PDF","PDF OCR":"OCR ya PDF","PDF Form Filler":"Kujaza Fomu za PDF","PDF Redaction Tool":"Kuficha Taarifa kwenye PDF","PDF Header & Footer":"Kichwa na Kijachini cha PDF","PDF Editor":"Hariri PDF","PDF Format Converter":"Kubadilisha Format ya PDF","PDF Page Manager":"Kupanga Kurasa za PDF","Search tools":"Tafuta zana","Request a Tool":"Omba zana"};var keys=Object.keys(dict).sort(function(a,b){return b.length-a.length;});function tx(v){if(!v||!/[A-Za-z]/.test(v))return v;var out=v;keys.forEach(function(k){out=out.split(k).join(dict[k]);});return out;}function walk(n){if(!n||n.nodeType!==1)return;if(/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE|TEXTAREA)$/i.test(n.tagName))return;['placeholder','aria-label','title','alt','value'].forEach(function(a){if(n.hasAttribute&&n.hasAttribute(a)){var v=n.getAttribute(a),nv=tx(v);if(nv!==v)n.setAttribute(a,nv);}});Array.prototype.forEach.call(n.childNodes||[],function(c){if(c.nodeType===3){var nv=tx(c.nodeValue);if(nv!==c.nodeValue)c.nodeValue=nv;}else if(c.nodeType===1)walk(c);});}function run(){walk(document.body);}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();new MutationObserver(function(ms){ms.forEach(function(m){Array.prototype.forEach.call(m.addedNodes||[],function(n){if(n.nodeType===1)walk(n);else if(n.nodeType===3){var nv=tx(n.nodeValue);if(nv!==n.nodeValue)n.nodeValue=nv;}});});}).observe(document.documentElement,{childList:true,subtree:true});})();
-</script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
+
+  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
+  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-page-numbers","name":"Namba za Kurasa za PDF","downloadContract":"free-account"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

@@ -1,0 +1,67 @@
+{
+  "schemaVersion": 1,
+  "family": "sw-water-sanitation-parity",
+  "coordinatorBase": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db",
+  "inventorySource": "reports/swahili-free-app-parity-inventory.json",
+  "scopeCount": 2,
+  "planningBoundary": "Makadirio ya kupanga pekee. Si usanifu wa mifumo ya maji au majitaka, idhini ya afya ya umma, BOQ, kipimo cha shinikizo, bei hai, bei rasmi au nukuu iliyohakikishwa.",
+  "engineHistory": {
+    "lastSourceChange": "2026-07-30",
+    "commit": "ba2589068db44d22a85a93576cf228eb0ee75948",
+    "meaning": "Historia ya faili katika hazina; si uthibitisho wa sasa wa bei za soko."
+  },
+  "apps": [
+    {
+      "id": "septic-tank",
+      "englishRoute": "/tools/septic-tank/",
+      "englishFile": "tools/septic-tank/index.html",
+      "frenchRoute": "/fr/tools/dimensionnement-fosse-septique/",
+      "frenchFile": "fr/tools/dimensionnement-fosse-septique/index.html",
+      "swRoute": "/sw/zana/ukubwa-wa-septic-tank/",
+      "swFile": "sw/zana/ukubwa-wa-septic-tank/index.html",
+      "engineSource": "engines/src/septic-tank-engine.js",
+      "enginePublic": "/engines/septic-tank-engine.js",
+      "engineGlobal": "SepticTankEngine",
+      "imageId": "septic-tank",
+      "imageWidth": 600,
+      "imageHeight": 400,
+      "title": "Kikokotoo cha Ukubwa wa Tangi la Majitaka",
+      "shortTitle": "Tangi la majitaka",
+      "description": "Kadiria ujazo, vipimo, vyumba, shimo la ufyonzaji na gharama ya tangi la majitaka kwa matumizi ya jengo, udongo na dhana za nchi.",
+      "oracle": {
+        "inputs": { "country": "TZ", "people": 8, "toilets": 3, "buildingType": "residential", "soil": "loam", "material": "concrete", "includeSoakaway": true },
+        "expected": { "dailyWaste": 960, "retentionVolume": 1.92, "sludgeVolume": 0.32, "volume": 2.3, "length": 1, "width": 1.2, "depth": 1.9, "chambers": 2, "constructionCost": 2253999.9999999995, "soakLength": 14.399999999999999, "soakCost": 1439999.9999999998, "total": 3693999.999999999, "annualDesludgingEstimate": 80500 }
+      },
+      "boundaryOracle": {
+        "inputs": { "country": "KE", "people": 1, "toilets": 1, "buildingType": "office", "soil": "sandy", "material": "plastic", "includeSoakaway": false },
+        "expected": { "volume": 2, "total": 70000, "annualDesludgingEstimate": 2500 }
+      }
+    },
+    {
+      "id": "plumbing-material",
+      "englishRoute": "/tools/plumbing-material/",
+      "englishFile": "tools/plumbing-material/index.html",
+      "frenchRoute": "/fr/tools/materiaux-plomberie/",
+      "frenchFile": "fr/tools/materiaux-plomberie/index.html",
+      "swRoute": "/sw/zana/vifaa-vya-mabomba/",
+      "swFile": "sw/zana/vifaa-vya-mabomba/index.html",
+      "engineSource": "engines/src/plumbing-material-engine.js",
+      "enginePublic": "/engines/plumbing-material-engine.js",
+      "engineGlobal": "PlumbingMaterialEngine",
+      "imageId": "plumbing-material",
+      "imageWidth": 600,
+      "imageHeight": 375,
+      "title": "Kikokotoo cha Vifaa vya Mabomba",
+      "shortTitle": "Vifaa vya mabomba",
+      "description": "Kadiria urefu wa mabomba, viungio, vifaa vya bafu, tanki, kazi na gharama kwa aina ya jengo na dhana za nchi.",
+      "oracle": {
+        "inputs": { "country": "TZ", "buildingType": "3bed", "pipeType": "ppr", "bathrooms": 3, "includeTank": true, "tankSize": 2000, "includeLabour": true },
+        "expected": { "pipeMetres": 240, "joints": 120, "pipeCost": 1560000, "fittingCost": 546000, "sanitarywareCost": 1560000, "tankCost": 700000, "boreholeConnectionCost": 195000, "materialTotal": 4561000, "labourDays": 13, "labourCost": 780000, "total": 5341000, "perBathroom": 1780333.3333333333 }
+      },
+      "boundaryOracle": {
+        "inputs": { "country": "KE", "buildingType": "1bed", "pipeType": "upvc", "bathrooms": 1, "includeTank": false, "tankSize": 500, "includeLabour": false },
+        "expected": { "pipeMetres": 100, "materialTotal": 44100, "labourCost": 0, "total": 44100, "perBathroom": 44100 }
+      }
+    }
+  ]
+}

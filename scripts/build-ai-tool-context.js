@@ -470,6 +470,33 @@ function directPayeFacts(countryCode, filePath, engine) {
       ],
     };
   }
+  if (countryCode === 'UG') {
+    const parameters = engine.formulaParameters;
+    return {
+      period: 'monthly',
+      regime: 'RESIDENT',
+      bands: [
+        { from: 0, to: 235000, rate: 0 },
+        { from: 235000, to: 335000, rate: 0.10 },
+        { from: 335000, to: 410000, rate: 0.20 },
+        { from: 410000, to: 10000000, rate: 0.30 },
+        { from: 10000000, to: null, rate: 0.40 },
+      ],
+      deductions: [
+        { key: 'nssf-employee', label: 'NSSF employee rate', rate: parameters.employeeNssfRate },
+        { key: 'nssf-employer', label: 'NSSF employer rate', rate: parameters.employerNssfRate },
+        { key: 'lst', label: 'Local Service Tax assessed from monthly gross salary before PAYE', rate: null },
+      ],
+      localServiceTax: {
+        assessmentBase: parameters.lstAssessmentBase,
+        deductedBeforePaye: parameters.lstDeductedBeforePaye,
+        collectionInstallmentsMaximum: parameters.lstCollectionInstallmentsMaximum,
+        bands: parameters.lstBands,
+      },
+      regimes: parameters.regimes,
+      nonResidentThresholds: parameters.nonResidentThresholds,
+    };
+  }
   return null;
 }
 
@@ -1246,6 +1273,81 @@ function comparabilityPlannerSourceRecord(binding) {
   return { text, facts };
 }
 
+function forexTicketReconciliationSourceRecord(binding) {
+  const expected = {
+    toolId: 'forex-profit',
+    route: '/tools/forex-profit/',
+    artifactPath: 'tools/forex-profit/index.html',
+    enginePath: 'engines/src/forex-profit-statement-engine.js',
+  };
+  Object.keys(expected).forEach(function (key) {
+    if (binding[key] !== expected[key]) {
+      throw new Error('forex-ticket-reconciliation-formula binding has unexpected ' + key);
+    }
+  });
+  const artifact = fs.readFileSync(path.join(ROOT, binding.artifactPath), 'utf8');
+  const enginePath = path.join(ROOT, binding.enginePath);
+  const engineSource = fs.readFileSync(enginePath, 'utf8');
+  delete require.cache[require.resolve(enginePath)];
+  const engine = require(enginePath);
+  if (!engine || typeof engine.calculate !== 'function') {
+    throw new Error('Forex ticket engine does not expose calculate()');
+  }
+  if (!artifact.includes('/engines/forex-profit-statement-engine.js')) {
+    throw new Error('Forex ticket route is missing its shared engine marker');
+  }
+  const referenceInput = {
+    baseCurrency: 'EUR',
+    quoteCurrency: 'USD',
+    reportingCurrencyUnit: 'NGN',
+    direction: 'buy',
+    entryPrice: 1.08,
+    exitPrice: 1.09,
+    baseUnits: 10000,
+    pipSize: 0.0001,
+    quoteToReportingRate: 1600,
+    transactionCostsQuote: 15,
+  };
+  const referenceResult = engine.calculate(referenceInput);
+  const facts = {
+    toolId: binding.toolId,
+    route: binding.route,
+    artifactPath: binding.artifactPath,
+    enginePath: binding.enginePath,
+    mode: 'manual_user_input',
+    supportedDirections: ['buy', 'sell'],
+    requiredInputs: [
+      'baseCurrency',
+      'quoteCurrency',
+      'reportingCurrencyUnit',
+      'direction',
+      'entryPrice',
+      'exitPrice',
+      'baseUnits',
+      'pipSize',
+      'quoteToReportingRate',
+      'transactionCostsQuote',
+    ],
+    networkData: false,
+    liveRate: false,
+    lotSizeAssumption: false,
+    leverageOrMargin: false,
+    forecastOrRecommendation: false,
+    aiPrefill: false,
+    sensitiveFieldsSentToAI: false,
+    referenceResult: {
+      signedPips: referenceResult.signedPips,
+      grossPnlQuote: referenceResult.grossPnlQuote,
+      netPnlQuote: referenceResult.netPnlQuote,
+      netPnlReporting: referenceResult.netPnlReporting,
+    },
+    engineDigest: sha256(engineSource),
+    artifactDigest: sha256(artifact),
+  };
+  const text = 'Structured forex ticket reconciliation contract: buy or sell price movement, base units, pip size, quote-to-reporting conversion and non-negative transaction costs are supplied by the user and calculated locally. No live rate, lot size, leverage, margin, broker recommendation, tax result, trade signal or profit forecast is supplied. No AI prefill exists and no financial values or private ticket note are sent to AI. Formula owner: ' + binding.enginePath + '.';
+  return { text, facts };
+}
+
 function paystackFeePlannerSourceRecord(binding) {
   const expected = {
     toolId: 'paystack-calculator',
@@ -1572,6 +1674,7 @@ function buildSourceRecord(binding) {
   if (binding.kind === 'withholding-tax-formula') return withholdingTaxSourceRecord(binding);
   if (binding.kind === 'comparability-planner-formula') return comparabilityPlannerSourceRecord(binding);
   if (binding.kind === 'paystack-fee-planner') return paystackFeePlannerSourceRecord(binding);
+  if (binding.kind === 'forex-ticket-reconciliation-formula') return forexTicketReconciliationSourceRecord(binding);
   throw new Error('Unknown source binding: ' + binding.kind);
 }
 

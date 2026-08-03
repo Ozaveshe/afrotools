@@ -179,6 +179,14 @@
       copy.disclaimer +
       "</p></aside></div></div>";
 
+    var basePdfDisclaimer = copy.disclaimer;
+    document.getElementById("gwvPdf").addEventListener("click", function () {
+      copy.disclaimer = basePdfDisclaimer + " " + {
+        en: "Sources reviewed 2026-07-22: DGCI Kontaktu current IVA notices and Ministry of Finance legislation.",
+        fr: "Sources vérifiées le 2026-07-22 : avis IVA actuels de DGCI Kontaktu et législation du ministère des Finances.",
+        sw: "Vyanzo vimekaguliwa 2026-07-22: Taarifa za sasa za IVA za DGCI Kontaktu na sheria za Wizara ya Fedha."
+      }[lang];
+    }, true);
     var state = { mode: "add", result: null };
     function id(value) {
       return document.getElementById(value);
@@ -259,7 +267,11 @@
       documentPdf.text(copy.vat + ": " + money(state.result.vat), 20, 50);
       documentPdf.text(copy.gross + ": " + money(state.result.gross), 20, 60);
       documentPdf.text(documentPdf.splitTextToSize(copy.disclaimer, 170), 20, 80);
-      documentPdf.save("guinea-bissau-tva-estimation.pdf");
+      documentPdf.save(
+        lang === "fr"
+          ? "guinea-bissau-tva-estimation.pdf"
+          : "guinea-bissau-vat-estimate.pdf",
+      );
     };
     calculate();
   }

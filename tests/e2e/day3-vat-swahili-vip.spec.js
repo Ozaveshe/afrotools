@@ -64,7 +64,7 @@ test('Swahili VAT flagship delivers four native, local-only workflows at 375px d
   await expect(page.locator('#singleNet')).toHaveText('1,000.00');
   await expect(page.locator('#singleVat')).toHaveText('75.00');
   await expect(page.locator('#singleTotal')).toHaveText('1,075.00');
-  await expect(page.locator('#singleSource')).toContainText('kiungo cha mamlaka');
+  await expect(page.locator('#singleSource')).toContainText('chanzo cha mamlaka');
 
   await page.locator('#shareCalculator').click();
   const shared = await page.evaluate(() => window.__sharedPayload);

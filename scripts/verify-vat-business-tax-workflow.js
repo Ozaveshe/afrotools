@@ -75,6 +75,10 @@ function verifyCalculator() {
   const calc = read('tools/vat-calculator/index.html');
   const controller = read('assets/js/pages/pan-african-vat-vip.js');
   const pack = JSON.parse(read('data/vat-business-tax/pan-african-vat-presets.json'));
+  const sourceLedger = JSON.parse(read('data/vat-business-tax/official-sources.json'));
+  const presetEligibleSourceCodes = new Set((sourceLedger.sources || [])
+    .map((source) => source.country)
+    .filter((code) => code !== 'AO'));
   const statuses = Object.values(pack.countries || {}).reduce((counts, country) => {
     counts[country.status] = (counts[country.status] || 0) + 1;
     return counts;
@@ -86,8 +90,9 @@ function verifyCalculator() {
   assert(!/ai-advisor|auto-email-gate|share-state|workspace-sync|vat-business-tax-report-sync/.test(calc + controller), 'VAT flagship must not load AI, email gate, workspace sync, or stateful share code');
   assert(!/localStorage|sessionStorage|afro_vat|history/i.test(controller), 'VAT calculation controller must not persist amounts or history');
   assert(Object.keys(pack.countries || {}).length === 54, 'VAT planning pack should name exactly 54 markets');
-  assert(statuses['authority-bound-planning-preset'] === 15, 'VAT planning pack should expose only 15 authority-bound presets');
-  assert(statuses['authority-source-gap'] === 36, 'VAT planning pack should retain 36 explicit authority-source gaps');
+  assert(statuses['authority-bound-planning-preset'] === presetEligibleSourceCodes.size, 'VAT planning pack authority-bound presets should match ledger rows with rate-proving authority URLs');
+  assert(statuses['authority-source-gap'] === 51 - presetEligibleSourceCodes.size, 'VAT planning pack should retain an explicit gap for every market without rate-proving authority evidence');
+  assert(pack.countries.AO.status === 'authority-source-gap' && !Object.prototype.hasOwnProperty.call(pack.countries.AO, 'standardRate'), 'AO generic authority homepage must not promote a 14% preset');
   assert(statuses['unverified-no-vat-claim'] === 3, 'VAT planning pack should keep 3 no-VAT claims unverified and rate-free');
   assert(!Object.values(pack.countries || {}).some((country) => country.status !== 'authority-bound-planning-preset' && Object.prototype.hasOwnProperty.call(country, 'standardRate')), 'VAT source gaps must not receive legacy rates');
 }

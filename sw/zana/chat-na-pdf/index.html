@@ -4,26 +4,27 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Chat na PDF - uliza maswali kuhusu hati | AfroTools</title>
-<meta name="description" content="Pakia PDF yenye maandishi, uliza maswali, pata muhtasari, tafuta kurasa na nukuu za ukurasa kwa tahadhari ya AI na local fallback.">
+<title>Uliza PDF | AfroTools</title>
+<meta name="description" content="Pakia PDF, uliza maswali ndani ya kifaa, pata muhtasari na marejeo ya kurasa; Usaidizi wa AI hutumika tu baada ya ridhaa.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Chat na PDF - uliza maswali kuhusu hati | AfroTools">
-<meta property="og:description" content="Pakia PDF yenye maandishi, uliza maswali, pata muhtasari, tafuta kurasa na nukuu za ukurasa kwa tahadhari ya AI na local fallback.">
+<meta property="og:title" content="Uliza PDF | AfroTools">
+<meta property="og:description" content="Pakia PDF, uliza maswali ndani ya kifaa, pata muhtasari na marejeo ya kurasa; Usaidizi wa AI hutumika tu baada ya ridhaa.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/chat-na-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Chat na PDF - uliza maswali kuhusu hati | AfroTools">
-<meta name="twitter:description" content="Pakia PDF yenye maandishi, uliza maswali, pata muhtasari, tafuta kurasa na nukuu za ukurasa kwa tahadhari ya AI na local fallback.">
+<meta name="twitter:title" content="Uliza PDF | AfroTools">
+<meta name="twitter:description" content="Pakia PDF, uliza maswali ndani ya kifaa, pata muhtasari na marejeo ya kurasa; Usaidizi wa AI hutumika tu baada ya ridhaa.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Uliza PDF","description":"Pakia PDF, uliza maswali ndani ya kifaa, pata muhtasari na marejeo ya kurasa; Usaidizi wa AI hutumika tu baada ya ridhaa.","url":"https://afrotools.com/sw/zana/chat-na-pdf/","inLanguage":"sw","applicationCategory":"ProductivityApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-chat.webp"}</script>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
-<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
@@ -43,19 +44,6 @@
     overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 120px;
-    height: 120px;
-    background: radial-gradient(circle, rgba(0,135,81,.12) 0%, transparent 70%);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -67,7 +55,7 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -85,7 +73,7 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -118,7 +106,7 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .b-green {
@@ -165,7 +153,10 @@
     transition: all 0.25s ease;
     background: #fafbfc;
     position: relative;
+    touch-action: manipulation;
+    display: block;
   }
+  .drop-zone > * { max-width: 100%; overflow-wrap: anywhere; }
 
   .drop-zone:hover,
   .drop-zone.dragover {
@@ -349,6 +340,9 @@
     align-items: center;
     justify-content: center;
     transition: all 0.15s;
+    min-width: 44px;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .file-bar-close:hover { background: #f1f5f9; color: #475569; }
@@ -374,6 +368,7 @@
     color: #334155;
     outline: none;
     background: #f8fafc;
+    min-height: 44px;
   }
 
   .doc-search:focus {
@@ -430,6 +425,9 @@
     font-weight: 600;
     font-size: 0.78rem;
     transition: all 0.15s;
+    min-height: 44px;
+    min-width: 56px;
+    touch-action: manipulation;
   }
 
   .page-nav button:hover:not(:disabled) { background: #e2e8f0; }
@@ -508,6 +506,8 @@
     font: 700 0.68rem 'DM Sans', sans-serif;
     cursor: pointer;
     transition: all 0.15s;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .chat-tool-btn:hover {
@@ -590,6 +590,36 @@
     font: 700 0.68rem 'DM Sans', sans-serif;
     cursor: pointer;
     vertical-align: baseline;
+    min-height: 32px;
+    touch-action: manipulation;
+  }
+
+  .privacy-choice {
+    margin: 10px 16px 0;
+    padding: 10px 12px;
+    border: 1px solid #dbeafe;
+    border-radius: 8px;
+    background: #f8fbff;
+    flex-shrink: 0;
+  }
+
+  .privacy-choice label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    color: #334155;
+    font-size: 0.76rem;
+    line-height: 1.45;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .privacy-choice input {
+    width: 18px;
+    height: 18px;
+    margin-top: 1px;
+    flex: 0 0 auto;
+    accent-color: var(--afro-green);
   }
 
   .citation-btn:hover {
@@ -602,7 +632,7 @@
     color: #94a3b8;
     margin-bottom: 3px;
     text-transform: uppercase;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .msg-user .msg-label { text-align: right; }
@@ -663,6 +693,8 @@
     cursor: pointer;
     transition: all 0.15s;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .quick-btn:hover {
@@ -706,8 +738,8 @@
   .chat-input-bar textarea::placeholder { color: #94a3b8; }
 
   .send-btn {
-    width: 40px;
-    height: 40px;
+    width: 44px;
+    height: 44px;
     background: var(--afro-green);
     border: none;
     border-radius: 10px;
@@ -717,6 +749,7 @@
     cursor: pointer;
     transition: all 0.15s;
     flex-shrink: 0;
+    touch-action: manipulation;
   }
 
   .send-btn:hover { opacity: 0.85; transform: scale(1.04); }
@@ -824,6 +857,35 @@
     line-height: 1.7;
   }
 
+  .drop-zone:focus-visible { outline: 3px solid var(--color-primary); outline-offset: 4px; }
+  :root[data-theme="dark"] .upload-view,
+  :root[data-theme="dark"] .pdf-panel,
+  :root[data-theme="dark"] .chat-panel,
+  :root[data-theme="dark"] .chat-header,
+  :root[data-theme="dark"] .chat-input-bar,
+  :root[data-theme="dark"] .file-bar,
+  :root[data-theme="dark"] .doc-tools { background: #121f33; border-color: #3a4c68; }
+  :root[data-theme="dark"] .drop-zone,
+  :root[data-theme="dark"] .privacy-choice,
+  :root[data-theme="dark"] .quick-btn,
+  :root[data-theme="dark"] .chat-input-bar textarea,
+  :root[data-theme="dark"] .doc-search { background: #17263c; border-color: #3a4c68; color: #eef5ff; }
+  :root[data-theme="dark"] .upload-title,
+  :root[data-theme="dark"] .drop-zone-text,
+  :root[data-theme="dark"] .chat-header-title,
+  :root[data-theme="dark"] .privacy-choice label,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] .faq-q { color: #eef5ff; }
+  :root[data-theme="dark"] .upload-subtitle,
+  :root[data-theme="dark"] .drop-zone-hint,
+  :root[data-theme="dark"] .chat-header-subtitle,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .faq-a p { color: #d8e4f5; }
+  :root[data-theme="dark"] .msg-ai .msg-bubble { background: #1d2b40; color: #eef5ff; }
+  :root[data-theme="dark"] .faq-item { border-color: #3a4c68; }
+
   /* ── Responsive ── */
   @media (max-width: 768px) {
     .workspace.show {
@@ -875,60 +937,61 @@
     }
   }
 </style>
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-
-
-<meta property="og:locale" content="en_US">
+<script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
+<meta property="og:locale" content="sw_TZ">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-chat.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nyumbani","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Uliza PDF","item":"https://afrotools.com/sw/zana/chat-na-pdf/"}]}</script>
 <meta property="article:modified_time" content="2026-04-28">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Chat na PDF","url":"https://afrotools.com/sw/zana/chat-na-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Pakia PDF yenye maandishi, uliza maswali, pata muhtasari, tafuta kurasa na nukuu za ukurasa kwa tahadhari ya AI na local fallback.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"Chat na PDF","item":"https://afrotools.com/sw/zana/chat-na-pdf/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, majibu ya AI ni uhakika?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Majibu yanaweza kukosea au kukosa muktadha. Hakiki ukurasa uliotajwa na mtaalamu kabla ya kutumia hati rasmi, kisheria, matibabu au fedha."}},{"@type":"Question","name":"PDF zipi zinafanya kazi vizuri?","acceptedAnswer":{"@type":"Answer","text":"PDF zenye selectable text hufanya kazi vizuri zaidi. Kwa scans au picha, tumia OCR kwanza na uhakiki maandishi yaliyotoka."}}]}</script>
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="sw-document-pdf:pdf-chat">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/chat-na-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-chat/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/chat-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/chat-na-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-chat/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar></afro-navbar>
 
+<main>
 <!-- Hero -->
 <section class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
-      <a href="/">Home</a> / <a href="/sw/hati-na-pdf/">Zana za PDF</a> / <span>Chat na PDF</span>
+      <a href="/">Nyumbani</a> / <a href="/sw/hati-na-pdf/">Zana za PDF</a> / <span>Uliza PDF</span>
     </div>
-    <h1>Zungumza na <em>PDF</em></h1>
-    <p class="hero-sub">Pakia PDF, uliza maswali, pata muhtasari, tafuta kwa ukurasa na majibu yenye nukuu za kurasa.</p>
+    <h1>Uliza <em>PDF</em></h1>
+    <p class="hero-sub">Pakia PDF yenye maandishi, uliza ndani ya kifaa, na urudi kwenye ukurasa wa chanzo kutoka kila jibu. Usaidizi wa AI unabaki umezimwa hadi uuchague.</p>
     <div class="hero-badges">
-      <span class="badge b-blue">Majibu yenye marejeo</span>
-      <span class="badge b-green">Kwenye kivinjari</span>
-      <span class="badge b-green">Nukuu za kurasa</span>
+      <span class="badge b-blue">Majibu yenye vyanzo</span>
+      <span class="badge b-green">Ndani ya kifaa</span>
+      <span class="badge b-green">Marejeo ya kurasa</span>
     </div>
   </div>
 </section>
 
-<!-- Pakia View -->
+<!-- Upload View -->
 <div class="upload-view" id="uploadView">
-  <h2 class="upload-title">Zungumza na <b>PDF</b></h2>
-  <p class="upload-subtitle">Pakia PDF yenye maandishi na uliza maswali. Msaidizi hupanga kurasa, kujibu kutoka kwenye hati na kurudisha kwenye vyanzo.</p>
+  <h2 class="upload-title">Uliza PDF yako <b>PDF</b></h2>
+  <p class="upload-subtitle">Pakia PDF yenye maandishi na uulize maswali. Msaidizi hupanga kurasa, hujibu kutoka kwenye hati na huunganisha majibu na vyanzo.</p>
 
-  <div class="drop-zone" id="dropZone">
+  <div class="drop-zone" id="dropZone" role="button" tabindex="0" aria-label="Chagua faili ya PDF">
     <div class="drop-zone-icon">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 16V4m0 0l-4 4m4-4l4 4M4 20h16"/></svg>
     </div>
-    <div class="drop-zone-text">Buruta PDF hapa au bofya browse</div>
-    <div class="drop-zone-hint">PDF hadi MB 20</div>
-    <input aria-label="FileInput" type="file" accept=".pdf,application/pdf" id="fileInput">
+    <div class="drop-zone-text">Dondosha PDF hapa au bofya kuchagua</div>
+    <div class="drop-zone-hint">Faili za PDF hadi MB 20</div>
+    <input aria-label="Chagua PDF file" type="file" accept=".pdf,application/pdf" id="fileInput">
   </div>
 
   <div class="upload-error" id="uploadError"></div>
-  <div class="upload-loading" id="uploadPakiaing">
+  <div class="upload-loading" id="uploadLoading">
     <div class="upload-spinner"></div>
-    <span>Inachambua hati...</span>
+    <span>Inachanganua hati...</span>
   </div>
 
   <div class="feature-pills">
@@ -946,11 +1009,11 @@
     </span>
     <span class="feature-pill">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>
-      AI na local fallback
+      Usaidizi wa AI wa hiari
     </span>
     <span class="feature-pill">
       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5h6M9 12h6m-6 7h6M5 5h.01M5 12h.01M5 19h.01"/></svg>
-      Nukuu za kurasa
+      Marejeo ya kurasa
     </span>
   </div>
 </div>
@@ -965,19 +1028,19 @@
       </div>
       <span class="file-bar-name" id="fileName">document.pdf</span>
       <span class="file-bar-meta" id="fileMeta"></span>
-      <button type="button" class="file-bar-close" id="closeBtn" title="Close document">
+      <button type="button" class="file-bar-close" id="closeBtn" title="Funga hati">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/></svg>
       </button>
     </div>
     <div class="doc-tools">
-      <input aria-label="Tafuta document text or pages" class="doc-search" id="docSearchInput" type="search" placeholder="Tafuta document text or pages...">
+      <input aria-label="Tafuta maandishi au kurasa za hati" class="doc-search" id="docSearchInput" type="search" placeholder="Tafuta maandishi au kurasa za hati...">
       <button type="button" class="chat-tool-btn" id="docSearchBtn">Tafuta</button>
-      <span class="doc-stat" id="docStats">0 words</span>
+      <span class="doc-stat" id="docStats">0 maneno</span>
     </div>
     <div class="pdf-preview" id="pdfPreview"></div>
     <div class="page-nav">
-      <button type="button" id="prevPage">Iliyopita</button>
-      <span class="page-nav-info" id="pageInfo">Ukurasa 1 of 1</span>
+      <button type="button" id="prevPage">Iliyotangulia</button>
+      <span class="page-nav-info" id="pageInfo">Ukurasa wa 1 wa 1</span>
       <button type="button" id="nextPage">Inayofuata</button>
     </div>
   </div>
@@ -989,29 +1052,36 @@
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"/></svg>
       </div>
       <div class="chat-header-main">
-        <div class="chat-header-title" id="chatTitle">Ongea kuhusu PDF yako</div>
-        <div class="chat-header-subtitle" id="chatMode">Msaidizi wa hati mwenye marejeo</div>
+        <div class="chat-header-title" id="chatTitle">Chat about PDF yako</div>
+        <div class="chat-header-subtitle" id="chatMode">Msaidizi wa hati ya msingi</div>
       </div>
       <div class="chat-actions">
-        <button type="button" class="chat-tool-btn" id="copyChatBtn" title="Nakili transcript">Nakili</button>
+        <button type="button" class="chat-tool-btn" id="copyChatBtn" title="Nakili manukuu">Nakili</button>
         <button type="button" class="chat-tool-btn" id="downloadChatBtn" title="Pakua transcript">Pakua</button>
-        <button type="button" class="chat-tool-btn" id="clearChatBtn" title="Futa chat">Futa</button>
+        <button type="button" class="chat-tool-btn" id="clearChatBtn" title="Futa gumzo">Futa</button>
       </div>
     </div>
 
     <div class="messages" id="messages"></div>
 
     <div class="quick-actions" id="quickActions">
-      <button type="button" class="quick-btn" data-prompt="Please provide a concise summary of this document.">Fupisha</button>
-      <button type="button" class="quick-btn" data-prompt="What are the key points and main takeaways from this document?">Hoja kuu</button>
-      <button type="button" class="quick-btn" data-prompt="Eleza the main concepts in this document in simple terms.">Eleza</button>
-      <button type="button" class="quick-btn" data-prompt="Find dates, deadlines, numbers, fees, amounts, and obligations in this document.">Tafuta maelezo</button>
+      <button type="button" class="quick-btn" data-prompt="Please provide a concise summary of this document.">Fanya muhtasari</button>
+      <button type="button" class="quick-btn" data-prompt="What are the key points and main takeaways from this document?">Mambo Muhimu</button>
+      <button type="button" class="quick-btn" data-prompt="Explain the main concepts in this document in simple terms.">Eleza</button>
+      <button type="button" class="quick-btn" data-prompt="Find dates, deadlines, numbers, fees, amounts, and obligations in this document.">Tafuta Maelezo</button>
       <button type="button" class="quick-btn" data-prompt="List risks, warnings, exceptions, or important caveats in this document.">Hatari</button>
     </div>
 
+    <div class="privacy-choice">
+      <label for="aiAssistConsent">
+        <input type="checkbox" id="aiAssistConsent">
+        <span>Washa Msaada wa AI: kagua na uidhinishe kutuma swali hili na dondoo la maandishi yaliyotolewa kwa AfroTools AI. Ondoka kwa majibu yaliyotajwa kwenye ukurasa wa karibu.</span>
+      </label>
+    </div>
+
     <div class="chat-input-bar">
-      <textarea id="chatInput" rows="1" placeholder="Uliza swali kuhusu PDF hii..." aria-label="Uliza swali kuhusu PDF hii..."></textarea>
-      <button type="button" class="send-btn" id="sendBtn" disabled title="Send message">
+      <textarea id="chatInput" rows="1" placeholder="Uliza swali kuhusu PDF hii..." aria-label="Swali kuhusu PDF hii"></textarea>
+      <button type="button" class="send-btn" id="sendBtn" disabled title="Tuma ujumbe" aria-label="Tuma ujumbe">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
@@ -1021,14 +1091,14 @@
 
 <!-- SEO -->
 <section class="seo-section">
-  <h2>Chat na PDF</h2>
-  <p>Zungumza na PDF yoyote yenye maandishi. Pakia mikataba, ripoti, tafiti, vitabu vya kiada, notisi za shule au nyaraka za biashara, kisha uulize maswali kwa lugha ya kawaida. Msaidizi huorodhesha maandishi kwa ukurasa, hujibu kwa kunukuu kurasa, na hukuruhusu kutafuta, kunakili au kupakua mazungumzo.</p>
+  <h2>Uliza PDF</h2>
+  <p>Uliza hati yoyote ya PDF yenye maandishi. Pakia mikataba, ripoti, tafiti, vitabu, maelezo ya shule au hati za biashara, kisha uliza kwa lugha ya kawaida. Msaidizi hupanga maandishi kwa ukurasa, hujibu kwa marejeo na hukuruhusu kutafuta, kunakili au kupakua mazungumzo.</p>
 
   <h3>Jinsi inavyofanya kazi</h3>
-  <p>PDF yako huchakatwa kwenye kivinjari chako kwa pdf.js. Maandishi yanayoweza kuchaguliwa hutolewa na kuorodheshwa kwa ukurasa ndani ya kifaa chako. Endapo huduma ya AI inapatikana, msaidizi anaweza kuitumia kwa majibu tajiri zaidi; isipopatikana au ikifikia kikomo, msaidizi wa ndani wa nukuu za kurasa bado hutoa majibu yaliyotolewa moja kwa moja kwenye hati yako.</p>
+  <p>PDF yako huchakatwa kwenye kivinjari kwa pdf.js. Maandishi yanayochaguliwa hutolewa na kupangwa ndani ya kifaa kwa kila ukurasa. Majibu ya ndani ndiyo chaguo la kawaida. Usaidizi wa AI ni wa hiari na hutumika baada tu ya kuchagua kutuma dondoo fupi ya maandishi pamoja na swali.</p>
 
   <h3>Unachoweza kufanya</h3>
-  <p>Omba muhtasari, toa hoja kuu, tafuta tarehe na kiasi cha fedha, tambua wajibu au hatari, tafuta neno kwenye kurasa zote, nakili majibu, pakua mazungumzo, au bofya nukuu ya ukurasa kukagua chanzo.</p>
+  <p>Omba muhtasari, toa hoja kuu, tafuta tarehe na kiasi, tambua wajibu au hatari, tafuta neno kwenye kurasa, nakili majibu, pakua mazungumzo au bofya rejea ya ukurasa kuona chanzo.</p>
 </section>
 
 <!-- FAQs -->
@@ -1036,39 +1106,46 @@
 <div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
 </div>
 <section class="faq-section">
-  <h2>Maswali ya mara kwa mara</h2>
+  <h2>Maswali yanayoulizwa mara kwa mara</h2>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Je, data ya PDF yangu ni ya faragha?</button>
-    <div class="faq-a"><p>Faili yako ya PDF huchambuliwa kwenye kivinjari chako. Huduma ya AI ikitumika, maandishi yaliyotolewa ndiyo hutumwa kwa uchambuzi, si faili la asili. Msaidizi wa ndani hujibu kutoka kwenye maandishi ya kurasa bila kuhitaji huduma hiyo.</p></div>
+    <button type="button" class="faq-q">Je, taarifa za PDF yangu ni za faragha na salama?</button>
+    <div class="faq-a"><p>Faili yako ya PDF huchambuliwa kwenye kivinjari. Majibu ya ndani hayatumii huduma ya AI. Ukiwasha Usaidizi wa AI, dondoo fupi ya maandishi na swali lako hutumwa kwa uchambuzi, si faili asili.</p></div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Ni PDF zipi hufanya kazi vizuri?</button>
-    <div class="faq-a"><p>PDF zenye maandishi hufanya kazi vizuri zaidi, zikiwemo ripoti, mikataba, tafiti na vitabu vya kielektroniki. PDF zilizoskaniwa au zenye picha tu huenda zisitoe maandishi vizuri. Kwa hizo, jaribu kwanza zana yetu ya OCR.</p></div>
+    <button type="button" class="faq-q">Ni aina gani za PDF hufanya kazi vizuri?</button>
+    <div class="faq-a"><p>PDF zenye maandishi hufanya kazi vizuri, ikiwemo ripoti, mikataba, tafiti na vitabu pepe. PDF zilizochanganuliwa au zenye picha pekee zinaweza kutotoa maandishi vizuri; tumia zana yetu ya OCR kwanza.</p></div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Naweza kuuliza maswali mangapi?</button>
-    <div class="faq-a"><p>Majibu ya AI yanaweza kuwa na vikomo vya kila siku. Kikomo kikifikiwa, msaidizi wa ndani wa nukuu za kurasa unabaki kupatikana kwa muhtasari, utafutaji, maelezo na majibu ya moja kwa moja.</p></div>
+    <button type="button" class="faq-q">Ninaweza kuuliza maswali mangapi?</button>
+    <div class="faq-a"><p>Majibu ya ndani yenye marejeo ya kurasa hayana kikomo cha kila siku cha AI. Majibu ya AI yanaweza kuwa na kikomo ukichagua kuwasha Usaidizi wa AI.</p></div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Je, kuna kikomo cha ukubwa wa faili?</button>
-    <div class="faq-a"><p>PDF hadi MB 20 zinaungwa mkono. Hati kubwa huorodheshwa kwa ukurasa ndani ya kifaa chako. Huduma ya AI hupokea sehemu ndogo ya muktadha, huku utafutaji wa ndani ukifanya kazi kwenye kurasa zote zilizotolewa.</p></div>
+    <button type="button" class="faq-q">Kuna kikomo cha ukubwa wa faili?</button>
+    <div class="faq-a"><p>PDF hadi MB 20 zinakubaliwa. Hati kubwa hupangwa ndani ya kifaa kwa ukurasa. Baada ya ridhaa, Usaidizi wa AI hupokea muktadha mfupi tu, huku utafutaji wa ndani ukifanya kazi kwenye kurasa zote.</p></div>
   </div>
 
   <div class="faq-item">
-    <button type="button" class="faq-q">Naweza kuuliza maswali ya kufuatilia?</button>
-    <div class="faq-a"><p>Ndiyo. AI hukumbuka mazungumzo ya karibuni, hivyo unaweza kuuliza maswali ya kufuatilia kwa kawaida. Jumbe 10 za mwisho huwekwa kama muktadha kwenye kila ombi.</p></div>
+    <button type="button" class="faq-q">Ninaweza kuuliza maswali ya kufuatilia?</button>
+    <div class="faq-a"><p>Ndiyo. Hali ya ndani hutumia swali la sasa na maandishi yaliyotolewa kwa ukurasa. Baada ya ridhaa, Usaidizi wa AI pia hupokea swali la sasa pamoja na dondoo fupi ya maandishi.</p></div>
   </div>
 </section>
 
-<afro-related-tools category="document-pdf" current="pdf-chat"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
+</main>
+
+<afro-related-tools category="document-pdf" current="pdf-chat" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
+<h2 class="seo-links-title">Zana zinazohusiana</h2>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Kijenzi</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Jenereta ya ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Mhariri wa PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Unganisha na Ugawanye PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Nafasi ya kazi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 <script src="/assets/js/components/related-tools.js?v=30f950c2" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 <script src="/assets/js/lib/pdf-utils.js?v=dd2ba85f"></script>
@@ -1115,6 +1192,7 @@
   const copyChatBtn = document.getElementById('copyChatBtn');
   const downloadChatBtn = document.getElementById('downloadChatBtn');
   const clearChatBtn = document.getElementById('clearChatBtn');
+  const aiAssistConsent = document.getElementById('aiAssistConsent');
 
   /* ── Drag & Drop ── */
   PdfUtils.initDragDrop(dropZone, {
@@ -1125,6 +1203,12 @@
 
   fileInput.addEventListener('change', function() {
     if (this.files[0]) handleFile(this.files[0]);
+  });
+  dropZone.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' || e.key === ' ' || e.key === 'Spacebar') {
+      e.preventDefault();
+      fileInput.click();
+    }
   });
 
   /* ── File Handling ── */
@@ -1164,7 +1248,7 @@
       };
 
       if (!fullText.trim() || fullText.replace(/\s/g, '').length < 30) {
-        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/tools/pdf-ocr/" style="color:var(--color-primary);font-weight:700">OCR tool</a> first to extract text.');
+        showUploadError('This PDF appears to be scanned or image-only. Try our <a href="/sw/zana/ocr-pdf/" style="color:var(--color-primary);font-weight:700">OCR tool</a> first to extract text.');
         uploadLoading.classList.remove('show');
         if (pdfDoc && pdfDoc.destroy) pdfDoc.destroy();
         pdfDoc = null;
@@ -1183,7 +1267,7 @@
       document.getElementById('fileName').textContent = pdfData.fileName;
       document.getElementById('fileMeta').textContent = totalPages + ' pages  |  ' + PdfUtils.formatSize(pdfData.fileSize);
       chatTitle.textContent = 'Chat about ' + pdfData.fileName;
-      chatMode.textContent = 'Grounded in extracted text with page citations';
+      chatMode.textContent = 'Local page-cited answers by default';
       docStats.textContent = documentStats.words.toLocaleString() + ' words';
 
       /* Render first page */
@@ -1197,7 +1281,7 @@
       messagesEl.innerHTML = '';
       var welcomeMsg = buildDocumentOverview(truncated);
       addMessage('ai', welcomeMsg);
-      chatFooter.textContent = 'Answers are grounded in extracted PDF text. Click page citations to inspect the source.';
+      chatFooter.textContent = 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
 
     } catch (err) {
       console.error('PDF load error:', err);
@@ -1289,6 +1373,7 @@
     fileInput.value = '';
     chatInput.value = '';
     chatFooter.textContent = '';
+    aiAssistConsent.checked = false;
     docSearchInput.value = '';
     docStats.textContent = '0 words';
     updateSendBtn();
@@ -1365,7 +1450,7 @@
     overview += "- Find deadlines, amounts, obligations, risks, or names\n";
     overview += "- Ask about a specific term and jump to the cited page\n";
     if (keywords.length) overview += "\n**Detected themes:** " + keywords.join(', ') + ".";
-    if (truncated) overview += "\n\nNote: the AI endpoint receives the first 18,000 characters, but the local citation assistant can still search all extracted pages.";
+    if (truncated) overview += "\n\nNote: this document is large, so optional AI Assist would receive only the first 18,000 characters after consent. Local citations can still search all extracted pages.";
     return overview;
   }
 
@@ -1426,7 +1511,7 @@
 
     const label = document.createElement('div');
     label.className = 'msg-label';
-    label.textContent = role === 'ai' ? 'AfroTools AI' : 'You';
+    label.textContent = role === 'ai' ? 'AfroTools Assistant' : 'You';
 
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
@@ -1451,7 +1536,7 @@
 
     const label = document.createElement('div');
     label.className = 'msg-label';
-    label.textContent = 'AfroTools AI';
+    label.textContent = 'AfroTools Assistant';
 
     const bubble = document.createElement('div');
     bubble.className = 'msg-bubble';
@@ -1541,19 +1626,48 @@
     addTypingIndicator();
 
     try {
-      const headers = { 'Content-Type': 'application/json' };
-      if (window.AfroAuth && typeof AfroAuth.getSessionToken === 'function') {
-        const token = AfroAuth.getSessionToken();
+      if (!aiAssistConsent.checked) {
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText);
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally from extracted page text. Nothing was sent to AI.';
+        return;
+      }
+
+      const consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      const hasContentConsent = consentApi && typeof consentApi.hasConsent === 'function' &&
+        consentApi.hasConsent('ai_optional_content_included', 'pdf-chat');
+      if (!hasContentConsent) {
+        aiAssistConsent.checked = false;
+        const localText = buildLocalAnswer(userMessage);
+        removeTypingIndicator();
+        addMessage('ai', localText + '\n\nAI Assist stayed off because document-content consent was not confirmed.');
+        chatHistory.push({ role: 'assistant', content: localText });
+        chatFooter.textContent = 'Answered locally. Review the AI content notice before enabling AI Assist.';
+        return;
+      }
+
+      const headers = {
+        'Content-Type': 'application/json',
+        'X-AfroTools-AI-Consent': 'accepted',
+        'X-AfroTools-AI-Content-Consent': 'accepted'
+      };
+      if (window.AfroAuth && typeof window.AfroAuth.getSessionToken === 'function') {
+        const token = window.AfroAuth.getSessionToken();
         if (token) headers['Authorization'] = 'Bearer ' + token;
       }
 
       const response = await fetch('/.netlify/functions/ai-advisor', {
         method: 'POST',
         headers: headers,
+        credentials: 'same-origin',
+        cache: 'no-store',
+        referrerPolicy: 'no-referrer',
         body: JSON.stringify({
           tool: 'pdf-chat',
           context: context,
-          messages: chatHistory.slice(-10)
+          messages: [{ role: 'user', content: userMessage }]
         })
       });
 
@@ -1584,13 +1698,16 @@
 
       /* Update remaining count if provided */
       if (data.remaining !== undefined) {
-        chatFooter.textContent = data.remaining + ' questions remaining today';
+        chatFooter.textContent = data.remaining + ' AI Assist questions remaining today. Verify cited pages before relying on answers.';
+      } else {
+        chatFooter.textContent = 'AI Assist answered with your consent. Verify cited pages before relying on answers.';
       }
 
     } catch (err) {
       removeTypingIndicator();
+      console.warn('PDF Chat AI Assist unavailable:', err && err.message ? err.message : 'unknown error');
       const localText = buildLocalAnswer(userMessage);
-      addMessage('ai', localText + '\n\nAI endpoint was unavailable, so this answer was generated locally from extracted page text.');
+      addMessage('ai', localText + '\n\nAI Assist was unavailable, so this answer was generated locally from extracted page text.');
       chatHistory.push({ role: 'assistant', content: localText });
       chatFooter.textContent = 'Using local citation assistant. Answers are extractive and grounded in the PDF text.';
     } finally {
@@ -1633,6 +1750,27 @@
     sendBtn.disabled = !chatInput.value.trim() || isSending || !context;
   }
   updateSendBtn(); /* initial state */
+
+  aiAssistConsent.addEventListener('change', function() {
+    if (this.checked) {
+      var consentApi = window.AfroTools && window.AfroTools.AIConsent;
+      var accepted = consentApi && typeof consentApi.ensureConsent === 'function' && consentApi.ensureConsent({
+        mode: 'ai_optional_content_included',
+        toolId: 'pdf-chat',
+        action: 'Send question and capped PDF excerpt',
+        contentIncluded: true,
+        requireFresh: true
+      });
+      if (!accepted) {
+        this.checked = false;
+        chatFooter.textContent = 'AI Assist stays off. Local page-cited answers remain available.';
+        return;
+      }
+    }
+    chatFooter.textContent = this.checked
+      ? 'AI Assist is on with content consent. Questions may send capped extracted text to AfroTools AI.'
+      : 'Local mode is on. Nothing is sent to AI unless you turn on AI Assist.';
+  });
 
   /* ── Quick Actions ── */
   quickActions.addEventListener('click', function(e) {
@@ -1695,16 +1833,29 @@
     messagesEl.innerHTML = '';
     chatHistory = [];
     addMessage('ai', buildDocumentOverview(context.length >= 18000));
-    chatFooter.textContent = 'Chat cleared. Ask a new question or search the document.';
+    chatFooter.textContent = aiAssistConsent.checked
+      ? 'Chat cleared. AI Assist remains on for new questions.'
+      : 'Chat cleared. Local mode remains on for new questions.';
   });
 
   /* ── FAQs ── */
-  document.querySelectorAll('.faq-q').forEach(function(btn) {
+  document.querySelectorAll('.faq-q').forEach(function(btn, index) {
+    var panel = btn.nextElementSibling;
+    btn.setAttribute('aria-expanded', 'false');
+    btn.setAttribute('aria-controls', 'pdfChatFaq' + index);
+    if (panel) panel.id = 'pdfChatFaq' + index;
     btn.addEventListener('click', function() {
       const item = this.closest('.faq-item');
       const wasOpen = item.classList.contains('open');
-      document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
-      if (!wasOpen) item.classList.add('open');
+      document.querySelectorAll('.faq-item.open').forEach(function(el) {
+        el.classList.remove('open');
+        var openButton = el.querySelector('.faq-q');
+        if (openButton) openButton.setAttribute('aria-expanded', 'false');
+      });
+      if (!wasOpen) {
+        item.classList.add('open');
+        this.setAttribute('aria-expanded', 'true');
+      }
     });
   });
 
@@ -1721,59 +1872,15 @@
 })();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="PDF Chat" tool-slug="pdf-chat"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<script>
-(function(){
-  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza Hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Ready","Tayari"],["Error","Hitilafu"]]);
-  const attrMap = textMap;
-  function swapText(node){
-    const raw = node.textContent || '';
-    const trimmed = raw.trim();
-    if (!trimmed || !textMap.has(trimmed)) return;
-    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
-  }
-  function walk(root){
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node){
-        const parent = node.parentElement;
-        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(swapText);
-    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
-      ['placeholder','aria-label','value','title'].forEach(attr => {
-        const value = el.getAttribute(attr);
-        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
-      });
-    });
-  }
-  function run(){ walk(document.body); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
-  new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      mutation.addedNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE) swapText(node);
-        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
-      });
-    }
-  }).observe(document.documentElement, { childList: true, subtree: true });
-})();
-</script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+
+  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
+  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-chat","name":"Uliza PDF","downloadContract":"free-account"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

@@ -56,6 +56,11 @@
         disclaimer: "Makadirio ya kupanga muamala wa kiwango cha kawaida pekee. Thibitisha matibabu halisi na wajibu wa sasa na OTR au mshauri mwenye sifa."
       }
     }[locale];
+    var pdfCopy = {
+      en: { subject: "Togo standard VAT planning estimate at 18%", meta: "Official standard rate: 18% | Currency: XOF", source: "Sources reviewed 2026-07-23: OTR CGI Article 195 and Fiscal Handbook 2026", mode: "VAT calculation mode", result: "VAT result" },
+      fr: { subject: "Estimation de TVA normale du Togo à 18 %", meta: "Taux normal officiel : 18 % | Devise : XOF", source: "Sources vérifiées le 2026-07-23 : article 195 du CGI OTR et Cahier fiscal 2026", mode: "Mode de calcul de la TVA", result: "Résultat de TVA" },
+      sw: { subject: "Makadirio ya VAT ya kawaida ya Togo kwa 18%", meta: "Kiwango rasmi cha kawaida: 18% | Sarafu: XOF", source: "Vyanzo vimekaguliwa 2026-07-23: Kifungu 195 cha CGI ya OTR na Kitabu cha Fedha 2026", mode: "Hali ya kukokotoa VAT", result: "Matokeo ya VAT" }
+    }[locale];
 
     var nav = document.querySelector("afro-navbar");
     var footer = document.querySelector("afro-footer");
@@ -78,7 +83,7 @@
     document.title = copy.title + " | AfroTools";
     main.innerHTML =
       '<div class="gnv-shell"><section class="gnv-hero"><div class="gnv-kicker">' + copy.kicker + '</div><h1>' + copy.title + '</h1><p class="gnv-lede">' + copy.lead + '</p></section><div class="gnv-grid">' +
-      '<form class="gnv-card" id="tgVatForm"><div class="gnv-switch" role="group" aria-label="VAT calculation mode"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="tgVatAmount">' + copy.amount + ' (XOF)</label><input class="gnv-input" id="tgVatAmount" name="amount" type="number" min="0" step="1" inputmode="numeric" value="10000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="tgVatError"></p><section class="gnv-result" id="tgVatResult" aria-label="VAT result"><dl><dt>' + copy.net + '</dt><dd id="tgVatNet"></dd><dt>' + copy.vat + '</dt><dd id="tgVatTax"></dd><dt>' + copy.gross + '</dt><dd id="tgVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="tgVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="tgVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="tgVatStatus" role="status" aria-live="polite"></div></form>' +
+      '<form class="gnv-card" id="tgVatForm"><div class="gnv-switch" role="group" aria-label="' + pdfCopy.mode + '"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="tgVatAmount">' + copy.amount + ' (XOF)</label><input class="gnv-input" id="tgVatAmount" name="amount" type="number" min="0" step="1" inputmode="numeric" value="10000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="tgVatError"></p><section class="gnv-result" id="tgVatResult" aria-label="' + pdfCopy.result + '"><dl><dt>' + copy.net + '</dt><dd id="tgVatNet"></dd><dt>' + copy.vat + '</dt><dd id="tgVatTax"></dd><dt>' + copy.gross + '</dt><dd id="tgVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="tgVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="tgVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="tgVatStatus" role="status" aria-live="polite"></div></form>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="tg-vat"><h2>' + copy.rules + '</h2><ul class="gnv-list"><li>' + copy.r1 + '</li><li>' + copy.r2 + '</li><li>' + copy.r3 + '</li><li>' + copy.r4 + '</li></ul><h2>' + copy.sources + '</h2><p class="gnv-note"><a href="https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/600-code-general-des-impots-livre-des-procedures-fiscales-mis-a-jour-2025/file.html">' + copy.sourceCode + '</a><br><a href="https://www.otr.tg/index.php/fr/documentation/sur-les-impots/code-general-des-impots/628-cahier-fiscal-2026/file.html">' + copy.sourceBook + '</a><br><a href="https://www.otr.tg/">' + copy.sourceOtr + '</a></p><p class="gnv-note">' + copy.disclaimer + '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Togo%20VAT%20calculation%20error">' + copy.report + '</a></p></aside></div></div>';
 
     var state = { mode: "add", result: null };
@@ -128,14 +133,14 @@
     byId("tgVatPdf").onclick = function () {
       if (!state.result || !window.jspdf) return;
       var pdf = new window.jspdf.jsPDF();
-      pdf.setProperties({ title: copy.title, subject: "Togo standard VAT planning estimate at 18%" });
+      pdf.setProperties({ title: copy.title, subject: pdfCopy.subject });
       pdf.text(copy.title, 20, 20);
-      pdf.text("Official standard rate: 18% | Currency: XOF", 20, 32);
+      pdf.text(pdfCopy.meta, 20, 32);
       pdf.text(copy.net + ": " + money(state.result.net), 20, 48);
       pdf.text(copy.vat + ": " + money(state.result.vat), 20, 59);
       pdf.text(copy.gross + ": " + money(state.result.gross), 20, 70);
       pdf.text(pdf.splitTextToSize(copy.disclaimer, 170), 20, 88);
-      pdf.text("Sources reviewed 2026-07-23: OTR CGI Article 195 and Fiscal Handbook 2026", 20, 116);
+      pdf.text(pdfCopy.source, 20, 116);
       pdf.save("togo-vat-18-percent-estimate.pdf");
       byId("tgVatStatus").textContent = copy.pdf + ".";
     };

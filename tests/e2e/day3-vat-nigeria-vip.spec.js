@@ -38,7 +38,7 @@ for (const route of routes) {
     await page.locator('#ngvInvoiceForm').evaluate(form => form.requestSubmit());
     await expect(page.locator('#ngvInvoiceVat')).toContainText('75');
     await page.locator('#ngvClassification').selectOption('medical-products-services');
-    await expect(page.locator('#ngvClassificationResult')).toContainText('187');
+    await expect(page.locator('#ngvClassificationResult')).toContainText('186');
     const downloadPromise = page.waitForEvent('download');
     await page.locator('#ngvPdf').click();
     const download = await downloadPromise; const saved = await download.path();

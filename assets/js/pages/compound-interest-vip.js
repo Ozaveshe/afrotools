@@ -1,8 +1,10 @@
 (function () {
   'use strict';
   var engine = window.AfroTools && window.AfroTools.engines && window.AfroTools.engines.investmentReturn;
-  var locale = document.documentElement.lang === 'fr' ? 'fr' : 'en';
-  var t = locale === 'fr' ? {
+  var pageLanguage = document.documentElement.lang;
+  var locale = pageLanguage === 'fr' ? 'fr' : pageLanguage === 'sw' ? 'sw' : 'en';
+  var translations = {
+  fr: {
     final:'Solde projeté', contributed:'Total versé', interest:'Intérêts projetés',
     effective:'Taux annuel effectif', period:'Période', tableContributed:'Versements cumulés',
     tableInterest:'Intérêts cumulés', tableBalance:'Solde projeté', year:'Année',
@@ -14,8 +16,25 @@
     boundary:'Estimation de planification uniquement. Le taux saisi est une hypothèse, pas une prévision ni un rendement garanti.',
     method:'Méthode : moteur AfroTools Investment Return ; taux mensuel équivalent calculé à partir du taux nominal saisi et de la fréquence choisie.',
     invalid:'Vérifiez les montants, le taux, la durée et la fréquence. Les montants ne peuvent pas être négatifs.',
+    stale:'Les données ont changé. Recalculez avant de télécharger.',
     labels:{initial:'Capital initial',monthly:'Versement mensuel',rate:'Taux annuel nominal',years:'Durée',frequency:'Fréquence de capitalisation',timing:'Moment du versement'}
-  } : {
+  },
+  sw: {
+    final:'Salio linalokadiriwa', contributed:'Jumla ya michango', interest:'Riba inayokadiriwa',
+    effective:'Kiwango halisi cha mwaka', period:'Kipindi', tableContributed:'Michango iliyokusanywa',
+    tableInterest:'Riba iliyokusanywa', tableBalance:'Salio linalokadiriwa', year:'Mwaka',
+    assumptions:'Makadirio yaliyotumika', nominal:'kiwango cha kawaida cha mwaka ulichoingiza', compound:'vipindi vya kujumuisha riba kwa mwaka',
+    timingBegin:'mchango wa kila mwezi mwanzoni mwa mwezi', timingEnd:'mchango wa kila mwezi mwishoni mwa mwezi',
+    excludes:'Ada, kodi, mfumuko wa bei, kushindwa kulipa, utoaji wa fedha na mabadiliko ya kiwango hayajahesabiwa.',
+    ready:'Makadirio yamekokotolewa kwenye kifaa chako.', txt:'Mapitio ya maandishi yamepakuliwa.', pdf:'PDF imeundwa kwenye kifaa chako.',
+    pdfFail:'Uundaji wa PDF haupatikani.', title:'Makadirio ya riba ya mchanganyiko na akiba ya mara kwa mara',
+    boundary:'Makadirio ya kupanga tu. Kiwango ulichoingiza ni dhana, si utabiri wala faida iliyohakikishwa.',
+    method:'Mbinu: injini ya AfroTools Investment Return; kiwango sawa cha mwezi hukokotolewa kutoka kiwango cha kawaida cha mwaka na marudio ya kujumuisha riba uliyochagua.',
+    invalid:'Kagua kiasi, kiwango, muda na marudio. Kiasi hakiwezi kuwa hasi.',
+    stale:'Taarifa zimebadilika. Kokotoa tena kabla ya kupakua.',
+    labels:{initial:'Kiasi cha kuanzia',monthly:'Mchango wa kila mwezi',rate:'Kiwango cha kawaida cha mwaka',years:'Muda',frequency:'Marudio ya kujumuisha riba',timing:'Wakati wa mchango'}
+  },
+  en: {
     final:'Projected balance', contributed:'Total contributed', interest:'Projected interest',
     effective:'Effective annual rate', period:'Period', tableContributed:'Cumulative contributions',
     tableInterest:'Cumulative interest', tableBalance:'Projected balance', year:'Year',
@@ -27,9 +46,13 @@
     boundary:'Planning estimate only. The entered rate is an assumption, not a forecast or guaranteed return.',
     method:'Method: AfroTools Investment Return engine; monthly-equivalent rate derived from the entered nominal rate and selected compounding frequency.',
     invalid:'Check the amounts, rate, term and frequency. Amounts cannot be negative.',
+    stale:'Inputs changed. Recalculate before downloading.',
     labels:{initial:'Initial amount',monthly:'Monthly contribution',rate:'Nominal annual rate',years:'Term',frequency:'Compounding frequency',timing:'Contribution timing'}
+  }
   };
+  var t = translations[locale];
   var result = null;
+  var resultSignature = null;
   var form = document.getElementById('ciForm');
   var status = document.getElementById('ciStatus');
   var resultPanel = document.getElementById('ciResult');
@@ -41,14 +64,28 @@
   function percent(number) { return new Intl.NumberFormat(locale, { style:'percent', minimumFractionDigits:2, maximumFractionDigits:2 }).format(number); }
   function clear(node) { while (node.firstChild) node.removeChild(node.firstChild); }
   function cell(tag, text) { var node=document.createElement(tag); node.textContent=text; return node; }
+  function clearResult(message) {
+    result=null;
+    resultSignature=null;
+    resultPanel.hidden=true;
+    ['ciFinal','ciContributed','ciInterest','ciEffective','ciAssumptions'].forEach(function(id){document.getElementById(id).textContent='';});
+    clear(document.getElementById('ciTableBody'));
+    clear(document.getElementById('ciYearCards'));
+    document.getElementById('ciTxt').disabled=true;
+    document.getElementById('ciPdf').disabled=true;
+    status.textContent=message||'';
+  }
   function input() {
     return {
+      displayCurrency:currency.value,
       initialInvestment:value('ciInitial'), monthlyContribution:value('ciMonthly'),
       annualRatePercent:value('ciRate'), years:value('ciYears'),
       compoundsPerYear:value('ciFrequency'), contributionTiming:document.getElementById('ciTiming').value,
       inflationRatePercent:0
     };
   }
+  function signature() { return JSON.stringify(input()); }
+  function markStale() { if(result&&signature()!==resultSignature)clearResult(t.stale); }
   function assumptionText() {
     return result.input.annualRatePercent + '% ' + t.nominal + '; ' + result.input.compoundsPerYear + ' ' + t.compound + '; ' +
       (result.input.contributionTiming === 'beginning' ? t.timingBegin : t.timingEnd) + '. ' + t.excludes;
@@ -78,6 +115,7 @@
       var values=input();
       if(values.initialInvestment>1000000000000||values.monthlyContribution>1000000000000)throw new RangeError('Amounts must not exceed 1,000,000,000,000.');
       result=engine.project(values);
+      resultSignature=JSON.stringify(values);
       document.getElementById('ciFinal').textContent=money(result.finalValue);
       document.getElementById('ciContributed').textContent=money(result.totalContributed);
       document.getElementById('ciInterest').textContent=money(result.projectedGain);
@@ -90,9 +128,7 @@
       status.textContent=t.ready;
       document.getElementById('ciResultHeading').focus();
     } catch (error) {
-      result=null; resultPanel.hidden=true;
-      document.getElementById('ciTxt').disabled=true; document.getElementById('ciPdf').disabled=true;
-      status.textContent=locale==='fr'?t.invalid:error.message;
+      clearResult(t.invalid);
     }
   }
   function reportText() {
@@ -117,5 +153,7 @@
     doc.save('compound-interest-'+locale+'.pdf');status.textContent=t.pdf;
   });
   form.addEventListener('submit',calculate);
-  form.addEventListener('reset',function(){result=null;resultPanel.hidden=true;status.textContent='';document.getElementById('ciTxt').disabled=true;document.getElementById('ciPdf').disabled=true;});
+  form.addEventListener('input',markStale);
+  form.addEventListener('change',markStale);
+  form.addEventListener('reset',function(){clearResult('');});
 })();

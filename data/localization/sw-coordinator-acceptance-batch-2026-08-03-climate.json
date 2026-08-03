@@ -1,0 +1,66 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 13,
+  "preservedBlockedEntries": 0,
+  "candidates": [
+    {
+      "id": "climate-environment-native-parity",
+      "commit": "cd5dbcc56db83488158ec82a57a3cc80c1fc8807",
+      "expectedRoutes": 13,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 13,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-climate-native-parity.spec.js",
+          "engineTest": "tests/sw-climate-parity.test.js",
+          "workflow": "All 13 Climate & Environment apps and the category hub passed 55 identity-gated Chromium tests covering shared-engine oracles, valid and invalid state, stale-result clearing, 320/375px and 200% reflow, manual/system dark mode, keyboard/labels, metadata, console and local-resource behavior.",
+          "export": "Every route parsed a JSON download and reopened it through the calculator; one route also produced a content-parsed PDF, for 27 parsed or reopened export assertions, with zero unexpected external/API requests or request bodies containing user input."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-climate-browser-evidence.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/result", "equals": "accepted" },
+            { "pointer": "/testedCandidateCommit", "equals": "cd5dbcc56db83488158ec82a57a3cc80c1fc8807" },
+            { "pointer": "/browser/testsPassed", "equals": 55 },
+            { "pointer": "/browser/testsFailed", "equals": 0 },
+            { "pointer": "/acceptance/exactEnglishDenominator", "equals": 13 },
+            { "pointer": "/acceptance/accepted", "equals": 13 },
+            { "pointer": "/acceptance/blocked", "equals": 0 },
+            { "pointer": "/coverage/totalParsedOrReopenedExportAssertions", "equals": 27 },
+            { "pointer": "/coverage/uniqueRoutesWithParsedOrReopenedExportEvidence", "equals": 13 },
+            { "pointer": "/privacy/unexpectedExternalRequests", "equals": 0 },
+            { "pointer": "/privacy/unexpectedApiRequests", "equals": 0 },
+            { "pointer": "/privacy/requestsWithUserInputPostData", "equals": 0 },
+            { "pointer": "/privacy/consoleErrors", "equals": 0 },
+            { "pointer": "/artwork/missing", "equals": 0 }
+          ]
+        },
+        {
+          "path": "data/localization/sw-climate-parity-manifest.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/canonicalEnglishApps", "equals": 13 },
+            { "pointer": "/nativeSwahiliCandidates", "equals": 13 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-climate-parity-manifest.json",
+          "rowsPointer": "/routes",
+          "idPointer": "/toolId",
+          "routePointer": "/swahili"
+        }
+      ]
+    }
+  ]
+}

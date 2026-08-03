@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "reviewedAt": "2026-08-03",
+  "baseline": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db",
+  "scope": {
+    "acceptedSwahiliIds": ["bi-paye-sw", "rw-paye-sw", "ug-paye-sw"],
+    "acceptedRoutes": [
+      "/sw/burundi/kikokotoo-kodi-mshahara/",
+      "/sw/rwanda/kikokotoo-kodi-mshahara/",
+      "/sw/uganda/kikokotoo-kodi-mshahara/"
+    ],
+    "englishFormulaOwnersVerified": ["/burundi/bi-paye", "/rwanda/rw-paye", "/uganda/ug-paye"],
+    "excludedLocalesChanged": [],
+    "centralAcceptanceLedgerChanged": false
+  },
+  "formulaEvidence": {
+    "burundi": {
+      "confidence": "high for OBR bands and INSS rates and caps",
+      "source": "https://inss.gov.bi/calcul-des-cotisations/",
+      "oracle": {"grossBif": 500000, "payeBif": 84600, "employeePensionBif": 18000, "netBif": 397400, "employerCostBif": 529400}
+    },
+    "rwanda": {
+      "confidence": "high for PAYE, pension, maternity and employer occupational hazard; medium for CBHI payroll ordering and rounding",
+      "sources": [
+        "https://www.rra.gov.rw/en/domestic-tax-services/employment-tax-paye/calculate-paye",
+        "https://www.rssb.rw/fileadmin/user_upload/Announcement_to_all_employers_.pdf",
+        "https://www.rssb.rw/scheme/occupational-hazards"
+      ],
+      "cbhiModelAssumption": "CBHI = round((net before CBHI * 0.005) / 1.005); the RSSB notice states 0.5% of net salary but does not define ordering or rounding",
+      "oracle": {"grossRwf": 300000, "payeRwf": 48600, "employeePensionRwf": 18000, "employeeMaternityRwf": 900, "employeeCbhiRwf": 1157, "netRwf": 231343, "employerCostRwf": 324900}
+    },
+    "uganda": {
+      "confidence": "high for current URA resident and non-resident bands, NSSF and KCCA LST assessment basis",
+      "sources": [
+        "https://ura.go.ug/en/domestic-taxes/paye-rates/",
+        "https://www.kcca.go.ug/uDocs/Local_Service_Tax_FAQs.pdf",
+        "https://www.nssfug.org/about-us/membership/"
+      ],
+      "repair": "LST is assessed from monthly gross salary, then the collected annual LST is deducted before PAYE; the rejected circular take-home model was removed",
+      "kccaWorkedExample": {"grossUgx": 420000, "annualLstUgx": 30000, "taxableUgx": 390000, "payeUgx": 21000, "employeeNssfUgx": 21000, "netUgx": 348000}
+    }
+  },
+  "browserProof": {
+    "command": "npx playwright test --config=playwright.sw-paye-exact-three.config.js --project=chromium --workers=1 --reporter=line",
+    "result": "6/6 full suite passed in 4.9 minutes; after replacing the temporary auth shim with the native local-only policy, the three app VIP flows plus Uganda English delayed-network check passed 4/4 in 4.7 minutes",
+    "coverage": [
+      "valid and invalid calculations plus stale-result reset",
+      "independent formula and boundary oracles",
+      "parsed PDF reopen and share payload",
+      "explicit AI consent and no unconsented mutation",
+      "320px and 375px layouts plus true 200% reflow",
+      "explicit and system light and dark themes",
+      "keyboard flow, axe checks, names, live regions, contrast and focus",
+      "local-first delayed-network behavior and Chart.js fallback",
+      "canonical, reciprocal hreflang, artwork, console and local-resource checks"
+    ],
+    "minimumContrast": {"text": 4.55, "boundary": 5.67, "focus": 9.37}
+  },
+  "staticProof": [
+    "exact-three source owner check passed with 0 stale outputs",
+    "Uganda shared browser and Netlify engine tests passed",
+    "exact-three formula, copy, schema, privacy, AI consent, export and discovery tests passed",
+    "26-route Swahili PAYE frozen report-language contract passed",
+    "CI lint and type-check passed",
+    "i18n validation passed across 11126 pages",
+    "hreflang validation passed across 32460 relationships",
+    "136939 internal links passed with no broken links",
+    "registry audit passed with its two existing missing-page findings",
+    "git diff check passed and zero deletions were found"
+  ],
+  "guardrails": {
+    "sitemapChanged": false,
+    "masterLedgerChanged": false,
+    "broadGeneratedRegistriesChanged": false,
+    "otherLocalesChanged": false,
+    "pushPrMergeDeploy": false,
+    "deletions": 0
+  }
+}

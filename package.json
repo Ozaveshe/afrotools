@@ -56,6 +56,10 @@
     "sw:paye:exports:build": "node scripts/normalize-sw-paye-local-exports.js --write",
     "sw:paye:exports:check": "node scripts/normalize-sw-paye-local-exports.js",
     "test:sw-paye:exports": "node tests/swahili-paye-local-exports.test.js",
+    "sw:paye:exact-three:build": "node scripts/build-sw-paye-exact-three.js --write",
+    "sw:paye:exact-three:check": "node scripts/build-sw-paye-exact-three.js",
+    "test:sw-paye:exact-three": "node tests/uganda-paye-shared-engine.test.js && node tests/swahili-paye-exact-three.test.js",
+    "test:sw-paye:exact-three:browser": "playwright test tests/e2e/swahili-paye-exact-three-vip.spec.js --config=playwright.sw-paye-exact-three.config.js --project=chromium --workers=1",
     "fr:acceptance:build": "node scripts/build-french-free-app-acceptance.js --write",
     "fr:acceptance:check": "node scripts/build-french-free-app-acceptance.js --check",
     "test:fr-acceptance": "node tests/french-free-app-acceptance-registry.test.js",
@@ -314,6 +318,8 @@
     "document-pdf:verify": "node scripts/verify-document-pdf-workflow.js",
     "salary-tax:verify": "node scripts/verify-salary-tax-workflow.js",
     "vat-business-tax:verify": "node scripts/verify-vat-business-tax-workflow.js",
+    "sw:vat-business-tax:live": "node scripts/run-swahili-vat-business-tax-live-suite.js --write --shards=5 --route-shards=9 --route-concurrency=3 --workers=1 --base-port=44220",
+    "sw:ecommerce:candidate-receipt": "node scripts/build-sw-ecommerce-candidate-receipt.js --write",
     "legal-workflow:verify": "node scripts/verify-legal-workflow.js",
     "category-workflow:verify": "node scripts/verify-category-workflow-lite.js",
     "seo": "npm run seo:structured-data && node scripts/fix-canonical-alias-links.js && node scripts/update-html-canonical-redirects.js && node scripts/seo-daily-fix.js && npm run route:sync",
@@ -423,6 +429,7 @@
   "devDependencies": {
     "@playwright/test": "^1.59.1",
     "acorn": "^8.16.0",
+    "axe-core": "^4.11.0",
     "d3-geo": "^3.1.1",
     "topojson-client": "^3.1.0",
     "world-atlas": "^2.0.2"

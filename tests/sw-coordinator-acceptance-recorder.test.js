@@ -185,6 +185,39 @@ test("rejects a central-existing candidate ID and leaves blocked rows byte-for-b
   assert.equal(fs.readFileSync(path.join(root, "ledger.json"), "utf8"), before);
 });
 
+test("upgrades an explicitly resolved blocked entry and preserves the other blockers exactly", () => {
+  const { root, blocked, manifest } = fixture({
+    candidateId: "bi-paye",
+    candidateRoute: "/sw/bi-paye/",
+  });
+  writeText(root, "sw/bi-paye/index.html", '<html lang="sw"></html>\n');
+  manifest.preservedBlockedEntries = 2;
+  manifest.resolvedBlockedEntries = 1;
+  manifest.candidates[0].approval.resolvesBlocked = true;
+  writeJson(root, "manifest.json", manifest);
+  const result = run(root, "write");
+  assert.equal(result.blockedResolved, 1);
+  assert.equal(result.blockedPreserved, 2);
+  const ledger = JSON.parse(fs.readFileSync(path.join(root, "ledger.json"), "utf8"));
+  assert.deepEqual(ledger.entries[0], {
+    englishId: "bi-paye",
+    swahiliRoute: "/sw/bi-paye/",
+    status: "accepted",
+    categoryKey: "developer",
+    evidence: EVIDENCE,
+  });
+  assert.deepEqual(ledger.entries.slice(1, 3), blocked.slice(1));
+  assert.doesNotThrow(() => run(root, "check"));
+});
+
+test("never upgrades a blocked entry without an explicit resolution approval", () => {
+  const { root } = fixture({ candidateId: "bi-paye", candidateRoute: "/sw/bi-paye/" });
+  writeText(root, "sw/bi-paye/index.html", '<html lang="sw"></html>\n');
+  const before = fs.readFileSync(path.join(root, "ledger.json"), "utf8");
+  assert.throws(() => run(root, "write"), /already exists in the central ledger/);
+  assert.equal(fs.readFileSync(path.join(root, "ledger.json"), "utf8"), before);
+});
+
 test("rejects a missing physical Swahili route", () => {
   const { root } = fixture({ omitRoute: true });
   assert.throws(() => run(root, "write"), /no physical Swahili route/);

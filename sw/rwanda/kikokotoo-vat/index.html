@@ -29,7 +29,7 @@
   "@type": "WebApplication",
   "name": "Rwanda VAT Kikokotoo 2026",
   "url": "https://afrotools.com/sw/rwanda/kikokotoo-vat/",
-  "description": "Ongeza au toa VAT ya Rwanda and screen registration thresholds using current RRA guidance.",
+  "description": "Ongeza au toa VAT ya Rwanda na ukague vizingiti vya usajili kwa kutumia vyanzo vya sasa vya RRA.",
   "inLanguage": "sw",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
@@ -48,26 +48,26 @@
         "mainEntity": [
           {
             "@type": "Question",
-            "name": "What is Rwanda's standard VAT rate?",
+            "name": "Kiwango cha kawaida cha VAT nchini Rwanda ni kipi?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "RRA states that Rwanda applies 18% to other taxable supplies and 0% only to supplies zero-rated by law."
+              "text": "RRA inaeleza kuwa kiwango cha kawaida ni 18% kwa ugavi unaotozwa ambao haujathibitishwa kisheria kuwa wa kiwango sifuri au msamaha."
             }
           },
           {
             "@type": "Question",
-            "name": "When is VAT registration required?",
+            "name": "Usajili wa VAT unahitajika lini?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "Registration is required when taxable turnover exceeds RWF 20 million in the previous fiscal year or RWF 5 million in the previous quarter, unless all activities are exempt."
+              "text": "Usajili unahitajika mapato yanayotozwa yanapozidi RWF milioni 20 katika mwaka wa fedha uliopita au RWF milioni 5 katika robo iliyopita, isipokuwa shughuli zote zimesamehewa."
             }
           },
           {
             "@type": "Question",
-            "name": "Does zero-rated mean exempt?",
+            "name": "Kiwango sifuri kinamaanisha msamaha?",
             "acceptedAnswer": {
               "@type": "Answer",
-              "text": "No. Zero-rated and exempt are separate statutory treatments. Confirm the exact provision before invoicing or filing."
+              "text": "Hapana. Kiwango sifuri na msamaha ni hali mbili tofauti za kisheria. Thibitisha kifungu halisi kabla ya kutoa ankara au kuwasilisha marejesho."
             }
           }
         ]
@@ -76,11 +76,12 @@
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8" />
     <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc" />
     <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1" />
-    <link rel="stylesheet" href="/assets/css/rwanda-vat-vip.css?v=0ddbd256" />
+    <link rel="stylesheet" href="/assets/css/rwanda-vat-vip.css?v=7f320331" />
     <link
       rel="stylesheet"
       href="/assets/css/tool-verification.css?v=28d60957"
     />
+    <script>window._afroAuthLoaded = true;</script>
     <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
     <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
     <script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
@@ -118,9 +119,9 @@
       data-tool-id="rw-vat"
     >
       <div class="rwv-container">
-        <strong>Vyanzo na uhakiki · Imepitiwa 22 Julai 2026:</strong> RRA VAT
-        guidance, Law No. 049/2023 and the Article 8 amendment in Law No.
-        009/2025.
+        <strong>Vyanzo na uhakiki · Imepitiwa 2 Agosti 2026:</strong> mwongozo
+        wa VAT wa RRA, Sheria Na. 049/2023 na marekebisho ya Kifungu cha 8
+        katika Sheria Na. 009/2025.
         <a
           class="tool-verification-report"
           href="/contact/?topic=calculation-error&amp;tool=rw-vat"
@@ -204,18 +205,18 @@
                   />
                 </div>
               </div>
-              <div class="rwv-error" id="rwvError"></div>
+              <div class="rwv-error" id="rwvError" role="alert"></div>
               <button class="rwv-primary" type="submit">
                 Kokotoa VAT ya Rwanda
               </button>
             </form>
-            <div class="rwv-result" id="rwvResult" aria-live="polite">
+            <div class="rwv-result" id="rwvResult" role="status" aria-live="polite">
               <div class="rwv-result-label" id="rwvResultLabel">
                 Jumla yenye VAT
               </div>
               <div class="rwv-result-main" id="rwvResultMain">—</div>
               <div class="rwv-result-row">
-                <span>Kiasi before VAT</span><strong id="rwvNet">—</strong>
+                <span>Kiasi kabla ya VAT</span><strong id="rwvNet">—</strong>
               </div>
               <div class="rwv-result-row">
                 <span>VAT</span><strong id="rwvVat">—</strong>
@@ -247,9 +248,9 @@
               Hutumia hali ya kawaida, sifuri iliyothibitishwa au mpango
               uliochaguliwa hapo juu.
             </p>
-            <form id="rwvInvoiceForm">
+            <form id="rwvInvoiceForm" novalidate>
               <div class="rwv-field">
-                <label for="rwvInvoiceDescription">Description</label
+                <label for="rwvInvoiceDescription">Maelezo</label
                 ><input
                   class="rwv-input"
                   id="rwvInvoiceDescription"
@@ -280,13 +281,13 @@
                   />
                 </div>
               </div>
-              <div class="rwv-error" id="rwvInvoiceError"></div>
+              <div class="rwv-error" id="rwvInvoiceError" role="alert"></div>
               <button class="rwv-primary" type="submit">
                 Kokotoa mstari wa ankara
               </button>
             </form>
-            <div class="rwv-result" id="rwvInvoiceOutput" aria-live="polite">
-              <div class="rwv-result-label">Mstari wa ankara summary</div>
+            <div class="rwv-result" id="rwvInvoiceOutput" role="status" aria-live="polite">
+              <div class="rwv-result-label">Muhtasari wa mstari wa ankara</div>
               <div class="rwv-result-row">
                 <span>Kabla ya VAT</span><strong id="rwvInvoiceNet">—</strong>
               </div>
@@ -311,7 +312,7 @@
                 <option value="review">Bado haijathibitishwa</option>
                 <option value="standard">Ugavi wa kawaida unaotozwa</option>
                 <option value="confirmed-zero">
-                  Sifuri iliyothibitishwa-rated supply
+                  Ugavi wa kiwango sifuri uliothibitishwa
                 </option>
                 <option value="confirmed-exempt">
                   Ugavi uliosamehewa uliothibitishwa
@@ -410,7 +411,7 @@
                 href="https://www.rra.gov.rw/fileadmin/user_upload/VAT_Law_of_2023_ok.pdf"
                 target="_blank"
                 rel="noopener"
-                >Law No. 049/2023</a
+                >Sheria Na. 049/2023</a
               ><a
                 href="https://www.rra.gov.rw/fileadmin/user_upload/Law_amending_the_2023_VAT_law___May_2025.pdf"
                 target="_blank"
@@ -429,11 +430,17 @@
         Kikokotoo hiki hakitumii AI, akaunti, barua pepe, hifadhi ya kiasi au
         upakiaji wa wingu.
       </p>
-      <div
-        class="container afro-source-meta"
-        data-source-meta-id="vat-rw-source"
-        data-source-meta-compact="true"
-      ></div>
+      <div class="container afro-source-meta">
+        <div class="source-confidence-card source-confidence-card--compact" data-locale-source-confidence="sw">
+          <div class="source-confidence-badges">
+            <a class="source-confidence-badge source-confidence-badge--reviewed" href="https://www.rra.gov.rw/en/domestic-tax-services/value-added-tax/penalties-and-interest" target="_blank" rel="noopener noreferrer">Chanzo rasmi</a>
+            <span class="source-confidence-badge source-confidence-badge--freshness-fresh">Kimesasishwa</span>
+            <span class="source-confidence-badge source-confidence-badge--confidence">Kimepitiwa</span>
+          </div>
+          <div class="source-confidence-title">RRA · sheria na mwongozo wa VAT</div>
+          <p class="source-confidence-notice"><strong>Makadirio ya kupanga:</strong> thibitisha uainishaji, usajili, marejesho ya VAT ya pembejeo, zuio, ankara, uwasilishaji na malipo kwa RRA au mshauri wa kodi.</p>
+        </div>
+      </div>
     </main>
     <afro-footer></afro-footer>
     <script>
@@ -450,6 +457,31 @@
         "trigger_previous-fiscal-year":
           "mwaka uliopita zaidi ya RWF milioni 20",
         "trigger_previous-quarter": "robo iliyopita zaidi ya RWF milioni 5",
+        grossResult: "Jumla yenye VAT",
+        netResult: "Kiasi kabla ya VAT",
+        scenarioNote:
+          "Hali ya kupanga tu. Thibitisha matibabu ya kisheria kabla ya kuitumia.",
+        zeroNote:
+          "Tumia 0% baada tu ya kuthibitisha kuwa Kifungu cha 7 kinatumika kwa ugavi huu.",
+        standardNote: "Makadirio kwa kiwango cha kawaida cha Rwanda cha 18%.",
+        calculated: "Makadirio ya VAT ya Rwanda yamesasishwa.",
+        invalid: "Weka kiasi kisichopungua sifuri na kiwango cha 0% hadi 100%.",
+        invalidInvoice: "Weka idadi na bei ya kipengee zisizopungua sifuri.",
+        invalidRegistration: "Weka mapato yasiyopungua sifuri.",
+        source_standard: "Sheria Na. 049/2023, Kifungu cha 4",
+        "source_confirmed-zero": "Imethibitishwa chini ya Sheria Na. 049/2023, Kifungu cha 7",
+        "source_confirmed-exempt":
+          "Imethibitishwa chini ya Kifungu cha 8 kilichorekebishwa na Sheria Na. 009/2025",
+        source_review: "Thibitisha kifungu halisi katika sheria na majedwali ya sasa ya VAT",
+        classificationCaveat:
+          "Thibitisha kifungu halisi kabla ya kutegemea mwongozo huu.",
+        shared: "Kiungo cha zana kimeshirikiwa bila kiasi chochote.",
+        shareFailed: "Kiungo cha zana hakikuweza kushirikiwa.",
+        pdfReady: "PDF imepakuliwa ndani ya kifaa.",
+        pdfSource:
+          "Mwongozo wa VAT wa RRA; Sheria Na. 049/2023 na Na. 009/2025; imepitiwa 2 Agosti 2026.",
+        pdfDisclaimer:
+          "Makadirio ya kupanga tu. Thibitisha uainishaji, usajili, ankara na uwasilishaji kwa RRA au mshauri wa kodi.",
         pdfTitle: "Makadirio ya VAT Rwanda",
         pdfMode: "Hali",
         addVat: "Ongeza VAT",
@@ -460,9 +492,9 @@
         rateUsed: "Kiwango kilichotumika",
       };
     </script>
-    <script src="/assets/js/engines/rw-vat.js?v=efad1465"></script>
+    <script src="/assets/js/engines/rw-vat.js?v=a24f8f76"></script>
     <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
-    <script src="/assets/js/pages/rwanda-vat-vip.js?v=6bba29e6"></script>
+    <script src="/assets/js/pages/rwanda-vat-vip.js?v=96abeb59"></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
 </body>

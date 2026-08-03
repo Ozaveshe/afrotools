@@ -1,0 +1,307 @@
+const { pathToFileURL } = require('node:url');
+
+let pdfParse;
+try { pdfParse = require('pdf-parse'); } catch {
+  pdfParse = async buffer => {
+    const pdfjs = await import(pathToFileURL(require.resolve('pdfjs-dist/legacy/build/pdf.mjs')).href);
+    const document = await pdfjs.getDocument({ data: new Uint8Array(buffer), disableWorker: true }).promise;
+    const pages = [];
+    for (let pageNumber = 1; pageNumber <= document.numPages; pageNumber += 1) {
+      const page = await document.getPage(pageNumber);
+      const content = await page.getTextContent();
+      pages.push(content.items.map(item => item.str).join(' '));
+    }
+    return { text: pages.join('\n') };
+  };
+}
+let playwrightTest;
+try { playwrightTest = require('@playwright/test'); } catch { playwrightTest = require('playwright/test'); }
+const { test, expect } = playwrightTest;
+const manifest = require('../../data/localization/sw-agriculture-parity-manifest.json');
+const oracles = require('../../reports/sw-agriculture-fish-farming-oracles.json');
+const fishContract = require('../../scripts/lib/sw-agriculture-family-contracts/fish-farming');
+
+const ROWS = manifest.rows.filter(row => row.family === 'fish-farming');
+const ORACLE_BY_ID = new Map(oracles.rows.map(row => [row.englishId, row]));
+const PORT = Number(process.env.SW_FISH_FARMING_PORT || 4395);
+const SENTINEL = [
+  'worktree=sw-parity-resume-20260803',
+  'root=C:\\Users\\Oza\\.codex\\worktrees\\sw-parity-resume-20260803',
+  'branch=codex/sw-parity-resume-20260803',
+  'base=0f6990118d9ac8b9dcde446a6ede10a017b9a2db'
+].join('\n');
+const RESULT_KEYS = [
+  'fishStocked', 'survivalPct', 'fishHarvested', 'harvestKg', 'cyclesPerYear', 'annualKg',
+  'feedKg', 'feedBags', 'growPeriodMonths', 'infraTotal', 'infraAmortized', 'feedCost',
+  'fingerlingCost', 'laborCost', 'electricityCost', 'waterCost', 'medicationsCost',
+  'transportCost', 'processingCost', 'opCostTotal', 'totalCostPerCycle', 'revenue',
+  'netRevenue', 'profitPerCycle', 'annualProfit', 'roiPct', 'paybackMonths', 'costPerKg',
+  'breakEvenPrice', 'profitMargin', 'sellingPrice', 'feedPricePerKg', 'fingerlingPrice', 'sym', 'isProfit'
+];
+
+function watchFailures(page) {
+  const state = { consoleErrors: [], pageErrors: [], resourceFailures: [], responses: [], writes: [], external: [] };
+  page.on('console', message => { if (message.type() === 'error') state.consoleErrors.push(message.text()); });
+  page.on('pageerror', error => state.pageErrors.push(error.message));
+  page.on('requestfailed', request => state.resourceFailures.push(`${request.url()} ${request.failure() && request.failure().errorText}`));
+  page.on('response', response => { if (response.status() >= 400) state.responses.push(`${response.status()} ${response.url()}`); });
+  page.on('request', request => {
+    if (request.method() !== 'GET') state.writes.push(`${request.method()} ${request.url()}`);
+    if (/^https?:/i.test(request.url()) && !new RegExp(`^https?://(?:127\\.0\\.0\\.1|localhost):${PORT}/`, 'i').test(request.url())) state.external.push(request.url());
+  });
+  return state;
+}
+async function downloadBuffer(download) {
+  const stream = await download.createReadStream(), chunks = [];
+  for await (const chunk of stream) chunks.push(chunk);
+  return Buffer.concat(chunks);
+}
+function parseCsv(text) {
+  const rows = []; let row = [], cell = '', quoted = false;
+  const input = text.replace(/^\ufeff/, '');
+  for (let index = 0; index < input.length; index += 1) {
+    const char = input[index];
+    if (quoted && char === '"' && input[index + 1] === '"') { cell += '"'; index += 1; }
+    else if (char === '"') quoted = !quoted;
+    else if (!quoted && char === ',') { row.push(cell); cell = ''; }
+    else if (!quoted && (char === '\n' || char === '\r')) {
+      if (char === '\r' && input[index + 1] === '\n') index += 1;
+      row.push(cell); if (row.some(value => value !== '')) rows.push(row); row = []; cell = '';
+    } else cell += char;
+  }
+  if (cell || row.length) { row.push(cell); rows.push(row); }
+  return rows;
+}
+function rgb(value) { const match = String(value).match(/[\d.]+/g); return match ? match.slice(0, 3).map(Number) : [0, 0, 0]; }
+function luminance(color) {
+  const channels = rgb(color).map(value => { const n = value / 255; return n <= 0.03928 ? n / 12.92 : ((n + 0.055) / 1.055) ** 2.4; });
+  return 0.2126 * channels[0] + 0.7152 * channels[1] + 0.0722 * channels[2];
+}
+function contrast(first, second) { const values = [luminance(first), luminance(second)].sort((a, b) => b - a); return (values[0] + 0.05) / (values[1] + 0.05); }
+async function computedAppContrast(page) {
+  const values = await page.evaluate(() => {
+    const body = getComputedStyle(document.body), input = document.getElementById('area'), inputStyle = getComputedStyle(input);
+    const button = document.querySelector('#fishForm button[type="submit"]'), buttonStyle = getComputedStyle(button);
+    input.focus(); const focused = getComputedStyle(input);
+    return { bodyText: body.color, bodyBackground: body.backgroundColor, inputText: inputStyle.color, inputBackground: inputStyle.backgroundColor, inputBorder: inputStyle.borderTopColor, buttonText: buttonStyle.color, buttonBackground: buttonStyle.backgroundColor, focusOutline: focused.outlineColor };
+  });
+  expect(contrast(values.bodyText, values.bodyBackground)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(values.inputText, values.inputBackground)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(values.buttonText, values.buttonBackground)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(values.inputBorder, values.inputBackground)).toBeGreaterThanOrEqual(3);
+  expect(contrast(values.focusOutline, values.inputBackground)).toBeGreaterThanOrEqual(3);
+}
+async function computedHubContrast(page) {
+  const values = await page.evaluate(() => {
+    const body = getComputedStyle(document.body), card = document.querySelector('.card'), cardStyle = getComputedStyle(card);
+    const link = document.querySelector('.country-list a'); link.focus(); const linkStyle = getComputedStyle(link);
+    return { bodyText: body.color, bodyBackground: body.backgroundColor, cardBorder: cardStyle.borderTopColor, cardBackground: cardStyle.backgroundColor, linkText: linkStyle.color, linkBackground: linkStyle.backgroundColor === 'rgba(0, 0, 0, 0)' ? cardStyle.backgroundColor : linkStyle.backgroundColor, focusOutline: linkStyle.outlineColor };
+  });
+  expect(contrast(values.bodyText, values.bodyBackground)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(values.linkText, values.linkBackground)).toBeGreaterThanOrEqual(4.5);
+  expect(contrast(values.cardBorder, values.cardBackground)).toBeGreaterThanOrEqual(3);
+  expect(contrast(values.focusOutline, values.linkBackground)).toBeGreaterThanOrEqual(3);
+}
+async function assertKeyboardFocus(page) {
+  expect(await page.evaluate(() => {
+    const nodes = [...document.querySelectorAll('#fishForm input, #fishForm select, #fishForm button, #resultPanel button')].filter(node => !node.disabled && node.offsetParent !== null);
+    const failed = [];
+    nodes.forEach(node => { node.focus(); const style = getComputedStyle(node); const visible = (parseFloat(style.outlineWidth) >= 2 && style.outlineStyle !== 'none') || style.boxShadow !== 'none'; if (document.activeElement !== node || !visible || node.tabIndex < 0) failed.push(node.id || node.textContent.trim()); });
+    return failed;
+  })).toEqual([]);
+}
+async function assertSequentialKeyboard(page) {
+  const expected = await page.evaluate(() => {
+    const nodes = [...document.querySelectorAll('a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]')]
+      .filter(node => node.offsetParent !== null && node.tabIndex >= 0 && !(node.matches('input[type="radio"]') && !node.checked));
+    nodes.forEach((node, index) => { node.dataset.keyboardSequence = String(index); });
+    document.body.setAttribute('tabindex', '-1');
+    document.body.focus();
+    return nodes.map((node, index) => String(index));
+  });
+  const visited = [];
+  const badFocus = [];
+  for (let index = 0; index < expected.length + 3 && visited.length < expected.length; index += 1) {
+    await page.keyboard.press('Tab');
+    const current = await page.evaluate(() => {
+      const node = document.activeElement;
+      if (!node || node.dataset.keyboardSequence === undefined) return null;
+      const style = getComputedStyle(node);
+      const visible = (parseFloat(style.outlineWidth) >= 2 && style.outlineStyle !== 'none') || style.boxShadow !== 'none';
+      return { sequence: node.dataset.keyboardSequence, visible, label: node.id || node.textContent.trim() };
+    });
+    if (current) {
+      visited.push(current.sequence);
+      if (!current.visible) badFocus.push(current.label);
+    }
+  }
+  expect(visited).toEqual(expected);
+  expect(badFocus).toEqual([]);
+}
+async function assertDoubledRootReflow(page, usabilitySelectors) {
+  const baseline = await page.evaluate(() => parseFloat(getComputedStyle(document.documentElement).fontSize));
+  expect(baseline).toBeGreaterThan(0);
+  for (const width of [320, 375]) {
+    await page.setViewportSize({ width, height: 900 });
+    const metrics = await page.evaluate(({ baselineFont, selectors }) => {
+      document.getElementById('reflowTextResize')?.remove();
+      const resizeStyle = document.createElement('style');
+      resizeStyle.id = 'reflowTextResize';
+      resizeStyle.textContent = `html:root[lang="sw"][data-theme] { font-size: ${baselineFont * 2}px !important; transition: none !important; }`;
+      document.head.appendChild(resizeStyle);
+      const offenders = [...document.body.querySelectorAll('*')].filter(node => {
+        if (node.offsetParent === null) return false;
+        const rect = node.getBoundingClientRect();
+        const style = getComputedStyle(node);
+        const outsideViewport = rect.left < -1 || rect.right > window.innerWidth + 1;
+        const visibleInternalOverflow = node.scrollWidth > node.clientWidth + 1 && style.overflowX === 'visible';
+        return outsideViewport || visibleInternalOverflow;
+      }).map(node => ({
+        tag: node.tagName,
+        id: node.id,
+        className: typeof node.className === 'string' ? node.className : '',
+        clientWidth: node.clientWidth,
+        scrollWidth: node.scrollWidth,
+        left: node.getBoundingClientRect().left,
+        right: node.getBoundingClientRect().right,
+      }));
+      const unusable = selectors.filter(selector => {
+        const node = document.querySelector(selector);
+        if (!node || node.offsetParent === null) return true;
+        const rect = node.getBoundingClientRect();
+        return rect.width < 24 || rect.height < 24 || rect.left < -1 || rect.right > window.innerWidth + 1;
+      });
+      return {
+        computedRootFont: parseFloat(getComputedStyle(document.documentElement).fontSize),
+        documentClientWidth: document.documentElement.clientWidth,
+        documentScrollWidth: document.documentElement.scrollWidth,
+        bodyClientWidth: document.body.clientWidth,
+        bodyScrollWidth: document.body.scrollWidth,
+        offenders,
+        unusable,
+      };
+    }, { baselineFont: baseline, selectors: usabilitySelectors });
+    expect(metrics.computedRootFont, JSON.stringify(metrics)).toBeCloseTo(baseline * 2, 1);
+    expect(metrics.documentScrollWidth).toBeLessThanOrEqual(metrics.documentClientWidth);
+    expect(metrics.bodyScrollWidth).toBeLessThanOrEqual(metrics.bodyClientWidth);
+    expect(metrics.offenders).toEqual([]);
+    expect(metrics.unusable).toEqual([]);
+  }
+  await page.evaluate(() => { document.getElementById('reflowTextResize')?.remove(); });
+  await page.setViewportSize({ width: 375, height: 900 });
+}
+async function assertRouteShell(page, row, failures) {
+  await expect(page.locator('html')).toHaveAttribute('lang', 'sw'); await expect(page.locator('iframe')).toHaveCount(0);
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', `https://afrotools.com${row.swahili.routeKey}`);
+  for (const { hreflang, route } of fishContract.alternateEntries(row, true)) await expect(page.locator(`link[rel="alternate"][hreflang="${hreflang}"]`)).toHaveAttribute('href', `https://afrotools.com${route}`);
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute('content', `https://afrotools.com${row.swahili.routeKey}`);
+  const schema = await page.locator('script[type="application/ld+json"]').first().evaluate(node => JSON.parse(node.textContent));
+  expect(schema.inLanguage).toBe('sw');
+  const image = page.locator('.hero-art'); await expect(image).toBeVisible(); expect(await image.evaluate(node => node.complete && node.naturalWidth > 0)).toBe(true);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
+  const sentinel = await page.evaluate(async () => (await fetch('/tests/fixtures/sw-fish-farming-worktree-sentinel.txt')).text());
+  expect(sentinel.trim()).toBe(SENTINEL);
+  await page.locator('.skip-link').focus(); await expect(page.locator('.skip-link')).toBeFocused(); await page.keyboard.press('Enter'); await expect(page.locator('main#contenu')).toBeFocused();
+  await expect(page.locator('a[href^="/"]:not([href^="/sw/"])')).toHaveCount(0);
+  expect(failures).toEqual({ consoleErrors: [], pageErrors: [], resourceFailures: [], responses: [], writes: [], external: [] });
+}
+async function fillValid(page, oracle) {
+  const input = oracle.validOracle.input;
+  await page.locator('#species').selectOption(input.speciesId); await page.locator('#system').selectOption(input.system);
+  await page.locator('#area').fill(String(input.pondArea)); await page.locator('#density').selectOption(input.densityLevel);
+  await page.locator('#management').selectOption(input.managementLevel); await page.locator('#target').selectOption(input.targetSizeLevel);
+  await page.locator('#months').fill(String(input.growPeriodMonths)); await page.locator('#cycles').fill(String(input.cyclesPerYear));
+  await page.locator('#feed').selectOption(input.feedType); await page.locator('#processing').selectOption(input.processingLevel);
+  await page.locator('#laborDays').fill(String(input.laborDays)); await page.locator('#familyLabor').fill(String(input.familyLaborPct));
+  await page.locator('#infrastructure').selectOption(input.hasExistingInfra ? 'yes' : 'no');
+  await page.locator('#water').selectOption(input.needsBorehole ? 'borehole' : 'surface');
+}
+
+for (const row of ROWS) {
+  test(`${row.english.id} full route local proof`, async ({ page }) => {
+    const failures = watchFailures(page);
+    await page.addInitScript(() => {
+      localStorage.removeItem('afrotools-theme');
+      Object.defineProperty(navigator, 'share', { configurable: true, value: async payload => { window.__fishSharePayload = payload; } });
+    });
+    await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+    await page.setViewportSize({ width: 375, height: 900 }); await page.goto(row.swahili.routeKey);
+
+    if (!row.country) {
+      await expect(page.locator('.country-list a')).toHaveCount(15);
+      await expect(page.getByRole('link', { name: 'FAO SOFIA 2024 — Hali ya Uvuvi na Ufugaji wa Samaki Duniani' })).toHaveAttribute('href', /fao\.org/);
+      await expect(page.getByRole('link', { name: 'WorldFish Center' })).toHaveAttribute('href', 'https://worldfishcenter.org/');
+      await expect(page.getByText(/gharama za soko za 2024–2025/)).toBeVisible();
+      await expect(page.getByText('Kiwango cha uhakika', { exact: true })).toBeVisible();
+      await expect(page.getByText(new RegExp(row.english.id))).toBeVisible();
+      await expect(page.locator('[data-result-action]')).toHaveCount(0);
+      expect(await page.locator('body').evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(13, 22, 36)'); await computedHubContrast(page);
+      await page.emulateMedia({ colorScheme: 'light' }); await expect.poll(() => page.locator('body').evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(245, 248, 252)'); await computedHubContrast(page);
+      await page.getByRole('button', { name: 'Mandhari meusi' }).click(); await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark');
+      await page.getByRole('button', { name: 'Mandhari mepesi' }).click(); await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+      await assertDoubledRootReflow(page, ['#themeToggle', '.country-list a']);
+      await assertSequentialKeyboard(page);
+      await assertRouteShell(page, row, failures); return;
+    }
+
+    const oracle = ORACLE_BY_ID.get(row.english.id); expect(oracle).toBeTruthy();
+    await expect(page.getByRole('heading', { level: 1 })).toContainText(oracle.countryName);
+    await expect(page.locator('meta[name="afrotools-country-id"]')).toHaveAttribute('content', row.country.code);
+    await expect(page.getByText(/hakuna ingizo linalotumwa kwa seva/i)).toBeVisible();
+    await expect(page.getByText(/si data ya moja kwa moja/)).toBeVisible();
+    await expect(page.getByRole('link', { name: 'FAO SOFIA 2024 — Hali ya Uvuvi na Ufugaji wa Samaki Duniani' })).toHaveAttribute('href', /fao\.org/);
+    await expect(page.getByRole('link', { name: 'WorldFish Center' })).toHaveAttribute('href', 'https://worldfishcenter.org/');
+    await expect(page.getByText(new RegExp(row.english.id))).toBeVisible();
+    const controls = page.locator('#fishForm input, #fishForm select');
+    for (let index = 0; index < await controls.count(); index += 1) { const id = await controls.nth(index).getAttribute('id'); await expect(page.locator(`label[for="${id}"]`)).toHaveCount(1); }
+    await expect(page.locator('[data-result-action]:enabled')).toHaveCount(0);
+    await fillValid(page, oracle);
+    const expectedUnit = oracle.validOracle.input.system === 'tarpaulin_tank' ? 'lita' : 'm²';
+    await expect(page.locator('#areaUnit')).toHaveText(expectedUnit);
+    const calculate = page.getByRole('button', { name: 'Kokotoa faida' }); await calculate.focus(); await expect(calculate).toBeFocused(); await page.keyboard.press('Enter');
+    await expect(page.locator('#resultPanel')).toBeVisible(); await expect(page.locator('#resultPanel')).toBeFocused();
+    const runtime = await page.evaluate(keys => {
+      const state = window.__SW_AGRI_TEST__, result = state.latest.result;
+      return { result: Object.fromEntries(keys.map(key => [key, result[key]])), report: state.reportObject(), config: window.__SW_AGRI_PAGE__ };
+    }, RESULT_KEYS);
+    expect(runtime.config.aiRouteId).toBe(row.english.id); expect(runtime.report.nchi.code).toBe(row.country.code);
+    expect(runtime.report.chanzo.lebo).toBe(oracle.source); expect(runtime.result).toEqual(oracle.validOracle.expected);
+
+    const exports = [
+      { name: 'Pakua JSON', extension: '.json', verify: buffer => { const parsed = JSON.parse(buffer.toString('utf8')); expect(parsed.nchi.code).toBe(row.country.code); expect(parsed.matokeo.faidaMzunguko).toBe(oracle.validOracle.expected.profitPerCycle); expect(parsed.chanzo.lebo).toBe(oracle.source); } },
+      { name: 'Pakua TXT', extension: '.txt', verify: buffer => { const text = buffer.toString('utf8').replace(/^\ufeff/, ''); expect(text).toContain('Faida ya ufugaji wa samaki'); expect(text).toContain('Vyanzo vilivyotajwa: ' + oracle.source); } },
+      { name: 'Pakua CSV', extension: '.csv', verify: buffer => { const parsed = parseCsv(buffer.toString('utf8')); expect(parsed).toHaveLength(2); const record = Object.fromEntries(parsed[0].map((key, index) => [key, parsed[1][index]])); expect(record.code_nchi).toBe(row.country.code); expect(Number(record.faida_mzunguko)).toBe(oracle.validOracle.expected.profitPerCycle); expect(record.sarafu).toBe(oracle.currency); } },
+      { name: 'Pakua PDF', extension: '.pdf', verify: async buffer => { expect(buffer.subarray(0, 4).toString('ascii')).toBe('%PDF'); const parsed = await pdfParse(buffer); expect(parsed.text).toContain('Faida ya ufugaji wa samaki'); expect(parsed.text).toContain('Vyanzo vilivyotajwa'); expect(parsed.text).toContain('FAO SOFIA'); expect(parsed.text).toContain('WorldFish Center'); } }
+    ];
+    for (const item of exports) { const pending = page.waitForEvent('download'); await page.getByRole('button', { name: item.name }).click(); const download = await pending; expect(download.suggestedFilename().toLowerCase()).toContain(row.country.code.toLowerCase()); expect(download.suggestedFilename().toLowerCase().endsWith(item.extension)).toBe(true); await item.verify(await downloadBuffer(download)); }
+    await page.getByRole('button', { name: 'Hifadhi kwenye kivinjari' }).click();
+    const saved = await page.evaluate(code => localStorage.getItem(`afrotools:sw-agriculture:fish-farming:${code}`), row.country.code); expect(JSON.parse(saved).nchi.code).toBe(row.country.code);
+    await page.getByRole('button', { name: 'Shiriki' }).click(); const share = await page.evaluate(() => window.__fishSharePayload);
+    expect(share.url).toBe(`http://127.0.0.1:${PORT}${row.swahili.routeKey}`); expect(share.text).toContain('Faida ya ufugaji wa samaki');
+
+    const invalidCases = [
+      { selector: '#area', value: '0', message: 'kati ya 1 na 1,000,000' }, { selector: '#area', value: '1000001', message: 'kati ya 1 na 1,000,000' }, { selector: '#area', value: '', message: 'kati ya 1 na 1,000,000' },
+      { selector: '#months', value: '0', message: 'kati ya mwezi 1 na miezi 24' }, { selector: '#months', value: '25', message: 'kati ya mwezi 1 na miezi 24' }, { selector: '#months', value: '1.5', message: 'kati ya mwezi 1 na miezi 24' },
+      { selector: '#cycles', value: '0', message: 'kati ya 1 na 12' }, { selector: '#cycles', value: '13', message: 'kati ya 1 na 12' }, { selector: '#cycles', value: '1.5', message: 'kati ya 1 na 12' },
+      { selector: '#laborDays', value: '-1', message: 'kati ya 0 na 3,660' }, { selector: '#laborDays', value: '3661', message: 'kati ya 0 na 3,660' }, { selector: '#laborDays', value: '1.5', message: 'kati ya 0 na 3,660' },
+      { selector: '#familyLabor', value: '-1', message: 'kati ya 0% na 100%' }, { selector: '#familyLabor', value: '101', message: 'kati ya 0% na 100%' },
+      { selector: '#species', invalidSelect: true, message: 'inayopatikana kwa nchi hii' }
+    ];
+    for (const boundary of invalidCases) {
+      await fillValid(page, oracle); await calculate.click(); await expect(page.locator('#resultPanel')).toBeVisible();
+      if (boundary.invalidSelect) await page.locator(boundary.selector).evaluate(node => { const option = document.createElement('option'); option.value = '__invalid__'; option.textContent = 'batili'; node.appendChild(option); node.value = '__invalid__'; node.dispatchEvent(new Event('change', { bubbles: true })); });
+      else await page.locator(boundary.selector).fill(boundary.value);
+      await expect(page.locator('#resultPanel')).toBeHidden(); await expect(page.locator('[data-result-action]:enabled')).toHaveCount(0); expect(await page.evaluate(() => window.__SW_AGRI_TEST__.latest)).toBeNull();
+      await calculate.click(); await expect(page.getByRole('alert')).toContainText(boundary.message); await expect(page.locator(boundary.selector)).toBeFocused(); await expect(page.locator('#resultPanel')).toBeHidden();
+    }
+
+    await fillValid(page, oracle); await calculate.click(); await assertKeyboardFocus(page);
+    await page.emulateMedia({ colorScheme: 'dark' }); await expect(page.locator('html')).toHaveAttribute('data-theme', 'system'); await expect.poll(() => page.locator('body').evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(13, 22, 36)'); await computedAppContrast(page);
+    await page.emulateMedia({ colorScheme: 'light' }); await expect.poll(() => page.locator('body').evaluate(node => getComputedStyle(node).backgroundColor)).toBe('rgb(245, 248, 252)'); await computedAppContrast(page);
+    await page.getByRole('button', { name: 'Mandhari meusi' }).click(); await expect(page.locator('html')).toHaveAttribute('data-theme', 'dark'); await page.getByRole('button', { name: 'Mandhari mepesi' }).click(); await expect(page.locator('html')).toHaveAttribute('data-theme', 'light');
+    await assertDoubledRootReflow(page, ['#fishForm button[type="submit"]', '#resultPanel', '[data-result-action="json"]']);
+    await assertSequentialKeyboard(page);
+    expect(await page.evaluate(() => { const ids = [...document.querySelectorAll('[id]')].map(element => element.id); return ids.filter((id, index) => ids.indexOf(id) !== index); })).toEqual([]);
+    await assertRouteShell(page, row, failures);
+  });
+}

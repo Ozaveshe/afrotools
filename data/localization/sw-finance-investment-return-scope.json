@@ -1,0 +1,45 @@
+{
+  "schemaVersion": 1,
+  "lane": "swahili-finance-remainder",
+  "baseSha": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db",
+  "inventory": "reports/swahili-free-app-parity-inventory.json",
+  "coordinatedSibling": {
+    "englishId": "compound-interest",
+    "sourceScope": "data/localization/sw-finance-compound-interest-scope.json",
+    "includedInThisCombinedCommit": true
+  },
+  "ownedRows": [
+    {
+      "englishId": "investment-return",
+      "categoryKey": "financial",
+      "englishRoute": "/tools/investment-return/",
+      "swahiliRoute": "/sw/zana/faida-ya-uwekezaji/",
+      "inventoryStateAtBase": "missing"
+    }
+  ],
+  "excludedCategories": ["hr-payroll", "personal-finance", "vat"],
+  "excludedAcceptedFinanceIds": [
+    "minimum-wage", "overtime-calc", "leave-calculator", "social-security", "ke-paye", "crypto-address"
+  ],
+  "excludedSeparateCandidateIds": [
+    "compound-interest", "savings-goal", "car-loan", "bank-charges"
+  ],
+  "excludedPayeRepairIds": [
+    "ao-paye", "bw-paye", "bf-paye", "bi-paye", "cm-paye", "cf-paye", "td-paye", "ci-paye", "eg-paye", "gq-paye", "sz-paye", "et-paye", "ga-paye", "gn-paye", "ls-paye", "mw-paye", "ml-paye", "mu-paye", "ne-paye", "rw-paye", "sn-paye", "sc-paye", "tz-paye", "ug-paye", "zm-paye", "zw-paye"
+  ],
+  "engineFamily": {
+    "source": "engines/src/investment-return-engine.js",
+    "runtime": "engines/investment-return-engine.js",
+    "controller": "assets/js/pages/investment-return-vip.js"
+  },
+  "advertisedNativeFormats": ["clipboard-text", "csv", "pdf"],
+  "prohibitedOwners": [
+    "data/localization/swahili-acceptance-ledger.json",
+    "assets/js/ai/intent-router.js",
+    "data/ai/tool-intents.json",
+    "data/registry/master-ledger.json",
+    "sitemap.xml",
+    "dist/"
+  ],
+  "policy": "This scope owns exactly the missing investment-return row. It reuses only the existing DOM-free investment engine and shared controller, is integrated with the separately bounded Compound Interest sibling, and infers no acceptance for any other Finance row."
+}
