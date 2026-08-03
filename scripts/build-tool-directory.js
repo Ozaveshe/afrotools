@@ -73,7 +73,7 @@ function buildFallbackHtml(records) {
         <div class="tc-top"><div class="tc-icon">AT</div><h3>${escapeHtml(tool.name)}</h3></div>
         <p>${escapeHtml(tool.description)}</p>
         <div class="tc-meta"><span><strong>Countries:</strong> ${escapeHtml(countryText)}</span><span><strong>Category:</strong> ${escapeHtml(tool.category)}</span><span><strong>Language:</strong> ${escapeHtml(tool.language.toUpperCase())} &middot; <strong>Data as of:</strong> ${escapeHtml(freshness)}</span></div>
-        <div class="tc-foot"><span class="tc-badge tc-badge-live">Live</span><span class="tc-cta">Open Tool &rarr;</span></div>
+        <div class="tc-foot"><span class="tc-cta">Open tool &rarr;</span></div>
       </a>`;
       }).join('\n');
 

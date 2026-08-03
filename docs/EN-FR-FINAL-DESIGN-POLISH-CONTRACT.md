@@ -1,12 +1,12 @@
 # English and French Final Design Polish Contract
 
-Status: prepared, implementation gated
+Status: release candidate; production proof pending
 
 Sequence: begin product edits only after Swahili parity is accepted
 
 Locales: English (`en`) and French (`fr`)
 
-Baseline reviewed: French integration candidate `4d006564a72e6af25c93338841f54907e8af575c`
+Accepted Swahili and release baseline: `14ebe624b4d77ac8fa847c48d1083452bfb290cc`
 
 ## Purpose
 
@@ -18,7 +18,7 @@ This is not a global repaint. Changes must be made at the real source owner—sh
 
 No English or French product page is changed under this programme until the Swahili parity programme has reached its documented acceptance boundary. Preparatory inventory, source-owner reconciliation, and design-contract work may happen before that boundary.
 
-The release coordinator must record the accepted Swahili commit before starting Wave 1 below.
+The release coordinator recorded accepted Swahili commit `14ebe624b4d77ac8fa847c48d1083452bfb290cc`; Wave 1 may proceed from that exact production baseline.
 
 ## Design Direction
 
@@ -85,8 +85,10 @@ These are detection counts, not confirmed violations. They intentionally overcou
 
 | Locale | Physical files scanned | Accent-rail signals | Gradient signals | Glow-shadow signals | Uppercase signals | Card-class signals | Badge-class signals | Generic-copy signals | Emoji signals |
 | --- | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: | ---: |
-| English | 1,400 | 899 in 499 files | 2,266 in 942 | 2,319 in 873 | 4,208 in 965 | 29,435 in 1,297 | 6,761 in 1,121 | 206 in 133 | 2,256 in 295 |
-| French | 1,610 | 810 in 798 files | 1,030 in 717 | 2,084 in 910 | 1,604 in 839 | 9,219 in 1,165 | 1,853 in 477 | 34 in 15 | 1,496 in 504 |
+| English | 1,401 | 899 in 499 files | 2,202 in 933 | 2,307 in 873 | 4,216 in 966 | 28,357 in 1,291 | 5,132 in 1,053 | 192 in 130 | 1,624 in 264 |
+| French | 1,610 | 810 in 798 files | 995 in 706 | 2,074 in 910 | 1,602 in 839 | 9,227 in 1,162 | 1,800 in 468 | 11 in 11 | 400 in 267 |
+
+The refreshed scanner separates visible markup, visible copy, and inline CSS. Script templates and embedded data are no longer counted as user-visible cards, badges, campaign copy, or emoji. This removes false positives without weakening the CSS-pattern checks.
 
 High-priority owner families found during the preparatory scan:
 
@@ -96,7 +98,20 @@ High-priority owner families found during the preparatory scan:
 - `assets/css/ke-stamp-duty-vip.css`, which currently fails the existing accent guard and also contains a decorative hero gradient, inset rail, metric rails, uppercase labels, and mixed typography;
 - semantic diff, warning, success, and platform-state rails that must not be removed mechanically.
 
-The baseline already contains the narrow `npm run ui:accent-check` introduced by the earlier decorative-accent cleanup. It currently reports one carried failure in `assets/css/ke-stamp-duty-vip.css`. This programme must repair that source owner after the Swahili gate opens; it must not disguise the failure by weakening the guard.
+The release candidate repairs the carried `assets/css/ke-stamp-duty-vip.css` failure. The fail-closed `npm run ui:accent-check` now passes without weakening its pattern rules and also inspects untracked source files so new work cannot bypass the guard before staging.
+
+## Release-Candidate Closeout
+
+The coordinated source pass deliberately concentrates on high-reach owners rather than repainting thousands of generated pages:
+
+- `assets/css/global.css` and `assets/css/design-system.css` now agree on solid actions, neutral boundaries, restrained elevation, dark-mode surfaces, visible focus, 44px controls, and reduced motion;
+- `assets/js/components/related-tools.js` now uses real artwork with calm monogram fallback, French discovery copy, neutral metadata, one-column mobile behavior, and no decorative emoji or category gradients;
+- `assets/css/energy.css` now supplies the shared English/French Energy family with calmer heroes, cards, controls, dark states, and 320px/200% reflow repairs;
+- the Kenya Stamp Duty English/French pair has a dedicated typography, hierarchy, theme, mobile, function, privacy, and parsed-export proof;
+- the English tool directory retains 1,258 crawlable canonical records and all machine-readable statuses while removing 1,258 redundant visible `Live` badges;
+- the French Agriculture renderer replaces the decorative trust rail at source. Existing physical French and Swahili Agriculture files were not broadly regenerated in this release; future narrow owner runs inherit the neutral contract.
+
+The inventory now includes the English homepage and resolves relative local stylesheet/script references. `npm run ui:polish:check` fails closed when the committed inventory is stale. Shared-owner reach overlaps and is therefore reported as reference coverage rather than summed as a unique-app total.
 
 ## Implementation Waves
 
