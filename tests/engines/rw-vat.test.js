@@ -66,9 +66,18 @@ test("registration thresholds are strictly exceeded", () => {
 });
 
 test("rejects invalid inputs", () => {
+  assert.throws(() => engine.calculate({ amount: "" }), RangeError);
   assert.throws(() => engine.calculate({ amount: -1 }), RangeError);
   assert.throws(
     () => engine.calculate({ amount: 1, rateKind: "scenario", rate: 101 }),
+    RangeError,
+  );
+  assert.throws(
+    () => engine.calculate({ amount: 1, rateKind: "scenario", rate: "" }),
+    RangeError,
+  );
+  assert.throws(
+    () => engine.calculateInvoice([{ quantity: "", unitPrice: 500 }]),
     RangeError,
   );
 });

@@ -107,14 +107,14 @@ for (const entry of CONTRACT.entries) {
 
 assert.deepStrictEqual(
   blocked.sort(),
-  ['bi-paye', 'rw-paye', 'ug-paye'],
-  'Only the three documented formula-parity routes may remain blocked',
+  [],
+  'All 26 PAYE routes must retain English-output parity',
 );
 assert.strictEqual(CONTRACT.entries.length, 26, 'The PAYE completion scope must remain exact');
 assert.strictEqual(
   CONTRACT.entries.filter((entry) => entry.englishParity).length,
-  23,
-  'Exactly 23 PAYE routes have English-output parity',
+  26,
+  'All 26 PAYE routes have English-output parity',
 );
 
-console.log('Verified exact English formula hashes, native runtime copy, reciprocal hreflang and 23/26 PAYE parity.');
+console.log('Verified exact English formula hashes, native runtime copy, reciprocal hreflang and 26/26 PAYE parity.');

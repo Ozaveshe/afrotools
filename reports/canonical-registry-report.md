@@ -7,13 +7,13 @@ Counts with different membership rules intentionally use different labels.
 
 | Semantic count | Value |
 |---|---:|
-| Raw tool registry rows | 3759 |
+| Raw tool registry rows | 3767 |
 | Explicit redirect aliases | 5 |
-| Canonical published tool records | 3754 |
+| Canonical published tool records | 3762 |
 | Canonical published English tool records | 1258 |
-| Localized published tool records | 2496 |
+| Localized published tool records | 2504 |
 | Expanded live tool experiences | 2612 |
-| Indexable tool destinations | 3754 |
+| Indexable tool destinations | 3762 |
 | Widget-enabled tool records | 156 |
 | Published widgets | 223 |
 | Widget categories | 23 |
@@ -53,7 +53,7 @@ Counts with different membership rules intentionally use different labels.
 | ha | partial | 87 |
 | ig | unsupported | 0 |
 | pt | unsupported | 0 |
-| sw | published | 880 |
+| sw | published | 888 |
 | yo | partial | 45 |
 
 ## Category coverage
@@ -65,15 +65,15 @@ Counts with different membership rules intentionally use different labels.
 | career | 18 |
 | climate | 32 |
 | creative | 114 |
-| data-productivity | 35 |
+| data-productivity | 38 |
 | developer | 83 |
 | diaspora | 7 |
-| document-pdf | 121 |
-| ecommerce | 248 |
-| education | 142 |
+| document-pdf | 124 |
+| ecommerce | 250 |
+| education | 141 |
 | energy | 267 |
 | engineering | 64 |
-| financial | 478 |
+| financial | 479 |
 | fintech | 85 |
 | government | 101 |
 | health | 122 |
@@ -105,21 +105,21 @@ Counts with different membership rules intentionally use different labels.
 | plans.api | API plans | 4 | Canonical API quota tiers after aliases such as starter are collapsed. |
 | plans.product_options | Product subscription options | 10 | Published currency and billing-interval options in the Pro product plan module. |
 | pro.apps | Pro apps | 11 | Published Pro application records with repository routes. |
-| tools.canonical_published | Canonical published tool records | 3754 | Published non-deprecated tool records after explicit route aliases are excluded. |
+| tools.canonical_published | Canonical published tool records | 3762 | Published non-deprecated tool records after explicit route aliases are excluded. |
 | tools.category.african.published | Uniquely African published tool records | 146 | Canonical published non-redirect tool records in category african. |
 | tools.category.agriculture.published | Agriculture published tool records | 509 | Canonical published non-redirect tool records in category agriculture. |
 | tools.category.career.published | Career & Development published tool records | 18 | Canonical published non-redirect tool records in category career. |
 | tools.category.climate.published | Climate & Environment published tool records | 32 | Canonical published non-redirect tool records in category climate. |
 | tools.category.creative.published | Creative Economy published tool records | 114 | Canonical published non-redirect tool records in category creative. |
-| tools.category.data-productivity.published | Business & ROI published tool records | 35 | Canonical published non-redirect tool records in category data-productivity. |
+| tools.category.data-productivity.published | Business & ROI published tool records | 38 | Canonical published non-redirect tool records in category data-productivity. |
 | tools.category.developer.published | Developer Tools published tool records | 83 | Canonical published non-redirect tool records in category developer. |
 | tools.category.diaspora.published | Diaspora published tool records | 7 | Canonical published non-redirect tool records in category diaspora. |
-| tools.category.document-pdf.published | Document & PDF published tool records | 121 | Canonical published non-redirect tool records in category document-pdf. |
-| tools.category.ecommerce.published | VAT & Business Tax published tool records | 248 | Canonical published non-redirect tool records in category ecommerce. |
-| tools.category.education.published | Education published tool records | 142 | Canonical published non-redirect tool records in category education. |
+| tools.category.document-pdf.published | Document & PDF published tool records | 124 | Canonical published non-redirect tool records in category document-pdf. |
+| tools.category.ecommerce.published | VAT & Business Tax published tool records | 250 | Canonical published non-redirect tool records in category ecommerce. |
+| tools.category.education.published | Education published tool records | 141 | Canonical published non-redirect tool records in category education. |
 | tools.category.energy.published | Energy & Utilities published tool records | 267 | Canonical published non-redirect tool records in category energy. |
 | tools.category.engineering.published | Engineering & Construction published tool records | 64 | Canonical published non-redirect tool records in category engineering. |
-| tools.category.financial.published | Finance, Tax & Market Data published tool records | 478 | Canonical published non-redirect tool records in category financial. |
+| tools.category.financial.published | Finance, Tax & Market Data published tool records | 479 | Canonical published non-redirect tool records in category financial. |
 | tools.category.fintech.published | Fintech & Banking published tool records | 85 | Canonical published non-redirect tool records in category fintech. |
 | tools.category.government.published | Government & Civic published tool records | 101 | Canonical published non-redirect tool records in category government. |
 | tools.category.health.published | Health & Wellness published tool records | 122 | Canonical published non-redirect tool records in category health. |
@@ -139,15 +139,15 @@ Counts with different membership rules intentionally use different labels.
 | tools.category.transport.published | Transport & Logistics published tool records | 55 | Canonical published non-redirect tool records in category transport. |
 | tools.category.travel-tourism.published | Travel & Tourism published tool records | 32 | Canonical published non-redirect tool records in category travel-tourism. |
 | tools.english_canonical_published | Canonical published English tool records | 1258 | Canonical published non-redirect tool records whose locale coverage includes English. |
-| tools.indexable_destinations | Indexable tool destinations | 3754 | Canonical published non-redirect tool records marked indexable. |
+| tools.indexable_destinations | Indexable tool destinations | 3762 | Canonical published non-redirect tool records marked indexable. |
 | tools.live_experiences | Live tool experiences | 2612 | Unique English published destinations plus declared hidden country variants from toolCount families. |
 | tools.locale.en.published | en published tool records | 1258 | Canonical published non-redirect tool records whose locale coverage includes en. |
 | tools.locale.fr.published | fr published tool records | 1484 | Canonical published non-redirect tool records whose locale coverage includes fr. |
 | tools.locale.ha.published | ha published tool records | 87 | Canonical published non-redirect tool records whose locale coverage includes ha. |
-| tools.locale.sw.published | sw published tool records | 880 | Canonical published non-redirect tool records whose locale coverage includes sw. |
+| tools.locale.sw.published | sw published tool records | 888 | Canonical published non-redirect tool records whose locale coverage includes sw. |
 | tools.locale.yo.published | yo published tool records | 45 | Canonical published non-redirect tool records whose locale coverage includes yo. |
-| tools.localized_records | Localized published tool records | 2496 | Canonical published tool records whose locale coverage does not include English. |
-| tools.raw_rows | Raw tool registry rows | 3759 | Every row in the legacy browser tool registry, including localized rows and explicit redirect aliases. |
+| tools.localized_records | Localized published tool records | 2504 | Canonical published tool records whose locale coverage does not include English. |
+| tools.raw_rows | Raw tool registry rows | 3767 | Every row in the legacy browser tool registry, including localized rows and explicit redirect aliases. |
 | tools.unpublished | Unpublished tool records | 0 | Canonical tool records that are neither published nor redirect aliases. |
 | tools.widget_enabled | Widget-enabled tool records | 156 | Canonical published tool records linked to at least one published widget by canonical full-tool route. |
 | widgets.categories | Widget categories | 23 | Distinct category identifiers represented by published widgets. |

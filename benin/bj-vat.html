@@ -22,19 +22,16 @@
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Benin","item":"https://afrotools.com/bj"},{"@type":"ListItem","position":3,"name":"Benin VAT Calculator","item":"https://afrotools.com/benin/bj-vat"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Benin VAT Calculator 2026","description":"Calculate Benin VAT using the 18% standard rate in CGI Article 241. Add or extract VAT and review source notes before filing.","url":"https://afrotools.com/benin/bj-vat","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/bj-vat.webp","dateModified":"2026-07-22"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Benin VAT Calculator 2026","url":"https://afrotools.com/benin/bj-vat","description":"Benin VAT planning calculator with official DGI and CGI references for the 18% rate and monthly filing deadline.","inLanguage":"en","dateModified":"2026-07-22","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/bj-vat.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Benin VAT Calculator 2026","description":"Calculate Benin VAT using the 18% standard rate in CGI Article 241. Add or extract VAT and review source notes before filing.","url":"https://afrotools.com/benin/bj-vat","inLanguage":"en","applicationCategory":"FinanceApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/bj-vat.webp","dateModified":"2026-08-02"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Benin VAT Calculator 2026","url":"https://afrotools.com/benin/bj-vat","description":"Benin VAT planning calculator with official DGI and CGI references for the 18% rate and monthly filing deadline.","inLanguage":"en","dateModified":"2026-08-02","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/bj-vat.webp"}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is the standard VAT rate in Benin?","acceptedAnswer":{"@type":"Answer","text":"The standard VAT rate in Benin is 18% as of 2026. This is levied on most goods and services sold within Benin."}},{"@type":"Question","name":"How do I add VAT to a price in Benin?","acceptedAnswer":{"@type":"Answer","text":"Multiply the pre-tax price by 1.1800 (i.e., price × (1 + 0.18)). Example: CFA10,000 × 1.1800 = CFA11,800 including VAT."}},{"@type":"Question","name":"How do I remove VAT from a price in Benin?","acceptedAnswer":{"@type":"Answer","text":"Divide the VAT-inclusive price by 1.1800. Example: CFA11,800 ÷ 1.1800 = CFA10,000 pre-tax."}}]}</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
 <link rel="stylesheet" href="/assets/css/bj-vat-vip.css?v=3691fdad">
-<script src="/assets/js/engines/bj-vat.js?v=df5da7a5"></script>
+<script src="/assets/js/engines/bj-vat.js?v=fbed2d94"></script>
+<script>window._afroAuthLoaded = true;</script>
 <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
-<script defer src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
     --acc: var(--color-primary);
@@ -327,6 +324,18 @@
     .res-copy-btn{padding:8px 12px}
   }
 </style>
+<style>
+  .bj-calc-status{min-height:1.35em;margin:8px 0 0;color:#991b1b;font-size:.78rem;font-weight:800}
+  .f-input[aria-invalid="true"],.custom-rate-input[aria-invalid="true"]{border-color:#b91c1c;box-shadow:0 0 0 3px rgba(185,28,28,.14)}
+  :where(button,a,input,select):focus-visible{outline:3px solid #005fcc!important;outline-offset:3px!important}
+  html[data-theme="dark"] body{background:#0b1220;color:#e5e7eb}
+  html[data-theme="dark"] :where(.calc-card,.side-card,.faq-item,.tool-info-card,.tool-verification-card){background:#111827;color:#e5e7eb;border-color:#475569}
+  html[data-theme="dark"] :where(.f-label-text,.f-hint,.tool-verification-meta,.tool-verification-lead,.faq-a){color:#cbd5e1}
+  html[data-theme="dark"] :where(.f-input,.custom-rate-input){background:#0f172a;color:#f8fafc;border-color:#64748b}
+  html[data-theme="dark"] .bj-calc-status{color:#fecaca}
+  html[data-theme="dark"] :where(button,a,input,select):focus-visible{outline-color:#93c5fd!important}
+  @media (prefers-color-scheme:dark){.bj-calc-status{color:#fecaca}}
+</style>
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 
   <script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
@@ -357,12 +366,12 @@
     <h1>Benin VAT<br><em>Calculator 2026</em></h1>
     <p class="hero-sub">Use the 18% standard rate in Benin CGI Article 241 to add or extract VAT and check multi-item invoice totals. Classification and filing remain confirmation steps.</p>
     <div class="hero-badges">
-      <span class="h-badge green">DGI reviewed 22 July 2026</span>
+      <span class="h-badge green">DGI CGI 2026 reviewed 2 August 2026</span>
       <span class="h-badge green">Standard 18%</span>
       <span class="h-badge">Zero-Rated Exports</span>
       <span class="h-badge">XOF · West African CFA Franc</span>
     </div>
-    <p class="hero-meta">Last reviewed: 22 July 2026 · Official DGI CGI and VAT guide · Planning estimate, not a filing</p>
+    <p class="hero-meta">Last reviewed: 2 August 2026 · Official DGI CGI 2026 and VAT guide · Planning estimate, not a filing</p>
   </div>
 </section>
 
@@ -416,8 +425,9 @@
               <label class="f-label" for="amount"><span class="f-label-text">Amount</span><span class="f-hint">Or type exact value</span></label>
               <div class="f-wrap">
                 <span class="f-prefix">CFA</span>
-                <input aria-label="Amount" type="number" class="f-input" id="amount" placeholder="10,000" min="0" step="100" value="10000" oninput="onInput(this)">
+                <input aria-label="Amount" aria-describedby="calcStatus" type="number" class="f-input" id="amount" placeholder="10,000" min="0" step="100" value="10000" oninput="onInput(this)">
               </div>
+              <p class="bj-calc-status" id="calcStatus" role="status" aria-live="polite"></p>
             </div>
 
             <!-- RATE SELECTOR -->
@@ -470,7 +480,7 @@
           </div><!-- end #multiMode -->
 
           <!-- RESULTS (single mode) -->
-          <div class="results-wrap" id="resultsWrap">
+          <div class="results-wrap" id="resultsWrap" role="region" aria-label="Benin VAT result">
             <div class="res-hero">
               <div class="res-hero-label" id="resLabel">Total (VAT Inclusive)</div>
               <div class="res-hero-amount">
@@ -610,12 +620,12 @@
           <div class="tool-info-features">
             <span class="tool-feat">Add / Extract VAT</span>
             <span class="tool-feat">Custom Rates</span>
-            <span class="tool-feat">PDF Export</span>
+            <span class="tool-feat">Print / Save PDF</span>
             <span class="tool-feat">Official source notes</span>
           </div>
         </div>
         <div class="tool-info-footer">
-          <span class="tool-info-updated">Reviewed: 22 Jul 2026</span>
+          <span class="tool-info-updated">Reviewed: 2 Aug 2026</span>
           <div class="tool-info-actions">
             <button type="button" class="tool-info-action" onclick="typeof shareResult==='function'?shareResult():navigator.share?.({title:document.title,url:location.href})">Share</button>
             <a class="tool-info-action" href="/tools/vat-calculator/">All Countries</a>
@@ -716,7 +726,7 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-07-22</span>
+          <span class="tool-verification-badge">Last verified 2026-08-02</span>
           <p class="tool-verification-note">Benin - high risk - AfroTools Day 3 VAT VIP review</p>
         </div>
       </div>
@@ -724,10 +734,9 @@
         <div class="tool-verification-block">
           <h3>Official source links</h3>
           <ul class="tool-verification-list">
-<li><a href="https://api.impots.bj/media/63c7b8d3eef3c_Benin-CGI-2023-officiel.pdf" target="_blank" rel="noopener">DGI Benin official General Tax Code 2023</a></li>
+<li><a href="https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf" target="_blank" rel="noopener">DGI Benin official General Tax Code 2026 · Article 241</a></li>
 <li><a href="https://api.impots.bj/media/619276da1364b_CE%20QUE%20VOUS%20DEVEZ%20SAVOIR%20SUR%20LA%20TVA.pdf" target="_blank" rel="noopener">DGI Benin official VAT guide</a></li>
 <li><a href="https://budgetbenin.bj/loi-de-finances-gestion-2026/" target="_blank" rel="noopener">Benin official 2026 Finance Act page</a></li>
-<li><a href="https://api.impots.bj/media/6984ebbbb7bc0_B%C3%A9nin-Code%20G%C3%A9n%C3%A9ral%20des%20Imp%C3%B4ts%202026.pdf" target="_blank" rel="noopener">Benin CGI 2026, Articles 119–129</a></li>
 <li><a href="https://cnss.bj/procedure-de-recouvrement-des-cotisations/" target="_blank" rel="noopener">CNSS Benin contribution base and rates</a></li>
           </ul>
         </div>
@@ -757,6 +766,7 @@
         <div class="tool-verification-block">
           <h3>Change history</h3>
           <ul class="tool-verification-list">
+<li><strong>2026-08-02:</strong> Rebound the 18% Article 241 rate to the official CGI 2026, kept exemptions and the registration threshold confirmation-only, and removed the remote chart dependency.</li>
 <li><strong>2026-07-22:</strong> Migrated English, French and Swahili to one reviewed local engine; corrected filing from the 15th to the 10th; removed unsupported XOF 50 million, broad exemption, withholding and unconsented AI result-sharing claims.</li>
           </ul>
         </div>
@@ -868,13 +878,33 @@ function getEffectiveRate() {
     // ── SINGLE CALCULATE ─────────────────────────────────────────────────
   function calculate() {
     const effRate = getEffectiveRate();
-    const raw = parseFloat(document.getElementById('amount').value) || 0;
-    const engineResult = window.AfroTools.BJVatEngine.calculate({
-      amount: raw,
-      mode: currentDir === 'remove' ? 'extract' : 'add',
-      rateKind: USE_CUSTOM_RATE && CUSTOM_RATE > 0 ? 'scenario' : currentRate === 0 ? 'export' : 'standard',
-      rate: effRate * 100
-    });
+    const amountInput = document.getElementById('amount');
+    const customInput = document.getElementById('customRateInput');
+    const status = document.getElementById('calcStatus');
+    const raw = Number(amountInput.value);
+    let engineResult;
+    try {
+      if (!Number.isFinite(raw) || raw < 0) throw new RangeError('amount');
+      if (USE_CUSTOM_RATE && (!Number.isFinite(CUSTOM_RATE) || CUSTOM_RATE <= 0 || CUSTOM_RATE > 100)) throw new RangeError('rate');
+      engineResult = window.AfroTools.BJVatEngine.calculate({
+        amount: raw,
+        mode: currentDir === 'remove' ? 'extract' : 'add',
+        rateKind: USE_CUSTOM_RATE ? 'scenario' : currentRate === 0 ? 'export' : 'standard',
+        rate: effRate * 100
+      });
+    } catch (error) {
+      RESULT = null;
+      amountInput.setAttribute('aria-invalid', String(!Number.isFinite(raw) || raw < 0));
+      customInput.setAttribute('aria-invalid', String(USE_CUSTOM_RATE && (!Number.isFinite(CUSTOM_RATE) || CUSTOM_RATE <= 0 || CUSTOM_RATE > 100)));
+      status.textContent = 'Enter an amount of 0 or more and, when enabled, a custom rate above 0% and no more than 100%.';
+      ['resAmount','resPretax','resVat','annualVat'].forEach(id => { document.getElementById(id).textContent = '—'; });
+      document.getElementById('formulaText').textContent = '';
+      document.getElementById('chartSection').style.display = 'none';
+      return null;
+    }
+    amountInput.setAttribute('aria-invalid', 'false');
+    customInput.setAttribute('aria-invalid', 'false');
+    status.textContent = '';
     const pretax = engineResult.net;
     const vat = engineResult.vat;
     const total = engineResult.gross;
@@ -902,6 +932,7 @@ function getEffectiveRate() {
     } else {
       document.getElementById('formulaText').textContent = 'Net = ' + fmtF(total) + ' \u00f7 (1 + ' + rPctStr + '%) = ' + fmtF(pretax) + '  |  VAT = ' + fmtF(total) + ' \u2212 ' + fmtF(pretax) + ' = ' + fmtF(vat);
     }
+    return RESULT;
     document.getElementById('formulaBox').classList.add('on');
 
     // Save & Share button data
@@ -984,9 +1015,10 @@ function getEffectiveRate() {
     setTimeout(() => { btn.textContent = orig; btn.style.color = ''; }, 1500);
   }
 
-  function printResult() { window.print(); }
+  function printResult() { if (!RESULT && !calculate()) return; window.print(); }
 
   function shareResult() {
+    if (!RESULT && !calculate()) return;
     const amt = document.getElementById('resAmount')?.textContent || '';
     const vat = document.getElementById('resVat')?.textContent || '';
     const text = `Benin VAT Calculator | Amount: ${amt} | VAT: ${vat} | Rate: ${(currentRate*100).toFixed(1)}% | AfroTools.com`;
@@ -1015,7 +1047,6 @@ function setChip(val, btn) {
 
 </script>
 <script src="/assets/js/share-image-inject.js?v=77cf8c7f" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
 <script>
 // ── CHART ──────────────────────────────────────────────
 var CHART = null;
@@ -1030,6 +1061,10 @@ function setChart(type, btn) {
 
 function renderChart(type) {
   if (!RESULT || !RESULT.netAmount) return;
+  if (typeof window.Chart !== 'function') {
+    document.getElementById('chartSection').style.display = 'none';
+    return;
+  }
   var R = RESULT;
   var canvas = document.getElementById('mainChart');
   if (!canvas) return;

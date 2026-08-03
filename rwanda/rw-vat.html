@@ -77,11 +77,12 @@
     <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8" />
     <link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc" />
     <link rel="stylesheet" href="/assets/css/theme-dark.min.css?v=e7def0f1" />
-    <link rel="stylesheet" href="/assets/css/rwanda-vat-vip.css?v=0ddbd256" />
+    <link rel="stylesheet" href="/assets/css/rwanda-vat-vip.css?v=7f320331" />
     <link
       rel="stylesheet"
       href="/assets/css/tool-verification.css?v=28d60957"
     />
+    <script>window._afroAuthLoaded = true;</script>
     <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
     <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
     <script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/lib/source-confidence.js?v=e7c3ebe4" defer></script>
@@ -118,7 +119,7 @@
       data-tool-id="rw-vat"
     >
       <div class="rwv-container">
-        <strong>Sources &amp; verification · Reviewed 22 July 2026:</strong> RRA
+        <strong>Sources &amp; verification · Reviewed 2 August 2026:</strong> RRA
         VAT guidance, Law No. 049/2023 and the Article 8 amendment in Law No.
         009/2025.
         <a
@@ -201,12 +202,12 @@
                   />
                 </div>
               </div>
-              <div class="rwv-error" id="rwvError"></div>
+              <div class="rwv-error" id="rwvError" role="alert"></div>
               <button class="rwv-primary" type="submit">
                 Calculate Rwanda VAT
               </button>
             </form>
-            <div class="rwv-result" id="rwvResult" aria-live="polite">
+            <div class="rwv-result" id="rwvResult" role="status" aria-live="polite">
               <div class="rwv-result-label" id="rwvResultLabel">
                 Total including VAT
               </div>
@@ -243,7 +244,7 @@
               Uses the selected standard, confirmed zero or planning treatment
               above.
             </p>
-            <form id="rwvInvoiceForm">
+            <form id="rwvInvoiceForm" novalidate>
               <div class="rwv-field">
                 <label for="rwvInvoiceDescription">Description</label
                 ><input
@@ -276,12 +277,12 @@
                   />
                 </div>
               </div>
-              <div class="rwv-error" id="rwvInvoiceError"></div>
+              <div class="rwv-error" id="rwvInvoiceError" role="alert"></div>
               <button class="rwv-primary" type="submit">
                 Calculate invoice line
               </button>
             </form>
-            <div class="rwv-result" id="rwvInvoiceOutput" aria-live="polite">
+            <div class="rwv-result" id="rwvInvoiceOutput" role="status" aria-live="polite">
               <div class="rwv-result-label">Invoice line summary</div>
               <div class="rwv-result-row">
                 <span>Before VAT</span><strong id="rwvInvoiceNet">—</strong>
@@ -446,7 +447,7 @@
           <p class="tool-verification-lead">This high-stakes calculator links the authority sources, method notes, test cases, and limitations used to check the numbers shown on this page.</p>
         </div>
         <div class="tool-verification-status">
-          <span class="tool-verification-badge">Last verified 2026-01-01</span>
+          <span class="tool-verification-badge">Last verified 2026-08-02</span>
           <p class="tool-verification-note">Rwanda - high risk - AfroTools Day 3 serial formula and browser review</p>
         </div>
       </div>
@@ -487,6 +488,7 @@
           <h3>Change history</h3>
           <ul class="tool-verification-list">
 <li><strong>2026-07-22:</strong> Rebuilt English, French, Swahili and widget runtimes around one reviewed Rwanda VAT engine and current primary-source contract.</li>
+<li><strong>2026-08-02:</strong> Rechecked the 18% rate, strict registration thresholds and invoice obligation against direct RRA guidance and current laws; hardened invalid-state clearing, local PDF proof, privacy and responsive accessibility.</li>
           </ul>
         </div>
       </div>
@@ -520,11 +522,42 @@
           "Below the two general mandatory-registration thresholds.",
         "trigger_previous-fiscal-year": "previous fiscal year above RWF 20m",
         "trigger_previous-quarter": "previous quarter above RWF 5m",
+        grossResult: "Total including VAT",
+        netResult: "Amount before VAT",
+        scenarioNote: "Planning scenario only. Confirm the legal treatment before use.",
+        zeroNote: "Use 0% only after confirming Article 7 applies to this supply.",
+        standardNote: "Rwanda standard-rate estimate at 18%.",
+        calculated: "Rwanda VAT estimate updated.",
+        invalid: "Enter a non-negative amount and a rate from 0% to 100%.",
+        invalidInvoice: "Enter a non-negative quantity and unit price.",
+        invalidRegistration: "Enter non-negative turnover amounts.",
+        source_standard: "Law No. 049/2023, Article 4",
+        "source_confirmed-zero": "Confirmed under Law No. 049/2023, Article 7",
+        "source_confirmed-exempt":
+          "Confirmed under Article 8 as amended by Law No. 009/2025",
+        source_review: "Confirm the exact provision in the current VAT law and schedules",
+        classificationCaveat:
+          "Confirm the exact provision before relying on this guide.",
+        shared: "Tool link shared. No amounts were included.",
+        shareFailed: "Could not share the tool link.",
+        pdfReady: "PDF downloaded locally.",
+        pdfTitle: "Rwanda VAT planning estimate",
+        pdfMode: "Mode",
+        addVat: "Add VAT",
+        extractVat: "Extract VAT",
+        net: "Amount before VAT",
+        vat: "VAT",
+        gross: "Total including VAT",
+        rateUsed: "Rate used",
+        pdfSource:
+          "RRA guidance; Laws No. 049/2023 and No. 009/2025; reviewed 2 August 2026.",
+        pdfDisclaimer:
+          "Planning estimate only. Confirm classification, registration, invoicing and filing with RRA or a qualified tax adviser.",
       };
     </script>
-    <script src="/assets/js/engines/rw-vat.js?v=efad1465"></script>
+    <script src="/assets/js/engines/rw-vat.js?v=a24f8f76"></script>
     <script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
-    <script src="/assets/js/pages/rwanda-vat-vip.js?v=6bba29e6"></script>
+    <script src="/assets/js/pages/rwanda-vat-vip.js?v=96abeb59"></script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
 </body>

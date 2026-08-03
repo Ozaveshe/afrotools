@@ -12,6 +12,8 @@
   var strings = Object.assign({
     customSource: 'Custom rate supplied by the user. No country-law treatment is implied.',
     presetSource: '{country} planning preset ({rate}%), authority link: {url}, dataset reviewed {date}.',
+    presetSourceLead: '{country} planning preset ({rate}%), authority source:',
+    presetSourceReview: 'Source reviewed {date}.',
     countryOptionalTitle: 'Country is optional',
     countryOptionalCopy: 'Enter a rate from your invoice, authority notice or adviser. Selecting a country never silently changes the rate.',
     presetTitle: '{country} has an authority-bound planning preset',
@@ -78,6 +80,25 @@
     setText(id, message);
     if (fieldId && byId(fieldId)) { setInvalid(fieldId, true); byId(fieldId).focus(); }
   }
+  function clearSingleResult(clearMessage) {
+    lastSingle = null;
+    byId('singleResult').hidden = true;
+    setText('singleSource', '');
+    if (clearMessage !== false) clearStatus('singleStatus');
+  }
+  function clearInvoiceResult(clearMessage) {
+    lastInvoice = null;
+    byId('invoiceResult').hidden = true;
+    if (clearMessage !== false) clearStatus('invoiceStatus');
+  }
+  function clearWithholdingResult() {
+    byId('withholdingResult').hidden = true;
+    clearStatus('withholdingStatus');
+  }
+  function clearCompareResult() {
+    byId('compareResult').hidden = true;
+    clearStatus('compareStatus');
+  }
   function sourceLabel() {
     var code = value('country');
     var preset = pack ? engine.getCountryPreset(pack, code) : { ok: false };
@@ -85,6 +106,25 @@
       return tr('presetSource', { country: countryName(code, preset.countryName), rate: preset.rate, url: preset.source.url, date: preset.reviewedOn });
     }
     return tr('customSource');
+  }
+  function renderSourceLine() {
+    var container = byId('singleSource');
+    var code = value('country');
+    var preset = pack ? engine.getCountryPreset(pack, code) : { ok: false };
+    if (!preset.ok || Number(value('rate')) !== preset.rate) {
+      container.textContent = tr('customSource');
+      return;
+    }
+    var link = document.createElement('a');
+    link.href = preset.source.url;
+    link.target = '_blank';
+    link.rel = 'noopener noreferrer';
+    link.textContent = preset.source.title;
+    container.replaceChildren(
+      document.createTextNode(tr('presetSourceLead', { country: countryName(code, preset.countryName), rate: preset.rate }) + ' '),
+      link,
+      document.createTextNode(' ' + tr('presetSourceReview', { date: preset.reviewedOn }))
+    );
   }
 
   function activateTab(name, focus) {
@@ -152,12 +192,14 @@
   }
 
   function usePreset() {
+    clearSingleResult();
     byId('rate').value = byId('usePreset').dataset.rate;
     setInvalid('rate', false);
     setText('singleStatus', tr('presetLoaded'));
   }
 
   function setMode(mode) {
+    clearSingleResult();
     singleMode = mode;
     byId('modeAdd').setAttribute('aria-pressed', mode === 'add' ? 'true' : 'false');
     byId('modeExtract').setAttribute('aria-pressed', mode === 'extract' ? 'true' : 'false');
@@ -169,6 +211,7 @@
     setInvalid('amount', false); setInvalid('rate', false);
     var result = engine.calculateSingle({ amount: value('amount'), rate: value('rate'), mode: singleMode });
     if (!result.ok) {
+      lastSingle = null;
       var field = result.field === 'VAT rate' ? 'rate' : 'amount';
       showStatus('singleStatus', errorText(result), field);
       byId('singleResult').hidden = true;
@@ -178,7 +221,7 @@
     setText('singleNet', money(result.display.net));
     setText('singleVat', money(result.display.vat));
     setText('singleTotal', money(result.display.total));
-    setText('singleSource', sourceLabel());
+    renderSourceLine();
     byId('singleResult').hidden = false;
   }
 
@@ -195,12 +238,14 @@
     byId('invoiceLines').appendChild(row);
     if (seed) { row.querySelector('.line-desc').value = seed.description || ''; row.querySelector('.line-amount').value = seed.amount || ''; row.querySelector('.line-rate').value = seed.rate || ''; }
     row.querySelector('.line-treatment').addEventListener('change', function () {
+      clearInvoiceResult();
       var rate = row.querySelector('.line-rate');
       var standard = this.value === 'standard';
       rate.disabled = !standard;
       if (!standard) { rate.value = ''; setInvalid(rate.id, false); }
     });
-    row.querySelector('.vat-line-remove').addEventListener('click', function () { row.remove(); });
+    row.querySelectorAll('input').forEach(function (input) { input.addEventListener('input', clearInvoiceResult); });
+    row.querySelector('.vat-line-remove').addEventListener('click', function () { row.remove(); clearInvoiceResult(); });
   }
 
   function calculateInvoice() {
@@ -212,6 +257,7 @@
     document.querySelectorAll('.vat-line input').forEach(function (input) { setInvalid(input.id, false); });
     var result = engine.calculateInvoice({ items: items });
     if (!result.ok) {
+      lastInvoice = null;
       var match = String(result.field || '').match(/items\[(\d+)\]\.(amount|rate)/);
       var target = match && rows[Number(match[1])] ? rows[Number(match[1])].querySelector('.line-' + match[2]) : null;
       showStatus('invoiceStatus', errorText(result), target ? target.id : null);
@@ -295,11 +341,14 @@
 
   function bind() {
     bindTabs();
-    byId('country').addEventListener('change', updatePreset); byId('usePreset').addEventListener('click', usePreset);
+    byId('country').addEventListener('change', function () { clearSingleResult(); updatePreset(); }); byId('usePreset').addEventListener('click', usePreset);
+    byId('amount').addEventListener('input', clearSingleResult); byId('rate').addEventListener('input', clearSingleResult);
     byId('modeAdd').addEventListener('click', function () { setMode('add'); }); byId('modeExtract').addEventListener('click', function () { setMode('extract'); });
     byId('calculateSingle').addEventListener('click', calculateSingle); byId('shareCalculator').addEventListener('click', routeOnlyShare); byId('singlePdf').addEventListener('click', exportSinglePdf);
-    byId('addInvoiceLine').addEventListener('click', function () { addLine(); }); byId('calculateInvoice').addEventListener('click', calculateInvoice); byId('invoicePdf').addEventListener('click', exportInvoicePdf);
+    byId('addInvoiceLine').addEventListener('click', function () { addLine(); clearInvoiceResult(); }); byId('calculateInvoice').addEventListener('click', calculateInvoice); byId('invoicePdf').addEventListener('click', exportInvoicePdf);
     byId('calculateWithholding').addEventListener('click', calculateWithholding); byId('calculateCompare').addEventListener('click', calculateCompare);
+    ['withholdingAmount', 'withholdingVatRate', 'withholdingPercent'].forEach(function (id) { byId(id).addEventListener('input', clearWithholdingResult); });
+    ['compareAmount', 'scenarioLabel1', 'scenarioRate1', 'scenarioLabel2', 'scenarioRate2', 'scenarioLabel3', 'scenarioRate3'].forEach(function (id) { byId(id).addEventListener('input', clearCompareResult); });
     addLine({ description: tr('defaultLine'), rate: '' }); setMode('add'); updatePreset();
   }
 

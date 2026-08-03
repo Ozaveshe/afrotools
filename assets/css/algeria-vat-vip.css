@@ -5,6 +5,9 @@
   --dzv-text: #14221a;
   --dzv-muted: #5c6c62;
   --dzv-line: #d7e2da;
+  --dzv-control-line: #637169;
+  --dzv-focus: #005f3d;
+  --dzv-button-focus: #071b13;
   --dzv-green: #087648;
   --dzv-red: #c5343e;
   --dzv-deep: #071b13;
@@ -16,6 +19,9 @@
   --dzv-text: #f1f8f3;
   --dzv-muted: #acc0b1;
   --dzv-line: #294536;
+  --dzv-control-line: #9ab09f;
+  --dzv-focus: #a7f3d0;
+  --dzv-button-focus: #020906;
   --dzv-green: #67d79d;
   --dzv-red: #ff8991;
   --dzv-deep: #020906;
@@ -91,6 +97,11 @@
   padding: 28px 0 52px;
   align-items: start;
 }
+.dzv-grid,
+.dzv-stack,
+.dzv-card {
+  min-width: 0;
+}
 .dzv-stack {
   display: grid;
   gap: 18px;
@@ -119,6 +130,9 @@
   letter-spacing: 0.13em;
   text-transform: uppercase;
   margin-bottom: 7px;
+}
+.dzv-hero .dzv-kicker {
+  color: #67d79d;
 }
 .dzv-group {
   display: grid;
@@ -173,19 +187,33 @@
 .dzv-select {
   width: 100%;
   min-height: 48px;
-  border: 1px solid var(--dzv-line);
+  border: 1px solid var(--dzv-control-line);
   border-radius: 11px;
   background: var(--dzv-bg);
   color: var(--dzv-text);
   padding: 11px 12px;
   font: inherit;
 }
+html[data-theme="dark"] body .dzv-page input.dzv-input,
+html[data-theme="dark"] body .dzv-page select.dzv-select {
+  border-color: var(--dzv-control-line) !important;
+  background: var(--dzv-bg) !important;
+  color: var(--dzv-text) !important;
+}
 .dzv-input:focus,
 .dzv-select:focus,
 .dzv-page button:focus-visible,
 .dzv-page a:focus-visible {
-  outline: 3px solid color-mix(in srgb, var(--dzv-green) 45%, transparent);
+  outline: 3px solid var(--dzv-focus);
   outline-offset: 2px;
+}
+.dzv-page button:focus-visible {
+  outline-color: var(--dzv-focus);
+  box-shadow: 0 0 0 5px var(--dzv-focus);
+}
+.dzv-page button[aria-pressed="true"]:focus-visible,
+.dzv-page .dzv-primary:focus-visible {
+  outline-color: var(--dzv-button-focus);
 }
 .dzv-scenario {
   display: none;
@@ -312,6 +340,13 @@
   border-color: var(--dzv-line) !important;
   color: var(--dzv-text) !important;
 }
+.source-confidence-card .source-confidence-title {
+  color: var(--dzv-text) !important;
+}
+.source-confidence-card .source-confidence-notice,
+.source-confidence-card .source-confidence-warning {
+  color: var(--dzv-muted) !important;
+}
 @media (max-width: 850px) {
   afro-site-assistant {
     display: none !important;
@@ -337,10 +372,17 @@
     grid-template-columns: 1fr;
   }
   .dzv-result-main {
-    font-size: 2rem;
+    font-size: clamp(1.25rem, 10vw, 2rem);
+    overflow-wrap: anywhere;
   }
   .dzv-row {
     align-items: flex-start;
+    flex-wrap: wrap;
+  }
+  .dzv-card h2,
+  .dzv-card h3,
+  .dzv-row strong {
+    overflow-wrap: anywhere;
   }
 }
 @media (prefers-reduced-motion: reduce) {

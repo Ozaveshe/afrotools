@@ -60,6 +60,7 @@
 <div class="rate-grid"><button class="rate-btn rate-on" type="button" onclick="setRate(0.18, 'Kawaida 18%', this)"><span>Kawaida 18%</span></button>
 <button class="rate-btn" type="button" onclick="setRate(0, 'Kiwango sifuri 0%', this)"><span>Kiwango sifuri 0%</span></button></div>
 <label class="sw-field"><span><span id="amountLabel">Kiasi bila VAT</span><small id="amountHint">XOF</small></span><input aria-label="Ingiza kiasi" class="sw-input" id="amount" type="number" min="0" step="any" value="10000" placeholder="Ingiza kiasi"></label>
+<p id="formError" role="alert" aria-live="assertive"></p>
 <div class="quick-chips">
 <button class="q-chip on" type="button" onclick="setChip(10000,this)">CFA10,000</button>
 <button class="q-chip" type="button" onclick="setChip(50000,this)">CFA50,000</button>
@@ -76,7 +77,7 @@
 <div class="result-row"><span>Kiwango kilichotumika</span><strong id="usedRate">-</strong></div>
 <div class="formula" id="formulaText"></div>
 <div class="chart-wrap"><canvas id="mainChart" aria-label="Chati ya mgawanyo wa VAT"></canvas></div>
-<div class="action-row"><button type="button" onclick="printResult()">Pakua/chapisha PDF</button><button type="button" onclick="shareResult()">Shiriki matokeo</button></div>
+<div class="action-row"><button type="button" data-export="pdf" onclick="downloadPdfResult()">Pakua PDF</button><button type="button" onclick="shareResult()">Shiriki matokeo</button></div>
 </div>
 </div>
 </div>
@@ -160,6 +161,9 @@
 </section>
 <div class="sw-disclaimer"><strong>Kanusho:</strong> Matokeo haya ni makadirio ya kikokotoo na mwongozo wa jumla wa biashara. Thibitisha viwango, misamaha, kizingiti, taratibu na maamuzi ya VAT na chanzo rasmi au mtaalamu mwenye sifa kabla ya kuwasilisha faili au kutoa ankara rasmi.</div>
 </div></main>
+<script src="/engines/tva-engine.js?v=bf1e8be7"></script>
+<script src="/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c"></script>
+<script src="/assets/js/lib/local-vat-pdf.js?v=f342835c"></script>
 <script>
 var VAT_DATA = {"swName":"Burkina Faso","enName":"Burkina Faso","rate":0.18,"currencySymbol":"CFA","currencyCode":"XOF","authority":"DGI","threshold":"XOF 50 milioni","zero":"bidhaa za mauzo nje","exempt":"Unprocessed vyakula bidhaa za matibabu, nyenzo za elimu","sourceUrl":"https://afrotools.com/burkina-faso/bf-vat"};
 var RATE = 0.18;
@@ -177,10 +181,13 @@ function setRate(r,label,btn){RATE=Number(r)||0;RATE_LABEL=label;customRate=0;do
 function onCustomRate(){customRate=parseFloat(document.getElementById('customRate').value)||0;document.querySelectorAll('.rate-btn').forEach(function(b){b.classList.remove('rate-on')});calculate();}
 function setChip(v,btn){document.getElementById('amount').value=v;document.querySelectorAll('.q-chip').forEach(function(c){c.classList.remove('on')});btn.classList.add('on');calculate();}
 function calculate(){
-  var amount=parseFloat(document.getElementById('amount').value)||0;
-  if(!amount){alert('Tafadhali ingiza kiasi.');return;}
-  var r=rate(), net, vat, total;
-  if(MODE==='add'){net=amount;vat=amount*r;total=net+vat;}else{total=amount;net=amount/(1+r);vat=total-net;}
+  var error=document.getElementById('formError');
+  var amount=parseFloat(document.getElementById('amount').value);
+  if(!Number.isFinite(amount)||amount<=0){error.textContent='Ingiza kiasi kikubwa kuliko sifuri.';document.getElementById('amount').focus();return;}
+  if(!window.TVAEngine||typeof window.TVAEngine.calculate!=='function'){error.textContent='Engine ya VAT haikupatikana. Pakia ukurasa tena.';return;}
+  error.textContent='';
+  var r=rate(), result=window.TVAEngine.calculate(amount,r,MODE);
+  var net=result.ht, vat=result.tva, total=result.ttc;
   RESULT={netAmount:net,vatAmount:vat,totalInclusive:total,rate:r};
   document.getElementById('heroLabel').textContent=MODE==='add'?'Jumla na VAT':'Kiasi kabla ya VAT';
   document.getElementById('heroAmount').textContent=MODE==='add'?fmt(total):fmt(net);
@@ -201,7 +208,21 @@ function renderChart(){
   var colors=(window.AfroChartColors&&window.AfroChartColors.series)||['#0062cc','#10b981','#f59e0b','#ef4444'];
   CHART=new Chart(canvas,{type:'doughnut',data:{labels:['Kiasi bila VAT','VAT ('+pct(RESULT.rate)+')'],datasets:[{data:[RESULT.netAmount,RESULT.vatAmount],backgroundColor:[colors[0],colors[3]||colors[1]],borderWidth:2,borderColor:'#fff'}]},options:{responsive:true,maintainAspectRatio:false,cutout:'62%',plugins:{legend:{position:'bottom'},tooltip:{callbacks:{label:function(ctx){return ' '+ctx.label+': '+fmt(ctx.raw);}}}}}});
 }
-function printResult(){if(!RESULT)calculate();window.print();}
+function downloadPdfResult(){
+  if(!RESULT)calculate();
+  if(!RESULT||!window.AfroTools||!window.AfroTools.localVatPdf)return;
+  window.AfroTools.localVatPdf({
+    title:'Makadirio ya VAT '+VAT_DATA.swName,
+    subtitle:'Makadirio ya kupanga pekee; si uwasilishaji au ushauri rasmi wa kodi.',
+    rows:[
+      {label:'Kiasi bila VAT',value:fmt(RESULT.netAmount)},
+      {label:'VAT ('+pct(RESULT.rate)+')',value:fmt(RESULT.vatAmount)},
+      {label:'Jumla na VAT',value:fmt(RESULT.totalInclusive)}
+    ],
+    disclaimer:'Thibitisha kiwango, uainishaji, ankara na wajibu wa uwasilishaji na mamlaka husika kabla ya kuchukua hatua.',
+    fileName:'burkina-faso-vat-estimate.pdf'
+  });
+}
 function shareResult(){if(!RESULT)calculate();var text='VAT '+VAT_DATA.swName+': jumla '+fmt(RESULT.totalInclusive)+', VAT '+fmt(RESULT.vatAmount)+' ('+pct(RESULT.rate)+')';if(navigator.share){navigator.share({title:'Kikokotoo cha VAT '+VAT_DATA.swName,text:text});}else{navigator.clipboard&&navigator.clipboard.writeText(text);alert(text);}}
 function addItem(desc,qty,price){ITEMS.push({desc:desc||'',qty:qty||1,price:price||0});renderItems();}
 function renderItems(){

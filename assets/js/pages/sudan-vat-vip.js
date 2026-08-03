@@ -53,6 +53,11 @@
         error: "Weka kiasi kisicho hasi.", ready: "Matokeo yamesasishwa.", disclaimer: "Makadirio ya kupanga tu. Thibitisha aina ya muamala na wajibu wa sasa na Mamlaka ya Kodi Sudan au mshauri mwenye sifa."
       }
     }[locale];
+    var pdfCopy = {
+      en: { subject: "Sudan standard VAT planning estimate at 17%", meta: "Official standard rate: 17% | Currency: SDG", source: "Source reviewed 2026-07-23: Sudan Tax Authority", mode: "VAT calculation mode", result: "VAT result" },
+      fr: { subject: "Estimation de TVA normale du Soudan à 17 %", meta: "Taux normal officiel : 17 % | Devise : SDG", source: "Source vérifiée le 2026-07-23 : Autorité fiscale du Soudan", mode: "Mode de calcul de la TVA", result: "Résultat de TVA" },
+      sw: { subject: "Makadirio ya VAT ya kawaida ya Sudan kwa 17%", meta: "Kiwango rasmi cha kawaida: 17% | Sarafu: SDG", source: "Chanzo kimekaguliwa 2026-07-23: Mamlaka ya Kodi Sudan", mode: "Hali ya kukokotoa VAT", result: "Matokeo ya VAT" }
+    }[locale];
 
     var nav = document.querySelector("afro-navbar");
     var footer = document.querySelector("afro-footer");
@@ -75,7 +80,7 @@
     document.title = copy.title + " | AfroTools";
     main.innerHTML =
       '<div class="gnv-shell"><section class="gnv-hero"><div class="gnv-kicker">' + copy.kicker + '</div><h1>' + copy.title + '</h1><p class="gnv-lede">' + copy.lead + '</p></section><div class="gnv-grid">' +
-      '<form class="gnv-card" id="sdVatForm"><div class="gnv-switch" role="group" aria-label="VAT calculation mode"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="sdVatAmount">' + copy.amount + ' (SDG)</label><input class="gnv-input" id="sdVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="sdVatError"></p><section class="gnv-result" id="sdVatResult" aria-label="VAT result"><dl><dt>' + copy.net + '</dt><dd id="sdVatNet"></dd><dt>' + copy.vat + '</dt><dd id="sdVatTax"></dd><dt>' + copy.gross + '</dt><dd id="sdVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="sdVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="sdVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="sdVatStatus" role="status" aria-live="polite"></div></form>' +
+      '<form class="gnv-card" id="sdVatForm"><div class="gnv-switch" role="group" aria-label="' + pdfCopy.mode + '"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="sdVatAmount">' + copy.amount + ' (SDG)</label><input class="gnv-input" id="sdVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="sdVatError"></p><section class="gnv-result" id="sdVatResult" aria-label="' + pdfCopy.result + '"><dl><dt>' + copy.net + '</dt><dd id="sdVatNet"></dd><dt>' + copy.vat + '</dt><dd id="sdVatTax"></dd><dt>' + copy.gross + '</dt><dd id="sdVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="sdVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="sdVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="sdVatStatus" role="status" aria-live="polite"></div></form>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="sd-vat"><h2>' + copy.rules + '</h2><ul class="gnv-list"><li>' + copy.r1 + '</li><li>' + copy.r2 + '</li><li>' + copy.r3 + '</li><li>' + copy.r4 + '</li></ul><h2>' + copy.sources + '</h2><p class="gnv-note"><a href="https://tax.gov.sd/en/newsen/">' + copy.sourceNews + '</a><br><a href="https://tax.gov.sd/en/value-added-tax-vat/">' + copy.sourceVat + '</a><br><a href="https://tax.gov.sd/en/tax-laws/">' + copy.sourceLaw + '</a></p><p class="gnv-note">' + copy.disclaimer + '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Sudan%20VAT%20calculation%20error">' + copy.report + '</a></p></aside></div></div>';
 
     var state = { mode: "add", result: null };
@@ -125,14 +130,14 @@
     byId("sdVatPdf").onclick = function () {
       if (!state.result || !window.jspdf) return;
       var pdf = new window.jspdf.jsPDF();
-      pdf.setProperties({ title: copy.title, subject: "Sudan standard VAT planning estimate at 17%" });
+      pdf.setProperties({ title: copy.title, subject: pdfCopy.subject });
       pdf.text(copy.title, 20, 20);
-      pdf.text("Official standard rate: 17% | Currency: SDG", 20, 32);
+      pdf.text(pdfCopy.meta, 20, 32);
       pdf.text(copy.net + ": " + money(state.result.net), 20, 48);
       pdf.text(copy.vat + ": " + money(state.result.vat), 20, 59);
       pdf.text(copy.gross + ": " + money(state.result.gross), 20, 70);
       pdf.text(pdf.splitTextToSize(copy.disclaimer, 170), 20, 88);
-      pdf.text("Source reviewed 2026-07-23: https://tax.gov.sd/en/newsen/", 20, 116);
+      pdf.text(pdfCopy.source, 20, 116);
       pdf.save("sudan-vat-17-percent-estimate.pdf");
       byId("sdVatStatus").textContent = copy.pdf + ".";
     };

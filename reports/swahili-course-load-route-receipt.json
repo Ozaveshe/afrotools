@@ -1,0 +1,117 @@
+{
+  "schemaVersion": 1,
+  "receiptId": "sw-education-course-load-clean-respin-2026-08-02",
+  "generatedAt": "2026-08-03T00:00:00Z",
+  "baseSha": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db",
+  "category": "education",
+  "englishId": "course-load",
+  "englishRoute": "/tools/course-load/",
+  "frenchRoute": "/fr/tools/charge-cours/",
+  "swahiliRoute": "/sw/zana/mzigo-wa-masomo/",
+  "acceptanceState": "repair-candidate-unaccepted",
+  "acceptanceReason": "Route-specific product proof is supplied; coordinator acceptance and generated aggregate outputs remain untouched.",
+  "sourceOwner": "data/localization/coverage-wave-2026-07.json (reuseExisting) + sw/zana/mzigo-wa-masomo/index.html + assets/js/pages/sw-course-load.js + tools/course-load/course-load-engine.js",
+  "engineContract": {
+    "path": "tools/course-load/course-load-engine.js",
+    "localeNeutral": true,
+    "unchangedFromBase": true,
+    "oracle": {
+      "input": "programme 120; earned 72; range 12-18; courses 3+4+5; weekly hours 18+20+15+5+(7.5x7)+14",
+      "registered": 12,
+      "band": "inside",
+      "remainingBefore": 48,
+      "remainingIfCompleted": 36,
+      "progress": 60,
+      "accounted": 124.5,
+      "unallocated": 43.5
+    },
+    "boundaries": [
+      "missing and non-numeric programme totals fail closed",
+      "minimum above maximum fails closed",
+      "at least one course with 0.01-100 credits is required",
+      "weekly categories accept only 0-168 hours and sleep only 0-24 per night",
+      "earned progress is capped at 100 percent and remaining credits never fall below zero",
+      "commitments beyond 168 hours are exposed arithmetically without a workload diagnosis"
+    ]
+  },
+  "educationSafetyBoundary": [
+    "uses only user-entered institutional limits and deterministic arithmetic",
+    "does not invent country, institution, overload, graduation or workload thresholds",
+    "does not approve registration, predict graduation or decide that a timetable is manageable",
+    "requires the user to record and recheck the current institution source and date"
+  ],
+  "exports": {
+    "originalEnglishFormats": ["clipboard text", "TXT", "print/save PDF"],
+    "swahiliFormats": ["clipboard text", "TXT", "print/save PDF"],
+    "proof": ["clipboard success and rejection fallback", "downloaded UTF-8 TXT reopened and parsed", "printed PDF generated and parsed with pdf-parse"]
+  },
+  "privacy": {
+    "localFirst": true,
+    "storage": "none",
+    "networkSend": "none",
+    "aiPath": "none",
+    "proof": "synthetic private course and rule-source markers are absent from requests and storage writes"
+  },
+  "browserProof": [
+    "exact inside, below and above range workflows",
+    "dynamic add/remove and six-item institution audit",
+    "route-specific invalid focus, aria-invalid and immediate stale-result clearing",
+    "fixed 320px and 375px viewports with computed root font size doubled from 16px to 32px and CSS zoom equal to 1",
+    "zero document overflow and zero visible element overflow offenders after exact workflow and clipboard export at both doubled-text widths",
+    "manual light, manual dark, system light and system dark computed text, placeholder, boundary and focus contrast plus axe-core 4.11.0 with zero violations",
+    "real sequential Tab focus through every form control, dynamic course row, action and native date-field sub-stop",
+    "keyboard submit, labels, live regions, artwork dimensions, schema, canonical, runtime language, console and resource checks"
+  ],
+  "reflowProof": {
+    "method": "computed root font size doubled from the measured baseline; CSS style.zoom is not used",
+    "viewports": [320, 375],
+    "viewportWidthHeldConstant": true,
+    "computedRootFontDoubled": true,
+    "bodyComputedZoom": "1",
+    "documentOverflowPixelsMaximum": 1,
+    "visibleOverflowOffenders": 0,
+    "workflow": "exact 12-credit calculation rerun at each width",
+    "exports": "clipboard export executed and all three original export controls enabled at each width"
+  },
+  "axeProof": {
+    "version": "4.11.0",
+    "themes": ["manual-light", "manual-dark", "system-light", "system-dark"],
+    "violations": 0
+  },
+  "testDependency": {
+    "name": "axe-core",
+    "version": "^4.11.0",
+    "scope": "development-only browser accessibility proof"
+  },
+  "touchedGeneratedAggregates": [],
+  "excluded": [
+    "central Swahili acceptance ledger",
+    "central AI router or generated map",
+    "parity inventory",
+    "generated locale coverage",
+    "canonical registry or report",
+    "minified registry, registry counts or search indexes",
+    "Swahili hub or index",
+    "sitemap",
+    "dist",
+    "deployment"
+  ],
+  "coordinatorGenerationCommands": [
+    "npm run sw:parity:build",
+    "node scripts/minify.js --only=tool-registry.js",
+    "npm run registry:build",
+    "node scripts/build-search-index.js"
+  ],
+  "finalValidation": {
+    "routeContract": "4/4 passed",
+    "browserWorkflow": "1/1 passed in Chromium",
+    "browserCoverage": "calculation, invalid/stale clearing, dynamic rows, clipboard, reopened UTF-8 TXT, parsed PDF, privacy, 320px, 375px, true 200% text reflow, four themes, contrast, keyboard and axe-core",
+    "localizationPlatform": "11,126 pages validated across 8 locales",
+    "hreflang": "10,143 pages and 32,460 relationships passed",
+    "internalLinks": "136,946 passed",
+    "swahiliSurface": "880 published routes and 2,612 experiences passed",
+    "swahiliAiRoutes": "487 accepted routes passed",
+    "ownerRegeneration": "idempotent; native route preserved",
+    "centralParityState": "intentionally unchanged; coordinator promotion remains pending"
+  }
+}

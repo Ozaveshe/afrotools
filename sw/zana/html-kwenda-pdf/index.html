@@ -4,20 +4,18 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools</title>
-<meta name="description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<title>HTML kwenda PDF | AfroTools</title>
+<meta name="description" content="Geuza HTML kuwa PDF, kagua mwonekano na pakua pia chanzo cha HTML na mipangilio ya JSON ndani ya kivinjari.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools">
-<meta property="og:description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<meta property="og:title" content="HTML kwenda PDF | AfroTools">
+<meta property="og:description" content="Geuza HTML kuwa PDF, kagua mwonekano na pakua pia chanzo cha HTML na mipangilio ya JSON ndani ya kivinjari.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/html-kwenda-pdf/">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/html-to-pdf.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="HTML kwenda PDF - geuza HTML au rich text kuwa PDF | AfroTools">
-<meta name="twitter:description" content="Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.">
+<meta name="twitter:title" content="HTML kwenda PDF | AfroTools">
+<meta name="twitter:description" content="Geuza HTML kuwa PDF, kagua mwonekano na pakua pia chanzo cha HTML na mipangilio ya JSON ndani ya kivinjari.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,19 +41,6 @@
     overflow: hidden;
   }
 
-  .tool-hero::after {
-    content: '';
-    position: absolute;
-    right: 5%;
-    top: 50%;
-    transform: translateY(-50%);
-    width: 120px;
-    height: 120px;
-    background: rgba(0, 98, 204, 0.04);
-    border-radius: 50%;
-    pointer-events: none;
-  }
-
   .tool-hero-inner {
     max-width: 1200px;
     margin: 0 auto;
@@ -67,7 +52,7 @@
     font-size: 0.72rem;
     font-weight: 500;
     color: rgba(255, 255, 255, 0.3);
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     margin-bottom: 14px;
   }
@@ -85,7 +70,7 @@
     font-size: clamp(1.6rem, 4vw, 2.4rem);
     font-weight: 800;
     color: #fff;
-    letter-spacing: -0.02em;
+    letter-spacing: 0;
     line-height: 1.1;
     margin-bottom: 10px;
   }
@@ -118,7 +103,7 @@
     border-radius: 4px;
     font-size: 0.68rem;
     font-weight: 700;
-    letter-spacing: 0.05em;
+    letter-spacing: 0;
   }
 
   .b-green {
@@ -161,6 +146,19 @@
     cursor: pointer;
     font-family: 'DM Sans', sans-serif;
     transition: all 0.2s;
+    min-height: 44px;
+    touch-action: manipulation;
+  }
+
+  .tab-btn:focus-visible,
+  .sample-btn:focus-visible,
+  .mini-action:focus-visible,
+  .rte-btn:focus-visible,
+  .convert-btn:focus-visible,
+  .dl-btn:focus-visible,
+  details summary:focus-visible {
+    outline: 3px solid rgba(0, 135, 81, 0.35);
+    outline-offset: 2px;
   }
 
   .tab-btn.active {
@@ -193,7 +191,7 @@
     background: #F5F9FF;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: #0f172a;
   }
@@ -238,6 +236,8 @@
     font-family: 'DM Sans', sans-serif;
     font-weight: 800;
     transition: all 0.15s;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .sample-btn {
@@ -280,7 +280,7 @@
     display: block;
     font-size: 0.72rem;
     font-weight: 700;
-    letter-spacing: 0.06em;
+    letter-spacing: 0;
     text-transform: uppercase;
     color: #64748b;
     margin-bottom: 6px;
@@ -300,6 +300,7 @@
     font-family: 'DM Sans', sans-serif;
     cursor: pointer;
     outline: none;
+    min-height: 44px;
   }
 
   .option-group input,
@@ -340,11 +341,16 @@
     font-size: 0.8rem;
     font-weight: 700;
     color: #334155;
+    min-height: 44px;
+    cursor: pointer;
+    touch-action: manipulation;
   }
 
   .check-row input {
     margin-top: 2px;
     accent-color: var(--afro-accent);
+    width: 18px;
+    height: 18px;
   }
 
   .hint-line,
@@ -385,7 +391,10 @@
     font-family: 'DM Sans', sans-serif;
     transition: all 0.15s;
     min-width: 30px;
+    min-height: 44px;
+    min-width: 44px;
     text-align: center;
+    touch-action: manipulation;
   }
 
   .rte-btn:hover {
@@ -436,6 +445,8 @@
     align-items: center;
     justify-content: center;
     gap: 8px;
+    min-height: 48px;
+    touch-action: manipulation;
   }
 
   .convert-btn:hover {
@@ -504,8 +515,41 @@
 
   .download-row {
     display: flex;
+    flex-wrap: wrap;
     gap: 12px;
     margin-top: 16px;
+  }
+
+  .output-review {
+    width: 100%;
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    border: 1px solid #BFDBFE;
+    border-radius: 8px;
+    background: #F8FBFF;
+    color: #334155;
+    font-size: 0.82rem;
+    font-weight: 600;
+    line-height: 1.5;
+    cursor: pointer;
+  }
+
+  .output-review input {
+    width: 18px;
+    height: 18px;
+    margin: 1px 0 0;
+    flex: 0 0 auto;
+    accent-color: var(--afro-accent);
+  }
+
+  .field-label {
+    display: block;
+    margin: 0 0 8px;
+    color: #0f172a;
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 
   .dl-btn {
@@ -520,6 +564,8 @@
     cursor: pointer;
     transition: all 0.18s;
     font-family: 'DM Sans', sans-serif;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   .dl-btn:hover {
@@ -620,6 +666,8 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
+    min-height: 44px;
+    touch-action: manipulation;
   }
 
   details summary::-webkit-details-marker { display: none; }
@@ -633,41 +681,6 @@
     font-family: 'DM Sans', sans-serif;
   }
 
-  .sw-proof-panel {
-    max-width: 900px;
-    margin: 0 auto 32px;
-    padding: 0 20px;
-  }
-
-  .sw-proof-grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 12px;
-  }
-
-  .sw-proof-card {
-    border: 1px solid #dbe6f4;
-    border-radius: 12px;
-    background: #fff;
-    padding: 14px;
-    box-shadow: 0 1px 8px rgba(15, 23, 42, 0.05);
-  }
-
-  .sw-proof-card strong {
-    display: block;
-    color: #0f172a;
-    font-size: 0.9rem;
-    line-height: 1.25;
-    margin-bottom: 6px;
-  }
-
-  .sw-proof-card p {
-    margin: 0;
-    color: #52637a;
-    font-size: 0.82rem;
-    line-height: 1.55;
-  }
-
   /* Hidden render container */
   #renderContainer {
     position: absolute;
@@ -679,53 +692,134 @@
   }
 
   @media (max-width: 600px) {
+    .tool-main {
+      padding-top: 20px;
+    }
     .options-row {
       flex-direction: column;
     }
     .download-row {
       flex-direction: column;
     }
+    .tool-main-inner,
+    .seo-section,
+    .faq-section {
+      padding-inline: 16px;
+    }
+    .card-body {
+      padding: 16px;
+    }
+    .tab-btn {
+      padding-inline: 10px;
+    }
     .advanced-grid {
       grid-template-columns: 1fr;
     }
-    .sw-proof-grid {
-      grid-template-columns: 1fr;
+  }
+
+  :root[data-theme="dark"] .tab-toggle,
+  :root[data-theme="dark"] .dl-btn.secondary,
+  :root[data-theme="dark"] .sample-btn,
+  :root[data-theme="dark"] .mini-action {
+    background: #111c30;
+    border-color: #294164;
+    color: #9cc8ff;
+  }
+
+  :root[data-theme="dark"] .tab-btn {
+    color: #aebdd2;
+  }
+
+  :root[data-theme="dark"] .tab-btn.active,
+  :root[data-theme="dark"] .tool-card,
+  :root[data-theme="dark"] details {
+    background: #101a2b;
+    border-color: #294164;
+  }
+
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .result-metrics,
+  :root[data-theme="dark"] .output-review {
+    background: #152238;
+    border-color: #294164;
+    color: #dbeafe;
+  }
+
+  :root[data-theme="dark"] #htmlInput,
+  :root[data-theme="dark"] #richEditor,
+  :root[data-theme="dark"] .option-group input,
+  :root[data-theme="dark"] .option-group select,
+  :root[data-theme="dark"] .option-group textarea {
+    background: #0b1423;
+    border-color: #35527b;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .option-group select option {
+    background: #0b1423;
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .field-label,
+  :root[data-theme="dark"] .option-group label,
+  :root[data-theme="dark"] .check-row,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .faq-section h2,
+  :root[data-theme="dark"] details summary {
+    color: #f1f5f9;
+  }
+
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] details .faq-body,
+  :root[data-theme="dark"] .hint-line,
+  :root[data-theme="dark"] .doc-stats {
+    color: #b7c5d8;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      animation-iteration-count: 1 !important;
+      scroll-behavior: auto !important;
+      transition-duration: 0.01ms !important;
     }
   }
 </style>
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML kwenda PDF","description":"Geuza HTML kuwa PDF, kagua mwonekano na pakua pia chanzo cha HTML na mipangilio ya JSON ndani ya kivinjari.","url":"https://afrotools.com/sw/zana/html-kwenda-pdf/","inLanguage":"sw","applicationCategory":"WebApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript and a modern browser with canvas support","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/html-to-pdf.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"HTML kwenda PDF","url":"https://afrotools.com/sw/zana/html-kwenda-pdf/","description":"Geuza HTML kuwa PDF, kagua mwonekano na pakua pia chanzo cha HTML na mipangilio ya JSON ndani ya kivinjari.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/html-to-pdf.webp"}</script>
 
-
-<meta property="og:locale" content="sw_KE">
-<meta property="og:locale:alternate" content="en_US">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
+<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/html-to-pdf.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nyumbani","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"HTML kwenda PDF","item":"https://afrotools.com/sw/zana/html-kwenda-pdf/"}]}</script>
 <meta property="article:modified_time" content="2026-04-28">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"HTML kwenda PDF","url":"https://afrotools.com/sw/zana/html-kwenda-pdf/","applicationCategory":"BusinessApplication","operatingSystem":"Any","inLanguage":"sw","description":"Badilisha HTML au rich text kuwa PDF kwenye kivinjari kwa templates, CSS, header, footer, namba za kurasa, margins na live preview.","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Hati na PDF","item":"https://afrotools.com/sw/hati-na-pdf/"},{"@type":"ListItem","position":4,"name":"HTML kwenda PDF","item":"https://afrotools.com/sw/zana/html-kwenda-pdf/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, HTML yangu inapakiwa?","acceptedAnswer":{"@type":"Answer","text":"Ubadilishaji umeundwa kufanyika kwenye kivinjari kwa maktaba za ndani. Picha za nje zinaweza kutegemea CORS na ruhusa za chanzo."}},{"@type":"Question","name":"Je, output ni sawa kabisa na browser page?","acceptedAnswer":{"@type":"Answer","text":"Hapana, export fidelity hutegemea CSS, fonts, picha, ukubwa wa ukurasa na uwezo wa browser. Hakiki PDF kabla ya kuituma."}},{"@type":"Question","name":"Ukubwa gani wa ukurasa unaungwa mkono?","acceptedAnswer":{"@type":"Answer","text":"Unaweza kutumia A4, A3, Letter au Legal kwa mwelekeo wa wima au mlalo, pamoja na margin za kawaida, nyembamba, pana, bila margin au maalum."}},{"@type":"Question","name":"Naweza kubadilisha rich text yenye formatting kuwa PDF?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Tumia tab ya Hariri rich text kwa bold, italic, headings, orodha, links na alignment, kisha badilisha moja kwa moja kuwa PDF."}},{"@type":"Question","name":"Je, maudhui marefu hugawanywa kwenye kurasa nyingi?","acceptedAnswer":{"@type":"Answer","text":"Ndiyo. Maudhui marefu hugawanywa kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua."}}]}</script>
-<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="sw-document-pdf:html-to-pdf">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/html-kwenda-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/html-to-pdf/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/html-en-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/html-kwenda-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/html-to-pdf/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
+<main id="main-content">
 <div class="tool-hero">
   <div class="tool-hero-inner">
     <div class="breadcrumb">
-      <a href="/">AfroTools</a> / <a href="/sw/zana-zote/">Zana</a> / <span>HTML kwenda PDF</span>
+      <a href="/">AfroTools</a> / <a href="/tools/">Zana</a> / <span>HTML hadi PDF</span>
     </div>
-    <h1>HTML kwenda <em>PDF</em></h1>
-    <p class="hero-sub">Badilisha HTML au rich text kuwa PDF iliyopangwa kwa templates, CSS maalum, header, footer, namba za kurasa, ubora na uchakataji wa kivinjari.</p>
+    <h1>HTML kwa <em>PDF</em></h1>
+    <p class="hero-sub">Bandika HTML au andika maandishi tele, hakiki ukurasa, na hamisha PDF ya ndani iliyo na pambizo, vichwa, vijachini na nambari za ukurasa.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Maktaba za ndani</span>
-      <span class="badge b-green">Header na footer</span>
-      <span class="badge b-green">mwonekano wa awali ya moja kwa moja</span>
+      <span class="badge b-green">Maktaba za mitaa</span>
+      <span class="badge b-green">Vichwa na vijachini</span>
+      <span class="badge b-green">Hakikisho la moja kwa moja</span>
     </div>
   </div>
 </div>
@@ -734,16 +828,16 @@
   <div class="tool-main-inner">
 
     <!-- Tab Toggle -->
-    <div class="tab-toggle">
-      <button type="button" class="tab-btn active" data-tab="html">Bandika HTML</button>
-      <button type="button" class="tab-btn" data-tab="rte">Hariri rich text</button>
+    <div class="tab-toggle" role="tablist" aria-label="Hati input mode">
+      <button type="button" class="tab-btn active" data-tab="html" role="tab" aria-selected="true" aria-controls="tab-html">Bandika HTML</button>
+      <button type="button" class="tab-btn" data-tab="rte" role="tab" aria-selected="false" aria-controls="tab-rte">Mhariri wa maandishi tajiri</button>
     </div>
 
     <!-- Status -->
-    <div id="statusMsg" class="status-msg"></div>
+    <div id="statusMsg" class="status-msg" role="status" aria-live="polite"></div>
 
-    <!-- Tab 1: Bandika HTML -->
-    <div id="tab-html" class="tab-content active">
+    <!-- Tab 1: Paste HTML -->
+    <div id="tab-html" class="tab-content active" role="tabpanel">
       <div class="tool-card">
         <div class="card-head">Ingizo la HTML</div>
         <div class="card-body">
@@ -752,35 +846,36 @@
             <button class="sample-btn" type="button" data-template="report">Ripoti</button>
             <button class="sample-btn" type="button" data-template="letter">Barua</button>
             <button class="sample-btn" type="button" data-template="certificate">Cheti</button>
-            <button class="mini-action" id="previewHtmlBtn" type="button">Onyesha HTML</button>
+            <button class="mini-action" id="previewHtmlBtn" type="button">Hakiki HTML</button>
           </div>
-          <textarea id="htmlInput" aria-label="Ingizo la HTML" placeholder="&lt;h1&gt;Hati yangu&lt;/h1&gt;&#10;&lt;p&gt;Bandika HTML yako hapa...&lt;/p&gt;&#10;&#10;&lt;ul&gt;&#10;  &lt;li&gt;Inaunga mkono inline styles&lt;/li&gt;&#10;  &lt;li&gt;Majedwali, picha na orodha&lt;/li&gt;&#10;  &lt;li&gt;Maudhui ya kurasa nyingi&lt;/li&gt;&#10;&lt;/ul&gt;"></textarea>
+          <label class="field-label" for="htmlInput">Chanzo cha HTML</label>
+          <textarea id="htmlInput" placeholder="<h2>Hujambo Ulimwengu</h2> <p>Bandika msimbo wako wa HTML hapa...</p> <ul> <li>Inaauni mitindo ya ndani</li> <li>Majedwali, picha, orodha</li> <li>Maudhui ya kurasa nyingi</li> </ul>"></textarea>
 
           <div class="options-row">
             <div class="option-group">
-              <label for="pageSize">Ukubwa wa ukurasa</label>
+              <label for="pageSize">Ukubwa wa Ukurasa</label>
               <select id="pageSize">
                 <option value="a4" selected>A4 (210 x 297 mm)</option>
                 <option value="a3">A3 (297 x 420 mm)</option>
-                <option value="letter">Letter (8.5 x 11 in)</option>
-                <option value="legal">Legal (8.5 x 14 in)</option>
+                <option value="letter">Barua (8.5 x 11 in)</option>
+                <option value="legal">Kisheria (8.5 x 14 in)</option>
               </select>
             </div>
             <div class="option-group">
-              <label>Mwelekeo</label>
-              <select id="orientation" aria-label="Orientation">
-                <option value="portrait" selected>Wima</option>
-                <option value="landscape">Mlalo</option>
+              <label for="orientation">Mwelekeo</label>
+              <select id="orientation">
+                <option value="portrait" selected>Picha</option>
+                <option value="landscape">Mandhari</option>
               </select>
             </div>
             <div class="option-group">
-              <label>Margins</label>
-              <select id="margins" aria-label="Margins">
+              <label for="margins">Pembezoni</label>
+              <select id="margins">
                 <option value="normal" selected>Kawaida (20mm)</option>
                 <option value="narrow">Nyembamba (10mm)</option>
-                <option value="wide">Pana (30mm)</option>
-                <option value="none">Bila margin</option>
-                <option value="custom">Maalum</option>
+                <option value="wide">Upana (30mm)</option>
+                <option value="none">Hakuna ukingo</option>
+                <option value="custom">Desturi</option>
               </select>
             </div>
           </div>
@@ -791,18 +886,18 @@
               <input id="fileName" type="text" value="afrotools-document.pdf">
             </div>
             <div class="option-group">
-              <label for="docTitle">Kichwa cha PDF</label>
+              <label for="docTitle">Jina la PDF</label>
               <input id="docTitle" type="text" value="AfroTools HTML PDF">
             </div>
             <div class="option-group">
-              <label for="customMargin">Margin maalum (mm)</label>
+              <label for="customMargin">Pambizo maalum (mm)</label>
               <input id="customMargin" type="number" min="0" max="60" value="16">
             </div>
             <div class="option-group">
-              <label for="renderScale">Kiwango cha render</label>
+              <label for="renderScale">Kiwango cha kutoa</label>
               <select id="renderScale">
                 <option value="1.5">Haraka</option>
-                <option value="2" selected>Wastani</option>
+                <option value="2" selected>Saliod</option>
                 <option value="2.75">Ubora wa juu</option>
               </select>
             </div>
@@ -810,34 +905,34 @@
               <label for="imageQuality">Ubora wa picha</label>
               <select id="imageQuality">
                 <option value="0.82">Faili ndogo</option>
-                <option value="0.92" selected>Wastani</option>
+                <option value="0.92" selected>Saliod</option>
                 <option value="0.98">Ubora wa juu</option>
               </select>
             </div>
             <div class="option-group">
-              <label for="headerText">Header</label>
-              <input id="headerText" type="text" placeholder="Header ya hiari ya ukurasa">
+              <label for="headerText">Kijajuu</label>
+              <input id="headerText" type="text" placeholder="Hiari ya kichwa cha ukurasa">
             </div>
             <div class="option-group">
-              <label for="footerText">Footer</label>
-              <input id="footerText" type="text" placeholder="Footer ya hiari ya ukurasa">
+              <label for="footerText">Kijachini</label>
+              <input id="footerText" type="text" placeholder="Hiari kijachini cha ukurasa">
             </div>
             <div class="option-group wide-field">
               <label for="customCss">CSS maalum</label>
               <textarea id="customCss" spellcheck="false" placeholder="@page { size: A4; }&#10;h1 { color: #0071e3; }&#10;.page-break { break-before: page; }"></textarea>
-              <div class="hint-line">Picha za nje zinaweza kuhitaji CORS. Scripts huondolewa kabla ya render kwa ubadilishaji salama zaidi wa ndani.</div>
+              <div class="hint-line">Picha za nje zinaweza kuhitaji CORS. Hati huondolewa kabla ya kutolewa kwa ubadilishaji salama wa karibu nawe.</div>
             </div>
             <label class="check-row">
-              <input aria-label="PageNumbers" id="pageNumbers" type="checkbox" checked>
-              <span>Ongeza namba za kurasa</span>
+               <input id="pageNumbers" type="checkbox" checked>
+              <span>Ongeza nambari za ukurasa</span>
             </label>
             <label class="check-row">
-              <input aria-label="IncludeDate" id="includeDate" type="checkbox">
-              <span>Ongeza tarehe ya kutengeneza</span>
+               <input id="includeDate" type="checkbox">
+              <span>Ongeza tarehe iliyotengenezwa</span>
             </label>
           </div>
 
-          <div class="doc-stats" id="docStats">Tayari. Bandika HTML au anza na template.</div>
+          <div class="doc-stats" id="docStats">Tayari. Bandika HTML au anza na kiolezo.</div>
 
           <button type="button" class="convert-btn" id="convertHtmlBtn">
             <span class="spinner" id="spinnerHtml"></span>
@@ -847,60 +942,60 @@
       </div>
     </div>
 
-    <!-- Tab 2: Hariri rich text -->
-    <div id="tab-rte" class="tab-content">
+    <!-- Tab 2: Rich Text Editor -->
+    <div id="tab-rte" class="tab-content" role="tabpanel">
       <div class="tool-card">
-        <div class="card-head">Hariri rich text</div>
+        <div class="card-head">Mhariri wa maandishi tajiri</div>
         <div class="rte-toolbar">
-          <button type="button" class="rte-btn" data-cmd="bold" title="Bold"><b>B</b></button>
-          <button type="button" class="rte-btn" data-cmd="italic" title="Italic"><i>I</i></button>
-          <button type="button" class="rte-btn" data-cmd="underline" title="Underline"><u>U</u></button>
+          <button type="button" class="rte-btn" data-cmd="bold" title="Ujasiri"><b>B</b></button>
+          <button type="button" class="rte-btn" data-cmd="italic" title="Italiki"><i>I</i></button>
+          <button type="button" class="rte-btn" data-cmd="underline" title="Piga mstari"><u>U</u></button>
           <div class="rte-sep"></div>
-          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h1" title="Heading 1">H1</button>
-          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h2" title="Heading 2">H2</button>
-          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h3" title="Heading 3">H3</button>
-          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="p" title="Paragraph">P</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h1" title="Kichwa 1">H1</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h2" title="Kichwa cha 2">H2</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="h3" title="Kichwa cha 3">H3</button>
+          <button type="button" class="rte-btn" data-cmd="formatBlock" data-val="p" title="Aya">P</button>
           <div class="rte-sep"></div>
-          <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Bullet List">&#8226; List</button>
-          <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Numbered List">1. List</button>
+          <button type="button" class="rte-btn" data-cmd="insertUnorderedList" title="Orodha ya risasi">• Orodha</button>
+          <button type="button" class="rte-btn" data-cmd="insertOrderedList" title="Orodha ya Nambari">1. Orodha</button>
           <div class="rte-sep"></div>
-          <button type="button" class="rte-btn" data-cmd="createLink" title="Insert Link">Link</button>
+          <button type="button" class="rte-btn" data-cmd="createLink" title="Weka Kiungo">Kiungo</button>
           <div class="rte-sep"></div>
-          <button type="button" class="rte-btn" data-cmd="justifyLeft" title="Align Left">Left</button>
-          <button type="button" class="rte-btn" data-cmd="justifyCenter" title="Align Center">Center</button>
-          <button type="button" class="rte-btn" data-cmd="justifyRight" title="Align Right">Right</button>
+          <button type="button" class="rte-btn" data-cmd="justifyLeft" title="Pangilia Kushoto">Kushoto</button>
+          <button type="button" class="rte-btn" data-cmd="justifyCenter" title="Pangilia katikati">Kituo</button>
+          <button type="button" class="rte-btn" data-cmd="justifyRight" title="Pangilia Kulia">Sawa</button>
         </div>
-        <div id="richEditor" contenteditable="true">
+        <div id="richEditor" contenteditable="true" role="textbox" aria-multiline="true" aria-label="Mhariri tajiri wa hati ya maandishi">
           <h2>Anza kuandika hapa...</h2>
-          <p>Tumia toolbar juu kupanga maandishi. Bold, italic, headings, orodha, viungo na alignment vinaungwa mkono.</p>
+          <p>Tumia upau wa vidhibiti hapo juu kufomati maandishi yako. herufi nzito, italiki, vichwa, orodha, viungo na upangaji vyote vinatumika.</p>
         </div>
       </div>
 
       <div class="options-row" style="margin-top:16px">
         <div class="option-group">
-          <label for="pageSizeRte">Ukubwa wa ukurasa</label>
+          <label for="pageSizeRte">Ukubwa wa Ukurasa</label>
           <select id="pageSizeRte">
             <option value="a4" selected>A4 (210 x 297 mm)</option>
             <option value="a3">A3 (297 x 420 mm)</option>
-            <option value="letter">Letter (8.5 x 11 in)</option>
-            <option value="legal">Legal (8.5 x 14 in)</option>
+            <option value="letter">Barua (8.5 x 11 in)</option>
+            <option value="legal">Kisheria (8.5 x 14 in)</option>
           </select>
         </div>
         <div class="option-group">
-          <label>Mwelekeo</label>
-          <select id="orientationRte" aria-label="Orientation Rte">
-            <option value="portrait" selected>Wima</option>
-            <option value="landscape">Mlalo</option>
+          <label for="orientationRte">Mwelekeo</label>
+          <select id="orientationRte">
+            <option value="portrait" selected>Picha</option>
+            <option value="landscape">Mandhari</option>
           </select>
         </div>
         <div class="option-group">
-          <label>Margins</label>
-          <select id="marginsRte" aria-label="Margins Rte">
+          <label for="marginsRte">Pembezoni</label>
+          <select id="marginsRte">
             <option value="normal" selected>Kawaida (20mm)</option>
             <option value="narrow">Nyembamba (10mm)</option>
-            <option value="wide">Pana (30mm)</option>
-            <option value="none">Bila margin</option>
-            <option value="custom">Tumia margin maalum hapo juu</option>
+            <option value="wide">Upana (30mm)</option>
+            <option value="none">Hakuna ukingo</option>
+            <option value="custom">Tumia ukingo maalum hapo juu</option>
           </select>
         </div>
       </div>
@@ -911,23 +1006,30 @@
       </button>
     </div>
 
-    <!-- Preview + Pakua -->
+    <!-- Preview + Download -->
     <div id="previewSection" class="preview-section">
       <div class="tool-card" style="margin-top:24px">
-        <div class="card-head">Muonekano wa HTML</div>
+        <div class="card-head">Hakiki ya HTML</div>
         <div class="card-body">
-          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="Muonekano wa HTML"></iframe>
+          <iframe id="htmlPreview" class="preview-frame html-preview-frame" title="Hakiki ya HTML" sandbox="allow-same-origin"></iframe>
         </div>
       </div>
       <div class="tool-card" style="margin-top:24px">
-        <div class="card-head">mwonekano wa awali ya PDF</div>
+        <div class="card-head">Muhtasari wa PDF</div>
         <div class="card-body">
-          <iframe id="pdfPreview" class="preview-frame" title="mwonekano wa awali ya PDF"></iframe>
+          <iframe id="pdfPreview" class="preview-frame" title="Muhtasari wa PDF"></iframe>
           <div class="result-metrics" id="resultMetrics"></div>
           <div class="download-row">
+            <label class="output-review" for="htmlPdfReviewConfirm">
+              <input id="htmlPdfReviewConfirm" type="checkbox">
+              <span>Nilikagua chanzo, onyesho la kukagua ukurasa, vipimo vya mpangilio, vichwa, vijachini na nambari za ukurasa kabla ya kusafirisha.</span>
+            </label>
             <button type="button" class="dl-btn" id="downloadBtn">Pakua PDF</button>
-            <button type="button" class="dl-btn secondary" id="openPreviewBtn">Fungua mwonekano wa awali</button>
-            <button type="button" class="dl-btn secondary" id="resetBtn">Badilisha nyingine</button>
+            <button type="button" class="dl-btn secondary" id="openPreviewBtn">Fungua Onyesho la Kuchungulia</button>
+            <button type="button" class="dl-btn secondary" id="copyHtmlSourceBtn">Chanzo cha nakala</button>
+            <button type="button" class="dl-btn secondary" id="downloadHtmlSourceBtn">Pakua HTML</button>
+            <button type="button" class="dl-btn secondary" id="downloadHtmlSettingsBtn">Hifadhi nakala ya JSON</button>
+            <button type="button" class="dl-btn secondary" id="resetBtn">Badilisha Mwingine</button>
           </div>
         </div>
       </div>
@@ -937,70 +1039,68 @@
 </div>
 
 <!-- Hidden render container -->
-<div id="renderContainer"></div>
+<div id="renderContainer" aria-hidden="true"></div>
 
 <!-- SEO Section -->
 <section class="seo-section">
-  <h2>Badilisha HTML kuwa PDF mtandaoni</h2>
-  <p>AfroTools HTML kwenda PDF hubadilisha HTML ghafi au rich text kuwa hati za PDF kwa kivinjari-local rendering. Tumia templates za ankara, ripoti, barua na vyeti, au bandika HTML yako yenye inline styles, majedwali, orodha na picha. Chagua ukubwa wa ukurasa, mwelekeo, margins, render quality, CSS, headers, footers, namba za kurasa na tarehe kabla ya export.</p>
-  <p>Kila kitu hufanyika upande wa kivinjari kwa kutumia html2canvas na jsPDF assets za ndani. Maudhui yako hayatoki kwenye kifaa chako, hivyo yanafaa kwa ankara, mikataba, ripoti, risiti, barua za shule na nyaraka za ndani. Kwa kunasa live URLs kwa usahihi wa pixel, tumia seva-side renderer; kwa HTML au rich text uliyobandika kwa faragha, zana hii inatoa kasi na udhibiti.</p>
-</section>
-<section class="sw-proof-panel" aria-labelledby="html-pdf-proof-title">
-  <h2 id="html-pdf-proof-title" style="margin:0 0 12px;color:#0f172a;font-size:1.25rem;">Kabla ya ku-export PDF</h2>
-  <div class="sw-proof-grid">
-    <div class="sw-proof-card"><strong>Inafaa kwa nini</strong><p>Ankara, risiti, barua, ripoti fupi, vyeti, notes za darasa na hati za ndani unazotaka kuunda bila kupakia maudhui.</p></div>
-    <div class="sw-proof-card"><strong>Faragha ya kazi</strong><p>HTML na rich text hukaa kwenye kivinjari. Picha za nje zinaweza kushindwa kama chanzo hakiruhusu CORS.</p></div>
-    <div class="sw-proof-card"><strong>Hakiki kabla ya kutuma</strong><p>PDF ya canvas inaweza kubadilisha fonti au spacing. Fungua mwonekano wa awali, kagua kurasa, kisha pakua.</p></div>
-  </div>
+  <h2>Badilisha HTML kuwa PDF Mtandaoni</h2>
+  <p>Kigeuzi cha AfroTools HTML hadi PDF hubadilisha HTML ghafi au maandishi nono kuwa hati za PDF zilizong'aa kwa uwasilishaji wa ndani wa kivinjari. Tumia violezo vya ankara, ripoti, barua na vyeti, au ubandike HTML yako mwenyewe na mitindo ya ndani, majedwali, orodha na picha. Chagua ukubwa wa ukurasa, mwelekeo, pambizo, ubora wa kutoa, CSS maalum, vichwa, vijachini, nambari za ukurasa na tarehe zilizoundwa kabla ya kusafirisha.</p>
+  <p>Kila kitu huendesha upande wa mteja kwa kutumia html2canvas ya ndani na vipengee vya jsPDF. Maudhui yako hayaachi kamwe kwenye kifaa chako, na hivyo kufanya zana hii kufaa kwa ankara za siri, mikataba, ripoti, risiti, barua za shule na hati za ndani. Kwa upigaji picha wa wavuti wa pixel-kamilifu wa URL za moja kwa moja, tumia kionyeshi cha upande wa seva; kwa HTML ya faragha iliyobandikwa na maandishi tele, zana hii ya ndani hukupa kasi, faragha na udhibiti.</p>
 </section>
 
 <!-- FAQ Section -->
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
+
 <section class="faq-section">
-  <h2>Maswali ya mara kwa mara</h2>
+  <h2>Maswali yanayoulizwa mara kwa mara</h2>
   <div class="faq-list">
     <details>
       <summary>
-        Je, HTML yangu inapakiwa kwenye seva?
+        Je, maudhui yangu ya HTML yamepakiwa kwenye seva?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Hapana. Ubadilishaji wote hufanyika kwenye kivinjari yako kwa html2canvas na jsPDF files za ndani. HTML yako haitoki kwenye kifaa chako.</div>
+      <div class="faq-body">Hapana. Ugeuzaji wote hutokea katika kivinjari chako kwa kutumia html2canvas ya ndani na faili za jsPDF. HTML yako haiachi kamwe kifaa chako.</div>
     </details>
     <details>
       <summary>
-        Ukubwa gani wa ukurasa na mwelekeo unaungwa mkono?
+        Je, ni saizi gani za ukurasa na mwelekeo gani unaoungwa mkono?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Zana inaunga mkono A4, A3, Letter na Legal kwa wima au mlalo. Unaweza kuchagua margin za kawaida, nyembamba, pana, bila margin au maalum.</div>
+      <div class="faq-body">Kigeuzi kinaauni ukubwa wa kurasa za A4, A3, Herufi, na Kisheria katika picha au mlalo. Unaweza kuchagua mipangilio ya ukingo wa kawaida, finyu, pana, isiyo na ukingo au maalum.</div>
     </details>
     <details>
       <summary>
-        Naweza kubadilisha rich text yenye formatting kuwa PDF?
+        Ninaweza kubadilisha maandishi tajiri na umbizo kuwa PDF?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Ndiyo. Fungua tab ya Hariri rich text kutumia editor yenye bold, italic, underline, headings, orodha, links na alignment. Maudhui hayo hubadilishwa moja kwa moja kuwa PDF.</div>
+      <div class="faq-body">Ndiyo. Badili hadi kwenye kichupo cha Kihariri cha Maandishi Nyingi ili kutumia kihariri kinachoonekana chenye herufi nzito, italiki, kupigia mstari, vichwa, orodha, viungo na upatanishaji wa maandishi. Maudhui yaliyoumbizwa hubadilika moja kwa moja hadi PDF.</div>
     </details>
     <details>
       <summary>
-        Je, zana hushughulikia maudhui ya kurasa nyingi?
+        Je, kigeuzi kinashughulikia maudhui ya kurasa nyingi?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Ndiyo. Maudhui marefu hugawanywa kwenye kurasa nyingi kulingana na ukubwa wa ukurasa, margins na render scale uliyochagua. Header, footer, namba za kurasa na tarehe hutumika kwenye kila ukurasa.</div>
+      <div class="faq-body">Ndiyo. Maudhui marefu yamegawanywa katika kurasa nyingi za PDF kulingana na saizi ya ukurasa uliochagua, pambizo, na kiwango cha kutoa. Vijajuu, vijachini, nambari za ukurasa na tarehe zinatumika kwa kila ukurasa.</div>
     </details>
     <details>
       <summary>
-        Je, CSS styles huhifadhiwa kwenye PDF?
+        Je! Mitindo ya CSS imehifadhiwa kwenye PDF?
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" style="flex-shrink:0;transition:transform .2s"><path d="M3 5l3 3 3-3" stroke="#9ca3af" stroke-width="1.5" stroke-linecap="round"/></svg>
       </summary>
-      <div class="faq-body">Inline styles na field ya CSS maalum hu-render kwenye PDF. Picha za nje zinaweza kuhitaji CORS, hivyo picha zilizopachikwa au same-origin ndizo za kuaminika zaidi.</div>
+      <div class="faq-body">Mitindo ya ndani na uga maalum wa CSS hutolewa kwenye PDF. Picha za nje zinaweza kuhitaji ufikiaji wa CORS, kwa hivyo picha zilizopachikwa au za asili moja ndizo zinazotegemewa zaidi.</div>
     </details>
   </div>
 </section>
+</main>
 
-<afro-related-tools category="document-pdf" current="html-to-pdf"></afro-related-tools>
-<afro-newsletter-cta></afro-newsletter-cta>
+<afro-related-tools category="document-pdf" current="html-to-pdf" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
+<h2 class="seo-links-title">Zana zinazohusiana</h2>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Kijenzi</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Jenereta ya ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Mhariri wa PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Unganisha na Ugawanye PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Nafasi ya kazi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-footer></afro-footer>
 
 <script src="/assets/js/pages/html-to-pdf.js?v=aea221ff"></script>
@@ -1264,8 +1364,7 @@
   }
 
   downloadBtn.addEventListener('click', function() {
-    var gate = document.querySelector('email-gate-modal');
-    if (gate) { gate.show(doActualDownload); } else { doActualDownload(); }
+    doActualDownload();
   });
 
   /* ── Reset ── */
@@ -1279,66 +1378,109 @@
 })();
 </script>
 <script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
-<script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
 
 <script>
-// Save/Share buttons — manual placement needed
 (function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="HTML kwenda PDF" tool-slug="html-to-pdf"></share-result-button>';
-  target.appendChild(div);
+  function byId(id){ return document.getElementById(id); }
+  function status(message,type){
+    var el=byId('statusMsg');
+    if(el){ el.textContent=message; el.className='status-msg '+(type||'success'); }
+  }
+  function activeSource(){
+    var active=document.querySelector('.tab-btn.active');
+    var mode=active&&active.dataset.tab==='rte'?'rte':'html';
+    var content=mode==='rte'?((byId('richEditor')||{}).innerHTML||''):((byId('htmlInput')||{}).value||'');
+    return {mode:mode,content:content};
+  }
+  function htmlSettings(){
+    var src=activeSource();
+    return {
+      tool:'html-to-pdf',
+      exportedAt:new Date().toISOString(),
+      mode:src.mode,
+      fileName:(byId('fileName')||{}).value||'afrotools-document.pdf',
+      documentTitle:(byId('docTitle')||{}).value||'AfroTools HTML PDF',
+      pageSize:(byId(src.mode==='rte'?'pageSizeRte':'pageSize')||{}).value||'a4',
+      orientation:(byId(src.mode==='rte'?'orientationRte':'orientation')||{}).value||'portrait',
+      margins:(byId(src.mode==='rte'?'marginsRte':'margins')||{}).value||'normal',
+      customMargin:(byId('customMargin')||{}).value||'',
+      renderScale:(byId('renderScale')||{}).value||'',
+      imageQuality:(byId('imageQuality')||{}).value||'',
+      headerText:(byId('headerText')||{}).value||'',
+      footerText:(byId('footerText')||{}).value||'',
+      pageNumbers:!!((byId('pageNumbers')||{}).checked),
+      includeDate:!!((byId('includeDate')||{}).checked),
+      customCss:(byId('customCss')||{}).value||'',
+      content:src.content,
+      privacy:'Local-first backup. Keep private if the document contains sensitive business or personal data.'
+    };
+  }
+  function safeName(name,ext){
+    var base=String(name||'afrotools-html-document').replace(/\.[^.]+$/,'').replace(/[\\/:*?"<>|]+/g,'-').replace(/\s+/g,'-')||'afrotools-html-document';
+    return base+ext;
+  }
+  function escHtml(text){
+    return String(text||'').replace(/[&<>"']/g,function(ch){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[ch];});
+  }
+  function downloadBlob(name,type,content){
+    var blob=new Blob([content],{type:type});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url;
+    a.download=name;
+    a.dataset.noPdfGate='true';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+  function copySource(){
+    var src=activeSource();
+    if(!src.content.trim()){ status('Add HTML or rich text before copying source.','error'); return; }
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(src.content).then(function(){ status('Source copied. It stayed in this browser.','success'); }).catch(function(){ status('Copy failed. Select the source manually.','error'); });
+    } else status('Copy is unavailable in this browser. Select the source manually.','error');
+  }
+  function requireReview(){
+    var review=byId('htmlPdfReviewConfirm');
+    if(review&&review.checked) return true;
+    status('Review the source, page preview, layout metrics, and footer settings before export.','error');
+    if(review) review.focus();
+    return false;
+  }
+  function downloadSource(){
+    if(!requireReview()) return;
+    var data=htmlSettings();
+    if(!data.content.trim()){ status('Add HTML or rich text before downloading source.','error'); return; }
+    var html=data.mode==='rte'?'<!doctype html><html><head><meta charset="utf-8"><title>'+escHtml(data.documentTitle)+'</title></head><body>'+data.content+'<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body></html>':data.content;
+    downloadBlob(safeName(data.fileName,'.html'),'text/html;charset=utf-8',html);
+    status('HTML source downloaded locally.','success');
+  }
+  function downloadSettings(){
+    if(!requireReview()) return;
+    var data=htmlSettings();
+    downloadBlob(safeName(data.fileName,'.json'),'application/json',JSON.stringify(data,null,2));
+    status('JSON backup downloaded. Keep it private if the content is sensitive.','success');
+  }
+  var copy=byId('copyHtmlSourceBtn');
+  var html=byId('downloadHtmlSourceBtn');
+  var json=byId('downloadHtmlSettingsBtn');
+  if(copy) copy.addEventListener('click',copySource);
+  if(html) html.addEventListener('click',downloadSource);
+  if(json) json.addEventListener('click',downloadSettings);
 })();
 </script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
 <script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<script>
-(function(){
-  const textMap = new Map([["Upload PDF","Pakia PDF"],["Download PDF","Pakua PDF"],["Download ZIP","Pakua ZIP"],["Download Report","Pakua ripoti"],["Download result","Pakua matokeo"],["Download audit CSV","Pakua audit CSV"],["Download CSV","Pakua CSV"],["Download Text","Pakua maandishi"],["Download Audio","Pakua sauti"],["Clear","Futa"],["Copy","Nakili"],["Save","Hifadhi"],["Cancel","Ghairi"],["Close","Funga"],["Remove file","Ondoa faili"],["Remove","Ondoa"],["Add Step","Ongeza hatua"],["Run Pipeline","Endesha mtiririko"],["Validate workflow","Hakiki workflow"],["Repair PDF","Rekebisha PDF"],["Translate PDF","Tafsiri PDF"],["Convert to PDF","Badilisha kuwa PDF"],["Find Matches","Tafuta matches"],["Replace Selected","Badilisha iliyochaguliwa"],["Replace All","Badilisha zote"],["Run Comparison","Endesha ulinganisho"],["Copy Summary","Nakili muhtasari"],["Loading...","Inapakia..."],["Loading voices...","Inapakia sauti..."],["Upload a PDF to get started.","Pakia PDF kuanza."],["No file selected","Hakuna faili iliyochaguliwa"],["Processing...","Inachakata..."],["Please paste some HTML code first.","Bandika msimbo wa HTML kwanza."],["Please type some content in the rich text editor.","Andika maudhui kwenye rich text editor kwanza."],["Paste HTML or choose a template before previewing.","Bandika HTML au chagua template kabla ya preview."],["Popup blocked. Please allow popups for preview.","Popup imezuiwa. Ruhusu popups ili kuona preview."],["PDF generated successfully","PDF imeundwa vizuri"],["Conversion failed:","Ubadilishaji umeshindikana:"],["Ready","Tayari"],["Error","Hitilafu"]]);
-  const attrMap = textMap;
-  function swapText(node){
-    const raw = node.textContent || '';
-    const trimmed = raw.trim();
-    if (!trimmed || !textMap.has(trimmed)) return;
-    node.textContent = raw.replace(trimmed, textMap.get(trimmed));
-  }
-  function walk(root){
-    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
-      acceptNode(node){
-        const parent = node.parentElement;
-        if (!parent || /^(SCRIPT|STYLE|NOSCRIPT)$/i.test(parent.tagName)) return NodeFilter.FILTER_REJECT;
-        return NodeFilter.FILTER_ACCEPT;
-      }
-    });
-    const nodes = [];
-    while (walker.nextNode()) nodes.push(walker.currentNode);
-    nodes.forEach(swapText);
-    root.querySelectorAll && root.querySelectorAll('[placeholder],[aria-label],button,input[type="button"],input[type="submit"]').forEach(el => {
-      ['placeholder','aria-label','value','title'].forEach(attr => {
-        const value = el.getAttribute(attr);
-        if (value && attrMap.has(value.trim())) el.setAttribute(attr, attrMap.get(value.trim()));
-      });
-    });
-  }
-  function run(){ walk(document.body); }
-  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', run); else run();
-  new MutationObserver(mutations => {
-    for (const mutation of mutations) {
-      mutation.addedNodes.forEach(node => {
-        if (node.nodeType === Node.TEXT_NODE) swapText(node);
-        else if (node.nodeType === Node.ELEMENT_NODE) walk(node);
-      });
-    }
-  }).observe(document.documentElement, { childList: true, subtree: true });
-})();
-</script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
+
+  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
+  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"html-to-pdf","name":"HTML kwenda PDF","downloadContract":"free-account"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
 </body>
 </html>

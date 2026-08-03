@@ -66,7 +66,8 @@ function ownedByScopedParity(rel) {
   const html = read(rel);
   return [
     'scripts/build-sw-legal-government-insurance-parity.js',
-    'scripts/build-sw-web-text-codecs-family.js'
+    'scripts/build-sw-web-text-codecs-family.js',
+    'scripts/build-swahili-hr-payroll-six.js'
   ].some((owner) => html.includes(owner));
 }
 function withAnalyticsLoader(html) {
@@ -490,6 +491,10 @@ const scriptLanguageRepairs = [
   [/\bif\s*\(\s*!matokeo\s*\)/g, 'if (!RESULT)'],
   [/\bconst R(\s*)=(\s*)matokeo\b/g, 'const R$1=$2RESULT'],
   [/\bmatokeo\./g, 'RESULT.'],
+  // The property repair above also sees sentence text inside inline script
+  // strings. Restore the Swahili noun there instead of leaking the RESULT
+  // identifier into the interface.
+  [/(kupata )RESULT\./g, '$1matokeo.'],
   [/\b([A-Za-z_$][\w$]*)\.kila mwaka\b/g, '$1.annual'],
   [/\b([A-Za-z_$][\w$]*)\.kila mwezi\b/g, '$1.monthly'],
   [/\bnavigator\.shiriki\b/g, 'navigator.share']

@@ -4,18 +4,18 @@
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Kujaza Fomu za PDF - Andika kwenye fomu na pakua | AfroTools</title>
-<meta name="description" content="Jaza fomu za PDF kwa Kiswahili kwa kuongeza maandishi na sehemu za taarifa kabla ya kupakua nakala yako.">
+<title>Jaza Fomu ya PDF | AfroTools</title>
+<meta name="description" content="Jaza sehemu za fomu ya PDF, kagua thamani zilizoingizwa na pakua PDF iliyojazwa bila kuituma mtandaoni.">
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
-<meta property="og:title" content="Kujaza Fomu za PDF - Andika kwenye fomu na pakua | AfroTools">
-<meta property="og:description" content="Jaza fomu za PDF kwa Kiswahili kwa kuongeza maandishi na sehemu za taarifa kabla ya kupakua nakala yako.">
+<meta property="og:title" content="Jaza Fomu ya PDF | AfroTools">
+<meta property="og:description" content="Jaza sehemu za fomu ya PDF, kagua thamani zilizoingizwa na pakua PDF iliyojazwa bila kuituma mtandaoni.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://afrotools.com/sw/zana/kujaza-fomu-pdf/">
 <meta property="og:image" content="https://afrotools.com/assets/img/tools/pdf-form-filler.webp">
 <meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Kujaza Fomu za PDF - Andika kwenye fomu na pakua | AfroTools">
-<meta name="twitter:description" content="Jaza fomu za PDF kwa Kiswahili kwa kuongeza maandishi na sehemu za taarifa kabla ya kupakua nakala yako.">
+<meta name="twitter:title" content="Jaza Fomu ya PDF | AfroTools">
+<meta name="twitter:description" content="Jaza sehemu za fomu ya PDF, kagua thamani zilizoingizwa na pakua PDF iliyojazwa bila kuituma mtandaoni.">
 <meta name="robots" content="index, follow">
 <meta name="author" content="AfroTools">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -29,14 +29,17 @@
 <script src="/assets/js/components/newsletter-cta.min.js?v=6a0f4316" defer></script>
 <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
 <script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf-lib/1.17.1/pdf-lib.min.js" crossorigin="anonymous"></script>
-<script>if(!window.PDFLib){document.write('<scr'+'ipt src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"><\/scr'+'ipt>')}</script>
+<script src="/assets/vendor/pdfjs/pdf.min.js?v=96de3233"></script>
+<script src="/assets/vendor/pdf-lib/pdf-lib.min.js?v=dec481b1"></script>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Jaza Fomu ya PDF","description":"Jaza sehemu za fomu ya PDF, kagua thamani zilizoingizwa na pakua PDF iliyojazwa bila kuituma mtandaoni.","url":"https://afrotools.com/sw/zana/kujaza-fomu-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-form-filler.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Jaza Fomu ya PDF","url":"https://afrotools.com/sw/zana/kujaza-fomu-pdf/","description":"Jaza sehemu za fomu ya PDF, kagua thamani zilizoingizwa na pakua PDF iliyojazwa bila kuituma mtandaoni.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/pdf-form-filler.webp"}</script>
 
 <style>
   :root { --afro-green: var(--color-primary); --afro-dark: #0f1419; --afro-light: #f5f7fa; }
 
   .tool-hero { background: linear-gradient(135deg, var(--afro-dark) 0%, #1a1f2e 100%); padding: 44px 0 36px; position: relative; overflow: hidden; }
-  .tool-hero::after { content: '\1F4DD'; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
+  .tool-hero::after { content: ''; position: absolute; right: 5%; top: 50%; transform: translateY(-50%); font-size: 8rem; opacity: 0.06; pointer-events: none; }
   .tool-hero-inner { max-width: 1200px; margin: 0 auto; padding: 0 24px; position: relative; }
   .breadcrumb { font-size: 0.72rem; font-weight: 500; color: rgba(255,255,255,0.3); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 14px; }
   .breadcrumb a { color: rgba(255,255,255,0.3); text-decoration: none; }
@@ -56,9 +59,9 @@
   .card-body { padding: 22px; }
 
   /* Upload zone */
-  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 10px; cursor: pointer; transition: all 0.2s; text-align: center; min-height: 180px; }
+  .upload-zone { display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 40px 20px; background: #EFF6FF; border: 2px dashed #e5e7eb; border-radius: 10px; cursor: pointer; transition: border-color 0.2s, background 0.2s; text-align: center; min-height: 180px; touch-action: manipulation; }
   .upload-zone:hover, .upload-zone.dragover { border-color: var(--afro-green); background: rgba(0,98,204,0.08); }
-  .upload-zone .uz-icon { font-size: 2.5rem; margin-bottom: 8px; }
+  .upload-zone .uz-icon { display: none; }
   .upload-zone .uz-text { font-size: 0.9rem; color: #334155; font-weight: 700; }
   .upload-zone .uz-sub { font-size: 0.72rem; color: #9ca3af; margin-top: 4px; }
   .upload-zone input[type="file"] { display: none; }
@@ -71,7 +74,7 @@
   .preview-panel { min-height: 500px; position: relative; }
   .preview-panel canvas { max-width: 100%; display: block; margin: 0 auto; border: 1px solid #e5e7eb; border-radius: 4px; background: #fff; }
   .page-nav { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 10px 0; }
-  .page-nav button { padding: 6px 14px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.78rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; transition: 0.15s; }
+  .page-nav button { min-height: 44px; padding: 6px 14px; background: #EFF6FF; border: 1px solid #e5e7eb; border-radius: 5px; cursor: pointer; font-size: 0.78rem; font-weight: 700; color: #334155; font-family: 'DM Sans', sans-serif; transition: border-color 0.15s, background 0.15s; touch-action: manipulation; }
   .page-nav button:hover { border-color: var(--afro-green); }
   .page-nav button:disabled { opacity: 0.4; cursor: not-allowed; }
   .page-nav span { font-size: 0.78rem; font-weight: 700; color: #374151; }
@@ -89,10 +92,10 @@
 
   .field-group input[type="text"],
   .field-group textarea,
-  .field-group select { width: 100%; padding: 8px 10px; border: 1.5px solid #e5e7eb; border-radius: 6px; font-size: 0.82rem; font-family: 'DM Sans', sans-serif; color: #1e293b; background: #fff; transition: border 0.15s; box-sizing: border-box; }
+  .field-group select { width: 100%; min-height: 44px; padding: 8px 10px; border: 1.5px solid #e5e7eb; border-radius: 6px; font-size: 0.92rem; font-family: 'DM Sans', sans-serif; color: #1e293b; background: #fff; transition: border-color 0.15s, box-shadow 0.15s; box-sizing: border-box; }
   .field-group input[type="text"]:focus,
   .field-group textarea:focus,
-  .field-group select:focus { outline: none; border-color: var(--afro-green); }
+  .field-group select:focus { outline: none; border-color: var(--afro-green); box-shadow: 0 0 0 3px rgba(0,98,204,0.12); }
   .field-group textarea { resize: vertical; min-height: 60px; }
 
   .field-group label.check-label { display: flex; align-items: center; gap: 8px; font-size: 0.82rem; color: #1e293b; font-weight: 600; cursor: pointer; }
@@ -104,21 +107,21 @@
 
   /* Buttons */
   .btn-row { display: flex; flex-wrap: wrap; gap: 8px; padding: 16px; border-top: 1px solid #e5e7eb; }
-  .btn-sm { padding: 8px 16px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: all 0.15s; font-family: 'DM Sans', sans-serif; border: none; }
+  .btn-sm { min-height: 44px; padding: 8px 16px; font-size: 0.78rem; font-weight: 700; border-radius: 6px; cursor: pointer; transition: background 0.15s, border-color 0.15s, color 0.15s; font-family: 'DM Sans', sans-serif; border: none; touch-action: manipulation; }
   .btn-fill-all { background: rgba(0,98,204,0.1); color: #1e40af; border: 1.5px solid rgba(0,98,204,0.35); }
   .btn-fill-all:hover { background: rgba(0,98,204,0.2); }
   .btn-clear { background: #fff; color: #6b7280; border: 1.5px solid #e5e7eb; }
   .btn-clear:hover { border-color: #d1d5db; }
 
-  .calc-btn { width: 100%; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: all 0.18s; font-family: 'DM Sans', sans-serif; }
-  .calc-btn:hover { background: #0059B3; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(0,98,204,0.3); }
+  .calc-btn { width: 100%; min-height: 48px; padding: 14px; background: var(--color-primary); color: #fff; border: none; border-radius: 8px; font-size: 0.9rem; font-weight: 700; letter-spacing: 0.03em; cursor: pointer; transition: background 0.18s, box-shadow 0.18s, opacity 0.18s; font-family: 'DM Sans', sans-serif; touch-action: manipulation; }
+  .calc-btn:hover { background: #0059B3; box-shadow: 0 6px 20px rgba(0,98,204,0.3); }
   .calc-btn:disabled { background: #93c5fd; cursor: not-allowed; transform: none; box-shadow: none; }
 
   .flatten-row { display: flex; align-items: center; gap: 8px; padding: 12px 16px; background: #f9fafb; border-top: 1px solid #e5e7eb; font-size: 0.82rem; font-weight: 600; color: #374151; }
   .flatten-row input[type="checkbox"] { width: 18px; height: 18px; accent-color: var(--color-primary); cursor: pointer; }
 
-  .no-fields { text-align: center; padding: 40px 20px; color: #9ca3af; font-size: 0.85rem; }
-  .no-fields .nf-icon { font-size: 2rem; margin-bottom: 8px; }
+  .no-fields { text-align: center; padding: 40px 20px; color: #64748b; font-size: 0.85rem; line-height: 1.55; }
+  .no-fields .nf-icon { display: none; }
 
   .status-msg { padding: 12px 16px; font-size: 0.82rem; font-weight: 600; border-radius: 6px; margin: 12px 0; }
   .status-success { background: #d1fae5; color: #065f46; }
@@ -139,77 +142,124 @@
   .field-count-bar { display: flex; gap: 12px; flex-wrap: wrap; padding: 12px 16px; background: #EFF6FF; border-bottom: 1px solid #e5e7eb; }
   .fc-item { font-size: 0.7rem; font-weight: 700; color: #374151; }
   .fc-item strong { color: var(--color-primary); }
+  .completion-meter { padding: 12px 16px; border-bottom: 1px solid #e5e7eb; background: #fff; }
+  .completion-meter__top { display: flex; justify-content: space-between; gap: 12px; margin-bottom: 8px; color: #334155; font-size: 0.78rem; font-weight: 750; }
+  .completion-meter__track { height: 8px; overflow: hidden; border-radius: 999px; background: #DBEAFE; }
+  .completion-meter__fill { width: 0%; height: 100%; border-radius: inherit; background: var(--color-primary); transition: width 0.18s ease; }
+  .field-required { color: #b45309; font-size: 0.66rem; font-weight: 900; letter-spacing: 0.04em; text-transform: uppercase; margin-left: auto; }
+  .field-group.is-empty-required { background: #fffbeb; }
+  .download-wrap { display: none; padding: 16px; }
+  .download-wrap.on { display: block; }
+  .field-review-note { padding: 10px 12px; border: 1px solid #FDE68A; border-radius: 8px; background: #FFFBEB; color: #92400E; font-size: 0.78rem; line-height: 1.5; margin: 0 0 12px; }
+  .action-row .act-share-image { display: none !important; }
+  :root[data-theme="dark"] .tool-hero { background:#101b2e; border-color:#26364e; }
+  :root[data-theme="dark"] body.top-level-page-ui-refresh .tool-hero h1 { color:#eef5ff!important; }
+  :root[data-theme="dark"] .hero-sub { color:#b8c7dc!important; }
+  :root[data-theme="dark"] .badge { background:#17263d; border-color:#60a5fa; color:#bfdbfe; }
+  :root[data-theme="dark"] .card-title,
+  :root[data-theme="dark"] .field-label,
+  :root[data-theme="dark"] .page-nav span,
+  :root[data-theme="dark"] .tips-title,
+  :root[data-theme="dark"] .seo-section h2,
+  :root[data-theme="dark"] .seo-section h3,
+  :root[data-theme="dark"] #fileInfo { color:#eef5ff!important; }
+  :root[data-theme="dark"] .card-head,
+  :root[data-theme="dark"] .upload-zone,
+  :root[data-theme="dark"] .flatten-row,
+  :root[data-theme="dark"] .tips-section,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .field-count-bar,
+  :root[data-theme="dark"] .completion-meter { background:#121f33; border-color:#3a4c68; }
+  :root[data-theme="dark"] .upload-zone .uz-text,
+  :root[data-theme="dark"] .upload-zone .uz-sub,
+  :root[data-theme="dark"] .flatten-row,
+  :root[data-theme="dark"] .tip-item,
+  :root[data-theme="dark"] .completion-meter__top,
+  :root[data-theme="dark"] .seo-section p,
+  :root[data-theme="dark"] .no-fields { color:#d8e4f5; }
+  .split-layout > *,
+  .card,
+  .card-body,
+  .fields-panel,
+  .field-group { min-width:0; }
+  @media (max-width: 520px) {
+    .tool-main { padding-inline: 16px; }
+    .card-head { align-items: flex-start; flex-direction: column; gap: 6px; }
+    .btn-row { display: grid; grid-template-columns: 1fr; }
+    .flatten-row { align-items: flex-start; }
+    .page-nav { flex-wrap: wrap; }
+  }
 </style>
-<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
-<script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
-
-
-<meta property="og:locale" content="en_US">
+<script src="/assets/js/bundles/core.b707407f.min.js" defer></script>
+<meta property="og:locale" content="sw_TZ">
 <meta property="og:locale:alternate" content="fr_FR">
 <meta name="twitter:image" content="https://afrotools.com/assets/img/tools/pdf-form-filler.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nyumbani","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Jaza Fomu ya PDF","item":"https://afrotools.com/sw/zana/kujaza-fomu-pdf/"}]}</script>
 <meta property="article:modified_time" content="2026-03-28">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Kujaza Fomu za PDF","description":"Jaza fomu za PDF kwa Kiswahili kwa kuongeza maandishi na sehemu za taarifa kabla ya kupakua nakala yako.","url":"https://afrotools.com/sw/zana/kujaza-fomu-pdf/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Kiswahili","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Kujaza Fomu za PDF","item":"https://afrotools.com/sw/zana/kujaza-fomu-pdf/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Je, faili zangu zinabaki salama?","acceptedAnswer":{"@type":"Answer","text":"Tumia zana hizi kwa tahadhari ya faragha na hakiki faili kabla ya kushiriki. Ukurasa unategemea tabia ya zana ya Kiingereza na usindikaji wa kivinjari."}},{"@type":"Question","name":"Je, PDF iliyotengenezwa ni hati rasmi ya kisheria?","acceptedAnswer":{"@type":"Answer","text":"Hapana. Matokeo ni kwa maandalizi na mpangilio wa nyaraka. Kwa saini, mikataba, fomu rasmi au ushahidi wa kisheria, hakiki na mtaalamu au mamlaka husika."}}]}</script>
-<link rel="stylesheet" href="/assets/css/sw-zana-mobile.css?v=adecdf8a">
+<link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
+
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<meta name="afrotools-content-id" content="sw-document-pdf:pdf-form-filler">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kujaza-fomu-pdf/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/pdf-form-filler/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/remplir-formulaire-pdf/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/kujaza-fomu-pdf/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/pdf-form-filler/">
 </head>
-<body class="top-level-page-ui-refresh">
-<!-- sw-document-pdf-workspace: pdf-form-filler -->
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
-    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Tools</span></div>
-    <h1>Kujaza Fomu za PDF</h1>
-    <p class="hero-sub">Ongeza taarifa kwenye fomu za PDF kwa maombi, mikataba, barua na hati za ofisi.</p>
+    <div class="breadcrumb"><a href="/">AfroTools</a> / <span>Zana</span></div>
+    <h1>Jaza Fomu ya PDF <em>Mtandaoni</em></h1>
+    <p class="hero-sub">Fungua fomu shirikishi ya PDF, kamilisha sehemu za maandishi, visanduku vya kuteua, menyu kunjuzi na vitufe vya redio, kisha upakue nakala iliyohakikiwa. Faili hukaa kwenye kivinjari chako.</p>
     <div class="hero-badges">
-      <span class="badge b-green">Hakuna kupakia</span>
-      <span class="badge b-green">Ndani ya kivinjari</span>
-      <span class="badge b-green">AcroForm</span>
+      <span class="badge b-green">Kujaza fomu za mitaa</span>
+      <span class="badge b-green">Uhakiki wa kukamilika</span>
+      <span class="badge b-green">Hiari flatten</span>
     </div>
   </div>
 </div>
 
-<div class="tool-main">
-  <!-- Pakia card (shown initially) -->
+<main class="tool-main">
+  <!-- Upload card (shown initially) -->
   <div class="card" id="uploadCard">
-    <div class="card-head"><span class="card-title">Pakia PDF yenye Sehemu za Fomu</span></div>
+    <div class="card-head"><span class="card-title">Pakia PDF na Sehemu za Fomu</span></div>
     <div class="card-body">
       <div class="upload-zone" id="uploadZone">
-        <div class="uz-icon">&#128196;</div>
-        <div class="uz-text">Bofya kuchagua au buruta na udondoshe PDF hapa</div>
-        <div class="uz-sub">Inaunga mkono PDF zenye sehemu za AcroForm (maandishi, checkbox, dropdown, radio)</div>
-        <input aria-label="FileInput" type="file" id="fileInput" accept=".pdf">
+        <div class="uz-icon"></div>
+        <div class="uz-text">Chagua au udondoshe fomu ya mwingiliano ya PDF</div>
+        <div class="uz-sub">Inasaidia PDF zilizo na sehemu halisi za AcroForm: maandishi, kisanduku cha kuteua, kushuka, redio</div>
+        <input aria-label="Chagua PDF form" type="file" id="fileInput" accept=".pdf">
       </div>
+      <div id="uploadStatus" class="status-msg" style="display:none;" role="status" aria-live="polite"></div>
     </div>
   </div>
 
   <!-- Main workspace (hidden until PDF loaded) -->
   <div id="workspace" style="display:none;">
-    <!-- Faili info bar -->
+    <!-- File info bar -->
     <div class="card" style="margin-bottom:12px;">
       <div class="card-body" style="padding:12px 22px; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:8px;">
         <div style="font-size:0.85rem; font-weight:700; color:#1e293b;" id="fileInfo"></div>
-        <button type="button" class="btn-sm btn-clear" id="loadNewBtn">Load Different PDF</button>
+        <button type="button" class="btn-sm btn-clear" id="loadNewBtn">Pakia PDF Tofauti</button>
       </div>
     </div>
 
     <div class="split-layout">
       <!-- Left: PDF preview -->
       <div class="card">
-        <div class="card-head"><span class="card-title">PDF Onyesho la awali</span></div>
+        <div class="card-head"><span class="card-title">Muhtasari wa PDF</span></div>
         <div class="card-body preview-panel" id="previewPanel">
           <canvas id="pdfCanvas"></canvas>
           <div class="page-nav">
-            <button type="button" id="prevPage">Prev</button>
-            <span id="pageInfo">Ukurasa 1 / 1</span>
-            <button type="button" id="nextPage">inayofuata</button>
+            <button type="button" id="prevPage">Iliyotangulia</button>
+            <span id="pageInfo">Ukurasa 1/1</span>
+            <button type="button" id="nextPage">Inayofuata</button>
           </div>
         </div>
       </div>
@@ -217,25 +267,35 @@
       <!-- Right: Form fields -->
       <div class="card">
         <div class="card-head">
-          <span class="card-title">Form Fields</span>
+          <span class="card-title">Viwanja vya Fomu</span>
           <span id="fieldCountBadge" style="font-size:0.7rem; font-weight:700; color:var(--color-primary);"></span>
         </div>
         <div class="field-count-bar" id="fieldCountBar" style="display:none;"></div>
+        <div class="completion-meter" id="completionMeter" style="display:none;">
+          <div class="completion-meter__top">
+            <span id="completionText">Sehemu 0 kati ya 0 zimekamilika</span>
+            <span id="requiredText">Sehemu zinazohitajika: 0</span>
+          </div>
+          <div class="completion-meter__track" role="progressbar" aria-label="Kukamilisha fomu" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0">
+            <div class="completion-meter__fill" id="completionFill"></div>
+          </div>
+        </div>
         <div class="fields-panel" id="fieldsPanel">
           <div class="no-fields" id="noFieldsMsg">
-            <div class="nf-icon">&#128269;</div>
-            <div>Load a PDF to detect form fields</div>
+            <div class="nf-icon"></div>
+            <div>Pakia PDF ili kugundua sehemu za fomu</div>
           </div>
         </div>
         <div class="btn-row" id="btnRow" style="display:none;">
-          <button type="button" class="btn-sm btn-fill-all" id="fillAllBtn">Jaza Zote kwa Sampuli</button>
-          <button type="button" class="btn-sm btn-clear" id="clearAllBtn">Futa All</button>
+          <button type="button" class="btn-sm btn-fill-all" id="fillAllBtn">Jaza maadili ya sampuli</button>
+          <button type="button" class="btn-sm btn-clear" id="clearAllBtn">Futa Zote</button>
         </div>
         <div class="flatten-row" id="flattenRow" style="display:none;">
           <input type="checkbox" id="flattenCheck">
-          <label for="flattenCheck" style="cursor:pointer;">Flatten form (burn values in, non-editable)</label>
+          <label for="flattenCheck" style="cursor:pointer;">Fomu bapa (choma thamani ndani, isiyoweza kuhaririwa)</label>
         </div>
-        <div style="padding:16px;" id="downloadWrap" style="display:none;">
+        <div class="download-wrap" id="downloadWrap">
+          <div class="field-review-note" id="reviewNote">Kagua majina, tarehe, visanduku vya kuteua, na hesabu ya kurasa kabla ya kutuma fomu iliyojazwa.</div>
           <div id="statusMsg"></div>
           <button type="button" class="calc-btn" id="downloadBtn" disabled>Pakua Filled PDF</button>
         </div>
@@ -246,43 +306,81 @@
     <div class="tips-section" style="margin-top:18px;">
       <div class="tips-title">Jinsi inavyofanya kazi</div>
       <div class="tips-grid">
-        <div class="tip-item">1. Pakia PDF yenye sehemu za fomu</div>
-        <div class="tip-item">2. Fill in text, check boxes, pick options</div>
-        <div class="tip-item">3. Ukipenda, gandisha (flatten) kufunga majibu ndani ya PDF</div>
-        <div class="tip-item">4. Pakua PDF iliyokamilika</div>
+        <div class="tip-item">1. Pakia a PDF that contains form fields</div>
+        <div class="tip-item">2. Jaza maandishi, angalia visanduku, chagua chaguzi</div>
+        <div class="tip-item">3. Lainisha kwa hiari ili kufunga thamani ndani</div>
+        <div class="tip-item">4. Pakua PDF iliyokamilishwa</div>
       </div>
     </div>
   </div>
-</div>
+</main>
 
 <!-- SEO content -->
 <div class="seo-section">
-  <h2>Free mtandaoni Kujaza Fomu za PDF</h2>
-  <p>Kujaza Fomu za PDF cha AfroTools kinakuwezesha kufungua PDF yoyote yenye sehemu za AcroForm na kuzijaza moja kwa moja kwenye kivinjari chako. Iwe ni fomu ya serikali, fomu ya kodi au mkataba wa biashara, unaweza kujaza kila sehemu ya maandishi, checkbox, dropdown na radio bila kuchapisha au kusakinisha programu.</p>
+  <h2>Jaza Fomu za PDF Mtandaoni Bila Kupakia Faili</h2>
+  <p>Kijazaji cha Fomu ya AfroTools PDF hufungua PDF shirikishi za AcroForm katika kivinjari chako na kukupa vidhibiti vinavyolingana vya sehemu za maandishi, visanduku vya kuteua, menyu kunjuzi, orodha za chaguo na vitufe vya redio. Itumie kwa fomu ambazo tayari zina sehemu halisi za PDF zinazoweza kuhaririwa.</p>
 
-  <h3>Jinsi Kujaza Fomu za PDF Kinavyofanya Kazi</h3>
-  <p>Unapopakia PDF, zana hutumia pdf-lib kuchambua hati na kutambua sehemu zote za fomu. Kila sehemu huonyeshwa kwenye paneli ya pembeni ikiwa na aina sahihi ya kujazia. Unavyojaza majibu, huandikwa ndani ya muundo wa PDF. Ukipenda, unaweza kugandisha fomu ili majibu yabaki ya kudumu na hati isiweze kuhaririwa tena.</p>
+  <h3>Jinsi Kijazaji cha Fomu ya PDF Hufanya Kazi</h3>
+  <p>Unapochagua PDF, zana hutumia pdf-lib kugundua sehemu za fomu zinazoingiliana ndani ya kifaa. Kila sehemu inaonekana kwenye utepe na kidhibiti kinacholingana na mita ya kukamilisha. Thamani zilizojazwa huandikwa tena katika nakala mpya ya PDF, na uboreshaji wa hiari unaweza kufunga thamani za sehemu zinazotumika kwenye ukurasa.</p>
 
-  <h3>Supported Field Andikas</h3>
-  <p>Zana inaunga mkono aina zote za kawaida za sehemu za AcroForm: maandishi ya mstari mmoja na mistari mingi, checkbox, menyu za dropdown na makundi ya radio. Jina la kila sehemu huonyeshwa kando ya kijazio ili kukusaidia kutambua unajaza sehemu ipi ya fomu.</p>
+  <h3>Aina za Sehemu Zinazotumika</h3>
+  <p>Chombo hiki kinaauni aina za sehemu za kawaida za AcroForm: sehemu za maandishi za mstari mmoja na za mistari mingi, visanduku vya kuteua, orodha kunjuzi za chaguo moja au orodha za chaguo, na vikundi vya vitufe vya redio. Majina ya sehemu huonyeshwa pamoja na kila ingizo ili kukusaidia kutambua ni sehemu gani ya fomu unayojaza.</p>
 
   <h3>Faragha na Usalama</h3>
-  <p>PDF yako haipakiwi kamwe kwenye seva yoyote. Utambuzi wa fomu, ujazaji na ugandishaji wote hufanyika ndani ya kivinjari chako kwa JavaScript. Ukifunga tab, hati inatoweka kwenye kumbukumbu.</p>
+  <p>PDF yako haijapakiwa na zana hii. Ugunduzi wa fomu, ujazo, uhakiki, na ubapa huendeshwa ndani ya kivinjari chako kwa kutumia JavaScript. Kabla ya kuwasilisha matokeo, fungua nakala iliyopakuliwa na uthibitishe kila sehemu muhimu na mahitaji ya sasa ya mpokeaji.</p>
 </div>
 
 
-<div style="padding: 0 20px; max-width: 760px; margin: 0 auto;">
-</div>
 
+<section class="tool-verification-sec" data-tool-verification-panel aria-labelledby="pdf-form-filler-verification-title">
+  <div class="tool-verification-card">
+    <div class="tool-verification-head">
+      <div>
+        <span class="tool-verification-kicker">Uthibitisho wa mtiririko wa kazi wa PDF</span>
+        <h2 class="tool-verification-title" id="pdf-form-filler-verification-title">Thibitisha sehemu zilizojazwa kabla ya kuwasilisha fomu</h2>
+        <p class="tool-verification-lead">Zana hii hujaza sehemu za AcroForm zinazotumika ndani ya kifaa. Haiwasilishi fomu, haidhibitishi mahitaji rasmi, au haihakikishi kwamba kila fomu ya PDF inatumia sehemu zinazoweza kuhaririwa.</p>
+      </div>
+      <div class="tool-verification-status">
+        <span class="tool-verification-badge">Zana ya ndani-ya kwanza ya PDF</span>
+        <p class="tool-verification-note">Imekaguliwa 2026. Kanusho: thibitisha na mpokeaji kabla ya kuwasilisha fomu iliyojazwa. Vipakuliwa vya moja kwa moja vya ndani havipakii thamani za fomu yako.</p>
+      </div>
+    </div>
+    <div class="tool-verification-grid">
+      <div class="tool-verification-block">
+        <h3>Mbinu</h3>
+        <ul class="tool-verification-list">
+          <li>Kusoma sehemu za fomu za PDF zinazotumika kwenye kivinjari, hukuruhusu kuhariri thamani, kisha kuhifadhi nakala iliyojazwa.</li>
+          <li>Ubapaji wa hiari hugeuza sehemu zinazotumika kuwa maudhui ya ukurasa usiobadilika ili kushiriki kwa urahisi.</li>
+          <li>Huenda fomu zilizochanganuliwa bila sehemu halisi zikahitaji kidokezo au kuwekelea maandishi katika Nafasi ya Kazi ya PDF badala yake.</li>
+        </ul>
+      </div>
+      <div class="tool-verification-block">
+        <h3>Kabla ya kuwasilisha</h3>
+        <ul class="tool-verification-list">
+          <li>Fungua pato katika kisomaji kingine na uthibitishe thamani za sehemu, visanduku vya kuteua, saini, hesabu ya kurasa na ubapa.</li>
+          <li>Thibitisha sheria za sasa za uwasilishaji na shule, mwajiri, benki, ubalozi, mahakama au wakala anayepokea fomu.</li>
+          <li>Kwa fomu zilizochanganuliwa au zisizo za sehemu, endelea <a href="/sw/zana/nafasi-pdf/">Nafasi ya kazi ya PDF</a>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+<afro-related-tools category="document-pdf" current="pdf-form-filler" data-ssr="1">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
+<h2 class="seo-links-title">Zana zinazohusiana</h2>
+<ul class="seo-links-list"><li><a href="/sw/zana/mjenzi-cv/" data-related-tool data-id="cv-builder" data-name="CV / Resume Builder" data-category="document-pdf" data-icon="CR" data-desc="Africa-ready templates. NYSC/NSS/KCSE aware. Premium templates.">CV / Resume Kijenzi</a></li><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Jenereta ya ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Mhariri wa PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Unganisha na Ugawanye PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Nafasi ya kazi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
 <afro-newsletter-cta></afro-newsletter-cta>
-<section class="sw-docpdf-related" style="max-width:1100px;margin:32px auto;padding:0 24px;"><div style="background:#f8fafc;border:1px solid #e5e7eb;border-radius:14px;padding:22px;"><p style="font-size:.72rem;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:#2563eb;margin:0 0 8px;">Angalia pia</p><h2 style="font-size:1.15rem;font-weight:800;color:#111827;margin:0 0 10px;">Hati, PDF na mtiririko wa kazi</h2><p style="font-size:.9rem;color:#4b5563;line-height:1.65;margin:0 0 14px;">Tumia zana hizi kama maandalizi ya nyaraka. Kwa saini, mikataba, fomu rasmi, faragha au hati za kisheria, hakiki na mtaalamu au mamlaka husika kabla ya kuwasilisha.</p><div style="display:flex;flex-wrap:wrap;gap:10px;"><a href="/sw/hati-na-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Hati na PDF</a><a href="/sw/zana/kituo-cha-pdf/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Kituo cha PDF</a><a href="/sw/zana/kizalishaji-ankara/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Ankara</a><a href="/sw/zana/mjenzi-cv/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Mjenzi CV</a><a href="/sw/picha-na-design/" style="display:inline-flex;padding:9px 12px;border:1px solid #dbeafe;border-radius:9px;background:#fff;color:#1d4ed8;font-weight:700;font-size:.84rem;text-decoration:none;">Picha na design</a></div></div></section>
 <afro-footer></afro-footer>
 
 <script>
 (function() {
   'use strict';
 
-  // ─── State ────────────────────────────────────────
+  // State
   function getPDFLib() {
     if (!window.PDFLib) throw new Error('PDF library failed to load. Please refresh the page.');
     return window.PDFLib;
@@ -295,10 +393,11 @@
   let formFields = [];     // parsed field info
   let fieldElements = {};  // DOM input references keyed by field name
 
-  // ─── DOM refs ─────────────────────────────────────
+  // DOM refs
   const uploadCard = document.getElementById('uploadCard');
   const uploadZone = document.getElementById('uploadZone');
   const fileInput = document.getElementById('fileInput');
+  const uploadStatus = document.getElementById('uploadStatus');
   const workspace = document.getElementById('workspace');
   const fileInfo = document.getElementById('fileInfo');
   const loadNewBtn = document.getElementById('loadNewBtn');
@@ -310,6 +409,10 @@
   const noFieldsMsg = document.getElementById('noFieldsMsg');
   const fieldCountBadge = document.getElementById('fieldCountBadge');
   const fieldCountBar = document.getElementById('fieldCountBar');
+  const completionMeter = document.getElementById('completionMeter');
+  const completionFill = document.getElementById('completionFill');
+  const completionText = document.getElementById('completionText');
+  const requiredText = document.getElementById('requiredText');
   const btnRow = document.getElementById('btnRow');
   const flattenRow = document.getElementById('flattenRow');
   const downloadWrap = document.getElementById('downloadWrap');
@@ -318,12 +421,51 @@
   const clearAllBtn = document.getElementById('clearAllBtn');
   const flattenCheck = document.getElementById('flattenCheck');
   const statusMsg = document.getElementById('statusMsg');
+  const reviewNote = document.getElementById('reviewNote');
 
   function isPdfFile(file) {
     return !!(file && ((file.type && file.type === 'application/pdf') || /\.pdf$/i.test(file.name || '')));
   }
 
-  // ─── Upload handling ──────────────────────────────
+  function showUploadStatus(message, type) {
+    uploadStatus.textContent = message || '';
+    uploadStatus.className = 'status-msg ' + (type === 'error' ? 'status-error' : 'status-success');
+    uploadStatus.style.display = message ? 'block' : 'none';
+  }
+
+  function showStatus(message, type) {
+    statusMsg.innerHTML = message ? '<div class="status-msg ' + (type === 'error' ? 'status-error' : 'status-success') + '">' + escHtml(message) + '</div>' : '';
+  }
+
+  function getFieldElementValue(info) {
+    const el = fieldElements[info.name];
+    if (!el) return '';
+    if (info.kind === 'text') return el.value.trim();
+    if (info.kind === 'checkbox') return el.checked ? 'checked' : '';
+    if (info.kind === 'dropdown') return el.value || '';
+    if (info.kind === 'radio') return el.querySelector('input[type="radio"]:checked') ? 'selected' : '';
+    return '';
+  }
+
+  function updateCompletion() {
+    const total = formFields.length;
+    const complete = formFields.filter(info => !!getFieldElementValue(info)).length;
+    const requiredTotal = formFields.filter(info => info.required).length;
+    const requiredMissing = formFields.filter(info => info.required && !getFieldElementValue(info)).length;
+    const pct = total ? Math.round((complete / total) * 100) : 0;
+    completionText.textContent = complete + ' of ' + total + ' fields complete';
+    requiredText.textContent = requiredTotal ? requiredMissing + ' required left' : 'Required fields: 0';
+    completionFill.style.width = pct + '%';
+    completionMeter.querySelector('[role="progressbar"]').setAttribute('aria-valuenow', String(pct));
+    formFields.forEach(info => {
+      if (info.groupEl) info.groupEl.classList.toggle('is-empty-required', !!(info.required && !getFieldElementValue(info)));
+    });
+    reviewNote.textContent = requiredMissing
+      ? 'Required fields are still empty. Review highlighted fields before downloading.'
+      : 'Review names, dates, checkboxes, and page count before sending the completed form.';
+  }
+
+  // Upload handling
   uploadZone.addEventListener('click', () => fileInput.click());
   uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('dragover'); });
   uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('dragover'));
@@ -332,9 +474,11 @@
     uploadZone.classList.remove('dragover');
     const file = e.dataTransfer.files[0];
     if (isPdfFile(file)) handleFile(file);
+    else showUploadStatus('Please choose a PDF file with interactive form fields.', 'error');
   });
   fileInput.addEventListener('change', e => {
     if (isPdfFile(e.target.files[0])) handleFile(e.target.files[0]);
+    else showUploadStatus('Please choose a PDF file with interactive form fields.', 'error');
   });
   loadNewBtn.addEventListener('click', () => {
     workspace.style.display = 'none';
@@ -346,11 +490,17 @@
     formFields = [];
     fieldElements = {};
     statusMsg.innerHTML = '';
+    showUploadStatus('', 'success');
+    completionMeter.style.display = 'none';
   });
 
   async function handleFile(file) {
-    if (!isPdfFile(file)) return;
+    if (!isPdfFile(file)) {
+      showUploadStatus('Please choose a PDF file with interactive form fields.', 'error');
+      return;
+    }
     try {
+      showUploadStatus('Loading PDF locally...', 'success');
       const ab = await file.arrayBuffer();
       pdfBytes = new Uint8Array(ab);
       fileInfo.textContent = file.name + ' (' + formatSize(file.size) + ')';
@@ -370,8 +520,9 @@
       // Render first page
       currentPage = 1;
       renderPage(currentPage);
+      showUploadStatus('', 'success');
     } catch (err) {
-      alert('Error loading PDF: ' + err.message);
+      showUploadStatus('Error loading PDF: ' + err.message, 'error');
       console.error(err);
     }
   }
@@ -382,16 +533,15 @@
     return (bytes / 1048576).toFixed(1) + ' MB';
   }
 
-  // ─── pdf.js preview ───────────────────────────────
+  // pdf.js preview
   let pdfjsLib = null;
   let pdfjsLoaded = false;
 
   async function loadPdfJs() {
     if (pdfjsLoaded) return;
-    // Dynamic import of pdf.js ESM
-    const mod = await import('https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.min.mjs');
-    pdfjsLib = mod;
-    pdfjsLib.GlobalWorkerOptions.workerSrc = 'https://cdn.jsdelivr.net/npm/pdfjs-dist@4.0.379/build/pdf.worker.min.mjs';
+    if (!window.pdfjsLib) throw new Error('PDF preview library failed to load. Please refresh the page.');
+    pdfjsLib = window.pdfjsLib;
+    pdfjsLib.GlobalWorkerOptions.workerSrc = '/assets/vendor/pdfjs/pdf.worker.min.js?v=a53a71a2';
     pdfjsLoaded = true;
   }
 
@@ -405,7 +555,9 @@
   async function renderPage(num) {
     if (!pdfJsDoc) return;
     const page = await pdfJsDoc.getPage(num);
-    const scale = 1.5;
+    const baseViewport = page.getViewport({ scale: 1 });
+    const panelWidth = Math.max(280, pdfCanvas.parentElement.clientWidth - 8);
+    const scale = Math.min(1.5, panelWidth / baseViewport.width);
     const viewport = page.getViewport({ scale });
     const ctx = pdfCanvas.getContext('2d');
     pdfCanvas.width = viewport.width;
@@ -419,7 +571,7 @@
   prevPageBtn.addEventListener('click', () => { if (currentPage > 1) { currentPage--; renderPage(currentPage); } });
   nextPageBtn.addEventListener('click', () => { if (currentPage < totalPages) { currentPage++; renderPage(currentPage); } });
 
-  // ─── Field detection ──────────────────────────────
+  // Field detection
   function detectFields() {
     formFields = [];
     fieldElements = {};
@@ -443,6 +595,7 @@
     fields.forEach(field => {
       const name = field.getName();
       const info = { name, field };
+      try { info.required = typeof field.isRequired === 'function' ? field.isRequired() : false; } catch(e) { info.required = false; }
 
       if (field instanceof PDFLib.PDFTextField) {
         textCount++;
@@ -500,6 +653,7 @@
     formFields.forEach((info, idx) => {
       const group = document.createElement('div');
       group.className = 'field-group';
+      info.groupEl = group;
 
       const label = document.createElement('div');
       label.className = 'field-label';
@@ -507,6 +661,12 @@
       const badgeClass = { text: 'ftb-text', checkbox: 'ftb-check', dropdown: 'ftb-drop', radio: 'ftb-radio' }[info.kind] || 'ftb-text';
       const kindLabel = { text: 'Text', checkbox: 'Check', dropdown: 'Dropdown', radio: 'Radio' }[info.kind] || 'Field';
       label.innerHTML = '<span class="field-type-badge ' + badgeClass + '">' + kindLabel + '</span> ' + escHtml(info.name);
+      if (info.required) {
+        const required = document.createElement('span');
+        required.className = 'field-required';
+        required.textContent = 'Required';
+        label.appendChild(required);
+      }
       group.appendChild(label);
 
       if (info.kind === 'text') {
@@ -517,9 +677,13 @@
           el = document.createElement('input');
           el.type = 'text';
         }
+        el.id = 'pdf-form-field-' + idx;
+        label.id = 'pdf-form-label-' + idx;
+        el.setAttribute('aria-labelledby', label.id);
         el.value = info.currentValue || '';
         el.placeholder = 'Enter value...';
         el.dataset.fieldIdx = idx;
+        el.addEventListener('input', updateCompletion);
         group.appendChild(el);
         fieldElements[info.name] = el;
 
@@ -528,8 +692,10 @@
         lbl.className = 'check-label';
         const cb = document.createElement('input');
         cb.type = 'checkbox';
+        cb.id = 'pdf-form-field-' + idx;
         cb.checked = info.currentValue || false;
         cb.dataset.fieldIdx = idx;
+        cb.addEventListener('change', updateCompletion);
         lbl.appendChild(cb);
         lbl.appendChild(document.createTextNode('Checked'));
         group.appendChild(lbl);
@@ -537,6 +703,9 @@
 
       } else if (info.kind === 'dropdown') {
         const sel = document.createElement('select');
+        sel.id = 'pdf-form-field-' + idx;
+        label.id = 'pdf-form-label-' + idx;
+        sel.setAttribute('aria-labelledby', label.id);
         sel.dataset.fieldIdx = idx;
         const defOpt = document.createElement('option');
         defOpt.value = '';
@@ -549,6 +718,7 @@
           if (Array.isArray(info.currentValue) ? info.currentValue.includes(opt) : info.currentValue === opt) o.selected = true;
           sel.appendChild(o);
         });
+        sel.addEventListener('change', updateCompletion);
         group.appendChild(sel);
         fieldElements[info.name] = sel;
 
@@ -563,6 +733,7 @@
           rb.name = radioName;
           rb.value = opt;
           rb.dataset.fieldIdx = idx;
+          rb.addEventListener('change', updateCompletion);
           if (info.currentValue === opt) rb.checked = true;
           rl.appendChild(rb);
           rl.appendChild(document.createTextNode(opt));
@@ -578,24 +749,28 @@
     noFieldsMsg.style.display = 'none';
     btnRow.style.display = 'flex';
     flattenRow.style.display = 'flex';
-    downloadWrap.style.display = 'block';
+    completionMeter.style.display = 'block';
+    downloadWrap.classList.add('on');
     downloadBtn.disabled = false;
+    updateCompletion();
   }
 
   function showNoFields() {
     fieldsPanel.innerHTML = '';
     noFieldsMsg.style.display = 'block';
     fieldsPanel.appendChild(noFieldsMsg);
-    noFieldsMsg.querySelector('.nf-icon').textContent = '\u26A0\uFE0F';
-    noFieldsMsg.querySelector('div:last-child').textContent = 'No interactive form fields detected in this PDF.';
+    noFieldsMsg.querySelector('.nf-icon').textContent = '';
+    noFieldsMsg.querySelector('div:last-child').textContent = 'No interactive form fields detected. Use this tool for PDFs with real AcroForm fields.';
     btnRow.style.display = 'none';
     flattenRow.style.display = 'none';
+    completionMeter.style.display = 'none';
+    downloadWrap.classList.remove('on');
     downloadBtn.disabled = true;
     fieldCountBadge.textContent = '0 fields';
     fieldCountBar.style.display = 'none';
   }
 
-  // ─── Fill All / Clear All ─────────────────────────
+  // Fill All / Clear All
   fillAllBtn.addEventListener('click', () => {
     formFields.forEach((info) => {
       const el = fieldElements[info.name];
@@ -611,6 +786,7 @@
         if (radios.length > 0) radios[0].checked = true;
       }
     });
+    updateCompletion();
   });
 
   clearAllBtn.addEventListener('click', () => {
@@ -628,13 +804,15 @@
         radios.forEach(r => r.checked = false);
       }
     });
+    updateCompletion();
   });
 
-  // ─── Download filled PDF ──────────────────────────
+  // Download filled PDF
   async function doFormDownload() {
+    updateCompletion();
     downloadBtn.disabled = true;
     downloadBtn.textContent = 'Processing...';
-    statusMsg.innerHTML = '';
+    showStatus('', 'success');
 
     try {
       // Reload doc fresh from original bytes to avoid mutation issues
@@ -653,7 +831,7 @@
             const cb = form.getCheckBox(info.name);
             if (el.checked) cb.check(); else cb.uncheck();
           } else if (info.kind === 'dropdown') {
-            const dd = form.getDropdown(info.name);
+            const dd = info.type === 'PDFOptionList' ? form.getOptionList(info.name) : form.getDropdown(info.name);
             if (el.value) dd.select(el.value); else dd.clear();
           } else if (info.kind === 'radio') {
             const rg = form.getRadioGroup(info.name);
@@ -680,10 +858,10 @@
       a.click();
       setTimeout(() => URL.revokeObjectURL(url), 5000);
 
-      statusMsg.innerHTML = '<div class="status-msg status-success">PDF downloaded successfully' + (flattenCheck.checked ? ' (flattened)' : '') + '!</div>';
+      showStatus('PDF downloaded successfully' + (flattenCheck.checked ? ' (flattened)' : '') + '.', 'success');
     } catch (err) {
       console.error(err);
-      statusMsg.innerHTML = '<div class="status-msg status-error">Error: ' + escHtml(err.message) + '</div>';
+      showStatus('Error: ' + err.message, 'error');
     }
 
     downloadBtn.disabled = false;
@@ -695,7 +873,7 @@
     if (gate) { gate.show(doFormDownload); } else { doFormDownload(); }
   });
 
-  // ─── Helpers ──────────────────────────────────────
+  // Helpers
   function escHtml(str) {
     const d = document.createElement('div');
     d.textContent = str;
@@ -705,24 +883,15 @@
 })();
 </script>
 
-<script>
-// Save/Share buttons — manual placement needed
-(function(){
-  var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]');
-  var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body;
-  var div = document.createElement('div');
-  div.className = 'result-actions';
-  div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap';
-  div.innerHTML = '<share-result-button tool-name="Pdf Form Filler" tool-slug="pdf-form-filler"></share-result-button>';
-  target.appendChild(div);
-})();
-</script>
-<email-gate-modal></email-gate-modal>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-<script>
-(function(){var dict={"Home":"Mwanzo","Document & PDF":"Hati na PDF","PDF Workspace":"Nafasi ya Kazi ya PDF","Your PDF Workspace":"Nafasi yako ya Kazi ya PDF","Drop a PDF here to get started":"Dondosha PDF hapa ili kuanza","Drop a PDF here":"Dondosha PDF hapa","click to browse":"bofya kuchagua faili","Upload a PDF":"Pakia PDF","Upload PDF":"Pakia PDF","Choose PDF":"Chagua PDF","Choose file":"Chagua faili","No file chosen":"Hakuna faili iliyochaguliwa","Private":"Faragha","No Upload":"Hakuna kupakia","No upload":"Hakuna kupakia","Client-side":"Ndani ya kivinjari","No limits":"Hakuna kikomo","Instant":"Haraka","Works offline":"Hufanya kazi bila mtandao","Files never leave your browser":"Faili hazitoki kwenye kivinjari chako","Your files never leave your browser":"Faili zako hazitoki kwenye kivinjari chako","Open":"Fungua","Download":"Pakua","Download PDF":"Pakua PDF","Export":"Hamisha","Save":"Hifadhi","Cancel":"Ghairi","Close":"Funga","Remove":"Ondoa","Delete":"Futa","Preview":"Onyesho la awali","Result":"Matokeo","Results":"Matokeo","Settings":"Mipangilio","Options":"Chaguo","File":"Faili","Files":"Faili","Page":"Ukurasa","Pages":"Kurasa","Page range":"Masafa ya kurasa","Page ranges":"Masafa ya kurasa","Selected pages":"Kurasa zilizochaguliwa","All pages":"Kurasa zote","Start page":"Ukurasa wa kuanza","End page":"Ukurasa wa mwisho","Rotate":"Zungusha","Reorder":"Panga upya","Merge":"Unganisha","Split":"Gawanya","Compress":"Bana","Convert":"Badilisha","Watermark":"Watermark","Password":"Nenosiri","Sign":"Saini","Signature":"Saini","Redact":"Ficha taarifa","Header":"Kichwa","Footer":"Kijachini","Text":"Maandishi","Image":"Picha","Quality":"Ubora","Size":"Ukubwa","Original size":"Ukubwa wa awali","New size":"Ukubwa mpya","Compression Level":"Kiwango cha kubana","Low":"Chini","Medium":"Kati","High":"Juu","Strong":"Kubwa","Balanced":"Wastani","Lossless":"Bila kupoteza ubora","Processing":"Inachakata","Processing...":"Inachakata...","Processed":"Imechakatwa","Done":"Imekamilika","Error":"Hitilafu","Try again":"Jaribu tena","Reset":"Weka upya","Clear":"Futa","Add files":"Ongeza faili","Add file":"Ongeza faili","Add text":"Ongeza maandishi","Add image":"Ongeza picha","Add signature":"Ongeza saini","Draw":"Chora","Type":"Andika","Upload":"Pakia","Upload files":"Pakia faili","Drag and drop":"Buruta na dondosha","or click to browse":"au bofya kuchagua","Extract":"Toa","Extract text":"Toa maandishi","Text extraction":"Kutoa maandishi","Form Filler":"Kujaza Fomu","Fill form":"Jaza fomu","Page Numbering":"Namba za Kurasa","Page numbers":"Namba za kurasa","PDF Merge & Split":"Unganisha na Gawanya PDF","PDF Compressor":"Kubana PDF","PDF Watermark Tool":"Watermark PDF","PDF Password Protect":"Linda PDF kwa Nenosiri","PDF Page Numbering":"Namba za Kurasa za PDF","PDF eSignature Tool":"Kusaini PDF","PDF OCR":"OCR ya PDF","PDF Form Filler":"Kujaza Fomu za PDF","PDF Redaction Tool":"Kuficha Taarifa kwenye PDF","PDF Header & Footer":"Kichwa na Kijachini cha PDF","PDF Editor":"Hariri PDF","PDF Format Converter":"Kubadilisha Format ya PDF","PDF Page Manager":"Kupanga Kurasa za PDF","Search tools":"Tafuta zana","Request a Tool":"Omba zana"};var keys=Object.keys(dict).sort(function(a,b){return b.length-a.length;});function tx(v){if(!v||!/[A-Za-z]/.test(v))return v;var out=v;keys.forEach(function(k){out=out.split(k).join(dict[k]);});return out;}function walk(n){if(!n||n.nodeType!==1)return;if(/^(SCRIPT|STYLE|NOSCRIPT|CODE|PRE|TEXTAREA)$/i.test(n.tagName))return;['placeholder','aria-label','title','alt','value'].forEach(function(a){if(n.hasAttribute&&n.hasAttribute(a)){var v=n.getAttribute(a),nv=tx(v);if(nv!==v)n.setAttribute(a,nv);}});Array.prototype.forEach.call(n.childNodes||[],function(c){if(c.nodeType===3){var nv=tx(c.nodeValue);if(nv!==c.nodeValue)c.nodeValue=nv;}else if(c.nodeType===1)walk(c);});}function run(){walk(document.body);}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',run);else run();new MutationObserver(function(ms){ms.forEach(function(m){Array.prototype.forEach.call(m.addedNodes||[],function(n){if(n.nodeType===1)walk(n);else if(n.nodeType===3){var nv=tx(n.nodeValue);if(nv!==n.nodeValue)n.nodeValue=nv;}});});}).observe(document.documentElement,{childList:true,subtree:true});})();
-</script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
+
+  <email-gate-modal data-sw-download-contract="free-account"></email-gate-modal>
+  <script src="/assets/js/lib/pdf-download-gate.js?v=26c7a2a0" defer></script>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"pdf-form-filler","name":"Jaza Fomu ya PDF","downloadContract":"free-account"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

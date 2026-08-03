@@ -10,7 +10,7 @@
   var STANDARD_RATE = 18,
     ANNUAL_REGISTRATION_THRESHOLD = 20000000,
     QUARTER_REGISTRATION_THRESHOLD = 5000000,
-    REVIEWED_ON = "2026-07-22";
+    REVIEWED_ON = "2026-08-02";
 
   function finite(value, fallback) {
     var number = Number(value);
@@ -20,12 +20,16 @@
     return Math.round((finite(value, 0) + Number.EPSILON) * 100) / 100;
   }
   function normalizeAmount(value) {
+    if (value === "" || value === null || typeof value === "undefined")
+      throw new RangeError("amount must be a non-negative number");
     var number = finite(value, NaN);
     if (!Number.isFinite(number) || number < 0)
       throw new RangeError("amount must be a non-negative number");
     return number;
   }
   function normalizeRate(value) {
+    if (value === "" || value === null || typeof value === "undefined")
+      throw new RangeError("rate must be between 0 and 100");
     var number = finite(value, NaN);
     if (!Number.isFinite(number) || number < 0 || number > 100)
       throw new RangeError("rate must be between 0 and 100");

@@ -215,7 +215,8 @@ test("Travel hub owns exactly 9 artwork-backed routes and the English hub recipr
 test("the current surface owner preserves all coordinator-accepted routes", () => {
   const acceptance = JSON.parse(read("data/audits/swahili-free-app-acceptance.json"));
   const accepted = acceptance.entries.filter((entry) => entry.status === "accepted");
-  assert.equal(accepted.length, 487);
+  const inventory = JSON.parse(read("reports/swahili-free-app-parity-inventory.json"));
+  assert.equal(accepted.length, inventory.totals.accepted);
   const acceptedRoutes = new Set(accepted.map((entry) => entry.swahiliRoute));
   assert.equal(manifest.rows.filter((entry) => acceptedRoutes.has(entry.swahiliRoute)).length, 24);
   const surfaceOwner = read("scripts/build-swahili-product-surface.js");

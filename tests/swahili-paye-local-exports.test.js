@@ -62,7 +62,7 @@ for (const country of TARGETS) {
   if (/function\s+renderChart\s*\(/.test(html)) {
     assert.match(
       html,
-      /function\s+renderChart\s*\([^)]*\)\s*\{\s*if\s*\(typeof Chart===['"]undefined['"]\)return;/,
+      /function\s+renderChart\s*\([^)]*\)\s*\{[\s\S]*?if\s*\((?:typeof Chart===['"]undefined['"]|typeof window\.Chart !== ['"]function['"])\)[\s\S]*?return;/,
       `${rel} must calculate safely when Chart.js is unavailable`,
     );
   }

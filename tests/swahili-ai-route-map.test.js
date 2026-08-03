@@ -7,6 +7,7 @@ const path = require("node:path");
 const ROOT = path.resolve(__dirname, "..");
 const acceptance = require("../data/audits/swahili-free-app-acceptance.json");
 const directory = require("../data/tool-directory.json");
+const inventory = require("../reports/swahili-free-app-parity-inventory.json");
 const routeMap = require("../assets/js/ai/swahili-route-map.generated.js");
 const routeEntry = require("../assets/js/pages/sw-ai-route-entry.js");
 const router = require("../assets/js/ai/intent-router.js");
@@ -36,9 +37,11 @@ assert.equal(angolaPaye.selectedToolId, "ao-paye");
 assert.equal(angolaPaye.selectedRoute, `${routeMap.ids["ao-paye"]}?source=ask`);
 assert.equal(angolaPaye._meta.localeRoute.status, "mapped");
 
+const unavailableId = inventory.rows.find((entry) => entry.accepted === false && entry.englishId)?.englishId;
+assert.ok(unavailableId, "expected at least one fail-closed Swahili inventory row");
 const unavailable = router.normalizeDecision({
-  selectedToolId: "pdf-workspace"
-}, "PDF workspace", { locale: "sw" });
+  selectedToolId: unavailableId
+}, "Unaccepted Swahili tool", { locale: "sw" });
 assert.equal(unavailable.selectedToolId, "tool-search");
 assert.match(unavailable.selectedRoute, /^\/sw\/zana-zote\/\?source=ask$/);
 assert.equal(unavailable._meta.localeRoute.status, "unavailable");

@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 12,
+  "preservedBlockedEntries": 0,
+  "candidates": [
+    {
+      "id": "business-roi-complete-parity",
+      "commit": "a7cd43d097965eef12ff2460522de8a277f34ac4",
+      "expectedRoutes": 12,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 12,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-business-roi-parity.spec.js",
+          "engineTest": "tests/sw-business-roi-engine.test.js",
+          "workflow": "All 12 Business & ROI apps and the exact hub passed 37 isolated Chromium checks covering workflows, invalid boundaries, 320/375px and 200% reflow, themes, keyboard/accessibility, SEO, console and local persistence.",
+          "export": "The 12 apps reopened 49 local artifacts: 12 JSON, 12 CSV, 12 TXT, 12 parsed PDFs and one ICS; no unexpected external, API or function requests occurred."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-business-roi-browser-evidence.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/baseline", "equals": "f7e45c5ed98f50767281ce71b8960d16d138bd33" },
+            { "pointer": "/tests/passed", "equals": 37 },
+            { "pointer": "/tests/failed", "equals": 0 },
+            { "pointer": "/acceptance/denominator", "equals": 12 },
+            { "pointer": "/acceptance/accepted", "equals": 12 },
+            { "pointer": "/acceptance/blocked", "equals": 0 },
+            { "pointer": "/exports/totalParsedOrReopened", "equals": 49 },
+            { "pointer": "/privacy/unexpectedExternalRequests", "equals": 0 },
+            { "pointer": "/privacy/unexpectedApiRequests", "equals": 0 },
+            { "pointer": "/result", "equals": "accepted" }
+          ]
+        },
+        {
+          "path": "data/localization/sw-business-roi-parity.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/baseline", "equals": "f7e45c5ed98f50767281ce71b8960d16d138bd33" },
+            { "pointer": "/denominator", "equals": 12 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "data/localization/sw-business-roi-parity.json",
+          "rowsPointer": "/routes",
+          "idPointer": "/id",
+          "routePointer": "/swahili"
+        }
+      ]
+    }
+  ]
+}

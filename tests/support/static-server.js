@@ -1,9 +1,50 @@
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { execFileSync } = require('child_process');
 
 const root = path.resolve(__dirname, '..', '..');
 const port = Number(process.env.PORT || 4173);
+const vatProofMode = process.env.AFROTOOLS_SW_VAT_PROOF_MODE === '1';
+let vatProofIdentity = null;
+
+if (vatProofMode) {
+  const required = [
+    'AFROTOOLS_SW_VAT_SERVER_ROOT',
+    'AFROTOOLS_SW_VAT_EXPECTED_COMMIT',
+    'AFROTOOLS_SW_VAT_EXPECTED_TREE',
+    'AFROTOOLS_SW_VAT_ROOT_IDENTITY'
+  ];
+  for (const name of required) {
+    if (!process.env[name]) throw new Error(`VAT proof requires ${name}`);
+  }
+  if (port === 4173) throw new Error('VAT proof refuses the default port 4173');
+  const actualRoot = fs.realpathSync(root);
+  const expectedRoot = fs.realpathSync(process.env.AFROTOOLS_SW_VAT_SERVER_ROOT);
+  if (actualRoot.toLowerCase() !== expectedRoot.toLowerCase()) {
+    throw new Error(`VAT proof root mismatch: ${actualRoot} !== ${expectedRoot}`);
+  }
+  const git = (...args) => execFileSync('git', args, { cwd: root, encoding: 'utf8' }).trim();
+  const actualCommit = git('rev-parse', 'HEAD');
+  const actualTree = git('rev-parse', 'HEAD^{tree}');
+  if (actualCommit !== process.env.AFROTOOLS_SW_VAT_EXPECTED_COMMIT) {
+    throw new Error(`VAT proof commit mismatch: ${actualCommit}`);
+  }
+  if (actualTree !== process.env.AFROTOOLS_SW_VAT_EXPECTED_TREE) {
+    throw new Error(`VAT proof tree mismatch: ${actualTree}`);
+  }
+  const proofDirty = git('status', '--porcelain', '--untracked-files=all')
+    .split(/\r?\n/)
+    .filter(Boolean)
+    .filter((line) => !line.endsWith(' test-results/.last-run.json'));
+  if (proofDirty.length) throw new Error(`VAT proof requires a clean product tree: ${proofDirty.join(', ')}`);
+  vatProofIdentity = {
+    commit: actualCommit,
+    tree: actualTree,
+    root: actualRoot,
+    label: process.env.AFROTOOLS_SW_VAT_ROOT_IDENTITY
+  };
+}
 if (process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES !== '0') {
   process.env.AFROTOOLS_LOCAL_SKIP_DATA_STORE_WRITES = '1';
 }
@@ -130,6 +171,13 @@ function readRequestBody(request) {
 
 const server = http.createServer(function (request, response) {
   const pathname = request.url.split('?')[0];
+
+  if (vatProofIdentity) {
+    response.setHeader('X-AfroTools-Proof-Commit', vatProofIdentity.commit);
+    response.setHeader('X-AfroTools-Proof-Tree', vatProofIdentity.tree);
+    response.setHeader('X-AfroTools-Proof-Root', vatProofIdentity.root);
+    response.setHeader('X-AfroTools-Proof-Identity', vatProofIdentity.label);
+  }
 
   if (
     pathname === '/assets/js/lazy-analytics.js' &&

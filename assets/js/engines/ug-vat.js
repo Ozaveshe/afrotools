@@ -10,7 +10,7 @@
   var STANDARD_RATE = 18,
     THREE_MONTH_REGISTRATION_THRESHOLD = 37500000,
     ANNUAL_THRESHOLD_REFERENCE = 150000000,
-    REVIEWED_ON = "2026-07-22";
+    REVIEWED_ON = "2026-08-02";
 
   function finite(value, fallback) {
     var number = Number(value);

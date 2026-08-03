@@ -3,94 +3,933 @@
 <head>
 <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
 <meta charset="UTF-8">
-<meta name="view-transition" content="same-origin">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Mjenzi wa CV | Violezo vya Kitaalamu kwa Afrika | AfroTools</title>
-<meta name="description" content="Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo 16+ kwa nchi za Afrika: Nigeria, Kenya, Ghana, Afrika Kusini. Pakua PDF bure, bila usajili.">
-<meta property="og:title" content="Mjenzi wa CV | Violezo vya Kitaalamu kwa Afrika | AfroTools">
-<meta property="og:description" content="Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo 16+ kwa nchi za Afrika. Pakua PDF bure.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="og:image:width" content="1200">
-<meta property="og:image:height" content="630">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Mjenzi wa CV | AfroTools</title>
+<meta name="description" content="Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.">
+<meta property="og:title" content="Mjenzi wa CV | AfroTools">
+<meta property="og:description" content="Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/cv-builder.webp">
 <meta property="og:url" content="https://afrotools.com/sw/zana/mjenzi-cv/">
 <meta property="og:type" content="website">
-<meta property="og:locale" content="sw_KE">
-<meta property="og:locale:alternate" content="en_US">
-<meta property="og:locale:alternate" content="fr_FR">
-<meta property="og:site_name" content="AfroTools">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Mjenzi wa CV | AfroTools">
-<meta name="twitter:description" content="Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo kwa nchi za Afrika. Bure kabisa.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
-<meta property="article:modified_time" content="2026-03-29"> <!-- Design System -->
+<!-- Design System -->
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc"> <!-- CV Builder Styles -->
-<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder.css?v=c9110cef"> <!-- Components -->
+<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+
+<!-- CV Builder Styles -->
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder.css?v=c9110cef">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-career-copilot.css?v=355ac689">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-career-copilot-compact.css?v=23114ded">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-template-studio.css?v=255fe157">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder-entry.css?v=227ba558">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder-entry-mobile.css?v=acaebb67">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder-entry-accessibility.css?v=f08d96b9">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-builder-workspace.css?v=2f305f10">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-template-gallery.css?v=bed307dd">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-country-rules.css?v=8efbf6f3">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-ats-matcher.css?v=13229ba7">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-import-assistant.css?v=79192264">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-improvement-assistant.css?v=ff5821f4">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-application-pack.css?v=1e673042">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-application-pack-polish.css?v=d8ebfa69">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-job-tracker.css?v=fab3dadf">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-upgrade.css?v=36655329">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-polish.css?v=b844711e">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-design-foundation.css?v=7763e6b1">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-layout-decongestion.css?v=e98749ac">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-export-empty-polish.css?v=cec42eed">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-mobile-control-fix.css?v=91558eb6">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-country-advisor-compact.css?v=6cacc450">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-form-spacing-fix.css?v=49ea1f5e">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-next-steps-polish.css?v=b8e2755a">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-workflow-dashboard.css?v=f923e422">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-sample-mode.css?v=0d2b9720">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-toolbar-groups.css?v=b1dd04fb">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-guided-workflow.css?v=267c67a3">
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-version-system.css?v=5a23d121">
+<style>
+.cv-export-modal-overlay.open{z-index:2147483600!important}
+.cv-sample-status{min-height:20px;margin:10px 0 0;color:#475569;font-size:.78rem;font-weight:800;line-height:1.4}
+.cv-start-card small{display:block;margin-top:6px;color:#475569;font-size:.72rem;font-weight:800;line-height:1.35}
+.cv-start-card.is-active{border-color:#2563eb;background:#eff6ff;box-shadow:0 0 0 3px rgba(37,99,235,.12)}
+.cv-starter-guidance-panel{margin:0 0 14px;padding:14px;border:1px solid #dbeafe;border-radius:8px;background:#f8fbff;color:#0f172a}
+.cv-starter-guidance-panel strong{display:block;margin-bottom:4px;font-size:.88rem;font-weight:900}
+.cv-starter-guidance-panel p{margin:0 0 8px;color:#475569;font-size:.78rem;line-height:1.45}
+.cv-starter-guidance-panel ul{display:grid;gap:5px;margin:0;padding-left:18px;color:#334155;font-size:.76rem;line-height:1.4}
+.cv-section.cv-starter-priority{border-color:#bfdbfe;box-shadow:0 0 0 2px rgba(37,99,235,.08)}
+.cv-section.cv-starter-support{border-color:#d1fae5}
+.cv-sample-panel{position:fixed!important;inset:0!important;z-index:2147483500!important;display:grid!important;align-items:start!important;max-width:none!important;margin:0!important;padding:clamp(12px,3vw,28px)!important;overflow-y:auto!important;background:rgba(7,20,38,.72)!important}
+.cv-sample-panel[hidden]{display:none!important}
+.cv-sample-panel>.cv-sample-shell{width:min(1180px,100%);margin:auto}
+@media(min-width:1024px){.cv-app.cv-toolbar-groups-ready .cv-toolbar{top:var(--nav-height,62px)!important;z-index:120!important}}
+.cv-handoff-panel{max-width:1180px;margin:14px auto 0;padding:14px 16px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;box-shadow:none;display:grid;grid-template-columns:minmax(250px,.92fr) minmax(0,1.25fr);gap:12px;align-items:center}
+.cv-handoff-copy{display:grid;gap:4px;min-width:0}.cv-handoff-kicker{color:#087f5b;font-size:10px;font-weight:900;text-transform:uppercase}.cv-handoff-copy h2{margin:0;color:#071426;font-size:18px;font-weight:900;line-height:1.15;letter-spacing:0}.cv-handoff-copy p{margin:0;color:#536172;font-size:12.5px;font-weight:700;line-height:1.45}.cv-handoff-note{color:#0f766e!important}
+.cv-handoff-actions{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}.cv-handoff-cta{display:flex;align-items:center;justify-content:center;min-height:40px;padding:8px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;text-align:center;text-decoration:none;font-size:12px;font-weight:850;line-height:1.2}.cv-handoff-cta:hover,.cv-handoff-cta:focus-visible{border-color:#0b63ce;background:#f8fbff;box-shadow:0 0 0 3px rgba(11,99,206,.13);outline:none;text-decoration:none}.cv-handoff-cta[aria-disabled="true"]{opacity:.5;cursor:not-allowed}
+.cv-handoff-tools{grid-column:2;display:flex;flex-wrap:wrap;gap:8px;align-items:center}.cv-handoff-tools button{min-height:36px;padding:7px 10px;border:1px solid #d7e1ea;border-radius:8px;background:#fff;color:#102033;font:inherit;font-size:12px;font-weight:850;cursor:pointer}.cv-handoff-tools button:disabled{opacity:.5;cursor:not-allowed}.cv-handoff-tools button:hover:not(:disabled),.cv-handoff-tools button:focus-visible{border-color:#087f5b;box-shadow:0 0 0 3px rgba(8,127,91,.12);outline:none}.cv-handoff-tools span{color:#64748b;font-size:12px;font-weight:750;line-height:1.35}
+.cv-flow-dashboard+.cv-landing{display:block!important;padding:0 0 28px!important;background:#f4f8fb!important;border-bottom:1px solid #d7e1ea!important}
+.cv-flow-dashboard+.cv-landing>.cv-landing-shell,.cv-flow-dashboard+.cv-landing>.cv-privacy-note{display:none!important}
+.cv-flow-dashboard+.cv-landing>.cv-quick-start{display:grid!important;max-width:1180px;margin:0 auto 18px;padding:0 14px}
+.cv-flow-dashboard+.cv-landing .cv-template-landing-gallery{display:grid!important}
+.cv-template-index-list{margin:8px 0 0;color:#64748b;font-size:12px;font-weight:800;line-height:1.45}
+.cv-privacy-note{max-width:1180px;margin:14px auto 0;color:#334155;font-size:13px;font-weight:800}
+.cv-privacy-accordion{max-width:1180px;margin:14px auto 0;border:1px solid #d5e1ea;border-radius:8px;background:#fff;color:#102033}
+.cv-privacy-accordion summary{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:13px 15px;cursor:pointer;font-size:13px;font-weight:950;list-style:none}
+.cv-privacy-accordion summary::-webkit-details-marker{display:none}
+.cv-privacy-accordion summary::after{content:"+";display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:999px;border:1px solid #cbd8e6;color:#0b63ce;font-size:16px;line-height:1}
+.cv-privacy-accordion[open] summary::after{content:"-"}
+.cv-privacy-accordion-body{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;padding:0 15px 15px}
+.cv-privacy-accordion-body p{margin:0;padding:11px 12px;border:1px solid #e0e8f1;border-radius:8px;background:#f8fbff;color:#526173;font-size:12.5px;font-weight:750;line-height:1.45}
+.cv-privacy-accordion-body strong{display:block;margin-bottom:4px;color:#102033;font-size:12.5px;font-weight:950}
+.cv-info{margin:52px 0 0;padding:44px 24px 52px;border-top:1px solid #d8e6ee;border-bottom:1px solid #d8e6ee;background:#f6fafb;color:#263545;font-family:var(--font-body)}
+.cv-info-shell{max-width:1120px;margin:0 auto;display:grid;gap:28px}
+.cv-info-hero{display:grid;grid-template-columns:minmax(0,1.38fr) minmax(260px,.62fr);gap:22px;align-items:stretch}
+.cv-info-copy{display:grid;align-content:start;gap:14px;min-width:0}
+.cv-info-kicker{color:#087f5b;font-size:11px;font-weight:950;text-transform:uppercase}
+.cv-info h2,.cv-info h3,.cv-info h4,.cv-info p{margin:0}
+.cv-info h2{max-width:820px;color:#0b1728;font-family:var(--font-display);font-size:clamp(28px,3vw,42px);font-weight:900;line-height:1.05;letter-spacing:0}
+.cv-info-lede{max-width:850px;color:#4d5f74;font-size:16px;line-height:1.72}
+.cv-info-lede strong{color:#0f5132;font-weight:900}
+.cv-info-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:4px}
+.cv-info-cta button,.cv-info-cta a{display:inline-flex;align-items:center;justify-content:center;min-height:44px;padding:10px 14px;border-radius:8px;border:1px solid #b8c9d8;background:#fff;color:#102033;text-decoration:none;font-size:13px;font-weight:900;line-height:1.2;cursor:pointer;transition:background .15s ease,border-color .15s ease,box-shadow .15s ease,color .15s ease}
+.cv-info-cta .primary{border-color:#087f5b;background:#087f5b;color:#fff}
+.cv-info-cta button:hover,.cv-info-cta button:focus-visible,.cv-info-cta a:hover,.cv-info-cta a:focus-visible{border-color:#0369a1;box-shadow:0 0 0 3px rgba(3,105,161,.14);outline:none;text-decoration:none}
+.cv-info-cta .primary:hover,.cv-info-cta .primary:focus-visible{border-color:#075f45;background:#075f45;color:#fff}
+.cv-info-outcome{display:grid;gap:12px;padding:18px;border:1px solid #cfe0dc;border-radius:8px;background:#fff;color:#102033}
+.cv-info-outcome strong{font-size:15px;font-weight:950}
+.cv-info-outcome span{display:block;padding-left:14px;border-left:3px solid #14b8a6;color:#4f6072;font-size:13px;font-weight:750;line-height:1.45}
+.cv-info-block{display:grid;gap:14px}
+.cv-info-block-head{display:grid;gap:6px;max-width:820px}
+.cv-info-block h3{color:#0b1728;font-family:var(--font-display);font-size:24px;font-weight:900;line-height:1.15}
+.cv-info-block-head p,.cv-info-ats p{color:#596a7d;font-size:15px;line-height:1.65}
+.cv-info-tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.cv-info-tile{display:grid;align-content:start;gap:8px;min-height:132px;padding:14px;border:1px solid #d5e1ea;border-radius:8px;background:#fff}
+.cv-info-tile b{color:#0b1728;font-size:14px;font-weight:950;line-height:1.25}
+.cv-info-tile span,.cv-info-tile p{color:#5a6c80;font-size:13px;font-weight:700;line-height:1.48}
+.cv-info-template{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+.cv-info-template .cv-info-tile{min-height:168px;border-top:4px solid #0369a1}
+.cv-info-chip{display:inline-flex;width:max-content;max-width:100%;padding:5px 8px;border-radius:999px;background:#e8f7f4;color:#0f766e;font-size:11px;font-weight:950;line-height:1}
+.cv-info-country{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.cv-info-country .cv-info-tile{min-height:178px}
+.cv-info-country a{width:max-content;color:#035fc7;font-weight:950;text-decoration:underline;text-underline-offset:3px}
+.cv-info-country a:hover,.cv-info-country a:focus-visible{color:#023e8a;outline:2px solid rgba(3,105,161,.18);outline-offset:3px}
+.cv-info-ats{display:grid;grid-template-columns:minmax(0,1fr) minmax(240px,.54fr);gap:18px;align-items:center;padding:18px;border:1px solid #cfe0dc;border-radius:8px;background:#fff}
+.cv-info-ats h3{color:#0b1728;font-family:var(--font-display);font-size:22px;font-weight:900;line-height:1.15}
+.cv-info-ats-note{display:grid;gap:6px;padding:14px;border-radius:8px;background:#effaf8;color:#0f5132;font-size:13px;font-weight:850;line-height:1.45}
+.cv-info-faq{display:grid;gap:10px}
+.cv-info-faq details{border:1px solid #d5e1ea;border-radius:8px;background:#fff;padding:14px 16px}
+.cv-info-faq summary{cursor:pointer;color:#0b1728;font-weight:900}
+.cv-info-faq p{margin-top:8px;color:#58697c;font-size:14px;line-height:1.6}
+@media(max-width:980px){.cv-handoff-panel{grid-template-columns:1fr!important}.cv-handoff-tools{grid-column:1}.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(min-width:1280px){.cv-app.cv-workspace-ready .cv-main{grid-template-columns:minmax(220px,250px) minmax(380px,470px) minmax(600px,1fr)!important}.cv-app.cv-workspace-ready .cv-preview-scroll{padding:22px 18px!important}}
+@media(max-width:960px){.cv-info{padding:34px 16px 42px}.cv-info-hero,.cv-info-ats{grid-template-columns:1fr!important}.cv-info-tiles{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-info-template{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-info-country{grid-template-columns:repeat(2,minmax(0,1fr))!important}}
+@media(max-width:720px){.cv-quick-start{grid-template-columns:1fr}.cv-start-card small{font-size:.7rem}.cv-handoff-panel{margin:12px 12px 0;padding:12px;border-radius:8px}.cv-handoff-actions{grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-handoff-cta{min-height:46px}.cv-handoff-tools{display:grid;grid-template-columns:repeat(2,minmax(0,1fr))!important}.cv-handoff-tools span{grid-column:1/-1}.cv-privacy-note,.cv-privacy-accordion{margin-left:12px;margin-right:12px}.cv-privacy-accordion-body{grid-template-columns:1fr}.cv-info h2{font-size:30px}.cv-info-tiles,.cv-info-template,.cv-info-country{grid-template-columns:1fr!important}.cv-info-tile{min-height:auto}.cv-info-cta{display:grid;grid-template-columns:1fr}.cv-info-cta button,.cv-info-cta a{width:100%}}
+@media(max-width:360px){.cv-handoff-actions,.cv-handoff-tools{grid-template-columns:1fr!important}}
+@media print{.cv-handoff-panel{display:none!important}}
+.cv-export-review{display:flex;align-items:flex-start;gap:10px;margin:12px 0;padding:12px;border:1px solid #cbd5e1;border-radius:10px;background:#f8fafc;color:#334155;font-size:13px;font-weight:750;line-height:1.5;cursor:pointer}.cv-export-review input{width:19px;height:19px;margin:1px 0 0;flex:0 0 auto;accent-color:#087f5b}
+:root[data-theme="dark"] .cv-flow-dashboard{--cv-flow-ink:#f1f5f9;--cv-flow-muted:#b7c5d8;--cv-flow-line:#294164;--cv-flow-soft:#101a2b}
+:root[data-theme="dark"] .cv-flow-shell,:root[data-theme="dark"] .cv-flow-nav,:root[data-theme="dark"] .cv-flow-side,:root[data-theme="dark"] .cv-flow-library,:root[data-theme="dark"] .cv-flow-stat,:root[data-theme="dark"] .cv-flow-doc,:root[data-theme="dark"] .cv-flow-checks,:root[data-theme="dark"] .cv-flow-badge,:root[data-theme="dark"] .cv-flow-progress{background:#101a2b;border-color:#294164;color:#dbeafe}
+:root[data-theme="dark"] .cv-flow-main,:root[data-theme="dark"] .cv-flow-dashboard+.cv-landing{background:#0b1423}
+:root[data-theme="dark"] .cv-flow-paper,:root[data-theme="dark"] .cv-flow-secondary,:root[data-theme="dark"] .cv-flow-quick button,:root[data-theme="dark"] .cv-flow-doc button{background:#152238;border-color:#35527b;color:#f1f5f9}
+:root[data-theme="dark"] .cv-flow-hero-title,:root[data-theme="dark"] .cv-flow-head h2,:root[data-theme="dark"] .cv-flow-library-head h3,:root[data-theme="dark"] .cv-flow-side h3,:root[data-theme="dark"] .cv-flow-stat strong,:root[data-theme="dark"] .cv-flow-doc strong{color:#f1f5f9}
+:root[data-theme="dark"] .cv-export-options,:root[data-theme="dark"] .cv-export-review{background:#101a2b!important;border-color:#294164!important;color:#dbeafe!important}
+:root[data-theme="dark"] .cv-export-options input,:root[data-theme="dark"] .cv-export-options select{background:#0b1423!important;border-color:#35527b!important;color:#f1f5f9!important}
+</style>
+<script>
+window.addEventListener('unhandledrejection', function (event) {
+  var reason = event.reason;
+  var message = reason && reason.message ? reason.message : String(reason || '');
+  if (message.indexOf('Transition was skipped') !== -1) {
+    event.preventDefault();
+    event.stopImmediatePropagation();
+  }
+}, true);
+</script>
+<link rel="stylesheet" href="/tools/cv-builder/css/cv-related-tools.css?v=31a377c4">
+
+<!-- Components -->
 <script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
-<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script> <!-- Fonts -->
+<script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
+
+<!-- Fonts (DM Sans via tokens, Instrument Serif for headings) -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap" onload="this.onload=null;this.rel='stylesheet'">
-<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&display=swap">
-</noscript> <!-- Lazy-load PDF libs -->
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js" as="script">
-<link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" as="script">
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600;700;800&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;600;700&display=swap"></noscript>
+
+<!-- Lazy-load PDF libs only when exporting -->
 <script>
 window._pdfLibsLoaded=false;
 window._pdfLibsPromise=null;
-window.loadPdfLibs=function(){ if(window._pdfLibsLoaded)return Promise.resolve(); if(window._pdfLibsPromise)return window._pdfLibsPromise; window._pdfLibsPromise=Promise.all([ new Promise(function(r,j){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s);}), new Promise(function(r,j){var s=document.createElement('script');s.src='https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';s.onload=r;s.onerror=j;document.head.appendChild(s);}) ]).then(function(){window._pdfLibsLoaded=true;}).catch(function(e){window._pdfLibsPromise=null;throw e;}); return window._pdfLibsPromise;
-};
-</script> <!-- Structured Data: WebApplication -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Mjenzi wa CV | AfroTools","description":"Tengeneza CV yako ya kitaalamu kwa dakika chache. Violezo 16+ kwa nchi za Afrika. Pakua PDF bure.","url":"https://afrotools.com/sw/zana/mjenzi-cv/","inLanguage":"https://afrotools.com/sw/","applicationCategory":"BusinessApplication","operatingSystem":"Web","browserRequirements":"Inahitaji JavaScript","ofas":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"}}</script> <!-- Structured Data: BreadcrumbList -->
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"AfroTools","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana (Kiswahili)","item":"https://afrotools.com/sw/"},{"@type":"ListItem","position":3,"name":"Mjenzi wa CV","item":"https://afrotools.com/sw/zana/mjenzi-cv/"}]}</script> <!-- Structured Data: FAQPage -->
-<script type="application/ld+json">
-{ "@context": "https://schema.org", "@type": "FAQPage", "mainEntity": [ { "@type": "Question", "name": "Je, Mjenzi wa CV ni bure kabisa?", "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo. Mjenzi wa CV wa AfroTools ni bure kabisa bila haja ya kusajili. Unaweza kuunda, kutazama, na kupakua CV yako kama PDF bila gharama yoyote wala alama ya maji."} }, { "@type": "Question", "name": "Je, nchi zipi za Afrika zinaauni?", "acceptedAnswer": {"@type": "Answer", "text": "Nchi zote 54 za Afrika zinaauniwa, pamoja na muundo wa kimataifa. Mjenzi hubadilisha maelekezo ya muundo kulingana na nchi uliyochagua."} }, { "@type": "Question", "name": "Je, ninaweza kuhifadhi CV yangu na kuhariri baadaye?", "acceptedAnswer": {"@type": "Answer", "text": "Ndiyo. CV yako inahifadhiwa kiotomatiki kwenye kivinjari chako kila sekunde 2. Unaweza pia kuhifadhi CV nyingi zilizopewa majina na kubadilisha kati yao."} }, { "@type": "Question", "name": "Ni muundo gani wa faili inayopakuliwa?", "acceptedAnswer": {"@type": "Answer", "text": "CV zinapakuliwa kama faili za PDF zilizoundwa kwa ukubwa wa karatasi A4 (210mm x 297mm). PDF iko tayari kuchapishwa na inafanya kazi na mifumo yote ya kutuma maombi ya kazi."} }, { "@type": "Question", "name": "Je, ninapaswa kujumuisha picha kwenye CV yangu?", "acceptedAnswer": {"@type": "Answer", "text": "Inategemea nchi. Katika Nigeria, Kenya, Misri na nchi nyingi za Afrika Mashariki na Magharibi, picha ya kitaalamu inatarajiwa. Katika Afrika Kusini, picha hazipendekezi kwa sababu ya sheria za usawa wa ajira. Mjenzi utakuongoza kulingana na nchi uliyochagua."} } ]
-}
-</script> <!-- Swahili label overrides injected before engine boots -->
-<script>
-window.CV_LANG_OVERRIDE = 'sw';
-window.CV_LABELS_SW = { personalInfo: 'Maelezo Binafsi', objective: 'Lengo', education: 'Elimu', experience: 'Uzoefu', skills: 'Ujuzi', languages: 'Lugha', references: 'Wadhamini', save: 'Hifadhi', print: 'Chapisha', pdf: 'Pakua PDF', analyze: 'Changanua', newCv: '+ CV Mpya', savedCvs: 'CV Zako Zilizohifadhiwa', selectCountry: 'Chagua Nchi', score: 'Alama', ats: 'Mtihani wa ATS', coverLetter: 'Barua ya Ombi', history: 'Historia', advisor: 'Mshauri', import: 'Ingiza', download: 'Pakua PDF', reset: 'Futa'
+window.loadPdfLibs=function(){
+  if(window._pdfLibsLoaded)return Promise.resolve();
+  if(window._pdfLibsPromise)return window._pdfLibsPromise;
+  window._pdfLibsPromise=Promise.all([
+    new Promise(function(r,j){var s=document.createElement('script');s.src='/assets/vendor/html2canvas/html2canvas.min.js?v=d7530aa0';s.onload=r;s.onerror=j;document.head.appendChild(s);}),
+    new Promise(function(r,j){var s=document.createElement('script');s.src='/assets/vendor/jspdf/jspdf.umd.min.js?v=c4b6303c';s.onload=r;s.onerror=j;document.head.appendChild(s);})
+  ]).then(function(){window._pdfLibsLoaded=true;}).catch(function(e){window._pdfLibsPromise=null;throw e;});
+  return window._pdfLibsPromise;
 };
 </script>
+
+<!-- Structured Data -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"Free CV Builder for African Job Seekers","alternateName":["Free Resume Builder Africa","ATS CV Builder Africa"],"description":"Create an ATS-ready CV for African job markets with country guidance, template options, cover letter support, LinkedIn profile help, job tracking and free PDF export without a watermark.","url":"https://afrotools.com/sw/zana/mjenzi-cv/","inLanguage":"sw","applicationCategory":"BusinessApplication","applicationSubCategory":"ResumeBuilderApplication","operatingSystem":"Web","browserRequirements":"Requires JavaScript","featureList":["Country-aware CV field guidance","ATS readiness score","Job description matching","CV template gallery","Cover letter generator","LinkedIn profile helper","Job application tracker","PDF export","Local browser save"],"offers":{"@type":"Offer","price":"0","priceCurrency":"USD","availability":"https://schema.org/InStock"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"publisher":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/cv-builder.webp"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","name":"Mjenzi wa CV","url":"https://afrotools.com/sw/zana/mjenzi-cv/","description":"Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.","inLanguage":"sw","isPartOf":{"@type":"WebSite","name":"AfroTools","url":"https://afrotools.com/"},"primaryImageOfPage":{"@type":"ImageObject","url":"https://afrotools.com/assets/img/tools/cv-builder.webp"},"about":[{"@type":"Thing","name":"CV builder Africa"},{"@type":"Thing","name":"ATS CV builder"},{"@type":"Thing","name":"Graduate CV template"},{"@type":"Thing","name":"Job application tracker"}],"image":"https://afrotools.com/assets/img/tools/cv-builder.webp"}</script>
+
+<form name="cv-leads" netlify netlify-honeypot="bot-field" hidden>
+  <input aria-label="Sehemu ya Bot" name="bot-field"><input aria-label="Barua pepe" name="email"><input aria-label="Jina Kamili" name="fullName"><input aria-label="Nchi" name="country">
+</form>
+<meta name="tool-id" content="cv-builder">
+<script src="/assets/js/favorites.js?v=163519f9" defer></script>
+<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/components/ai-consent.js?v=2690ecaa" defer></script>
+<meta property="og:locale" content="sw_TZ">
+<meta property="og:locale:alternate" content="fr_FR">
+<meta property="og:site_name" content="AfroTools">
+<meta name="twitter:title" content="Mjenzi wa CV | AfroTools">
+<meta name="twitter:description" content="Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/cv-builder.webp">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Nyumbani","item":"https://afrotools.com/"},{"@type":"ListItem","position":2,"name":"Zana","item":"https://afrotools.com/tools/"},{"@type":"ListItem","position":3,"name":"Mjenzi wa CV","item":"https://afrotools.com/sw/zana/mjenzi-cv/"}]}</script>
+
+<meta property="article:modified_time" content="2026-05-20">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
+<!-- tool-structured-data:auto -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebApplication","name":"Mjenzi wa CV","description":"Tengeneza CV ya kitaalamu ndani ya kifaa na pakua PDF, DOCX, TXT, CSV, JSON au ZIP bila lango la akaunti.","url":"https://afrotools.com/sw/zana/mjenzi-cv/","inLanguage":"sw","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Organization","name":"AfroTools","url":"https://afrotools.com/"},"image":"https://afrotools.com/assets/img/tools/cv-builder.webp"}</script>
+<meta name="afrotools-content-id" content="sw-document-pdf:cv-builder">
+  <meta name="afrotools-source-owner" content="scripts/build-swahili-document-pdf-parity.js">
+  <script src="/assets/js/pages/sw-document-pdf-dom-stability.js?v=5039aef4"></script>
+  <link rel="stylesheet" href="/assets/css/sw-document-pdf-a11y.css?v=2f7548b2">
 <link rel="canonical" href="https://afrotools.com/sw/zana/mjenzi-cv/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/cv-builder/">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/tools/generateur-cv/">
 <link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana/mjenzi-cv/">
 <link rel="alternate" hreflang="x-default" href="https://afrotools.com/tools/cv-builder/">
 </head>
-<body class="top-level-page-ui-refresh">
+<body id="sw-document-pdf-a11y-scope" class="top-level-page-ui-refresh" data-local-first-downloads>
 <afro-navbar active="tools"></afro-navbar>
-<h1 style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0">Mjenzi wa CV na Wasifu wa Kitaalamu kwa Afrika</h1> <!-- Saved CVs Section -->
-<div class="cv-saved-section"> <div class="cv-saved-wrap"> <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px"> <h3 class="cv-saved-title">CV Zako Zilizohifadhiwa</h3> <button type="button" class="cv-btn cv-btn-primary" data-action="new" style="font-size:11px;padding:5px 12px">+ CV Mpya</button> </div> <div class="cv-saved-grid"></div> </div>
-</div> <!-- Main App -->
-<div class="cv-app"> <!-- Toolbar --> <div class="cv-toolbar"> <div class="cv-toolbar-left"> <div class="cv-tool-brand"> <span class="cv-brand-icon"></span>Mjenzi wa CV <span class="cv-tool-sub">| Violezo 16 kwa masoko ya kazi ya Afrika</span> </div> </div> <div class="cv-toolbar-right"> <select class="cv-country-sel" aria-label="Chagua nchi"></select> <select class="cv-lang-sel" aria-label="Lugha ya Kiolesura" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--color-text-inverse);padding:6px 8px;border-radius:var(--radius-sm);font-size:11px;cursor:pointer;font-family:var(--font-body)"> <option value="sw" selected>SW</option> <option value="en">EN</option> <option value="fr">FR</option> <option value="ar">AR</option> <option value="pt">PT</option> </select> <button type="button" class="cv-btn cv-btn-ghost" data-action="save" title="Hifadhi CV"> Hifadhi</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="print" title="Chapisha"> Chapisha</button> <button type="button" class="cv-btn cv-btn-primary" data-action="pdf" title="Pakua PDF"> Pakua PDF</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="import" title="Ingiza CV" style="font-size:11px"> Ingiza</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" title="Mtihani wa ATS" style="font-size:11px"> ATS</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="coverletter" title="Barua ya Ombi" style="font-size:11px"> Barua ya Ombi</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="history" title="Historia ya Matoleo" style="font-size:11px"> Historia</button> <button type="button" class="cv-btn cv-btn-ai" data-action="analyze" title="Uchambuzi wa CV kwa AI"> Changanua</button> <button type="button" class="cv-btn cv-btn-ai" data-action="chat" title="Mshauri wa AI" style="background:linear-gradient(135deg,#6366f1,#0062CC)"> Mshauri</button> </div> </div> <!-- Score Bar --> <div class="cv-complete-wrap"> <div class="cv-complete-bar" style="width:0%"></div> </div> <!-- Mobile Toggle --> <div class="cv-mobile-toggle"></div> <!-- Main Split --> <div class="cv-main"> <!-- Form Panel --> <div class="cv-form-panel"> <div class="cv-score"></div> <div class="cv-form-inner"> <!-- Imejazwa na JS --> </div> </div> <!-- Preview Panel --> <div class="cv-preview-panel"> <div class="cv-preview-top"> <!-- Imejazwa na JS --> </div> <div class="cv-colors"> <!-- Imejazwa na JS --> </div> <div class="cv-preview-scroll"> <div id="cvpreview"> <!-- Kiolezo kinachosanyika hapa --> </div> </div> </div> </div> <!-- Mobile Action Bar --> <div class="cv-action-bar"> <button type="button" class="cv-btn cv-btn-ghost" data-action="save" style="color:var(--color-text);border:1px solid var(--color-border)"> Hifadhi</button> <button type="button" class="cv-btn cv-btn-primary" data-action="pdf"> PDF</button> <button type="button" class="cv-btn cv-btn-ai" data-action="analyze"> Alama</button> <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" style="color:var(--color-text);border:1px solid var(--color-border);font-size:12px"> ATS</button> </div>
-</div> <!-- Toast -->
-<div class="cv-toast"></div> <!-- SEO Content Section -->
-<section style="max-width:860px;margin:48px auto;padding:0 24px;font-family:var(--font-body);color:#374151;line-height:1.8"> <h2 style="font-size:1.5rem;font-weight:800;color:var(--color-text);margin-bottom:16px;font-family:var(--font-display)">Mjenzi wa CV wa Kitaalamu kwa Afrika</h2> <p>Mjenzi wa CV wa AfroTools husaidia wataalamu katika nchi zote 54 za Afrika kuunda CV nzuri, tayari kwa kazi kwa dakika chache. Tofauti na wajenzi wa CV wa kawaida, kila kiolezo na mapendekezo yanalingana na mila za kuajiri za Afrika | kuanzia matarajio ya Nigeria ya maelezo ya kibinafsi na jimbo la asili hadi mahitaji ya Sheria ya Usawa wa Ajira ya Afrika Kusini.</p> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Jinsi ya Kutumia Mjenzi wa CV</h3> <ol style="padding-left:20px;margin-bottom:16px"> <li>Chagua nchi yako lengwa kutoka kwenye orodha kunjuzi ili kutumia muundo sahihi wa CV na mila.</li> <li>Jaza maelezo yako ya kibinafsi, uzoefu wa kazi, elimu, na ujuzi kwenye kidirisha cha fomu iliyoongozwa.</li> <li>Chagua kutoka kwa violezo 16 vilivyoundwa kitaalamu vinavyofaa kwa sekta yako na kiwango cha kazi.</li> <li>Tazama CV yako moja kwa moja kwenye kidirisha cha kulia chenye muundo kamili wa A4.</li> <li>Tumia Kichanganuzi cha AI kupata alama ya CV yako na vidokezo vya kuboresha kwa nchi mahususi.</li> <li>Pakua kama PDF ya ubora wa juu tayari kuwasilisha kwa waajiri au kupakia kwenye mabandari ya kazi.</li> </ol> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Violezo 16 kwa Kila Sekta</h3> <p><strong>Violezo vya Kawaida:</strong> Slate, Ember, Phantom, Indigo, Noir, na Stone | miundo safi ya kitaalamu kwa sekta yoyote.</p> <p><strong>Violezo vya Masoko ya Afrika:</strong> Lagos Corporate (iliyoboreshwa kwa ATS kwa benki na mafuta ya Nigeria), Cape Town Modern (muundo wa Afrika Kusini na marejeo), Nairobi Executive (mtaalamu wa Afrika Mashariki), Accra Graduate (mwingiliaji anayeanza kazi wenye mipangilio ya kwanza-ujuzi), Cairo Bilingual (picha na muundo rasmi), Abuja Government (muundo wa utumishi wa umma), Kigali Tech (iliyoundiwa kwa wasanidi programu wenye viungo vya GitHub), Pan-African Minimal (maandishi yaliyohakikishiwa ya ATS), Francophone Standard (muundo wa CV ya Kifaransa kwa Afrika ya Kifaransa), na Diaspora/Japa (ya kimataifa yenye ulinganifu wa sifa).</p> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Muundo Maalum kwa Nchi</h3> <p>Masoko ya kazi ya Afrika yana matarajio tofauti. Waajiri wa Nigeria kawaida wanatarajia kuona tarehe yako ya kuzaliwa, hali ya ndoa, jimbo la asili, maelezo ya NYSC, na picha ya pasipoti. CV za Kenya zinajumuisha nambari za kitambulisho cha taifa na alama za KCSE/KCPE. CV za Afrika Kusini zinaachilia mbali maelezo yote ya kibinafsi ili kufuata sheria za usawa wa ajira. CV za Misri zinajumuisha hali ya huduma ya kijeshi na picha. Mjenzi wa CV wa AfroTools hubadilisha kiotomatiki sehemu zinazoonyeshwa kulingana na nchi uliyochagua.</p> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Vipengele vya AI</h3> <ul style="padding-left:20px;margin-bottom:16px"> <li><strong>Alama na Uchambuzi wa CV:</strong> Pata alama ya kina kutoka 100 inayofunika ukamilifu, utayari wa ATS, na mahitaji maalum ya nchi.</li> <li><strong>Kiboresha cha Sehemu:</strong> Acha AI iandike upya muhtasari wako wa kitaalamu wenye vitenzi vikali vya vitendo na mafanikio yaliyopimwa.</li> <li><strong>Mshauri wa Mazungumzo ya AI:</strong> Uliza chochote kuhusu CV yako | pata ushauri unaozingatia Afrika kuhusu uumbizaji, pengo la kazi, vidokezo vya sekta, na zaidi.</li> <li><strong>Kilinganishi cha Maelezo ya Kazi:</strong> Bandika maelezo ya kazi na uone ni ujuzi gani unaolingana na maneno gani muhimu unayokosa.</li> </ul> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Vidokezo vya Maombi ya Kazi Afrika</h3> <ul style="padding-left:20px;margin-bottom:16px"> <li>Weka CV yako kwa kurasa 2 isipokuwa una uzoefu wa miaka 10 au zaidi.</li> <li>Jumuisha muhtasari wa kitaalamu juu wenye mafanikio yako muhimu na malengo ya kazi.</li> <li>Pima mafanikio yako iwezekanavyo: mapato yaliyotengenezwa, ukubwa wa timu iliyosimamiwa, miradi iliyotekelezwa.</li> <li>Orodhesha uzoefu wako wa hivi karibuni kwanza na urudi nyuma kwa mpangilio wa wakati.</li> <li>Jumuisha marejeo yenye maelezo kamili ya mawasiliano | waajiri wengi wa Afrika wanatarajia hili.</li> <li>Kwa CV za Nigeria, daima jumuisha hali yako ya NYSC na jimbo la asili.</li> <li>Kwa CV za Afrika Kusini, achilia mbali maelezo ya kibinafsi kama umri, jinsia, na picha.</li> </ul> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Maswali Yanayoulizwa Mara kwa Mara</h3> <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px"> <summary style="font-weight:600;color:var(--color-text);cursor:pointer">Je, Mjenzi wa CV ni bure kabisa?</summary> <p style="margin-top:8px">Ndiyo. Mjenzi wa CV wa AfroTools ni bure 100% bila haja ya kusajili. Unaweza kuunda, kutazama, na kupakua CV yako kama PDF bila gharama yoyote wala alama za maji.</p> </details> <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px"> <summary style="font-weight:600;color:var(--color-text);cursor:pointer">Je, nchi zipi za Afrika zinaauni?</summary> <p style="margin-top:8px">Nchi zote 54 za Afrika zinaauniwa, pamoja na muundo wa kimataifa. Mjenzi hubadilisha mapendekezo yake ya muundo kulingana na nchi unayochagua.</p> </details> <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px"> <summary style="font-weight:600;color:var(--color-text);cursor:pointer">Je, ninaweza kuhifadhi CV yangu na kuhariri baadaye?</summary> <p style="margin-top:8px">Ndiyo. CV yako inahifadhiwa kiotomatiki kwenye hifadhi ya ndani ya kivinjari chako kila sekunde 2. Unaweza pia kuhifadhi CV nyingi zilizopewa majina na kubadilisha kati yao. Kwa uhifadhi wa kudumu katika vifaa vyote, ingia kwenye dashibodi yako ya AfroTools.</p> </details> <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px"> <summary style="font-weight:600;color:var(--color-text);cursor:pointer">Ni muundo gani wa faili inayopakuliwa?</summary> <p style="margin-top:8px">CV zinapakuliwa kama faili za PDF zilizoundwa kwa ukubwa wa karatasi A4 (210mm x 297mm). PDF iko tayari kuchapishwa na inafanya kazi na mifumo yote ya kutuma maombi ya kazi (ATS).</p> </details> <details style="margin-bottom:12px;border:1px solid var(--color-border);border-radius:8px;padding:14px 16px"> <summary style="font-weight:600;color:var(--color-text);cursor:pointer">Je, tofauti kati ya CV na resume ni nini?</summary> <p style="margin-top:8px">Katika Afrika, "CV" (Curriculum Vitae) ndiyo neno linalopendelewa. Ni hati ya kina inayofunika historia yako yote ya kitaalamu. Nchini Marekani, "resume" inamaanisha hati fupi ya ukurasa 1. Mjenzi wa CV wa AfroTools huunda CV katika muundo wa Afrika, ambao kwa kawaida una kurasa 2-3 zenye maelezo ya kina ya kibinafsi, historia ya kazi, elimu, na marejeo.</p> </details> <h3 style="font-size:1.15rem;font-weight:700;color:var(--color-text);margin:28px 0 10px;font-family:var(--font-display)">Zana Zinazohusiana</h3> <p>Baada ya kuunda CV yako, angalia zana hizi muhimu za AfroTools: <a href="/sw/mshahara-na-kodi/" style="color:var(--color-primary)">Kikokotozi cha Kodi ya PAYE</a> &middot; <a href="/sw/zana/kibadilishaji-sarafu/" style="color:var(--color-primary)">Kibadilishaji cha Sarafu</a> &middot; <a href="/sw/zana/barua-ombi/" style="color:var(--color-primary)">Mtengenezaji wa Barua ya Ombi la Kazi</a> &middot; <a href="/sw/zana/kizalishaji-ankara/" style="color:var(--color-primary)">Kizalishaji cha Ankara</a> </p>
-</section> <afro-related-tools category="document-pdf" current="cv-builder"></afro-related-tools>
-<!-- sw-career-workplace-docs -->
-<section id="kazi-na-ajira" style="padding:34px 20px;background:#f8fafc;border-top:1px solid #e5e7eb">
-  <div style="max-width:1040px;margin:0 auto">
-    <div style="font-size:.72rem;text-transform:uppercase;letter-spacing:.12em;color:#0f766e;font-weight:900;margin-bottom:8px">Kazi</div>
-    <h2 style="font-size:1.45rem;line-height:1.15;letter-spacing:-.02em;margin:0 0 8px;color:#0f172a">Kazi, CV na mshahara</h2>
-    <p style="margin:0 0 16px;color:#526071;line-height:1.65">Baada ya kuandaa CV, linganisha ofa, andika barua ya ombi, panga interview na jadili mshahara kwa Kiswahili.</p>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px"><a href="/sw/kazi-na-ajira/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Kazi na ajira</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">CV, ofas, interviews, negotiation, kazi ya freelance na workplace docs.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/mjenzi-cv/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mjenzi wa CV</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Andaa CV/resume inayosomeka na waajiri.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/barua-ombi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Barua ya ombi</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Andika cover letter kwa role unayoomba.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="https://africa-tools.com/sw/zana/tathmini-ya-ofa-ya-kazi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Tathmini ya ofa</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Linganisha ofa, net value na risk.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/majadiliano-ya-mshahara/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Majadiliano ya mshahara</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Panga counter-ofa kwa ushahidi.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/zana/mkataba-wa-ajira/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mkataba wa ajira</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Checklist ya contract kabla ya kusaini.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/mshahara-na-kodi/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Mshahara na PAYE</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Kokotoa salary, PAYE na employment tools.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a><a href="/sw/elimu/" style="display:block;background:#fff;border:1px solid #ccfbf1;border-radius:12px;padding:16px;text-decoration:none;color:inherit"><strong style="display:block;color:#0f172a;margin-bottom:5px">Elimu</strong><span style="display:block;color:#64748b;font-size:.86rem;line-height:1.45">Mitihani, udhamini na njia za kazi.</span><span style="display:inline-block;margin-top:10px;color:#0f766e;font-weight:900;font-size:.84rem">Fungua &rarr;</span></a></div>
+
+<header class="cv-product-header" aria-label="CV Kijenzi product navigation">
+  <a class="cv-product-brand" href="/" aria-label="AfroTools nyumbani">
+    <img src="/assets/img/logo-mark.svg" alt="" width="26" height="26">
+    <span>AfroTools</span>
+  </a>
+  <nav class="cv-product-actions" aria-label="CV Kijenzi actions">
+    <label class="cv-product-lang">
+      <span class="cv-sr-only">Lugha</span>
+      <select class="cv-landing-lang" aria-label="Kiteuzi cha lugha">
+        <option value="en">Kiingereza</option>
+        <option value="fr">Kifaransa</option>
+        <option value="ar">Kiarabu</option>
+        <option value="pt">Português</option>
+        <option value="sw">Kiswahili</option>
+      </select>
+    </label>
+    <button type="button" class="cv-product-link" data-action="import">Ingiza CV</button>
+    <button type="button" class="cv-product-link cv-product-link-primary" data-action="new" data-cv-entry="start">Anzisha CV Mpya</button>
+    <button type="button" class="cv-product-link" data-cv-entry="saved">CV zilizohifadhiwa</button>
+  </nav>
+</header>
+
+<section class="cv-landing" aria-labelledby="cv-landing-title">
+  <div class="cv-landing-shell">
+    <div class="cv-landing-copy">
+      <h1 id="cv-landing-title">Free CV Kijenzi for African & International Jobs</h1>
+      <p class="cv-landing-subheadline">Unda CV iliyo salama ya ATS, ibadilishe kulingana na kazi, hamisha faili za PDF na ATS, na utengeneze pakiti yako ya programu.</p>
+      <div class="cv-landing-cta-row">
+        <button type="button" class="cv-landing-cta primary" data-cv-entry="build">Jenga CV Yangu</button>
+        <button type="button" class="cv-landing-cta secondary" data-action="import">Leta CV Iliyopo</button>
+        <button type="button" class="cv-landing-cta secondary" data-cv-sample>Jaribu Mfano wa CV</button>
+      </div>
+      <p class="cv-sample-status" data-cv-sample-status aria-live="polite">Modi ya sampuli hujaza CV ya onyesho. Hakuna kinachohifadhiwa isipokuwa uchague Hifadhi.</p>
+      <div class="cv-trust-chips" aria-label="CV Kijenzi highlights">
+        <span>PDF ya bure</span>
+        <span>Hakuna Alama ya maji</span>
+        <span>Hifadhi ya ndani</span>
+        <span>Usafirishaji wa nje wa ATS</span>
+      </div>
+    </div>
+
+    <div class="cv-preview-showcase" aria-label="Onyesho la kukagua CV na muhtasari wa utayari">
+      <div class="cv-preview-badge score">
+        <span>Alama ya ATS</span>
+        <strong>91%</strong>
+      </div>
+      <div class="cv-preview-badge country">
+        <span>Umbizo</span>
+        <strong>Nigeria tayari</strong>
+      </div>
+      <div class="cv-preview-badge template">
+        <span>Kiolezo</span>
+        <strong>Lagos Corporate</strong>
+      </div>
+      <article class="cv-mock-paper" aria-label="Onyesho la kukagua CV ya dhihaka">
+        <div class="cv-mock-head">
+          <div>
+            <strong>Amina Okafor</strong>
+            <span>Mchambuzi wa Takwimu aliyehitimu</span>
+          </div>
+          <small>Lagos, Nigeria</small>
+        </div>
+        <div class="cv-mock-rule"></div>
+        <div class="cv-mock-grid">
+          <div class="cv-mock-main">
+            <span class="cv-mock-label">Wasifu</span>
+            <p>Mchambuzi wa data aliye na SQL, Excel, Power BI, kuripoti dashibodi, na uzoefu wa vitendo wa timu ya fedha.</p>
+            <span class="cv-mock-label">Uzoefu</span>
+            <div class="cv-mock-line wide"></div>
+            <div class="cv-mock-line"></div>
+            <div class="cv-mock-line short"></div>
+          </div>
+          <aside class="cv-mock-side">
+            <span class="cv-mock-label">Ujuzi</span>
+            <div class="cv-mock-pill">SQL</div>
+            <div class="cv-mock-pill">Nguvu BI</div>
+            <div class="cv-mock-pill">Excel</div>
+            <span class="cv-mock-label cv-mock-gap">Ziada</span>
+            <div class="cv-mock-line"></div>
+            <div class="cv-mock-line short"></div>
+          </aside>
+        </div>
+      </article>
+    </div>
+  </div>
+
+  <div class="cv-quick-start" aria-label="Anza haraka njia za CV">
+    <button type="button" class="cv-start-card" data-cv-preset="graduate">
+      <strong>Mhitimu / Hakuna Uzoefu</strong>
+      <span>Ujuzi-wa kwanza CV kwa mafunzo na majukumu ya kuingia</span>
+      <small>Bora kwa: CV za kwanza, mafunzo, NYSC au maombi ya huduma ya kitaifa.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="professional">
+      <strong>Mtaalamu</strong>
+      <span>CV inayoongozwa na uzoefu kwa majukumu ya sekta binafsi</span>
+      <small>Bora zaidi kwa: majukumu ya katikati ya kazi ambapo matokeo ya hivi majuzi yana umuhimu zaidi.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="tech">
+      <strong>Teknolojia / Msanidi</strong>
+      <span>Miradi, GitHub, zana, na ushahidi wa bidhaa</span>
+      <small>Bora kwa: wasanidi programu, data, bidhaa, QA, wingu, na majukumu ya usaidizi.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="government">
+      <strong>Serikali / NGO</strong>
+      <span>Muundo rasmi wa majukumu ya sekta ya umma na maendeleo</span>
+      <small>Bora kwa: huduma ya umma, NGO, wafadhili, M&E, na majukumu ya programu.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="diaspora">
+      <strong>Diaspora / Kimataifa</strong>
+      <span>Global kompakt CV na mafanikio kubebeka</span>
+      <small>Bora kwa: kijijini, uhamisho, udhamini, na maombi ya kimataifa.</small>
+    </button>
+    <button type="button" class="cv-start-card" data-cv-preset="trade">
+      <strong>Biashara / Uanafunzi</strong>
+      <span>Ujuzi wa vitendo, zana, usalama, mafunzo, na marejeleo</span>
+      <small>Bora kwa: mafundi, mafundi, wanagenzi, madereva, na ufundi stadi.</small>
+    </button>
+  </div>
+
+  <section class="cv-template-landing-gallery" data-template-landing-gallery aria-labelledby="cv-template-gallery-title">
+    <div class="cv-template-landing-head">
+      <div>
+        <h2 id="cv-template-gallery-title">Chagua kutoka kwa violezo 30 vya malipo ya CV</h2>
+        <p>Vinjari Mipangilio ya ATS-salama, kitaaluma, mhitimu, ubunifu, maendeleo, mtendaji, teknolojia, biashara, diaspora, Kifaransa, Kiarabu na kimataifa kabla ya kufungua kihariri.</p>
+        <p class="cv-template-index-list">Violezo: Muundo rahisi wa Afrika; ATS isiyo na mapambo; Muundo mfupi wa kimataifa; Kampuni ya Lagos; Teknolojia Nairobi; Mhitimu Accra; Muundo wa kisasa Cape Town; Serikali Abuja; Msanidi wa Kigali; Lugha mbili Cairo; Kiwango cha Kifaransa; Kifaransa-Kiarabu Morocco; Uongozi wa bodi; Athari za NGO; Afisa ufuatiliaji na tathmini; Mwalimu / Elimu; Huduma za afya za kliniki; Fedha na utawala; Mauzo / Rejareja; Huduma kwa wateja; Ukarimu; Ufundi; Dereva / Usafirishaji; Ujenzi / HSE; Ufundi wa mafuta na gesi; Msaidizi wa mbali; CV ya ufadhili / Taaluma; Jalada la ubunifu; Mwanzilishi / Mshauri; Kuhamia ughaibuni.</p>
+      </div>
+    </div>
+    <div class="cv-template-landing-grid" aria-label="Violezo"></div>
+  </section>
+
+  <p class="cv-privacy-note">CV yako itasalia kwenye kivinjari chako isipokuwa uchague usaidizi wa AI au uingie katika akaunti.</p>
+  <section data-ai-consent-notice data-consent-mode="ai_optional_content_included" data-tool-id="cv-builder" data-consent-title="Usaidizi wa AI ni wa hiari kwa maudhui ya CV" data-consent-copy="Build, edit, save, and export locally. If you choose AI help later, AfroTools must ask before sending CV, job description, profile, or document content to a model." aria-label="CV Kijenzi AI consent notice"></section>
+</section>
+
+<!-- Saved CVs Section -->
+<div class="cv-saved-section">
+  <div class="cv-saved-wrap">
+    <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px">
+      <h3 class="cv-saved-title">CV zako Ulizohifadhi</h3>
+      <button type="button" class="cv-btn cv-btn-primary" data-action="new" style="font-size:11px;padding:5px 12px">+ CV mpya</button>
+    </div>
+    <div class="cv-saved-grid"></div>
+  </div>
+</div>
+
+<!-- Main App -->
+<div class="cv-app">
+  <!-- Toolbar -->
+  <div class="cv-toolbar">
+    <div class="cv-toolbar-left">
+      <div class="cv-tool-brand">
+        <span class="cv-brand-icon">CV</span>CV Kijenzi
+        <span class="cv-tool-sub">- Violezo 30 vilivyo tayari kuuza nje kwa ajili ya masoko ya ajira barani Afrika</span>
+      </div>
+    </div>
+    <div class="cv-toolbar-right">
+      <select class="cv-country-sel" aria-label="Chagua nchi"></select>
+      <select class="cv-lang-sel" aria-label="Lugha ya UI" style="background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);color:var(--color-text-inverse);padding:6px 8px;border-radius:var(--radius-sm);font-size:11px;cursor:pointer;font-family:var(--font-body)">
+        <option value="en">EN</option>
+        <option value="fr">FR</option>
+        <option value="ar">AR</option>
+        <option value="pt">PT</option>
+        <option value="sw">SW</option>
+      </select>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="save" title="Hifadhi CV">Hifadhi</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="print" title="Chapisha">Chapisha</button>
+      <button type="button" class="cv-btn cv-btn-primary" data-action="pdf" title="Pakua PDF">PDF</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="import" title="Ingiza CV" style="font-size:11px">Leta</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" title="Simulator ya ATS" style="font-size:11px">ATS</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="coverletter" title="Barua ya Jalada" style="font-size:11px">Barua ya Jalada</button>
+      <button type="button" class="cv-btn cv-btn-ghost" data-action="history" title="Historia ya Toleo" style="font-size:11px">Historia</button>
+      <button type="button" class="cv-btn cv-btn-ai" data-action="analyze" title="Boresha CV">Boresha CV</button>
+      <button type="button" class="cv-btn cv-btn-ai" data-action="chat" title="Mwongozo wa CV" style="background:linear-gradient(135deg,#6366f1,#0062CC)">Mwongozo</button>
+    </div>
+  </div>
+
+  <!-- Score Bar -->
+  <div class="cv-complete-wrap">
+    <div class="cv-complete-bar" style="width:0%"></div>
+  </div>
+
+  <!-- Mobile Toggle -->
+  <div class="cv-mobile-toggle"></div>
+
+  <!-- Main Split -->
+  <div class="cv-main">
+    <!-- Form Panel -->
+    <div class="cv-form-panel">
+      <div class="cv-score" role="status" aria-live="polite"></div>
+      <div class="cv-form-inner">
+        <!-- Populated by JS -->
+      </div>
+    </div>
+
+    <!-- Preview Panel -->
+    <div class="cv-preview-panel">
+      <!-- Template switcher -->
+      <div class="cv-preview-top">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- Accent color picker -->
+      <div class="cv-colors">
+        <!-- Populated by JS -->
+      </div>
+
+      <!-- A4 Preview -->
+      <div class="cv-preview-scroll">
+        <div id="cvpreview">
+          <!-- Template renders here -->
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Mobile Action Bar -->
+  <div class="cv-action-bar">
+    <button type="button" class="cv-btn cv-btn-ghost" data-action="save" style="color:var(--color-text);border:1px solid var(--color-border)">Hifadhi</button>
+    <button type="button" class="cv-btn cv-btn-primary" data-action="pdf">PDF</button>
+    <button type="button" class="cv-btn cv-btn-ai" data-action="analyze">Alama</button>
+    <button type="button" class="cv-btn cv-btn-ghost" data-action="ats" style="color:var(--color-text);border:1px solid var(--color-border);font-size:12px">ATS</button>
+  </div>
+</div>
+
+<details class="cv-privacy-accordion" aria-label="CV Builder maelezo ya faragha na mauzo ya nje">
+  <summary>Vidokezo vya faragha na usafirishaji</summary>
+  <div class="cv-privacy-accordion-body">
+    <p><strong>Faragha kwa chaguo-msingi</strong>CV yako itasalia kwenye kivinjari hiki isipokuwa ukichagua kwa uwazi usaidizi wa AI, uingie katika akaunti au uhamishe faili.</p>
+    <p><strong>Njia ya kuingiza</strong>Bandika maandishi ya CV au pakia TXT ndani ya kifaa. Uchanganuzi wa PDF na DOCX huendeshwa tu wakati kichanganuzi kinachooana cha kivinjari kinapakiwa, na hakuna kinachobadilika hadi uthibitishe sehemu zilizotolewa.</p>
+    <p><strong>Mauzo nje</strong>PDF hutumia onyesho la kukagua moja kwa moja. ATS Plain PDF, DOCX, TXT, JSON nakala rudufu, na uhamishaji wa pakiti ya programu-tumizi zinapatikana kutoka kwa upau wa vidhibiti wa programu inapotumika.</p>
+    <p><strong>Mbinu</strong>Mwongozo unatokana na sehemu zinazoweza kuhaririwa za CV, kanuni za nchi, mawimbi ya kusomeka ya ATS, na ulinganishaji wa maneno muhimu ya maelezo ya kazi. Wasifu wako, tangazo la kazi, na maagizo ya mwajiri yanabaki kuwa chanzo cha ukweli.</p>
+    <p><strong>noti ya ATS</strong>Husaidia usomaji; haihakikishii mahojiano, viwango, ufadhili, matokeo ya visa, au ofa za kazi.</p>
+  </div>
+</details>
+
+<!-- Toast -->
+<div class="cv-toast"></div>
+
+<!-- SEO Content Section -->
+<section class="cv-info" aria-labelledby="cvInfoTitle">
+  <div class="cv-info-shell">
+    <div class="cv-info-hero">
+      <div class="cv-info-copy">
+        <span class="cv-info-kicker">Imeundwa kwa matumizi halisi</span>
+        <h2 id="cvInfoTitle">CV ya bure na Mjenzi wa Kuanza tena kwa Masoko ya Ajira ya Kiafrika</h2>
+        <p class="cv-info-lede"><strong>AfroTools CV Kijenzi</strong> husaidia wanafunzi, wahitimu na wataalamu kuandaa CV inayofahamu nchi kwa maombi ya Kiafrika na kimataifa. Inachanganya kihariri kinachoongozwa, hakikisho la moja kwa moja la A4, ukaguzi wa utayari wa ATS, kulinganisha maelezo ya kazi, barua za jalada, wasaidizi wa LinkedIn, na kifuatiliaji kazi cha ndani.</p>
+        <p class="cv-info-lede">Itumie kama kijenzi cha CV bila malipo kwa Afrika, kijenzi cha kuanza tena kwa programu za diaspora, au kijenzi cha ATS CV kinacholenga wakati tovuti ya kazi inapouliza hati rahisi na inayoweza kusomeka. Uhamishaji wa PDF ni bure, hauna Alama ya maji, na mwongozo unaendelea kuhaririwa.</p>
+        <div class="cv-info-cta" aria-label="CV Kijenzi actions">
+          <button type="button" class="primary" data-cv-entry="build">Anza kujenga</button>
+          <a href="/sw/zana/barua-ombi/">Unda barua ya jalada</a>
+          <a href="/for-hr-payroll/">Kukodisha timu</a>
+        </div>
+      </div>
+      <aside class="cv-info-outcome" aria-label="Watafuta kazi gani wanaweza kumaliza hapa">
+        <strong>Ondoka na mambo muhimu</strong>
+        <span>CV moja safi kwa waajiri, milango, na maombi ya moja kwa moja.</span>
+        <span>Barua ya maombi inayolingana na ujumbe mfupi wa maombi.</span>
+        <span>Hifadhi rudufu ya faragha unayodhibiti katika kivinjari hiki.</span>
+      </aside>
+    </div>
+
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>Nini unaweza kujenga</h3>
+        <p>Chagua pato unayohitaji sasa, kisha uendelee kuboresha CV sawa na jinsi programu zako zinavyobadilika.</p>
+      </div>
+      <div class="cv-info-tiles">
+        <article class="cv-info-tile">
+          <b>CV inayofahamu nchi</b>
+          <span>Nigeria, Kenya, Afrika Kusini, Ghana, Misri, Morocco, Ethiopia, na masoko mengine ya Afrika.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Toleo la ATS wazi</b>
+          <span>Muundo rahisi wa lango zinazopendelea hati zinazosomeka, zenye muundo wa chini.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Kifurushi cha maombi</b>
+          <span>Barua ya jalada, ujumbe wa barua pepe, kichwa cha habari cha LinkedIn, na rasimu ya LinkedIn Kuhusu.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Mfuatiliaji wa kazi</b>
+          <span>Hali, tarehe ya mwisho, tarehe ya kufuatilia, na maelezo ya toleo la CV katika sehemu moja.</span>
+        </article>
+        <article class="cv-info-tile">
+          <b>Hifadhi rudufu inayoweza kutumika tena</b>
+          <span>Pakua JSON ili uweze kurejesha data yako ya CV baadaye.</span>
+        </article>
+      </div>
+    </div>
+
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>Kiolezo gallery</h3>
+        <p>Kiteuzi cha ndani ya programu kinajumuisha chaguo 30 zilizo tayari kutumwa kwenye ATS rahisi, mhitimu, taaluma, mtendaji, teknolojia, ubunifu, NGO, serikali, biashara, huduma ya afya, elimu, diaspora, Kifaransa, na miundo ya CV ya Kiarabu au lugha mbili inapotumika.</p>
+      </div>
+      <div class="cv-info-template">
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Uchanganuzi safi</span>
+          <h4>ATS Rahisi</h4>
+          <p>Phantom, Pan-African Minimal, na Global Compact ni chaguo zisizo na picha au za umbizo la chini kwa uchanganuzi safi zaidi.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Majukumu ya kwanza</span>
+          <h4>Graduate CV Kiolezos</h4>
+          <p>Accra Wahitimu na Wahitimu Uzinduzi wa ujuzi wa msaada, elimu, miradi, na ushahidi wa kujitolea.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Ukuaji wa kazi</span>
+          <h4>Mtaalamu na Mtendaji</h4>
+          <p>Slate, Indigo, Stone, Lagos Corporate, Cape Town Modern, Nairobi Executive, na Boardroom Brief inashughulikia majukumu ya biashara.</p>
+        </article>
+        <article class="cv-info-tile">
+          <span class="cv-info-chip">Majukumu ya kitaalam</span>
+          <h4>Miundo ya Wataalamu</h4>
+          <p>Kigali Tech, Systems Tech, Impact Report, Francophone Standard, Cairo Bilingual, Abuja Government, na Portfolio Split usaidizi wa kesi za matumizi.</p>
+        </article>
+      </div>
+    </div>
+
+    <div class="cv-info-block">
+      <div class="cv-info-block-head">
+        <h3>Miongozo ya CV kulingana na nchi</h3>
+        <p>Mwongozo wa nchi huangazia matarajio ya kawaida ya mwajiri na chaguo salama zaidi. Ni mwongozo unaoweza kuhaririwa, si ushauri wa kisheria, na sehemu nyeti husalia kwa hiari.</p>
+      </div>
+      <div class="cv-info-country">
+        <article id="nigeria-cv-format" class="cv-info-tile">
+          <h4>Muundo wa CV wa Nigeria</h4>
+          <p>Jumuisha maelezo ya wazi ya mawasiliano, elimu, hali ya NYSC inapofaa, ujuzi, na risasi za uzoefu zinazoongozwa na ushahidi.</p>
+          <a href="/nigeria/">Zana za Nigeria</a>
+        </article>
+        <article id="kenya-cv-format" class="cv-info-tile">
+          <h4>Muundo wa CV ya Kenya</h4>
+          <p>Weka CV kwa ufupi, onyesha sifa zinazofaa, orodhesha ujuzi wa kiufundi na laini, na uepuke kushiriki maelezo ya kitambulisho cha kitaifa isipokuwa mchakato unaoaminika wa kuajiri unawahitaji.</p>
+          <a href="/kenya/">Zana za Kenya</a>
+        </article>
+        <article id="south-africa-cv-format" class="cv-info-tile">
+          <h4>Fomati ya CV ya Afrika Kusini</h4>
+          <p>Tumia muundo usio na picha, unaoongozwa na mafanikio kwa chaguomsingi na uepuke maelezo ya kidemografia yasiyo ya lazima isipokuwa mwajiri aiombe kihalali.</p>
+          <a href="/south-africa/">Zana za Afrika Kusini</a>
+        </article>
+        <article id="ghana-cv-format" class="cv-info-tile">
+          <h4>Umbizo la CV ya Ghana</h4>
+          <p>Ongoza ukitumia wasifu, elimu, tajriba ya kazini, maelezo ya huduma ya kitaifa yanapofaa, uidhinishaji, lugha na marejeleo unapoombwa.</p>
+          <a href="/ghana/">Zana za Ghana</a>
+        </article>
+        <article id="egypt-cv-format" class="cv-info-tile">
+          <h4>Muundo wa CV ya Misri</h4>
+          <p>Violezo vya lugha mbili au rasmi vinaweza kuwa muhimu kwa baadhi ya majukumu. Ongeza picha au maelezo ya huduma ya kijeshi pale tu yanapolingana na mchakato lengwa wa mwajiri.</p>
+          <a href="/egypt/">Zana za Misri</a>
+        </article>
+        <article id="morocco-cv-format" class="cv-info-tile">
+          <h4>Muundo wa CV ya Moroko</h4>
+          <p>Tayarisha Kifaransa, Kiarabu, au maudhui ya lugha mbili inapofaa, fanya viwango vya lugha vionekane na uweke maelezo nyeti kwa hiari.</p>
+          <a href="/morocco/">Zana za Morocco</a>
+        </article>
+        <article id="ethiopia-cv-format" class="cv-info-tile">
+          <h4>Muundo wa CV wa Ethiopia</h4>
+          <p>Weka elimu, mafunzo ya kitaaluma, uwezo wa lugha, na ushahidi wa vitendo wa mradi kwa urahisi kuchanganua.</p>
+          <a href="/ethiopia/">Vyombo vya Ethiopia</a>
+        </article>
+      </div>
+    </div>
+
+    <div class="cv-info-ats">
+      <div>
+        <h3>Jinsi ATS na ukaguzi wa mechi kazi husaidia</h3>
+        <p>Alama ya ATS hukagua maelezo ya mawasiliano, nguvu za muhtasari, ubora wa vitone, mafanikio yaliyokadiriwa, umuhimu wa ujuzi, ukamilifu wa elimu, ufunikaji wa maneno muhimu, usalama wa uumbizaji, ukamilifu wa nchi mahususi, urefu na usomaji.</p>
+      </div>
+      <div class="cv-info-ats-note">
+        <span>Inakusaidia kuboresha ushahidi na uwazi.</span>
+        <span>Husaidia usomaji; haihakikishii mahojiano au viwango.</span>
+      </div>
+    </div>
+
+    <section class="cv-related-tools" aria-labelledby="cvRelatedToolsTitle">
+    <div class="cv-related-tools__head">
+      <h3 id="cvRelatedToolsTitle">Zana Zinazohusiana za Kazi na Pesa</h3>
+      <p>Unda kifurushi chako cha maombi, linganisha chaguzi za masomo, na upange maamuzi ya mshahara au ushuru baada ya CV yako kuwa tayari.</p>
+    </div>
+    <div class="cv-related-tools__grid">
+      <a class="cv-related-tool-card" href="/sw/zana/barua-ombi/">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/cover-letter.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Jenereta ya Barua ya Jalada</strong>
+          <span>Geuza vidokezo vyako vya CV kuwa barua iliyoundwa kwa kila jukumu.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/tools/scholarship-finder/">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/scholarship-finder.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Mpataji wa Scholarship</strong>
+          <span>Tafuta njia za ufadhili kwa masomo, mafunzo, na harakati za kazi.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/tools/study-abroad-cost/">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/study-abroad-cost.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Gharama ya Kusoma Nje ya Nchi</strong>
+          <span>Kadiria masomo, gharama za maisha, uthibitisho wa pesa, na ziada.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/tools/japa-calculator/">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/japa-calculator.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Japa Calculator</strong>
+          <span>Linganisha gharama za uhamishaji, malengo ya uokoaji, na nyakati.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/salary-tax/">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/paye-calculator.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Kitovu cha Kikokotoo cha Mshahara</strong>
+          <span>Gundua malipo halisi, PAYE, makato, na zana za mishahara.</span>
+          <span class="cv-related-tool-card__cta">Fungua kitovu</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/nigeria/ng-salary-tax">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/ng-paye.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Zana ya PAYE ya Nigeria</strong>
+          <span>Kadiria mshahara wa jumla wa Nigeria, PAYE, pensheni na unafuu.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/kenya/ke-paye">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/ke-paye.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Zana ya PAYE ya Kenya</strong>
+          <span>Angalia malipo yote kwa PAYE ya Kenya na makato ya kawaida.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+      <a class="cv-related-tool-card" href="/south-africa/za-paye">
+        <span class="cv-related-tool-card__media"><img src="/assets/img/tools/za-paye.webp" alt="" loading="lazy" width="360" height="203"></span>
+        <span class="cv-related-tool-card__body">
+          <strong>Zana ya PAYE ya Afrika Kusini</strong>
+          <span>Kadiria malipo ya kurudi nyumbani ukitumia pembejeo za ushuru za Afrika Kusini.</span>
+          <span class="cv-related-tool-card__cta">Fungua zana</span>
+        </span>
+      </a>
+    </div>
+  </section>
+
+    <div class="cv-info-block cv-info-faq" aria-labelledby="cvInfoFaqTitle">
+      <div class="cv-info-block-head">
+        <h3 id="cvInfoFaqTitle">Maswali yanayoulizwa mara kwa mara</h3>
+        <p>Majibu mafupi kwa maswali ambayo watu huuliza kwa kawaida kabla ya kuamini zana ya CV yenye data ya kazi.</p>
+      </div>
+      <details>
+        <summary>Je, Kijenzi cha CV cha AfroTools ni bure?</summary>
+        <p>Ndiyo. Unaweza kuunda, kuhakiki na kuhamisha PDF CV bila Alama ya maji. AfroTools haionyeshi uwekaji wa washirika wanaolipiwa kwenye Kijenzi cha CV ilhali hakuna ufadhili unaotumika.</p>
+      </details>
+      <details>
+        <summary>Je, inafanya kazi kwa Nigeria, Kenya, na Afrika Kusini?</summary>
+        <p>Ndiyo. Mjenzi ni pamoja na mwongozo wa kufahamu nchi kwa nchi zote 54 za Kiafrika na muundo wa kimataifa au wa diaspora. Inatoa mapendekezo na maonyo badala ya kulazimisha nyanja nyeti za kibinafsi.</p>
+      </details>
+      <details>
+        <summary>Ninaweza kuitumia kama mjenzi wa ATS CV?</summary>
+        <p>Mjenzi ni pamoja na ukaguzi wa utayari wa ATS, ulinganishaji wa maelezo ya kazi, na chaguzi za usafirishaji za muundo wazi. Husaidia usomaji; haihakikishii mahojiano au viwango.</p>
+      </details>
+      <details>
+        <summary>Je, wahitimu wanaweza kutumia violezo vya CV?</summary>
+        <p>Ndiyo. Watumiaji waliohitimu na wasio na uzoefu wanaweza kuanza na violezo vya ujuzi wa kwanza, sehemu za mradi, maelezo ya elimu na mifano inayoweza kuhaririwa.</p>
+      </details>
+      <details>
+        <summary>CV yangu imehifadhiwa wapi?</summary>
+        <p>Rasimu ya data ya CV huhifadhiwa kwenye kivinjari chako isipokuwa ukichagua kuingia. Epuka kutumia vifaa vinavyoshirikiwa kwa hati za kibinafsi za kutafuta kazi.</p>
+      </details>
+    </div>
   </div>
 </section>
-<!-- /sw-career-workplace-docs -->
+<afro-related-tools data-ssr="1" category="document-pdf" current="cv-builder">
+<!-- RELATED_TOOLS_SSR_START -->
+<nav class="seo-links related-tools-ssr" data-related-tools-ssr aria-label="Zana zinazohusiana">
+<h2 class="seo-links-title">Zana zinazohusiana</h2>
+<ul class="seo-links-list"><li><a href="/sw/zana/kizalishaji-ankara/" data-related-tool data-id="invoice-generator" data-name="Invoice Generator" data-category="document-pdf" data-icon="IG" data-desc="Create African invoices with VAT, payment details, balance due, saved clients/items, share links and PDF export.">Jenereta ya ankara</a></li><li><a href="/sw/zana/hariri-pdf/" data-related-tool data-id="pdf-editor" data-name="PDF Editor" data-category="document-pdf" data-icon="PE" data-desc="Edit PDFs locally with text, images, signatures, stamps, shapes, highlights, whiteout, drawing, undo, preview, and flatt">Mhariri wa PDF</a></li><li><a href="/sw/zana/unganisha-na-gawanya-pdf/" data-related-tool data-id="pdf-merge-split" data-name="PDF Merge &amp; Split" data-category="document-pdf" data-icon="PM" data-desc="Merge, reorder, choose page ranges, split by ranges, extract selected pages, or export every page as a ZIP. Browser-only">Unganisha na Ugawanye PDF</a></li><li><a href="/sw/zana/nafasi-pdf/" data-related-tool data-id="pdf-workspace" data-name="PDF Workspace" data-category="document-pdf" data-icon="PW" data-desc="Split, merge, rearrange, rotate, compress, add page numbers. Files never leave your browser.">Nafasi ya kazi ya PDF</a></li><li><a href="/sw/zana/kubana-pdf/" data-related-tool data-id="pdf-compress" data-name="PDF Compressor" data-category="document-pdf" data-icon="PC" data-desc="Compress PDFs with clean, balanced, strong, custom target-size, and batch ZIP modes. Browser-only processing.">PDF Compressor</a></li><li><a href="/sw/zana/kubadilisha-format-pdf/" data-related-tool data-id="pdf-convert" data-name="PDF Format Converter" data-category="document-pdf" data-icon="PF" data-desc="Convert DOCX, XLSX, XLS, CSV, selectable PDF text, and PDF pages to PNG/JPG ZIP in the browser.">Kigeuzi cha Umbizo la PDF</a></li></ul>
+</nav>
+<!-- RELATED_TOOLS_SSR_END -->
+</afro-related-tools>
+<afro-footer></afro-footer>
 
-<section class="sw-career-limits-note" style="max-width:1100px;margin:24px auto;padding:0 20px;"><div style="border:1px solid #bbf7d0;background:#f0fdf4;color:#14532d;border-radius:12px;padding:16px 18px;line-height:1.65;"><strong>Mipaka ya kazi na HR:</strong> CV, interview, offer, HR, payslip, overtime, leave na contract ni maneno ya soko la ajira. Zana hizi husaidia kupanga na kuandika rasimu; hazitoi haki rasmi, ushauri wa kisheria, matokeo ya ajira au tafsiri ya sheria ya kazi. Hakiki na mwajiri, HR, wakili au mamlaka husika.</div></section>
-<afro-footer></afro-footer> <!-- CV Builder Scripts (engine unchanged | only Swahili shell) -->
+<!-- CV Builder Scripts (no React, no frameworks) -->
+<script src="/tools/cv-builder/js/cv-analytics.js?v=eb28bb92"></script>
 <script src="/tools/cv-builder/js/cv-data.js?v=6ea915e9"></script>
 <script src="/tools/cv-builder/js/cv-app.js?v=79705f0e"></script>
+<script src="/tools/cv-builder/js/cv-country-rules.js?v=50dfb216"></script>
+<script src="/tools/cv-builder/js/cv-country-advisor-compact.js?v=af37def0"></script>
 <script src="/tools/cv-builder/js/cv-templates.js?v=508b55d9"></script>
-<!-- cv-ai.js inapakia kwa uvivu wakati mtumiaji anabonyeza vitufe vya AI --> <script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
-<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
-<script src="/assets/js/lib/auto-email-gate.js?v=fa3f2d98" defer></script> <script>
-(function(){ var containers = document.querySelectorAll('.card, .tool-card, .calculator-card, [class*="result"]'); var target = containers.length > 0 ? containers[containers.length - 1] : document.querySelector('main') || document.body; var div = document.createElement('div'); div.className = 'result-actions'; div.style.cssText = 'display:flex;gap:8px;margin-top:20px;flex-wrap:wrap'; div.innerHTML = '<share-result-button tool-name="Mjenzi wa CV" tool-slug="cv-builder"></share-result-button>'; target.appendChild(div);
+<script src="/tools/cv-builder/js/cv-template-studio.js?v=0fba9f9c"></script>
+<script src="/tools/cv-builder/js/cv-pdf-templates.js?v=b61ddd79"></script>
+<script src="/tools/cv-builder/js/cv-template-registry.js?v=0441103c"></script>
+<script src="/tools/cv-builder/js/cv-template-registry-studio.js?v=d7c9aab4"></script>
+<script src="/tools/cv-builder/js/cv-template-expanded-renderers.js?v=97054c66"></script>
+<script src="/tools/cv-builder/js/cv-template-registry-expanded.js?v=b50d7361"></script>
+<script src="/tools/cv-builder/js/cv-career-copilot.js?v=62f455eb"></script>
+<script src="/tools/cv-builder/js/cv-workspace-enhancer.js?v=8eee620c"></script>
+<script src="/tools/cv-builder/js/cv-template-gallery.js?v=7774f547"></script>
+<script src="/tools/cv-builder/js/cv-advanced.js?v=9e14bbd9"></script>
+<script src="/tools/cv-builder/js/cv-ats-matcher.js?v=b6a96225"></script>
+<script src="/tools/cv-builder/js/cv-import-assistant.js?v=aac24862"></script>
+<script src="/tools/cv-builder/js/cv-improvement-assistant.js?v=cfc3ae55"></script>
+<script src="/tools/cv-builder/js/cv-application-pack.js?v=b072a11a"></script>
+<script src="/tools/cv-builder/js/cv-application-pack-polish.js?v=916c770b"></script>
+<script src="/tools/cv-builder/js/cv-job-tracker.js?v=0ab305ac"></script>
+<script src="/tools/cv-builder/js/cv-export-upgrade.js?v=e6a32271"></script>
+<script>
+(function(){
+  function patchCvExport(){
+    if(typeof CVApp !== "undefined") window.CVApp = CVApp;
+    if(typeof CVCareerCopilot !== "undefined") window.CVCareerCopilot = CVCareerCopilot;
+    var exportRole = document.querySelector("[data-export-role]");
+    if(exportRole && window.CVApp && window.CVApp.getState){
+      var liveTitle = (window.CVApp.getState().data || {}).title || "";
+      if(liveTitle && (!exportRole.value.trim() || exportRole.value.trim() === "Target Role")){
+        exportRole.value = liveTitle;
+      }
+    }
+    if(window.CVApp && window.CVExportUpgrade && window.CVExportUpgrade.exportPdf){
+      window.CVApp.downloadPDF = window.CVExportUpgrade.exportPdf;
+      return;
+    }
+    setTimeout(patchCvExport, 50);
+  }
+  if(document.readyState === "loading") document.addEventListener("DOMContentLoaded", patchCvExport);
+  else patchCvExport();
 })();
 </script>
+<script src="/tools/cv-builder/js/cv-docx-export.js?v=cbc0f24c"></script>
+<script src="/tools/cv-builder/js/cv-export-pdf-quality.js?v=7cbb8473"></script>
+<script src="/tools/cv-builder/js/cv-export-pagination-fix.js?v=9a691b8e"></script>
+<script src="/tools/cv-builder/js/cv-layout-decongestion.js?v=ada43aac"></script>
+<script src="/tools/cv-builder/js/cv-export-empty-polish.js?v=cf6a36ff"></script>
+<script src="/tools/cv-builder/js/cv-completion-flow-fix.js?v=f7435f9e"></script>
+<script src="/tools/cv-builder/js/cv-ats-plain-pdf-fix.js?v=df1bd4a3"></script>
+<script src="/tools/cv-builder/js/cv-ats-plain-mode.js?v=5b20ad46"></script>
+<script src="/tools/cv-builder/js/cv-application-pack-export.js?v=37358e90"></script>
+<script src="/tools/cv-builder/js/cv-design-foundation.js?v=50609f44"></script>
+<script src="/tools/cv-builder/js/cv-next-steps-polish.js?v=0ca9a04c"></script>
+<script src="/tools/cv-builder/js/cv-sample-mode.js?v=96bcee78"></script>
+<script>
+(function(){
+  document.addEventListener("click", function(event){
+    var openTrigger = event.target.closest && event.target.closest("[data-cv-sample]");
+    var useTrigger = event.target.closest && event.target.closest("[data-cv-sample-use]");
+    if(!openTrigger && !useTrigger) return;
+    setTimeout(function(){
+      var panel = document.querySelector(".cv-sample-panel");
+      if(!panel) return;
+      panel.setAttribute("role", "dialog");
+      panel.setAttribute("aria-modal", "true");
+      if(useTrigger) panel.hidden = true;
+    }, 0);
+  }, true);
+})();
+</script>
+<script src="/tools/cv-builder/js/cv-starter-paths.js?v=423fde81"></script>
+<script src="/tools/cv-builder/js/cv-privacy-handoff.js?v=cd6a8eea"></script>
+<script src="/tools/cv-builder/js/cv-workflow-dashboard.js?v=95963652"></script>
+<script src="/tools/cv-builder/js/cv-toolbar-groups.js?v=7b9a4334"></script>
+<script src="/tools/cv-builder/js/cv-guided-workflow.js?v=6ededcda"></script>
+<script src="/tools/cv-builder/js/cv-version-system.js?v=c889c98d"></script>
+<!-- cv-ai.js is lazy-loaded when user clicks AI buttons -->
+
+<script>
+(function(){
+  function ready(fn){
+    if(document.readyState === 'loading') document.addEventListener('DOMContentLoaded', fn);
+    else fn();
+  }
+
+  ready(function(){
+    var appEl = document.querySelector('.cv-app');
+    function scrollToBuilder(){
+      if(!appEl) return;
+      var productHeader = document.querySelector('.cv-product-header');
+      var globalNav = document.querySelector('afro-navbar');
+      var offset = 12;
+      if(productHeader) offset += productHeader.getBoundingClientRect().height;
+      if(globalNav && window.innerWidth > 900) offset += globalNav.getBoundingClientRect().height;
+      var top = appEl.getBoundingClientRect().top + window.pageYOffset - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      setTimeout(function(){
+        var firstInput = appEl.querySelector('.cv-inp, .cv-textarea, .cv-select');
+        if(firstInput) firstInput.focus({ preventScroll: true });
+      }, 450);
+    }
+
+    function syncLandingLanguage(value){
+      var editorLang = document.querySelector('.cv-lang-sel');
+      if(editorLang){
+        editorLang.value = value;
+        editorLang.dispatchEvent(new Event('change', { bubbles: true }));
+      } else if(typeof setUILang === 'function') {
+        setUILang(value);
+        if(typeof CVApp !== 'undefined' && typeof CVApp.renderAll === 'function') CVApp.renderAll();
+      }
+    }
+
+    document.querySelectorAll('[data-cv-entry]').forEach(function(button){
+      button.addEventListener('click', function(){
+        if(button.dataset.cvEntry === 'saved'){
+          var saved = document.querySelector('.cv-saved-section.show');
+          if(saved){
+            saved.scrollIntoView({ behavior: 'smooth', block: 'start' });
+          } else {
+            scrollToBuilder();
+            if(typeof CVApp !== 'undefined' && typeof CVApp.showToast === 'function'){
+              CVApp.showToast('Saved CVs appear here after you save your first CV.');
+            }
+          }
+          return;
+        }
+        scrollToBuilder();
+      });
+    });
+
+    var landingLang = document.querySelector('.cv-landing-lang');
+    if(landingLang){
+      landingLang.addEventListener('change', function(e){
+        syncLandingLanguage(e.target.value);
+      });
+    }
+
+    document.querySelectorAll('[data-cv-preset]').forEach(function(card){
+      card.addEventListener('click', function(){
+        if(window.CVStarterPaths && typeof window.CVStarterPaths.applyStarter === 'function'){
+          window.CVStarterPaths.applyStarter(card.dataset.cvPreset);
+        } else {
+          scrollToBuilder();
+        }
+      });
+    });
+  });
+})();
+</script>
+
+<script src="/assets/js/lib/workspace-sync.js?v=da7e0c2c" defer></script>
+<script src="/assets/js/lib/saved-tools.js?v=b442062a" defer></script>
+<script src="/assets/js/favorites-widget.js?v=73aeef17" defer></script>
+<script src="/tools/cv-builder/js/cv-workspace-sync.js?v=60bcdf21" defer></script>
+<script src="/assets/js/lib/document-pdf-report-sync.js?v=4ea419e4" defer></script>
+
+<script>
+(function(){
+  var labels = {
+    fn: 'First name',
+    ln: 'Last name',
+    title: 'Professional title',
+    email: 'Email address',
+    phoneCode: 'Phone country code',
+    phone: 'Phone number',
+    loc: 'City and country',
+    linkedin: 'LinkedIn URL',
+    web: 'Website or portfolio URL',
+    nyscStatus: 'NYSC status',
+    summary: 'Professional summary',
+    'exps.0.t': 'Experience job title',
+    'exps.0.c': 'Experience company or organisation',
+    'exps.0.l': 'Experience location',
+    'exps.0.s': 'Experience start month',
+    'exps.0.e': 'Experience end month',
+    'exps.0.d': 'Experience achievements',
+    'edus.0.deg': 'Education qualification',
+    'edus.0.sch': 'Education institution',
+    'edus.0.loc': 'Education location',
+    'edus.0.y1': 'Education start year',
+    'edus.0.y2': 'Education end year',
+    'edus.0.g': 'Education grade or class',
+    'skills.h': 'Hard skills',
+    'skills.s': 'Soft skills',
+    'skills.t': 'Tools and software skills',
+    'langs.0.l': 'Language',
+    'langs.0.lv': 'Language proficiency',
+    'refs.0.n': 'Reference full name',
+    'refs.0.t': 'Reference title or position',
+    'refs.0.org': 'Reference organisation',
+    'refs.0.e': 'Reference email',
+    'refs.0.p': 'Reference phone',
+    'refs.0.rel': 'Reference relationship'
+  };
+  var packLabels = {
+    coverLetter: 'Cover letter output',
+    emailMessage: 'Short email application message output',
+    linkedinHeadline: 'LinkedIn headline output',
+    linkedinAbout: 'LinkedIn About section output',
+    interviewPrep: 'Interview prep questions output',
+    recruiterMessage: 'Recruiter message output',
+    followupApplication: 'Follow-up email after application output',
+    followupInterview: 'Follow-up email after interview output'
+  };
+  function decorate(){
+    document.querySelectorAll('[data-path]').forEach(function(el){
+      if (!el.getAttribute('aria-label')) {
+        var key = el.getAttribute('data-path');
+        el.setAttribute('aria-label', labels[key] || el.getAttribute('placeholder') || key || 'CV field');
+      }
+    });
+    document.querySelectorAll('[data-pack-text]').forEach(function(el){
+      if (!el.getAttribute('aria-label')) {
+        var key = el.getAttribute('data-pack-text');
+        el.setAttribute('aria-label', packLabels[key] || 'Application pack output');
+      }
+    });
+    document.querySelectorAll('.cv-country-sel,.cv-lang-sel').forEach(function(el){
+      el.style.minHeight = '44px';
+      el.style.height = '44px';
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', decorate);
+  else decorate();
+  new MutationObserver(decorate).observe(document.documentElement, { childList: true, subtree: true });
+})();
+</script>
+
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
-  <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
-</body>
+<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+
+  <script type="application/json" id="sw-document-pdf-locale">{"id":"cv-builder","name":"Mjenzi wa CV","downloadContract":"sensitive-guest"}</script>
+  <script src="/assets/js/pages/sw-document-pdf-lexicon.js?v=2260fb75" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-localizer.js?v=3a7af24a" defer></script>
+  <script src="/assets/js/pages/sw-document-pdf-integrity.js?v=368786e4" defer></script>
+<script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script></body>
 </html>

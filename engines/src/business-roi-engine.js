@@ -130,24 +130,41 @@
 
   function timeZone(input) {
     var instant = zonedInputToDate(input.localDateTime, input.fromZone);
+    var locale = input.locale === "sw" ? "sw-KE" : input.locale === "en" ? "en-GB" : "fr-FR";
     var options = { timeZone: input.toZone, hour: "2-digit", minute: "2-digit", hour12: false };
     return {
       iso: instant.toISOString(),
-      from: new Intl.DateTimeFormat("fr-FR", {
+      from: new Intl.DateTimeFormat(locale, {
         timeZone: input.fromZone, dateStyle: "full", timeStyle: "short"
       }).format(instant),
-      to: new Intl.DateTimeFormat("fr-FR", {
+      to: new Intl.DateTimeFormat(locale, {
         timeZone: input.toZone, dateStyle: "full", timeStyle: "short"
       }).format(instant),
-      toTime: new Intl.DateTimeFormat("fr-FR", options).format(instant)
+      toTime: new Intl.DateTimeFormat(locale, options).format(instant)
     };
   }
 
   var HOLIDAY_SOURCES = {
-    ZA: ["Afrique du Sud", "Gouvernement sud-africain", "https://www.gov.za/about-sa/public-holidays"],
-    KE: ["Kenya", "Ministère de l’Intérieur", "https://www.interior.go.ke/"],
-    GH: ["Ghana", "Ministry of the Interior", "https://www.mint.gov.gh/"],
-    NG: ["Nigeria", "Federal Ministry of Interior", "https://interior.gov.ng/"]
+    ZA: {
+      country: { fr: "Afrique du Sud", en: "South Africa", sw: "Afrika Kusini" },
+      authority: { fr: "Gouvernement sud-africain", en: "South African Government", sw: "Serikali ya Afrika Kusini" },
+      url: "https://www.gov.za/about-sa/public-holidays"
+    },
+    KE: {
+      country: { fr: "Kenya", en: "Kenya", sw: "Kenya" },
+      authority: { fr: "Ministère de l’Intérieur", en: "Ministry of Interior", sw: "Wizara ya Mambo ya Ndani" },
+      url: "https://www.interior.go.ke/"
+    },
+    GH: {
+      country: { fr: "Ghana", en: "Ghana", sw: "Ghana" },
+      authority: { fr: "Ministry of the Interior", en: "Ministry of the Interior", sw: "Wizara ya Mambo ya Ndani" },
+      url: "https://www.mint.gov.gh/"
+    },
+    NG: {
+      country: { fr: "Nigeria", en: "Nigeria", sw: "Nigeria" },
+      authority: { fr: "Federal Ministry of Interior", en: "Federal Ministry of Interior", sw: "Wizara ya Mambo ya Ndani ya Shirikisho" },
+      url: "https://interior.gov.ng/"
+    }
   };
 
   function escapeIcs(value) {
@@ -165,27 +182,41 @@
     next.setUTCDate(next.getUTCDate() + 1);
     var compact = String(input.date).replace(/-/g, "");
     var nextCompact = next.toISOString().slice(0, 10).replace(/-/g, "");
-    var english = input.locale === "en";
-    var description = (english ? "User-confirmed from " : "Entrée confirmée par l’utilisateur depuis ") +
-      source[1] + ". " + (String(input.note || "").trim() ||
-        (english ? "Recheck the official notice before relying on this entry." :
-          "Revérifiez l’avis officiel avant de vous fier à cette entrée."));
-    var boundary = english
-      ? "User-confirmed entry; unofficial calendar"
-      : "Entree confirmee par utilisateur; calendrier non officiel";
+    var language = input.locale === "sw" ? "sw" : input.locale === "en" ? "en" : "fr";
+    var authority = source.authority[language];
+    var descriptions = {
+      en: "User-confirmed from ",
+      fr: "Entrée confirmée par l’utilisateur depuis ",
+      sw: "Tukio limethibitishwa na mtumiaji kutoka "
+    };
+    var reminders = {
+      en: "Recheck the official notice before relying on this entry.",
+      fr: "Revérifiez l’avis officiel avant de vous fier à cette entrée.",
+      sw: "Thibitisha tena tangazo rasmi kabla ya kutegemea tukio hili."
+    };
+    var boundaries = {
+      en: "User-confirmed entry; unofficial calendar",
+      fr: "Entree confirmee par utilisateur; calendrier non officiel",
+      sw: "Tukio limethibitishwa na mtumiaji; si kalenda rasmi"
+    };
+    var description = descriptions[language] + authority + ". " +
+      (String(input.note || "").trim() || reminders[language]);
     var ics = [
       "BEGIN:VCALENDAR", "VERSION:2.0",
-      "PRODID:-//AfroTools//User Confirmed Holiday Entry//" + (english ? "EN" : "FR"),
+      "PRODID:-//AfroTools//User Confirmed Holiday Entry//" + language.toUpperCase(),
       "CALSCALE:GREGORIAN", "BEGIN:VEVENT",
       "UID:" + compact + "-" + input.country.toLowerCase() + "@afrotools.local",
       "DTSTART;VALUE=DATE:" + compact, "DTEND;VALUE=DATE:" + nextCompact,
       "SUMMARY:" + escapeIcs(String(input.name).trim()),
       "DESCRIPTION:" + escapeIcs(description),
-      "X-AFROTOOLS-SOURCE-URL:" + source[2],
-      "X-AFROTOOLS-BOUNDARY:" + boundary,
+      "X-AFROTOOLS-SOURCE-URL:" + source.url,
+      "X-AFROTOOLS-BOUNDARY:" + boundaries[language],
       "END:VEVENT", "END:VCALENDAR", ""
     ].join("\r\n");
-    return { country: source[0], authority: source[1], sourceUrl: source[2], description: description, ics: ics };
+    return {
+      country: source.country[language], authority: authority,
+      sourceUrl: source.url, description: description, ics: ics
+    };
   }
 
   function workingDays(input) {

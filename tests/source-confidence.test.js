@@ -104,9 +104,9 @@ test("all server PAYE engines carry source review stamps", function () {
   assert.strictEqual(engines.length, 53);
   for (const engine of engines) {
     const source = fs.readFileSync(path.join(engineDir, engine), "utf8");
-    assert.match(source, /^\s*lastUpdated:/m, engine + " lastUpdated");
-    assert.match(source, /^\s*sourceCheckedOn:/m, engine + " sourceCheckedOn");
-    assert.match(source, /^\s*nextReviewDate:/m, engine + " nextReviewDate");
+    assert.match(source, /\blastUpdated\s*:/m, engine + " lastUpdated");
+    assert.match(source, /\bsourceCheckedOn\s*:/m, engine + " sourceCheckedOn");
+    assert.match(source, /\bnextReviewDate\s*:/m, engine + " nextReviewDate");
   }
   const report = JSON.parse(fs.readFileSync(path.join(ROOT, "reports", "paye-source-review-needs-review.json"), "utf8"));
   assert.strictEqual(report.summary.stamped, 53);

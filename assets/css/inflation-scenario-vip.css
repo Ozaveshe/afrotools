@@ -4,6 +4,8 @@
   --ic-text: #17211b;
   --ic-muted: #58635c;
   --ic-line: #d9dfda;
+  --ic-input-line: #737373;
+  --ic-focus: #075b36;
   --ic-accent: #176b45;
   --ic-soft: #e8f3ed;
   --ic-warn: #fff7df;
@@ -91,7 +93,7 @@ body {
 .ic-field input {
   width: 100%;
   min-height: 46px;
-  border: 1px solid #aeb9b1;
+  border: 1px solid var(--ic-input-line);
   border-radius: 8px;
   background: var(--ic-card);
   color: var(--ic-text);
@@ -101,9 +103,11 @@ body {
 .ic-field input:focus-visible,
 .ic-button:focus-visible,
 a:focus-visible {
-  outline: 3px solid #78b996;
+  outline: 3px solid var(--ic-focus);
   outline-offset: 2px;
 }
+html body .ic-page .ic-card .ic-field input { border-color: var(--ic-input-line) !important; }
+html body .ic-page :is(.ic-field input,.ic-button,a):focus-visible { outline-color: var(--ic-focus) !important; }
 .ic-help {
   color: var(--ic-muted);
   font-size: 0.86rem;
@@ -203,6 +207,9 @@ a:focus-visible {
   background: var(--ic-warn);
   padding: 14px;
 }
+.ic-hero .ic-langs {
+  color: #f8fff9 !important;
+}
 .ic-langs a {
   color: #c5ebd4;
 }
@@ -217,10 +224,48 @@ a:focus-visible {
   --ic-text: #edf7ef;
   --ic-muted: #b6c4ba;
   --ic-line: #344039;
+  --ic-input-line: #8a8a8a;
+  --ic-focus: #a9d8bd;
   --ic-accent: #80d2a1;
   --ic-soft: #22372b;
   --ic-warn: #3a311c;
   --ic-danger: #ffaaa2;
+}
+[data-theme="light"] {
+  --ic-bg: #f7f8f5;
+  --ic-card: #fff;
+  --ic-text: #17211b;
+  --ic-muted: #58635c;
+  --ic-line: #d9dfda;
+  --ic-input-line: #737373;
+  --ic-focus: #075b36;
+  --ic-accent: #176b45;
+  --ic-soft: #e8f3ed;
+  --ic-warn: #fff7df;
+  --ic-danger: #9c2f25;
+}
+html[data-theme="dark"] body .ic-page .ic-button.ic-primary {
+  background: #80d2a1 !important;
+  color: #07120b !important;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --ic-bg: #101713;
+    --ic-card: #18211b;
+    --ic-text: #edf7ef;
+    --ic-muted: #b6c4ba;
+    --ic-line: #344039;
+    --ic-input-line: #8a8a8a;
+    --ic-focus: #a9d8bd;
+    --ic-accent: #80d2a1;
+    --ic-soft: #22372b;
+    --ic-warn: #3a311c;
+    --ic-danger: #ffaaa2;
+  }
+  :root:not([data-theme="light"]) body .ic-page .ic-button.ic-primary {
+    background: #80d2a1 !important;
+    color: #07120b !important;
+  }
 }
 .ic-page {
   color-scheme: light dark;

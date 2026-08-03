@@ -71,6 +71,50 @@
     return String(value == null ? '' : value);
   }
 
+  function parserValidPdf(title, reportLines) {
+    var JsPdf = window.jspdf && window.jspdf.jsPDF;
+    if (!JsPdf) return null;
+    var documentPdf = new JsPdf({ unit: 'pt', format: 'a4', compress: false });
+    var margin = 48;
+    var pageWidth = documentPdf.internal.pageSize.getWidth();
+    var pageHeight = documentPdf.internal.pageSize.getHeight();
+    var maxWidth = pageWidth - margin * 2;
+    var y = 54;
+
+    function clean(value) {
+      return String(value == null ? '' : value)
+        .replace(/[\u2013\u2014]/g, '-')
+        .replace(/[\u2018\u2019]/g, "'")
+        .replace(/[\u201c\u201d]/g, '"')
+        .normalize('NFD')
+        .replace(/[\u0300-\u036f]/g, '')
+        .replace(/[^\x20-\x7e]/g, '?');
+    }
+
+    function addLines(value, size, weight, leading) {
+      documentPdf.setFont('helvetica', weight || 'normal');
+      documentPdf.setFontSize(size);
+      documentPdf.splitTextToSize(clean(value), maxWidth).forEach(function (line) {
+        if (y > pageHeight - margin) {
+          documentPdf.addPage();
+          y = margin;
+        }
+        documentPdf.text(line, margin, y);
+        y += leading;
+      });
+    }
+
+    addLines(title, 14, 'bold', 18);
+    y += 6;
+    (reportLines || []).forEach(function (line) { addLines(line, 10, 'normal', 14); });
+    documentPdf.setProperties({
+      title: clean(title),
+      creator: 'AfroTools',
+      subject: 'Swahili local-first legal planning worksheet'
+    });
+    return new Uint8Array(documentPdf.output('arraybuffer'));
+  }
+
   function resultData(result) {
     var fields = result.resultFields || {};
     var translated = {};
@@ -91,6 +135,9 @@
   function availabilityText(source) {
     if (source.availability === 'official-source') {
       return 'Chanzo rasmi kimeunganishwa kwa mamlaka hii pekee.';
+    }
+    if (source.availability === 'external-reference') {
+      return 'Rejea ya nje imeunganishwa; thibitisha mamlaka, sheria na masharti ya sasa kabla ya kuitumia.';
     }
     if (source.availability === 'planning-default') {
       return 'Thamani hizi ni za kupanga tu; hakuna chanzo rasmi kilichounganishwa kwa mamlaka hii.';
@@ -293,17 +340,47 @@
       download('\uFEFF' + lines().join('\n') + '\n', 'text/plain;charset=utf-8', englishId + '-sw.txt');
     } else if (action === 'json' && requireResult()) {
       download(JSON.stringify(serializable(), null, 2) + '\n', 'application/json;charset=utf-8', englishId + '-sw.json');
+    } else if (action === 'import') {
+      var importInput = root.querySelector('[data-import-json]');
+      if (importInput) importInput.click();
     } else if (action === 'pdf' && requireResult()) {
-      var pdf = contract.parserValidPdf && window.AfroTools.SwahiliLocalPdf
-        ? await window.AfroTools.SwahiliLocalPdf.create(contract.name, lines())
-        : window.AfroTools.FrenchMortgagePropertyEngine.createPdf(contract.name, lines());
+      var pdf = contract.parserValidPdf ? parserValidPdf(contract.name, lines()) : null;
+      if (!pdf && contract.parserValidPdf && window.AfroTools.SwahiliLocalPdf) {
+        pdf = await window.AfroTools.SwahiliLocalPdf.create(contract.name, lines());
+      }
+      if (!pdf) pdf = window.AfroTools.FrenchMortgagePropertyEngine.createPdf(contract.name, lines());
       download(pdf, 'application/pdf', englishId + '-sw.pdf');
     } else if (action === 'print' && requireResult()) {
       window.print();
     }
   });
 
-  fetch('/data/registry/swahili-legal-property-gaps.json', { cache: 'no-store' })
+  root.addEventListener('change', function (event) {
+    if (!event.target.matches('[data-import-json]') || !event.target.files || !event.target.files[0]) return;
+    var reader = new FileReader();
+    reader.onload = function () {
+      try {
+        var payload = JSON.parse(String(reader.result || ''));
+        if (payload.lugha !== 'sw' || payload.englishId !== englishId || !payload.inputs) throw new Error('owner');
+        contract.fields.forEach(function (field) {
+          var control = form.elements[field.name];
+          if (!control || !Object.prototype.hasOwnProperty.call(payload.inputs, field.name)) return;
+          if (field.type === 'checkbox') control.checked = Boolean(payload.inputs[field.name]);
+          else control.value = String(payload.inputs[field.name]);
+        });
+        form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+        say('JSON imefunguliwa tena na matokeo yamekokotolewa upya kwenye kivinjari.');
+      } catch (_) {
+        say('JSON hii si ya zana hii au haina muundo salama unaotarajiwa.', true);
+      } finally {
+        event.target.value = '';
+      }
+    };
+    reader.onerror = function () { say('JSON haikuweza kusomwa.', true); };
+    reader.readAsText(event.target.files[0]);
+  });
+
+  fetch(root.getAttribute('data-contract-manifest') || '/data/registry/swahili-legal-property-gaps.json', { cache: 'no-store' })
     .then(function (response) {
       if (!response.ok) throw new Error('manifest');
       return response.json();

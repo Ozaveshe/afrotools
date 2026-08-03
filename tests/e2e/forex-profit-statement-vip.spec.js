@@ -7,6 +7,7 @@ const routes = [
   ["/fr/tools/profit-forex/", "fr"],
   ["/sw/zana/kikokotoo-faida-forex/", "sw"],
 ];
+const baseOrigin = new URL(process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173').origin;
 
 async function fillTrade(page) {
   await page.locator("#fx-base").fill("AAA");
@@ -31,7 +32,7 @@ for (const [route, lang] of routes) {
       const url = new URL(request.url());
       const sharedShell = /fonts\.googleapis|fonts\.gstatic/.test(url.hostname) || url.href.includes("twemoji");
       if (/\/api\/forex|\/data\/forex|\/api\/fx-rates/.test(url.pathname)) rateRequests.push(url.href);
-      if (url.origin !== "http://127.0.0.1:4173" && !sharedShell) unexpectedExternal.push(url.href);
+      if (url.origin !== baseOrigin && !sharedShell) unexpectedExternal.push(url.href);
     });
     await page.goto(route);
     await expect(page.locator("html")).toHaveAttribute("lang", lang);

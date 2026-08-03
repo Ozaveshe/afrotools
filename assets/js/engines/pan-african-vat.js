@@ -184,7 +184,7 @@
       rate: country.standardRate,
       status: country.status,
       source: country.source,
-      reviewedOn: pack.datasetReviewed,
+      reviewedOn: country.source.reviewedOn || pack.datasetReviewed,
       disclaimer: pack.displayDisclaimer
     };
   }

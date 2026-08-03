@@ -8,18 +8,21 @@ const routes = [
     path: "/rwanda/rw-vat",
     calc: "Calculate Rwanda VAT",
     pdf: "Rwanda",
+    classification: "Article 7",
   },
   {
     name: "fr",
     path: "/fr/rwanda/rw-vat",
     calc: "Calculer la TVA Rwanda",
     pdf: "Rwanda",
+    classification: "article 7",
   },
   {
     name: "sw",
     path: "/sw/rwanda/kikokotoo-vat/",
     calc: "Kokotoa VAT ya Rwanda",
     pdf: "Rwanda",
+    classification: "Kifungu cha 7",
   },
 ];
 
@@ -73,7 +76,7 @@ for (const route of routes)
     await expect(page.locator("#rwvInvoiceVat")).toContainText("180");
     await page.locator("#rwvClassification").selectOption("confirmed-zero");
     await expect(page.locator("#rwvClassificationResult")).toContainText(
-      "Article 7",
+      route.classification,
     );
     await page.locator("#rwvAnnual").fill("20000000");
     await page.locator("#rwvQuarter").fill("5000000");

@@ -92,6 +92,15 @@
       '<section class="gnv-result" id="mrvResult" aria-label="Result"><dl><dt>' + text.net + '</dt><dd id="mrvNet"></dd><dt>' + text.vat + '</dt><dd id="mrvVat"></dd><dt>' + text.gross + '</dt><dd id="mrvGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="mrvPdf">' + text.pdf + '</button><button class="gnv-button" type="button" id="mrvShare">' + text.share + '</button></div></section><div class="gnv-status" id="mrvStatus" role="status" aria-live="polite"></div></form>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="mr-vat"><h2>' + text.rules + '</h2><ul class="gnv-list"><li>' + text.r1 + '</li><li>' + text.r2 + '</li><li>' + text.r3 + '</li><li>' + text.r4 + '</li><li>' + text.r5 + '</li></ul><h2>' + text.verify + '</h2><p class="gnv-note"><a href="https://finances.gov.mr/sites/default/files/2023-03/CGI-Fr-2023.pdf">Mauritania Code général des impôts 2023</a><br><a href="https://www.finances.gov.mr/sites/default/files/2023-08/LFR%202023-FR%20Final%201%20-%20Copie_0.pdf">Loi de finances rectificative 2023</a><br><a href="https://finances.gov.mr/fr/node/745">Loi de finances 2026</a></p><p class="gnv-note">' + text.disclaimer + '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Mauritania%20VAT%20calculation%20error">' + text.report + '</a></p></aside></div></div>';
 
+    document.getElementById('mrvResult').setAttribute('aria-label', lang === 'sw' ? 'Matokeo ya VAT' : lang === 'fr' ? 'Résultats TVA' : 'VAT results');
+    var basePdfDisclaimer = text.disclaimer;
+    document.getElementById('mrvPdf').addEventListener('click', function () {
+      text.disclaimer = basePdfDisclaimer + ' ' + {
+        en: 'Sources reviewed 2026-07-22: Mauritania General Tax Code 2023, Amending Finance Law 2023 and Finance Law 2026.',
+        fr: 'Sources vérifiées le 2026-07-22 : Code général des impôts 2023, loi de finances rectificative 2023 et loi de finances 2026.',
+        sw: 'Vyanzo vimekaguliwa 2026-07-22: Kanuni ya Jumla ya Kodi 2023, Sheria ya Fedha Iliyorekebishwa 2023 na Sheria ya Fedha 2026.'
+      }[lang];
+    }, true);
     var state = { mode: 'add', result: null };
     function byId(id) { return document.getElementById(id); }
     function money(value) {

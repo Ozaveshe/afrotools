@@ -1,0 +1,283 @@
+{
+  "schemaVersion": 1,
+  "rootIdentity": "sw-vat-business-tax-clean-respin-8354e321-20260802",
+  "routes": [
+    {
+      "id": "ga-vat",
+      "englishRoute": "/gabon/ga-vat",
+      "swahiliRoute": "/sw/gabon/kikokotoo-vat/",
+      "engine": "assets/js/engines/ga-vat.js",
+      "currency": "XAF",
+      "pdfCurrency": "FCFA",
+      "input": { "amount": 10999, "mode": "add" },
+      "expected": { "net": 10999, "taxableBase": 10000, "vat": 1800, "gross": 12799, "rate": 18 },
+      "extractInput": 12799,
+      "selectors": { "amount": "#gavAmount", "result": "#gavResult", "error": "#gavError", "pdf": "#gavPdf", "net": "#gavNet", "tax": "#gavVat", "gross": "#gavGross", "base": "#gavBase" },
+      "pdfTitle": "Kikokotoo cha VAT Gabon",
+      "pdfProvenance": { "en": ["Gabon VAT calculator", "Sources reviewed 2026-07-22: Official Journal Law 041/2025 and DGI CGI 2025."], "sw": ["Kikokotoo cha VAT Gabon", "Vyanzo vimekaguliwa 2026-07-22: Gazeti Rasmi, Sheria 041/2025 na CGI 2025 ya DGI."] },
+      "evidenceBoundary": {
+        "rateSelector": "#gavRate",
+        "rateValue": "article-221-five-confirmed",
+        "evidenceSelector": "#gavEvidence",
+        "engineInput": { "amount": 10000, "mode": "add", "rateKind": "article-221-five-confirmed", "rateEvidenceConfirmed": true, "rateEvidenceType": "finance-law-2026-article-221-five-percent-listed-supply" },
+        "expectedTax": 500
+      }
+    },
+    {
+      "id": "gn-vat",
+      "englishRoute": "/guinea/gn-vat",
+      "swahiliRoute": "/sw/guinea/kikokotoo-vat/",
+      "engine": "assets/js/engines/gn-vat.js",
+      "currency": "GNF",
+      "input": { "amount": 100000, "mode": "add" },
+      "expected": { "net": 100000, "vat": 18000, "gross": 118000, "rate": 18 },
+      "extractInput": 118000,
+      "selectors": { "amount": "#gnvAmount", "result": "#gnvResult", "error": "#gnvError", "pdf": "#gnvPdf", "net": "#gnvNet", "tax": "#gnvVat", "gross": "#gnvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Guinea",
+      "pdfProvenance": { "en": ["Guinea VAT calculator", "Sources reviewed 2026-07-22: DGI General Tax Code and Ministry of Budget finance laws."], "sw": ["Kikokotoo cha VAT Guinea", "Vyanzo vimekaguliwa 2026-07-22: Kanuni ya Jumla ya Kodi ya DGI na sheria za fedha za Wizara ya Bajeti."] },
+      "evidenceBoundary": {
+        "rateSelector": "#gnvRate",
+        "rateValue": "confirmed-article-373-zero",
+        "evidenceSelector": "#gnvEvidence",
+        "engineInput": { "amount": 100000, "mode": "add", "rateKind": "confirmed-article-373-zero", "rateEvidenceConfirmed": true, "rateEvidenceType": "dgi-cgi-article-373-export-or-international-transport" },
+        "expectedTax": 0
+      }
+    },
+    {
+      "id": "gw-vat",
+      "englishRoute": "/guinea-bissau/gw-vat",
+      "swahiliRoute": "/sw/guinea-bissau/kikokotoo-vat/",
+      "engine": "assets/js/engines/gw-vat.js",
+      "currency": "XOF",
+      "pdfCurrency": "CFA",
+      "input": { "amount": 100000, "mode": "add" },
+      "expected": { "net": 100000, "vat": 19000, "gross": 119000, "rate": 19 },
+      "extractInput": 119000,
+      "selectors": { "amount": "#gwvAmount", "result": "#gwvResult", "error": "#gwvError", "pdf": "#gwvPdf", "net": "#gwvNet", "tax": "#gwvVat", "gross": "#gwvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Guinea-Bissau",
+      "pdfProvenance": { "en": ["Guinea-Bissau VAT calculator", "Sources reviewed 2026-07-22: DGCI Kontaktu current IVA notices and Ministry of Finance legislation."], "sw": ["Kikokotoo cha VAT Guinea-Bissau", "Vyanzo vimekaguliwa 2026-07-22: Taarifa za sasa za IVA za DGCI Kontaktu na sheria za Wizara ya Fedha."] },
+      "evidenceBoundary": {
+        "rateSelector": "#gwvRate",
+        "rateValue": "confirmed-annex-1-ten",
+        "evidenceSelector": "#gwvEvidence",
+        "engineInput": { "amount": 100000, "mode": "add", "rateKind": "confirmed-annex-1-ten", "rateEvidenceConfirmed": true, "rateEvidenceType": "civa-article-18-annex-1-exact-line" },
+        "expectedTax": 10000
+      }
+    },
+    {
+      "id": "ls-vat",
+      "englishRoute": "/lesotho/ls-vat",
+      "swahiliRoute": "/sw/lesotho/kikokotoo-vat/",
+      "engine": "assets/js/engines/ls-vat.js",
+      "currency": "LSL",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 150, "gross": 1150, "rate": 15 },
+      "extractInput": 1150,
+      "selectors": { "amount": "#lsvAmount", "result": "#lsvResult", "error": "#lsvError", "pdf": "#lsvPdf", "net": "#lsvNet", "tax": "#lsvVat", "gross": "#lsvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Lesotho",
+      "pdfProvenance": { "en": ["Lesotho VAT calculator", "Sources reviewed 2026-07-22: RSL tax rates, VAT registration guidance and current publications."], "sw": ["Kikokotoo cha VAT Lesotho", "Vyanzo vimekaguliwa 2026-07-22: Viwango vya kodi, mwongozo wa usajili wa VAT na machapisho ya sasa ya RSL."] },
+      "evidenceBoundary": {
+        "rateSelector": "#lsvRate",
+        "rateValue": "confirmed-electricity-ten",
+        "evidenceSelector": "#lsvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-electricity-ten", "rateEvidenceConfirmed": true, "rateEvidenceType": "rsl-current-electricity-treatment" },
+        "expectedTax": 100
+      }
+    },
+    {
+      "id": "lr-vat",
+      "englishRoute": "/liberia/lr-vat",
+      "swahiliRoute": "/sw/liberia/kikokotoo-vat/",
+      "engine": "assets/js/engines/lr-vat.js",
+      "currency": "LRD",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "gst": 130, "gross": 1130, "rate": 13 },
+      "extractInput": 1130,
+      "selectors": { "amount": "#lrvAmount", "result": "#lrvResult", "error": "#lrvError", "pdf": "#lrvPdf", "net": "#lrvNet", "tax": "#lrvTax", "gross": "#lrvGross" },
+      "pdfTitle": "Kikokotoo cha GST Liberia",
+      "pdfProvenance": { "en": ["Liberia GST calculator", "Sources reviewed 2026-07-22: LRA December 2025 Tax Amendment Act and implementation notice."], "sw": ["Kikokotoo cha GST Liberia", "Vyanzo vimekaguliwa 2026-07-22: Sheria ya Marekebisho ya Kodi ya LRA ya Desemba 2025 na taarifa ya utekelezaji."] },
+      "evidenceBoundary": {
+        "rateSelector": "#lrvRate",
+        "rateValue": "confirmed-export-goods-zero",
+        "evidenceSelector": "#lrvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-export-goods-zero", "rateEvidenceConfirmed": true, "rateEvidenceType": "lra-section-1000-export-of-goods" },
+        "expectedTax": 0
+      }
+    },
+    {
+      "id": "mg-vat",
+      "englishRoute": "/madagascar/mg-vat",
+      "swahiliRoute": "/sw/madagascar/kikokotoo-vat/",
+      "engine": "assets/js/engines/mg-vat.js",
+      "currency": "MGA",
+      "pdfCurrency": { "en": "Ar", "sw": "MGA" },
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 200, "gross": 1200, "rate": 20 },
+      "extractInput": 1200,
+      "selectors": { "amount": "#mgvAmount", "result": "#mgvResult", "error": "#mgvError", "pdf": "#mgvPdf", "net": "#mgvNet", "tax": "#mgvVat", "gross": "#mgvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Madagascar",
+      "pdfProvenance": { "en": ["Madagascar VAT calculator", "Sources reviewed 2026-07-22: DGI Madagascar Tax Code 2026 and official legislation catalogue."], "sw": ["Kikokotoo cha VAT Madagascar", "Vyanzo vimekaguliwa 2026-07-22: Kanuni ya Kodi ya DGI Madagascar ya 2026 na orodha rasmi ya sheria."] },
+      "evidenceBoundary": {
+        "rateSelector": "#mgvRate",
+        "rateValue": "confirmed-butane-ten",
+        "evidenceSelector": "#mgvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-butane-ten", "rateEvidenceConfirmed": true, "rateEvidenceType": "dgi-article-06-01-12-butane-tariff-line" },
+        "expectedTax": 100
+      }
+    },
+    {
+      "id": "ml-vat",
+      "englishRoute": "/mali/ml-vat",
+      "swahiliRoute": "/sw/mali/kikokotoo-vat/",
+      "engine": "assets/js/engines/ml-vat.js",
+      "currency": "XOF",
+      "pdfCurrency": "CFA",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 180, "gross": 1180, "rate": 18 },
+      "extractInput": 1180,
+      "selectors": { "amount": "#mlvAmount", "result": "#mlvResult", "error": "#mlvError", "pdf": "#mlvPdf", "net": "#mlvNet", "tax": "#mlvVat", "gross": "#mlvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Mali",
+      "pdfProvenance": { "en": ["Mali VAT calculator", "Sources reviewed 2026-07-22: DGI Mali General Tax Code and official portal."], "sw": ["Kikokotoo cha VAT Mali", "Vyanzo vimekaguliwa 2026-07-22: Kanuni ya Jumla ya Kodi na tovuti rasmi ya DGI Mali."] },
+      "evidenceBoundary": {
+        "rateSelector": "#mlvRate",
+        "rateValue": "confirmed-reduced-five",
+        "evidenceSelector": "#mlvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-reduced-five", "rateEvidenceConfirmed": true, "rateEvidenceType": "dgi-cgi-article-229-point-d-exact-tariff-line" },
+        "expectedTax": 50
+      }
+    },
+    {
+      "id": "mr-vat",
+      "englishRoute": "/mauritania/mr-vat",
+      "swahiliRoute": "/sw/mauritania/kikokotoo-vat/",
+      "engine": "assets/js/engines/mr-vat.js",
+      "currency": "MRU",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 160, "gross": 1160, "rate": 16 },
+      "extractInput": 1160,
+      "selectors": { "amount": "#mrvAmount", "result": "#mrvResult", "error": "#mrvError", "pdf": "#mrvPdf", "net": "#mrvNet", "tax": "#mrvVat", "gross": "#mrvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Mauritania",
+      "pdfProvenance": { "en": ["Mauritania VAT calculator", "Sources reviewed 2026-07-22: Mauritania General Tax Code 2023, Amending Finance Law 2023 and Finance Law 2026."], "sw": ["Kikokotoo cha VAT Mauritania", "Vyanzo vimekaguliwa 2026-07-22: Kanuni ya Jumla ya Kodi 2023, Sheria ya Fedha Iliyorekebishwa 2023 na Sheria ya Fedha 2026."] },
+      "evidenceBoundary": {
+        "rateSelector": "#mrvRate",
+        "rateValue": "confirmed-telephony",
+        "evidenceSelector": "#mrvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-telephony", "rateEvidenceConfirmed": true, "rateEvidenceType": "lfr-2023-article-230-telephony-supply" },
+        "expectedTax": 180
+      }
+    },
+    {
+      "id": "mu-vat",
+      "englishRoute": "/mauritius/mu-vat",
+      "swahiliRoute": "/sw/mauritius/kikokotoo-vat/",
+      "engine": "assets/js/engines/mu-vat.js",
+      "currency": "MUR",
+      "pdfCurrency": { "en": "Rs", "sw": "MUR" },
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 150, "gross": 1150, "rate": 15 },
+      "extractInput": 1150,
+      "selectors": { "amount": "#muvAmount", "result": "#muvResult", "error": "#muvError", "pdf": "#muvPdf", "net": "#muvNet", "tax": "#muvVat", "gross": "#muvGross" },
+      "pdfTitle": "Kikokotoo cha VAT Morisi",
+      "pdfProvenance": { "en": ["Mauritius VAT calculator", "Sources reviewed 2026-07-22: MRA VAT guidance and Mauritius Value Added Tax Act."], "sw": ["Kikokotoo cha VAT Morisi", "Vyanzo vimekaguliwa 2026-07-22: Mwongozo wa VAT wa MRA na Sheria ya VAT ya Morisi."] },
+      "evidenceBoundary": {
+        "rateSelector": "#muvRate",
+        "rateValue": "confirmed-fifth-schedule-zero",
+        "evidenceSelector": "#muvEvidence",
+        "engineInput": { "amount": 1000, "mode": "add", "rateKind": "confirmed-fifth-schedule-zero", "rateEvidenceConfirmed": true, "rateEvidenceType": "vat-act-fifth-schedule-exact-zero-rated-supply" },
+        "expectedTax": 0
+      }
+    },
+    {
+      "id": "sd-vat",
+      "englishRoute": "/sudan/sd-vat",
+      "swahiliRoute": "/sw/sudan/kikokotoo-vat/",
+      "engine": "assets/js/engines/sd-vat.js",
+      "currency": "SDG",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 170, "gross": 1170, "rate": 17 },
+      "extractInput": 1170,
+      "selectors": { "amount": "#sdVatAmount", "result": "#sdVatResult", "error": "#sdVatError", "pdf": "#sdVatPdf", "net": "#sdVatNet", "tax": "#sdVatTax", "gross": "#sdVatGross" },
+      "pdfTitle": "Kikokotoo cha VAT Sudan",
+      "pdfProvenance": { "en": ["Sudan VAT calculator", "Source reviewed 2026-07-23: Sudan Tax Authority"], "sw": ["Kikokotoo cha VAT Sudan", "Chanzo kimekaguliwa 2026-07-23: Mamlaka ya Kodi Sudan"] }
+    },
+    {
+      "id": "tg-vat",
+      "englishRoute": "/togo/tg-vat",
+      "swahiliRoute": "/sw/togo/kikokotoo-vat/",
+      "engine": "assets/js/engines/tg-vat.js",
+      "currency": "XOF",
+      "pdfCurrency": "XOF",
+      "input": { "amount": 10000, "mode": "add" },
+      "expected": { "net": 10000, "vat": 1800, "gross": 11800, "rate": 18 },
+      "extractInput": 11800,
+      "selectors": { "amount": "#tgVatAmount", "result": "#tgVatResult", "error": "#tgVatError", "pdf": "#tgVatPdf", "net": "#tgVatNet", "tax": "#tgVatTax", "gross": "#tgVatGross" },
+      "pdfTitle": "Kikokotoo cha VAT Togo",
+      "pdfProvenance": { "en": ["Togo VAT calculator", "Sources reviewed 2026-07-23: OTR CGI Article 195 and Fiscal Handbook 2026"], "sw": ["Kikokotoo cha VAT Togo", "Vyanzo vimekaguliwa 2026-07-23: Kifungu 195 cha CGI ya OTR na Kitabu cha Fedha 2026"] }
+    },
+    {
+      "id": "tn-vat",
+      "englishRoute": "/tunisia/tn-vat",
+      "swahiliRoute": "/sw/tunisia/kikokotoo-vat/",
+      "engine": "assets/js/engines/tn-vat.js",
+      "currency": "TND",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 190, "gross": 1190, "rate": 19 },
+      "extractInput": 1190,
+      "selectors": { "amount": "#tnVatAmount", "result": "#tnVatResult", "error": "#tnVatError", "pdf": "#tnVatPdf", "net": "#tnVatNet", "tax": "#tnVatTax", "gross": "#tnVatGross" },
+      "pdfTitle": "Kikokotoo cha VAT Tunisia",
+      "pdfProvenance": { "en": ["Tunisia VAT calculator", "Sources reviewed 2026-07-23: Tunisia Ministry of Finance"], "sw": ["Kikokotoo cha VAT Tunisia", "Vyanzo vimekaguliwa 2026-07-23: Wizara ya Fedha Tunisia"] }
+    },
+    {
+      "id": "zm-vat",
+      "englishRoute": "/zambia/zm-vat",
+      "swahiliRoute": "/sw/zambia/kikokotoo-vat/",
+      "engine": "assets/js/engines/zm-vat.js",
+      "currency": "ZMW",
+      "input": { "amount": 1000, "mode": "add" },
+      "expected": { "net": 1000, "vat": 160, "gross": 1160, "rate": 16 },
+      "extractInput": 1160,
+      "selectors": { "amount": "#zmVatAmount", "result": "#zmVatResult", "error": "#zmVatError", "pdf": "#zmVatPdf", "net": "#zmVatNet", "tax": "#zmVatTax", "gross": "#zmVatGross" },
+      "pdfTitle": "Kikokotoo cha VAT Zambia",
+      "pdfProvenance": { "en": ["Zambia VAT calculator", "Sources reviewed 2026-07-23: ZRA tax information, VSDC specification, VAT Amendment Act 2025"], "sw": ["Kikokotoo cha VAT Zambia", "Vyanzo vimekaguliwa 2026-07-23: ZRA, vipimo vya VSDC na Sheria ya Marekebisho ya VAT 2025"] }
+    },
+    {
+      "id": "zw-vat",
+      "englishRoute": "/zimbabwe/zw-vat",
+      "swahiliRoute": "/sw/zimbabwe/kikokotoo-vat/",
+      "engine": "assets/js/engines/zw-vat.js",
+      "currency": "ZWG",
+      "input": { "amount": 1000, "mode": "add", "currency": "ZWG" },
+      "expected": { "net": 1000, "vat": 155, "gross": 1155, "rate": 15.5, "currency": "ZWG" },
+      "extractInput": 1155,
+      "selectors": { "amount": "#zwVatAmount", "currency": "#zwVatCurrency", "result": "#zwVatResult", "error": "#zwVatError", "pdf": "#zwVatPdf", "net": "#zwVatNet", "tax": "#zwVatTax", "gross": "#zwVatGross" },
+      "pdfTitle": "Kikokotoo cha VAT Zimbabwe",
+      "pdfProvenance": { "en": ["Zimbabwe VAT calculator", "Sources reviewed 2026-07-23: ZIMRA Notice 07/2026, Finance Act 7/2025 s34, RBZ ZWG statement"], "sw": ["Kikokotoo cha VAT Zimbabwe", "Vyanzo vimekaguliwa 2026-07-23: Taarifa ya ZIMRA 07/2026, Finance Act 7/2025 kifungu 34 na taarifa ya RBZ kuhusu ZWG"] }
+    }
+  ],
+  "businessRoutes": [
+    {
+      "id": "business-name-gen",
+      "englishRoute": "/tools/business-name-gen/",
+      "swahiliRoute": "/sw/zana/kitengeneza-jina-la-biashara/",
+      "engine": "assets/js/engines/business-name-workshop.js",
+      "input": { "industry": "technology", "audience": "local", "tone": "clear", "style": "mixed", "maxLength": 24, "batch": 0, "keywords": "trust, payments, quick", "localWord": "" },
+      "expected": { "count": 20, "firstName": "Trust Tech", "firstScore": 100, "version": "business-name-workshop-2026-07-23" },
+      "exports": ["csv", "json", "pdf", "print"]
+    },
+    {
+      "id": "market-stall-profit",
+      "englishRoute": "/tools/market-stall-profit/",
+      "swahiliRoute": "/sw/zana/faida-ya-kibanda-sokoni/",
+      "engine": "assets/js/engines/market-stall-profit.js",
+      "input": {
+        "currency": "KES",
+        "marketDays": 20,
+        "reinvestRate": 30,
+        "items": [{ "name": "Tomatoes", "unitCost": 50, "unitPrice": 80, "unitsSold": 10, "unitsLost": 2 }],
+        "expenses": [{ "name": "Transport", "amount": 100 }, { "name": "Market fee", "amount": 50 }]
+      },
+      "expected": { "revenue": 800, "soldStockCost": 500, "stockLossCost": 100, "operatingExpenses": 150, "netDailyProfit": 50, "breakEvenRevenue": 666.67, "monthlyNetProfit": 1000, "version": "market-stall-profit-2026-07-23" },
+      "exports": ["csv", "json", "pdf", "print"]
+    }
+  ]
+}

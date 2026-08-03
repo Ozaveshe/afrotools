@@ -23,6 +23,13 @@
     if (state.rateKind !== 'scenario') return state.rate;
     return Number(custom.value);
   }
+  function clearResult() {
+    ['ngvResultMain', 'ngvNet', 'ngvVat', 'ngvGross', 'ngvRateUsed'].forEach(function (id) {
+      byId(id).textContent = '—';
+    });
+    byId('ngvResultNote').textContent = '';
+    resultBox.classList.remove('on');
+  }
   function calculate() {
     try {
       state.result = engine.calculate({ amount: amount.value, mode: state.mode, rate: currentRate(), rateKind: state.rateKind });
@@ -35,12 +42,12 @@
       byId('ngvResultLabel').textContent = state.mode === 'add' ? text('grossResult', 'Total including VAT') : text('netResult', 'Amount before VAT');
       byId('ngvResultNote').textContent = state.rateKind === 'scenario'
         ? text('scenarioNote', 'Planning scenario only. Confirm the statutory treatment before invoicing or filing.')
-        : (state.result.rate === 0 ? text('zeroNote', '0% is only for supplies confirmed as zero-rated under NTA 2025 s187.') : text('standardNote', 'Standard-rate estimate under NTA 2025 s148.'));
+        : (state.result.rate === 0 ? text('zeroNote', '0% is only for supplies confirmed as zero-rated under NTA 2025 s186.') : text('standardNote', 'Standard-rate estimate under NTA 2025 s147.'));
       resultBox.classList.add('on');
       status.textContent = text('calculated', 'VAT estimate updated.');
     } catch (caught) {
       state.result = null;
-      resultBox.classList.remove('on');
+      clearResult();
       error.textContent = text('invalid', 'Enter a non-negative amount and a rate from 0% to 100%.');
       status.textContent = error.textContent;
     }
@@ -82,7 +89,7 @@
   var words = invoiceStrings[document.documentElement.lang] || invoiceStrings.en;
   var invoiceSection = document.createElement('section');
   invoiceSection.className = 'ngv-card'; invoiceSection.setAttribute('aria-labelledby', 'invoice-title');
-  invoiceSection.innerHTML = '<div class="ngv-kicker">' + words[0] + '</div><h2 id="invoice-title">' + words[1] + '</h2><p>' + words[2] + '</p><form id="ngvInvoiceForm"><div class="ngv-field"><label for="ngvInvoiceDescription">' + words[3] + '</label><input class="ngv-input" id="ngvInvoiceDescription" value="' + words[4] + '"></div><div class="ngv-rate"><div class="ngv-field"><label for="ngvInvoiceQty">' + words[5] + '</label><input class="ngv-input" id="ngvInvoiceQty" type="number" min="0" step="0.01" value="1"></div><div class="ngv-field"><label for="ngvInvoiceUnit">' + words[6] + '</label><input class="ngv-input" id="ngvInvoiceUnit" type="number" min="0" step="0.01" value="100000"></div></div><div class="ngv-error" id="ngvInvoiceError"></div><button class="ngv-primary" type="submit">' + words[7] + '</button></form><div class="ngv-result" id="ngvInvoiceOutput" aria-live="polite"><div class="ngv-result-label">' + words[8] + '</div><div class="ngv-result-row"><span>' + words[9] + '</span><strong id="ngvInvoiceNet">—</strong></div><div class="ngv-result-row"><span>' + words[10] + '</span><strong id="ngvInvoiceVat">—</strong></div><div class="ngv-result-row"><span>' + words[11] + '</span><strong id="ngvInvoiceGross">—</strong></div></div>';
+  invoiceSection.innerHTML = '<div class="ngv-kicker">' + words[0] + '</div><h2 id="invoice-title">' + words[1] + '</h2><p>' + words[2] + '</p><form id="ngvInvoiceForm" novalidate><div class="ngv-field"><label for="ngvInvoiceDescription">' + words[3] + '</label><input class="ngv-input" id="ngvInvoiceDescription" value="' + words[4] + '"></div><div class="ngv-rate"><div class="ngv-field"><label for="ngvInvoiceQty">' + words[5] + '</label><input class="ngv-input" id="ngvInvoiceQty" type="number" min="0" step="0.01" value="1" aria-describedby="ngvInvoiceError"></div><div class="ngv-field"><label for="ngvInvoiceUnit">' + words[6] + '</label><input class="ngv-input" id="ngvInvoiceUnit" type="number" min="0" step="0.01" value="100000" aria-describedby="ngvInvoiceError"></div></div><div class="ngv-error" id="ngvInvoiceError" role="alert" aria-live="assertive"></div><button class="ngv-primary" type="submit">' + words[7] + '</button></form><div class="ngv-result" id="ngvInvoiceOutput" aria-live="polite"><div class="ngv-result-label">' + words[8] + '</div><div class="ngv-result-row"><span>' + words[9] + '</span><strong id="ngvInvoiceNet">—</strong></div><div class="ngv-result-row"><span>' + words[10] + '</span><strong id="ngvInvoiceVat">—</strong></div><div class="ngv-result-row"><span>' + words[11] + '</span><strong id="ngvInvoiceGross">—</strong></div></div>';
   byId('ngvClassification').closest('.ngv-card').before(invoiceSection);
 
   byId('ngvInvoiceForm').addEventListener('submit', function (event) {
@@ -97,6 +104,7 @@
       byId('ngvInvoiceOutput').classList.add('on');
     } catch (caught) {
       byId('ngvInvoiceOutput').classList.remove('on');
+      ['ngvInvoiceNet', 'ngvInvoiceVat', 'ngvInvoiceGross'].forEach(function (id) { byId(id).textContent = '—'; });
       invoiceError.textContent = text('invalidInvoice', 'Enter a non-negative quantity and unit price.');
     }
   });
@@ -117,7 +125,7 @@
     if (!state.result || !window.jspdf || !window.jspdf.jsPDF) return;
     var doc = new window.jspdf.jsPDF({ unit: 'pt', format: 'a4' });
     doc.setFont('helvetica', 'bold'); doc.setFontSize(20); doc.text(text('pdfTitle', 'Nigeria VAT planning estimate'), 48, 62);
-    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.text(text('pdfSource', 'Nigeria Tax Act 2025, sections 148, 186 and 187; reviewed 22 July 2026.'), 48, 82);
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(10); doc.text(text('pdfSource', 'Nigeria Tax Act 2025, sections 147, 148, 185 and 186; reviewed 2 August 2026.'), 48, 82);
     doc.setFontSize(12);
     var rows = [
       [text('pdfMode', 'Mode'), state.mode === 'add' ? text('addVat', 'Add VAT') : text('extractVat', 'Extract VAT')],

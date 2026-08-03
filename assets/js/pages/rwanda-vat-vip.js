@@ -23,9 +23,24 @@
   function input() {
     return { amount: amount.value, mode: state.mode, rateKind: state.rateKind, rate: state.rateKind === "scenario" ? custom.value : undefined };
   }
+  function clearMainResult() {
+    ["rwvResultMain", "rwvNet", "rwvVat", "rwvGross", "rwvRateUsed"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("rwvResultNote").textContent = "";
+    byId("rwvResult").classList.remove("on");
+  }
+  function clearInvoiceResult() {
+    ["rwvInvoiceNet", "rwvInvoiceVat", "rwvInvoiceGross"].forEach(function (id) {
+      byId(id).textContent = "—";
+    });
+    byId("rwvInvoiceOutput").classList.remove("on");
+  }
   function calculate() {
     try {
       state.result = engine.calculate(input());
+      amount.setAttribute("aria-invalid", "false");
+      custom.setAttribute("aria-invalid", "false");
       error.textContent = "";
       byId("rwvResultMain").textContent = money(state.mode === "add" ? state.result.gross : state.result.net);
       byId("rwvNet").textContent = money(state.result.net);
@@ -42,7 +57,9 @@
       status.textContent = text("calculated", "Rwanda VAT estimate updated.");
     } catch (caught) {
       state.result = null;
-      byId("rwvResult").classList.remove("on");
+      clearMainResult();
+      amount.setAttribute("aria-invalid", String(amount.value === "" || Number(amount.value) < 0));
+      custom.setAttribute("aria-invalid", String(state.rateKind === "scenario"));
       error.textContent = text("invalid", "Enter a non-negative amount and a rate from 0% to 100%.");
       status.textContent = error.textContent;
     }
@@ -66,7 +83,7 @@
     box.className = "rwv-treatment " + treatment.treatment;
     box.replaceChildren();
     strong.textContent = text("treatment_" + treatment.treatment, treatment.treatment);
-    span.textContent = treatment.source + " · " + text("classificationCaveat", "Confirm the exact provision before relying on this guide.");
+    span.textContent = text("source_" + event.target.value, treatment.source) + " · " + text("classificationCaveat", "Confirm the exact provision before relying on this guide.");
     box.append(strong, span);
   });
   byId("rwvInvoiceForm").addEventListener("submit", function (event) {
@@ -74,20 +91,30 @@
     try {
       var invoice = engine.calculateInvoice([{ description: byId("rwvInvoiceDescription").value, quantity: byId("rwvInvoiceQty").value, unitPrice: byId("rwvInvoiceUnit").value }], input());
       byId("rwvInvoiceError").textContent = "";
+      byId("rwvInvoiceQty").setAttribute("aria-invalid", "false");
+      byId("rwvInvoiceUnit").setAttribute("aria-invalid", "false");
       byId("rwvInvoiceNet").textContent = money(invoice.net);
       byId("rwvInvoiceVat").textContent = money(invoice.vat);
       byId("rwvInvoiceGross").textContent = money(invoice.gross);
       byId("rwvInvoiceOutput").classList.add("on");
     } catch (caught) {
-      byId("rwvInvoiceOutput").classList.remove("on");
+      clearInvoiceResult();
+      byId("rwvInvoiceQty").setAttribute("aria-invalid", String(byId("rwvInvoiceQty").value === "" || Number(byId("rwvInvoiceQty").value) < 0));
+      byId("rwvInvoiceUnit").setAttribute("aria-invalid", String(byId("rwvInvoiceUnit").value === "" || Number(byId("rwvInvoiceUnit").value) < 0));
       byId("rwvInvoiceError").textContent = text("invalidInvoice", "Enter a non-negative quantity and unit price.");
     }
   });
   function updateRegistration() {
     try {
       var result = engine.registrationBand({ previousFiscalYear: byId("rwvAnnual").value, previousQuarter: byId("rwvQuarter").value });
+      byId("rwvAnnual").setAttribute("aria-invalid", "false");
+      byId("rwvQuarter").setAttribute("aria-invalid", "false");
       byId("rwvRegistrationResult").textContent = text("registration_" + result.band, result.band) + (result.triggers.length ? " (" + result.triggers.map(function (trigger) { return text("trigger_" + trigger, trigger); }).join(", ") + ")" : "");
-    } catch (caught) { byId("rwvRegistrationResult").textContent = text("invalid", "Enter non-negative turnover amounts."); }
+    } catch (caught) {
+      byId("rwvAnnual").setAttribute("aria-invalid", String(Number(byId("rwvAnnual").value) < 0));
+      byId("rwvQuarter").setAttribute("aria-invalid", String(Number(byId("rwvQuarter").value) < 0));
+      byId("rwvRegistrationResult").textContent = text("invalidRegistration", "Enter non-negative turnover amounts.");
+    }
   }
   ["rwvAnnual", "rwvQuarter"].forEach(function (id) { byId(id).addEventListener("input", updateRegistration); });
   byId("rwvShare").addEventListener("click", async function () {
@@ -103,7 +130,7 @@
     if (!state.result || !window.jspdf || !window.jspdf.jsPDF) return;
     var doc = new window.jspdf.jsPDF({ unit: "pt", format: "a4" }), rows;
     doc.setFont("helvetica", "bold"); doc.setFontSize(20); doc.text(text("pdfTitle", "Rwanda VAT planning estimate"), 48, 62);
-    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.text(text("pdfSource", "RRA guidance; Laws No. 049/2023 and No. 009/2025; reviewed 22 July 2026."), 48, 82);
+    doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.text(text("pdfSource", "RRA guidance; Laws No. 049/2023 and No. 009/2025; reviewed 2 August 2026."), 48, 82);
     rows = [[text("pdfMode", "Mode"), state.mode === "add" ? text("addVat", "Add VAT") : text("extractVat", "Extract VAT")], [text("net", "Amount before VAT"), "RWF " + state.result.net.toFixed(2)], [text("vat", "VAT"), "RWF " + state.result.vat.toFixed(2)], [text("gross", "Total including VAT"), "RWF " + state.result.gross.toFixed(2)], [text("rateUsed", "Rate used"), state.result.rate.toFixed(2) + "%"]];
     doc.setFontSize(11); rows.forEach(function (row, index) { var y = 120 + index * 27; doc.setFont("helvetica", "normal"); doc.text(row[0], 48, y); doc.setFont("helvetica", "bold"); doc.text(row[1], 280, y); });
     doc.setFont("helvetica", "normal"); doc.setFontSize(10); doc.text(doc.splitTextToSize(text("pdfDisclaimer", "Planning estimate only. Confirm classification, registration, invoicing and filing with RRA or a qualified tax adviser."), 500), 48, 285);

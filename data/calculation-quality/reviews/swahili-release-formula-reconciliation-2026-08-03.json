@@ -1,0 +1,50 @@
+{
+  "reviewedBy": "Codex Swahili release coordinator",
+  "reviewedAt": "2026-08-03",
+  "sourceUrl": "https://github.com/Ozaveshe/afrotools/tree/main/data/calculation-quality/reviews",
+  "reason": "Authorize the integrated release digest refresh for formula artifacts already covered by the source-specific review records committed with this Swahili parity wave. The release coordinator reran the calculation-quality suite, the focused VAT, PAYE, agriculture and business-engine tests, and the browser-backed localized workflow proofs. The only expected-value change is the Uganda very-large-decimal fixture, which now follows the reviewed current-law shared engine: annual KCCA LST is assessed from monthly gross salary and deducted before PAYE, while NSSF remains separate from the PAYE base. This umbrella record does not replace the individual statutory and regulator source records; it binds their reviewed changes to the single release build.",
+  "formulaIds": [
+    "formula-assets-js-engines-pan-african-vat",
+    "formula-assets-js-engines-ug-vat",
+    "formula-engines-business-roi-engine",
+    "formula-engines-farm-loan-engine",
+    "paye-server-ug",
+    "route-bj-vat",
+    "route-maternity-leave",
+    "route-na-vat",
+    "route-ne-vat",
+    "route-retrenchment-calculator",
+    "route-rw-paye",
+    "route-sc-vat",
+    "route-sd-vat",
+    "route-sl-vat",
+    "route-sn-vat",
+    "route-so-vat",
+    "route-st-vat",
+    "route-tg-vat",
+    "route-tn-vat",
+    "route-ug-paye",
+    "route-ug-vat",
+    "route-zm-vat",
+    "route-zw-vat"
+  ],
+  "fixtureDeltas": [
+    {
+      "fixtureId": "paye-ug-large-decimal",
+      "reason": "Align the protected golden values with the independently reviewed current-law Uganda shared PAYE/LST engine.",
+      "previousExpected": {
+        "deductions.totalDeductions": 416659000,
+        "result.netAnnual": 583341001,
+        "result.netMonthly": 48611750,
+        "tax.netTax": 366659000
+      },
+      "nextExpected": {
+        "deductions.totalDeductions": 436824000,
+        "result.netAnnual": 563176000,
+        "result.netMonthly": 46931333,
+        "tax.netTax": 386824000
+      },
+      "sourceReview": "data/calculation-quality/reviews/uganda-current-law-shared-engine-2026-08-02.json"
+    }
+  ]
+}

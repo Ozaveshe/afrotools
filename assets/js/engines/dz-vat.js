@@ -9,7 +9,7 @@
   "use strict";
   var STANDARD_RATE = 19,
     REDUCED_RATE = 9,
-    REVIEWED_ON = "2026-07-22";
+    REVIEWED_ON = "2026-08-02";
 
   function number(value, label) {
     if (value === "" || value === null || typeof value === "undefined")

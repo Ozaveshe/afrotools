@@ -1,0 +1,64 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity",
+  "authoritativeInventoryRows": 1257,
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 60,
+  "preservedBlockedEntries": 0,
+  "candidates": [
+    {
+      "id": "ecommerce-complete-parity",
+      "commit": "6caaa15aa189e1714b80a85e15b53556c044ccae",
+      "expectedRoutes": 60,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 60,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-vat-business-tax-route-contract.spec.js",
+          "engineTest": "tests/swahili-vat-business-tax-wave1-oracles.test.js",
+          "workflow": "The exact 63-app Ecommerce category passed 493 owner-browser checks and 63 route contracts; the 60 routes not already accepted proved calculations, invalid states, 320px mobile, 200% reflow, themes, keyboard/accessibility, metadata, sources and local-first boundaries.",
+          "export": "Every accepted route matched its advertised export contract, including real download/reopen proof; Burkina Faso VAT now produces and parses a genuine PDF rather than advertising a non-existent download."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-ecommerce-acceptance/resume-60.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/pinnedBaseSha", "equals": "0f6990118d9ac8b9dcde446a6ede10a017b9a2db" },
+            { "pointer": "/scope/exactCategoryRows", "equals": 63 },
+            { "pointer": "/scope/priorCentralAccepted", "equals": 3 },
+            { "pointer": "/scope/candidateRows", "equals": 60 },
+            { "pointer": "/scope/candidateAccepted", "equals": 60 },
+            { "pointer": "/scope/candidateBlocked", "equals": 0 },
+            { "pointer": "/liveProof/ownerSuite/passed", "equals": 493 },
+            { "pointer": "/liveProof/ownerSuite/failed", "equals": 0 },
+            { "pointer": "/liveProof/productionBoundarySuites/passed", "equals": 5 },
+            { "pointer": "/staticProof/artworkMissing", "equals": 0 }
+          ]
+        },
+        {
+          "path": "reports/swahili-vat-business-tax-owner-suite-result.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/ownerSuite/passed", "equals": 493 },
+            { "pointer": "/ownerSuite/failed", "equals": 0 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "path": "reports/sw-ecommerce-acceptance/resume-60.json",
+          "rowsPointer": "/rows",
+          "statusPointer": "/acceptedCandidate",
+          "acceptedValues": [true],
+          "idPointer": "/englishId",
+          "routePointer": "/swahiliRoute"
+        }
+      ]
+    }
+  ]
+}

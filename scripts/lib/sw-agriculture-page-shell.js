@@ -13,10 +13,14 @@ function escapeHtml(value) {
   }[character]));
 }
 
-function hreflangBlock(row) {
-  return alternateEntries(row).map(({ hreflang, route }) => (
+function hreflangBlock(row, entries, allowedHreflangs) {
+  const candidates = entries || alternateEntries(row);
+  const allowed = allowedHreflangs ? new Set(allowedHreflangs) : null;
+  return candidates
+    .filter(({ hreflang }) => !allowed || allowed.has(hreflang))
+    .map(({ hreflang, route }) => (
     `<link rel="alternate" hreflang="${hreflang}" href="https://afrotools.com${route}">`
-  )).join('\n');
+    )).join('\n');
 }
 
 function replaceAll(content, replacements) {
@@ -42,7 +46,7 @@ function renderSwahiliAgriculturePage(options) {
 
   html = html.replace(
     /(?:<link rel="alternate" hreflang="[^"]+" href="[^"]+">\r?\n?)+/,
-    `${hreflangBlock(row)}\n`
+    `${hreflangBlock(row, options.hreflangEntries, options.reciprocalHreflangs)}\n`
   );
   html = replaceAll(html, [
     ['<html lang="fr"', '<html lang="sw"'],
@@ -80,7 +84,7 @@ function renderSwahiliAgriculturePage(options) {
   ]);
   html = html.replace(
     /(?:<link rel="alternate" hreflang="[^"]+" href="[^"]+">\r?\n?)+/,
-    `${hreflangBlock(row)}\n`
+    `${hreflangBlock(row, options.hreflangEntries, options.reciprocalHreflangs)}\n`
   );
   if (!row.country && options.currentLabel) {
     html = html.replace(
@@ -92,6 +96,7 @@ function renderSwahiliAgriculturePage(options) {
 }
 
 module.exports = {
+  escapeHtml,
   hreflangBlock,
   renderSwahiliAgriculturePage
 };

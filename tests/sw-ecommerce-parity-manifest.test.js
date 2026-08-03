@@ -9,8 +9,8 @@ test('Swahili Ecommerce manifest owns exactly 63 rows with coordinator acceptanc
   assert.equal(manifest.rows.length, 63);
   assert.equal(new Set(manifest.rows.map(row => row.english.id)).size, 63);
   assert.equal(manifest.families.reduce((sum, family) => sum + family.rowCount, 0), 63);
-  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'accepted-scoped').length, 3);
-  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'pending').length, 60);
+  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'accepted-scoped').length, 63);
+  assert.equal(manifest.rows.filter(row => row.acceptance.state === 'pending').length, 0);
 });
 
 test('every row resolves an exact maintained English owner contract', () => {

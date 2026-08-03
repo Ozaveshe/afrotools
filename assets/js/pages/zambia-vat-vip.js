@@ -47,13 +47,18 @@
         disclaimer: "Makadirio ya muamala wa kiwango cha kawaida pekee. Thibitisha jedwali la sheria, msimbo wa ankara na ushahidi na ZRA au mshauri mwenye sifa."
       }
     }[locale];
+    var pdfCopy = {
+      en: { subject: "Zambia standard VAT planning estimate at 16%", meta: "Official standard rate: 16% | Currency: ZMW", source: "Sources reviewed 2026-07-23: ZRA tax information, VSDC specification, VAT Amendment Act 2025", mode: "VAT calculation mode", result: "VAT result" },
+      fr: { subject: "Estimation de TVA normale de Zambie à 16 %", meta: "Taux normal officiel : 16 % | Devise : ZMW", source: "Sources vérifiées le 2026-07-23 : ZRA, spécification VSDC et loi modificative TVA 2025", mode: "Mode de calcul de la TVA", result: "Résultat de TVA" },
+      sw: { subject: "Makadirio ya VAT ya kawaida ya Zambia kwa 16%", meta: "Kiwango rasmi cha kawaida: 16% | Sarafu: ZMW", source: "Vyanzo vimekaguliwa 2026-07-23: ZRA, vipimo vya VSDC na Sheria ya Marekebisho ya VAT 2025", mode: "Hali ya kukokotoa VAT", result: "Matokeo ya VAT" }
+    }[locale];
 
     var main = document.querySelector("main");
     if (!main) return;
     main.id = "main-content";
     main.tabIndex = -1;
     main.innerHTML = '<div class="gnv-shell"><section class="gnv-hero"><div class="gnv-kicker">' + copy.kicker + '</div><h1>' + copy.title + '</h1><p class="gnv-lede">' + copy.lead + '</p></section><div class="gnv-grid">' +
-      '<form class="gnv-card" id="zmVatForm"><div class="gnv-switch" role="group" aria-label="VAT calculation mode"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="zmVatAmount">' + copy.amount + ' (ZMW)</label><input class="gnv-input" id="zmVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="zmVatError"></p><section class="gnv-result" id="zmVatResult" aria-label="VAT result"><dl><dt>' + copy.net + '</dt><dd id="zmVatNet"></dd><dt>' + copy.vat + '</dt><dd id="zmVatTax"></dd><dt>' + copy.gross + '</dt><dd id="zmVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="zmVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="zmVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="zmVatStatus" role="status" aria-live="polite"></div></form>' +
+      '<form class="gnv-card" id="zmVatForm"><div class="gnv-switch" role="group" aria-label="' + pdfCopy.mode + '"><button class="gnv-button" type="button" data-mode="add" aria-pressed="true">' + copy.add + '</button><button class="gnv-button" type="button" data-mode="extract" aria-pressed="false">' + copy.extract + '</button></div><label class="gnv-field" for="zmVatAmount">' + copy.amount + ' (ZMW)</label><input class="gnv-input" id="zmVatAmount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" value="1000" autocomplete="off"><button class="gnv-button gnv-primary" type="submit">' + copy.calculate + '</button><p class="gnv-error" id="zmVatError"></p><section class="gnv-result" id="zmVatResult" aria-label="' + pdfCopy.result + '"><dl><dt>' + copy.net + '</dt><dd id="zmVatNet"></dd><dt>' + copy.vat + '</dt><dd id="zmVatTax"></dd><dt>' + copy.gross + '</dt><dd id="zmVatGross"></dd></dl><div class="gnv-actions"><button class="gnv-button" type="button" id="zmVatPdf">' + copy.pdf + '</button><button class="gnv-button" type="button" id="zmVatShare">' + copy.share + '</button></div></section><div class="gnv-status" id="zmVatStatus" role="status" aria-live="polite"></div></form>' +
       '<aside class="gnv-card" data-tool-verification-panel data-tool-id="zm-vat"><h2>' + copy.rules + '</h2><ul class="gnv-list"><li>' + copy.r1 + '</li><li>' + copy.r2 + '</li><li>' + copy.r3 + '</li><li>' + copy.r4 + '</li></ul><h2>' + copy.sources + '</h2><p class="gnv-note"><a href="https://www.zra.org.zm/tax-information/">' + copy.tax + '</a><br><a href="https://www.zra.org.zm/wp-content/uploads/2024/08/VSDC-API-Specification-Document-v1.0.7-1.pdf">' + copy.codes + '</a><br><a href="https://www.parliament.gov.zm/node/12767">' + copy.act + '</a></p><p class="gnv-note">' + copy.disclaimer + '</p><p class="gnv-note"><a href="mailto:hello@afrotools.com?subject=Zambia%20VAT%20calculation%20error">' + copy.report + '</a></p></aside></div></div>';
 
     var state = { mode: "add", result: null };
@@ -101,14 +106,14 @@
     byId("zmVatPdf").onclick = function () {
       if (!state.result || !window.jspdf) return;
       var pdf = new window.jspdf.jsPDF();
-      pdf.setProperties({ title: copy.title, subject: "Zambia standard VAT planning estimate at 16%" });
+      pdf.setProperties({ title: copy.title, subject: pdfCopy.subject });
       pdf.text(copy.title, 20, 20);
-      pdf.text("Official standard rate: 16% | Currency: ZMW", 20, 32);
+      pdf.text(pdfCopy.meta, 20, 32);
       pdf.text(copy.net + ": " + money(state.result.net), 20, 48);
       pdf.text(copy.vat + ": " + money(state.result.vat), 20, 59);
       pdf.text(copy.gross + ": " + money(state.result.gross), 20, 70);
       pdf.text(pdf.splitTextToSize(copy.disclaimer, 170), 20, 88);
-      pdf.text("Sources reviewed 2026-07-23: ZRA tax information, VSDC specification, VAT Amendment Act 2025", 20, 116);
+      pdf.text(pdfCopy.source, 20, 116);
       pdf.save("zambia-vat-16-percent-estimate.pdf");
       byId("zmVatStatus").textContent = copy.pdf + ".";
     };

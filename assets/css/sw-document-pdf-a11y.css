@@ -1,0 +1,775 @@
+/*
+ * Swahili Document/PDF accessibility contract.
+ *
+ * This stylesheet is loaded only by the source-owned Swahili Document/PDF
+ * generator. It provides one maintained contrast, focus, control-boundary and
+ * narrow reflow layer across the hub and all 31 applications.
+ */
+:root {
+  --sw-doc-page: #f8fafc;
+  --sw-doc-panel: #ffffff;
+  --sw-doc-panel-muted: #eef2f7;
+  --sw-doc-text: #172033;
+  --sw-doc-muted: #3d4b5f;
+  --sw-doc-link: #0645ad;
+  --sw-doc-border: #526273;
+  --sw-doc-action: #0b4f8a;
+  --sw-doc-action-text: #ffffff;
+  --sw-doc-focus: #7c3aed;
+  --sw-doc-hero: #102a43;
+  --sw-doc-hero-text: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --sw-doc-page: #080f1c;
+    --sw-doc-panel: #111c2e;
+    --sw-doc-panel-muted: #1b2a40;
+    --sw-doc-text: #f8fafc;
+    --sw-doc-muted: #d7e0eb;
+    --sw-doc-link: #8ec5ff;
+    --sw-doc-border: #a8b6c8;
+    --sw-doc-action: #cfe5ff;
+    --sw-doc-action-text: #071525;
+    --sw-doc-focus: #ffd43b;
+    --sw-doc-hero: #050a12;
+    --sw-doc-hero-text: #ffffff;
+  }
+}
+
+:root[data-theme="dark"],
+:root.dark,
+:root.dark-mode {
+  --sw-doc-page: #080f1c;
+  --sw-doc-panel: #111c2e;
+  --sw-doc-panel-muted: #1b2a40;
+  --sw-doc-text: #f8fafc;
+  --sw-doc-muted: #d7e0eb;
+  --sw-doc-link: #8ec5ff;
+  --sw-doc-border: #a8b6c8;
+  --sw-doc-action: #cfe5ff;
+  --sw-doc-action-text: #071525;
+  --sw-doc-focus: #ffd43b;
+  --sw-doc-hero: #050a12;
+  --sw-doc-hero-text: #ffffff;
+}
+
+html,
+body {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  background: var(--sw-doc-page) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+main,
+[role="main"] {
+  box-sizing: border-box !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  color: var(--sw-doc-text) !important;
+}
+
+main *,
+[role="main"] * {
+  box-sizing: border-box;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+html[lang="sw"] body > * {
+  box-sizing: border-box !important;
+  max-width: 100% !important;
+  min-width: 0 !important;
+}
+
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) a {
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-link) !important;
+}
+
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(button, input, select, textarea, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(section, article, aside, nav, header, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, ul, ol, li) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+}
+
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(nav, header, h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, th, td, label, legend, caption, summary, small, output) {
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body > :is(button, input, select, textarea, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body > :is(button, input, select, textarea, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]):focus-visible {
+  outline: 3px solid var(--sw-doc-focus) !important;
+  outline-offset: 3px !important;
+}
+
+html[lang="sw"] body > :is(#sw-document-pdf-route-scope, :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero)) :where(a, button, input, select, textarea, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body > :is(#sw-document-pdf-route-scope, :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero)) :where(input[type="checkbox"], input[type="radio"]) {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  height: 1.5rem;
+  min-height: 1.5rem;
+  min-width: 1.5rem;
+  width: 1.5rem;
+}
+
+html[lang="sw"] body > :is(#sw-document-pdf-route-scope, :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero)) :where(input[type="checkbox"]:checked, input[type="radio"]:checked) {
+  background-color: var(--sw-doc-action) !important;
+  box-shadow: inset 0 0 0 0.24rem var(--sw-doc-panel) !important;
+}
+
+html[lang="sw"] body > :is(#sw-document-pdf-route-scope, :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero)) :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])) {
+  background-color: var(--sw-doc-action) !important;
+  border-color: #ffffff !important;
+  color: var(--sw-doc-action-text) !important;
+}
+
+html[lang="sw"] body :where(.cv-drag-handle, .cv-item-num, [style*="color:#f59e0b"], [style*="color: #f59e0b"]) {
+  color: #7a3f00 !important;
+}
+
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid var(--sw-doc-focus) !important;
+  outline-offset: 3px !important;
+}
+
+html[lang="sw"] body a:is(#sw-document-pdf-verification-report-scope, .tool-verification-report) {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+html[lang="sw"] body a:is(#sw-document-pdf-verification-report-scope, .tool-verification-report):focus-visible {
+  outline-color: #ffd43b !important;
+}
+
+:root:root[lang="sw"] body :is(main, [role="main"]) :where(input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, ul, ol, li) {
+    background-color: var(--sw-doc-panel) !important;
+    background-image: none !important;
+  }
+
+  :root:not([data-theme="light"]) body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, summary, small, output) {
+    color: var(--sw-doc-text) !important;
+  }
+}
+
+:is(:root[data-theme="dark"], :root.dark, :root.dark-mode) body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, ul, ol, li) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+}
+
+:is(:root[data-theme="dark"], :root.dark, :root.dark-mode) body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, .tool-hero, .hero, .sw-doc-hero) :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, summary, small, output) {
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body > :is(.tool-hero, .hero, .sw-doc-hero) {
+  background-color: var(--sw-doc-hero) !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body > :is(.tool-hero, .hero, .sw-doc-hero) :where(div, h1, h2, h3, p, span, strong, em, li) {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body > :is(.tool-hero, .hero, .sw-doc-hero) a {
+  background-color: transparent !important;
+  border: 2px solid var(--sw-doc-hero-text) !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body > :is(.tool-hero, .hero, .sw-doc-hero) :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline: 3px solid #ffd43b !important;
+  outline-offset: 3px !important;
+}
+
+main :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, small, output),
+[role="main"] :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, small, output) {
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body main :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, small, output, .kicker, [class*="kicker"]),
+html[lang="sw"] body [role="main"] :where(h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, label, legend, caption, small, output, .kicker, [class*="kicker"]) {
+  color: var(--sw-doc-text) !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) main :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+  :root:not([data-theme="light"]) [role="main"] :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a) {
+    background-color: var(--sw-doc-panel) !important;
+    background-image: none !important;
+  }
+}
+
+:root[data-theme="dark"] main :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+:root.dark main :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+:root.dark-mode main :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+:root[data-theme="dark"] [role="main"] :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+:root.dark [role="main"] :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a),
+:root.dark-mode [role="main"] :where(section, article, aside, div, form, fieldset, details, table, thead, tbody, tr, th, td, a) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+}
+
+main :where(p, li, dt, dd, label, legend, caption, small, output),
+[role="main"] :where(p, li, dt, dd, label, legend, caption, small, output) {
+  color: var(--sw-doc-text) !important;
+}
+
+main :where(.muted, .sub, .subtitle, .description, .hint, .help, .note, .meta, .eyebrow, [class*="-muted"], [class*="-hint"], [class*="-help"], [class*="-note"], [class*="-meta"]),
+[role="main"] :where(.muted, .sub, .subtitle, .description, .hint, .help, .note, .meta, .eyebrow, [class*="-muted"], [class*="-hint"], [class*="-help"], [class*="-note"], [class*="-meta"]) {
+  color: var(--sw-doc-muted) !important;
+}
+
+main :where(a),
+[role="main"] :where(a) {
+  color: var(--sw-doc-link) !important;
+  border: 2px solid currentColor !important;
+  border-radius: max(3px, 0.2rem);
+  text-decoration-color: currentColor !important;
+  text-decoration-thickness: max(1px, 0.08em);
+  text-underline-offset: 0.16em;
+}
+
+html[lang="sw"] body main :where(a, input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]),
+html[lang="sw"] body [role="main"] :where(a, input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  border-color: var(--sw-doc-border) !important;
+}
+
+html[lang="sw"] body main a,
+html[lang="sw"] body [role="main"] a {
+  color: var(--sw-doc-link) !important;
+  border-color: currentColor !important;
+}
+
+main :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]),
+[role="main"] :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) {
+  background-color: var(--sw-doc-hero) !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+main :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(h1, h2, h3, p, span, small, strong, em, a, li),
+[role="main"] :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(h1, h2, h3, p, span, small, strong, em, a, li) {
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body main :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(h1, h2, h3, p, span, small, strong, em, a, li),
+html[lang="sw"] body [role="main"] :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(h1, h2, h3, p, span, small, strong, em, a, li) {
+  color: var(--sw-doc-hero-text) !important;
+}
+
+main :where(.card, .tool-card, .panel, .box, .workspace-card, .sw-doc-card, fieldset, details, [class*="-card"], [class*="-panel"]),
+[role="main"] :where(.card, .tool-card, .panel, .box, .workspace-card, .sw-doc-card, fieldset, details, [class*="-card"], [class*="-panel"]) {
+  border-color: var(--sw-doc-border) !important;
+}
+
+main :where(input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]),
+[role="main"] :where(input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  max-width: 100% !important;
+  min-height: 2.75rem;
+  border: 2px solid var(--sw-doc-border) !important;
+  border-radius: max(4px, 0.25rem);
+  background-color: var(--sw-doc-panel) !important;
+  color: var(--sw-doc-text) !important;
+  caret-color: currentColor;
+}
+
+main :where(input[type="checkbox"], input[type="radio"]),
+[role="main"] :where(input[type="checkbox"], input[type="radio"]) {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  min-width: 1.5rem;
+  width: 1.5rem;
+  min-height: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid var(--sw-doc-border) !important;
+  background-color: var(--sw-doc-panel) !important;
+  accent-color: var(--sw-doc-action);
+}
+
+main :where(input[type="checkbox"]),
+[role="main"] :where(input[type="checkbox"]) {
+  border-radius: 4px;
+}
+
+main :where(input[type="radio"]),
+[role="main"] :where(input[type="radio"]) {
+  border-radius: 50%;
+}
+
+main :where(input[type="checkbox"]:checked, input[type="radio"]:checked),
+[role="main"] :where(input[type="checkbox"]:checked, input[type="radio"]:checked) {
+  background-color: var(--sw-doc-action) !important;
+  box-shadow: inset 0 0 0 0.24rem var(--sw-doc-panel) !important;
+}
+
+main :where(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]),
+[role="main"] :where(button, [role="button"], input[type="button"], input[type="submit"], input[type="reset"]) {
+  white-space: normal !important;
+  overflow-wrap: anywhere;
+}
+
+main :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])),
+[role="main"] :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])) {
+  background-color: var(--sw-doc-action) !important;
+  border-color: var(--sw-doc-action) !important;
+  color: var(--sw-doc-action-text) !important;
+}
+
+main :where(input, select, textarea)::placeholder,
+[role="main"] :where(input, select, textarea)::placeholder {
+  color: var(--sw-doc-muted) !important;
+  opacity: 1 !important;
+}
+
+main :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]), [contenteditable="true"]):focus-visible,
+[role="main"] :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]), [contenteditable="true"]):focus-visible {
+  outline: 3px solid var(--sw-doc-focus) !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+main :where(img, svg, canvas, iframe, video, audio),
+[role="main"] :where(img, svg, canvas, iframe, video, audio) {
+  max-width: 100% !important;
+}
+
+main :where(table),
+[role="main"] :where(table) {
+  display: block;
+  width: 100% !important;
+  max-width: 100% !important;
+  overflow-x: auto;
+}
+
+@media (max-width: 420px) {
+  main,
+  [role="main"] {
+    width: 100% !important;
+    padding-inline: clamp(0.5rem, 3vw, 1rem) !important;
+  }
+
+  main :where([class*="grid"], [class*="layout"], [class*="columns"]),
+  [role="main"] :where([class*="grid"], [class*="layout"], [class*="columns"]) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  main :where(section, article, aside, div, form, fieldset, details, header, nav, ul, ol, li, p, h1, h2, h3, h4, h5, h6),
+  [role="main"] :where(section, article, aside, div, form, fieldset, details, header, nav, ul, ol, li, p, h1, h2, h3, h4, h5, h6) {
+    max-width: 100% !important;
+  }
+
+  main :where(.tool-verification-head, .tool-verification-grid),
+  [role="main"] :where(.tool-verification-head, .tool-verification-grid) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    width: 100% !important;
+  }
+
+  main :where(.tool-verification-status),
+  [role="main"] :where(.tool-verification-status) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    max-width: 100% !important;
+    width: auto !important;
+  }
+
+  main :where(.tool-verification-badge),
+  [role="main"] :where(.tool-verification-badge) {
+    max-width: 100% !important;
+    white-space: normal !important;
+  }
+
+  html[lang="sw"] body :where(.tool-verification-sec, .tool-verification-card, .tool-verification-head, .tool-verification-grid, .tool-verification-status, .tool-verification-badge, .tool-verification-note) {
+    box-sizing: border-box !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+  }
+
+  html[lang="sw"] body :where(.tool-verification-head, .tool-verification-grid, .tool-verification-status) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  html[lang="sw"] body :where(.tool-verification-status, .tool-verification-badge, .tool-verification-note) {
+    width: auto !important;
+    white-space: normal !important;
+  }
+
+  main :where([class*="row"], [class*="actions"], [class*="toolbar"], [class*="controls"], [class*="header"], [class*="head"]),
+  [role="main"] :where([class*="row"], [class*="actions"], [class*="toolbar"], [class*="controls"], [class*="header"], [class*="head"]) {
+    flex-wrap: wrap !important;
+    max-width: 100% !important;
+  }
+
+  main :where([class*="sidebar"], [class*="aside"], [class*="preview"]),
+  [role="main"] :where([class*="sidebar"], [class*="aside"], [class*="preview"]) {
+    position: static !important;
+    width: 100% !important;
+    max-width: 100% !important;
+  }
+
+  main :where(input, select, textarea, button, [role="button"]),
+  [role="main"] :where(input, select, textarea, button, [role="button"]) {
+    width: 100% !important;
+  }
+
+  main :where(input[type="file"][style*="opacity:0"], input[type="file"][style*="opacity: 0"]),
+  [role="main"] :where(input[type="file"][style*="opacity:0"], input[type="file"][style*="opacity: 0"]) {
+    height: 1px !important;
+    max-height: 1px !important;
+    max-width: 1px !important;
+    width: 1px !important;
+  }
+
+  main :where(input[type="file"].hidden-input),
+  [role="main"] :where(input[type="file"].hidden-input) {
+    inset: 0 !important;
+    max-height: 100% !important;
+    max-width: 100% !important;
+  }
+}
+
+/*
+ * The repository theme bundle contains high-specificity legacy selectors.
+ * The :is() sentinel gives this lane-owned final contract enough specificity
+ * to remain authoritative without changing any English/shared theme owner.
+ */
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(h1, h2, h3, h4, h5, h6, div, p, span, strong, b, em, li, dt, dd, label, legend, caption, summary, small, output) {
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(a, input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  border-color: var(--sw-doc-border) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) a {
+  color: var(--sw-doc-link) !important;
+  border: 2px solid currentColor !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  color: var(--sw-doc-text) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where([class*="preview"]:not(canvas):not(img):not(video):not(iframe)) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+  color: var(--sw-doc-text) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])),
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])) * {
+  background-color: var(--sw-doc-action) !important;
+  border-color: var(--sw-doc-action) !important;
+  color: var(--sw-doc-action-text) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) {
+  background-color: var(--sw-doc-hero) !important;
+  background-image: none !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(h1, h2, h3, div, p, span, strong, b, em, li, a) {
+  color: var(--sw-doc-hero-text) !important;
+  border-color: currentColor !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]), [contenteditable="true"]):focus-visible {
+  outline: 3px solid var(--sw-doc-focus) !important;
+  outline-offset: 3px !important;
+  box-shadow: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, a, ul, ol, li, nav, header, span, strong, p, label) {
+    background-color: var(--sw-doc-panel) !important;
+    background-image: none !important;
+  }
+}
+
+:root[data-theme="dark"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, a, ul, ol, li, nav, header, span, strong, p, label),
+:root.dark body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, a, ul, ol, li, nav, header, span, strong, p, label),
+:root.dark-mode body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(section, article, aside, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, a, ul, ol, li, nav, header, span, strong, p, label) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]),
+  :root:not([data-theme="light"]) body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(div, a) {
+    background-color: var(--sw-doc-hero) !important;
+  }
+}
+
+:root[data-theme="dark"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]),
+:root[data-theme="dark"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(div, a) {
+  background-color: var(--sw-doc-hero) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(div, span, strong, p, li) {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) a {
+  background-color: transparent !important;
+  background-image: none !important;
+  border-color: var(--sw-doc-hero-text) !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"])):focus-visible {
+  outline-color: #ffd43b !important;
+}
+
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])),
+html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) :where(.primary:is(button, a, [role="button"]), .btn-primary:is(button, a, [role="button"]), .action-primary:is(button, a, [role="button"]), [data-primary="true"]:is(button, a, [role="button"])) * {
+  background-color: var(--sw-doc-action) !important;
+  border-color: var(--sw-doc-action) !important;
+  color: var(--sw-doc-action-text) !important;
+}
+
+html[lang="sw"] body a:is(#sw-document-pdf-verification-report-scope, .tool-verification-report) {
+  border-color: #ffffff !important;
+  color: #ffffff !important;
+}
+
+html[lang="sw"] body a:is(#sw-document-pdf-verification-report-scope, .tool-verification-report):focus-visible {
+  outline-color: #ffd43b !important;
+}
+
+/* Keep the focused control and its two-colour edge distinguishable from every
+ * app surface, including dark action fills and pale form fields. */
+html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, #afro-cookie-consent) :where(button, input, select, textarea, a[href], [tabindex]:not([tabindex="-1"]), [contenteditable="true"]):focus-visible {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  outline: 3px solid #000000 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px #ffffff !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(section, article, aside, nav, header, div, form, fieldset, details, summary, table, thead, tbody, tr, th, td, ul, ol, li) {
+  background-color: var(--sw-doc-panel) !important;
+  background-image: none !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(div, nav, header, h1, h2, h3, h4, h5, h6, p, span, strong, b, em, li, dt, dd, th, td, label, legend, caption, summary, small, output, pre, code) {
+  color: var(--sw-doc-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :where(nav, header, h1, h2, h3, h4, h5, h6, p):not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) {
+  color: var(--sw-doc-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :where(.priv-bar, .privacy-bar, [class*="privacy-banner"]) :where(span, strong, b, em, p, a) {
+  color: #ffffff !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > .ai-consent-notice {
+  background-color: var(--sw-doc-panel) !important;
+  border-color: var(--sw-doc-border) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > .ai-consent-notice :where(h3, p, span, strong, b, em) {
+  color: var(--sw-doc-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(p, span, strong, b, em, small, output) {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) kbd {
+  background-color: #e5e7eb !important;
+  color: #111827 !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.high, .medium, .low, .required, .optional, .ok, .warn, .bad) {
+  background-color: #172033 !important;
+  color: #ffffff !important;
+}
+
+/* Status containers often wrap their label in a strong or span. Keep those
+ * descendants on the same high-contrast foreground as the status surface. */
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.high, .medium, .low, .required, .optional, .ok, .warn, .bad) :where(p, span, strong, b, em, small, output) {
+  color: #ffffff !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(a, summary, input, select, textarea, button, [role="button"], [role="checkbox"], [role="radio"], [role="switch"], [role="tab"], [role="menuitem"], [tabindex]:not([tabindex="-1"]), [contenteditable="true"]) {
+  background-color: var(--sw-doc-panel) !important;
+  border: 2px solid var(--sw-doc-border) !important;
+  color: var(--sw-doc-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(summary):focus-visible {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  outline: 3px solid #000000 !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px #ffffff !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) :where(div, nav, h1, h2, h3, p, span, strong, b, em, li, a) {
+  background-color: transparent !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) {
+  background-color: var(--sw-doc-hero) !important;
+  background-image: none !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :is(.tool-hero, .hero, .sw-doc-hero),
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :is(.tool-hero, .hero, .sw-doc-hero) :where(.wrap, .ey) {
+  background-color: var(--sw-doc-hero) !important;
+  background-image: none !important;
+  color: var(--sw-doc-hero-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :is(.tool-hero, .hero, .sw-doc-hero) :where(div, nav, h1, h2, h3, p, span, strong, b, em, li) {
+  color: var(--sw-doc-hero-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :is(.tool-hero, .hero, .sw-doc-hero) :where(div, nav, h1, h2, h3, p, span, strong, b, em, li) {
+  background-color: transparent !important;
+  background-image: none !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.tool-hero, .hero, .sw-doc-hero, [class*="hero-inner"]) a {
+  border-color: var(--sw-doc-hero-text) !important;
+}
+
+body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(button, input, select, textarea, a[href], summary, [tabindex]:not([tabindex="-1"]), [contenteditable="true"]):focus-visible {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  outline: 3px solid #005fcc !important;
+  outline-offset: 3px !important;
+  box-shadow: 0 0 0 6px #ffffff !important;
+}
+
+/* At narrow widths, document tables become linear reading groups. This keeps
+ * labels and editable values reachable at 200% text without a two-dimensional
+ * scroll area or route-specific column squeezing. */
+@media (max-width: 480px) {
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(section, article, aside, nav, header, div, form, fieldset, details, summary, h1, h2, h3, h4, h5, h6, p, a, button, input, select, textarea) {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where([class*="actions"], [class*="action-row"], [class*="button-row"]) {
+    flex-wrap: wrap !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(.mob-bar, .mobile-toolbar, [class*="mobile"][class*="toolbar"]) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow-x: visible !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where([role="tablist"], .bp-section-nav) {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    overflow-x: visible !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where([role="tab"], .bp-section-tab) {
+    width: 100% !important;
+    white-space: normal !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(section, article, aside, div, form, fieldset)[style*="grid"],
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(section, article, aside, div, form, fieldset) {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(table, thead, tbody, tr, th, td) {
+    box-sizing: border-box !important;
+    min-width: 0 !important;
+    max-width: 100% !important;
+    width: 100% !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(table, thead, tbody, tr, td) {
+    display: block !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) :where(th, td) {
+    overflow-wrap: anywhere !important;
+    white-space: normal !important;
+  }
+
+  body#sw-document-pdf-a11y-scope#sw-document-pdf-a11y-scope > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta, afro-business-cta, #afro-cookie-consent) .r-watermark {
+    box-sizing: border-box !important;
+    width: 100% !important;
+    max-width: 100% !important;
+    padding-inline: 1rem !important;
+    font-size: 1.5rem !important;
+    text-align: center !important;
+    transform: translate(-50%, -50%) !important;
+    white-space: normal !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]),
+  html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) *,
+  html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) *::before,
+  html[lang="sw"] body :is(#sw-document-pdf-a11y-scope, main, [role="main"]) *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+
+  html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta),
+  html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta) *,
+  html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta) *::before,
+  html[lang="sw"] body > :not(afro-navbar, afro-footer, afro-related-tools, afro-site-assistant, afro-newsletter-cta) *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}
