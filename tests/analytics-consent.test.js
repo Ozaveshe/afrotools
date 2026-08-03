@@ -67,6 +67,13 @@ function commands(context) {
   return (context.window.dataLayer || []).map((entry) => Array.from(entry));
 }
 
+function assertNativeGtagCommands(context, message) {
+  assert.ok(
+    context.window.dataLayer.every((entry) => !Array.isArray(entry) && Object.prototype.toString.call(entry) === "[object Arguments]"),
+    message
+  );
+}
+
 function run(initialConsent) {
   const context = createSandbox(initialConsent);
   vm.runInNewContext(lazySource, context.sandbox, { filename: "lazy-analytics.js" });
@@ -78,6 +85,7 @@ function commandRows(context, name, detail) {
 }
 
 const fresh = run(null);
+assertNativeGtagCommands(fresh, "GA commands use native Arguments records required by the live Google tag");
 const freshCommands = commands(fresh);
 assert.deepStrictEqual(
   JSON.parse(JSON.stringify(freshCommands[0].slice(0, 3))),
@@ -135,6 +143,7 @@ fresh.window.gtag("event", "search_query", { query: "private@example.com", resul
 fresh.window.gtag("event", "tool_error", { error_message: "Account private@example.com failed", error_type: "validation" });
 fresh.window.gtag("event", "referral_source", { utm_source: "private@example.com", utm_campaign: "customer-name" });
 fresh.window.gtag("event", "unsafe", { email: "private@example.com", phone: "+123", tool_name: "safe-tool" });
+assertNativeGtagCommands(fresh, "sanitized event commands preserve the native gtag Arguments contract");
 const emittedEvents = commandRows(fresh, "event");
 const serializedEvents = JSON.stringify(emittedEvents);
 assert.ok(!serializedEvents.includes("private@example.com"), "raw search, campaign, and email values are removed at the GA boundary");

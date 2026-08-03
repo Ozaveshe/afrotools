@@ -94,10 +94,12 @@
     window.dataLayer = window.dataLayer || [];
     window.gtag = function (command, name, params) {
       if (command === 'event' || command === 'config') {
-        window.dataLayer.push([command, name, sanitizeParams(params)]);
-      } else {
-        window.dataLayer.push(Array.from(arguments));
+        arguments[2] = sanitizeParams(params);
       }
+      // gtag.js consumes the native Arguments record used by Google's
+      // documented snippet. Plain arrays look equivalent in tests but are not
+      // processed as commands by the live Google tag.
+      window.dataLayer.push(arguments);
     };
   }
 
