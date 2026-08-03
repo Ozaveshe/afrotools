@@ -387,6 +387,7 @@ function head(app, category, imageId) {
   };
   return `<meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="afrotools-content-id" content="sw-legal-government-insurance:${esc(imageId)}">
   <meta name="afrotools-source-owner" content="scripts/build-sw-legal-government-insurance-parity.js">
   <title>${esc(app.name)} | AfroTools</title>
   <meta name="description" content="${esc(app.description)}">

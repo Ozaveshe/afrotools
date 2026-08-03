@@ -35,8 +35,16 @@ const contracts = {
   }
 };
 
-function maintain(source) {
-  return source
+function maintain(source, relative) {
+  const contentId = `sw-web-text-codecs:${path.basename(path.dirname(relative))}`;
+  let maintained = source;
+  if (!/name=["']afrotools-content-id["']/i.test(maintained)) {
+    maintained = maintained.replace(
+      /(<meta name="afrotools-source-owner"[^>]*>)/i,
+      `$1\n<meta name="afrotools-content-id" content="${contentId}">`
+    );
+  }
+  return maintained
     .replace(/\n?<script class="sw-dev-runtime-localizer">[\s\S]*?<\/script>\s*/g, '\n')
     .replace(/\s+lang="en"\s+data-explicit-language-fallback="true"/g, '');
 }
@@ -45,7 +53,7 @@ let stale = false;
 for (const relative of owners) {
   const file = path.join(root, relative);
   const before = fs.readFileSync(file, 'utf8');
-  const after = maintain(before);
+  const after = maintain(before, relative);
   if (after.includes('sw-dev-runtime-localizer') || after.includes('data-explicit-language-fallback')) {
     throw new Error(`generic localization fallback remains in ${relative}`);
   }
