@@ -8,6 +8,8 @@ const vm = require("vm");
 const ROOT = path.join(__dirname, "..");
 const lazySource = fs.readFileSync(path.join(ROOT, "assets", "js", "lazy-analytics.js"), "utf8");
 const managerSource = fs.readFileSync(path.join(ROOT, "assets", "js", "components", "analytics-consent-v2.js"), "utf8");
+const authSource = fs.readFileSync(path.join(ROOT, "auth", "index.html"), "utf8");
+const dashboardSource = fs.readFileSync(path.join(ROOT, "dashboard", "index.html"), "utf8");
 
 function createSandbox(initialConsent) {
   let consent = initialConsent;
@@ -165,8 +167,13 @@ assert.ok(returningDeclined.inserted.some((node) => /googletagmanager/.test(node
 assert.ok(managerSource.includes("Accept analytics") && managerSource.includes("Reject analytics"), "consent UI has explicit accept and reject actions");
 assert.ok(managerSource.includes("cookieless measurement"), "consent UI accurately discloses denied-state measurement");
 assert.ok(managerSource.includes("data-afro-cookie-consent-open"), "consent choices can be reopened from a visible control");
+assert.ok(managerSource.includes("if (!document.body)") && managerSource.includes("DOMContentLoaded"), "early consent bootstrap waits safely for the document body");
 assert.ok(!lazySource.includes("G-8W6LCTFSK2"), "SalaryPadi measurement id is not present in AfroTools analytics");
 assert.strictEqual((lazySource.match(/G-D859CGF391/g) || []).length, 1, "AfroTools uses one measurement id constant");
+assert.ok(authSource.includes("window.gtag('event', 'login'"), "successful password sign-in emits the GA4 standard login event");
+assert.ok(authSource.includes("method: method") && !authSource.includes("email: email"), "login analytics retain method without account PII");
+assert.ok(dashboardSource.includes("queueDashboardAnalyticsEvent('login', { method:"), "OAuth callback emits the same metadata-only login event");
+assert.ok(!dashboardSource.includes("dataLayer.push(['event', 'dashboard_auth_state'"), "dashboard analytics never queue invalid plain arrays");
 
 const requiredRoutes = [
   "fr/index.html",

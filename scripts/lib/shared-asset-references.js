@@ -20,6 +20,7 @@ const MANAGED_CORE_BUNDLE_PATH_RE = /\/assets\/js\/bundles\/core\.[a-f0-9]+\.min
 const MANAGED_CORE_BUNDLE_TAG_RE = /<script\s+[^>]*src=["'][^"']*\/assets\/js\/bundles\/core\.[a-f0-9]+\.min\.js(?:\?[^"']*)?["'][^>]*><\/script>/gi;
 const MANAGED_TOOL_REGISTRY_TAG_RE = /<script\s+[^>]*src=["'][^"']*\/assets\/js\/components\/tool-registry(?:\.min)?\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/gi;
 const MANAGED_LAZY_ANALYTICS_TAG_RE = /<script\s+[^>]*src=["'][^"']*\/assets\/js\/lazy-analytics\.js(?:\?[^"']*)?["'][^>]*><\/script>\s*/gi;
+const MANAGED_ANALYTICS_BOOTSTRAP_TAG_RE = /<script\s+[^>]*src=["'][^"']*\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi;
 const MANAGED_TWITTER_FALLBACK_TAG_RE = /<meta\b[^>]*\bname=["']twitter:(?:card|title|description|image)["'][^>]*>\s*/gi;
 const MANAGED_ASSET_VERSION_RE = /((?:src|href)=["'][^"']*\/(?:assets|data|engines)\/[^"'?]+)\?v=[a-f0-9]+(["'])/gi;
 const MANAGED_SEO_LINKS_RE = /<!-- seo-internal-links -->[\s\S]*?<!-- seo-internal-links -->\s*/gi;
@@ -77,6 +78,7 @@ function normalizeBuildManagedHtml(html) {
     )
     .replace(MANAGED_TOOL_REGISTRY_TAG_RE, "")
     .replace(MANAGED_LAZY_ANALYTICS_TAG_RE, "")
+    .replace(MANAGED_ANALYTICS_BOOTSTRAP_TAG_RE, "")
     .replace(MANAGED_TWITTER_FALLBACK_TAG_RE, "")
     .replace(MANAGED_SEO_LINKS_RE, "")
     .replace(MANAGED_ASSET_VERSION_RE, "$1$2")
@@ -108,6 +110,7 @@ module.exports = {
   MANAGED_CORE_BUNDLE_TAG_RE,
   MANAGED_TOOL_REGISTRY_TAG_RE,
   MANAGED_LAZY_ANALYTICS_TAG_RE,
+  MANAGED_ANALYTICS_BOOTSTRAP_TAG_RE,
   MANAGED_TWITTER_FALLBACK_TAG_RE,
   MANAGED_ASSET_VERSION_RE,
   MANAGED_SEO_LINKS_RE,

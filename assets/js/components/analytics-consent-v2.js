@@ -4,6 +4,7 @@
   var CONSENT_KEY = 'afrotools_cookie_consent';
   var BANNER_ID = 'afro-cookie-consent';
   var STYLE_ID = 'afro-cookie-consent-style';
+  var pendingBodyOpen = false;
   var COPY = {
     en: {
       label: 'Cookie consent',
@@ -100,6 +101,16 @@
   }
 
   function open() {
+    if (!document.body) {
+      if (!pendingBodyOpen) {
+        pendingBodyOpen = true;
+        document.addEventListener('DOMContentLoaded', function () {
+          pendingBodyOpen = false;
+          open();
+        }, { once: true });
+      }
+      return null;
+    }
     var copy = languageCopy();
     var status = readConsent();
     close();

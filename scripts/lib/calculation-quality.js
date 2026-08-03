@@ -128,6 +128,10 @@ function normalizeHtmlFormulaPresentation(source) {
   // helpers change; calculator engines remain separate protected artifacts.
   return String(source)
     .replace(
+      /<script\s+[^>]*src=["'][^"']*\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?["'][^>]*><\/script>[ \t]*(?:\r?\n)?/gi,
+      "",
+    )
+    .replace(
     /(assets\/js\/(?:lazy-analytics|components\/(?:related-tools|navbar)(?:\.min)?)\.js\?v=)[a-f0-9]{8}/gi,
     "$1__FORMULA_DIGEST_CACHE__",
     )

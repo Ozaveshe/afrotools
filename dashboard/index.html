@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
     <link rel="icon" type="image/svg+xml" href="/assets/img/logo-mark.svg">
     <link rel="manifest" href="/manifest.json">
     <link rel="apple-touch-icon" href="/assets/img/logo-mark.svg">
@@ -3770,16 +3771,30 @@
                     detail: { state: nextState, previousState: previousState || null }
                 }));
             } catch(e) {}
-            setTimeout(function() {
-                try {
-                    if (typeof window.gtag === 'function') {
-                        window.gtag('event', 'dashboard_auth_state', payload);
-                    } else {
-                        window.dataLayer = window.dataLayer || [];
-                        window.dataLayer.push(['event', 'dashboard_auth_state', payload]);
-                    }
-                } catch(e) {}
-            }, 0);
+            queueDashboardAnalyticsEvent('dashboard_auth_state', payload);
+        }
+
+        function queueDashboardAnalyticsEvent(eventName, payload, attempt) {
+            attempt = attempt || 0;
+            try {
+                if (typeof window.gtag === 'function') {
+                    window.gtag('event', eventName, payload);
+                    return;
+                }
+            } catch(e) {}
+            if (attempt < 20) {
+                setTimeout(function() {
+                    queueDashboardAnalyticsEvent(eventName, payload, attempt + 1);
+                }, 100);
+            }
+        }
+
+        function trackDashboardLogin(method) {
+            try {
+                if (sessionStorage.getItem('afrotools_login_event_sent') === '1') return;
+                sessionStorage.setItem('afrotools_login_event_sent', '1');
+            } catch(e) {}
+            queueDashboardAnalyticsEvent('login', { method: method || 'oauth' });
         }
 
         function normalizeDashboardUser(user) {
@@ -3920,6 +3935,7 @@
                     currentUser = result.user;
                     cacheDashboardUser(currentUser);
                     if (options.oauthCallback || isDashboardOAuthCallbackUrl()) {
+                        trackDashboardLogin('oauth');
                         var callbackNext = dashboardSafeNext(options.next || '');
                         if (callbackNext && callbackNext !== window.location.pathname) {
                             window.location.replace(callbackNext);

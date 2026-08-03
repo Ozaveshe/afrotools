@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="en">
 <head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Sign in or create an account | AfroTools</title>
@@ -296,6 +297,29 @@
       });
     });
 
+    function continueAfterLogin(method, destination) {
+      var navigated = false;
+      function navigate() {
+        if (navigated) return;
+        navigated = true;
+        window.location.href = destination;
+      }
+      try {
+        if (typeof window.gtag !== 'function') {
+          navigate();
+          return;
+        }
+        window.gtag('event', 'login', {
+          method: method,
+          event_callback: navigate,
+          event_timeout: 800
+        });
+        window.setTimeout(navigate, 900);
+      } catch (_) {
+        navigate();
+      }
+    }
+
     document.getElementById('loginForm').addEventListener('submit', async function(evt){
       if (!window.AfroAuth || typeof AfroAuth.login !== 'function') return;
       evt.preventDefault();
@@ -306,7 +330,7 @@
         var result = await AfroAuth.login(email, password);
         if (result && result.ok !== false) {
           syncApiEmail(email);
-          window.location.href = next;
+          continueAfterLogin(result.offline ? 'offline_cache' : 'password', next);
           return;
         }
         setStatus(result && result.error ? result.error : 'Sign in failed. Check your details and try again.', true);

@@ -86,6 +86,52 @@ test('delayed core bundle cannot create a competing legacy consent banner', asyn
   await expect(page.getByRole('button', { name: 'Reject analytics' })).toHaveCount(1);
 });
 
+test('successful password sign-in emits a metadata-only login event before redirecting', async ({ page }) => {
+  const analyticsCalls = [];
+  await page.exposeFunction('captureAuthAnalytics', (eventName, params) => {
+    analyticsCalls.push({ eventName, params });
+  });
+  await page.addInitScript(() => {
+    localStorage.setItem('afrotools_cookie_consent', 'accepted');
+    window._afroAuthLoaded = true;
+    window.AfroAuth = {
+      login: async () => ({ ok: true }),
+    };
+  });
+  await page.route('https://www.googletagmanager.com/**', (route) => route.fulfill({
+    status: 200,
+    contentType: 'application/javascript',
+    body: 'window.__fakeGoogleTagLoaded = true;'
+  }));
+  await page.route('https://www.google-analytics.com/**', (route) => route.fulfill({ status: 204, body: '' }));
+
+  await page.goto('/auth/?mode=login&next=/dashboard/', { waitUntil: 'domcontentloaded' });
+  await expect.poll(() => page.evaluate(() => typeof window.gtag)).toBe('function');
+  await page.evaluate(() => {
+    const original = window.gtag;
+    window.gtag = function auditedGtag(command, name, params) {
+      if (command === 'event') {
+        const serializable = {};
+        Object.keys(params || {}).forEach((key) => {
+          if (typeof params[key] !== 'function') serializable[key] = params[key];
+        });
+        window.captureAuthAnalytics(name, serializable);
+      }
+      return original.apply(this, arguments);
+    };
+  });
+
+  await page.locator('#loginEmail').fill('synthetic@example.test');
+  await page.locator('#loginPassword').fill('synthetic-password');
+  await page.locator('#loginForm .auth-submit').click();
+
+  await expect.poll(() => analyticsCalls.find((call) => call.eventName === 'login')).toBeTruthy();
+  const login = analyticsCalls.find((call) => call.eventName === 'login');
+  expect(login.params).toMatchObject({ method: 'password', event_timeout: 800 });
+  expect(JSON.stringify(login)).not.toContain('synthetic@example.test');
+  await page.waitForURL('**/dashboard/', { timeout: 3000 });
+});
+
 test('French Agriculture theme storage changes only after an explicit selection', async ({ page }) => {
   const configuredOrigin = new URL(
     process.env.PLAYWRIGHT_BASE_URL || 'http://127.0.0.1:4173',

@@ -8,7 +8,10 @@ const { writeFileSyncWithRetry } = require("./lib/safe-write");
 
 const ROOT = path.resolve(__dirname, "..");
 const ANALYTICS_SOURCE = path.join(ROOT, "assets", "js", "lazy-analytics.js");
+const BOOTSTRAP_SOURCE = path.join(ROOT, "assets", "js", "analytics-bootstrap.js");
 const PUBLIC_SRC = "/assets/js/lazy-analytics.js";
+const BOOTSTRAP_PUBLIC_SRC = "/assets/js/analytics-bootstrap.js";
+const ACTIVE_LOCALIZATION_PREFIXES = new Set(["ha", "sw", "yo"]);
 
 // Keep this list aligned with the non-public top-level directories in
 // scripts/build-dist.js. The source build owns public pages; evidence,
@@ -60,7 +63,8 @@ const SKIPPED_FILES = new Set([
   "widgets/iframe/template.html",
 ]);
 
-const LOADER_PATTERN = /<script\b[^>]*\bsrc=(["'])\/assets\/js\/lazy-analytics\.js(?:\?[^"']*)?\1[^>]*>\s*<\/script>/gi;
+const LOADER_PATTERN = /<script\b[^>]*\ssrc=(["'])\/assets\/js\/lazy-analytics\.js(?:\?[^"']*)?\1[^>]*>\s*<\/script>/gi;
+const BOOTSTRAP_PATTERN = /<script\b[^>]*\ssrc=(["'])\/assets\/js\/analytics-bootstrap\.js(?:\?[^"']*)?\1[^>]*>\s*<\/script>/gi;
 
 function normalizeRelative(filePath, root = ROOT) {
   return path.relative(root, filePath).replace(/\\/g, "/");
@@ -107,8 +111,30 @@ function analyticsVersion(sourcePath = ANALYTICS_SOURCE) {
   return crypto.createHash("md5").update(source).digest("hex").slice(0, 8);
 }
 
+function bootstrapVersion(sourcePath = BOOTSTRAP_SOURCE) {
+  const source = fs.readFileSync(sourcePath);
+  return crypto.createHash("md5").update(source).digest("hex").slice(0, 8);
+}
+
 function canonicalLoaderTag(version = analyticsVersion()) {
   return `<script src="${PUBLIC_SRC}?v=${version}" defer></script>`;
+}
+
+function earlyBootstrapTag(
+  version = bootstrapVersion(),
+  loaderVersion = analyticsVersion(),
+) {
+  return `<script src="${BOOTSTRAP_PUBLIC_SRC}?v=${version}" data-loader-version="${loaderVersion}" async></script>`;
+}
+
+function shouldUseEarlyBootstrap(relativePath) {
+  const normalized = String(relativePath || "").replace(/\\/g, "/").replace(/^\.\/+/, "");
+  const topLevel = normalized.split("/").filter(Boolean)[0] || "";
+  return !ACTIVE_LOCALIZATION_PREFIXES.has(topLevel);
+}
+
+function bootstrapMatches(html) {
+  return Array.from(html.matchAll(new RegExp(BOOTSTRAP_PATTERN.source, BOOTSTRAP_PATTERN.flags)));
 }
 
 function loaderMatches(html) {
@@ -118,6 +144,35 @@ function loaderMatches(html) {
 function loaderSource(tag) {
   const match = tag.match(/\bsrc=(["'])([^"']+)\1/i);
   return match ? match[2] : "";
+}
+
+function loaderIsInHead(html, match) {
+  const openingHead = /<head\b[^>]*>/i.exec(html);
+  const closingHead = /<\/head\s*>/i.exec(html);
+  if (!openingHead || !closingHead) return false;
+  const headStart = openingHead.index + openingHead[0].length;
+  return match.index >= headStart && match.index < closingHead.index;
+}
+
+function loaderIsCanonical(html, match, tag, placement) {
+  if (loaderSource(match[0]) !== loaderSource(tag)) return false;
+  if (placement !== "head") return true;
+  return loaderIsInHead(html, match)
+    && /\sasync(?:\s|=|>)/i.test(match[0])
+    && !/\sdefer(?:\s|=|>)/i.test(match[0]);
+}
+
+function insertAfterOpeningHead(html, tag) {
+  const openingHead = /<head\b[^>]*>/i.exec(html);
+  if (!openingHead) return null;
+  const insertAt = openingHead.index + openingHead[0].length;
+  const rest = html.slice(insertAt);
+  const existingLineBreak = /^(\r?\n)/.exec(rest);
+  return html.slice(0, insertAt)
+    + (existingLineBreak ? existingLineBreak[1] : "")
+    + tag
+    + (existingLineBreak ? "" : "\n")
+    + rest;
 }
 
 function insertBeforeClosingBody(html, tag) {
@@ -138,25 +193,46 @@ function insertBeforeClosingBody(html, tag) {
   return html.slice(0, bodyIndex) + "\n" + tag + "\n" + html.slice(bodyIndex);
 }
 
-function normalizeLoaderInHtml(html, tag) {
+function removeLoaderMatch(html, match) {
+  const lineStart = html.lastIndexOf("\n", match.index - 1) + 1;
+  const lineEndMatch = /\r?\n/.exec(html.slice(match.index + match[0].length));
+  const lineEnd = lineEndMatch
+    ? match.index + match[0].length + lineEndMatch.index + lineEndMatch[0].length
+    : html.length;
+  const beforeOnLine = html.slice(lineStart, match.index);
+  const afterOnLine = html.slice(match.index + match[0].length, lineEnd);
+  if (/^[ \t]*$/.test(beforeOnLine) && /^[ \t]*(?:\r?\n)?$/.test(afterOnLine)) {
+    return html.slice(0, lineStart) + html.slice(lineEnd);
+  }
+  return html.slice(0, match.index) + html.slice(match.index + match[0].length);
+}
+
+function normalizeLoaderInHtml(html, tag, options = {}) {
+  const placement = options.placement === "head" ? "head" : "body";
   const matches = loaderMatches(html);
   if (matches.length > 1) {
     return { html, duplicate: true, injected: false, normalized: false };
   }
   if (matches.length === 1) {
     const match = matches[0];
-    if (loaderSource(match[0]) === loaderSource(tag)) {
+    if (loaderIsCanonical(html, match, tag, placement)) {
       return { html, duplicate: false, injected: false, normalized: false };
     }
+    const withoutLoader = removeLoaderMatch(html, match);
+    const movedHtml = placement === "head"
+      ? insertAfterOpeningHead(withoutLoader, tag)
+      : insertBeforeClosingBody(withoutLoader, tag);
     return {
-      html: html.slice(0, match.index) + tag + html.slice(match.index + match[0].length),
+      html: movedHtml === null ? html : movedHtml,
       duplicate: false,
       injected: false,
-      normalized: true,
+      normalized: movedHtml !== null,
     };
   }
 
-  const injectedHtml = insertBeforeClosingBody(html, tag);
+  const injectedHtml = placement === "head"
+    ? insertAfterOpeningHead(html, tag)
+    : insertBeforeClosingBody(html, tag);
   return {
     html: injectedHtml === null ? html : injectedHtml,
     duplicate: false,
@@ -165,8 +241,35 @@ function normalizeLoaderInHtml(html, tag) {
   };
 }
 
-function scanCoverage(root = ROOT, version = analyticsVersion(path.join(root, "assets", "js", "lazy-analytics.js"))) {
-  const tag = canonicalLoaderTag(version);
+function normalizeBootstrapInHtml(html, tag, required) {
+  const matches = bootstrapMatches(html);
+  if (!required) {
+    if (!matches.length) return { html, duplicate: false, injected: false, normalized: false };
+    let output = html;
+    for (const match of matches.slice().reverse()) output = removeLoaderMatch(output, match);
+    return { html: output, duplicate: matches.length > 1, injected: false, normalized: true };
+  }
+  if (matches.length > 1) return { html, duplicate: true, injected: false, normalized: false };
+  if (matches.length === 1 && loaderIsCanonical(html, matches[0], tag, "head")) {
+    return { html, duplicate: false, injected: false, normalized: false };
+  }
+  const withoutBootstrap = matches.length ? removeLoaderMatch(html, matches[0]) : html;
+  const output = insertAfterOpeningHead(withoutBootstrap, tag);
+  return {
+    html: output === null ? html : output,
+    duplicate: false,
+    injected: !matches.length && output !== null,
+    normalized: Boolean(matches.length && output !== null),
+  };
+}
+
+function scanCoverage(
+  root = ROOT,
+  version = analyticsVersion(path.join(root, "assets", "js", "lazy-analytics.js")),
+  earlyVersion = bootstrapVersion(path.join(root, "assets", "js", "analytics-bootstrap.js")),
+) {
+  const loaderTag = canonicalLoaderTag(version);
+  const bootstrapTag = earlyBootstrapTag(earlyVersion, version);
   const report = {
     scanned: 0,
     eligible: 0,
@@ -174,12 +277,16 @@ function scanCoverage(root = ROOT, version = analyticsVersion(path.join(root, "a
     missing: [],
     nonCanonical: [],
     duplicates: [],
+    missingBootstrap: [],
+    nonCanonicalBootstrap: [],
+    duplicateBootstrap: [],
     malformed: [],
   };
 
   for (const file of walkHtml(root)) {
     report.scanned += 1;
     const relative = normalizeRelative(file, root);
+    const early = shouldUseEarlyBootstrap(relative);
     const html = fs.readFileSync(file, "utf8");
     if (!/<html(?:\s|>)/i.test(html)) continue;
     if (!/<\/body\s*>/i.test(html)) {
@@ -195,7 +302,17 @@ function scanCoverage(root = ROOT, version = analyticsVersion(path.join(root, "a
       report.duplicates.push(relative);
     } else {
       report.covered += 1;
-      if (loaderSource(matches[0][0]) !== loaderSource(tag)) report.nonCanonical.push(relative);
+      if (loaderSource(matches[0][0]) !== loaderSource(loaderTag)) {
+        report.nonCanonical.push(relative);
+      }
+    }
+    const bootstraps = bootstrapMatches(html);
+    if (early && !bootstraps.length) report.missingBootstrap.push(relative);
+    else if (bootstraps.length > 1) report.duplicateBootstrap.push(relative);
+    else if (early && !loaderIsCanonical(html, bootstraps[0], bootstrapTag, "head")) {
+      report.nonCanonicalBootstrap.push(relative);
+    } else if (!early && bootstraps.length) {
+      report.nonCanonicalBootstrap.push(relative);
     }
   }
 
@@ -205,8 +322,10 @@ function scanCoverage(root = ROOT, version = analyticsVersion(path.join(root, "a
 function applyCoverage(root = ROOT) {
   const sourcePath = path.join(root, "assets", "js", "lazy-analytics.js");
   const version = analyticsVersion(sourcePath);
-  const tag = canonicalLoaderTag(version);
-  const before = scanCoverage(root, version);
+  const earlyVersion = bootstrapVersion(path.join(root, "assets", "js", "analytics-bootstrap.js"));
+  const loaderTag = canonicalLoaderTag(version);
+  const bootstrapTag = earlyBootstrapTag(earlyVersion, version);
+  const before = scanCoverage(root, version, earlyVersion);
 
   if (before.duplicates.length) {
     throw new Error(`Refusing to rewrite ${before.duplicates.length} page(s) with duplicate analytics loaders.`);
@@ -215,25 +334,33 @@ function applyCoverage(root = ROOT) {
   let injected = 0;
   let normalized = 0;
   for (const file of walkHtml(root)) {
+    const relative = normalizeRelative(file, root);
     const html = fs.readFileSync(file, "utf8");
     if (!/<html(?:\s|>)/i.test(html) || !/<\/body\s*>/i.test(html)) continue;
 
-    const result = normalizeLoaderInHtml(html, tag);
-    if (result.html === html) continue;
-    writeFileSyncWithRetry(file, result.html, "utf8");
-    if (result.injected) injected += 1;
-    if (result.normalized) normalized += 1;
+    const loaderResult = normalizeLoaderInHtml(html, loaderTag);
+    const bootstrapResult = normalizeBootstrapInHtml(
+      loaderResult.html,
+      bootstrapTag,
+      shouldUseEarlyBootstrap(relative),
+    );
+    if (bootstrapResult.html === html) continue;
+    writeFileSyncWithRetry(file, bootstrapResult.html, "utf8");
+    if (loaderResult.injected || bootstrapResult.injected) injected += 1;
+    if (loaderResult.normalized || bootstrapResult.normalized) normalized += 1;
   }
 
-  const after = scanCoverage(root, version);
+  const after = scanCoverage(root, version, earlyVersion);
   return { before, after, injected, normalized, version };
 }
 
 function printReport(report, label) {
   console.log(
     `[analytics] ${label}: ${report.covered}/${report.eligible} eligible page(s) covered; `
-    + `${report.missing.length} missing, ${report.nonCanonical.length} stale, `
-    + `${report.duplicates.length} duplicate, ${report.malformed.length} malformed.`
+      + `${report.missing.length} missing, ${report.nonCanonical.length} stale, `
+      + `${report.duplicates.length} duplicate, ${report.missingBootstrap.length} missing early bootstrap, `
+      + `${report.nonCanonicalBootstrap.length} stale early bootstrap, `
+      + `${report.duplicateBootstrap.length} duplicate early bootstrap, ${report.malformed.length} malformed.`
   );
 }
 
@@ -260,6 +387,9 @@ function main() {
       result.after.missing.length
       || result.after.nonCanonical.length
       || result.after.duplicates.length
+      || result.after.missingBootstrap.length
+      || result.after.nonCanonicalBootstrap.length
+      || result.after.duplicateBootstrap.length
     ) {
       process.exitCode = 1;
     }
@@ -271,10 +401,15 @@ function main() {
   printPaths("missing loader", report.missing);
   printPaths("stale loader", report.nonCanonical);
   printPaths("duplicate loader", report.duplicates);
+  printPaths("missing early bootstrap", report.missingBootstrap);
+  printPaths("stale early bootstrap", report.nonCanonicalBootstrap);
+  printPaths("duplicate early bootstrap", report.duplicateBootstrap);
   printPaths("malformed documents skipped", report.malformed);
   if (
     check
-    && (report.missing.length || report.nonCanonical.length || report.duplicates.length)
+    && (report.missing.length || report.nonCanonical.length || report.duplicates.length
+      || report.missingBootstrap.length || report.nonCanonicalBootstrap.length
+      || report.duplicateBootstrap.length)
   ) {
     process.exitCode = 1;
   }
@@ -285,13 +420,18 @@ if (require.main === module) main();
 module.exports = {
   ROOT,
   analyticsVersion,
+  bootstrapVersion,
   applyCoverage,
   canonicalLoaderTag,
+  earlyBootstrapTag,
   insertBeforeClosingBody,
+  insertAfterOpeningHead,
   loaderMatches,
   loaderSource,
   normalizeLoaderInHtml,
+  normalizeBootstrapInHtml,
   scanCoverage,
   shouldSkipRelativePath,
+  shouldUseEarlyBootstrap,
   walkHtml,
 };
