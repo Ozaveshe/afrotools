@@ -6,9 +6,9 @@ const fs = require('fs');
 const { execFileSync } = require('child_process');
 
 const writeMode = process.argv.includes('--write');
-const trackedFiles = execFileSync(
+const sourceFiles = execFileSync(
   'git',
-  ['ls-files', '-z', '*.css', '*.html', '*.js'],
+  ['ls-files', '-z', '--cached', '--others', '--exclude-standard', '--', '*.css', '*.html', '*.js'],
   { encoding: 'utf8', maxBuffer: 32 * 1024 * 1024 }
 )
   .split('\0')
@@ -24,7 +24,7 @@ const findings = [];
 let changedFiles = 0;
 let removedRules = 0;
 
-for (const file of trackedFiles) {
+for (const file of sourceFiles) {
   const original = fs.readFileSync(file, 'utf8');
   let source = original;
 
@@ -60,5 +60,5 @@ if (findings.length) {
   findings.forEach((finding) => console.error(`- ${finding}`));
   process.exitCode = 1;
 } else {
-  console.log(`UI accent audit passed across ${trackedFiles.length} tracked source files.`);
+  console.log(`UI accent audit passed across ${sourceFiles.length} versioned and untracked source files.`);
 }

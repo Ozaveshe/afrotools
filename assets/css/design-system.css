@@ -2481,35 +2481,36 @@ html[data-theme="dark"] .vat-prefix {
 
 /* ── PRINT ─────────────────────────────────────────────────────────── */
 
-/* 2026+ visual refresh: shared polish for pages that import the full design system. */
+/* Shared task-first controls and surfaces for pages that import the full design system. */
 :where(.btn, .btn-primary, .btn-secondary, .btn-ghost, .card-cta, .hero-search-btn, button[type="submit"], a[role="button"]) {
   min-height: var(--control-height, 44px);
   border-radius: var(--radius-control, var(--radius-md));
-  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast), transform var(--transition-fast);
+  transition: background-color var(--transition-fast), border-color var(--transition-fast), color var(--transition-fast), box-shadow var(--transition-fast);
   touch-action: manipulation;
 }
 
 :where(.btn-primary, .btn--primary, .hero-search-btn, .card-cta.cta-monthly, .card-cta.cta-annual, button[type="submit"]) {
-  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-dark, #004ba0) 100%);
-  border-color: transparent;
+  background: var(--color-primary);
+  border-color: var(--color-primary);
   color: #fff;
-  box-shadow: var(--shadow-glow-blue, 0 14px 32px rgba(0, 98, 204, 0.16));
+  box-shadow: none;
 }
 
 :where(.btn-primary, .btn--primary, .hero-search-btn, .card-cta.cta-monthly, .card-cta.cta-annual, button[type="submit"]):hover {
-  transform: translateY(-1px);
-  box-shadow: 0 18px 38px rgba(var(--color-primary-rgb, 0, 98, 204), 0.22);
+  background: var(--color-primary-dark, #004ba0);
+  border-color: var(--color-primary-dark, #004ba0);
+  box-shadow: none;
 }
 
 :where(.btn-secondary, .btn-ghost, .btn--ghost-dark, .btn-outline, .card-cta):not(.cta-monthly):not(.cta-annual) {
-  background: var(--surface-glass-strong, var(--color-surface));
-  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.18);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.06);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: none;
 }
 
 :where(.card, .panel, .box, .stat-card, .metric-card, .result-card, .tool-card, .category-card, .cat-card, .hub-card, .feature-card, .step-card, .dashboard-card, .admin-card, .pro-lab-card, .plan-boundary-card, .home-tool-card, .country-tool-card) {
-  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.12);
-  box-shadow: var(--shadow-card);
+  border-color: var(--color-border);
+  box-shadow: var(--shadow-sm);
 }
 
 :where(a.card, a.panel, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card, .card-hover, [role="button"].card) {
@@ -2517,8 +2518,8 @@ html[data-theme="dark"] .vat-prefix {
 }
 
 :where(a.card, a.panel, a.tool-card, a.category-card, a.cat-card, a.hub-card, a.feature-card, a.step-card, a.home-tool-card, a.country-tool-card, .card-hover, [role="button"].card):hover {
-  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.28);
-  box-shadow: var(--shadow-card-hover);
+  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.36);
+  box-shadow: var(--shadow-sm);
 }
 
 :where(.form-input, .form-select, .form-textarea, input:not([type="checkbox"]):not([type="radio"]):not([type="range"]), select, textarea):focus {
@@ -2531,21 +2532,18 @@ html[data-theme="dark"] .vat-prefix {
   letter-spacing: 0;
 }
 
-/* 2026+ app interior polish: forms, result panels, tables, and workbench cards. */
+/* App interiors: one quiet boundary for forms, results, tables, and workbenches. */
 :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.92), rgba(248, 251, 255, 0.86)),
-    var(--surface-glass, var(--color-surface));
-  border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
-  border-radius: var(--radius-xl, 18px);
+  background: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 10px);
 }
 
 :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
-  background:
-    linear-gradient(145deg, rgba(255, 255, 255, 0.94), rgba(248, 251, 255, 0.88)) !important;
-  border-color: rgba(var(--color-primary-rgb, 0, 98, 204), 0.14) !important;
-  border-radius: var(--radius-xl, 18px) !important;
-  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06)) !important;
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  border-radius: var(--radius-md, 10px) !important;
+  box-shadow: var(--shadow-sm) !important;
 }
 
 :where(.form-grid, .result-grid, .result-cards, .app-grid, .dashboard-grid, .tool-main-grid, .input-row, .form-row, .form-row-2) {
@@ -2580,10 +2578,10 @@ html[data-theme="dark"] .vat-prefix {
 }
 
 :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
-  border: 1px solid rgba(var(--color-primary-rgb, 0, 98, 204), 0.13);
-  border-radius: var(--radius-xl, 18px);
-  background: var(--surface-glass-strong, var(--color-surface));
-  box-shadow: var(--shadow-card, 0 12px 30px rgba(15, 23, 42, 0.06));
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md, 10px);
+  background: var(--color-surface);
+  box-shadow: none;
   overflow: auto;
 }
 
@@ -2597,23 +2595,20 @@ html[data-theme="dark"] .vat-prefix {
 }
 
 html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .panel, .preview-card, .insights-card, .workflow-card, .app-card, .dashboard-card) {
-  background:
-    linear-gradient(145deg, rgba(18, 31, 51, 0.88), rgba(11, 21, 36, 0.92)),
-    var(--color-surface);
-  border-color: rgba(147, 197, 253, 0.16);
+  background: var(--color-surface);
+  border-color: var(--color-border);
 }
 
 html[data-theme="dark"] :where(.calc-card, .input-card, .output-card, .result-card, .form-panel, .cv-form-panel, .import-card, .converter-card, .preview-card, .insights-card, .app-card, .dashboard-card, .ai-command) {
-  background:
-    linear-gradient(145deg, rgba(18, 31, 51, 0.9), rgba(11, 21, 36, 0.94)) !important;
-  border-color: rgba(147, 197, 253, 0.18) !important;
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28) !important;
+  background: var(--color-surface) !important;
+  border-color: var(--color-border) !important;
+  box-shadow: none !important;
 }
 
 html[data-theme="dark"] :where(.table-wrap, .items-table-wrap, .fx-table-wrap, .pad-table-wrap, .tax-table-wrapper, .band-table-wrap) {
-  background: rgba(18, 31, 51, 0.78);
-  border-color: rgba(147, 197, 253, 0.16);
-  box-shadow: 0 18px 42px rgba(0, 0, 0, 0.28);
+  background: var(--color-surface);
+  border-color: var(--color-border);
+  box-shadow: none;
 }
 
 /* Top-level page repair: keep card links from inheriting button-like centering. */

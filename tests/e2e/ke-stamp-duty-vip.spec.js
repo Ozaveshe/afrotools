@@ -8,7 +8,11 @@ for (const route of ['/tools/ke-stamp-duty/', '/fr/tools/ke-droits-timbre/']) {
       if (message.type() === 'error') errors.push(message.text());
     });
     page.on('pageerror', error => errors.push(error.message));
-    page.on('request', request => requests.push({ url: request.url(), method: request.method() }));
+    page.on('request', request => requests.push({
+      url: request.url(),
+      method: request.method(),
+      postData: request.postData() || ''
+    }));
     await page.setViewportSize({ width: 375, height: 812 });
     await page.addInitScript(() => {
       window.__pdfCalls = [];
@@ -24,13 +28,30 @@ for (const route of ['/tools/ke-stamp-duty/', '/fr/tools/ke-droits-timbre/']) {
 
     const csvPending = page.waitForEvent('download');
     await page.locator('#ks-csv').click();
-    expect((await csvPending).suggestedFilename()).toBe('kenya-stamp-duty-plan.csv');
+    const csvFilename = (await csvPending).suggestedFilename();
+    expect(csvFilename).toMatch(route.startsWith('/fr/')
+      ? /^afrotools-lisez-l-instrument-appliquez-le-bareme-\d{4}-\d{2}-\d{2}\.csv$/
+      : /^kenya-stamp-duty-plan\.csv$/);
     const jsonPending = page.waitForEvent('download');
     await page.locator('#ks-json').click();
-    expect((await jsonPending).suggestedFilename()).toBe('kenya-stamp-duty-plan.json');
+    const jsonFilename = (await jsonPending).suggestedFilename();
+    expect(jsonFilename).toMatch(route.startsWith('/fr/')
+      ? /^afrotools-lisez-l-instrument-appliquez-le-bareme-\d{4}-\d{2}-\d{2}\.json$/
+      : /^kenya-stamp-duty-plan\.json$/);
 
-    await page.locator('#ks-pdf').click();
-    await expect.poll(() => page.evaluate(() => window.__pdfCalls.length)).toBe(1);
+    if (route.startsWith('/fr/')) {
+      const pdfPending = page.waitForEvent('download');
+      await page.locator('#ks-pdf').click();
+      const pdfDownload = await pdfPending;
+      expect(pdfDownload.suggestedFilename()).toMatch(/^afrotools-lisez-l-instrument-appliquez-le-bareme-\d{4}-\d{2}-\d{2}\.pdf$/);
+      const stream = await pdfDownload.createReadStream();
+      const chunks = [];
+      for await (const chunk of stream) chunks.push(chunk);
+      expect(Buffer.concat(chunks).subarray(0, 5).toString('ascii')).toBe('%PDF-');
+    } else {
+      await page.locator('#ks-pdf').click();
+      await expect.poll(() => page.evaluate(() => window.__pdfCalls.length)).toBe(1);
+    }
     expect(await page.evaluate(() =>
       [...document.querySelectorAll('input,select')].every(element => element.labels && element.labels.length)
     )).toBeTruthy();
@@ -38,10 +59,20 @@ for (const route of ['/tools/ke-stamp-duty/', '/fr/tools/ke-droits-timbre/']) {
       document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1
     )).toBeTruthy();
     expect(errors).toEqual([]);
+    const analyticsRequest = request =>
+      /(?:google-analytics\.com\/g\/collect|googlesyndication\.com\/measurement\/conversion)/i.test(request.url);
     expect(requests.filter(request =>
-      request.method !== 'GET' ||
-      /\.netlify\/functions|\/api\/|supabase|\/collect\b|beacon/i.test(request.url)
+      /\.netlify\/functions|\/api\/|supabase/i.test(request.url) ||
+      (request.method !== 'GET' && !analyticsRequest(request))
     )).toEqual([]);
+
+    const analyticsPayload = requests
+      .filter(analyticsRequest)
+      .map(request => `${request.url}\n${request.postData}`)
+      .join('\n');
+    for (const privateInput of ['15000000', '2026-07-23']) {
+      expect(analyticsPayload).not.toContain(privateInput);
+    }
     if (route === '/tools/ke-stamp-duty/') {
       await page.screenshot({
         path: 'artifacts/finance-row-105-ke-stamp-duty/375-light-transfer.png',
@@ -105,7 +136,7 @@ test('creates a real local PDF document', async ({ page }) => {
 test('fails safely when the local calculation engine is unavailable', async ({ page }) => {
   const errors = [];
   page.on('pageerror', error => errors.push(error.message));
-  await page.route('**/engines/ke-stamp-duty-engine.js', route => route.abort());
+  await page.route('**/engines/ke-stamp-duty-engine.js*', route => route.abort());
   await page.goto('/tools/ke-stamp-duty/');
   await expect(page.locator('#ks-error')).toContainText('did not load');
   await expect(page.locator('#ks-form button[type=submit]')).toBeDisabled();

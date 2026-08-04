@@ -71,25 +71,35 @@ class AfroRelatedTools extends HTMLElement {
     return AfroRelatedTools._dataPromise;
   }
 
-  // Per-category visual identity (matches tool-registry.js category values)
+  // Category labels match tool-registry.js category values.
   _cat(c) {
     return ({
-      'african':           { gradient:'linear-gradient(145deg,#1E3A5F 0%,var(--color-accent) 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'Uniquely African'  },
-      'education':         { gradient:'linear-gradient(145deg,#b45309 0%,#f59e0b 100%)', pill:'#fef3c7', pillTxt:'#92400e', label:'Education'         },
-      'financial':         { gradient:'linear-gradient(145deg,#1d4ed8 0%,#3b82f6 100%)', pill:'#dbeafe', pillTxt:'#1e40af', label:'Finance'           },
-      'document-pdf':      { gradient:'linear-gradient(145deg,#6d28d9 0%,#8b5cf6 100%)', pill:'#ede9fe', pillTxt:'#5b21b6', label:'PDF & Docs'        },
-      'engineering':       { gradient:'linear-gradient(145deg,#b91c1c 0%,#ef4444 100%)', pill:'#fee2e2', pillTxt:'#991b1b', label:'Engineering'       },
-      'data-productivity': { gradient:'linear-gradient(145deg,#0369a1 0%,#0ea5e9 100%)', pill:'#e0f2fe', pillTxt:'#0c4a6e', label:'Productivity'     },
-      'health':            { gradient:'linear-gradient(145deg,#9d174d 0%,#ec4899 100%)', pill:'#fce7f3', pillTxt:'#831843', label:'Health'            },
-      'legal':             { gradient:'linear-gradient(145deg,#92400e 0%,#d97706 100%)', pill:'#fef3c7', pillTxt:'#78350f', label:'Legal'             },
-      'ecommerce':         { gradient:'linear-gradient(145deg,#1E40AF 0%,#3B82F6 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'E-Commerce'        },
-      'image-design':      { gradient:'linear-gradient(145deg,#312e81 0%,#6366f1 100%)', pill:'#e0e7ff', pillTxt:'#3730a3', label:'Design'            },
-      'developer':         { gradient:'linear-gradient(145deg,#164e63 0%,#0ea5e9 100%)', pill:'#cffafe', pillTxt:'#155e75', label:'Developer Tools'   },
-      'language':          { gradient:'linear-gradient(145deg,#1E3A5F 0%,#3B82F6 100%)', pill:'#DBEAFE', pillTxt:'#1E40AF', label:'Language'          },
+      'african':           { label:'Uniquely African' },
+      'education':         { label:'Education' },
+      'financial':         { label:'Finance' },
+      'document-pdf':      { label:'PDF & Docs' },
+      'engineering':       { label:'Engineering' },
+      'data-productivity': { label:'Productivity' },
+      'health':            { label:'Health' },
+      'legal':             { label:'Legal' },
+      'ecommerce':         { label:'E-Commerce' },
+      'image-design':      { label:'Design' },
+      'developer':         { label:'Developer Tools' },
+      'language':          { label:'Language' },
       // legacy keys kept for backwards compat
-      'salary-tax':        { gradient:'linear-gradient(145deg,#1d4ed8 0%,#3b82f6 100%)', pill:'#dbeafe', pillTxt:'#1e40af', label:'Salary & Tax'     },
-      'pdf-docs':          { gradient:'linear-gradient(145deg,#6d28d9 0%,#8b5cf6 100%)', pill:'#ede9fe', pillTxt:'#5b21b6', label:'PDF & Docs'        },
-    })[c] || { gradient:'linear-gradient(145deg,#374151,#6b7280)', pill:'#f3f4f6', pillTxt:'#374151', label: c };
+      'salary-tax':        { label:'Salary & Tax' },
+      'pdf-docs':          { label:'PDF & Docs' },
+    })[c] || { label: c || 'Tools' };
+  }
+
+  _monogram(t) {
+    const words = String((t && (t.name || t.id)) || 'AT')
+      .replace(/[^\p{L}\p{N}]+/gu, ' ')
+      .trim()
+      .split(/\s+/)
+      .filter(Boolean);
+    if (!words.length) return 'AT';
+    return words.slice(0, 3).map(word => word[0]).join('').toLocaleUpperCase();
   }
 
   _imageKey(t) {
@@ -186,12 +196,22 @@ class AfroRelatedTools extends HTMLElement {
   _render() {
     const tools = this._getTools();
     if (!tools.length) { this.shadowRoot.innerHTML=''; return; }
-    const isHausa = (document.documentElement.lang || '').toLowerCase().startsWith('ha');
+    const pageLanguage = (document.documentElement.lang || 'en').toLowerCase();
+    const isHausa = pageLanguage.startsWith('ha');
+    const isFrench = pageLanguage.startsWith('fr');
     const categoryHa = {
       african:'Na Afirka', education:'Ilimi', financial:'Kudi', 'document-pdf':'Takardu da PDF',
       engineering:'Injiniya', 'data-productivity':'Tsarin aiki', health:'Lafiya', legal:'Doka',
       ecommerce:'Kasuwanci', 'image-design':'Zane', developer:'Masu gini', language:'Harshe',
       agriculture:'Noma', telecom:'Sadarwa'
+    };
+    const categoryFr = {
+      african:'Spécificités africaines', education:'Éducation', financial:'Finance',
+      'document-pdf':'PDF et documents', engineering:'Ingénierie',
+      'data-productivity':'Productivité', health:'Santé', legal:'Droit',
+      ecommerce:'Commerce', 'image-design':'Design', developer:'Développement',
+      language:'Langues', agriculture:'Agriculture', telecom:'Télécoms',
+      'salary-tax':'Salaire et impôts', 'pdf-docs':'PDF et documents'
     };
     const fallbackOnlyIds = new Set(['html-to-pdf','pdf-bates','pdf-chat','pdf-compare','pdf-convert','pdf-find-replace','pdf-image-convert','pdf-reorder','pdf-repair','pdf-to-audio','pdf-translate','pdf-workflow']);
 
@@ -205,21 +225,26 @@ class AfroRelatedTools extends HTMLElement {
       const imgFallback = imageExt && encodedImageKey ? `/assets/img/tools/${encodedImageKey}.${fallbackExt}` : '';
       const useImage = Boolean(imageExt && encodedImageKey && !fallbackOnlyIds.has(t.id) && !fallbackOnlyIds.has(imageKey));
       const desc = t.desc && t.desc.length > 50 ? t.desc.slice(0,48)+'…' : (t.desc||'');
+      const categoryLabel = isHausa
+        ? (categoryHa[t.category] || 'Kayan aiki')
+        : isFrench
+          ? (categoryFr[t.category] || cs.label || 'Outil')
+          : cs.label;
       return `
         <a class="card" href="${t.href}" aria-label="${t.name}">
-          <div class="card-visual" style="background:${cs.gradient}">
+          <div class="card-visual">
             ${useImage ? `<img class="card-img" src="${img}" alt=""
                  loading="lazy"
                  onerror="this.onerror=function(){this.style.display='none';this.nextElementSibling.style.display='flex'};this.classList.add('card-img--icon');this.src='${imgFallback}'">` : ''}
-            <div class="card-emoji" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${t.icon||'PDF'}</div>
+            <div class="card-monogram" style="display:${useImage ? 'none' : 'flex'}" aria-hidden="true">${this._monogram(t)}</div>
           </div>
           <div class="card-body">
-            <span class="pill" style="background:${cs.pill};color:${cs.pillTxt}">${isHausa ? (categoryHa[t.category] || 'Kayan aiki') : cs.label}</span>
+            <span class="category-meta">${categoryLabel}</span>
             <div class="card-name">${t.name}</div>
             <div class="card-desc">${desc}</div>
           </div>
           <div class="card-cta">
-            <span class="cta-btn">${isHausa ? 'Bude kayan aiki' : 'Open tool'}</span>
+            <span class="cta-btn">${isHausa ? 'Bude kayan aiki' : isFrench ? 'Ouvrir l’outil' : 'Open tool'}</span>
             <svg class="cta-arrow" width="14" height="14" viewBox="0 0 14 14" fill="none">
               <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -233,8 +258,9 @@ class AfroRelatedTools extends HTMLElement {
 
         :host {
           display: block;
-          font-family: -apple-system, 'SF Pro Display', 'DM Sans', system-ui, sans-serif;
-          background: #f5f5f7;
+          font-family: 'DM Sans', system-ui, -apple-system, sans-serif;
+          color: var(--color-text, #172033);
+          background: var(--color-bg, #f7f9fc);
           padding: 40px 0 80px !important;
         }
 
@@ -257,20 +283,16 @@ class AfroRelatedTools extends HTMLElement {
         .eyebrow {
           font-size: 0.7rem;
           font-weight: 700;
-          letter-spacing: .1em;
-          text-transform: uppercase;
+          letter-spacing: 0;
           color: var(--color-primary);
           margin-bottom: 6px;
         }
         .title {
           font-size: 1.35rem;
           font-weight: 700;
-          color: #1d1d1f;
+          color: var(--color-text, #172033);
           letter-spacing: -0.025em;
           line-height: 1.15;
-        }
-        :host-context(html[data-theme="dark"]) .title {
-          color: #eef5ff;
         }
         .all-link {
           display: inline-flex;
@@ -281,12 +303,12 @@ class AfroRelatedTools extends HTMLElement {
           color: var(--color-primary);
           text-decoration: none;
           white-space: nowrap;
-          padding: 8px 18px;
-          border-radius: 980px;
-          background: rgba(0,98,204,.08);
-          transition: background .18s;
+          padding: 6px 0;
+          border-radius: 0;
+          background: transparent;
+          transition: color .18s;
         }
-        .all-link:hover { background: rgba(0,98,204,.16); }
+        .all-link:hover { color: var(--color-primary-dark, #004ba0); }
 
         /* ── Card grid ── */
         .grid {
@@ -299,20 +321,18 @@ class AfroRelatedTools extends HTMLElement {
         .card {
           display: flex;
           flex-direction: column;
-          background: #ffffff;
-          border-radius: 14px;
+          background: var(--color-surface, #fff);
+          border: 1px solid var(--color-border, #d7dee8);
+          border-radius: var(--radius-md, 10px);
           overflow: hidden;
           text-decoration: none;
           color: inherit;
-          box-shadow: 0 1px 4px rgba(0,0,0,.06), 0 0 0 .5px rgba(0,0,0,.05);
-          transition:
-            transform .28s cubic-bezier(.34,1.56,.64,1),
-            box-shadow .28s ease;
-          will-change: transform;
+          box-shadow: var(--shadow-sm, 0 1px 2px rgba(15,23,42,.05));
+          transition: border-color .18s ease, box-shadow .18s ease;
         }
         .card:hover {
-          transform: translateY(-4px) scale(1.01);
-          box-shadow: 0 12px 28px rgba(0,0,0,.1), 0 1px 4px rgba(0,0,0,.06);
+          border-color: rgba(var(--color-primary-rgb, 0,98,204), .38);
+          box-shadow: var(--shadow-sm, 0 1px 2px rgba(15,23,42,.05));
         }
 
         /* ── Visual header (image area) ── */
@@ -324,14 +344,11 @@ class AfroRelatedTools extends HTMLElement {
           position: relative;
           overflow: hidden;
           flex-shrink: 0;
+          background: var(--color-bg-subtle, #eef3f7);
         }
         /* Subtle noise texture overlay */
         .card-visual::after {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='.04'/%3E%3C/svg%3E");
-          pointer-events: none;
+          display: none;
         }
         .card-img {
           width: 100%;
@@ -347,19 +364,21 @@ class AfroRelatedTools extends HTMLElement {
           object-fit: contain;
           position: relative;
           inset: auto;
-          border-radius: 12px;
-          background: rgba(255,255,255,.15);
-          box-shadow: 0 2px 12px rgba(0,0,0,.2);
+          border-radius: var(--radius-sm, 6px);
+          background: transparent;
         }
-        .card-emoji {
+        .card-monogram {
           width: 48px;
           height: 48px;
-          border-radius: 12px;
-          background: rgba(255,255,255,.18);
+          border: 1px solid var(--color-border, #d7dee8);
+          border-radius: var(--radius-sm, 6px);
+          background: var(--color-surface, #fff);
+          color: var(--color-text-secondary, #526173);
           align-items: center;
           justify-content: center;
-          font-size: 1.6rem;
-          box-shadow: 0 2px 12px rgba(0,0,0,.18);
+          font-size: .82rem;
+          font-weight: 800;
+          letter-spacing: .04em;
           position: relative;
           z-index: 1;
         }
@@ -369,27 +388,25 @@ class AfroRelatedTools extends HTMLElement {
           padding: 10px 14px 8px;
           flex: 1;
         }
-        .pill {
+        .category-meta {
           display: inline-block;
-          font-size: 0.6rem;
+          font-size: 0.68rem;
           font-weight: 700;
-          letter-spacing: .04em;
-          text-transform: uppercase;
-          padding: 2px 7px;
-          border-radius: 100px;
+          color: var(--color-text-muted, #64748b);
+          letter-spacing: 0;
           margin-bottom: 5px;
         }
         .card-name {
           font-size: 0.82rem;
           font-weight: 700;
-          color: #1d1d1f;
+          color: var(--color-text, #172033);
           letter-spacing: -0.01em;
           line-height: 1.25;
           margin-bottom: 3px;
         }
         .card-desc {
           font-size: 0.72rem;
-          color: #6e6e73;
+          color: var(--color-text-muted, #64748b);
           line-height: 1.45;
         }
 
@@ -399,7 +416,7 @@ class AfroRelatedTools extends HTMLElement {
           align-items: center;
           justify-content: space-between;
           padding: 7px 14px 10px;
-          border-top: 1px solid rgba(0,0,0,.05);
+          border-top: 1px solid var(--color-border, #d7dee8);
         }
         .cta-btn {
           font-size: 0.72rem;
@@ -424,24 +441,48 @@ class AfroRelatedTools extends HTMLElement {
           .grid { grid-template-columns: 1fr 1fr; gap: 10px; }
           .title { font-size: 1.15rem; }
           .card-visual { height: 90px; }
-          .card-emoji { width: 36px; height: 36px; border-radius: 8px; }
-          .card-emoji { font-size: 1.1rem; }
+          .card-monogram { width: 36px; height: 36px; }
           .card-name { font-size: 0.76rem; }
           .card-desc { font-size: 0.68rem; }
           .card-body { padding: 8px 10px 6px; }
           .card-cta { padding: 6px 10px 8px; }
           .cta-btn { font-size: 0.68rem; }
         }
+        @media (max-width: 480px) {
+          .grid { grid-template-columns: 1fr; }
+          .card-visual { height: 112px; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          .card, .cta-arrow, .all-link { transition: none; }
+          .card:hover .cta-arrow { transform: none; }
+        }
+
+        :host-context(html[data-theme="dark"]) {
+          color: var(--color-text, #eef5ff);
+          background: var(--color-bg, #0b1524);
+        }
+        :host-context(html[data-theme="dark"]) .card,
+        :host-context(html[data-theme="dark"]) .card-monogram {
+          background: var(--color-surface, #131d2e);
+          border-color: var(--color-border, #334155);
+        }
+        :host-context(html[data-theme="dark"]) .card-visual {
+          background: var(--color-bg-subtle, #182438);
+        }
+        :host-context(html[data-theme="dark"]) .title,
+        :host-context(html[data-theme="dark"]) .card-name {
+          color: var(--color-text, #eef5ff);
+        }
       </style>
 
       <div class="wrap">
         <div class="header">
           <div class="header-left">
-            <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : 'More from AfroTools'}</p>
-            <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : 'You might also like'}</h2>
+            <p class="eyebrow">${isHausa ? 'Karin kayan AfroTools' : isFrench ? 'Plus d’outils AfroTools' : 'More from AfroTools'}</p>
+            <h2 class="title">${isHausa ? 'Wata kila za ka kuma so' : isFrench ? 'Ces outils peuvent aussi vous aider' : 'You might also like'}</h2>
           </div>
-          <a href="${isHausa ? '/ha/kayan-aiki/' : '/tools/'}" class="all-link">
-            ${isHausa ? 'Duba duk kayan aiki' : 'Browse all tools'}
+          <a href="${isHausa ? '/ha/kayan-aiki/' : isFrench ? '/fr/tools/' : '/tools/'}" class="all-link">
+            ${isHausa ? 'Duba duk kayan aiki' : isFrench ? 'Voir tous les outils' : 'Browse all tools'}
             <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
               <path d="M2.5 6h7M7 3l3 3-3 3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>

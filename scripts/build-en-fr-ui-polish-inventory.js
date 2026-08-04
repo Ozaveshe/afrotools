@@ -3,7 +3,6 @@
 
 // Broad candidate inventory; the narrow fail-closed accent guard remains
 // scripts/audit-ui-accent-patterns.js.
-const childProcess = require('child_process');
 const fs = require('fs');
 const path = require('path');
 const vm = require('vm');
@@ -17,6 +16,7 @@ function valueAfter(flag) {
 
 const ROOT = path.resolve(valueAfter('--root') || path.join(__dirname, '..'));
 const SHOULD_WRITE = args.includes('--write');
+const SHOULD_CHECK = args.includes('--check');
 const JSON_STDOUT = args.includes('--json');
 const OUTPUT = path.resolve(
   valueAfter('--output') || path.join(ROOT, 'reports', 'en-fr-ui-polish-candidates.json')
@@ -43,6 +43,9 @@ const PATTERNS = {
   ],
   decorativeEmoji: [/\p{Extended_Pictographic}/gu]
 };
+
+const CSS_PATTERN_NAMES = new Set(['accentRail', 'gradient', 'glowShadow', 'uppercase']);
+const MARKUP_PATTERN_NAMES = new Set(['cardClass', 'badgeClass']);
 
 function read(file) {
   return fs.readFileSync(file, 'utf8');
@@ -139,6 +142,11 @@ function collectFiles(registry) {
   const files = new Map();
   const missingRoutes = [];
 
+  const homepage = path.join(ROOT, 'index.html');
+  if (fs.existsSync(homepage)) {
+    addFile(files, homepage, 'en', 'top-level-hub-candidate', '/');
+  }
+
   for (const row of registry) {
     const locale = localeForRow(row);
     if (locale !== 'en' && locale !== 'fr') continue;
@@ -170,7 +178,30 @@ function countMatches(source, regex) {
   return matches ? matches.length : 0;
 }
 
-function sourceHints(html) {
+function htmlSurfaces(html) {
+  const inlineCss = [];
+  for (const match of html.matchAll(/<style\b[^>]*>([\s\S]*?)<\/style\s*>/gi)) {
+    inlineCss.push(match[1]);
+  }
+  for (const match of html.matchAll(/\bstyle\s*=\s*["']([^"']*)["']/gi)) {
+    inlineCss.push(match[1]);
+  }
+
+  const markup = html
+    .replace(/<script\b[^>]*>[\s\S]*?<\/script\s*>/gi, ' ')
+    .replace(/<style\b[^>]*>[\s\S]*?<\/style\s*>/gi, ' ');
+  const visibleText = markup
+    .replace(/<!--([\s\S]*?)-->/g, ' ')
+    .replace(/<[^>]+>/g, ' ');
+
+  return {
+    css: inlineCss.join('\n'),
+    markup,
+    visibleText
+  };
+}
+
+function sourceHints(html, pageFile) {
   const hints = new Set();
   const patterns = [
     /<link\b[^>]*\bhref\s*=\s*["']([^"']+\.css(?:\?[^"']*)?)["'][^>]*>/gi,
@@ -178,8 +209,17 @@ function sourceHints(html) {
   ];
   for (const pattern of patterns) {
     for (const match of html.matchAll(pattern)) {
-      const value = match[1].split('?')[0];
-      if (value.startsWith('/') && !value.startsWith('//')) hints.add(value);
+      const value = match[1].split(/[?#]/)[0];
+      if (!value || /^(?:https?:)?\/\//i.test(value)) continue;
+      if (value.startsWith('/')) {
+        hints.add(value);
+        continue;
+      }
+      const absolute = path.resolve(path.dirname(pageFile), value);
+      const relativeSource = path.relative(ROOT, absolute).replace(/\\/g, '/');
+      if (!relativeSource.startsWith('../') && relativeSource !== '..') {
+        hints.add(`/${relativeSource}`);
+      }
     }
   }
   return [...hints].sort();
@@ -202,9 +242,15 @@ function declaredOwners(html) {
 
 function scanFile(record) {
   const html = read(record.file);
+  const surfaces = htmlSurfaces(html);
   const signals = {};
   for (const [name, regexes] of Object.entries(PATTERNS)) {
-    signals[name] = regexes.reduce((total, regex) => total + countMatches(html, regex), 0);
+    const source = CSS_PATTERN_NAMES.has(name)
+      ? surfaces.css
+      : MARKUP_PATTERN_NAMES.has(name)
+        ? surfaces.markup
+        : surfaces.visibleText;
+    signals[name] = regexes.reduce((total, regex) => total + countMatches(source, regex), 0);
   }
   const totalSignals = Object.values(signals).reduce((sum, count) => sum + count, 0);
   return {
@@ -215,7 +261,7 @@ function scanFile(record) {
     signals,
     totalSignals,
     declaredOwners: declaredOwners(html),
-    sourceHints: sourceHints(html)
+    sourceHints: sourceHints(html, record.file)
   };
 }
 
@@ -366,18 +412,6 @@ function summarize(records, locale) {
   };
 }
 
-function currentCommit() {
-  try {
-    return childProcess.execFileSync(
-      'git',
-      ['-C', ROOT, 'rev-parse', 'HEAD'],
-      { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }
-    ).trim();
-  } catch (_) {
-    return null;
-  }
-}
-
 function main() {
   const registry = loadRegistry();
   const collected = collectFiles(registry);
@@ -388,9 +422,7 @@ function main() {
 
   const report = {
     schemaVersion: 1,
-    generatedAt: new Date().toISOString(),
-    root: ROOT,
-    commit: currentCommit(),
+    root: '.',
     scope: {
       locales: ['en', 'fr'],
       registryRows: registry.filter((row) => ['en', 'fr'].includes(localeForRow(row))).length,
@@ -406,18 +438,25 @@ function main() {
     candidates
   };
 
-  if (SHOULD_WRITE) {
+  const serialized = `${JSON.stringify(report, null, 2)}\n`;
+
+  if (SHOULD_CHECK) {
+    if (!fs.existsSync(OUTPUT) || fs.readFileSync(OUTPUT, 'utf8') !== serialized) {
+      process.stderr.write(`UI polish inventory is stale. Run: node scripts/build-en-fr-ui-polish-inventory.js --write\n`);
+      process.exitCode = 1;
+      return;
+    }
+  } else if (SHOULD_WRITE) {
     fs.mkdirSync(path.dirname(OUTPUT), { recursive: true });
-    fs.writeFileSync(OUTPUT, `${JSON.stringify(report, null, 2)}\n`, 'utf8');
+    fs.writeFileSync(OUTPUT, serialized, 'utf8');
   }
 
   if (JSON_STDOUT) {
-    process.stdout.write(`${JSON.stringify(report, null, 2)}\n`);
+    process.stdout.write(serialized);
     return;
   }
 
   const printable = {
-    commit: report.commit,
     output: SHOULD_WRITE ? OUTPUT : null,
     summary: report.summary,
     ownership: {
