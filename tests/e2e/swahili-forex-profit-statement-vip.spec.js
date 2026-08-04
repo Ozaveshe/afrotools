@@ -12,7 +12,7 @@ async function openPrivate(page) {
   page.on('console',(message)=>{if(message.type()==='error')telemetry.console.push(message.text());}); page.on('pageerror',(error)=>telemetry.page.push(error.message)); page.on('requestfailed',(request)=>telemetry.failed.push(request.url())); page.on('download',(download)=>telemetry.downloads.push(download.suggestedFilename()));
   page.on('request',(request)=>{const item={url:request.url(),method:request.method(),body:request.postData()};telemetry.requests.push(item);if(['xhr','fetch','websocket'].includes(request.resourceType()))telemetry.data.push(item);if(/google-analytics\.com|googletagmanager\.com/i.test(request.url()))telemetry.analytics.push(item);});
   await page.goto(ROUTE,{waitUntil:'domcontentloaded'}); await expect(page.locator('html')).toHaveAttribute('lang','sw'); await expect(page.locator('script[src^="/assets/js/lazy-analytics.js?v="]')).toHaveCount(1);
-  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('afrotools:cookie-consent',{detail:{status:'declined'}}))); await expect.poll(()=>page.evaluate(()=>window['ga-disable-G-D859CGF391'])).toBe(true); return telemetry;
+  await page.evaluate(()=>window.dispatchEvent(new CustomEvent('afrotools:cookie-consent',{detail:{status:'declined'}}))); await expect.poll(()=>page.evaluate(()=>(window.dataLayer||[]).some((entry)=>{const command=Array.from(entry);return command[0]==='consent'&&command[1]==='update'&&command[2]?.analytics_storage==='denied';}))).toBe(true); return telemetry;
 }
 
 async function fill(page,values={}) {
