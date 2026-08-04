@@ -238,6 +238,16 @@ test('formula update workflow requires provenance, fixture deltas, and owner rev
   assert.match(pullRequestTemplate, /calculation-quality:check/);
 });
 
+test('shared presentation cache hashes do not create protected formula drift', function () {
+  const before = '<link rel="stylesheet" href="/assets/css/global.min.css?v=11111111">' +
+    '<link rel="stylesheet" href="/assets/css/design-system.min.css?v=22222222">' +
+    '<script src="/assets/js/components/related-tools.min.js?v=33333333"></script>';
+  const after = '<link rel="stylesheet" href="/assets/css/global.min.css?v=aaaaaaaa">' +
+    '<link rel="stylesheet" href="/assets/css/design-system.min.css?v=bbbbbbbb">' +
+    '<script src="/assets/js/components/related-tools.min.js?v=cccccccc"></script>';
+  assert.strictEqual(quality.digestHtmlFormulaSource(before), quality.digestHtmlFormulaSource(after));
+});
+
 test('formula country, currency, route, and source jurisdictions agree', function () {
   const result = quality.checkCountryIdentity(artifacts, ROOT);
   assert.deepStrictEqual(result.errors, []);

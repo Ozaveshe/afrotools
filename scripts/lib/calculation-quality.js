@@ -136,6 +136,18 @@ function normalizeHtmlFormulaPresentation(source) {
     "$1__FORMULA_DIGEST_CACHE__",
     )
     .replace(
+      /(assets\/css\/global(?:\.min)?\.css\?v=)[a-f0-9]{8}/gi,
+      function normalizeGlobalCssHash(match, prefix) {
+        return prefix + "0ff6e9dc";
+      },
+    )
+    .replace(
+      /(assets\/css\/design-system(?:\.min)?\.css\?v=)[a-f0-9]{8}/gi,
+      function normalizeDesignSystemCssHash(match, prefix) {
+        return prefix + "11fcf8e5";
+      },
+    )
+    .replace(
       /(assets\/js\/bundles\/core\.)[a-f0-9]{8}(\.min\.js)/gi,
       function normalizeCoreBundleHash(match, prefix, suffix) {
         return prefix + "53e2e483" + suffix;

@@ -31,6 +31,7 @@ The shared-owner reach overlaps and is not a unique-app acceptance count. The re
 - `npm run validate:hreflang`: 11,288 pages, 33,400 relationships, 5,351 groups; passed.
 - `npm run test:localization`, `npm run test:privacy-ai-consent`, `npm run category-workflow:verify`, and `npm run pdf:verify`: passed.
 - `npm run lint`, `npm run type-check`, `npm run audit`, `npm run tools:quality`, and `npm run security:scan`: passed.
+- `npm run calculation-quality:check` and `npm run test:calculation-quality`: 737 artifacts and 307/307 fixtures passed; shared UI cache hashes are excluded without weakening executable formula coverage.
 - `npm run build:deploy`: passed; 17,357 files copied into the publish artifact.
 - `npm run audit:dist`: passed.
 - `npm run ui:accent-check` and `npm run ui:polish:check`: passed.
