@@ -699,7 +699,7 @@
         link.href = '/assets/img/logo-mark.svg';
         document.head.appendChild(link);
       }
-      this._render(); this._bind();
+      this._renderAndBind();
       this._ensureLocalizationAssets();
       this._ensureLocaleRouteResolver();
     }
@@ -737,10 +737,26 @@
       script.src = '/assets/js/lib/locale-route-resolver.js';
       script.dataset.afroLocaleRouteResolver = 'true';
       script.addEventListener('load', () => {
-        this._render();
-        this._bind();
+        if (this._localeNavigationNeedsRefresh()) this._renderAndBind();
       });
       document.head.appendChild(script);
+    }
+
+    _localeNavigationNeedsRefresh() {
+      const currentLang = this._getLang();
+      const links = Array.from(this.shadowRoot.querySelectorAll('[data-locale-target]'));
+      return links.some(link => {
+        const destination = this._languageDestinationFor(link.dataset.localeTarget, currentLang);
+        try {
+          const currentUrl = new URL(link.getAttribute('href') || '/', window.location.href);
+          const destinationUrl = new URL(destination.route || '/', window.location.href);
+          const currentRoute = currentUrl.pathname + currentUrl.search + currentUrl.hash;
+          const destinationRoute = destinationUrl.pathname + destinationUrl.search + destinationUrl.hash;
+          return currentRoute !== destinationRoute || link.dataset.localeRelationship !== destination.relationship;
+        } catch (_) {
+          return (link.getAttribute('href') || '') !== (destination.route || '') || link.dataset.localeRelationship !== destination.relationship;
+        }
+      });
     }
 
     _ensureLocalizationAssets() {
@@ -766,8 +782,7 @@
       sources.reduce(function(chain, src) { return chain.then(function() { return load(src); }); }, Promise.resolve()).then(() => {
         if (window.AfroToolsLocalization && window.AfroToolsLocaleManifest && window.AfroToolsTranslations) {
           window.AfroToolsLocalization.install({ root: window, manifest: window.AfroToolsLocaleManifest, catalogs: window.AfroToolsTranslations, locale: this._getLang() });
-          this._render();
-          this._bind();
+          if (this._getLang() !== 'en') this._renderAndBind();
         }
         this._localizationLoading = false;
       });
@@ -1156,6 +1171,10 @@
       return cleaned || fallback || 'Dashboard';
     }
 
+    _renderAndBind() {
+      if (this._render()) this._bind();
+    }
+
     _render() {
       var lang = this._getLang();
       var isFr = lang === 'fr';
@@ -1351,7 +1370,7 @@
       if (T_BY_LANG[lang]) Object.assign(T, T_BY_LANG[lang]);
 
       this.removeAttribute('data-styles-ready');
-      this.shadowRoot.innerHTML = `
+      const markup = `
         <style>:host(:not([data-styles-ready])){visibility:hidden}</style>
         <link rel="stylesheet" href="${NAVBAR_CSS_HREF}">
         <link rel="stylesheet" href="/assets/css/navbar-language-switcher.css?v=1">
@@ -1543,6 +1562,9 @@
         </dialog>
 
 `;
+      if (markup === this._lastRenderedMarkup) return false;
+      this._lastRenderedMarkup = markup;
+      this.shadowRoot.innerHTML = markup;
       const styleLinks = Array.from(this.shadowRoot.querySelectorAll('link[rel="stylesheet"]'));
       let pendingStyles = styleLinks.length;
       let revealed = false;
@@ -1564,6 +1586,7 @@
       });
       if (!styleLinks.length) reveal();
       window.setTimeout(reveal, 1500);
+      return true;
     }
 
     _bind() {
