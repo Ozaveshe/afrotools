@@ -34,7 +34,7 @@ The six pre-existing authoritative routes were preserved. Only Tutoring Rate and
 
 - All visible workflow, validation, result, privacy, export and planning-boundary copy is native Kiswahili.
 - Calculations remain in the existing DOM-free English-owner engines; no formula was forked or translated.
-- Inputs stay inside the browser. No account, storage, analytics payload, AI request or other network send was added.
+- Inputs stay inside the browser. No account, storage, raw-input analytics payload, AI request or calculation API send was added; shared consent-aware site analytics may still load.
 - Invalid input clears stale results and produces an assertive Kiswahili error.
 - Results can be copied or downloaded as JSON, TXT and real PDF.
 - The shared UI supports system dark mode, an explicit light/dark control, reduced motion, visible focus, real labels and status/live regions.
@@ -58,7 +58,7 @@ The coordinator authorized four reciprocal metadata-only edits required for a co
   - JSON/TXT/PDF download and reopen/parse for every app;
   - 320px and 375px layouts, 200% reflow, manual dark mode;
   - keyboard entry/focus, native labels/landmarks/live regions;
-  - canonical/OG/artwork and no console, page or outbound-network errors;
+  - canonical/OG/artwork, no console/page errors, no calculation/API request, and no raw-input network leak;
   - both Swahili education hubs expose all eight routes without 320px overflow.
 - PASS — `npm run validate:hreflang`: 11,290 pages, 33,412 relationships, 5,351 equivalence groups.
 - PASS — `npm run check-links`: 138,218 internal links across 11,509 HTML files.

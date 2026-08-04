@@ -32,8 +32,9 @@ for (const scenario of [
     await expect(page.locator('html')).toHaveAttribute('lang', 'sw');
     await expect(page.locator('link[rel="canonical"]')).toHaveAttribute('href', 'https://afrotools.com/sw/zana/viwango-vya-cbk/');
     await expect(page.locator('link[rel="alternate"][hreflang="en"]')).toHaveAttribute('href', 'https://afrotools.com/tools/cbk-rates/');
-    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://afrotools.com/assets/img/og-default.png');
-    expect(await page.locator('script[type="application/ld+json"]').first().textContent()).toContain('"inLanguage":"sw"');
+    await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content', 'https://afrotools.com/assets/img/tools/cbk-rates.webp');
+    const schema = JSON.parse(await page.locator('script[type="application/ld+json"]').first().textContent());
+    expect(schema.inLanguage).toBe('sw');
 
     const controls = page.locator('[data-cbk-manual] input,[data-cbk-manual] select,[data-cbk-manual] button');
     expect(await controls.count()).toBe(6);

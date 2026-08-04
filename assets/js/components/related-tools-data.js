@@ -12648,7 +12648,8 @@
         "priority": 82,
         "estTraffic": 0,
         "imageExt": "",
-        "sourceId": "cbk-rates"
+        "sourceId": "cbk-rates",
+        "imageId": "cbk-rates"
       },
       {
         "id": "cnps-guide-sw-coverage-cnps-guide",
@@ -21511,7 +21512,8 @@
         "priority": 82,
         "estTraffic": 0,
         "imageExt": "",
-        "sourceId": "cbk-rates"
+        "sourceId": "cbk-rates",
+        "imageId": "cbk-rates"
       },
       {
         "id": "cnps-guide-sw-coverage-cnps-guide",

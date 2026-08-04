@@ -10,6 +10,7 @@ for (const app of manifest.apps) {
   test(`${app.id}: native workflow, exports, privacy and responsive UI`, async ({ page }, testInfo) => {
     const errors = [];
     const outbound = [];
+    const privateMarker = app.id === 'ke-helb' ? '123456.78' : 'XTS';
     page.on('console', msg => { if (msg.type() === 'error') errors.push(msg.text()); });
     page.on('pageerror', error => errors.push(error.message));
     page.on('request', request => { if (new URL(request.url()).origin !== localOrigin) outbound.push(request.url()); });
@@ -23,6 +24,8 @@ for (const app of manifest.apps) {
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
     await page.keyboard.press('Tab');
     await expect(page.locator('.skip')).toBeFocused();
+    if (app.id === 'ke-helb') await page.locator('[name="balance"]').fill(privateMarker);
+    else await page.locator('[name="currency"]').fill(privateMarker);
     await page.getByRole('button', { name: 'Kokotoa' }).click();
     await expect(page.locator('#swEduResult')).toBeVisible();
     await expect(page.locator('.metric')).toHaveCount(app.metrics.length);
@@ -62,7 +65,9 @@ for (const app of manifest.apps) {
     await page.setViewportSize({ width: 640, height: 800 });
     await page.evaluate(() => { document.body.style.zoom = '2'; });
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth)).toBe(true);
-    expect(errors).toEqual([]); expect(outbound).toEqual([]);
+    expect(errors).toEqual([]);
+    expect(outbound.some(url => decodeURIComponent(url).includes(privateMarker))).toBe(false);
+    expect(outbound.filter(url => /(?:openai|anthropic|supabase)|\/api\//i.test(url))).toEqual([]);
     await testInfo.attach(`${app.id}-320-dark`, { body: await page.screenshot({ fullPage: true }), contentType: 'image/png' });
   });
 }

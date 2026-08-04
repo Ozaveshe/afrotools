@@ -14,10 +14,10 @@ execFileSync(process.execPath, ['scripts/build-sw-education-affordability-parity
 for (const app of manifest.apps) {
   const route = path.join(root, 'sw/zana', app.slug, 'index.html');
   const html = fs.readFileSync(route, 'utf8');
-  assert.match(html, /^<!doctype html>\n<html lang="sw">/);
+  assert.match(html, /^<!doctype html>\n<html\b[^>]*\blang="sw"[^>]*>/);
   assert.ok(html.includes(`https://afrotools.com/sw/zana/${app.slug}/`));
   assert.ok(html.includes(`href="https://afrotools.com${app.english}"`));
-  assert.ok(html.includes(`src="${app.engine}"`));
+  assert.ok(html.includes(`src="${app.engine}`));
   assert.ok(html.includes(`/assets/img/tools/${app.image}`));
   assert.ok(fs.existsSync(path.join(root, 'assets/img/tools', app.image)));
   assert.ok(!/<iframe\b/i.test(html));

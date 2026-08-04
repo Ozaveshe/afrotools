@@ -28,7 +28,7 @@ Lane: `codex/sw-finance-native-20260804`
 - Privacy: calculation produced no FX/rate API request and changed neither local nor session storage. No export is advertised; the page explicitly says no PDF or download is created.
 - UI/accessibility: passed at 320px light and 375px dark, plus 320px at 200% root text size; no horizontal overflow, controls have labels or stable accessible button text, result/error regions announce state, and keyboard focus is visible.
 - SEO: native `lang=sw`, Swahili WebApplication schema, matching canonical, and reciprocal English hreflang are present.
-- Artwork: the registry explicitly declares `image: false`; both language owners intentionally use the existing `assets/img/og-default.png` fallback. The file exists. No bespoke-artwork claim is made.
+- Artwork: both language owners and registry rows use the dedicated `assets/img/tools/cbk-rates.webp` social preview.
 - AI: the existing Swahili registry candidate carries `sourceId: cbk-rates`. This lane records candidate evidence only and does not change the coordinator-owned AI route map.
 
 ## Fail-closed blockers
