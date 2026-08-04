@@ -383,7 +383,7 @@ for (const route of routes) {
     await page.goto(route.swahiliRoute, { waitUntil: 'domcontentloaded' });
     await page.waitForLoadState('load');
     await page.evaluate(() => new Promise((resolve) => requestAnimationFrame(() => requestAnimationFrame(resolve))));
-    await expect(page.locator('link[href="/assets/css/sw-document-pdf-a11y.css"]')).toHaveCount(1);
+    await expect(page.locator('link[href^="/assets/css/sw-document-pdf-a11y.css"]')).toHaveCount(1);
 
     const themes = {};
     for (const mode of themeModes) {

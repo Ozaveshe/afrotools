@@ -23,7 +23,12 @@ async function openPrivate(page) {
   await expect(page.locator('html')).toHaveAttribute('lang', 'sw');
   await expect(page.locator('script[src^="/assets/js/lazy-analytics.js?v="]')).toHaveCount(1);
   await page.evaluate(() => window.dispatchEvent(new CustomEvent('afrotools:cookie-consent', { detail:{ status:'declined' } })));
-  await expect.poll(() => page.evaluate(() => window['ga-disable-G-D859CGF391'])).toBe(true);
+  await expect.poll(() => page.evaluate(() => (window.dataLayer || []).some((entry) => {
+    const command = Array.from(entry);
+    return command[0] === 'consent'
+      && command[1] === 'update'
+      && command[2]?.analytics_storage === 'denied';
+  }))).toBe(true);
   return telemetry;
 }
 
