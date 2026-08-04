@@ -218,6 +218,12 @@ if (TARGET_ID === 'pdf-merge-split') {
     "minimumPages: 3,\n    expectedText: PRIVATE_MARKER",
     "minimumPages: 3"
   );
+  source = source.replace(
+    "await uploadPdfs(page, '#mergeFileInput');\n  await page.locator('#mergeBtn').click();",
+    "await uploadPdfs(page, '#mergeFileInput');\n  await waitEnabled(page, '#mergeBtn');\n  await page.locator('#mergeBtn').press('Enter');\n" +
+    "  await expect(page.locator('#resultCard')).toHaveClass(/on/, { timeout: 30_000 });\n" +
+    "  expect(await page.locator('#resultText').textContent()).not.toMatch(/hitilafu|error/i);"
+  );
 }
 if (TARGET_ID === 'pdf-form-filler') {
   source = source.replace(
@@ -239,6 +245,14 @@ if (TARGET_ID === 'pdf-sign') {
   );
 }
 if (TARGET_ID === 'pdf-redact') {
+  source = source.replace(
+    "await expect(page.locator('#fullPageBtn')).toBeVisible({ timeout: 30_000 });",
+    "await expect(page.locator('#fullPageBtn')).toBeVisible({ timeout: 30_000 });\n  await waitEnabled(page, '#fullPageBtn');"
+  );
+  source = source.replace(
+    "await page.locator('#reviewConfirm').check();\n  await page.locator('#exportBtn').click();",
+    "await waitEnabled(page, '#exportBtn');\n  await page.locator('#reviewConfirm').check();\n  await page.locator('#exportBtn').press('Enter');"
+  );
   source = source.replace(
     "await acceptPdf('pdf-redact', await captureDownload(page, '#downloadBtn'), { minimumPages: 2 });",
     "await acceptPdf('pdf-redact', await captureDownload(page, '#downloadBtn'), { minimumPages: 2, inputBytes: firstPdf, operation: 'full-page-redaction-applied-and-reopened' });"
@@ -302,6 +316,31 @@ if (TARGET_ID === 'invoice-generator') {
     "  await page.locator('.li-price').fill('15000');",
     "  await page.locator('.li-price').fill('15000');\n" +
     "  await page.locator('#invoiceReviewConfirm').check();"
+  );
+}
+const stableKeyboardActions = {
+  'pdf-watermark': ['#watermarkBtn'],
+  'pdf-page-numbers': ['#numberBtn'],
+  'pdf-redact': ['#fullPageBtn', '#exportBtn'],
+  'pdf-header-footer': ['#applyBtn'],
+  'pdf-bates': ['#stampBtn']
+};
+for (const selector of stableKeyboardActions[TARGET_ID] || []) {
+  source = source.split(`page.locator('${selector}').click()`).join(`page.locator('${selector}').press('Enter')`);
+}
+const stableKeyboardChecks = {
+  'pdf-header-footer': ['#previewConfirm'],
+  'pdf-to-audio': ['#audioReviewConfirm'],
+  'pdf-bates': ['#batesReviewConfirm'],
+  'invoice-generator': ['#invoiceReviewConfirm']
+};
+for (const selector of stableKeyboardChecks[TARGET_ID] || []) {
+  source = source.split(`page.locator('${selector}').check()`).join(`page.locator('${selector}').press('Space')`);
+}
+if (TARGET_ID === 'pdf-header-footer') {
+  source = source.replace(
+    "await page.locator('#applyBtn').press('Enter');",
+    "await waitEnabled(page, '#applyBtn');\n  await page.locator('#applyBtn').press('Enter');"
   );
 }
 if (TARGET_ID === 'cv-builder') {
