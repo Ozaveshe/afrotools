@@ -6,23 +6,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11288 |
-| Indexable pages | 10305 |
+| Public pages | 11290 |
+| Indexable pages | 10307 |
 | Permanent and temporary redirects | 2931 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
 | Genuine equivalence groups | 5351 |
-| Documented fallbacks | 14509 |
-| Routes eligible for primary sitemaps | 10305 |
+| Documented fallbacks | 14511 |
+| Routes eligible for primary sitemaps | 10307 |
 
 ## Locale Coverage
 
 - en: 5924 page records
 - fr: 3765 page records
 - ha: 105 page records
-- sw: 1449 page records
+- sw: 1451 page records
 - yo: 45 page records
 
 ## Page Types
@@ -33,7 +33,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - category: 695
 - country-tool: 484
 - legal: 4
-- page: 5275
+- page: 5277
 - tool: 4003
 - widget: 379
 
@@ -4515,6 +4515,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:47fa08b2a61b: en=`/agriculture/crop-yield/tunisia`, fr=`/fr/agriculture/crop-yield/tunisia`, sw=`/sw/kilimo/mavuno/tunisia/`; x-default=`/agriculture/crop-yield/tunisia`
 - equivalence:4803228a4312: en=`/tools/discount-calc/`, fr=`/fr/tools/calculateur-remise/`, sw=`/sw/zana/kikokotoo-discount/`; x-default=`/tools/discount-calc/`
 - equivalence:480ce918ad45: en=`/jamb/economics/1999/`; x-default=`/jamb/economics/1999/`
+- equivalence:48192036b452: en=`/tools/study-abroad-cost/`, fr=`/fr/tools/cout-etudes-etranger/`, sw=`/sw/zana/gharama-za-kusoma-nje/`; x-default=`/tools/study-abroad-cost/`
 - equivalence:482c68ae6eb9: en=`/tools/citation-generator/`, fr=`/fr/tools/generateur-citations/`, sw=`/sw/zana/kizalishaji-citation/`; x-default=`/tools/citation-generator/`
 - equivalence:482d3dd54acc: en=`/tools/domestic-worker/cameroon/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cameroun/`; x-default=`/tools/domestic-worker/cameroon/`
 - equivalence:4838cbae2f8a: en=`/agriculture/vaccination-schedule/liberia`, fr=`/fr/agriculture/vaccination-schedule/liberia`; x-default=`/agriculture/vaccination-schedule/liberia`
@@ -6544,7 +6545,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:aa45a1f8e384: en=`/agriculture/crop-yield/botswana`, fr=`/fr/agriculture/crop-yield/botswana`, sw=`/sw/kilimo/mavuno/botswana/`; x-default=`/agriculture/crop-yield/botswana`
 - equivalence:aa52b5dcfded: en=`/cars/namibia/mercedes-benz/e-class/2017/`, fr=`/fr/cars/namibie/mercedes-benz/e-class/2017/`; x-default=`/cars/namibia/mercedes-benz/e-class/2017/`
 - equivalence:aa59eb0a1d70: en=`/eq-guinea/gq-vat`, fr=`/fr/eq-guinea/gq-vat/`, sw=`/sw/equatorial-guinea/kikokotoo-vat/`; x-default=`/eq-guinea/gq-vat`
-- equivalence:aa5ab3011e98: en=`/tools/study-abroad-cost/`, fr=`/fr/tools/cout-etudes-etranger/`; x-default=`/tools/study-abroad-cost/`
 - equivalence:aa62114edf63: en=`/tools/pdf-compress/`, fr=`/fr/tools/compresser-pdf/`, ha=`/ha/kayan-aiki/matsa-pdf/`, sw=`/sw/zana/kubana-pdf/`; x-default=`/tools/pdf-compress/`
 - equivalence:aa6f7c5751ca: fr=`/fr/lifestyle/savings/`; x-default=`/fr/lifestyle/savings/`
 - equivalence:aa7159653898: en=`/tools/api-tester/`, fr=`/fr/tools/testeur-api/`, sw=`/sw/zana/kijaribu-api/`; x-default=`/tools/api-tester/`
@@ -7049,7 +7049,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c2ab51a2cca4: en=`/cars/nigeria/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/nigeria/mercedes-benz/g-wagon/2022/`; x-default=`/cars/nigeria/mercedes-benz/g-wagon/2022/`
 - equivalence:c2ad6c973b67: en=`/tools/africa-conflict/conflicts/western-sahara/`; x-default=`/tools/africa-conflict/conflicts/western-sahara/`
 - equivalence:c2af5191b87f: en=`/tools/microinsurance/morocco`; x-default=`/tools/microinsurance/morocco`
-- equivalence:c2b1279bd6bf: en=`/tools/tutoring-rate/`, fr=`/fr/tools/calculateur-tarif-tutorat/`; x-default=`/tools/tutoring-rate/`
 - equivalence:c2bd414516b7: en=`/tools/afrokitchen/recipes/injera/`; x-default=`/tools/afrokitchen/recipes/injera/`
 - equivalence:c2c1a06d770b: en=`/tools/domestic-worker/tanzania/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-tanzanie/`; x-default=`/tools/domestic-worker/tanzania/`
 - equivalence:c2c3be6d6798: en=`/blog/average-salary-kenya-2026/`, fr=`/fr/blog/average-salary-kenya-2026/`; x-default=`/blog/average-salary-kenya-2026/`
@@ -7623,6 +7622,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:dcf35fd2f5b8: en=`/tools/afrokitchen/recipes/koki-beans-cm/`; x-default=`/tools/afrokitchen/recipes/koki-beans-cm/`
 - equivalence:dcf9995d7b6d: en=`/tools/board-resolution/`, fr=`/fr/tools/modele-resolution-conseil/`, sw=`/sw/zana/azimio-la-bodi/`; x-default=`/tools/board-resolution/`
 - equivalence:dd00b7245a7b: en=`/agriculture/input-prices/cameroon`, fr=`/fr/agriculture/input-prices/cameroon`, sw=`/sw/kilimo/bei-za-pembejeo/cameroon/`; x-default=`/agriculture/input-prices/cameroon`
+- equivalence:dd04c912491c: en=`/tools/tutoring-rate/`, fr=`/fr/tools/calculateur-tarif-tutorat/`, sw=`/sw/zana/bei-ya-tutoring/`; x-default=`/tools/tutoring-rate/`
 - equivalence:dd06cb69214d: en=`/jamb/physics/1992/`; x-default=`/jamb/physics/1992/`
 - equivalence:dd0acca959f7: en=`/tools/fuel-tracker/somalia/`, fr=`/fr/tools/suivi-carburant/somalia/`; x-default=`/tools/fuel-tracker/somalia/`
 - equivalence:dd107df0bdfe: en=`/cars/kenya/lexus/es/`, fr=`/fr/cars/kenya/lexus/es/`; x-default=`/cars/kenya/lexus/es/`

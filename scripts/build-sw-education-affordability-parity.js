@@ -10,6 +10,14 @@ function esc(value) {
   return String(value).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
 }
 
+function comparableHtml(value) {
+  return value
+    .replace(/ data-chat-bundle="\/assets\/js\/bundles\/chat\.[0-9a-f]+\.min\.js"/g, '')
+    .replace(/\?v=[0-9a-f]{8}(?=["'])/g, '')
+    .replace(/\s*<script src="\/assets\/js\/lib\/sw-accessibility\.js" defer><\/script>\r?\n?/g, '')
+    .replace(/\s*<script src="\/assets\/js\/lazy-analytics\.js" defer><\/script>\r?\n?/g, '');
+}
+
 function page(app) {
   const route = `/sw/zana/${app.slug}/`;
   const englishFile = path.join(root, app.english.replace(/^\//, ''), 'index.html');
@@ -23,16 +31,27 @@ function page(app) {
   alternates.set('en', `https://afrotools.com${app.english}`);
   alternates.set('sw', `https://afrotools.com${route}`);
   alternates.set('x-default', `https://afrotools.com${app.english}`);
-  const alternateLinks = Array.from(alternates.entries()).map(([language, href]) => `<link rel="alternate" hreflang="${esc(language)}" href="${esc(href)}">`).join('');
+  const alternateLinks = Array.from(alternates.entries())
+    .sort(([left], [right]) => {
+      if (left === 'x-default') return 1;
+      if (right === 'x-default') return -1;
+      return 0;
+    })
+    .map(([language, href]) => `<link rel="alternate" hreflang="${esc(language)}" href="${esc(href)}">`)
+    .join('\n');
   const fields = app.fields.map(field => `<div class="field"><label for="f-${esc(field[0])}">${esc(field[1])}</label><input id="f-${esc(field[0])}" name="${esc(field[0])}" type="${esc(field[2])}" value="${esc(field[3])}" ${field[2] === 'number' ? 'min="0" step="any" inputmode="decimal"' : 'maxlength="40"'}></div>`).join('');
   const schema = JSON.stringify({ '@context': 'https://schema.org', '@type': 'WebApplication', name: app.title, description: app.summary, inLanguage: 'sw', applicationCategory: 'EducationalApplication', operatingSystem: 'Any', isAccessibleForFree: true, url: `https://afrotools.com${route}`, image: `https://afrotools.com/assets/img/tools/${app.image}`, isBasedOn: `https://afrotools.com${app.english}` }).replace(/</g, '\\u003c');
   return `<!doctype html>
 <html lang="sw"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
 <title>${esc(app.title)} | AfroTools</title><meta name="description" content="${esc(app.summary)}">
-<link rel="canonical" href="https://afrotools.com${route}">${alternateLinks}
 <meta property="og:type" content="website"><meta property="og:locale" content="sw_TZ"><meta property="og:title" content="${esc(app.title)}"><meta property="og:description" content="${esc(app.summary)}"><meta property="og:url" content="https://afrotools.com${route}"><meta property="og:image" content="https://afrotools.com/assets/img/tools/${esc(app.image)}">
-<meta name="twitter:card" content="summary_large_image"><script type="application/ld+json">${schema}</script>
-<link rel="stylesheet" href="/assets/css/sw-education-affordability-parity.css"></head><body>
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="${esc(app.title)} | AfroTools">
+<meta name="twitter:description" content="${esc(app.summary)}">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/${esc(app.image)}"><script type="application/ld+json">${schema}</script>
+<link rel="stylesheet" href="/assets/css/sw-education-affordability-parity.css"><link rel="canonical" href="https://afrotools.com${route}">
+${alternateLinks}
+</head><body>
 <a class="skip" href="#kikokotoo">Ruka hadi kikokotoo</a><header class="top"><div class="wrap"><a class="brand" href="/sw/">AFROTOOLS</a><nav class="nav" aria-label="Urambazaji mkuu"><a href="/sw/elimu/">Elimu</a><a href="/sw/zana-za-elimu/">Zana za elimu</a><button class="theme" id="swTheme" type="button" aria-pressed="false">Mandhari nyeusi</button></nav></div></header>
 <section class="hero"><div class="wrap"><div class="crumb"><a href="/sw/">Mwanzo</a> / <a href="/sw/elimu/">Elimu</a> / ${esc(app.title)}</div><h1>${esc(app.title)}</h1><p class="lead">${esc(app.summary)}</p><div class="chips"><span>Hufanya kazi ndani ya kivinjari</span><span>Hakuna akaunti</span><span>Data haitumwi kwa AI</span></div></div></section>
 <main class="main" id="kikokotoo"><div class="wrap layout"><section class="card" aria-labelledby="formTitle"><h2 id="formTitle">Weka taarifa zako</h2><p class="intro">Tumia sarafu moja na kiasi kutoka chanzo unachoweza kuthibitisha. Sehemu hazitumwi kwenye seva.</p><form id="swEduForm" novalidate><div class="grid">${fields}</div><div class="actions"><button class="btn primary" type="submit">Kokotoa</button><button class="btn" id="swEduReset" type="button">Futa</button></div><p class="error" id="swEduError" role="alert" aria-live="assertive"></p></form>
@@ -46,7 +65,7 @@ for (const app of manifest.apps) {
   const target = path.join(root, 'sw/zana', app.slug, 'index.html');
   const expected = page(app);
   if (check) {
-    if (!fs.existsSync(target) || fs.readFileSync(target, 'utf8') !== expected) { console.error(`STALE ${path.relative(root, target)}`); failed = true; }
+    if (!fs.existsSync(target) || comparableHtml(fs.readFileSync(target, 'utf8')) !== expected) { console.error(`STALE ${path.relative(root, target)}`); failed = true; }
   } else {
     fs.mkdirSync(path.dirname(target), { recursive: true });
     fs.writeFileSync(target, expected);

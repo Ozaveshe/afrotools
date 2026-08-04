@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1452 |
-| Swahili coverage records | 1449 |
+| Swahili physical HTML pages | 1454 |
+| Swahili coverage records | 1451 |
 | Native candidates | 574 |
-| Localized shell candidates | 581 |
+| Localized shell candidates | 583 |
 | English fallbacks | 10 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 92 |
-| **Accepted** | **856** |
+| Missing | 90 |
+| **Accepted** | **873** |
 
 ## Category reconciliation
 
@@ -34,11 +34,11 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Creative Economy | 46 | 0 | 46 | 0 | 0 | 0 | 0 | 0 | 0 | 12 |
 | Developer Tools | 32 | 0 | 29 | 2 | 0 | 0 | 0 | 0 | 1 | 6 |
 | Diaspora | 2 | 2 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 2 |
-| Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 24 |
-| Education | 42 | 1 | 33 | 0 | 0 | 0 | 0 | 0 | 8 | 2 |
+| Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
+| Education | 42 | 1 | 35 | 0 | 0 | 0 | 0 | 0 | 6 | 10 |
 | Energy & Utilities | 20 | 0 | 16 | 4 | 0 | 0 | 0 | 0 | 0 | 3 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 6 |
-| Finance, Tax & Market Data | 132 | 7 | 84 | 3 | 0 | 0 | 0 | 0 | 38 | 39 |
+| Finance, Tax & Market Data | 132 | 7 | 84 | 3 | 0 | 0 | 0 | 0 | 38 | 40 |
 | Fintech & Banking | 31 | 0 | 25 | 0 | 0 | 0 | 0 | 0 | 6 | 2 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -188,25 +188,25 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Tunisia VAT Calculator | VAT & Business Tax | `/tunisia/tn-vat` | Native candidate | `/sw/tunisia/kikokotoo-vat` | Yes |
 | Zambia VAT Calculator | VAT & Business Tax | `/zambia/zm-vat` | Native candidate | `/sw/zambia/kikokotoo-vat` | Yes |
 | Zimbabwe VAT Calculator | VAT & Business Tax | `/zimbabwe/zw-vat` | Native candidate | `/sw/zimbabwe/kikokotoo-vat` | Yes |
-| PDF Merge & Split | Document & PDF | `/tools/pdf-merge-split` | Localized shell candidate | `/sw/zana/unganisha-na-gawanya-pdf` | No |
+| PDF Merge & Split | Document & PDF | `/tools/pdf-merge-split` | Localized shell candidate | `/sw/zana/unganisha-na-gawanya-pdf` | Yes |
 | PDF Compressor | Document & PDF | `/tools/pdf-compress` | Localized shell candidate | `/sw/zana/kubana-pdf` | Yes |
 | PDF ↔ Image Converter | Document & PDF | `/tools/pdf-image-convert` | Localized shell candidate | `/sw/zana/kubadilisha-pdf-na-picha` | Yes |
-| PDF Watermark Tool | Document & PDF | `/tools/pdf-watermark` | Localized shell candidate | `/sw/zana/watermark-pdf` | No |
+| PDF Watermark Tool | Document & PDF | `/tools/pdf-watermark` | Localized shell candidate | `/sw/zana/watermark-pdf` | Yes |
 | PDF Password Protect | Document & PDF | `/tools/pdf-password` | Localized shell candidate | `/sw/zana/kulinda-pdf-kwa-nenosiri` | Yes |
-| PDF Page Numbering | Document & PDF | `/tools/pdf-page-numbers` | Localized shell candidate | `/sw/zana/namba-za-kurasa-pdf` | No |
+| PDF Page Numbering | Document & PDF | `/tools/pdf-page-numbers` | Localized shell candidate | `/sw/zana/namba-za-kurasa-pdf` | Yes |
 | PDF eSignature Tool | Document & PDF | `/tools/pdf-sign` | Localized shell candidate | `/sw/zana/kusaini-pdf` | Yes |
 | PDF OCR — Text Extraction | Document & PDF | `/tools/pdf-ocr` | Localized shell candidate | `/sw/zana/ocr-pdf` | Yes |
 | PDF Form Filler | Document & PDF | `/tools/pdf-form-filler` | Localized shell candidate | `/sw/zana/kujaza-fomu-pdf` | Yes |
-| PDF Redaction Tool | Document & PDF | `/tools/pdf-redact` | Localized shell candidate | `/sw/zana/kuficha-taarifa-pdf` | No |
-| PDF Header & Footer | Document & PDF | `/tools/pdf-header-footer` | Localized shell candidate | `/sw/zana/kichwa-na-kijachini-pdf` | No |
+| PDF Redaction Tool | Document & PDF | `/tools/pdf-redact` | Localized shell candidate | `/sw/zana/kuficha-taarifa-pdf` | Yes |
+| PDF Header & Footer | Document & PDF | `/tools/pdf-header-footer` | Localized shell candidate | `/sw/zana/kichwa-na-kijachini-pdf` | Yes |
 | PDF Editor | Document & PDF | `/tools/pdf-editor` | Localized shell candidate | `/sw/zana/hariri-pdf` | Yes |
 | PDF Format Converter | Document & PDF | `/tools/pdf-convert` | Localized shell candidate | `/sw/zana/kubadilisha-format-pdf` | Yes |
 | PDF Page Manager | Document & PDF | `/tools/pdf-reorder` | Localized shell candidate | `/sw/zana/kupanga-kurasa-pdf` | Yes |
 | AI Chat with PDF | Document & PDF | `/tools/pdf-chat` | Localized shell candidate | `/sw/zana/chat-na-pdf` | Yes |
 | PDF Translator | Document & PDF | `/tools/pdf-translate` | Localized shell candidate | `/sw/zana/kutafsiri-pdf` | Yes |
 | PDF Compare Tool | Document & PDF | `/tools/pdf-compare` | Localized shell candidate | `/sw/zana/kulinganisha-pdf` | Yes |
-| PDF to Audio Reader | Document & PDF | `/tools/pdf-to-audio` | Localized shell candidate | `/sw/zana/pdf-kwenda-sauti` | No |
-| PDF Bates Numbering | Document & PDF | `/tools/pdf-bates` | Localized shell candidate | `/sw/zana/namba-bates-pdf` | No |
+| PDF to Audio Reader | Document & PDF | `/tools/pdf-to-audio` | Localized shell candidate | `/sw/zana/pdf-kwenda-sauti` | Yes |
+| PDF Bates Numbering | Document & PDF | `/tools/pdf-bates` | Localized shell candidate | `/sw/zana/namba-bates-pdf` | Yes |
 | HTML to PDF Converter | Document & PDF | `/tools/html-to-pdf` | Localized shell candidate | `/sw/zana/html-kwenda-pdf` | Yes |
 | PDF Find & Replace | Document & PDF | `/tools/pdf-find-replace` | Localized shell candidate | `/sw/zana/tafuta-na-badilisha-pdf` | Yes |
 | PDF Repair Tool | Document & PDF | `/tools/pdf-repair` | Localized shell candidate | `/sw/zana/kurekebisha-pdf` | Yes |
@@ -274,7 +274,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Lobola Gift List | Religious & Cultural | `/tools/lobola-gift-list` | Missing | None | No |
 | Informal Remittance Cost Tracker | Uniquely African | `/tools/hawala-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-hawala` | Yes |
 | Funeral Cost Estimator | Uniquely African | `/tools/burial-cost` | English fallback | `/sw/zana/gharama-za-mazishi` | No |
-| School Fees Comparator | Education | `/tools/school-fees` | Localized shell candidate | `/sw/zana/ada-za-shule` | No |
+| School Fees Comparator | Education | `/tools/school-fees` | Localized shell candidate | `/sw/zana/ada-za-shule` | Yes |
 | Staple Basket Tracker | Uniquely African | `/tools/staple-basket` | Localized shell candidate | `/sw/zana/kikapu-cha-bidhaa-msingi` | Yes |
 | Wholesale Retail Spread | Uniquely African | `/tools/wholesale-retail-spread` | Localized shell candidate | `/sw/zana/tofauti-bei-jumla-rejareja` | Yes |
 | Land Size Calculator | Uniquely African | `/tools/land-size` | Localized shell candidate | `/sw/zana/ukubwa-wa-ardhi` | Yes |
@@ -284,7 +284,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Susu Group Tracker | Uniquely African | `/tools/susu-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-susu` | No |
 | WhatsApp Link Generator | Uniquely African | `/tools/whatsapp-link` | Missing | None | No |
 | CV / Resume Builder | Document & PDF | `/tools/cv-builder` | Localized shell candidate | `/sw/zana/mjenzi-cv` | Yes |
-| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Localized shell candidate | `/sw/zana/kizalishaji-ankara` | No |
+| Invoice Generator | Document & PDF | `/tools/invoice-generator` | Localized shell candidate | `/sw/zana/kizalishaji-ankara` | Yes |
 | Cover Letter Generator | Document & PDF | `/tools/cover-letter-generator` | Localized shell candidate | `/sw/zana/barua-ombi` | Yes |
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Localized shell candidate | `/sw/zana/kumbukumbu-za-mkutano` | Yes |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | No |
@@ -298,7 +298,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | KRA eTIMS Guide — Scope, Onboarding & Invoicing | Finance, Tax & Market Data | `/tools/etims-guide` | Missing | None | No |
 | SARS eFiling Guide — Registration, Filing & Assessment | Finance, Tax & Market Data | `/tools/sars-efiling` | Missing | None | No |
 | CNPS Côte d'Ivoire Guide — Contributions & e-CNPS | Finance, Tax & Market Data | `/tools/cnps-guide` | Localized shell candidate | `/sw/zana/mwongozo-wa-cnps` | No |
-| CBK Rate Guide & Manual KES Converter | Finance, Tax & Market Data | `/tools/cbk-rates` | Native candidate | `/sw/zana/viwango-vya-cbk` | No |
+| CBK Rate Guide & Manual KES Converter | Finance, Tax & Market Data | `/tools/cbk-rates` | Native candidate | `/sw/zana/viwango-vya-cbk` | Yes |
 | Business Plan Builder | Document & PDF | `/tools/business-plan` | Localized shell candidate | `/sw/zana/mpango-wa-biashara` | Yes |
 | Nigeria CIT Calculator | Finance, Tax & Market Data | `/tools/ng-cit` | Missing | None | No |
 | Nigeria CGT Calculator | Finance, Tax & Market Data | `/tools/ng-cgt` | Missing | None | No |
@@ -767,7 +767,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | Yes |
 | Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Missing | None | No |
 | Kenya NSSF Contribution Calculator | Finance, Tax & Market Data | `/tools/ke-nssf` | Missing | None | No |
-| Kenya HELB Repayment Worksheet | Education | `/tools/ke-helb` | Localized shell candidate | `/sw/zana/kikokotoo-helb-kenya` | No |
+| Kenya HELB Repayment Worksheet | Education | `/tools/ke-helb` | Localized shell candidate | `/sw/zana/kikokotoo-helb-kenya` | Yes |
 | South Africa GEPF Calculator | Finance, Tax & Market Data | `/tools/za-gepf` | Missing | None | No |
 | South Africa Transfer Duty Calculator | Finance, Tax & Market Data | `/tools/za-transfer-duty` | Missing | None | No |
 | Ghana SSNIT Calculator 2026 | Finance, Tax & Market Data | `/tools/gh-ssnit` | Missing | None | No |
@@ -1093,14 +1093,14 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Vehicle Import Checklist | Transport & Logistics | `/tools/vehicle-registration` | Localized shell candidate | `/sw/zana/usajili-na-nyaraka-za-gari` | No |
 | Roadworthiness Checklist | Transport & Logistics | `/tools/roadworthiness` | Localized shell candidate | `/sw/zana/ukaguzi-wa-roadworthiness` | No |
 | Vehicle Depreciation Calculator | Transport & Logistics | `/tools/vehicle-depreciation` | Localized shell candidate | `/sw/zana/kushuka-thamani-ya-gari` | No |
-| Study Abroad Cost Worksheet | Education | `/tools/study-abroad-cost` | Missing | None | No |
-| Teacher Offer & Workload Checker | Education | `/tools/teacher-salary` | Localized shell candidate | `/sw/zana/mshahara-wa-mwalimu` | No |
-| Fixed-Rate Student Loan Worksheet | Education | `/tools/student-loan-repay` | Localized shell candidate | `/sw/zana/marejesho-ya-mkopo-wa-mwanafunzi` | No |
+| Study Abroad Cost Worksheet | Education | `/tools/study-abroad-cost` | Localized shell candidate | `/sw/zana/gharama-za-kusoma-nje` | Yes |
+| Teacher Offer & Workload Checker | Education | `/tools/teacher-salary` | Localized shell candidate | `/sw/zana/mshahara-wa-mwalimu` | Yes |
+| Fixed-Rate Student Loan Worksheet | Education | `/tools/student-loan-repay` | Localized shell candidate | `/sw/zana/marejesho-ya-mkopo-wa-mwanafunzi` | Yes |
 | NYSC Service-Period Budget Ledger | Education | `/tools/nysc-allowance` | Localized shell candidate | `/sw/zana/posho-ya-nysc` | No |
 | KCSE Aggregate & Mean Grade Worksheet | Education | `/tools/kcse-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-kcse` | No |
 | Ghana National Service Budget Ledger | Education | `/tools/national-service-gh` | Localized shell candidate | `/sw/zana/posho-ya-national-service-ghana` | No |
 | University Admission Route Planner | Education | `/tools/university-admission` | Localized shell candidate | `/sw/zana/njia-ya-kuingia-chuo-kikuu` | No |
-| Private Student Budget Planner | Education | `/tools/student-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-mwanafunzi` | No |
+| Private Student Budget Planner | Education | `/tools/student-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-mwanafunzi` | Yes |
 | Coding Bootcamp Comparison Worksheet | Education | `/tools/coding-bootcamp` | Localized shell candidate | `/sw/zana/mafunzo-ya-kina-ya-programu` | No |
 | African Proverb Generator — Yoruba, Swahili, Zulu, Akan | Religious & Cultural | `/tools/african-proverbs` | Localized shell candidate | `/sw/zana/methali-za-afrika` | No |
 | AfroPrices — Compare Prices Across Africa | Uniquely African | `/tools/afroprices` | Localized shell candidate | `/sw/zana/afroprices` | Yes |
@@ -1185,11 +1185,11 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Certification Cost & Payback Scenario | Education | `/tools/cert-roi` | Localized shell candidate | `/sw/zana/faida-ya-cheti` | No |
 | Classroom Layout Planning Worksheet | Education | `/tools/classroom-size` | Localized shell candidate | `/sw/zana/ukubwa-wa-darasa` | No |
 | Course Load & Credit Audit | Education | `/tools/course-load` | Localized shell candidate | `/sw/zana/mzigo-wa-masomo` | Yes |
-| Education Savings Plan Calculator Africa 2026 | Education | `/tools/edu-savings` | Localized shell candidate | `/sw/zana/akiba-ya-elimu` | No |
+| Education Savings Plan Calculator Africa 2026 | Education | `/tools/edu-savings` | Localized shell candidate | `/sw/zana/akiba-ya-elimu` | Yes |
 | Exam Timetable Generator | Education | `/tools/exam-timetable` | Localized shell candidate | `/sw/zana/ratiba-ya-mtihani` | No |
 | Interview Preparation Checklist for Africa — By Company Type & Role | Education | `/tools/interview-prep` | Localized shell candidate | `/sw/zana/maandalizi-ya-mahojiano` | No |
 | Plagiarism Percentage Self-Check Tool | Education | `/tools/plagiarism-pct` | Missing | None | No |
-| Tutoring Rate Calculator Africa 2026 | Education | `/tools/tutoring-rate` | Missing | None | No |
+| Tutoring Rate Calculator Africa 2026 | Education | `/tools/tutoring-rate` | Localized shell candidate | `/sw/zana/bei-ya-tutoring` | Yes |
 | Asset Finance Calculator — Africa | Fintech & Banking | `/tools/asset-finance` | Localized shell candidate | `/sw/zana/ufadhili-wa-mali` | No |
 | Cross-Border B2B Payment Comparator — Africa | Fintech & Banking | `/tools/b2b-payment` | Localized shell candidate | `/sw/zana/malipo-ya-biashara-kwa-biashara` | Yes |
 | Bill Split Calculator — Africa | Fintech & Banking | `/tools/bill-split` | Localized shell candidate | `/sw/zana/kigawanya-bili-na-bakshishi` | Yes |

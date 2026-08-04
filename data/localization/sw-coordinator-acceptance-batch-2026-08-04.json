@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "4f74dee35e5fed17140cd98d12bf6b71ea646875",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 3,
+  "expectedAcceptedRoutes": 17,
+  "preservedBlockedEntries": 0,
+  "policy": "The listed commits were independently reviewed after integration. The recorder must fail closed on inventory identity, central-ledger overlap, duplicate IDs or routes, missing physical lang=sw owners, or incomplete receipt evidence.",
+  "candidates": [
+    {
+      "id": "document-pdf-eight-export-closeout",
+      "commit": "517fe574ddbb18aad49ea28348c1baf1bd9af935",
+      "expectedRoutes": 8,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 8,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-document-pdf-legacy-export-route.spec.js",
+          "engineTest": "tests/e2e/swahili-document-pdf-legacy-export-route.spec.js",
+          "workflow": "Eight previously blocked Swahili Document and PDF owners passed route-isolated operation, mobile, theme, keyboard, privacy and download-contract verification.",
+          "export": "Every advertised PDF, ZIP, CSV or truthful TXT output was parsed or reopened; the sensitive invoice guest PDF remained ungated and the account-gated PDF workflows were verified under their declared contract."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-document-pdf-eight-export-closeout-2026-08-04.md",
+          "format": "text",
+          "requiredText": "Accepted: 8/8. Blocked: 0/8."
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "pdf-merge-split", "swahiliRoute": "/sw/zana/unganisha-na-gawanya-pdf/" },
+            { "englishId": "pdf-watermark", "swahiliRoute": "/sw/zana/watermark-pdf/" },
+            { "englishId": "pdf-page-numbers", "swahiliRoute": "/sw/zana/namba-za-kurasa-pdf/" },
+            { "englishId": "pdf-redact", "swahiliRoute": "/sw/zana/kuficha-taarifa-pdf/" },
+            { "englishId": "pdf-header-footer", "swahiliRoute": "/sw/zana/kichwa-na-kijachini-pdf/" },
+            { "englishId": "pdf-to-audio", "swahiliRoute": "/sw/zana/pdf-kwenda-sauti/" },
+            { "englishId": "pdf-bates", "swahiliRoute": "/sw/zana/namba-bates-pdf/" },
+            { "englishId": "invoice-generator", "swahiliRoute": "/sw/zana/kizalishaji-ankara/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "finance-cbk-native-parity",
+      "commit": "2d050ed918ec8fb79a842bd9fc5d98a897267423",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-finance-cbk-native.spec.js",
+          "engineTest": "tests/sw-finance-native-four-review.test.js",
+          "workflow": "The CBK manual reference and local KES conversion workflow passed native Swahili identity, validation, responsive, theme, keyboard, privacy and no-network proof.",
+          "export": "This route advertises no portable result export; the accepted proof confirms that no nonexistent save or download capability is claimed."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-finance-native-four-review.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/coordinatorOwnedFilesUntouched", "equals": true }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "cbk-rates", "swahiliRoute": "/sw/zana/viwango-vya-cbk/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "education-affordability-eight",
+      "commit": "add9a86837ea534662b84eaa04246131bc6be8b0",
+      "expectedRoutes": 8,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 8,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-education-affordability-parity.spec.js",
+          "engineTest": "tests/sw-education-affordability-parity.test.js",
+          "workflow": "Eight native Swahili education affordability workflows passed exact shared-engine oracles, invalid-state clearing, hubs, responsive, theme, keyboard, privacy and reciprocal metadata proof.",
+          "export": "All 24 advertised JSON, TXT and PDF outputs were downloaded, parsed or reopened locally across the eight accepted apps."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-education-affordability-parity.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/family", "equals": "sw-education-affordability" }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "school-fees", "swahiliRoute": "/sw/zana/ada-za-shule/" },
+            { "englishId": "ke-helb", "swahiliRoute": "/sw/zana/kikokotoo-helb-kenya/" },
+            { "englishId": "student-budget", "swahiliRoute": "/sw/zana/bajeti-ya-mwanafunzi/" },
+            { "englishId": "teacher-salary", "swahiliRoute": "/sw/zana/mshahara-wa-mwalimu/" },
+            { "englishId": "student-loan-repay", "swahiliRoute": "/sw/zana/marejesho-ya-mkopo-wa-mwanafunzi/" },
+            { "englishId": "tutoring-rate", "swahiliRoute": "/sw/zana/bei-ya-tutoring/" },
+            { "englishId": "edu-savings", "swahiliRoute": "/sw/zana/akiba-ya-elimu/" },
+            { "englishId": "study-abroad-cost", "swahiliRoute": "/sw/zana/gharama-za-kusoma-nje/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
