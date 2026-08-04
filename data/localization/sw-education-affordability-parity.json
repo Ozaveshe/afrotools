@@ -1,0 +1,45 @@
+{
+  "family": "sw-education-affordability",
+  "apps": [
+    {
+      "id": "school-fees", "slug": "ada-za-shule", "title": "Kikokotoo cha ada za shule", "summary": "Panga ada ya mwaka, gharama za ziada na kiasi cha kuweka kila mwezi bila kubuni bei za shule.", "engine": "/tools/school-fees/school-fees-engine.js", "engineGlobal": "AfroTools.schoolFeesEngine", "english": "/tools/school-fees/", "image": "school-fees.webp",
+      "fields": [["school","Shule au chaguo","text","Shule A"],["currency","Sarafu","text","KES"],["tuition","Ada ya mwaka","number","120000"],["extras","Gharama nyingine za mwaka","number","24000"],["monthlySupport","Kiasi kinachopatikana kwa mwezi","number","15000"],["rhythm","Idadi ya malipo kwa mwaka","number","3"]],
+      "metrics": [["annualTotal","Jumla ya mwaka"],["monthlyReserve","Akiba inayohitajika kwa mwezi"],["paymentChunk","Kiasi kwa kila malipo"]]
+    },
+    {
+      "id": "ke-helb", "slug": "kikokotoo-helb-kenya", "title": "Kikokotoo cha marejesho ya HELB Kenya", "summary": "Kadiria muda na riba ya mkopo kwa kutumia salio, kiwango na malipo uliyothibitisha kwenye taarifa yako.", "engine": "/tools/ke-helb/helb-engine.js", "engineGlobal": "AfroTools.helbEngine", "english": "/tools/ke-helb/", "image": "ke-helb.webp",
+      "fields": [["balance","Salio la mkopo (KES)","number","120000"],["annualRate","Riba ya mwaka (%)","number","12"],["monthlyPayment","Malipo ya mwezi (KES)","number","11000"],["extraPayment","Malipo ya ziada kwa mwezi (KES)","number","0"]],
+      "metrics": [["months","Miezi ya kumaliza"],["totalInterest","Jumla ya riba"],["totalPaid","Jumla ya malipo"]]
+    },
+    {
+      "id": "student-budget", "slug": "bajeti-ya-mwanafunzi", "title": "Mpangaji wa bajeti ya mwanafunzi", "summary": "Linganisha mapato, ufadhili na gharama kwa kipindi kimoja bila kuchanganya gharama za mwezi na gharama za mara moja.", "engine": "/tools/student-budget/student-budget-engine.js", "engineGlobal": "AfroTools.studentBudgetEngine", "english": "/tools/student-budget/", "image": "student-budget.webp",
+      "fields": [["currency","Sarafu","text","TZS"],["periodMonths","Miezi ya mpango","number","4"],["monthlyIncome","Mapato ya mwezi","number","1000"],["periodFunding","Ufadhili wa mara moja","number","500"],["housing","Makazi kwa mwezi","number","300"],["food","Chakula kwa mwezi","number","200"],["transport","Usafiri kwa mwezi","number","100"],["tuition","Ada ya kipindi","number","1000"],["setup","Gharama za mara moja","number","100"]],
+      "metrics": [["totalResources","Rasilimali zote"],["totalExpenses","Gharama zote"],["balance","Salio"]]
+    },
+    {
+      "id": "teacher-salary", "slug": "mshahara-wa-mwalimu", "title": "Kikokotoo cha ofa ya mshahara wa mwalimu", "summary": "Kagua ofa halisi kwa kujumlisha posho, makato na saa za kazi; hakuna kiwango cha mshahara kinachokisiwa.", "engine": "/tools/teacher-salary/teacher-salary-engine.js", "engineGlobal": "AfroTools.teacherSalaryEngine", "english": "/tools/teacher-salary/", "image": "teacher-salary.webp",
+      "fields": [["currency","Sarafu","text","KES"],["baseMonthly","Mshahara wa msingi kwa mwezi","number","100000"],["allowancesMonthly","Posho kwa mwezi","number","20000"],["deductionsMonthly","Makato kwa mwezi","number","15000"],["weeklyHours","Saa za kazi kwa wiki","number","40"],["workingWeeks","Wiki za kazi kwa mwaka","number","48"]],
+      "metrics": [["grossCashMonthly","Mapato ghafi kwa mwezi"],["estimatedTakeHomeMonthly","Kiasi baada ya makato"],["takeHomeHourly","Kiasi halisi kwa saa"]]
+    },
+    {
+      "id": "student-loan-repay", "slug": "marejesho-ya-mkopo-wa-mwanafunzi", "title": "Kikokotoo cha mkopo wa mwanafunzi", "summary": "Pima malipo ya mkopo wa riba isiyobadilika na athari ya kuongeza malipo ya kila mwezi.", "engine": "/tools/student-loan-repay/student-loan-engine.js", "engineGlobal": "StudentLoanEngine", "english": "/tools/student-loan-repay/", "image": "student-loan-repay.webp",
+      "fields": [["currency","Sarafu","text","NGN"],["principal","Salio la mkopo","number","100000"],["annualRate","Riba ya mwaka (%)","number","12"],["months","Miezi iliyobaki","number","36"],["extraPayment","Malipo ya ziada kwa mwezi","number","1000"]],
+      "metrics": [["monthlyPayment","Malipo ya mwezi"],["payoffMonths","Miezi ya kumaliza"],["totalInterest","Jumla ya riba"],["monthsSaved","Miezi iliyookolewa"]]
+    },
+    {
+      "id": "tutoring-rate", "slug": "bei-ya-tutoring", "title": "Kikokotoo cha bei ya masomo ya ziada", "summary": "Kokotoa bei inayotokana na lengo la mapato, gharama, muda na akiba yako; si bei ya soko.", "engine": "/tools/tutoring-rate/tutoring-rate-engine.js", "engineGlobal": "AfroToolsTutoringRateEngine", "english": "/tools/tutoring-rate/", "image": "tutoring-rate.webp",
+      "fields": [["currency","Sarafu","text","KES"],["targetIncome","Lengo la mapato kwa mwezi","number","300000"],["monthlyCosts","Gharama za kudumu kwa mwezi","number","40000"],["sessionsPerWeek","Vipindi kwa wiki","number","10"],["weeksPerMonth","Wiki kwa mwezi","number","4"],["lessonMinutes","Dakika za somo","number","60"],["groupSize","Wanafunzi kwa kipindi","number","1"],["prepMinutes","Dakika za maandalizi","number","20"],["adminMinutes","Dakika za usimamizi","number","10"],["travelMinutes","Dakika za safari","number","0"],["sessionCost","Gharama kwa kipindi","number","1000"],["taxReserve","Akiba ya kodi (%)","number","15"],["riskReserve","Akiba ya hatari (%)","number","5"],["packageSessions","Vipindi kwenye kifurushi","number","5"],["packageDiscount","Punguzo la kifurushi (%)","number","5"]],
+      "metrics": [["requiredSessionRevenue","Mapato yanayohitajika kwa kipindi"],["sessionsMonthly","Vipindi kwa mwezi"],["requiredRevenue","Mapato yanayohitajika"],["effectiveWorkHourIncome","Mapato halisi kwa saa ya kazi"]]
+    },
+    {
+      "id": "edu-savings", "slug": "akiba-ya-elimu", "title": "Kikokotoo cha akiba ya elimu", "summary": "Pima lengo la baadaye, ukuaji wa akiba na mchango wa kila mwezi kwa dhana unazochagua mwenyewe.", "engine": "/tools/edu-savings/edu-savings-engine.js", "engineGlobal": "AfroTools.eduSavingsEngine", "english": "/tools/edu-savings/", "image": "edu-savings.webp",
+      "fields": [["currency","Sarafu","text","TZS"],["todayCost","Gharama ya elimu leo","number","10000"],["months","Miezi hadi fedha ihitajike","number","12"],["inflationRate","Ongezeko la gharama kwa mwaka (%)","number","0"],["currentSavings","Akiba iliyopo","number","1000"],["monthlyContribution","Mchango wa mwezi","number","500"],["annualGrowthRate","Ukuaji wa mwaka (%)","number","0"]],
+      "metrics": [["futureCost","Lengo la baadaye"],["projectedFund","Akiba inayokadiriwa"],["gap","Pengo"],["requiredMonthlyContribution","Mchango unaohitajika kwa mwezi"]]
+    },
+    {
+      "id": "study-abroad-cost", "slug": "gharama-za-kusoma-nje", "title": "Mpangaji wa gharama za kusoma nje", "summary": "Jenga bajeti kutoka ada, makazi, maisha, bima, vibali na ufadhili uliothibitisha; si uamuzi wa visa au udahili.", "engine": "/tools/study-abroad-cost/study-cost-engine.js", "engineGlobal": "AfroTools.studyCostEngine", "english": "/tools/study-abroad-cost/", "image": "study-abroad-cost.webp",
+      "fields": [["currency","Sarafu","text","USD"],["months","Miezi ya masomo","number","18"],["tuitionAnnual","Ada kwa mwaka wa masomo","number","10000"],["tuitionYears","Miaka inayotozwa ada","number","2"],["accommodationMonthly","Makazi kwa mwezi","number","500"],["livingMonthly","Maisha kwa mwezi","number","300"],["insuranceAnnual","Bima kwa mwaka","number","1200"],["governmentFees","Ada za serikali na vibali","number","400"],["setupCosts","Safari na kuanza maisha","number","1000"],["confirmedAid","Ufadhili uliothibitishwa","number","5000"],["availableFunds","Fedha zilizopo","number","12000"],["upfrontTuition","Ada inayolipwa kabla ya safari","number","5000"],["otherUpfront","Gharama nyingine za awali","number","600"],["refundableDeposit","Amana inayorejeshwa","number","1000"]],
+      "metrics": [["gross","Gharama ghafi"],["net","Gharama baada ya ufadhili"],["fundingGap","Pengo la ufadhili"],["upfrontCash","Fedha zinazohitajika awali"]]
+    }
+  ]
+}
