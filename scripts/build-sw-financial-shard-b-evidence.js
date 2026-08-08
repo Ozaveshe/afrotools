@@ -198,6 +198,11 @@ function inspectAccepted(row) {
 }
 
 function blockReason(row) {
+  if (row.englishId === 'pension-projection') return 'Skipped fail-closed at position 66: the distinct legacy 26-country product keeps contribution, preset-growth and illustrative 4% withdrawal logic inline in tools/pension-projection/index.html. The maintained DOM-free pension-projection-planner engine belongs to the already accepted pension-proj product and cannot be substituted without changing product identity.';
+  if (row.englishId === 'sars-efiling') return 'Skipped fail-closed at position 74: this is an editorial route guide, not a calculator app, and has no DOM-free calculation/export engine to prove. Its dedicated artwork is also missing; app-level acceptance cannot be inferred from the English guide.';
+  if (row.englishId === 'sd-paye') return 'Skipped fail-closed at position 75: Sudan PAYE tax and NSIF logic remains inline, its source registry marks the formula review-required/high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
+  if (row.englishId === 'sl-paye') return 'Skipped fail-closed at position 77: Sierra Leone PAYE and NASSIT logic remains inline, official-source verification is high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
+  if (row.englishId === 'tn-paye') return 'Skipped fail-closed at position 85: Tunisia IRPP and CNSS logic remains inline, official-source verification is high-risk, and the legacy PDF path posts email plus raw gross salary to a lead form. No maintained DOM-free engine can support safe native parity.';
   if (row.state === 'missing') return 'No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane.';
   if (row.englishId === 'paye-calculator') return 'The candidate is a PAYE directory hub, not a native equivalent of the English calculator app.';
   if (row.englishId === 'salary-intelligence') return 'The candidate is the broad salary category hub, not a native equivalent of the English salary-intelligence app.';
