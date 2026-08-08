@@ -5,6 +5,7 @@ const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
 const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
 const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
+const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -23,6 +24,7 @@ const routes = [
   ['/sw/zana/daftari-la-ushahidi-wa-mishahara', 'salary-intelligence'],
   ['/sw/zana/kikokotoo-cgt-nigeria', 'ng-cgt'],
   ['/sw/zana/kikokotoo-cit-nigeria', 'ng-cit'],
+  ['/sw/zana/kikokotoo-wht-nigeria', 'ng-wht'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
@@ -151,6 +153,78 @@ test('ng-cit delegates to the reviewed English engine and reopens its private TX
   await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
   await expect(page.locator('[data-export-status]')).toContainText('yamerudishwa mwanzo');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /cit|company|profit|tax/i.test(key)))).toEqual([]);
+  expect(writes).toEqual([]);
+});
+
+test('ng-wht delegates to the reviewed engine and reopens every local advertised export', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:5000000|250000|4750000)/.test(body)) writes.push({ url: request.url(), body });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    window.__printed = false;
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async (value) => { window.__copiedText = value; } },
+    });
+    window.print = () => { window.__printed = true; };
+  });
+  await page.goto('/sw/zana/kikokotoo-wht-nigeria/', { waitUntil: 'domcontentloaded' });
+
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya WHT' }).click();
+  await expect(page.locator('[name="scopeConfirmed"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Thibitisha');
+
+  const input = {
+    transactionType: 'professional', recipientClass: 'corporate', residency: 'resident',
+    grossAmount: 5000000, transactionDate: '2026-08-08', taxIdAvailable: true,
+    treatment: 'schedule', documentationConfirmed: false, treatyRatePercent: 7.5, scopeConfirmed: true,
+  };
+  const expected = nigeriaWht.calculate(input);
+  await page.locator('[name="scopeConfirmed"]').check();
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya WHT' }).click();
+  await expect(page.locator('[data-result]')).toBeVisible();
+  await expect(page.locator('[data-rate]')).toHaveText(`${expected.appliedRatePercent.toFixed(2)}%`);
+  await expect(page.locator('[data-deduction]')).toContainText('250,000');
+  await expect(page.locator('[data-net]')).toContainText('4,750,000');
+
+  await page.locator('[data-copy]').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya kupanga WHT ya Nigeria ya AfroTools');
+  expect(copied).toContain('Kiasi kinachokadiriwa kukatwa');
+  expect(copied).not.toContain('Planning estimate only');
+
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('[data-download]').click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-wht-nigeria.txt');
+  const txt = fs.readFileSync(await download.path(), 'utf8');
+  expect(txt).toContain('NGN 250,000.00');
+  expect(txt).toContain('NGN 4,750,000.00');
+  expect(txt).toContain('Makadirio ya kupanga tu');
+
+  await page.locator('[data-print]').click();
+  expect(await page.evaluate(() => window.__printed)).toBe(true);
+  const pdf = await page.pdf({ format: 'A4', printBackground: true });
+  const parsed = await pdfParse(pdf);
+  expect(parsed.text).toContain('Kikokotoo cha kodi ya zuio ya Nigeria');
+  expect(parsed.text).toContain('Kiasi kinachokadiriwa kukatwa');
+
+  await page.locator('[name="grossAmount"]').fill('6000000');
+  await expect(page.locator('[data-result]')).toBeHidden();
+  await expect(page.locator('[data-status]')).toContainText('Data imebadilika');
+  await page.locator('[name="grossAmount"]').fill('-1');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya WHT' }).click();
+  await expect(page.locator('[name="grossAmount"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Kagua kiasi');
+
+  await page.getByRole('button', { name: 'Weka upya' }).click();
+  await expect(page.locator('[name="grossAmount"]')).toHaveValue('5000000');
+  await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
+  await expect(page.locator('[data-status]')).toContainText('yamerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /wht|tax|payment|recipient/i.test(key)))).toEqual([]);
   expect(writes).toEqual([]);
 });
 

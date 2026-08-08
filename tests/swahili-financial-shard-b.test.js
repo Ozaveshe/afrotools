@@ -10,6 +10,7 @@ const MANIFEST = path.join(ROOT, 'data/localization/sw-financial-shard-b-manifes
 const RECEIPT = path.join(ROOT, 'reports/swahili-financial-shard-b-candidate-receipt.json');
 const ARTWORK = path.join(ROOT, 'reports/swahili-financial-shard-b-missing-artwork.json');
 const nigeriaCit = require('../assets/js/engines/ng-cit.js');
+const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -25,7 +26,7 @@ const EXPECTED_IDS = [
 
 const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
-  'mr-paye', 'ng-cgt', 'ng-cit', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
+  'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
   'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing',
 ];
@@ -50,8 +51,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 25);
-  assert.equal(receipt.blocked, 21);
+  assert.equal(receipt.accepted, 26);
+  assert.equal(receipt.blocked, 20);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -142,4 +143,31 @@ test('ng-cit Swahili parity preserves the reviewed source and DOM-free engine co
   assert.equal(source.lastReviewedAt, '2026-08-08');
   assert.ok(source.toolIds.includes('ng-cit-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-cit-nigeria'));
+});
+
+test('ng-wht Swahili parity preserves the reviewed official Schedule and DOM-free engine contract', () => {
+  const result = nigeriaWht.calculate({
+    transactionType: 'professional',
+    recipientClass: 'corporate',
+    residency: 'resident',
+    grossAmount: 5000000,
+    transactionDate: '2026-08-08',
+    taxIdAvailable: true,
+    treatment: 'schedule',
+    documentationConfirmed: false,
+    treatyRatePercent: 0,
+    scopeConfirmed: true,
+  });
+  assert.equal(result.scheduleRatePercent, 5);
+  assert.equal(result.appliedRatePercent, 5);
+  assert.equal(result.deduction, 250000);
+  assert.equal(result.netPayment, 4750000);
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['ng-wht'];
+  assert.equal(verification.last_verified, '2026-08-08');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-wht-nigeria/'));
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'nigeria-wht-2026-source');
+  assert.equal(source.lastReviewedAt, '2026-08-08');
+  assert.ok(source.toolIds.includes('ng-wht-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-wht-nigeria'));
 });

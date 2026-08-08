@@ -3,9 +3,21 @@ const { test, expect } = require("@playwright/test");
 const routes = {
   en: "/tools/ng-wht/",
   fr: "/fr/tools/ng-retenue-source/",
+  sw: "/sw/zana/kikokotoo-wht-nigeria/",
   ha: "/ha/kayan-aiki/wht-najeriya/",
   yo: "/yo/awon-ise/wht-naijiria/",
 };
+
+test("native Swahili route exposes reciprocal metadata, artwork and localized controls", async ({ page }) => {
+  await page.goto(routes.sw);
+  await expect(page.locator("html")).toHaveAttribute("lang", "sw");
+  await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href", "https://afrotools.com/sw/zana/kikokotoo-wht-nigeria/");
+  await expect(page.locator('meta[property="og:url"]')).toHaveAttribute("content", "https://afrotools.com/sw/zana/kikokotoo-wht-nigeria/");
+  await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", /\/assets\/img\/tools\/ng-wht\.webp$/);
+  await expect(page.locator('link[rel="alternate"]')).toHaveCount(6);
+  await expect(page.getByRole("button", { name: "Kokotoa makadirio ya WHT" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "Weka upya" })).toBeVisible();
+});
 
 async function calculate(page) {
   await page.locator('[name="scopeConfirmed"]').check();
