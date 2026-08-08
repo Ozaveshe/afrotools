@@ -273,13 +273,27 @@ function calculate(){
 
   // Build a PVWatts-style derating profile from site inputs.
   const firstPassSite = getSiteProfile(psh, panelW, 0);
+  const sharedSizing = window.SolarCalculatorEngine.calculate({
+    appliances: appliances.map(function(item){return {name:item.name,watts:item.watts,qty:item.qty,hoursPerDay:item.hrs};}),
+    sunHours: psh, panelWatts: panelW, batteryType: battType, backupDays: backupDays,
+    systemType: systemType, orientationFactor: numVal('orientationFactor',1),
+    shadeLossPct: numVal('shadeLoss',0), soilingLossPct: numVal('soilingLoss',7),
+    roofArea: numVal('roofArea',0), monthlyGeneratorCost: genCost, usdRate: 1
+  });
+  if(sharedSizing.error){ alert('Please check the appliance load and site assumptions.'); return; }
 
   // ── PANELS ──
   // Panel kWp needed = daily Wh needed / derated peak sun hours.
-  const panelKW = totalWh / (firstPassSite.effectivePsh * 1000);
-  const numPanels = Math.ceil(panelKW * 1000 / panelW);
-  const actualKWp = (numPanels * panelW) / 1000;
-  const siteProfile = getSiteProfile(psh, panelW, numPanels);
+  const panelKW = sharedSizing.arrayKwp;
+  const numPanels = sharedSizing.panels;
+  const actualKWp = sharedSizing.arrayKwp;
+  const siteProfile = Object.assign(getSiteProfile(psh, panelW, numPanels), {
+    effectivePsh: sharedSizing.effectiveSunHours,
+    roofNeeded: sharedSizing.roofNeeded,
+    roofAvailable: sharedSizing.roofAvailable,
+    roofOk: sharedSizing.roofOk,
+    totalLossPct: sharedSizing.lossPercent
+  });
 
   // ── BATTERIES ──
   const dod = BATT_DOD[battType];
@@ -288,26 +302,26 @@ function calculate(){
   // Panel-side losses (soiling, shade, orientation) size the array, not the
   // battery, so use the real load and let round-trip efficiency (eff) and
   // depth of discharge (dod) carry the storage derate.
-  const battKWhNeeded = needsBattery ? (totalWh / 1000) * backupDays / (dod * eff) : 0;
-  const numBatteries = needsBattery ? Math.ceil(battKWhNeeded * 1000 / BATT_UNIT_WH) : 0;
-  const actualBattKWh = (numBatteries * BATT_UNIT_WH) / 1000;
+  const battKWhNeeded = sharedSizing.batteryKwh;
+  const numBatteries = sharedSizing.batteries;
+  const actualBattKWh = sharedSizing.batteryKwh;
 
   // ── INVERTER ──
   // Size for peak load + 20% headroom
-  const invKVA = Math.ceil((peakW * 1.2) / 1000 * 2) / 2; // round up to nearest 0.5 kVA
+  const invKVA = sharedSizing.inverterKva;
 
   // ── MPPT ──
-  const mpptA = Math.ceil(actualKWp * 1000 / (panelW > 400 ? 24 : 12) * 1.25 / 10) * 10;
+  const mpptA = sharedSizing.mpptA;
 
   // ── APPROX SYSTEM COST ──
-  const panelCostUSD = numPanels * 220; // ~$220/400W panel
+  const panelCostUSD = numPanels * sharedSizing.assumptions.panelUsd;
   const battCostUSD = numBatteries * (battType === 'lifepo4' ? 280 : 90);
-  const invCostUSD = invKVA * 180;
-  const totalCostUSD = (panelCostUSD + battCostUSD + invCostUSD) * 1.3; // +30% installation
+  const invCostUSD = invKVA * sharedSizing.assumptions.inverterUsdPerKva;
+  const totalCostUSD = sharedSizing.systemCostUsd;
 
   // ── ROI ──
-  const monthlyGenCost = genCost;
-  const annualGenCost = monthlyGenCost * 12;
+  const monthlyGenCost = sharedSizing.monthlyGeneratorCost;
+  const annualGenCost = sharedSizing.annualGeneratorCost;
 
   // Currency conversion (rough)
   const USD_RATES = {

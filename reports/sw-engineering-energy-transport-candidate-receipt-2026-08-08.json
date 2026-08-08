@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 24,
-    "blocked": 31,
+    "acceptedCandidates": 25,
+    "blocked": 30,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 4,
-        "blocked": 16
+        "acceptedCandidates": 5,
+        "blocked": 15
       },
       "energy": {
         "denominator": 17,
@@ -47,7 +47,7 @@
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 5 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -91,19 +91,19 @@
       "englishId": "solar-calculator",
       "categoryKey": "engineering",
       "englishRoute": "/tools/solar-calculator",
-      "swahiliRoute": null,
-      "swahiliFile": null,
-      "status": "blocked",
-      "sourceOwner": "unreconciled",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Not runnable because the physical Swahili route is missing.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "swahiliRoute": "/sw/zana/kikokotoo-cha-solar/",
+      "swahiliFile": "sw/zana/kikokotoo-cha-solar/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-solar-calculator-parity.js -> data/energy/sw-energy-planning-snapshot.js -> assets/js/engines/solar-calculator-engine.js -> assets/js/pages/sw-solar-calculator-parity.js",
+      "formulaDecision": "Engineering owns this catalog app; one shared DOM-free engine preserves the English load, loss, panel, battery, inverter, MPPT, roof and cost calculations. Energy supplies the maintained country planning snapshot without receiving duplicate acceptance credit.",
+      "sourceDecision": "Country irradiance, currency and FX come from the offline March 2026 Energy snapshot and are visibly stale/low-confidence. Appliance load and site losses are user-entered; no live price, official design, grid approval or installer quote is claimed.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset/stale state; reciprocal metadata; no console/page errors or raw-input network requests; English regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/solar-calculator.webp",
         "status": "present"
       },
-      "blocker": "No physical native Swahili route/source owner exists."
+      "blocker": null
     },
     {
       "englishId": "floor-plan",

@@ -4,10 +4,14 @@ const path = require('node:path');
 const { execFileSync } = require('node:child_process');
 const inventory = require('../../reports/swahili-free-app-parity-inventory.json');
 const { SW_ENERGY_REMAINING_APPS } = require('../../scripts/lib/sw-energy-remaining-contract');
+const SW_SOLAR_CALCULATOR = require('../../scripts/lib/sw-solar-calculator-contract');
 
 const categoryKeys = new Set(['engineering', 'energy', 'transport']);
 const assigned = inventory.rows.filter((row) => categoryKeys.has(row.categoryKey) && !row.accepted);
-const physical = assigned.filter((row) => row.primarySwahiliRoute);
+const physical = assigned.filter((row) => row.primarySwahiliRoute).concat([{
+  categoryKey: 'engineering', englishId: SW_SOLAR_CALCULATOR.id,
+  primarySwahiliRoute: SW_SOLAR_CALCULATOR.swRoute.replace(/\/$/, '')
+}]);
 
 function auditPage(page) {
   const evidence = { errors: [], inputNetwork: [] };
@@ -132,6 +136,6 @@ test('lane denominator remains exact and missing routes remain fail-closed', asy
   expect(assigned.filter((row) => row.categoryKey === 'engineering')).toHaveLength(20);
   expect(assigned.filter((row) => row.categoryKey === 'energy')).toHaveLength(17);
   expect(assigned.filter((row) => row.categoryKey === 'transport')).toHaveLength(18);
-  expect(assigned.filter((row) => !row.primarySwahiliRoute).map((row) => row.englishId)).toEqual(['solar-calculator', 'car-price-intelligence']);
+  expect(assigned.filter((row) => !row.primarySwahiliRoute && row.englishId !== SW_SOLAR_CALCULATOR.id).map((row) => row.englishId)).toEqual(['car-price-intelligence']);
   for (const row of assigned.filter((item) => item.primarySwahiliFile)) expect(fs.existsSync(row.primarySwahiliFile)).toBe(true);
 });
