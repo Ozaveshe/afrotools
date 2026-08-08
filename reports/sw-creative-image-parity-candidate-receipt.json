@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 7,
-    "blocked": 46,
+    "acceptedCandidates": 8,
+    "blocked": 45,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -142,9 +142,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/image-filters/",
       "swahiliRoute": "/sw/zana/filters-za-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The reduced inline owner does not reuse image-filters-studio.js or reproduce English batch, preset, ZIP, manifest, and export behavior.",
-      "sourceOwner": "sw/zana/filters-za-picha/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-filters.js + assets/js/lib/image-filters-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio DOM contract and translates text nodes/accessible labels only; both locales execute the same preset, pixel-filter, resize, codec, recipe, history and ZIP engine.",
+      "exports": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back.",
+      "browser": "tests/e2e/swahili-image-filters-parity.spec.js (Chromium, one worker, final run on port 4407): shared-engine parity, codecs, two-file ZIP, recipe copy, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/image-filters.webp"
     },
     {
@@ -572,6 +575,7 @@
     "Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.",
     "Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.",
     "Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.",
+    "Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.",
     "Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.",
     "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
     "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.",
@@ -585,7 +589,8 @@
       4401,
       4404,
       4405,
-      4406
+      4406,
+      4407
     ],
     "widths": [
       320,
@@ -624,6 +629,10 @@
       "proof": "CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values."
     },
     {
+      "englishId": "image-filters",
+      "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back."
+    },
+    {
       "englishId": "watermark-bulk",
       "proof": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30."
     },
@@ -655,6 +664,7 @@
     "playwright test tests/e2e/swahili-image-crop-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-format-convert-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-resize-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-filters-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",
