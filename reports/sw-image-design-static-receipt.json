@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 9,
-    "blocked": 10,
+    "staticCandidates": 10,
+    "blocked": 9,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -21,6 +21,12 @@
       "route": "/sw/zana/kitengeneza-qr/",
       "sourceOwner": "assets/js/engines/qr-payload-engine.js",
       "browserProof": "tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
+    },
+    {
+      "id": "passport-photo",
+      "route": "/sw/zana/picha-ya-pasipoti/",
+      "sourceOwner": "scripts/build-sw-passport-photo.js",
+      "browserProof": "tests/e2e/swahili-passport-photo-parity.spec.js: Swahili is generated from the exact English studio DOM and loads passport-photo-studio.js; controlled English and Swahili 413x531 PNG output was byte-identical; all nine advertised single, 4x6-sheet and A4 exports reopened as PNG, JPG and WebP at exact 413x531, 1800x1200 and 2480x3508 dimensions; preset source facts and the localized clipboard brief were verified; invalid input, crop reset, checklist, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
     },
     {
       "id": "image-crop",
@@ -79,12 +85,6 @@
       "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
     },
     {
-      "id": "passport-photo",
-      "route": "/sw/zana/picha-ya-pasipoti/",
-      "status": "blocked-feature-parity",
-      "blocker": "The Swahili canvas owner is narrower than passport-photo-studio.js and lacks the English crop, preset, sheet, validation, and export proof surface."
-    },
-    {
       "id": "favicon-generator",
       "route": "/sw/zana/kizalishaji-favicon/",
       "status": "blocked-missing-route",
@@ -127,7 +127,7 @@
       "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -143,7 +143,8 @@
       4405,
       4406,
       4407,
-      4408
+      4408,
+      4409
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -153,18 +154,19 @@
       "tests/e2e/swahili-image-format-convert-parity.spec.js",
       "tests/e2e/swahili-image-resize-parity.spec.js",
       "tests/e2e/swahili-image-filters-parity.spec.js",
-      "tests/e2e/swahili-social-card-parity.spec.js"
+      "tests/e2e/swahili-social-card-parity.spec.js",
+      "tests/e2e/swahili-passport-photo-parity.spec.js"
     ],
-    "result": "24 passed"
+    "result": "27 passed"
   },
   "validation": {
     "focusedStatic": "pass",
     "colorFamilyOwner": "pass",
     "colorFamilyAudit": "pass",
     "freeAppInventory": "pass: 1,257 rows / 770 accepted globally; Image & Design remains 0 accepted",
-    "localization": "pass: 11,256 pages",
-    "hreflang": "pass: 33,248 relationships / 5,340 groups",
-    "internalLinks": "pass: 138,213 links across 11,475 HTML files",
+    "localization": "pass: 11,290 pages",
+    "hreflang": "pass: 33,412 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,248 links across 11,509 HTML files",
     "lint": "pass",
     "typeCheck": "pass",
     "artworkIndex": "pass",

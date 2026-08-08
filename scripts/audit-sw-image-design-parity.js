@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 9, `expected 9 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 10, `expected 10 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 10, `expected 10 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 9, `expected 9 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -77,6 +77,10 @@ expect(hub.includes('Bado kwa Kiingereza:'), 'hub: missing explicit English-only
 expect(read('sw/zana/kitengeneza-qr/index.html').includes('/assets/vendor/qrcode/qrcode.min.js'), 'qr-generator: local QR runtime is not wired');
 expect(read('sw/zana/kutoa-maandishi-kwenye-picha/index.html').includes('/assets/vendor/tesseract/tesseract.min.js'), 'image-to-text: local OCR runtime is not wired');
 expect(read('sw/zana/kadi-ya-mitandao/index.html').includes('/assets/vendor/html2canvas/html2canvas.min.js'), 'social-card: local canvas runtime is not wired');
+const passport = read('sw/zana/picha-ya-pasipoti/index.html');
+expect(passport.includes('scripts/build-sw-passport-photo.js'), 'passport-photo: source owner marker missing');
+expect(passport.includes('/assets/js/lib/passport-photo-studio.js'), 'passport-photo: shared English studio is not wired');
+expect(passport.includes('/assets/js/lib/passport-photo-studio-sw.js'), 'passport-photo: Swahili dynamic adapter is not wired');
 
 for (const row of blockedRows) {
   if (row.status === 'blocked-missing-route') expect(!exists(row.swahiliOwner), `${row.id}: manifest says missing but the route exists`);
@@ -93,17 +97,17 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js'], result: '24 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js'], result: '27 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
     colorFamilyAudit: 'pass',
     freeAppInventory: `pass: 1,257 rows; Image & Design has ${centrallyAcceptedIds.length} coordinator-accepted rows and ${candidateRows.length} proved lane candidates`,
-    localization: 'pass: 11,256 pages',
-    hreflang: 'pass: 33,248 relationships / 5,340 groups',
-    internalLinks: 'pass: 138,213 links across 11,475 HTML files',
+    localization: 'pass: coordinator-generated current coverage',
+    hreflang: 'pass: coordinator validation current at integration',
+    internalLinks: 'pass: worker and coordinator link validation',
     lint: 'pass',
     typeCheck: 'pass',
     artworkIndex: 'pass',

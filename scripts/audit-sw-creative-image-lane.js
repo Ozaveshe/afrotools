@@ -44,7 +44,7 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'qr-generator', 'social-card', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'passport-photo', 'qr-generator', 'social-card', 'watermark-bulk']);
 const candidateProof = {
   'color-picker': {
     sourceOwner: 'scripts/build-sw-image-color-family.js',
@@ -81,6 +81,12 @@ const candidateProof = {
     oracle: 'Swahili now loads the exact English local batch resizer for presets, fit/fill/pad/stretch geometry, focal coordinates, no-upscale, format, quality, naming, history and download semantics; a bounded adapter localizes dynamic UI only.',
     exports: 'English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP plus fit/fill/pad/stretch outputs reopened at exact dimensions; two files across custom and thumbnail targets produced four individually reopened files and four more reopened through Download all at 60x40 or 512x512.',
     browser: 'tests/e2e/swahili-image-resize-parity.spec.js (Chromium, one worker, final run on port 4406): shared-engine parity, all resize modes, codecs, multi-file multi-target exports, clear/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
+  },
+  'passport-photo': {
+    sourceOwner: 'scripts/build-sw-passport-photo.js + assets/js/lib/passport-photo-studio.js',
+    oracle: 'A bounded idempotent generator copies the exact English studio DOM contract and translates text nodes and accessible labels only; both locales execute the same country/destination presets, source-confidence data, manual crop, 300 DPI layout and codec engine.',
+    exports: 'Controlled English and Swahili single-photo PNG output was byte-identical at 413x531. All nine advertised PNG, JPG and WebP combinations reopened in the browser at exact single 413x531, 4x6-sheet 1800x1200 and A4 2480x3508 dimensions; the localized requirement brief retained exact preset dimensions, source URL and 300 DPI contract.',
+    browser: 'tests/e2e/swahili-passport-photo-parity.spec.js (Chromium, one worker, final run on port 4409): shared renderer, all advertised formats and layouts, source facts, clipboard brief, invalid input, crop reset, checklist, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
   },
   'qr-generator': {
     sourceOwner: 'assets/js/engines/qr-payload-engine.js',
@@ -135,8 +141,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 9, `accepted candidate count drifted: expected 9, found ${accepted.length}`);
-expect(blocked.length === 44, `blocked count drifted: expected 44, found ${blocked.length}`);
+expect(accepted.length === 10, `accepted candidate count drifted: expected 10, found ${accepted.length}`);
+expect(blocked.length === 43, `blocked count drifted: expected 43, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -163,12 +169,13 @@ const receipt = {
     'The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.',
     'QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.',
     'Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.',
+    'Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.',
     'Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.'
   ],
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408],
+    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409],
     widths: [320, 375, 640],
     reflow: '640 CSS px as the 200% reflow equivalent of a 1280 px viewport',
     themes: ['light', 'dark'],
@@ -192,6 +199,7 @@ const receipt = {
     'playwright test tests/e2e/swahili-image-resize-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-image-filters-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',
@@ -205,7 +213,7 @@ const receipt = {
 };
 
 const mdRows = rows.map(row => `- \`${row.englishId}\` — ${row.status}: ${row.status === 'accepted-candidate' ? row.exports : row.blocker}`).join('\n');
-const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407 and 4408: **24 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
+const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408 and 4409: **27 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
 
 if (failures.length) {
   console.error(failures.join('\n'));
