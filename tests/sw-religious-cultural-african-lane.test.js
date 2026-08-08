@@ -18,8 +18,9 @@ const funeralBudgetEngine = require('../assets/js/engines/funeral-budget-engine.
 const rcEngine = require('../assets/js/engines/religious-cultural-parity.js');
 const swBuilder = require('../scripts/build-sw-religious-cultural-parity.js');
 
-const acceptedBefore = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
-const assigned = inventory.rows.filter((row) => ['religious-cultural', 'african'].includes(row.categoryKey) && !acceptedBefore.has(row.englishId));
+const receiptBuilder = require('../scripts/build-sw-religious-cultural-african-receipt.js');
+const assignedIds = new Set(receiptBuilder.ASSIGNED_IDS);
+const assigned = inventory.rows.filter((row) => assignedIds.has(row.englishId));
 const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 

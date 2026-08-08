@@ -11,6 +11,7 @@ const religiousSource = require('../data/localization/fr-religious-cultural-pari
 
 const ROOT = path.resolve(__dirname, '..');
 const BASELINE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
+const ASSIGNED_IDS = Object.freeze(['japa-calculator','mobile-money-fees','tithe-offering','lobola-calculator','lobola-negotiation-checklist','lobola-gift-list','burial-cost','naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','remittance-compare','remittance-v2','brideprice-advisor','ajo-interest','market-days','ajo-chama-calc','african-proverbs','prayer-times','ramadan-timetable','islamic-finance','wedding-budget','naming-ceremony','funeral-cost','baby-name-generator','traditional-calendar','age-calculator-african','festival-calendar','aso-ebi-cost','traditional-attire','halal-compliance','islamic-calendar']);
 const AFRICAN_ACCEPTED = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
 const BLOCKERS = Object.freeze({
   'japa-calculator':'The English owner embeds changing visa, travel and relocation price assumptions without a current reviewed source contract.',
@@ -21,7 +22,9 @@ function slash(route) { return route.endsWith('/') ? route : `${route}/`; }
 function exists(publicPath) { return fs.existsSync(path.join(ROOT, publicPath.replace(/^\//, ''))); }
 
 function build() {
-  const scope = inventory.rows.filter((row) => !row.accepted && ['religious-cultural','african'].includes(row.categoryKey));
+  const inventoryById = new Map(inventory.rows.map((row) => [row.englishId, row]));
+  const scope = ASSIGNED_IDS.map((id) => inventoryById.get(id));
+  if (scope.some((row) => !row)) throw new Error('Pinned Religious, Cultural and African assignment no longer resolves against the authoritative inventory');
   if (scope.length !== 33) throw new Error(`Expected 33 assigned rows, found ${scope.length}`);
   const africanById = new Map(africanManifest.rows.map((row) => [row.english.id, row]));
   const religiousById = new Map(religiousSource.tools.map((row) => [row.sourceId, row]));
@@ -91,4 +94,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { build };
+module.exports = { ASSIGNED_IDS, build };
