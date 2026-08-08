@@ -15,7 +15,12 @@ const OUT_ART = "reports/sw-engineering-energy-transport-missing-artwork-2026-08
 const BASE_SHA = "6edacda8437e1fa9b9e5a512138cbdd3169e38be";
 const CATEGORY_KEYS = ["engineering", "energy", "transport"];
 
-const rows = inventory.rows.filter((row) => CATEGORY_KEYS.includes(row.categoryKey) && !row.accepted);
+// This lane was partitioned against BASE_SHA. Central acceptance grows after
+// integration, so deriving today's rows from `!accepted` silently shrinks and
+// reassigns the 55-app programme. Resolve the frozen IDs from the owned receipt.
+const pinnedReceipt = JSON.parse(fs.readFileSync(path.join(ROOT, OUT_JSON), "utf8"));
+const inventoryById = new Map(inventory.rows.map((row) => [row.englishId, row]));
+const rows = pinnedReceipt.apps.map((app) => inventoryById.get(app.englishId));
 const energyIds = new Set(SW_ENERGY_REMAINING_APPS.map((app) => app.id));
 const engineeringIds = new Set(SW_ENGINEERING_MATERIALS_APPS.map((app) => app.id));
 const transportCostIds = new Set(SW_TRANSPORT_COST_APPS.map((app) => app.id));
@@ -25,6 +30,7 @@ function exists(file) { return Boolean(file) && fs.existsSync(path.join(ROOT, fi
 function routeFile(row) { return row.primarySwahiliFile || null; }
 function artworkFile(row) { return `assets/img/tools/${row.englishId}.webp`; }
 
+if (rows.some((row) => !row)) throw new Error("Pinned 55-app assignment no longer resolves against the authoritative inventory.");
 if (rows.length !== 55) throw new Error(`Expected exact denominator 55, received ${rows.length}.`);
 for (const [key, count] of [["engineering", 20], ["energy", 17], ["transport", 18]]) {
   const actual = rows.filter((row) => row.categoryKey === key).length;
