@@ -2,8 +2,8 @@
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Accepted candidates: **5**
-- Fail-closed rows: **14**
+- Accepted candidates: **6**
+- Fail-closed rows: **13**
 - Central ledger edits: **0**
 - Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
@@ -14,6 +14,7 @@
 - `image-crop` — `/sw/zana/kukata-picha/`: tests/e2e/swahili-image-crop-parity.spec.js: English and Swahili share the exact interactive crop engine and produced byte-identical PNG output; Swahili selection, rotate/flip/reset, local history and localized recipe passed; PNG, JPG and WebP reopened at exact 64x48 dimensions; 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
 - `watermark-bulk` — `/sw/zana/watermark-nyingi/`: tests/e2e/swahili-watermark-bulk-parity.spec.js: two synthetic images, full-resolution current and batch PNG downloads parsed and reopened at 64x48 and 40x30; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed.
+- `image-format-convert` — `/sw/zana/kubadilisha-format-ya-picha/`: tests/e2e/swahili-image-format-convert-parity.spec.js: English and Swahili share the exact local converter and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP files reopened at exact 60x40 dimensions; unsupported AVIF remained disabled; the two-file, three-format ZIP manifest parsed and every nested output reopened; picture markup, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `colour-palette` — `/sw/zana/paleti-ya-rangi/`: tests/e2e/swahili-image-color-family.spec.js: all 45 palettes and 225 colors retained; CSS and JSON downloads parsed, filtering/copy, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
 
 ## Fail-closed rows
@@ -31,7 +32,6 @@
 - `certificate-maker` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.
 - `flyer-maker` — blocked-feature-parity: The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior.
 - `thumbnail-maker` — blocked-missing-route: No physical Swahili route or native thumbnail studio owner exists on the coordinator base.
-- `image-format-convert` — blocked-codec-parity: The reduced inline owner does not reuse image-format-convert-studio.js or reproduce English batch, browser-codec fail-closed, ZIP manifest, and reopen behavior.
 
 ## Validation
 

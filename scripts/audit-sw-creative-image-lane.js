@@ -25,7 +25,7 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-crop', 'qr-generator', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-crop', 'image-format-convert', 'qr-generator', 'watermark-bulk']);
 const candidateProof = {
   'color-picker': {
     sourceOwner: 'scripts/build-sw-image-color-family.js',
@@ -44,6 +44,12 @@ const candidateProof = {
     oracle: 'Swahili now uses the exact English interactive crop owner for free/fixed selection, rotate, flip, nudge, exact coordinates, output sizing, format, quality, local settings and history.',
     exports: 'English and Swahili 64x48 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads were each reopened by format parser at exactly 64x48; the localized clipboard recipe was also read back.',
     browser: 'tests/e2e/swahili-image-crop-parity.spec.js (Chromium, one worker, final run on port 4404): shared-engine parity, all advertised codecs, stale invalid/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
+  },
+  'image-format-convert': {
+    sourceOwner: 'assets/js/lib/image-format-convert-studio.js',
+    oracle: 'Swahili now loads the exact English local converter for presets, dimensions, quality, codec detection, batch processing, manifest contents and filename semantics; a bounded adapter localizes dynamic UI only.',
+    exports: 'English and Swahili 60x40 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads reopened at exactly 60x40; unsupported AVIF stayed disabled; a two-source, three-format ZIP manifest parsed and all six nested files reopened at 60x40; copied picture markup was read back.',
+    browser: 'tests/e2e/swahili-image-format-convert-parity.spec.js (Chromium, one worker, final run on port 4405): shared-engine parity, codec fail-closed behavior, direct and batch exports, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
   },
   'qr-generator': {
     sourceOwner: 'assets/js/engines/qr-payload-engine.js',
@@ -92,8 +98,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 5, `accepted candidate count drifted: expected 5, found ${accepted.length}`);
-expect(blocked.length === 48, `blocked count drifted: expected 48, found ${blocked.length}`);
+expect(accepted.length === 6, `accepted candidate count drifted: expected 6, found ${accepted.length}`);
+expect(blocked.length === 47, `blocked count drifted: expected 47, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -114,6 +120,7 @@ const receipt = {
     'Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.',
     'Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.',
     'Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.',
+    'Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.',
     'The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.',
     'QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.',
     'Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.'
@@ -121,7 +128,7 @@ const receipt = {
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398, 4401, 4404],
+    isolatedPorts: [4398, 4401, 4404, 4405],
     widths: [320, 375, 640],
     reflow: '640 CSS px as the 200% reflow equivalent of a 1280 px viewport',
     themes: ['light', 'dark'],
@@ -141,6 +148,7 @@ const receipt = {
     'playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-image-crop-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-image-format-convert-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',
@@ -154,7 +162,7 @@ const receipt = {
 };
 
 const mdRows = rows.map(row => `- \`${row.englishId}\` — ${row.status}: ${row.status === 'accepted-candidate' ? row.exports : row.blocker}`).join('\n');
-const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401 and 4404: **12 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
+const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401, 4404 and 4405: **15 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
 
 if (failures.length) {
   console.error(failures.join('\n'));

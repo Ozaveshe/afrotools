@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 5,
-    "blocked": 48,
+    "acceptedCandidates": 6,
+    "blocked": 47,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -202,9 +202,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/image-format-convert/",
       "swahiliRoute": "/sw/zana/kubadilisha-format-ya-picha/",
-      "status": "blocked-codec-parity",
-      "blocker": "The reduced inline owner does not reuse image-format-convert-studio.js or reproduce English batch, browser-codec fail-closed, ZIP manifest, and reopen behavior.",
-      "sourceOwner": "sw/zana/kubadilisha-format-ya-picha/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/lib/image-format-convert-studio.js",
+      "oracle": "Swahili now loads the exact English local converter for presets, dimensions, quality, codec detection, batch processing, manifest contents and filename semantics; a bounded adapter localizes dynamic UI only.",
+      "exports": "English and Swahili 60x40 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads reopened at exactly 60x40; unsupported AVIF stayed disabled; a two-source, three-format ZIP manifest parsed and all six nested files reopened at 60x40; copied picture markup was read back.",
+      "browser": "tests/e2e/swahili-image-format-convert-parity.spec.js (Chromium, one worker, final run on port 4405): shared-engine parity, codec fail-closed behavior, direct and batch exports, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/image-format-convert.webp"
     },
     {
@@ -565,6 +568,7 @@
     "Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.",
     "Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.",
     "Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.",
+    "Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.",
     "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
     "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.",
     "Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof."
@@ -575,7 +579,8 @@
     "isolatedPorts": [
       4398,
       4401,
-      4404
+      4404,
+      4405
     ],
     "widths": [
       320,
@@ -614,6 +619,10 @@
       "proof": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30."
     },
     {
+      "englishId": "image-format-convert",
+      "proof": "English and Swahili 60x40 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads reopened at exactly 60x40; unsupported AVIF stayed disabled; a two-source, three-format ZIP manifest parsed and all six nested files reopened at 60x40; copied picture markup was read back."
+    },
+    {
       "englishId": "colour-palette",
       "proof": "Per-palette CSS, all-palette CSS and JSON downloads were reopened; JSON parsed to all 45 records and CSS parsed to all 225 colors."
     }
@@ -635,6 +644,7 @@
     "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-crop-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-format-convert-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",

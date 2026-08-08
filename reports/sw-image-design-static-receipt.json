@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 5,
-    "blocked": 14,
+    "staticCandidates": 6,
+    "blocked": 13,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -33,6 +33,12 @@
       "route": "/sw/zana/watermark-nyingi/",
       "sourceOwner": "sw/zana/watermark-nyingi/index.html",
       "browserProof": "tests/e2e/swahili-watermark-bulk-parity.spec.js: two synthetic images, full-resolution current and batch PNG downloads parsed and reopened at 64x48 and 40x30; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
+    },
+    {
+      "id": "image-format-convert",
+      "route": "/sw/zana/kubadilisha-format-ya-picha/",
+      "sourceOwner": "assets/js/lib/image-format-convert-studio.js",
+      "browserProof": "tests/e2e/swahili-image-format-convert-parity.spec.js: English and Swahili share the exact local converter and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP files reopened at exact 60x40 dimensions; unsupported AVIF remained disabled; the two-file, three-format ZIP manifest parsed and every nested output reopened; picture markup, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
     },
     {
       "id": "colour-palette",
@@ -119,12 +125,6 @@
       "route": "/sw/zana/kitengeneza-thumbnail/",
       "status": "blocked-missing-route",
       "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base."
-    },
-    {
-      "id": "image-format-convert",
-      "route": "/sw/zana/kubadilisha-format-ya-picha/",
-      "status": "blocked-codec-parity",
-      "blocker": "The reduced inline owner does not reuse image-format-convert-studio.js or reproduce English batch, browser-codec fail-closed, ZIP manifest, and reopen behavior."
     }
   ],
   "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.",
@@ -139,15 +139,17 @@
     "ports": [
       4398,
       4401,
-      4404
+      4404,
+      4405
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
       "tests/e2e/swahili-watermark-bulk-parity.spec.js",
       "tests/e2e/swahili-qr-generator-parity.spec.js",
-      "tests/e2e/swahili-image-crop-parity.spec.js"
+      "tests/e2e/swahili-image-crop-parity.spec.js",
+      "tests/e2e/swahili-image-format-convert-parity.spec.js"
     ],
-    "result": "12 passed"
+    "result": "15 passed"
   },
   "validation": {
     "focusedStatic": "pass",
