@@ -3,7 +3,7 @@
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Derivation: `categoryKey=financial`, coordinator-accepted IDs removed, `englishId` ascending, positions 1–46.
 - Partition proof: 92 unaccepted financial rows = shard A 46 + shard B 46; overlap 0.
-- Outcome: **18 accepted candidate / 28 blocked / 46 denominator**.
+- Outcome: **19 accepted candidate / 27 blocked / 46 denominator**.
 - Coordinator-owned acceptance, inventory, AI route-map, coverage, sitemap, redirect and service-worker outputs were not edited.
 - Missing `.claude/rules/i18n.md` was recorded at the pinned baseline and was not treated as a blocker, per coordinator direction.
 
@@ -37,7 +37,7 @@
 | 24 | `dj-paye` | `/djibouti/dj-paye` | `/sw/djibouti/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/djibouti/kikokotoo-kodi-mshahara/index.html` |
 | 25 | `dz-paye` | `/algeria/dz-paye` | `/sw/algeria/kikokotoo-kodi-mshahara` | BLOCKED | The physical Swahili candidate fails one or more fail-closed static product contracts. |
 | 26 | `er-paye` | `/eritrea/er-paye` | `/sw/eritrea/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/eritrea/kikokotoo-kodi-mshahara/index.html` |
-| 27 | `er-vat` | `/eritrea/er-vat` | `/sw/eritrea/kikokotoo-vat` | BLOCKED | Focused Chromium proof found horizontal overflow at 200% text scaling; the candidate remains fail-closed pending route-specific reflow repair. |
+| 27 | `er-vat` | `/eritrea/er-vat` | `/sw/eritrea/kikokotoo-vat` | ACCEPTED | `sw/eritrea/kikokotoo-vat/index.html` |
 | 28 | `etims-guide` | `/tools/etims-guide` | — | BLOCKED | No physical native Swahili application route exists on the pinned coordinator baseline. |
 | 29 | `first-home-buyer` | `/tools/first-home-buyer` | `/sw/zana/mnunuzi-wa-kwanza-wa-nyumba` | ACCEPTED | `sw/zana/mnunuzi-wa-kwanza-wa-nyumba/index.html` |
 | 30 | `fuel-tracker` | `/tools/fuel-tracker` | `/sw/zana/ufuatiliaji-bei-za-mafuta` | ACCEPTED | `sw/zana/ufuatiliaji-bei-za-mafuta/index.html` |
@@ -76,12 +76,13 @@ See `reports/swahili-financial-shard-a-missing-artwork.json` (3 queued IDs).
 
 - PASS — `node scripts/build-sw-financial-shard-a-receipt.js --check`.
 - PASS 3/3 — `node tests/swahili-financial-shard-a.test.js`.
-- PASS 18/18 — `npx playwright test tests/e2e/swahili-financial-shard-a.spec.js --config=playwright.sw-financial-shard-a.config.js --project=chromium --workers=1`.
+- PASS 19/19 — `npx playwright test tests/e2e/swahili-financial-shard-a.spec.js --config=playwright.sw-financial-shard-a.config.js --project=chromium --workers=1`.
 - PASS 4/4 — `tests/e2e/swahili-financial-shard-a-paye.spec.js` downloaded and parsed each Swahili PAYE PDF with `pdf-parse`, and exercised valid, invalid, reset, 200% reflow, dark-mode and raw-input privacy contracts.
-- PASS 6/6 — `tests/e2e/swahili-financial-shard-a-deterministic.spec.js` parsed the Swahili converter CSV, first-home TXT, job-offer CSV/JSON, and all advertised PDFs/print output; it exercised exact results, invalid/reset behavior, 200% reflow, dark mode, focus, runtime errors, raw-input network privacy, and EN/FR parity for the shared job-offer clear fix.
+- PASS 7/7 — `tests/e2e/swahili-financial-shard-a-deterministic.spec.js` parsed the Swahili converter CSV, first-home TXT, job-offer CSV/JSON, and all advertised PDFs/print output; it exercised exact results, invalid/reset behavior, evidence-gated Eritrea historical sales tax, 200% reflow, dark mode, focus, runtime errors, raw-input network privacy, and EN/FR parity for the shared job-offer clear fix.
 - PASS — `tests/engines/{bj,cv,dj,gm}-paye.test.js` preserves browser/server formula parity for the four newly accepted PAYE routes.
 - PASS — `tests/engines/import-duty-nigeria-engine.test.js` and `tests/import-duty-data-trust.test.js` preserve the reviewed Nigeria import-duty engine and source contract.
 - PASS — `tests/first-home-readiness.test.js` and `tests/job-offer-engine.test.js` preserve the deterministic first-home and job-offer source engines.
+- PASS 5/5 — `tests/engines/er-vat.test.js` preserves the historical Eritrea sales-tax evidence gate and its matching API validation contract.
 - CARRIED BROAD-SUITE DEBT — the combined legacy `first-home-readiness.spec.js` / `job-offer-evaluator-vip.spec.js` run had 4/8 pass: its French first-home assertion expects an older TXT shape, job-offer external-request filtering hard-codes port 4173 instead of this lane's isolated port, and the French PDF filename assertion conflicts with the localized export owner. The focused six-case suite proves the scoped Swahili contracts and shared-controller parity independently.
 - PASS — `npm run validate:hreflang` (33,416 relationships; reciprocal EN/FR/SW job-offer metadata repaired).
 - PASS — `npm run check-links` (138,238 links; zero broken).

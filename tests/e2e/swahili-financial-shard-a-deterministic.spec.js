@@ -225,3 +225,40 @@ for (const route of ['/tools/job-offer-evaluator/', '/fr/tools/evaluateur-offre-
     await expect(page.locator('#joe-results')).not.toHaveClass(/on/);
   });
 }
+
+test('Swahili Eritrea historical sales-tax reference fails closed and parses its local PDF at 200%', async ({ page }) => {
+  const runtime = collectRuntime(page);
+  const privateValue = '12345.67';
+  await page.emulateMedia({ colorScheme: 'dark', reducedMotion: 'reduce' });
+  await page.setViewportSize({ width: 320, height: 800 });
+  await page.goto('/sw/eritrea/kikokotoo-vat/');
+
+  await expect(page.locator('#ervResult')).not.toHaveClass(/on/);
+  await expect(page.locator('#ervError')).not.toBeEmpty();
+  await page.locator('#ervAmount').fill('-1');
+  await page.locator('#ervEvidence').check();
+  await expect(page.locator('#ervResult')).not.toHaveClass(/on/);
+  await expect(page.locator('#ervError')).toContainText('kiasi kisicho hasi');
+
+  await page.locator('#ervAmount').fill(privateValue);
+  await expect(page.locator('#ervResult')).toHaveClass(/on/);
+  await expect(page.locator('#ervRate')).toHaveText('5%');
+  await expect(page.locator('#ervTax')).toContainText(/617[,.]28/);
+  await expect(page.locator('#ervGross')).toContainText(/12[\s,]?962[,.]95/);
+
+  const pdfPromise = page.waitForEvent('download');
+  await page.locator('#ervPdf').click();
+  const pdf = await pdfPromise;
+  expect(pdf.suggestedFilename()).toBe('eritrea-sales-tax-reference.pdf');
+  const pdfText = (await pdfParse(fs.readFileSync(await pdf.path()))).text;
+  expect(pdfText).toContain('ERN 12345.67');
+  expect(pdfText).toContain('ERN 617.28');
+  expect(pdfText).toContain('ERN 12962.95');
+
+  await page.locator('#ervTreatment').selectOption('services-ten-confirmed');
+  await expect(page.locator('#ervEvidence')).not.toBeChecked();
+  await expect(page.locator('#ervResult')).not.toHaveClass(/on/);
+  await expectTwoHundredPercentReflow(page);
+  expect(runtime.requests.filter(request => `${request.url}\n${request.body}`.includes(privateValue))).toEqual([]);
+  expect(runtime.errors).toEqual([]);
+});

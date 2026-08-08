@@ -16,7 +16,6 @@ const FALSE_PAIR_IDS = new Set(["crypto-prices"]);
 const ARTWORK_BLOCK_IDS = new Set(["cnps-guide"]);
 const BROWSER_BLOCK_IDS = new Set([
   "business-planner",
-  "er-vat",
 ]);
 const ROUTE_PROOF = {
   "bj-paye": ["tests/engines/bj-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
@@ -27,6 +26,7 @@ const ROUTE_PROOF = {
   "import-duty": ["tests/engines/import-duty-nigeria-engine.test.js", "tests/import-duty-data-trust.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "first-home-buyer": ["tests/first-home-readiness.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "job-offer-evaluator": ["tests/job-offer-engine.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
+  "er-vat": ["tests/engines/er-vat.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
 };
 
 function routeFile(route) {
@@ -195,10 +195,11 @@ function build() {
     "- PASS 3/3 — `node tests/swahili-financial-shard-a.test.js`.",
     `- PASS ${accepted.length}/${accepted.length} — \`npx playwright test tests/e2e/swahili-financial-shard-a.spec.js --config=playwright.sw-financial-shard-a.config.js --project=chromium --workers=1\`.`,
     "- PASS 4/4 — `tests/e2e/swahili-financial-shard-a-paye.spec.js` downloaded and parsed each Swahili PAYE PDF with `pdf-parse`, and exercised valid, invalid, reset, 200% reflow, dark-mode and raw-input privacy contracts.",
-    "- PASS 6/6 — `tests/e2e/swahili-financial-shard-a-deterministic.spec.js` parsed the Swahili converter CSV, first-home TXT, job-offer CSV/JSON, and all advertised PDFs/print output; it exercised exact results, invalid/reset behavior, 200% reflow, dark mode, focus, runtime errors, raw-input network privacy, and EN/FR parity for the shared job-offer clear fix.",
+    "- PASS 7/7 — `tests/e2e/swahili-financial-shard-a-deterministic.spec.js` parsed the Swahili converter CSV, first-home TXT, job-offer CSV/JSON, and all advertised PDFs/print output; it exercised exact results, invalid/reset behavior, evidence-gated Eritrea historical sales tax, 200% reflow, dark mode, focus, runtime errors, raw-input network privacy, and EN/FR parity for the shared job-offer clear fix.",
     "- PASS — `tests/engines/{bj,cv,dj,gm}-paye.test.js` preserves browser/server formula parity for the four newly accepted PAYE routes.",
     "- PASS — `tests/engines/import-duty-nigeria-engine.test.js` and `tests/import-duty-data-trust.test.js` preserve the reviewed Nigeria import-duty engine and source contract.",
     "- PASS — `tests/first-home-readiness.test.js` and `tests/job-offer-engine.test.js` preserve the deterministic first-home and job-offer source engines.",
+    "- PASS 5/5 — `tests/engines/er-vat.test.js` preserves the historical Eritrea sales-tax evidence gate and its matching API validation contract.",
     "- CARRIED BROAD-SUITE DEBT — the combined legacy `first-home-readiness.spec.js` / `job-offer-evaluator-vip.spec.js` run had 4/8 pass: its French first-home assertion expects an older TXT shape, job-offer external-request filtering hard-codes port 4173 instead of this lane's isolated port, and the French PDF filename assertion conflicts with the localized export owner. The focused six-case suite proves the scoped Swahili contracts and shared-controller parity independently.",
     "- PASS — `npm run validate:hreflang` (33,416 relationships; reciprocal EN/FR/SW job-offer metadata repaired).",
     "- PASS — `npm run check-links` (138,238 links; zero broken).",
