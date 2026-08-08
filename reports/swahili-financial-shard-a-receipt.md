@@ -14,9 +14,9 @@
 | 1 | `afrorates` | `/tools/afrorates` | `/sw/zana/viwango-benki` | ACCEPTED | `sw/zana/viwango-benki/index.html` |
 | 2 | `backup-power-costs` | `/tools/backup-power-costs` | `/sw/zana/gharama-ya-nishati-ya-dharura` | ACCEPTED | `sw/zana/gharama-ya-nishati-ya-dharura/index.html` |
 | 3 | `bj-paye` | `/benin/bj-paye` | `/sw/benin/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/benin/kikokotoo-kodi-mshahara/index.html` |
-| 4 | `business-planner` | `/tools/business-planner` | `/sw/zana/mpangaji-wa-biashara-ai` | BLOCKED | Focused Chromium proof found horizontal overflow at 200% text scaling; the candidate remains fail-closed pending route-specific reflow repair. |
-| 5 | `cd-paye` | `/dr-congo/cd-paye` | `/sw/dr-congo/kikokotoo-kodi-mshahara` | BLOCKED | The physical Swahili candidate fails one or more fail-closed static product contracts. |
-| 6 | `cg-paye` | `/congo/cg-paye` | `/sw/congo/kikokotoo-kodi-mshahara` | BLOCKED | The physical Swahili candidate fails one or more fail-closed static product contracts. |
+| 4 | `business-planner` | `/tools/business-planner` | `/sw/zana/mpangaji-wa-biashara-ai` | BLOCKED | The physical route labels deterministic template output as AI and advertises an unwired copy-summary action; accepting it would violate the AI-truth and working-export contracts. |
+| 5 | `cd-paye` | `/dr-congo/cd-paye` | `/sw/dr-congo/kikokotoo-kodi-mshahara` | BLOCKED | The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof. |
+| 6 | `cg-paye` | `/congo/cg-paye` | `/sw/congo/kikokotoo-kodi-mshahara` | BLOCKED | The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof. |
 | 7 | `cnps-guide` | `/tools/cnps-guide` | `/sw/zana/mwongozo-wa-cnps` | BLOCKED | Dedicated tool artwork is missing; queued explicitly rather than accepting with a generic image. |
 | 8 | `crypto-arbitrage` | `/crypto/arbitrage` | — | BLOCKED | No physical native Swahili application route exists on the pinned coordinator baseline. |
 | 9 | `crypto-cgt` | `/tools/crypto-tax` | `/sw/zana/kodi-ya-sarafu-za-kidijitali` | ACCEPTED | `sw/zana/kodi-ya-sarafu-za-kidijitali/index.html` |
@@ -35,7 +35,7 @@
 | 22 | `currency-converter` | `/tools/currency-converter` | `/sw/zana/kibadilishaji-sarafu` | ACCEPTED | `sw/zana/kibadilishaji-sarafu/index.html` |
 | 23 | `cv-paye` | `/cape-verde/cv-paye` | `/sw/cape-verde/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/cape-verde/kikokotoo-kodi-mshahara/index.html` |
 | 24 | `dj-paye` | `/djibouti/dj-paye` | `/sw/djibouti/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/djibouti/kikokotoo-kodi-mshahara/index.html` |
-| 25 | `dz-paye` | `/algeria/dz-paye` | `/sw/algeria/kikokotoo-kodi-mshahara` | BLOCKED | The physical Swahili candidate fails one or more fail-closed static product contracts. |
+| 25 | `dz-paye` | `/algeria/dz-paye` | `/sw/algeria/kikokotoo-kodi-mshahara` | BLOCKED | The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof. |
 | 26 | `er-paye` | `/eritrea/er-paye` | `/sw/eritrea/kikokotoo-kodi-mshahara` | ACCEPTED | `sw/eritrea/kikokotoo-kodi-mshahara/index.html` |
 | 27 | `er-vat` | `/eritrea/er-vat` | `/sw/eritrea/kikokotoo-vat` | ACCEPTED | `sw/eritrea/kikokotoo-vat/index.html` |
 | 28 | `etims-guide` | `/tools/etims-guide` | — | BLOCKED | No physical native Swahili application route exists on the pinned coordinator baseline. |
@@ -62,7 +62,7 @@
 
 Accepted candidates have physical native/localized Swahili documents, no iframe or English-document fetch transplantation, self-canonical metadata, Swahili and English alternates, structured data, dedicated artwork, and focused static/browser coverage. Existing shared deterministic engines remain the formula/data owners; this lane does not change tax rates, market data, country semantics, currencies, or source claims.
 
-Blocked rows are not accepted by implication. Missing routes require native controllers and per-app formula/export/browser proof. `crypto-prices` is blocked because its inventory candidate is only a category hub. `cnps-guide` is blocked until dedicated artwork exists.
+Blocked rows are not accepted by implication. Missing routes require native controllers and per-app formula/export/browser proof. `crypto-prices` is blocked because its inventory candidate is only a category hub. `cnps-guide` is blocked until dedicated artwork exists. `business-planner` is blocked for unsupported AI labeling and an unwired advertised action. The legacy `cd-paye`, `cg-paye`, and `dz-paye` pages are blocked for unconsented raw-input sends, email-gated print/PDF, and the absence of a maintained shared formula owner suitable for safe parity proof.
 
 ## Browser matrix and exports
 

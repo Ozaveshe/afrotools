@@ -28,6 +28,10 @@ test("candidate receipt is fail-closed and coordinator-owned outputs remain outs
   assert.equal(candidate.coordinatorOwnedFilesEdited, false);
   assert.equal(candidate.rows.find((row) => row.englishId === "crypto-prices").status, "blocked");
   assert.match(candidate.rows.find((row) => row.englishId === "crypto-prices").blocker, /category hub/i);
+  assert.match(candidate.rows.find((row) => row.englishId === "business-planner").blocker, /deterministic template output as AI/i);
+  for (const id of ["cd-paye", "cg-paye", "dz-paye"]) {
+    assert.match(candidate.rows.find((row) => row.englishId === id).blocker, /raw salary\/chat content/i, id);
+  }
   for (const id of ["bj-paye", "cv-paye", "dj-paye", "gm-paye"]) {
     const row = candidate.rows.find((candidateRow) => candidateRow.englishId === id);
     assert.equal(row.status, "accepted", id);

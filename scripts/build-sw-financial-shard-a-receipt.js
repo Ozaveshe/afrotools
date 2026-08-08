@@ -14,8 +14,12 @@ const REFLOW_STYLESHEET = '<link rel="stylesheet" href="/assets/css/sw-financial
 const BASE_SHA = "6edacda8437e1fa9b9e5a512138cbdd3169e38be";
 const FALSE_PAIR_IDS = new Set(["crypto-prices"]);
 const ARTWORK_BLOCK_IDS = new Set(["cnps-guide"]);
-const BROWSER_BLOCK_IDS = new Set([
-  "business-planner",
+const BROWSER_BLOCK_IDS = new Set([]);
+const PRODUCT_BLOCKERS = new Map([
+  ["business-planner", "The physical route labels deterministic template output as AI and advertises an unwired copy-summary action; accepting it would violate the AI-truth and working-export contracts."],
+  ["cd-paye", "The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof."],
+  ["cg-paye", "The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof."],
+  ["dz-paye", "The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof."],
 ]);
 const ROUTE_PROOF = {
   "bj-paye": ["tests/engines/bj-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
@@ -80,6 +84,9 @@ function assess(row) {
   }
   if (ARTWORK_BLOCK_IDS.has(row.englishId) || artwork.length === 0) {
     return { ...common, status: "blocked", blocker: "Dedicated tool artwork is missing; queued explicitly rather than accepting with a generic image." };
+  }
+  if (PRODUCT_BLOCKERS.has(row.englishId)) {
+    return { ...common, status: "blocked", blocker: PRODUCT_BLOCKERS.get(row.englishId) };
   }
   if (BROWSER_BLOCK_IDS.has(row.englishId)) {
     return { ...common, status: "blocked", blocker: "Focused Chromium proof found horizontal overflow at 200% text scaling; the candidate remains fail-closed pending route-specific reflow repair." };
@@ -179,7 +186,7 @@ function build() {
     "",
     "Accepted candidates have physical native/localized Swahili documents, no iframe or English-document fetch transplantation, self-canonical metadata, Swahili and English alternates, structured data, dedicated artwork, and focused static/browser coverage. Existing shared deterministic engines remain the formula/data owners; this lane does not change tax rates, market data, country semantics, currencies, or source claims.",
     "",
-    "Blocked rows are not accepted by implication. Missing routes require native controllers and per-app formula/export/browser proof. `crypto-prices` is blocked because its inventory candidate is only a category hub. `cnps-guide` is blocked until dedicated artwork exists.",
+    "Blocked rows are not accepted by implication. Missing routes require native controllers and per-app formula/export/browser proof. `crypto-prices` is blocked because its inventory candidate is only a category hub. `cnps-guide` is blocked until dedicated artwork exists. `business-planner` is blocked for unsupported AI labeling and an unwired advertised action. The legacy `cd-paye`, `cg-paye`, and `dz-paye` pages are blocked for unconsented raw-input sends, email-gated print/PDF, and the absence of a maintained shared formula owner suitable for safe parity proof.",
     "",
     "## Browser matrix and exports",
     "",
