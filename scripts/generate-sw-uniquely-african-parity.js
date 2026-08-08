@@ -19,7 +19,7 @@ const FULL = process.argv.includes("--full");
 
 const ROUTES = Object.freeze({
   "japa-calculator": ["/sw/zana/kikokotoo-uhamishaji/", "native-blocked-handoff"],
-  "mobile-money-fees": ["/sw/zana/ada-pesa-simu/", "native-blocked-inline-engine"],
+  "mobile-money-fees": ["/sw/zana/ada-pesa-simu/", "native-existing"],
   "fintech-fee-watch": ["/sw/zana/ufuatiliaji-ada-fintech/", "shared-engine"],
   "ajo-chama": ["/sw/zana/kifuatiliaji-ajo-chama/", "shared-engine"],
   "electricity-estimator": ["/sw/zana/makisio-ya-bili-ya-umeme/", "shared-engine"],
@@ -131,10 +131,10 @@ function buildManifest() {
       english: row.english,
       french: row.french,
       swahili: { route: target[0], file: path.relative(ROOT, swFile).replace(/\\/g, "/"), mode: target[1] },
-      culturalScope: row.culturalScope,
+      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.culturalScope,
       countryCodes: row.countryCodes,
-      engineOwner: row.engineOwner,
-      dataOwner: row.dataOwner,
+      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.engineOwner,
+      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.dataOwner,
       exports: row.exports,
       artwork: row.artwork
     };

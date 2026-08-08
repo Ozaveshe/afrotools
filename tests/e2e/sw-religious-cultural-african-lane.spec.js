@@ -5,18 +5,18 @@ const { test, expect } = require('@playwright/test');
 const religiousBuilder = require('../../scripts/build-sw-religious-cultural-parity.js');
 const africanManifest = require('../../data/localization/sw-uniquely-african-parity-manifest.json');
 
-const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2']);
+const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees']);
 const remittanceIds = new Set(['remittance-compare','remittance-v2']);
 const routes = [
   ...Array.from(religiousBuilder.ACCEPTED, (id) => ({ id, family:'religious', route:religiousBuilder.ROUTES[id] })),
-  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':'african', route:row.swahili.route }))
+  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':'african', route:row.swahili.route }))
 ];
 
 test.describe.configure({ mode:'serial' });
 
-test('29 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test('30 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(29);
+  expect(routes).toHaveLength(30);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
@@ -42,8 +42,8 @@ test('29 candidate apps pass native workflow, export, privacy and responsive bro
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content',/\/assets\/img\/tools\//);
     await expect(page.locator('body')).not.toContainText(/Famille|Confirmer les|Révision familiale|Montant de référence|Calculer|Résultat/);
 
-    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : page.locator('[data-ua-form]');
-    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : page.locator('[data-ua-result]');
+    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : app.family === 'mobile-money' ? page.locator('#mm-form') : page.locator('[data-ua-form]');
+    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : app.family === 'mobile-money' ? page.locator('#mm-result-list') : page.locator('[data-ua-result]');
     await expect(form).toBeVisible();
     if (app.id === 'whatsapp-link') await page.locator('[data-ua-field="message"]').fill('SW_PRIVACY_SENTINEL');
     if (app.family === 'african') await form.locator('button[type="submit"]').click();
@@ -57,6 +57,19 @@ test('29 candidate apps pass native workflow, export, privacy and responsive bro
         await page.locator(`#rm-${letter}-recipient`).fill(letter==='a'?'64000':'64500');
         await page.locator(`#rm-${letter}-fee`).fill(letter==='a'?'3':'4');
         await page.locator(`#rm-${letter}-observed`).fill(checked);
+      }
+      await form.locator('button[type="submit"]').click();
+    }
+    if (app.family === 'mobile-money') {
+      const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
+      for (const letter of ['a','b']) {
+        await page.locator(`#mm-${letter}-label`).fill(`Njia ${letter.toUpperCase()}`);
+        await page.locator(`#mm-${letter}-market`).fill('Soko la majaribio');
+        await page.locator(`#mm-${letter}-currency`).fill('KES');
+        await page.locator(`#mm-${letter}-amount`).fill('5000');
+        await page.locator(`#mm-${letter}-sender`).fill(letter==='a'?'30':'20');
+        await page.locator(`#mm-${letter}-recipient`).fill('5');
+        await page.locator(`#mm-${letter}-observed`).fill(checked);
       }
       await form.locator('button[type="submit"]').click();
     }
@@ -81,6 +94,14 @@ test('29 candidate apps pass native workflow, export, privacy and responsive bro
       expect(parsed.methodology).toBe('user-entered-remittance-quotes');
       expect(parsed.result.hasEligibleComparison).toBe(true);
       await page.locator('#rm-copy').click();
+      await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
+    } else if (app.family === 'mobile-money') {
+      const download=page.waitForEvent('download');
+      await page.locator('#mm-json').click();
+      const item=await download;const file=await item.path();const parsed=JSON.parse(fs.readFileSync(file,'utf8'));
+      expect(parsed.methodology).toBe('user-entered-mobile-money-quotes');
+      expect(parsed.result.hasEligibleComparison).toBe(true);
+      await page.locator('#mm-copy').click();
       await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
     } else {
       for (const kind of ['json','txt']) {
@@ -146,6 +167,25 @@ test('invalid input clears stale results and focuses the failed field', async ({
   await page.locator('#sw-rc-form button[type="submit"]').click();
   await expect(page.locator('#sw-rc-output')).toBeHidden();
   await expect(page.locator('[name="reference"]')).toHaveAttribute('aria-invalid','true');
+
+  await page.goto('/sw/zana/ada-pesa-simu/');
+  const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
+  for (const letter of ['a','b']) {
+    await page.locator(`#mm-${letter}-label`).fill(`Njia ${letter}`);
+    await page.locator(`#mm-${letter}-market`).fill('Soko la majaribio');
+    await page.locator(`#mm-${letter}-currency`).fill('KES');
+    await page.locator(`#mm-${letter}-amount`).fill('5000');
+    await page.locator(`#mm-${letter}-sender`).fill('20');
+    await page.locator(`#mm-${letter}-recipient`).fill('5');
+    await page.locator(`#mm-${letter}-observed`).fill(checked);
+  }
+  await page.locator('#mm-form button[type="submit"]').click();
+  await expect(page.locator('#mm-result-list')).not.toBeEmpty();
+  await page.locator('#mm-a-amount').fill('');
+  await page.locator('#mm-form button[type="submit"]').click();
+  await expect(page.locator('#mm-result-list')).toBeEmpty();
+  await page.locator('#mm-form button[type="reset"]').click();
+  await expect(page.locator('#mm-result-list')).toBeEmpty();
 });
 
 test('English prayer owners use the same date-aware engine and conservative boundaries', async ({ page }) => {
@@ -184,4 +224,22 @@ test('English remittance owners share the receipt engine without static provider
     await page.locator('#rm-form button[type="submit"]').click();
     await expect(page.locator('#rm-primary-value')).toContainText('64,500 KES');
   }
+});
+
+test('English mobile-money owner uses entered quotes without embedded provider tariffs', async ({ page }) => {
+  await page.goto('/tools/mobile-money-fees/');
+  await expect(page.locator('main[data-mobile-money-parity]')).toBeVisible();
+  await expect(page.locator('body')).not.toContainText(/M-Pesa|MTN MoMo|Airtel Money|Orange Money|Wave|OPay/);
+  const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
+  for (const letter of ['a','b']) {
+    await page.locator(`#mm-${letter}-label`).fill(`Route ${letter.toUpperCase()}`);
+    await page.locator(`#mm-${letter}-market`).fill('Synthetic market');
+    await page.locator(`#mm-${letter}-currency`).fill('KES');
+    await page.locator(`#mm-${letter}-amount`).fill('5000');
+    await page.locator(`#mm-${letter}-sender`).fill(letter==='a'?'30':'20');
+    await page.locator(`#mm-${letter}-recipient`).fill('5');
+    await page.locator(`#mm-${letter}-observed`).fill(checked);
+  }
+  await page.locator('#mm-form button[type="submit"]').click();
+  await expect(page.locator('#mm-primary-value')).toContainText('25 KES');
 });

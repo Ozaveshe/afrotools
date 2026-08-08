@@ -13,12 +13,13 @@ const prayerFixtures = require('../data/localization/prayer-times-source-fixture
 const african = require('../data/localization/sw-uniquely-african-parity-manifest.json');
 const uaEngine = require('../engines/src/uniquely-african-engine.js');
 const remittanceEngine = require('../engines/src/remittance-quote-comparator-engine.js');
+const mobileMoneyEngine = require('../assets/js/engines/mobile-money-quote-engine.js');
 const rcEngine = require('../assets/js/engines/religious-cultural-parity.js');
 const swBuilder = require('../scripts/build-sw-religious-cultural-parity.js');
 
 const acceptedBefore = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
 const assigned = inventory.rows.filter((row) => ['religious-cultural', 'african'].includes(row.categoryKey) && !acceptedBefore.has(row.englishId));
-const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2']);
+const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 
 test('assigned denominator is exactly 33 with the requested category split', () => {
@@ -78,10 +79,10 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
 });
 
-test('ten corrected African rows use native engines and four source-risk rows remain blocked', () => {
+test('eleven corrected African rows use native engines and three source-risk rows remain blocked', () => {
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'shared-engine').length, 28);
-  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 2);
-  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 4);
+  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 3);
+  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 3);
   for (const id of sharedAfricanLane) {
     const row = african.rows.find((item) => item.english.id === id);
     assert.equal(row.swahili.mode, 'shared-engine');
@@ -96,6 +97,11 @@ test('ten corrected African rows use native engines and four source-risk rows re
     assert.match(html,/remittance-quote-comparator-engine\.js/);
     assert.doesNotMatch(html,/Wise|WorldRemit|Remitly|Western Union|MoneyGram|\/api\/forex|ai-advisor/i);
   }
+  const mobile=african.rows.find((item)=>item.english.id==='mobile-money-fees');
+  assert.equal(mobile.swahili.mode,'native-existing');
+  const mobileHtml=fs.readFileSync(path.join(ROOT,mobile.swahili.file),'utf8');
+  assert.match(mobileHtml,/mobile-money-quote-engine\.js/);
+  assert.doesNotMatch(mobileHtml,/const FEE=|M-Pesa|MTN MoMo|Airtel Money|Orange Money|Wave|OPay/);
 });
 
 test('African source-oracle calculations and invalid clearing contracts', () => {
@@ -121,11 +127,15 @@ test('African source-oracle calculations and invalid clearing contracts', () => 
   assert.equal(remittance.hasEligibleComparison,true);
   assert.equal(remittance.groups[0].highestRecipientAmount,64500);
   assert.equal(remittance.quotes[1].highestAmongEligibleComparable,true);
+  const mobileMoney=mobileMoneyEngine.calculate({asOf:'2026-08-08T12:00:00Z',quotes:[{label:'A',market:'Synthetic',currency:'KES',transactionType:'send',amount:5000,senderFee:30,recipientFee:5,observedAt:'2026-08-08T10:00:00Z'},{label:'B',market:'Synthetic',currency:'KES',transactionType:'send',amount:5000,senderFee:20,recipientFee:5,observedAt:'2026-08-08T10:05:00Z'}]});
+  assert.equal(mobileMoney.hasEligibleComparison,true);
+  assert.equal(mobileMoney.groups[0].lowestTotalFee,25);
+  assert.equal(mobileMoney.quotes[1].lowestAmongEligibleComparable,true);
 });
 
 test('all assigned accepted routes have dedicated artwork and reciprocal metadata', () => {
   const ids = new Set([...swBuilder.ACCEPTED, ...africanLane]);
-  assert.equal(ids.size,29);
+  assert.equal(ids.size,30);
   for (const id of ids) {
     const route = swBuilder.ROUTES[id] || african.rows.find((item) => item.english.id === id).swahili.route;
     const file = path.join(ROOT,route.replace(/^\/+|\/+$/g,''),'index.html');
