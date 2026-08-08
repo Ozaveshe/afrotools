@@ -28,6 +28,7 @@ const ACCEPTED = new Set([
   'retirement-planner',
   'route-fares',
   'salary-compare',
+  'salary-intelligence',
   'side-hustle-tax',
   'so-paye',
   'ss-paye',
@@ -53,6 +54,7 @@ const PROOF = {
   'retirement-planner': ['tests/retirement-scenario-planner.test.js', 'tests/e2e/day3-finance-retirement-planner-vip.spec.js'],
   'route-fares': ['tests/engines/route-fares.test.js', 'tests/e2e/day3-finance-route-fares-locales-vip.spec.js'],
   'salary-compare': ['tests/salary-offer-compare.test.js', 'tests/e2e/day3-finance-salary-compare-vip.spec.js'],
+  'salary-intelligence': ['tests/salary-evidence-notebook.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'side-hustle-tax': ['tests/side-income-tax-reserve.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'so-paye': ['tests/engines/so-paye.test.js', 'tests/e2e/day3-finance-somalia-vip.spec.js'],
   'ss-paye': ['tests/engines/ss-paye.test.js', 'tests/e2e/day3-finance-south-sudan-vip.spec.js'],
@@ -65,6 +67,7 @@ const PROOF = {
 };
 
 const SWAHILI_OVERRIDES = {
+  'salary-intelligence': { primarySwahiliFile: 'sw/zana/daftari-la-ushahidi-wa-mishahara/index.html', primarySwahiliRoute: '/sw/zana/daftari-la-ushahidi-wa-mishahara/' },
   'side-hustle-tax': { primarySwahiliFile: 'sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html', primarySwahiliRoute: '/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/' },
   'transfer-pricing': {
     primarySwahiliFile: 'sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html',
@@ -215,6 +218,8 @@ const rows = shardB.map((row, index) => {
                 ? 'The focused shard suite exercises the five shared-engine methods and fail-closed range/source boundary, parses TXT and JSON, verifies print, copy and reset, and proves no raw-input network write.'
                 : row.englishId === 'side-hustle-tax'
                   ? 'The focused shard suite validates the user-rate reserve oracle, injection-safe CSV, parsed JSON, reopened PDF, copy/reset/stale-evidence behavior and no raw-input network write.'
+                  : row.englishId === 'salary-intelligence'
+                    ? 'The focused shard suite validates quartile and annualization semantics, parses injection-safe CSV and JSON, clears and reimports/reopens JSON, reopens PDF with pdf-parse, verifies clipboard, future-date rejection, reset and no raw-input network write.'
           : 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
       },
       privacyNoRawInputNetworkLeak: true,
@@ -273,6 +278,7 @@ const receipt = {
     'assets/js/pages/pension-projection-sw.js',
     'assets/js/pages/transfer-pricing-vip.js',
     'assets/js/pages/side-income-tax-reserve-vip.js',
+    'assets/js/pages/salary-intelligence-vip.js',
     'assets/js/components/tool-registry.js',
     'assets/css/property-roi-vip.css',
     'assets/css/property-transfer-cost-vip.css',
@@ -289,6 +295,7 @@ const receipt = {
     'sw/zana/makadirio-ya-pensheni/index.html',
     'sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html',
     'sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html',
+    'sw/zana/daftari-la-ushahidi-wa-mishahara/index.html',
     'tools/student-loan/index.html',
     'fr/tools/pret-etudiant/index.html',
     'tools/staff-cost/index.html',
@@ -300,16 +307,18 @@ const receipt = {
     'fr/tools/prix-transfert/index.html',
     'tools/side-hustle-tax/index.html',
     'fr/tools/impot-activite-secondaire/index.html',
+    'tools/salary-intelligence/index.html',
+    'fr/jobs/salary-benchmarks/index.html',
   ],
-  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.',
+  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.',
   browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 5, failed: 0, note: 'Current increment rerun covered shard derivation/static acceptance plus side-income reserve oracle fixtures; preceding commits cover transfer-pricing, pension-proj, staff-cost and student-loan.' },
-    shardBrowserMatrix: { passed: 30, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
+    focusedNodeSubtests: { passed: 6, failed: 0, note: 'Current increment rerun covered shard derivation/static acceptance, 23 salary-evidence engine assertions and 18 salary-intelligence API-safety assertions.' },
+    shardBrowserMatrix: { passed: 32, failed: 0, execution: 'complete corrected one-worker system-Chrome run on isolated port 43917 after adding the file-import accessible name' },
     focusedExistingWorkflowExportSelection: { passed: 20, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
-    localizationValidation: { publicPages: 11295, hreflangRelationships: 33444, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
-    linkValidation: { htmlFiles: 11514, internalLinks: 138242, broken: 0 },
+    localizationValidation: { publicPages: 11296, hreflangRelationships: 33450, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
+    linkValidation: { htmlFiles: 11515, internalLinks: 138246, broken: 0 },
     registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewStudentLoanMissingPage: false },
     mauritaniaOfficialSourceRecheck: {
       checkedOn: '2026-08-08',
@@ -367,11 +376,11 @@ const human = [
   '## Current lane command evidence',
   '',
   `- Evidence generator check: 46 rows, ${acceptedRows.length} accepted candidates, ${blockedRows.length} blocked, one missing artwork.`,
-  '- PASS: current 5 focused Node subtests cover shard derivation, fail-closed acceptance and side-income reserve oracles; preceding checkpoints cover transfer-pricing, pension-proj, staff-cost and student-loan.',
-  '- PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.',
-  '- PASS: complete 30-test shard browser matrix on isolated port 43917, including side-hustle-tax, transfer-pricing, pension-proj, staff-cost and student-loan parsed exports, clipboard/reset/invalid-evidence behavior, privacy, and all accepted route shards.',
-  '- PASS: i18n validation and 33,444 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
-  '- PASS: 138,242 internal links across 11,514 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.',
+  '- PASS: current 6 focused Node subtests cover shard derivation, fail-closed acceptance, 23 salary-evidence engine assertions and 18 salary-intelligence API-safety assertions.',
+  '- PASS: the initial salary browser matrix exposed an unnamed JSON file input; the accessible name was added and the complete corrected rerun passed.',
+  '- PASS: complete 32-test shard browser matrix on isolated port 43917, including salary-intelligence parsed CSV/JSON, JSON clear/import/reopen, reopened PDF, clipboard, reset/future-date behavior, privacy, and every accepted route shard.',
+  '- PASS: i18n validation and 33,450 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
+  '- PASS: 138,246 internal links across 11,515 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.',
   '- PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.',
   '- MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
@@ -384,6 +393,7 @@ const human = [
   '- Pension-proj native parity: the Swahili controller uses `engines/pension-projection-planner.js`, requires current scheme evidence and explicit assumption confirmation, and provides local copy/CSV/PDF without country rates, entitlements or forecasts. The distinct legacy `pension-projection` route remains blocked.',
   '- Transfer-pricing native parity: the shared `transfer-pricing-planner.js` controller now has complete Swahili method, error, result and memo copy; the route requires a documented user range and provides local copy/TXT/JSON/print without a benchmark or compliance conclusion.',
   '- Side-hustle-tax native parity: the shared `side-income-tax-reserve.js` engine and controller require a user-sourced reserve rate and recent evidence, then provide injection-safe CSV, JSON, copy and PDF without selecting a tax rate or deciding deductions.',
+  '- Salary-intelligence native parity: the private Swahili evidence notebook uses `assets/js/engines/salary-evidence-notebook.js`, requires five comparable recent user-entered rows, annualizes monthly evidence by 12, applies the existing NIST p(N+1) quartile interpolation and provides local injection-safe CSV, JSON import/reopen, PDF and copy. It contains no seeded market salary, representative benchmark, API, analytics or raw-input storage.',
   '- Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.',
   '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.',
   '- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',

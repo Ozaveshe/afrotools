@@ -18,6 +18,7 @@ const routes = [
   ['/sw/zana/mpango-wa-kustaafu-mapema', 'retirement-planner'],
   ['/sw/zana/nauli-za-ruti', 'route-fares'],
   ['/sw/zana/kilinganisha-mishahara', 'salary-compare'],
+  ['/sw/zana/daftari-la-ushahidi-wa-mishahara', 'salary-intelligence'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
@@ -28,6 +29,21 @@ const routes = [
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
   ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
 ];
+
+test('salary-intelligence keeps evidence private and reopens every advertised export', async ({ page }) => {
+  const writes = []; page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
+  await page.addInitScript(() => { window.__copiedText = ''; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } }); });
+  await page.goto('/sw/zana/daftari-la-ushahidi-wa-mishahara/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#si-country').fill('KE'); await page.locator('#si-city').fill('Nairobi'); await page.locator('#si-role').fill('Uhandisi wa programu'); await page.locator('#si-experience').fill('Kati'); await page.locator('#si-currency').fill('KES'); await page.locator('#si-basis').selectOption('gross'); await page.locator('#si-period').selectOption('annual'); await page.locator('#si-date').fill('2026-07-20');
+  for (const [index, amount] of [100000, 200000, 300000, 400000, 500000].entries()) { await page.locator('#si-amount').fill(String(amount)); await page.locator('#si-source').fill(index === 0 ? '=Jedwali la majaribio' : `Jedwali ${index + 1}`); await page.getByRole('button', { name: 'Ongeza safu ya ushahidi' }).click(); }
+  await expect(page.locator('.si-row')).toHaveCount(5); await page.locator('#si-analyze').click(); await expect(page.locator('#si-q1')).toContainText('150,000'); await expect(page.locator('#si-median')).toContainText('300,000'); await expect(page.locator('#si-q3')).toContainText('450,000');
+  await page.locator('#si-copy').click(); expect(await page.evaluate(() => window.__copiedText)).toContain('Muhtasari wa ushahidi wa mishahara');
+  let download = page.waitForEvent('download'); await page.locator('#si-csv').click(); const csv = fs.readFileSync(await (await download).path(), 'utf8'); expect(csv.split('\n')).toHaveLength(6); expect(csv).toContain("\"'=Jedwali la majaribio\"");
+  download = page.waitForEvent('download'); await page.locator('#si-json').click(); const jsonText = fs.readFileSync(await (await download).path(), 'utf8'); const json = JSON.parse(jsonText); expect(json.schemaVersion).toBe(1); expect(json.rows).toHaveLength(5); expect(json.privacy).toContain('faragha');
+  await page.locator('#si-clear').click(); await expect(page.locator('.si-row')).toHaveCount(0); await page.locator('#si-import').setInputFiles({ name: 'ushahidi.json', mimeType: 'application/json', buffer: Buffer.from(jsonText) }); await expect(page.locator('.si-row')).toHaveCount(5); await page.locator('#si-analyze').click(); await expect(page.locator('#si-median')).toContainText('300,000');
+  const pdfBytes = await page.evaluate(async () => { const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true })); document.getElementById('si-pdf').click(); return generated; }); const pdf = await pdfParse(Buffer.from(pdfBytes)); expect(pdf.text).toContain('Muhtasari wa ushahidi wa mishahara'); expect(pdf.text).toContain('300,000');
+  await page.locator('#si-clear').click(); await page.locator('#si-country').fill('KE'); await page.locator('#si-city').fill('Nairobi'); await page.locator('#si-role').fill('Uhandisi'); await page.locator('#si-experience').fill('Kati'); await page.locator('#si-currency').fill('KES'); await page.locator('#si-date').fill('2027-01-01'); await page.locator('#si-amount').fill('100000'); await page.locator('#si-source').fill('Tarehe ya majaribio'); await page.getByRole('button', { name: 'Ongeza safu ya ushahidi' }).click(); await expect(page.locator('#si-error')).toContainText('baadaye'); await expect(page.locator('.si-row')).toHaveCount(0); await page.locator('#si-clear').click(); await expect(page.locator('#si-country')).toHaveValue(''); expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /salary|evidence/i.test(key)))).toEqual([]); expect(writes).toEqual([]);
+});
 
 test('side-hustle-tax preserves the user-rate reserve engine and local exports', async ({ page }) => {
   const writes = []; page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });

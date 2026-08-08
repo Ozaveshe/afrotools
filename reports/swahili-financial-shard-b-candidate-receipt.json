@@ -5,8 +5,8 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 22,
-  "blocked": 24,
+  "accepted": 23,
+  "blocked": 23,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
@@ -16,6 +16,7 @@
     "assets/js/pages/pension-projection-sw.js",
     "assets/js/pages/transfer-pricing-vip.js",
     "assets/js/pages/side-income-tax-reserve-vip.js",
+    "assets/js/pages/salary-intelligence-vip.js",
     "assets/js/components/tool-registry.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
@@ -32,6 +33,7 @@
     "sw/zana/makadirio-ya-pensheni/index.html",
     "sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html",
     "sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html",
+    "sw/zana/daftari-la-ushahidi-wa-mishahara/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
@@ -42,9 +44,11 @@
     "tools/transfer-pricing/index.html",
     "fr/tools/prix-transfert/index.html",
     "tools/side-hustle-tax/index.html",
-    "fr/tools/impot-activite-secondaire/index.html"
+    "fr/tools/impot-activite-secondaire/index.html",
+    "tools/salary-intelligence/index.html",
+    "fr/jobs/salary-benchmarks/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -65,14 +69,14 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 5,
+      "passed": 6,
       "failed": 0,
-      "note": "Current increment rerun covered shard derivation/static acceptance plus side-income reserve oracle fixtures; preceding commits cover transfer-pricing, pension-proj, staff-cost and student-loan."
+      "note": "Current increment rerun covered shard derivation/static acceptance, 23 salary-evidence engine assertions and 18 salary-intelligence API-safety assertions."
     },
     "shardBrowserMatrix": {
-      "passed": 30,
+      "passed": 32,
       "failed": 0,
-      "execution": "complete one-worker system-Chrome run on isolated port 43917"
+      "execution": "complete corrected one-worker system-Chrome run on isolated port 43917 after adding the file-import accessible name"
     },
     "focusedExistingWorkflowExportSelection": {
       "passed": 20,
@@ -85,15 +89,15 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11295,
-      "hreflangRelationships": 33444,
+      "publicPages": 11296,
+      "hreflangRelationships": 33450,
       "equivalenceGroups": 5351,
       "status": "passed",
       "protectedGeneratedCoverageArtifacts": "reported stale and intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11514,
-      "internalLinks": 138242,
+      "htmlFiles": 11515,
+      "internalLinks": 138246,
       "broken": 0
     },
     "registryAudit": {
@@ -1107,12 +1111,60 @@
       "englishName": "Salary Evidence Notebook",
       "englishRoute": "/tools/salary-intelligence",
       "startingState": "native-candidate",
-      "status": "blocked",
-      "swahiliRoute": "/sw/mshahara-na-kodi",
-      "swahiliFile": "sw/mshahara-na-kodi/index.html",
-      "sourceOwner": "sw/mshahara-na-kodi/index.html",
-      "proof": null,
-      "blocker": "The candidate is the broad salary category hub, not a native equivalent of the English salary-intelligence app."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/daftari-la-ushahidi-wa-mishahara",
+      "swahiliFile": "sw/zana/daftari-la-ushahidi-wa-mishahara/index.html",
+      "sourceOwner": [
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/engines/salary-evidence-notebook.js",
+        "/assets/js/pages/salary-intelligence-vip.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/salary-evidence-notebook.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/salary-evidence-notebook.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite validates quartile and annualization semantics, parses injection-safe CSV and JSON, clears and reimports/reopens JSON, reopens PDF with pdf-parse, verifies clipboard, future-date rejection, reset and no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 74,
