@@ -5,11 +5,12 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 16,
-  "blocked": 30,
+  "accepted": 17,
+  "blocked": 29,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
+    "assets/js/engines/mr-paye.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
     "assets/css/route-fares-vip.css",
@@ -18,9 +19,10 @@
     "assets/css/togo-paye-vip.css",
     "sw/sao-tome/kikokotoo-kodi-mshahara/index.html",
     "sw/liberia/kikokotoo-kodi-mshahara/index.html",
+    "sw/mauritania/kikokotoo-kodi-mshahara/index.html",
     "sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia now uses a DOM-free browser engine proved against the reviewed server engine; this corrects the Swahili page so NASSCORP remains separate from the PAYE tax base.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia and Mauritania now use DOM-free browser engines proved against their reviewed server engines. Liberia keeps NASSCORP separate from the PAYE tax base; Mauritania preserves monthly ITS, CNSS, allowance, statutory round-down and employer-cost semantics.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -41,16 +43,16 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 16,
+      "passed": 18,
       "failed": 0
     },
     "shardBrowserMatrix": {
-      "passed": 18,
+      "passed": 20,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
     "focusedExistingWorkflowExportSelection": {
-      "passed": 19,
+      "passed": 20,
       "failed": 11,
       "failuresClaimedAsPass": false
     },
@@ -58,6 +60,16 @@
       "serverPassed": true,
       "browserPassed": 3,
       "browserFailed": 0
+    },
+    "mauritaniaOfficialSourceRecheck": {
+      "checkedOn": "2026-08-08",
+      "dgiItsContract": "Official DGI obligations page remained reachable and states monthly ITS rates of 15%, 25% and 40%.",
+      "cnssContributionContract": "Official CNSS declaration form remained reachable and states 13% employer CNSS, 1% worker CNSS and 2% occupational medicine.",
+      "decision": "No formula or cap changed; the reviewed 2026-07-21 source contract and 2026-10-31 next-review boundary remain in force.",
+      "urls": [
+        "https://impots.gov.mr/DGI/particuliers/calendrier_obligations_paiement.html",
+        "https://cnss.mr/wp-content/uploads/2020/12/declaration-trimestrielle-FR.pdf"
+      ]
     },
     "lint": {
       "status": "passed",
@@ -123,7 +135,7 @@
             "tests/engines/lr-paye-browser-parity.test.js",
             "tests/e2e/swahili-financial-shard-b.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -223,7 +235,7 @@
             "tests/microfinance-offer-engine.test.js",
             "tests/e2e/microfinance-offer-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -285,7 +297,7 @@
             "tests/day7-property-tool-contract.test.js",
             "tests/e2e/mortgage-budget-boundary.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -347,7 +359,7 @@
             "tests/day7-property-tool-contract.test.js",
             "tests/e2e/day3-finance-mortgage-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -364,12 +376,62 @@
       "englishName": "Mauritania PAYE Calculator",
       "englishRoute": "/mauritania/mr-paye",
       "startingState": "localized-shell-candidate",
-      "status": "blocked",
+      "status": "accepted",
       "swahiliRoute": "/sw/mauritania/kikokotoo-kodi-mshahara",
       "swahiliFile": "sw/mauritania/kikokotoo-kodi-mshahara/index.html",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "proof": null,
-      "blocker": "The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt."
+      "sourceOwner": [
+        "/assets/js/lib/simple-chart-fallback.js",
+        "/assets/js/lib/chart-config.js",
+        "/assets/js/engines/mr-paye.js",
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/lib/sw-accessibility.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/engines/mr-paye-browser-parity.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/engines/mr-paye-browser-parity.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 55,
@@ -539,7 +601,7 @@
             "tests/payslip-unicode-roundtrip.test.js",
             "tests/e2e/day3-finance-payslip-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -627,7 +689,7 @@
             "tests/day7-property-tool-contract.test.js",
             "tests/e2e/property-roi-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -689,7 +751,7 @@
             "tests/day7-property-tool-contract.test.js",
             "tests/e2e/property-transfer-cost-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -751,7 +813,7 @@
             "tests/day7-property-tool-contract.test.js",
             "tests/e2e/rent-vs-buy-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -813,7 +875,7 @@
             "tests/retirement-scenario-planner.test.js",
             "tests/e2e/day3-finance-retirement-planner-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -875,7 +937,7 @@
             "tests/engines/route-fares.test.js",
             "tests/e2e/day3-finance-route-fares-locales-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -937,7 +999,7 @@
             "tests/salary-offer-compare.test.js",
             "tests/e2e/day3-finance-salary-compare-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -1066,7 +1128,7 @@
             "tests/engines/so-paye.test.js",
             "tests/e2e/day3-finance-somalia-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -1130,7 +1192,7 @@
             "tests/engines/ss-paye.test.js",
             "tests/e2e/day3-finance-south-sudan-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -1193,7 +1255,7 @@
             "tests/engines/st-paye.test.js",
             "tests/e2e/day3-finance-sao-tome-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -1267,7 +1329,7 @@
             "tests/startup-valuation-engine.test.js",
             "tests/e2e/startup-valuation-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
@@ -1344,7 +1406,7 @@
             "tests/engines/tg-paye.test.js",
             "tests/e2e/day3-finance-togo-vip.spec.js"
           ],
-          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence."
         },
         "privacyNoRawInputNetworkLeak": true,
         "mobile320": true,
