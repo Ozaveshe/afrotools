@@ -20,6 +20,28 @@
     max-width: 100%;
   }
 
+  html,
+  body {
+    width: 100%;
+    overflow-x: clip;
+  }
+
+  [class*="grid"] > *,
+  [class*="row"] > *,
+  [class*="actions"] > *,
+  [class*="check"] > * {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  body > header,
+  body > main,
+  body > section,
+  [class*="hero"],
+  [class*="content"] {
+    overflow-x: clip;
+  }
+
   input,
   select,
   textarea,
@@ -52,5 +74,24 @@
   td {
     overflow-wrap: anywhere;
     word-break: normal;
+  }
+
+  .fh-skip,
+  .erv-skip {
+    position: fixed;
+    top: 0.75rem;
+    left: 0.75rem;
+    z-index: 10000;
+    width: auto;
+    max-width: calc(100% - 1.5rem);
+    transform: translateY(calc(-100% - 2rem));
+  }
+
+  .fh-skip:focus,
+  .fh-skip:focus-visible,
+  .erv-skip:focus,
+  .erv-skip:focus-visible {
+    left: 0.75rem;
+    transform: translateY(0);
   }
 }

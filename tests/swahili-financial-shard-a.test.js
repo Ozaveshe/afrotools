@@ -22,10 +22,17 @@ test("derives exactly 46 shard A rows with zero shard B overlap", () => {
 test("candidate receipt is fail-closed and coordinator-owned outputs remain outside the lane", () => {
   const { candidate } = build();
   assert.equal(candidate.totals.denominator, 46);
+  assert.equal(candidate.totals.accepted, 14);
+  assert.equal(candidate.totals.blocked, 32);
   assert.equal(candidate.totals.accepted + candidate.totals.blocked, 46);
   assert.equal(candidate.coordinatorOwnedFilesEdited, false);
   assert.equal(candidate.rows.find((row) => row.englishId === "crypto-prices").status, "blocked");
   assert.match(candidate.rows.find((row) => row.englishId === "crypto-prices").blocker, /category hub/i);
+  for (const id of ["bj-paye", "cv-paye", "dj-paye", "gm-paye"]) {
+    const row = candidate.rows.find((candidateRow) => candidateRow.englishId === id);
+    assert.equal(row.status, "accepted", id);
+    assert.ok(row.evidence.includes("tests/e2e/swahili-financial-shard-a-paye.spec.js"), id);
+  }
   for (const row of candidate.rows.filter((item) => item.status === "accepted")) {
     assert.ok(row.swahiliFile, row.englishId);
     const html = fs.readFileSync(path.join(ROOT, row.swahiliFile), "utf8");
