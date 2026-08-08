@@ -9,10 +9,27 @@ const ROOT = path.resolve(__dirname, '..');
 const WRITE = process.argv.includes('--write');
 const SOURCE = require('../data/localization/fr-religious-cultural-parity.json');
 const ACCEPTED = new Set([
-  'tithe-offering','lobola-calculator','lobola-negotiation-checklist','lobola-gift-list','african-proverbs','islamic-finance','wedding-budget','naming-ceremony','funeral-cost','baby-name-generator','traditional-calendar','age-calculator-african','festival-calendar','aso-ebi-cost','traditional-attire','halal-compliance','islamic-calendar'
+  'tithe-offering','lobola-calculator','lobola-negotiation-checklist','lobola-gift-list','african-proverbs','prayer-times','ramadan-timetable','islamic-finance','wedding-budget','naming-ceremony','funeral-cost','baby-name-generator','traditional-calendar','age-calculator-african','festival-calendar','aso-ebi-cost','traditional-attire','halal-compliance','islamic-calendar'
 ]);
 const ROUTES = Object.freeze({
   'tithe-offering':'/sw/zana/kikokotoo-fungu-la-kumi-na-sadaka/','lobola-calculator':'/sw/zana/kikokotoo-lobola-na-mahari/','lobola-negotiation-checklist':'/sw/zana/orodha-ya-majadiliano-ya-lobola/','lobola-gift-list':'/sw/zana/orodha-ya-zawadi-za-lobola/','african-proverbs':'/sw/zana/methali-za-afrika/','prayer-times':'/sw/zana/nyakati-za-swala-na-qibla/','ramadan-timetable':'/sw/zana/ratiba-ya-ramadhani/','islamic-finance':'/sw/zana/fedha-za-kiislamu/','wedding-budget':'/sw/zana/bajeti-ya-harusi/','naming-ceremony':'/sw/zana/bajeti-ya-sherehe-ya-jina/','funeral-cost':'/sw/zana/mpango-wa-gharama-za-mazishi/','baby-name-generator':'/sw/zana/majina-ya-watoto-wa-afrika/','traditional-calendar':'/sw/zana/kalenda-ya-kimila/','age-calculator-african':'/sw/zana/umri-na-jina-la-siku-afrika/','festival-calendar':'/sw/zana/kalenda-ya-tamasha-za-utamaduni/','aso-ebi-cost':'/sw/zana/gharama-za-aso-ebi/','traditional-attire':'/sw/zana/gharama-za-mavazi-ya-kimila/','halal-compliance':'/sw/zana/ukaguzi-wa-halal/','islamic-calendar':'/sw/zana/kalenda-ya-kiislamu/'
+});
+const DATE_AWARE_FIELDS = Object.freeze({
+  'prayer-times': [
+    {id:'city',type:'select',value:'Nairobi',options:['Nairobi','Lagos','Caire','Accra','Johannesburg','Casablanca']},
+    {id:'method',type:'select',value:'MWL',options:['MWL','Egypt','ISNA','UmmQura']},
+    {id:'school',type:'select',value:'standard',options:[{value:'standard',label:'Kawaida'},{value:'hanafi',label:'Hanafi'}]},
+    {id:'date',type:'date',value:'2026-04-27'}
+  ],
+  'ramadan-timetable': [
+    {id:'city',type:'select',value:'Lagos',options:['Lagos','Nairobi','Caire','Accra','Johannesburg','Casablanca']},
+    {id:'method',type:'select',value:'MWL',options:['MWL','Egypt','ISNA','UmmQura']},
+    {id:'school',type:'select',value:'standard',options:[{value:'standard',label:'Kawaida'},{value:'hanafi',label:'Hanafi'}]},
+    {id:'startDate',type:'date',value:'2026-02-19'},
+    {id:'days',type:'number',value:30,min:1,max:30,step:1},
+    {id:'suhoorBuffer',type:'number',value:10,min:0,max:120,step:1},
+    {id:'iftarBuffer',type:'number',value:0,min:0,max:120,step:1}
+  ]
 });
 const COPY = Object.freeze({
   'tithe-offering':['Mpangaji binafsi wa fungu la kumi na sadaka','Jumlisha asilimia, sadaka na ahadi ulizochagua bila kuamua wajibu wa dini, baraka au matokeo ya kifedha.'],
@@ -20,8 +37,8 @@ const COPY = Object.freeze({
   'lobola-negotiation-checklist':['Orodha ya maandalizi ya mazungumzo ya Lobola','Andaa wasemaji, maswali na hatua zinazofuata kwa mkutano wa familia wenye heshima na ridhaa.'],
   'lobola-gift-list':['Orodha ya zawadi za Lobola na mahari','Andika vipengee na thamani za kupanga; familia na wazee husika ndio huthibitisha desturi na zawadi.'],
   'african-proverbs':['Daftari la methali za Afrika','Chagua marejeo machache ya kuanzia kisha andika chanzo au msemaji wa kuthibitisha kabla ya kuchapisha.'],
-  'prayer-times':['Mpangaji wa nyakati za swala na Qibla','Mfano wa kulinganisha tu; preset za sasa hazikokotoi tarehe iliyochaguliwa na hazijakubaliwa.'],
-  'ramadan-timetable':['Rasimu ya ratiba ya Ramadhani','Mfano wa rasimu tu; unategemea nyakati zisizokokotolewa kwa tarehe na haujakubaliwa.'],
+  'prayer-times':['Mpangaji wa nyakati za swala na Qibla','Kokotoa makisio ya tarehe na mji kwa mbinu iliyochaguliwa, kisha thibitisha nyakati zote na msikiti wa eneo.'],
+  'ramadan-timetable':['Rasimu ya ratiba ya Ramadhani','Tengeneza rasimu ya kila tarehe kwa mji na mbinu iliyochaguliwa; mwandamo na msikiti wa eneo ndio uthibitisho wa mwisho.'],
   'islamic-finance':['Kikokotoo cha muundo wa fedha za Kiislamu','Linganisha bei, amana, ongezeko la gharama, ada na muda kama hesabu ya kupanga—si fatwa wala ofa ya benki.'],
   'wedding-budget':['Mpangaji wa bajeti ya harusi','Tenganisha wageni, chakula, ukumbi, mavazi, huduma na akiba bila kudai bei rasmi au mila ya lazima.'],
   'naming-ceremony':['Mpangaji wa sherehe ya jina','Panga mapokezi, zawadi, mwezeshaji na usafiri huku familia na jamii zikibaki mamlaka ya desturi.'],
@@ -35,7 +52,7 @@ const COPY = Object.freeze({
   'halal-compliance':['Orodha ya utayari wa Halal','Panga ushahidi wa viambato, wasambazaji, uhifadhi, usafi na lebo; alama si uthibitisho wa Halal.'],
   'islamic-calendar':['Kibadilishaji cha Gregorian kwenda Hijri','Pata makisio ya kalenda ya hesabu na uthibitishe Ramadhani, Eid, Hajj na ibada nyingine kwa mamlaka ya eneo.']
 });
-const LABELS = Object.freeze({currency:'Sarafu',reference:'Kiasi cha marejeo',rate:'Asilimia uliyochagua',offering:'Sadaka ya ziada',pledge:'Ahadi ya hiari',periods:'Vipindi',essentials:'Matumizi muhimu',familyExpectation:'Matarajio ya familia yaliyoingizwa',giftValue:'Thamani ya zawadi',ceremonyCost:'Gharama ya sherehe',buffer:'Akiba (%)',familyA:'Familia au msemaji wa kwanza',familyB:'Familia au msemaji wa pili',pending:'Jambo la kuthibitisha',nextStep:'Hatua inayofuata',item1:'Kipengee cha kwanza',value1:'Thamani ya kwanza',item2:'Kipengee cha pili',value2:'Thamani ya pili',item3:'Kipengee cha tatu',value3:'Thamani ya tatu',culture:'Lugha au jamii ya kuthibitisha',purpose:'Matumizi yaliyopangwa',verification:'Chanzo au msemaji wa kuuliza',city:'Jiji la mfano',method:'Njia ya kulinganisha',date:'Tarehe ya Gregorian',startDate:'Tarehe ya kuanzia ya muda',days:'Siku',fajr:'Fajr ya eneo',maghrib:'Maghrib ya eneo',suhoorBuffer:'Dakika kabla ya Fajr',iftarBuffer:'Dakika baada ya Maghrib',assetPrice:'Bei ya mali',deposit:'Amana',margin:'Ongezeko la gharama (%)',termMonths:'Muda (miezi)',fees:'Ada zilizoingizwa',guests:'Wageni',foodPerGuest:'Chakula kwa mtu',venue:'Ukumbi',attire:'Mavazi',services:'Huduma nyingine',gifts:'Zawadi na vifaa',officiant:'Msaada kwa mwezeshaji',logistics:'Usafiri na maandalizi',mortuary:'Maandalizi na mortuary',burial:'Maziko na jeneza',transport:'Usafiri',remembrance:'Kumbukumbu',candidate:'Jina linalopitiwa',meaning:'Maana iliyosimuliwa',reviewer:'Msemaji, mzee au chanzo',referenceDate:'Tarehe ya marejeo',referenceIndex:'Siku ya mzunguko wa marejeo',localAuthority:'Chanzo cha eneo',birthDate:'Tarehe ya kuzaliwa',asOfDate:'Tarehe ya kukokotoa',gender:'Jedwali la pendekezo',festival:'Tamasha au tukio',country:'Nchi au jamii',provisionalDate:'Tarehe ya muda',organizer:'Mratibu wa kuthibitisha',respectNote:'Kanuni ya heshima',people:'Watu',fabricYards:'Mita au yards kwa mtu',fabricPrice:'Bei ya kitambaa kwa kipimo',tailoring:'Ushonaji kwa mtu',accessories:'Vifaa kwa vazi',delivery:'Usafirishaji wa kikundi',discount:'Punguzo (%)',quantity:'Idadi ya mavazi',fabricCost:'Kitambaa kwa vazi',tailoringCost:'Ushonaji kwa vazi',rushFee:'Ada ya haraka',ingredients:'Orodha ya viambato',suppliers:'Ushahidi wa wasambazaji',storage:'Utenganishaji na uhifadhi',cleaning:'Utaratibu wa usafi',labels:'Lebo na ufuatiliaji',authority:'Mamlaka ya kuuliza',adjustment:'Marekebisho ya siku'});
+const LABELS = Object.freeze({currency:'Sarafu',reference:'Kiasi cha marejeo',rate:'Asilimia uliyochagua',offering:'Sadaka ya ziada',pledge:'Ahadi ya hiari',periods:'Vipindi',essentials:'Matumizi muhimu',familyExpectation:'Matarajio ya familia yaliyoingizwa',giftValue:'Thamani ya zawadi',ceremonyCost:'Gharama ya sherehe',buffer:'Akiba (%)',familyA:'Familia au msemaji wa kwanza',familyB:'Familia au msemaji wa pili',pending:'Jambo la kuthibitisha',nextStep:'Hatua inayofuata',item1:'Kipengee cha kwanza',value1:'Thamani ya kwanza',item2:'Kipengee cha pili',value2:'Thamani ya pili',item3:'Kipengee cha tatu',value3:'Thamani ya tatu',culture:'Lugha au jamii ya kuthibitisha',purpose:'Matumizi yaliyopangwa',verification:'Chanzo au msemaji wa kuuliza',city:'Jiji la mfano',method:'Njia ya kulinganisha',school:'Njia ya kukokotoa Asr',date:'Tarehe ya Gregorian',startDate:'Tarehe ya kuanzia ya muda',days:'Siku',fajr:'Fajr ya eneo',maghrib:'Maghrib ya eneo',suhoorBuffer:'Dakika kabla ya Fajr',iftarBuffer:'Dakika baada ya Maghrib',assetPrice:'Bei ya mali',deposit:'Amana',margin:'Ongezeko la gharama (%)',termMonths:'Muda (miezi)',fees:'Ada zilizoingizwa',guests:'Wageni',foodPerGuest:'Chakula kwa mtu',venue:'Ukumbi',attire:'Mavazi',services:'Huduma nyingine',gifts:'Zawadi na vifaa',officiant:'Msaada kwa mwezeshaji',logistics:'Usafiri na maandalizi',mortuary:'Maandalizi na mortuary',burial:'Maziko na jeneza',transport:'Usafiri',remembrance:'Kumbukumbu',candidate:'Jina linalopitiwa',meaning:'Maana iliyosimuliwa',reviewer:'Msemaji, mzee au chanzo',referenceDate:'Tarehe ya marejeo',referenceIndex:'Siku ya mzunguko wa marejeo',localAuthority:'Chanzo cha eneo',birthDate:'Tarehe ya kuzaliwa',asOfDate:'Tarehe ya kukokotoa',gender:'Jedwali la pendekezo',festival:'Tamasha au tukio',country:'Nchi au jamii',provisionalDate:'Tarehe ya muda',organizer:'Mratibu wa kuthibitisha',respectNote:'Kanuni ya heshima',people:'Watu',fabricYards:'Mita au yards kwa mtu',fabricPrice:'Bei ya kitambaa kwa kipimo',tailoring:'Ushonaji kwa mtu',accessories:'Vifaa kwa vazi',delivery:'Usafirishaji wa kikundi',discount:'Punguzo (%)',quantity:'Idadi ya mavazi',fabricCost:'Kitambaa kwa vazi',tailoringCost:'Ushonaji kwa vazi',rushFee:'Ada ya haraka',ingredients:'Orodha ya viambato',suppliers:'Ushahidi wa wasambazaji',storage:'Utenganishaji na uhifadhi',cleaning:'Utaratibu wa usafi',labels:'Lebo na ufuatiliaji',authority:'Mamlaka ya kuuliza',adjustment:'Marekebisho ya siku'});
 const OPTIONS = Object.freeze({'Discussion familiale':'Mazungumzo ya familia','Cours':'Darasa','Discours':'Hotuba','Publication':'Chapisho','Autorité égyptienne':'Mamlaka ya Misri','Réglage local':'Mpangilio wa eneo','Homme / garçon':'Mwanaume / mvulana','Femme / fille':'Mwanamke / msichana','Oui':'Ndiyo','Non':'Hapana','À confirmer':'Kuthibitishwa',female:'Mwanamke / msichana',male:'Mwanaume / mvulana',yes:'Imeandikwa',no:'Haijaandikwa',unknown:'Haijathibitishwa'});
 const VALUES = Object.freeze({
   'Famille A':'Familia A','Famille B':'Familia B','Confirmer les cadeaux et le déplacement':'Thibitisha zawadi na usafiri','Valider le compte rendu avec les deux familles':'Thibitisha kumbukumbu na familia zote mbili',
@@ -57,7 +74,9 @@ function renderField(field) {
 }
 function translateTool(source) {
   const copy = COPY[source.sourceId];
-  return { ...source, route:ROUTES[source.sourceId], title:copy[0], description:copy[1], fields:source.fields.map((field)=>({...field,label:LABELS[field.id]||field.id,value:field.type==='select'?field.value:(VALUES[field.value]||field.value)})), source:'Hesabu ya ndani iliyotolewa kutoka mmiliki wa Kiingereza; taarifa hubaki kwenye kivinjari na marejeo yanahitaji uthibitishaji wa eneo.', boundary:copy[1] + ' Thibitisha maamuzi ya dini, familia, sheria au utamaduni kwa viongozi na wataalamu husika.', confidence:'Juu kwa hesabu ya maingizo; hakuna mamlaka ya dini, familia, utamaduni au bei inayodaiwa.' };
+  const astronomical = ['prayer-times','ramadan-timetable'].includes(source.sourceId);
+  const fields = DATE_AWARE_FIELDS[source.sourceId] || source.fields;
+  return { ...source, route:ROUTES[source.sourceId], title:copy[0], description:copy[1], fields:fields.map((field)=>({...field,label:LABELS[field.id]||field.id,value:field.type==='select'?field.value:(VALUES[field.value]||field.value)})), source:astronomical?'Hesabu ya ndani ya tarehe kwa milinganyo ya jua ya NOAA na vigezo vya mbinu vilivyoandikwa na PrayTimes; hakuna data ya moja kwa moja.':'Hesabu ya ndani iliyotolewa kutoka mmiliki wa Kiingereza; taarifa hubaki kwenye kivinjari na marejeo yanahitaji uthibitishaji wa eneo.', boundary:copy[1] + ' Thibitisha maamuzi ya dini, familia, sheria au utamaduni kwa viongozi na wataalamu husika.', confidence:astronomical?'Makisio ya kiastronomia yanayorudiwa; nyakati za ibada na tarehe ya kuanza lazima zithibitishwe na msikiti na mamlaka ya eneo.':'Juu kwa hesabu ya maingizo; hakuna mamlaka ya dini, familia, utamaduni au bei inayodaiwa.' };
 }
 function alternates(tool) { return `<link rel="alternate" hreflang="en" href="https://afrotools.com${esc(tool.englishRoute)}"><link rel="alternate" hreflang="fr" href="https://afrotools.com${esc(SOURCE.tools.find((row)=>row.sourceId===tool.sourceId).route)}"><link rel="alternate" hreflang="sw" href="https://afrotools.com${esc(tool.route)}"><link rel="alternate" hreflang="x-default" href="https://afrotools.com${esc(tool.englishRoute)}">`; }
 function page(tool) {
@@ -77,14 +96,14 @@ function main() {
   const changed=[];
   for(const source of unaccepted){
     if(!ACCEPTED.has(source.sourceId)) continue;
-    const tool=translateTool(source); const file=fileFor(tool.route); const html=page(tool); const current=fs.existsSync(file)?fs.readFileSync(file,'utf8'):'';
+    const tool=translateTool(source); const file=fileFor(tool.route); const rawHtml=page(tool); const html=['prayer-times','ramadan-timetable'].includes(source.sourceId)?rawHtml.replace('<script src="/assets/js/engines/religious-cultural-parity.js"></script>', '<script src="/assets/js/engines/prayer-times.js"></script><script src="/assets/js/engines/religious-cultural-parity.js"></script>'):rawHtml; const current=fs.existsSync(file)?fs.readFileSync(file,'utf8'):'';
     if(current!==html){changed.push(path.relative(ROOT,file).replace(/\\/g,'/'));if(WRITE){fs.mkdirSync(path.dirname(file),{recursive:true});writeFileSyncWithRetry(file,html,'utf8');}}
     const englishFile=path.join(ROOT,source.englishRoute.replace(/^\/+|\/+$/g,''),'index.html'); const next=reciprocal(fs.readFileSync(englishFile,'utf8'),tool);
     if(next!==fs.readFileSync(englishFile,'utf8')){changed.push(path.relative(ROOT,englishFile).replace(/\\/g,'/'));if(WRITE)writeFileSyncWithRetry(englishFile,next,'utf8');}
     const frenchFile=fileFor(source.route); const frenchNext=reciprocal(fs.readFileSync(frenchFile,'utf8'),tool);
     if(frenchNext!==fs.readFileSync(frenchFile,'utf8')){changed.push(path.relative(ROOT,frenchFile).replace(/\\/g,'/'));if(WRITE)writeFileSyncWithRetry(frenchFile,frenchNext,'utf8');}
   }
-  console.log(JSON.stringify({mode:WRITE?'write':'check',denominator:19,accepted:ACCEPTED.size,blocked:['prayer-times','ramadan-timetable'],changedFiles:changed.length,files:changed},null,2));
+  console.log(JSON.stringify({mode:WRITE?'write':'check',denominator:19,accepted:ACCEPTED.size,blocked:[],changedFiles:changed.length,files:changed},null,2));
   if(!WRITE&&changed.length)process.exitCode=1;
 }
 if(require.main===module)main();

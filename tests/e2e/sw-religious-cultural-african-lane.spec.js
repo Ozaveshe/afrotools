@@ -13,9 +13,9 @@ const routes = [
 
 test.describe.configure({ mode:'serial' });
 
-test('25 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test('27 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(25);
+  expect(routes).toHaveLength(27);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
@@ -124,4 +124,23 @@ test('invalid input clears stale results and focuses the failed field', async ({
   await page.locator('#sw-rc-form button[type="submit"]').click();
   await expect(page.locator('#sw-rc-output')).toBeHidden();
   await expect(page.locator('[name="reference"]')).toHaveAttribute('aria-invalid','true');
+});
+
+test('English prayer owners use the same date-aware engine and conservative boundaries', async ({ page }) => {
+  const errors = [];
+  page.on('pageerror',(error)=>errors.push(String(error)));
+  await page.goto('/tools/prayer-times/');
+  await expect(page.locator('.rs-output')).toContainText('Date-aware planning estimate');
+  const first = await page.locator('.rs-output').textContent();
+  await page.locator('.rs-form [name="date"]').fill('2026-05-27');
+  await page.locator('.rs-form button[type="submit"]').click();
+  const second = await page.locator('.rs-output').textContent();
+  expect(second).not.toBe(first);
+  await expect(page.locator('.rs-output')).toContainText('Confirm every time with your local mosque');
+
+  await page.goto('/tools/ramadan-timetable/');
+  await expect(page.locator('.rs-output')).toContainText('date-aware planning timetable');
+  await expect(page.locator('.rs-output')).toContainText('local moon sighting');
+  await expect(page.locator('.rs-table > div')).toHaveCount(7);
+  expect(errors).toEqual([]);
 });

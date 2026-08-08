@@ -9,6 +9,7 @@ const ROOT = path.resolve(__dirname, '..');
 const inventory = require('../reports/swahili-free-app-parity-inventory.json');
 const acceptance = require('../data/audits/swahili-free-app-acceptance.json');
 const religious = require('../data/localization/fr-religious-cultural-parity.json');
+const prayerFixtures = require('../data/localization/prayer-times-source-fixtures.json');
 const african = require('../data/localization/sw-uniquely-african-parity-manifest.json');
 const uaEngine = require('../engines/src/uniquely-african-engine.js');
 const rcEngine = require('../assets/js/engines/religious-cultural-parity.js');
@@ -24,8 +25,8 @@ test('assigned denominator is exactly 33 with the requested category split', () 
   assert.equal(assigned.filter((row) => row.categoryKey === 'african').length, 14);
 });
 
-test('17 religious routes are native local workflows and two date-defective routes remain blocked', () => {
-  assert.equal(swBuilder.ACCEPTED.size, 17);
+test('19 religious routes are native local workflows with shared date-aware prayer calculations', () => {
+  assert.equal(swBuilder.ACCEPTED.size, 19);
   for (const id of swBuilder.ACCEPTED) {
     const route = swBuilder.ROUTES[id];
     const file = path.join(ROOT, route.replace(/^\/+|\/+$/g, ''), 'index.html');
@@ -36,9 +37,7 @@ test('17 religious routes are native local workflows and two date-defective rout
     assert.doesNotMatch(html, /<iframe\b|Fungua zana kamili ya Kiingereza/i);
     assert.match(html, /Hakuna ombi la AI|Hakuna maandishi yanayotumwa kwa AI/);
   }
-  for (const id of ['prayer-times', 'ramadan-timetable']) {
-    assert.equal(swBuilder.ACCEPTED.has(id), false);
-  }
+  for (const id of ['prayer-times', 'ramadan-timetable']) assert.equal(swBuilder.ACCEPTED.has(id), true);
 });
 
 test('religious workflow oracles preserve arithmetic and conservative boundaries', () => {
@@ -58,6 +57,23 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
   const halal = rcEngine.calculate('halalReadiness',{ingredients:'yes',suppliers:'unknown',storage:'yes',cleaning:'no',labels:'yes',authority:'Mamlaka ya eneo'});
   assert.equal(halal.values.certification,false);
+  const prayer = rcEngine.calculate('prayer',{city:'Nairobi',method:'MWL',school:'standard',date:'2026-04-27'});
+  assert.deepEqual({fajr:prayer.values.fajr,maghrib:prayer.values.maghrib,qibla:prayer.values.qibla},{fajr:'05:17',maghrib:'18:32',qibla:7});
+  const shifted = rcEngine.calculate('prayer',{city:'Nairobi',method:'MWL',school:'standard',date:'2026-05-27'});
+  assert.notEqual(shifted.values.fajr, prayer.values.fajr);
+  const ramadan = rcEngine.calculate('ramadan',{city:'Lagos',method:'MWL',school:'standard',startDate:'2026-02-19',days:30,suhoorBuffer:10,iftarBuffer:0});
+  assert.equal(ramadan.values.rows.length,30);
+  assert.deepEqual({firstSuhoor:ramadan.values.firstSuhoor,firstIftar:ramadan.values.firstIftar,lastSuhoor:ramadan.values.lastSuhoor,lastIftar:ramadan.values.lastIftar},{firstSuhoor:'05:42',firstIftar:'18:59',lastSuhoor:'05:32',lastIftar:'18:58'});
+  assert.equal(rcEngine.calculate('prayer',{city:'Nairobi',method:'MWL',date:'2026-02-30'}).ok,false);
+  for (const fixture of prayerFixtures.fixtures) {
+    if (fixture.input.date) {
+      const result = rcEngine.calculate('prayer',fixture.input);
+      for (const [key,value] of Object.entries(fixture.expected)) assert.equal(result.values[key],value,`${fixture.id}.${key}`);
+    } else {
+      const result = rcEngine.calculate('ramadan',fixture.input);
+      for (const [key,value] of Object.entries(fixture.expected)) assert.equal(key==='rowCount'?result.values.rows.length:result.values[key],value,`${fixture.id}.${key}`);
+    }
+  }
 });
 
 test('eight corrected African rows use the shared engine and six source-risk rows remain blocked', () => {
@@ -95,7 +111,7 @@ test('African source-oracle calculations and invalid clearing contracts', () => 
 
 test('all assigned accepted routes have dedicated artwork and reciprocal metadata', () => {
   const ids = new Set([...swBuilder.ACCEPTED, ...africanLane]);
-  assert.equal(ids.size,25);
+  assert.equal(ids.size,27);
   for (const id of ids) {
     const route = swBuilder.ROUTES[id] || african.rows.find((item) => item.english.id === id).swahili.route;
     const file = path.join(ROOT,route.replace(/^\/+|\/+$/g,''),'index.html');
