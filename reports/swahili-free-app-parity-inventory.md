@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 27 |
-| **Accepted** | **1148** |
+| **Accepted** | **1149** |
 
 ## Category reconciliation
 
@@ -37,7 +37,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 13 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 | Finance, Tax & Market Data | 132 | 6 | 98 | 2 | 0 | 0 | 0 | 0 | 26 | 89 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
@@ -696,7 +696,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-cha-solar` | Yes |
 | Building Cost Estimator | Engineering & Construction | `/tools/floor-plan` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-za-ujenzi` | Yes |
 | BOQ Builder | Engineering & Construction | `/tools/boq-builder` | Localized shell candidate | `/sw/zana/orodha-vifaa` | Yes |
-| Structural Calculator | Engineering & Construction | `/tools/structural-calc` | Localized shell candidate | `/sw/zana/kikokotoo-miundo-ya-ujenzi` | No |
+| Structural Calculator | Engineering & Construction | `/tools/structural-calc` | Localized shell candidate | `/sw/zana/kikokotoo-miundo-ya-ujenzi` | Yes |
 | Electrical Load Calculator | Engineering & Construction | `/tools/electrical-load` | Localized shell candidate | `/sw/zana/kikokotoo-mzigo-wa-umeme` | No |
 | Concrete Mix Calculator | Engineering & Construction | `/tools/concrete-mix` | Localized shell candidate | `/sw/zana/mchanganyiko-wa-zege` | Yes |
 | Paint Coverage Calculator | Engineering & Construction | `/tools/paint-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-rangi` | No |
