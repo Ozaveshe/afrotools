@@ -5,8 +5,8 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 23,
-  "blocked": 23,
+  "accepted": 24,
+  "blocked": 22,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
@@ -17,6 +17,9 @@
     "assets/js/pages/transfer-pricing-vip.js",
     "assets/js/pages/side-income-tax-reserve-vip.js",
     "assets/js/pages/salary-intelligence-vip.js",
+    "assets/js/pages/ng-cgt-vip.js",
+    "data/tool-verification.json",
+    "data/source-registry.json",
     "assets/js/components/tool-registry.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
@@ -34,6 +37,7 @@
     "sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html",
     "sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html",
     "sw/zana/daftari-la-ushahidi-wa-mishahara/index.html",
+    "sw/zana/kikokotoo-cgt-nigeria/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
@@ -46,9 +50,12 @@
     "tools/side-hustle-tax/index.html",
     "fr/tools/impot-activite-secondaire/index.html",
     "tools/salary-intelligence/index.html",
-    "fr/jobs/salary-benchmarks/index.html"
+    "fr/jobs/salary-benchmarks/index.html",
+    "tools/ng-cgt/index.html",
+    "fr/tools/ng-plus-value/index.html",
+    "ha/kayan-aiki/cgt-najeriya/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Ng-cgt delegates unchanged to assets/js/engines/ng-cgt.js; the NIPC-published Nigeria Tax Act 2025 still supports its share thresholds and rate treatment, while the Federal Ministry of Finance transition guidance still sets 1 January 2026 as the NTA boundary. The page is a scoped planning estimate, not a filing, assessment, classification or exemption decision. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -69,14 +76,19 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 6,
+      "passed": 12,
       "failed": 0,
-      "note": "Current increment rerun covered shard derivation/static acceptance, 23 salary-evidence engine assertions and 18 salary-intelligence API-safety assertions."
+      "note": "Current increment rerun covered seven ng-cgt engine oracle cases, four shard derivation/static acceptance tests and the tool-verification source contract."
+    },
+    "ngCgtFamilyBrowser": {
+      "passed": 7,
+      "failed": 0,
+      "execution": "one-worker English, French, Hausa and Swahili family regression with exact totals, TXT, scope, privacy and reflow proof"
     },
     "shardBrowserMatrix": {
-      "passed": 32,
+      "passed": 34,
       "failed": 0,
-      "execution": "complete corrected one-worker system-Chrome run on isolated port 43917 after adding the file-import accessible name"
+      "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
     "focusedExistingWorkflowExportSelection": {
       "passed": 20,
@@ -89,15 +101,15 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11296,
-      "hreflangRelationships": 33450,
+      "publicPages": 11297,
+      "hreflangRelationships": 33458,
       "equivalenceGroups": 5351,
       "status": "passed",
       "protectedGeneratedCoverageArtifacts": "reported stale and intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11515,
-      "internalLinks": 138246,
+      "htmlFiles": 11516,
+      "internalLinks": 138253,
       "broken": 0
     },
     "registryAudit": {
@@ -106,7 +118,17 @@
         "job-offer-evaluator",
         "zana-tathmini-ya-ofa-ya-kazi-sw-wave8"
       ],
-      "netNewStudentLoanMissingPage": false
+      "netNewNgCgtMissingPage": false
+    },
+    "nigeriaCgtOfficialSourceRecheck": {
+      "checkedOn": "2026-08-08",
+      "actContract": "The NIPC-published Nigeria Tax Act 2025 remains reachable and states the Nigerian-share proceeds, gain and same-year reinvestment rules used by the existing engine.",
+      "transitionContract": "Federal Ministry of Finance guidance published in June 2026 still states that the Nigeria Tax Act 2025 applies from 1 January 2026.",
+      "decision": "No formula parameter changed. The Swahili route delegates to the reviewed English engine and remains a scoped planning estimate rather than a filing, assessment or exemption decision.",
+      "urls": [
+        "https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf",
+        "https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/"
+      ]
     },
     "mauritaniaOfficialSourceRecheck": {
       "checkedOn": "2026-08-08",
@@ -512,12 +534,62 @@
       "englishName": "Nigeria CGT Calculator",
       "englishRoute": "/tools/ng-cgt",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/kikokotoo-cgt-nigeria",
+      "swahiliFile": "sw/zana/kikokotoo-cgt-nigeria/index.html",
+      "sourceOwner": [
+        "/assets/js/lib/source-confidence.js",
+        "/assets/js/engines/ng-cgt.js",
+        "/assets/js/pages/ng-cgt-vip.js",
+        "data/tool-verification.json",
+        "data/source-registry.json"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/engines/ng-cgt.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/engines/ng-cgt.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite compares the rendered estimate with the maintained NigeriaCgt engine, downloads and parses the only advertised TXT export, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 58,
@@ -1859,7 +1931,9 @@
   "missingArtworkQueue": "reports/swahili-financial-shard-b-missing-artwork.json",
   "requiredCommands": [
     "node scripts/build-sw-financial-shard-b-evidence.js",
-    "node --test tests/swahili-financial-shard-b.test.js",
+    "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=nigeria-cgt-2026-source",
+    "node --test tests/engines/ng-cgt.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
+    "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/day3-finance-ng-cgt-vip.spec.js --workers=1",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.sw-financial-shard-b.config.js"
   ]
 }

@@ -3,6 +3,7 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
+const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -19,6 +20,7 @@ const routes = [
   ['/sw/zana/nauli-za-ruti', 'route-fares'],
   ['/sw/zana/kilinganisha-mishahara', 'salary-compare'],
   ['/sw/zana/daftari-la-ushahidi-wa-mishahara', 'salary-intelligence'],
+  ['/sw/zana/kikokotoo-cgt-nigeria', 'ng-cgt'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
@@ -29,6 +31,54 @@ const routes = [
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
   ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
 ];
+
+test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push({ url: request.url(), body: request.postData() }); });
+  await page.addInitScript(() => { window.__copiedText = ''; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } }); });
+  await page.goto('/sw/zana/kikokotoo-cgt-nigeria/', { waitUntil: 'domcontentloaded' });
+
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya faida' }).click();
+  await expect(page.locator('[name="scopeConfirmed"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Thibitisha upeo');
+
+  const input = { scopeConfirmed: true, sellerType: 'individual', assetType: 'general', proceeds: 20000000, acquisitionCost: 10000000, disposalCosts: 1000000, otherChargeableIncome: 0 };
+  const expected = nigeriaCgt.calculate(input);
+  await page.locator('[name="scopeConfirmed"]').check();
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya faida' }).click();
+  await expect(page.locator('[data-result]')).toBeVisible();
+  await expect(page.locator('[data-tax]')).toHaveAttribute('data-amount', String(expected.tax));
+  await expect(page.locator('[data-gain]')).toContainText(expected.rawGain.toLocaleString('sw-NG'));
+  await expect(page.locator('[data-taxable]')).toContainText(expected.taxableGain.toLocaleString('sw-NG'));
+  await expect(page.locator('[data-rate]')).toHaveText('Viwango vya hatua 0–25%');
+
+  await page.locator('[data-copy]').click();
+  expect(await page.evaluate(() => window.__copiedText)).toContain('Makadirio ya AfroTools ya faida inayotozwa kodi Nigeria');
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('[data-download]').click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-cgt-nigeria.txt');
+  const txt = fs.readFileSync(await download.path(), 'utf8');
+  expect(txt).toContain(`Ongezeko la kodi lililokadiriwa: NGN ${expected.tax.toLocaleString('sw-NG', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`);
+  expect(txt).toContain('Makadirio ya kupanga tu');
+  expect(txt).not.toMatch(/\b(?:Estimated|Planning estimate|Rate treatment|Relief)\b/);
+
+  await page.locator('[name="proceeds"]').fill('21000000');
+  await expect(page.locator('[data-result]')).toBeHidden();
+  await expect(page.locator('[data-status]')).toContainText('Data imebadilika');
+  await page.locator('[name="proceeds"]').fill('-1');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya faida' }).click();
+  await expect(page.locator('[data-error]')).toContainText('namba chanya');
+  await expect(page.locator('[name="proceeds"]')).toBeFocused();
+  await expect(page.locator('[data-result]')).toBeHidden();
+
+  await page.getByRole('button', { name: 'Futa data' }).click();
+  await expect(page.locator('[name="proceeds"]')).toHaveValue('20000000');
+  await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
+  await expect(page.locator('[data-status]')).toContainText('Data na matokeo yamefutwa');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /cgt|capital|gain|tax/i.test(key)))).toEqual([]);
+  expect(writes).toEqual([]);
+});
 
 test('salary-intelligence keeps evidence private and reopens every advertised export', async ({ page }) => {
   const writes = []; page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
