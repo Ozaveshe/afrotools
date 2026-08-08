@@ -1,19 +1,21 @@
 # Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **17 accepted candidates / 38 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **21 accepted candidates / 34 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
 | Category | Denominator | Accepted candidate | Blocked |
 |---|---:|---:|---:|
-| Engineering & Construction | 20 | 0 | 20 |
+| Engineering & Construction | 20 | 4 | 16 |
 | Energy & Utilities | 17 | 17 | 0 |
 | Transport & Logistics | 18 | 0 | 18 |
-| **Total** | **55** | **17** | **38** |
+| **Total** | **55** | **21** | **34** |
 
 Accepted Energy IDs: `electricity-tariff`, `solar-roi`, `prepaid-meter`, `solar-vs-generator`, `electricity-bill-verify`, `water-bill`, `gas-lpg-cost`, `paygo-solar`, `outage-cost`, `energy-audit`, `appliance-power`, `diesel-vs-solar-farm`, `mini-grid-feasibility`, `carbon-footprint-energy`, `ev-charging`, `biogas-roi`, `generator-fuel`.
 
-Blocked Engineering IDs: `afrodraft`, `afroplan-floor-planner`, `solar-calculator`, `floor-plan`, `boq-generator`, `structural-calc`, `electrical-load`, `concrete-calc`, `paint-calc`, `tiles-calc`, `water-tank`, `roofing-calc`, `borehole-cost`, `rebar-calc`, `generator-sizing`, `boq-gen`, `home-renovation-cost`, `fence-cost`, `swimming-pool-cost`, `architectural-fee`.
+Accepted Engineering IDs: `concrete-calc`, `tiles-calc`, `water-tank`, `rebar-calc`.
+
+Blocked Engineering IDs: `afrodraft`, `afroplan-floor-planner`, `solar-calculator`, `floor-plan`, `boq-generator`, `structural-calc`, `electrical-load`, `paint-calc`, `roofing-calc`, `borehole-cost`, `generator-sizing`, `boq-gen`, `home-renovation-cost`, `fence-cost`, `swimming-pool-cost`, `architectural-fee`.
 
 Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`, `boda-income`, `matatu-fare`, `delivery-cost`, `car-loan-vs-cash`, `vehicle-registration`, `roadworthiness`, `vehicle-depreciation`, `fleet-fuel`, `last-mile-delivery`, `parking-fee`, `route-cost`, `toll-calc`, `truck-load`, `vehicle-operating-cost`, `vehicle-tracker-roi`.
 
@@ -21,7 +23,7 @@ Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`,
 
 - The 17 Energy pages use their exact English-owned DOM-free engines through `scripts/lib/sw-energy-remaining-contract.js`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded `data/energy/sw-energy-planning-snapshot.js` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
-- Engineering is fail-closed: 19 physical localized shells and one missing route do not provide individual English-engine, boundary and export proof.
+- Concrete, tiles, water-tank and rebar now share `assets/js/engines/engineering-materials-engine.js` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; the remaining 16 Engineering IDs stay fail-closed.
 - Transport is fail-closed: 17 physical localized shells and one missing route do not provide full product parity. The car-import controller passes focused browser behavior, but its customs/port source set remains `changed` in `data/transport/source-status.json`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
@@ -29,6 +31,7 @@ Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`,
 
 - Chromium, one worker, isolated port 4198: 53 existing physical routes at 320px, 375px and 640px with 200% CSS reflow; no horizontal overflow, iframe, canonical mismatch, console error or page error.
 - Every Energy app: valid calculation, invalid-state clearing, reset, explicit dark/light toggle, keyboard focus, JSON download/parse/reopen, CSV parse, TXT parse and PDF parse via the repository-vendored PDF.js 3.11 parser. The final proof is split into green 17-test deep-workflow and green 55-test route/boundary runs to isolate browser-cache contention.
+- Every accepted Engineering app: the same interaction/export matrix at 320px and 375px, plus a green English-route regression through the shared engine.
 - Network instrumentation recorded no Energy fetch/XHR containing raw inputs. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
 - The two absent physical routes are `solar-calculator` and `car-price-intelligence`; their absence is asserted and blocked, not hidden by denominator arithmetic.
 
@@ -38,6 +41,8 @@ Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`,
 - Energy runtime/data/style: `assets/js/pages/sw-energy-remaining-parity.js`, `data/energy/sw-energy-planning-snapshot.js`, `assets/css/sw-energy-remaining-parity.css`.
 - Generated by the bounded owner only: 17 `sw/zana/**/index.html` Energy routes and the Swahili Energy hub.
 - Transport checkpoint: `assets/js/pages/swahili-car-import-cost.js` and focused transport source/browser tests.
+- Engineering generator/manifest/engine: `scripts/build-sw-engineering-materials-parity.js`, `scripts/lib/sw-engineering-materials-contract.js`, and `assets/js/engines/engineering-materials-engine.js`.
+- Engineering runtime/style: `assets/js/pages/sw-engineering-materials-parity.js` and `assets/css/sw-engineering-materials-parity.css`; four bounded generated Swahili routes are owned by that generator.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
 - The requested `.claude/rules/i18n.md` reference is absent in this checkout; the coordinator explicitly declared that absence non-blocking. The repository Swahili strategy and coordinator skill governed the work.
 
@@ -45,6 +50,8 @@ Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`,
 
 - `node scripts/build-sw-energy-remaining-parity.js`
 - `node --test tests/swahili-energy-remaining-static.test.js tests/swahili-transport-static-candidate.test.js`
+- `node --test tests/swahili-engineering-materials-parity.test.js`
+- `npx playwright test -c playwright.sw-engineering-materials.config.js --workers=1`
 - `npx playwright test -c playwright.sw-engineering-energy-transport.config.js --workers=1`
 - `npm run build:i18n:validate`
 - `npm run validate:hreflang`

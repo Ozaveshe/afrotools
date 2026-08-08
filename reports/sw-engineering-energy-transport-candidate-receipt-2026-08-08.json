@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 17,
-    "blocked": 38,
+    "acceptedCandidates": 21,
+    "blocked": 34,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 0,
-        "blocked": 20
+        "acceptedCandidates": 4,
+        "blocked": 16
       },
       "energy": {
         "denominator": 17,
@@ -38,10 +38,14 @@
   "proof": {
     "static": [
       "tests/swahili-energy-remaining-static.test.js",
+      "tests/swahili-engineering-materials-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js"
     ],
-    "browser": "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
-    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; car-import focused invalid/reset/privacy flow.",
+    "browser": [
+      "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
+      "tests/e2e/sw-engineering-materials-parity.spec.js"
+    ],
+    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local."
   },
   "apps": [
@@ -175,19 +179,19 @@
       "englishId": "concrete-calc",
       "categoryKey": "engineering",
       "englishRoute": "/tools/concrete-mix",
-      "swahiliRoute": "/sw/zana/mchanganyiko-wa-zege",
+      "swahiliRoute": "/sw/zana/mchanganyiko-wa-zege/",
       "swahiliFile": "sw/zana/mchanganyiko-wa-zege/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-engineering-materials-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-engineering-materials-parity.js",
+      "formulaDecision": "Exact English semantics extracted to one DOM-free engine and consumed by both English and Swahili controllers; oracle and English browser regressions passed.",
+      "sourceDecision": "User-entered dimensions, waste, prices and material assumptions only; no changing official/live rate is claimed. Planning-estimate and professional-review boundaries are visible.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset; no console/page errors or raw-input network requests.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/concrete-calc.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "paint-calc",
@@ -211,37 +215,37 @@
       "englishId": "tiles-calc",
       "categoryKey": "engineering",
       "englishRoute": "/tools/tiles-calc",
-      "swahiliRoute": "/sw/zana/kikokotoo-vigae-na-sakafu",
+      "swahiliRoute": "/sw/zana/kikokotoo-vigae-na-sakafu/",
       "swahiliFile": "sw/zana/kikokotoo-vigae-na-sakafu/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-engineering-materials-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-engineering-materials-parity.js",
+      "formulaDecision": "Exact English semantics extracted to one DOM-free engine and consumed by both English and Swahili controllers; oracle and English browser regressions passed.",
+      "sourceDecision": "User-entered dimensions, waste, prices and material assumptions only; no changing official/live rate is claimed. Planning-estimate and professional-review boundaries are visible.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset; no console/page errors or raw-input network requests.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/tiles-calc.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "water-tank",
       "categoryKey": "engineering",
       "englishRoute": "/tools/water-tank",
-      "swahiliRoute": "/sw/zana/ukubwa-wa-tangi-la-maji",
+      "swahiliRoute": "/sw/zana/ukubwa-wa-tangi-la-maji/",
       "swahiliFile": "sw/zana/ukubwa-wa-tangi-la-maji/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-engineering-materials-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-engineering-materials-parity.js",
+      "formulaDecision": "Exact English semantics extracted to one DOM-free engine and consumed by both English and Swahili controllers; oracle and English browser regressions passed.",
+      "sourceDecision": "User-entered dimensions, waste, prices and material assumptions only; no changing official/live rate is claimed. Planning-estimate and professional-review boundaries are visible.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset; no console/page errors or raw-input network requests.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/water-tank.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "roofing-calc",
@@ -283,19 +287,19 @@
       "englishId": "rebar-calc",
       "categoryKey": "engineering",
       "englishRoute": "/tools/rebar-calculator",
-      "swahiliRoute": "/sw/zana/kikokotoo-nondo",
+      "swahiliRoute": "/sw/zana/kikokotoo-nondo/",
       "swahiliFile": "sw/zana/kikokotoo-nondo/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-engineering-materials-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-engineering-materials-parity.js",
+      "formulaDecision": "Exact English semantics extracted to one DOM-free engine and consumed by both English and Swahili controllers; oracle and English browser regressions passed.",
+      "sourceDecision": "User-entered dimensions, waste, prices and material assumptions only; no changing official/live rate is claimed. Planning-estimate and professional-review boundaries are visible.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset; no console/page errors or raw-input network requests.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/rebar-calc.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "generator-sizing",

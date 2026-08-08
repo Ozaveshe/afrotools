@@ -1,0 +1,3 @@
+const {defineConfig,devices}=require('@playwright/test');
+const port=4201;
+module.exports=defineConfig({testDir:'./tests/e2e',testMatch:'sw-engineering-materials-parity.spec.js',timeout:60000,expect:{timeout:10000},workers:1,fullyParallel:false,reporter:[['list']],use:{...devices['Desktop Chrome'],baseURL:`http://127.0.0.1:${port}`,serviceWorkers:'block',trace:'off',launchOptions:{executablePath:'C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe'}},webServer:{command:'node tests/support/static-server.js',url:`http://127.0.0.1:${port}`,env:{PORT:String(port)},reuseExistingServer:false,timeout:30000},projects:[{name:'chrome'}]});
