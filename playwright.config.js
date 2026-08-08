@@ -14,6 +14,7 @@ const ownerTestStorageState = process.env.AFROTOOLS_TEST_DISABLE_ANALYTICS === '
       }]
     }
   : undefined;
+const chromiumExecutablePath = process.env.PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH || undefined;
 
 module.exports = defineConfig({
   testDir: './tests/e2e',
@@ -36,6 +37,6 @@ module.exports = defineConfig({
   },
   projects: [{
     name: 'chromium',
-    use: { ...devices['Desktop Chrome'] }
+    use: { ...devices['Desktop Chrome'], launchOptions: chromiumExecutablePath ? { executablePath: chromiumExecutablePath } : undefined }
   }]
 });
