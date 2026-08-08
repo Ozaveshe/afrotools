@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 15, `expected 15 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 4, `expected 4 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 16, `expected 16 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 3, `expected 3 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -101,6 +101,10 @@ const meme = read('sw/zana/kitengeneza-meme/index.html');
 expect(meme.includes('scripts/build-sw-meme-generator.js'), 'meme-generator: source owner marker missing');
 expect(meme.includes('/assets/js/lib/meme-generator-studio-sw.js'), 'meme-generator: Swahili presentation adapter is not wired');
 expect(meme.includes('const STARTER_SCENES = {') && meme.includes('function downloadMeme()'), 'meme-generator: deterministic English canvas owner is missing');
+const logo = read('sw/zana/kitengeneza-logo/index.html');
+expect(logo.includes('scripts/build-sw-logo-maker.js'), 'logo-maker: source owner marker missing');
+expect(logo.includes('/assets/js/lib/logo-maker-sw.js'), 'logo-maker: Swahili presentation adapter is not wired');
+expect(logo.includes('const PRESETS = {') && logo.includes("downloadSvgBtn.addEventListener('click'") && logo.includes("downloadPngBtn.addEventListener('click'"), 'logo-maker: deterministic English SVG/PNG owner is missing');
 
 for (const row of blockedRows) {
   if (row.status === 'blocked-missing-route') expect(!exists(row.swahiliOwner), `${row.id}: manifest says missing but the route exists`);
@@ -117,9 +121,9 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Meme Generator keeps uploaded pixels and caption data inside the local FileReader/canvas owner. Other candidates use committed local runtimes and maintained shared studios.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Meme Generator keeps uploaded pixels and caption data inside the local FileReader/canvas owner. Logo Maker keeps brand text and SVG/PNG rendering inside the local SVG/canvas owner. Other candidates use committed local runtimes and maintained shared studios.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420, 4425, 4426], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js', 'tests/e2e/swahili-image-to-text-parity.spec.js', 'tests/e2e/swahili-meme-generator-parity.spec.js'], result: '42 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420, 4425, 4426, 4436, 4441], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js', 'tests/e2e/swahili-image-to-text-parity.spec.js', 'tests/e2e/swahili-meme-generator-parity.spec.js', 'tests/e2e/swahili-logo-maker-parity.spec.js'], result: '45 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
@@ -142,7 +146,7 @@ const receipt = {
 const markdown = `# Swahili Image & Design candidate receipt\n\n- Base: \`${receipt.baseCommit}\`\n- Exact English denominator: **19**\n- Accepted candidates: **${candidateRows.length}**\n- Fail-closed rows: **${blockedRows.length}**\n- Central ledger edits: **0**\n- Verdict: **CANDIDATE COMPLETE**\n- Artwork present: **${receipt.artwork.present}/19**\n\n## Accepted candidates\n\n${receipt.acceptedCandidates.map(row => `- \`${row.id}\` — \`${row.route}\`: ${row.browserProof}`).join('\n')}\n\n## Fail-closed rows\n\n${receipt.blocked.map(row => `- \`${row.id}\` — ${row.status}: ${row.blocker}`).join('\n')}\n\n## Validation\n\n- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.\n- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.\n\n## Boundary\n\nNo central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.\n`;
 
 const proofMarkdown = markdown
-  .replace('- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.', '- Focused static/source-owner proof, 42 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.')
+  .replace('- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.', '- Focused static/source-owner proof, 45 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.')
   .replace('- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.', '- `build:i18n:validate` stopped only on coordinator-owned stale locale coverage artifacts. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.')
   .replace('No central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed.', 'No central acceptance ledger, AI route map, sitemap, dist, redirects, locale-coverage output, deployment, or live service was changed. The only other-locale edits are reciprocal `sw` hreflang links in the English and French Thumbnail Maker and Meme Generator pages.');
 

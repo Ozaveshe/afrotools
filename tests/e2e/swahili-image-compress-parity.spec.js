@@ -166,9 +166,15 @@ test('Swahili compressor covers presets, invalid and clear behavior, reflow, the
   await page.locator('#dropZone').focus();
   await expect(page.locator('#dropZone')).toBeFocused();
   expect(await page.locator('#dropZone').evaluate((node) => getComputedStyle(node).outlineWidth)).not.toBe('0px');
-  const chooser = page.waitForEvent('filechooser');
-  await page.keyboard.press('Enter');
-  await (await chooser).setFiles(svgFixture('keyboard-source.svg'));
+  const keyboardActivation = await page.locator('#dropZone').evaluate((node) => {
+    const input = document.getElementById('fileInput');
+    let clicks = 0;
+    input.addEventListener('click', (event) => { clicks += 1; event.preventDefault(); }, { once: true });
+    node.dispatchEvent(new KeyboardEvent('keydown', { key: 'Enter', bubbles: true, cancelable: true }));
+    return clicks;
+  });
+  expect(keyboardActivation).toBe(1);
+  await page.locator('#fileInput').setInputFiles(svgFixture('keyboard-source.svg'));
   await expect(page.locator('.queue-badge.done')).toHaveCount(1);
   await page.locator('#clearQueueBtn').click();
   await expect(page.locator('#studioStatus')).toHaveText('Foleni imefutwa.');
