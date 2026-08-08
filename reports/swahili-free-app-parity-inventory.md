@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1519 |
-| Swahili coverage records | 1516 |
+| Swahili physical HTML pages | 1520 |
+| Swahili coverage records | 1517 |
 | Native candidates | 590 |
-| Localized shell candidates | 639 |
+| Localized shell candidates | 640 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 26 |
-| **Accepted** | **1152** |
+| Missing | 25 |
+| **Accepted** | **1153** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
-| Finance, Tax & Market Data | 132 | 6 | 99 | 2 | 0 | 0 | 0 | 0 | 25 | 90 |
+| Finance, Tax & Market Data | 132 | 6 | 100 | 2 | 0 | 0 | 0 | 0 | 24 | 91 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -769,7 +769,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Kenya NSSF Contribution Calculator | Finance, Tax & Market Data | `/tools/ke-nssf` | Missing | None | No |
 | Kenya HELB Repayment Worksheet | Education | `/tools/ke-helb` | Localized shell candidate | `/sw/zana/kikokotoo-helb-kenya` | Yes |
 | South Africa GEPF Calculator | Finance, Tax & Market Data | `/tools/za-gepf` | Localized shell candidate | `/sw/zana/kikokotoo-gepf-afrika-kusini` | Yes |
-| South Africa Transfer Duty Calculator | Finance, Tax & Market Data | `/tools/za-transfer-duty` | Missing | None | No |
+| South Africa Transfer Duty Calculator | Finance, Tax & Market Data | `/tools/za-transfer-duty` | Localized shell candidate | `/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini` | Yes |
 | Ghana SSNIT Calculator 2026 | Finance, Tax & Market Data | `/tools/gh-ssnit` | Missing | None | No |
 | Lagos Land Use Charge Calculator | Finance, Tax & Market Data | `/tools/ng-land-use` | Missing | None | No |
 | Kenya Stamp Duty Calculator | Finance, Tax & Market Data | `/tools/ke-stamp-duty` | Missing | None | No |
