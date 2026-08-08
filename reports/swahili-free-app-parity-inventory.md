@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 30 |
-| **Accepted** | **1142** |
+| **Accepted** | **1143** |
 
 ## Category reconciliation
 
@@ -37,7 +37,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 12 |
 | Finance, Tax & Market Data | 132 | 6 | 96 | 2 | 0 | 0 | 0 | 0 | 28 | 87 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
@@ -694,7 +694,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | AfroDraft 2D CAD | Engineering & Construction | `/engineering/afrodraft` | Localized shell candidate | `/sw/zana/afrodraft-cad` | No |
 | AfroPlan Floor Planner | Engineering & Construction | `/engineering/floor-planner` | Localized shell candidate | `/sw/zana/mpangaji-ramani-ya-sakafu` | No |
 | Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-cha-solar` | Yes |
-| Building Cost Estimator | Engineering & Construction | `/tools/floor-plan` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-za-ujenzi` | No |
+| Building Cost Estimator | Engineering & Construction | `/tools/floor-plan` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-za-ujenzi` | Yes |
 | BOQ Builder | Engineering & Construction | `/tools/boq-builder` | Localized shell candidate | `/sw/zana/orodha-vifaa` | No |
 | Structural Calculator | Engineering & Construction | `/tools/structural-calc` | Localized shell candidate | `/sw/zana/kikokotoo-miundo-ya-ujenzi` | No |
 | Electrical Load Calculator | Engineering & Construction | `/tools/electrical-load` | Localized shell candidate | `/sw/zana/kikokotoo-mzigo-wa-umeme` | No |
