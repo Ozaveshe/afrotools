@@ -12,6 +12,56 @@ const HUMAN_PATH = path.join(ROOT, "reports/swahili-financial-shard-a-receipt.md
 const ARTWORK_PATH = path.join(ROOT, "reports/swahili-financial-shard-a-missing-artwork.json");
 const REFLOW_STYLESHEET = '<link rel="stylesheet" href="/assets/css/sw-financial-shard-a.css">';
 const BASE_SHA = "6edacda8437e1fa9b9e5a512138cbdd3169e38be";
+// This lane was partitioned against BASE_SHA. Central acceptance changes after
+// integration must not silently reassign apps between shards.
+const SHARD_A_IDS = [
+  "afrorates",
+  "backup-power-costs",
+  "bj-paye",
+  "business-planner",
+  "cd-paye",
+  "cg-paye",
+  "cnps-guide",
+  "crypto-arbitrage",
+  "crypto-cgt",
+  "crypto-contract",
+  "crypto-dca",
+  "crypto-exchange",
+  "crypto-mining",
+  "crypto-p2p",
+  "crypto-portfolio",
+  "crypto-prices",
+  "crypto-profit",
+  "crypto-quiz",
+  "crypto-remittance",
+  "crypto-scam",
+  "crypto-stablecoins",
+  "currency-converter",
+  "cv-paye",
+  "dj-paye",
+  "dz-paye",
+  "er-paye",
+  "er-vat",
+  "etims-guide",
+  "first-home-buyer",
+  "fuel-tracker",
+  "gh-paye",
+  "gh-paye-2",
+  "gh-ssnit",
+  "gm-paye",
+  "gw-paye",
+  "home-loan-eligibility",
+  "import-duty",
+  "interest-rate-ref",
+  "itax-guide",
+  "job-offer-evaluator",
+  "ke-cgt",
+  "ke-nssf",
+  "ke-stamp-duty",
+  "ke-wht",
+  "km-paye",
+  "loan-compare",
+];
 const FALSE_PAIR_IDS = new Set(["crypto-prices"]);
 const ARTWORK_BLOCK_IDS = new Set(["cnps-guide"]);
 const BROWSER_BLOCK_IDS = new Set([]);
@@ -51,10 +101,21 @@ function exactShards() {
   const inventory = JSON.parse(fs.readFileSync(INVENTORY_PATH, "utf8"));
   const ledger = JSON.parse(fs.readFileSync(ACCEPTANCE_PATH, "utf8"));
   const accepted = new Set(ledger.entries.filter((entry) => entry.status === "accepted").map((entry) => entry.englishId));
-  const unaccepted = inventory.rows
-    .filter((row) => row.categoryKey === "financial" && !accepted.has(row.englishId))
-    .sort((a, b) => a.englishId.localeCompare(b.englishId));
-  return { inventory, accepted, unaccepted, shardA: unaccepted.slice(0, 46), shardB: unaccepted.slice(46) };
+  const financialById = new Map(inventory.rows
+    .filter((row) => row.categoryKey === "financial")
+    .map((row) => [row.englishId, row]));
+  const shardA = SHARD_A_IDS.map((id) => financialById.get(id));
+  const shardBManifest = JSON.parse(fs.readFileSync(
+    path.join(ROOT, "data/localization/sw-financial-shard-b-manifest.json"),
+    "utf8",
+  ));
+  const shardB = shardBManifest.rows.map((row) => financialById.get(row.englishId));
+  const missing = [...shardA, ...shardB].filter((row) => !row);
+  if (missing.length || shardA.length !== 46 || shardB.length !== 46) {
+    throw new Error("Pinned financial shard assignment no longer resolves against the authoritative inventory");
+  }
+  const unaccepted = [...shardA, ...shardB];
+  return { inventory, accepted, unaccepted, shardA, shardB };
 }
 
 function assess(row) {
@@ -141,7 +202,7 @@ function build() {
       sort: "englishId ascending",
       positions: [1, 46],
       financialRows: inventory.rows.filter((row) => row.categoryKey === "financial").length,
-      alreadyAcceptedFinancial: inventory.rows.filter((row) => row.categoryKey === "financial" && row.accepted).length,
+      alreadyAcceptedFinancial: inventory.rows.filter((row) => row.categoryKey === "financial").length - unaccepted.length,
       unacceptedFinancial: unaccepted.length,
       shardACount: shardA.length,
       shardBCount: shardB.length,
