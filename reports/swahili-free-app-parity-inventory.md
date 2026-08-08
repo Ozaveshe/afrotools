@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1506 |
-| Swahili coverage records | 1503 |
-| Native candidates | 591 |
-| Localized shell candidates | 626 |
+| Swahili physical HTML pages | 1507 |
+| Swahili coverage records | 1504 |
+| Native candidates | 590 |
+| Localized shell candidates | 627 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 38 |
-| **Accepted** | **1130** |
+| **Accepted** | **1131** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
-| Finance, Tax & Market Data | 132 | 7 | 90 | 2 | 0 | 0 | 0 | 0 | 33 | 81 |
+| Finance, Tax & Market Data | 132 | 6 | 91 | 2 | 0 | 0 | 0 | 0 | 33 | 82 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -733,7 +733,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Tip & Bill Splitter | Business & ROI | `/tools/tip-calculator` | Native candidate | `/sw/zana/kigawanya-bili-na-tip` | Yes |
 | Remittance Comparator Pro | Uniquely African | `/tools/remittance-v2` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa-kina` | Yes |
 | Salary Offer Comparator | Finance, Tax & Market Data | `/tools/salary-compare` | Localized shell candidate | `/sw/zana/kilinganisha-mishahara` | Yes |
-| Salary Evidence Notebook | Finance, Tax & Market Data | `/tools/salary-intelligence` | Native candidate | `/sw/mshahara-na-kodi` | No |
+| Salary Evidence Notebook | Finance, Tax & Market Data | `/tools/salary-intelligence` | Localized shell candidate | `/sw/zana/daftari-la-ushahidi-wa-mishahara` | Yes |
 | African Cost of Living Comparator | Uniquely African | `/tools/cost-of-living` | Localized shell candidate | `/sw/zana/gharama-za-maisha` | Yes |
 | African Property Tax Calculator | Mortgage & Property | `/tools/property-tax` | Localized shell candidate | `/sw/zana/kodi-mali` | Yes |
 | Rental Yield Calculator | Mortgage & Property | `/tools/rental-yield` | Localized shell candidate | `/sw/zana/faida-kupangisha` | Yes |
