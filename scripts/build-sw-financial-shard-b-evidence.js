@@ -23,6 +23,7 @@ const ACCEPTED = new Set([
   'ng-cgt',
   'ng-cit',
   'ng-land-use',
+  'ng-pension',
   'ng-wht',
   'payslip-generator',
   'pension-proj',
@@ -58,6 +59,7 @@ const PROOF = {
   'ng-cgt': ['tests/engines/ng-cgt.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'ng-cit': ['tests/engines/ng-cit.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'ng-land-use': ['tests/ng-land-use-engine.test.js', 'tests/e2e/ng-land-use-vip.spec.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
+  'ng-pension': ['tests/ng-pension-engine.test.js', 'tests/e2e/ng-pension-vip.spec.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'ng-wht': ['tests/engines/ng-wht.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'payslip-generator': ['tests/payslip-unicode-roundtrip.test.js', 'tests/e2e/day3-finance-payslip-vip.spec.js'],
   'pension-proj': ['tests/pension-projection-planner.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
@@ -88,6 +90,7 @@ const SWAHILI_OVERRIDES = {
   'ng-cgt': { primarySwahiliFile: 'sw/zana/kikokotoo-cgt-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cgt-nigeria/' },
   'ng-cit': { primarySwahiliFile: 'sw/zana/kikokotoo-cit-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cit-nigeria/' },
   'ng-land-use': { primarySwahiliFile: 'sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/' },
+  'ng-pension': { primarySwahiliFile: 'sw/zana/kikokotoo-pensheni-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-pensheni-nigeria/' },
   'ng-wht': { primarySwahiliFile: 'sw/zana/kikokotoo-wht-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-wht-nigeria/' },
   'za-cgt': { primarySwahiliFile: 'sw/zana/kikokotoo-cgt-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cgt-afrika-kusini/' },
   'za-dividend-tax': { primarySwahiliFile: 'sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/' },
@@ -162,6 +165,7 @@ function inspectAccepted(row) {
     .filter((source) => /\/(?:engines?|pages|lib)\//.test(source));
   const implementationOwners = scripts.slice();
   if (row.englishId === 'ng-land-use') implementationOwners.push('engines/src/ng-land-use-engine.js');
+  if (row.englishId === 'ng-pension') implementationOwners.push('engines/src/ng-pension-engine.js', 'data/source-registry.json');
   if (['ng-cgt', 'ng-cit', 'ng-wht', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty', 'za-uif'].includes(row.englishId)) implementationOwners.push('data/tool-verification.json', 'data/source-registry.json');
   const text = visibleText(html);
   const checks = {
@@ -264,6 +268,8 @@ const rows = shardB.map((row, index) => {
                       ? 'The focused shard suite compares the rendered estimate with the maintained NigeriaCgt engine, downloads and parses the only advertised TXT export, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
                     : row.englishId === 'ng-cit'
                       ? 'The focused shard suite compares the rendered estimate with the maintained NigeriaCit engine, downloads and parses the only advertised TXT export, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
+                    : row.englishId === 'ng-pension'
+                      ? 'The focused shard suite compares the rendered scenario with the maintained pension engine, parses injection-safe CSV and JSON, reopens PDF with pdf-parse, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
                     : row.englishId === 'ng-wht'
                       ? 'The focused shard suite compares the rendered estimate with the maintained Nigeria WHT engine, downloads and parses TXT, reopens parser-valid print/PDF, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
                       : row.englishId === 'za-dividend-tax'

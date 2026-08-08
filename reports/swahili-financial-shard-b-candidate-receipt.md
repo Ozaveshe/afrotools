@@ -2,7 +2,7 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **32**. Blocked: **14**.
+Denominator: **46**. Accepted: **33**. Blocked: **13**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
@@ -22,6 +22,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `ng-cgt` | `/tools/ng-cgt` | `/sw/zana/kikokotoo-cgt-nigeria` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ng-cgt.js`<br>`/assets/js/pages/ng-cgt-vip.js`<br>`/assets/js/lib/sw-accessibility.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-cit` | `/tools/ng-cit` | `/sw/zana/kikokotoo-cit-nigeria` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ng-cit.js`<br>`/assets/js/pages/ng-cit-vip.js`<br>`/assets/js/lib/sw-accessibility.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-land-use` | `/tools/ng-land-use` | `/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos` | `/assets/js/lib/pdf-template.js`<br>`/engines/ng-land-use-engine.js`<br>`/assets/js/pages/ng-land-use-vip.js`<br>`/assets/js/lib/sw-accessibility.js`<br>`engines/src/ng-land-use-engine.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `ng-pension` | `/tools/ng-pension` | `/sw/zana/kikokotoo-pensheni-nigeria` | `/assets/js/lib/pdf-template.js`<br>`/engines/ng-pension-engine.js`<br>`/assets/js/pages/ng-pension-vip.js`<br>`engines/src/ng-pension-engine.js`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-wht` | `/tools/ng-wht` | `/sw/zana/kikokotoo-wht-nigeria` | `/assets/js/engines/ng-wht.js`<br>`/assets/js/pages/ng-wht-vip.js`<br>`/assets/js/lib/sw-accessibility.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `payslip-generator` | `/tools/payslip-generator` | `/sw/zana/kizalishaji-payslip` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/payslip-draft.js`<br>`/assets/js/pages/payslip-draft-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `pension-proj` | `/tools/pension-proj` | `/sw/zana/makadirio-ya-pensheni` | `/engines/pension-projection-planner.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/pension-projection-sw.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
@@ -57,7 +58,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `mz-paye` | `/sw/mozambique/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `na-paye` | `/sw/namibia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `ng-paye` | `/sw/nigeria/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
-| `ng-pension` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `paye-calculator` | `/sw/mshahara-na-kodi/paye` | The candidate is a PAYE directory hub, not a native equivalent of the English calculator app. |
 | `pension-projection` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `sars-efiling` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
@@ -76,7 +76,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 32 accepted candidates, 14 blocked, one missing artwork.
+- Evidence generator check: 46 rows, 33 accepted candidates, 13 blocked, one missing artwork.
 - PASS: ng-land-use English/French/Swahili focused family regression covers both valuation modes, exact engine parity, parsed copy/CSV/JSON/PDF, invalid focus, stale-result clearing, reset, privacy, themes and responsive reflow.
 - PASS: current focused Node subtests 13/13 cover the UIF engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
 - PASS: za-uif English/French/Swahili focused family regression 4/4, including contributions, ordinary and maternity benefits, reopened private clipboard summary, privacy, focus, theme and reflow.

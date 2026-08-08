@@ -4,6 +4,7 @@ const assert = require('node:assert/strict');
 const fs = require('node:fs');
 const path = require('node:path');
 const test = require('node:test');
+const vm = require('node:vm');
 
 const ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(ROOT, 'data/localization/sw-financial-shard-b-manifest.json');
@@ -11,6 +12,9 @@ const RECEIPT = path.join(ROOT, 'reports/swahili-financial-shard-b-candidate-rec
 const ARTWORK = path.join(ROOT, 'reports/swahili-financial-shard-b-missing-artwork.json');
 const nigeriaCit = require('../assets/js/engines/ng-cit.js');
 const nigeriaLandUse = require('../engines/src/ng-land-use-engine.js');
+const pensionContext = { globalThis: {} };
+vm.runInNewContext(fs.readFileSync(path.join(ROOT, 'engines/src/ng-pension-engine.js'), 'utf8'), pensionContext);
+const nigeriaPension = pensionContext.globalThis.NgPensionEngine;
 const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
@@ -32,7 +36,7 @@ const EXPECTED_IDS = [
 
 const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
-  'mr-paye', 'ng-cgt', 'ng-cit', 'ng-land-use', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
+  'mr-paye', 'ng-cgt', 'ng-cit', 'ng-land-use', 'ng-pension', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
   'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty', 'za-uif',
 ];
@@ -57,8 +61,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 32);
-  assert.equal(receipt.blocked, 14);
+  assert.equal(receipt.accepted, 33);
+  assert.equal(receipt.blocked, 13);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -190,6 +194,41 @@ test('ng-land-use Swahili parity preserves the notice-driven Lagos formula bound
   assert.match(html, /assets\/js\/pages\/ng-land-use-vip\.js/);
   assert.match(html, /data-source-label="Sheria ya Land Use Charge Lagos 2020/);
   assert.doesNotMatch(html, /<iframe|generated-bridge|afrotools-language-fallback/i);
+});
+
+test('ng-pension Swahili parity preserves the source-dated shared scenario engine', () => {
+  const result = nigeriaPension.calculateScenario({
+    openingBalance: 1000000,
+    monthlyEmoluments: 500000,
+    employeeRate: 8,
+    employerRate: 10,
+    voluntaryContribution: 0,
+    annualNetReturn: 0,
+    annualSalaryGrowth: 0,
+    years: 1,
+    sourceLabel: 'Payslip + PRA 2014 section 4',
+    sourceDate: '2026-08-09',
+    returnSource: 'Zero-return planning scenario',
+    returnSourceDate: '2026-08-09',
+    today: '2026-08-09',
+  });
+  assert.equal(result.ok, true);
+  assert.equal(result.firstEmployeeContribution, 40000);
+  assert.equal(result.firstEmployerContribution, 50000);
+  assert.equal(result.futureContributions, 1080000);
+  assert.equal(result.projectedBalance, 2080000);
+
+  const html = fs.readFileSync(path.join(ROOT, 'sw/zana/kikokotoo-pensheni-nigeria/index.html'), 'utf8');
+  assert.match(html, /data-locale="sw"/);
+  assert.match(html, /engines\/ng-pension-engine\.js/);
+  assert.match(html, /assets\/js\/pages\/ng-pension-vip\.js/);
+  assert.match(html, /Kurasa za zamani za PenCom[^<]*7\.5%/);
+  assert.doesNotMatch(html, /<iframe|generated-bridge|afrotools-language-fallback/i);
+
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'ng-pension-cps-scenario-method');
+  assert.equal(source.lastReviewedAt, '2026-08-09');
+  assert.ok(source.toolIds.includes('ng-pension-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-pensheni-nigeria'));
 });
 
 test('ng-wht Swahili parity preserves the reviewed official Schedule and DOM-free engine contract', () => {

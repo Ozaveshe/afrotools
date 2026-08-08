@@ -3,9 +3,14 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
+const path = require('node:path');
+const vm = require('node:vm');
 const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
 const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
 const nigeriaLandUse = require('../../engines/src/ng-land-use-engine.js');
+const pensionContext = { globalThis: {} };
+vm.runInNewContext(fs.readFileSync(path.join(__dirname, '../../engines/src/ng-pension-engine.js'), 'utf8'), pensionContext);
+const nigeriaPension = pensionContext.globalThis.NgPensionEngine;
 const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
@@ -31,6 +36,7 @@ const routes = [
   ['/sw/zana/kikokotoo-cgt-nigeria', 'ng-cgt'],
   ['/sw/zana/kikokotoo-cit-nigeria', 'ng-cit'],
   ['/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos', 'ng-land-use'],
+  ['/sw/zana/kikokotoo-pensheni-nigeria', 'ng-pension'],
   ['/sw/zana/kikokotoo-wht-nigeria', 'ng-wht'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
@@ -47,6 +53,49 @@ const routes = [
   ['/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini', 'za-transfer-duty'],
   ['/sw/zana/kikokotoo-uif-afrika-kusini', 'za-uif'],
 ];
+
+test('ng-pension uses the shared engine and reopens every local advertised export', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:500000|1000000|2080000)/.test(body)) sensitiveWrites.push(request.url());
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+  });
+  await page.goto('/sw/zana/kikokotoo-pensheni-nigeria/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#np-balance').fill('1000000');
+  await page.locator('#np-emoluments').fill('500000');
+  await page.locator('#np-return').fill('0');
+  await page.locator('#np-source').fill('Payslip + PRA 2014 section 4');
+  await page.locator('#np-source-date').fill('2026-08-08');
+  await page.locator('#np-return-source').fill('Zero-return planning scenario');
+  await page.locator('#np-return-date').fill('2026-08-08');
+  const expected = nigeriaPension.calculateScenario({ openingBalance: 1000000, monthlyEmoluments: 500000, employeeRate: 8, employerRate: 10, voluntaryContribution: 0, annualNetReturn: 0, annualSalaryGrowth: 0, years: 20, sourceLabel: 'Payslip + PRA 2014 section 4', sourceDate: '2026-08-08', returnSource: 'Zero-return planning scenario', returnSourceDate: '2026-08-08', today: '2026-08-09' });
+  await page.getByRole('button', { name: 'Kokotoa makadirio' }).click();
+  await expect(page.locator('#np-results')).toBeVisible();
+  await expect(page.locator('#np-balance-result')).toContainText('22,600,000');
+  await page.locator('#np-copy').click();
+  await expect.poll(() => page.evaluate(() => window.__copiedText)).toContain('Makadirio ya michango');
+
+  const csvDownload = page.waitForEvent('download'); await page.locator('#np-csv').click();
+  const csv = fs.readFileSync(await (await csvDownload).path(), 'utf8');
+  expect(csv).toContain('mwaka'); expect(csv).toContain(String(expected.projectedBalance));
+  const jsonDownload = page.waitForEvent('download'); await page.locator('#np-json').click();
+  const json = JSON.parse(fs.readFileSync(await (await jsonDownload).path(), 'utf8'));
+  expect(json.scenario.projectedBalance).toBe(expected.projectedBalance); expect(json.privacy).toContain('kwenye kifaa');
+  const pdfDownload = page.waitForEvent('download'); await page.locator('#np-pdf').click();
+  const pdf = fs.readFileSync(await (await pdfDownload).path());
+  expect(pdf.subarray(0, 5).toString()).toBe('%PDF-');
+  const parsed = await pdfParse(pdf); expect(parsed.text).toContain('Makadirio ya michango');
+
+  await page.locator('#np-emoluments').fill('');
+  await page.getByRole('button', { name: 'Kokotoa makadirio' }).click();
+  await expect(page.locator('#np-emoluments')).toBeFocused(); await expect(page.locator('#np-results')).toBeHidden();
+  await page.locator('#np-reset').click(); await expect(page.locator('#np-balance')).toBeFocused();
+  expect(sensitiveWrites).toEqual([]);
+});
 
 test('ng-land-use delegates to the Lagos engine and reopens every private export', async ({ page }) => {
   const sensitiveWrites = [];
