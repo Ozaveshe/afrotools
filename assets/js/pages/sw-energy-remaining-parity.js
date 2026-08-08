@@ -39,6 +39,7 @@
   var formStatus = document.getElementById("formStatus");
   var exportStatus = document.getElementById("exportStatus");
   var regulatorLink = document.getElementById("regulatorLink");
+  var themeButton = document.querySelector("[data-theme-toggle]");
   var lastRecord = null;
 
   function setStatus(node, message, state) {
@@ -169,12 +170,46 @@
     ).join("\n");
   }
 
+  function pdfSafeText(value) {
+    return String(value || "")
+      .normalize("NFKD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^\x20-\x7E\n]/g, " ");
+  }
+
+  function simplePdfBlob(value) {
+    function escapePdfText(text) { return text.replace(/([\\()])/g, "\\$1"); }
+    var reportLines = pdfSafeText(value).split("\n").slice(0, 48);
+    var stream = "BT\n/F1 10 Tf\n48 790 Td\n" + reportLines.map(function (line, index) {
+      return (index ? "0 -14 Td\n" : "") + "(" + escapePdfText(line) + ") Tj";
+    }).join("\n") + "\nET\n";
+    var objects = [
+      "<< /Type /Catalog /Pages 2 0 R >>",
+      "<< /Type /Pages /Kids [3 0 R] /Count 1 >>",
+      "<< /Type /Page /Parent 2 0 R /MediaBox [0 0 595 842] /Resources << /Font << /F1 4 0 R >> >> /Contents 5 0 R >>",
+      "<< /Type /Font /Subtype /Type1 /BaseFont /Helvetica >>",
+      "<< /Length " + stream.length + " >>\nstream\n" + stream + "endstream",
+    ];
+    var body = "%PDF-1.4\n";
+    var offsets = [0];
+    objects.forEach(function (object, index) {
+      offsets.push(body.length);
+      body += (index + 1) + " 0 obj\n" + object + "\nendobj\n";
+    });
+    var xrefOffset = body.length;
+    body += "xref\n0 " + (objects.length + 1) + "\n0000000000 65535 f \n";
+    offsets.slice(1).forEach(function (offset) { body += String(offset).padStart(10, "0") + " 00000 n \n"; });
+    body += "trailer\n<< /Size " + (objects.length + 1) + " /Root 1 0 R >>\nstartxref\n" + xrefOffset + "\n%%EOF\n";
+    return new Blob([body], { type: "application/pdf" });
+  }
+
   function download(name, type, content) {
     var blob = content instanceof Blob ? content : new Blob([content], { type: type });
     var url = URL.createObjectURL(blob);
     var anchor = document.createElement("a");
     anchor.href = url; anchor.download = name; document.body.appendChild(anchor); anchor.click(); anchor.remove();
-    setTimeout(function () { URL.revokeObjectURL(url); }, 0);
+    // Revoking on the next tick can truncate larger PDF downloads in Chromium.
+    setTimeout(function () { URL.revokeObjectURL(url); }, 30000);
   }
 
   function exportRecord(format) {
@@ -188,12 +223,7 @@
       download(base + ".csv", "text/csv;charset=utf-8", "\ufeff" + csv);
     }
     if (format === "pdf") {
-      var jsPDF = root.jspdf && root.jspdf.jsPDF;
-      if (!jsPDF) { setStatus(exportStatus, "PDF haipatikani kwenye kivinjari hiki.", "error"); return; }
-      var doc = new jsPDF({ unit: "pt", format: "a4" });
-      doc.setFont("helvetica", "bold"); doc.setFontSize(16); doc.text(config.title, 48, 58);
-      doc.setFont("helvetica", "normal"); doc.setFontSize(10);
-      var lines = doc.splitTextToSize(reportText(), 500); doc.text(lines, 48, 82); doc.save(base + ".pdf");
+      download(base + ".pdf", "application/pdf", simplePdfBlob(config.title + "\n\n" + reportText()));
     }
     setStatus(exportStatus, "Faili ya " + format.toUpperCase() + " imeundwa kwenye kifaa hiki.", "success");
   }
@@ -218,6 +248,19 @@
 
   form.addEventListener("submit", function (event) { event.preventDefault(); runCalculation(); });
   form.addEventListener("input", function () { clearResult(); setStatus(formStatus, "Maadili yamebadilika; kokotoa tena."); });
+  form.addEventListener("reset", function () {
+    root.setTimeout(function () {
+      clearResult();
+      updateSourceLink();
+      setStatus(formStatus, "Sehemu zimerejeshwa kwenye maadili ya mfano. Kokotoa upya.", "success");
+    }, 0);
+  });
+  if (themeButton) themeButton.addEventListener("click", function () {
+    var dark = document.documentElement.dataset.theme !== "dark";
+    document.documentElement.dataset.theme = dark ? "dark" : "light";
+    themeButton.setAttribute("aria-pressed", String(dark));
+    themeButton.textContent = dark ? "Tumia mandhari mepesi" : "Tumia mandhari meusi";
+  });
   countrySelect.addEventListener("change", updateSourceLink);
   document.querySelectorAll("[data-export]").forEach(function (button) { button.addEventListener("click", function () { exportRecord(button.dataset.export); }); });
   document.getElementById("importJson").addEventListener("change", function (event) { var file = event.target.files && event.target.files[0]; if (file) reopen(file); });

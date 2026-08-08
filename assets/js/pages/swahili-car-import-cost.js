@@ -161,7 +161,10 @@
 
   function clearResult(message) {
     var results = document.getElementById('carImportResults');
-    if (results) results.hidden = true;
+    if (results) {
+      results.hidden = true;
+      results.style.display = 'none';
+    }
     resultIsFresh = false;
     if (status) status.textContent = message || 'Badilisha taarifa, kisha kokotoa tena kabla ya kupakua.';
   }
@@ -234,6 +237,8 @@
       return;
     }
     resultIsFresh = true;
+    var results = document.getElementById('carImportResults');
+    if (results) results.style.removeProperty('display');
     if (error) error.textContent = '';
     if (status) status.textContent = 'Makadirio mapya yako tayari. Thibitisha vyanzo na masharti kabla ya kulipa.';
     setTimeout(function afterCalculation() { translateSubtree(body); keepRouteOnly(); }, 0);

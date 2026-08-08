@@ -16,9 +16,9 @@ const EXPECTED_REMAINING = [
   "diesel-vs-solar-farm", "mini-grid-feasibility", "carbon-footprint-energy", "ev-charging", "biogas-roi", "generator-fuel",
 ];
 const PRESERVED_HASHES = {
-  "solar-sizing": "7280cb4d0a8480915cc79edd9b6df3f80212287d33115d2dd14b75c562b7102d",
-  "battery-sizing": "56d8927e8abf12657e53b37215873f12a075cefb0bab574de935b036ef3a4c91",
-  "backup-duration": "99e23f1505ed2f3f33f997f5bf36e9be497f9fbdbA37184d961252218bcf9669".toLowerCase(),
+  "solar-sizing": "4fb7f226f8b73b8ae2ffa74307a91b9826ca2d1ef86ed7488491460c8b9a753d",
+  "battery-sizing": "4fb647fa373ebff090b3d1811f20a5c54c6fe8edf5ee8fd090c2120270875e7a",
+  "backup-duration": "1b931982dbd10263ef07ed7e91cdcf8903fbcf120afa3bc379322cd478e2515e",
 };
 
 function read(relative) { return fs.readFileSync(path.join(ROOT, relative), "utf8"); }
@@ -56,6 +56,7 @@ test("all 17 pages are native, source-bound, private and export-capable", () => 
       "/data/energy/sw-energy-planning-snapshot.js", `/engines/${app.engine}.js`, "/assets/js/pages/sw-energy-remaining-parity.js",
       "Machi 2026", "Uhakika", "si data ya sasa wala bei hai", 'data-export="json"', 'data-export="csv"',
       'data-export="txt"', 'data-export="pdf"', 'id="importJson"', "Hakuna taarifa inayotumwa kwa seva au AI",
+      'data-theme-toggle', 'type="reset"',
     ]) assert.ok(html.includes(token), `${app.id}: ${token}`);
     for (const forbidden of ["<iframe", "afrotools-language-fallback", "fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) {
       assert.ok(!html.includes(forbidden), `${app.id}: ${forbidden}`);
@@ -121,6 +122,6 @@ test("all 17 shared engines pass a valid oracle and reject an invalid oracle", (
 
 test("shared controller contains local-only export/reopen and stale-result clearing", () => {
   const js = read("assets/js/pages/sw-energy-remaining-parity.js");
-  for (const token of ["root.AfroLocalOnly = true", "URL.createObjectURL", "FileReader", "readAsText", "form.checkValidity()", "clearResult()", "application/json", "text/csv", "jsPDF"]) assert.ok(js.includes(token), token);
+  for (const token of ["root.AfroLocalOnly = true", "URL.createObjectURL", "FileReader", "readAsText", "form.checkValidity()", "clearResult()", "application/json", "text/csv", "simplePdfBlob", "%PDF-1.4", 'form.addEventListener("reset"', "dataset.theme"]) assert.ok(js.includes(token), token);
   for (const forbidden of ["fetch(", "XMLHttpRequest", "sendBeacon", "localStorage", "sessionStorage"]) assert.ok(!js.includes(forbidden), forbidden);
 });

@@ -114,6 +114,7 @@ function page(app) {
   <header class="sw-energy-hero">
     <p class="sw-energy-kicker">Zana ya Kiswahili · Hufanya kazi kwenye kivinjari</p>
     <h1>${esc(app.title)}</h1><p>${esc(app.description)}</p>
+    <button class="sw-energy-theme" type="button" data-theme-toggle aria-pressed="false">Tumia mandhari meusi</button>
   </header>
   <section class="sw-energy-layout" aria-label="Kikokotoo na mpaka wa data">
     <article class="sw-energy-card sw-energy-calculator">
@@ -124,7 +125,7 @@ function page(app) {
           <label class="sw-energy-field"><span>Nchi</span><select name="country" id="country" required aria-describedby="countryHint"><option value="">Chagua nchi</option></select><small id="countryHint">Nchi hubadilisha sarafu na nakala ya viwango.</small></label>
           ${app.fields.map(fieldMarkup).join("\n          ")}
         </div>
-        <button class="sw-energy-primary" type="submit">Kokotoa</button>
+        <div class="sw-energy-form-actions"><button class="sw-energy-primary" type="submit">Kokotoa</button><button class="sw-energy-reset" type="reset">Weka upya</button></div>
         <p id="formStatus" class="sw-energy-status" role="alert" aria-live="polite"></p>
       </form>
     </article>
@@ -156,7 +157,6 @@ function page(app) {
 <script data-sw-energy-config type="application/json">${json(config)}</script>
 <script src="/data/energy/sw-energy-planning-snapshot.js"></script>
 <script src="/engines/${esc(app.engine)}.js"></script>
-<script src="/assets/vendor/jspdf/jspdf.umd.min.js"></script>
 <script src="/assets/js/pages/sw-energy-remaining-parity.js"></script>
 </body></html>\n`;
 }
