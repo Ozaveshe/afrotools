@@ -77,6 +77,11 @@ const ROUTE_OVERRIDES = new Map([
     file: "sw/zana/kikokotoo-faida-crypto/index.html",
     sourceOwner: "Native Swahili page, shared DOM-free crypto-profit engine and localized shared controller",
   }],
+  ["crypto-mining", {
+    route: "/sw/zana/kikokotoo-margin-uchimbaji-crypto",
+    file: "sw/zana/kikokotoo-margin-uchimbaji-crypto/index.html",
+    sourceOwner: "Native Swahili page, shared DOM-free crypto-mining-margin engine and localized shared controller",
+  }],
 ]);
 const ROUTE_PROOF = {
   "bj-paye": ["tests/engines/bj-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
@@ -89,6 +94,7 @@ const ROUTE_PROOF = {
   "job-offer-evaluator": ["tests/job-offer-engine.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "er-vat": ["tests/engines/er-vat.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "crypto-profit": ["tests/crypto-profit-engine.test.js", "tests/crypto-profit-vip.test.js", "tests/e2e/swahili-financial-shard-a-crypto-profit.spec.js"],
+  "crypto-mining": ["tests/crypto-mining-margin-engine.test.js", "tests/crypto-mining-margin-contract.test.js", "tests/e2e/swahili-financial-shard-a-crypto-mining.spec.js"],
 };
 
 function routeFile(route) {
@@ -248,6 +254,14 @@ function build() {
     "- Coordinator-owned acceptance, inventory, AI route-map, coverage, sitemap, redirect and service-worker outputs were not edited.",
     "- Missing `.claude/rules/i18n.md` was recorded at the pinned baseline and was not treated as a blocker, per coordinator direction.",
     "",
+    "## Current crypto-mining increment",
+    "",
+    "- Accepted candidate: `crypto-mining` at `/sw/zana/kikokotoo-margin-uchimbaji-crypto/` with dedicated artwork `assets/img/tools/crypto-mining.webp`.",
+    "- Source owner: unchanged DOM-free `assets/js/engines/crypto-mining-margin.js`; localized shared browser owner `assets/js/pages/crypto-mining-margin.js`; native page `sw/zana/kikokotoo-margin-uchimbaji-crypto/index.html`.",
+    "- Formula/data/source decision: preserve user-entered gross output × price, one pool-fee deduction, kW × uptime × entered energy rate, other entered daily cost, period extension, break-even price and conditional simple hardware payback. No live price, difficulty, network, country, tax, lending, eligibility or forecast source is introduced.",
+    "- Family edits outside Swahili: EN/FR received reciprocal `sw` hreflang and schema language metadata; their invalid coin-label regex was repaired without changing copy, formula or defaults.",
+    "- Product/evidence paths: `assets/css/crypto-mining-margin.css`, `assets/js/components/tool-registry.js`, `assets/js/pages/crypto-mining-margin.js`, `crypto/mining-calculator/index.html`, `fr/crypto/mining-calculator/index.html`, `sw/zana/kikokotoo-margin-uchimbaji-crypto/index.html`, `tests/crypto-mining-margin-contract.test.js`, `tests/e2e/swahili-financial-shard-a-crypto-mining.spec.js`.",
+    "",
     "## Per-app result",
     "",
     "| # | English ID | English route | Swahili route | Result | Source / blocker |",
@@ -281,15 +295,18 @@ function build() {
     "- PASS 5/5 — `tests/engines/er-vat.test.js` preserves the historical Eritrea sales-tax evidence gate and its matching API validation contract.",
     "- PASS — `tests/crypto-profit-engine.test.js` and `tests/crypto-profit-vip.test.js` preserve bounded engine arithmetic, native EN/FR/SW product structure, local-only exports and reciprocal metadata.",
     "- PASS 1/1 — `tests/e2e/swahili-financial-shard-a-crypto-profit.spec.js` matches the DOM-free engine oracle, parses CSV/JSON/PDF/print PDF, and proves invalid/reset, keyboard/a11y, dark mode, 320px at 200% and raw-input privacy.",
+    "- PASS — `tests/crypto-mining-margin-engine.test.js` and `tests/crypto-mining-margin-contract.test.js` preserve bounded operating arithmetic, native EN/FR/SW structure, local-only exports, valid family input patterns and reciprocal metadata.",
+    "- PASS 1/1 — `tests/e2e/swahili-financial-shard-a-crypto-mining.spec.js` matches the DOM-free engine oracle, parses CSV/JSON/PDF/print PDF, and proves invalid/reset, keyboard/a11y, light/dark themes, 320px at 200% and raw-input privacy.",
+    "- PASS 3/3 — `tests/e2e/crypto-mining-margin-vip.spec.js` proves maintained English/French deterministic, invalid, accessibility, mobile-overlay and local-export behavior after the shared-controller and input-pattern repair.",
     "- CARRIED BROAD-SUITE DEBT — the combined legacy `first-home-readiness.spec.js` / `job-offer-evaluator-vip.spec.js` run had 4/8 pass: its French first-home assertion expects an older TXT shape, job-offer external-request filtering hard-codes port 4173 instead of this lane's isolated port, and the French PDF filename assertion conflicts with the localized export owner. The focused six-case suite proves the scoped Swahili contracts and shared-controller parity independently.",
     "- CARRIED BROAD-SUITE DEBT — `tests/e2e/crypto-profit-vip.spec.js` passed 3/4; the only failure is its pre-existing English cookie-banner overlap assertion on inline English page CSS not changed by this increment. Engine, French invalid handling, English CSV/JSON/PDF/print exports and widget checks passed; the focused Swahili case independently proves the new route.",
-    "- PASS — `npm run validate:hreflang` (33,422 relationships; reciprocal EN/FR/SW crypto-profit metadata included).",
-    "- PASS — `npm run check-links` (138,247 links; zero broken).",
-    "- PASS — `npm run audit` (3,768 live/new rows; zero missing pages).",
+    "- PASS — `npm run validate:hreflang` (33,428 relationships; reciprocal EN/FR/SW crypto-mining metadata included).",
+    "- PASS — `npm run check-links` (138,257 links; zero broken).",
+    "- PASS — `npm run audit` (3,769 live/new rows; zero missing pages).",
     "- PASS — `npm run type-check`.",
     "- PASS — `npm run test:privacy-ai-consent` (server contract plus 3/3 browser cases).",
     "- PASS — `git diff --check`, changed-script syntax checks, and deletion review.",
-    "- BLOCKED BY COORDINATOR-OWNED OUTPUT — `npm run build:i18n:validate` reports stale `data/registry/locale-page-coverage.json`; this lane is prohibited from regenerating it.",
+    "- BLOCKED BY COORDINATOR-OWNED OUTPUT — `npm run build:i18n:validate` reports stale `data/registry/locale-page-coverage.json`, `reports/localization-coverage.json` and `reports/localization-coverage.md`; this lane is prohibited from regenerating them.",
     "- PASS — `npm run lint` (49 JavaScript files checked).",
   ];
   return { candidate, missingArtwork, human: `${lines.join("\n")}\n` };

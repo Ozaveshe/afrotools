@@ -22,8 +22,8 @@ test("derives exactly 46 shard A rows with zero shard B overlap", () => {
 test("candidate receipt is fail-closed and coordinator-owned outputs remain outside the lane", () => {
   const { candidate } = build();
   assert.equal(candidate.totals.denominator, 46);
-  assert.equal(candidate.totals.accepted, 20);
-  assert.equal(candidate.totals.blocked, 26);
+  assert.equal(candidate.totals.accepted, 21);
+  assert.equal(candidate.totals.blocked, 25);
   assert.equal(candidate.totals.accepted + candidate.totals.blocked, 46);
   assert.equal(candidate.coordinatorOwnedFilesEdited, false);
   assert.equal(candidate.rows.find((row) => row.englishId === "crypto-prices").status, "blocked");
@@ -46,6 +46,11 @@ test("candidate receipt is fail-closed and coordinator-owned outputs remain outs
   assert.equal(cryptoProfit.status, "accepted");
   assert.equal(cryptoProfit.swahiliRoute, "/sw/zana/kikokotoo-faida-crypto");
   assert.ok(cryptoProfit.evidence.includes("tests/e2e/swahili-financial-shard-a-crypto-profit.spec.js"));
+  const cryptoMining = candidate.rows.find((row) => row.englishId === "crypto-mining");
+  assert.equal(cryptoMining.status, "accepted");
+  assert.equal(cryptoMining.swahiliRoute, "/sw/zana/kikokotoo-margin-uchimbaji-crypto");
+  assert.ok(cryptoMining.evidence.includes("tests/crypto-mining-margin-engine.test.js"));
+  assert.ok(cryptoMining.evidence.includes("tests/e2e/swahili-financial-shard-a-crypto-mining.spec.js"));
   for (const row of candidate.rows.filter((item) => item.status === "accepted")) {
     assert.ok(row.swahiliFile, row.englishId);
     const html = fs.readFileSync(path.join(ROOT, row.swahiliFile), "utf8");
