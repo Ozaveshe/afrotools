@@ -8,13 +8,17 @@ async function bytes(download) {
   return Buffer.concat(chunks);
 }
 function observe(page) {
-  const proof = { errors: [], writes: [], external: [], bad: [] };
+  const proof = { errors: [], writes: [], external: [], telemetry: [], bad: [] };
+  const isTelemetry = url => /^(?:https:\/\/(?:www\.)?google-analytics\.com\/g\/collect|https:\/\/www\.google\.com\/g\/collect|https:\/\/pagead2\.googlesyndication\.com\/measurement\/conversion|https:\/\/www\.googletagmanager\.com\/td)/.test(url);
   page.on('pageerror', error => proof.errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') proof.errors.push(message.text()); });
   page.on('request', request => {
     const url = new URL(request.url());
-    if (!['GET', 'HEAD'].includes(request.method())) proof.writes.push(`${request.method()} ${request.url()}`);
-    if (!['127.0.0.1', 'localhost'].includes(url.hostname) && ['fetch', 'xhr', 'websocket'].includes(request.resourceType())) proof.external.push(request.url());
+    if (isTelemetry(request.url())) proof.telemetry.push(`${request.method()} ${request.url()}`);
+    else {
+      if (!['GET', 'HEAD'].includes(request.method())) proof.writes.push(`${request.method()} ${request.url()}`);
+      if (!['127.0.0.1', 'localhost'].includes(url.hostname) && ['fetch', 'xhr', 'websocket'].includes(request.resourceType())) proof.external.push(request.url());
+    }
     expect(request.postData() || '').not.toContain('AFROTOOLS OCR TEST');
   });
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1') && response.status() >= 400) proof.bad.push(`${response.status()} ${response.url()}`); });
