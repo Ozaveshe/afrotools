@@ -376,6 +376,98 @@
     };
   }
 
+  function roof(input) {
+    if (!input) return fail("invalid_roof_input");
+    var length = Number(input.length),
+      width = Number(input.width),
+      pitch = Number(input.pitch),
+      overhang = Number(input.overhang),
+      coverWidth = Number(input.coverWidth),
+      wastePct = Number(input.wastePct),
+      sections = Math.floor(Number(input.sections)),
+      roofType = input.roofType;
+    if (
+      !finitePositive(length) ||
+      !finitePositive(width) ||
+      !finitePositive(pitch) ||
+      pitch >= 89 ||
+      !Number.isFinite(overhang) ||
+      overhang < 0 ||
+      !finitePositive(coverWidth) ||
+      !Number.isFinite(wastePct) ||
+      wastePct < 0 ||
+      wastePct > 100 ||
+      !finitePositive(sections) ||
+      ["gable", "hip", "flat"].indexOf(roofType) === -1
+    )
+      return fail("invalid_roof_input");
+    var slopeFactor = 1 / Math.cos((pitch * Math.PI) / 180),
+      effectiveLength = length + 2 * overhang,
+      effectiveWidth = width + 2 * overhang,
+      slopeLength,
+      roofArea,
+      ridgeLength;
+    if (roofType === "gable") {
+      slopeLength = (effectiveWidth / 2) * slopeFactor;
+      roofArea = 2 * effectiveLength * slopeLength;
+      ridgeLength = effectiveLength;
+    } else if (roofType === "hip") {
+      slopeLength = (effectiveWidth / 2) * slopeFactor;
+      roofArea = effectiveLength * effectiveWidth * slopeFactor;
+      ridgeLength = Math.max(0, effectiveLength - effectiveWidth + effectiveWidth * 0.5);
+    } else {
+      slopeLength = effectiveWidth * slopeFactor;
+      roofArea = effectiveLength * slopeLength;
+      ridgeLength = 0;
+    }
+    var sheetsExact = roofArea / (coverWidth * slopeLength),
+      wasteSheets = Math.ceil(sheetsExact * (wastePct / 100)),
+      totalSheets = Math.ceil(sheetsExact) + wasteSheets,
+      ridgeCaps = Math.ceil(ridgeLength / 0.9),
+      nails = totalSheets * 20,
+      nailKg = Math.ceil(nails / 80),
+      fasciaM = Math.ceil(2 * (length + width) + 2),
+      trussSpacing = 0.9,
+      numTrusses = Math.ceil(length / trussSpacing) + 1,
+      trussSpan = width + 2 * overhang,
+      rafterLength = slopeLength + 0.3,
+      timberPerTruss = rafterLength * 2 + trussSpan + trussSpan * 0.5,
+      totalTimberM = timberPerTruss * numTrusses,
+      purlinsM = length * Math.ceil(slopeLength / 1.2) * sections,
+      valleyM = roofType === "hip" ? Math.ceil((slopeLength * 4) / 2) : 0;
+    return {
+      roofType: roofType,
+      length: length,
+      width: width,
+      pitch: pitch,
+      overhang: overhang,
+      coverWidth: coverWidth,
+      wastePct: wastePct,
+      sections: sections,
+      slopeFactor: slopeFactor,
+      effectiveLength: effectiveLength,
+      effectiveWidth: effectiveWidth,
+      slopeLength: slopeLength,
+      roofArea: roofArea,
+      ridgeLength: ridgeLength,
+      sheetsExact: sheetsExact,
+      wasteSheets: wasteSheets,
+      totalSheets: totalSheets,
+      ridgeCaps: ridgeCaps,
+      nails: nails,
+      nailKg: nailKg,
+      fasciaM: fasciaM,
+      trussSpacing: trussSpacing,
+      numTrusses: numTrusses,
+      trussSpan: trussSpan,
+      rafterLength: rafterLength,
+      timberPerTruss: timberPerTruss,
+      totalTimberM: totalTimberM,
+      purlinsM: purlinsM,
+      valleyM: valleyM,
+    };
+  }
+
   return Object.freeze({
     BAR_DATA: BAR_DATA,
     STANDARD_TANKS: STANDARD_TANKS,
@@ -387,5 +479,6 @@
     rebar: rebar,
     paintRoom: paintRoom,
     paint: paint,
+    roof: roof,
   });
 });

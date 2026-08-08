@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 30,
-    "blocked": 25,
+    "acceptedCandidates": 31,
+    "blocked": 24,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 10,
-        "blocked": 10
+        "acceptedCandidates": 11,
+        "blocked": 9
       },
       "energy": {
         "denominator": 17,
@@ -43,6 +43,7 @@
       "tests/swahili-structural-screening-parity.test.js",
       "tests/swahili-electrical-load-parity.test.js",
       "tests/swahili-paint-parity.test.js",
+      "tests/swahili-roof-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -53,9 +54,10 @@
       "tests/e2e/sw-structural-screening-parity.spec.js",
       "tests/e2e/sw-electrical-load-parity.spec.js",
       "tests/e2e/sw-paint-parity.spec.js",
+      "tests/e2e/sw-roof-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 10 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 11 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -261,19 +263,19 @@
       "englishId": "roofing-calc",
       "categoryKey": "engineering",
       "englishRoute": "/tools/roof-calculator",
-      "swahiliRoute": "/sw/zana/vifaa-vya-paa",
+      "swahiliRoute": "/sw/zana/vifaa-vya-paa/",
       "swahiliFile": "sw/zana/vifaa-vya-paa/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-roof-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-roof-parity.js",
+      "formulaDecision": "Exact English gable, hip and mono-pitch geometry, overhang, pitch, effective coverage, waste, ridge, nail, fascia, truss-timber and purlin planning formulas are shared through the maintained DOM-free Engineering Materials engine; the undefined English sections runtime defect is repaired.",
+      "sourceDecision": "Exact route ownership is proved by inventory, registry sourceId, locale coverage and route graph. Product coverage is user-checked; no stale brand price or live-width claim is made. Truss, purlin and fixing outputs are low-confidence planning allowances until a licensed roof professional verifies wind, loads, spans, details and local rules.",
+      "browserProof": "Chromium: gable, hip and mono-pitch oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/roofing-calc.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "borehole-cost",
