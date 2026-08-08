@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 8,
-    "blocked": 45,
+    "acceptedCandidates": 9,
+    "blocked": 44,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -155,9 +155,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/social-card/",
       "swahiliRoute": "/sw/zana/kadi-ya-mitandao/",
-      "status": "blocked-feature-parity",
-      "blocker": "The route has a local canvas draft but not the English social-card-studio.js templates, dimensions, validation, and export contract.",
-      "sourceOwner": "sw/zana/kadi-ya-mitandao/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-social-card.js + assets/js/lib/social-card-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio workspace contract and translates text nodes/accessible labels only; both locales execute the same platform, layout, palette, canvas, contrast, history and export engine.",
+      "exports": "Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed.",
+      "browser": "tests/e2e/swahili-social-card-parity.spec.js (Chromium, one worker, final run on port 4408): shared renderer, all codecs, six platform exports, clipboard handoffs, reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/social-card.webp"
     },
     {
@@ -578,7 +581,8 @@
     "Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.",
     "Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.",
     "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
-    "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.",
+    "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.",
+    "Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.",
     "Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof."
   ],
   "browserMatrix": {
@@ -590,7 +594,8 @@
       4404,
       4405,
       4406,
-      4407
+      4407,
+      4408
     ],
     "widths": [
       320,
@@ -633,6 +638,10 @@
       "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back."
     },
     {
+      "englishId": "social-card",
+      "proof": "Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed."
+    },
+    {
       "englishId": "watermark-bulk",
       "proof": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30."
     },
@@ -665,6 +674,7 @@
     "playwright test tests/e2e/swahili-image-format-convert-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-resize-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-filters-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",

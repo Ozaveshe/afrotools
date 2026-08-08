@@ -2,8 +2,8 @@
 
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact denominator: **53** (**34 Creative**, **19 Image & Design**)
-- Accepted candidates: **8**
-- Blocked fail-closed: **45**
+- Accepted candidates: **9**
+- Blocked fail-closed: **44**
 - Central acceptance ledger changed: **no**
 - Verdict: **PARTIAL — FAIL CLOSED**
 
@@ -21,7 +21,7 @@
 - `meme-generator` — blocked-missing-route: No physical Swahili route or native meme canvas/export owner exists on the coordinator base.
 - `logo-maker` — blocked-feature-parity: The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract.
 - `image-filters` — accepted-candidate: English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back.
-- `social-card` — blocked-feature-parity: The route has a local canvas draft but not the English social-card-studio.js templates, dimensions, validation, and export contract.
+- `social-card` — accepted-candidate: Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed.
 - `certificate-maker` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.
 - `flyer-maker` — blocked-feature-parity: The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior.
 - `thumbnail-maker` — blocked-missing-route: No physical Swahili route or native thumbnail studio owner exists on the coordinator base.
@@ -72,13 +72,14 @@
 - Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.
 - Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.
 - The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.
-- QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.
+- QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.
+- Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.
 - Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.
 
 ## Browser and export proof
 
-- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406 and 4407: **21 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
-- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
+- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407 and 4408: **24 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
+- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
 - Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.
 
 ## Artwork
@@ -88,4 +89,4 @@
 
 ## Boundary and baseline debt
 
-The 45 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
+The 44 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.

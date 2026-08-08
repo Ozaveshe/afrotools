@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 8, `expected 8 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 11, `expected 11 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 9, `expected 9 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 10, `expected 10 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -95,7 +95,7 @@ const receipt = {
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
   privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js'], result: '21 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js'], result: '24 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
