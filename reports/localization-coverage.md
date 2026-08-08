@@ -6,14 +6,14 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 
 | Metric | Count |
 |---|---:|
-| rawPages | 11346 |
+| rawPages | 11347 |
 | native | 8808 |
-| localizedShell | 2479 |
+| localizedShell | 2480 |
 | englishFallback | 38 |
 | unavailable | 20 |
 | deprecated | 1 |
-| indexableEligible | 10363 |
-| sitemapEligible | 10363 |
+| indexableEligible | 10364 |
+| sitemapEligible | 10364 |
 
 ## By locale
 
@@ -21,7 +21,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 |---|---|---:|---:|---:|---:|---:|---:|---:|---:|
 | en | default | 5924 | 5924 | 0 | 0 | 0 | 0 | 5073 | 180 |
 | fr | launched | 3765 | 2144 | 1620 | 0 | 0 | 1 | 3693 | 180 |
-| sw | launched | 1507 | 717 | 787 | 3 | 0 | 0 | 1502 | 180 |
+| sw | launched | 1508 | 717 | 788 | 3 | 0 | 0 | 1503 | 180 |
 | yo | partial | 45 | 9 | 13 | 3 | 20 | 0 | 22 | 180 |
 | ha | partial | 105 | 14 | 59 | 32 | 0 | 0 | 73 | 180 |
 | pt | planned | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 0 |
@@ -36,7 +36,7 @@ Generated from `data/registry/locale-manifest.json`, `data/registry/locale-cover
 | article | 442 | 442 | 0 | 0 | 0 | 0 | 440 |
 | auth | 3 | 2 | 0 | 1 | 0 | 0 | 0 |
 | category | 695 | 695 | 0 | 0 | 0 | 0 | 691 |
-| country-tool | 498 | 186 | 311 | 0 | 0 | 1 | 494 |
+| country-tool | 499 | 186 | 312 | 0 | 0 | 1 | 495 |
 | legal | 4 | 4 | 0 | 0 | 0 | 0 | 4 |
 | page | 5319 | 4608 | 654 | 37 | 20 | 0 | 4699 |
 | tool | 4003 | 2633 | 1370 | 0 | 0 | 0 | 3886 |
