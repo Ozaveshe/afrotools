@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1500 |
-| Swahili coverage records | 1497 |
+| Swahili physical HTML pages | 1503 |
+| Swahili coverage records | 1500 |
 | Native candidates | 591 |
-| Localized shell candidates | 619 |
+| Localized shell candidates | 622 |
 | English fallbacks | 3 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 44 |
-| **Accepted** | **1117** |
+| Missing | 41 |
+| **Accepted** | **1120** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
-| Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 76 |
+| Finance, Tax & Market Data | 132 | 7 | 88 | 2 | 0 | 0 | 0 | 0 | 35 | 79 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -682,7 +682,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | African Business Name Shortlist Workshop | VAT & Business Tax | `/tools/business-name-gen` | Native candidate | `/sw/zana/kitengeneza-jina-la-biashara` | Yes |
 | Nigeria CAC Registration Cost | Mortgage & Property | `/tools/cac-cost` | Localized shell candidate | `/sw/zana/gharama-za-cac-nigeria` | Yes |
 | SA CIPC Registration Cost | Mortgage & Property | `/tools/cipc-cost` | Localized shell candidate | `/sw/zana/gharama-za-cipc-afrika-kusini` | Yes |
-| Staff Cost Planner | Finance, Tax & Market Data | `/tools/staff-cost` | Missing | None | No |
+| Staff Cost Planner | Finance, Tax & Market Data | `/tools/staff-cost` | Localized shell candidate | `/sw/zana/bajeti-ya-gharama-za-wafanyakazi` | Yes |
 | Swahili Phrasebook & Optional Translator | Language & Translation | `/tools/swahili-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiswahili` | Yes |
 | Yoruba Phrasebook & Optional Translator | Language & Translation | `/tools/yoruba-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kiyoruba` | Yes |
 | Hausa Draft Phrasebook & Optional Translator | Language & Translation | `/tools/hausa-translator` | Localized shell candidate | `/sw/zana/mtafsiri-wa-kihausa` | Yes |
@@ -709,7 +709,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Contract Generator | Mortgage & Property | `/tools/contract-generator` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba` | Yes |
 | Tenancy Deposit Calculator | Mortgage & Property | `/tools/tenancy-deposit` | Localized shell candidate | `/sw/zana/amana-ya-upangaji` | Yes |
 | Statutory Leave Days Calculator | Mortgage & Property | `/tools/leave-days` | Localized shell candidate | `/sw/zana/siku-za-likizo-za-kisheria` | Yes |
-| Pension Projection Calculator | Finance, Tax & Market Data | `/tools/pension-proj` | Missing | None | No |
+| Pension Projection Calculator | Finance, Tax & Market Data | `/tools/pension-proj` | Localized shell candidate | `/sw/zana/makadirio-ya-pensheni` | Yes |
 | African Central Bank Rates | Finance, Tax & Market Data | `/tools/interest-rate-ref` | Missing | None | No |
 | African Visa Cost Checker | Mortgage & Property | `/tools/visa-cost` | Localized shell candidate | `/sw/zana/gharama-za-visa` | Yes |
 | Stamp Tariff Calculator | Mortgage & Property | `/tools/stamp-duty` | Localized shell candidate | `/sw/zana/kikokotoo-ushuru-wa-stampu` | Yes |
@@ -763,7 +763,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Inflation Scenario Calculator | Finance, Tax & Market Data | `/tools/inflation-calc` | Localized shell candidate | `/sw/zana/kikokotoo-cha-mfumuko-wa-bei` | Yes |
 | Savings Goal Planner | Finance, Tax & Market Data | `/tools/savings-goal` | Localized shell candidate | `/sw/zana/lengo-la-akiba` | Yes |
 | Car Loan Cost Planner | Finance, Tax & Market Data | `/tools/car-loan` | Localized shell candidate | `/sw/zana/mkopo-wa-gari` | Yes |
-| Student Loan Repayment Planner | Finance, Tax & Market Data | `/tools/student-loan` | Missing | None | No |
+| Student Loan Repayment Planner | Finance, Tax & Market Data | `/tools/student-loan` | Localized shell candidate | `/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi` | Yes |
 | Africa Housing Fund Calculator | Mortgage & Property | `/tools/ng-nhf` | Localized shell candidate | `/sw/zana/kikokotoo-nhf-nigeria` | Yes |
 | Nigeria Pension Calculator | Finance, Tax & Market Data | `/tools/ng-pension` | Missing | None | No |
 | Kenya NSSF Contribution Calculator | Finance, Tax & Market Data | `/tools/ke-nssf` | Missing | None | No |
