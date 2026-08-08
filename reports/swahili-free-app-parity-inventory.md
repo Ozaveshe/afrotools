@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 26 |
-| **Accepted** | **1150** |
+| **Accepted** | **1151** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
+| Image & Design | 19 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -221,7 +221,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Favicon Generator | Image & Design | `/tools/favicon-generator` | Localized shell candidate | `/sw/zana/kizalishaji-favicon` | Yes |
 | Image to Text OCR Studio | Image & Design | `/tools/image-to-text` | Localized shell candidate | `/sw/zana/kutoa-maandishi-kwenye-picha` | Yes |
 | Meme Generator | Image & Design | `/tools/meme-generator` | Localized shell candidate | `/sw/zana/kitengeneza-meme` | Yes |
-| Logo Maker | Image & Design | `/tools/logo-maker` | Localized shell candidate | `/sw/zana/kitengeneza-logo` | No |
+| Logo Maker | Image & Design | `/tools/logo-maker` | Localized shell candidate | `/sw/zana/kitengeneza-logo` | Yes |
 | Photo Filter Studio | Image & Design | `/tools/image-filters` | Localized shell candidate | `/sw/zana/filters-za-picha` | Yes |
 | Social Card Studio | Image & Design | `/tools/social-card` | Localized shell candidate | `/sw/zana/kadi-ya-mitandao` | Yes |
 | Certificate Generator | Image & Design | `/tools/certificate-maker` | Localized shell candidate | `/sw/zana/kitengeneza-cheti` | No |
