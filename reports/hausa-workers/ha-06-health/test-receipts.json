@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "lane": "HA-06-health",
+  "validatedProductSha": "d87425e2f9a5a735a40b61bee5f3c4958bfe41f4",
+  "receipts": [
+    { "command": "node -c ha/assets/health-parity-ha.js", "status": "pass" },
+    { "command": "node --test tests/hausa/ha-06-health/engine-parity.test.js", "status": "pass", "result": "10/10" },
+    { "command": "node --test tests/hausa/ha-06-health/engine-parity.test.js tests/sickle-cell-engine.test.js tests/haemoglobin-result-verification-engine.test.js tests/childbirth-budget-vip.test.js tests/day5-health-external-lane-c.test.js", "status": "pass", "result": "29/29 before the final artwork assertion; lane test rerun after assertion 10/10" },
+    { "command": "$env:AFROTOOLS_TEST_DISABLE_ANALYTICS='1'; $env:PORT='43106'; npx playwright test -c tests/hausa/ha-06-health/playwright.config.js --trace=off --reporter=line", "status": "pass", "result": "12/12 in 37.8s" },
+    { "command": "node scripts/audit-hausa-visible-copy.js", "status": "pass", "result": "106 routes; BLOCKER_VISIBLE_ENGLISH 0; generated central reports restored to frozen base after reading result" },
+    { "command": "npm run ha:coverage:check", "status": "pass", "result": "105 routes; 14 native, 59 localized shell, 32 explicit English fallback" },
+    { "command": "npm run test:ha-surface", "status": "pass", "result": "13 explicit bridges, 106 audited routes" },
+    { "command": "npm run validate:hreflang", "status": "pass", "result": "11291 public pages, 10308 with hreflang, 33414 relationships, 5352 equivalence groups" },
+    { "command": "npm run check-links", "status": "pass", "result": "138230 internal links across 11510 HTML files; no broken links" },
+    { "command": "git diff --check", "status": "pass" },
+    { "command": "git diff --diff-filter=D --summary 6edacda8437e1fa9b9e5a512138cbdd3169e38be..d87425e2f9a5a735a40b61bee5f3c4958bfe41f4", "status": "pass", "result": "empty; no deletions" },
+    { "command": "npm run ha:surface:check", "status": "baseline-fail", "result": "13 coordinator-owned generated Hausa product surfaces were already stale; no write run because build owner is forbidden" },
+    { "command": "npm run build:i18n:validate", "status": "baseline-fail", "result": "protected data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} stale; no generated repair run" }
+  ],
+  "netNewDefects": 0,
+  "baselineDebt": [
+    "Hausa product-surface generated pages stale outside HA-06 ownership.",
+    "Generated localization coverage artifacts stale and coordinator-owned."
+  ]
+}

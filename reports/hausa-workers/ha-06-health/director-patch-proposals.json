@@ -1,0 +1,79 @@
+{
+  "schemaVersion": 1,
+  "lane": "HA-06-health",
+  "applied": false,
+  "reason": "These targets are coordinator-owned or outside Hausa-only route ownership and require serialized integration.",
+  "proposals": [
+    {
+      "id": "HA06-CENTRAL-ALL-TOOLS",
+      "target": "ha/kayan-aiki/index.html",
+      "owner": "director-coordinator",
+      "baseIntegrity": "Worker path is byte-identical to 6edacda8437e1fa9b9e5a512138cbdd3169e38be.",
+      "replaceExistingCards": [
+        {
+          "route": "/ha/kayan-aiki/kudin-asibiti/",
+          "title": "Kasafin asibiti",
+          "description": "Tara rubutaccen farashi, gudummawar inshora da ajiyar shiri.",
+          "dataSearch": "hospital cost asibiti lafiya"
+        },
+        {
+          "route": "/ha/kayan-aiki/duba-genotype/",
+          "title": "Tabbatar da rahoton genotype",
+          "description": "Tsara rahoto guda daya da tambayoyin da za a kai dakin gwaji ko likita.",
+          "dataSearch": "genotype haemoglobin report lab lafiya"
+        },
+        {
+          "route": "/ha/kayan-aiki/sickle-cell/",
+          "title": "Ilimin gadon sikila",
+          "description": "Yiwuwar hadin ga kowane ciki daga sakamakon dakin gwaji; ba hukuncin jituwa ba.",
+          "dataSearch": "sickle cell genotype lafiya"
+        }
+      ],
+      "insertCards": [
+        {
+          "route": "/ha/kayan-aiki/kudin-haihuwa/",
+          "dataKind": "hausa",
+          "dataGroup": "health money",
+          "dataSearch": "childbirth cost maternity budget haihuwa lafiya",
+          "title": "Kasafin haihuwa",
+          "description": "Tara farashin haihuwa da cire gudummawar mai biya da aka tabbatar."
+        },
+        {
+          "route": "/ha/kayan-aiki/kwatanta-farashin-magani/",
+          "dataKind": "hausa",
+          "dataGroup": "health money",
+          "dataSearch": "medicine pharmacy exact price magani lafiya",
+          "title": "Kwatanta farashin magani",
+          "description": "Kwatanta farashi biyu na ainihin magani, karfi da nau'i daya."
+        },
+        {
+          "route": "/ha/kayan-aiki/tsarin-abincin-afirka/",
+          "dataKind": "hausa",
+          "dataGroup": "health food money",
+          "dataSearch": "african meal plan budget abinci lafiya",
+          "title": "Tsarin abinci da kasafi",
+          "description": "Lissafa yawan hidima da kasafin sayayya daga farashin yankinka."
+        }
+      ]
+    },
+    {
+      "id": "HA06-MEAL-ROUTE-OWNER",
+      "sourceId": "african-meal-plan",
+      "oldHausaRoute": "/ha/kayan-aiki/abincin-afirka/",
+      "newAssignedHausaRoute": "/ha/kayan-aiki/tsarin-abincin-afirka/",
+      "exactReplacements": [
+        { "target": "assets/js/components/tool-registry.js", "lineAtBase": 146, "field": "href", "from": "/ha/kayan-aiki/abincin-afirka/", "to": "/ha/kayan-aiki/tsarin-abincin-afirka/" },
+        { "target": "assets/js/components/tool-registry.js", "lineAtBase": 146, "field": "desc", "from": "Gina tsarin abinci na kwanaki 7 da calories, BMR/TDEE da jerin sayayya a Hausa; ba maganin abinci na likita ba.", "to": "Lissafa yawan hidimar abinci da kasafin sayayya daga zabin mai amfani da farashin yankinsa; ba shirin diet ko shawarar lafiya ba." },
+        { "target": "tools/african-meal-plan/index.html", "lineAtBase": 41, "field": "hreflang ha href", "from": "https://afrotools.com/ha/kayan-aiki/abincin-afirka/", "to": "https://afrotools.com/ha/kayan-aiki/tsarin-abincin-afirka/" },
+        { "target": "fr/tools/plan-repas-africain/index.html", "lineAtBase": 82, "field": "hreflang ha href", "from": "https://afrotools.com/ha/kayan-aiki/abincin-afirka/", "to": "https://afrotools.com/ha/kayan-aiki/tsarin-abincin-afirka/" },
+        { "target": "sw/zana/mpango-wa-milo-afrika/index.html", "lineAtBase": 78, "field": "hreflang ha href", "from": "https://afrotools.com/ha/kayan-aiki/abincin-afirka/", "to": "https://afrotools.com/ha/kayan-aiki/tsarin-abincin-afirka/" }
+      ],
+      "generatedFollowUp": [
+        "Regenerate data/registry/locale-page-coverage.json and reports/localization-coverage.* through their owner after serialization.",
+        "Choose a coordinator-owned migration for the old Hausa route (prefer a durable redirect or an explicit canonical transition) without creating duplicate indexable apps.",
+        "Re-run validate:hreflang, check-links, Hausa coverage and localization artifact checks."
+      ],
+      "acceptanceEffect": "Unblocks HA-06 row 6 SEO/source-owner receipt; no app implementation change is needed."
+    }
+  ]
+}

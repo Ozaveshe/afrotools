@@ -1,0 +1,43 @@
+{
+  "schemaVersion": 1,
+  "lane": "HA-06-health",
+  "denominator": 6,
+  "branch": "codex/ha-health-06-20260808",
+  "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+  "validatedProductSha": "d87425e2f9a5a735a40b61bee5f3c4958bfe41f4",
+  "evidenceCommit": "The evidence-only descendant of validatedProductSha; exact pushed branch tip is reported in the final handoff because a commit cannot contain its own SHA.",
+  "assignedRows": [
+    { "row": 1, "sourceId": "hospital-cost", "route": "/ha/kayan-aiki/kudin-asibiti/" },
+    { "row": 2, "sourceId": "sickle-cell", "route": "/ha/kayan-aiki/sickle-cell/" },
+    { "row": 3, "sourceId": "genotype-checker", "route": "/ha/kayan-aiki/duba-genotype/" },
+    { "row": 4, "sourceId": "childbirth-cost", "route": "/ha/kayan-aiki/kudin-haihuwa/" },
+    { "row": 5, "sourceId": "drug-price-compare", "route": "/ha/kayan-aiki/kwatanta-farashin-magani/" },
+    { "row": 6, "sourceId": "african-meal-plan", "route": "/ha/kayan-aiki/tsarin-abincin-afirka/" }
+  ],
+  "changedProductPaths": [
+    "ha/assets/health-parity-ha.css",
+    "ha/assets/health-parity-ha.js",
+    "ha/kayan-aiki/duba-genotype/index.html",
+    "ha/kayan-aiki/kudin-asibiti/index.html",
+    "ha/kayan-aiki/kudin-haihuwa/index.html",
+    "ha/kayan-aiki/kwatanta-farashin-magani/index.html",
+    "ha/kayan-aiki/sickle-cell/index.html",
+    "ha/kayan-aiki/tsarin-abincin-afirka/index.html",
+    "ha/lafiya/index.html"
+  ],
+  "changedTestPaths": [
+    "tests/hausa/ha-06-health/browser.spec.js",
+    "tests/hausa/ha-06-health/engine-parity.test.js",
+    "tests/hausa/ha-06-health/playwright.config.js"
+  ],
+  "noDeletionProof": {
+    "command": "git diff --diff-filter=D --summary 6edacda8437e1fa9b9e5a512138cbdd3169e38be..d87425e2f9a5a735a40b61bee5f3c4958bfe41f4",
+    "output": "",
+    "status": "pass-no-deleted-files"
+  },
+  "centralCollisionProof": {
+    "path": "ha/kayan-aiki/index.html",
+    "command": "git diff --exit-code 6edacda8437e1fa9b9e5a512138cbdd3169e38be..d87425e2f9a5a735a40b61bee5f3c4958bfe41f4 -- ha/kayan-aiki/index.html",
+    "status": "pass-byte-identical-to-frozen-base"
+  }
+}
