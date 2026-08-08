@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 33 |
-| **Accepted** | **1138** |
+| **Accepted** | **1139** |
 
 ## Category reconciliation
 
@@ -55,7 +55,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Sports & Entertainment | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Telecom & Mobile | 14 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 | Trade & Import | 22 | 0 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
-| Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 2 |
+| Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 3 |
 | Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 34 | 0 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 34 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 63 |
@@ -1317,7 +1317,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Parking Fee Calculator Africa — Lagos, Nairobi, Accra | Transport & Logistics | `/tools/parking-fee` | Localized shell candidate | `/sw/zana/ada-za-maegesho` | No |
 | Logistics Route Cost Comparator Africa | Transport & Logistics | `/tools/route-cost` | Localized shell candidate | `/sw/zana/gharama-njia-za-logistics` | No |
 | Toll Fee Calculator Africa — Lagos, Johannesburg, Accra Routes | Transport & Logistics | `/tools/toll-calc` | Localized shell candidate | `/sw/zana/ada-za-toll` | No |
-| Truck Load Optimizer Africa | Transport & Logistics | `/tools/truck-load` | Localized shell candidate | `/sw/zana/kupakia-lori` | No |
+| Truck Load Optimizer Africa | Transport & Logistics | `/tools/truck-load` | Localized shell candidate | `/sw/zana/kupakia-lori` | Yes |
 | Vehicle Operating Cost Calculator Africa | Transport & Logistics | `/tools/vehicle-operating-cost` | Localized shell candidate | `/sw/zana/gharama-uendeshaji-gari` | Yes |
 | Vehicle Tracker ROI Calculator — Africa | Transport & Logistics | `/tools/vehicle-tracker-roi` | Localized shell candidate | `/sw/zana/faida-ya-tracker-ya-gari` | No |
 | Africa Domestic Flight Price Tracker | Travel & Tourism | `/tools/africa-flight` | Localized shell candidate | `/sw/zana/safari-za-ndege-afrika` | Yes |
