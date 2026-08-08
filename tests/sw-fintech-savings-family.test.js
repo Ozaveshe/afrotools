@@ -10,15 +10,15 @@ const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '8354e321ff34caf60a33a3393cd0dcddfb00c023';
+const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 
 const manifest = buildManifest();
 assert.strictEqual(manifest.totals.allocated, 99);
-assert.strictEqual(manifest.totals.excludedAccepted, 6);
-assert.strictEqual(manifest.totals.remainingUnaccepted, 93);
+assert.strictEqual(manifest.totals.excludedAccepted, 8);
+assert.strictEqual(manifest.totals.remainingUnaccepted, 91);
 assert.deepStrictEqual(
   manifest.excludedAccepted.map((row) => row.englishId).sort(),
-  ['bol-generator', 'cross-border-data', 'customs-time', 'packing-list', 'proforma-invoice', 'shipping-weight'].sort()
+  ['b2b-payment', 'bill-split', 'bol-generator', 'cross-border-data', 'customs-time', 'packing-list', 'proforma-invoice', 'shipping-weight'].sort()
 );
 assert.deepStrictEqual(manifest.selectedFamily.rows.map((row) => row.englishId), apps.map((app) => app.id));
 assert.strictEqual(build(false), 3);

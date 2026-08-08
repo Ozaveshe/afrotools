@@ -8,7 +8,7 @@ const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '8354e321ff34caf60a33a3393cd0dcddfb00c023';
+const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 const apps = [
   { id: 'fire-calc', sw: '/sw/zana/kikokotoo-fire/', en: '/tools/fire-calc/', fr: '/fr/tools/calculateur-fire/', controller: 'fire-calc.js', markers: ['id="fire-source-date"', 'id="fire-source"', 'id="fire-withdrawal"'] },
   { id: 'property-vs-stocks', sw: '/sw/zana/mali-dhidi-ya-hisa/', en: '/tools/property-vs-stocks/', fr: '/fr/tools/immobilier-vs-actions/', controller: 'property-vs-stocks.js', markers: ['id="pvs-market"', 'id="pvs-source-date"', 'id="pv-sale-cost"'] },
@@ -21,8 +21,8 @@ const scope = new Set(['small-business', 'fintech', 'transport', 'trade']);
 const rows = inventory.rows.filter((row) => scope.has(row.categoryKey));
 
 assert.strictEqual(rows.length, 99);
-assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 6);
-assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 93);
+assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 8);
+assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 91);
 assert.strictEqual(inventory.rows.filter((row) => row.categoryKey === 'fintech').length, 31);
 
 for (const app of apps) {

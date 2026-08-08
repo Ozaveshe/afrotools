@@ -8,7 +8,7 @@ const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '8354e321ff34caf60a33a3393cd0dcddfb00c023';
+const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 const id = 'mobile-vs-bank';
 const sw = '/sw/zana/pesa-simu-dhidi-ya-benki/';
 const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/swahili-free-app-parity-inventory.json'), 'utf8'));
@@ -18,8 +18,8 @@ const scope = new Set(['small-business', 'fintech', 'transport', 'trade']);
 const rows = inventory.rows.filter((row) => scope.has(row.categoryKey));
 
 assert.strictEqual(rows.length, 99);
-assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 6);
-assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 93);
+assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 8);
+assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 91);
 assert.strictEqual(inventory.rows.filter((row) => row.categoryKey === 'fintech').length, 31);
 const baseRow = rows.find((row) => row.englishId === id);
 assert.ok(baseRow && baseRow.state === 'missing' && !accepted.has(id), 'mobile-vs-bank must be a missing, centrally unaccepted row');
