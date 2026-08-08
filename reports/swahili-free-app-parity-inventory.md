@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1520 |
-| Swahili coverage records | 1517 |
+| Swahili physical HTML pages | 1522 |
+| Swahili coverage records | 1519 |
 | Native candidates | 590 |
-| Localized shell candidates | 640 |
+| Localized shell candidates | 642 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 25 |
-| **Accepted** | **1154** |
+| Missing | 23 |
+| **Accepted** | **1156** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
-| Finance, Tax & Market Data | 132 | 6 | 100 | 2 | 0 | 0 | 0 | 0 | 24 | 91 |
+| Finance, Tax & Market Data | 132 | 6 | 102 | 2 | 0 | 0 | 0 | 0 | 22 | 93 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -80,7 +80,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Nigeria PAYE Calculator | Finance, Tax & Market Data | `/nigeria/ng-salary-tax` | English fallback | `/sw/nigeria/kikokotoo-kodi-mshahara` | No |
 | Kenya PAYE Calculator | Finance, Tax & Market Data | `/kenya/ke-paye` | Localized shell candidate | `/sw/kenya/kikokotoo-kodi-mshahara` | Yes |
 | PDF Workspace | Document & PDF | `/tools/pdf-workspace` | Localized shell candidate | `/sw/zana/nafasi-pdf` | Yes |
-| Japa Cost Calculator | Uniquely African | `/tools/japa-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-uhamishaji` | Yes |
+| Japa Relocation Budget Planner | Uniquely African | `/tools/japa-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-uhamishaji` | Yes |
 | Medical Report Interpreter | Health & Wellness | `/tools/medical-report` | Native candidate | `/sw/zana/tafsiri-ya-ripoti-ya-matibabu` | Yes |
 | AI Business Planner | Finance, Tax & Market Data | `/tools/business-planner` | Localized shell candidate | `/sw/zana/mpangaji-wa-biashara-ai` | No |
 | Ghana PAYE + SSNIT | Finance, Tax & Market Data | `/ghana/gh-paye` | Localized shell candidate | `/sw/ghana/kikokotoo-kodi-mshahara` | Yes |
@@ -263,7 +263,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/sw/zana/namba-za-kirumi` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Localized shell candidate | `/sw/zana/kikokotoo-asilimia` | Yes |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Localized shell candidate | `/sw/zana/kikokotoo-kisayansi` | Yes |
-| Mobile Money Fee Checker | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | Yes |
+| Mobile Money Quote Fee Comparator | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | Yes |
 | Fintech Fee Watch | Uniquely African | `/tools/fintech-fee-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-ada-fintech` | Yes |
 | Ajo/Chama Savings Tracker | Uniquely African | `/tools/ajo-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-ajo-chama` | Yes |
 | Electricity Bill Estimator | Uniquely African | `/tools/electricity-estimator` | Localized shell candidate | `/sw/zana/makisio-ya-bili-ya-umeme` | Yes |
@@ -273,7 +273,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Lobola Negotiation Checklist | Religious & Cultural | `/tools/lobola-negotiation-checklist` | Localized shell candidate | `/sw/zana/orodha-ya-majadiliano-ya-lobola` | Yes |
 | Lobola Gift List | Religious & Cultural | `/tools/lobola-gift-list` | Localized shell candidate | `/sw/zana/orodha-ya-zawadi-za-lobola` | Yes |
 | Informal Remittance Cost Tracker | Uniquely African | `/tools/hawala-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-hawala` | Yes |
-| Funeral Cost Estimator | Uniquely African | `/tools/burial-cost` | Localized shell candidate | `/sw/zana/gharama-za-mazishi` | Yes |
+| Family Funeral Budget Planner | Uniquely African | `/tools/burial-cost` | Localized shell candidate | `/sw/zana/gharama-za-mazishi` | Yes |
 | School Fees Comparator | Education | `/tools/school-fees` | Localized shell candidate | `/sw/zana/ada-za-shule` | Yes |
 | Staple Basket Tracker | Uniquely African | `/tools/staple-basket` | Localized shell candidate | `/sw/zana/kikapu-cha-bidhaa-msingi` | Yes |
 | Wholesale Retail Spread | Uniquely African | `/tools/wholesale-retail-spread` | Localized shell candidate | `/sw/zana/tofauti-bei-jumla-rejareja` | Yes |
@@ -308,7 +308,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Nigeria WHT Calculator | Finance, Tax & Market Data | `/tools/ng-wht` | Localized shell candidate | `/sw/zana/kikokotoo-wht-nigeria` | Yes |
 | Kenya WHT Calculator | Finance, Tax & Market Data | `/tools/ke-wht` | Missing | None | No |
 | Transfer Pricing Comparability Planner | Finance, Tax & Market Data | `/tools/transfer-pricing` | Localized shell candidate | `/sw/zana/ulinganisho-wa-bei-za-uhamisho` | Yes |
-| South Africa UIF Calculator | Finance, Tax & Market Data | `/tools/za-uif` | Missing | None | No |
+| South Africa UIF Calculator | Finance, Tax & Market Data | `/tools/za-uif` | Localized shell candidate | `/sw/zana/kikokotoo-uif-afrika-kusini` | Yes |
 | Investment Return Calculator | Finance, Tax & Market Data | `/tools/investment-return` | Native candidate | `/sw/zana/faida-ya-uwekezaji` | Yes |
 | Crypto Capital Gains Calculator | Finance, Tax & Market Data | `/tools/crypto-tax` | Localized shell candidate | `/sw/zana/kodi-ya-sarafu-za-kidijitali` | Yes |
 | BMI Measurement Quality Worksheet | Health & Wellness | `/health/bmi-calculator` | Native candidate | `/sw/zana/kikokotoo-bmi` | Yes |
@@ -771,7 +771,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | South Africa GEPF Calculator | Finance, Tax & Market Data | `/tools/za-gepf` | Localized shell candidate | `/sw/zana/kikokotoo-gepf-afrika-kusini` | Yes |
 | South Africa Transfer Duty Calculator | Finance, Tax & Market Data | `/tools/za-transfer-duty` | Localized shell candidate | `/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini` | Yes |
 | Ghana SSNIT Calculator 2026 | Finance, Tax & Market Data | `/tools/gh-ssnit` | Missing | None | No |
-| Lagos Land Use Charge Calculator | Finance, Tax & Market Data | `/tools/ng-land-use` | Missing | None | No |
+| Lagos Land Use Charge Calculator | Finance, Tax & Market Data | `/tools/ng-land-use` | Localized shell candidate | `/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos` | Yes |
 | Kenya Stamp Duty Calculator | Finance, Tax & Market Data | `/tools/ke-stamp-duty` | Missing | None | No |
 | Private Fluid Intake Log | Health & Wellness | `/tools/water-intake` | Native candidate | `/sw/zana/kikokotoo-maji-ya-kunywa` | Yes |
 | Vaccination Programme Finder | Health & Wellness | `/tools/vaccine-schedule` | Native candidate | `/sw/zana/ratiba-ya-chanjo` | Yes |
@@ -802,7 +802,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | AfroPoints — Earn Money Contributing Data | Uniquely African | `/tools/afropoints` | Localized shell candidate | `/sw/zana/afropoints` | Yes |
 | AfroKitchen — African Recipes | Uniquely African | `/tools/afrokitchen` | Localized shell candidate | `/sw/zana/jikoni` | Yes |
 | AfroConflict — Conflict Intelligence | Uniquely African | `/tools/africa-conflict` | Localized shell candidate | `/sw/zana/migogoro-ya-afrika` | Yes |
-| Bride Price Advisor | Uniquely African | `/tools/brideprice-advisor` | Localized shell candidate | `/sw/zana/mshauri-wa-mahari` | Yes |
+| Consent-First Marriage Family Planner | Uniquely African | `/tools/brideprice-advisor` | Localized shell candidate | `/sw/zana/mshauri-wa-mahari` | Yes |
 | Ajo / Esusu Interest Calculator | Uniquely African | `/tools/ajo-interest` | Localized shell candidate | `/sw/zana/riba-ya-ajo-esusu-stokvel` | Yes |
 | African Diaspora Tax Guide | Uniquely African | `/tools/diaspora-guide` | Localized shell candidate | `/sw/zana/mwongozo-wa-diaspora` | Yes |
 | Film/TV Budget Estimator Africa | Uniquely African | `/tools/nollywood-pitch` | Localized shell candidate | `/sw/zana/bajeti-ya-filamu-afrika` | Yes |
