@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 25,
-    "blocked": 30,
+    "acceptedCandidates": 26,
+    "blocked": 29,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 5,
-        "blocked": 15
+        "acceptedCandidates": 6,
+        "blocked": 14
       },
       "energy": {
         "denominator": 17,
@@ -47,7 +47,7 @@
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 5 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 6 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -109,19 +109,19 @@
       "englishId": "floor-plan",
       "categoryKey": "engineering",
       "englishRoute": "/tools/floor-plan",
-      "swahiliRoute": "/sw/zana/kikokotoo-gharama-za-ujenzi",
+      "swahiliRoute": "/sw/zana/kikokotoo-gharama-za-ujenzi/",
       "swahiliFile": "sw/zana/kikokotoo-gharama-za-ujenzi/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-building-cost-parity.js -> assets/js/engines/building-cost-engine.js -> assets/js/pages/sw-building-cost-parity.js",
+      "formulaDecision": "Exact floor-plan Building Cost Estimator semantics: measured area gross-up, city/finish/type/site rate, preliminaries, external works, professional fees, contingency, escalation, confidence range and timeline. English and Swahili consume one DOM-free engine.",
+      "sourceDecision": "Exact route ownership is proved by inventory, locale coverage and route graph. City rates are a stale 2024 planning snapshot; RICS cost-prediction methodology is linked, while quantities, current prices, approvals and contract scope require local professional verification.",
+      "browserProof": "Chromium: 320px, 375px and 200% reflow; themes, keyboard/focus, valid/invalid/reset/stale state, reciprocal metadata, no console/page errors or raw-input network requests; English regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/floor-plan.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "boq-generator",

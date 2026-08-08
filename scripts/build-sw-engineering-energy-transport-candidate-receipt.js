@@ -8,6 +8,7 @@ const { SW_ENERGY_REMAINING_APPS } = require("./lib/sw-energy-remaining-contract
 const { SW_ENGINEERING_MATERIALS_APPS } = require("./lib/sw-engineering-materials-contract.js");
 const { SW_TRANSPORT_COST_APPS } = require("./lib/sw-transport-cost-contract.js");
 const SW_SOLAR_CALCULATOR = require("./lib/sw-solar-calculator-contract.js");
+const SW_BUILDING_COST = require("./lib/sw-building-cost-contract.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT_JSON = "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json";
@@ -97,6 +98,18 @@ const apps = rows.map((row) => {
       artwork, blocker: null,
     };
   }
+  if (row.englishId === SW_BUILDING_COST.id) {
+    if (!exists(SW_BUILDING_COST.file)) throw new Error("Building cost owner missing.");
+    return {
+      englishId: row.englishId, categoryKey: row.categoryKey, englishRoute: row.englishRoute,
+      swahiliRoute: SW_BUILDING_COST.swRoute, swahiliFile: SW_BUILDING_COST.file, status: "accepted-candidate",
+      sourceOwner: "scripts/build-sw-building-cost-parity.js -> assets/js/engines/building-cost-engine.js -> assets/js/pages/sw-building-cost-parity.js",
+      formulaDecision: "Exact floor-plan Building Cost Estimator semantics: measured area gross-up, city/finish/type/site rate, preliminaries, external works, professional fees, contingency, escalation, confidence range and timeline. English and Swahili consume one DOM-free engine.",
+      sourceDecision: "Exact route ownership is proved by inventory, locale coverage and route graph. City rates are a stale 2024 planning snapshot; RICS cost-prediction methodology is linked, while quantities, current prices, approvals and contract scope require local professional verification.",
+      browserProof: "Chromium: 320px, 375px and 200% reflow; themes, keyboard/focus, valid/invalid/reset/stale state, reciprocal metadata, no console/page errors or raw-input network requests; English regression passed.",
+      exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.", artwork, blocker: null,
+    };
+  }
 
   if (row.categoryKey === "engineering" && engineeringIds.has(row.englishId)) {
     const contract = SW_ENGINEERING_MATERIALS_APPS.find((app) => app.id === row.englishId);
@@ -167,7 +180,7 @@ const receipt = {
     acceptedCandidates: accepted.length,
     blocked: blocked.length,
     byCategory: {
-      engineering: { denominator: 20, acceptedCandidates: 5, blocked: 15 },
+      engineering: { denominator: 20, acceptedCandidates: 6, blocked: 14 },
       energy: { denominator: 17, acceptedCandidates: 17, blocked: 0 },
       transport: { denominator: 18, acceptedCandidates: 3, blocked: 15 },
     },
@@ -176,13 +189,13 @@ const receipt = {
   proof: {
     static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
     browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
-    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 5 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 6 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     privacy: "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists.",
   },
   apps,
 };
 
-if (accepted.length !== 25 || blocked.length !== 30) throw new Error(`Expected 25 accepted candidates and 30 blocked; received ${accepted.length}/${blocked.length}.`);
+if (accepted.length !== 26 || blocked.length !== 29) throw new Error(`Expected 26 accepted candidates and 29 blocked; received ${accepted.length}/${blocked.length}.`);
 
 const artworkReceipt = {
   schemaVersion: 1,
@@ -196,16 +209,16 @@ const artworkReceipt = {
 const byCategory = (key, status) => apps.filter((app) => app.categoryKey === key && app.status === status).map((app) => `\`${app.englishId}\``).join(", ");
 const md = `# Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **25 accepted candidates / 30 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **26 accepted candidates / 29 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
 | Category | Denominator | Accepted candidate | Blocked |
 |---|---:|---:|---:|
-| Engineering & Construction | 20 | 5 | 15 |
+| Engineering & Construction | 20 | 6 | 14 |
 | Energy & Utilities | 17 | 17 | 0 |
 | Transport & Logistics | 18 | 3 | 15 |
-| **Total** | **55** | **25** | **30** |
+| **Total** | **55** | **26** | **29** |
 
 Accepted Energy IDs: ${byCategory("energy", "accepted-candidate")}.
 
@@ -221,8 +234,9 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 
 - The 17 Energy pages use their exact English-owned DOM-free engines through \`scripts/lib/sw-energy-remaining-contract.js\`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded \`data/energy/sw-energy-planning-snapshot.js\` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
-- Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; after the solar-calculator addition, the remaining 15 Engineering IDs stay fail-closed.
+- Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; after the solar and building-cost additions, the remaining 14 Engineering IDs stay fail-closed.
 - \`solar-calculator\` remains Engineering-owned but reuses the maintained March 2026 Energy snapshot and one shared DOM-free sizing engine with the English route. It receives one Engineering acceptance credit and no duplicate Energy credit. The UI marks the country data stale/low-confidence and the output as planning-only, never an installer design or grid approval.
+- \`floor-plan\` owns exactly \`/sw/zana/kikokotoo-gharama-za-ujenzi/\` through inventory, locale-coverage and route-graph evidence. It is distinct from Legal \`construction-budget\`, AfroPlan and road-construction routes. Its 2024 city-rate snapshot is visibly stale, RICS methodology is linked, and one shared engine owns the full allowance stack.
 - Fleet fuel, vehicle operating cost and truck load now use the exact English DOM-free Transport cost engine. Truck load uses only user-entered capacity, load, distance, currency label and trip cost; it supplies no fare, tariff, market benchmark or legal load approval. The remaining 15 Transport IDs stay fail-closed, and car-import customs/port sources remain \`changed\` in \`data/transport/source-status.json\`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
@@ -245,6 +259,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Engineering generator/manifest/engine: \`scripts/build-sw-engineering-materials-parity.js\`, \`scripts/lib/sw-engineering-materials-contract.js\`, and \`assets/js/engines/engineering-materials-engine.js\`.
 - Engineering runtime/style: \`assets/js/pages/sw-engineering-materials-parity.js\` and \`assets/css/sw-engineering-materials-parity.css\`; four bounded generated Swahili routes are owned by that generator.
 - Solar calculator owner/runtime/style: \`scripts/build-sw-solar-calculator-parity.js\`, \`scripts/lib/sw-solar-calculator-contract.js\`, \`assets/js/engines/solar-calculator-engine.js\`, \`assets/js/pages/sw-solar-calculator-parity.js\`, and \`assets/css/sw-solar-calculator-parity.css\`.
+- Building-cost owner/runtime/style: \`scripts/build-sw-building-cost-parity.js\`, \`scripts/lib/sw-building-cost-contract.js\`, \`assets/js/engines/building-cost-engine.js\`, \`assets/js/pages/sw-building-cost-parity.js\`, and \`assets/css/sw-building-cost-parity.css\`.
 - Transport cost engine/manifest/runtimes: \`assets/js/engines/transport-cost-engine.js\`, \`scripts/lib/sw-transport-cost-contract.js\`, \`assets/js/pages/sw-transport-cost-parity.js\`, \`assets/js/pages/sw-vehicle-operating-cost-parity.js\`, and \`assets/js/pages/sw-truck-load-parity.js\`.
 - Truck-load generator/style/routes: \`scripts/build-sw-truck-load-parity.js\`, \`assets/css/sw-truck-load-parity.css\`, \`sw/zana/kupakia-lori/index.html\`, and the English source route \`tools/truck-load/index.html\`.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
@@ -258,6 +273,8 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - \`npx playwright test -c playwright.sw-engineering-materials.config.js --workers=1\`
 - \`node --test tests/swahili-solar-calculator-parity.test.js\`
 - \`npx playwright test -c playwright.sw-solar-calculator.config.js --workers=1\`
+- \`node --test tests/swahili-building-cost-parity.test.js\`
+- \`npx playwright test -c playwright.sw-building-cost.config.js --workers=1\`
 - \`node scripts/build-sw-vehicle-operating-cost-parity.js\`
 - \`node scripts/build-sw-truck-load-parity.js\`
 - \`node --test tests/swahili-transport-cost-parity.test.js\`

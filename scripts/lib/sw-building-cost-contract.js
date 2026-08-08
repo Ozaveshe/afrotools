@@ -1,0 +1,1 @@
+"use strict";module.exports=Object.freeze({id:"floor-plan",englishRoute:"/tools/floor-plan/",frenchRoute:"/fr/tools/plan-etage/",swRoute:"/sw/zana/kikokotoo-gharama-za-ujenzi/",file:"sw/zana/kikokotoo-gharama-za-ujenzi/index.html",image:"/assets/img/tools/floor-plan.webp",snapshot:"2024",status:"planning_snapshot_stale"});
