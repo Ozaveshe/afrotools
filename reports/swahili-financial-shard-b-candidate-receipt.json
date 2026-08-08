@@ -5,10 +5,11 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 15,
-  "blocked": 31,
+  "accepted": 16,
+  "blocked": 30,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
+    "assets/js/engines/lr-paye.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
     "assets/css/route-fares-vip.css",
@@ -16,9 +17,10 @@
     "assets/css/startup-valuation-vip.css",
     "assets/css/togo-paye-vip.css",
     "sw/sao-tome/kikokotoo-kodi-mshahara/index.html",
+    "sw/liberia/kikokotoo-kodi-mshahara/index.html",
     "sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html"
   ],
-  "formulaDataSourceDecision": "No formula, rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia now uses a DOM-free browser engine proved against the reviewed server engine; this corrects the Swahili page so NASSCORP remains separate from the PAYE tax base.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -39,13 +41,13 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 15,
+      "passed": 16,
       "failed": 0
     },
     "shardBrowserMatrix": {
-      "passed": 16,
+      "passed": 18,
       "failed": 0,
-      "execution": "two 8-test one-worker shards"
+      "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
     "focusedExistingWorkflowExportSelection": {
       "passed": 19,
@@ -58,8 +60,14 @@
       "browserFailed": 0
     },
     "lint": {
-      "status": "carried-baseline-debt",
+      "status": "passed",
+      "checkedJavaScriptFiles": 49,
       "netNewChangedPathsReported": 0
+    },
+    "legacyLiberiaRegistryTest": {
+      "status": "carried-baseline-debt",
+      "productFixturesPassedBeforeRegistryAssertion": true,
+      "reason": "tests/engines/lr-paye.test.js expects two source titles while the existing central formula registry currently contains five."
     }
   },
   "rows": [
@@ -69,12 +77,62 @@
       "englishName": "Liberia PAYE Calculator",
       "englishRoute": "/liberia/lr-paye",
       "startingState": "english-fallback",
-      "status": "blocked",
+      "status": "accepted",
       "swahiliRoute": "/sw/liberia/kikokotoo-kodi-mshahara",
       "swahiliFile": "sw/liberia/kikokotoo-kodi-mshahara/index.html",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "proof": null,
-      "blocker": "The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt."
+      "sourceOwner": [
+        "/assets/js/lib/simple-chart-fallback.js",
+        "/assets/js/lib/chart-config.js",
+        "/assets/js/engines/lr-paye.js",
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/lib/sw-accessibility.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/engines/lr-paye-browser-parity.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/engines/lr-paye-browser-parity.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 19 of 30 selected workflow/export tests; the remaining failures are recorded separately and are not represented as passing evidence."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 48,

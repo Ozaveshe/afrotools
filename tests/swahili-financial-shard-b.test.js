@@ -23,7 +23,7 @@ const EXPECTED_IDS = [
 ];
 
 const ACCEPTED_IDS = [
-  'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
+  'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
   'payslip-generator', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'so-paye', 'ss-paye',
   'st-paye', 'startup-valuation', 'tg-paye',
@@ -49,8 +49,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 15);
-  assert.equal(receipt.blocked, 31);
+  assert.equal(receipt.accepted, 16);
+  assert.equal(receipt.blocked, 30);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
