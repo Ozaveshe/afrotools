@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 27,
-    "blocked": 28,
+    "acceptedCandidates": 28,
+    "blocked": 27,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 7,
-        "blocked": 13
+        "acceptedCandidates": 8,
+        "blocked": 12
       },
       "energy": {
         "denominator": 17,
@@ -40,6 +40,7 @@
       "tests/swahili-energy-remaining-static.test.js",
       "tests/swahili-engineering-materials-parity.test.js",
       "tests/swahili-boq-builder-parity.test.js",
+      "tests/swahili-structural-screening-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -47,9 +48,10 @@
       "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-boq-builder-parity.spec.js",
+      "tests/e2e/sw-structural-screening-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 7 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 8 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -147,19 +149,19 @@
       "englishId": "structural-calc",
       "categoryKey": "engineering",
       "englishRoute": "/tools/structural-calc",
-      "swahiliRoute": "/sw/zana/kikokotoo-miundo-ya-ujenzi",
+      "swahiliRoute": "/sw/zana/kikokotoo-miundo-ya-ujenzi/",
       "swahiliFile": "sw/zana/kikokotoo-miundo-ya-ujenzi/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-structural-screening-contract.js -> assets/js/engines/structural-screening-engine.js -> assets/js/pages/sw-structural-screening-parity.js",
+      "formulaDecision": "Exact English legacy beam, column, slab and footing screens were extracted into one DOM-free engine and consumed by both routes. These outputs remain preliminary prompts, never structural design or code approval.",
+      "sourceDecision": "Exact route ownership is proved by inventory, registry sourceId, locale coverage and route graph. The BS 8110-style formula set and embedded material prices are undated, stale and low-confidence; a registered structural engineer must select current rules, loads and details.",
+      "browserProof": "Chromium: all four mode oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; four English shared-engine regressions passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/structural-calc.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "electrical-load",

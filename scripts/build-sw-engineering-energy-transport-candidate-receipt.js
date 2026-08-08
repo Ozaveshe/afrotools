@@ -10,6 +10,7 @@ const { SW_TRANSPORT_COST_APPS } = require("./lib/sw-transport-cost-contract.js"
 const SW_SOLAR_CALCULATOR = require("./lib/sw-solar-calculator-contract.js");
 const SW_BUILDING_COST = require("./lib/sw-building-cost-contract.js");
 const SW_BOQ_BUILDER = require("./lib/sw-boq-builder-contract.js");
+const SW_STRUCTURAL_SCREENING = require("./lib/sw-structural-screening-contract.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT_JSON = "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json";
@@ -125,6 +126,19 @@ const apps = rows.map((row) => {
     };
   }
 
+  if (row.englishId === SW_STRUCTURAL_SCREENING.id) {
+    if (!exists(SW_STRUCTURAL_SCREENING.file)) throw new Error("Structural screening owner missing.");
+    return {
+      englishId: row.englishId, categoryKey: row.categoryKey, englishRoute: row.englishRoute,
+      swahiliRoute: SW_STRUCTURAL_SCREENING.swRoute, swahiliFile: SW_STRUCTURAL_SCREENING.file, status: "accepted-candidate",
+      sourceOwner: "scripts/lib/sw-structural-screening-contract.js -> assets/js/engines/structural-screening-engine.js -> assets/js/pages/sw-structural-screening-parity.js",
+      formulaDecision: "Exact English legacy beam, column, slab and footing screens were extracted into one DOM-free engine and consumed by both routes. These outputs remain preliminary prompts, never structural design or code approval.",
+      sourceDecision: "Exact route ownership is proved by inventory, registry sourceId, locale coverage and route graph. The BS 8110-style formula set and embedded material prices are undated, stale and low-confidence; a registered structural engineer must select current rules, loads and details.",
+      browserProof: "Chromium: all four mode oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; four English shared-engine regressions passed.",
+      exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.", artwork, blocker: null,
+    };
+  }
+
   if (row.categoryKey === "engineering" && engineeringIds.has(row.englishId)) {
     const contract = SW_ENGINEERING_MATERIALS_APPS.find((app) => app.id === row.englishId);
     if (!routePresent) throw new Error(`Engineering owner missing for ${row.englishId}.`);
@@ -194,22 +208,22 @@ const receipt = {
     acceptedCandidates: accepted.length,
     blocked: blocked.length,
     byCategory: {
-      engineering: { denominator: 20, acceptedCandidates: 7, blocked: 13 },
+      engineering: { denominator: 20, acceptedCandidates: 8, blocked: 12 },
       energy: { denominator: 17, acceptedCandidates: 17, blocked: 0 },
       transport: { denominator: 18, acceptedCandidates: 3, blocked: 15 },
     },
     acceptanceBoundary: "Candidate receipt only; coordinator-owned central acceptance remains unchanged.",
   },
   proof: {
-    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-boq-builder-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
-    browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-boq-builder-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
-    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 7 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-boq-builder-parity.test.js", "tests/swahili-structural-screening-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
+    browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-boq-builder-parity.spec.js", "tests/e2e/sw-structural-screening-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
+    browserMatrix: "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 8 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     privacy: "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists.",
   },
   apps,
 };
 
-if (accepted.length !== 27 || blocked.length !== 28) throw new Error(`Expected 27 accepted candidates and 28 blocked; received ${accepted.length}/${blocked.length}.`);
+if (accepted.length !== 28 || blocked.length !== 27) throw new Error(`Expected 28 accepted candidates and 27 blocked; received ${accepted.length}/${blocked.length}.`);
 
 const artworkReceipt = {
   schemaVersion: 1,
@@ -223,16 +237,16 @@ const artworkReceipt = {
 const byCategory = (key, status) => apps.filter((app) => app.categoryKey === key && app.status === status).map((app) => `\`${app.englishId}\``).join(", ");
 const md = `# Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **27 accepted candidates / 28 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **28 accepted candidates / 27 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
 | Category | Denominator | Accepted candidate | Blocked |
 |---|---:|---:|---:|
-| Engineering & Construction | 20 | 7 | 13 |
+| Engineering & Construction | 20 | 8 | 12 |
 | Energy & Utilities | 17 | 17 | 0 |
 | Transport & Logistics | 18 | 3 | 15 |
-| **Total** | **55** | **27** | **28** |
+| **Total** | **55** | **28** | **27** |
 
 Accepted Energy IDs: ${byCategory("energy", "accepted-candidate")}.
 
@@ -248,10 +262,11 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 
 - The 17 Energy pages use their exact English-owned DOM-free engines through \`scripts/lib/sw-energy-remaining-contract.js\`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded \`data/energy/sw-energy-planning-snapshot.js\` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
-- Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; after the solar, building-cost and BOQ Builder additions, the remaining 13 Engineering IDs stay fail-closed.
+- Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; after the solar, building-cost, BOQ Builder and structural-screening additions, the remaining 12 Engineering IDs stay fail-closed.
 - \`solar-calculator\` remains Engineering-owned but reuses the maintained March 2026 Energy snapshot and one shared DOM-free sizing engine with the English route. It receives one Engineering acceptance credit and no duplicate Energy credit. The UI marks the country data stale/low-confidence and the output as planning-only, never an installer design or grid approval.
 - \`floor-plan\` owns exactly \`/sw/zana/kikokotoo-gharama-za-ujenzi/\` through inventory, locale-coverage and route-graph evidence. It is distinct from Legal \`construction-budget\`, AfroPlan and road-construction routes. Its 2024 city-rate snapshot is visibly stale, RICS methodology is linked, and one shared engine owns the full allowance stack.
 - \`boq-generator\` owns exactly \`/sw/zana/orodha-vifaa/\` and English \`/tools/boq-builder/\`. It is distinct from \`boq-gen\` at \`/tools/boq-generator/\` and \`/sw/zana/kizalishaji-orodha-ya-kiasi/\`. The shared engine preserves contingency, VAT and markup ordering; all price and scope inputs remain user-provided planning assumptions.
+- \`structural-calc\` owns exactly \`/sw/zana/kikokotoo-miundo-ya-ujenzi/\`. Its four legacy screens are shared with English, but both the formula basis and embedded material rates are visibly undated, stale and low-confidence. No structural design, code compliance or approval is claimed.
 - Fleet fuel, vehicle operating cost and truck load now use the exact English DOM-free Transport cost engine. Truck load uses only user-entered capacity, load, distance, currency label and trip cost; it supplies no fare, tariff, market benchmark or legal load approval. The remaining 15 Transport IDs stay fail-closed, and car-import customs/port sources remain \`changed\` in \`data/transport/source-status.json\`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
@@ -262,6 +277,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Every accepted Engineering app: the same interaction/export matrix at 320px and 375px, plus a green English-route regression through the shared engine.
 - Solar calculator: 320px, 375px and 200% reflow; stale state; invalid/reset; themes and keyboard focus; JSON parsed/reopened, CSV/TXT parsed and PDF reopened through PDF.js; English shared-engine regression and reciprocal English/French/Swahili metadata passed.
 - BOQ Builder: exact allowance-order oracle, invalid/stale clearing, reset, themes and keyboard focus; JSON parsed/reopened, RFC-escaped CSV/TXT parsed and PDF reopened through PDF.js; English shared-engine regression and exact route disambiguation passed.
+- Structural screening: beam, column, slab and footing oracles; invalid/stale clearing, reset, themes and keyboard focus; JSON parsed/reopened, CSV/TXT parsed and PDF reopened through PDF.js; four English shared-engine regressions and exact ownership passed.
 - Truck load: exact oracle plus overload boundary; invalid/reset; light/dark; keyboard/focus; reciprocal metadata; JSON parsed and reopened, CSV/TXT parsed, and PDF reopened with PDF.js. The English route passed through the same engine after removal of its unused fuel-consumption field.
 - Network instrumentation recorded no fetch/XHR/beacon carrying raw inputs on the accepted deep flows. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
 - The remaining absent physical route is \`car-price-intelligence\`; its absence is asserted and blocked, not hidden by denominator arithmetic.
@@ -277,6 +293,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Solar calculator owner/runtime/style: \`scripts/build-sw-solar-calculator-parity.js\`, \`scripts/lib/sw-solar-calculator-contract.js\`, \`assets/js/engines/solar-calculator-engine.js\`, \`assets/js/pages/sw-solar-calculator-parity.js\`, and \`assets/css/sw-solar-calculator-parity.css\`.
 - Building-cost owner/runtime/style: \`scripts/build-sw-building-cost-parity.js\`, \`scripts/lib/sw-building-cost-contract.js\`, \`assets/js/engines/building-cost-engine.js\`, \`assets/js/pages/sw-building-cost-parity.js\`, and \`assets/css/sw-building-cost-parity.css\`.
 - BOQ Builder owner/engine/routes: \`scripts/build-sw-boq-builder-parity.js\`, \`scripts/lib/sw-boq-builder-contract.js\`, \`assets/js/engines/boq-builder-engine.js\`, \`tools/boq-builder/app.html\`, and \`sw/zana/orodha-vifaa/index.html\`.
+- Structural screening owner/engine/routes: \`scripts/build-sw-structural-screening-parity.js\`, \`scripts/lib/sw-structural-screening-contract.js\`, \`assets/js/engines/structural-screening-engine.js\`, \`assets/js/pages/sw-structural-screening-parity.js\`, \`tools/structural-calc/index.html\`, and \`sw/zana/kikokotoo-miundo-ya-ujenzi/index.html\`.
 - Transport cost engine/manifest/runtimes: \`assets/js/engines/transport-cost-engine.js\`, \`scripts/lib/sw-transport-cost-contract.js\`, \`assets/js/pages/sw-transport-cost-parity.js\`, \`assets/js/pages/sw-vehicle-operating-cost-parity.js\`, and \`assets/js/pages/sw-truck-load-parity.js\`.
 - Truck-load generator/style/routes: \`scripts/build-sw-truck-load-parity.js\`, \`assets/css/sw-truck-load-parity.css\`, \`sw/zana/kupakia-lori/index.html\`, and the English source route \`tools/truck-load/index.html\`.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
@@ -294,6 +311,8 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - \`npx playwright test -c playwright.sw-building-cost.config.js --workers=1\`
 - \`node --test tests/swahili-boq-builder-parity.test.js\`
 - \`npx playwright test -c playwright.sw-boq-builder.config.js --workers=1\`
+- \`node --test tests/swahili-structural-screening-parity.test.js\`
+- \`npx playwright test -c playwright.sw-structural-screening.config.js --workers=1\`
 - \`node scripts/build-sw-vehicle-operating-cost-parity.js\`
 - \`node scripts/build-sw-truck-load-parity.js\`
 - \`node --test tests/swahili-transport-cost-parity.test.js\`
