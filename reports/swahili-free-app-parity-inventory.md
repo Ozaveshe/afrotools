@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1516 |
-| Swahili coverage records | 1513 |
+| Swahili physical HTML pages | 1517 |
+| Swahili coverage records | 1514 |
 | Native candidates | 590 |
-| Localized shell candidates | 636 |
+| Localized shell candidates | 637 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 29 |
-| **Accepted** | **1145** |
+| Missing | 28 |
+| **Accepted** | **1146** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 12 |
-| Finance, Tax & Market Data | 132 | 6 | 97 | 2 | 0 | 0 | 0 | 0 | 27 | 88 |
+| Finance, Tax & Market Data | 132 | 6 | 98 | 2 | 0 | 0 | 0 | 0 | 26 | 89 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -304,7 +304,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Nigeria CGT Calculator | Finance, Tax & Market Data | `/tools/ng-cgt` | Localized shell candidate | `/sw/zana/kikokotoo-cgt-nigeria` | Yes |
 | Kenya CGT Calculator | Finance, Tax & Market Data | `/tools/ke-cgt` | Missing | None | No |
 | South Africa CGT Calculator | Finance, Tax & Market Data | `/tools/za-cgt` | Localized shell candidate | `/sw/zana/kikokotoo-cgt-afrika-kusini` | Yes |
-| SA Dividends Tax Calculator | Finance, Tax & Market Data | `/tools/za-dividend-tax` | Missing | None | No |
+| SA Dividends Tax Calculator | Finance, Tax & Market Data | `/tools/za-dividend-tax` | Localized shell candidate | `/sw/zana/kikokotoo-kodi-gawio-afrika-kusini` | Yes |
 | Nigeria WHT Calculator | Finance, Tax & Market Data | `/tools/ng-wht` | Localized shell candidate | `/sw/zana/kikokotoo-wht-nigeria` | Yes |
 | Kenya WHT Calculator | Finance, Tax & Market Data | `/tools/ke-wht` | Missing | None | No |
 | Transfer Pricing Comparability Planner | Finance, Tax & Market Data | `/tools/transfer-pricing` | Localized shell candidate | `/sw/zana/ulinganisho-wa-bei-za-uhamisho` | Yes |
