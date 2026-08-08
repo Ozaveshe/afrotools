@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 36 |
-| **Accepted** | **1134** |
+| **Accepted** | **1135** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 10 |
+| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 11 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -211,7 +211,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | PDF Find & Replace | Document & PDF | `/tools/pdf-find-replace` | Localized shell candidate | `/sw/zana/tafuta-na-badilisha-pdf` | Yes |
 | PDF Repair Tool | Document & PDF | `/tools/pdf-repair` | Localized shell candidate | `/sw/zana/kurekebisha-pdf` | Yes |
 | PDF Workflow Builder | Document & PDF | `/tools/pdf-workflow` | Localized shell candidate | `/sw/zana/workflow-ya-pdf` | Yes |
-| Image Compressor Studio | Image & Design | `/tools/image-compress` | Localized shell candidate | `/sw/zana/kubana-picha` | No |
+| Image Compressor Studio | Image & Design | `/tools/image-compress` | Localized shell candidate | `/sw/zana/kubana-picha` | Yes |
 | Image Resizer Studio | Image & Design | `/tools/image-resize` | Localized shell candidate | `/sw/zana/kubadilisha-ukubwa-wa-picha` | Yes |
 | QR Code Generator | Image & Design | `/tools/qr-generator` | Localized shell candidate | `/sw/zana/kitengeneza-qr` | Yes |
 | Background Remover Studio | Image & Design | `/tools/background-remover` | Localized shell candidate | `/sw/zana/kiondoa-mandharinyuma` | No |
