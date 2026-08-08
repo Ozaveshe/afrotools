@@ -5,9 +5,9 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 14,
-    "blocked": 5,
-    "centrallyAccepted": 13
+    "staticCandidates": 15,
+    "blocked": 4,
+    "centrallyAccepted": 14
   },
   "acceptedCandidates": [
     {
@@ -59,6 +59,12 @@
       "browserProof": "tests/e2e/swahili-image-to-text-parity.spec.js: English and Swahili execute the exact local Tesseract and OCR studio owners; controlled source pixels produced equivalent extracted text; TXT and Markdown reopened as text, JSON parsed with source/language/result/field contracts, CSV parsed with stable type/value columns, and the localized handoff brief was read back. Queue, invalid/reset, local model requests with zero user-data writes, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, artwork and console checks passed."
     },
     {
+      "id": "meme-generator",
+      "route": "/sw/zana/kitengeneza-meme/",
+      "sourceOwner": "scripts/build-sw-meme-generator.js + tools/meme-generator/index.html deterministic inline canvas owner",
+      "browserProof": "tests/e2e/swahili-meme-generator-parity.spec.js: the generated Swahili route retains the exact English canvas/render/download owner; controlled uploaded-image output was byte-identical; starter-scene and uploaded-image PNG files reopened at exactly 1200x900; all five scenes, six caption packs, three styles, text size, reset, invalid image, 320/375px, true 200% zoom, light/dark, keyboard/focus, SEO, artwork, console and no-user-data-egress checks passed."
+    },
+    {
       "id": "image-filters",
       "route": "/sw/zana/filters-za-picha/",
       "sourceOwner": "scripts/build-sw-image-filters.js",
@@ -103,12 +109,6 @@
       "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
     },
     {
-      "id": "meme-generator",
-      "route": "/sw/zana/kitengeneza-meme/",
-      "status": "blocked-missing-route",
-      "blocker": "No physical Swahili route or native meme canvas/export owner exists on the coordinator base."
-    },
-    {
       "id": "logo-maker",
       "route": "/sw/zana/kitengeneza-logo/",
       "status": "blocked-feature-parity",
@@ -127,7 +127,7 @@
       "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Other candidates use committed local runtimes and maintained shared studios.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Meme Generator keeps uploaded pixels and caption data inside the local FileReader/canvas owner. Other candidates use committed local runtimes and maintained shared studios.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -149,7 +149,9 @@
       4411,
       4415,
       4418,
-      4420
+      4420,
+      4425,
+      4426
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -164,15 +166,16 @@
       "tests/e2e/swahili-image-compress-parity.spec.js",
       "tests/e2e/swahili-thumbnail-maker-parity.spec.js",
       "tests/e2e/swahili-favicon-generator-parity.spec.js",
-      "tests/e2e/swahili-image-to-text-parity.spec.js"
+      "tests/e2e/swahili-image-to-text-parity.spec.js",
+      "tests/e2e/swahili-meme-generator-parity.spec.js"
     ],
-    "result": "39 passed"
+    "result": "42 passed"
   },
   "validation": {
     "focusedStatic": "pass",
     "colorFamilyOwner": "pass",
     "colorFamilyAudit": "pass",
-    "freeAppInventory": "pass: 1,257 rows; Image & Design has 13 coordinator-accepted rows and 14 proved lane candidates",
+    "freeAppInventory": "pass: 1,257 rows; Image & Design has 14 coordinator-accepted rows and 15 proved lane candidates",
     "localization": "pass: coordinator-generated current coverage",
     "hreflang": "pass: coordinator validation current at integration",
     "internalLinks": "pass: worker and coordinator link validation",
@@ -185,7 +188,9 @@
   "prohibitedSurfacesChanged": [],
   "reciprocalHreflangMetadataEdits": [
     "tools/thumbnail-maker/index.html",
-    "fr/tools/createur-miniatures/index.html"
+    "fr/tools/createur-miniatures/index.html",
+    "tools/meme-generator/index.html",
+    "fr/tools/generateur-memes/index.html"
   ],
   "acceptanceLedgerChanged": false
 }

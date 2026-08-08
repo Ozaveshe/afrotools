@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 14,
-    "blocked": 39,
+    "acceptedCandidates": 15,
+    "blocked": 38,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -134,9 +134,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/meme-generator/",
       "swahiliRoute": "/sw/zana/kitengeneza-meme/",
-      "status": "blocked-missing-route",
-      "blocker": "No physical Swahili route or native meme canvas/export owner exists on the coordinator base.",
-      "sourceOwner": "sw/zana/kitengeneza-meme/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-meme-generator.js + tools/meme-generator/index.html deterministic inline canvas owner",
+      "oracle": "A bounded idempotent generator copies the exact English 1200x900 canvas, starter/upload, caption, style, reset and download owner. A thin Swahili adapter replaces only scene/caption data and dynamic presentation.",
+      "exports": "Controlled uploaded-image output was byte-identical in English and Swahili. Starter-scene and uploaded-image PNG downloads reopened at exactly 1200x900; all five scenes, six caption packs and three text styles remained functional.",
+      "browser": "tests/e2e/swahili-meme-generator-parity.spec.js (Chromium, one worker, isolated port): shared deterministic canvas parity, starter/upload PNGs, scenes, packs, styles, reset, invalid input, 320/375, true 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/meme-generator.webp"
     },
     {
@@ -598,6 +601,7 @@
     "Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.",
     "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
     "Image to Text is generated from the English studio DOM and executes the exact same local Tesseract adapter and OCR studio; a bounded adapter localizes dynamic presentation without changing OCR, cleanup, field extraction or export semantics.",
+    "Meme Generator is generated from the exact English local canvas owner; a bounded adapter localizes starter scenes, caption packs and dynamic guidance without changing uploaded-image decoding, canvas dimensions, text rendering controls or PNG download semantics.",
     "Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.",
     "Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.",
     "Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.",
@@ -620,14 +624,16 @@
       4411,
       4415,
       4418,
-      4420
+      4420,
+      4425,
+      4426
     ],
     "widths": [
       320,
       375,
       640
     ],
-    "reflow": "320/375 px narrow widths plus explicit true 200% browser zoom checks for Thumbnail Maker, Favicon Generator and Image to Text; earlier candidates retain their recorded 640 px equivalent checks",
+    "reflow": "320/375 px narrow widths plus explicit true 200% browser zoom checks for Thumbnail Maker, Favicon Generator, Image to Text and Meme Generator; earlier candidates retain their recorded 640 px equivalent checks",
     "themes": [
       "light",
       "dark"
@@ -675,6 +681,10 @@
       "proof": "A controlled synthetic image produced equivalent English and Swahili OCR text. TXT and Markdown reopened as text; JSON parsed with source, language, result and field contracts; CSV parsed with stable type/value columns; the localized handoff brief was read back."
     },
     {
+      "englishId": "meme-generator",
+      "proof": "Controlled uploaded-image output was byte-identical in English and Swahili. Starter-scene and uploaded-image PNG downloads reopened at exactly 1200x900; all five scenes, six caption packs and three text styles remained functional."
+    },
+    {
       "englishId": "image-filters",
       "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back."
     },
@@ -720,6 +730,7 @@
     "node tests/swahili-thumbnail-maker-parity.test.js",
     "node tests/swahili-favicon-generator-parity.test.js",
     "node tests/swahili-image-to-text-parity.test.js",
+    "node tests/swahili-meme-generator-parity.test.js",
     "playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
@@ -733,6 +744,7 @@
     "playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-favicon-generator-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-to-text-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-meme-generator-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",
@@ -746,9 +758,11 @@
     "thumbnailStaticOracle": "pass",
     "thumbnailBrowser": "pass: 3 tests, one worker, isolated port 4411",
     "imageToTextStaticOracle": "pass",
-    "imageToTextBrowser": "pass: 3 focused tests on port 4418; full 39-test Image & Design matrix on port 4420",
-    "hreflang": "pass: 33,424 relationships / 5,351 groups",
-    "internalLinks": "pass: 138,290 links / 11,511 HTML files",
+    "imageToTextBrowser": "pass: 3 focused tests on port 4418; included in the full 42-test Image & Design matrix on port 4426",
+    "memeGeneratorStaticOracle": "pass",
+    "memeGeneratorBrowser": "pass: 3 focused tests on port 4425; full 42-test Image & Design matrix on port 4426",
+    "hreflang": "pass: 33,430 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,308 links / 11,512 HTML files",
     "registryAudit": "pass with carried baseline debt: two unrelated missing-page rows",
     "lint": "pass: 49 JavaScript files",
     "typeCheck": "pass",

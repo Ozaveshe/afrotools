@@ -44,8 +44,14 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'favicon-generator', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'image-to-text', 'passport-photo', 'qr-generator', 'social-card', 'thumbnail-maker', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'favicon-generator', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'image-to-text', 'meme-generator', 'passport-photo', 'qr-generator', 'social-card', 'thumbnail-maker', 'watermark-bulk']);
 const candidateProof = {
+  'meme-generator': {
+    sourceOwner: 'scripts/build-sw-meme-generator.js + tools/meme-generator/index.html deterministic inline canvas owner',
+    oracle: 'A bounded idempotent generator copies the exact English 1200x900 canvas, starter/upload, caption, style, reset and download owner. A thin Swahili adapter replaces only scene/caption data and dynamic presentation.',
+    exports: 'Controlled uploaded-image output was byte-identical in English and Swahili. Starter-scene and uploaded-image PNG downloads reopened at exactly 1200x900; all five scenes, six caption packs and three text styles remained functional.',
+    browser: 'tests/e2e/swahili-meme-generator-parity.spec.js (Chromium, one worker, isolated port): shared deterministic canvas parity, starter/upload PNGs, scenes, packs, styles, reset, invalid input, 320/375, true 200% reflow, themes, keyboard/focus, SEO, artwork, console and no-user-data-egress passed.'
+  },
   'image-to-text': {
     sourceOwner: 'scripts/build-sw-image-to-text.js + assets/js/lib/image-to-text-ocr-local.js + assets/js/lib/image-to-text-studio.js',
     oracle: 'A bounded idempotent generator copies the exact English OCR studio DOM. Both locales execute the same local Tesseract adapter and shared queue, cleanup, OCR, field extraction, history and export owner; a thin Swahili adapter translates dynamic presentation and clipboard copy only.',
@@ -165,8 +171,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 14, `accepted candidate count drifted: expected 14, found ${accepted.length}`);
-expect(blocked.length === 39, `blocked count drifted: expected 39, found ${blocked.length}`);
+expect(accepted.length === 15, `accepted candidate count drifted: expected 15, found ${accepted.length}`);
+expect(blocked.length === 38, `blocked count drifted: expected 38, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -193,6 +199,7 @@ const receipt = {
     'Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.',
     'The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.',
     'Image to Text is generated from the English studio DOM and executes the exact same local Tesseract adapter and OCR studio; a bounded adapter localizes dynamic presentation without changing OCR, cleanup, field extraction or export semantics.',
+    'Meme Generator is generated from the exact English local canvas owner; a bounded adapter localizes starter scenes, caption packs and dynamic guidance without changing uploaded-image decoding, canvas dimensions, text rendering controls or PNG download semantics.',
     'Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.',
     'Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.',
     'Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.',
@@ -202,9 +209,9 @@ const receipt = {
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420],
+    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420, 4425, 4426],
     widths: [320, 375, 640],
-    reflow: '320/375 px narrow widths plus explicit true 200% browser zoom checks for Thumbnail Maker, Favicon Generator and Image to Text; earlier candidates retain their recorded 640 px equivalent checks',
+    reflow: '320/375 px narrow widths plus explicit true 200% browser zoom checks for Thumbnail Maker, Favicon Generator, Image to Text and Meme Generator; earlier candidates retain their recorded 640 px equivalent checks',
     themes: ['light', 'dark'],
     checked: ['keyboard/focus', 'computed contrast', 'canonical/OG/schema/hreflang', 'console/page/resource errors', 'network writes', 'invalid-state behavior']
   },
@@ -223,6 +230,7 @@ const receipt = {
     'node tests/swahili-thumbnail-maker-parity.test.js',
     'node tests/swahili-favicon-generator-parity.test.js',
     'node tests/swahili-image-to-text-parity.test.js',
+    'node tests/swahili-meme-generator-parity.test.js',
     'playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1',
@@ -236,6 +244,7 @@ const receipt = {
     'playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-favicon-generator-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-image-to-text-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-meme-generator-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',
@@ -249,9 +258,11 @@ const receipt = {
     thumbnailStaticOracle: 'pass',
     thumbnailBrowser: 'pass: 3 tests, one worker, isolated port 4411',
     imageToTextStaticOracle: 'pass',
-    imageToTextBrowser: 'pass: 3 focused tests on port 4418; full 39-test Image & Design matrix on port 4420',
-    hreflang: 'pass: 33,424 relationships / 5,351 groups',
-    internalLinks: 'pass: 138,290 links / 11,511 HTML files',
+    imageToTextBrowser: 'pass: 3 focused tests on port 4418; included in the full 42-test Image & Design matrix on port 4426',
+    memeGeneratorStaticOracle: 'pass',
+    memeGeneratorBrowser: 'pass: 3 focused tests on port 4425; full 42-test Image & Design matrix on port 4426',
+    hreflang: 'pass: 33,430 relationships / 5,351 groups',
+    internalLinks: 'pass: 138,308 links / 11,512 HTML files',
     registryAudit: 'pass with carried baseline debt: two unrelated missing-page rows',
     lint: 'pass: 49 JavaScript files',
     typeCheck: 'pass',
@@ -266,9 +277,9 @@ const mdRows = rows.map(row => `- \`${row.englishId}\` — ${row.status}: ${row.
 const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409 and 4410: **30 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Image Compress reopened PNG, JPG, WebP, auto-selected, target-size and two Download all outputs at exact dimensions and matched English PNG bytes; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
 
 const proofMarkdown = markdown
-  .replace('isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409 and 4410: **30 passed**', 'isolated ports through 4420: **39 passed**')
-  .replace('; Watermark Bulk downloads', '; Thumbnail Maker reopened all 15 direct size/format outputs, three A/B variants and the local-asset output at exact dimensions and matched controlled English PNG bytes; Image to Text ran real local OCR in English and Swahili, reopened TXT and Markdown, parsed JSON and CSV, and read back the localized handoff; Watermark Bulk downloads')
-  .replace('\n## Artwork\n', '\n## Validation gates\n\n- PASS: focused static oracle; focused Image to Text Chromium 3/3; full Image & Design Chromium 39/39; hreflang (33,424 relationships / 5,351 groups); links (138,290 / 11,511 HTML files); registry audit; locale-key validation; lint; type-check; privacy/AI consent.\n- OWNERSHIP BOUNDARY: `build:i18n:validate` reports coordinator-owned stale locale coverage artifacts. This lane is prohibited from regenerating them; the coordinator must regenerate and rerun the gate after integration.\n- Carried audit debt: the two unrelated missing-page rows remain `job-offer-evaluator` and `zana-tathmini-ya-ofa-ya-kazi-sw-wave8`.\n- Reciprocal metadata-only edits retained from the earlier Thumbnail Maker candidate: `tools/thumbnail-maker/index.html` and `fr/tools/createur-miniatures/index.html`. Image to Text required no cross-locale edit because reciprocity was already present.\n\n## Artwork\n');
+  .replace('isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409 and 4410: **30 passed**', 'isolated ports through 4426: **42 passed**')
+  .replace('; Watermark Bulk downloads', '; Thumbnail Maker reopened all 15 direct size/format outputs, three A/B variants and the local-asset output at exact dimensions and matched controlled English PNG bytes; Image to Text ran real local OCR in English and Swahili, reopened TXT and Markdown, parsed JSON and CSV, and read back the localized handoff; Meme Generator reopened uploaded-image and starter-scene PNGs at exactly 1200x900 and matched controlled English PNG bytes; Watermark Bulk downloads')
+  .replace('\n## Artwork\n', '\n## Validation gates\n\n- PASS: focused static oracle; focused Meme Generator Chromium 3/3; full Image & Design Chromium 42/42; hreflang (33,430 relationships / 5,351 groups); links (138,308 / 11,512 HTML files); registry audit; locale-key validation; lint; type-check; privacy/AI consent.\n- OWNERSHIP BOUNDARY: `build:i18n:validate` reports coordinator-owned stale locale coverage artifacts. This lane is prohibited from regenerating them; the coordinator must regenerate and rerun the gate after integration.\n- Carried audit debt: the two unrelated missing-page rows remain `job-offer-evaluator` and `zana-tathmini-ya-ofa-ya-kazi-sw-wave8`.\n- Reciprocal metadata-only edits: `tools/thumbnail-maker/index.html`, `fr/tools/createur-miniatures/index.html`, `tools/meme-generator/index.html` and `fr/tools/generateur-memes/index.html`. Image to Text required no cross-locale edit because reciprocity was already present.\n\n## Artwork\n');
 
 if (failures.length) {
   console.error(failures.join('\n'));
