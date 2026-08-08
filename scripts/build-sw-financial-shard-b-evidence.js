@@ -21,6 +21,7 @@ const ACCEPTED = new Set([
   'mortgage-calculator',
   'mr-paye',
   'ng-cgt',
+  'ng-cit',
   'payslip-generator',
   'pension-proj',
   'property-roi',
@@ -48,6 +49,7 @@ const PROOF = {
   'mortgage-calculator': ['tests/day7-property-tool-contract.test.js', 'tests/e2e/day3-finance-mortgage-vip.spec.js'],
   'mr-paye': ['tests/engines/mr-paye-browser-parity.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'ng-cgt': ['tests/engines/ng-cgt.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
+  'ng-cit': ['tests/engines/ng-cit.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'payslip-generator': ['tests/payslip-unicode-roundtrip.test.js', 'tests/e2e/day3-finance-payslip-vip.spec.js'],
   'pension-proj': ['tests/pension-projection-planner.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'property-roi': ['tests/day7-property-tool-contract.test.js', 'tests/e2e/property-roi-vip.spec.js'],
@@ -70,6 +72,7 @@ const PROOF = {
 
 const SWAHILI_OVERRIDES = {
   'ng-cgt': { primarySwahiliFile: 'sw/zana/kikokotoo-cgt-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cgt-nigeria/' },
+  'ng-cit': { primarySwahiliFile: 'sw/zana/kikokotoo-cit-nigeria/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cit-nigeria/' },
   'salary-intelligence': { primarySwahiliFile: 'sw/zana/daftari-la-ushahidi-wa-mishahara/index.html', primarySwahiliRoute: '/sw/zana/daftari-la-ushahidi-wa-mishahara/' },
   'side-hustle-tax': { primarySwahiliFile: 'sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html', primarySwahiliRoute: '/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/' },
   'transfer-pricing': {
@@ -137,7 +140,7 @@ function inspectAccepted(row) {
     .map((match) => match[1].split(/[?#]/)[0])
     .filter((source) => /\/(?:engines?|pages|lib)\//.test(source));
   const implementationOwners = scripts.slice();
-  if (row.englishId === 'ng-cgt') implementationOwners.push('data/tool-verification.json', 'data/source-registry.json');
+  if (row.englishId === 'ng-cgt' || row.englishId === 'ng-cit') implementationOwners.push('data/tool-verification.json', 'data/source-registry.json');
   const text = visibleText(html);
   const checks = {
     swahiliFile: swExists,
@@ -236,6 +239,8 @@ const rows = shardB.map((row, index) => {
                     ? 'The focused shard suite validates quartile and annualization semantics, parses injection-safe CSV and JSON, clears and reimports/reopens JSON, reopens PDF with pdf-parse, verifies clipboard, future-date rejection, reset and no raw-input network write.'
                     : row.englishId === 'ng-cgt'
                       ? 'The focused shard suite compares the rendered estimate with the maintained NigeriaCgt engine, downloads and parses the only advertised TXT export, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
+                    : row.englishId === 'ng-cit'
+                      ? 'The focused shard suite compares the rendered estimate with the maintained NigeriaCit engine, downloads and parses the only advertised TXT export, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
           : 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
       },
       privacyNoRawInputNetworkLeak: true,
@@ -296,6 +301,7 @@ const receipt = {
     'assets/js/pages/side-income-tax-reserve-vip.js',
     'assets/js/pages/salary-intelligence-vip.js',
     'assets/js/pages/ng-cgt-vip.js',
+    'assets/js/pages/ng-cit-vip.js',
     'data/tool-verification.json',
     'data/source-registry.json',
     'assets/js/components/tool-registry.js',
@@ -316,6 +322,7 @@ const receipt = {
     'sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html',
     'sw/zana/daftari-la-ushahidi-wa-mishahara/index.html',
     'sw/zana/kikokotoo-cgt-nigeria/index.html',
+    'sw/zana/kikokotoo-cit-nigeria/index.html',
     'tools/student-loan/index.html',
     'fr/tools/pret-etudiant/index.html',
     'tools/staff-cost/index.html',
@@ -332,18 +339,34 @@ const receipt = {
     'tools/ng-cgt/index.html',
     'fr/tools/ng-plus-value/index.html',
     'ha/kayan-aiki/cgt-najeriya/index.html',
+    'tools/ng-cit/index.html',
+    'fr/tools/ng-impot-societes/index.html',
+    'ha/kayan-aiki/cit-najeriya/index.html',
+    'yo/awon-ise/cit-naijiria/index.html',
   ],
-  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Ng-cgt delegates unchanged to assets/js/engines/ng-cgt.js; the NIPC-published Nigeria Tax Act 2025 still supports its share thresholds and rate treatment, while the Federal Ministry of Finance transition guidance still sets 1 January 2026 as the NTA boundary. The page is a scoped planning estimate, not a filing, assessment, classification or exemption decision. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.',
+  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Ng-cit delegates unchanged to assets/js/engines/ng-cit.js; the NIPC-published Nigeria Tax Act 2025 still supports its small-company definition, company rates, development levy and section 57 review trigger, while the Federal Ministry of Finance transition guidance still sets 1 January 2026 as the NTA boundary. The page fails closed outside a confirmed resident ordinary-company scope and does not calculate a section 57 top-up, filing, assessment or company-specific adjustment. Ng-cgt likewise delegates unchanged to assets/js/engines/ng-cgt.js. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine, requires at least five recent comparable user-entered rows, annualizes monthly evidence by 12 and applies the existing NIST p(N+1) interpolation; it contains no seeded salary, market figure, representative benchmark or API. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.',
   browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 12, failed: 0, note: 'Current increment rerun covered seven ng-cgt engine oracle cases, four shard derivation/static acceptance tests and the tool-verification source contract.' },
+    focusedNodeSubtests: { passed: 12, failed: 0, note: 'Current increment rerun covered six ng-cit engine oracle cases, five shard derivation/static/source-owner tests and the tool-verification source contract.' },
     ngCgtFamilyBrowser: { passed: 7, failed: 0, execution: 'one-worker English, French, Hausa and Swahili family regression with exact totals, TXT, scope, privacy and reflow proof' },
-    shardBrowserMatrix: { passed: 34, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
+    ngCitFamilyBrowser: { passed: 9, failed: 0, execution: 'one-worker English, Swahili, French, Hausa and Yoruba family regression on isolated port 43918 with exact statutory boundaries, TXT, privacy, focus, theme and reflow proof' },
+    shardBrowserMatrix: { passed: 36, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
     focusedExistingWorkflowExportSelection: { passed: 20, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
-    localizationValidation: { publicPages: 11297, hreflangRelationships: 33458, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
-    linkValidation: { htmlFiles: 11516, internalLinks: 138253, broken: 0 },
-    registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewNgCgtMissingPage: false },
+    localizationValidation: { publicPages: 11298, hreflangRelationships: 33468, equivalenceGroups: 5351, directLanguageValidation: 'passed', hreflangStatus: 'passed', buildI18nValidateWrapper: 'carried-protected-artifact-debt', protectedGeneratedCoverageArtifacts: 'data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} reported stale and were intentionally not regenerated' },
+    linkValidation: { htmlFiles: 11517, internalLinks: 138262, broken: 0 },
+    registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewNgCgtMissingPage: false, netNewNgCitMissingPage: false },
+    nigeriaCitOfficialSourceRecheck: {
+      checkedOn: '2026-08-08',
+      actContract: 'The NIPC-published Nigeria Tax Act 2025 remains reachable and states the small-company definition, 0% or 30% company-tax branch, 4% development levy and section 57 review trigger used by the existing engine.',
+      transitionContract: 'Federal Ministry of Finance guidance published in June 2026 still states that the Nigeria Tax Act 2025 applies from 1 January 2026.',
+      decision: 'No formula parameter changed. The Swahili route delegates to the reviewed English engine, requires explicit scope confirmation and does not calculate the section 57 top-up or make a filing or assessment decision.',
+      urls: [
+        'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
+        'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+        'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
+      ],
+    },
     nigeriaCgtOfficialSourceRecheck: {
       checkedOn: '2026-08-08',
       actContract: 'The NIPC-published Nigeria Tax Act 2025 remains reachable and states the Nigerian-share proceeds, gain and same-year reinvestment rules used by the existing engine.',
@@ -371,10 +394,20 @@ const receipt = {
   missingArtworkQueue: ARTWORK_FILE,
   requiredCommands: [
     'node scripts/build-sw-financial-shard-b-evidence.js',
-    'node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=nigeria-cgt-2026-source',
-    'node --test tests/engines/ng-cgt.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
-    'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/day3-finance-ng-cgt-vip.spec.js --workers=1',
+    'node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=nigeria-cit-2026-source',
+    'node --test tests/engines/ng-cit.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
+    'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.ng-cit-sw.config.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.sw-financial-shard-b.config.js',
+    'node tests/ai-consent-server.test.js',
+    'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/privacy-ai-consent.spec.js --workers=1 --trace=off',
+    'npm run build:i18n:validate (carried protected localization-artifact staleness only)',
+    'node scripts/build-i18n.js --validate',
+    'npm run validate:hreflang',
+    'npm run check-links',
+    'npm run audit',
+    'npm run lint',
+    'npm run type-check',
+    'git diff --check',
   ],
 };
 
@@ -405,18 +438,18 @@ const human = [
   '',
   '- Synthetic inputs only. Shared DOM-free engines and existing app-specific oracle suites preserve English formula/data semantics.',
   '- The focused Playwright matrix checks every accepted route at 320px and 375px, 200% text reflow, system light/dark, keyboard focus, canonical/OG identity, local resource failures, privacy and local-only advertised actions.',
-  '- Each accepted app points to an app-specific parser or export-payload suite. The ng-cgt family suite passed 7/7 after its privacy assertion separated empty-body measurement beacons from sensitive request bodies; the historical mixed 20/31 selection remains recorded separately and is not represented as green.',
+  '- Each accepted app points to an app-specific parser or export-payload suite. The current ng-cit family suite passed 9/9 after its privacy assertion separated consent-mode measurement beacons from first-party or raw-input writes; the historical mixed 20/31 selection remains recorded separately and is not represented as green.',
   '- No coordinator acceptance ledger, inventory, AI route map, locale coverage output, sitemap, redirects, service-worker stamp, live service or other locale UI/copy is edited.',
   '- Blocked high-stakes tax apps remain blocked rather than receiving invented formulas, rates, claims or evidence.',
   '',
   '## Current lane command evidence',
   '',
   `- Evidence generator check: 46 rows, ${acceptedRows.length} accepted candidates, ${blockedRows.length} blocked, one missing artwork.`,
-  '- PASS: current 12 focused Node subtests cover seven ng-cgt engine oracle cases, four shard derivation/static acceptance tests and the source-verification panel contract.',
-  '- PASS: ng-cgt English/French/Hausa/Swahili family regression 7/7, including exact totals, scope boundaries, TXT parsing, privacy and 200% reflow.',
-  '- PASS: complete 34-test shard browser matrix on isolated port 43917, including ng-cgt exact engine comparison, parsed TXT, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route shard.',
-  '- PASS: i18n validation and 33,458 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
-  '- PASS: 138,253 internal links across 11,516 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.',
+  '- PASS: current 12 focused Node subtests cover six ng-cit engine oracle cases, five shard derivation/static/source-owner tests and the source-verification panel contract.',
+  '- PASS: ng-cit English/Swahili/French/Hausa/Yoruba family regression 9/9, including exact statutory boundaries, TXT parsing, privacy, focus, theme and reflow.',
+  '- PASS: complete 36-test shard browser matrix on isolated port 43917, including ng-cit exact engine comparison, parsed TXT, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.',
+  '- PASS: direct language validation and 33,468 reciprocal hreflang relationships across 5,351 equivalence groups and 11,298 public pages. The broad `build:i18n:validate` wrapper separately reports three protected stale coverage artifacts, which were intentionally not regenerated.',
+  '- PASS: 138,262 internal links across 11,517 HTML files; registry audit retains two unrelated missing-page rows and adds no ng-cit defect.',
   '- PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.',
   '- MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
@@ -431,10 +464,13 @@ const human = [
   '- Side-hustle-tax native parity: the shared `side-income-tax-reserve.js` engine and controller require a user-sourced reserve rate and recent evidence, then provide injection-safe CSV, JSON, copy and PDF without selecting a tax rate or deciding deductions.',
   '- Salary-intelligence native parity: the private Swahili evidence notebook uses `assets/js/engines/salary-evidence-notebook.js`, requires five comparable recent user-entered rows, annualizes monthly evidence by 12, applies the existing NIST p(N+1) quartile interpolation and provides local injection-safe CSV, JSON import/reopen, PDF and copy. It contains no seeded market salary, representative benchmark, API, analytics or raw-input storage.',
   '- Ng-cgt native parity: `/sw/zana/kikokotoo-cgt-nigeria/` delegates to `assets/js/engines/ng-cgt.js`, keeps the NTA 2025 scope confirmation and transaction exclusions visible, localizes the progressive rate label, clears stale results, focuses invalid inputs, resets locally and offers only copy plus a parsed local TXT summary. It makes no filing, assessment, classification or exemption decision.',
+  '- Ng-cit native parity: `/sw/zana/kikokotoo-cit-nigeria/` delegates to the unchanged DOM-free `assets/js/engines/ng-cit.js`, preserves separate total-profits and assessable-profits bases, requires explicit resident ordinary-company scope, flags but does not calculate section 57 review, clears stale results, focuses invalid inputs, resets locally and advertises only copy plus parsed local TXT.',
+  '- Ng-cit reciprocal metadata only: `tools/ng-cit/index.html`, `fr/tools/ng-impot-societes/index.html`, `ha/kayan-aiki/cit-najeriya/index.html` and `yo/awon-ise/cit-naijiria/index.html` add the one Swahili alternate; their visible UI/copy is unchanged.',
   '- Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.',
-  '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. Ng-cgt preserves the existing NigeriaCgt rules exactly; the microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.',
+  '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. Ng-cit preserves the existing NigeriaCit rules exactly and remains fail-closed outside its confirmed scope; ng-cgt preserves the existing NigeriaCgt rules exactly; the microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.',
   '- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',
   '- Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.',
+  '- Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still supports the small-company definition, company rates, development levy and section 57 review trigger used by the unchanged NigeriaCit engine; June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still contains the Nigerian-share threshold and same-year reinvestment rules used by the existing engine, and June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: the Mauritania DGI obligations page still states monthly ITS rates of 15%, 25% and 40%; the official CNSS declaration form still states 13% employer CNSS, 1% worker CNSS and 2% occupational medicine. No cap or formula was changed, and the reviewed 21 July contract retains its 31 October review boundary.',
   '- Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.',

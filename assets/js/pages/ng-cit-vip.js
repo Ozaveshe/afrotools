@@ -37,6 +37,10 @@
     yo: {
       scope: 'Jẹ́rìí ààlà kalkulẹ́tọ̀ kí o tó ṣe ìṣirò.',
       number: 'Fi odo tàbí nọ́mbà rere sínú gbogbo ààyè iye.'
+    },
+    sw: {
+      scope: 'Thibitisha upeo wa kikokotoo kabla ya kukokotoa.',
+      number: 'Weka sifuri au namba chanya katika kila sehemu ya kiasi.'
     }
   };
 
@@ -73,9 +77,16 @@
   }
 
   function fail(message, target) {
-    result.hidden = true;
+    clear();
     error.textContent = message;
     (target || field('scopeConfirmed')).focus();
+  }
+
+  function clear(message) {
+    lastSummary = '';
+    result.hidden = true;
+    error.textContent = '';
+    if (message) status.textContent = message;
   }
 
   function compute() {
@@ -123,7 +134,7 @@
       app.querySelector('[data-etr-warning]').hidden = !output.etrReview;
       lastSummary = [
         text('summaryTitle'),
-        text('regimeLabel') + ': ' + output.regime,
+        text('regimeLabel') + ': ' + (app.dataset.regimeValue || output.regime),
         text('classificationLabel') + ': ' + (output.smallCompany ? text('smallLabel') : text('otherLabel')),
         text('turnoverLabel') + ': ' + money(output.turnover),
         text('assetsLabel') + ': ' + money(output.fixedAssets),
@@ -161,7 +172,7 @@
     var blob = new Blob([lastSummary + '\n'], { type: 'text/plain;charset=utf-8' });
     var link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = 'nigeria-cit-estimate.txt';
+    link.download = app.dataset.downloadFile || 'nigeria-cit-estimate.txt';
     document.body.appendChild(link);
     link.click();
     link.remove();
@@ -172,6 +183,14 @@
   form.addEventListener('submit', function (event) {
     event.preventDefault();
     compute();
+  });
+  form.addEventListener('input', function () {
+    if (lastSummary && app.dataset.changedLabel) clear(text('changedLabel'));
+  });
+  form.addEventListener('reset', function () {
+    setTimeout(function () {
+      clear(text('resetLabel'));
+    }, 0);
   });
   app.querySelector('[data-copy]').addEventListener('click', copy);
   app.querySelector('[data-download]').addEventListener('click', download);

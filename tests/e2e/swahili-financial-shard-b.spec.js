@@ -4,6 +4,7 @@ const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
 const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
+const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -21,6 +22,7 @@ const routes = [
   ['/sw/zana/kilinganisha-mishahara', 'salary-compare'],
   ['/sw/zana/daftari-la-ushahidi-wa-mishahara', 'salary-intelligence'],
   ['/sw/zana/kikokotoo-cgt-nigeria', 'ng-cgt'],
+  ['/sw/zana/kikokotoo-cit-nigeria', 'ng-cit'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
@@ -77,6 +79,78 @@ test('ng-cgt delegates to the English engine and keeps its TXT estimate private'
   await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
   await expect(page.locator('[data-status]')).toContainText('Data na matokeo yamefutwa');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /cgt|capital|gain|tax/i.test(key)))).toEqual([]);
+  expect(writes).toEqual([]);
+});
+
+test('ng-cit delegates to the reviewed English engine and reopens its private TXT estimate', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => {
+    if (request.method() !== 'GET' && request.postData()) writes.push({ url: request.url(), body: request.postData() });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async (value) => { window.__copiedText = value; } },
+    });
+  });
+  await page.goto('/sw/zana/kikokotoo-cit-nigeria/', { waitUntil: 'domcontentloaded' });
+
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya CIT' }).click();
+  await expect(page.locator('[name="scopeConfirmed"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Thibitisha upeo');
+
+  const input = {
+    turnover: 80000000,
+    fixedAssets: 200000000,
+    totalProfits: 7000000,
+    assessableProfits: 10000000,
+    professionalServices: false,
+    mneGroup: false,
+    scopeConfirmed: true,
+  };
+  const expected = nigeriaCit.calculate(input);
+  await page.locator('[name="scopeConfirmed"]').check();
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya CIT' }).click();
+  await expect(page.locator('[data-result]')).toBeVisible();
+  await expect(page.locator('[data-total]')).toHaveAttribute('data-amount', String(expected.total));
+  await expect(page.locator('[data-classification]')).toHaveText('Kampuni nyingine');
+  await expect(page.locator('[data-cit]')).toContainText('30%');
+  await expect(page.locator('[data-levy]')).toContainText('4%');
+  await expect(page.locator('[data-cit-base]')).toContainText(expected.totalProfits.toLocaleString('sw-NG'));
+  await expect(page.locator('[data-levy-base]')).toContainText(expected.assessableProfits.toLocaleString('sw-NG'));
+
+  await page.locator('[data-copy]').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya kupanga CIT ya Nigeria ya AfroTools');
+  expect(copied).toContain('Nigeria Tax Act 2025 (kuanzia 1 Januari 2026)');
+  expect(copied).not.toContain('Planning estimate only');
+
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('[data-download]').click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-cit-nigeria.txt');
+  const txt = fs.readFileSync(await download.path(), 'utf8');
+  expect(txt).toContain('Jumla ya kodi iliyokadiriwa');
+  expect(txt).toContain('Makadirio ya kupanga tu');
+  expect(txt).toContain('Development levy');
+  expect(txt).not.toContain('Planning estimate only');
+
+  await page.locator('[name="turnover"]').fill('90000000');
+  await expect(page.locator('[data-result]')).toBeHidden();
+  await expect(page.locator('[data-export-status]')).toContainText('Data imebadilika');
+  await page.locator('[name="totalProfits"]').fill('-1');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya CIT' }).click();
+  await expect(page.locator('[data-error]')).toContainText('namba chanya');
+  await expect(page.locator('[name="totalProfits"]')).toBeFocused();
+  await expect(page.locator('[data-result]')).toBeHidden();
+
+  await page.getByRole('button', { name: 'Weka upya' }).click();
+  await expect(page.locator('[name="turnover"]')).toHaveValue('80000000');
+  await expect(page.locator('[name="totalProfits"]')).toHaveValue('7000000');
+  await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
+  await expect(page.locator('[data-export-status]')).toContainText('yamerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /cit|company|profit|tax/i.test(key)))).toEqual([]);
   expect(writes).toEqual([]);
 });
 

@@ -9,6 +9,7 @@ const ROOT = path.resolve(__dirname, '..');
 const MANIFEST = path.join(ROOT, 'data/localization/sw-financial-shard-b-manifest.json');
 const RECEIPT = path.join(ROOT, 'reports/swahili-financial-shard-b-candidate-receipt.json');
 const ARTWORK = path.join(ROOT, 'reports/swahili-financial-shard-b-missing-artwork.json');
+const nigeriaCit = require('../assets/js/engines/ng-cit.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -24,7 +25,7 @@ const EXPECTED_IDS = [
 
 const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
-  'mr-paye', 'ng-cgt', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
+  'mr-paye', 'ng-cgt', 'ng-cit', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
   'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing',
 ];
@@ -49,8 +50,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 24);
-  assert.equal(receipt.blocked, 22);
+  assert.equal(receipt.accepted, 25);
+  assert.equal(receipt.blocked, 21);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -84,4 +85,61 @@ test('localized microfinance labels preserve shared engine enum values', () => {
   assert.match(html, /<option value="annual">Kwa mwaka<\/option>/);
   assert.match(html, /<option value="monthly" selected>Kwa mwezi<\/option>/);
   assert.doesNotMatch(html, /value="kila (?:mwaka|mwezi)"/);
+});
+
+test('ng-cit Swahili parity preserves the reviewed source and DOM-free engine contract', () => {
+  assert.deepEqual(nigeriaCit.formulaParameters, {
+    effectiveFrom: '2026-01-01',
+    smallTurnoverMaximum: 50000000,
+    smallFixedAssetsMaximum: 250000000,
+    citRate: 0.3,
+    developmentLevyRate: 0.04,
+    etrTurnoverReview: 20000000000,
+    professionalServicesExcluded: true,
+  });
+  assert.deepEqual(
+    nigeriaCit.calculate({
+      turnover: 80000000,
+      fixedAssets: 200000000,
+      totalProfits: 7000000,
+      assessableProfits: 10000000,
+      professionalServices: false,
+      mneGroup: false,
+      scopeConfirmed: true,
+    }),
+    {
+      regime: 'Nigeria Tax Act 2025 (from 1 January 2026)',
+      classification: 'other',
+      smallCompany: false,
+      professionalServices: false,
+      turnover: 80000000,
+      fixedAssets: 200000000,
+      totalProfits: 7000000,
+      assessableProfits: 10000000,
+      citRate: 0.3,
+      developmentLevyRate: 0.04,
+      cit: 2100000,
+      developmentLevy: 400000,
+      total: 2500000,
+      etrReview: false,
+      limitations: [
+        'Resident ordinary company estimate only',
+        'Excludes minimum effective tax top-up',
+        'Excludes specialised sectors, incentives, losses and transition adjustments',
+      ],
+    },
+  );
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['ng-cit'];
+  assert.equal(verification.last_verified, '2026-08-08');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-cit-nigeria/'));
+  assert.deepEqual(verification.source_urls, [
+    'https://www.nipc.gov.ng/wp-content/uploads/2025/07/Nigeria-Tax-Act-2025.pdf',
+    'https://finance.gov.ng/federal-government-issues-transition-guidelines-for-tax-acts-2025/',
+    'https://statehouse.gov.ng/new-tax-laws-will-commence-on-january-1-2026-as-planned/',
+  ]);
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'nigeria-cit-2026-source');
+  assert.equal(source.lastReviewedAt, '2026-08-08');
+  assert.ok(source.toolIds.includes('ng-cit-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-cit-nigeria'));
 });

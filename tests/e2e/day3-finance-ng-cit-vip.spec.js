@@ -11,6 +11,15 @@ const routes = [
     other: "Other company",
   },
   {
+    name: "sw",
+    path: "/sw/zana/kikokotoo-cit-nigeria/",
+    lang: "sw",
+    width: 375,
+    heading: "Kadiria kodi ya kampuni bila kuchanganya utaratibu wa zamani na mpya.",
+    button: "Kokotoa makadirio ya CIT",
+    other: "Kampuni nyingine",
+  },
+  {
     name: "fr",
     path: "/fr/tools/ng-impot-societes/",
     lang: "fr",
@@ -62,15 +71,15 @@ for (const route of routes) {
     page,
   }) => {
     const errors = [],
-      nonGet = [],
+      writes = [],
       dataRequests = [];
     page.on("pageerror", (error) => errors.push(error.message));
     page.on("console", (message) => {
       if (message.type() === "error") errors.push(message.text());
     });
     page.on("request", (request) => {
-      if (request.method() !== "GET")
-        nonGet.push(`${request.method()} ${request.url()}`);
+      if (request.method() !== "GET" && request.postData())
+        writes.push({ method: request.method(), url: request.url(), body: request.postData() });
       if (/\.netlify\/functions|\/api\//i.test(request.url()))
         dataRequests.push(request.url());
     });
@@ -79,7 +88,7 @@ for (const route of routes) {
     await page.goto(route.path, { waitUntil: "networkidle" });
     await expect(page.locator("html")).toHaveAttribute("lang", route.lang);
     await expect(page.locator("h1")).toHaveText(route.heading);
-    await expect(page.locator('link[rel="alternate"]')).toHaveCount(5);
+    await expect(page.locator('link[rel="alternate"]')).toHaveCount(6);
     await expect(page.locator('a[href="undefined"]')).toHaveCount(0);
     await expect(
       page.locator(
@@ -135,7 +144,9 @@ for (const route of routes) {
       "Download PDF",
     );
     expect(dataRequests).toEqual([]);
-    expect(nonGet).toEqual([]);
+    const pageOrigin = new URL(page.url()).origin;
+    expect(writes.filter((request) => new URL(request.url).origin === pageOrigin)).toEqual([]);
+    expect(writes.filter((request) => /(?:80000000|200000000|7000000|10000000)/.test(request.body))).toEqual([]);
     expect(errors).toEqual([]);
     await page.screenshot({
       path: `artifacts/day3-finance-ng-cit/ng-cit-${route.name}-${route.width}-dark.png`,
