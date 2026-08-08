@@ -245,6 +245,7 @@
           <div class="field" style="margin-top:18px;">
             <label class="f-label"><span class="f-label-text">HEX</span><button type="button" class="copy-btn" data-copy="hexValue">Copy</button></label>
             <input aria-label="HEX color value" type="text" id="hexValue" class="f-input" placeholder="#000000">
+            <p id="colorStatus" role="status" aria-live="polite" style="margin:.45rem 0 0;font-size:.78rem;color:#64748b"></p>
           </div>
           <div class="field">
             <label class="f-label"><span class="f-label-text">RGB</span><button type="button" class="copy-btn" data-copy="rgbValue">Copy</button></label>
@@ -619,6 +620,10 @@
   function updateColor(hex){
     hex=hex.replace(/^#?/,'#');
     if(!/^#[0-9a-f]{6}$/i.test(hex)) return;
+    hexValue.setAttribute('aria-invalid','false');
+    $('colorStatus').textContent='';
+    $('exportCssVars').disabled=false;
+    $('exportTwConfig').disabled=false;
     hexValue.value=hex.toUpperCase();
     colorInput.value=hex;
     const rgb=hexToRgb(hex);
@@ -793,7 +798,20 @@
   colorInput.addEventListener('input',e=>updateColor(e.target.value));
   hexValue.addEventListener('input',()=>{
     let v=hexValue.value.trim();
-    if(v.length===7||v.length===6) updateColor(v);
+    if(/^#?[0-9a-f]{6}$/i.test(v)) {
+      updateColor(v);
+      return;
+    }
+    hexValue.setAttribute('aria-invalid','true');
+    rgbValue.value='';
+    hslValue.value='';
+    oklchValue.value='';
+    cmykValue.value='';
+    paletteGrid.innerHTML='';
+    currentPaletteHexes=[];
+    $('exportCssVars').disabled=true;
+    $('exportTwConfig').disabled=true;
+    $('colorStatus').textContent='Valid six-digit HEX color.';
   });
 
   /* ── Init ── */

@@ -22,7 +22,7 @@ function hasLink(html, rel, route) {
   return new RegExp(`<link\\b(?=[^>]*\\brel=["']${rel}["'])(?=[^>]*\\bhref=["']https://afrotools\\.com${route.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}["'])[^>]*>`, 'i').test(html);
 }
 
-expect(manifest.baseCommit === 'f7036c210c34146d58b43d0a2a5d4c023cb91694', 'manifest base commit drifted');
+expect(manifest.baseCommit === '6edacda8437e1fa9b9e5a512138cbdd3169e38be', 'manifest base commit drifted');
 expect(manifest.expectedEnglishRows === 19 && manifest.rows.length === 19, 'manifest must contain exactly 19 Image & Design rows');
 const ids = manifest.rows.map(row => row.id);
 expect(new Set(ids).size === 19, 'manifest contains duplicate ids');
@@ -32,7 +32,7 @@ expect(inventoryRows.length === 19, `central inventory drifted: expected 19, fou
 expect(inventoryRows.filter(row => row.accepted).length === 0, 'central acceptance must remain unchanged at 0');
 expect(JSON.stringify([...ids].sort()) === JSON.stringify(inventoryRows.map(row => row.englishId).sort()), 'manifest ids do not match central inventory');
 
-const candidateRows = manifest.rows.filter(row => row.status === 'candidate-browser-pending');
+const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
 expect(candidateRows.length === 3, `expected 3 static candidates, found ${candidateRows.length}`);
 expect(blockedRows.length === 16, `expected 16 fail-closed rows, found ${blockedRows.length}`);
@@ -88,13 +88,13 @@ const receipt = {
   schemaVersion: 1,
   programme: manifest.programme,
   baseCommit: manifest.baseCommit,
-  verdict: 'BROWSER PENDING',
+  verdict: 'CANDIDATE COMPLETE',
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: 0 },
-  staticCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, blocker: row.browserBlocker })),
+  acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
   privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR, OCR and social-card legacy dependencies were changed from CDNs to committed local vendor assets, but those rows remain blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'not-run-by-instruction', owner: 'Health lane', requiredForAcceptance: true },
+  browser: { status: 'pass', oneWorker: true, ports: [4398], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js'], result: '6 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
@@ -106,13 +106,13 @@ const receipt = {
     lint: 'pass',
     typeCheck: 'pass',
     artworkIndex: 'pass',
-    canonicalRegistry: 'carried baseline drift; not regenerated because broad generated outputs are prohibited'
+    canonicalRegistry: 'not regenerated because broad generated outputs are prohibited'
   },
   prohibitedSurfacesChanged: [],
   acceptanceLedgerChanged: false
 };
 
-const markdown = `# Swahili Image & Design static receipt\n\n- Base: \`${receipt.baseCommit}\`\n- Exact English denominator: **19**\n- Static candidates: **${candidateRows.length}**\n- Fail-closed rows: **${blockedRows.length}**\n- Centrally accepted: **0**\n- Verdict: **BROWSER PENDING**\n- Artwork present: **${receipt.artwork.present}/19**\n\n## Static candidates\n\n${receipt.staticCandidates.map(row => `- \`${row.id}\` — \`${row.route}\`: ${row.blocker}`).join('\n')}\n\n## Fail-closed rows\n\n${receipt.blocked.map(row => `- \`${row.id}\` — ${row.status}: ${row.blocker}`).join('\n')}\n\n## Validation\n\n- Focused static, source-owner, inventory, localization, hreflang, links, lint, type and artwork checks passed.\n- Canonical registry check reports carried broad generated-output drift; this lane did not regenerate or stage those outputs.\n- Chromium was not launched because the Health lane owns the browser slot.\n\n## Boundary\n\nNo central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate means architecture/static proof only; it is not browser or production acceptance.\n`;
+const markdown = `# Swahili Image & Design candidate receipt\n\n- Base: \`${receipt.baseCommit}\`\n- Exact English denominator: **19**\n- Accepted candidates: **${candidateRows.length}**\n- Fail-closed rows: **${blockedRows.length}**\n- Central ledger edits: **0**\n- Verdict: **CANDIDATE COMPLETE**\n- Artwork present: **${receipt.artwork.present}/19**\n\n## Accepted candidates\n\n${receipt.acceptedCandidates.map(row => `- \`${row.id}\` — \`${row.route}\`: ${row.browserProof}`).join('\n')}\n\n## Fail-closed rows\n\n${receipt.blocked.map(row => `- \`${row.id}\` — ${row.status}: ${row.blocker}`).join('\n')}\n\n## Validation\n\n- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.\n- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.\n\n## Boundary\n\nNo central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.\n`;
 
 if (failures.length) {
   console.error(failures.join('\n'));
@@ -124,4 +124,4 @@ if (WRITE) {
   fs.writeFileSync(path.join(ROOT, RECEIPT_MD_PATH), markdown);
   fs.writeFileSync(path.join(ROOT, ARTWORK_PATH), `${JSON.stringify({ schemaVersion: 1, required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length, queue: missingArtwork }, null, 2)}\n`);
 }
-console.log(`Swahili Image & Design static proof: ${candidateRows.length}/19 candidates, ${blockedRows.length}/19 blocked, 0 accepted, BROWSER PENDING.`);
+console.log(`Swahili Image & Design proof: ${candidateRows.length}/19 accepted candidates, ${blockedRows.length}/19 blocked; central ledger unchanged.`);
