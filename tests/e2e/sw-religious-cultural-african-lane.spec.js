@@ -5,18 +5,18 @@ const { test, expect } = require('@playwright/test');
 const religiousBuilder = require('../../scripts/build-sw-religious-cultural-parity.js');
 const africanManifest = require('../../data/localization/sw-uniquely-african-parity-manifest.json');
 
-const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
+const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
 const remittanceIds = new Set(['remittance-compare','remittance-v2']);
 const routes = [
   ...Array.from(religiousBuilder.ACCEPTED, (id) => ({ id, family:'religious', route:religiousBuilder.ROUTES[id] })),
-  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':row.english.id==='burial-cost'?'funeral':'african', route:row.swahili.route }))
+  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':row.english.id==='burial-cost'?'funeral':row.english.id==='japa-calculator'?'relocation':row.english.id==='brideprice-advisor'?'marriage':'african', route:row.swahili.route }))
 ];
 
 test.describe.configure({ mode:'serial' });
 
-test('31 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test('33 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(31);
+  expect(routes).toHaveLength(33);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
@@ -42,8 +42,8 @@ test('31 candidate apps pass native workflow, export, privacy and responsive bro
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content',/\/assets\/img\/tools\//);
     await expect(page.locator('body')).not.toContainText(/Famille|Confirmer les|Révision familiale|Montant de référence|Calculer|Résultat/);
 
-    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : app.family === 'mobile-money' ? page.locator('#mm-form') : app.family === 'funeral' ? page.locator('#fb-form') : page.locator('[data-ua-form]');
-    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : app.family === 'mobile-money' ? page.locator('#mm-result-list') : app.family === 'funeral' ? page.locator('#fb-result-list') : page.locator('[data-ua-result]');
+    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : app.family === 'mobile-money' ? page.locator('#mm-form') : app.family === 'funeral' ? page.locator('#fb-form') : app.family === 'relocation' ? page.locator('#jb-form') : app.family === 'marriage' ? page.locator('#bp-form') : page.locator('[data-ua-form]');
+    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : app.family === 'mobile-money' ? page.locator('#mm-result-list') : app.family === 'funeral' ? page.locator('#fb-result-list') : app.family === 'relocation' ? page.locator('#jb-result-list') : app.family === 'marriage' ? page.locator('#bp-result-list') : page.locator('[data-ua-result]');
     await expect(form).toBeVisible();
     if (app.id === 'whatsapp-link') await page.locator('[data-ua-field="message"]').fill('SW_PRIVACY_SENTINEL');
     if (app.family === 'african') await form.locator('button[type="submit"]').click();
@@ -81,6 +81,10 @@ test('31 candidate apps pass native workflow, export, privacy and responsive bro
       await page.locator('#fb-contributors').fill('5');
       await form.locator('button[type="submit"]').click();
     }
+    if (app.family === 'relocation') {
+      await page.locator('#jb-pre').fill('500');await page.locator('#jb-official').fill('1000');await page.locator('#jb-travel').fill('1500');await page.locator('#jb-housing').fill('2000');await page.locator('#jb-arrival').fill('500');await page.locator('#jb-monthly').fill('1000');await page.locator('#jb-savings').fill('5000');await form.locator('button[type="submit"]').click();
+    }
+    if (app.family === 'marriage') {await page.locator('#bp-gift').fill('1000');await page.locator('#bp-gathering').fill('500');await page.locator('#bp-travel').fill('200');await page.locator('#bp-other').fill('300');await page.locator('#bp-saved').fill('1200');for(const id of ['consent','heard','pause','written'])await page.locator(`#bp-${id}`).check();await form.locator('button[type="submit"]').click();}
     await expect(result).toBeVisible();
 
     if (app.family === 'religious') {
@@ -119,6 +123,10 @@ test('31 candidate apps pass native workflow, export, privacy and responsive bro
       expect(parsed.result.total).toBe(3300);
       await page.locator('#fb-copy').click();
       await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
+    } else if (app.family === 'relocation') {
+      for (const kind of ['json','txt']) {const download=page.waitForEvent('download');await page.locator(`#jb-${kind}`).click();const item=await download;const file=await item.path();const body=fs.readFileSync(file,'utf8');if(kind==='json'){const parsed=JSON.parse(body);expect(parsed.methodology).toBe('user-entered-relocation-budget');expect(parsed.result.total).toBe(9350);}else expect(body).toContain('9,350');}
+      await page.locator('#jb-copy').click();await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
+    } else if (app.family === 'marriage') {const download=page.waitForEvent('download');await page.locator('#bp-json').click();const item=await download;const file=await item.path();const parsed=JSON.parse(fs.readFileSync(file,'utf8'));expect(parsed.methodology).toBe('consent-first-user-entered-marriage-plan');expect(parsed.result.total).toBe(2200);await page.locator('#bp-copy').click();await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
     } else {
       for (const kind of ['json','txt']) {
         const button = page.locator(`[data-ua-export="${kind}"]`);
@@ -212,6 +220,11 @@ test('invalid input clears stale results and focuses the failed field', async ({
   await expect(page.locator('#fb-result-list')).toBeEmpty();
   await page.locator('#fb-form button[type="reset"]').click();
   await expect(page.locator('#fb-result-list')).toBeEmpty();
+
+  await page.goto('/sw/zana/kikokotoo-uhamishaji/');
+  await page.locator('#jb-pre').fill('500');await page.locator('#jb-form button[type="submit"]').click();await expect(page.locator('#jb-result-list')).not.toBeEmpty();await page.locator('#jb-saving-months').fill('0');await page.locator('#jb-form button[type="submit"]').click();await expect(page.locator('#jb-result-list')).toBeEmpty();await page.locator('#jb-form button[type="reset"]').click();await expect(page.locator('#jb-result-list')).toBeEmpty();
+
+  await page.goto('/sw/zana/mshauri-wa-mahari/');await page.locator('#bp-gift').fill('1000');await page.locator('#bp-form button[type="submit"]').click();await expect(page.locator('#bp-result-list')).not.toBeEmpty();await page.locator('#bp-months').fill('0');await page.locator('#bp-form button[type="submit"]').click();await expect(page.locator('#bp-result-list')).toBeEmpty();await page.locator('#bp-form button[type="reset"]').click();await expect(page.locator('#bp-result-list')).toBeEmpty();
 });
 
 test('English prayer owners use the same date-aware engine and conservative boundaries', async ({ page }) => {
@@ -282,3 +295,9 @@ test('English funeral owner uses family-entered costs without price or faith mul
   await page.locator('#fb-form button[type="submit"]').click();
   await expect(page.locator('#fb-primary-value')).toContainText('3,300 KES');
 });
+
+test('English Japa owner uses verified inputs without visa or eligibility claims', async ({ page }) => {
+  await page.goto('/tools/japa-calculator/');await expect(page.locator('main[data-relocation-budget]')).toBeVisible();await expect(page.locator('body')).not.toContainText(/73 visa pathways|Visa Readiness Signal|approval predictor|AI assistant|official fee schedules checked/);await page.locator('#jb-pre').fill('500');await page.locator('#jb-official').fill('1000');await page.locator('#jb-travel').fill('1500');await page.locator('#jb-housing').fill('2000');await page.locator('#jb-arrival').fill('500');await page.locator('#jb-monthly').fill('1000');await page.locator('#jb-savings').fill('5000');await page.locator('#jb-form button[type="submit"]').click();await expect(page.locator('#jb-primary-value')).toContainText('9,350 USD');
+});
+
+test('English marriage owner is consent-first without cultural price tables', async ({ page }) => {await page.goto('/tools/brideprice-advisor/');const main=page.locator('main[data-marriage-plan]');await expect(main).toBeVisible();await expect(main).not.toContainText(/Igbo|Yoruba|Zulu|Kikuyu|Hausa|average bride price|AI assistant/);await page.locator('#bp-gift').fill('1000');await page.locator('#bp-gathering').fill('500');await page.locator('#bp-travel').fill('200');await page.locator('#bp-other').fill('300');await page.locator('#bp-saved').fill('1200');for(const id of ['consent','heard','pause','written'])await page.locator(`#bp-${id}`).check();await page.locator('#bp-form button[type="submit"]').click();await expect(page.locator('#bp-primary-value')).toContainText('2,200 KES');});

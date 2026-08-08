@@ -1,22 +1,24 @@
 # Swahili Religious, Cultural and African parity lane receipt
 
-Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`. Exact denominator: **33** (19 Religious & Cultural, 14 Uniquely African). Candidate accepted: **31**. Blocked: **2**. The coordinator acceptance ledger was not edited.
+Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`. Exact denominator: **33** (19 Religious & Cultural, 14 Uniquely African). Candidate accepted: **33**. Blocked: **0**. The coordinator acceptance ledger was not edited.
 
 ## Candidate accepted IDs
 
-`mobile-money-fees`, `tithe-offering`, `lobola-calculator`, `lobola-negotiation-checklist`, `lobola-gift-list`, `burial-cost`, `naira-to-words`, `amount-words-ke`, `amount-words-gh`, `susu-tracker`, `whatsapp-link`, `remittance-compare`, `remittance-v2`, `ajo-interest`, `market-days`, `ajo-chama-calc`, `african-proverbs`, `prayer-times`, `ramadan-timetable`, `islamic-finance`, `wedding-budget`, `naming-ceremony`, `funeral-cost`, `baby-name-generator`, `traditional-calendar`, `age-calculator-african`, `festival-calendar`, `aso-ebi-cost`, `traditional-attire`, `halal-compliance`, `islamic-calendar`
+`japa-calculator`, `mobile-money-fees`, `tithe-offering`, `lobola-calculator`, `lobola-negotiation-checklist`, `lobola-gift-list`, `burial-cost`, `naira-to-words`, `amount-words-ke`, `amount-words-gh`, `susu-tracker`, `whatsapp-link`, `remittance-compare`, `remittance-v2`, `brideprice-advisor`, `ajo-interest`, `market-days`, `ajo-chama-calc`, `african-proverbs`, `prayer-times`, `ramadan-timetable`, `islamic-finance`, `wedding-budget`, `naming-ceremony`, `funeral-cost`, `baby-name-generator`, `traditional-calendar`, `age-calculator-african`, `festival-calendar`, `aso-ebi-cost`, `traditional-attire`, `halal-compliance`, `islamic-calendar`
 
 ## Blocked IDs and exact reasons
 
-- `japa-calculator`: The English owner embeds changing visa, travel and relocation price assumptions without a current reviewed source contract.
-- `brideprice-advisor`: The owner presents culturally sensitive price guidance without a defensible locale-neutral source or formula contract.
+None.
 
 ## Changed paths and source owners
 
+- `assets/js/engines/relocation-budget-engine.js`
+- `scripts/build-relocation-budget-parity.js`
+- `assets/js/pages/relocation-budget-parity.js`
+- `assets/js/components/tool-registry.js`
 - `assets/js/engines/mobile-money-quote-engine.js`
 - `scripts/build-mobile-money-quote-parity.js`
 - `assets/js/pages/mobile-money-quote-parity.js`
-- `assets/js/components/tool-registry.js`
 - `data/fintech/official-sources.json`
 - `assets/js/engines/religious-cultural-parity.js`
 - `scripts/build-sw-religious-cultural-parity.js`
@@ -30,15 +32,18 @@ Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`. Exact denominator: **33** 
 - `engines/src/remittance-quote-comparator-engine.js`
 - `scripts/build-remittance-quote-parity.js`
 - `assets/js/pages/remittance-quote-parity.js`
+- `assets/js/engines/marriage-conversation-engine.js`
+- `scripts/build-marriage-conversation-parity.js`
+- `assets/js/pages/marriage-conversation-parity.js`
 - `assets/js/engines/prayer-times.js`
 - `scripts/enhance-religious-cultural-section.js`
 - `data/localization/prayer-times-source-fixtures.json`
-- Native pages: the 19 accepted religious routes and twelve accepted African routes listed in the machine receipt.
+- Native pages: all 19 assigned religious routes and all 14 assigned African routes listed in the machine receipt.
 - Discovery: `sw/dini-na-utamaduni/index.html` and `sw/zana-za-kipekee-afrika/index.html`.
-- English parity: prayer/Ramadan, remittance, mobile-money and funeral-budget English owners use the same DOM-free engines as their Swahili counterparts. No other locale UI/copy changed.
+- English parity: prayer/Ramadan, remittance, mobile-money, funeral-budget, relocation-budget and marriage-conversation owners use the same DOM-free engines as their Swahili counterparts. No other locale UI/copy changed.
 - Proof: `tests/sw-religious-cultural-african-lane.test.js`, `tests/e2e/sw-religious-cultural-african-lane.spec.js`, the machine receipt and the artwork queue.
 
-Religious and cultural copy states the authority boundary and avoids declaring obligations, authenticity, official dates or prices. Prayer results are offline astronomical planning estimates with local-mosque and moon-sighting boundaries. Remittance and mobile-money results compare only timestamped user-entered quote receipts; funeral planning uses only family-confirmed costs and benefits. Changing travel and culturally sensitive price claims remain blocked.
+Religious and cultural copy states the authority boundary and avoids declaring obligations, authenticity, official dates or prices. Prayer results are offline astronomical planning estimates with local-mosque and moon-sighting boundaries. Remittance and mobile-money compare only timestamped user-entered receipts; funeral and relocation planning use only user-confirmed values. The marriage-family workflow replaces unsourced cultural price averages with voluntary-consent boundaries and a user-agreed budget.
 
 ## Browser, export, privacy and artwork proof
 
@@ -46,9 +51,9 @@ Chromium ran with one worker on an isolated port at 320px, 375px and emulated 20
 
 ## Evidence and commands
 
-- PASS — focused Node suite (7/7 lane tests, remittance, mobile-money and funeral-budget engine oracles, and all 22 preserved French fixtures).
-- PASS — Swahili, French, religious, remittance, mobile-money and funeral-budget generator check modes.
-- PASS — focused Chromium lane spec on isolated port 4329, one worker (31-route matrix, invalid/reset and English shared-engine parity; 6/6).
+- PASS — focused Node suite (7/7 lane tests plus remittance, mobile-money, funeral, relocation and marriage engine oracles, and all 22 preserved French fixtures).
+- PASS — all focused source-owner generator check modes.
+- PASS — focused Chromium lane spec on isolated port 4332, one worker (33-route matrix, invalid/reset, parsed exports and English shared-engine parity; 8/8).
 - PASS — privacy/AI consent tests on isolated port 4328 (3/3); the first default-port attempt failed only with `ERR_CONNECTION_REFUSED`.
 - PASS — `npm run validate:hreflang`, `npm run check-links`, `npm run audit`, `npm run type-check`, `npm run lint`, and `git diff --check`.
 - FAIL-CLOSED AT PROHIBITED INTEGRATION BOUNDARY — `npm run build:i18n:validate` reports only the three coordinator-owned locale coverage artifacts as stale; this lane did not regenerate them.

@@ -18,7 +18,7 @@ const LANE_IDS = new Set(["naira-to-words", "amount-words-ke", "amount-words-gh"
 const FULL = process.argv.includes("--full");
 
 const ROUTES = Object.freeze({
-  "japa-calculator": ["/sw/zana/kikokotoo-uhamishaji/", "native-blocked-handoff"],
+  "japa-calculator": ["/sw/zana/kikokotoo-uhamishaji/", "native-existing"],
   "mobile-money-fees": ["/sw/zana/ada-pesa-simu/", "native-existing"],
   "fintech-fee-watch": ["/sw/zana/ufuatiliaji-ada-fintech/", "shared-engine"],
   "ajo-chama": ["/sw/zana/kifuatiliaji-ajo-chama/", "shared-engine"],
@@ -42,7 +42,7 @@ const ROUTES = Object.freeze({
   "afropoints": ["/sw/zana/afropoints/", "shared-engine"],
   "afrokitchen": ["/sw/zana/jikoni/", "shared-engine"],
   "africa-conflict": ["/sw/zana/migogoro-ya-afrika/", "shared-engine"],
-  "brideprice-advisor": ["/sw/zana/mshauri-wa-mahari/", "native-blocked-shell"],
+  "brideprice-advisor": ["/sw/zana/mshauri-wa-mahari/", "native-existing"],
   "ajo-interest": ["/sw/zana/riba-ya-ajo-esusu-stokvel/", "shared-engine"],
   "diaspora-guide": ["/sw/zana/mwongozo-wa-diaspora/", "shared-engine"],
   "nollywood-pitch": ["/sw/zana/bajeti-ya-filamu-afrika/", "shared-engine"],
@@ -131,11 +131,11 @@ function buildManifest() {
       english: row.english,
       french: row.french,
       swahili: { route: target[0], file: path.relative(ROOT, swFile).replace(/\\/g, "/"), mode: target[1] },
-      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.english.id === "burial-cost" ? "Respectful family funeral budget using only user-entered costs; no country, faith, ceremony, provider or insurance price assumptions." : row.culturalScope,
+      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.english.id === "burial-cost" ? "Respectful family funeral budget using only user-entered costs; no country, faith, ceremony, provider or insurance price assumptions." : row.english.id === "japa-calculator" ? "User-entered relocation budget with verified official fees and quotes; no embedded visa, eligibility, FX, price, tax or legal claims." : row.english.id === "brideprice-advisor" ? "Consent-first family conversation and user-entered affordability plan; no cultural price list, average, authenticity claim or universal custom." : row.culturalScope,
       countryCodes: row.countryCodes,
-      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.english.id === "burial-cost" ? "assets/js/engines/funeral-budget-engine.js" : row.engineOwner,
-      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.english.id === "burial-cost" ? "user-entered-confirmed-family-costs" : row.dataOwner,
-      exports: row.exports,
+      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.english.id === "burial-cost" ? "assets/js/engines/funeral-budget-engine.js" : row.english.id === "japa-calculator" ? "assets/js/engines/relocation-budget-engine.js" : row.english.id === "brideprice-advisor" ? "assets/js/engines/marriage-conversation-engine.js" : row.engineOwner,
+      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.english.id === "burial-cost" ? "user-entered-confirmed-family-costs" : row.english.id === "japa-calculator" ? "user-entered-verified-official-fees-and-local-quotes" : row.english.id === "brideprice-advisor" ? "user-entered-consent-and-agreed-budget" : row.dataOwner,
+      exports: row.english.id === "japa-calculator" ? ["copy","txt","json"] : row.exports,
       artwork: row.artwork
     };
   });

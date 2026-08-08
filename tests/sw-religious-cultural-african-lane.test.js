@@ -15,13 +15,15 @@ const uaEngine = require('../engines/src/uniquely-african-engine.js');
 const remittanceEngine = require('../engines/src/remittance-quote-comparator-engine.js');
 const mobileMoneyEngine = require('../assets/js/engines/mobile-money-quote-engine.js');
 const funeralBudgetEngine = require('../assets/js/engines/funeral-budget-engine.js');
+const relocationBudgetEngine = require('../assets/js/engines/relocation-budget-engine.js');
+const marriageConversationEngine = require('../assets/js/engines/marriage-conversation-engine.js');
 const rcEngine = require('../assets/js/engines/religious-cultural-parity.js');
 const swBuilder = require('../scripts/build-sw-religious-cultural-parity.js');
 
 const receiptBuilder = require('../scripts/build-sw-religious-cultural-african-receipt.js');
 const assignedIds = new Set(receiptBuilder.ASSIGNED_IDS);
 const assigned = inventory.rows.filter((row) => assignedIds.has(row.englishId));
-const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
+const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost','japa-calculator','brideprice-advisor']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 
 test('assigned denominator is exactly 33 with the requested category split', () => {
@@ -81,10 +83,10 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
 });
 
-test('twelve corrected African rows use native engines and two source-risk rows remain blocked', () => {
+test('all fourteen African rows use native engines with unsafe price claims removed', () => {
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'shared-engine').length, 28);
-  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 4);
-  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 2);
+  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 6);
+  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 0);
   for (const id of sharedAfricanLane) {
     const row = african.rows.find((item) => item.english.id === id);
     assert.equal(row.swahili.mode, 'shared-engine');
@@ -109,6 +111,16 @@ test('twelve corrected African rows use native engines and two source-risk rows 
   const burialHtml=fs.readFileSync(path.join(ROOT,burial.swahili.file),'utf8');
   assert.match(burialHtml,/funeral-budget-engine\.js/);
   assert.doesNotMatch(burialHtml,/COSTS\s*=|Muslim.*0\.5|Christian.*price|Old Mutual|Avbob/i);
+  const japa=african.rows.find((item)=>item.english.id==='japa-calculator');
+  assert.equal(japa.swahili.mode,'native-existing');
+  const japaHtml=fs.readFileSync(path.join(ROOT,japa.swahili.file),'utf8');
+  assert.match(japaHtml,/relocation-budget-engine\.js/);
+  assert.doesNotMatch(japaHtml,/visa pathway|eligibility predictor|\/api\/forex|ai-advisor|official fee schedules/i);
+  const marriage=african.rows.find((item)=>item.english.id==='brideprice-advisor');
+  assert.equal(marriage.swahili.mode,'native-existing');
+  const marriageHtml=fs.readFileSync(path.join(ROOT,marriage.swahili.file),'utf8');
+  assert.match(marriageHtml,/marriage-conversation-engine\.js/);
+  assert.doesNotMatch(marriageHtml,/totalAvg|Igbo|Yoruba|Zulu|Kikuyu|Hausa|AI assistant/i);
 });
 
 test('African source-oracle calculations and invalid clearing contracts', () => {
@@ -140,11 +152,15 @@ test('African source-oracle calculations and invalid clearing contracts', () => 
   assert.equal(mobileMoney.quotes[1].lowestAmongEligibleComparable,true);
   const funeral=funeralBudgetEngine.calculate({currency:'KES',items:[{label:'A',amount:100},{label:'B',amount:200}],bufferPercent:10,availableFund:50,confirmedBenefit:30,contributors:2,days:5});
   assert.deepEqual({total:funeral.total,gap:funeral.gap,share:funeral.perContributor,daily:funeral.perDay},{total:330,gap:250,share:125,daily:50});
+  const relocation=relocationBudgetEngine.calculate({currency:'USD',preDeparture:500,verifiedOfficialFees:1000,travel:1500,housing:2000,arrivalSetup:500,monthlyLiving:1000,runwayMonths:3,bufferPercent:10,availableSavings:5000,savingMonths:5});
+  assert.deepEqual({total:relocation.total,gap:relocation.gap,target:relocation.monthlySavingsTarget},{total:9350,gap:4350,target:870});
+  const marriagePlan=marriageConversationEngine.calculate({currency:'KES',agreedGift:1000,gathering:500,travel:200,other:300,bufferPercent:10,saved:1200,months:4,voluntaryConsent:true,coupleHeard:true,pauseRespected:true,termsWritten:true,localGuidance:false});
+  assert.deepEqual({total:marriagePlan.total,gap:marriagePlan.gap,target:marriagePlan.monthlyTarget,ready:marriagePlan.readyForConversation},{total:2200,gap:1000,target:250,ready:true});
 });
 
 test('all assigned accepted routes have dedicated artwork and reciprocal metadata', () => {
   const ids = new Set([...swBuilder.ACCEPTED, ...africanLane]);
-  assert.equal(ids.size,31);
+  assert.equal(ids.size,33);
   for (const id of ids) {
     const route = swBuilder.ROUTES[id] || african.rows.find((item) => item.english.id === id).swahili.route;
     const file = path.join(ROOT,route.replace(/^\/+|\/+$/g,''),'index.html');
