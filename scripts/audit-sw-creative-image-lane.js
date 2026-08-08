@@ -11,12 +11,31 @@ const inventory = JSON.parse(fs.readFileSync(path.join(ROOT, 'reports/swahili-fr
 const creative = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/localization/sw-creative-parity-manifest.json'), 'utf8'));
 const image = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/localization/sw-image-design-parity.json'), 'utf8'));
 const failures = [];
+const BASELINE_ACCEPTED_CREATIVE_IDS = new Set([
+  'african-palette',
+  'art-commission',
+  'book-publishing-cost',
+  'creator-club',
+  'creator-course',
+  'creator-research',
+  'engagement-rate',
+  'music-royalty-splitter',
+  'photography-pricing',
+  'podcast-monetization',
+  'self-publishing-royalty',
+  'wedding-photo-package'
+]);
 
 function expect(ok, message) { if (!ok) failures.push(message); }
 function exists(rel) { return fs.existsSync(path.join(ROOT, rel)); }
 function slash(route) { return route.endsWith('/') ? route : `${route}/`; }
 
-const assigned = inventory.rows.filter(row => ['creative', 'image-design'].includes(row.categoryKey) && !row.accepted);
+// This is an exact baseline assignment. Coordinator acceptance must not shrink
+// the lane denominator or silently erase already integrated rows from evidence.
+const assigned = inventory.rows.filter(row => (
+  row.categoryKey === 'image-design' ||
+  (row.categoryKey === 'creative' && !BASELINE_ACCEPTED_CREATIVE_IDS.has(row.englishId))
+));
 const assignedCreative = assigned.filter(row => row.categoryKey === 'creative');
 const assignedImage = assigned.filter(row => row.categoryKey === 'image-design');
 expect(assigned.length === 53, `assigned denominator drifted: expected 53, found ${assigned.length}`);

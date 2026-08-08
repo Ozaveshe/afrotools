@@ -29,8 +29,9 @@ expect(new Set(ids).size === 19, 'manifest contains duplicate ids');
 
 const inventoryRows = buildReport().rows.filter(row => row.categoryKey === 'image-design');
 expect(inventoryRows.length === 19, `central inventory drifted: expected 19, found ${inventoryRows.length}`);
-expect(inventoryRows.filter(row => row.accepted).length === 0, 'central acceptance must remain unchanged at 0');
 expect(JSON.stringify([...ids].sort()) === JSON.stringify(inventoryRows.map(row => row.englishId).sort()), 'manifest ids do not match central inventory');
+const centrallyAcceptedIds = inventoryRows.filter(row => row.accepted).map(row => row.englishId);
+expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id && row.status === 'accepted-candidate')), 'central ledger accepts an Image & Design row that this exact lane manifest has not proved');
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
@@ -89,7 +90,7 @@ const receipt = {
   programme: manifest.programme,
   baseCommit: manifest.baseCommit,
   verdict: 'CANDIDATE COMPLETE',
-  exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: 0 },
+  exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
   privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.',
@@ -99,7 +100,7 @@ const receipt = {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
     colorFamilyAudit: 'pass',
-    freeAppInventory: 'pass: 1,257 rows / 770 accepted globally; Image & Design remains 0 accepted',
+    freeAppInventory: `pass: 1,257 rows; Image & Design has ${centrallyAcceptedIds.length} coordinator-accepted rows and ${candidateRows.length} proved lane candidates`,
     localization: 'pass: 11,256 pages',
     hreflang: 'pass: 33,248 relationships / 5,340 groups',
     internalLinks: 'pass: 138,213 links across 11,475 HTML files',
