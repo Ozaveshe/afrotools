@@ -14,8 +14,8 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 22,
-    "blocked": 33,
+    "acceptedCandidates": 23,
+    "blocked": 32,
     "byCategory": {
       "engineering": {
         "denominator": 20,
@@ -29,8 +29,8 @@
       },
       "transport": {
         "denominator": 18,
-        "acceptedCandidates": 1,
-        "blocked": 17
+        "acceptedCandidates": 2,
+        "blocked": 16
       }
     },
     "acceptanceBoundary": "Candidate receipt only; coordinator-owned central acceptance remains unchanged."
@@ -47,7 +47,7 @@
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel and vehicle-operating-cost deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local."
   },
   "apps": [
@@ -1009,19 +1009,19 @@
       "englishId": "vehicle-operating-cost",
       "categoryKey": "transport",
       "englishRoute": "/tools/vehicle-operating-cost",
-      "swahiliRoute": "/sw/zana/gharama-uendeshaji-gari",
+      "swahiliRoute": "/sw/zana/gharama-uendeshaji-gari/",
       "swahiliFile": "sw/zana/gharama-uendeshaji-gari/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "changed: ng-nmdpra, ke-epra-pump-prices, gh-npa-indicative-prices, za-dmre-fuel, ng-frsc, ke-ntsa, za-sanral",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-vehicle-operating-cost-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-vehicle-operating-cost-parity.js",
+      "formulaDecision": "Exact English operating-cost engine: fuel units and annualization plus fixed 4/6% maintenance, 1.5% registration and 20/22% depreciation planning assumptions are preserved and visibly disclosed.",
+      "sourceDecision": "All changing prices and costs are user-entered. Fixed percentage assumptions are labelled low-to-medium-confidence planning inputs, not official rates or live market data.",
+      "browserProof": "Chromium at 320px and 375px; valid/invalid/reset, focusable controls, no console/page errors or raw-input network requests; English regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/vehicle-operating-cost.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "vehicle-tracker-roi",

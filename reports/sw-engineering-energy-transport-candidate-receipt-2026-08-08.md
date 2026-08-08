@@ -1,6 +1,6 @@
 # Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **22 accepted candidates / 33 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **23 accepted candidates / 32 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
@@ -8,8 +8,8 @@ Status: **22 accepted candidates / 33 blocked / exact denominator 55**. This rec
 |---|---:|---:|---:|
 | Engineering & Construction | 20 | 4 | 16 |
 | Energy & Utilities | 17 | 17 | 0 |
-| Transport & Logistics | 18 | 1 | 17 |
-| **Total** | **55** | **22** | **33** |
+| Transport & Logistics | 18 | 2 | 16 |
+| **Total** | **55** | **23** | **32** |
 
 Accepted Energy IDs: `electricity-tariff`, `solar-roi`, `prepaid-meter`, `solar-vs-generator`, `electricity-bill-verify`, `water-bill`, `gas-lpg-cost`, `paygo-solar`, `outage-cost`, `energy-audit`, `appliance-power`, `diesel-vs-solar-farm`, `mini-grid-feasibility`, `carbon-footprint-energy`, `ev-charging`, `biogas-roi`, `generator-fuel`.
 
@@ -17,16 +17,16 @@ Accepted Engineering IDs: `concrete-calc`, `tiles-calc`, `water-tank`, `rebar-ca
 
 Blocked Engineering IDs: `afrodraft`, `afroplan-floor-planner`, `solar-calculator`, `floor-plan`, `boq-generator`, `structural-calc`, `electrical-load`, `paint-calc`, `roofing-calc`, `borehole-cost`, `generator-sizing`, `boq-gen`, `home-renovation-cost`, `fence-cost`, `swimming-pool-cost`, `architectural-fee`.
 
-Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`, `boda-income`, `matatu-fare`, `delivery-cost`, `car-loan-vs-cash`, `vehicle-registration`, `roadworthiness`, `vehicle-depreciation`, `last-mile-delivery`, `parking-fee`, `route-cost`, `toll-calc`, `truck-load`, `vehicle-operating-cost`, `vehicle-tracker-roi`.
+Blocked Transport IDs: `car-import-cost`, `car-price-intelligence`, `ride-fare`, `boda-income`, `matatu-fare`, `delivery-cost`, `car-loan-vs-cash`, `vehicle-registration`, `roadworthiness`, `vehicle-depreciation`, `last-mile-delivery`, `parking-fee`, `route-cost`, `toll-calc`, `truck-load`, `vehicle-tracker-roi`.
 
-Accepted Transport IDs: `fleet-fuel`.
+Accepted Transport IDs: `fleet-fuel`, `vehicle-operating-cost`.
 
 ## Product, formula and source decisions
 
 - The 17 Energy pages use their exact English-owned DOM-free engines through `scripts/lib/sw-energy-remaining-contract.js`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded `data/energy/sw-energy-planning-snapshot.js` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
 - Concrete, tiles, water-tank and rebar now share `assets/js/engines/engineering-materials-engine.js` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; the remaining 16 Engineering IDs stay fail-closed.
-- Fleet fuel now uses the exact English DOM-free engine with only user-entered consumption and price. The remaining 17 Transport IDs stay fail-closed; car-import customs/port sources remain `changed` in `data/transport/source-status.json`.
+- Fleet fuel and vehicle operating cost now use the exact English DOM-free Transport cost engine. Operating-cost percentage assumptions are visible and bounded; the remaining 16 Transport IDs stay fail-closed, and car-import customs/port sources remain `changed` in `data/transport/source-status.json`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
 ## Browser and export proof
@@ -45,7 +45,7 @@ Accepted Transport IDs: `fleet-fuel`.
 - Transport checkpoint: `assets/js/pages/swahili-car-import-cost.js` and focused transport source/browser tests.
 - Engineering generator/manifest/engine: `scripts/build-sw-engineering-materials-parity.js`, `scripts/lib/sw-engineering-materials-contract.js`, and `assets/js/engines/engineering-materials-engine.js`.
 - Engineering runtime/style: `assets/js/pages/sw-engineering-materials-parity.js` and `assets/css/sw-engineering-materials-parity.css`; four bounded generated Swahili routes are owned by that generator.
-- Transport cost engine/manifest/runtime: `assets/js/engines/transport-cost-engine.js`, `scripts/lib/sw-transport-cost-contract.js`, and `assets/js/pages/sw-transport-cost-parity.js`.
+- Transport cost engine/manifest/runtimes: `assets/js/engines/transport-cost-engine.js`, `scripts/lib/sw-transport-cost-contract.js`, `assets/js/pages/sw-transport-cost-parity.js`, and `assets/js/pages/sw-vehicle-operating-cost-parity.js`.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
 - The requested `.claude/rules/i18n.md` reference is absent in this checkout; the coordinator explicitly declared that absence non-blocking. The repository Swahili strategy and coordinator skill governed the work.
 
@@ -55,6 +55,7 @@ Accepted Transport IDs: `fleet-fuel`.
 - `node --test tests/swahili-energy-remaining-static.test.js tests/swahili-transport-static-candidate.test.js`
 - `node --test tests/swahili-engineering-materials-parity.test.js`
 - `npx playwright test -c playwright.sw-engineering-materials.config.js --workers=1`
+- `node scripts/build-sw-vehicle-operating-cost-parity.js`
 - `node --test tests/swahili-transport-cost-parity.test.js`
 - `npx playwright test -c playwright.sw-transport-cost.config.js --workers=1`
 - `npx playwright test -c playwright.sw-engineering-energy-transport.config.js --workers=1`
