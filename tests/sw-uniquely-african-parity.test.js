@@ -51,10 +51,10 @@ const invalidators = {
 
 assert.strictEqual(manifest.denominator, 34, "authoritative category denominator");
 assert.strictEqual(manifest.rows.length, 34, "manifest row count");
-assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length, 20, "implemented shared-engine routes");
-assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode.startsWith("native-blocked")).length, 14, "fail-closed native-owner backlog");
+assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode === "shared-engine").length, 28, "implemented shared-engine routes");
+assert.strictEqual(manifest.rows.filter((row) => row.swahili.mode.startsWith("native-blocked")).length, 6, "fail-closed native-owner backlog");
 assert.strictEqual(fixtures.routes.length, 20, "English oracle count");
-assert.strictEqual(Object.keys(COPY).length, 20, "Swahili presentation count");
+assert.strictEqual(Object.keys(COPY).length, 28, "Swahili presentation count");
 const hub = fs.readFileSync(path.join(root, "sw", "zana-za-kipekee-afrika", "index.html"), "utf8");
 assert(hub.includes('name="afrotools-source-owner" content="scripts/generate-sw-uniquely-african-parity.js"'), "hub source owner");
 assert(hub.includes('name="afrotools-content-id" content="sw-uniquely-african:hub"'), "hub stable content id");
@@ -94,4 +94,4 @@ for (const fixture of fixtures.routes) {
   assert.deepStrictEqual(invalid.values, {}, `${fixture.id}: no stale invalid values`);
 }
 
-console.log("Swahili Uniquely African parity: 20 engine/oracle routes passed; 14 native-owner routes remain fail-closed.");
+console.log("Swahili Uniquely African parity: 20 legacy engine/oracle routes passed; 28 shared-engine routes are implemented and 6 native-owner routes remain fail-closed.");
