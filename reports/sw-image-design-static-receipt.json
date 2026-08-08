@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 4,
-    "blocked": 15,
+    "staticCandidates": 5,
+    "blocked": 14,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -15,6 +15,12 @@
       "route": "/sw/zana/kitengeneza-qr/",
       "sourceOwner": "assets/js/engines/qr-payload-engine.js",
       "browserProof": "tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
+    },
+    {
+      "id": "image-crop",
+      "route": "/sw/zana/kukata-picha/",
+      "sourceOwner": "assets/js/lib/image-crop-studio.js",
+      "browserProof": "tests/e2e/swahili-image-crop-parity.spec.js: English and Swahili share the exact interactive crop engine and produced byte-identical PNG output; Swahili selection, rotate/flip/reset, local history and localized recipe passed; PNG, JPG and WebP reopened at exact 64x48 dimensions; 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
     },
     {
       "id": "color-picker",
@@ -59,12 +65,6 @@
       "route": "/sw/zana/picha-ya-pasipoti/",
       "status": "blocked-feature-parity",
       "blocker": "The Swahili canvas owner is narrower than passport-photo-studio.js and lacks the English crop, preset, sheet, validation, and export proof surface."
-    },
-    {
-      "id": "image-crop",
-      "route": "/sw/zana/kukata-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The route uses an independent inline crop implementation rather than the English image-crop-studio.js contract and omits equivalent interactive crop and export behavior."
     },
     {
       "id": "favicon-generator",
@@ -138,14 +138,16 @@
     "oneWorker": true,
     "ports": [
       4398,
-      4401
+      4401,
+      4404
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
       "tests/e2e/swahili-watermark-bulk-parity.spec.js",
-      "tests/e2e/swahili-qr-generator-parity.spec.js"
+      "tests/e2e/swahili-qr-generator-parity.spec.js",
+      "tests/e2e/swahili-image-crop-parity.spec.js"
     ],
-    "result": "9 passed"
+    "result": "12 passed"
   },
   "validation": {
     "focusedStatic": "pass",
