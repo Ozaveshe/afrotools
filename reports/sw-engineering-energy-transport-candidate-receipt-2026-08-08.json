@@ -14,13 +14,13 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 28,
-    "blocked": 27,
+    "acceptedCandidates": 29,
+    "blocked": 26,
     "byCategory": {
       "engineering": {
         "denominator": 20,
-        "acceptedCandidates": 8,
-        "blocked": 12
+        "acceptedCandidates": 9,
+        "blocked": 11
       },
       "energy": {
         "denominator": 17,
@@ -41,6 +41,7 @@
       "tests/swahili-engineering-materials-parity.test.js",
       "tests/swahili-boq-builder-parity.test.js",
       "tests/swahili-structural-screening-parity.test.js",
+      "tests/swahili-electrical-load-parity.test.js",
       "tests/swahili-transport-static-candidate.test.js",
       "tests/swahili-transport-cost-parity.test.js"
     ],
@@ -49,9 +50,10 @@
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-boq-builder-parity.spec.js",
       "tests/e2e/sw-structural-screening-parity.spec.js",
+      "tests/e2e/sw-electrical-load-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 8 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "54 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 9 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
@@ -167,19 +169,19 @@
       "englishId": "electrical-load",
       "categoryKey": "engineering",
       "englishRoute": "/tools/electrical-load",
-      "swahiliRoute": "/sw/zana/kikokotoo-mzigo-wa-umeme",
+      "swahiliRoute": "/sw/zana/kikokotoo-mzigo-wa-umeme/",
       "swahiliFile": "sw/zana/kikokotoo-mzigo-wa-umeme/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "No bounded app-specific official-source ledger was proved in this lane.",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-electrical-load-contract.js -> assets/js/engines/electrical-load-engine.js -> assets/js/pages/sw-electrical-load-parity.js",
+      "formulaDecision": "Exact English connected-load, diversity, phase-current, illustrative breaker/cable, generator and monthly-use calculations were extracted into one DOM-free engine consumed by both routes.",
+      "sourceDecision": "Exact Engineering ownership is proved by inventory, registry sourceId, locale coverage and route graph. Country voltages, tariff assumptions and sizing tables are undated static planning inputs with low confidence; a licensed electrician and current utility rules control final selection.",
+      "browserProof": "Chromium: deterministic home and three-phase oracles, invalid/stale clearing, reset, 320px, 375px and 200% reflow, themes, keyboard/focus, reciprocal metadata, no console/page errors or raw-input egress; English shared-engine regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js parser.",
       "artwork": {
         "file": "assets/img/tools/electrical-load.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "concrete-calc",

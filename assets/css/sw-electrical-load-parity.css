@@ -1,0 +1,224 @@
+:root {
+  --swel-bg: #f5f7fb;
+  --swel-card: #fff;
+  --swel-text: #10233f;
+  --swel-muted: #52647b;
+  --swel-line: #d7e0eb;
+  --swel-accent: #075f4f;
+  --swel-warn: #fff5da;
+}
+* {
+  box-sizing: border-box;
+}
+body {
+  margin: 0;
+  background: var(--swel-bg);
+  color: var(--swel-text);
+}
+.swel-shell {
+  max-width: 1180px;
+  margin: auto;
+  padding: 28px 18px 64px;
+}
+.swel-hero {
+  background: #09253d;
+  color: #fff;
+  border-radius: 20px;
+  padding: clamp(24px, 5vw, 52px);
+  margin-bottom: 20px;
+}
+.swel-kicker {
+  color: #7ee2c2;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+}
+.swel-hero h1 {
+  font-size: clamp(2rem, 5vw, 3.5rem);
+  line-height: 1.05;
+  margin: 0.5rem 0;
+}
+.swel-hero p {
+  max-width: 760px;
+  line-height: 1.65;
+}
+.swel-boundary {
+  background: var(--swel-warn);
+  border-left: 5px solid #b36b00;
+  border-radius: 12px;
+  padding: 18px;
+  margin-bottom: 20px;
+}
+.swel-boundary h2,
+.swel-boundary p {
+  margin: 0.25rem 0;
+}
+.swel-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(300px, 0.8fr);
+  gap: 20px;
+}
+.swel-panel,
+.swel-evidence article {
+  background: var(--swel-card);
+  border: 1px solid var(--swel-line);
+  border-radius: 16px;
+  padding: 20px;
+}
+.swel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.swel-panel label {
+  display: grid;
+  gap: 6px;
+  font-weight: 750;
+}
+.swel-panel input,
+.swel-panel select,
+.swel-panel button {
+  font: inherit;
+  min-height: 44px;
+  border-radius: 9px;
+}
+.swel-panel input,
+.swel-panel select {
+  width: 100%;
+  border: 1px solid var(--swel-line);
+  padding: 9px 10px;
+  background: var(--swel-card);
+  color: var(--swel-text);
+}
+fieldset {
+  border: 1px solid var(--swel-line);
+  border-radius: 12px;
+  margin: 18px 0;
+  padding: 14px;
+}
+legend {
+  font-weight: 850;
+}
+.swel-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.5fr) repeat(
+      3,
+      minmax(74px, 0.65fr)
+    ) 44px;
+  gap: 8px;
+  margin-bottom: 9px;
+  align-items: end;
+}
+.swel-row button {
+  padding: 0;
+}
+.swel-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin-top: 14px;
+}
+.swel-actions button,
+#swelAdd {
+  border: 0;
+  background: var(--swel-accent);
+  color: #fff;
+  font-weight: 800;
+  padding: 9px 14px;
+  cursor: pointer;
+}
+.swel-actions .swel-secondary,
+.swel-secondary {
+  background: #e8eef5 !important;
+  color: #16314f !important;
+}
+#swelError {
+  background: #fee2e2;
+  color: #8b1b1b;
+  padding: 12px;
+  border-radius: 9px;
+}
+#swelMetrics {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+#swelMetrics div {
+  border: 1px solid var(--swel-line);
+  border-radius: 10px;
+  padding: 10px;
+}
+#swelMetrics dt {
+  color: var(--swel-muted);
+  font-size: 0.82rem;
+}
+#swelMetrics dd {
+  font-size: 1.15rem;
+  font-weight: 850;
+  margin: 4px 0 0;
+}
+.swel-output p,
+.swel-evidence p {
+  color: var(--swel-muted);
+  line-height: 1.6;
+}
+.swel-evidence {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+  margin-top: 20px;
+}
+.swel-evidence h2 {
+  font-size: 1.05rem;
+}
+.swel-panel button:focus-visible,
+.swel-panel input:focus-visible,
+.swel-panel select:focus-visible {
+  outline: 3px solid #f6b73c;
+  outline-offset: 2px;
+}
+@media (max-width: 820px) {
+  .swel-layout,
+  .swel-evidence {
+    grid-template-columns: 1fr;
+  }
+  .swel-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 520px) {
+  .swel-row {
+    grid-template-columns: 1fr 1fr;
+  }
+  .swel-row label:first-child {
+    grid-column: 1/-1;
+  }
+  .swel-row button {
+    min-height: 44px;
+  }
+  .swel-shell {
+    padding-inline: 12px;
+  }
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --swel-bg: #0b1422;
+    --swel-card: #122137;
+    --swel-text: #f4f7fb;
+    --swel-muted: #c1ccda;
+    --swel-line: #38506c;
+    --swel-warn: #382b0e;
+  }
+  .swel-secondary {
+    background: #29415f !important;
+    color: #fff !important;
+  }
+}
+html.dark:root {
+  --swel-bg: #0b1422;
+  --swel-card: #122137;
+  --swel-text: #f4f7fb;
+  --swel-muted: #c1ccda;
+  --swel-line: #38506c;
+  --swel-warn: #382b0e;
+}
