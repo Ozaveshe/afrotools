@@ -213,6 +213,100 @@
     return result({ officialValue: amount * official, observedValue: amount * observed, spread: observed - official, spreadPct: (observed - official) / official * 100, difference: amount * (observed - official) });
   }
 
+  var NUMBER_ONES = ["", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine", "Ten", "Eleven", "Twelve", "Thirteen", "Fourteen", "Fifteen", "Sixteen", "Seventeen", "Eighteen", "Nineteen"];
+  var NUMBER_TENS = ["", "", "Twenty", "Thirty", "Forty", "Fifty", "Sixty", "Seventy", "Eighty", "Ninety"];
+  function numberWords(value) {
+    var n = Math.floor(value);
+    if (n === 0) return "Zero";
+    if (n < 20) return NUMBER_ONES[n];
+    if (n < 100) return NUMBER_TENS[Math.floor(n / 10)] + (n % 10 ? "-" + NUMBER_ONES[n % 10] : "");
+    if (n < 1000) return NUMBER_ONES[Math.floor(n / 100)] + " Hundred" + (n % 100 ? " and " + numberWords(n % 100) : "");
+    if (n < 1000000) return numberWords(Math.floor(n / 1000)) + " Thousand" + (n % 1000 ? " " + numberWords(n % 1000) : "");
+    if (n < 1000000000) return numberWords(Math.floor(n / 1000000)) + " Million" + (n % 1000000 ? " " + numberWords(n % 1000000) : "");
+    return numberWords(Math.floor(n / 1000000000)) + " Billion" + (n % 1000000000 ? " " + numberWords(n % 1000000000) : "");
+  }
+  function amountWords(input, mode) {
+    var amount = number(input.amount);
+    if (!Number.isFinite(amount) || amount < 0 || amount > 999999999999.99) return invalid("amount", "amount_out_of_range");
+    var parts = amount.toFixed(2).split(".");
+    var main = Number(parts[0]);
+    var sub = Number(parts[1]);
+    var words;
+    if (mode === "ke") words = main === 0 && sub === 0 ? "Zero Kenya Shillings Only" : (main ? "Kenya Shillings " + numberWords(main) : "") + (sub ? (main ? " and Cents " : "Cents ") + numberWords(sub) : "") + " Only";
+    else if (mode === "gh") words = main === 0 && sub === 0 ? "Zero Ghana Cedis Only" : (main ? "Ghana Cedis " + numberWords(main) : "") + (sub ? (main ? " and Pesewas " : "Pesewas ") + numberWords(sub) : "") + " Only";
+    else words = main === 0 && sub === 0 ? "Zero Naira Only" : (main ? numberWords(main) + " Naira" : "") + (sub ? (main ? " and " : "") + numberWords(sub) + " Kobo" : "") + " Only";
+    return result({ amount: amount, words: words, mainUnit: main, subUnit: sub });
+  }
+  function susu(input) {
+    var members = Math.floor(number(input.members));
+    var contribution = number(input.contribution);
+    if (!(members >= 2)) return invalid("members", "minimum_two_members");
+    if (!(contribution > 0)) return invalid("contribution", "positive_required");
+    var feePct = Math.max(0, number(input.collectorFee) || 0);
+    var reservePct = Math.max(0, number(input.reservePct) || 0);
+    var missed = Math.max(0, Math.floor(number(input.missedPayments) || 0));
+    var latePenalty = Math.max(0, number(input.latePenalty) || 0);
+    var pot = contribution * members;
+    var fee = pot * feePct / 100;
+    var reserve = pot * reservePct / 100;
+    var net = Math.max(0, pot - fee - reserve);
+    var rows = [];
+    for (var index = 0; index < members; index += 1) rows.push({ round:index + 1, recipient:index + 1, contribution:contribution, netPot:net });
+    return result({ members:members, potSize:pot, feeAmount:fee, reserveAmount:reserve, netPot:net, defaultExposure:missed * contribution, penaltyDue:missed * latePenalty }, rows);
+  }
+  function whatsapp(input) {
+    var code = String(input.countryCode || "").replace(/\D/g, "");
+    var clean = String(input.phoneNumber || "").replace(/[\s\-()+]/g, "").replace(/^0+/, "");
+    if (!code) return invalid("countryCode", "country_code_required");
+    if (!clean) return invalid("phoneNumber", "phone_required");
+    var normalized = clean.indexOf(code) === 0 && clean.length > code.length + 5 ? clean : code + clean;
+    if (normalized.length < 8 || normalized.length > 15) return invalid("phoneNumber", "phone_length");
+    var message = String(input.message || "").trim();
+    var link = "https://wa.me/" + normalized + (message ? "?text=" + encodeURIComponent(message) : "");
+    return result({ normalizedNumber:normalized, messageLength:message.length, link:link });
+  }
+  function ajoInterest(input) {
+    var members = Math.max(1, Math.floor(number(input.members) || 10));
+    var contribution = number(input.contribution);
+    if (!(contribution > 0)) return invalid("contribution", "positive_required");
+    var position = Math.min(Math.max(1, Math.floor(number(input.position) || 1)), members);
+    var feePct = Math.max(0, number(input.fee) || 0);
+    var reservePct = Math.max(0, number(input.reservePct) || 0);
+    var lateMembers = Math.max(0, Math.floor(number(input.lateMembers) || 0));
+    var pool = contribution * members;
+    var payout = pool - pool * feePct / 100;
+    var exposure = lateMembers * contribution;
+    var reserve = pool * reservePct / 100;
+    return result({ members:members, position:position, pool:pool, payout:payout, totalContribution:contribution * members, wait:position - 1, reserveTarget:reserve, missedExposure:exposure, coveragePct:exposure ? Math.min(100, reserve / exposure * 100) : 100 });
+  }
+  function marketDays(input) {
+    var raw = String(input.date || "");
+    if (!/^\d{4}-\d{2}-\d{2}$/.test(raw)) return invalid("date", "invalid_date");
+    var date = new Date(raw + "T00:00:00Z");
+    if (!Number.isFinite(date.getTime()) || date.toISOString().slice(0, 10) !== raw) return invalid("date", "invalid_date");
+    var reference = new Date("2026-01-01T00:00:00Z");
+    var names = ["Eke", "Orie", "Afor", "Nkwo"];
+    var offset = Math.round((date.getTime() - reference.getTime()) / 86400000);
+    var index = ((1 + offset) % 4 + 4) % 4;
+    return result({ date:raw, marketDay:names[index], dayIndex:index, referenceDate:"2026-01-01", referenceDay:"Orie" }, names.map(function (name, rowIndex) { return { dayIndex:rowIndex, marketDay:name }; }), ["confirm_with_local_market"]);
+  }
+  function ajoChamaCalc(input) {
+    var members = Math.floor(number(input.members));
+    var contribution = number(input.contribution);
+    var cycles = Math.max(1, Math.floor(number(input.numCycles) || 1));
+    if (!(members >= 2)) return invalid("members", "minimum_two_members");
+    if (!(contribution > 0)) return invalid("contribution", "positive_required");
+    var interestRate = Math.max(0, number(input.interestRate) || 0);
+    var reserveRate = Math.max(0, number(input.reserveRate) || 0);
+    var penaltyRate = Math.max(0, number(input.penaltyRate) || 0);
+    var pool = contribution * members;
+    var payout = pool + pool * interestRate / 100;
+    var rounds = members * cycles;
+    var rows = [];
+    for (var index = 0; index < rounds; index += 1) rows.push({ round:index + 1, recipient:index % members + 1, contribution:contribution, payout:payout });
+    return result({ members:members, poolPerRound:pool, payoutPerRound:payout, penaltyAmount:contribution * penaltyRate / 100, totalRounds:rounds, totalCycleValue:payout * rounds, totalEachPays:contribution * rounds, totalEachReceives:payout * cycles, reserveTotal:pool * reserveRate / 100 * rounds }, rows);
+  }
+
   function monthlyCityCost(city, input) {
     var people = Math.max(1, number(input.householdSize) || 1);
     var lifestyleFactor = input.lifestyle === "expat" ? 1.35 : input.lifestyle === "local" ? 0.85 : 1;
@@ -432,6 +526,14 @@
   }
 
   var calculators = Object.freeze({
+    "naira-to-words": function (input) { return amountWords(input, "ng"); },
+    "amount-words-ke": function (input) { return amountWords(input, "ke"); },
+    "amount-words-gh": function (input) { return amountWords(input, "gh"); },
+    "susu-tracker": susu,
+    "whatsapp-link": whatsapp,
+    "ajo-interest": ajoInterest,
+    "market-days": marketDays,
+    "ajo-chama-calc": ajoChamaCalc,
     "fintech-fee-watch": feeWatch,
     "ajo-chama": ajoTracker,
     "electricity-estimator": electricity,
@@ -455,6 +557,14 @@
   });
 
   var routeContracts = Object.freeze({
+    "naira-to-words": { inputKeys:["amount"], outputKeys:["words","mainUnit","subUnit"], sourceOwner:"tools/naira-to-words/index.html#amountToWords" },
+    "amount-words-ke": { inputKeys:["amount"], outputKeys:["words","mainUnit","subUnit"], sourceOwner:"tools/amount-words-ke/index.html#amountToWords" },
+    "amount-words-gh": { inputKeys:["amount"], outputKeys:["words","mainUnit","subUnit"], sourceOwner:"tools/amount-words-gh/index.html#amountToWords" },
+    "susu-tracker": { inputKeys:["members","contribution","collectorFee","reservePct","missedPayments","latePenalty"], outputKeys:["potSize","netPot","reserveAmount","feeAmount"], sourceOwner:"tools/susu-tracker/index.html#generate" },
+    "whatsapp-link": { inputKeys:["countryCode","phoneNumber","message"], outputKeys:["normalizedNumber","messageLength","link"], sourceOwner:"tools/whatsapp-link/index.html#buildLink" },
+    "ajo-interest": { inputKeys:["members","position","contribution","fee","reservePct","lateMembers"], outputKeys:["pool","payout","wait","coveragePct"], sourceOwner:"tools/ajo-interest/index.html#calculate" },
+    "market-days": { inputKeys:["date"], outputKeys:["marketDay","dayIndex","referenceDate"], delegateOwner:"assets/js/engines/igbo-market-days.js" },
+    "ajo-chama-calc": { inputKeys:["members","contribution","numCycles","interestRate","reserveRate","penaltyRate"], outputKeys:["poolPerRound","payoutPerRound","totalRounds","reserveTotal"], sourceOwner:"tools/ajo-chama/index.html#generateSchedule" },
     "fintech-fee-watch": { inputKeys: ["amount", "flatFee", "feePct", "fxMarginPct"], outputKeys: ["fee", "fxCost", "totalCost", "recipientValue", "totalPct"], sourceOwner: "tools/fintech-fee-watch/index.html" },
     "ajo-chama": { inputKeys: ["members", "contribution", "rounds", "missedPayments", "latePenalty"], outputKeys: ["pool", "totalContributions", "arrears"], sourceOwner: "tools/ajo-tracker/index.html" },
     "electricity-estimator": { inputKeys: ["watts", "hoursPerDay", "quantity", "tariff", "days"], outputKeys: ["dailyKwh", "monthlyKwh", "monthlyCost"], sourceOwner: "tools/electricity-estimator/index.html" },
