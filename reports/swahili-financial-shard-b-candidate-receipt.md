@@ -2,7 +2,7 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **21**. Blocked: **25**.
+Denominator: **46**. Accepted: **22**. Blocked: **24**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
@@ -25,6 +25,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `retirement-planner` | `/tools/retirement-planner` | `/sw/zana/mpango-wa-kustaafu-mapema` | `/assets/js/lib/pdf-template.js`<br>`/assets/js/engines/retirement-scenario-planner.js`<br>`/assets/js/pages/retirement-planner-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `route-fares` | `/tools/route-fares` | `/sw/zana/nauli-za-ruti` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/route-fares.js`<br>`/assets/js/pages/route-fares-locales-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `salary-compare` | `/tools/salary-compare` | `/sw/zana/kilinganisha-mishahara` | `/assets/js/lib/pdf-template.js`<br>`/assets/js/engines/salary-offer-compare.js`<br>`/assets/js/pages/salary-compare-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `side-hustle-tax` | `/tools/side-hustle-tax` | `/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada` | `/assets/js/lib/pdf-template.js`<br>`/assets/js/engines/side-income-tax-reserve.js`<br>`/assets/js/pages/side-income-tax-reserve-vip.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `so-paye` | `/somalia/so-paye` | `/sw/somalia/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/so-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/somalia-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ss-paye` | `/south-sudan/ss-paye` | `/sw/south-sudan/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ss-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/south-sudan-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `st-paye` | `/sao-tome/st-paye` | `/sw/sao-tome/kikokotoo-kodi-mshahara` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/st-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
@@ -54,7 +55,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `salary-intelligence` | `/sw/mshahara-na-kodi` | The candidate is the broad salary category hub, not a native equivalent of the English salary-intelligence app. |
 | `sars-efiling` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `sd-paye` | `/sw/sudan/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
-| `side-hustle-tax` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `sl-paye` | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `tn-paye` | `/sw/tunisia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `za-cgt` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
@@ -74,12 +74,12 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 21 accepted candidates, 25 blocked, one missing artwork.
-- PASS: current 14 focused Node subtests cover shard derivation, fail-closed acceptance and all five transfer-pricing methods; preceding checkpoints cover pension-proj, staff-cost and student-loan oracles.
+- Evidence generator check: 46 rows, 22 accepted candidates, 24 blocked, one missing artwork.
+- PASS: current 5 focused Node subtests cover shard derivation, fail-closed acceptance and side-income reserve oracles; preceding checkpoints cover transfer-pricing, pension-proj, staff-cost and student-loan.
 - PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.
-- PASS: complete 28-test shard browser matrix on isolated port 43917, including transfer-pricing, pension-proj, staff-cost and student-loan parsed exports, clipboard/reset/invalid-evidence behavior, privacy, and all accepted route shards.
-- PASS: i18n validation and 33,438 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.
-- PASS: 138,238 internal links across 11,513 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.
+- PASS: complete 30-test shard browser matrix on isolated port 43917, including side-hustle-tax, transfer-pricing, pension-proj, staff-cost and student-loan parsed exports, clipboard/reset/invalid-evidence behavior, privacy, and all accepted route shards.
+- PASS: i18n validation and 33,444 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.
+- PASS: 138,242 internal links across 11,514 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.
 - PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.
 - MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.
 
@@ -91,6 +91,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Staff-cost native parity: the Swahili controller uses `engines/staff-cost-planner.js`, requires current user-supplied employer-obligation evidence, neutralizes spreadsheet-formula prefixes in CSV, and provides local copy/CSV/PDF without bundled statutory rates.
 - Pension-proj native parity: the Swahili controller uses `engines/pension-projection-planner.js`, requires current scheme evidence and explicit assumption confirmation, and provides local copy/CSV/PDF without country rates, entitlements or forecasts. The distinct legacy `pension-projection` route remains blocked.
 - Transfer-pricing native parity: the shared `transfer-pricing-planner.js` controller now has complete Swahili method, error, result and memo copy; the route requires a documented user range and provides local copy/TXT/JSON/print without a benchmark or compliance conclusion.
+- Side-hustle-tax native parity: the shared `side-income-tax-reserve.js` engine and controller require a user-sourced reserve rate and recent evidence, then provide injection-safe CSV, JSON, copy and PDF without selecting a tax rate or deciding deductions.
 - Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.
 - Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.
 - Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.

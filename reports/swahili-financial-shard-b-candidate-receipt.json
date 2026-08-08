@@ -5,8 +5,8 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 21,
-  "blocked": 25,
+  "accepted": 22,
+  "blocked": 24,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
@@ -15,6 +15,7 @@
     "assets/js/pages/staff-cost-sw.js",
     "assets/js/pages/pension-projection-sw.js",
     "assets/js/pages/transfer-pricing-vip.js",
+    "assets/js/pages/side-income-tax-reserve-vip.js",
     "assets/js/components/tool-registry.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
@@ -30,6 +31,7 @@
     "sw/zana/bajeti-ya-gharama-za-wafanyakazi/index.html",
     "sw/zana/makadirio-ya-pensheni/index.html",
     "sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html",
+    "sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
@@ -38,9 +40,11 @@
     "tools/pension-proj/index.html",
     "fr/tools/projection-pension-simple/index.html",
     "tools/transfer-pricing/index.html",
-    "fr/tools/prix-transfert/index.html"
+    "fr/tools/prix-transfert/index.html",
+    "tools/side-hustle-tax/index.html",
+    "fr/tools/impot-activite-secondaire/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Transfer-pricing parity uses the existing tp-comparability-planner-2026 engine and only compares method-specific arithmetic with a user-supplied documented range; it makes no arm-length, filing, adjustment or audit conclusion. Pension-proj uses the reviewed user-assumption engine and adds no country rate, entitlement, forecast or guarantee; the separate legacy pension-projection row remains blocked. Staff-cost and student-loan likewise require user-supplied evidence and assumptions.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Side-hustle-tax uses the existing reserve engine with a user-sourced rate and evidence no older than 365 days; it makes no deduction, liability or filing decision. Transfer-pricing uses only a documented user range. Pension-proj, staff-cost and student-loan likewise use user-supplied evidence and assumptions rather than current statutory presets.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -61,12 +65,12 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 14,
+      "passed": 5,
       "failed": 0,
-      "note": "Current increment rerun covered shard derivation/static acceptance plus all five transfer-pricing method and fail-closed oracle fixtures; preceding commits cover pension-proj, staff-cost and student-loan."
+      "note": "Current increment rerun covered shard derivation/static acceptance plus side-income reserve oracle fixtures; preceding commits cover transfer-pricing, pension-proj, staff-cost and student-loan."
     },
     "shardBrowserMatrix": {
-      "passed": 28,
+      "passed": 30,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
@@ -81,15 +85,15 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11294,
-      "hreflangRelationships": 33438,
+      "publicPages": 11295,
+      "hreflangRelationships": 33444,
       "equivalenceGroups": 5351,
       "status": "passed",
       "protectedGeneratedCoverageArtifacts": "reported stale and intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11513,
-      "internalLinks": 138238,
+      "htmlFiles": 11514,
+      "internalLinks": 138242,
       "broken": 0
     },
     "registryAudit": {
@@ -1142,12 +1146,60 @@
       "englishName": "Side-Income Tax Reserve Planner",
       "englishRoute": "/tools/side-hustle-tax",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada",
+      "swahiliFile": "sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html",
+      "sourceOwner": [
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/engines/side-income-tax-reserve.js",
+        "/assets/js/pages/side-income-tax-reserve-vip.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/side-income-tax-reserve.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/side-income-tax-reserve.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite validates the user-rate reserve oracle, injection-safe CSV, parsed JSON, reopened PDF, copy/reset/stale-evidence behavior and no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 77,

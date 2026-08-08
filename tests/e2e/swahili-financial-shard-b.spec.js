@@ -18,6 +18,7 @@ const routes = [
   ['/sw/zana/mpango-wa-kustaafu-mapema', 'retirement-planner'],
   ['/sw/zana/nauli-za-ruti', 'route-fares'],
   ['/sw/zana/kilinganisha-mishahara', 'salary-compare'],
+  ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
   ['/sw/sao-tome/kikokotoo-kodi-mshahara', 'st-paye'],
@@ -27,6 +28,19 @@ const routes = [
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
   ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
 ];
+
+test('side-hustle-tax preserves the user-rate reserve engine and local exports', async ({ page }) => {
+  const writes = []; page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
+  await page.addInitScript(() => { window.__copiedText = ''; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } }); });
+  await page.goto('/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#sir-currency').fill('KES'); await page.locator('#sir-jurisdiction').fill('Nchi ya majaribio'); await page.locator('#sir-period').fill('2026'); await page.locator('#sir-gross').fill('100000'); await page.locator('#sir-refunds').fill('5000'); await page.locator('#sir-platform-fees').fill('10000'); await page.locator('#sir-expenses').fill('15000'); await page.locator('#sir-credits').fill('2000'); await page.locator('#sir-rate').fill('20'); await page.locator('#sir-instalments').fill('4'); await page.locator('#sir-source').fill('=Taarifa ya majaribio'); await page.locator('#sir-date').fill('2026-07-22'); await page.getByRole('button', { name: 'Tengeneza mpango wa akiba' }).click();
+  await expect(page.locator('#sir-profit')).toContainText('70,000'); await expect(page.locator('#sir-reserve')).toContainText('12,000'); await expect(page.locator('#sir-instalment')).toContainText('3,000'); await expect(page.locator('#sir-cash')).toContainText('58,000'); await expect(page.locator('#sir-cost-ratio')).toHaveText('30.00%'); await expect(page.locator('#sir-reserve-ratio')).toHaveText('12.00%');
+  await page.locator('#sir-copy').click(); expect(await page.evaluate(() => window.__copiedText)).toContain('Mpango wa akiba ya kodi ya mapato ya ziada');
+  let download = page.waitForEvent('download'); await page.locator('#sir-csv').click(); const csv = fs.readFileSync(await (await download).path(), 'utf8'); expect(csv).toContain("\"Evidence\",\"'=Taarifa ya majaribio\"");
+  download = page.waitForEvent('download'); await page.locator('#sir-json').click(); const json = JSON.parse(fs.readFileSync(await (await download).path(), 'utf8')); expect(json.plan).toMatchObject({ planningProfit: 70000, reserveAfterCredits: 12000, reservePerInstalment: 3000 });
+  const pdfBytes = await page.evaluate(async () => { const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true })); document.getElementById('sir-pdf').click(); return generated; }); const pdf = await pdfParse(Buffer.from(pdfBytes)); expect(pdf.text).toContain('Mpango wa akiba ya kodi ya mapato ya ziada'); expect(pdf.text).toContain('12,000');
+  await page.locator('#sir-date').fill('2025-01-01'); await page.getByRole('button', { name: 'Tengeneza mpango wa akiba' }).click(); await expect(page.locator('#sir-error')).toContainText('siku 365'); await expect(page.locator('#sir-results')).toBeHidden(); await page.locator('#sir-reset').click(); await expect(page.locator('#sir-currency')).toHaveValue(''); expect(writes).toEqual([]);
+});
 
 test('transfer-pricing preserves the user-range engine and local exports', async ({ page }) => {
   const writes = [];
