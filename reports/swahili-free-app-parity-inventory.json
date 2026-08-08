@@ -36,8 +36,8 @@
     "missing": 29,
     "mappedCandidateRows": 1226,
     "unavailableOrFallbackRows": 31,
-    "accepted": 1144,
-    "remainingUnaccepted": 113,
+    "accepted": 1145,
+    "remainingUnaccepted": 112,
     "nativeCandidatePercent": 46.94
   },
   "categories": [
@@ -277,7 +277,7 @@
       "alias-utility": 0,
       "unclassified-candidate": 0,
       "missing": 1,
-      "accepted": 13
+      "accepted": 14
     },
     {
       "category": "Insurance",
@@ -1295,7 +1295,6 @@
       "inventory-tracker",
       "ly-vat",
       "nigerian-pidgin-translator",
-      "ocr-image-text",
       "robots-txt-generator",
       "septic-tank-size",
       "ss-vat",
@@ -11410,8 +11409,19 @@
       "categoryKey": "image-design",
       "category": "Image & Design",
       "state": "localized-shell-candidate",
-      "accepted": false,
-      "acceptanceEvidence": null,
+      "accepted": true,
+      "acceptanceEvidence": {
+        "englishId": "image-to-text",
+        "swahiliRoute": "/sw/zana/kutoa-maandishi-kwenye-picha/",
+        "status": "accepted",
+        "categoryKey": "image-design",
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-image-to-text-parity.spec.js",
+          "engineTest": "tests/swahili-image-to-text-parity.test.js",
+          "workflow": "The coordinator reviewed the generated native owner and reran its source contract plus 3/3 real Chromium OCR workflows. A synthetic image was recognized locally with equivalent English and Swahili OCR text; invalid input, two-image queue, cleanup reset, localized clipboard handoff and no persistence of pixels or recognized text passed.",
+          "export": "TXT, Markdown, JSON and CSV downloads were parsed; JSON fields and raw OCR text were inspected. Tesseract worker, WASM and language GETs stayed same-origin, while any non-telemetry write or external data request remained fail-closed. Mobile/reflow, themes, keyboard/focus, canonical/OG/schema/hreflang and dedicated artwork passed."
+        }
+      },
       "primarySwahiliRoute": "/sw/zana/kutoa-maandishi-kwenye-picha",
       "primarySwahiliFile": "sw/zana/kutoa-maandishi-kwenye-picha/index.html",
       "sourceOwner": "Swahili localized shell and shared deterministic engine",
@@ -11439,6 +11449,10 @@
             {
               "kind": "coverage-equivalent-route",
               "detail": "coverage:721ed39a8288"
+            },
+            {
+              "kind": "registry-source-id",
+              "detail": "zana-kutoa-maandishi-kwenye-picha-sw-wave8"
             },
             {
               "kind": "hreflang-en",

@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 29 |
-| **Accepted** | **1144** |
+| **Accepted** | **1145** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 18 | 0 | 0 | 0 | 0 | 0 | 1 | 13 |
+| Image & Design | 19 | 0 | 18 | 0 | 0 | 0 | 0 | 0 | 1 | 14 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -64,7 +64,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 
 - Swahili routes with conflicting owner evidence: 5
 - English apps with multiple live Swahili owner candidates: 63
-- Swahili registry source IDs outside the free denominator: 23
+- Swahili registry source IDs outside the free denominator: 22
 
 Conflicts are preserved in the JSON report. Locale coverage outranks registry metadata, which outranks hreflang and direct-path hints. Runtime transplants remain explicit product deficits.
 
@@ -219,7 +219,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Image Crop Studio | Image & Design | `/tools/image-crop` | Localized shell candidate | `/sw/zana/kukata-picha` | Yes |
 | Color Picker & Converter | Image & Design | `/tools/color-picker` | Localized shell candidate | `/sw/zana/kichagua-rangi` | Yes |
 | Favicon Generator | Image & Design | `/tools/favicon-generator` | Localized shell candidate | `/sw/zana/kizalishaji-favicon` | Yes |
-| Image to Text OCR Studio | Image & Design | `/tools/image-to-text` | Localized shell candidate | `/sw/zana/kutoa-maandishi-kwenye-picha` | No |
+| Image to Text OCR Studio | Image & Design | `/tools/image-to-text` | Localized shell candidate | `/sw/zana/kutoa-maandishi-kwenye-picha` | Yes |
 | Meme Generator | Image & Design | `/tools/meme-generator` | Missing | None | No |
 | Logo Maker | Image & Design | `/tools/logo-maker` | Localized shell candidate | `/sw/zana/kitengeneza-logo` | No |
 | Photo Filter Studio | Image & Design | `/tools/image-filters` | Localized shell candidate | `/sw/zana/filters-za-picha` | Yes |
