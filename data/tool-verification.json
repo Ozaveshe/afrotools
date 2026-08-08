@@ -4643,6 +4643,70 @@
         }
       ]
     },
+    "za-gepf": {
+      "tool_id": "za-gepf",
+      "jurisdiction": "South Africa",
+      "country_code": "ZA",
+      "calculation_currency": "ZAR",
+      "calculation_mode": "public_service_retirement_planning",
+      "routes": [
+        "/fr/tools/za-gepf/",
+        "/sw/zana/kikokotoo-gepf-afrika-kusini/",
+        "/tools/za-gepf/"
+      ],
+      "source_urls": [
+        "https://www.gepf.co.za/wp-content/uploads/2025/03/51202-10-9-NationalTreasury.pdf",
+        "https://www.gepf.co.za/retirement-benefits/",
+        "https://www.gepf.co.za/employer-contributions/",
+        "https://www.gepf.co.za/clarification-on-the-implementation-of-revised-actuarialinterest-factors-as-at-1-october-2025/"
+      ],
+      "source_titles": [
+        "Government Gazette 51202 - GEPF two-pot amendments",
+        "GEPF retirement benefits",
+        "GEPF employer contributions",
+        "GEPF clarification on revised actuarial interest factors from 1 October 2025"
+      ],
+      "last_verified": "2026-08-08",
+      "effective_from": "2024-09-01",
+      "verified_by": "AfroTools Finance VIP review and Swahili Finance shard B source recheck",
+      "risk_level": "high",
+      "disclaimer_type": "financial",
+      "law_or_version": "Government Gazette 51202 two-pot amendments effective 2024-09-01; GEPF retirement, contribution and actuarial-factor guidance rechecked 2026-08-08",
+      "methodology_markdown": "For members with at least ten years of vested service, the shared local engine applies the published vested-service gratuity factor, the appropriate savings-service factor for other or services members, and separate vested and retirement annuity factors. It applies the standard early-retirement reduction before age 60 unless the user selects an employer-approved basis, and separately shows current member and employer contributions. The user supplies every salary, service, age and employer-class input from their own record.",
+      "known_limitations": [
+        "GEPF determines service records, actuarial factors, tax, early-retirement approval and final benefits; this is a planning estimate only.",
+        "The tool does not estimate resignation, dismissal, savings-pot withdrawal, divorce, purchased service, housing loan, survivor or enhanced-spouse benefits.",
+        "Profiles below ten years of vested service fail closed because different public-benefit cases apply.",
+        "No identity, member number, beneficiary record, filing, claim or payment is collected or submitted."
+      ],
+      "change_history": [
+        {
+          "date": "2026-08-08",
+          "note": "Rechecked the Gazette, retirement, contribution and revised actuarial-factor publications; added native Swahili parity without changing the shared engine or formula parameters."
+        },
+        {
+          "date": "2026-07-23",
+          "note": "Rebuilt English and native French routes on one reviewed local engine with explicit three-service inputs, contribution categories and fail-closed exclusions."
+        }
+      ],
+      "test_cases": [
+        {
+          "input": "Final annual pensionable salary R300,000; vested service 25 years; savings service 0.667; retirement service 1.333; age 60; other employer.",
+          "expected_output": "Estimated gratuity R550,523.25, annual annuity R146,951.26 and monthly annuity R12,245.94.",
+          "why": "Protects the published three-service retirement factors."
+        },
+        {
+          "input": "The same record at age 55 with standard early-retirement treatment.",
+          "expected_output": "20% reduction and estimated gratuity R440,418.60.",
+          "why": "Protects the one-third-of-one-percent monthly early-retirement reduction."
+        },
+        {
+          "input": "Eight vested years with otherwise valid values.",
+          "expected_output": "Calculation fails closed and directs the user to an official GEPF estimate.",
+          "why": "Prevents an unsupported under-ten-year benefit estimate."
+        }
+      ]
+    },
     "za-uif": {
       "tool_id": "za-uif",
       "jurisdiction": "South Africa",

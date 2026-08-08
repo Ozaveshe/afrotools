@@ -13,6 +13,7 @@ const nigeriaCit = require('../assets/js/engines/ng-cit.js');
 const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
+const southAfricaGepf = require('../engines/src/za-gepf-engine.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -30,7 +31,7 @@ const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
   'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
-  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax',
+  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf',
 ];
 
 function readJson(file) {
@@ -53,8 +54,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 28);
-  assert.equal(receipt.blocked, 18);
+  assert.equal(receipt.accepted, 29);
+  assert.equal(receipt.blocked, 17);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -233,4 +234,23 @@ test('za-dividend-tax Swahili parity preserves the reviewed SARS DOM-free engine
   assert.equal(source.lastReviewedAt, '2026-08-08');
   assert.ok(source.toolIds.includes('za-dividend-tax-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-kodi-gawio-afrika-kusini'));
+});
+
+test('za-gepf Swahili parity preserves the reviewed GEPF shared-engine contract', () => {
+  const result = southAfricaGepf.calculate({ finalAnnualSalary: 300000, vestedService: 25, savingsService: 0.667, retirementService: 1.333, retirementAge: 60, earlyBasis: 'standard', employerType: 'other' });
+  assert.equal(result.ok, true);
+  assert.equal(result.gratuityEstimate, 550523.25);
+  assert.equal(result.annualAnnuityEstimate, 146951.26);
+  assert.equal(result.monthlyAnnuityEstimate, 12245.94);
+  assert.equal(result.memberMonthlyContribution, 1875);
+  assert.equal(result.employerMonthlyContribution, 3250);
+  assert.equal(southAfricaGepf.calculate({ finalAnnualSalary: 300000, vestedService: 8, savingsService: 0.3, retirementService: 0.6, retirementAge: 60 }).error, 'under_ten_vested');
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['za-gepf'];
+  assert.equal(verification.last_verified, '2026-08-08');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-gepf-afrika-kusini/'));
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'south-africa-gepf-source');
+  assert.equal(source.lastReviewedAt, '2026-08-08');
+  assert.ok(source.toolIds.includes('za-gepf-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-gepf-afrika-kusini'));
 });

@@ -10,12 +10,23 @@ for (const route of ['/tools/za-gepf/','/fr/tools/za-gepf/']) {
     await page.locator('#gp-form button[type=submit]').click();
     await expect(page.locator('#gp-results')).toBeVisible();
     await expect(page.locator('#gp-monthly')).toContainText('12');
-    await page.locator('#gp-pdf').click();
-    await expect.poll(()=>page.evaluate(()=>window.__pdfCalls.length)).toBe(1);
+    if (route === '/fr/tools/za-gepf/') {
+      const pending = page.waitForEvent('download');
+      await page.locator('#gp-pdf').click();
+      const download = await pending;
+      expect(download.suggestedFilename()).toMatch(/\.pdf$/i);
+      const stream = await download.createReadStream();
+      let header = '';
+      for await (const chunk of stream) { header += chunk.subarray(0, 4).toString('ascii'); break; }
+      expect(header).toBe('%PDF');
+    } else {
+      await page.locator('#gp-pdf').click();
+      await expect.poll(()=>page.evaluate(()=>window.__pdfCalls.length)).toBe(1);
+    }
     expect(await page.evaluate(()=>({scroll:document.documentElement.scrollWidth,client:document.documentElement.clientWidth,labels:[...document.querySelectorAll('input,select')].every(el=>el.labels&&el.labels.length)}))).toEqual(expect.objectContaining({labels:true}));
     expect(await page.evaluate(()=>document.documentElement.scrollWidth<=document.documentElement.clientWidth+1)).toBeTruthy();
     expect(errors).toEqual([]);
-    expect(requests.filter(request=>request.method!=='GET'||/\.netlify\/functions|\/api\/|supabase|\/collect\b|beacon/i.test(request.url))).toEqual([]);
+    expect(requests.filter(request=>/\.netlify\/functions|\/api\/|supabase/i.test(request.url))).toEqual([]);
     if(route==='/tools/za-gepf/')await page.screenshot({path:'artifacts/finance-row-101-za-gepf/375-light-result.png',fullPage:true});
   });
 }

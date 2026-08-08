@@ -8,6 +8,7 @@ const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
 const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
+const southAfricaGepf = require('../../engines/src/za-gepf-engine.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -38,6 +39,7 @@ const routes = [
   ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
   ['/sw/zana/kikokotoo-cgt-afrika-kusini', 'za-cgt'],
   ['/sw/zana/kikokotoo-kodi-gawio-afrika-kusini', 'za-dividend-tax'],
+  ['/sw/zana/kikokotoo-gepf-afrika-kusini', 'za-gepf'],
 ];
 
 test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
@@ -367,6 +369,72 @@ test('za-dividend-tax delegates to the SARS engine and reopens every advertised 
   await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
   await expect(page.locator('[data-status]')).toContainText('kimerudishwa mwanzo');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /dividend|gawio|tax|amount/i.test(key)))).toEqual([]);
+  expect(sensitiveWrites).toEqual([]);
+});
+
+test('za-gepf delegates to the GEPF engine and reopens every advertised local export', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:300000|550523|12245)/.test(body)) sensitiveWrites.push({ url: request.url(), body });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+  });
+  await page.goto('/sw/zana/kikokotoo-gepf-afrika-kusini/', { waitUntil: 'domcontentloaded' });
+
+  const expected = southAfricaGepf.calculate({ finalAnnualSalary: 300000, vestedService: 25, savingsService: 0.667, retirementService: 1.333, retirementAge: 60, earlyBasis: 'standard', employerType: 'other' });
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya GEPF' }).click();
+  await expect(page.locator('#gp-results')).toBeVisible();
+  await expect(page.locator('#gp-gratuity')).toContainText('550,523.25');
+  await expect(page.locator('#gp-monthly')).toContainText('12,245.94');
+  expect(expected.gratuityEstimate).toBe(550523.25);
+
+  await page.locator('#gp-copy').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya kustaafu ya GEPF Afrika Kusini');
+  expect(copied).toContain('Gratuity inayokadiriwa');
+
+  let downloadEvent = page.waitForEvent('download');
+  await page.locator('#gp-csv').click();
+  let download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-gepf-afrika-kusini.csv');
+  const csv = fs.readFileSync(await download.path(), 'utf8');
+  expect(csv).toContain('"kipengele","thamani"');
+  expect(csv).toContain('"gratuity_estimate","550523.25"');
+
+  downloadEvent = page.waitForEvent('download');
+  await page.locator('#gp-json').click();
+  download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-gepf-afrika-kusini.json');
+  const json = JSON.parse(fs.readFileSync(await download.path(), 'utf8'));
+  expect(json.schemaVersion).toBe(1);
+  expect(json.privacy).toContain('ndani ya kifaa');
+  expect(json.estimate).toMatchObject({ ok: true, gratuityEstimate: 550523.25, monthlyAnnuityEstimate: 12245.94 });
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true }));
+    document.getElementById('gp-pdf').click();
+    return generated;
+  });
+  const pdf = await pdfParse(Buffer.from(pdfBytes));
+  expect(pdf.text).toContain('Makadirio ya kustaafu ya GEPF Afrika Kusini');
+  expect(pdf.text).toMatch(/gratuity inayokadiriwa/i);
+  expect(pdf.text).toContain('550,523.25');
+
+  await page.locator('#gp-salary').fill('310000');
+  await expect(page.locator('#gp-results')).toBeHidden();
+  await expect(page.locator('#gp-status')).toContainText('Data imebadilika');
+  await page.locator('#gp-vested').fill('8');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya GEPF' }).click();
+  await expect(page.locator('#gp-vested')).toBeFocused();
+  await expect(page.locator('#gp-error')).toContainText('angalau miaka 10');
+
+  await page.getByRole('button', { name: 'Weka upya' }).click();
+  await expect(page.locator('#gp-salary')).toHaveValue('300000');
+  await expect(page.locator('#gp-status')).toContainText('kimerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /gepf|pension|salary|service/i.test(key)))).toEqual([]);
   expect(sensitiveWrites).toEqual([]);
 });
 
