@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "reviewedOn": "2026-08-08",
+  "scope": "offline planning estimates for the existing AfroTools African city presets",
+  "sources": {
+    "solarEquations": "https://gml.noaa.gov/grad/solcalc/solareqns.PDF",
+    "solarLimitations": "https://gml.noaa.gov/grad/solcalc/calcdetails.html",
+    "prayerMethodParameters": "https://praytimes.org/docs/methods"
+  },
+  "boundaries": [
+    "NOAA describes the solar equations as estimates and notes that observed sunrise and sunset can vary with atmospheric conditions.",
+    "Prayer-method parameters are calculation conventions, not a religious ruling or an official mosque timetable.",
+    "Ramadan start dates remain provisional until confirmed by the relevant local moon-sighting or religious authority."
+  ],
+  "fixtures": [
+    {
+      "id": "nairobi-mwl-2026-04-27",
+      "input": {"city":"Nairobi","method":"MWL","school":"standard","date":"2026-04-27"},
+      "expected": {"fajr":"05:17","sunrise":"06:28","dhuhr":"12:30","asr":"15:50","maghrib":"18:32","isha":"19:39","qibla":7}
+    },
+    {
+      "id": "lagos-mwl-ramadan-planning-2026",
+      "input": {"city":"Lagos","method":"MWL","school":"standard","startDate":"2026-02-19","days":30,"suhoorBuffer":10,"iftarBuffer":0},
+      "expected": {"firstSuhoor":"05:42","firstIftar":"18:59","lastSuhoor":"05:32","lastIftar":"18:58","rowCount":30}
+    }
+  ]
+}

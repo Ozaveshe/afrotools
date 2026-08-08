@@ -20,7 +20,7 @@
   const labels = Object.freeze({
     percentage:'Kiasi cha asilimia uliyochagua', offering:'Sadaka ya ziada', pledgePerPeriod:'Ahadi kwa kipindi', total:'Jumla', remaining:'Salio la hesabu', subtotal:'Jumla ndogo', bufferAmount:'Akiba ya dharura',
     familyA:'Familia ya kwanza', familyB:'Familia ya pili', pending:'Jambo la kuthibitisha', nextStep:'Hatua inayofuata', items:'Vipengee', culture:'Lugha au jamii', purpose:'Matumizi yaliyopangwa', verification:'Njia ya uthibitishaji', text:'Methali ya kuanzia', context:'Tahadhari ya muktadha',
-    city:'Jiji la mfano', method:'Njia ya kulinganisha', date:'Tarehe', fajr:'Fajr', sunrise:'Kuchomoza jua', dhuhr:'Dhuhr', asr:'Asr', maghrib:'Maghrib', isha:'Isha', qibla:'Mwelekeo wa Qibla (digrii)', startDate:'Tarehe ya kuanzia', days:'Siku', suhoor:'Mwisho wa suhoor wa makisio', iftar:'Iftar ya makisio',
+    city:'Jiji la mfano', method:'Njia ya kulinganisha', school:'Njia ya Asr', timeZone:'Ukanda wa saa', date:'Tarehe', fajr:'Fajr', sunrise:'Kuchomoza jua', dhuhr:'Dhuhr', asr:'Asr', maghrib:'Maghrib', isha:'Isha', qibla:'Mwelekeo wa Qibla (digrii)', startDate:'Tarehe ya kuanzia', days:'Siku', firstSuhoor:'Mwisho wa suhoor, siku ya kwanza', firstIftar:'Iftar, siku ya kwanza', lastSuhoor:'Mwisho wa suhoor, siku ya mwisho', lastIftar:'Iftar, siku ya mwisho', rows:'Ratiba ya kila tarehe',
     financed:'Kiasi kinachofadhiliwa', markup:'Ongezeko la gharama', monthly:'Kiasi cha mwezi', hospitality:'Mapokezi ya waombolezaji', candidate:'Jina linalopitiwa', reportedMeaning:'Maana iliyotolewa', reviewer:'Mtu wa kuthibitisha', referenceDate:'Tarehe ya marejeo', marketDay:'Siku ya mzunguko', localAuthority:'Chanzo cha eneo', years:'Miaka kamili', months:'Miezi ya ziada', totalDays:'Siku zote', weekday:'Siku ya kuzaliwa', name:'Pendekezo la jina la siku',
     festival:'Tamasha au tukio', country:'Nchi au jamii', provisionalDate:'Tarehe ya muda', organizer:'Mratibu wa kuthibitisha', respectNote:'Kanuni ya heshima', nextAction:'Hatua inayofuata', discountAmount:'Punguzo', quantity:'Idadi', documented:'Vipengee vilivyoandikwa', missing:'Vipengee visivyoandikwa', followUps:'Mambo ya kufuatilia', totalChecks:'Ukaguzi wote', authority:'Mamlaka ya kuuliza', certification:'Uthibitisho umetolewa', gregorian:'Tarehe ya Gregorian', hijriDay:'Siku ya Hijri ya makisio', hijriMonth:'Namba ya mwezi wa Hijri', hijriMonthName:'Mwezi wa Hijri wa makisio', hijriYear:'Mwaka wa Hijri wa makisio', adjustment:'Marekebisho ya siku', boundary:'Aina ya matokeo'
   });
@@ -44,6 +44,7 @@
       const date = new Date(`${form.elements.date.value}T00:00:00Z`);
       return new Intl.DateTimeFormat('sw-TZ', { day:'numeric', month:'long', year:'numeric', timeZone:'UTC' }).format(date);
     }
+    if (Array.isArray(value) && value.some((item) => item && item.date)) return value.map((item) => `${item.date}: suhoor ${item.suhoor}, iftar ${item.iftar}`).join(' · ');
     if (Array.isArray(value)) return value.map((item) => `${item.item || 'Kipengee'}: ${Number(item.value || 0).toLocaleString('sw-TZ')}`).join(' · ');
     if (typeof value === 'boolean') return values[String(value)];
     if (typeof value === 'number') {

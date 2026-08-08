@@ -516,6 +516,7 @@ ${tags}
 <section class="rs-upgrade-shell rs-full-app" data-rs-tool-id="${tool.id}"></section>
 </main>
 <afro-footer></afro-footer>
+${['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>' : ''}
 <script src="/assets/js/religious-cultural-apps.js" defer></script>
 </body>
 </html>
@@ -528,7 +529,7 @@ function jsString(value) {
 
 function runtimeTemplate() {
   const runtimePath = path.join(ROOT, 'assets/js/religious-cultural-apps.js');
-  if (fs.existsSync(runtimePath)) return fs.readFileSync(runtimePath, 'utf8');
+  if (fs.existsSync(runtimePath) && !process.argv.includes('--rebuild-runtime')) return fs.readFileSync(runtimePath, 'utf8');
   const publicTools = tools.map((tool) => ({
     id: tool.id,
     category: tool.category,
@@ -640,26 +641,25 @@ function runtimeTemplate() {
         };
       }
       case 'prayer': {
-        var city = CITY_TIMES[v.city] || CITY_TIMES.Lagos;
-        var methodShift = { MWL: 0, Egypt: -4, ISNA: 8, UmmQura: 5 }[v.method] || 0;
-        var asrShift = v.school === 'hanafi' ? 35 : 0;
-        var qibla = bearingToKaaba(city.lat, city.lon);
+        var prayerEngine = window.AfroTools && window.AfroTools.prayerTimes;
+        var prayer = prayerEngine && prayerEngine.calculateDay({ city: v.city, method: v.method, school: v.school, date: v.date });
+        if (!prayer || !prayer.ok) throw new Error(prayer ? prayer.code : 'Prayer engine unavailable');
+        var p = prayer.values;
         return {
-          metrics: [['Fajr', minutesToTime(city.fajr, methodShift)], ['Dhuhr', city.dhuhr], ['Asr', minutesToTime(city.asr, asrShift)], ['Qibla bearing', qibla.toFixed(1) + ' deg']],
-          verdict: 'Planning estimate for ' + v.city + '. Confirm with your local mosque, especially for Fajr, Isha and Ramadan.',
-          rows: [['Sunrise', city.sunrise], ['Maghrib', city.maghrib], ['Isha', minutesToTime(city.isha, methodShift)], ['Method', v.method + ', ' + v.school + ' Asr']]
+          metrics: [['Fajr', p.fajr], ['Dhuhr', p.dhuhr], ['Asr', p.asr], ['Qibla bearing', p.qibla + ' deg']],
+          verdict: 'Date-aware planning estimate for ' + v.city + ' on ' + v.date + '. Confirm every time with your local mosque.',
+          rows: [['Sunrise', p.sunrise], ['Maghrib', p.maghrib], ['Isha', p.isha], ['Method', p.method + ', ' + p.school + ' Asr'], ['Time zone', p.timeZone]]
         };
       }
       case 'ramadan': {
-        var base = CITY_TIMES[v.city] || CITY_TIMES.Lagos;
-        var days = Math.min(30, Math.max(1, v.days || 30));
-        var sample = [];
-        for (var i = 0; i < Math.min(days, 7); i++) {
-          sample.push(['Day ' + (i + 1), 'Suhoor stop ' + minutesToTime(base.fajr, -Math.abs(v.suhoorBuffer || 0) + i), 'Iftar ' + minutesToTime(base.maghrib, (v.iftarBuffer || 0) + i)]);
-        }
+        var ramadanEngine = window.AfroTools && window.AfroTools.prayerTimes;
+        var result = ramadanEngine && ramadanEngine.calculateRamadan({ city: v.city, method: v.method || 'MWL', school: v.school || 'standard', startDate: v.startDate, days: v.days, suhoorBuffer: v.suhoorBuffer, iftarBuffer: v.iftarBuffer });
+        if (!result || !result.ok) throw new Error(result ? result.code : 'Prayer engine unavailable');
+        var timetable = result.values;
+        var sample = timetable.rows.slice(0, 7).map(function (row) { return [row.date, 'Suhoor stop ' + row.suhoor, 'Iftar ' + row.iftar]; });
         return {
-          metrics: [['City', v.city], ['Ramadan days', days], ['Last ten nights start', 'Day ' + Math.max(1, days - 9)], ['Eid planning', 'Day ' + (days + 1)]],
-          verdict: 'Generated a working timetable from ' + v.startDate + '. Adjust by local moon sighting before publishing.',
+          metrics: [['City', v.city], ['Ramadan days', timetable.days], ['First suhoor stop', timetable.firstSuhoor], ['First iftar', timetable.firstIftar]],
+          verdict: 'Generated a date-aware planning timetable from ' + v.startDate + '. Confirm the first day by local moon sighting and every time with your mosque before publishing.',
           rows: sample
         };
       }
@@ -964,7 +964,8 @@ function attachExistingPages() {
     if (!fs.existsSync(filePath)) continue;
     let html = fs.readFileSync(filePath, 'utf8');
     if (!html.includes(`data-rs-tool-id="${tool.id}"`)) {
-      const section = `\n<section class="rs-upgrade-shell" data-rs-tool-id="${tool.id}"></section>\n<script src="/assets/js/religious-cultural-apps.js" defer></script>\n`;
+      const prayerScript = ['prayer-times', 'ramadan-timetable'].includes(tool.id) ? '<script src="/assets/js/engines/prayer-times.js"></script>\n' : '';
+      const section = `\n<section class="rs-upgrade-shell" data-rs-tool-id="${tool.id}"></section>\n${prayerScript}<script src="/assets/js/religious-cultural-apps.js" defer></script>\n`;
       if (html.includes('<afro-footer')) {
         html = html.replace(/<afro-footer/i, section + '<afro-footer');
       } else {
@@ -1082,6 +1083,10 @@ function writeSummaryDoc() {
 
 function main() {
   writeFile(path.join(ROOT, 'assets/js/religious-cultural-apps.js'), runtimeTemplate());
+  if (process.argv.includes('--runtime-only')) {
+    console.log('Religious-cultural runtime rebuilt.');
+    return;
+  }
   writeFile(path.join(ROOT, 'assets/css/religious-cultural-apps.css'), cssTemplate());
   writeMissingPages();
   attachExistingPages();
