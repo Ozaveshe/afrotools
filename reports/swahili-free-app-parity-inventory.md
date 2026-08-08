@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 38 |
-| **Accepted** | **1127** |
+| **Accepted** | **1129** |
 
 ## Category reconciliation
 
@@ -57,7 +57,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Trade & Import | 22 | 0 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
 | Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
 | Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
-| Uniquely African | 34 | 0 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
+| Uniquely African | 34 | 0 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 34 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 63 |
 
 ## Ambiguous ownership
@@ -80,7 +80,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Nigeria PAYE Calculator | Finance, Tax & Market Data | `/nigeria/ng-salary-tax` | English fallback | `/sw/nigeria/kikokotoo-kodi-mshahara` | No |
 | Kenya PAYE Calculator | Finance, Tax & Market Data | `/kenya/ke-paye` | Localized shell candidate | `/sw/kenya/kikokotoo-kodi-mshahara` | Yes |
 | PDF Workspace | Document & PDF | `/tools/pdf-workspace` | Localized shell candidate | `/sw/zana/nafasi-pdf` | Yes |
-| Japa Cost Calculator | Uniquely African | `/tools/japa-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-uhamishaji` | No |
+| Japa Cost Calculator | Uniquely African | `/tools/japa-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-uhamishaji` | Yes |
 | Medical Report Interpreter | Health & Wellness | `/tools/medical-report` | Native candidate | `/sw/zana/tafsiri-ya-ripoti-ya-matibabu` | Yes |
 | AI Business Planner | Finance, Tax & Market Data | `/tools/business-planner` | Localized shell candidate | `/sw/zana/mpangaji-wa-biashara-ai` | No |
 | Ghana PAYE + SSNIT | Finance, Tax & Market Data | `/ghana/gh-paye` | Localized shell candidate | `/sw/ghana/kikokotoo-kodi-mshahara` | Yes |
@@ -802,7 +802,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | AfroPoints — Earn Money Contributing Data | Uniquely African | `/tools/afropoints` | Localized shell candidate | `/sw/zana/afropoints` | Yes |
 | AfroKitchen — African Recipes | Uniquely African | `/tools/afrokitchen` | Localized shell candidate | `/sw/zana/jikoni` | Yes |
 | AfroConflict — Conflict Intelligence | Uniquely African | `/tools/africa-conflict` | Localized shell candidate | `/sw/zana/migogoro-ya-afrika` | Yes |
-| Bride Price Advisor | Uniquely African | `/tools/brideprice-advisor` | Localized shell candidate | `/sw/zana/mshauri-wa-mahari` | No |
+| Bride Price Advisor | Uniquely African | `/tools/brideprice-advisor` | Localized shell candidate | `/sw/zana/mshauri-wa-mahari` | Yes |
 | Ajo / Esusu Interest Calculator | Uniquely African | `/tools/ajo-interest` | Localized shell candidate | `/sw/zana/riba-ya-ajo-esusu-stokvel` | Yes |
 | African Diaspora Tax Guide | Uniquely African | `/tools/diaspora-guide` | Localized shell candidate | `/sw/zana/mwongozo-wa-diaspora` | Yes |
 | Film/TV Budget Estimator Africa | Uniquely African | `/tools/nollywood-pitch` | Localized shell candidate | `/sw/zana/bajeti-ya-filamu-afrika` | Yes |
