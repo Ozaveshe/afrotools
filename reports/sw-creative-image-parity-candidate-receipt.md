@@ -2,8 +2,8 @@
 
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact denominator: **53** (**34 Creative**, **19 Image & Design**)
-- Accepted candidates: **12**
-- Blocked fail-closed: **41**
+- Accepted candidates: **13**
+- Blocked fail-closed: **40**
 - Central acceptance ledger changed: **no**
 - Verdict: **PARTIAL — FAIL CLOSED**
 
@@ -16,7 +16,7 @@
 - `passport-photo` — accepted-candidate: Controlled English and Swahili single-photo PNG output was byte-identical at 413x531. All nine advertised PNG, JPG and WebP combinations reopened in the browser at exact single 413x531, 4x6-sheet 1800x1200 and A4 2480x3508 dimensions; the localized requirement brief retained exact preset dimensions, source URL and 300 DPI contract.
 - `image-crop` — accepted-candidate: English and Swahili 64x48 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads were each reopened by format parser at exactly 64x48; the localized clipboard recipe was also read back.
 - `color-picker` — accepted-candidate: CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values.
-- `favicon-generator` — blocked-missing-route: No physical Swahili route or native favicon/ZIP owner exists on the coordinator base.
+- `favicon-generator` — accepted-candidate: Controlled English and Swahili text output was byte-identical. The ZIP parsed with exactly four PNGs, one ICO and one site.webmanifest; all PNGs and every ICO-embedded PNG reopened at 16, 32, 48 and 64 pixels, and the manifest referenced the exact four files.
 - `image-to-text` — blocked-feature-parity: The route performs local OCR but does not reuse the English local OCR/studio owners or reproduce their source, language, clearing, and export contracts.
 - `meme-generator` — blocked-missing-route: No physical Swahili route or native meme canvas/export owner exists on the coordinator base.
 - `logo-maker` — blocked-feature-parity: The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract.
@@ -77,6 +77,7 @@
 - Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.
 - Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.
 - Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.
+- Favicon Generator is generated from the English studio DOM contract and loads favicon-generator-studio.js; the shared engine owns local image/text rendering, four PNG sizes, multi-image ICO construction, site.webmanifest and ZIP output.
 - Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.
 
 ## Browser and export proof
@@ -99,4 +100,4 @@
 
 ## Boundary and baseline debt
 
-The 41 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
+The 40 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.

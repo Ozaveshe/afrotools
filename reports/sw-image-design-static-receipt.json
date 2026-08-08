@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 12,
-    "blocked": 7,
+    "staticCandidates": 13,
+    "blocked": 6,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -45,6 +45,12 @@
       "route": "/sw/zana/kichagua-rangi/",
       "sourceOwner": "scripts/build-sw-image-color-family.js",
       "browserProof": "tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed."
+    },
+    {
+      "id": "favicon-generator",
+      "route": "/sw/zana/kizalishaji-favicon/",
+      "sourceOwner": "scripts/build-sw-favicon-generator.js + assets/js/lib/favicon-generator-studio.js",
+      "browserProof": "tests/e2e/swahili-favicon-generator-parity.spec.js: English and Swahili share the exact local canvas owner; controlled text and uploaded-image output matched byte-for-byte; ZIP contents were parsed; all four PNG files reopened at exact dimensions; ICO directory entries and embedded PNGs parsed at 16, 32, 48 and 64 pixels; site.webmanifest parsed and referenced every PNG; invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-user-data-egress checks passed."
     },
     {
       "id": "image-filters",
@@ -91,12 +97,6 @@
       "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
     },
     {
-      "id": "favicon-generator",
-      "route": "/sw/zana/kizalishaji-favicon/",
-      "status": "blocked-missing-route",
-      "blocker": "No physical Swahili route or native favicon/ZIP owner exists on the coordinator base."
-    },
-    {
       "id": "image-to-text",
       "route": "/sw/zana/kutoa-maandishi-kwenye-picha/",
       "status": "blocked-feature-parity",
@@ -127,7 +127,7 @@
       "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Favicon Generator, Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -146,7 +146,8 @@
       4408,
       4409,
       4410,
-      4411
+      4411,
+      4415
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -159,9 +160,10 @@
       "tests/e2e/swahili-social-card-parity.spec.js",
       "tests/e2e/swahili-passport-photo-parity.spec.js",
       "tests/e2e/swahili-image-compress-parity.spec.js",
-      "tests/e2e/swahili-thumbnail-maker-parity.spec.js"
+      "tests/e2e/swahili-thumbnail-maker-parity.spec.js",
+      "tests/e2e/swahili-favicon-generator-parity.spec.js"
     ],
-    "result": "33 passed"
+    "result": "36 passed"
   },
   "validation": {
     "focusedStatic": "pass",

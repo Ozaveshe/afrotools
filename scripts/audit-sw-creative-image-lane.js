@@ -44,8 +44,14 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'passport-photo', 'qr-generator', 'social-card', 'thumbnail-maker', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'favicon-generator', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'passport-photo', 'qr-generator', 'social-card', 'thumbnail-maker', 'watermark-bulk']);
 const candidateProof = {
+  'favicon-generator': {
+    sourceOwner: 'scripts/build-sw-favicon-generator.js + assets/js/lib/favicon-generator-studio.js',
+    oracle: 'English and Swahili execute the exact shared local canvas owner. The existing four PNG sizes remain unchanged, while the formerly advertised-but-missing ICO plus a matching site.webmanifest are now generated inside the same ZIP.',
+    exports: 'Controlled English and Swahili text output was byte-identical. The ZIP parsed with exactly four PNGs, one ICO and one site.webmanifest; all PNGs and every ICO-embedded PNG reopened at 16, 32, 48 and 64 pixels, and the manifest referenced the exact four files.',
+    browser: 'tests/e2e/swahili-favicon-generator-parity.spec.js (Chromium, one worker, final run on port 4415): shared rendering, image and text input, parsed PNG/ICO/manifest/archive, invalid/reset, 320/375, true 200% reflow, themes, keyboard/focus, a11y, SEO, console and no-user-data-egress passed.'
+  },
   'image-compress': {
     sourceOwner: 'scripts/build-sw-image-compress.js + assets/js/lib/image-compress-studio.js',
     oracle: 'The English inline IIFE was extracted byte-for-byte into the maintained shared owner (baseline SHA-256 47a6a29e4f9e61559c16525c3d73e09589400324caf1b6f65129a897e0ab6cfa); English and Swahili now execute that exact queue, target-size, resize, codec, comparison, filename, settings and history engine.',
@@ -153,8 +159,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 12, `accepted candidate count drifted: expected 12, found ${accepted.length}`);
-expect(blocked.length === 41, `blocked count drifted: expected 41, found ${blocked.length}`);
+expect(accepted.length === 13, `accepted candidate count drifted: expected 13, found ${accepted.length}`);
+expect(blocked.length === 40, `blocked count drifted: expected 40, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -184,12 +190,13 @@ const receipt = {
     'Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.',
     'Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.',
     'Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.',
+    'Favicon Generator is generated from the English studio DOM contract and loads favicon-generator-studio.js; the shared engine owns local image/text rendering, four PNG sizes, multi-image ICO construction, site.webmanifest and ZIP output.',
     'Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.'
   ],
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411],
+    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415],
     widths: [320, 375, 640],
     reflow: '320/375 px narrow widths plus an explicit 200% browser zoom reflow check for Thumbnail Maker; earlier candidates retain their recorded 640 px equivalent checks',
     themes: ['light', 'dark'],
@@ -208,6 +215,7 @@ const receipt = {
     'node tests/qr-payload-engine.test.js',
     'node tests/image-compress-shared-owner.test.js',
     'node tests/swahili-thumbnail-maker-parity.test.js',
+    'node tests/swahili-favicon-generator-parity.test.js',
     'playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1',
@@ -219,6 +227,7 @@ const receipt = {
     'playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-image-compress-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-favicon-generator-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',

@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 12, `expected 12 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 7, `expected 7 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 13, `expected 13 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 6, `expected 6 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -89,6 +89,9 @@ const thumbnail = read('sw/zana/kitengeneza-thumbnail/index.html');
 expect(thumbnail.includes('scripts/build-sw-thumbnail-maker.js'), 'thumbnail-maker: source owner marker missing');
 expect(thumbnail.includes('/assets/js/lib/thumbnail-maker-studio.js'), 'thumbnail-maker: shared English studio is not wired');
 expect(thumbnail.includes('/assets/js/lib/thumbnail-maker-studio-sw.js'), 'thumbnail-maker: Swahili dynamic adapter is not wired');
+const favicon = read('sw/zana/kizalishaji-favicon/index.html');
+expect(favicon.includes('scripts/build-sw-favicon-generator.js'), 'favicon-generator: source owner marker missing');
+expect(favicon.includes('/assets/js/lib/favicon-generator-studio.js'), 'favicon-generator: shared English studio is not wired');
 
 for (const row of blockedRows) {
   if (row.status === 'blocked-missing-route') expect(!exists(row.swahiliOwner), `${row.id}: manifest says missing but the route exists`);
@@ -105,9 +108,9 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Favicon Generator, Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js'], result: '33 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js'], result: '36 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
