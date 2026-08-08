@@ -34,9 +34,9 @@ const ROUTES = Object.freeze({
   "amount-words-gh": ["/sw/zana/kiasi-kwa-maneno-ghana/", "shared-engine"],
   "susu-tracker": ["/sw/zana/kifuatiliaji-susu/", "shared-engine"],
   "whatsapp-link": ["/sw/zana/kiungo-cha-whatsapp/", "shared-engine"],
-  "remittance-compare": ["/sw/zana/ulinganisho-uhamishaji-pesa/", "native-blocked-inline-engine"],
+  "remittance-compare": ["/sw/zana/ulinganisho-uhamishaji-pesa/", "native-existing"],
   "informal-fx-watch": ["/sw/zana/ufuatiliaji-soko-la-fedha/", "shared-engine"],
-  "remittance-v2": ["/sw/zana/ulinganisho-uhamishaji-pesa-kina/", "native-blocked-missing"],
+  "remittance-v2": ["/sw/zana/ulinganisho-uhamishaji-pesa-kina/", "native-existing"],
   "cost-of-living": ["/sw/zana/gharama-za-maisha/", "shared-engine"],
   "afroatlas": ["/sw/zana/afroatlas/", "shared-engine"],
   "afropoints": ["/sw/zana/afropoints/", "shared-engine"],
@@ -308,7 +308,11 @@ function main() {
     if (!fs.existsSync(file)) throw new Error(`Missing native Swahili owner ${row.english.id}`);
     writeOrCheck(file, hardenNative(row, fs.readFileSync(file, "utf8")), changed);
   }
+  const readyCount = manifest.rows.filter((row) => row.swahili.mode === "shared-engine" || row.swahili.mode === "native-existing").length;
+  const blockedCount = manifest.rows.length - readyCount;
   const hub = hubHtml(manifest)
+    .replace('Programu 6 bado zimezuiwa', `Programu ${blockedCount} bado zimezuiwa`)
+    .replace('<strong>28 / 34</strong>', `<strong>${readyCount} / 34</strong>`)
     .replace(
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">',
       '<link rel="alternate" hreflang="sw" href="https://afrotools.com/sw/zana-za-kipekee-afrika/"><link rel="alternate" hreflang="x-default" href="https://afrotools.com/sw/zana-za-kipekee-afrika/">'

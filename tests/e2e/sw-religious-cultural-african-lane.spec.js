@@ -5,17 +5,18 @@ const { test, expect } = require('@playwright/test');
 const religiousBuilder = require('../../scripts/build-sw-religious-cultural-parity.js');
 const africanManifest = require('../../data/localization/sw-uniquely-african-parity-manifest.json');
 
-const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
+const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2']);
+const remittanceIds = new Set(['remittance-compare','remittance-v2']);
 const routes = [
   ...Array.from(religiousBuilder.ACCEPTED, (id) => ({ id, family:'religious', route:religiousBuilder.ROUTES[id] })),
-  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:'african', route:row.swahili.route }))
+  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':'african', route:row.swahili.route }))
 ];
 
 test.describe.configure({ mode:'serial' });
 
-test('27 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test('29 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(27);
+  expect(routes).toHaveLength(29);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
@@ -41,11 +42,24 @@ test('27 candidate apps pass native workflow, export, privacy and responsive bro
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content',/\/assets\/img\/tools\//);
     await expect(page.locator('body')).not.toContainText(/Famille|Confirmer les|Révision familiale|Montant de référence|Calculer|Résultat/);
 
-    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : page.locator('[data-ua-form]');
-    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : page.locator('[data-ua-result]');
+    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : page.locator('[data-ua-form]');
+    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : page.locator('[data-ua-result]');
     await expect(form).toBeVisible();
     if (app.id === 'whatsapp-link') await page.locator('[data-ua-field="message"]').fill('SW_PRIVACY_SENTINEL');
     if (app.family === 'african') await form.locator('button[type="submit"]').click();
+    if (app.family === 'remittance') {
+      const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
+      for (const letter of ['a','b']) {
+        await page.locator(`#rm-${letter}-label`).fill(`Nukuu ${letter.toUpperCase()}`);
+        await page.locator(`#rm-${letter}-send`).fill('USD');
+        await page.locator(`#rm-${letter}-debit`).fill('500');
+        await page.locator(`#rm-${letter}-receive`).fill('KES');
+        await page.locator(`#rm-${letter}-recipient`).fill(letter==='a'?'64000':'64500');
+        await page.locator(`#rm-${letter}-fee`).fill(letter==='a'?'3':'4');
+        await page.locator(`#rm-${letter}-observed`).fill(checked);
+      }
+      await form.locator('button[type="submit"]').click();
+    }
     await expect(result).toBeVisible();
 
     if (app.family === 'religious') {
@@ -60,6 +74,14 @@ test('27 candidate apps pass native workflow, export, privacy and responsive bro
       await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
       await page.locator('#sw-rc-print').click();
       expect(await page.evaluate(() => window.__printInvoked === true)).toBe(true);
+    } else if (app.family === 'remittance') {
+      const download=page.waitForEvent('download');
+      await page.locator('#rm-json').click();
+      const item=await download;const file=await item.path();const parsed=JSON.parse(fs.readFileSync(file,'utf8'));
+      expect(parsed.methodology).toBe('user-entered-remittance-quotes');
+      expect(parsed.result.hasEligibleComparison).toBe(true);
+      await page.locator('#rm-copy').click();
+      await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
     } else {
       for (const kind of ['json','txt']) {
         const button = page.locator(`[data-ua-export="${kind}"]`);
@@ -143,4 +165,23 @@ test('English prayer owners use the same date-aware engine and conservative boun
   await expect(page.locator('.rs-output')).toContainText('local moon sighting');
   await expect(page.locator('.rs-table > div')).toHaveCount(7);
   expect(errors).toEqual([]);
+});
+
+test('English remittance owners share the receipt engine without static provider claims', async ({ page }) => {
+  for (const route of ['/tools/remittance-compare/','/tools/remittance-v2/']) {
+    await page.goto(route);
+    await expect(page.locator('main[data-remittance-parity]')).toBeVisible();
+    await expect(page.locator('body')).not.toContainText(/Wise|WorldRemit|Remitly|Western Union|MoneyGram/);
+    const checked=new Date(Date.now()-60000).toISOString().slice(0,16);
+    for (const letter of ['a','b']) {
+      await page.locator(`#rm-${letter}-label`).fill(`Quote ${letter.toUpperCase()}`);
+      await page.locator(`#rm-${letter}-send`).fill('USD');
+      await page.locator(`#rm-${letter}-debit`).fill('500');
+      await page.locator(`#rm-${letter}-receive`).fill('KES');
+      await page.locator(`#rm-${letter}-recipient`).fill(letter==='a'?'64000':'64500');
+      await page.locator(`#rm-${letter}-observed`).fill(checked);
+    }
+    await page.locator('#rm-form button[type="submit"]').click();
+    await expect(page.locator('#rm-primary-value')).toContainText('64,500 KES');
+  }
 });

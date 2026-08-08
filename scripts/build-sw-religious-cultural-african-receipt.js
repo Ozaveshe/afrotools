@@ -11,13 +11,11 @@ const religiousSource = require('../data/localization/fr-religious-cultural-pari
 
 const ROOT = path.resolve(__dirname, '..');
 const BASELINE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
-const AFRICAN_ACCEPTED = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
+const AFRICAN_ACCEPTED = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2']);
 const BLOCKERS = Object.freeze({
   'japa-calculator':'The English owner embeds changing visa, travel and relocation price assumptions without a current reviewed source contract.',
   'mobile-money-fees':'The result depends on provider fee tables whose freshness and authoritative source contract are not established in this lane.',
   'burial-cost':'The owner combines country price assumptions with a route-specific runtime wrapper; no safe locale-neutral price source was proved.',
-  'remittance-compare':'Provider availability, fees and exchange-rate semantics are changeable and lack a reviewed current source contract.',
-  'remittance-v2':'Provider availability, fees and exchange-rate semantics are changeable and lack a reviewed current source contract.',
   'brideprice-advisor':'The owner presents culturally sensitive price guidance without a defensible locale-neutral source or formula contract.'
 });
 
@@ -44,7 +42,7 @@ function build() {
       status: accepted ? 'candidate-accepted' : 'blocked',
       sourceOwners: row.categoryKey === 'religious-cultural'
         ? (['prayer-times','ramadan-timetable'].includes(row.englishId) ? ['assets/js/engines/prayer-times.js','assets/js/engines/religious-cultural-parity.js','scripts/enhance-religious-cultural-section.js','scripts/build-sw-religious-cultural-parity.js','assets/js/pages/sw-religious-cultural-parity.js','data/localization/prayer-times-source-fixtures.json'] : ['assets/js/engines/religious-cultural-parity.js','scripts/build-sw-religious-cultural-parity.js','assets/js/pages/sw-religious-cultural-parity.js'])
-        : ['engines/src/uniquely-african-engine.js','scripts/generate-sw-uniquely-african-parity.js','assets/js/pages/sw-uniquely-african-parity.js'],
+        : (['remittance-compare','remittance-v2'].includes(row.englishId) ? ['engines/src/remittance-quote-comparator-engine.js','scripts/build-remittance-quote-parity.js','assets/js/pages/remittance-quote-parity.js','data/fintech/official-sources.json'] : ['engines/src/uniquely-african-engine.js','scripts/generate-sw-uniquely-african-parity.js','assets/js/pages/sw-uniquely-african-parity.js']),
       decision: accepted ? 'Preserved the English calculation/data semantics through a DOM-free shared engine and a native Swahili presentation.' : BLOCKERS[row.englishId],
       proof: accepted ? {
         staticTest:'tests/sw-religious-cultural-african-lane.test.js',
@@ -61,7 +59,7 @@ function build() {
   });
   const accepted = rows.filter((row) => row.status === 'candidate-accepted').length;
   const blocked = rows.length - accepted;
-  if (accepted !== 27 || blocked !== 6) throw new Error(`Expected 27 accepted and 6 blocked, found ${accepted}/${blocked}`);
+  if (accepted !== 29 || blocked !== 4) throw new Error(`Expected 29 accepted and 4 blocked, found ${accepted}/${blocked}`);
   const receipt = {
     schemaVersion:1,
     programme:'swahili-free-app-parity',
@@ -80,9 +78,9 @@ function build() {
   const md = `# Swahili Religious, Cultural and African parity lane receipt\n\n`+
     `Baseline: \`${BASELINE}\`. Exact denominator: **33** (19 Religious & Cultural, 14 Uniquely African). Candidate accepted: **${accepted}**. Blocked: **${blocked}**. The coordinator acceptance ledger was not edited.\n\n`+
     `## Candidate accepted IDs\n\n${acceptedIds}\n\n## Blocked IDs and exact reasons\n\n${blockedRows}\n\n`+
-    `## Changed paths and source owners\n\n${changedOwners.map((owner) => `- \`${owner}\``).join('\n')}\n- Native pages: the 19 accepted religious routes and eight accepted African routes listed in the machine receipt.\n- Discovery: \`sw/dini-na-utamaduni/index.html\` and \`sw/zana-za-kipekee-afrika/index.html\`.\n- English parity: \`tools/prayer-times/index.html\`, \`tools/ramadan-timetable/index.html\`, and the shared English runtime owner use the same date-aware engine. No other locale UI/copy changed.\n- Proof: \`tests/sw-religious-cultural-african-lane.test.js\`, \`tests/e2e/sw-religious-cultural-african-lane.spec.js\`, the machine receipt and the artwork queue.\n\nReligious and cultural copy states the authority boundary and avoids declaring obligations, authenticity, official dates or prices. Prayer results are offline astronomical planning estimates with local-mosque and moon-sighting boundaries. African number-word, group-contribution, WhatsApp, interest, market-day and Ajo/Chama workflows preserve their English calculations in the shared DOM-free engine. Changing provider, travel, remittance and cultural-price claims remain blocked.\n\n`+
+    `## Changed paths and source owners\n\n${changedOwners.map((owner) => `- \`${owner}\``).join('\n')}\n- Native pages: the 19 accepted religious routes and ten accepted African routes listed in the machine receipt.\n- Discovery: \`sw/dini-na-utamaduni/index.html\` and \`sw/zana-za-kipekee-afrika/index.html\`.\n- English parity: prayer/Ramadan and both remittance English owners use the same DOM-free engines as their Swahili counterparts. No other locale UI/copy changed.\n- Proof: \`tests/sw-religious-cultural-african-lane.test.js\`, \`tests/e2e/sw-religious-cultural-african-lane.spec.js\`, the machine receipt and the artwork queue.\n\nReligious and cultural copy states the authority boundary and avoids declaring obligations, authenticity, official dates or prices. Prayer results are offline astronomical planning estimates with local-mosque and moon-sighting boundaries. Remittance results compare only timestamped user-entered quote receipts; no provider price or ranking is embedded. Changing provider tariffs, travel and cultural-price claims remain blocked.\n\n`+
     `## Browser, export, privacy and artwork proof\n\nChromium ran with one worker on an isolated port at 320px, 375px and emulated 200% reflow, plus light/dark themes, keyboard focus, invalid/reset clearing, page/console errors and request inspection. Every advertised downloadable JSON/TXT file was downloaded and parsed or reopened; copy payloads were read back and print actions were invoked. The synthetic privacy sentinel produced zero raw-input network leaks and no AI request. Dedicated artwork is present for all 33 assigned rows; the missing-artwork queue is empty.\n\n`+
-    `## Evidence and commands\n\n- PASS — focused Node suite (7/7 lane tests plus all 22 preserved French fixtures).\n- PASS — Swahili and French generator check modes; date-aware source fixtures cover daily prayer and 30-day Ramadan outputs.\n- PASS — focused Chromium lane spec on isolated ports, one worker (27-route matrix, invalid/reset, and English parity; 3/3).\n- PASS — privacy/AI consent tests (3/3).\n- PASS — \`npm run validate:hreflang\`, \`npm run check-links\`, \`npm run audit\`, \`npm run type-check\`, \`npm run lint\`, and \`git diff --check\`.\n- FAIL-CLOSED AT PROHIBITED INTEGRATION BOUNDARY — \`npm run build:i18n:validate\` reports only the three coordinator-owned locale coverage artifacts as stale; this lane did not regenerate them.\n- CARRIED BASELINE DEBT — \`npm run audit\` remains successful but reports the same two registry rows without pages.\n\nThe required reference \`.claude/rules/i18n.md\` was absent at the baseline; AGENTS.md, the Swahili strategy and coordinator skill governed the lane.\n`;
+    `## Evidence and commands\n\n- PASS — focused Node suite (7/7 lane tests, remittance engine oracle, and all 22 preserved French fixtures).\n- PASS — Swahili, French, religious and remittance generator check modes.\n- PASS — focused Chromium lane spec on isolated ports, one worker (29-route matrix, invalid/reset, prayer English parity and remittance English parity; 4/4).\n- PASS — privacy/AI consent tests (3/3).\n- PASS — \`npm run validate:hreflang\`, \`npm run check-links\`, \`npm run audit\`, \`npm run type-check\`, \`npm run lint\`, and \`git diff --check\`.\n- FAIL-CLOSED AT PROHIBITED INTEGRATION BOUNDARY — \`npm run build:i18n:validate\` reports only the three coordinator-owned locale coverage artifacts as stale; this lane did not regenerate them.\n- CARRIED BASELINE DEBT — \`npm run audit\` remains successful but reports the same two registry rows without pages.\n\nThe required reference \`.claude/rules/i18n.md\` was absent at the baseline; AGENTS.md, the Swahili strategy and coordinator skill governed the lane.\n`;
   return { receipt, queue, md };
 }
 
