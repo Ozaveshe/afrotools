@@ -2,8 +2,8 @@
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Accepted candidates: **13**
-- Fail-closed rows: **6**
+- Accepted candidates: **14**
+- Fail-closed rows: **5**
 - Central ledger edits: **0**
 - Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
@@ -17,6 +17,7 @@
 - `image-crop` — `/sw/zana/kukata-picha/`: tests/e2e/swahili-image-crop-parity.spec.js: English and Swahili share the exact interactive crop engine and produced byte-identical PNG output; Swahili selection, rotate/flip/reset, local history and localized recipe passed; PNG, JPG and WebP reopened at exact 64x48 dimensions; 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
 - `favicon-generator` — `/sw/zana/kizalishaji-favicon/`: tests/e2e/swahili-favicon-generator-parity.spec.js: English and Swahili share the exact local canvas owner; controlled text and uploaded-image output matched byte-for-byte; ZIP contents were parsed; all four PNG files reopened at exact dimensions; ICO directory entries and embedded PNGs parsed at 16, 32, 48 and 64 pixels; site.webmanifest parsed and referenced every PNG; invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-user-data-egress checks passed.
+- `image-to-text` — `/sw/zana/kutoa-maandishi-kwenye-picha/`: tests/e2e/swahili-image-to-text-parity.spec.js: English and Swahili execute the exact local Tesseract and OCR studio owners; controlled source pixels produced equivalent extracted text; TXT and Markdown reopened as text, JSON parsed with source/language/result/field contracts, CSV parsed with stable type/value columns, and the localized handoff brief was read back. Queue, invalid/reset, local model requests with zero user-data writes, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, artwork and console checks passed.
 - `image-filters` — `/sw/zana/filters-za-picha/`: tests/e2e/swahili-image-filters-parity.spec.js: Swahili is generated from the exact English studio DOM and loads image-filters-studio.js; English and Swahili produced byte-identical 60x40 PNG; direct PNG, JPG and WebP reopened at exact dimensions; the two-file PNG batch ZIP manifest parsed and every output reopened at 60x40; recipe copy, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `social-card` — `/sw/zana/kadi-ya-mitandao/`: tests/e2e/swahili-social-card-parity.spec.js: Swahili is generated from the exact English studio DOM and loads social-card-studio.js; controlled English and Swahili output was byte-identical at 1200x630; direct PNG, JPG and WebP reopened; all six platform-set PNGs reopened at exact 1200x630, 1200x627, 1080x1080, 1080x1350, 1080x1920 and 1280x720; OG metadata and handoff clipboard exports parsed; reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `thumbnail-maker` — `/sw/zana/kitengeneza-thumbnail/`: tests/e2e/swahili-thumbnail-maker-parity.spec.js: Swahili is generated from the exact English studio DOM and loads thumbnail-maker-studio.js; controlled English and Swahili 1280x720 PNG output was byte-identical; all 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized clipboard handoffs, invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
@@ -27,7 +28,6 @@
 ## Fail-closed rows
 
 - `background-remover` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.
-- `image-to-text` — blocked-feature-parity: The route performs local OCR but does not reuse the English local OCR/studio owners or reproduce their source, language, clearing, and export contracts.
 - `meme-generator` — blocked-missing-route: No physical Swahili route or native meme canvas/export owner exists on the coordinator base.
 - `logo-maker` — blocked-feature-parity: The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract.
 - `certificate-maker` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.
@@ -35,8 +35,8 @@
 
 ## Validation
 
-- Focused static/source-owner proof, 33 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.
-- `build:i18n:validate` failed only because the new physical route makes coordinator-owned locale coverage artifacts stale. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.
+- Focused static/source-owner proof, 39 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.
+- `build:i18n:validate` stopped only on coordinator-owned stale locale coverage artifacts. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.
 
 ## Boundary
 

@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 13, `expected 13 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 6, `expected 6 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 14, `expected 14 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 5, `expected 5 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -92,6 +92,11 @@ expect(thumbnail.includes('/assets/js/lib/thumbnail-maker-studio-sw.js'), 'thumb
 const favicon = read('sw/zana/kizalishaji-favicon/index.html');
 expect(favicon.includes('scripts/build-sw-favicon-generator.js'), 'favicon-generator: source owner marker missing');
 expect(favicon.includes('/assets/js/lib/favicon-generator-studio.js'), 'favicon-generator: shared English studio is not wired');
+const imageToText = read('sw/zana/kutoa-maandishi-kwenye-picha/index.html');
+expect(imageToText.includes('scripts/build-sw-image-to-text.js'), 'image-to-text: source owner marker missing');
+expect(imageToText.includes('/assets/js/lib/image-to-text-ocr-local.js'), 'image-to-text: local OCR adapter is not wired');
+expect(imageToText.includes('/assets/js/lib/image-to-text-studio.js'), 'image-to-text: shared English studio is not wired');
+expect(imageToText.includes('/assets/js/lib/image-to-text-studio-sw.js'), 'image-to-text: Swahili presentation adapter is not wired');
 
 for (const row of blockedRows) {
   if (row.status === 'blocked-missing-route') expect(!exists(row.swahiliOwner), `${row.id}: manifest says missing but the route exists`);
@@ -108,9 +113,9 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Favicon Generator, Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Other candidates use committed local runtimes and maintained shared studios.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js'], result: '36 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411, 4415, 4418, 4420], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js', 'tests/e2e/swahili-thumbnail-maker-parity.spec.js', 'tests/e2e/swahili-favicon-generator-parity.spec.js', 'tests/e2e/swahili-image-to-text-parity.spec.js'], result: '39 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',
@@ -133,8 +138,8 @@ const receipt = {
 const markdown = `# Swahili Image & Design candidate receipt\n\n- Base: \`${receipt.baseCommit}\`\n- Exact English denominator: **19**\n- Accepted candidates: **${candidateRows.length}**\n- Fail-closed rows: **${blockedRows.length}**\n- Central ledger edits: **0**\n- Verdict: **CANDIDATE COMPLETE**\n- Artwork present: **${receipt.artwork.present}/19**\n\n## Accepted candidates\n\n${receipt.acceptedCandidates.map(row => `- \`${row.id}\` — \`${row.route}\`: ${row.browserProof}`).join('\n')}\n\n## Fail-closed rows\n\n${receipt.blocked.map(row => `- \`${row.id}\` — ${row.status}: ${row.blocker}`).join('\n')}\n\n## Validation\n\n- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.\n- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.\n\n## Boundary\n\nNo central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.\n`;
 
 const proofMarkdown = markdown
-  .replace('- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.', '- Focused static/source-owner proof, 33 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.')
-  .replace('- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.', '- `build:i18n:validate` failed only because the new physical route makes coordinator-owned locale coverage artifacts stale. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.')
+  .replace('- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.', '- Focused static/source-owner proof, 39 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.')
+  .replace('- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.', '- `build:i18n:validate` stopped only on coordinator-owned stale locale coverage artifacts. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.')
   .replace('No central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed.', 'No central acceptance ledger, AI route map, sitemap, dist, redirects, locale-coverage output, deployment, or live service was changed. The only other-locale edits are reciprocal `sw` hreflang links in the English and French thumbnail pages.');
 
 if (failures.length) {

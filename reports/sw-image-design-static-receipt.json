@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 13,
-    "blocked": 6,
+    "staticCandidates": 14,
+    "blocked": 5,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -53,6 +53,12 @@
       "browserProof": "tests/e2e/swahili-favicon-generator-parity.spec.js: English and Swahili share the exact local canvas owner; controlled text and uploaded-image output matched byte-for-byte; ZIP contents were parsed; all four PNG files reopened at exact dimensions; ICO directory entries and embedded PNGs parsed at 16, 32, 48 and 64 pixels; site.webmanifest parsed and referenced every PNG; invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-user-data-egress checks passed."
     },
     {
+      "id": "image-to-text",
+      "route": "/sw/zana/kutoa-maandishi-kwenye-picha/",
+      "sourceOwner": "scripts/build-sw-image-to-text.js + assets/js/lib/image-to-text-ocr-local.js + assets/js/lib/image-to-text-studio.js",
+      "browserProof": "tests/e2e/swahili-image-to-text-parity.spec.js: English and Swahili execute the exact local Tesseract and OCR studio owners; controlled source pixels produced equivalent extracted text; TXT and Markdown reopened as text, JSON parsed with source/language/result/field contracts, CSV parsed with stable type/value columns, and the localized handoff brief was read back. Queue, invalid/reset, local model requests with zero user-data writes, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, artwork and console checks passed."
+    },
+    {
       "id": "image-filters",
       "route": "/sw/zana/filters-za-picha/",
       "sourceOwner": "scripts/build-sw-image-filters.js",
@@ -97,12 +103,6 @@
       "blocker": "The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists."
     },
     {
-      "id": "image-to-text",
-      "route": "/sw/zana/kutoa-maandishi-kwenye-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The route performs local OCR but does not reuse the English local OCR/studio owners or reproduce their source, language, clearing, and export contracts."
-    },
-    {
       "id": "meme-generator",
       "route": "/sw/zana/kitengeneza-meme/",
       "status": "blocked-missing-route",
@@ -127,7 +127,7 @@
       "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Favicon Generator, Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. Image to Text uses same-origin Tesseract workers, WASM cores and language models; browser proof confirms source pixels and extracted text create no network write. Other candidates use committed local runtimes and maintained shared studios.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -147,7 +147,9 @@
       4409,
       4410,
       4411,
-      4415
+      4415,
+      4418,
+      4420
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -161,18 +163,19 @@
       "tests/e2e/swahili-passport-photo-parity.spec.js",
       "tests/e2e/swahili-image-compress-parity.spec.js",
       "tests/e2e/swahili-thumbnail-maker-parity.spec.js",
-      "tests/e2e/swahili-favicon-generator-parity.spec.js"
+      "tests/e2e/swahili-favicon-generator-parity.spec.js",
+      "tests/e2e/swahili-image-to-text-parity.spec.js"
     ],
-    "result": "36 passed"
+    "result": "39 passed"
   },
   "validation": {
     "focusedStatic": "pass",
     "colorFamilyOwner": "pass",
     "colorFamilyAudit": "pass",
-    "freeAppInventory": "pass: 1,257 rows / 770 accepted globally; Image & Design remains 0 accepted",
-    "localization": "blocked at required ownership boundary: the new physical Swahili route makes coordinator-owned locale-page-coverage and localization-coverage outputs stale; this lane is prohibited from regenerating them",
-    "hreflang": "pass: 33,418 relationships / 5,351 groups",
-    "internalLinks": "pass: 138,265 links across 11,510 HTML files",
+    "freeAppInventory": "pass: exact 19 Image & Design rows; central Image & Design acceptance remains 0",
+    "localization": "blocked at required ownership boundary: coordinator-owned locale-page-coverage and localization-coverage outputs are stale on this branch; this lane is prohibited from regenerating them",
+    "hreflang": "pass: 33,424 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,290 links across 11,511 HTML files",
     "registryAudit": "pass with carried baseline debt: job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 remain the same unrelated missing-page rows",
     "lint": "pass",
     "typeCheck": "pass",

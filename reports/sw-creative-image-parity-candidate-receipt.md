@@ -2,8 +2,8 @@
 
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact denominator: **53** (**34 Creative**, **19 Image & Design**)
-- Accepted candidates: **13**
-- Blocked fail-closed: **40**
+- Accepted candidates: **14**
+- Blocked fail-closed: **39**
 - Central acceptance ledger changed: **no**
 - Verdict: **PARTIAL — FAIL CLOSED**
 
@@ -17,7 +17,7 @@
 - `image-crop` — accepted-candidate: English and Swahili 64x48 PNG output was byte-identical. Swahili PNG, JPG and WebP downloads were each reopened by format parser at exactly 64x48; the localized clipboard recipe was also read back.
 - `color-picker` — accepted-candidate: CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values.
 - `favicon-generator` — accepted-candidate: Controlled English and Swahili text output was byte-identical. The ZIP parsed with exactly four PNGs, one ICO and one site.webmanifest; all PNGs and every ICO-embedded PNG reopened at 16, 32, 48 and 64 pixels, and the manifest referenced the exact four files.
-- `image-to-text` — blocked-feature-parity: The route performs local OCR but does not reuse the English local OCR/studio owners or reproduce their source, language, clearing, and export contracts.
+- `image-to-text` — accepted-candidate: A controlled synthetic image produced equivalent English and Swahili OCR text. TXT and Markdown reopened as text; JSON parsed with source, language, result and field contracts; CSV parsed with stable type/value columns; the localized handoff brief was read back.
 - `meme-generator` — blocked-missing-route: No physical Swahili route or native meme canvas/export owner exists on the coordinator base.
 - `logo-maker` — blocked-feature-parity: The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract.
 - `image-filters` — accepted-candidate: English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at exactly 60x40; a parsed two-source PNG ZIP manifest retained 120x80 source dimensions and every nested output reopened at 60x40; the clipboard recipe was read back.
@@ -73,7 +73,7 @@
 - Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.
 - Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.
 - The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.
-- QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.
+- Image to Text is generated from the English studio DOM and executes the exact same local Tesseract adapter and OCR studio; a bounded adapter localizes dynamic presentation without changing OCR, cleanup, field extraction or export semantics.
 - Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.
 - Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.
 - Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.
@@ -82,16 +82,16 @@
 
 ## Browser and export proof
 
-- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410 and 4411: **33 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
-- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Image Compress reopened PNG, JPG, WebP, auto-selected, target-size and two Download all outputs at exact dimensions and matched English PNG bytes; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Thumbnail Maker reopened all 15 direct size/format outputs, three A/B variants and the local-asset output at exact dimensions and matched controlled English PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
+- Chromium, one worker, isolated ports through 4420: **39 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
+- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Image Compress reopened PNG, JPG, WebP, auto-selected, target-size and two Download all outputs at exact dimensions and matched English PNG bytes; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Thumbnail Maker reopened all 15 direct size/format outputs, three A/B variants and the local-asset output at exact dimensions and matched controlled English PNG bytes; Image to Text ran real local OCR in English and Swahili, reopened TXT and Markdown, parsed JSON and CSV, and read back the localized handoff; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
 - Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.
 
 ## Validation gates
 
-- PASS: thumbnail static oracle; thumbnail Chromium (3 tests, one worker, port 4411); hreflang (33,418 relationships / 5,351 groups); links (138,265 / 11,510 HTML files); registry audit; lint; type-check; privacy/AI consent.
-- OWNERSHIP BOUNDARY: `build:i18n:validate` reports stale coordinator-owned locale coverage artifacts after the new physical route. This lane is prohibited from regenerating them; the coordinator must regenerate and rerun the gate after integration.
+- PASS: focused static oracle; focused Image to Text Chromium 3/3; full Image & Design Chromium 39/39; hreflang (33,424 relationships / 5,351 groups); links (138,290 / 11,511 HTML files); registry audit; locale-key validation; lint; type-check; privacy/AI consent.
+- OWNERSHIP BOUNDARY: `build:i18n:validate` reports coordinator-owned stale locale coverage artifacts. This lane is prohibited from regenerating them; the coordinator must regenerate and rerun the gate after integration.
 - Carried audit debt: the two unrelated missing-page rows remain `job-offer-evaluator` and `zana-tathmini-ya-ofa-ya-kazi-sw-wave8`.
-- Reciprocal metadata-only edits: `tools/thumbnail-maker/index.html` and `fr/tools/createur-miniatures/index.html`.
+- Reciprocal metadata-only edits retained from the earlier Thumbnail Maker candidate: `tools/thumbnail-maker/index.html` and `fr/tools/createur-miniatures/index.html`. Image to Text required no cross-locale edit because reciprocity was already present.
 
 ## Artwork
 
@@ -100,4 +100,4 @@
 
 ## Boundary and baseline debt
 
-The 40 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
+The 39 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
