@@ -16,10 +16,8 @@ const FALSE_PAIR_IDS = new Set(["crypto-prices"]);
 const ARTWORK_BLOCK_IDS = new Set(["cnps-guide"]);
 const BROWSER_BLOCK_IDS = new Set([
   "business-planner",
-  "currency-converter",
   "er-vat",
   "first-home-buyer",
-  "import-duty",
   "job-offer-evaluator",
 ]);
 const ROUTE_PROOF = {
@@ -27,6 +25,8 @@ const ROUTE_PROOF = {
   "cv-paye": ["tests/engines/cv-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
   "dj-paye": ["tests/engines/dj-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
   "gm-paye": ["tests/engines/gm-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
+  "currency-converter": ["tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
+  "import-duty": ["tests/engines/import-duty-nigeria-engine.test.js", "tests/import-duty-data-trust.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
 };
 
 function routeFile(route) {
@@ -195,7 +195,9 @@ function build() {
     "- PASS 3/3 — `node tests/swahili-financial-shard-a.test.js`.",
     `- PASS ${accepted.length}/${accepted.length} — \`npx playwright test tests/e2e/swahili-financial-shard-a.spec.js --config=playwright.sw-financial-shard-a.config.js --project=chromium --workers=1\`.`,
     "- PASS 4/4 — `tests/e2e/swahili-financial-shard-a-paye.spec.js` downloaded and parsed each Swahili PAYE PDF with `pdf-parse`, and exercised valid, invalid, reset, 200% reflow, dark-mode and raw-input privacy contracts.",
+    "- PASS 2/2 — `tests/e2e/swahili-financial-shard-a-deterministic.spec.js` parsed the Swahili converter CSV and import-duty PDF, and exercised exact results, invalid/reset behavior, 200% reflow, dark mode, focus, runtime errors and raw-input network privacy.",
     "- PASS — `tests/engines/{bj,cv,dj,gm}-paye.test.js` preserves browser/server formula parity for the four newly accepted PAYE routes.",
+    "- PASS — `tests/engines/import-duty-nigeria-engine.test.js` and `tests/import-duty-data-trust.test.js` preserve the reviewed Nigeria import-duty engine and source contract.",
     "- PASS — `npm run validate:hreflang` (33,416 relationships; reciprocal EN/FR/SW job-offer metadata repaired).",
     "- PASS — `npm run check-links` (138,238 links; zero broken).",
     "- PASS — `npm run audit` (3,767 live/new rows; zero missing pages after two scoped registry URL repairs).",
