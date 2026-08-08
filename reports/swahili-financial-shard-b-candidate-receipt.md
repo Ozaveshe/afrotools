@@ -2,11 +2,11 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **30**. Blocked: **16**.
+Denominator: **46**. Accepted: **31**. Blocked: **15**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
-Ordering proof: position 90 `za-paye` remains fail-closed because it has no maintained readable engine and its source contract still targets 2025/26. Position 91 `za-transfer-duty` is the next eligible row and owns a maintained DOM-free engine plus current official SARS evidence.
+Ordering proof: position 90 `za-paye` remains fail-closed because it has no maintained readable engine and its source contract still targets 2025/26. Positions 91 `za-transfer-duty` and 92 `za-uif` are accepted; UIF owns a maintained DOM-free engine plus current official SARS and Department evidence.
 
 The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENTS.md, the Swahili strategy and coordinator skill supplied the active localization contract.
 
@@ -44,6 +44,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `za-dividend-tax` | `/tools/za-dividend-tax` | `/sw/zana/kikokotoo-kodi-gawio-afrika-kusini` | `/assets/js/engines/za-dividend-tax.js`<br>`/assets/js/pages/za-dividend-tax-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `za-gepf` | `/tools/za-gepf` | `/sw/zana/kikokotoo-gepf-afrika-kusini` | `/assets/js/lib/pdf-template.js`<br>`/engines/za-gepf-engine.js`<br>`/assets/js/pages/za-gepf-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `za-transfer-duty` | `/tools/za-transfer-duty` | `/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini` | `/assets/js/lib/pdf-template.js`<br>`/engines/za-transfer-duty-engine.js`<br>`/assets/js/pages/za-transfer-duty-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `za-uif` | `/tools/za-uif` | `/sw/zana/kikokotoo-uif-afrika-kusini` | `/engines/za-uif-engine.js`<br>`/assets/js/pages/za-uif-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 
 ## Blocked candidates
 
@@ -64,7 +65,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `sl-paye` | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `tn-paye` | `/sw/tunisia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `za-paye` | `/sw/south-africa/kikokotoo-kodi-mshahara` | Skipped fail-closed at position 90: only a minified legacy engine exists, the page and source contract still target 2025/26, and no maintained readable engine owner can safely support native parity. |
-| `za-uif` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 
 ## Proof contract
 
@@ -76,16 +76,17 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 30 accepted candidates, 16 blocked, one missing artwork.
-- PASS: current focused Node subtests 12/12 cover the transfer-duty engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
+- Evidence generator check: 46 rows, 31 accepted candidates, 15 blocked, one missing artwork.
+- PASS: current focused Node subtests 13/13 cover the UIF engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
+- PASS: za-uif English/French/Swahili focused family regression 4/4, including contributions, ordinary and maternity benefits, reopened private clipboard summary, privacy, focus, theme and reflow.
 - PASS: za-transfer-duty English/French/Swahili focused family regression 6/6, including exact maintained-engine output, parsed CSV/JSON/PDF, real English and French PDF downloads, privacy, focus, theme and reflow.
 - PASS: za-gepf English/French/Swahili focused family regression 6/6, including exact maintained-engine output, parsed CSV/JSON/PDF, real English and French PDF downloads, privacy, focus, theme and reflow.
 - PASS: za-dividend-tax English/French/Swahili focused family regression 8/8, including standard/reduced/exempt boundaries, parsed TXT, reopened print/PDF, privacy, focus, theme and reflow.
 - PASS: za-cgt English/Swahili focused family regression 7/7, including exact progressive tax, parsed TXT, metadata, privacy, focus, theme and reflow.
 - PASS: ng-wht English/Swahili/French/Hausa/Yoruba family regression 13/13, including exact Schedule boundaries, metadata, privacy, focus, theme and reflow.
-- PASS: complete 46-test shard browser matrix on isolated port 43917, including za-transfer-duty exact engine comparison, parsed CSV/JSON/PDF, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.
-- PASS: direct language validation and 33,502 reciprocal hreflang relationships across 5,351 equivalence groups and 11,303 public pages. Protected coordinator coverage artifacts were intentionally not regenerated.
-- PASS: 138,301 internal links across 11,522 HTML files; registry audit retains two unrelated missing-page rows and adds no za-transfer-duty defect.
+- PASS: complete 48-test shard browser matrix on isolated port 43917, including za-uif exact engine comparisons, private clipboard summary, stale-result clearing, invalid focus, reset, privacy and every accepted route.
+- PASS: direct language validation and 33,508 reciprocal hreflang relationships across 5,351 equivalence groups and 11,304 public pages. Protected coordinator coverage artifacts were intentionally not regenerated.
+- PASS: 138,307 internal links across 11,523 HTML files; registry audit retains two unrelated missing-page rows and adds no za-uif defect.
 - PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.
 - MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.
 
@@ -112,9 +113,11 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Za-gepf reciprocal metadata only: `tools/za-gepf/index.html` and `fr/tools/za-gepf/index.html` add the Swahili alternate. The existing French PDF regression now verifies its real local download rather than intercepting it with a stub; visible UI and calculation copy are unchanged.
 - Za-transfer-duty native parity: `/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/` delegates to the maintained `engines/za-transfer-duty-engine.js`, preserves the SARS 2027 brackets and greater-value rule, keeps VAT status as explicit user input, clears stale results, focuses invalid dates, resets locally and reopens copy, injection-safe CSV, JSON and parser-readable PDF.
 - Za-transfer-duty reciprocal metadata only: `tools/za-transfer-duty/index.html` and `fr/tools/za-droits-mutation/index.html` add the Swahili alternate and advance their visible source-review date to 9 August 2026. Their formula and calculation UI remain unchanged.
+- Za-uif native parity: `/sw/zana/kikokotoo-uif-afrika-kusini/` delegates to the maintained `engines/za-uif-engine.js`, preserves the contribution, ordinary-benefit and maternity formulas, requires user-entered verified credits, clears stale results, focuses invalid inputs, resets locally and exposes only a private clipboard summary. It makes no eligibility, credit, claim or payment decision.
+- Za-uif reciprocal metadata only: `tools/za-uif/index.html` and `fr/tools/za-uif/index.html` add the Swahili alternate and advance their visible source-review date to 9 August 2026. Their calculation UI and formula remain unchanged.
 - Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.
-- Formula/data/source decision: no formula, rate, bracket, threshold or jurisdiction rule changed. Za-transfer-duty only advances the shared engine verified-through date after the official SARS recheck; the other accepted tools retain their reviewed engines and evidence contracts.
-- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43923; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
+- Formula/data/source decision: no formula, rate, ceiling, tier or benefit rule changed. Za-uif only advances the shared engine verified-through date after official source rechecks; the other accepted tools retain their reviewed engines and evidence contracts.
+- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43924; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
 - Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.
 - Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still supports the small-company definition, company rates, development levy and section 57 review trigger used by the unchanged NigeriaCit engine; June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.
 - Official-source recheck on 8 August 2026: the official Deduction at Source Regulations 2024 Gazette remains the WHT rate source; Nigeria Tax Administration Act 2025 section 51 requires prescribed regulatory rates, JRB 2026 guidance still references the 2024 Regulations, and federal transition guidance keeps the 1 January 2026 boundary. No engine parameter changed.
@@ -122,6 +125,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Official-source recheck on 8 August 2026: the SARS Dividends Tax page still states 20% from 22 February 2017 and the last-day-of-following-month remittance boundary; the 2027 rate page confirms no change, while declaration evidence and the DTA portal remain the reduced-rate or exemption boundary. No engine parameter changed.
 - Official-source recheck on 8 August 2026: official GEPF retirement-benefit, employer-contribution and revised actuarial-factor pages remain reachable. No shared-engine parameter changed; the Swahili app stays a planning estimate and leaves recognised service, tax, withdrawal eligibility and final benefits to GEPF.
 - Official-source recheck on 9 August 2026: the SARS 2027 transfer-duty table, Budget 2026 guidance, Act 3 of 2026 and eFiling value rules remain aligned with the shared engine. No bracket or formula changed; VAT treatment remains a user-supplied fact and VAT itself is not calculated.
+- Official-source recheck on 9 August 2026: SARS still publishes the 1% + 1% UIF contribution and R17,712 ceiling; Department/UIF material retains the ordinary 38%-60% and 20% tiers plus the 66%/121-day maternity boundary. No engine formula changed.
 - Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still contains the Nigerian-share threshold and same-year reinvestment rules used by the existing engine, and June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.
 - Official-source recheck on 8 August 2026: the Mauritania DGI obligations page still states monthly ITS rates of 15%, 25% and 40%; the official CNSS declaration form still states 13% employer CNSS, 1% worker CNSS and 2% occupational medicine. No cap or formula was changed, and the reviewed 21 July contract retains its 31 October review boundary.
 - Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.

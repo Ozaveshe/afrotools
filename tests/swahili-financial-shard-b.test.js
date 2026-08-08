@@ -15,6 +15,7 @@ const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
 const southAfricaGepf = require('../engines/src/za-gepf-engine.js');
 const southAfricaTransferDuty = require('../engines/src/za-transfer-duty-engine.js');
+const southAfricaUif = require('../engines/src/za-uif-engine.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -32,7 +33,7 @@ const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
   'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
-  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty',
+  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty', 'za-uif',
 ];
 
 function readJson(file) {
@@ -55,8 +56,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 30);
-  assert.equal(receipt.blocked, 16);
+  assert.equal(receipt.accepted, 31);
+  assert.equal(receipt.blocked, 15);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -282,4 +283,37 @@ test('za-transfer-duty Swahili parity preserves the reviewed SARS shared-engine 
   assert.equal(source.lastReviewedAt, '2026-08-09');
   assert.ok(source.toolIds.includes('za-transfer-duty-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini'));
+});
+
+test('za-uif Swahili parity preserves the reviewed SARS and Labour shared-engine contract', () => {
+  assert.deepEqual(southAfricaUif.constants, {
+    monthlyCeiling: 17712,
+    annualCeiling: 212544,
+    employeeRate: 0.01,
+    employerRate: 0.01,
+    maximumCreditDays: 365,
+    slidingTierDays: 238,
+    secondTierRate: 0.2,
+    maternityRate: 0.66,
+    maternityMaximumDays: 121,
+    verifiedThrough: '2026-08-09',
+  });
+  const contribution = southAfricaUif.calculateContribution({ monthlyRemuneration: 25000, employees: 8, months: 2 });
+  assert.equal(contribution.employeeMonthly, 177.12);
+  assert.equal(contribution.employerMonthly, 177.12);
+  assert.equal(contribution.teamPeriodTotal, 5667.84);
+  const benefit = southAfricaUif.calculateBenefitPlan({ averageMonthlyRemuneration: 17712, availableCreditDays: 365, requestedDays: 239 });
+  assert.equal(benefit.slidingTierDays, 238);
+  assert.equal(benefit.secondTierDays, 1);
+  const maternity = southAfricaUif.calculateMaternityPlan({ averageMonthlyRemuneration: 12000, employerMonthlyPay: 10000, requestedDays: 121 });
+  assert.ok(Math.abs(maternity.dailyBenefit - (2000 * 12 / 365)) < 0.01);
+  assert.equal(maternity.topUpLimited, true);
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['za-uif'];
+  assert.equal(verification.last_verified, '2026-08-09');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-uif-afrika-kusini/'));
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'south-africa-uif-source');
+  assert.equal(source.lastReviewedAt, '2026-08-09');
+  assert.ok(source.toolIds.includes('za-uif-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-uif-afrika-kusini'));
 });

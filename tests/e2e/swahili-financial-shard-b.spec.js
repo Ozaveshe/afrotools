@@ -10,6 +10,7 @@ const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
 const southAfricaGepf = require('../../engines/src/za-gepf-engine.js');
 const southAfricaTransferDuty = require('../../engines/src/za-transfer-duty-engine.js');
+const southAfricaUif = require('../../engines/src/za-uif-engine.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -42,6 +43,7 @@ const routes = [
   ['/sw/zana/kikokotoo-kodi-gawio-afrika-kusini', 'za-dividend-tax'],
   ['/sw/zana/kikokotoo-gepf-afrika-kusini', 'za-gepf'],
   ['/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini', 'za-transfer-duty'],
+  ['/sw/zana/kikokotoo-uif-afrika-kusini', 'za-uif'],
 ];
 
 test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
@@ -511,6 +513,68 @@ test('za-transfer-duty delegates to the SARS engine and reopens every advertised
   await expect(page.locator('#td-consideration')).toHaveValue('2500000');
   await expect(page.locator('#td-status')).toContainText('kimerudishwa mwanzo');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /transfer|duty|property|consideration/i.test(key)))).toEqual([]);
+  expect(sensitiveWrites).toEqual([]);
+});
+
+test('za-uif delegates to the reviewed engine and reopens its advertised private summary', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:25000|177\.12|19890)/.test(body)) sensitiveWrites.push({ url: request.url(), body });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+  });
+  await page.goto('/sw/zana/kikokotoo-uif-afrika-kusini/', { waitUntil: 'domcontentloaded' });
+
+  const contribution = southAfricaUif.calculateContribution({ monthlyRemuneration: 25000, employees: 8, months: 2 });
+  await page.locator('#uif-employees').fill('8');
+  await page.locator('#uif-months').fill('2');
+  await page.getByRole('button', { name: 'Kokotoa mchango' }).click();
+  await expect(page.locator('#uif-contribution-results')).toBeFocused();
+  await expect(page.locator('#uif-contribution-results')).toContainText('177.12');
+  await expect(page.locator('#uif-contribution-results')).toContainText('5,667.84');
+  expect(contribution.teamPeriodTotal).toBe(5667.84);
+
+  await page.getByRole('tab', { name: 'Mpango wa ukosefu wa ajira' }).click();
+  const benefit = southAfricaUif.calculateBenefitPlan({ averageMonthlyRemuneration: 17712, availableCreditDays: 365, requestedDays: 239 });
+  await page.locator('#uif-average').fill('17712');
+  await page.locator('#uif-credits').fill('365');
+  await page.locator('#uif-requested').fill('239');
+  await page.getByRole('button', { name: 'Kokotoa makadirio' }).click();
+  await expect(page.locator('#uif-benefit-results')).toBeFocused();
+  await expect(page.locator('#uif-benefit-results')).toContainText(String(benefit.payableDays));
+  await expect(page.locator('#uif-benefit-results')).toContainText(String(benefit.secondTierDays));
+
+  await page.getByRole('tab', { name: 'Mpango wa uzazi' }).click();
+  const maternity = southAfricaUif.calculateMaternityPlan({ averageMonthlyRemuneration: 30000, employerMonthlyPay: 25000, requestedDays: 121 });
+  await page.locator('#uif-maternity-average').fill('30000');
+  await page.locator('#uif-employer-pay').fill('25000');
+  await page.getByRole('button', { name: 'Kokotoa mpango wa uzazi' }).click();
+  await expect(page.locator('#uif-maternity-results')).toBeFocused();
+  await expect(page.locator('#uif-maternity-results')).toContainText('19,890.41');
+  expect(Math.round(maternity.estimatedBenefit * 100) / 100).toBe(19890.41);
+
+  await page.locator('#uif-copy').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya kupanga mafao ya UIF Afrika Kusini');
+  expect(copied).toContain('19,890.41');
+  expect(copied).toContain('9 Agosti 2026');
+  expect(copied).not.toContain('South Africa UIF benefit planning estimate');
+
+  await page.locator('#uif-employer-pay').fill('24000');
+  await expect(page.locator('#uif-maternity-results')).toBeEmpty();
+  await expect(page.locator('#uif-status')).toContainText('Taarifa imebadilika');
+  await page.locator('#uif-employer-pay').fill('-1');
+  await page.getByRole('button', { name: 'Kokotoa mpango wa uzazi' }).click();
+  await expect(page.locator('#uif-employer-pay')).toBeFocused();
+  await expect(page.locator('#uif-status')).toContainText('Weka kiasi halali');
+  await page.locator('[data-uif-reset="uif-maternity-form"]').click();
+  await expect(page.locator('#uif-maternity-average')).toBeFocused();
+  await expect(page.locator('#uif-employer-pay')).toHaveValue('0');
+  await expect(page.locator('#uif-status')).toContainText('kimerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /uif|salary|claim|benefit/i.test(key)))).toEqual([]);
   expect(sensitiveWrites).toEqual([]);
 });
 
