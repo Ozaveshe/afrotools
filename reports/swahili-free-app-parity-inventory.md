@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1504 |
-| Swahili coverage records | 1501 |
+| Swahili physical HTML pages | 1506 |
+| Swahili coverage records | 1503 |
 | Native candidates | 591 |
-| Localized shell candidates | 624 |
+| Localized shell candidates | 626 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 40 |
-| **Accepted** | **1125** |
+| Missing | 38 |
+| **Accepted** | **1127** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
-| Finance, Tax & Market Data | 132 | 7 | 88 | 2 | 0 | 0 | 0 | 0 | 35 | 79 |
+| Finance, Tax & Market Data | 132 | 7 | 90 | 2 | 0 | 0 | 0 | 0 | 33 | 81 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -307,7 +307,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | SA Dividends Tax Calculator | Finance, Tax & Market Data | `/tools/za-dividend-tax` | Missing | None | No |
 | Nigeria WHT Calculator | Finance, Tax & Market Data | `/tools/ng-wht` | Missing | None | No |
 | Kenya WHT Calculator | Finance, Tax & Market Data | `/tools/ke-wht` | Missing | None | No |
-| Transfer Pricing Comparability Planner | Finance, Tax & Market Data | `/tools/transfer-pricing` | Missing | None | No |
+| Transfer Pricing Comparability Planner | Finance, Tax & Market Data | `/tools/transfer-pricing` | Localized shell candidate | `/sw/zana/ulinganisho-wa-bei-za-uhamisho` | Yes |
 | South Africa UIF Calculator | Finance, Tax & Market Data | `/tools/za-uif` | Missing | None | No |
 | Investment Return Calculator | Finance, Tax & Market Data | `/tools/investment-return` | Native candidate | `/sw/zana/faida-ya-uwekezaji` | Yes |
 | Crypto Capital Gains Calculator | Finance, Tax & Market Data | `/tools/crypto-tax` | Localized shell candidate | `/sw/zana/kodi-ya-sarafu-za-kidijitali` | Yes |
@@ -758,7 +758,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Diaspora Property Investment Calculator | Mortgage & Property | `/tools/diaspora-property` | Localized shell candidate | `/sw/zana/uwekezaji-wa-diaspora-kwenye-mali` | Yes |
 | Off-Plan vs Ready Property Comparator | Mortgage & Property | `/tools/offplan-vs-ready` | Localized shell candidate | `/sw/zana/mradi-wa-ramani-dhidi-ya-nyumba-tayari` | Yes |
 | Retirement Scenario Planner | Finance, Tax & Market Data | `/tools/retirement-planner` | Localized shell candidate | `/sw/zana/mpango-wa-kustaafu-mapema` | Yes |
-| Side-Income Tax Reserve Planner | Finance, Tax & Market Data | `/tools/side-hustle-tax` | Missing | None | No |
+| Side-Income Tax Reserve Planner | Finance, Tax & Market Data | `/tools/side-hustle-tax` | Localized shell candidate | `/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada` | Yes |
 | Bank Charge Offer Comparator | Finance, Tax & Market Data | `/tools/bank-charges` | Localized shell candidate | `/sw/zana/ada-za-benki` | Yes |
 | Inflation Scenario Calculator | Finance, Tax & Market Data | `/tools/inflation-calc` | Localized shell candidate | `/sw/zana/kikokotoo-cha-mfumuko-wa-bei` | Yes |
 | Savings Goal Planner | Finance, Tax & Market Data | `/tools/savings-goal` | Localized shell candidate | `/sw/zana/lengo-la-akiba` | Yes |
