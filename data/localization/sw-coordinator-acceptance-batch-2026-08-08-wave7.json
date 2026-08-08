@@ -1,0 +1,85 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "a156248f",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 5,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the four deterministic Engineering-materials apps and Fleet Fuel beyond the prior seventeen-app Energy checkpoint. Fail closed on source-owner drift, formula mismatch, missing parsed exports, browser regressions or any of the 33 explicit remaining blockers.",
+  "candidates": [
+    {
+      "id": "engineering-materials-four",
+      "commit": "175f21b986f1c24f1b22772dd6076209ad2e8279",
+      "expectedRoutes": 4,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 4,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-engineering-materials-parity.spec.js",
+          "engineTest": "tests/swahili-engineering-materials-parity.test.js",
+          "workflow": "Concrete Mix, Tiles, Water Tank and Rebar use one DOM-free shared engine and passed exact formula oracles, invalid/reset, 320/375/200-percent reflow, themes, keyboard, metadata, reciprocal hreflang and local-only checks.",
+          "export": "The coordinator reran eight Chromium workflows; all four Swahili apps generated and parser-reopened JSON, CSV, TXT and PDF outputs, while all four English owners still calculated through the shared engine."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/outcome/acceptedCandidates", "equals": 22 },
+            { "pointer": "/outcome/blocked", "equals": 33 },
+            { "pointer": "/outcome/byCategory/engineering/acceptedCandidates", "equals": 4 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "concrete-calc", "swahiliRoute": "/sw/zana/mchanganyiko-wa-zege/" },
+            { "englishId": "tiles-calc", "swahiliRoute": "/sw/zana/kikokotoo-vigae-na-sakafu/" },
+            { "englishId": "water-tank", "swahiliRoute": "/sw/zana/ukubwa-wa-tangi-la-maji/" },
+            { "englishId": "rebar-calc", "swahiliRoute": "/sw/zana/kikokotoo-nondo/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fleet-fuel-shared-engine",
+      "commit": "fedc0ca63979c52b12808419f4d337f1ee8f1839",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-transport-cost-parity.spec.js",
+          "engineTest": "tests/swahili-transport-cost-parity.test.js",
+          "workflow": "Fleet Fuel now uses a bounded DOM-free shared engine that preserves the English six-day-week and operating-day-month assumptions and fails closed on invalid input without adding market-price claims.",
+          "export": "The coordinator reran both English and Swahili Chromium workflows at mobile widths with reset and no raw-input network writes; the Swahili workflow produced the verified local result contract."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/outcome/acceptedCandidates", "equals": 22 },
+            { "pointer": "/outcome/blocked", "equals": 33 },
+            { "pointer": "/outcome/byCategory/transport/acceptedCandidates", "equals": 1 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "fleet-fuel", "swahiliRoute": "/sw/zana/gharama-mafuta-ya-fleet/" }
+          ]
+        }
+      ]
+    }
+  ]
+}

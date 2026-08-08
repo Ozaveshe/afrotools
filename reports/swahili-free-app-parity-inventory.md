@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 44 |
-| **Accepted** | **1111** |
+| **Accepted** | **1116** |
 
 ## Category reconciliation
 
@@ -37,7 +37,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 6 |
+| Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
 | Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 76 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
@@ -55,7 +55,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Sports & Entertainment | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Telecom & Mobile | 14 | 14 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 14 |
 | Trade & Import | 22 | 0 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
-| Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 0 |
+| Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
 | Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
 | Uniquely African | 34 | 0 | 32 | 1 | 0 | 0 | 0 | 0 | 1 | 28 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 63 |
@@ -698,13 +698,13 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | BOQ Builder | Engineering & Construction | `/tools/boq-builder` | Localized shell candidate | `/sw/zana/orodha-vifaa` | No |
 | Structural Calculator | Engineering & Construction | `/tools/structural-calc` | Localized shell candidate | `/sw/zana/kikokotoo-miundo-ya-ujenzi` | No |
 | Electrical Load Calculator | Engineering & Construction | `/tools/electrical-load` | Localized shell candidate | `/sw/zana/kikokotoo-mzigo-wa-umeme` | No |
-| Concrete Mix Calculator | Engineering & Construction | `/tools/concrete-mix` | Localized shell candidate | `/sw/zana/mchanganyiko-wa-zege` | No |
+| Concrete Mix Calculator | Engineering & Construction | `/tools/concrete-mix` | Localized shell candidate | `/sw/zana/mchanganyiko-wa-zege` | Yes |
 | Paint Coverage Calculator | Engineering & Construction | `/tools/paint-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-rangi` | No |
-| Tiles & Flooring Calculator | Engineering & Construction | `/tools/tiles-calc` | Localized shell candidate | `/sw/zana/kikokotoo-vigae-na-sakafu` | No |
-| Water Tank Sizing Calculator | Engineering & Construction | `/tools/water-tank` | Localized shell candidate | `/sw/zana/ukubwa-wa-tangi-la-maji` | No |
+| Tiles & Flooring Calculator | Engineering & Construction | `/tools/tiles-calc` | Localized shell candidate | `/sw/zana/kikokotoo-vigae-na-sakafu` | Yes |
+| Water Tank Sizing Calculator | Engineering & Construction | `/tools/water-tank` | Localized shell candidate | `/sw/zana/ukubwa-wa-tangi-la-maji` | Yes |
 | Roofing Material Calculator | Engineering & Construction | `/tools/roof-calculator` | Localized shell candidate | `/sw/zana/vifaa-vya-paa` | No |
 | Borehole Cost Estimator | Engineering & Construction | `/tools/borehole-cost` | Localized shell candidate | `/sw/zana/gharama-za-kisima` | No |
-| Rebar Calculator | Engineering & Construction | `/tools/rebar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-nondo` | No |
+| Rebar Calculator | Engineering & Construction | `/tools/rebar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-nondo` | Yes |
 | POPIA/NDPR Compliance Checker | Mortgage & Property | `/tools/data-compliance` | Localized shell candidate | `/sw/zana/ukaguzi-wa-ulinzi-wa-data` | Yes |
 | Contract Generator | Mortgage & Property | `/tools/contract-generator` | Localized shell candidate | `/sw/zana/kizalishaji-mkataba` | Yes |
 | Tenancy Deposit Calculator | Mortgage & Property | `/tools/tenancy-deposit` | Localized shell candidate | `/sw/zana/amana-ya-upangaji` | Yes |
@@ -1312,7 +1312,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Cross-Border Data Transfer Checklist — Africa 2024 | Trade & Import | `/tools/cross-border-data` | Localized shell candidate | `/sw/zana/uhamishaji-data-mpaka` | Yes |
 | Customs Clearance Time Estimator Africa | Trade & Import | `/tools/customs-time` | Localized shell candidate | `/sw/zana/muda-wa-kupitisha-forodha` | Yes |
 | Shipping Weight / Volumetric Weight Calculator | Trade & Import | `/tools/shipping-weight` | Localized shell candidate | `/sw/zana/uzito-wa-usafirishaji` | Yes |
-| Fleet Fuel Budget Calculator Africa | Transport & Logistics | `/tools/fleet-fuel` | Localized shell candidate | `/sw/zana/gharama-mafuta-ya-fleet` | No |
+| Fleet Fuel Budget Calculator Africa | Transport & Logistics | `/tools/fleet-fuel` | Localized shell candidate | `/sw/zana/gharama-mafuta-ya-fleet` | Yes |
 | Last-Mile Delivery Cost Optimizer Africa | Transport & Logistics | `/tools/last-mile-delivery` | Localized shell candidate | `/sw/zana/gharama-last-mile-delivery` | No |
 | Parking Fee Calculator Africa — Lagos, Nairobi, Accra | Transport & Logistics | `/tools/parking-fee` | Localized shell candidate | `/sw/zana/ada-za-maegesho` | No |
 | Logistics Route Cost Comparator Africa | Transport & Logistics | `/tools/route-cost` | Localized shell candidate | `/sw/zana/gharama-njia-za-logistics` | No |
