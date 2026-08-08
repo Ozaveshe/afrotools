@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1511 |
-| Swahili coverage records | 1508 |
+| Swahili physical HTML pages | 1512 |
+| Swahili coverage records | 1509 |
 | Native candidates | 590 |
-| Localized shell candidates | 631 |
+| Localized shell candidates | 632 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 34 |
-| **Accepted** | **1137** |
+| Missing | 33 |
+| **Accepted** | **1138** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 11 |
+| Image & Design | 19 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 2 | 12 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -809,7 +809,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Crop Farming Profit Calculator | Agriculture | `/tools/agric-profit` | Localized shell candidate | `/sw/zana/faida-ya-kilimo` | Yes |
 | Okada / Boda Boda Income Tracker | Uniquely African | `/tools/okada-income` | Localized shell candidate | `/sw/zana/mapato-ya-okada-boda` | Yes |
 | African Market Day Calendar | Uniquely African | `/tools/market-days` | Localized shell candidate | `/sw/zana/kalenda-ya-siku-za-soko` | Yes |
-| YouTube Thumbnail Studio | Image & Design | `/tools/thumbnail-maker` | Missing | None | No |
+| YouTube Thumbnail Studio | Image & Design | `/tools/thumbnail-maker` | Localized shell candidate | `/sw/zana/kitengeneza-thumbnail` | Yes |
 | Bulk Watermark Tool | Image & Design | `/tools/watermark-bulk` | Localized shell candidate | `/sw/zana/watermark-nyingi` | Yes |
 | Image Format Converter Studio | Image & Design | `/tools/image-format-convert` | Localized shell candidate | `/sw/zana/kubadilisha-format-ya-picha` | Yes |
 | African Colour Palette Generator | Image & Design | `/tools/colour-palette` | Localized shell candidate | `/sw/zana/paleti-ya-rangi` | Yes |
