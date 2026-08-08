@@ -2,10 +2,10 @@
 
 ## Outcome
 
-Implemented all 8 assigned Education, Exams, and Language mappings as native Hausa applications. Candidate acceptance: **8/8**. Remaining assigned implementation rows: **0/8**.
+Implemented all 8 assigned Education, Exams, and Language mappings as native Hausa applications, then completed the director-requested visible-copy correction. Candidate acceptance proposal: **8/8**. Remaining assigned implementation rows: **0/8**.
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
-- Implementation commit: `3723caf5c67f4627cdc7387d87f1dc8aa090a77d`
+- Final implementation commit: `5bfd98cbe98e02f5db8e9257e4250e849b8c5e59`
 - Branch: `codex/ha-03-education-exams-language-20260808`
 
 This package proposes candidates only. It does not mutate the coordinator acceptance registry.
@@ -23,6 +23,8 @@ This package proposes candidates only. It does not mutate the coordinator accept
 
 ## User-facing implementation
 
+- The repository Hausa visible-copy auditor now reports zero blockers across the eight exact routes. A second contract gate covers title/description/OG/Twitter/AI metadata and visible UI attributes that the repository auditor intentionally excludes.
+- Reset controls are native Hausa (`Goge fom` or `Goge bincike`), and the named WAEC, GPA, scholarship, NYSC, school-fee, student-budget and translator English UI/meta phrases were removed without changing engine keys or formulas.
 - The eight pages use one Hausa-only controller and scoped responsive/dark-mode stylesheet.
 - WAEC, JAMB, GPA, school fees, NYSC and student budget call the existing English source-owned DOM-free engines without changing formulas.
 - Scholarship Finder uses the existing feed and matcher, displays actual live/cached/curated/fallback mode and returned freshness, never fabricates an absent deadline, and keeps provider links as HTTPS-only.
@@ -38,7 +40,8 @@ Scholarship Finder, NYSC and Student Budget have existing complete reciprocal en
 
 ## Proof summary
 
-- Engine/contract: 8/8 Node tests pass.
+- Visible copy: 0 blocker findings across 8/8 exact routes; human-facing metadata/UI rejection list also passes.
+- Engine/contract: 9/9 Node tests pass.
 - Browser: 8/8 Playwright app receipts pass using synthetic fixtures.
 - Exports: 8/8 TXT files downloaded, read back, BOM and content asserted.
 - Privacy: raw fixture values absent from requests and URLs; no screenshots, traces, videos, analytics, console logging or local raw-profile persistence in the HA-03 runtime.

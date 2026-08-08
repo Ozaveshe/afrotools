@@ -3,12 +3,14 @@
   "lane": "HA-03",
   "runDate": "2026-08-08",
   "command": "npx playwright test --config=tests/hausa/ha-03/playwright.config.js --trace=off --workers=1",
-  "result": "8 passed (32.2s)",
+  "result": "8 passed, 0 failed",
   "browser": "Chromium via Playwright 1.59.1",
   "server": "tests/hausa/ha-03/static-server.js on isolated port 4313",
   "fixturePolicy": "Synthetic fixtures only; no screenshots, video, trace, real student data, or real scholarship profile data.",
   "commonAssertions": [
     "Hausa html language, native data-ha03 app mount, visible H1 and artwork",
+    "native Hausa reset label: Goge fom or Goge bincike",
+    "coordinator-rejected English UI phrases absent from the rendered body after the valid flow",
     "invalid or no-match path with deterministic feedback and focus",
     "reset path and focus restoration",
     "keyboard Enter submission for valid path",
@@ -21,11 +23,11 @@
     "console errors, page errors and request failures equal zero"
   ],
   "rows": [
-    { "sourceId": "waec-calculator", "route": "/ha/kayan-aiki/kalkuleta-waec/", "status": "pass", "validReceipt": "Nigeria best-five planning value 15", "invalidReceipt": "Empty grades moved focus to English grade", "exportReceipt": "afrotools-ha-waec-neco-tsarin.txt reopened" },
+    { "sourceId": "waec-calculator", "route": "/ha/kayan-aiki/kalkuleta-waec/", "status": "pass", "validReceipt": "Nigeria best-five planning value 15 with Hausa subject and letter-mark labels", "invalidReceipt": "Empty marks moved focus to the Turanci mark control", "exportReceipt": "afrotools-ha-waec-neco-tsarin.txt reopened" },
     { "sourceId": "jamb-aggregate", "route": "/ha/kayan-aiki/jimillar-jamb/", "status": "pass", "validReceipt": "300/70 with 60/40 produced 73%", "invalidReceipt": "401 UTME produced Hausa range error and focus", "exportReceipt": "afrotools-ha-jimillar-jamb.txt reopened" },
-    { "sourceId": "gpa-calculator", "route": "/ha/kayan-aiki/kalkuleta-gpa/", "status": "pass", "validReceipt": "Synthetic courses produced 3.6 GPA", "invalidReceipt": "Empty courses produced Hausa error and focused grade value", "exportReceipt": "afrotools-ha-gpa-cgpa.txt reopened" },
-    { "sourceId": "school-fees", "route": "/ha/kayan-aiki/kudin-makaranta/", "status": "pass", "validReceipt": "120000 tuition plus 30000 extras displayed 150000", "invalidReceipt": "Zero tuition/extras focused tuition", "exportReceipt": "afrotools-ha-kudin-makaranta.txt reopened" },
-    { "sourceId": "scholarship-finder", "route": "/ha/kayan-aiki/neman-tallafin-karatu/", "status": "pass", "validReceipt": "Mock live feed showed synthetic STEM record, provider URL, mode and actual checked timestamp", "invalidReceipt": "GPA above chosen scale focused GPA and returned Hausa validation", "exportReceipt": "afrotools-ha-shortlist-tallafin-karatu.txt reopened", "networkReceipt": "Only GET /api/scholarships; profile values absent", "reflowRepair": "Long AfroScholarshipFeed code token wraps at 200%" },
+    { "sourceId": "gpa-calculator", "route": "/ha/kayan-aiki/kalkuleta-gpa/", "status": "pass", "validReceipt": "Synthetic courses produced 3.6 GPA with Hausa weighted-point labels", "invalidReceipt": "Empty courses produced Hausa error and focused the mark-or-grade value", "exportReceipt": "afrotools-ha-gpa-cgpa.txt reopened" },
+    { "sourceId": "school-fees", "route": "/ha/kayan-aiki/kudin-makaranta/", "status": "pass", "validReceipt": "120000 school fee plus 30000 additional charges displayed 150000", "invalidReceipt": "Zero school fee/additional charges focused the school-fee control", "exportReceipt": "afrotools-ha-kudin-makaranta.txt reopened" },
+    { "sourceId": "scholarship-finder", "route": "/ha/kayan-aiki/neman-tallafin-karatu/", "status": "pass", "validReceipt": "Mock live feed showed synthetic STEM record, provider URL, mode and actual checked timestamp", "invalidReceipt": "GPA above chosen scale focused GPA and returned Hausa validation", "exportReceipt": "afrotools-ha-gajeren-jerin-tallafin-karatu.txt reopened", "networkReceipt": "Only GET /api/scholarships; form values absent", "reflowRepair": "Source prose and provider links remained contained at 200%" },
     { "sourceId": "nysc-allowance", "route": "/ha/kayan-aiki/alawus-na-nysc/", "status": "pass", "validReceipt": "Editable federal value and synthetic costs produced Hausa totals", "invalidReceipt": "13-month plan focused planMonths and returned Hausa validation", "exportReceipt": "afrotools-ha-kasafin-nysc.txt reopened" },
     { "sourceId": "student-budget", "route": "/ha/kayan-aiki/kasafin-dalibi/", "status": "pass", "validReceipt": "Synthetic income/funding/expenses produced Hausa resource totals", "invalidReceipt": "Two-letter currency focused currency and returned Hausa validation", "exportReceipt": "afrotools-ha-kasafin-dalibi.txt reopened" },
     { "sourceId": "hausa-translator", "route": "/ha/kayan-aiki/fassarar-hausa/", "status": "pass", "validReceipt": "thank you matched Na gode", "invalidReceipt": "Synthetic no-match returned honest local phrasebook empty state", "exportReceipt": "afrotools-ha-kundin-fassara.txt reopened", "networkReceipt": "No translator network request" }
