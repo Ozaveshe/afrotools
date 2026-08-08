@@ -35,6 +35,7 @@ const ACCEPTED = new Set([
   'startup-valuation',
   'student-loan',
   'tg-paye',
+  'transfer-pricing',
 ]);
 
 const PROOF = {
@@ -58,9 +59,14 @@ const PROOF = {
   'startup-valuation': ['tests/startup-valuation-engine.test.js', 'tests/e2e/startup-valuation-vip.spec.js'],
   'student-loan': ['tests/student-loan-plan.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'tg-paye': ['tests/engines/tg-paye.test.js', 'tests/e2e/day3-finance-togo-vip.spec.js'],
+  'transfer-pricing': ['tests/engines/transfer-pricing-planner.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
 };
 
 const SWAHILI_OVERRIDES = {
+  'transfer-pricing': {
+    primarySwahiliFile: 'sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html',
+    primarySwahiliRoute: '/sw/zana/ulinganisho-wa-bei-za-uhamisho/',
+  },
   'pension-proj': {
     primarySwahiliFile: 'sw/zana/makadirio-ya-pensheni/index.html',
     primarySwahiliRoute: '/sw/zana/makadirio-ya-pensheni/',
@@ -202,6 +208,8 @@ const rows = shardB.map((row, index) => {
             ? 'The focused shard suite validates golden totals, downloads and parses injection-safe CSV, reopens the generated PDF, verifies clipboard/reset/stale-evidence behavior and proves no raw-input network write.'
             : row.englishId === 'pension-proj'
               ? 'The focused shard suite validates the shared pension projection oracle, parses the downloaded year-by-year CSV, reopens PDF, verifies clipboard/stale-evidence behavior and proves no raw-input network write.'
+              : row.englishId === 'transfer-pricing'
+                ? 'The focused shard suite exercises the five shared-engine methods and fail-closed range/source boundary, parses TXT and JSON, verifies print, copy and reset, and proves no raw-input network write.'
           : 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
       },
       privacyNoRawInputNetworkLeak: true,
@@ -258,6 +266,7 @@ const receipt = {
     'assets/js/pages/student-loan-vip.js',
     'assets/js/pages/staff-cost-sw.js',
     'assets/js/pages/pension-projection-sw.js',
+    'assets/js/pages/transfer-pricing-vip.js',
     'assets/js/components/tool-registry.js',
     'assets/css/property-roi-vip.css',
     'assets/css/property-transfer-cost-vip.css',
@@ -272,6 +281,7 @@ const receipt = {
     'sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html',
     'sw/zana/bajeti-ya-gharama-za-wafanyakazi/index.html',
     'sw/zana/makadirio-ya-pensheni/index.html',
+    'sw/zana/ulinganisho-wa-bei-za-uhamisho/index.html',
     'tools/student-loan/index.html',
     'fr/tools/pret-etudiant/index.html',
     'tools/staff-cost/index.html',
@@ -279,16 +289,18 @@ const receipt = {
     'ha/kayan-aiki/kudin-maikaci/index.html',
     'tools/pension-proj/index.html',
     'fr/tools/projection-pension-simple/index.html',
+    'tools/transfer-pricing/index.html',
+    'fr/tools/prix-transfert/index.html',
   ],
-  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Pension-proj parity uses the reviewed pension-user-assumptions-2026-v1 engine with user-entered statement values, returns, fees and inflation; it adds no country rate, entitlement, forecast or guarantee. The separate legacy pension-projection row remains blocked. Staff-cost uses the existing user-evidence engine and bundles no PAYE, statutory rate, ceiling or termination rule. Student-loan requires user-entered sourced terms and adds no programme preset.',
+  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Transfer-pricing parity uses the existing tp-comparability-planner-2026 engine and only compares method-specific arithmetic with a user-supplied documented range; it makes no arm-length, filing, adjustment or audit conclusion. Pension-proj uses the reviewed user-assumption engine and adds no country rate, entitlement, forecast or guarantee; the separate legacy pension-projection row remains blocked. Staff-cost and student-loan likewise require user-supplied evidence and assumptions.',
   browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 5, failed: 0, note: 'Current increment rerun covered shard derivation/static acceptance plus pension-proj oracle fixtures; staff-cost and student-loan oracle fixtures passed in preceding commits.' },
-    shardBrowserMatrix: { passed: 26, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
+    focusedNodeSubtests: { passed: 14, failed: 0, note: 'Current increment rerun covered shard derivation/static acceptance plus all five transfer-pricing method and fail-closed oracle fixtures; preceding commits cover pension-proj, staff-cost and student-loan.' },
+    shardBrowserMatrix: { passed: 28, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
     focusedExistingWorkflowExportSelection: { passed: 20, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
-    localizationValidation: { publicPages: 11293, hreflangRelationships: 33432, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
-    linkValidation: { htmlFiles: 11512, internalLinks: 138233, broken: 0 },
+    localizationValidation: { publicPages: 11294, hreflangRelationships: 33438, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
+    linkValidation: { htmlFiles: 11513, internalLinks: 138238, broken: 0 },
     registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewStudentLoanMissingPage: false },
     mauritaniaOfficialSourceRecheck: {
       checkedOn: '2026-08-08',
@@ -346,11 +358,11 @@ const human = [
   '## Current lane command evidence',
   '',
   `- Evidence generator check: 46 rows, ${acceptedRows.length} accepted candidates, ${blockedRows.length} blocked, one missing artwork.`,
-  '- PASS: current 5 focused Node subtests cover shard derivation, fail-closed acceptance and pension-proj golden/oracle fixtures; preceding checkpoints cover staff-cost and student-loan oracles.',
+  '- PASS: current 14 focused Node subtests cover shard derivation, fail-closed acceptance and all five transfer-pricing methods; preceding checkpoints cover pension-proj, staff-cost and student-loan oracles.',
   '- PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.',
-  '- PASS: complete 26-test shard browser matrix on isolated port 43917, including pension-proj, staff-cost and student-loan parsed exports, clipboard/reset/stale-evidence behavior, privacy, and all accepted route shards.',
-  '- PASS: i18n validation and 33,432 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
-  '- PASS: 138,233 internal links across 11,512 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.',
+  '- PASS: complete 28-test shard browser matrix on isolated port 43917, including transfer-pricing, pension-proj, staff-cost and student-loan parsed exports, clipboard/reset/invalid-evidence behavior, privacy, and all accepted route shards.',
+  '- PASS: i18n validation and 33,438 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
+  '- PASS: 138,238 internal links across 11,513 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.',
   '- PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.',
   '- MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
@@ -361,6 +373,7 @@ const human = [
   '- Student-loan native parity: the new Swahili route uses `assets/js/engines/student-loan-plan.js` and the shared controller, requires user-entered sourced terms, and provides local copy/PDF/CSV/JSON without programme presets or network submission.',
   '- Staff-cost native parity: the Swahili controller uses `engines/staff-cost-planner.js`, requires current user-supplied employer-obligation evidence, neutralizes spreadsheet-formula prefixes in CSV, and provides local copy/CSV/PDF without bundled statutory rates.',
   '- Pension-proj native parity: the Swahili controller uses `engines/pension-projection-planner.js`, requires current scheme evidence and explicit assumption confirmation, and provides local copy/CSV/PDF without country rates, entitlements or forecasts. The distinct legacy `pension-projection` route remains blocked.',
+  '- Transfer-pricing native parity: the shared `transfer-pricing-planner.js` controller now has complete Swahili method, error, result and memo copy; the route requires a documented user range and provides local copy/TXT/JSON/print without a benchmark or compliance conclusion.',
   '- Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.',
   '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.',
   '- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',

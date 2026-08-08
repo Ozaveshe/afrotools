@@ -25,7 +25,22 @@ const routes = [
   ['/sw/zana/thamani-ya-startup', 'startup-valuation'],
   ['/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi', 'student-loan'],
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
+  ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
 ];
+
+test('transfer-pricing preserves the user-range engine and local exports', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
+  await page.addInitScript(() => { window.__copiedText = ''; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } }); window.print = () => { document.documentElement.dataset.printed = 'yes'; }; });
+  await page.goto('/sw/zana/ulinganisho-wa-bei-za-uhamisho/', { waitUntil: 'domcontentloaded' });
+  await page.locator('[name="jurisdiction"]').fill('Nchi ya majaribio'); await page.locator('[name="period"]').fill('FY2025'); await page.locator('[name="currency"]').fill('KES'); await page.locator('[name="comparableSource"]').fill('Masafa ya majaribio FY2025, yalikaguliwa 2026-07-22'); await page.locator('[name="scopeConfirmed"]').check(); await page.getByRole('button', { name: 'Linganisha kiashiria' }).click();
+  await expect(page.locator('[data-position]')).toHaveText('Ndani ya masafa uliyoingiza'); await expect(page.locator('[data-indicator]')).toHaveText('5%'); await expect(page.locator('[data-source]')).toContainText('Masafa ya majaribio');
+  await page.locator('[data-copy]').click(); expect(await page.evaluate(() => window.__copiedText)).toContain('Karatasi ya ulinganisho wa bei za uhamisho');
+  let download = page.waitForEvent('download'); await page.locator('[data-txt]').click(); const txt = fs.readFileSync(await (await download).path(), 'utf8'); expect(txt).toContain('Nafasi: Ndani ya masafa uliyoingiza');
+  download = page.waitForEvent('download'); await page.locator('[data-json]').click(); const json = JSON.parse(fs.readFileSync(await (await download).path(), 'utf8')); expect(json.result).toMatchObject({ ok: true, method: 'tnmm', indicator: 5, status: 'inside' }); expect(json.input.comparableSource).toContain('FY2025');
+  await page.locator('[data-print]').click(); await expect(page.locator('html')).toHaveAttribute('data-printed', 'yes');
+  await page.locator('[name="rangeLow"]').fill('8'); await page.locator('[name="rangeMedian"]').fill('5'); await page.locator('[name="rangeHigh"]').fill('3'); await page.getByRole('button', { name: 'Linganisha kiashiria' }).click(); await expect(page.locator('[data-error]')).toContainText('chini, kati, kisha juu'); await expect(page.locator('[data-result]')).toBeHidden(); await page.getByRole('button', { name: 'Futa data' }).click(); await expect(page.locator('[name="jurisdiction"]')).toHaveValue(''); expect(writes).toEqual([]);
+});
 
 test('pension-proj preserves the user-assumption engine and local exports', async ({ page }) => {
   const writes = [];
