@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 44 |
-| **Accepted** | **1100** |
+| **Accepted** | **1105** |
 
 ## Category reconciliation
 
@@ -38,18 +38,18 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 6 |
-| Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 70 |
+| Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 71 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 4 |
+| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 6 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
 | Mortgage & Property | 66 | 0 | 66 | 0 | 0 | 0 | 0 | 0 | 0 | 66 |
 | Personal Finance | 5 | 0 | 5 | 0 | 0 | 0 | 0 | 0 | 0 | 5 |
-| Religious & Cultural | 22 | 2 | 20 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
+| Religious & Cultural | 22 | 2 | 20 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
 | Security & Safety | 7 | 7 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 7 |
 | Small Business & SME | 28 | 0 | 28 | 0 | 0 | 0 | 0 | 0 | 0 | 28 |
 | Sports & Entertainment | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
@@ -124,7 +124,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Guinea-Bissau PAYE | Finance, Tax & Market Data | `/guinea-bissau/gw-paye` | Localized shell candidate | `/sw/guinea-bissau/kikokotoo-kodi-mshahara` | Yes |
 | Sierra Leone PAYE | Finance, Tax & Market Data | `/sierra-leone/sl-paye` | English fallback | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | No |
 | Liberia PAYE Calculator | Finance, Tax & Market Data | `/liberia/lr-paye` | Localized shell candidate | `/sw/liberia/kikokotoo-kodi-mshahara` | Yes |
-| Mauritania PAYE Calculator | Finance, Tax & Market Data | `/mauritania/mr-paye` | Localized shell candidate | `/sw/mauritania/kikokotoo-kodi-mshahara` | No |
+| Mauritania PAYE Calculator | Finance, Tax & Market Data | `/mauritania/mr-paye` | Localized shell candidate | `/sw/mauritania/kikokotoo-kodi-mshahara` | Yes |
 | Gambia PAYE Calculator | Finance, Tax & Market Data | `/gambia/gm-paye` | Localized shell candidate | `/sw/gambia/kikokotoo-kodi-mshahara` | Yes |
 | Cape Verde PAYE Calculator | Finance, Tax & Market Data | `/cape-verde/cv-paye` | Localized shell candidate | `/sw/cape-verde/kikokotoo-kodi-mshahara` | Yes |
 | São Tomé Payroll Contributions Checker | Finance, Tax & Market Data | `/sao-tome/st-paye` | Localized shell candidate | `/sw/sao-tome/kikokotoo-kodi-mshahara` | Yes |
@@ -216,7 +216,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | QR Code Generator | Image & Design | `/tools/qr-generator` | Localized shell candidate | `/sw/zana/kitengeneza-qr` | Yes |
 | Background Remover Studio | Image & Design | `/tools/background-remover` | Localized shell candidate | `/sw/zana/kiondoa-mandharinyuma` | No |
 | Passport Photo Studio | Image & Design | `/tools/passport-photo` | Localized shell candidate | `/sw/zana/picha-ya-pasipoti` | No |
-| Image Crop Studio | Image & Design | `/tools/image-crop` | Localized shell candidate | `/sw/zana/kukata-picha` | No |
+| Image Crop Studio | Image & Design | `/tools/image-crop` | Localized shell candidate | `/sw/zana/kukata-picha` | Yes |
 | Color Picker & Converter | Image & Design | `/tools/color-picker` | Localized shell candidate | `/sw/zana/kichagua-rangi` | Yes |
 | Favicon Generator | Image & Design | `/tools/favicon-generator` | Missing | None | No |
 | Image to Text OCR Studio | Image & Design | `/tools/image-to-text` | Localized shell candidate | `/sw/zana/kutoa-maandishi-kwenye-picha` | No |
@@ -811,7 +811,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | African Market Day Calendar | Uniquely African | `/tools/market-days` | Localized shell candidate | `/sw/zana/kalenda-ya-siku-za-soko` | Yes |
 | YouTube Thumbnail Studio | Image & Design | `/tools/thumbnail-maker` | Missing | None | No |
 | Bulk Watermark Tool | Image & Design | `/tools/watermark-bulk` | Localized shell candidate | `/sw/zana/watermark-nyingi` | Yes |
-| Image Format Converter Studio | Image & Design | `/tools/image-format-convert` | Localized shell candidate | `/sw/zana/kubadilisha-format-ya-picha` | No |
+| Image Format Converter Studio | Image & Design | `/tools/image-format-convert` | Localized shell candidate | `/sw/zana/kubadilisha-format-ya-picha` | Yes |
 | African Colour Palette Generator | Image & Design | `/tools/colour-palette` | Localized shell candidate | `/sw/zana/paleti-ya-rangi` | Yes |
 | Generator Size Calculator | Engineering & Construction | `/tools/generator-sizing` | Localized shell candidate | `/sw/zana/ukubwa-wa-generator` | No |
 | Tenancy Agreement Generator | Mortgage & Property | `/tools/tenancy-agreement` | Localized shell candidate | `/sw/zana/mkataba-wa-upangaji` | Yes |
@@ -1253,8 +1253,8 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Security Emergency Fund | Personal Finance | `/tools/security-emergency-fund` | Localized shell candidate | `/sw/zana/mfuko-wa-dharura-wa-usalama` | Yes |
 | African Side Hustle Profitability Ranker — Top 5 for Your Profile | Personal Finance | `/tools/side-hustle-ranker` | Localized shell candidate | `/sw/zana/orodha-ya-side-hustle` | Yes |
 | Zakat Calculator | Religious & Cultural | `/tools/zakat-calculator` | Native candidate | `/sw/zana/kikokotoo-zakat` | Yes |
-| Prayer Times and Qibla Planner | Religious & Cultural | `/tools/prayer-times` | Localized shell candidate | `/sw/zana/nyakati-za-swala-na-qibla` | No |
-| Ramadan Timetable Generator | Religious & Cultural | `/tools/ramadan-timetable` | Localized shell candidate | `/sw/zana/ratiba-ya-ramadhani` | No |
+| Prayer Times and Qibla Planner | Religious & Cultural | `/tools/prayer-times` | Localized shell candidate | `/sw/zana/nyakati-za-swala-na-qibla` | Yes |
+| Ramadan Timetable Generator | Religious & Cultural | `/tools/ramadan-timetable` | Localized shell candidate | `/sw/zana/ratiba-ya-ramadhani` | Yes |
 | Islamic Inheritance Faraid Calculator | Religious & Cultural | `/tools/faraid-inheritance` | Native candidate | `/sw/zana/urithi-wa-faraid` | Yes |
 | Hajj and Umrah Budget Calculator | Religious & Cultural | `/tools/hajj-budget` | Localized shell candidate | `/sw/zana/bajeti-ya-hajj-na-umrah` | Yes |
 | Islamic Finance Profit Rate Calculator | Religious & Cultural | `/tools/islamic-finance` | Localized shell candidate | `/sw/zana/fedha-za-kiislamu` | Yes |

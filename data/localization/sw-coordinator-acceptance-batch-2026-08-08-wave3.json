@@ -1,0 +1,81 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "ee69eb08",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 2,
+  "expectedAcceptedRoutes": 3,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the three newly accepted rows beyond the reviewed wave-2 tips; reject duplicates, missing physical owners, receipt drift, or incomplete evidence.",
+  "candidates": [
+    {
+      "id": "mauritania-paye",
+      "commit": "be5e70bc81595ad19d22e7c5e6f130634ee3f882",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-financial-shard-b.spec.js",
+          "engineTest": "tests/engines/mr-paye-browser-parity.test.js",
+          "workflow": "Mauritania PAYE passed reviewed-source engine parity, native calculation, invalid/reset, mobile/reflow, theme, keyboard, metadata and privacy proof.",
+          "export": "The advertised Mauritania PAYE PDF was downloaded and parser-reopened with the source and planning boundaries preserved."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/swahili-financial-shard-b-candidate-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/accepted", "equals": 17 },
+            { "pointer": "/blocked", "equals": 29 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "mr-paye", "swahiliRoute": "/sw/mauritania/kikokotoo-kodi-mshahara/" }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "date-aware-prayer-and-ramadan",
+      "commit": "e22df066e00540acde75bbefda63a9db585427c6",
+      "expectedRoutes": 2,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 2,
+        "evidence": {
+          "browserSpec": "tests/e2e/sw-religious-cultural-african-lane.spec.js",
+          "engineTest": "tests/sw-religious-cultural-african-lane.test.js",
+          "workflow": "Prayer Times and Ramadan Timetable now use a shared date-aware solar engine with repository fixtures, native Swahili results, fail-closed invalid states, mobile/reflow, themes, keyboard and privacy proof.",
+          "export": "The date-aware reports were downloaded and parsed or reopened, while the UI clearly labels them as planning estimates rather than official mosque timetables or moon-sighting decisions."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-religious-cultural-african-lane-candidate.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/candidateAccepted", "equals": 27 },
+            { "pointer": "/totals/blocked", "equals": 6 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "prayer-times", "swahiliRoute": "/sw/zana/nyakati-za-swala-na-qibla/" },
+            { "englishId": "ramadan-timetable", "swahiliRoute": "/sw/zana/ratiba-ya-ramadhani/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
