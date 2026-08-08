@@ -4707,6 +4707,70 @@
         }
       ]
     },
+    "za-transfer-duty": {
+      "tool_id": "za-transfer-duty",
+      "jurisdiction": "South Africa",
+      "country_code": "ZA",
+      "calculation_currency": "ZAR",
+      "calculation_mode": "transfer_duty_planning",
+      "routes": [
+        "/fr/tools/za-droits-mutation/",
+        "/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/",
+        "/tools/za-transfer-duty/"
+      ],
+      "source_urls": [
+        "https://www.sars.gov.za/tax-rates/transfer-duty/",
+        "https://www.sars.gov.za/td-ae-02-g02-guide-for-transfer-duty-via-efiling-external-guide/",
+        "https://www.sars.gov.za/wp-content/uploads/Docs/Budget/Budget2026/Budget-tax-guide-2026-online-version-for-printing.pdf",
+        "https://www.sars.gov.za/wp-content/uploads/Legal/Acts/2026/Rates-and-Monetary-Amounts-and-Amendment-of-Revenue-Laws-Act-3-of-2026-Government-Gazette-55258.pdf"
+      ],
+      "source_titles": [
+        "SARS Transfer Duty rates",
+        "SARS Guide for Transfer Duty via eFiling",
+        "SARS Budget 2026 Tax Guide",
+        "Rates and Monetary Amounts and Amendment of Revenue Laws Act 3 of 2026"
+      ],
+      "last_verified": "2026-08-09",
+      "effective_from": "2026-04-01",
+      "verified_by": "AfroTools Finance VIP review and Swahili Finance shard B official-source recheck",
+      "risk_level": "high",
+      "disclaimer_type": "tax",
+      "law_or_version": "SARS transfer-duty table for the 2027 tax year effective 2026-04-01; Rates and Monetary Amounts and Amendment of Revenue Laws Act 3 of 2026",
+      "methodology_markdown": "The shared local engine applies the SARS 2027 progressive transfer-duty table to the greater of the declared fair market value and total consideration. Total consideration is the purchase consideration plus any other consideration entered. If the user explicitly marks the acquisition as subject to VAT, transfer duty is shown as zero; the tool does not decide VAT scope or calculate VAT.",
+      "known_limitations": [
+        "Planning estimate only; SARS and the conveyancer determine the declared value, VAT treatment, exemptions, assessment, filing and payment.",
+        "The estimate excludes VAT, conveyancing, Deeds Office, bond, valuation, municipal, penalty, interest and finance costs.",
+        "The tool supports agreements from 1 April 2026 through the verified-through date only and fails closed outside that window.",
+        "No party name, tax number, property address, agreement document, filing or payment is collected or submitted."
+      ],
+      "change_history": [
+        {
+          "date": "2026-08-09",
+          "note": "Rechecked official SARS rates, eFiling guidance, Budget 2026 tax guide and Act 3 of 2026; added native Swahili parity and advanced the shared engine verified-through date without changing any bracket or formula."
+        },
+        {
+          "date": "2026-07-23",
+          "note": "Rebuilt English and native French routes on one reviewed local engine with explicit greater-value and user-supplied VAT boundaries."
+        }
+      ],
+      "test_cases": [
+        {
+          "input": "Purchase consideration R2,000,000; other consideration R100,000; fair market value R2,200,000; agreement 9 August 2026; not subject to VAT.",
+          "expected_output": "Duty basis R2,200,000 and transfer duty R45,786.",
+          "why": "Protects the greater-value rule and the progressive bracket calculation."
+        },
+        {
+          "input": "The same values explicitly marked subject to VAT.",
+          "expected_output": "Transfer duty R0 with a boundary explaining that VAT itself is not calculated.",
+          "why": "Protects the user-supplied VAT boundary without inventing a VAT decision."
+        },
+        {
+          "input": "Agreement dated before 1 April 2026 or after 9 August 2026.",
+          "expected_output": "Calculation fails closed and no export is enabled.",
+          "why": "Prevents applying the reviewed table outside its supported date window."
+        }
+      ]
+    },
     "za-uif": {
       "tool_id": "za-uif",
       "jurisdiction": "South Africa",

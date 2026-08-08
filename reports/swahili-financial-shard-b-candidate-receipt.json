@@ -1,14 +1,14 @@
 {
   "schemaVersion": 1,
   "lane": "swahili-financial-shard-b",
-  "reviewedAt": "2026-08-08",
+  "reviewedAt": "2026-08-09",
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 29,
-  "blocked": 17,
+  "accepted": 30,
+  "blocked": 16,
   "coordinatorOwnedFilesEdited": false,
-  "orderingDecision": "Position 89 za-gepf is the immediate row after accepted position 88 za-dividend-tax and has a maintained DOM-free engine. No row was skipped in this increment. Earlier blocked positions remain fail-closed with their existing exact blockers.",
+  "orderingDecision": "Position 90 za-paye was skipped fail-closed because it has no maintained readable engine and its 2025/26 source contract is stale. Position 91 za-transfer-duty is the next eligible row and owns a maintained DOM-free engine plus current SARS 2027 source evidence.",
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
     "assets/js/engines/mr-paye.js",
@@ -25,6 +25,10 @@
     "assets/js/pages/za-dividend-tax-vip.js",
     "assets/js/pages/za-gepf-vip.js",
     "assets/css/za-gepf-sw.css",
+    "assets/js/pages/za-transfer-duty-vip.js",
+    "assets/css/za-transfer-duty-sw.css",
+    "engines/src/za-transfer-duty-engine.js",
+    "engines/za-transfer-duty-engine.js",
     "assets/css/ng-wht-vip.css",
     "data/tool-verification.json",
     "data/source-registry.json",
@@ -51,6 +55,7 @@
     "sw/zana/kikokotoo-cgt-afrika-kusini/index.html",
     "sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html",
     "sw/zana/kikokotoo-gepf-afrika-kusini/index.html",
+    "sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
@@ -80,9 +85,11 @@
     "tools/za-dividend-tax/index.html",
     "fr/tools/za-impot-dividendes/index.html",
     "tools/za-gepf/index.html",
-    "fr/tools/za-gepf/index.html"
+    "fr/tools/za-gepf/index.html",
+    "tools/za-transfer-duty/index.html",
+    "fr/tools/za-droits-mutation/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Za-gepf delegates unchanged to engines/za-gepf-engine.js generated from engines/src/za-gepf-engine.js and preserves the published three-service gratuity and annuity factors, contribution rates, age boundary and fail-closed ten-year vested-service minimum. Za-dividend-tax delegates unchanged to assets/js/engines/za-dividend-tax.js. Za-cgt delegates unchanged to assets/js/engines/za-cgt.js. Ng-wht, ng-cit and ng-cgt likewise retain their reviewed engines. Salary-intelligence and the remaining user-input tools retain their maintained engine and evidence contracts rather than invented current presets.",
+  "formulaDataSourceDecision": "No rate, bracket, threshold or jurisdiction formula changed. Za-transfer-duty delegates to engines/za-transfer-duty-engine.js generated from the maintained engines/src owner; only verifiedThrough advanced to 2026-08-09 after an official SARS source recheck. The six progressive brackets, greater-value rule and user-supplied VAT boundary remain unchanged. Earlier accepted tools retain their reviewed engines and evidence contracts.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -92,7 +99,8 @@
       43919,
       43920,
       43921,
-      43922
+      43922,
+      43923
     ],
     "widths": [
       320,
@@ -107,9 +115,14 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 11,
+      "passed": 12,
       "failed": 0,
-      "note": "Current increment rerun covered the GEPF engine oracle, nine shard derivation/static/source-owner checks and the tool-verification source contract."
+      "note": "Current increment covered the transfer-duty engine oracle, ten shard derivation/static/source-owner checks and the tool-verification source contract."
+    },
+    "zaTransferDutyFamilyBrowser": {
+      "passed": 6,
+      "failed": 0,
+      "execution": "one-worker English, French and Swahili regression on isolated port 43923 with exact shared-engine output, parsed CSV/JSON/PDF, real French and English PDF downloads, privacy, focus, theme and reflow proof"
     },
     "zaGepfFamilyBrowser": {
       "passed": 6,
@@ -142,7 +155,7 @@
       "execution": "one-worker English, Swahili, French, Hausa and Yoruba family regression on isolated port 43919 with exact engine, TXT/PDF, privacy, focus, theme and reflow proof"
     },
     "shardBrowserMatrix": {
-      "passed": 44,
+      "passed": 46,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
@@ -157,17 +170,17 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11302,
-      "hreflangRelationships": 33496,
+      "publicPages": 11303,
+      "hreflangRelationships": 33502,
       "equivalenceGroups": 5351,
       "directLanguageValidation": "passed",
       "hreflangStatus": "passed",
       "buildI18nValidateWrapper": "carried-protected-artifact-debt",
-      "protectedGeneratedCoverageArtifacts": "data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} reported stale and were intentionally not regenerated"
+      "protectedGeneratedCoverageArtifacts": "data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} were intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11521,
-      "internalLinks": 138292,
+      "htmlFiles": 11522,
+      "internalLinks": 138301,
       "broken": 0
     },
     "registryAudit": {
@@ -192,6 +205,18 @@
         "https://www.gepf.co.za/retirement-benefits/",
         "https://www.gepf.co.za/employer-contributions/",
         "https://www.gepf.co.za/clarification-on-the-implementation-of-revised-actuarialinterest-factors-as-at-1-october-2025/"
+      ]
+    },
+    "southAfricaTransferDutyOfficialSourceRecheck": {
+      "checkedOn": "2026-08-09",
+      "rateContract": "Official SARS Budget 2026 guidance and Act 3 of 2026 retain the 2027 transfer-duty table effective 1 April 2026.",
+      "valueContract": "The SARS eFiling guide retains the greater-of-fair-value-and-consideration assessment boundary and the treatment of other consideration.",
+      "decision": "No bracket or formula changed. Only the engine verified-through date advanced to the source-review date; VAT status remains explicit user input and VAT itself is not calculated.",
+      "urls": [
+        "https://www.sars.gov.za/tax-rates/transfer-duty/",
+        "https://www.sars.gov.za/td-ae-02-g02-guide-for-transfer-duty-via-efiling-external-guide/",
+        "https://www.sars.gov.za/wp-content/uploads/Docs/Budget/Budget2026/Budget-tax-guide-2026-online-version-for-printing.pdf",
+        "https://www.sars.gov.za/wp-content/uploads/Legal/Acts/2026/Rates-and-Monetary-Amounts-and-Amendment-of-Revenue-Laws-Act-3-of-2026-Government-Gazette-55258.pdf"
       ]
     },
     "southAfricaDividendTaxOfficialSourceRecheck": {
@@ -2263,7 +2288,7 @@
       "swahiliFile": "sw/south-africa/kikokotoo-kodi-mshahara/index.html",
       "sourceOwner": "Swahili localized shell and shared deterministic engine",
       "proof": null,
-      "blocker": "The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt."
+      "blocker": "Skipped fail-closed at position 90: only a minified legacy engine exists, the page and source contract still target 2025/26, and no maintained readable engine owner can safely support native parity."
     },
     {
       "position": 91,
@@ -2271,12 +2296,64 @@
       "englishName": "South Africa Transfer Duty Calculator",
       "englishRoute": "/tools/za-transfer-duty",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini",
+      "swahiliFile": "sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/index.html",
+      "sourceOwner": [
+        "/assets/js/lib/pdf-template.js",
+        "/engines/za-transfer-duty-engine.js",
+        "/assets/js/pages/za-transfer-duty-vip.js",
+        "data/tool-verification.json",
+        "data/source-registry.json"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/za-transfer-duty-engine.test.js",
+          "tests/e2e/za-transfer-duty-vip.spec.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/za-transfer-duty-engine.test.js",
+            "tests/e2e/za-transfer-duty-vip.spec.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite compares the rendered estimate with the maintained SARS transfer-duty engine, parses CSV and JSON, reopens PDF, verifies clipboard, stale-result clearing, invalid-date focus, reset and no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 92,
@@ -2299,14 +2376,17 @@
     "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-cgt-2027-source",
     "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-dividends-tax-source",
     "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-gepf-source",
+    "node scripts/build-source-registry.js --check --as-of=2026-08-09 --only-source-ids=south-africa-transfer-duty-source",
     "node --test tests/engines/ng-wht.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node --test tests/engines/za-cgt.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node --test tests/engines/za-dividend-tax.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node --test tests/za-gepf-engine.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
+    "node --test tests/za-transfer-duty-engine.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.ng-wht-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-cgt-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-dividend-tax-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-gepf-sw.config.js",
+    "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-transfer-duty-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.sw-financial-shard-b.config.js",
     "node tests/ai-consent-server.test.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/privacy-ai-consent.spec.js --workers=1 --trace=off",

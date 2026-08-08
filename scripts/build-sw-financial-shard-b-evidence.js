@@ -44,6 +44,7 @@ const ACCEPTED = new Set([
   'za-cgt',
   'za-dividend-tax',
   'za-gepf',
+  'za-transfer-duty',
 ]);
 
 const PROOF = {
@@ -76,6 +77,7 @@ const PROOF = {
   'za-cgt': ['tests/engines/za-cgt.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'za-dividend-tax': ['tests/engines/za-dividend-tax.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'za-gepf': ['tests/za-gepf-engine.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
+  'za-transfer-duty': ['tests/za-transfer-duty-engine.test.js', 'tests/e2e/za-transfer-duty-vip.spec.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
 };
 
 const SWAHILI_OVERRIDES = {
@@ -85,6 +87,7 @@ const SWAHILI_OVERRIDES = {
   'za-cgt': { primarySwahiliFile: 'sw/zana/kikokotoo-cgt-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-cgt-afrika-kusini/' },
   'za-dividend-tax': { primarySwahiliFile: 'sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/' },
   'za-gepf': { primarySwahiliFile: 'sw/zana/kikokotoo-gepf-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-gepf-afrika-kusini/' },
+  'za-transfer-duty': { primarySwahiliFile: 'sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/index.html', primarySwahiliRoute: '/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/' },
   'salary-intelligence': { primarySwahiliFile: 'sw/zana/daftari-la-ushahidi-wa-mishahara/index.html', primarySwahiliRoute: '/sw/zana/daftari-la-ushahidi-wa-mishahara/' },
   'side-hustle-tax': { primarySwahiliFile: 'sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/index.html', primarySwahiliRoute: '/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/' },
   'transfer-pricing': {
@@ -152,7 +155,7 @@ function inspectAccepted(row) {
     .map((match) => match[1].split(/[?#]/)[0])
     .filter((source) => /\/(?:engines?|pages|lib)\//.test(source));
   const implementationOwners = scripts.slice();
-  if (['ng-cgt', 'ng-cit', 'ng-wht', 'za-dividend-tax', 'za-gepf'].includes(row.englishId)) implementationOwners.push('data/tool-verification.json', 'data/source-registry.json');
+  if (['ng-cgt', 'ng-cit', 'ng-wht', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty'].includes(row.englishId)) implementationOwners.push('data/tool-verification.json', 'data/source-registry.json');
   const text = visibleText(html);
   const checks = {
     swahiliFile: swExists,
@@ -187,6 +190,7 @@ function blockReason(row) {
   if (row.state === 'missing') return 'No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane.';
   if (row.englishId === 'paye-calculator') return 'The candidate is a PAYE directory hub, not a native equivalent of the English calculator app.';
   if (row.englishId === 'salary-intelligence') return 'The candidate is the broad salary category hub, not a native equivalent of the English salary-intelligence app.';
+  if (row.englishId === 'za-paye') return 'Skipped fail-closed at position 90: only a minified legacy engine exists, the page and source contract still target 2025/26, and no maintained readable engine owner can safely support native parity.';
   return 'The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt.';
 }
 
@@ -259,6 +263,8 @@ const rows = shardB.map((row, index) => {
                         ? 'The focused shard suite compares standard, documented reduced-rate and exemption outputs with the unchanged SARS engine, parses TXT, reopens print/PDF, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
                         : row.englishId === 'za-gepf'
                           ? 'The focused shard suite compares the rendered estimate with the maintained GEPF engine, parses CSV and JSON, reopens PDF, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write.'
+                          : row.englishId === 'za-transfer-duty'
+                            ? 'The focused shard suite compares the rendered estimate with the maintained SARS transfer-duty engine, parses CSV and JSON, reopens PDF, verifies clipboard, stale-result clearing, invalid-date focus, reset and no raw-input network write.'
           : 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
       },
       privacyNoRawInputNetworkLeak: true,
@@ -302,14 +308,14 @@ const manifest = {
 const receipt = {
   schemaVersion: 1,
   lane: 'swahili-financial-shard-b',
-  reviewedAt: '2026-08-08',
+  reviewedAt: '2026-08-09',
   baseSha: BASE_SHA,
   acceptanceRule: 'Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.',
   denominator: rows.length,
   accepted: acceptedRows.length,
   blocked: blockedRows.length,
   coordinatorOwnedFilesEdited: false,
-  orderingDecision: 'Position 89 za-gepf is the immediate row after accepted position 88 za-dividend-tax and has a maintained DOM-free engine. No row was skipped in this increment. Earlier blocked positions remain fail-closed with their existing exact blockers.',
+  orderingDecision: 'Position 90 za-paye was skipped fail-closed because it has no maintained readable engine and its 2025/26 source contract is stale. Position 91 za-transfer-duty is the next eligible row and owns a maintained DOM-free engine plus current SARS 2027 source evidence.',
   changedProductPaths: [
     'assets/js/engines/lr-paye.js',
     'assets/js/engines/mr-paye.js',
@@ -326,6 +332,10 @@ const receipt = {
     'assets/js/pages/za-dividend-tax-vip.js',
     'assets/js/pages/za-gepf-vip.js',
     'assets/css/za-gepf-sw.css',
+    'assets/js/pages/za-transfer-duty-vip.js',
+    'assets/css/za-transfer-duty-sw.css',
+    'engines/src/za-transfer-duty-engine.js',
+    'engines/za-transfer-duty-engine.js',
     'assets/css/ng-wht-vip.css',
     'data/tool-verification.json',
     'data/source-registry.json',
@@ -352,6 +362,7 @@ const receipt = {
     'sw/zana/kikokotoo-cgt-afrika-kusini/index.html',
     'sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html',
     'sw/zana/kikokotoo-gepf-afrika-kusini/index.html',
+    'sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/index.html',
     'tools/student-loan/index.html',
     'fr/tools/pret-etudiant/index.html',
     'tools/staff-cost/index.html',
@@ -382,22 +393,25 @@ const receipt = {
     'fr/tools/za-impot-dividendes/index.html',
     'tools/za-gepf/index.html',
     'fr/tools/za-gepf/index.html',
+    'tools/za-transfer-duty/index.html',
+    'fr/tools/za-droits-mutation/index.html',
   ],
-  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Za-gepf delegates unchanged to engines/za-gepf-engine.js generated from engines/src/za-gepf-engine.js and preserves the published three-service gratuity and annuity factors, contribution rates, age boundary and fail-closed ten-year vested-service minimum. Za-dividend-tax delegates unchanged to assets/js/engines/za-dividend-tax.js. Za-cgt delegates unchanged to assets/js/engines/za-cgt.js. Ng-wht, ng-cit and ng-cgt likewise retain their reviewed engines. Salary-intelligence and the remaining user-input tools retain their maintained engine and evidence contracts rather than invented current presets.',
-  browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918, 43919, 43920, 43921, 43922], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
+  formulaDataSourceDecision: 'No rate, bracket, threshold or jurisdiction formula changed. Za-transfer-duty delegates to engines/za-transfer-duty-engine.js generated from the maintained engines/src owner; only verifiedThrough advanced to 2026-08-09 after an official SARS source recheck. The six progressive brackets, greater-value rule and user-supplied VAT boundary remain unchanged. Earlier accepted tools retain their reviewed engines and evidence contracts.',
+  browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918, 43919, 43920, 43921, 43922, 43923], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 11, failed: 0, note: 'Current increment rerun covered the GEPF engine oracle, nine shard derivation/static/source-owner checks and the tool-verification source contract.' },
+    focusedNodeSubtests: { passed: 12, failed: 0, note: 'Current increment covered the transfer-duty engine oracle, ten shard derivation/static/source-owner checks and the tool-verification source contract.' },
+    zaTransferDutyFamilyBrowser: { passed: 6, failed: 0, execution: 'one-worker English, French and Swahili regression on isolated port 43923 with exact shared-engine output, parsed CSV/JSON/PDF, real French and English PDF downloads, privacy, focus, theme and reflow proof' },
     zaGepfFamilyBrowser: { passed: 6, failed: 0, execution: 'one-worker English, French and Swahili regression on isolated port 43922 with exact shared-engine output, parsed CSV/JSON/PDF, real French and English PDF downloads, privacy, focus, theme and reflow proof' },
     zaDividendTaxFamilyBrowser: { passed: 8, failed: 0, execution: 'one-worker English, French and Swahili regression on isolated port 43921 with standard/reduced/exempt boundaries, parsed TXT, reopened print/PDF, privacy, focus, theme and reflow proof' },
     zaCgtFamilyBrowser: { passed: 7, failed: 0, execution: 'one-worker English and Swahili regression on isolated port 43920 with exact progressive tax, local TXT, privacy, focus, theme and reflow proof' },
     ngCgtFamilyBrowser: { passed: 7, failed: 0, execution: 'one-worker English, French, Hausa and Swahili family regression with exact totals, TXT, scope, privacy and reflow proof' },
     ngCitFamilyBrowser: { passed: 9, failed: 0, execution: 'one-worker English, Swahili, French, Hausa and Yoruba family regression on isolated port 43918 with exact statutory boundaries, TXT, privacy, focus, theme and reflow proof' },
     ngWhtFamilyBrowser: { passed: 13, failed: 0, execution: 'one-worker English, Swahili, French, Hausa and Yoruba family regression on isolated port 43919 with exact engine, TXT/PDF, privacy, focus, theme and reflow proof' },
-    shardBrowserMatrix: { passed: 44, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
+    shardBrowserMatrix: { passed: 46, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
     focusedExistingWorkflowExportSelection: { passed: 20, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
-    localizationValidation: { publicPages: 11302, hreflangRelationships: 33496, equivalenceGroups: 5351, directLanguageValidation: 'passed', hreflangStatus: 'passed', buildI18nValidateWrapper: 'carried-protected-artifact-debt', protectedGeneratedCoverageArtifacts: 'data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} reported stale and were intentionally not regenerated' },
-    linkValidation: { htmlFiles: 11521, internalLinks: 138292, broken: 0 },
+    localizationValidation: { publicPages: 11303, hreflangRelationships: 33502, equivalenceGroups: 5351, directLanguageValidation: 'passed', hreflangStatus: 'passed', buildI18nValidateWrapper: 'carried-protected-artifact-debt', protectedGeneratedCoverageArtifacts: 'data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} were intentionally not regenerated' },
+    linkValidation: { htmlFiles: 11522, internalLinks: 138301, broken: 0 },
     registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewNgCgtMissingPage: false, netNewNgCitMissingPage: false, netNewNgWhtMissingPage: false, netNewZaCgtMissingPage: false, netNewZaDividendTaxMissingPage: false, netNewZaGepfMissingPage: false },
     southAfricaGepfOfficialSourceRecheck: {
       checkedOn: '2026-08-08',
@@ -408,6 +422,18 @@ const receipt = {
         'https://www.gepf.co.za/retirement-benefits/',
         'https://www.gepf.co.za/employer-contributions/',
         'https://www.gepf.co.za/clarification-on-the-implementation-of-revised-actuarialinterest-factors-as-at-1-october-2025/',
+      ],
+    },
+    southAfricaTransferDutyOfficialSourceRecheck: {
+      checkedOn: '2026-08-09',
+      rateContract: 'Official SARS Budget 2026 guidance and Act 3 of 2026 retain the 2027 transfer-duty table effective 1 April 2026.',
+      valueContract: 'The SARS eFiling guide retains the greater-of-fair-value-and-consideration assessment boundary and the treatment of other consideration.',
+      decision: 'No bracket or formula changed. Only the engine verified-through date advanced to the source-review date; VAT status remains explicit user input and VAT itself is not calculated.',
+      urls: [
+        'https://www.sars.gov.za/tax-rates/transfer-duty/',
+        'https://www.sars.gov.za/td-ae-02-g02-guide-for-transfer-duty-via-efiling-external-guide/',
+        'https://www.sars.gov.za/wp-content/uploads/Docs/Budget/Budget2026/Budget-tax-guide-2026-online-version-for-printing.pdf',
+        'https://www.sars.gov.za/wp-content/uploads/Legal/Acts/2026/Rates-and-Monetary-Amounts-and-Amendment-of-Revenue-Laws-Act-3-of-2026-Government-Gazette-55258.pdf',
       ],
     },
     southAfricaDividendTaxOfficialSourceRecheck: {
@@ -485,14 +511,17 @@ const receipt = {
     'node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-cgt-2027-source',
     'node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-dividends-tax-source',
     'node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-gepf-source',
+    'node scripts/build-source-registry.js --check --as-of=2026-08-09 --only-source-ids=south-africa-transfer-duty-source',
     'node --test tests/engines/ng-wht.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
     'node --test tests/engines/za-cgt.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
     'node --test tests/engines/za-dividend-tax.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
     'node --test tests/za-gepf-engine.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
+    'node --test tests/za-transfer-duty-engine.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.ng-wht-sw.config.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-cgt-sw.config.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-dividend-tax-sw.config.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-gepf-sw.config.js',
+    'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-transfer-duty-sw.config.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.sw-financial-shard-b.config.js',
     'node tests/ai-consent-server.test.js',
     'node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/privacy-ai-consent.spec.js --workers=1 --trace=off',
@@ -516,7 +545,7 @@ const human = [
   '',
   `Derivation proof: ${unaccepted.length} unaccepted financial rows; shard A ${shardA.length} rows through \`${shardA.at(-1).englishId}\`; shard B positions 47-92 from \`${shardB[0].englishId}\` through \`${shardB.at(-1).englishId}\`; overlap **${overlap.length}**.`,
   '',
-  'Ordering proof: `za-gepf` is position 89, immediately after accepted position 88 `za-dividend-tax`, and owns a maintained DOM-free engine. No row was skipped in this increment; all earlier blocked rows retain their fail-closed reasons.',
+  'Ordering proof: position 90 `za-paye` remains fail-closed because it has no maintained readable engine and its source contract still targets 2025/26. Position 91 `za-transfer-duty` is the next eligible row and owns a maintained DOM-free engine plus current official SARS evidence.',
   '',
   'The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENTS.md, the Swahili strategy and coordinator skill supplied the active localization contract.',
   '',
@@ -543,14 +572,15 @@ const human = [
   '## Current lane command evidence',
   '',
   `- Evidence generator check: 46 rows, ${acceptedRows.length} accepted candidates, ${blockedRows.length} blocked, one missing artwork.`,
-  '- PASS: current focused Node subtests 11/11 cover the GEPF engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.',
+  '- PASS: current focused Node subtests 12/12 cover the transfer-duty engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.',
+  '- PASS: za-transfer-duty English/French/Swahili focused family regression 6/6, including exact maintained-engine output, parsed CSV/JSON/PDF, real English and French PDF downloads, privacy, focus, theme and reflow.',
   '- PASS: za-gepf English/French/Swahili focused family regression 6/6, including exact maintained-engine output, parsed CSV/JSON/PDF, real English and French PDF downloads, privacy, focus, theme and reflow.',
   '- PASS: za-dividend-tax English/French/Swahili focused family regression 8/8, including standard/reduced/exempt boundaries, parsed TXT, reopened print/PDF, privacy, focus, theme and reflow.',
   '- PASS: za-cgt English/Swahili focused family regression 7/7, including exact progressive tax, parsed TXT, metadata, privacy, focus, theme and reflow.',
   '- PASS: ng-wht English/Swahili/French/Hausa/Yoruba family regression 13/13, including exact Schedule boundaries, metadata, privacy, focus, theme and reflow.',
-  '- PASS: complete 44-test shard browser matrix on isolated port 43917, including za-gepf exact engine comparison, parsed CSV/JSON/PDF, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.',
-  '- PASS: direct language validation and 33,496 reciprocal hreflang relationships across 5,351 equivalence groups and 11,302 public pages. The broad `build:i18n:validate` wrapper separately reports three protected stale coverage artifacts, which were intentionally not regenerated.',
-  '- PASS: 138,292 internal links across 11,521 HTML files; registry audit retains two unrelated missing-page rows and adds no za-gepf defect.',
+  '- PASS: complete 46-test shard browser matrix on isolated port 43917, including za-transfer-duty exact engine comparison, parsed CSV/JSON/PDF, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.',
+  '- PASS: direct language validation and 33,502 reciprocal hreflang relationships across 5,351 equivalence groups and 11,303 public pages. Protected coordinator coverage artifacts were intentionally not regenerated.',
+  '- PASS: 138,301 internal links across 11,522 HTML files; registry audit retains two unrelated missing-page rows and adds no za-transfer-duty defect.',
   '- PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.',
   '- MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
@@ -575,15 +605,18 @@ const human = [
   '- Za-dividend-tax reciprocal metadata only: `tools/za-dividend-tax/index.html` and `fr/tools/za-impot-dividendes/index.html` add the Swahili alternate; their visible UI and calculation copy are unchanged.',
   '- Za-gepf native parity: `/sw/zana/kikokotoo-gepf-afrika-kusini/` delegates to the unchanged maintained `engines/za-gepf-engine.js`, preserves the three-service gratuity and annuity calculation, requires the ten-year vested-service minimum, clears stale results, focuses invalid inputs, resets locally and reopens copy, injection-safe CSV, JSON and parser-readable PDF. It makes no recognised-service, withdrawal, tax or final-benefit decision.',
   '- Za-gepf reciprocal metadata only: `tools/za-gepf/index.html` and `fr/tools/za-gepf/index.html` add the Swahili alternate. The existing French PDF regression now verifies its real local download rather than intercepting it with a stub; visible UI and calculation copy are unchanged.',
+  '- Za-transfer-duty native parity: `/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/` delegates to the maintained `engines/za-transfer-duty-engine.js`, preserves the SARS 2027 brackets and greater-value rule, keeps VAT status as explicit user input, clears stale results, focuses invalid dates, resets locally and reopens copy, injection-safe CSV, JSON and parser-readable PDF.',
+  '- Za-transfer-duty reciprocal metadata only: `tools/za-transfer-duty/index.html` and `fr/tools/za-droits-mutation/index.html` add the Swahili alternate and advance their visible source-review date to 9 August 2026. Their formula and calculation UI remain unchanged.',
   '- Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.',
-  '- Formula/data/source decision: no formula, rate, threshold or jurisdiction rule changed. Za-gepf preserves the maintained GEPF three-service benefit engine and visible Fund-decision boundary; za-dividend-tax preserves the reviewed SARS 20% engine; za-cgt preserves the reviewed SARS 2027 engine. Ng-wht preserves the official 2024 Schedule and 2026 administration boundary exactly; ng-cit and ng-cgt preserve their existing engines; the other accepted tools retain their reviewed user-evidence contracts.',
-  '- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43922; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',
+  '- Formula/data/source decision: no formula, rate, bracket, threshold or jurisdiction rule changed. Za-transfer-duty only advances the shared engine verified-through date after the official SARS recheck; the other accepted tools retain their reviewed engines and evidence contracts.',
+  '- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43923; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',
   '- Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.',
   '- Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still supports the small-company definition, company rates, development levy and section 57 review trigger used by the unchanged NigeriaCit engine; June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: the official Deduction at Source Regulations 2024 Gazette remains the WHT rate source; Nigeria Tax Administration Act 2025 section 51 requires prescribed regulatory rates, JRB 2026 guidance still references the 2024 Regulations, and federal transition guidance keeps the 1 January 2026 boundary. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: the SARS CGT page remains reachable and identifies the 2027 assessment year as 1 March 2026 through 28 February 2027; the official individual-rate page and comprehensive CGT guide remain the engine boundary. No formula parameter changed.',
   '- Official-source recheck on 8 August 2026: the SARS Dividends Tax page still states 20% from 22 February 2017 and the last-day-of-following-month remittance boundary; the 2027 rate page confirms no change, while declaration evidence and the DTA portal remain the reduced-rate or exemption boundary. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: official GEPF retirement-benefit, employer-contribution and revised actuarial-factor pages remain reachable. No shared-engine parameter changed; the Swahili app stays a planning estimate and leaves recognised service, tax, withdrawal eligibility and final benefits to GEPF.',
+  '- Official-source recheck on 9 August 2026: the SARS 2027 transfer-duty table, Budget 2026 guidance, Act 3 of 2026 and eFiling value rules remain aligned with the shared engine. No bracket or formula changed; VAT treatment remains a user-supplied fact and VAT itself is not calculated.',
   '- Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still contains the Nigerian-share threshold and same-year reinvestment rules used by the existing engine, and June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.',
   '- Official-source recheck on 8 August 2026: the Mauritania DGI obligations page still states monthly ITS rates of 15%, 25% and 40%; the official CNSS declaration form still states 13% employer CNSS, 1% worker CNSS and 2% occupational medicine. No cap or formula was changed, and the reviewed 21 July contract retains its 31 October review boundary.',
   '- Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.',

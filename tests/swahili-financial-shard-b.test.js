@@ -14,6 +14,7 @@ const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
 const southAfricaGepf = require('../engines/src/za-gepf-engine.js');
+const southAfricaTransferDuty = require('../engines/src/za-transfer-duty-engine.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -31,7 +32,7 @@ const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
   'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
-  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf',
+  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty',
 ];
 
 function readJson(file) {
@@ -54,8 +55,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 29);
-  assert.equal(receipt.blocked, 17);
+  assert.equal(receipt.accepted, 30);
+  assert.equal(receipt.blocked, 16);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -253,4 +254,32 @@ test('za-gepf Swahili parity preserves the reviewed GEPF shared-engine contract'
   assert.equal(source.lastReviewedAt, '2026-08-08');
   assert.ok(source.toolIds.includes('za-gepf-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-gepf-afrika-kusini'));
+});
+
+test('za-transfer-duty Swahili parity preserves the reviewed SARS shared-engine contract', () => {
+  assert.equal(southAfricaTransferDuty.RULES.effectiveFrom, '2026-04-01');
+  assert.equal(southAfricaTransferDuty.RULES.verifiedThrough, '2026-08-09');
+  assert.deepEqual(southAfricaTransferDuty.RULES.brackets.map((row) => [row.upper, row.rate, row.base, row.offset]), [
+    [1210000, 0, 0, 0],
+    [1663800, 0.03, 0, 1210000],
+    [2329300, 0.06, 13614, 1663800],
+    [2994800, 0.08, 53544, 2329300],
+    [13310000, 0.11, 106784, 2994800],
+    [Infinity, 0.13, 1241456, 13310000],
+  ]);
+  const result = southAfricaTransferDuty.calculate({ consideration: 2000000, otherConsideration: 100000, fairValue: 2200000, agreementDate: '2026-08-09', vatStatus: 'not-vat' });
+  assert.equal(result.ok, true);
+  assert.equal(result.totalConsideration, 2100000);
+  assert.equal(result.taxableBasis, 2200000);
+  assert.equal(result.duty, 45786);
+  assert.equal(southAfricaTransferDuty.calculate({ consideration: 2000000, otherConsideration: 100000, fairValue: 2200000, agreementDate: '2026-08-09', vatStatus: 'vat' }).duty, 0);
+  assert.equal(southAfricaTransferDuty.calculate({ consideration: 2000000, agreementDate: '2026-03-31', vatStatus: 'not-vat' }).error, 'unsupported_date');
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['za-transfer-duty'];
+  assert.equal(verification.last_verified, '2026-08-09');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/'));
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'south-africa-transfer-duty-source');
+  assert.equal(source.lastReviewedAt, '2026-08-09');
+  assert.ok(source.toolIds.includes('za-transfer-duty-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini'));
 });

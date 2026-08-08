@@ -9,6 +9,7 @@ const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
 const southAfricaGepf = require('../../engines/src/za-gepf-engine.js');
+const southAfricaTransferDuty = require('../../engines/src/za-transfer-duty-engine.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -40,6 +41,7 @@ const routes = [
   ['/sw/zana/kikokotoo-cgt-afrika-kusini', 'za-cgt'],
   ['/sw/zana/kikokotoo-kodi-gawio-afrika-kusini', 'za-dividend-tax'],
   ['/sw/zana/kikokotoo-gepf-afrika-kusini', 'za-gepf'],
+  ['/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini', 'za-transfer-duty'],
 ];
 
 test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
@@ -435,6 +437,80 @@ test('za-gepf delegates to the GEPF engine and reopens every advertised local ex
   await expect(page.locator('#gp-salary')).toHaveValue('300000');
   await expect(page.locator('#gp-status')).toContainText('kimerudishwa mwanzo');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /gepf|pension|salary|service/i.test(key)))).toEqual([]);
+  expect(sensitiveWrites).toEqual([]);
+});
+
+test('za-transfer-duty delegates to the SARS engine and reopens every advertised local export', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:2000000|2200000|45786)/.test(body)) sensitiveWrites.push({ url: request.url(), body });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+  });
+  await page.goto('/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/', { waitUntil: 'domcontentloaded' });
+
+  await page.locator('#td-consideration').fill('2000000');
+  await page.locator('#td-other').fill('100000');
+  await page.locator('#td-fair').fill('2200000');
+  await page.locator('#td-date').fill('2026-08-09');
+  const expected = southAfricaTransferDuty.calculate({ consideration: 2000000, otherConsideration: 100000, fairValue: 2200000, agreementDate: '2026-08-09', vatStatus: 'not-vat' });
+  await page.getByRole('button', { name: 'Kokotoa ushuru' }).click();
+  await expect(page.locator('#td-results')).toBeVisible();
+  await expect(page.locator('#td-results')).toBeFocused();
+  await expect(page.locator('#td-basis')).toContainText('2,200,000');
+  await expect(page.locator('#td-duty')).toContainText('45,786');
+  expect(expected.duty).toBe(45786);
+
+  await page.locator('#td-copy').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya ushuru wa uhamisho Afrika Kusini');
+  expect(copied).toContain('45,786');
+
+  let pending = page.waitForEvent('download');
+  await page.locator('#td-csv').click();
+  let download = await pending;
+  expect(download.suggestedFilename()).toBe('makadirio-ushuru-uhamisho-afrika-kusini.csv');
+  const csv = fs.readFileSync(await download.path(), 'utf8');
+  expect(csv).toContain('"kipengele","thamani"');
+  expect(csv).toContain('"taxable_basis","2200000"');
+  expect(csv).toContain('"transfer_duty","45786"');
+
+  pending = page.waitForEvent('download');
+  await page.locator('#td-json').click();
+  download = await pending;
+  expect(download.suggestedFilename()).toBe('makadirio-ushuru-uhamisho-afrika-kusini.json');
+  const json = JSON.parse(fs.readFileSync(await download.path(), 'utf8'));
+  expect(json.schemaVersion).toBe(1);
+  expect(json.privacy).toContain('binafsi');
+  expect(json.estimate).toMatchObject({ ok: true, taxableBasis: 2200000, duty: 45786, vatStatus: 'not-vat' });
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true }));
+    document.getElementById('td-pdf').click();
+    return generated;
+  });
+  const pdf = await pdfParse(Buffer.from(pdfBytes));
+  expect(pdf.text).toContain('Makadirio ya ushuru wa uhamisho Afrika Kusini');
+  expect(pdf.text).toContain('45,786');
+  expect(pdf.text).toContain('2,200,000');
+
+  await page.locator('#td-consideration').fill('2100000');
+  await expect(page.locator('#td-results')).toBeHidden();
+  await expect(page.locator('#td-status')).toContainText('Taarifa imebadilika');
+  await page.locator('#td-date').fill('2026-03-31');
+  await page.getByRole('button', { name: 'Kokotoa ushuru' }).click();
+  await expect(page.locator('#td-date')).toBeFocused();
+  await expect(page.locator('#td-error')).toContainText('1 Aprili');
+  await expect(page.locator('#td-csv')).toBeDisabled();
+
+  await page.getByRole('button', { name: 'Rudisha mwanzo' }).click();
+  await expect(page.locator('#td-date')).toBeFocused();
+  await expect(page.locator('#td-consideration')).toHaveValue('2500000');
+  await expect(page.locator('#td-status')).toContainText('kimerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /transfer|duty|property|consideration/i.test(key)))).toEqual([]);
   expect(sensitiveWrites).toEqual([]);
 });
 

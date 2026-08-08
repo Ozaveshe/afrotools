@@ -253,7 +253,7 @@ function buildRegistry(asOf) {
     toolsByRoute.get(route).push(tool.id);
   });
 
-  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|gepf|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
+  const generatedId = /^(?:telecom-static-snapshot$|paye-[a-z]{2}-source|vat-[a-z]{2}-source|crypto-cgt-ng-ke-za-gh-2026-source$|nigeria-(?:cit|cgt|wht)-2026-source$|kenya-(?:cgt|wht)-2026-source$|south-africa-(?:cgt-2027|dividends-tax|gepf|transfer-duty|uif)-source$|transfer-pricing-method-source$|investment-return-method-source$|pension-projection-method-source$|ng-pension-cps-scenario-method$|staff-cost-user-input-method$|employee-cost-user-input-method$|contractor-vs-employee-user-input-method$|domestic-worker-user-input-method$|gratuity-user-input-method$|parental-leave-user-input-method$|retrenchment-user-input-method$|route-fares-user-input-method$|backup-power-costs-user-input-method$|salary-offer-comparison-method$|salary-evidence-notebook-method$|retirement-scenario-user-input-method$|side-income-tax-reserve-user-input-method$|bank-charge-offer-user-input-method$|inflation-scenario-user-input-method$|savings-goal-user-input-method$|car-loan-user-input-method$|student-loan-user-input-method$|social-security-|electricity-tariff-rates$|remittance-fx-planning$|mortgage-planning-method$|loan-comparison-method$|payslip-draft-method$|kra-(?:itax|etims)-guide-source$|sars-efiling-guide-source$|cnps-ci-guide-source$|cbk-manual-rate-guide-source$|ledger-tool-|official-)/;
   const entries = new Map(
     existing.sources
       .filter(function (source) {
@@ -1079,6 +1079,20 @@ function buildRegistry(asOf) {
         { id: 'south-africa-gepf-source', sourceName: (southAfricaGepfVerification.source_titles || [])[0] || 'Government Employees Pension Fund', sourceType: 'official', sourceUrl: (southAfricaGepfVerification.source_urls || [])[0], countryCodes: ['ZA'], appliesTo: ['salary', 'retirement'], lastCheckedAt: southAfricaGepfVerification.last_verified, lastReviewedAt: southAfricaGepfVerification.last_verified, effectiveFrom: southAfricaGepfVerification.effective_from, freshnessStatus: freshnessStatus(southAfricaGepfVerification.last_verified, southAfricaGepfVerification.last_verified, 90, today), confidence: 'reviewed', reviewCadenceDays: 90, notes: 'The local GEPF retirement planner uses published three-service gratuity and annuity factors for members with at least ten vested-service years, plus current contribution rates. It requires user-entered service-record values and fails closed outside the supported public formula.', displayDisclaimer: 'GEPF planning estimate only. Confirm service records, actuarial factors, tax, early-retirement approval and final benefits with GEPF before acting.' },
         {
           toolIds: unique(routes.flatMap(function (route) { return toolsByRoute.get(route) || []; }).concat(['za-gepf'])),
+          routes,
+        },
+      ),
+    );
+  }
+
+  const southAfricaTransferDutyVerification = toolVerification.tools && toolVerification.tools['za-transfer-duty'];
+  if (southAfricaTransferDutyVerification) {
+    const routes = (southAfricaTransferDutyVerification.routes || []).map(normalizedRoute);
+    add(
+      withOptional(
+        { id: 'south-africa-transfer-duty-source', sourceName: (southAfricaTransferDutyVerification.source_titles || [])[0] || 'SARS Transfer Duty rates', sourceType: 'official', sourceUrl: (southAfricaTransferDutyVerification.source_urls || [])[0], countryCodes: ['ZA'], appliesTo: ['tax', 'property'], lastCheckedAt: southAfricaTransferDutyVerification.last_verified, lastReviewedAt: southAfricaTransferDutyVerification.last_verified, effectiveFrom: southAfricaTransferDutyVerification.effective_from, freshnessStatus: freshnessStatus(southAfricaTransferDutyVerification.last_verified, southAfricaTransferDutyVerification.last_verified, 90, today), confidence: 'reviewed', reviewCadenceDays: 90, notes: 'The local transfer-duty engine applies the SARS 2027 progressive table to the greater of fair market value and total consideration. VAT status is supplied by the user; the tool does not decide VAT scope or calculate VAT.', displayDisclaimer: 'South Africa transfer-duty planning estimate only. Confirm the acquisition date, declared value, VAT treatment, exemptions, filing and payment with SARS and the conveyancer.' },
+        {
+          toolIds: unique(routes.flatMap(function (route) { return toolsByRoute.get(route) || []; }).concat(['za-transfer-duty'])),
           routes,
         },
       ),
