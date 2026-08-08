@@ -25,6 +25,26 @@ const energyIds = new Set(SW_ENERGY_REMAINING_APPS.map((app) => app.id));
 const engineeringIds = new Set(SW_ENGINEERING_MATERIALS_APPS.map((app) => app.id));
 const transportCostIds = new Set(SW_TRANSPORT_COST_APPS.map((app) => app.id));
 const statusByTransportId = new Map(transportStatus.tools.map((tool) => [tool.id, tool]));
+const transportProofById = Object.freeze({
+  "fleet-fuel": Object.freeze({
+    sourceOwner: "scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-transport-cost-parity.js",
+    formulaDecision: "Exact English fleet fuel engine: km x L/100km x user-entered price x vehicle count; six-day week, entered operating-day month and 12-month year preserved.",
+    sourceDecision: "Fuel price and consumption are user-entered; no live/current pump-price claim. UI requires verification before budgeting or dispatch.",
+    exportProof: "English advertises copy only; Swahili copy remains local and no unavailable download format is advertised.",
+  }),
+  "vehicle-operating-cost": Object.freeze({
+    sourceOwner: "scripts/build-sw-vehicle-operating-cost-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-vehicle-operating-cost-parity.js",
+    formulaDecision: "Exact English operating-cost engine: fuel units and annualization plus fixed 4/6% maintenance, 1.5% registration and 20/22% depreciation planning assumptions are preserved and visibly disclosed.",
+    sourceDecision: "All changing prices and costs are user-entered. Fixed percentage assumptions are labelled low-to-medium-confidence planning inputs, not official rates or live market data.",
+    exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
+  }),
+  "truck-load": Object.freeze({
+    sourceOwner: "scripts/build-sw-truck-load-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-truck-load-parity.js",
+    formulaDecision: "Exact English load engine: utilization = load/capacity, tonne-km = load x km, unit costs divide the user-entered trip cost, and unused-capacity cost is the proportional share. English and Swahili fail closed when load exceeds entered capacity.",
+    sourceDecision: "Capacity, load, distance, currency label and total trip cost are user-entered planning assumptions. The UI supplies no fare, tariff, market benchmark or legal axle/load approval and requires vehicle/route verification.",
+    exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
+  }),
+});
 
 function exists(file) { return Boolean(file) && fs.existsSync(path.join(ROOT, file)); }
 function routeFile(row) { return row.primarySwahiliFile || null; }
@@ -80,15 +100,16 @@ const apps = rows.map((row) => {
   if (row.categoryKey === "transport" && transportCostIds.has(row.englishId)) {
     const contract = SW_TRANSPORT_COST_APPS.find((app) => app.id === row.englishId);
     if (!routePresent) throw new Error(`Transport cost owner missing for ${row.englishId}.`);
-    const isFleet = row.englishId === "fleet-fuel";
+    const proof = transportProofById[row.englishId];
+    if (!proof) throw new Error(`Transport proof missing for ${row.englishId}.`);
     return {
       englishId: row.englishId, categoryKey: row.categoryKey, englishRoute: row.englishRoute,
       swahiliRoute: contract.swRoute, swahiliFile: contract.file, status: "accepted-candidate",
-      sourceOwner: isFleet ? "scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-transport-cost-parity.js" : "scripts/build-sw-vehicle-operating-cost-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-vehicle-operating-cost-parity.js",
-      formulaDecision: isFleet ? "Exact English fleet fuel engine: km x L/100km x user-entered price x vehicle count; six-day week, entered operating-day month and 12-month year preserved." : "Exact English operating-cost engine: fuel units and annualization plus fixed 4/6% maintenance, 1.5% registration and 20/22% depreciation planning assumptions are preserved and visibly disclosed.",
-      sourceDecision: isFleet ? "Fuel price and consumption are user-entered; no live/current pump-price claim. UI requires verification before budgeting or dispatch." : "All changing prices and costs are user-entered. Fixed percentage assumptions are labelled low-to-medium-confidence planning inputs, not official rates or live market data.",
-      browserProof: "Chromium at 320px and 375px; valid/invalid/reset, focusable controls, no console/page errors or raw-input network requests; English regression passed.",
-      exportProof: isFleet ? "English advertises copy only; Swahili copy remains local and no unavailable download format is advertised." : "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
+      sourceOwner: proof.sourceOwner,
+      formulaDecision: proof.formulaDecision,
+      sourceDecision: proof.sourceDecision,
+      browserProof: "Chromium at 320px, 375px and 200% reflow; valid/invalid/reset, theme, keyboard/focus, no overflow, console/page errors or raw-input network requests; English regression passed.",
+      exportProof: proof.exportProof,
       artwork, blocker: null,
     };
   }
@@ -133,20 +154,20 @@ const receipt = {
     byCategory: {
       engineering: { denominator: 20, acceptedCandidates: 4, blocked: 16 },
       energy: { denominator: 17, acceptedCandidates: 17, blocked: 0 },
-      transport: { denominator: 18, acceptedCandidates: 2, blocked: 16 },
+      transport: { denominator: 18, acceptedCandidates: 3, blocked: 15 },
     },
     acceptanceBoundary: "Candidate receipt only; coordinator-owned central acceptance remains unchanged.",
   },
   proof: {
     static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-transport-static-candidate.test.js", "tests/swahili-transport-cost-parity.test.js"],
     browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js", "tests/e2e/sw-transport-cost-parity.spec.js"],
-    browserMatrix: "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel and vehicle-operating-cost deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
-    privacy: "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local.",
+    browserMatrix: "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    privacy: "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists.",
   },
   apps,
 };
 
-if (accepted.length !== 23 || blocked.length !== 32) throw new Error(`Expected 23 accepted candidates and 32 blocked; received ${accepted.length}/${blocked.length}.`);
+if (accepted.length !== 24 || blocked.length !== 31) throw new Error(`Expected 24 accepted candidates and 31 blocked; received ${accepted.length}/${blocked.length}.`);
 
 const artworkReceipt = {
   schemaVersion: 1,
@@ -160,7 +181,7 @@ const artworkReceipt = {
 const byCategory = (key, status) => apps.filter((app) => app.categoryKey === key && app.status === status).map((app) => `\`${app.englishId}\``).join(", ");
 const md = `# Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **23 accepted candidates / 32 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **24 accepted candidates / 31 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
@@ -168,8 +189,8 @@ Status: **23 accepted candidates / 32 blocked / exact denominator 55**. This rec
 |---|---:|---:|---:|
 | Engineering & Construction | 20 | 4 | 16 |
 | Energy & Utilities | 17 | 17 | 0 |
-| Transport & Logistics | 18 | 2 | 16 |
-| **Total** | **55** | **23** | **32** |
+| Transport & Logistics | 18 | 3 | 15 |
+| **Total** | **55** | **24** | **31** |
 
 Accepted Energy IDs: ${byCategory("energy", "accepted-candidate")}.
 
@@ -186,15 +207,16 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - The 17 Energy pages use their exact English-owned DOM-free engines through \`scripts/lib/sw-energy-remaining-contract.js\`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded \`data/energy/sw-energy-planning-snapshot.js\` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
 - Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; the remaining 16 Engineering IDs stay fail-closed.
-- Fleet fuel and vehicle operating cost now use the exact English DOM-free Transport cost engine. Operating-cost percentage assumptions are visible and bounded; the remaining 16 Transport IDs stay fail-closed, and car-import customs/port sources remain \`changed\` in \`data/transport/source-status.json\`.
+- Fleet fuel, vehicle operating cost and truck load now use the exact English DOM-free Transport cost engine. Truck load uses only user-entered capacity, load, distance, currency label and trip cost; it supplies no fare, tariff, market benchmark or legal load approval. The remaining 15 Transport IDs stay fail-closed, and car-import customs/port sources remain \`changed\` in \`data/transport/source-status.json\`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
 ## Browser and export proof
 
-- Chromium, one worker, isolated port 4198: 53 existing physical routes at 320px, 375px and 640px with 200% CSS reflow; no horizontal overflow, iframe, canonical mismatch, console error or page error.
+- Chromium, one worker, isolated ports 4198 and 4202: 53 existing physical routes at 320px, 375px and 640px with 200% CSS reflow; no horizontal overflow, iframe, canonical mismatch, console error or page error.
 - Every Energy app: valid calculation, invalid-state clearing, reset, explicit dark/light toggle, keyboard focus, JSON download/parse/reopen, CSV parse, TXT parse and PDF parse via the repository-vendored PDF.js 3.11 parser. The final proof is split into green 17-test deep-workflow and green 55-test route/boundary runs to isolate browser-cache contention.
 - Every accepted Engineering app: the same interaction/export matrix at 320px and 375px, plus a green English-route regression through the shared engine.
-- Network instrumentation recorded no Energy fetch/XHR containing raw inputs. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
+- Truck load: exact oracle plus overload boundary; invalid/reset; light/dark; keyboard/focus; reciprocal metadata; JSON parsed and reopened, CSV/TXT parsed, and PDF reopened with PDF.js. The English route passed through the same engine after removal of its unused fuel-consumption field.
+- Network instrumentation recorded no fetch/XHR/beacon carrying raw inputs on the accepted deep flows. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
 - The two absent physical routes are \`solar-calculator\` and \`car-price-intelligence\`; their absence is asserted and blocked, not hidden by denominator arithmetic.
 
 ## Ownership and changed paths
@@ -205,7 +227,8 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - Transport checkpoint: \`assets/js/pages/swahili-car-import-cost.js\` and focused transport source/browser tests.
 - Engineering generator/manifest/engine: \`scripts/build-sw-engineering-materials-parity.js\`, \`scripts/lib/sw-engineering-materials-contract.js\`, and \`assets/js/engines/engineering-materials-engine.js\`.
 - Engineering runtime/style: \`assets/js/pages/sw-engineering-materials-parity.js\` and \`assets/css/sw-engineering-materials-parity.css\`; four bounded generated Swahili routes are owned by that generator.
-- Transport cost engine/manifest/runtimes: \`assets/js/engines/transport-cost-engine.js\`, \`scripts/lib/sw-transport-cost-contract.js\`, \`assets/js/pages/sw-transport-cost-parity.js\`, and \`assets/js/pages/sw-vehicle-operating-cost-parity.js\`.
+- Transport cost engine/manifest/runtimes: \`assets/js/engines/transport-cost-engine.js\`, \`scripts/lib/sw-transport-cost-contract.js\`, \`assets/js/pages/sw-transport-cost-parity.js\`, \`assets/js/pages/sw-vehicle-operating-cost-parity.js\`, and \`assets/js/pages/sw-truck-load-parity.js\`.
+- Truck-load generator/style/routes: \`scripts/build-sw-truck-load-parity.js\`, \`assets/css/sw-truck-load-parity.css\`, \`sw/zana/kupakia-lori/index.html\`, and the English source route \`tools/truck-load/index.html\`.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
 - The requested \`.claude/rules/i18n.md\` reference is absent in this checkout; the coordinator explicitly declared that absence non-blocking. The repository Swahili strategy and coordinator skill governed the work.
 
@@ -216,6 +239,7 @@ Accepted Transport IDs: ${byCategory("transport", "accepted-candidate")}.
 - \`node --test tests/swahili-engineering-materials-parity.test.js\`
 - \`npx playwright test -c playwright.sw-engineering-materials.config.js --workers=1\`
 - \`node scripts/build-sw-vehicle-operating-cost-parity.js\`
+- \`node scripts/build-sw-truck-load-parity.js\`
 - \`node --test tests/swahili-transport-cost-parity.test.js\`
 - \`npx playwright test -c playwright.sw-transport-cost.config.js --workers=1\`
 - \`npx playwright test -c playwright.sw-engineering-energy-transport.config.js --workers=1\`

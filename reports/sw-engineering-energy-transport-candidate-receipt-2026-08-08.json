@@ -14,8 +14,8 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 23,
-    "blocked": 32,
+    "acceptedCandidates": 24,
+    "blocked": 31,
     "byCategory": {
       "engineering": {
         "denominator": 20,
@@ -29,8 +29,8 @@
       },
       "transport": {
         "denominator": 18,
-        "acceptedCandidates": 2,
-        "blocked": 16
+        "acceptedCandidates": 3,
+        "blocked": 15
       }
     },
     "acceptanceBoundary": "Candidate receipt only; coordinator-owned central acceptance remains unchanged."
@@ -47,8 +47,8 @@
       "tests/e2e/sw-engineering-materials-parity.spec.js",
       "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel and vehicle-operating-cost deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
-    "privacy": "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local."
+    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel, vehicle-operating-cost and truck-load deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
+    "privacy": "Deep tests instrument fetch, XMLHttpRequest and beacon boundaries; zero raw-input requests. All accepted calculations and exports remain local and no AI call exists."
   },
   "apps": [
     {
@@ -907,7 +907,7 @@
       "sourceOwner": "scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-transport-cost-parity.js",
       "formulaDecision": "Exact English fleet fuel engine: km x L/100km x user-entered price x vehicle count; six-day week, entered operating-day month and 12-month year preserved.",
       "sourceDecision": "Fuel price and consumption are user-entered; no live/current pump-price claim. UI requires verification before budgeting or dispatch.",
-      "browserProof": "Chromium at 320px and 375px; valid/invalid/reset, focusable controls, no console/page errors or raw-input network requests; English regression passed.",
+      "browserProof": "Chromium at 320px, 375px and 200% reflow; valid/invalid/reset, theme, keyboard/focus, no overflow, console/page errors or raw-input network requests; English regression passed.",
       "exportProof": "English advertises copy only; Swahili copy remains local and no unavailable download format is advertised.",
       "artwork": {
         "file": "assets/img/tools/fleet-fuel.webp",
@@ -991,19 +991,19 @@
       "englishId": "truck-load",
       "categoryKey": "transport",
       "englishRoute": "/tools/truck-load",
-      "swahiliRoute": "/sw/zana/kupakia-lori",
+      "swahiliRoute": "/sw/zana/kupakia-lori/",
       "swahiliFile": "sw/zana/kupakia-lori/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "blocked: ke-kenha, za-sanral, ng-npa, ke-kpa, za-tnpa",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-truck-load-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-truck-load-parity.js",
+      "formulaDecision": "Exact English load engine: utilization = load/capacity, tonne-km = load x km, unit costs divide the user-entered trip cost, and unused-capacity cost is the proportional share. English and Swahili fail closed when load exceeds entered capacity.",
+      "sourceDecision": "Capacity, load, distance, currency label and total trip cost are user-entered planning assumptions. The UI supplies no fare, tariff, market benchmark or legal axle/load approval and requires vehicle/route verification.",
+      "browserProof": "Chromium at 320px, 375px and 200% reflow; valid/invalid/reset, theme, keyboard/focus, no overflow, console/page errors or raw-input network requests; English regression passed.",
+      "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/truck-load.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "vehicle-operating-cost",
@@ -1015,7 +1015,7 @@
       "sourceOwner": "scripts/build-sw-vehicle-operating-cost-parity.js -> scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-vehicle-operating-cost-parity.js",
       "formulaDecision": "Exact English operating-cost engine: fuel units and annualization plus fixed 4/6% maintenance, 1.5% registration and 20/22% depreciation planning assumptions are preserved and visibly disclosed.",
       "sourceDecision": "All changing prices and costs are user-entered. Fixed percentage assumptions are labelled low-to-medium-confidence planning inputs, not official rates or live market data.",
-      "browserProof": "Chromium at 320px and 375px; valid/invalid/reset, focusable controls, no console/page errors or raw-input network requests; English regression passed.",
+      "browserProof": "Chromium at 320px, 375px and 200% reflow; valid/invalid/reset, theme, keyboard/focus, no overflow, console/page errors or raw-input network requests; English regression passed.",
       "exportProof": "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       "artwork": {
         "file": "assets/img/tools/vehicle-operating-cost.webp",

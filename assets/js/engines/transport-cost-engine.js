@@ -14,5 +14,12 @@
     var fuel=(km/100)*consumption*fuelPrice,maintenance=value*(type==="motorcycle"?.04:.06),registration=value*.015,depreciation=value*(type==="suv"?.20:.22),parking=parkingMonth*12,total=fuel+insurance+maintenance+registration+parking+tolls+depreciation;
     return{fuel:fuel,insurance:insurance,maintenance:maintenance,registration:registration,parking:parking,tolls:tolls,depreciation:depreciation,total:total,monthly:total/12,perKm:km>0?total/km:0,assumptions:{maintenanceRate:type==="motorcycle"?.04:.06,registrationRate:.015,depreciationRate:type==="suv"?.20:.22}};
   }
-  return{fleetFuel:fleetFuel,operatingCost:operatingCost};
+  function truckLoad(input){
+    var capacity=positive(input.capacity),load=positive(input.load),distance=positive(input.distance),cost=num(input.cost);
+    if(![capacity,load,distance,cost].every(Number.isFinite)||cost<0)return{error:"invalid-input"};
+    if(load>capacity)return{error:"load-exceeds-entered-capacity"};
+    var efficiency=load/capacity*100,tonneKm=load*distance,costPerTonneKm=cost>0?cost/tonneKm:0,costPerTonne=cost>0?cost/load:0,emptyCapacity=capacity-load,potentialSaving=cost>0?emptyCapacity/capacity*cost:0;
+    return{capacity:capacity,load:load,distance:distance,cost:cost,efficiency:efficiency,tonneKm:tonneKm,costPerTonneKm:costPerTonneKm,costPerTonne:costPerTonne,emptyCapacity:emptyCapacity,potentialSaving:potentialSaving,efficiencyBand:efficiency>=85?"high":efficiency>=65?"medium":"low"};
+  }
+  return{fleetFuel:fleetFuel,operatingCost:operatingCost,truckLoad:truckLoad};
 });
