@@ -15,6 +15,7 @@ const HUMAN_FILE = 'reports/swahili-financial-shard-b-candidate-receipt.md';
 const ARTWORK_FILE = 'reports/swahili-financial-shard-b-missing-artwork.json';
 
 const ACCEPTED = new Set([
+  'lr-paye',
   'microfinance-calc',
   'mortgage-affordability',
   'mortgage-calculator',
@@ -33,6 +34,7 @@ const ACCEPTED = new Set([
 ]);
 
 const PROOF = {
+  'lr-paye': ['tests/engines/lr-paye-browser-parity.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'microfinance-calc': ['tests/microfinance-offer-engine.test.js', 'tests/e2e/microfinance-offer-vip.spec.js'],
   'mortgage-affordability': ['tests/day7-property-tool-contract.test.js', 'tests/e2e/mortgage-budget-boundary.spec.js'],
   'mortgage-calculator': ['tests/day7-property-tool-contract.test.js', 'tests/e2e/day3-finance-mortgage-vip.spec.js'],
@@ -221,6 +223,7 @@ const receipt = {
   blocked: blockedRows.length,
   coordinatorOwnedFilesEdited: false,
   changedProductPaths: [
+    'assets/js/engines/lr-paye.js',
     'assets/css/property-roi-vip.css',
     'assets/css/property-transfer-cost-vip.css',
     'assets/css/route-fares-vip.css',
@@ -228,16 +231,18 @@ const receipt = {
     'assets/css/startup-valuation-vip.css',
     'assets/css/togo-paye-vip.css',
     'sw/sao-tome/kikokotoo-kodi-mshahara/index.html',
+    'sw/liberia/kikokotoo-kodi-mshahara/index.html',
     'sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html',
   ],
-  formulaDataSourceDecision: 'No formula, rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics.',
+  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia now uses a DOM-free browser engine proved against the reviewed server engine; this corrects the Swahili page so NASSCORP remains separate from the PAYE tax base.',
   browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 15, failed: 0 },
-    shardBrowserMatrix: { passed: 16, failed: 0, execution: 'two 8-test one-worker shards' },
+    focusedNodeSubtests: { passed: 16, failed: 0 },
+    shardBrowserMatrix: { passed: 18, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
     focusedExistingWorkflowExportSelection: { passed: 19, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
-    lint: { status: 'carried-baseline-debt', netNewChangedPathsReported: 0 },
+    lint: { status: 'passed', checkedJavaScriptFiles: 49, netNewChangedPathsReported: 0 },
+    legacyLiberiaRegistryTest: { status: 'carried-baseline-debt', productFixturesPassedBeforeRegistryAssertion: true, reason: 'tests/engines/lr-paye.test.js expects two source titles while the existing central formula registry currently contains five.' },
   },
   rows,
   missingArtworkQueue: ARTWORK_FILE,
@@ -281,10 +286,10 @@ const human = [
   '',
   '## Current lane command evidence',
   '',
-  '- PASS: evidence generator check; 46 rows, 15 accepted candidates, 31 blocked, one missing artwork.',
-  '- PASS: 15 focused Node subtests covering scope, source contracts and DOM-free engine/oracle fixtures.',
+  '- PASS: evidence generator check; 46 rows, 16 accepted candidates, 30 blocked, one missing artwork.',
+  '- PASS: 16 focused Node subtests covering scope, source contracts and DOM-free engine/oracle fixtures.',
   '- PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.',
-  '- PASS after fixes: complete 16-test shard browser matrix on isolated port 43917, executed as two 8-test one-worker shards with system Chrome.',
+  '- PASS after fixes: complete 18-test shard browser matrix on isolated port 43917, including the parsed Liberia PDF workflow and route shards with system Chrome.',
   '- MIXED: focused existing workflow/export suites passed 19/30. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
   '## Changed product paths and decisions',
@@ -294,7 +299,7 @@ const human = [
   '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`).',
   '- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',
   '- Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.',
-  '- Carried baseline debt: `npm run lint` lists pre-existing AI/runtime files only; neither lane source nor evidence paths appear. Registry audit also retains two unrelated missing-page rows.',
+  '- Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.',
   '',
   '## Artwork',
   '',

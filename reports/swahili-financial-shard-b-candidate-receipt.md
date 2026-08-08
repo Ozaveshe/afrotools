@@ -2,7 +2,7 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **15**. Blocked: **31**.
+Denominator: **46**. Accepted: **16**. Blocked: **30**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
@@ -12,6 +12,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 | ID | English owner | Swahili app | Source owners | Export/browser proof |
 |---|---|---|---|---|
+| `lr-paye` | `/liberia/lr-paye` | `/sw/liberia/kikokotoo-kodi-mshahara` | `/assets/js/lib/simple-chart-fallback.js`<br>`/assets/js/lib/chart-config.js`<br>`/assets/js/engines/lr-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `microfinance-calc` | `/tools/microfinance-calc` | `/sw/zana/microfinance-riba-tambarare-dhidi-ya-salio` | `/engines/microfinance-offer-engine.js`<br>`/assets/js/pages/microfinance-offer.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `mortgage-affordability` | `/tools/mortgage-affordability` | `/sw/zana/uwezo-wa-mkopo-wa-nyumba` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/mortgage-budget-boundary.js`<br>`/assets/js/pages/mortgage-budget-boundary.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `mortgage-calculator` | `/tools/mortgage-calculator` | `/sw/zana/kikokotoo-mkopo-wa-nyumba` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/mortgage-planner.js`<br>`/assets/js/pages/mortgage-planner-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
@@ -32,7 +33,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 | ID | Current candidate | Exact blocker |
 |---|---|---|
-| `lr-paye` | `/sw/liberia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `ly-paye` | `/sw/libya/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `ma-paye` | `/sw/morocco/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `mg-paye` | `/sw/madagascar/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
@@ -74,10 +74,10 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- PASS: evidence generator check; 46 rows, 15 accepted candidates, 31 blocked, one missing artwork.
-- PASS: 15 focused Node subtests covering scope, source contracts and DOM-free engine/oracle fixtures.
+- PASS: evidence generator check; 46 rows, 16 accepted candidates, 30 blocked, one missing artwork.
+- PASS: 16 focused Node subtests covering scope, source contracts and DOM-free engine/oracle fixtures.
 - PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.
-- PASS after fixes: complete 16-test shard browser matrix on isolated port 43917, executed as two 8-test one-worker shards with system Chrome.
+- PASS after fixes: complete 18-test shard browser matrix on isolated port 43917, including the parsed Liberia PDF workflow and route shards with system Chrome.
 - MIXED: focused existing workflow/export suites passed 19/30. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.
 
 ## Changed product paths and decisions
@@ -87,7 +87,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`).
 - Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
 - Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.
-- Carried baseline debt: `npm run lint` lists pre-existing AI/runtime files only; neither lane source nor evidence paths appear. Registry audit also retains two unrelated missing-page rows.
+- Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.
 
 ## Artwork
 

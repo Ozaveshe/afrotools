@@ -30,7 +30,7 @@
   "name": "Kikokotoo cha Kodi ya Mshahara Liberia 2026",
   "description": "Kokotoa mshahara wako halisi baada ya kodi ya LRA PAYE, NASSCORP Liberia.",
   "url": "https://afrotools.com/sw/liberia/kikokotoo-kodi-mshahara/",
-  "inLanguage": "https://afrotools.com/sw/",
+  "inLanguage": "sw",
   "applicationCategory": "FinanceApplication",
   "operatingSystem": "Web",
   "offers": {
@@ -52,7 +52,7 @@
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[
 {"@type":"Question","name":"Kodi ya PAYE Liberia ni nini?","acceptedAnswer":{"@type":"Answer","text":"PAYE ni kodi ya mapato inayokatwa na mwajiri kutoka mshahara na kupelekwa LRA. Msingi wa sasa wa kila mwaka ni: 0% hadi LRD 70,000; 5% kwa LRD 70,001–200,000; 15% kwa sehemu ya LRD 200,001–800,000; na 25% kwa sehemu iliyo juu ya LRD 800,000."}},
 {"@type":"Question","name":"NASSCORP ni nini Liberia?","acceptedAnswer":{"@type":"Answer","text":"NASSCORP ni National Social Security and Welfare Corporation ya Liberia. Mwajiriwa analipa 4% ya mshahara ghafi na mwajiri analipa 6%. Mchango wa mwajiriwa huonyeshwa kando na PAYE katika kikokotoo hiki."}},
-{"@type":"Question","name":"Liberia inatumia sarafu gani?","acceptedAnswer":{"@type":"Answer","text":"Liberia inatumia Liberian Dollar (LRD) kama sarafu yake rasmi. Hata hivyo, US Dollar (USD) pia inatumika sana katika biashara na malipo. Kiwango cha ubadilishaji ni takriban USD 1 = LRD 190–200 (2026). Mabanda ya kodi ya LRA yanaonyeshwa katika LRD."}},
+{"@type":"Question","name":"Nikitumia USD nifanye nini?","acceptedAnswer":{"@type":"Answer","text":"Kikokotoo hiki kinatumia LRD pekee. Badilisha kiasi kwa kiwango cha ubadilishaji kilichothibitishwa siku hiyo kabla ya kukokotoa; ukurasa huu hautoi kiwango cha fedha cha moja kwa moja."}},
 {"@type":"Question","name":"Je, NASSCORP inakatwa kutoka mapato yanayolipishwa kodi?","acceptedAnswer":{"@type":"Answer","text":"Kikokotoo hiki kinaonyesha mchango wa NASSCORP wa mfanyakazi wa 4% kando ya PAYE na hutumia mshahara wa kila mwezi uliogeuzwa kuwa wa mwaka kwa makadirio ya kodi ya LRA. Thibitisha matumizi ya mishahara yako na mwajiri au mshauri wa kodi."}},
 {"@type":"Question","name":"Jinsi ya kukokotoa PAYE Liberia?","acceptedAnswer":{"@type":"Answer","text":"Hatua: 1) Geuza mshahara wa mwezi kuwa wa mwaka. 2) Tumia mabanda ya kila mwaka ya LRA hadi LRD 800,000, kisha 25% kwa sehemu iliyo juu. 3) Gawanya kodi ya mwaka kwa 12 kupata PAYE ya mwezi. 4) Onyesha NASSCORP ya mfanyakazi ya 4% kando ili kupata mshahara halisi."}}
 ]}
@@ -70,6 +70,8 @@
 <script src="/assets/js/lib/simple-chart-fallback.js?v=45721bf1"></script>
 <script src="/assets/js/lib/chart-config.js?v=b81750bb"></script>
 <script src="/assets/js/bundles/tool-page.315f0428.min.js?v=315f0428" defer></script>
+<script src="/assets/js/engines/lr-paye.js"></script>
+<script src="/assets/js/lib/pdf-template.js?v=980345b6" defer></script>
 <link rel="stylesheet" href="/assets/css/print.css?v=ca13c10a" media="print">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <script>window.PAYE_SAVE_SLUG='lr-paye-sw';</script>
@@ -81,12 +83,15 @@
   .toggle-chip{display:inline-flex;align-items:center;gap:6px;padding:5px 12px;border-radius:20px;font-size:.78rem;font-weight:500;cursor:pointer;border:1px solid #d1d5db;background:#f9fafb;color:#374151;user-select:none;transition:all .15s}
   .toggle-chip.active{background:var(--calc-accent-subtle);border-color:var(--calc-accent);color:var(--calc-accent)}
   .toggle-chip .dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+  .lr-status{margin:12px 0 0;min-height:1.5em;color:#475569;font-weight:600;line-height:1.5}
+  .lr-status.error{color:#b91c1c}
+  .calc-card,.calc-card *,.results-grid,.results-grid>*{min-width:0}
+  .tool-hero-title,.calc-card-title,.result-value,.sidebar-card-header,.localized-trust-panel{overflow-wrap:anywhere}
+  button.sidebar-card-header{width:100%;border:0;text-align:left;font:inherit}
   @media(max-width:640px){.toggle-chip{font-size:1rem;min-height:44px;padding:8px 14px;line-height:1.2}}
 </style>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
 <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments)}gtag('js',new Date());gtag('config','G-D859CGF391');</script>
-<meta name="afrotools-language-fallback" content="en">
-<meta name="afrotools-language-fallback-owner" content="sw-country-paye-reference-copy: Swahili localization">
 <link rel="canonical" href="https://afrotools.com/sw/liberia/kikokotoo-kodi-mshahara/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/liberia/lr-paye">
 <link rel="alternate" hreflang="fr" href="https://afrotools.com/fr/liberia/lr-paye">
@@ -95,7 +100,6 @@
 </head>
 <body class="top-level-page-ui-refresh">
 <afro-navbar theme="dark"></afro-navbar>
-<aside data-language-fallback-notice="sw-country-paye-reference-copy" lang="sw" role="note" style="max-width:1120px;margin:16px auto;padding:14px 18px;border:1px solid #d9a441;border-left-width:4px;border-radius:10px;background:#fff8e6;color:#4b3a16;line-height:1.55">Baadhi ya maelezo ya marejeo bado yako kwa Kiingereza. Kila sehemu hiyo imewekewa alama wazi ili isionekane kama tafsiri ya Kiswahili.</aside>
 
 <div class="tool-hero">
   <div class="tool-hero-inner">
@@ -133,9 +137,9 @@
           <label class="salary-label">Mshahara Ghafi (LRD)</label>
           <div class="salary-input-wrap">
             <span class="salary-prefix">LRD</span>
-            <input aria-label="SalaryInput" type="number" id="salaryInput" class="salary-input" value="500000" min="0" max="5000000" step="10000" oninput="syncSlider(this.value);calculate()">
+            <input aria-label="Mshahara ghafi" type="number" id="salaryInput" class="salary-input" value="500000" min="0" max="5000000" step="10000" oninput="syncSlider(this.value);markChanged()">
           </div>
-          <input aria-label="SalarySlider" type="range" id="salarySlider" class="salary-slider" min="50000" max="5000000" step="10000" value="500000" oninput="syncInput(this.value);calculate()">
+          <input aria-label="Kitelezeshi cha mshahara ghafi" type="range" id="salarySlider" class="salary-slider" min="50000" max="5000000" step="10000" value="500000" oninput="syncInput(this.value);markChanged()">
           <div class="slider-labels"><span>LRD 50k</span><span>LRD 5M</span></div>
         </div>
         <div class="preset-row">
@@ -148,10 +152,12 @@
         <div class="deduct-section">
           <div class="deduct-title">Makato ya Lazima</div>
           <div class="deduct-chips">
-            <span class="toggle-chip active" id="tog-nasscorp" onclick="togItem(this)" data-key="nasscorp"><span class="dot"></span>NASSCORP 4%</span>
+            <button type="button" class="toggle-chip active" id="tog-nasscorp" onclick="togItem(this)" data-key="nasscorp"><span class="dot"></span>NASSCORP 4%</button>
           </div>
         </div>
         <button type="button" class="calc-btn" onclick="calculate()">Kokotoa Kodi</button>
+        <button type="button" class="action-btn secondary" id="resetBtn" onclick="resetCalc()">Futa</button>
+        <p class="lr-status" id="calcStatus" role="status" aria-live="polite">Weka mshahara kisha ukokotoe. Taarifa zako hubaki kwenye kivinjari hiki.</p>
       </div>
     </div>
 
@@ -180,29 +186,9 @@
           <div class="chart-wrap"><canvas id="payChart" width="260" height="260"></canvas></div>
         </div>
         <div class="result-actions">
-          <button type="button" class="action-btn" onclick="openPdfModal()">⬇ Pakua PDF</button>
-          <button type="button" class="action-btn secondary" onclick="shareCalc()">↗ Shiriki</button>
+          <button type="button" class="action-btn" id="pdfBtn" data-no-gate="true" onclick="downloadPdf()">⬇ Pakua PDF</button>
+          <button type="button" class="action-btn secondary" id="shareBtn" onclick="shareCalc()">↗ Shiriki</button>
         </div>
-      </div>
-    </div>
-
-    <div class="calc-card ai-card" id="aiCard">
-      <div class="calc-card-header">
-        <span class="calc-card-icon">🤖</span>
-        <div>
-          <div class="calc-card-title">Mshauri wa Fedha wa AI</div>
-          <div class="calc-card-sub">Maswali kuhusu kodi yako</div>
-        </div>
-      </div>
-      <div class="calc-body">
-        <div class="ai-messages" id="aiMessages">
-          <div class="ai-msg ai">Habari! Mimi ni mshauri wako wa fedha wa AI. Je, una swali kuhusu kodi ya mshahara Liberia? Ninaweza kukusaidia kuelewa mabanda ya LRA, makato ya NASSCORP, au jinsi ya kupanga fedha zako.</div>
-        </div>
-        <div class="ai-input-row">
-          <input aria-label="Uliza swali lolote" type="text" id="aiInput" class="ai-input" placeholder="Uliza swali lolote..." onkeydown="if(event.key==='Enter')sendChat()">
-          <button type="button" class="ai-send" onclick="sendChat()">➤</button>
-        </div>
-        <button type="button" class="ai-prompt-btn" onclick="getAI()">✨ Niambie jinsi ya kupunguza kodi yangu</button>
       </div>
     </div>
 
@@ -223,7 +209,7 @@
       <p>NASSCORP (National Social Security and Welfare Corporation) ni mfuko wa hifadhi ya jamii wa lazima. Mwajiriwa analipa 4% ya mshahara ghafi, na mwajiri analipa 6%. Kikokotoo hiki kinaonyesha mchango wa mfanyakazi kando ya PAYE ya LRA ili utofautishe kodi na hifadhi ya jamii kwa uwazi.</p>
 
       <h3>Liberian Dollar (LRD) na US Dollar (USD)</h3>
-      <p>Liberia ni nchi maalum kwa sababu US Dollar (USD) pia inatumika sana sambamba na Liberian Dollar (LRD). Mshahara mwingi wa sekta ya umma hulipwa kwa LRD, huku sekta binafsi mara nyingi hutumia USD. Kiwango cha ubadilishaji kwa 2026 ni takriban USD 1 = LRD 190–200, lakini hii inaweza kubadilika.</p>
+      <p>Liberian Dollar (LRD) ndiyo sarafu inayotumiwa na kikokotoo hiki. Ukiwa na mshahara uliotajwa kwa USD, badilisha kwanza kwa kiwango cha ubadilishaji unachoweza kuthibitisha siku ya kukokotoa; ukurasa huu hautoi kiwango cha moja kwa moja cha fedha.</p>
 
       <h3>Jinsi ya Kukokotoa PAYE Liberia — Mfano</h3>
       <p>Mfano wa mfanyakazi mwenye mshahara wa LRD 500,000 kwa mwezi (LRD 6,000,000 kwa mwaka):</p>
@@ -245,11 +231,11 @@
 
   <aside class="calc-sidebar">
     <div class="sidebar-card" id="bandsCard">
-      <div class="sidebar-card-header" onclick="toggleBands(this)">
+      <button type="button" class="sidebar-card-header" onclick="toggleBands(this)" aria-controls="lrBandsBody" aria-expanded="true">
         <span>Mabanda ya Kodi ya LRA 2026</span>
         <span class="toggle-icon">▼</span>
-      </div>
-      <div class="sidebar-card-body">
+      </button>
+      <div class="sidebar-card-body" id="lrBandsBody">
         <table class="bands-table">
           <thead><tr><th>Mapato (LRD/Mwaka)</th><th>Kiwango</th></tr></thead>
           <tbody>
@@ -259,7 +245,7 @@
             <tr><td>Zaidi ya 800,000</td><td>25%</td></tr>
           </tbody>
         </table>
-        <p class="bands-note">Mabanda ya kila mwaka. NASSCORP inaweza kukatwa kutoka mapato yanayolipishwa kodi.</p>
+        <p class="bands-note">Mabanda ni ya mwaka. Kwa mujibu wa injini iliyokaguliwa, PAYE hutumia mshahara ghafi wa mwaka; NASSCORP huonyeshwa kama punguzo tofauti.</p>
       </div>
     </div>
     <div class="sidebar-card">
@@ -300,7 +286,7 @@
     <div class="faq-list">
       <details class="faq-item"><summary>Kodi ya PAYE Liberia ni nini?</summary><p>PAYE inakusanywa na LRA. Mfumo wa sasa wa mwaka ni 0% hadi LRD 70,000; 5% kwa 70,001–200,000; 15% kwa sehemu ya 200,001–800,000; na 25% kwa sehemu iliyo juu ya LRD 800,000.</p></details>
       <details class="faq-item"><summary>NASSCORP ni nini?</summary><p>NASSCORP ni hifadhi ya jamii ya lazima ya Liberia. Mfanyakazi analipa 4% na mwajiri analipa 6%. Kikokotoo hiki kinaonyesha mchango huo kando na PAYE.</p></details>
-      <details class="faq-item"><summary>Liberia inatumia sarafu gani?</summary><p>Liberia inatumia Liberian Dollar (LRD) rasmi, lakini US Dollar (USD) pia inatumika sana. Kiwango cha takriban USD 1 = LRD 190–200 (2026).</p></details>
+      <details class="faq-item"><summary>Nikitumia USD nifanye nini?</summary><p>Kikokotoo hiki kinatumia LRD pekee. Badilisha kiasi kwa kiwango cha ubadilishaji kilichothibitishwa siku hiyo kabla ya kukokotoa; hakuna kiwango cha moja kwa moja kinachotolewa hapa.</p></details>
       <details class="faq-item"><summary>Je, kiwango cha PAYE Liberia ni kikubwa?</summary><p>Kiwango cha juu ni 25%, ambacho ni cha chini ukiwa Afrika Magharibi. Mapato ya chini ya LRD 70,000 kwa mwaka hayatozwi kodi.</p></details>
       <details class="faq-item"><summary>Jinsi ya kukokotoa PAYE Liberia?</summary><p>Geuza mshahara wa mwezi kuwa wa mwaka, tumia mabanda ya LRA hadi LRD 800,000, kisha gawanya PAYE ya mwaka kwa 12. NASSCORP ya mfanyakazi ya 4% huonyeshwa kando kupata mshahara halisi.</p></details>
     </div>
@@ -309,53 +295,48 @@
 
 <!-- localized-tax-trust-panel -->
 <section class="section panel localized-trust-panel" data-tool-verification-panel style="max-width:1100px;margin:24px auto;padding:18px 20px;border:1px solid #dbeafe;background:#fff;border-radius:14px;box-shadow:0 10px 28px rgba(15,23,42,.06);">
-  <h2 style="margin:0 0 10px;color:#0f172a;">Methodology / Mbinu, sources and freshness</h2>
-  <p style="margin:0 0 10px;color:#334155;line-height:1.65;"><strong>Methodology:</strong> Kikokotoo cha Kodi ya Mshahara Liberia hutumia kiasi ulichoingiza, muktadha wa Liberia PAYE, NASSCORP na mshahara halisi, na breakdown inayoonekana kwenye ukurasa huu ili kutoa planning estimate inayoweza kunakiliwa, kupakuliwa au kuhifadhiwa.</p>
-  <p style="margin:0 0 10px;color:#334155;line-height:1.65;"><strong>Sources and freshness 2026:</strong> Hakiki viwango vya sasa, thresholds, deadlines, employer contributions, regulator guidance na forms kwenye official revenue authority, social-security authority, employer payroll policy au mshauri mwenye sifa kabla ya kulipa au kuwasilisha.</p>
-  <p style="margin:0;color:#7c2d12;line-height:1.65;" lang="en" data-explicit-language-fallback="true"><strong>Disclaimer:</strong> This is not official filing, not tax advice, not legal advice and not a guarantee. Ni makadirio ya kupanga tu; verify with the relevant authority before acting.</p>
+  <h2 style="margin:0 0 10px;color:#0f172a;">Mbinu, vyanzo na tarehe ya ukaguzi</h2>
+  <p style="margin:0 0 10px;color:#334155;line-height:1.65;"><strong>Mbinu:</strong> Injini hutumia mshahara ghafi wa mwaka kwa mabanda ya PAYE ya LRA. NASSCORP ya mfanyakazi ya 4% haipunguzi msingi wa PAYE; inaondolewa kando wakati wa kupata mshahara halisi. Mchango wa mwajiri wa 6% huongezwa kwenye gharama ya mwajiri.</p>
+  <p style="margin:0 0 10px;color:#334155;line-height:1.65;"><strong>Vyanzo vilikaguliwa 21 Julai 2026:</strong> <a href="https://revenue.lra.gov.lr/domestic-tax/tax-education/" target="_blank" rel="noopener">Elimu ya kodi ya Liberia Revenue Authority</a> na <a href="https://www.nasscorp.org.lr/wp-content/uploads/2024/06/Revised-Employers-Guide-Mar-20-24.pdf" target="_blank" rel="noopener">mwongozo wa waajiri wa NASSCORP</a>. Thibitisha kama viwango au taratibu zimebadilika kabla ya kuandaa mishahara au kuwasilisha malipo.</p>
+  <p style="margin:0;color:#7c2d12;line-height:1.65;"><strong>Tahadhari:</strong> Haya ni makadirio ya kupanga, si jalada rasmi, ushauri wa kodi au dhamana. Thibitisha hali yako na LRA, NASSCORP au mtaalamu mwenye sifa.</p>
 </section>
 <!-- localized-tax-business-cta -->
-<afro-business-cta tool-name="Kikokotoo cha Kodi ya Mshahara Liberia" save-note="Hifadhi scenario, pakua PDF/TXT au tumia matokeo haya kuomba dashboard ya payroll, tax au finance kwa timu yako."></afro-business-cta>
+<afro-business-cta tool-name="Kikokotoo cha Kodi ya Mshahara Liberia" save-note="Hifadhi makadirio, pakua PDF/TXT au tumia matokeo haya kuomba dashibodi ya mishahara, kodi au fedha kwa timu yako."></afro-business-cta>
 <afro-footer></afro-footer>
 
 <script>
-var NASSCORP_RATE = 0.04;
-var EMP_NASSCORP = 0.06;
-var LRA_BANDS = [
-  {min:0,       max:70000,    rate:0.00},
-  {min:70000,   max:200000,   rate:0.05},
-  {min:200000,  max:800000,   rate:0.15},
-  {min:800000,  max:Infinity, rate:0.25}
-];
 var state = {gross:500000, period:'monthly', togs:{nasscorp:true}};
 var myChart = null;
+var currentResult = null;
+var canonicalUrl = 'https://afrotools.com/sw/liberia/kikokotoo-kodi-mshahara/';
 
 function togItem(el){var key=el.dataset.key;state.togs[key]=!state.togs[key];el.classList.toggle('active',state.togs[key]);calculate();}
 function setPreset(v,btn){state.gross=v;document.getElementById('salaryInput').value=v;document.getElementById('salarySlider').value=v;document.querySelectorAll('.preset-btn').forEach(function(b){b.classList.remove('active')});if(btn)btn.classList.add('active');calculate();}
 function syncSlider(v){state.gross=parseFloat(v)||0;document.getElementById('salarySlider').value=state.gross;}
 function syncInput(v){state.gross=parseFloat(v)||0;document.getElementById('salaryInput').value=state.gross;}
-function setPeriod(p,btn){state.period=p;document.querySelectorAll('.period-btn').forEach(function(b){b.classList.remove('active')});if(btn)btn.classList.add('active');calculate();}
-function calcLRA(annual){var tax=0;LRA_BANDS.forEach(function(b){if(annual>b.min){var chunk=Math.min(annual,b.max===Infinity?annual:b.max)-b.min;tax+=chunk*b.rate;}});return tax;}
+function setPeriod(p,btn){state.period=p;document.querySelectorAll('.period-btn').forEach(function(b){b.classList.remove('active')});if(btn)btn.classList.add('active');markChanged();}
 function fmt(n){return 'LRD '+Math.round(n).toLocaleString();}
+function setStatus(message,error){var node=document.getElementById('calcStatus');node.textContent=message;node.classList.toggle('error',Boolean(error));}
+function markChanged(){currentResult=null;document.getElementById('resultsCard').classList.remove('on');setStatus('Taarifa zimebadilika. Bonyeza Kokotoa Kodi kupata matokeo mapya.',false);}
 function calculate(){
-  var gross=state.period==='annual'?state.gross/12:state.gross;
-  var nasscorp=state.togs.nasscorp?gross*NASSCORP_RATE:0;
-  var annualTaxable=(gross-nasscorp)*12;
-  var annualTax=calcLRA(annualTaxable);
-  var monthlyTax=annualTax/12;
-  var net=gross-nasscorp-monthlyTax;
-  var effRate=gross>0?(monthlyTax/gross)*100:0;
-  var empCost=gross*(1+EMP_NASSCORP);
-  document.getElementById('resultsSubtitle').textContent='Mshahara ghafi: '+fmt(gross)+'/mwezi';
-  document.getElementById('r-gross').textContent=fmt(gross);
-  document.getElementById('r-nasscorp').textContent='- '+fmt(nasscorp);
-  document.getElementById('r-tax').textContent='- '+fmt(monthlyTax);
-  document.getElementById('r-net').textContent=fmt(Math.max(0,net));
-  document.getElementById('r-eff').textContent=effRate.toFixed(1)+'%';
-  document.getElementById('r-emp').textContent=fmt(empCost);
-  updateChart(Math.max(0,net),nasscorp,monthlyTax);
+  var engine=window.AfroTools&&window.AfroTools.liberiaPaye;
+  if(!engine){markChanged();setStatus('Injini ya hesabu haikupakia. Onyesha ukurasa upya.',true);return;}
+  var value=Number(document.getElementById('salaryInput').value);
+  if(!Number.isFinite(value)||value<=0){markChanged();setStatus('Weka mshahara ghafi ulio zaidi ya sifuri.',true);return;}
+  state.gross=value;
+  currentResult=engine.calculate({grossAnnual:state.period==='annual'?value:value*12,nasscorp:state.togs.nasscorp});
+  document.getElementById('resultsSubtitle').textContent='Mshahara ghafi: '+fmt(currentResult.grossMonthly)+'/mwezi';
+  document.getElementById('r-gross').textContent=fmt(currentResult.grossMonthly);
+  document.getElementById('r-nasscorp').textContent='- '+fmt(currentResult.employeeNasscorpMonthly);
+  document.getElementById('r-tax').textContent='- '+fmt(currentResult.taxMonthly);
+  document.getElementById('r-net').textContent=fmt(Math.max(0,currentResult.netMonthly));
+  document.getElementById('r-eff').textContent=(currentResult.effectiveRate*100).toFixed(1)+'%';
+  document.getElementById('r-emp').textContent=fmt(currentResult.employerCostMonthly);
+  document.getElementById('resultsCard').classList.add('on');
+  updateChart(Math.max(0,currentResult.netMonthly),currentResult.employeeNasscorpMonthly,currentResult.taxMonthly);
+  setStatus('Makadirio yamesasishwa kwa injini ya Liberia iliyokaguliwa. Hakuna taarifa iliyotumwa.',false);
 }
-function toggleBands(el){var card=el.closest('.sidebar-card');card.classList.toggle('collapsed');el.querySelector('.toggle-icon').textContent=card.classList.contains('collapsed')?'▶':'▼';}
+function toggleBands(el){var card=el.closest('.sidebar-card');card.classList.toggle('collapsed');var collapsed=card.classList.contains('collapsed');el.setAttribute('aria-expanded',String(!collapsed));el.querySelector('.toggle-icon').textContent=collapsed?'▶':'▼';}
 function updateChart(net,nasscorp,tax){
   if(!window.Chart){return;}
   var ctx=document.getElementById('payChart').getContext('2d');
@@ -364,34 +345,20 @@ function updateChart(net,nasscorp,tax){
 }
 function setChart(type,btn){
   document.querySelectorAll('.chart-btn').forEach(function(b){b.classList.remove('active')});if(btn)btn.classList.add('active');
-  if(!window.Chart){return;}
-  var gross=state.period==='annual'?state.gross/12:state.gross;
-  var nasscorp=state.togs.nasscorp?gross*NASSCORP_RATE:0;
-  var tax=calcLRA((gross-nasscorp)*12)/12;
-  var net=Math.max(0,gross-nasscorp-tax);
+  if(!window.Chart||!currentResult){return;}
   if(myChart){myChart.destroy();}
   var ctx=document.getElementById('payChart').getContext('2d');
-  myChart=new Chart(ctx,{type:type==='bar'?'bar':'doughnut',data:{labels:['Mshahara Halisi','NASSCORP','Kodi ya LRA'],datasets:[{data:[Math.round(net),Math.round(nasscorp),Math.round(tax)],backgroundColor:['#0062CC','#FF9500','#FF3B30'],borderWidth:2}]},options:type==='bar'?{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}:{cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}});
+  myChart=new Chart(ctx,{type:type==='bar'?'bar':'doughnut',data:{labels:['Mshahara Halisi','NASSCORP','Kodi ya LRA'],datasets:[{data:[Math.round(currentResult.netMonthly),Math.round(currentResult.employeeNasscorpMonthly),Math.round(currentResult.taxMonthly)],backgroundColor:['#0062CC','#FF9500','#FF3B30'],borderWidth:2}]},options:type==='bar'?{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true}}}:{cutout:'68%',plugins:{legend:{position:'bottom',labels:{font:{size:11},boxWidth:12}}}}});
 }
-function openPdfModal(){if(window.openPayePdfModal)window.openPayePdfModal();else alert('PDF inatengenezwa...');}
-function shareCalc(){var url=window.location.href+'?gross='+state.gross+'&period='+state.period;if(navigator.share){navigator.share({title:'Kikokotoo cha Kodi Liberia',url:url});}else{navigator.clipboard.writeText(url);alert('Kiungo kimekopiwa!');}}
-function getAI(){
-  var gross=state.period==='annual'?state.gross/12:state.gross;
-  var nasscorp=state.togs.nasscorp?gross*NASSCORP_RATE:0;
-  var tax=calcLRA((gross-nasscorp)*12)/12;
-  var net=Math.max(0,gross-nasscorp-tax);
-  var msg='Mshahara wangu ni LRD '+Math.round(gross).toLocaleString()+'/mwezi. Kodi ya LRA ni LRD '+Math.round(tax).toLocaleString()+'. NASSCORP ni LRD '+Math.round(nasscorp).toLocaleString()+'. Mshahara halisi ni LRD '+Math.round(net).toLocaleString()+'. Nipe ushauri wa kupanga fedha zangu Liberia.';
-  document.getElementById('aiInput').value=msg;sendChat();
+function resetCalc(){state={gross:0,period:'monthly',togs:{nasscorp:true}};currentResult=null;document.getElementById('salaryInput').value='';document.getElementById('salarySlider').value='50000';document.querySelectorAll('.period-btn').forEach(function(button,index){button.classList.toggle('active',index===0);});document.getElementById('tog-nasscorp').classList.add('active');document.getElementById('resultsCard').classList.remove('on');if(myChart){myChart.destroy();myChart=null;}setStatus('Imefutwa. Hakuna kilichohifadhiwa au kutumwa.',false);document.getElementById('salaryInput').focus();}
+async function downloadPdf(){
+  if(!currentResult){setStatus('Kokotoa mshahara kabla ya kupakua PDF.',true);return;}
+  if(!(window.AfroTools&&window.AfroTools.pdf)){setStatus('Huduma ya PDF bado inapakia. Jaribu tena.',true);return;}
+  await window.AfroTools.pdf.generate({filename:'afrotools-liberia-paye-sw.pdf',title:'Makadirio ya Kodi ya Mshahara Liberia',subtitle:'PAYE ya LRA na NASSCORP',country:'Liberia',currency:'LRD',summary:[{label:'Mshahara halisi wa mwezi',value:fmt(currentResult.netMonthly)},{label:'Mshahara ghafi wa mwezi',value:fmt(currentResult.grossMonthly)},{label:'PAYE ya mwezi',value:fmt(currentResult.taxMonthly)},{label:'NASSCORP ya mfanyakazi',value:fmt(currentResult.employeeNasscorpMonthly)}],sections:[{heading:'Muhtasari wa mwaka',rows:[['Mshahara ghafi',fmt(currentResult.grossAnnual)],['PAYE',fmt(currentResult.taxAnnual)],['NASSCORP',fmt(currentResult.employeeNasscorpAnnual)],['Mshahara halisi',fmt(currentResult.netAnnual)]]},{heading:'Chanzo na matumizi',rows:[['Imekaguliwa','LRA na mwongozo wa NASSCORP — 21 Julai 2026'],['Tahadhari','Makadirio ya kupanga tu; thibitisha kabla ya kuandaa mishahara au kuwasilisha malipo.']]}],skipGate:true});
+  setStatus('PDF binafsi imetengenezwa kwenye kivinjari.',false);
 }
-function sendChat(){
-  var input=document.getElementById('aiInput');var msg=input.value.trim();if(!msg)return;
-  var msgs=document.getElementById('aiMessages');
-  msgs.innerHTML+='<div class="ai-msg user">'+msg+'</div>';input.value='';
-  msgs.innerHTML+='<div class="ai-msg ai" id="aiTyping">Inafikiri...</div>';msgs.scrollTop=msgs.scrollHeight;
-  fetch('/.netlify/functions/ai-advisor',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({tool:'lr-paye',question:msg,lang:'sw'})})
-    .then(function(r){return r.json();}).then(function(d){var t=document.getElementById('aiTyping');if(t)t.textContent=d.answer||d.response||'Samahani, jaribu tena.';msgs.scrollTop=msgs.scrollHeight;})
-    .catch(function(){var t=document.getElementById('aiTyping');if(t)t.textContent='Samahani, huduma haipo sasa. Jaribu tena baadaye.';});
-}
+async function copyText(text){if(navigator.clipboard&&navigator.clipboard.writeText)return navigator.clipboard.writeText(text);var field=document.createElement('textarea');field.value=text;field.setAttribute('readonly','');field.style.position='fixed';field.style.opacity='0';document.body.appendChild(field);field.select();document.execCommand('copy');field.remove();}
+async function shareCalc(){var payload={title:'Kikokotoo cha Kodi ya Mshahara Liberia',url:canonicalUrl};if(navigator.share){await navigator.share(payload);}else{await copyText(payload.url);setStatus('Kiungo kimenakiliwa bila taarifa ya mshahara.',false);}}
 document.addEventListener('DOMContentLoaded',function(){calculate();});
 </script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
