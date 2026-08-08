@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 3,
-    "blocked": 50,
+    "acceptedCandidates": 4,
+    "blocked": 49,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -40,9 +40,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/qr-generator/",
       "swahiliRoute": "/sw/zana/kitengeneza-qr/",
-      "status": "blocked-export-parity",
-      "blocker": "QR generation is local, but the route lacks the English PNG/SVG download and reopen contract and full payload validation.",
-      "sourceOwner": "sw/zana/kitengeneza-qr/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "assets/js/engines/qr-payload-engine.js",
+      "oracle": "Shared DOM-free engine preserves English text, URL, escaped WiFi and vCard payload semantics and high error correction; Swahili invalid/reset states clear stale output.",
+      "exports": "PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths.",
+      "browser": "tests/e2e/swahili-qr-generator-parity.spec.js (Chromium, one worker, final run on port 4401): English/Swahili payload and PNG/SVG export parity, stale invalid/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/qr-generator.webp"
     },
     {
@@ -559,14 +562,15 @@
     "Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.",
     "Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.",
     "The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.",
-    "QR, OCR and social-card dependencies were moved from remote CDNs to committed local vendor assets, but those rows remain blocked because local dependencies alone do not prove product parity.",
+    "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.",
     "Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof."
   ],
   "browserMatrix": {
     "engine": "Chromium",
     "workers": 1,
     "isolatedPorts": [
-      4398
+      4398,
+      4401
     ],
     "widths": [
       320,
@@ -588,6 +592,10 @@
     ]
   },
   "exportParseProof": [
+    {
+      "englishId": "qr-generator",
+      "proof": "PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths."
+    },
     {
       "englishId": "color-picker",
       "proof": "CSS variables and Tailwind JS were downloaded, reopened as text and parsed for five exact palette values."
@@ -613,8 +621,10 @@
     "node scripts/build-sw-image-color-family.js",
     "node scripts/audit-sw-image-color-family.js",
     "node scripts/audit-sw-image-design-parity.js",
+    "node tests/qr-payload-engine.test.js",
     "playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",

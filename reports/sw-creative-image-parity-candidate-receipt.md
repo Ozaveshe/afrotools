@@ -2,8 +2,8 @@
 
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact denominator: **53** (**34 Creative**, **19 Image & Design**)
-- Accepted candidates: **3**
-- Blocked fail-closed: **50**
+- Accepted candidates: **4**
+- Blocked fail-closed: **49**
 - Central acceptance ledger changed: **no**
 - Verdict: **PARTIAL — FAIL CLOSED**
 
@@ -11,7 +11,7 @@
 
 - `image-compress` — blocked-feature-parity: The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract.
 - `image-resize` — blocked-feature-parity: The Swahili inline owner does not reuse image-resize-studio.js or reproduce English presets, batch behavior, validation, and export receipts.
-- `qr-generator` — blocked-export-parity: QR generation is local, but the route lacks the English PNG/SVG download and reopen contract and full payload validation.
+- `qr-generator` — accepted-candidate: PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths.
 - `background-remover` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.
 - `passport-photo` — blocked-feature-parity: The Swahili canvas owner is narrower than passport-photo-studio.js and lacks the English crop, preset, sheet, validation, and export proof surface.
 - `image-crop` — blocked-feature-parity: The route uses an independent inline crop implementation rather than the English image-crop-studio.js contract and omits equivalent interactive crop and export behavior.
@@ -68,13 +68,13 @@
 - Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.
 - Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.
 - The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.
-- QR, OCR and social-card dependencies were moved from remote CDNs to committed local vendor assets, but those rows remain blocked because local dependencies alone do not prove product parity.
+- QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.
 - Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.
 
 ## Browser and export proof
 
-- Chromium, one worker, isolated port 4398: **6 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
-- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
+- Chromium, one worker, isolated ports 4398 and 4401: **9 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
+- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
 - Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.
 
 ## Artwork
@@ -84,4 +84,4 @@
 
 ## Boundary and baseline debt
 
-The 50 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
+The 49 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.

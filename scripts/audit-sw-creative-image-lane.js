@@ -25,7 +25,7 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'qr-generator', 'watermark-bulk']);
 const candidateProof = {
   'color-picker': {
     sourceOwner: 'scripts/build-sw-image-color-family.js',
@@ -38,6 +38,12 @@ const candidateProof = {
     oracle: 'English dataset remains exact at 45 palettes and 225 colors; category filtering and keyboard clipboard flow passed.',
     exports: 'Per-palette CSS, all-palette CSS and JSON downloads were reopened; JSON parsed to all 45 records and CSS parsed to all 225 colors.',
     browser: 'tests/e2e/swahili-image-color-family.spec.js (Chromium, one worker, final combined run on port 4398): 320/375, 200% reflow, themes, keyboard/focus, contrast, console and no-network passed.'
+  },
+  'qr-generator': {
+    sourceOwner: 'assets/js/engines/qr-payload-engine.js',
+    oracle: 'Shared DOM-free engine preserves English text, URL, escaped WiFi and vCard payload semantics and high error correction; Swahili invalid/reset states clear stale output.',
+    exports: 'PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths.',
+    browser: 'tests/e2e/swahili-qr-generator-parity.spec.js (Chromium, one worker, final run on port 4401): English/Swahili payload and PNG/SVG export parity, stale invalid/reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
   },
   'watermark-bulk': {
     sourceOwner: 'sw/zana/watermark-nyingi/index.html',
@@ -80,8 +86,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 3, `accepted candidate count drifted: expected 3, found ${accepted.length}`);
-expect(blocked.length === 50, `blocked count drifted: expected 50, found ${blocked.length}`);
+expect(accepted.length === 4, `accepted candidate count drifted: expected 4, found ${accepted.length}`);
+expect(blocked.length === 49, `blocked count drifted: expected 49, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -102,13 +108,13 @@ const receipt = {
     'Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.',
     'Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.',
     'The English color-picker owner was repaired so invalid HEX clears stale derived values and disables exports in both locales.',
-    'QR, OCR and social-card dependencies were moved from remote CDNs to committed local vendor assets, but those rows remain blocked because local dependencies alone do not prove product parity.',
+    'QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR and social-card dependencies are local but those rows remain blocked because local dependencies alone do not prove product parity.',
     'Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.'
   ],
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398],
+    isolatedPorts: [4398, 4401],
     widths: [320, 375, 640],
     reflow: '640 CSS px as the 200% reflow equivalent of a 1280 px viewport',
     themes: ['light', 'dark'],
@@ -123,8 +129,10 @@ const receipt = {
     'node scripts/build-sw-image-color-family.js',
     'node scripts/audit-sw-image-color-family.js',
     'node scripts/audit-sw-image-design-parity.js',
+    'node tests/qr-payload-engine.test.js',
     'playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',
@@ -138,7 +146,7 @@ const receipt = {
 };
 
 const mdRows = rows.map(row => `- \`${row.englishId}\` — ${row.status}: ${row.status === 'accepted-candidate' ? row.exports : row.blocker}`).join('\n');
-const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated port 4398: **6 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe 50 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
+const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398 and 4401: **9 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
 
 if (failures.length) {
   console.error(failures.join('\n'));

@@ -888,6 +888,7 @@
 <afro-business-cta tool-name="QR Code Generator" prospect-segment="design-workflows" save-note="Generate the code in-browser, scan-test it, then download PNG or SVG before sending to print or packaging."></afro-business-cta>
 <afro-footer></afro-footer>
 
+<script src="/assets/js/engines/qr-payload-engine.js?v=20260808"></script>
 <script>
   let currentMode = 'text';
   let qrcodeInstance = null;
@@ -1066,48 +1067,30 @@
     });
   });
 
-  function escapeVCard(str) {
-    return str.replace(/\\/g, '\\\\').replace(/,/g, '\\,').replace(/;/g, '\\;').replace(/\r\n/g, '\\n').replace(/\r/g, '\\n').replace(/\n/g, '\\n');
-  }
-
-  function escapeWifi(str) {
-    return str.replace(/\\/g, '\\\\').replace(/"/g, '\\"').replace(/;/g, '\\;').replace(/:/g, '\\:');
-  }
-
   function getQRData() {
-    switch(currentMode) {
-      case 'text':
-        return document.getElementById('textInput').value;
-      case 'url':
-        return document.getElementById('urlInput').value;
-      case 'wifi':
-        const ssid = document.getElementById('wifiSSID').value;
-        const password = document.getElementById('wifiPassword').value;
-        const security = document.getElementById('wifiSecurity').value;
-        if (!ssid) return null;
-        if ((security === 'WPA' || security === 'WEP') && !password) {
-          alert('Password is required for WPA/WPA2 and WEP networks');
-          return null;
-        }
-        if (security === 'WPA' && password && (password.length < 8 || password.length > 63)) {
-          alert('WPA/WPA2 passwords must be between 8 and 63 characters');
-          return null;
-        }
-        return `WIFI:T:${security};S:${escapeWifi(ssid)};P:${escapeWifi(password)};;`;
-      case 'vcard':
-        const name = document.getElementById('vcardName').value;
-        const phone = document.getElementById('vcardPhone').value;
-        const email = document.getElementById('vcardEmail').value;
-        const org = document.getElementById('vcardOrg').value;
-        if (!name) return null;
-        return `BEGIN:VCARD\nVERSION:3.0\nFN:${escapeVCard(name)}\n${phone ? 'TEL:' + escapeVCard(phone) + '\n' : ''}${email ? 'EMAIL:' + escapeVCard(email) + '\n' : ''}${org ? 'ORG:' + escapeVCard(org) + '\n' : ''}END:VCARD`;
-    }
+    return window.AfroTools.QrPayload.buildPayload({
+      mode: currentMode,
+      text: document.getElementById('textInput').value,
+      url: document.getElementById('urlInput').value,
+      ssid: document.getElementById('wifiSSID').value,
+      password: document.getElementById('wifiPassword').value,
+      security: document.getElementById('wifiSecurity').value,
+      name: document.getElementById('vcardName').value,
+      phone: document.getElementById('vcardPhone').value,
+      email: document.getElementById('vcardEmail').value,
+      org: document.getElementById('vcardOrg').value
+    });
   }
 
   generateBtn.addEventListener('click', () => {
-    const data = getQRData();
-    if (!data) {
-      alert('Please fill in all required fields');
+    const result = getQRData();
+    if (!result.ok) {
+      const errors = {
+        wifi_password_required: 'Password is required for WPA/WPA2 and WEP networks',
+        wifi_password_length: 'WPA/WPA2 passwords must be between 8 and 63 characters',
+        required_fields: 'Please fill in all required fields'
+      };
+      alert(errors[result.error] || 'Unable to build this QR payload');
       return;
     }
 
@@ -1118,7 +1101,7 @@
     const lightColor = lightColorInput.value;
 
     qrcodeInstance = new QRCode(qrcodeDiv, {
-      text: data,
+      text: result.data,
       width: 256,
       height: 256,
       colorDark: darkColor,
@@ -1142,29 +1125,7 @@
 
   function buildQRVector() {
     const qr = qrcodeInstance && qrcodeInstance._oQRCode;
-    const moduleCount = qr && typeof qr.getModuleCount === 'function' ? qr.getModuleCount() : 0;
-    if (!moduleCount) return '';
-
-    const quietZone = 4;
-    const viewSize = moduleCount + quietZone * 2;
-    const modules = [];
-
-    for (let row = 0; row < moduleCount; row += 1) {
-      for (let column = 0; column < moduleCount; column += 1) {
-        if (qr.isDark(row, column)) {
-          modules.push(`M${column + quietZone} ${row + quietZone}h1v1h-1z`);
-        }
-      }
-    }
-
-    return [
-      '<svg xmlns="http://www.w3.org/2000/svg"',
-      ` viewBox="0 0 ${viewSize} ${viewSize}" width="1024" height="1024"`,
-      ' shape-rendering="crispEdges">',
-      `<rect width="${viewSize}" height="${viewSize}" fill="${lightColorInput.value}"/>`,
-      `<path d="${modules.join('')}" fill="${darkColorInput.value}"/>`,
-      '</svg>'
-    ].join('');
+    return window.AfroTools.QrPayload.buildSvg(qr, darkColorInput.value, lightColorInput.value);
   }
 
   document.getElementById('downloadSVG').addEventListener('click', () => {
