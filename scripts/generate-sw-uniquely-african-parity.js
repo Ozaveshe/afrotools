@@ -25,7 +25,7 @@ const ROUTES = Object.freeze({
   "electricity-estimator": ["/sw/zana/makisio-ya-bili-ya-umeme/", "shared-engine"],
   "fuel-cost": ["/sw/zana/gharama-za-mafuta/", "shared-engine"],
   "hawala-tracker": ["/sw/zana/ufuatiliaji-hawala/", "shared-engine"],
-  "burial-cost": ["/sw/zana/gharama-za-mazishi/", "native-blocked-runtime-wrapper"],
+  "burial-cost": ["/sw/zana/gharama-za-mazishi/", "native-existing"],
   "staple-basket": ["/sw/zana/kikapu-cha-bidhaa-msingi/", "shared-engine"],
   "wholesale-retail-spread": ["/sw/zana/tofauti-bei-jumla-rejareja/", "shared-engine"],
   "land-size": ["/sw/zana/ukubwa-wa-ardhi/", "shared-engine"],
@@ -131,10 +131,10 @@ function buildManifest() {
       english: row.english,
       french: row.french,
       swahili: { route: target[0], file: path.relative(ROOT, swFile).replace(/\\/g, "/"), mode: target[1] },
-      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.culturalScope,
+      culturalScope: row.english.id === "mobile-money-fees" ? "User-entered, timestamped mobile-money fee quotes; compare only matching currency, amount and transaction type without embedded operator tariffs or rankings." : row.english.id === "burial-cost" ? "Respectful family funeral budget using only user-entered costs; no country, faith, ceremony, provider or insurance price assumptions." : row.culturalScope,
       countryCodes: row.countryCodes,
-      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.engineOwner,
-      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.dataOwner,
+      engineOwner: row.english.id === "mobile-money-fees" ? "assets/js/engines/mobile-money-quote-engine.js" : row.english.id === "burial-cost" ? "assets/js/engines/funeral-budget-engine.js" : row.engineOwner,
+      dataOwner: row.english.id === "mobile-money-fees" ? "user-entered-quote-receipts + data/fintech/official-sources.json#mobileMoney.fee" : row.english.id === "burial-cost" ? "user-entered-confirmed-family-costs" : row.dataOwner,
       exports: row.exports,
       artwork: row.artwork
     };

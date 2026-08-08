@@ -14,12 +14,13 @@ const african = require('../data/localization/sw-uniquely-african-parity-manifes
 const uaEngine = require('../engines/src/uniquely-african-engine.js');
 const remittanceEngine = require('../engines/src/remittance-quote-comparator-engine.js');
 const mobileMoneyEngine = require('../assets/js/engines/mobile-money-quote-engine.js');
+const funeralBudgetEngine = require('../assets/js/engines/funeral-budget-engine.js');
 const rcEngine = require('../assets/js/engines/religious-cultural-parity.js');
 const swBuilder = require('../scripts/build-sw-religious-cultural-parity.js');
 
 const acceptedBefore = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
 const assigned = inventory.rows.filter((row) => ['religious-cultural', 'african'].includes(row.categoryKey) && !acceptedBefore.has(row.englishId));
-const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees']);
+const africanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
 const sharedAfricanLane = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc']);
 
 test('assigned denominator is exactly 33 with the requested category split', () => {
@@ -79,10 +80,10 @@ test('religious workflow oracles preserve arithmetic and conservative boundaries
   }
 });
 
-test('eleven corrected African rows use native engines and three source-risk rows remain blocked', () => {
+test('twelve corrected African rows use native engines and two source-risk rows remain blocked', () => {
   assert.equal(african.rows.filter((row) => row.swahili.mode === 'shared-engine').length, 28);
-  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 3);
-  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 3);
+  assert.equal(african.rows.filter((row) => row.swahili.mode === 'native-existing').length, 4);
+  assert.equal(african.rows.filter((row) => row.swahili.mode.startsWith('native-blocked')).length, 2);
   for (const id of sharedAfricanLane) {
     const row = african.rows.find((item) => item.english.id === id);
     assert.equal(row.swahili.mode, 'shared-engine');
@@ -102,6 +103,11 @@ test('eleven corrected African rows use native engines and three source-risk row
   const mobileHtml=fs.readFileSync(path.join(ROOT,mobile.swahili.file),'utf8');
   assert.match(mobileHtml,/mobile-money-quote-engine\.js/);
   assert.doesNotMatch(mobileHtml,/const FEE=|M-Pesa|MTN MoMo|Airtel Money|Orange Money|Wave|OPay/);
+  const burial=african.rows.find((item)=>item.english.id==='burial-cost');
+  assert.equal(burial.swahili.mode,'native-existing');
+  const burialHtml=fs.readFileSync(path.join(ROOT,burial.swahili.file),'utf8');
+  assert.match(burialHtml,/funeral-budget-engine\.js/);
+  assert.doesNotMatch(burialHtml,/COSTS\s*=|Muslim.*0\.5|Christian.*price|Old Mutual|Avbob/i);
 });
 
 test('African source-oracle calculations and invalid clearing contracts', () => {
@@ -131,11 +137,13 @@ test('African source-oracle calculations and invalid clearing contracts', () => 
   assert.equal(mobileMoney.hasEligibleComparison,true);
   assert.equal(mobileMoney.groups[0].lowestTotalFee,25);
   assert.equal(mobileMoney.quotes[1].lowestAmongEligibleComparable,true);
+  const funeral=funeralBudgetEngine.calculate({currency:'KES',items:[{label:'A',amount:100},{label:'B',amount:200}],bufferPercent:10,availableFund:50,confirmedBenefit:30,contributors:2,days:5});
+  assert.deepEqual({total:funeral.total,gap:funeral.gap,share:funeral.perContributor,daily:funeral.perDay},{total:330,gap:250,share:125,daily:50});
 });
 
 test('all assigned accepted routes have dedicated artwork and reciprocal metadata', () => {
   const ids = new Set([...swBuilder.ACCEPTED, ...africanLane]);
-  assert.equal(ids.size,30);
+  assert.equal(ids.size,31);
   for (const id of ids) {
     const route = swBuilder.ROUTES[id] || african.rows.find((item) => item.english.id === id).swahili.route;
     const file = path.join(ROOT,route.replace(/^\/+|\/+$/g,''),'index.html');

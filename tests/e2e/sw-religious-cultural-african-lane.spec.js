@@ -5,18 +5,18 @@ const { test, expect } = require('@playwright/test');
 const religiousBuilder = require('../../scripts/build-sw-religious-cultural-parity.js');
 const africanManifest = require('../../data/localization/sw-uniquely-african-parity-manifest.json');
 
-const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees']);
+const africanIds = new Set(['naira-to-words','amount-words-ke','amount-words-gh','susu-tracker','whatsapp-link','ajo-interest','market-days','ajo-chama-calc','remittance-compare','remittance-v2','mobile-money-fees','burial-cost']);
 const remittanceIds = new Set(['remittance-compare','remittance-v2']);
 const routes = [
   ...Array.from(religiousBuilder.ACCEPTED, (id) => ({ id, family:'religious', route:religiousBuilder.ROUTES[id] })),
-  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':'african', route:row.swahili.route }))
+  ...africanManifest.rows.filter((row) => africanIds.has(row.english.id)).map((row) => ({ id:row.english.id, family:remittanceIds.has(row.english.id)?'remittance':row.english.id==='mobile-money-fees'?'mobile-money':row.english.id==='burial-cost'?'funeral':'african', route:row.swahili.route }))
 ];
 
 test.describe.configure({ mode:'serial' });
 
-test('30 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
+test('31 candidate apps pass native workflow, export, privacy and responsive browser proof', async ({ page }) => {
   test.setTimeout(180000);
-  expect(routes).toHaveLength(30);
+  expect(routes).toHaveLength(31);
   await page.addInitScript(() => {
     Object.defineProperty(navigator, 'clipboard', { configurable:true, value:{ writeText:async (value) => { window.__copiedText=String(value); } } });
     window.print=() => { window.__printInvoked=true; };
@@ -42,8 +42,8 @@ test('30 candidate apps pass native workflow, export, privacy and responsive bro
     await expect(page.locator('meta[property="og:image"]')).toHaveAttribute('content',/\/assets\/img\/tools\//);
     await expect(page.locator('body')).not.toContainText(/Famille|Confirmer les|Révision familiale|Montant de référence|Calculer|Résultat/);
 
-    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : app.family === 'mobile-money' ? page.locator('#mm-form') : page.locator('[data-ua-form]');
-    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : app.family === 'mobile-money' ? page.locator('#mm-result-list') : page.locator('[data-ua-result]');
+    const form = app.family === 'religious' ? page.locator('#sw-rc-form') : app.family === 'remittance' ? page.locator('#rm-form') : app.family === 'mobile-money' ? page.locator('#mm-form') : app.family === 'funeral' ? page.locator('#fb-form') : page.locator('[data-ua-form]');
+    const result = app.family === 'religious' ? page.locator('#sw-rc-output') : app.family === 'remittance' ? page.locator('#rm-result-list') : app.family === 'mobile-money' ? page.locator('#mm-result-list') : app.family === 'funeral' ? page.locator('#fb-result-list') : page.locator('[data-ua-result]');
     await expect(form).toBeVisible();
     if (app.id === 'whatsapp-link') await page.locator('[data-ua-field="message"]').fill('SW_PRIVACY_SENTINEL');
     if (app.family === 'african') await form.locator('button[type="submit"]').click();
@@ -71,6 +71,14 @@ test('30 candidate apps pass native workflow, export, privacy and responsive bro
         await page.locator(`#mm-${letter}-recipient`).fill('5');
         await page.locator(`#mm-${letter}-observed`).fill(checked);
       }
+      await form.locator('button[type="submit"]').click();
+    }
+    if (app.family === 'funeral') {
+      await page.locator('#fb-care').fill('1000');
+      await page.locator('#fb-food').fill('2000');
+      await page.locator('#fb-fund').fill('500');
+      await page.locator('#fb-benefit').fill('300');
+      await page.locator('#fb-contributors').fill('5');
       await form.locator('button[type="submit"]').click();
     }
     await expect(result).toBeVisible();
@@ -102,6 +110,14 @@ test('30 candidate apps pass native workflow, export, privacy and responsive bro
       expect(parsed.methodology).toBe('user-entered-mobile-money-quotes');
       expect(parsed.result.hasEligibleComparison).toBe(true);
       await page.locator('#mm-copy').click();
+      await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
+    } else if (app.family === 'funeral') {
+      const download=page.waitForEvent('download');
+      await page.locator('#fb-json').click();
+      const item=await download;const file=await item.path();const parsed=JSON.parse(fs.readFileSync(file,'utf8'));
+      expect(parsed.methodology).toBe('user-entered-funeral-budget');
+      expect(parsed.result.total).toBe(3300);
+      await page.locator('#fb-copy').click();
       await expect.poll(() => page.evaluate(() => (window.__copiedText || '').length)).toBeGreaterThan(40);
     } else {
       for (const kind of ['json','txt']) {
@@ -186,6 +202,16 @@ test('invalid input clears stale results and focuses the failed field', async ({
   await expect(page.locator('#mm-result-list')).toBeEmpty();
   await page.locator('#mm-form button[type="reset"]').click();
   await expect(page.locator('#mm-result-list')).toBeEmpty();
+
+  await page.goto('/sw/zana/gharama-za-mazishi/');
+  await page.locator('#fb-care').fill('1000');
+  await page.locator('#fb-form button[type="submit"]').click();
+  await expect(page.locator('#fb-result-list')).not.toBeEmpty();
+  await page.locator('#fb-contributors').fill('0');
+  await page.locator('#fb-form button[type="submit"]').click();
+  await expect(page.locator('#fb-result-list')).toBeEmpty();
+  await page.locator('#fb-form button[type="reset"]').click();
+  await expect(page.locator('#fb-result-list')).toBeEmpty();
 });
 
 test('English prayer owners use the same date-aware engine and conservative boundaries', async ({ page }) => {
@@ -242,4 +268,17 @@ test('English mobile-money owner uses entered quotes without embedded provider t
   }
   await page.locator('#mm-form button[type="submit"]').click();
   await expect(page.locator('#mm-primary-value')).toContainText('25 KES');
+});
+
+test('English funeral owner uses family-entered costs without price or faith multipliers', async ({ page }) => {
+  await page.goto('/tools/burial-cost/');
+  await expect(page.locator('main[data-funeral-budget]')).toBeVisible();
+  await expect(page.locator('body')).not.toContainText(/Real Cost Data|Average Funeral Costs|Muslim.*40|Christian.*price|Old Mutual|Avbob/);
+  await page.locator('#fb-care').fill('1000');
+  await page.locator('#fb-food').fill('2000');
+  await page.locator('#fb-fund').fill('500');
+  await page.locator('#fb-benefit').fill('300');
+  await page.locator('#fb-contributors').fill('5');
+  await page.locator('#fb-form button[type="submit"]').click();
+  await expect(page.locator('#fb-primary-value')).toContainText('3,300 KES');
 });

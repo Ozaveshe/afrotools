@@ -11,8 +11,8 @@
     "denominator": 33,
     "religiousCultural": 19,
     "uniquelyAfrican": 14,
-    "candidateAccepted": 30,
-    "blocked": 3
+    "candidateAccepted": 31,
+    "blocked": 2
   },
   "proof": {
     "staticTest": "tests/sw-religious-cultural-african-lane.test.js",
@@ -234,14 +234,33 @@
       "englishRoute": "/tools/burial-cost/",
       "categoryKey": "african",
       "swahiliRoute": "/sw/zana/gharama-za-mazishi/",
-      "status": "blocked",
+      "status": "candidate-accepted",
       "sourceOwners": [
-        "engines/src/uniquely-african-engine.js",
-        "scripts/generate-sw-uniquely-african-parity.js",
-        "assets/js/pages/sw-uniquely-african-parity.js"
+        "assets/js/engines/funeral-budget-engine.js",
+        "scripts/build-funeral-budget-parity.js",
+        "assets/js/pages/funeral-budget-parity.js",
+        "assets/js/components/tool-registry.js"
       ],
-      "decision": "The owner combines country price assumptions with a route-specific runtime wrapper; no safe locale-neutral price source was proved.",
-      "proof": null,
+      "decision": "Preserved the English calculation/data semantics through a DOM-free shared engine and a native Swahili presentation.",
+      "proof": {
+        "staticTest": "tests/sw-religious-cultural-african-lane.test.js",
+        "browserTest": "tests/e2e/sw-religious-cultural-african-lane.spec.js",
+        "invalidReset": true,
+        "responsive": [
+          "320px",
+          "375px",
+          "200% reflow"
+        ],
+        "themes": [
+          "light",
+          "dark"
+        ],
+        "keyboardAndA11y": true,
+        "rawInputNetworkLeaks": 0,
+        "downloadableExportsParsed": [
+          "json"
+        ]
+      },
       "artwork": {
         "path": "assets/img/tools/burial-cost.webp",
         "status": "present"
