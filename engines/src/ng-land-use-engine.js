@@ -3,7 +3,7 @@
   var RULES = Object.freeze({
     scheme: 'Lagos State Land Use Charge Law 2020',
     effectiveFrom: '2020-05-25',
-    verifiedThrough: '2026-07-23',
+    verifiedThrough: '2026-08-09',
     maximumChargeRatePct: 3.5,
     source: 'Lagos State Land Use Charge Law 2020 and Annual Charge Rates Notice 2020'
   });

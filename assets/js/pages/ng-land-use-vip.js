@@ -6,7 +6,7 @@
   var locale = root.dataset.locale || 'en';
   var text = {
     en: {
-      date: 'This verified planner supports Lagos assessments dated from 25 May 2020 through 23 July 2026.',
+      date: 'This verified planner supports Lagos assessments dated from 25 May 2020 through 9 August 2026.',
       rate: 'Enter the annual charge rate printed on the current demand notice (0% to 3.5%).',
       discount: 'The notice discount must be blank or between 0% and 100%.',
       assessed: 'Enter a positive assessed property value from the official notice.',
@@ -18,11 +18,17 @@
       changed: 'Inputs changed. Calculate again.',
       copied: 'Calculation copied locally.',
       exported: 'Local export created.',
+      reset: 'Inputs and results reset.',
       assessedMode: 'Used the assessed value entered from the notice.',
-      componentMode: 'Built the assessed value from the section 7 component formula.'
+      componentMode: 'Built the assessed value from the section 7 component formula.',
+      assessedModeValue: 'assessed value',
+      componentModeValue: 'section 7 components',
+      csvItem: 'item',
+      csvValue: 'value',
+      privacy: 'Local Lagos Land Use Charge planning calculation. Contains user-entered property values.'
     },
     fr: {
-      date: 'Ce planificateur vérifié couvre les avis de Lagos du 25 mai 2020 au 23 juillet 2026.',
+      date: 'Ce planificateur vérifié couvre les avis de Lagos du 25 mai 2020 au 9 août 2026.',
       rate: 'Saisissez le taux annuel indiqué sur l’avis actuel (de 0 % à 3,5 %).',
       discount: 'La remise de l’avis doit être vide ou comprise entre 0 % et 100 %.',
       assessed: 'Saisissez une valeur imposable positive provenant de l’avis officiel.',
@@ -34,10 +40,39 @@
       changed: 'Données modifiées. Recalculez.',
       copied: 'Calcul copié localement.',
       exported: 'Export local créé.',
+      reset: 'Données et résultats réinitialisés.',
       assessedMode: 'Valeur imposable reprise de l’avis.',
-      componentMode: 'Valeur construite avec la formule par composantes de l’article 7.'
+      componentMode: 'Valeur construite avec la formule par composantes de l’article 7.',
+      assessedModeValue: 'valeur imposable',
+      componentModeValue: 'composantes de l’article 7',
+      csvItem: 'élément',
+      csvValue: 'valeur',
+      privacy: 'Calcul indicatif local du Land Use Charge de Lagos. Contient les valeurs foncières saisies.'
+    },
+    sw: {
+      date: 'Mpangaji huyu uliokaguliwa unatumika kwa tathmini za Lagos kuanzia 25 Mei 2020 hadi 9 Agosti 2026.',
+      rate: 'Weka kiwango cha mwaka kilicho kwenye hati ya sasa ya madai (0% hadi 3.5%).',
+      discount: 'Punguzo la hati lazima liachwe wazi au liwe kati ya 0% na 100%.',
+      assessed: 'Weka thamani chanya ya mali iliyotathminiwa kutoka hati rasmi.',
+      land: 'Eneo la ardhi na kiwango rasmi cha ardhi lazima viwe sifuri au zaidi.',
+      building: 'Eneo la jengo na kiwango rasmi cha jengo lazima viwe sifuri au zaidi.',
+      factors: 'Vipengele vya uchakavu na nafuu lazima viwe kati ya 0% na 100%.',
+      total: 'Fomula ya vipengele lazima itoe thamani chanya iliyotathminiwa.',
+      ready: 'Makadirio ya kupanga yako tayari. Hakuna data iliyoondoka kwenye kivinjari hiki.',
+      changed: 'Data imebadilika. Kokotoa tena.',
+      copied: 'Makadirio yamenakiliwa kwenye kifaa.',
+      exported: 'Faili imetengenezwa kwenye kifaa.',
+      reset: 'Data na matokeo yamerudishwa mwanzo.',
+      assessedMode: 'Thamani iliyotathminiwa imenakiliwa kutoka hati rasmi.',
+      componentMode: 'Thamani imejengwa kwa fomula ya vipengele ya kifungu cha 7.',
+      assessedModeValue: 'thamani iliyotathminiwa',
+      componentModeValue: 'vipengele vya kifungu cha 7',
+      csvItem: 'kipengele',
+      csvValue: 'thamani',
+      privacy: 'Makadirio ya ndani ya Ada ya Matumizi ya Ardhi Lagos. Yana thamani za mali ulizoingiza.'
     }
-  }[locale];
+  }[locale] || null;
+  if (!text) return;
   var form = document.getElementById('luc-form');
   var componentFields = document.getElementById('luc-component-fields');
   var assessedField = document.getElementById('luc-assessed-field');
@@ -65,14 +100,14 @@
     };
   }
   function money(value) {
-    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-NG', {
+    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : locale === 'sw' ? 'sw-NG' : 'en-NG', {
       style: 'currency',
       currency: 'NGN',
       maximumFractionDigits: 2
     }).format(value);
   }
   function percent(value) {
-    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : 'en-NG', {
+    return new Intl.NumberFormat(locale === 'fr' ? 'fr-FR' : locale === 'sw' ? 'sw-NG' : 'en-NG', {
       style: 'percent',
       minimumFractionDigits: 2,
       maximumFractionDigits: 4
@@ -85,6 +120,20 @@
     results.hidden = true;
     enable(false);
     if (message) status.textContent = message;
+  }
+  function focusError(code) {
+    var ids = {
+      unsupported_date: 'luc-date',
+      invalid_charge_rate: 'luc-rate',
+      invalid_discount: 'luc-discount',
+      invalid_assessed_value: 'luc-assessed',
+      invalid_land_component: 'luc-land-rate',
+      invalid_building_component: 'luc-building-rate',
+      invalid_factors: 'luc-depreciation',
+      invalid_components_total: 'luc-land-rate'
+    };
+    var target = document.getElementById(ids[code] || 'luc-date');
+    if (target) target.focus();
   }
   function syncMode() {
     var componentMode = mode() === 'components';
@@ -121,6 +170,7 @@
         result.error === 'invalid_land_component' ? text.land :
         result.error === 'invalid_building_component' ? text.building :
         result.error === 'invalid_factors' ? text.factors : text.total;
+      focusError(result.error);
       return;
     }
     current = result;
@@ -132,18 +182,21 @@
     set('luc-discount-result', money(result.discountAmount));
     set('luc-monthly-result', money(result.monthlyPlanningEquivalent));
     set('luc-mode-note', result.mode === 'assessed' ? text.assessedMode : text.componentMode);
-    set('luc-boundary', result.boundary);
+    set('luc-boundary', root.dataset.boundary);
     results.hidden = false;
     enable(true);
     status.textContent = text.ready;
+    results.setAttribute('tabindex', '-1');
+    results.focus();
   });
   form.addEventListener('input', function () { if (current) clear(text.changed); });
   document.getElementById('luc-reset').addEventListener('click', function () {
     form.reset();
     syncMode();
     error.textContent = '';
-    status.textContent = '';
     clear();
+    status.textContent = text.reset;
+    document.getElementById('luc-date').focus();
   });
 
   function cell(value) {
@@ -174,9 +227,9 @@
   });
   document.getElementById('luc-csv').addEventListener('click', function () {
     var rows = [
-      ['item', 'value'],
+      [text.csvItem, text.csvValue],
       ['assessment_date', current.assessmentDate],
-      ['mode', current.mode],
+      ['mode', current.mode === 'assessed' ? text.assessedModeValue : text.componentModeValue],
       ['assessed_value', current.assessedValue],
       ['annual_charge_rate', current.chargeRate],
       ['gross_charge', current.grossCharge],
@@ -192,8 +245,12 @@
     download('lagos-land-use-charge-plan.json', 'application/json', JSON.stringify({
       schemaVersion: 1,
       exportedAt: new Date().toISOString(),
-      privacy: 'Local Lagos Land Use Charge planning calculation. Contains user-entered property values.',
-      calculation: current
+      locale: locale,
+      privacy: text.privacy,
+      calculation: Object.assign({}, current, {
+        modeLabel: current.mode === 'assessed' ? text.assessedModeValue : text.componentModeValue,
+        boundary: root.dataset.boundary
+      })
     }, null, 2));
   });
   document.getElementById('luc-pdf').addEventListener('click', async function () {
@@ -216,10 +273,10 @@
             [root.dataset.grossLabel, money(current.grossCharge)],
             [root.dataset.discountLabel, money(current.discountAmount)],
             [root.dataset.monthlyLabel, money(current.monthlyPlanningEquivalent)],
-            [root.dataset.modeLabel, current.mode]
+            [root.dataset.modeLabel, current.mode === 'assessed' ? text.assessedModeValue : text.componentModeValue]
           ]
         }],
-        source: engine.RULES.source + ' · reviewed ' + engine.RULES.verifiedThrough,
+        source: (root.dataset.sourceLabel || engine.RULES.source) + ' · ' + engine.RULES.verifiedThrough,
         disclaimer: root.dataset.pdfDisclaimer
       });
       status.textContent = text.exported;

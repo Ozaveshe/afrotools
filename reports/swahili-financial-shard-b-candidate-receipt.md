@@ -2,11 +2,11 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **31**. Blocked: **15**.
+Denominator: **46**. Accepted: **32**. Blocked: **14**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
-Ordering proof: position 90 `za-paye` remains fail-closed because it has no maintained readable engine and its source contract still targets 2025/26. Positions 91 `za-transfer-duty` and 92 `za-uif` are accepted; UIF owns a maintained DOM-free engine plus current official SARS and Department evidence.
+Ordering proof: after position 92, selection wrapped to the earliest blocked row. Positions 48-56 remain fail-closed because their PAYE logic is inline or legacy without a maintained readable DOM-free engine. Position 59 `ng-land-use` is the first eligible row; position 90 `za-paye` remains fail-closed.
 
 The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENTS.md, the Swahili strategy and coordinator skill supplied the active localization contract.
 
@@ -21,6 +21,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `mr-paye` | `/mauritania/mr-paye` | `/sw/mauritania/kikokotoo-kodi-mshahara` | `/assets/js/lib/simple-chart-fallback.js`<br>`/assets/js/lib/chart-config.js`<br>`/assets/js/engines/mr-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-cgt` | `/tools/ng-cgt` | `/sw/zana/kikokotoo-cgt-nigeria` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ng-cgt.js`<br>`/assets/js/pages/ng-cgt-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-cit` | `/tools/ng-cit` | `/sw/zana/kikokotoo-cit-nigeria` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ng-cit.js`<br>`/assets/js/pages/ng-cit-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `ng-land-use` | `/tools/ng-land-use` | `/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos` | `/assets/js/lib/pdf-template.js`<br>`/engines/ng-land-use-engine.js`<br>`/assets/js/pages/ng-land-use-vip.js`<br>`/assets/js/lib/sw-accessibility.js`<br>`engines/src/ng-land-use-engine.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ng-wht` | `/tools/ng-wht` | `/sw/zana/kikokotoo-wht-nigeria` | `/assets/js/engines/ng-wht.js`<br>`/assets/js/pages/ng-wht-vip.js`<br>`data/tool-verification.json`<br>`data/source-registry.json` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `payslip-generator` | `/tools/payslip-generator` | `/sw/zana/kizalishaji-payslip` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/payslip-draft.js`<br>`/assets/js/pages/payslip-draft-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `pension-proj` | `/tools/pension-proj` | `/sw/zana/makadirio-ya-pensheni` | `/engines/pension-projection-planner.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/pension-projection-sw.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
@@ -55,7 +56,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `mg-paye` | `/sw/madagascar/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `mz-paye` | `/sw/mozambique/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `na-paye` | `/sw/namibia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
-| `ng-land-use` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `ng-paye` | `/sw/nigeria/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `ng-pension` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `paye-calculator` | `/sw/mshahara-na-kodi/paye` | The candidate is a PAYE directory hub, not a native equivalent of the English calculator app. |
@@ -76,7 +76,8 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 31 accepted candidates, 15 blocked, one missing artwork.
+- Evidence generator check: 46 rows, 32 accepted candidates, 14 blocked, one missing artwork.
+- PASS: ng-land-use English/French/Swahili focused family regression covers both valuation modes, exact engine parity, parsed copy/CSV/JSON/PDF, invalid focus, stale-result clearing, reset, privacy, themes and responsive reflow.
 - PASS: current focused Node subtests 13/13 cover the UIF engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
 - PASS: za-uif English/French/Swahili focused family regression 4/4, including contributions, ordinary and maternity benefits, reopened private clipboard summary, privacy, focus, theme and reflow.
 - PASS: za-transfer-duty English/French/Swahili focused family regression 6/6, including exact maintained-engine output, parsed CSV/JSON/PDF, real English and French PDF downloads, privacy, focus, theme and reflow.
@@ -84,7 +85,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - PASS: za-dividend-tax English/French/Swahili focused family regression 8/8, including standard/reduced/exempt boundaries, parsed TXT, reopened print/PDF, privacy, focus, theme and reflow.
 - PASS: za-cgt English/Swahili focused family regression 7/7, including exact progressive tax, parsed TXT, metadata, privacy, focus, theme and reflow.
 - PASS: ng-wht English/Swahili/French/Hausa/Yoruba family regression 13/13, including exact Schedule boundaries, metadata, privacy, focus, theme and reflow.
-- PASS: complete 48-test shard browser matrix on isolated port 43917, including za-uif exact engine comparisons, private clipboard summary, stale-result clearing, invalid focus, reset, privacy and every accepted route.
+- PASS: complete 50-test shard browser matrix on isolated port 43917, including ng-land-use exact engine comparisons and parsed exports plus every accepted route’s interaction, privacy, metadata and reflow boundaries.
 - PASS: direct language validation and 33,508 reciprocal hreflang relationships across 5,351 equivalence groups and 11,304 public pages. Protected coordinator coverage artifacts were intentionally not regenerated.
 - PASS: 138,307 internal links across 11,523 HTML files; registry audit retains two unrelated missing-page rows and adds no za-uif defect.
 - PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.
@@ -103,6 +104,8 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Ng-cgt native parity: `/sw/zana/kikokotoo-cgt-nigeria/` delegates to `assets/js/engines/ng-cgt.js`, keeps the NTA 2025 scope confirmation and transaction exclusions visible, localizes the progressive rate label, clears stale results, focuses invalid inputs, resets locally and offers only copy plus a parsed local TXT summary. It makes no filing, assessment, classification or exemption decision.
 - Ng-cit native parity: `/sw/zana/kikokotoo-cit-nigeria/` delegates to the unchanged DOM-free `assets/js/engines/ng-cit.js`, preserves separate total-profits and assessable-profits bases, requires explicit resident ordinary-company scope, flags but does not calculate section 57 review, clears stale results, focuses invalid inputs, resets locally and advertises only copy plus parsed local TXT.
 - Ng-cit reciprocal metadata only: `tools/ng-cit/index.html`, `fr/tools/ng-impot-societes/index.html`, `ha/kayan-aiki/cit-najeriya/index.html` and `yo/awon-ise/cit-naijiria/index.html` add the one Swahili alternate; their visible UI/copy is unchanged.
+- Ng-land-use native parity: `/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/` delegates to the unchanged Lagos Land Use Charge formula in `engines/src/ng-land-use-engine.js`, requires an official assessed value or section 7 component inputs plus the rate and discount printed on the current notice, clears stale results, focuses invalid inputs, resets locally and reopens copy, injection-safe CSV, JSON and parser-readable PDF. It does not classify property, select a rate, infer a discount, decide exemptions, calculate penalties or confirm payment.
+- Ng-land-use reciprocal/source metadata: `tools/ng-land-use/index.html` and `fr/tools/ng-taxe-fonciere/index.html` add the Swahili alternate and advance their visible source-review date to 9 August 2026. Their valuation formula and input contract remain unchanged.
 - Ng-wht native parity: `/sw/zana/kikokotoo-wht-nigeria/` delegates to the unchanged DOM-free `assets/js/engines/ng-wht.js`, preserves the exact official Schedule matrix, requires scope and relief evidence, fails closed for unsupported combinations, clears stale results, focuses invalid inputs, resets locally and reopens copy, TXT and print/PDF outputs.
 - Ng-wht reciprocal metadata only: `tools/ng-wht/index.html`, `fr/tools/ng-retenue-source/index.html`, `ha/kayan-aiki/wht-najeriya/index.html` and `yo/awon-ise/wht-naijiria/index.html` add the one Swahili alternate; their visible UI/copy is unchanged.
 - Za-cgt native parity: `/sw/zana/kikokotoo-cgt-afrika-kusini/` delegates to the unchanged DOM-free `assets/js/engines/za-cgt.js`, preserves the SARS 2027 assessment-year formula, requires explicit scope and residence evidence, clears stale results, focuses invalid inputs, resets locally and advertises only copy plus parsed TXT. No PDF, filing, assessment or payment output is claimed.
@@ -117,9 +120,10 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Za-uif reciprocal metadata only: `tools/za-uif/index.html` and `fr/tools/za-uif/index.html` add the Swahili alternate and advance their visible source-review date to 9 August 2026. Their calculation UI and formula remain unchanged.
 - Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.
 - Formula/data/source decision: no formula, rate, ceiling, tier or benefit rule changed. Za-uif only advances the shared engine verified-through date after official source rechecks; the other accepted tools retain their reviewed engines and evidence contracts.
-- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43924; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
+- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43925; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
 - Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.
 - Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still supports the small-company definition, company rates, development levy and section 57 review trigger used by the unchanged NigeriaCit engine; June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.
+- Official-source recheck on 9 August 2026: the live Lagos Ministry of Finance LUC portal remains available for bills, payment confirmation and authority contact, but still describes the repealed 2001 law and a 15% early-payment discount. The maintained engine therefore keeps the 2020 law formula and 0%-3.5% maximum while requiring the current assessment or demand notice for every valuation input, applicable rate and discount. No formula parameter changed.
 - Official-source recheck on 8 August 2026: the official Deduction at Source Regulations 2024 Gazette remains the WHT rate source; Nigeria Tax Administration Act 2025 section 51 requires prescribed regulatory rates, JRB 2026 guidance still references the 2024 Regulations, and federal transition guidance keeps the 1 January 2026 boundary. No engine parameter changed.
 - Official-source recheck on 8 August 2026: the SARS CGT page remains reachable and identifies the 2027 assessment year as 1 March 2026 through 28 February 2027; the official individual-rate page and comprehensive CGT guide remain the engine boundary. No formula parameter changed.
 - Official-source recheck on 8 August 2026: the SARS Dividends Tax page still states 20% from 22 February 2017 and the last-day-of-following-month remittance boundary; the 2027 rate page confirms no change, while declaration evidence and the DTA portal remain the reduced-rate or exemption boundary. No engine parameter changed.

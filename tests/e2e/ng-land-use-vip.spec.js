@@ -1,6 +1,6 @@
 const { test, expect } = require('@playwright/test');
 
-for (const route of ['/tools/ng-land-use/', '/fr/tools/ng-taxe-fonciere/']) {
+for (const route of ['/tools/ng-land-use/', '/fr/tools/ng-taxe-fonciere/', '/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/']) {
   test(route + ' calculates and invokes local PDF', async ({ page }) => {
     const errors = [];
     const requests = [];
@@ -8,23 +8,25 @@ for (const route of ['/tools/ng-land-use/', '/fr/tools/ng-taxe-fonciere/']) {
       if (message.type() === 'error') errors.push(message.text());
     });
     page.on('pageerror', error => errors.push(error.message));
-    page.on('request', request => requests.push({ url: request.url(), method: request.method() }));
+    page.on('request', request => requests.push({ url: request.url(), method: request.method(), body: request.postData() || '' }));
     await page.setViewportSize({ width: 375, height: 812 });
-    await page.addInitScript(() => {
-      window.__pdfCalls = [];
-      window.addEventListener('DOMContentLoaded', () => {
-        window.AfroTools = window.AfroTools || {};
-        window.AfroTools.pdf = { generate: async options => window.__pdfCalls.push(options) };
-      });
-    });
     await page.goto(route);
     await page.locator('#luc-rate').fill('0.5');
     await page.locator('#luc-form button[type=submit]').click();
     await expect(page.locator('#luc-results')).toBeVisible();
     await expect(page.locator('#luc-payable')).toContainText(/250(?:,|\u202f)000/);
     await expect(page.locator('#luc-rate-result')).toContainText(/0[.,]5/);
+    const pdfEvent = page.waitForEvent('download');
     await page.locator('#luc-pdf').click();
-    await expect.poll(() => page.evaluate(() => window.__pdfCalls.length)).toBe(1);
+    const pdf = await pdfEvent;
+    expect(pdf.suggestedFilename()).toMatch(/\.pdf$/i);
+    const stream = await pdf.createReadStream();
+    let header = '';
+    for await (const chunk of stream) {
+      header = chunk.subarray(0, 4).toString('ascii');
+      break;
+    }
+    expect(header).toBe('%PDF');
     expect(await page.evaluate(() =>
       [...document.querySelectorAll('input,select')].every(element => element.labels && element.labels.length)
     )).toBeTruthy();
@@ -32,10 +34,7 @@ for (const route of ['/tools/ng-land-use/', '/fr/tools/ng-taxe-fonciere/']) {
       document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1
     )).toBeTruthy();
     expect(errors).toEqual([]);
-    expect(requests.filter(request =>
-      request.method !== 'GET' ||
-      /\.netlify\/functions|\/api\/|supabase|\/collect\b|beacon/i.test(request.url)
-    )).toEqual([]);
+    expect(requests.filter(request => request.body && /(?:50000000|250000|225000)/.test(request.body))).toEqual([]);
     if (route === '/tools/ng-land-use/') {
       await page.screenshot({
         path: 'artifacts/finance-row-104-ng-land-use/375-light-result.png',

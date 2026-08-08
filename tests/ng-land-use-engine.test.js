@@ -2,7 +2,7 @@ const assert = require('assert');
 const engine = require('../engines/src/ng-land-use-engine.js');
 
 const assessed = engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'assessed',
   assessedValue: 50000000,
   chargeRatePct: 0.5,
@@ -16,7 +16,7 @@ assert.strictEqual(assessed.payable, 225000);
 assert.strictEqual(assessed.monthlyPlanningEquivalent, 18750);
 
 const components = engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'components',
   landArea: 600,
   landRate: 100000,
@@ -36,7 +36,7 @@ assert.strictEqual(components.grossCharge, 486000);
 assert.strictEqual(components.payable, 486000);
 
 const maximumRate = engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'assessed',
   assessedValue: 1000000,
   chargeRatePct: 3.5,
@@ -45,25 +45,25 @@ const maximumRate = engine.calculate({
 assert.strictEqual(maximumRate.payable, 35000);
 
 assert.strictEqual(engine.calculate({
-  assessmentDate: '2026-07-24',
+  assessmentDate: '2026-08-10',
   mode: 'assessed',
   assessedValue: 1,
   chargeRatePct: 1
 }).error, 'unsupported_date');
 assert.strictEqual(engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'assessed',
   assessedValue: 1,
   chargeRatePct: 3.5001
 }).error, 'invalid_charge_rate');
 assert.strictEqual(engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'assessed',
   assessedValue: 0,
   chargeRatePct: 1
 }).error, 'invalid_assessed_value');
 assert.strictEqual(engine.calculate({
-  assessmentDate: '2026-07-23',
+  assessmentDate: '2026-08-09',
   mode: 'components',
   landArea: 0,
   landRate: 0,

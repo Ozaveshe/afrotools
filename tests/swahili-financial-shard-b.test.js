@@ -10,6 +10,7 @@ const MANIFEST = path.join(ROOT, 'data/localization/sw-financial-shard-b-manifes
 const RECEIPT = path.join(ROOT, 'reports/swahili-financial-shard-b-candidate-receipt.json');
 const ARTWORK = path.join(ROOT, 'reports/swahili-financial-shard-b-missing-artwork.json');
 const nigeriaCit = require('../assets/js/engines/ng-cit.js');
+const nigeriaLandUse = require('../engines/src/ng-land-use-engine.js');
 const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
@@ -31,7 +32,7 @@ const EXPECTED_IDS = [
 
 const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
-  'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
+  'mr-paye', 'ng-cgt', 'ng-cit', 'ng-land-use', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
   'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax', 'za-gepf', 'za-transfer-duty', 'za-uif',
 ];
@@ -56,8 +57,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 31);
-  assert.equal(receipt.blocked, 15);
+  assert.equal(receipt.accepted, 32);
+  assert.equal(receipt.blocked, 14);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -148,6 +149,47 @@ test('ng-cit Swahili parity preserves the reviewed source and DOM-free engine co
   assert.equal(source.lastReviewedAt, '2026-08-08');
   assert.ok(source.toolIds.includes('ng-cit-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-cit-nigeria'));
+});
+
+test('ng-land-use Swahili parity preserves the notice-driven Lagos formula boundary', () => {
+  assert.deepEqual(nigeriaLandUse.RULES, {
+    scheme: 'Lagos State Land Use Charge Law 2020',
+    effectiveFrom: '2020-05-25',
+    verifiedThrough: '2026-08-09',
+    maximumChargeRatePct: 3.5,
+    source: 'Lagos State Land Use Charge Law 2020 and Annual Charge Rates Notice 2020',
+  });
+  assert.deepEqual(nigeriaLandUse.calculate({
+    assessmentDate: '2026-08-09',
+    mode: 'assessed',
+    assessedValue: 50000000,
+    chargeRatePct: 0.5,
+    discountRatePct: 10,
+  }), {
+    ok: true,
+    scheme: 'Lagos State Land Use Charge Law 2020',
+    assessmentDate: '2026-08-09',
+    mode: 'assessed',
+    assessedValue: 50000000,
+    chargeRate: 0.005,
+    grossCharge: 250000,
+    discountRate: 0.1,
+    discountAmount: 25000,
+    payable: 225000,
+    monthlyPlanningEquivalent: 18750,
+    components: null,
+    boundary: 'Lagos planning calculation only. Every valuation input, relief factor, annual charge rate and discount must come from the current official assessment or demand notice. This result does not determine classification, exemptions, penalties, arrears, enforcement, appeal rights or the official amount due.',
+  });
+  assert.equal(nigeriaLandUse.calculate({
+    assessmentDate: '2026-08-09', mode: 'assessed', assessedValue: 50000000, chargeRatePct: 3.5001,
+  }).error, 'invalid_charge_rate');
+
+  const html = fs.readFileSync(path.join(ROOT, 'sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/index.html'), 'utf8');
+  assert.match(html, /data-locale="sw"/);
+  assert.match(html, /engines\/ng-land-use-engine\.js/);
+  assert.match(html, /assets\/js\/pages\/ng-land-use-vip\.js/);
+  assert.match(html, /data-source-label="Sheria ya Land Use Charge Lagos 2020/);
+  assert.doesNotMatch(html, /<iframe|generated-bridge|afrotools-language-fallback/i);
 });
 
 test('ng-wht Swahili parity preserves the reviewed official Schedule and DOM-free engine contract', () => {

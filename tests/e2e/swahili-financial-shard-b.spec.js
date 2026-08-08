@@ -5,6 +5,7 @@ const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
 const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
 const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
+const nigeriaLandUse = require('../../engines/src/ng-land-use-engine.js');
 const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
 const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
@@ -29,6 +30,7 @@ const routes = [
   ['/sw/zana/daftari-la-ushahidi-wa-mishahara', 'salary-intelligence'],
   ['/sw/zana/kikokotoo-cgt-nigeria', 'ng-cgt'],
   ['/sw/zana/kikokotoo-cit-nigeria', 'ng-cit'],
+  ['/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos', 'ng-land-use'],
   ['/sw/zana/kikokotoo-wht-nigeria', 'ng-wht'],
   ['/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada', 'side-hustle-tax'],
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
@@ -45,6 +47,87 @@ const routes = [
   ['/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini', 'za-transfer-duty'],
   ['/sw/zana/kikokotoo-uif-afrika-kusini', 'za-uif'],
 ];
+
+test('ng-land-use delegates to the Lagos engine and reopens every private export', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:50000000|250000|225000)/.test(body)) {
+      sensitiveWrites.push({ url: request.url(), body });
+    }
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async (value) => { window.__copiedText = value; } },
+    });
+  });
+  await page.goto('/sw/zana/kikokotoo-ada-ya-matumizi-ya-ardhi-lagos/', { waitUntil: 'domcontentloaded' });
+
+  await page.locator('#luc-rate').fill('0.5');
+  await page.locator('#luc-discount').fill('10');
+  const expected = nigeriaLandUse.calculate({
+    assessmentDate: '2026-08-09', mode: 'assessed', assessedValue: 50000000,
+    chargeRatePct: 0.5, discountRatePct: 10,
+  });
+  await page.getByRole('button', { name: 'Kokotoa kiasi cha kupanga' }).click();
+  await expect(page.locator('#luc-results')).toBeVisible();
+  await expect(page.locator('#luc-payable')).toContainText('225,000');
+  await expect(page.locator('#luc-gross-result')).toContainText('250,000');
+  await expect(page.locator('#luc-discount-result')).toContainText('25,000');
+  expect(expected.payable).toBe(225000);
+
+  await page.locator('#luc-copy').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya Ada ya Matumizi ya Ardhi Lagos');
+  expect(copied).toContain('Makadirio ya kiasi cha kulipa');
+  expect(copied).not.toContain('Planning calculation only');
+
+  const csvEvent = page.waitForEvent('download');
+  await page.locator('#luc-csv').click();
+  const csvDownload = await csvEvent;
+  expect(csvDownload.suggestedFilename()).toBe('lagos-land-use-charge-plan.csv');
+  const csv = fs.readFileSync(await csvDownload.path(), 'utf8');
+  expect(csv).toContain('"kipengele","thamani"');
+  expect(csv).toContain('"assessed_value","50000000"');
+  expect(csv).toContain('"planning_payable","225000"');
+
+  const jsonEvent = page.waitForEvent('download');
+  await page.locator('#luc-json').click();
+  const payload = JSON.parse(fs.readFileSync(await (await jsonEvent).path(), 'utf8'));
+  expect(payload).toMatchObject({ schemaVersion: 1, locale: 'sw' });
+  expect(payload.calculation).toMatchObject({ assessedValue: 50000000, grossCharge: 250000, payable: 225000 });
+  expect(payload.privacy).toContain('Makadirio ya ndani');
+  expect(payload.calculation.boundary).toContain('Makadirio ya kupanga tu');
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => {
+      resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]);
+    }, { once: true }));
+    document.getElementById('luc-pdf').click();
+    return generated;
+  });
+  const parsed = await pdfParse(Buffer.from(pdfBytes));
+  expect(parsed.text).toContain('Makadirio ya Ada ya Matumizi ya Ardhi Lagos');
+  expect(parsed.text).toContain('225,000');
+
+  await page.locator('#luc-assessed').fill('51000000');
+  await expect(page.locator('#luc-results')).toBeHidden();
+  await expect(page.locator('#luc-status')).toContainText('Data imebadilika');
+  await page.locator('#luc-rate').fill('3.6');
+  await page.getByRole('button', { name: 'Kokotoa kiasi cha kupanga' }).click();
+  await expect(page.locator('#luc-error')).toContainText('3.5%');
+  await expect(page.locator('#luc-rate')).toBeFocused();
+  await expect(page.locator('#luc-results')).toBeHidden();
+
+  await page.locator('#luc-reset').click();
+  await expect(page.locator('#luc-date')).toHaveValue('2026-08-09');
+  await expect(page.locator('#luc-rate')).toHaveValue('');
+  await expect(page.locator('#luc-status')).toContainText('yamerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /land|property|luc|charge/i.test(key)))).toEqual([]);
+  expect(sensitiveWrites).toEqual([]);
+});
 
 test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
   const writes = [];
