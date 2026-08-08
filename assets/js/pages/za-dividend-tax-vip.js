@@ -5,6 +5,7 @@
   var app = document.querySelector("[data-za-dividend-tax-app]");
   if (!engine || !app) return;
   var isFrench = document.documentElement.lang === "fr";
+  var isSwahili = document.documentElement.lang === "sw";
 
   var form = app.querySelector("[data-form]");
   var result = app.querySelector("[data-result]");
@@ -19,7 +20,7 @@
   }
 
   function money(value) {
-    return new Intl.NumberFormat(isFrench ? "fr-ZA" : "en-ZA", {
+    return new Intl.NumberFormat(isFrench ? "fr-ZA" : isSwahili ? "sw-TZ" : "en-ZA", {
       style: "currency",
       currency: "ZAR",
       minimumFractionDigits: 2,
@@ -27,7 +28,7 @@
   }
 
   function date(value) {
-    return new Intl.DateTimeFormat(isFrench ? "fr-ZA" : "en-ZA", {
+    return new Intl.DateTimeFormat(isFrench ? "fr-ZA" : isSwahili ? "sw-TZ" : "en-ZA", {
       year: "numeric",
       month: "long",
       day: "numeric",
@@ -56,6 +57,11 @@
   }
 
   function treatmentLabel(value) {
+    if (isSwahili) {
+      if (value === "reduced") return "Kiwango kilichopunguzwa kilichothibitishwa na mtumiaji";
+      if (value === "exempt") return "Msamaha uliothibitishwa na mtumiaji";
+      return "Kiwango cha kawaida cha ndani";
+    }
     if (isFrench) {
       if (value === "reduced") return "Taux réduit confirmé par l’utilisateur";
       if (value === "exempt") return "Exonération confirmée par l’utilisateur";
@@ -76,7 +82,15 @@
     app.querySelector("[data-due-date]").textContent = date(out.indicativeRemittanceDate);
     app.querySelector("[data-treatment]").textContent = treatmentLabel(out.treatment);
 
-    var steps = isFrench
+    var steps = isSwahili
+      ? [
+          "Gawio ghafi la fedha kwa kila malipo: " + money(out.grossDividend) + ".",
+          treatmentLabel(out.treatment) + " kimetumika kwa " + (out.rate * 100).toFixed(2) + "%.",
+          "Kodi inayokadiriwa kuzuiwa kwa kila malipo: " + money(out.taxPerPayment) + ".",
+          "Fedha halisi zinazokadiriwa kwa kila malipo: " + money(out.netPerPayment) + ".",
+          "Malipo " + out.paymentCount + " yanayofanana yanatoa jumla ya kodi inayozuiwa ya " + money(out.scenarioTax) + ".",
+        ]
+      : isFrench
       ? [
           "Dividende brut en numéraire par paiement : " + money(out.grossDividend) + ".",
           treatmentLabel(out.treatment) + " appliqué à " + (out.rate * 100).toFixed(2) + " %.",
@@ -97,7 +111,24 @@
       })
       .join("");
 
-    lastSummary = (isFrench
+    lastSummary = (isSwahili
+      ? [
+          "Makadirio ya kupanga ya kodi ya gawio ya Afrika Kusini ya AfroTools",
+          "Tarehe ya malipo: " + out.paymentDate,
+          "Matumizi ya kiwango: " + treatmentLabel(out.treatment),
+          "Gawio ghafi kwa kila malipo: " + money(out.grossDividend),
+          "Kiwango: " + (out.rate * 100).toFixed(2) + "%",
+          "Kodi inayokadiriwa kuzuiwa kwa kila malipo: " + money(out.taxPerPayment),
+          "Fedha halisi zinazokadiriwa kwa kila malipo: " + money(out.netPerPayment),
+          "Idadi ya malipo katika mfano: " + out.paymentCount,
+          "Jumla ghafi ya mfano: " + money(out.scenarioGross),
+          "Jumla ya kodi inayozuiwa katika mfano: " + money(out.scenarioTax),
+          "Jumla halisi ya mfano: " + money(out.scenarioNet),
+          "Tarehe elekezi ya wakala kuwasilisha kodi: " + out.indicativeRemittanceDate,
+          "Makadirio ya kupanga tu. Thibitisha mnufaika halisi, matamko, DTA husika na rekodi za wakala wa zuio.",
+          "Si marejesho ya SARS, cheti cha kodi, ushauri wa kisheria wala maelekezo ya kuwasilisha.",
+        ]
+      : isFrench
       ? [
           "Estimation AfroTools de l’impôt sud-africain sur les dividendes",
           "Date de paiement : " + out.paymentDate,
@@ -144,21 +175,26 @@
   function showError(failure) {
     var message = failure && failure.message;
     if (message === "scope confirmation is required") {
+      if (isSwahili) return "Thibitisha kuwa hili ni gawio la fedha lililo ndani ya upeo kabla ya kukokotoa.";
       return isFrench
         ? "Confirmez qu’il s’agit d’une estimation de dividende en numéraire dans le périmètre."
         : "Confirm that this is an in-scope cash-dividend estimate before calculating.";
     }
     if (message === "documentation confirmation is required") {
+      if (isSwahili) return "Thibitisha kuwa wakala wa zuio ana tamko linalohitajika la msamaha au kiwango kilichopunguzwa.";
       return isFrench
         ? "Confirmez que l’agent de retenue dispose de la déclaration d’exonération ou de taux réduit requise."
         : "Confirm that the withholding agent has the required exemption or reduced-rate declaration.";
     }
     if (message && message.indexOf("reducedRatePercent") !== -1) {
+      if (isSwahili) return "Weka kiwango kilichothibitishwa kuanzia 0% hadi chini ya 20%.";
       return isFrench
         ? "Saisissez un taux réduit vérifié compris entre 0 % et moins de 20 %."
         : "Enter a verified reduced rate from 0% up to, but below, 20%.";
     }
-    return isFrench
+    return isSwahili
+      ? "Kagua tarehe, kiasi na idadi ya malipo, kisha ujaribu tena."
+      : isFrench
       ? "Vérifiez la date, le montant et le nombre de paiements, puis réessayez."
       : "Check the payment date, amount and payment count, then try again.";
   }
@@ -172,6 +208,8 @@
     } catch (failure) {
       result.hidden = true;
       error.textContent = showError(failure);
+      var invalid = form.querySelector(":invalid");
+      if (invalid) invalid.focus();
     }
   });
 
@@ -179,10 +217,12 @@
     if (!lastSummary) return;
     navigator.clipboard.writeText(lastSummary).then(
       function () {
-        status.textContent = isFrench ? "Résumé copié." : "Summary copied.";
+        status.textContent = isSwahili ? "Muhtasari umenakiliwa." : isFrench ? "Résumé copié." : "Summary copied.";
       },
       function () {
-        status.textContent = isFrench
+        status.textContent = isSwahili
+          ? "Kunakili hakupatikani; chagua hatua za hesabu mwenyewe."
+          : isFrench
           ? "Copie indisponible ; sélectionnez les étapes manuellement."
           : "Copy unavailable; select the calculation steps manually.";
       },
@@ -196,24 +236,45 @@
     );
     var link = document.createElement("a");
     link.href = url;
-    link.download = isFrench
+    link.download = isSwahili
+      ? "makadirio-kodi-gawio-afrika-kusini.txt"
+      : isFrench
       ? "estimation-impot-dividendes-afrique-du-sud.txt"
       : "south-africa-dividends-tax-estimate.txt";
     document.body.appendChild(link);
     link.click();
     link.remove();
     URL.revokeObjectURL(url);
-    status.textContent = isFrench ? "Résumé TXT téléchargé." : "TXT summary downloaded.";
+    status.textContent = isSwahili ? "Muhtasari wa TXT umepakuliwa." : isFrench ? "Résumé TXT téléchargé." : "TXT summary downloaded.";
   });
 
   app.querySelector("[data-print]").addEventListener("click", function () {
     if (!lastSummary) return;
-    status.textContent = isFrench
+    status.textContent = isSwahili
+      ? "Kidirisha cha uchapishaji wa ndani kinafunguliwa; chagua Hifadhi kama PDF ukihitaji."
+      : isFrench
       ? "Ouverture de l’impression locale ; choisissez Enregistrer au format PDF si nécessaire."
       : "Opening the local print dialog; choose Save as PDF if needed.";
     window.print();
   });
 
   field("treatment").addEventListener("change", updateTreatment);
+  form.addEventListener("input", function () {
+    if (!result.hidden) {
+      result.hidden = true;
+      lastSummary = "";
+      status.textContent = isSwahili ? "Data imebadilika; kokotoa tena." : isFrench ? "Les données ont changé ; recalculez." : "Inputs changed; calculate again.";
+    }
+  });
+  var reset = app.querySelector("[data-reset]");
+  if (reset) reset.addEventListener("click", function () {
+    form.reset();
+    result.hidden = true;
+    error.textContent = "";
+    lastSummary = "";
+    updateTreatment();
+    status.textContent = isSwahili ? "Kikokotoo kimerudishwa mwanzo." : isFrench ? "Le calculateur a été réinitialisé." : "Calculator reset.";
+    field("grossDividend").focus();
+  });
   updateTreatment();
 })();

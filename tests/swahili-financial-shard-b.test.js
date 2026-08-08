@@ -12,6 +12,7 @@ const ARTWORK = path.join(ROOT, 'reports/swahili-financial-shard-b-missing-artwo
 const nigeriaCit = require('../assets/js/engines/ng-cit.js');
 const nigeriaWht = require('../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../assets/js/engines/za-cgt.js');
+const southAfricaDividendTax = require('../assets/js/engines/za-dividend-tax.js');
 
 const EXPECTED_IDS = [
   'lr-paye', 'ly-paye', 'ma-paye', 'mg-paye', 'microfinance-calc',
@@ -29,7 +30,7 @@ const ACCEPTED_IDS = [
   'lr-paye', 'microfinance-calc', 'mortgage-affordability', 'mortgage-calculator',
   'mr-paye', 'ng-cgt', 'ng-cit', 'ng-wht', 'payslip-generator', 'pension-proj', 'property-roi', 'property-transfer-cost', 'rent-vs-buy',
   'retirement-planner', 'route-fares', 'salary-compare', 'salary-intelligence', 'side-hustle-tax', 'so-paye', 'ss-paye',
-  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt',
+  'st-paye', 'staff-cost', 'startup-valuation', 'student-loan', 'tg-paye', 'transfer-pricing', 'za-cgt', 'za-dividend-tax',
 ];
 
 function readJson(file) {
@@ -52,8 +53,8 @@ test('shard B is the exact non-overlapping 46-row slice', () => {
 test('acceptance is fail-closed per English ID and every accepted check has concrete proof', () => {
   const receipt = readJson(RECEIPT);
   assert.equal(receipt.denominator, 46);
-  assert.equal(receipt.accepted, 27);
-  assert.equal(receipt.blocked, 19);
+  assert.equal(receipt.accepted, 28);
+  assert.equal(receipt.blocked, 18);
   assert.equal(receipt.coordinatorOwnedFilesEdited, false);
   assert.deepEqual(receipt.rows.filter((row) => row.status === 'accepted').map((row) => row.englishId), ACCEPTED_IDS);
 
@@ -204,4 +205,32 @@ test('za-cgt Swahili parity preserves the reviewed SARS 2027 DOM-free engine con
   assert.equal(source.lastReviewedAt, '2026-08-08');
   assert.ok(source.toolIds.includes('za-cgt-sw-parity'));
   assert.ok(source.routes.includes('/sw/zana/kikokotoo-cgt-afrika-kusini'));
+});
+
+test('za-dividend-tax Swahili parity preserves the reviewed SARS DOM-free engine contract', () => {
+  const standard = southAfricaDividendTax.calculate({
+    grossDividend: 100000, paymentCount: 2, paymentDate: '2026-08-08', treatment: 'standard',
+    reducedRatePercent: 15, documentationConfirmed: false, scopeConfirmed: true,
+  });
+  assert.equal(standard.rate, 0.2);
+  assert.equal(standard.taxPerPayment, 20000);
+  assert.equal(standard.scenarioTax, 40000);
+  assert.equal(standard.indicativeRemittanceDate, '2026-09-30');
+  const reduced = southAfricaDividendTax.calculate({
+    grossDividend: 100000, paymentCount: 1, paymentDate: '2026-08-08', treatment: 'reduced',
+    reducedRatePercent: 7.5, documentationConfirmed: true, scopeConfirmed: true,
+  });
+  assert.equal(reduced.taxPerPayment, 7500);
+  assert.throws(() => southAfricaDividendTax.calculate({
+    grossDividend: 100000, paymentCount: 1, paymentDate: '2026-08-08', treatment: 'exempt',
+    reducedRatePercent: 0, documentationConfirmed: false, scopeConfirmed: true,
+  }), /documentation confirmation/);
+
+  const verification = readJson(path.join(ROOT, 'data/tool-verification.json')).tools['za-dividend-tax'];
+  assert.equal(verification.last_verified, '2026-08-08');
+  assert.ok(verification.routes.includes('/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/'));
+  const source = readJson(path.join(ROOT, 'data/source-registry.json')).sources.find((row) => row.id === 'south-africa-dividends-tax-source');
+  assert.equal(source.lastReviewedAt, '2026-08-08');
+  assert.ok(source.toolIds.includes('za-dividend-tax-sw-parity'));
+  assert.ok(source.routes.includes('/sw/zana/kikokotoo-kodi-gawio-afrika-kusini'));
 });

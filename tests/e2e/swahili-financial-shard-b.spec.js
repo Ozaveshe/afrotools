@@ -7,6 +7,7 @@ const nigeriaCgt = require('../../assets/js/engines/ng-cgt.js');
 const nigeriaCit = require('../../assets/js/engines/ng-cit.js');
 const nigeriaWht = require('../../assets/js/engines/ng-wht.js');
 const southAfricaCgt = require('../../assets/js/engines/za-cgt.js');
+const southAfricaDividendTax = require('../../assets/js/engines/za-dividend-tax.js');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -36,6 +37,7 @@ const routes = [
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
   ['/sw/zana/ulinganisho-wa-bei-za-uhamisho', 'transfer-pricing'],
   ['/sw/zana/kikokotoo-cgt-afrika-kusini', 'za-cgt'],
+  ['/sw/zana/kikokotoo-kodi-gawio-afrika-kusini', 'za-dividend-tax'],
 ];
 
 test('ng-cgt delegates to the English engine and keeps its TXT estimate private', async ({ page }) => {
@@ -289,6 +291,82 @@ test('za-cgt delegates to the SARS 2027 engine and reopens every advertised loca
   await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
   await expect(page.locator('[data-status]')).toContainText('imerudishwa mwanzo');
   expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /cgt|capital|gain|tax|proceeds/i.test(key)))).toEqual([]);
+  expect(sensitiveWrites).toEqual([]);
+});
+
+test('za-dividend-tax delegates to the SARS engine and reopens every advertised local export', async ({ page }) => {
+  const sensitiveWrites = [];
+  page.on('request', (request) => {
+    const body = request.postData();
+    if (request.method() !== 'GET' && body && /(?:100000|7500|20000)/.test(body)) sensitiveWrites.push({ url: request.url(), body });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    window.__printed = false;
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+    window.print = () => { window.__printed = true; };
+  });
+  await page.goto('/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/', { waitUntil: 'domcontentloaded' });
+
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya kodi ya gawio' }).click();
+  await expect(page.locator('[name="scopeConfirmed"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Thibitisha');
+
+  const expected = southAfricaDividendTax.calculate({
+    grossDividend: 100000, paymentCount: 1, paymentDate: '2026-08-08', treatment: 'standard',
+    reducedRatePercent: 15, documentationConfirmed: false, scopeConfirmed: true,
+  });
+  await page.locator('[name="scopeConfirmed"]').check();
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya kodi ya gawio' }).click();
+  await expect(page.locator('[data-result]')).toBeVisible();
+  await expect(page.locator('[data-tax]')).toContainText('20,000.00');
+  await expect(page.locator('[data-net]')).toContainText('80,000.00');
+  await expect(page.locator('[data-rate]')).toHaveText('20.00%');
+  expect(expected.taxPerPayment).toBe(20000);
+
+  await page.locator('[data-copy]').click();
+  const copied = await page.evaluate(() => window.__copiedText);
+  expect(copied).toContain('Makadirio ya kupanga ya kodi ya gawio ya Afrika Kusini');
+  expect(copied).toContain('Kodi inayokadiriwa kuzuiwa kwa kila malipo');
+  expect(copied).not.toContain('Planning estimate');
+
+  const downloadEvent = page.waitForEvent('download');
+  await page.locator('[data-download]').click();
+  const download = await downloadEvent;
+  expect(download.suggestedFilename()).toBe('makadirio-kodi-gawio-afrika-kusini.txt');
+  const txt = fs.readFileSync(await download.path(), 'utf8');
+  expect(txt).toContain('ZAR\u00a020,000.00');
+  expect(txt).toContain('ZAR\u00a080,000.00');
+  expect(txt).toContain('Si marejesho ya SARS');
+
+  await page.locator('[data-print]').click();
+  expect(await page.evaluate(() => window.__printed)).toBe(true);
+  const pdf = await page.pdf({ format: 'A4', printBackground: true });
+  const parsed = await pdfParse(pdf);
+  expect(parsed.text).toContain('Tengeneza makadirio ya kodi inayozuiwa');
+  expect(parsed.text).toContain('Kodi inayokadiriwa kuzuiwa kwa kila malipo');
+
+  await page.locator('[name="treatment"]').selectOption('reduced');
+  await page.locator('[name="reducedRatePercent"]').fill('7.5');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya kodi ya gawio' }).click();
+  await expect(page.locator('[data-error]')).toContainText('tamko');
+  await page.locator('[name="documentationConfirmed"]').check();
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya kodi ya gawio' }).click();
+  await expect(page.locator('[data-tax]')).toContainText('7,500.00');
+
+  await page.locator('[name="grossDividend"]').fill('110000');
+  await expect(page.locator('[data-result]')).toBeHidden();
+  await expect(page.locator('[data-status]')).toContainText('Data imebadilika');
+  await page.locator('[name="grossDividend"]').fill('-1');
+  await page.getByRole('button', { name: 'Kokotoa makadirio ya kodi ya gawio' }).click();
+  await expect(page.locator('[name="grossDividend"]')).toBeFocused();
+  await expect(page.locator('[data-error]')).toContainText('Kagua');
+
+  await page.getByRole('button', { name: 'Weka upya' }).click();
+  await expect(page.locator('[name="grossDividend"]')).toHaveValue('100000');
+  await expect(page.locator('[name="scopeConfirmed"]')).not.toBeChecked();
+  await expect(page.locator('[data-status]')).toContainText('kimerudishwa mwanzo');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /dividend|gawio|tax|amount/i.test(key)))).toEqual([]);
   expect(sensitiveWrites).toEqual([]);
 });
 

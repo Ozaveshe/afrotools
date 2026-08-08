@@ -5,9 +5,10 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 27,
-  "blocked": 19,
+  "accepted": 28,
+  "blocked": 18,
   "coordinatorOwnedFilesEdited": false,
+  "orderingDecision": "Position 88 za-dividend-tax is the immediate row after accepted position 87 za-cgt and has a maintained DOM-free engine. No row was skipped in this increment. Earlier blocked positions remain fail-closed with their existing exact blockers.",
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
     "assets/js/engines/mr-paye.js",
@@ -21,6 +22,7 @@
     "assets/js/pages/ng-cit-vip.js",
     "assets/js/pages/ng-wht-vip.js",
     "assets/js/pages/za-cgt-vip.js",
+    "assets/js/pages/za-dividend-tax-vip.js",
     "assets/css/ng-wht-vip.css",
     "data/tool-verification.json",
     "data/source-registry.json",
@@ -45,6 +47,7 @@
     "sw/zana/kikokotoo-cit-nigeria/index.html",
     "sw/zana/kikokotoo-wht-nigeria/index.html",
     "sw/zana/kikokotoo-cgt-afrika-kusini/index.html",
+    "sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
@@ -70,9 +73,11 @@
     "ha/kayan-aiki/wht-najeriya/index.html",
     "yo/awon-ise/wht-naijiria/index.html",
     "tools/za-cgt/index.html",
-    "fr/tools/za-plus-value/index.html"
+    "fr/tools/za-plus-value/index.html",
+    "tools/za-dividend-tax/index.html",
+    "fr/tools/za-impot-dividendes/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Za-cgt delegates unchanged to assets/js/engines/za-cgt.js and preserves the SARS 2027 assessment-year parameters, progressive individual tax delta, company/trust rates, residence apportionment and loss ordering. Ng-wht delegates unchanged to assets/js/engines/ng-wht.js; treaty and exemption treatment remain evidence-gated and unsupported combinations fail closed. Ng-cit and ng-cgt likewise retain their reviewed engines. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine and user evidence. Side-hustle-tax, transfer-pricing, pension-proj, staff-cost and student-loan retain user-supplied evidence and assumptions rather than invented current presets.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Za-dividend-tax delegates unchanged to assets/js/engines/za-dividend-tax.js: the 20% standard rate, 22 February 2017 boundary, following-month date and evidence-gated reduced or exempt treatments remain unchanged. Za-cgt delegates unchanged to assets/js/engines/za-cgt.js and preserves the SARS 2027 assessment-year parameters, progressive individual tax delta, company/trust rates, residence apportionment and loss ordering. Ng-wht delegates unchanged to assets/js/engines/ng-wht.js; treaty and exemption treatment remain evidence-gated and unsupported combinations fail closed. Ng-cit and ng-cgt likewise retain their reviewed engines. Salary-intelligence uses the maintained DOM-free salary-evidence-notebook engine and user evidence. Side-hustle-tax, transfer-pricing, pension-proj, staff-cost and student-loan retain user-supplied evidence and assumptions rather than invented current presets.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -80,7 +85,8 @@
       43917,
       43918,
       43919,
-      43920
+      43920,
+      43921
     ],
     "widths": [
       320,
@@ -97,7 +103,12 @@
     "focusedNodeSubtests": {
       "passed": 17,
       "failed": 0,
-      "note": "Current increment rerun covered nine za-cgt engine oracle cases, seven shard derivation/static/source-owner tests and the tool-verification source contract."
+      "note": "Current increment rerun covered eight za-dividend-tax engine oracle cases, eight shard derivation/static/source-owner tests and the tool-verification source contract."
+    },
+    "zaDividendTaxFamilyBrowser": {
+      "passed": 8,
+      "failed": 0,
+      "execution": "one-worker English, French and Swahili regression on isolated port 43921 with standard/reduced/exempt boundaries, parsed TXT, reopened print/PDF, privacy, focus, theme and reflow proof"
     },
     "zaCgtFamilyBrowser": {
       "passed": 7,
@@ -120,7 +131,7 @@
       "execution": "one-worker English, Swahili, French, Hausa and Yoruba family regression on isolated port 43919 with exact engine, TXT/PDF, privacy, focus, theme and reflow proof"
     },
     "shardBrowserMatrix": {
-      "passed": 40,
+      "passed": 42,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
@@ -135,8 +146,8 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11300,
-      "hreflangRelationships": 33484,
+      "publicPages": 11301,
+      "hreflangRelationships": 33490,
       "equivalenceGroups": 5351,
       "directLanguageValidation": "passed",
       "hreflangStatus": "passed",
@@ -144,8 +155,8 @@
       "protectedGeneratedCoverageArtifacts": "data/registry/locale-page-coverage.json and reports/localization-coverage.{json,md} reported stale and were intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11519,
-      "internalLinks": 138277,
+      "htmlFiles": 11520,
+      "internalLinks": 138285,
       "broken": 0
     },
     "registryAudit": {
@@ -157,7 +168,19 @@
       "netNewNgCgtMissingPage": false,
       "netNewNgCitMissingPage": false,
       "netNewNgWhtMissingPage": false,
-      "netNewZaCgtMissingPage": false
+      "netNewZaCgtMissingPage": false,
+      "netNewZaDividendTaxMissingPage": false
+    },
+    "southAfricaDividendTaxOfficialSourceRecheck": {
+      "checkedOn": "2026-08-08",
+      "ratesContract": "The official SARS Dividends Tax page remains reachable and states 20% for dividends paid on or after 22 February 2017, with payment by the last day of the following month. The 2027 SARS interest-and-dividends page confirms no rate change.",
+      "reliefContract": "SARS continues to require the relevant declaration and undertaking before an exemption or reduced DTA rate may be applied; the DTA portal remains the treaty source boundary.",
+      "decision": "No formula parameter changed. The Swahili route delegates to the reviewed za-dividend-tax engine and does not infer beneficial ownership, treaty eligibility, exemption, filing, assessment or payment status.",
+      "urls": [
+        "https://www.sars.gov.za/types-of-tax/dividends-tax/",
+        "https://www.sars.gov.za/tax-rates/income-tax/interest-and-dividends/",
+        "https://www.sars.gov.za/legal-counsel/international-treaties-agreements/double-taxation-agreements-protocols/"
+      ]
     },
     "southAfricaCgtOfficialSourceRecheck": {
       "checkedOn": "2026-08-08",
@@ -2087,12 +2110,61 @@
       "englishName": "SA Dividends Tax Calculator",
       "englishRoute": "/tools/za-dividend-tax",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/kikokotoo-kodi-gawio-afrika-kusini",
+      "swahiliFile": "sw/zana/kikokotoo-kodi-gawio-afrika-kusini/index.html",
+      "sourceOwner": [
+        "/assets/js/engines/za-dividend-tax.js",
+        "/assets/js/pages/za-dividend-tax-vip.js",
+        "data/tool-verification.json",
+        "data/source-registry.json"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/engines/za-dividend-tax.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/engines/za-dividend-tax.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite compares standard, documented reduced-rate and exemption outputs with the unchanged SARS engine, parses TXT, reopens print/PDF, verifies clipboard, stale-result clearing, invalid focus, reset and no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 89,
@@ -2152,10 +2224,13 @@
     "node scripts/build-sw-financial-shard-b-evidence.js",
     "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=nigeria-wht-2026-source",
     "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-cgt-2027-source",
+    "node scripts/build-source-registry.js --check --as-of=2026-08-08 --only-source-ids=south-africa-dividends-tax-source",
     "node --test tests/engines/ng-wht.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node --test tests/engines/za-cgt.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
+    "node --test tests/engines/za-dividend-tax.test.js tests/swahili-financial-shard-b.test.js tests/tool-verification.test.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.ng-wht-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-cgt-sw.config.js",
+    "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.za-dividend-tax-sw.config.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test --config tests/playwright.sw-financial-shard-b.config.js",
     "node tests/ai-consent-server.test.js",
     "node C:\\Users\\Oza\\Documents\\afrotools\\node_modules\\@playwright\\test\\cli.js test tests/e2e/privacy-ai-consent.spec.js --workers=1 --trace=off",
