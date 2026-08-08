@@ -34,8 +34,8 @@ expect(JSON.stringify([...ids].sort()) === JSON.stringify(inventoryRows.map(row 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 3, `expected 3 static candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 16, `expected 16 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 4, `expected 4 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 15, `expected 15 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -92,9 +92,9 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: 0 },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR, OCR and social-card legacy dependencies were changed from CDNs to committed local vendor assets, but those rows remain blocked on product parity.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js'], result: '6 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js'], result: '9 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',

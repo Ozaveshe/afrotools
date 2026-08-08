@@ -5,11 +5,17 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 3,
-    "blocked": 16,
+    "staticCandidates": 4,
+    "blocked": 15,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
+    {
+      "id": "qr-generator",
+      "route": "/sw/zana/kitengeneza-qr/",
+      "sourceOwner": "assets/js/engines/qr-payload-engine.js",
+      "browserProof": "tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
+    },
     {
       "id": "color-picker",
       "route": "/sw/zana/kichagua-rangi/",
@@ -41,12 +47,6 @@
       "route": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
       "status": "blocked-feature-parity",
       "blocker": "The Swahili inline owner does not reuse image-resize-studio.js or reproduce English presets, batch behavior, validation, and export receipts."
-    },
-    {
-      "id": "qr-generator",
-      "route": "/sw/zana/kitengeneza-qr/",
-      "status": "blocked-export-parity",
-      "blocker": "QR generation is local, but the route lacks the English PNG/SVG download and reopen contract and full payload validation."
     },
     {
       "id": "background-remover",
@@ -127,7 +127,7 @@
       "blocker": "The reduced inline owner does not reuse image-format-convert-studio.js or reproduce English batch, browser-codec fail-closed, ZIP manifest, and reopen behavior."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR, OCR and social-card legacy dependencies were changed from CDNs to committed local vendor assets, but those rows remain blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. OCR and social-card legacy dependencies are also local, but those rows remain blocked on product parity.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -137,13 +137,15 @@
     "status": "pass",
     "oneWorker": true,
     "ports": [
-      4398
+      4398,
+      4401
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
-      "tests/e2e/swahili-watermark-bulk-parity.spec.js"
+      "tests/e2e/swahili-watermark-bulk-parity.spec.js",
+      "tests/e2e/swahili-qr-generator-parity.spec.js"
     ],
-    "result": "6 passed"
+    "result": "9 passed"
   },
   "validation": {
     "focusedStatic": "pass",

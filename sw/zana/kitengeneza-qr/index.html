@@ -8,14 +8,14 @@
   <meta property="og:type" content="website">
   <meta property="og:title" content="Kitengeneza QR Code | AfroTools">
   <meta property="og:description" content="Tengeneza QR code kwa URL, maandishi, WhatsApp au WiFi kwa matumizi ya biashara na tukio.">
-<meta property="og:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta property="og:image" content="https://afrotools.com/assets/img/tools/qr-generator.webp">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
   <meta property="og:url" content="https://afrotools.com/sw/zana/kitengeneza-qr/">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Kitengeneza QR Code | AfroTools">
   <meta name="twitter:description" content="Tengeneza QR code kwa URL, maandishi, WhatsApp au WiFi kwa matumizi ya biashara na tukio.">
-<meta name="twitter:image" content="https://afrotools.com/assets/img/og-default.png">
+<meta name="twitter:image" content="https://afrotools.com/assets/img/tools/qr-generator.webp">
   <link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
   <style>
     body{margin:0;font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;background:#f7f9fb;color:#182233}
@@ -31,6 +31,7 @@
     table{width:100%;border-collapse:collapse;margin-top:14px}th,td{text-align:left;border-bottom:1px solid #e2e8f0;padding:10px;vertical-align:top}th{background:#eff6ff;color:#1e3a8a}
     .note{border-left:4px solid #2563eb;background:#eff6ff;border-radius:8px;padding:14px 16px;color:#213a62}.link-list{display:flex;flex-wrap:wrap;gap:10px}.link-list a{border:1px solid #bfdbfe;background:#fff;border-radius:999px;padding:9px 12px;text-decoration:none;font-weight:750}
     .output-list{display:grid;gap:10px;margin-top:14px}.output-list div{background:#fff;border:1px solid #e2e8f0;border-radius:8px;padding:12px}@media(max-width:640px){.wrap{padding:24px 14px 42px}th,td{font-size:.92rem;padding:8px 6px}}
+    html[data-theme="dark"] body{background:#0f172a;color:#e2e8f0}html[data-theme="dark"] h2{color:#f8fafc}html[data-theme="dark"] p{color:#cbd5e1}html[data-theme="dark"] .panel,html[data-theme="dark"] .card,html[data-theme="dark"] .metric,html[data-theme="dark"] input,html[data-theme="dark"] select,html[data-theme="dark"] textarea{background:#172033;color:#f8fafc;border-color:#475569}html[data-theme="dark"] label{color:#e2e8f0}html[data-theme="dark"] button.secondary{background:#334155;color:#dbeafe}html[data-theme="dark"] .note{background:#1e293b;color:#dbeafe;border-color:#60a5fa}
   </style>
   <script type="application/ld+json">{
   "@context": "https://schema.org",
@@ -82,7 +83,48 @@
       <h1>Kitengeneza QR</h1>
       <p>Tengeneza QR code kwa URL, maandishi, WhatsApp au WiFi kwa matumizi ya biashara na tukio.</p>
     </section>
-    <section class="grid"><div class="panel"><h2>Ingiza maelezo</h2><div class="form-grid"><label>Aina ya QR<select id="mode"><option value="url">URL</option><option value="text">Maandishi</option><option value="whatsapp">WhatsApp</option><option value="wifi">WiFi</option></select></label><label>Data<textarea id="data">https://afrotools.com/sw/picha-na-design/</textarea></label><label>Lebo<input aria-label="Label" id="label" type="text" value="Scan kupata link" ></label></div><div class="actions"><button type="button" id="calculate">Tengeneza</button><button type="button" class="secondary" id="reset">Mfano</button></div></div><div class="panel"><h2>Muonekano wa QR</h2><div id="results" class="results"></div><div id="detail"></div></div></section>
+    <section class="grid" aria-labelledby="qr-workspace-title">
+      <div class="panel">
+        <h2 id="qr-workspace-title">1. Chagua aina ya QR</h2>
+        <div class="actions" id="modeButtons" role="group" aria-label="Aina ya maudhui ya QR">
+          <button type="button" class="secondary mode-btn" data-mode="text">Maandishi</button>
+          <button type="button" class="secondary mode-btn" data-mode="url">URL</button>
+          <button type="button" class="secondary mode-btn" data-mode="wifi">WiFi</button>
+          <button type="button" class="secondary mode-btn" data-mode="vcard">Kadi ya mawasiliano</button>
+        </div>
+        <div class="form-grid" style="margin-top:18px">
+          <label id="textMode">Maandishi<textarea id="textInput" placeholder="Andika ujumbe mfupi"></textarea></label>
+          <label id="urlMode" hidden>URL<input id="urlInput" type="url" placeholder="https://example.com"></label>
+          <div id="wifiMode" class="form-grid" hidden>
+            <label>Jina la mtandao (SSID)<input id="wifiSSID" type="text" autocomplete="off"></label>
+            <label>Nenosiri<input id="wifiPassword" type="password" autocomplete="new-password"></label>
+            <label>Usalama<select id="wifiSecurity"><option value="WPA">WPA/WPA2</option><option value="WEP">WEP</option><option value="nopass">Wazi bila nenosiri</option></select></label>
+          </div>
+          <div id="vcardMode" class="form-grid" hidden>
+            <label>Jina kamili<input id="vcardName" type="text" autocomplete="name"></label>
+            <label>Simu<input id="vcardPhone" type="tel" autocomplete="tel"></label>
+            <label>Barua pepe<input id="vcardEmail" type="email" autocomplete="email"></label>
+            <label>Shirika<input id="vcardOrg" type="text" autocomplete="organization"></label>
+          </div>
+        </div>
+        <h2 style="margin-top:24px">2. Rekebisha rangi</h2>
+        <div class="form-grid">
+          <label>Rangi nyeusi ya QR<input id="darkColor" type="color" value="#000000"><span id="darkColorHex">#000000</span></label>
+          <label>Rangi ya mandharinyuma<input id="lightColor" type="color" value="#ffffff"><span id="lightColorHex">#FFFFFF</span></label>
+        </div>
+        <div class="actions"><button type="button" id="generateBtn">Tengeneza QR</button><button type="button" class="secondary" id="resetBtn">Weka upya</button></div>
+        <p class="note" id="qrStatus" role="status" aria-live="polite">Chagua aina, jaza sehemu zinazohitajika, kisha tengeneza QR.</p>
+      </div>
+      <div class="panel">
+        <h2>3. Hakiki na upakue</h2>
+        <div id="qrcode" class="preview" aria-label="Muonekano wa QR"></div>
+        <div class="actions">
+          <button type="button" id="downloadPNG" disabled>Pakua PNG</button>
+          <button type="button" id="downloadSVG" class="secondary" disabled>Pakua SVG</button>
+        </div>
+        <p>PNG ni pikseli 256 × 256. SVG ni vekta ya 1024 × 1024 yenye eneo tulivu la moduli nne.</p>
+      </div>
+    </section>
 <section class="section panel"><h2>Angalia pia</h2><div class="link-list"><a href="/sw/ubunifu-na-watayarishi/">Ubunifu na watayarishi</a>
         <a href="/sw/zana/picha-ya-pasipoti/">Picha ya pasipoti</a>
         <a href="/sw/zana/hook-za-video/">Hook za video</a>
@@ -113,9 +155,117 @@
   <script src="/assets/js/components/share-card-generator.js?v=1d440fc6"></script>
   <script src="/assets/js/components/share-button.js?v=f8342961"></script>
 <script src="/assets/js/components/related-tools.min.js?v=9de30883"></script>
+  <script src="/assets/js/engines/qr-payload-engine.js?v=20260808"></script>
   <script>
-const q=id=>document.getElementById(id);const val=id=>String(q(id)?.value||'').trim();const num=id=>Number(q(id)?.value||0);function metric(l,v,h){return '<div class="metric"><span>'+l+'</span><strong>'+v+'</strong>'+(h?'<small>'+h+'</small>':'')+'</div>'}function setResults(h){q('results').innerHTML=h}function setDetail(h){q('detail').innerHTML=h}function rows(a){return '<div class="output-list">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>'}function bind(c,r){q('calculate').addEventListener('click',c);q('reset').addEventListener('click',()=>{r();c()});if(q('download'))q('download').addEventListener('click',downloadCanvas);c()}function canvas(){return q('canvas')}function ctx(){return canvas().getContext('2d')}function downloadCanvas(){const a=document.createElement('a');a.href=canvas().toDataURL('image/png');a.download='afrotools-design.png';a.click()}function drawTextBox(c,t,x,y,w,size,color){c.fillStyle=color;c.font='800 '+size+'px Inter, Arial';const words=t.split(' ');let line='',yy=y;words.forEach(word=>{const test=line+word+' ';if(c.measureText(test).width>w&&line){c.fillText(line,x,yy);line=word+' ';yy+=size*1.15}else line=test});c.fillText(line,x,yy)}function basicCanvas(title,sub,bg='#1d4ed8',fg='#fff'){const c=ctx();c.fillStyle=bg;c.fillRect(0,0,canvas().width,canvas().height);drawTextBox(c,title,70,180,920,72,fg);drawTextBox(c,sub,70,520,900,34,fg);c.fillStyle='rgba(255,255,255,.18)';c.fillRect(70,790,420,90);c.fillStyle=fg;c.font='700 28px Inter, Arial';c.fillText('Imetengenezwa na AfroTools',95,845)}function readImage(file,cb){const img=new Image();img.onload=()=>cb(img);img.src=URL.createObjectURL(file)}function money(n,c='USD'){try{return new Intl.NumberFormat('sw',{style:'currency',currency:c,maximumFractionDigits:0}).format(Number(n)||0)}catch(e){return Math.round(Number(n)||0).toLocaleString('sw')}}
-function calc(){const data=val('mode')==='whatsapp'?'https://wa.me/'+val('data').replace(/\D/g,''):val('data');setResults(metric('Data ya QR',val('mode').toUpperCase(),'Tumia muonekano wa awali au library ya QR ikiwa imepakiwa'));let box='<div class="preview" id="qrbox"></div><p>'+val('label')+'</p>';setDetail(box);const el=q('qrbox');if(window.QRCode){el.innerHTML='';new QRCode(el,{text:data,width:220,height:220})}else{el.textContent=data}}function reset(){q('mode').value='url';q('data').value='https://afrotools.com/sw/picha-na-design/';q('label').value='Scan kupata link'}bind(calc,reset);
+  (() => {
+    'use strict';
+    const q = id => document.getElementById(id);
+    let currentMode = 'text';
+    let qrcodeInstance = null;
+    const status = q('qrStatus');
+    const modePanels = { text: q('textMode'), url: q('urlMode'), wifi: q('wifiMode'), vcard: q('vcardMode') };
+    const filenames = { text: 'maandishi-qr', url: 'kiungo-qr', wifi: 'wifi-qr', vcard: 'mawasiliano-qr' };
+    const errors = {
+      required_fields: 'Jaza sehemu zote zinazohitajika.',
+      wifi_password_required: 'Nenosiri linahitajika kwa mtandao wa WPA/WPA2 au WEP.',
+      wifi_password_length: 'Nenosiri la WPA/WPA2 lazima liwe na herufi 8 hadi 63.',
+      unsupported_mode: 'Aina hii ya QR haitumiki.'
+    };
+
+    function setMode(mode) {
+      currentMode = mode;
+      Object.entries(modePanels).forEach(([key, panel]) => { panel.hidden = key !== mode; });
+      document.querySelectorAll('.mode-btn').forEach(button => {
+        const active = button.dataset.mode === mode;
+        button.classList.toggle('secondary', !active);
+        button.setAttribute('aria-pressed', String(active));
+      });
+      status.textContent = 'Jaza maelezo ya QR ya ' + ({ text: 'maandishi', url: 'URL', wifi: 'WiFi', vcard: 'kadi ya mawasiliano' }[mode]) + '.';
+    }
+
+    function readPayload() {
+      return window.AfroTools.QrPayload.buildPayload({
+        mode: currentMode,
+        text: q('textInput').value,
+        url: q('urlInput').value,
+        ssid: q('wifiSSID').value,
+        password: q('wifiPassword').value,
+        security: q('wifiSecurity').value,
+        name: q('vcardName').value,
+        phone: q('vcardPhone').value,
+        email: q('vcardEmail').value,
+        org: q('vcardOrg').value
+      });
+    }
+
+    function syncColors() {
+      q('darkColorHex').textContent = q('darkColor').value.toUpperCase();
+      q('lightColorHex').textContent = q('lightColor').value.toUpperCase();
+    }
+
+    function generate() {
+      const result = readPayload();
+      if (!result.ok) {
+        q('qrcode').innerHTML = '';
+        q('downloadPNG').disabled = true;
+        q('downloadSVG').disabled = true;
+        status.textContent = errors[result.error] || 'QR haikuweza kutengenezwa.';
+        return;
+      }
+      q('qrcode').innerHTML = '';
+      qrcodeInstance = new QRCode(q('qrcode'), {
+        text: result.data,
+        width: 256,
+        height: 256,
+        colorDark: q('darkColor').value,
+        colorLight: q('lightColor').value,
+        correctLevel: QRCode.CorrectLevel.H
+      });
+      q('downloadPNG').disabled = false;
+      q('downloadSVG').disabled = false;
+      status.textContent = 'QR imetengenezwa ndani ya kivinjari. Ihakiki kwa skana kabla ya kuchapisha.';
+    }
+
+    function downloadBlob(blob, extension) {
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = filenames[currentMode] + '.' + extension;
+      anchor.click();
+      window.setTimeout(() => URL.revokeObjectURL(url), 0);
+    }
+
+    q('downloadPNG').addEventListener('click', () => {
+      const canvas = q('qrcode').querySelector('canvas');
+      if (!canvas) return;
+      canvas.toBlob(blob => { if (blob) downloadBlob(blob, 'png'); }, 'image/png');
+    });
+
+    q('downloadSVG').addEventListener('click', () => {
+      const qr = qrcodeInstance && qrcodeInstance._oQRCode;
+      const svg = window.AfroTools.QrPayload.buildSvg(qr, q('darkColor').value, q('lightColor').value);
+      if (svg) downloadBlob(new Blob([svg], { type: 'image/svg+xml' }), 'svg');
+    });
+
+    q('generateBtn').addEventListener('click', generate);
+    q('resetBtn').addEventListener('click', () => {
+      ['textInput', 'urlInput', 'wifiSSID', 'wifiPassword', 'vcardName', 'vcardPhone', 'vcardEmail', 'vcardOrg'].forEach(id => { q(id).value = ''; });
+      q('wifiSecurity').value = 'WPA';
+      q('darkColor').value = '#000000';
+      q('lightColor').value = '#ffffff';
+      q('qrcode').innerHTML = '';
+      q('downloadPNG').disabled = true;
+      q('downloadSVG').disabled = true;
+      syncColors();
+      setMode('text');
+      status.textContent = 'Sehemu zote zimewekwa upya.';
+    });
+    document.querySelectorAll('.mode-btn').forEach(button => button.addEventListener('click', () => setMode(button.dataset.mode)));
+    q('darkColor').addEventListener('input', syncColors);
+    q('lightColor').addEventListener('input', syncColors);
+    syncColors();
+    setMode('text');
+  })();
   </script>
 <script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
   <script src="/assets/js/lib/sw-accessibility.js?v=c732ef57" defer></script>
