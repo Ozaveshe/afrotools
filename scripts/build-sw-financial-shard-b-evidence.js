@@ -173,13 +173,22 @@ function blockReason(row) {
 const inventory = readJson(INVENTORY_FILE);
 const acceptance = readJson(ACCEPTANCE_FILE);
 const alreadyAccepted = new Set(acceptance.entries.filter((entry) => entry.status === 'accepted').map((entry) => entry.englishId));
-const unaccepted = inventory.rows.filter((row) => row.categoryKey === 'financial' && !alreadyAccepted.has(row.englishId))
-  .sort((left, right) => left.englishId.localeCompare(right.englishId));
-const shardA = unaccepted.slice(0, 46);
-const shardB = unaccepted.slice(46, 92);
+// The programme was partitioned against BASE_SHA. Coordinator acceptance grows
+// during integration, so deriving shards from today's unaccepted rows silently
+// reassigns the lane. Resolve the frozen 46+46 IDs from their owned manifests.
+const financialById = new Map(inventory.rows
+  .filter((row) => row.categoryKey === 'financial')
+  .map((row) => [row.englishId, row]));
+const shardAManifest = readJson('data/localization/sw-financial-shard-a-candidate.json');
+const shardBManifest = readJson(MANIFEST_FILE);
+const shardBBaselineById = new Map(shardBManifest.rows.map((row) => [row.englishId, row]));
+const shardA = shardAManifest.rows.map((row) => financialById.get(row.englishId));
+const shardB = shardBManifest.rows.map((row) => financialById.get(row.englishId));
+const unaccepted = [...shardA, ...shardB];
 const overlap = shardB.filter((row) => shardA.some((other) => other.englishId === row.englishId));
 
-if (unaccepted.length !== 92) throw new Error(`Expected 92 unaccepted financial rows; found ${unaccepted.length}.`);
+if (unaccepted.some((row) => !row)) throw new Error('Pinned financial shard assignment no longer resolves against the authoritative inventory.');
+if (unaccepted.length !== 92) throw new Error(`Expected 92 pinned financial rows; found ${unaccepted.length}.`);
 if (shardA.length !== 46 || shardB.length !== 46) throw new Error('Expected two exact 46-row shards.');
 if (overlap.length) throw new Error(`Shard overlap: ${overlap.map((row) => row.englishId).join(', ')}`);
 if (shardB[0].englishId !== 'lr-paye' || shardB.at(-1).englishId !== 'za-uif') throw new Error('Shard B boundaries drifted.');
@@ -195,7 +204,7 @@ const rows = shardB.map((row, index) => {
     englishId: row.englishId,
     englishName: row.englishName,
     englishRoute: normalizeRoute(row.englishRoute),
-    startingState: row.state,
+    startingState: shardBBaselineById.get(row.englishId).startingState,
     status: selected ? 'accepted' : 'blocked',
     swahiliRoute: selected ? inspection.swahiliRoute : normalizeRoute(row.primarySwahiliRoute),
     swahiliFile: selected ? inspection.swahiliFile : row.primarySwahiliFile,
