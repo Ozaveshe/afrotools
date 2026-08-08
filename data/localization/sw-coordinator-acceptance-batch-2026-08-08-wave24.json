@@ -1,0 +1,48 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "29b28bb6",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Favicon Generator only after English and Swahili use the same local renderer, every advertised PNG, ICO and manifest output is parsed or reopened, controlled outputs are byte-identical, and privacy, mobile/reflow, themes, keyboard/accessibility, metadata and focused browser proof pass coordinator review.",
+  "candidates": [
+    {
+      "id": "favicon-generator-sw-parity",
+      "commit": "29b28bb6f4d022f378e74e5e78ee06f42aa01551",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-favicon-generator-parity.spec.js",
+          "engineTest": "tests/swahili-favicon-generator-parity.test.js",
+          "workflow": "The coordinator reviewed the shared local owner and reran the source contract plus 3/3 English/Swahili browser workflows. Text and uploaded-image inputs, invalid/reset behavior, keyboard upload, four PNG sizes, real multi-entry ICO and site.webmanifest generation are deterministic.",
+          "export": "The ZIP was parsed as exactly six files; PNG outputs reopened at 16, 32, 48 and 64 pixels, ICO headers and all four embedded PNGs parsed, and the manifest parsed with references to every icon. Controlled English and Swahili output bytes matched; no favicon bytes or uploaded image data left the browser."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-image-design-static-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/englishRows", "equals": 19 },
+            { "pointer": "/exactScope/staticCandidates", "equals": 13 },
+            { "pointer": "/exactScope/blocked", "equals": 6 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "favicon-generator", "swahiliRoute": "/sw/zana/kizalishaji-favicon/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
