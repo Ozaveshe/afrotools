@@ -22,7 +22,7 @@ function exportMethod(){return latest.methodology+" Every monetary amount and re
 function payload(){return JSON.stringify({currencyUnit:latest.currencyUnit,inputs:read(),weights:weights(),result:latest,methodology:exportMethod()},null,2)}
 function download(blob,name){var u=URL.createObjectURL(blob),a=e("a",{href:u,download:name});a.click();setTimeout(function(){URL.revokeObjectURL(u)},1000)}
 document.getElementById("joe-calc").onclick=render;
-document.getElementById("joe-clear").onclick=function(){document.querySelectorAll("[data-offer] input").forEach(function(x){x.value=x.name==="label"?"":""});latest=null;results.classList.remove("on");status.textContent=T.cleared};
+document.getElementById("joe-clear").onclick=function(){document.querySelectorAll("[data-offer] input").forEach(function(x){x.value=""});weightBox.querySelector('[name="currency"]').value="";latest=null;results.classList.remove("on");status.textContent=T.cleared};
 document.getElementById("joe-copy").onclick=function(){if(latest)navigator.clipboard.writeText(payload())};
 document.getElementById("joe-json").onclick=function(){if(latest)download(new Blob([payload()],{type:"application/json"}),"job-offer-comparison.json")};
 document.getElementById("joe-csv").onclick=function(){if(latest)download(new Blob(["currency_unit,offer,annual_value,weighted_score\n"+latest.offers.map(function(o){return '"'+latest.currencyUnit.replace(/"/g,'""')+'","'+o.label.replace(/"/g,'""')+'",'+o.annualValue+","+o.weightedScore}).join("\n")],{type:"text/csv"}),"job-offer-comparison.csv")};
