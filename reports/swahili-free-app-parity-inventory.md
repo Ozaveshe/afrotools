@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 44 |
-| **Accepted** | **1106** |
+| **Accepted** | **1111** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 6 |
-| Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 71 |
+| Finance, Tax & Market Data | 132 | 7 | 85 | 2 | 0 | 0 | 0 | 0 | 38 | 76 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -289,7 +289,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Localized shell candidate | `/sw/zana/kumbukumbu-za-mkutano` | Yes |
 | Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | No |
 | Informal FX Watch | Uniquely African | `/tools/informal-fx-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-soko-la-fedha` | Yes |
-| Nigeria Import Duty & Landed Cost | Finance, Tax & Market Data | `/tools/import-duty` | Localized shell candidate | `/sw/zana/ushuru-forodha` | No |
+| Nigeria Import Duty & Landed Cost | Finance, Tax & Market Data | `/tools/import-duty` | Localized shell candidate | `/sw/zana/ushuru-forodha` | Yes |
 | Mortgage Planning Calculator | Finance, Tax & Market Data | `/tools/mortgage-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-mkopo-wa-nyumba` | Yes |
 | Loan Comparison Tool | Finance, Tax & Market Data | `/tools/loan-compare` | Localized shell candidate | `/sw/zana/kilinganisha-mikopo` | Yes |
 | Receipt Generator | Document & PDF | `/tools/receipt-generator` | Localized shell candidate | `/sw/zana/kizalishaji-risiti` | Yes |
@@ -716,7 +716,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Pomodoro Timer | Business & ROI | `/tools/pomodoro` | Native candidate | `/sw/zana/pomodoro` | Yes |
 | Unit Converter (African) | Business & ROI | `/tools/unit-converter` | Native candidate | `/sw/zana/kubadilisha-vipimo` | Yes |
 | Monthly Budget Planner | Business & ROI | `/tools/budget-planner` | Native candidate | `/sw/zana/mpango-bajeti` | Yes |
-| African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-sarafu` | No |
+| African Currency Converter | Finance, Tax & Market Data | `/tools/currency-converter` | Localized shell candidate | `/sw/zana/kibadilishaji-sarafu` | Yes |
 | AfroFuel — African Fuel Price Reference | Finance, Tax & Market Data | `/tools/fuel-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-bei-za-mafuta` | Yes |
 | Route Fare Budget Planner | Finance, Tax & Market Data | `/tools/route-fares` | Localized shell candidate | `/sw/zana/nauli-za-ruti` | Yes |
 | Backup Power Cost Calculator | Finance, Tax & Market Data | `/tools/backup-power-costs` | Localized shell candidate | `/sw/zana/gharama-ya-nishati-ya-dharura` | Yes |
@@ -786,7 +786,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | African Scholarship Finder | Education | `/tools/scholarship-finder` | Localized shell candidate | `/sw/zana/udhamini` | Yes |
 | African University Comparison Worksheet | Education | `/tools/university-ranking` | Localized shell candidate | `/sw/zana/orodha-vyuo-vikuu` | Yes |
 | Study Planner & Timetable | Education | `/tools/study-planner` | Localized shell candidate | `/sw/zana/mpango-masomo` | Yes |
-| Job Offer Evaluator | Finance, Tax & Market Data | `/tools/job-offer-evaluator` | Localized shell candidate | `/sw/zana/tathmini-ya-ofa-ya-kazi` | No |
+| Job Offer Evaluator | Finance, Tax & Market Data | `/tools/job-offer-evaluator` | Localized shell candidate | `/sw/zana/tathmini-ya-ofa-ya-kazi` | Yes |
 | IELTS Score Worksheet | Education | `/tools/ielts-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-ielts` | Yes |
 | Foreign Degree Recognition Route Checker | Education | `/tools/degree-checker` | Localized shell candidate | `/sw/zana/ukaguzi-wa-degree` | Yes |
 | Startup Valuation Evidence Worksheet | Finance, Tax & Market Data | `/tools/startup-valuation` | Localized shell candidate | `/sw/zana/thamani-ya-startup` | Yes |
@@ -832,7 +832,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Exchange Due-Diligence Workbook | Finance, Tax & Market Data | `/crypto/exchange-ratings` | Missing | None | No |
 | Contract Address Evidence Check | Finance, Tax & Market Data | `/crypto/contract-scanner` | Missing | None | No |
 | Crypto Concepts & Wallet Safety Quiz | Finance, Tax & Market Data | `/crypto/quiz` | Missing | None | No |
-| Eritrea Historical Sales Tax Reference | Finance, Tax & Market Data | `/eritrea/er-vat` | Localized shell candidate | `/sw/eritrea/kikokotoo-vat` | No |
+| Eritrea Historical Sales Tax Reference | Finance, Tax & Market Data | `/eritrea/er-vat` | Localized shell candidate | `/sw/eritrea/kikokotoo-vat` | Yes |
 | Ajo / Chama / Tontine Calculator | Uniquely African | `/tools/ajo-chama` | Localized shell candidate | `/sw/zana/kikokotoo-ajo-chama-tontine` | Yes |
 | Adult BMI Calculator — Metric & Imperial | Health & Wellness | `/tools/bmi-calculator` | Native candidate | `/sw/zana/kikokotoo-bmi-ya-mwili` | Yes |
 | Bill of Quantities Generator | Engineering & Construction | `/tools/boq-generator` | Localized shell candidate | `/sw/zana/kizalishaji-orodha-ya-kiasi` | No |
@@ -841,7 +841,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Compound Interest & Regular Savings Calculator | Finance, Tax & Market Data | `/tools/compound-interest` | Native candidate | `/sw/zana/riba-ya-mchanganyiko` | Yes |
 | Crop Yield Calculator | Agriculture | `/tools/crop-yield` | Localized shell candidate | `/sw/zana/mavuno-ya-mazao` | Yes |
 | Pregnancy Date Range Estimator | Health & Wellness | `/tools/due-date` | Native candidate | `/sw/zana/kikokotoo-tarehe-ya-kujifungua` | Yes |
-| First Home Buyer Readiness Pack | Finance, Tax & Market Data | `/tools/first-home-buyer` | Localized shell candidate | `/sw/zana/mnunuzi-wa-kwanza-wa-nyumba` | No |
+| First Home Buyer Readiness Pack | Finance, Tax & Market Data | `/tools/first-home-buyer` | Localized shell candidate | `/sw/zana/mnunuzi-wa-kwanza-wa-nyumba` | Yes |
 | Home Loan Application File Checklist | Finance, Tax & Market Data | `/tools/home-loan-eligibility` | Localized shell candidate | `/sw/zana/ustahiki-wa-mkopo-wa-nyumba` | Yes |
 | Renovation Cost Calculator | Engineering & Construction | `/tools/home-renovation-cost` | Localized shell candidate | `/sw/zana/gharama-ukarabati-wa-nyumba` | No |
 | Septic Tank Size Calculator | Engineering & Construction | `/tools/septic-tank` | Localized shell candidate | `/sw/zana/ukubwa-wa-septic-tank` | Yes |

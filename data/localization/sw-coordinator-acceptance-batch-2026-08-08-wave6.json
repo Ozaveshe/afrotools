@@ -1,0 +1,53 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "a7da8246",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 5,
+  "preservedBlockedEntries": 0,
+  "policy": "Record only the five newly accepted Finance shard-A rows beyond its reviewed fourteen-row checkpoint. The pinned 92-row assignment, focused engine tests, parsed exports and coordinator Chromium rerun must remain green; all 27 explicit blockers stay excluded.",
+  "candidates": [
+    {
+      "id": "financial-shard-a-five",
+      "commit": "72598590717ac87c79a4de5d7e2f4f9c6ad065ad",
+      "expectedRoutes": 5,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 5,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-financial-shard-a-deterministic.spec.js",
+          "engineTest": "tests/swahili-financial-shard-a.test.js",
+          "workflow": "Currency Converter, Eritrea VAT reference, First-home Buyer, Import Duty and Job-offer Evaluator passed the pinned shard contract, shared-engine or source-boundary oracles, invalid/reset, responsive, theme, keyboard, metadata, artwork and no-network checks.",
+          "export": "The coordinator reran seven Chromium workflows: CSV, PDF, TXT and JSON outputs were downloaded and parsed or reopened, currency conversion stayed synthetic/local, Eritrea VAT failed closed without evidence, and all workflows passed 200-percent reflow."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "data/localization/sw-financial-shard-a-candidate.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/totals/accepted", "equals": 19 },
+            { "pointer": "/totals/blocked", "equals": 27 },
+            { "pointer": "/derivation/shardACount", "equals": 46 },
+            { "pointer": "/derivation/shardBCount", "equals": 46 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "currency-converter", "swahiliRoute": "/sw/zana/kibadilishaji-sarafu/" },
+            { "englishId": "er-vat", "swahiliRoute": "/sw/eritrea/kikokotoo-vat/" },
+            { "englishId": "first-home-buyer", "swahiliRoute": "/sw/zana/mnunuzi-wa-kwanza-wa-nyumba/" },
+            { "englishId": "import-duty", "swahiliRoute": "/sw/zana/ushuru-forodha/" },
+            { "englishId": "job-offer-evaluator", "swahiliRoute": "/sw/zana/tathmini-ya-ofa-ya-kazi/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
