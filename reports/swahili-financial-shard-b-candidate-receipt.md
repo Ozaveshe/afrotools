@@ -2,7 +2,7 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **26**. Blocked: **20**.
+Denominator: **46**. Accepted: **27**. Blocked: **19**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
@@ -38,6 +38,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `student-loan` | `/tools/student-loan` | `/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi` | `/assets/js/lib/pdf-template.js`<br>`/assets/js/engines/student-loan-plan.js`<br>`/assets/js/pages/student-loan-vip.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `tg-paye` | `/togo/tg-paye` | `/sw/togo/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/tg-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/togo-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `transfer-pricing` | `/tools/transfer-pricing` | `/sw/zana/ulinganisho-wa-bei-za-uhamisho` | `/assets/js/engines/transfer-pricing-planner.js`<br>`/assets/js/pages/transfer-pricing-vip.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `za-cgt` | `/tools/za-cgt` | `/sw/zana/kikokotoo-cgt-afrika-kusini` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/za-cgt.js`<br>`/assets/js/pages/za-cgt-vip.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 
 ## Blocked candidates
 
@@ -57,7 +58,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `sd-paye` | `/sw/sudan/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `sl-paye` | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `tn-paye` | `/sw/tunisia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
-| `za-cgt` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `za-dividend-tax` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `za-gepf` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `za-paye` | `/sw/south-africa/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
@@ -74,12 +74,13 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 26 accepted candidates, 20 blocked, one missing artwork.
-- PASS: current focused Node subtests cover the ng-wht engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
+- Evidence generator check: 46 rows, 27 accepted candidates, 19 blocked, one missing artwork.
+- PASS: current focused Node subtests 17/17 cover the za-cgt engine oracle, shard derivation/static/source-owner checks and the source-verification panel contract.
+- PASS: za-cgt English/Swahili focused family regression 7/7, including exact progressive tax, parsed TXT, metadata, privacy, focus, theme and reflow.
 - PASS: ng-wht English/Swahili/French/Hausa/Yoruba family regression 13/13, including exact Schedule boundaries, metadata, privacy, focus, theme and reflow.
-- PASS: complete 38-test shard browser matrix on isolated port 43917, including ng-wht exact engine comparison, parsed TXT and print/PDF, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.
-- PASS: direct language validation and 33,468 reciprocal hreflang relationships across 5,351 equivalence groups and 11,298 public pages. The broad `build:i18n:validate` wrapper separately reports three protected stale coverage artifacts, which were intentionally not regenerated.
-- PASS: 138,262 internal links across 11,517 HTML files; registry audit retains two unrelated missing-page rows and adds no ng-cit defect.
+- PASS: complete 40-test shard browser matrix on isolated port 43917, including za-cgt exact engine comparison, parsed TXT, clipboard, stale-result clearing, invalid focus, reset, privacy and every accepted route.
+- PASS: direct language validation and 33,484 reciprocal hreflang relationships across 5,351 equivalence groups and 11,300 public pages. The broad `build:i18n:validate` wrapper separately reports three protected stale coverage artifacts, which were intentionally not regenerated.
+- PASS: 138,277 internal links across 11,519 HTML files; registry audit retains two unrelated missing-page rows and adds no za-cgt defect.
 - PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.
 - MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.
 
@@ -98,12 +99,15 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Ng-cit reciprocal metadata only: `tools/ng-cit/index.html`, `fr/tools/ng-impot-societes/index.html`, `ha/kayan-aiki/cit-najeriya/index.html` and `yo/awon-ise/cit-naijiria/index.html` add the one Swahili alternate; their visible UI/copy is unchanged.
 - Ng-wht native parity: `/sw/zana/kikokotoo-wht-nigeria/` delegates to the unchanged DOM-free `assets/js/engines/ng-wht.js`, preserves the exact official Schedule matrix, requires scope and relief evidence, fails closed for unsupported combinations, clears stale results, focuses invalid inputs, resets locally and reopens copy, TXT and print/PDF outputs.
 - Ng-wht reciprocal metadata only: `tools/ng-wht/index.html`, `fr/tools/ng-retenue-source/index.html`, `ha/kayan-aiki/wht-najeriya/index.html` and `yo/awon-ise/wht-naijiria/index.html` add the one Swahili alternate; their visible UI/copy is unchanged.
+- Za-cgt native parity: `/sw/zana/kikokotoo-cgt-afrika-kusini/` delegates to the unchanged DOM-free `assets/js/engines/za-cgt.js`, preserves the SARS 2027 assessment-year formula, requires explicit scope and residence evidence, clears stale results, focuses invalid inputs, resets locally and advertises only copy plus parsed TXT. No PDF, filing, assessment or payment output is claimed.
+- Za-cgt reciprocal metadata only: `tools/za-cgt/index.html` and `fr/tools/za-plus-value/index.html` add the Swahili alternate; their visible UI and calculation copy are unchanged.
 - Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.
-- Formula/data/source decision: no formula, rate, threshold or jurisdiction rule changed. Ng-wht preserves the official 2024 Schedule and 2026 administration boundary exactly, with treaty and exemption treatment evidence-gated; ng-cit and ng-cgt preserve their existing engines; the other accepted tools retain their reviewed user-evidence contracts.
-- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
+- Formula/data/source decision: no formula, rate, threshold or jurisdiction rule changed. Za-cgt preserves the reviewed SARS 2027 engine, including progressive individual tax delta, inclusion rates, loss ordering and apportioned residence relief. Ng-wht preserves the official 2024 Schedule and 2026 administration boundary exactly; ng-cit and ng-cgt preserve their existing engines; the other accepted tools retain their reviewed user-evidence contracts.
+- Browser matrix: system Chrome, one worker, isolated ports 43917 through 43920; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
 - Privacy/AI: no raw input body was observed leaving the browser; empty-body analytics page-view beacons are separated from sensitive payload checks. `test:privacy-ai-consent` passed 3/3 browser tests plus its server test.
 - Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still supports the small-company definition, company rates, development levy and section 57 review trigger used by the unchanged NigeriaCit engine; June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.
 - Official-source recheck on 8 August 2026: the official Deduction at Source Regulations 2024 Gazette remains the WHT rate source; Nigeria Tax Administration Act 2025 section 51 requires prescribed regulatory rates, JRB 2026 guidance still references the 2024 Regulations, and federal transition guidance keeps the 1 January 2026 boundary. No engine parameter changed.
+- Official-source recheck on 8 August 2026: the SARS CGT page remains reachable and identifies the 2027 assessment year as 1 March 2026 through 28 February 2027; the official individual-rate page and comprehensive CGT guide remain the engine boundary. No formula parameter changed.
 - Official-source recheck on 8 August 2026: the NIPC-published Nigeria Tax Act 2025 still contains the Nigerian-share threshold and same-year reinvestment rules used by the existing engine, and June 2026 Federal Ministry of Finance guidance still sets the NTA boundary at 1 January 2026. No engine parameter changed.
 - Official-source recheck on 8 August 2026: the Mauritania DGI obligations page still states monthly ITS rates of 15%, 25% and 40%; the official CNSS declaration form still states 13% employer CNSS, 1% worker CNSS and 2% occupational medicine. No cap or formula was changed, and the reviewed 21 July contract retains its 31 October review boundary.
 - Carried baseline debt: the legacy `tests/engines/lr-paye.test.js` source-title assertion expects two entries while the existing central formula registry contains five; its product fixtures run before that assertion. Registry audit also retains two unrelated missing-page rows. `npm run lint` now passes all 49 checked JavaScript files.
