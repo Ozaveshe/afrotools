@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 11,
-    "blocked": 42,
+    "acceptedCandidates": 12,
+    "blocked": 41,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -194,9 +194,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/thumbnail-maker/",
       "swahiliRoute": "/sw/zana/kitengeneza-thumbnail/",
-      "status": "blocked-missing-route",
-      "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base.",
-      "sourceOwner": "sw/zana/kitengeneza-thumbnail/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-thumbnail-maker.js + assets/js/lib/thumbnail-maker-studio.js",
+      "oracle": "A bounded idempotent generator copies the exact English studio DOM contract; both locales execute the same five-size, layout, palette, hook, brand-kit, readiness, local FileReader/canvas and codec/export owner, while a thin adapter localizes dynamic text and clipboard output.",
+      "exports": "Controlled English and Swahili 1280x720 PNG output was byte-identical. All 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; all three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized upload brief, checklist and design-link exports were parsed.",
+      "browser": "tests/e2e/swahili-thumbnail-maker-parity.spec.js (Chromium, one worker, final run on port 4411): shared-renderer parity, five sizes, three codecs, three A/B outputs, local assets, reset/invalid, 320/375, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/thumbnail-maker.webp"
     },
     {
@@ -591,6 +594,7 @@
     "QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.",
     "Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.",
     "Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.",
+    "Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.",
     "Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof."
   ],
   "browserMatrix": {
@@ -605,14 +609,15 @@
       4407,
       4408,
       4409,
-      4410
+      4410,
+      4411
     ],
     "widths": [
       320,
       375,
       640
     ],
-    "reflow": "640 CSS px as the 200% reflow equivalent of a 1280 px viewport",
+    "reflow": "320/375 px narrow widths plus an explicit 200% browser zoom reflow check for Thumbnail Maker; earlier candidates retain their recorded 640 px equivalent checks",
     "themes": [
       "light",
       "dark"
@@ -660,6 +665,10 @@
       "proof": "Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed."
     },
     {
+      "englishId": "thumbnail-maker",
+      "proof": "Controlled English and Swahili 1280x720 PNG output was byte-identical. All 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; all three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized upload brief, checklist and design-link exports were parsed."
+    },
+    {
       "englishId": "watermark-bulk",
       "proof": "Current and two-file batch PNGs were downloaded and reopened by PNG signature/IHDR parser; source dimensions remained exactly 64x48 and 40x30."
     },
@@ -679,6 +688,10 @@
     "missing": 0
   },
   "prohibitedSurfacesChanged": [],
+  "reciprocalHreflangMetadataEdits": [
+    "tools/thumbnail-maker/index.html",
+    "fr/tools/createur-miniatures/index.html"
+  ],
   "missingMandatoryReference": ".claude/rules/i18n.md was absent on the mandated base; coordinator explicitly declared this non-blocking.",
   "validationCommands": [
     "node scripts/build-sw-image-color-family.js",
@@ -686,6 +699,7 @@
     "node scripts/audit-sw-image-design-parity.js",
     "node tests/qr-payload-engine.test.js",
     "node tests/image-compress-shared-owner.test.js",
+    "node tests/swahili-thumbnail-maker-parity.test.js",
     "playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
@@ -696,6 +710,7 @@
     "playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-image-compress-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",
@@ -705,5 +720,17 @@
     "npm run test:privacy-ai-consent",
     "git diff --check"
   ],
-  "baselineDebt": "Rows marked blocked were already unaccepted at the recorded origin/main baseline. This lane does not present those inherited parity gaps as regressions or accepted work."
+  "gateResults": {
+    "thumbnailStaticOracle": "pass",
+    "thumbnailBrowser": "pass: 3 tests, one worker, isolated port 4411",
+    "hreflang": "pass: 33,418 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,265 links / 11,510 HTML files",
+    "registryAudit": "pass with carried baseline debt: two unrelated missing-page rows",
+    "lint": "pass: 49 JavaScript files",
+    "typeCheck": "pass",
+    "privacyAiConsent": "pass: server test plus 3 Chromium tests",
+    "buildI18nValidate": "blocked at prohibited ownership boundary: coordinator-owned locale-page-coverage and localization-coverage artifacts are stale after adding the physical Swahili route"
+  },
+  "baselineDebt": "Rows marked blocked were already unaccepted at the recorded origin/main baseline. Registry audit still reports the same unrelated job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 missing-page rows. This lane does not present inherited parity or registry gaps as regressions.",
+  "netNewCoordinatorFollowUp": "Regenerate coordinator-owned locale-page-coverage and localization-coverage artifacts after integrating this physical Swahili route, then rerun build:i18n:validate."
 }

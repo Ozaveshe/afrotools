@@ -5,8 +5,8 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 11,
-    "blocked": 8,
+    "staticCandidates": 12,
+    "blocked": 7,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
@@ -57,6 +57,12 @@
       "route": "/sw/zana/kadi-ya-mitandao/",
       "sourceOwner": "scripts/build-sw-social-card.js",
       "browserProof": "tests/e2e/swahili-social-card-parity.spec.js: Swahili is generated from the exact English studio DOM and loads social-card-studio.js; controlled English and Swahili output was byte-identical at 1200x630; direct PNG, JPG and WebP reopened; all six platform-set PNGs reopened at exact 1200x630, 1200x627, 1080x1080, 1080x1350, 1080x1920 and 1280x720; OG metadata and handoff clipboard exports parsed; reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
+    },
+    {
+      "id": "thumbnail-maker",
+      "route": "/sw/zana/kitengeneza-thumbnail/",
+      "sourceOwner": "scripts/build-sw-thumbnail-maker.js + assets/js/lib/thumbnail-maker-studio.js",
+      "browserProof": "tests/e2e/swahili-thumbnail-maker-parity.spec.js: Swahili is generated from the exact English studio DOM and loads thumbnail-maker-studio.js; controlled English and Swahili 1280x720 PNG output was byte-identical; all 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized clipboard handoffs, invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
     },
     {
       "id": "watermark-bulk",
@@ -119,15 +125,9 @@
       "route": "/sw/zana/kitengeneza-flyer/",
       "status": "blocked-feature-parity",
       "blocker": "The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior."
-    },
-    {
-      "id": "thumbnail-maker",
-      "route": "/sw/zana/kitengeneza-thumbnail/",
-      "status": "blocked-missing-route",
-      "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo, Social Card and Thumbnail Maker use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -145,7 +145,8 @@
       4407,
       4408,
       4409,
-      4410
+      4410,
+      4411
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -157,23 +158,29 @@
       "tests/e2e/swahili-image-filters-parity.spec.js",
       "tests/e2e/swahili-social-card-parity.spec.js",
       "tests/e2e/swahili-passport-photo-parity.spec.js",
-      "tests/e2e/swahili-image-compress-parity.spec.js"
+      "tests/e2e/swahili-image-compress-parity.spec.js",
+      "tests/e2e/swahili-thumbnail-maker-parity.spec.js"
     ],
-    "result": "30 passed"
+    "result": "33 passed"
   },
   "validation": {
     "focusedStatic": "pass",
     "colorFamilyOwner": "pass",
     "colorFamilyAudit": "pass",
     "freeAppInventory": "pass: 1,257 rows / 770 accepted globally; Image & Design remains 0 accepted",
-    "localization": "pass: 11,290 pages",
-    "hreflang": "pass: 33,412 relationships / 5,351 groups",
-    "internalLinks": "pass: 138,248 links across 11,509 HTML files",
+    "localization": "blocked at required ownership boundary: the new physical Swahili route makes coordinator-owned locale-page-coverage and localization-coverage outputs stale; this lane is prohibited from regenerating them",
+    "hreflang": "pass: 33,418 relationships / 5,351 groups",
+    "internalLinks": "pass: 138,265 links across 11,510 HTML files",
+    "registryAudit": "pass with carried baseline debt: job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 remain the same unrelated missing-page rows",
     "lint": "pass",
     "typeCheck": "pass",
     "artworkIndex": "pass",
     "canonicalRegistry": "not regenerated because broad generated outputs are prohibited"
   },
   "prohibitedSurfacesChanged": [],
+  "reciprocalHreflangMetadataEdits": [
+    "tools/thumbnail-maker/index.html",
+    "fr/tools/createur-miniatures/index.html"
+  ],
   "acceptanceLedgerChanged": false
 }

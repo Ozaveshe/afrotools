@@ -44,7 +44,7 @@ expect(assignedImage.length === 19, `Image & Design denominator drifted: expecte
 
 const creativeById = new Map(creative.rows.map(row => [row.englishId, row]));
 const imageById = new Map(image.rows.map(row => [row.id, row]));
-const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'passport-photo', 'qr-generator', 'social-card', 'watermark-bulk']);
+const acceptedIds = new Set(['color-picker', 'colour-palette', 'image-compress', 'image-crop', 'image-filters', 'image-format-convert', 'image-resize', 'passport-photo', 'qr-generator', 'social-card', 'thumbnail-maker', 'watermark-bulk']);
 const candidateProof = {
   'image-compress': {
     sourceOwner: 'scripts/build-sw-image-compress.js + assets/js/lib/image-compress-studio.js',
@@ -106,6 +106,12 @@ const candidateProof = {
     exports: 'Controlled English and Swahili 1200x630 PNG output was byte-identical. Direct PNG, JPG and WebP reopened at 1200x630; the six-file platform set reopened at exact OG, LinkedIn, square, portrait, story and YouTube dimensions; OG metadata and handoff clipboard exports were parsed.',
     browser: 'tests/e2e/swahili-social-card-parity.spec.js (Chromium, one worker, final run on port 4408): shared renderer, all codecs, six platform exports, clipboard handoffs, reset, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
   },
+  'thumbnail-maker': {
+    sourceOwner: 'scripts/build-sw-thumbnail-maker.js + assets/js/lib/thumbnail-maker-studio.js',
+    oracle: 'A bounded idempotent generator copies the exact English studio DOM contract; both locales execute the same five-size, layout, palette, hook, brand-kit, readiness, local FileReader/canvas and codec/export owner, while a thin adapter localizes dynamic text and clipboard output.',
+    exports: 'Controlled English and Swahili 1280x720 PNG output was byte-identical. All 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; all three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized upload brief, checklist and design-link exports were parsed.',
+    browser: 'tests/e2e/swahili-thumbnail-maker-parity.spec.js (Chromium, one worker, final run on port 4411): shared-renderer parity, five sizes, three codecs, three A/B outputs, local assets, reset/invalid, 320/375, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network passed.'
+  },
   'watermark-bulk': {
     sourceOwner: 'sw/zana/watermark-nyingi/index.html',
     oracle: 'English full-resolution canvas, placement, opacity, filename and multi-file behavior is retained with native Swahili presets, validation and live status.',
@@ -147,8 +153,8 @@ const rows = assigned.map(row => {
 
 const accepted = rows.filter(row => row.status === 'accepted-candidate');
 const blocked = rows.filter(row => row.status !== 'accepted-candidate');
-expect(accepted.length === 11, `accepted candidate count drifted: expected 11, found ${accepted.length}`);
-expect(blocked.length === 42, `blocked count drifted: expected 42, found ${blocked.length}`);
+expect(accepted.length === 12, `accepted candidate count drifted: expected 12, found ${accepted.length}`);
+expect(blocked.length === 41, `blocked count drifted: expected 41, found ${blocked.length}`);
 const missingArtwork = rows.filter(row => !exists(row.artwork)).map(row => ({ englishId: row.englishId, expectedPath: row.artwork }));
 
 const receipt = {
@@ -177,14 +183,15 @@ const receipt = {
     'QR now uses its committed local runtime plus a shared DOM-free English/Swahili payload engine; OCR dependencies are local but that row remains blocked because local dependencies alone do not prove product parity.',
     'Social Card is generated from the English studio workspace contract and loads social-card-studio.js; a shared CSS repair constrains hidden file inputs so both English and Swahili reflow at 320px without changing canvas or export semantics.',
     'Passport Photo is generated from the English studio workspace contract and loads passport-photo-studio.js; the shared engine remains the sole owner of country presets, source-confidence notes, crop geometry, 300 DPI sheets and codec output.',
+    'Thumbnail Maker is generated from the English studio DOM contract and loads thumbnail-maker-studio.js; the shared engine remains the sole owner of five output sizes, layouts, readiness, local assets, hook variants, brand state and PNG/JPEG/WebP exports.',
     'Real-device capture/codec rows creator-clip, creator-record and creator-voice remain blocked without actual device output and reopen proof.'
   ],
   browserMatrix: {
     engine: 'Chromium',
     workers: 1,
-    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410],
+    isolatedPorts: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410, 4411],
     widths: [320, 375, 640],
-    reflow: '640 CSS px as the 200% reflow equivalent of a 1280 px viewport',
+    reflow: '320/375 px narrow widths plus an explicit 200% browser zoom reflow check for Thumbnail Maker; earlier candidates retain their recorded 640 px equivalent checks',
     themes: ['light', 'dark'],
     checked: ['keyboard/focus', 'computed contrast', 'canonical/OG/schema/hreflang', 'console/page/resource errors', 'network writes', 'invalid-state behavior']
   },
@@ -192,6 +199,7 @@ const receipt = {
   privacyAiProof: 'Accepted candidates make no raw-input network writes and contain no AI path. Analytics was declined in the browser test storage state; fetch/XHR/WebSocket and non-GET requests were asserted empty.',
   artwork: { required: 53, present: 53 - missingArtwork.length, missing: missingArtwork.length },
   prohibitedSurfacesChanged: [],
+  reciprocalHreflangMetadataEdits: ['tools/thumbnail-maker/index.html', 'fr/tools/createur-miniatures/index.html'],
   missingMandatoryReference: '.claude/rules/i18n.md was absent on the mandated base; coordinator explicitly declared this non-blocking.',
   validationCommands: [
     'node scripts/build-sw-image-color-family.js',
@@ -199,6 +207,7 @@ const receipt = {
     'node scripts/audit-sw-image-design-parity.js',
     'node tests/qr-payload-engine.test.js',
     'node tests/image-compress-shared-owner.test.js',
+    'node tests/swahili-thumbnail-maker-parity.test.js',
     'playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1',
@@ -209,6 +218,7 @@ const receipt = {
     'playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1',
     'playwright test tests/e2e/swahili-image-compress-parity.spec.js --project=chromium --workers=1',
+    'playwright test tests/e2e/swahili-thumbnail-maker-parity.spec.js --project=chromium --workers=1',
     'npm run build:i18n:validate',
     'npm run validate:hreflang',
     'npm run check-links',
@@ -218,11 +228,28 @@ const receipt = {
     'npm run test:privacy-ai-consent',
     'git diff --check'
   ],
-  baselineDebt: 'Rows marked blocked were already unaccepted at the recorded origin/main baseline. This lane does not present those inherited parity gaps as regressions or accepted work.'
+  gateResults: {
+    thumbnailStaticOracle: 'pass',
+    thumbnailBrowser: 'pass: 3 tests, one worker, isolated port 4411',
+    hreflang: 'pass: 33,418 relationships / 5,351 groups',
+    internalLinks: 'pass: 138,265 links / 11,510 HTML files',
+    registryAudit: 'pass with carried baseline debt: two unrelated missing-page rows',
+    lint: 'pass: 49 JavaScript files',
+    typeCheck: 'pass',
+    privacyAiConsent: 'pass: server test plus 3 Chromium tests',
+    buildI18nValidate: 'blocked at prohibited ownership boundary: coordinator-owned locale-page-coverage and localization-coverage artifacts are stale after adding the physical Swahili route'
+  },
+  baselineDebt: 'Rows marked blocked were already unaccepted at the recorded origin/main baseline. Registry audit still reports the same unrelated job-offer-evaluator and zana-tathmini-ya-ofa-ya-kazi-sw-wave8 missing-page rows. This lane does not present inherited parity or registry gaps as regressions.',
+  netNewCoordinatorFollowUp: 'Regenerate coordinator-owned locale-page-coverage and localization-coverage artifacts after integrating this physical Swahili route, then rerun build:i18n:validate.'
 };
 
 const mdRows = rows.map(row => `- \`${row.englishId}\` — ${row.status}: ${row.status === 'accepted-candidate' ? row.exports : row.blocker}`).join('\n');
 const markdown = `# Swahili Creative + Image & Design candidate receipt\n\n- Baseline: \`${BASE}\`\n- Exact denominator: **53** (**34 Creative**, **19 Image & Design**)\n- Accepted candidates: **${accepted.length}**\n- Blocked fail-closed: **${blocked.length}**\n- Central acceptance ledger changed: **no**\n- Verdict: **PARTIAL — FAIL CLOSED**\n\n## Per-app result\n\n${mdRows}\n\n## Product and source decisions\n\n${receipt.sourceDecisions.map(item => `- ${item}`).join('\n')}\n\n## Browser and export proof\n\n- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409 and 4410: **30 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.\n- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Image Compress reopened PNG, JPG, WebP, auto-selected, target-size and two Download all outputs at exact dimensions and matched English PNG bytes; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.\n- Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.\n\n## Artwork\n\n- Present: **${receipt.artwork.present}/53**\n- Missing queue: **${missingArtwork.length}**\n\n## Boundary and baseline debt\n\nThe ${blocked.length} blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. \`.claude/rules/i18n.md\` was absent and coordinator-declared non-blocking.\n`;
+
+const proofMarkdown = markdown
+  .replace('4408, 4409 and 4410: **30 passed**', '4408, 4409, 4410 and 4411: **33 passed**')
+  .replace('; Watermark Bulk downloads', '; Thumbnail Maker reopened all 15 direct size/format outputs, three A/B variants and the local-asset output at exact dimensions and matched controlled English PNG bytes; Watermark Bulk downloads')
+  .replace('\n## Artwork\n', '\n## Validation gates\n\n- PASS: thumbnail static oracle; thumbnail Chromium (3 tests, one worker, port 4411); hreflang (33,418 relationships / 5,351 groups); links (138,265 / 11,510 HTML files); registry audit; lint; type-check; privacy/AI consent.\n- OWNERSHIP BOUNDARY: `build:i18n:validate` reports stale coordinator-owned locale coverage artifacts after the new physical route. This lane is prohibited from regenerating them; the coordinator must regenerate and rerun the gate after integration.\n- Carried audit debt: the two unrelated missing-page rows remain `job-offer-evaluator` and `zana-tathmini-ya-ofa-ya-kazi-sw-wave8`.\n- Reciprocal metadata-only edits: `tools/thumbnail-maker/index.html` and `fr/tools/createur-miniatures/index.html`.\n\n## Artwork\n');
 
 if (failures.length) {
   console.error(failures.join('\n'));
@@ -231,7 +258,7 @@ if (failures.length) {
 
 if (WRITE) {
   fs.writeFileSync(path.join(ROOT, 'reports/sw-creative-image-parity-candidate-receipt.json'), `${JSON.stringify(receipt, null, 2)}\n`);
-  fs.writeFileSync(path.join(ROOT, 'reports/sw-creative-image-parity-candidate-receipt.md'), markdown);
+  fs.writeFileSync(path.join(ROOT, 'reports/sw-creative-image-parity-candidate-receipt.md'), proofMarkdown);
   fs.writeFileSync(path.join(ROOT, 'reports/sw-creative-image-parity-missing-artwork.json'), `${JSON.stringify({ schemaVersion: 1, denominator: 53, required: 53, present: 53 - missingArtwork.length, missing: missingArtwork.length, queue: missingArtwork }, null, 2)}\n`);
 }
 

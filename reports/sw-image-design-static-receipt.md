@@ -2,8 +2,8 @@
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Accepted candidates: **11**
-- Fail-closed rows: **8**
+- Accepted candidates: **12**
+- Fail-closed rows: **7**
 - Central ledger edits: **0**
 - Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
@@ -18,6 +18,7 @@
 - `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
 - `image-filters` — `/sw/zana/filters-za-picha/`: tests/e2e/swahili-image-filters-parity.spec.js: Swahili is generated from the exact English studio DOM and loads image-filters-studio.js; English and Swahili produced byte-identical 60x40 PNG; direct PNG, JPG and WebP reopened at exact dimensions; the two-file PNG batch ZIP manifest parsed and every output reopened at 60x40; recipe copy, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `social-card` — `/sw/zana/kadi-ya-mitandao/`: tests/e2e/swahili-social-card-parity.spec.js: Swahili is generated from the exact English studio DOM and loads social-card-studio.js; controlled English and Swahili output was byte-identical at 1200x630; direct PNG, JPG and WebP reopened; all six platform-set PNGs reopened at exact 1200x630, 1200x627, 1080x1080, 1080x1350, 1080x1920 and 1280x720; OG metadata and handoff clipboard exports parsed; reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
+- `thumbnail-maker` — `/sw/zana/kitengeneza-thumbnail/`: tests/e2e/swahili-thumbnail-maker-parity.spec.js: Swahili is generated from the exact English studio DOM and loads thumbnail-maker-studio.js; controlled English and Swahili 1280x720 PNG output was byte-identical; all 15 advertised size/format combinations reopened at exact 3840x2160, 1280x720, 1920x1080, 1080x1920 or 1080x1080 dimensions; three A/B PNG variants and an uploaded background/subject/logo PNG reopened at 1280x720; localized clipboard handoffs, invalid/reset, 320/375px, true 200% zoom reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `watermark-bulk` — `/sw/zana/watermark-nyingi/`: tests/e2e/swahili-watermark-bulk-parity.spec.js: two synthetic images, full-resolution current and batch PNG downloads parsed and reopened at 64x48 and 40x30; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed.
 - `image-format-convert` — `/sw/zana/kubadilisha-format-ya-picha/`: tests/e2e/swahili-image-format-convert-parity.spec.js: English and Swahili share the exact local converter and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP files reopened at exact 60x40 dimensions; unsupported AVIF remained disabled; the two-file, three-format ZIP manifest parsed and every nested output reopened; picture markup, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `colour-palette` — `/sw/zana/paleti-ya-rangi/`: tests/e2e/swahili-image-color-family.spec.js: all 45 palettes and 225 colors retained; CSS and JSON downloads parsed, filtering/copy, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
@@ -31,13 +32,12 @@
 - `logo-maker` — blocked-feature-parity: The reduced inline canvas does not reproduce the English logo templates, editing surface, quality boundaries, and export contract.
 - `certificate-maker` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English certificate workflow; no native PDF/image export owner exists.
 - `flyer-maker` — blocked-feature-parity: The reduced inline canvas does not reuse flyer-maker-studio.js or reproduce the English templates, asset controls, exact dimensions, and export behavior.
-- `thumbnail-maker` — blocked-missing-route: No physical Swahili route or native thumbnail studio owner exists on the coordinator base.
 
 ## Validation
 
-- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.
-- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.
+- Focused static/source-owner proof, 33 one-worker browser checks, every advertised export, hreflang, links, registry audit, lint, type-check and privacy/AI consent passed.
+- `build:i18n:validate` failed only because the new physical route makes coordinator-owned locale coverage artifacts stale. This lane is explicitly prohibited from regenerating those files; coordinator regeneration is required after integration.
 
 ## Boundary
 
-No central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.
+No central acceptance ledger, AI route map, sitemap, dist, redirects, locale-coverage output, deployment, or live service was changed. The only other-locale edits are reciprocal `sw` hreflang links in the English and French thumbnail pages. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.
