@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1503 |
-| Swahili coverage records | 1500 |
+| Swahili physical HTML pages | 1504 |
+| Swahili coverage records | 1501 |
 | Native candidates | 591 |
-| Localized shell candidates | 622 |
-| English fallbacks | 3 |
+| Localized shell candidates | 624 |
+| English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 41 |
-| **Accepted** | **1121** |
+| Missing | 40 |
+| **Accepted** | **1125** |
 
 ## Category reconciliation
 
@@ -57,12 +57,12 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Trade & Import | 22 | 0 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 22 |
 | Transport & Logistics | 18 | 0 | 17 | 0 | 0 | 0 | 0 | 0 | 1 | 1 |
 | Travel & Tourism | 9 | 0 | 9 | 0 | 0 | 0 | 0 | 0 | 0 | 9 |
-| Uniquely African | 34 | 0 | 32 | 1 | 0 | 0 | 0 | 0 | 1 | 28 |
+| Uniquely African | 34 | 0 | 34 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | VAT & Business Tax | 63 | 63 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 63 |
 
 ## Ambiguous ownership
 
-- Swahili routes with conflicting owner evidence: 6
+- Swahili routes with conflicting owner evidence: 5
 - English apps with multiple live Swahili owner candidates: 63
 - Swahili registry source IDs outside the free denominator: 23
 
@@ -263,7 +263,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Roman Numeral Converter | Education | `/tools/roman-numerals` | Native candidate | `/sw/zana/namba-za-kirumi` | Yes |
 | Percentage Calculator | Education | `/tools/percentage-calc` | Localized shell candidate | `/sw/zana/kikokotoo-asilimia` | Yes |
 | Scientific Calculator | Education | `/tools/scientific-calc` | Localized shell candidate | `/sw/zana/kikokotoo-kisayansi` | Yes |
-| Mobile Money Fee Checker | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | No |
+| Mobile Money Fee Checker | Uniquely African | `/tools/mobile-money-fees` | Localized shell candidate | `/sw/zana/ada-pesa-simu` | Yes |
 | Fintech Fee Watch | Uniquely African | `/tools/fintech-fee-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-ada-fintech` | Yes |
 | Ajo/Chama Savings Tracker | Uniquely African | `/tools/ajo-tracker` | Localized shell candidate | `/sw/zana/kifuatiliaji-ajo-chama` | Yes |
 | Electricity Bill Estimator | Uniquely African | `/tools/electricity-estimator` | Localized shell candidate | `/sw/zana/makisio-ya-bili-ya-umeme` | Yes |
@@ -273,7 +273,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Lobola Negotiation Checklist | Religious & Cultural | `/tools/lobola-negotiation-checklist` | Localized shell candidate | `/sw/zana/orodha-ya-majadiliano-ya-lobola` | Yes |
 | Lobola Gift List | Religious & Cultural | `/tools/lobola-gift-list` | Localized shell candidate | `/sw/zana/orodha-ya-zawadi-za-lobola` | Yes |
 | Informal Remittance Cost Tracker | Uniquely African | `/tools/hawala-tracker` | Localized shell candidate | `/sw/zana/ufuatiliaji-hawala` | Yes |
-| Funeral Cost Estimator | Uniquely African | `/tools/burial-cost` | English fallback | `/sw/zana/gharama-za-mazishi` | No |
+| Funeral Cost Estimator | Uniquely African | `/tools/burial-cost` | Localized shell candidate | `/sw/zana/gharama-za-mazishi` | Yes |
 | School Fees Comparator | Education | `/tools/school-fees` | Localized shell candidate | `/sw/zana/ada-za-shule` | Yes |
 | Staple Basket Tracker | Uniquely African | `/tools/staple-basket` | Localized shell candidate | `/sw/zana/kikapu-cha-bidhaa-msingi` | Yes |
 | Wholesale Retail Spread | Uniquely African | `/tools/wholesale-retail-spread` | Localized shell candidate | `/sw/zana/tofauti-bei-jumla-rejareja` | Yes |
@@ -287,7 +287,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Invoice Generator | Document & PDF | `/tools/invoice-generator` | Localized shell candidate | `/sw/zana/kizalishaji-ankara` | Yes |
 | Cover Letter Generator | Document & PDF | `/tools/cover-letter-generator` | Localized shell candidate | `/sw/zana/barua-ombi` | Yes |
 | Meeting Minutes Generator | Document & PDF | `/tools/meeting-minutes` | Localized shell candidate | `/sw/zana/kumbukumbu-za-mkutano` | Yes |
-| Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | No |
+| Remittance Comparator | Uniquely African | `/tools/remittance-compare` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa` | Yes |
 | Informal FX Watch | Uniquely African | `/tools/informal-fx-watch` | Localized shell candidate | `/sw/zana/ufuatiliaji-soko-la-fedha` | Yes |
 | Nigeria Import Duty & Landed Cost | Finance, Tax & Market Data | `/tools/import-duty` | Localized shell candidate | `/sw/zana/ushuru-forodha` | Yes |
 | Mortgage Planning Calculator | Finance, Tax & Market Data | `/tools/mortgage-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-mkopo-wa-nyumba` | Yes |
@@ -731,7 +731,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Password Generator | Developer Tools | `/tools/password-generator` | Localized shell candidate | `/sw/zana/kizalishaji-nenosiri` | Yes |
 | Meeting Cost Calculator | Business & ROI | `/tools/meeting-cost` | Native candidate | `/sw/zana/gharama-ya-mkutano` | Yes |
 | Tip & Bill Splitter | Business & ROI | `/tools/tip-calculator` | Native candidate | `/sw/zana/kigawanya-bili-na-tip` | Yes |
-| Remittance Comparator Pro | Uniquely African | `/tools/remittance-v2` | Missing | None | No |
+| Remittance Comparator Pro | Uniquely African | `/tools/remittance-v2` | Localized shell candidate | `/sw/zana/ulinganisho-uhamishaji-pesa-kina` | Yes |
 | Salary Offer Comparator | Finance, Tax & Market Data | `/tools/salary-compare` | Localized shell candidate | `/sw/zana/kilinganisha-mishahara` | Yes |
 | Salary Evidence Notebook | Finance, Tax & Market Data | `/tools/salary-intelligence` | Native candidate | `/sw/mshahara-na-kodi` | No |
 | African Cost of Living Comparator | Uniquely African | `/tools/cost-of-living` | Localized shell candidate | `/sw/zana/gharama-za-maisha` | Yes |
