@@ -133,7 +133,7 @@
       clearInvalid(form);
       clearError();
       clearResult();
-      showStatus('An share bayanan fom ɗin a wannan shafin.');
+      showStatus('An goge bayanan fom ɗin a wannan shafin.');
       if (typeof resetExtra === 'function') resetExtra();
       var field = firstField(form);
       if (field) field.focus();
@@ -185,8 +185,18 @@
       var mathematics = document.querySelector('[data-waec-key="Mathematics"]');
       var mathLabel = mathematics && mathematics.querySelector('[data-subject-label]');
       if (mathematics) mathematics.setAttribute('data-engine-subject', ghana ? 'Core Mathematics' : 'Mathematics');
-      if (mathLabel) mathLabel.textContent = ghana ? 'Babban Lissafi (Core Mathematics)' : 'Lissafi (Mathematics)';
+      if (mathLabel) mathLabel.textContent = ghana ? 'Babban Lissafi' : 'Lissafi';
       byId('waecPathwayHelp').hidden = !ghana;
+    }
+
+    function subjectLabel(name) {
+      return {
+        'English Language': 'Turanci',
+        Mathematics: 'Lissafi',
+        'Core Mathematics': 'Babban Lissafi',
+        'Integrated Science': 'Kimiyyar haɗaka',
+        'Social Studies': 'Nazarin zamantakewa'
+      }[name] || name;
     }
 
     function rows() {
@@ -206,8 +216,8 @@
         'English Language credit recorded': 'An shigar da kiredit na Turanci',
         'Mathematics credit recorded': 'An shigar da kiredit na Lissafi',
         'Core Mathematics credit recorded': 'An shigar da kiredit na Babban Lissafi',
-        'Integrated Science credit recorded': 'An shigar da kiredit na Integrated Science',
-        'Social Studies credit recorded': 'An shigar da kiredit na Social Studies',
+        'Integrated Science credit recorded': 'An shigar da kiredit na Kimiyyar haɗaka',
+        'Social Studies credit recorded': 'An shigar da kiredit na Nazarin zamantakewa',
         'Three elective credits recorded': 'An shigar da kiredit na darussan zaɓi uku'
       };
       return labels[label] || 'An duba sharadin darasi';
@@ -231,7 +241,7 @@
         return;
       }
       var selected = result.selected.map(function (row) {
-        return '<li>' + escapeHtml(row.name) + ': ' + escapeHtml(row.grade) + ' — maki ' + formatNumber(row.points, 0) + '</li>';
+        return '<li>' + escapeHtml(subjectLabel(row.name)) + ': ' + escapeHtml(row.grade) + ' — maki ' + formatNumber(row.points, 0) + '</li>';
       }).join('');
       var checks = result.checks.map(function (check) {
         return '<li>' + (check.pass ? 'Ya cika: ' : 'Bai cika ba: ') + escapeHtml(translateCheck(check.label)) + '</li>';
@@ -241,16 +251,16 @@
         '<p>' + (system.value === 'ng' ? 'Ma’aunin shiri na darussa biyar mafi ƙanƙantar maki.' : 'Jimillar shiri ta WASSCE: darussan wajibi uku da na zaɓi uku.') + '</p>' +
         '<h3>Darussan da aka ƙirga</h3><ul>' + selected + '</ul>' +
         '<h3>Binciken shiri</h3><ul>' + checks + '</ul>' +
-        '<p><strong>Iyaka:</strong> Wannan ba aggregate na hukuma ko hukuncin cancantar shiga ba ne. JAMB, makaranta ko shirin karatu ne ke tantance haɗin darussa.</p>'
+        '<p><strong>Iyaka:</strong> Wannan ba jimillar hukuma ko hukuncin cancantar shiga ba ne. JAMB, makaranta ko shirin karatu ne ke tantance haɗin darussa.</p>'
       );
       exportText = [
         'AfroTools Hausa — Tsarin WAEC/NECO/WASSCE',
         'Tsari: ' + system.options[system.selectedIndex].text,
         'Sakamakon shiri: ' + result.value,
         'Darussan da aka ƙirga:',
-        result.selected.map(function (row) { return '- ' + row.name + ': ' + row.grade + ' (maki ' + row.points + ')'; }).join('\n'),
+        result.selected.map(function (row) { return '- ' + subjectLabel(row.name) + ': ' + row.grade + ' (maki ' + row.points + ')'; }).join('\n'),
         '',
-        'Ba aggregate na hukuma ko hukuncin cancantar shiga ba ne.',
+        'Ba jimillar hukuma ko hukuncin cancantar shiga ba ne.',
         'Tushen dubawa: https://eligibility.jamb.gov.ng/ da https://waecgh.org/home/wassce-school/',
         'An duba iyakar tushe: 2026-07-26.'
       ].join('\n');
@@ -275,7 +285,7 @@
       'Post-UTME score must be between 0 and 100.': 'Makin Post-UTME dole ya kasance daga 0 zuwa 100.',
       'Enter non-negative UTME and Post-UTME weights.': 'Shigar da nauyin UTME da Post-UTME da ba su ƙasa da sifili ba.',
       'UTME and Post-UTME weights must add up to 100%.': 'Nauyin UTME da Post-UTME dole su zama 100% idan an haɗa.',
-      'The published benchmark must be between 0 and 100.': 'Benchmark da makaranta ta wallafa dole ya kasance daga 0 zuwa 100.'
+      'The published benchmark must be between 0 and 100.': 'Ma\'aunin kwatanci da makaranta ta wallafa dole ya kasance daga 0 zuwa 100.'
     };
     form.addEventListener('submit', function (event) {
       event.preventDefault();
@@ -299,10 +309,10 @@
         return;
       }
       var comparison = result.difference === null
-        ? 'Ba a shigar da benchmark ba.'
+        ? 'Ba a shigar da ma\'aunin kwatanci ba.'
         : result.difference >= 0
-          ? 'Ya fi benchmark ɗin da ka shigar da ' + formatNumber(result.difference, 2) + ' maki.'
-          : 'Ya gaza benchmark ɗin da ka shigar da ' + formatNumber(Math.abs(result.difference), 2) + ' maki.';
+          ? 'Ya fi ma\'aunin kwatancin da ka shigar da ' + formatNumber(result.difference, 2) + ' maki.'
+          : 'Ya gaza ma\'aunin kwatancin da ka shigar da ' + formatNumber(Math.abs(result.difference), 2) + ' maki.';
       showResult(
         '<strong class="ha03-number">' + formatNumber(result.aggregate, 2) + '%</strong>' +
         '<dl class="ha03-kv"><dt>UTME bayan raba 400 zuwa 100</dt><dd>' + formatNumber(result.normalizedUtme, 2) + '</dd>' +
@@ -316,7 +326,7 @@
         'UTME: ' + result.utme + '/400',
         'Post-UTME: ' + result.postUtme + '/100',
         'Nauyi: UTME ' + result.utmeWeight + '%, Post-UTME ' + result.postUtmeWeight + '%',
-        'Aggregate na shiri: ' + result.aggregate.toFixed(2) + '%',
+        'Jimillar shiri: ' + result.aggregate.toFixed(2) + '%',
         comparison,
         '',
         'Dabara da ma’aunin kwatanci sun fito daga abin da mai amfani ya shigar; tabbatar da su daga makaranta.',
@@ -345,7 +355,7 @@
       return '<div class="ha03-course" data-gpa-course>' +
         '<div class="ha03-field"><label for="gpaName' + index + '">Sunan kwas</label><input id="gpaName' + index + '" data-gpa-name autocomplete="off"></div>' +
         '<div class="ha03-field"><label for="gpaCredit' + index + '">Raka’o’i</label><input id="gpaCredit' + index + '" data-gpa-credit type="number" min="0.5" max="100" step="0.5"></div>' +
-        '<div class="ha03-field"><label for="gpaValue' + index + '">Maki ko grade</label><input id="gpaValue' + index + '" data-gpa-value autocomplete="off"></div>' +
+        '<div class="ha03-field"><label for="gpaValue' + index + '">Maki ko daraja</label><input id="gpaValue' + index + '" data-gpa-value autocomplete="off"></div>' +
         '<button class="ha03-course-remove" type="button" data-gpa-remove aria-label="Cire wannan kwas">Cire</button>' +
         '</div>';
     }
@@ -388,7 +398,7 @@
       if (!result.validCourses || result.invalidCourses.length) {
         var invalidIndex = result.invalidCourses.length ? result.invalidCourses[0] : 0;
         var invalidRow = courses.querySelectorAll('[data-gpa-course]')[invalidIndex];
-        markInvalid(invalidRow && invalidRow.querySelector('[data-gpa-value]'), 'Cika aƙalla kwas ɗaya; raka’o’i su fi sifili kuma maki/grade ya dace da tsarin da ka zaɓa.');
+        markInvalid(invalidRow && invalidRow.querySelector('[data-gpa-value]'), 'Cika aƙalla kwas ɗaya; raka’o’i su fi sifili kuma maki ko daraja ya dace da tsarin da ka zaɓa.');
         exportText = '';
         return;
       }
@@ -408,20 +418,20 @@
         '<strong class="ha03-number">' + formatNumber(result.average, 3) + ' / ' + formatNumber(template.scale, 1) + '</strong>' +
         '<p>' + unit + ' na wannan zangon bisa raka’o’i.</p>' +
         '<dl class="ha03-kv"><dt>Jimillar raka’o’in zango</dt><dd>' + formatNumber(result.totalCredits, 2) + '</dd>' +
-        '<dt>Jimillar grade points</dt><dd>' + formatNumber(result.totalPoints, 3) + '</dd>' +
+        '<dt>Jimillar makin daraja mai nauyi</dt><dd>' + formatNumber(result.totalPoints, 3) + '</dd>' +
         '<dt>CGPA/matsakaicin haɗe</dt><dd>' + formatNumber(cumulative, 3) + ' / ' + formatNumber(template.scale, 1) + '</dd></dl>' +
         '<p><strong>Iyaka:</strong> Teburin haruffa misali ne kawai. Jami’a ce ke yanke tsarin maki, zagaye lamba, sake kwas da rabon daraja.</p>'
       );
       exportText = [
         'AfroTools Hausa — Takardar lissafin GPA/CGPA',
-        'Tsari: ' + template.id + ' (iyaka ' + template.scale + ')',
+        'Tsari: ' + byId('gpaTemplate').options[byId('gpaTemplate').selectedIndex].text + ' (iyaka ' + template.scale + ')',
         'GPA/matsakaicin zango: ' + result.average.toFixed(3),
         'CGPA/matsakaicin haɗe: ' + cumulative.toFixed(3),
         'Raka’o’in zango: ' + result.totalCredits,
         '',
         'Kwas:',
         inputCourses.filter(function (row) { return row.name || row.credits || row.value; }).map(function (row) {
-          return '- ' + (row.name || 'Kwas') + ': raka’o’i ' + row.credits + ', maki/grade ' + row.value;
+          return '- ' + (row.name || 'Kwas') + ': raka’o’i ' + row.credits + ', maki ko daraja ' + row.value;
         }).join('\n'),
         '',
         'Teburin misali ba dokar jami’a ko sauya darajar takardar karatu ba ne.',
@@ -459,7 +469,7 @@
         rhythm: byId('feesRhythm').value
       });
       if (!result.ok) {
-        markInvalid(byId('feesTuition'), 'Duba lambar kuɗi, kuɗin shekara, ƙarin caji, tallafin wata da tsarin biyan kuɗi. Aƙalla tuition ko extras ya fi sifili.');
+        markInvalid(byId('feesTuition'), 'Duba lambar kuɗi, kuɗin shekara, ƙarin caji, tallafin wata da tsarin biyan kuɗi. Aƙalla kuɗin karatu ko ƙarin caji ya fi sifili.');
         exportText = '';
         return;
       }
@@ -472,7 +482,7 @@
       var ratio = result.ratio === null ? 'Ba a lissafa ba' : formatNumber(result.ratio * 100, 1) + '% na tallafin wata';
       showResult(
         '<strong class="ha03-number">' + escapeHtml(formatMoney(result.annual, result.currency)) + '</strong>' +
-        '<p>Jimillar tuition da ƙarin caji na shekara da kai ka shigar.</p>' +
+        '<p>Jimillar kuɗin karatu da ƙarin caji na shekara da kai ka shigar.</p>' +
         '<dl class="ha03-kv"><dt>Ajiyar da ake bukata kowane wata</dt><dd>' + escapeHtml(formatMoney(result.monthlyReserve, result.currency)) + '</dd>' +
         '<dt>Kowane kashi na biyan kuɗi</dt><dd>' + escapeHtml(formatMoney(result.paymentChunk, result.currency)) + '</dd>' +
         '<dt>Alamar nauyi</dt><dd>' + escapeHtml(band) + ' — ' + escapeHtml(ratio) + '</dd></dl>' +
@@ -481,14 +491,14 @@
       exportText = [
         'AfroTools Hausa — Tsarin kuɗin makaranta',
         'Makaranta/zabi: ' + result.school,
-        'Tuition na shekara: ' + formatMoney(result.tuition, result.currency),
+        'Kuɗin karatu na shekara: ' + formatMoney(result.tuition, result.currency),
         'Ƙarin caji na shekara: ' + formatMoney(result.extras, result.currency),
         'Jimilla: ' + formatMoney(result.annual, result.currency),
         'Ajiyar wata: ' + formatMoney(result.monthlyReserve, result.currency),
         'Kowane kashi: ' + formatMoney(result.paymentChunk, result.currency),
         'Nauyi: ' + band + ' — ' + ratio,
         '',
-        'Tabbatar da takardar kuɗin makaranta, rajista, littattafai, uniform, sufuri, abinci, levies, ranakun biya da maido da kuɗi daga makaranta.',
+        'Tabbatar da takardar kuɗin makaranta, rajista, littattafai, kayan ɗalibai, sufuri, abinci, ƙarin caji, ranakun biya da maido da kuɗi daga makaranta.',
         'Kiyasin shiri kawai; adadin duk daga mai amfani ne.'
       ].join('\n');
       showStatus('An yi lissafi a cikin burauzarka.');
@@ -564,7 +574,7 @@
         return;
       }
       if (ielts !== null && (!Number.isFinite(ielts) || ielts < 0 || ielts > 9)) {
-        markInvalid(ieltsControl, 'Makin IELTS overall dole ya kasance daga sifili zuwa tara.');
+        markInvalid(ieltsControl, 'Jimillar makin IELTS dole ya kasance daga sifili zuwa tara.');
         exportText = '';
         return;
       }
@@ -638,7 +648,7 @@
       loading.textContent = 'Ba a samu bayanan tallafin karatu ba. Sake loda shafin.';
       submit.disabled = false;
     });
-    bindExport(function () { return exportText; }, 'afrotools-ha-shortlist-tallafin-karatu.txt');
+    bindExport(function () { return exportText; }, 'afrotools-ha-gajeren-jerin-tallafin-karatu.txt');
     bindReset(form, function () { exportText = ''; if (feed.length) runMatch(); });
   }
 
@@ -680,15 +690,15 @@
         return;
       }
       var tone = result.remainder >= 0 ? 'Ragowar shiri' : 'Gibin shiri';
-      var buffer = result.bufferMonths === null ? 'Ba a lissafa ba' : formatNumber(result.bufferMonths, 1) + ' watannin manyan bukatu';
+      var buffer = result.bufferMonths === null ? 'Ba a lissafa ba' : formatNumber(result.bufferMonths, 1) + ' watannin manyan buƙatu';
       showResult(
         '<strong class="ha03-number">' + escapeHtml(formatMoney(Math.abs(result.remainder), 'NGN')) + '</strong>' +
         '<p>' + tone + ' bayan kuɗin shiga da kashe-kashen da ka shigar.</p>' +
         '<dl class="ha03-kv"><dt>Jimillar kuɗin shiga</dt><dd>' + escapeHtml(formatMoney(result.totalIncome, 'NGN')) + '</dd>' +
         '<dt>Jimillar kashe-kashe</dt><dd>' + escapeHtml(formatMoney(result.totalCosts, 'NGN')) + '</dd>' +
         '<dt>Matsakaicin kuɗin shiga na wata</dt><dd>' + escapeHtml(formatMoney(result.averageMonthlyIncome, 'NGN')) + '</dd>' +
-        '<dt>Buffer</dt><dd>' + escapeHtml(buffer) + '</dd></dl>' +
-        '<p><strong>Iyaka:</strong> Wannan arithmetic ne kawai. Ba ya duba entitlement, arrears, NYSC/PPA/payroll ko lokacin biyan kuɗi.</p>'
+        '<dt>Kariyar manyan buƙatu</dt><dd>' + escapeHtml(buffer) + '</dd></dl>' +
+        '<p><strong>Iyaka:</strong> Wannan lissafin kasafi ne kawai. Ba ya tabbatar da haƙƙin kuɗi, bashin baya, biyan NYSC/PPA, tsarin albashi ko lokacin biyan kuɗi.</p>'
       );
       exportText = [
         'AfroTools Hausa — Kasafin alawus na NYSC',
@@ -696,11 +706,11 @@
         'Jimillar kuɗin shiga: ' + formatMoney(result.totalIncome, 'NGN'),
         'Jimillar kashe-kashe: ' + formatMoney(result.totalCosts, 'NGN'),
         tone + ': ' + formatMoney(Math.abs(result.remainder), 'NGN'),
-        'Buffer: ' + buffer,
+        'Kariyar manyan buƙatu: ' + buffer,
         '',
         'Adadin kuɗin tarayya da sauran kuɗi duk ana iya gyarawa; yi amfani da abin da ka tabbatar daga takardar biyan kuɗi.',
-        'Tushen bayanin federal: https://yid.fmyd.gov.ng/nysc-monthly-allowance-increased-to-%E2%82%A677000-a-milestone-in-youth-empowerment/',
-        'An duba iyakar tushe: 2026-07-26. Wannan ba tabbacin entitlement ko lokacin biya ba ne.'
+        'Tushen bayanin tarayya: https://yid.fmyd.gov.ng/nysc-monthly-allowance-increased-to-%E2%82%A677000-a-milestone-in-youth-empowerment/',
+        'An duba iyakar tushe: 2026-07-26. Wannan ba tabbacin haƙƙin kuɗi ko lokacin biya ba ne.'
       ].join('\n');
       showStatus('An yi lissafi a cikin burauzarka.');
     });
@@ -751,8 +761,17 @@
         return;
       }
       var tone = result.balance >= 0 ? 'Ragowar kasafi' : 'Gibin kasafi';
+      var expenseLabels = {
+        housing: 'Masauki',
+        food: 'Abinci',
+        transport: 'Sufuri',
+        data: 'Intanet da waya',
+        other: 'Sauran kashe-kashe',
+        tuition: 'Kuɗin karatu',
+        books: 'Littattafai da kayan aiki'
+      };
       var largest = result.largestExpense
-        ? result.largestExpense.key + ' — ' + formatMoney(result.largestExpense.amount, currency)
+        ? (expenseLabels[result.largestExpense.key] || 'Sauran kashe-kashe') + ' — ' + formatMoney(result.largestExpense.amount, currency)
         : 'Babu kashe kuɗin da aka shigar';
       showResult(
         '<strong class="ha03-number">' + escapeHtml(formatMoney(Math.abs(result.balance), currency)) + '</strong>' +
@@ -761,7 +780,7 @@
         '<dt>Jimillar kashe-kashe</dt><dd>' + escapeHtml(formatMoney(result.totalExpenses, currency)) + '</dd>' +
         '<dt>Matsakaicin kashe-kashe na wata</dt><dd>' + escapeHtml(formatMoney(result.monthlyExpenseEquivalent, currency)) + '</dd>' +
         '<dt>Babban kashe-kuɗi</dt><dd>' + escapeHtml(largest) + '</dd></dl>' +
-        '<p><strong>Iyaka:</strong> Positive balance ba tabbacin affordability ba ne. Kuɗin da aka manta, deadlines, gaggawa da sauyin income na iya canza sakamako.</p>'
+        '<p><strong>Iyaka:</strong> Ragowar kuɗi ba tabbacin iya ɗaukar nauyi ba ne. Kuɗin da aka manta, ranakun biya, gaggawa da sauyin kuɗin shiga na iya canza sakamako.</p>'
       );
       exportText = [
         'AfroTools Hausa — Kasafin ɗalibi',
@@ -806,7 +825,7 @@
       var entries = data.entries.filter(function (entry) { return matches(entry, query, direction, category); }).slice(0, 30);
       if (!entries.length) {
         results.innerHTML = '<p>Babu daidaitaccen rubutu a ƙaramin kundin nan. Gwada gajeriyar kalma ko wani rukuni.</p>';
-        showResult('<p>Ba a samu kalma ko ɓangaren kalma da ya dace ba. Wannan app ba na’urar fassarar kowace magana ba ce.</p>');
+        showResult('<p>Ba a samu kalma ko ɓangaren kalma da ya dace ba. Wannan kayan aikin ba na’urar fassarar kowace magana ba ce.</p>');
         exportText = '';
         return;
       }
@@ -823,14 +842,14 @@
       }).join('');
       showResult(
         '<strong class="ha03-number">' + entries.length + '</strong>' +
-        '<p>Jimlolin da suka dace a kundin Boko na wannan app.</p>' +
+        '<p>Jimlolin da suka dace a kundin Boko na wannan kayan aikin.</p>' +
         '<p><strong>Iyaka:</strong> Kundin daftarin farko ne, ba cikakkiyar fassara, Ajami, alamar karin sauti ko nazarin ƙwararren mai fassara ba.</p>'
       );
       exportText = [
         'AfroTools Hausa — Kundin jimloli',
         'Hanyar bincike: ' + (direction === 'ha-en' ? 'Hausa zuwa Turanci' : 'Turanci zuwa Hausa'),
         'An duba iyakar rubutu: ' + data.checkedAt,
-        'Script: ' + data.script,
+        'Nau\'in rubutu: ' + data.script,
         '',
         entries.map(function (entry) {
           return entry.en + '\t' + entry.ha + '\t' + entry.pron + '\t' + entry.cat + (entry.note ? '\t' + entry.note : '');

@@ -6,6 +6,7 @@ const fs = require('node:fs');
 const path = require('node:path');
 const vm = require('node:vm');
 const { execFileSync } = require('node:child_process');
+const { buildReport: buildHausaVisibleCopyReport } = require('../../../scripts/audit-hausa-visible-copy.js');
 
 const ROOT = path.resolve(__dirname, '../../..');
 const BASE_SHA = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
@@ -32,6 +33,26 @@ function scholarshipMatcher() {
   const context = {};
   vm.runInNewContext(read('engines/scholarship-matcher.js'), context, { filename: 'scholarship-matcher.js' });
   return context.ScholarshipMatcher;
+}
+
+function humanFacingCopy(html) {
+  const parts = [];
+  const title = html.match(/<title>([\s\S]*?)<\/title>/i);
+  if (title) parts.push(title[1]);
+  for (const match of html.matchAll(/<meta\s+([^>]*?)>/gi)) {
+    const attrs = match[1] || '';
+    const key = (attrs.match(/(?:name|property)=["']([^"']+)["']/i) || [])[1] || '';
+    const content = (attrs.match(/content=["']([^"']*)["']/i) || [])[1] || '';
+    if (/^(?:description|ai-content-declaration|og:title|og:description|twitter:title|twitter:description)$/i.test(key)) parts.push(content);
+  }
+  const body = (html.match(/<body\b[^>]*>([\s\S]*?)<\/body>/i) || [])[1] || '';
+  for (const match of body.matchAll(/\b(?:placeholder|aria-label|alt|title)=["']([^"']+)["']/gi)) parts.push(match[1]);
+  parts.push(body
+    .replace(/<(?:script|style|template|svg)\b[^>]*>[\s\S]*?<\/(?:script|style|template|svg)>/gi, ' ')
+    .replace(/<[^>]+>/g, ' '));
+  return parts.join('\n')
+    .replace(/&nbsp;|&amp;|&quot;|&#39;/gi, ' ')
+    .replace(/\s+/g, ' ');
 }
 
 test('HA-03 denominator is exactly the eight director-assigned rows', () => {
@@ -67,6 +88,19 @@ test('all exact Hausa routes are native, self-canonical, structured, and export-
     const artwork = path.join(ROOT, 'assets/img/tools', row.image);
     assert.ok(fs.existsSync(artwork) && fs.statSync(artwork).size > 1000, `${row.id}: nontrivial artwork exists`);
     assert.ok(html.includes(`/assets/img/tools/${row.image}`), `${row.id}: artwork is used`);
+  }
+});
+
+test('the eight routes have zero Hausa visible-copy blockers and clean human-facing metadata', () => {
+  const routeSet = new Set(rows.map((row) => row.route));
+  const audit = buildHausaVisibleCopyReport();
+  const blockers = audit.groups.BLOCKER_VISIBLE_ENGLISH.filter((finding) => routeSet.has(finding.route));
+  assert.deepEqual(blockers, [], 'route-scoped scripts/audit-hausa-visible-copy.js result');
+
+  const forbiddenHumanCopy = /(?:\bShare\b|Share fom|Share bincike|\bGrade\b|Core\/compulsory|\(English Language\)|grade point|Weighted percentage|Weighted score|\baverage\b|Arts da Humanities|\bPercentage\b|reviewed feed|Budget arithmetic|\bentitlement\b|\barrears\b|income streams|service year|\bprofile\b|ranar ƙage|\bbenchmark\b|\badmissions\b|\bBuffer\b|Positive balance|\baffordability\b|\bdeadlines\b|\btuition\b|\bextras\b|\buniform\b|\blevies\b|\boverall\b|\bState\b|\bapp\b)/i;
+  for (const row of rows) {
+    const copy = humanFacingCopy(fs.readFileSync(localFile(row.route), 'utf8'));
+    assert.doesNotMatch(copy, forbiddenHumanCopy, `${row.id}: visible UI and metadata contain no rejected English phrase`);
   }
 });
 

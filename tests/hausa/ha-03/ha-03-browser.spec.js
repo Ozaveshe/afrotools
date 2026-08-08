@@ -72,7 +72,7 @@ const apps = [
     id: 'school-fees', route: '/ha/kayan-aiki/kudin-makaranta/', app: 'school-fees', first: '#feesSchool', exportToken: 'kuɗin makaranta',
     invalid: async (page) => {
       await page.locator('button[type="submit"]').click();
-      await expect(page.locator('#ha03Error')).toContainText('Aƙalla tuition ko extras');
+      await expect(page.locator('#ha03Error')).toContainText('Aƙalla kuɗin karatu ko ƙarin caji');
       await expect(page.locator('#feesTuition')).toBeFocused();
     },
     valid: async (page) => {
@@ -201,6 +201,7 @@ for (const app of apps) {
     await expect(page.locator('body')).toHaveAttribute('data-ha03-app', app.app);
     await expect(page.locator('h1')).toBeVisible();
     await expect(page.locator('[data-ha03-theme]')).toBeVisible();
+    await expect(page.locator('[data-ha03-reset]')).toHaveText(app.app === 'translator' ? 'Goge bincike' : 'Goge fom');
     const artwork = page.locator('.ha03-hero img');
     await expect(artwork).toBeVisible();
     expect(await artwork.evaluate((image) => ({ complete: image.complete, width: image.naturalWidth, height: image.naturalHeight }))).toEqual(expect.objectContaining({ complete: true }));
@@ -215,6 +216,7 @@ for (const app of apps) {
       await expect(page.locator(app.first)).toBeFocused();
       const privateTokens = await app.valid(page);
       await expect(page.locator('#ha03Error')).toHaveText('');
+      await expect(page.locator('body')).not.toContainText(/\bShare\b|\bGrade\b|Core\/compulsory|\(English Language\)|grade point|Weighted percentage|Weighted score|\baverage\b|Arts da Humanities|\bPercentage\b|reviewed feed|Budget arithmetic|\bentitlement\b|\barrears\b|income streams|service year|\bprofile\b|ranar ƙage|\bBuffer\b|Positive balance|\baffordability\b|\bdeadlines\b|\btuition\b|\bextras\b|\buniform\b|\blevies\b|\boverall\b|\bState\b|\bapp\b/i);
       const downloadPromise = page.waitForEvent('download');
       await page.locator('[data-ha03-export]').click();
       const download = await downloadPromise;
