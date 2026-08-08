@@ -14,8 +14,8 @@
     }
   },
   "outcome": {
-    "acceptedCandidates": 21,
-    "blocked": 34,
+    "acceptedCandidates": 22,
+    "blocked": 33,
     "byCategory": {
       "engineering": {
         "denominator": 20,
@@ -29,8 +29,8 @@
       },
       "transport": {
         "denominator": 18,
-        "acceptedCandidates": 0,
-        "blocked": 18
+        "acceptedCandidates": 1,
+        "blocked": 17
       }
     },
     "acceptanceBoundary": "Candidate receipt only; coordinator-owned central acceptance remains unchanged."
@@ -39,13 +39,15 @@
     "static": [
       "tests/swahili-energy-remaining-static.test.js",
       "tests/swahili-engineering-materials-parity.test.js",
-      "tests/swahili-transport-static-candidate.test.js"
+      "tests/swahili-transport-static-candidate.test.js",
+      "tests/swahili-transport-cost-parity.test.js"
     ],
     "browser": [
       "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
-      "tests/e2e/sw-engineering-materials-parity.spec.js"
+      "tests/e2e/sw-engineering-materials-parity.spec.js",
+      "tests/e2e/sw-transport-cost-parity.spec.js"
     ],
-    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; car-import focused invalid/reset/privacy flow.",
+    "browserMatrix": "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; fleet-fuel deep Swahili and English regressions; car-import focused invalid/reset/privacy flow.",
     "privacy": "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local."
   },
   "apps": [
@@ -899,19 +901,19 @@
       "englishId": "fleet-fuel",
       "categoryKey": "transport",
       "englishRoute": "/tools/fleet-fuel",
-      "swahiliRoute": "/sw/zana/gharama-mafuta-ya-fleet",
+      "swahiliRoute": "/sw/zana/gharama-mafuta-ya-fleet/",
       "swahiliFile": "sw/zana/gharama-mafuta-ya-fleet/index.html",
-      "status": "blocked",
-      "sourceOwner": "Swahili localized shell and shared deterministic engine",
-      "formulaDecision": "Fail closed: exact per-English-ID engine/formula parity not proved.",
-      "sourceDecision": "changed: ng-nmdpra, ke-epra-pump-prices, gh-npa-indicative-prices, za-dmre-fuel, za-sanral, ke-kenha",
-      "browserProof": "Physical route shell passed 320px, 375px and 200% reflow smoke; this is not product acceptance.",
-      "exportProof": "Not accepted: every English-advertised export was not downloaded and parsed/reopened for this app.",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/lib/sw-transport-cost-contract.js -> assets/js/engines/transport-cost-engine.js -> assets/js/pages/sw-transport-cost-parity.js",
+      "formulaDecision": "Exact English fleet fuel engine: km x L/100km x user-entered price x vehicle count; six-day week, entered operating-day month and 12-month year preserved.",
+      "sourceDecision": "Fuel price and consumption are user-entered; no live/current pump-price claim. UI requires verification before budgeting or dispatch.",
+      "browserProof": "Chromium at 320px and 375px; valid/invalid/reset, focusable controls, no console/page errors or raw-input network requests; English regression passed.",
+      "exportProof": "English advertises copy only; Swahili copy remains local and no unavailable download format is advertised.",
       "artwork": {
         "file": "assets/img/tools/fleet-fuel.webp",
         "status": "present"
       },
-      "blocker": "The present localized shell does not prove the exact English engine, calculation boundary, invalid/reset behavior and every advertised export for this English ID."
+      "blocker": null
     },
     {
       "englishId": "last-mile-delivery",
