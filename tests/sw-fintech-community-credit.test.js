@@ -8,7 +8,7 @@ const routeEntry = require('../assets/js/pages/sw-ai-route-entry');
 const routeMap = require('../assets/js/ai/swahili-route-map.generated');
 
 const ROOT = path.resolve(__dirname, '..');
-const BASE = '8354e321ff34caf60a33a3393cd0dcddfb00c023';
+const BASE = '6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 const apps = [
   ['sacco-calc', 'sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/index.html', '/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/', '/tools/sacco-calc/', '/fr/tools/calculateur-sacco-cooperative/'],
   ['credit-score', 'sw/zana/alama-ya-mkopo/index.html', '/sw/zana/alama-ya-mkopo/', '/tools/credit-score/', '/fr/tools/score-credit/']
@@ -20,8 +20,8 @@ const scope = new Set(['small-business', 'fintech', 'transport', 'trade']);
 const rows = inventory.rows.filter((row) => scope.has(row.categoryKey));
 
 assert.strictEqual(rows.length, 99);
-assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 6);
-assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 93);
+assert.strictEqual(rows.filter((row) => accepted.has(row.englishId)).length, 8);
+assert.strictEqual(rows.filter((row) => !accepted.has(row.englishId)).length, 91);
 
 for (const [id, file, sw, en, fr] of apps) {
   const html = fs.readFileSync(path.join(ROOT, file), 'utf8');

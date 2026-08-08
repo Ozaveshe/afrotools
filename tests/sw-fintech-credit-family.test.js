@@ -6,7 +6,7 @@ const childProcess=require('child_process');
 const routeEntry=require('../assets/js/pages/sw-ai-route-entry');
 const routeMap=require('../assets/js/ai/swahili-route-map.generated');
 const ROOT=path.resolve(__dirname,'..');
-const BASE='8354e321ff34caf60a33a3393cd0dcddfb00c023';
+const BASE='6edacda8437e1fa9b9e5a512138cbdd3169e38be';
 const apps=[
   ['loan-shark-compare','sw/zana/mkopeshaji-hatari-dhidi-ya-benki/index.html','/sw/zana/mkopeshaji-hatari-dhidi-ya-benki/','/tools/loan-shark-compare/','/fr/tools/pret-usurier-vs-banque/','loan-shark-compare.js'],
   ['microfinance-loan','sw/zana/kikokotoo-mkopo-wa-microfinance/index.html','/sw/zana/kikokotoo-mkopo-wa-microfinance/','/tools/microfinance-loan/','/fr/tools/pret-microfinance/','microfinance-loan.js'],
@@ -19,8 +19,8 @@ const acceptedIds=new Set((acceptance.entries||[]).filter((row)=>row.status==='a
 const scope=new Set(['small-business','fintech','transport','trade']);
 const rows=inventory.rows.filter((row)=>scope.has(row.categoryKey));
 assert.strictEqual(rows.length,99);
-assert.strictEqual(rows.filter((row)=>acceptedIds.has(row.englishId)).length,6);
-assert.strictEqual(rows.filter((row)=>!acceptedIds.has(row.englishId)).length,93);
+assert.strictEqual(rows.filter((row)=>acceptedIds.has(row.englishId)).length,8);
+assert.strictEqual(rows.filter((row)=>!acceptedIds.has(row.englishId)).length,91);
 for(const [id,file,sw,en,fr,controller] of apps){
   const html=fs.readFileSync(path.join(ROOT,file),'utf8');
   assert.ok(html.includes('lang="sw"'),id);
