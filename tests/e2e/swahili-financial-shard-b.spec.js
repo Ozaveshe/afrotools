@@ -2,6 +2,7 @@
 
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
+const fs = require('node:fs');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
@@ -20,8 +21,84 @@ const routes = [
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
   ['/sw/sao-tome/kikokotoo-kodi-mshahara', 'st-paye'],
   ['/sw/zana/thamani-ya-startup', 'startup-valuation'],
+  ['/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi', 'student-loan'],
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
 ];
+
+test('student-loan preserves the shared engine and all local export contracts', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => {
+    if (request.method() !== 'GET' && request.postData()) writes.push({ url: request.url(), body: request.postData() });
+  });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', {
+      configurable: true,
+      value: { writeText: async (value) => { window.__copiedText = value; } },
+    });
+  });
+  await page.goto('/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#sl-currency').fill('KES');
+  await page.locator('#sl-balance').fill('10000');
+  await page.locator('#sl-financed-fees').fill('500');
+  await page.locator('#sl-rate').fill('0');
+  await page.locator('#sl-months').fill('10');
+  await page.locator('#sl-grace').fill('2');
+  await page.locator('#sl-grace-accrual').check();
+  await page.locator('#sl-monthly-fee').fill('10');
+  await page.locator('#sl-extra').fill('0');
+  await page.locator('#sl-income').fill('5000');
+  await page.locator('#sl-debts').fill('500');
+  await page.locator('#sl-source').fill('Taarifa ya majaribio');
+  await page.locator('#sl-date').fill('2026-07-22');
+  await page.getByRole('button', { name: 'Kokotoa mpango wa malipo' }).click();
+
+  await expect(page.locator('#sl-start')).toContainText('10,500');
+  await expect(page.locator('#sl-payment')).toContainText('1,050');
+  await expect(page.locator('#sl-cash-payment')).toContainText('1,060');
+  await expect(page.locator('#sl-interest')).toContainText('0');
+  await expect(page.locator('#sl-fees')).toContainText('600');
+  await expect(page.locator('#sl-total')).toContainText('10,600');
+  await expect(page.locator('#sl-timeline')).toHaveText('12 miezi');
+  await expect(page.locator('#sl-debt-load')).toHaveText('31.2%');
+  await expect(page.locator('#sl-cash-after')).toContainText('3,440');
+  await expect(page.locator('#sl-schedule tr')).toHaveCount(12);
+
+  await page.locator('#sl-copy').click();
+  expect(await page.evaluate(() => window.__copiedText)).toContain('Mpango wa malipo ya mkopo wa mwanafunzi');
+
+  const csvEvent = page.waitForEvent('download');
+  await page.locator('#sl-csv').click();
+  const csv = fs.readFileSync(await (await csvEvent).path(), 'utf8');
+  expect(csv.split('\n')).toHaveLength(13);
+  expect(csv).toContain('"month","phase","payment","fee","interest","principal","balance"');
+  expect(csv).not.toMatch(/(?:^|,)"[=+@-]/m);
+
+  const jsonEvent = page.waitForEvent('download');
+  await page.locator('#sl-json').click();
+  const payload = JSON.parse(fs.readFileSync(await (await jsonEvent).path(), 'utf8'));
+  expect(payload.schemaVersion).toBe(1);
+  expect(payload.plan).toMatchObject({ currency: 'KES', balanceAtRepaymentStart: 10500, scheduledPayment: 1050, totalPaid: 10600 });
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => {
+      resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]);
+    }, { once: true }));
+    document.getElementById('sl-pdf').click();
+    return generated;
+  });
+  const parsed = await pdfParse(Buffer.from(pdfBytes));
+  expect(parsed.text).toContain('Mpango wa malipo ya mkopo wa mwanafunzi');
+  expect(parsed.text).toContain('10,600');
+
+  await page.locator('#sl-date').fill('2025-01-01');
+  await page.getByRole('button', { name: 'Kokotoa mpango wa malipo' }).click();
+  await expect(page.locator('#sl-error')).toContainText('siku 365');
+  await expect(page.locator('#sl-results')).toBeHidden();
+  await page.locator('#sl-reset').click();
+  await expect(page.locator('#sl-currency')).toHaveValue('');
+  expect(writes).toEqual([]);
+});
 
 test('lr-paye uses the reviewed engine and creates a private parser-readable PDF', async ({ page }) => {
   const writes = [];

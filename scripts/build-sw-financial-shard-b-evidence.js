@@ -31,6 +31,7 @@ const ACCEPTED = new Set([
   'ss-paye',
   'st-paye',
   'startup-valuation',
+  'student-loan',
   'tg-paye',
 ]);
 
@@ -51,7 +52,15 @@ const PROOF = {
   'ss-paye': ['tests/engines/ss-paye.test.js', 'tests/e2e/day3-finance-south-sudan-vip.spec.js'],
   'st-paye': ['tests/engines/st-paye.test.js', 'tests/e2e/day3-finance-sao-tome-vip.spec.js'],
   'startup-valuation': ['tests/startup-valuation-engine.test.js', 'tests/e2e/startup-valuation-vip.spec.js'],
+  'student-loan': ['tests/student-loan-plan.test.js', 'tests/e2e/swahili-financial-shard-b.spec.js'],
   'tg-paye': ['tests/engines/tg-paye.test.js', 'tests/e2e/day3-finance-togo-vip.spec.js'],
+};
+
+const SWAHILI_OVERRIDES = {
+  'student-loan': {
+    primarySwahiliFile: 'sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html',
+    primarySwahiliRoute: '/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/',
+  },
 };
 
 function readJson(relative) {
@@ -83,7 +92,8 @@ function extract(html, regex) {
 }
 
 function inspectAccepted(row) {
-  const swFile = row.primarySwahiliFile;
+  const localized = { ...row, ...(SWAHILI_OVERRIDES[row.englishId] || {}) };
+  const swFile = localized.primarySwahiliFile;
   const swPath = swFile && path.join(ROOT, swFile);
   const englishFile = resolveEnglishFile(row.englishRoute);
   const englishPath = englishFile && path.join(ROOT, englishFile);
@@ -91,7 +101,7 @@ function inspectAccepted(row) {
   const enExists = Boolean(englishPath && fs.existsSync(englishPath));
   const html = swExists ? fs.readFileSync(swPath, 'utf8') : '';
   const english = enExists ? fs.readFileSync(englishPath, 'utf8') : '';
-  const route = normalizeRoute(row.primarySwahiliRoute);
+  const route = normalizeRoute(localized.primarySwahiliRoute);
   const canonical = normalizeRoute(extract(html, /<link\b(?=[^>]*rel=["'][^"']*canonical)[^>]*href=["']([^"']+)/i));
   const ogUrl = normalizeRoute(extract(html, /<meta\b(?=[^>]*property=["']og:url["'])[^>]*content=["']([^"']+)/i));
   const ogImage = extract(html, /<meta\b(?=[^>]*property=["']og:image["'])[^>]*content=["']([^"']+)/i);
@@ -174,7 +184,9 @@ const rows = shardB.map((row, index) => {
       advertisedExportProof: {
         status: 'repository-suite-present',
         suites: PROOF[row.englishId],
-        note: 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
+        note: row.englishId === 'student-loan'
+          ? 'The focused shard suite downloads and parses CSV and JSON, reopens the generated PDF with pdf-parse, verifies clipboard output and proves no raw-input network write.'
+          : 'App-specific suites contain parser or payload-contract checks. The focused current-lane run passed 20 of 31 selected workflow/export tests, including Mauritania PDF parsing; the remaining failures are recorded separately and are not represented as passing evidence.',
       },
       privacyNoRawInputNetworkLeak: true,
       mobile320: true,
@@ -227,6 +239,8 @@ const receipt = {
   changedProductPaths: [
     'assets/js/engines/lr-paye.js',
     'assets/js/engines/mr-paye.js',
+    'assets/js/pages/student-loan-vip.js',
+    'assets/js/components/tool-registry.js',
     'assets/css/property-roi-vip.css',
     'assets/css/property-transfer-cost-vip.css',
     'assets/css/route-fares-vip.css',
@@ -237,14 +251,20 @@ const receipt = {
     'sw/liberia/kikokotoo-kodi-mshahara/index.html',
     'sw/mauritania/kikokotoo-kodi-mshahara/index.html',
     'sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html',
+    'sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html',
+    'tools/student-loan/index.html',
+    'fr/tools/pret-etudiant/index.html',
   ],
-  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia and Mauritania now use DOM-free browser engines proved against their reviewed server engines. Liberia keeps NASSCORP separate from the PAYE tax base; Mauritania preserves monthly ITS, CNSS, allowance, statutory round-down and employer-cost semantics.',
+  formulaDataSourceDecision: 'No rate, threshold, jurisdiction data or authority source changed. Student-loan parity uses the existing DOM-free fixed-rate engine and requires user-entered currency, rate, fees, grace treatment, source and checked date; it adds no programme preset, eligibility rule or current-rate claim. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia and Mauritania use DOM-free browser engines proved against their reviewed server engines.',
   browserMatrix: { engine: 'system Chrome', workers: 1, isolatedPorts: [43917, 43918], widths: [320, 375], colorSchemes: ['dark', 'light'], textReflowPercent: 200, syntheticDataOnly: true },
   validationSummary: {
-    focusedNodeSubtests: { passed: 18, failed: 0 },
-    shardBrowserMatrix: { passed: 20, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
+    focusedNodeSubtests: { passed: 10, failed: 0 },
+    shardBrowserMatrix: { passed: 22, failed: 0, execution: 'complete one-worker system-Chrome run on isolated port 43917' },
     focusedExistingWorkflowExportSelection: { passed: 20, failed: 11, failuresClaimedAsPass: false },
     privacyAiConsent: { serverPassed: true, browserPassed: 3, browserFailed: 0 },
+    localizationValidation: { publicPages: 11291, hreflangRelationships: 33418, equivalenceGroups: 5351, status: 'passed', protectedGeneratedCoverageArtifacts: 'reported stale and intentionally not regenerated' },
+    linkValidation: { htmlFiles: 11510, internalLinks: 138224, broken: 0 },
+    registryAudit: { status: 'carried-baseline-debt', missingPages: ['job-offer-evaluator', 'zana-tathmini-ya-ofa-ya-kazi-sw-wave8'], netNewStudentLoanMissingPage: false },
     mauritaniaOfficialSourceRecheck: {
       checkedOn: '2026-08-08',
       dgiItsContract: 'Official DGI obligations page remained reachable and states monthly ITS rates of 15%, 25% and 40%.',
@@ -300,16 +320,20 @@ const human = [
   '',
   '## Current lane command evidence',
   '',
-  '- PASS: evidence generator check; 46 rows, 17 accepted candidates, 29 blocked, one missing artwork.',
-  '- PASS: 18 focused Node subtests covering scope, source contracts and DOM-free engine/oracle fixtures.',
+  `- Evidence generator check: 46 rows, ${acceptedRows.length} accepted candidates, ${blockedRows.length} blocked, one missing artwork.`,
+  '- PASS: 10 focused Node subtests covering shard derivation, fail-closed acceptance and student-loan engine/oracle fixtures.',
   '- PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.',
-  '- PASS after fixes: complete 20-test shard browser matrix on isolated port 43917, including parsed Liberia and Mauritania PDF workflows and route shards with system Chrome.',
+  '- PASS: complete 22-test shard browser matrix on isolated port 43917, including parsed student-loan CSV/JSON/PDF, clipboard/reset/stale-evidence behavior, privacy, and all accepted route shards.',
+  '- PASS: i18n validation and 33,418 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.',
+  '- PASS: 138,224 internal links across 11,510 HTML files; registry audit retains two unrelated missing-page rows and adds no student-loan defect.',
+  '- PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.',
   '- MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.',
   '',
   '## Changed product paths and decisions',
   '',
   '- Responsive source styles: `assets/css/property-roi-vip.css`, `assets/css/property-transfer-cost-vip.css`, `assets/css/route-fares-vip.css`, `assets/css/somalia-paye-vip.css`, `assets/css/startup-valuation-vip.css`, and `assets/css/togo-paye-vip.css`.',
   '- Targeted Swahili page fixes: `sw/sao-tome/kikokotoo-kodi-mshahara/index.html` (long-heading reflow) and `sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html` (engine enum values preserved while labels remain Kiswahili).',
+  '- Student-loan native parity: the new Swahili route uses `assets/js/engines/student-loan-plan.js` and the shared controller, requires user-entered sourced terms, and provides local copy/PDF/CSV/JSON without programme presets or network submission.',
   '- Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.',
   '- Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.',
   '- Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.',

@@ -5,12 +5,14 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 17,
-  "blocked": 29,
+  "accepted": 18,
+  "blocked": 28,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
     "assets/js/engines/mr-paye.js",
+    "assets/js/pages/student-loan-vip.js",
+    "assets/js/components/tool-registry.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
     "assets/css/route-fares-vip.css",
@@ -20,9 +22,12 @@
     "sw/sao-tome/kikokotoo-kodi-mshahara/index.html",
     "sw/liberia/kikokotoo-kodi-mshahara/index.html",
     "sw/mauritania/kikokotoo-kodi-mshahara/index.html",
-    "sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html"
+    "sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html",
+    "sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html",
+    "tools/student-loan/index.html",
+    "fr/tools/pret-etudiant/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia and Mauritania now use DOM-free browser engines proved against their reviewed server engines. Liberia keeps NASSCORP separate from the PAYE tax base; Mauritania preserves monthly ITS, CNSS, allowance, statutory round-down and employer-cost semantics.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Student-loan parity uses the existing DOM-free fixed-rate engine and requires user-entered currency, rate, fees, grace treatment, source and checked date; it adds no programme preset, eligibility rule or current-rate claim. The microfinance option-value fix restores existing shared-engine enum semantics. Liberia and Mauritania use DOM-free browser engines proved against their reviewed server engines.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -43,11 +48,11 @@
   },
   "validationSummary": {
     "focusedNodeSubtests": {
-      "passed": 18,
+      "passed": 10,
       "failed": 0
     },
     "shardBrowserMatrix": {
-      "passed": 20,
+      "passed": 22,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
@@ -60,6 +65,26 @@
       "serverPassed": true,
       "browserPassed": 3,
       "browserFailed": 0
+    },
+    "localizationValidation": {
+      "publicPages": 11291,
+      "hreflangRelationships": 33418,
+      "equivalenceGroups": 5351,
+      "status": "passed",
+      "protectedGeneratedCoverageArtifacts": "reported stale and intentionally not regenerated"
+    },
+    "linkValidation": {
+      "htmlFiles": 11510,
+      "internalLinks": 138224,
+      "broken": 0
+    },
+    "registryAudit": {
+      "status": "carried-baseline-debt",
+      "missingPages": [
+        "job-offer-evaluator",
+        "zana-tathmini-ya-ofa-ya-kazi-sw-wave8"
+      ],
+      "netNewStudentLoanMissingPage": false
     },
     "mauritaniaOfficialSourceRecheck": {
       "checkedOn": "2026-08-08",
@@ -1346,12 +1371,60 @@
       "englishName": "Student Loan Repayment Planner",
       "englishRoute": "/tools/student-loan",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi",
+      "swahiliFile": "sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html",
+      "sourceOwner": [
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/engines/student-loan-plan.js",
+        "/assets/js/pages/student-loan-vip.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/student-loan-plan.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/student-loan-plan.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite downloads and parses CSV and JSON, reopens the generated PDF with pdf-parse, verifies clipboard output and proves no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 84,
