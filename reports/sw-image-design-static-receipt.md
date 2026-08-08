@@ -1,18 +1,18 @@
-# Swahili Image & Design static receipt
+# Swahili Image & Design candidate receipt
 
-- Base: `f7036c210c34146d58b43d0a2a5d4c023cb91694`
+- Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Static candidates: **3**
+- Accepted candidates: **3**
 - Fail-closed rows: **16**
-- Centrally accepted: **0**
-- Verdict: **BROWSER PENDING**
+- Central ledger edits: **0**
+- Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
 
-## Static candidates
+## Accepted candidates
 
-- `color-picker` — `/sw/zana/kichagua-rangi/`: Re-run conversions, invalid clearing, clipboard fallback, CSS/Tailwind download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base.
-- `watermark-bulk` — `/sw/zana/watermark-nyingi/`: Re-run multi-file input, preview mutation, invalid clearing, current/batch downloads, decoded dimensions, 320/375px, 200% reflow, themes, keyboard/focus, console, and no-network checks.
-- `colour-palette` — `/sw/zana/paleti-ya-rangi/`: Re-run category filtering, copy fallback, CSS/JSON download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base.
+- `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
+- `watermark-bulk` — `/sw/zana/watermark-nyingi/`: tests/e2e/swahili-watermark-bulk-parity.spec.js: two synthetic images, full-resolution current and batch PNG downloads parsed and reopened at 64x48 and 40x30; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed.
+- `colour-palette` — `/sw/zana/paleti-ya-rangi/`: tests/e2e/swahili-image-color-family.spec.js: all 45 palettes and 225 colors retained; CSS and JSON downloads parsed, filtering/copy, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
 
 ## Fail-closed rows
 
@@ -35,10 +35,9 @@
 
 ## Validation
 
-- Focused static, source-owner, inventory, localization, hreflang, links, lint, type and artwork checks passed.
-- Canonical registry check reports carried broad generated-output drift; this lane did not regenerate or stage those outputs.
-- Chromium was not launched because the Health lane owns the browser slot.
+- Focused static, source-owner, browser, export, inventory, localization, hreflang, links, lint, type and artwork checks are recorded in the combined lane receipt.
+- Chromium passed with one worker on isolated ports. Every advertised candidate export was parsed or reopened.
 
 ## Boundary
 
-No central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate means architecture/static proof only; it is not browser or production acceptance.
+No central acceptance ledger, AI route map, sitemap, dist, redirects, other locale, deployment, or live service was changed. Candidate acceptance is lane evidence for coordinator review; it is not central or production acceptance.

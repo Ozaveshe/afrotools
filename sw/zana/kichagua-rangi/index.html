@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html data-chat-bundle="/assets/js/bundles/chat.6886c889.min.js" lang="sw">
 <head>
+<script src="/assets/js/analytics-bootstrap.js?v=03318ee7" data-loader-version="d378a891" async></script>
 <meta charset="UTF-8">
 <meta name="view-transition" content="same-origin">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -18,13 +19,13 @@
 <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600;9..40,700;9..40,800&display=swap"></noscript>
 <link rel="stylesheet" href="/assets/css/tokens.min.css?v=f987f2a8">
 <link rel="stylesheet" href="/assets/css/tool-verification.css?v=28d60957">
-<link rel="stylesheet" href="/assets/css/global.min.css?v=0ff6e9dc">
+<link rel="stylesheet" href="/assets/css/global.min.css?v=23d6ef69">
 <link rel="stylesheet" href="/assets/css/image-design-workflow.css?v=0c4f7205">
 <link rel="stylesheet" href="/assets/css/image-design-tool-focus.css?v=8941fca1">
 <link rel="stylesheet" href="/assets/css/image-design-day4-tools.css?v=d3fd2c85">
 <script src="/assets/js/pages/image-design-tool-focus.js?v=257c735f" defer></script>
 <script src="/assets/js/components/business-cta.js?v=af66626f" defer></script>
-<script src="/assets/js/components/navbar.min.js?v=6ff46cac" defer></script>
+<script src="/assets/js/components/navbar.min.js?v=f1fd60f9" defer></script>
 <script src="/assets/js/components/footer.min.js?v=506bb75a" defer></script>
 <style>
   :root { --afro-blue: var(--color-primary); --afro-dark: #0f1419; }
@@ -168,7 +169,7 @@
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"Tofauti kati ya miundo ya HEX, RGB na HSL ni ipi?","acceptedAnswer":{"@type":"Answer","text":"HEX hutumia msimbo wa heksadesimali wenye tarakimu sita kwa nyekundu, kijani na buluu. RGB huonyesha kila njia kwa 0-255. HSL hutumia hue, ukolezi na uangavu, hivyo ni rahisi kurekebisha rangi."}},{"@type":"Question","name":"OKLCH ni nini na kwa nini nitumie?","acceptedAnswer":{"@type":"Answer","text":"OKLCH ni nafasi ya rangi inayolingana vizuri na mtazamo wa binadamu. Hutumia uangavu, chroma na hue, na hutoa gradient laini na marekebisho yanayotabirika kuliko HSL."}},{"@type":"Question","name":"Kikagua utofautishaji cha WCAG hufanyaje kazi?","acceptedAnswer":{"@type":"Answer","text":"Hesabu uwiano wa mwangaza kati ya rangi ya mbele na mandharinyuma. WCAG AA huhitaji 4.5:1 kwa maandishi ya kawaida na 3:1 kwa makubwa; AAA huhitaji 7:1 na 4.5:1."}},{"@type":"Question","name":"Ninapataje class ya Tailwind CSS iliyo karibu na rangi yangu?","acceptedAnswer":{"@type":"Answer","text":"Kitafuta class ya Tailwind hulinganisha rangi yako na paleti chaguomsingi ya Tailwind na kurudisha class iliyo karibu zaidi, kwa mfano bg-blue-500."}},{"@type":"Question","name":"CMYK ni nini na inahusianaje na RGB?","acceptedAnswer":{"@type":"Answer","text":"CMYK hutumika katika uchapishaji, ilhali RGB hutumika kwa mwanga wa skrini. Ugeuzaji ni makisio kwa sababu nafasi zao za rangi hutofautiana; rangi ya skrini inaweza kutolingana kabisa na chapisho."}}]}
 </script>
-<script src="/assets/js/bundles/core.0f3c2059.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
+<script src="/assets/js/bundles/core.b707407f.min.js" defer></script><script src="/assets/js/afro-history.js?v=6ecf1296" defer></script>
 <script src="/assets/js/components/save-result-button.js?v=cc26bc74" defer></script>
 <script src="/assets/js/components/share-card-generator.js?v=1d440fc6" defer></script>
 <script src="/assets/js/components/share-button.js?v=f8342961" defer></script>
@@ -205,7 +206,7 @@
 }
 </script>
 <meta property="article:modified_time" content="2026-03-28">
-<link rel="stylesheet" href="/assets/css/design-system.min.css?v=11fcf8e5">
+<link rel="stylesheet" href="/assets/css/design-system.min.css?v=1e4c3b11">
 <link rel="stylesheet" href="/assets/css/top-level-page-ui-refresh.css?v=9ab47fa3">
 <link rel="canonical" href="https://afrotools.com/sw/zana/kichagua-rangi/">
 <link rel="alternate" hreflang="en" href="https://afrotools.com/tools/color-picker/">
@@ -244,6 +245,7 @@
           <div class="field" style="margin-top:18px;">
             <label class="f-label"><span class="f-label-text">HEX</span><button type="button" class="copy-btn" data-copy="hexValue">Nakili</button></label>
             <input aria-label="HEX color value" type="text" id="hexValue" class="f-input" placeholder="#000000">
+            <p id="colorStatus" role="status" aria-live="polite" style="margin:.45rem 0 0;font-size:.78rem;color:#64748b"></p>
           </div>
           <div class="field">
             <label class="f-label"><span class="f-label-text">RGB</span><button type="button" class="copy-btn" data-copy="rgbValue">Nakili</button></label>
@@ -614,6 +616,10 @@
   function updateColor(hex){
     hex=hex.replace(/^#?/,'#');
     if(!/^#[0-9a-f]{6}$/i.test(hex)) return;
+    hexValue.setAttribute('aria-invalid','false');
+    $('colorStatus').textContent='';
+    $('exportCssVars').disabled=false;
+    $('exportTwConfig').disabled=false;
     hexValue.value=hex.toUpperCase();
     colorInput.value=hex;
     const rgb=hexToRgb(hex);
@@ -788,7 +794,20 @@
   colorInput.addEventListener('input',e=>updateColor(e.target.value));
   hexValue.addEventListener('input',()=>{
     let v=hexValue.value.trim();
-    if(v.length===7||v.length===6) updateColor(v);
+    if(/^#?[0-9a-f]{6}$/i.test(v)) {
+      updateColor(v);
+      return;
+    }
+    hexValue.setAttribute('aria-invalid','true');
+    rgbValue.value='';
+    hslValue.value='';
+    oklchValue.value='';
+    cmykValue.value='';
+    paletteGrid.innerHTML='';
+    currentPaletteHexes=[];
+    $('exportCssVars').disabled=true;
+    $('exportTwConfig').disabled=true;
+    $('colorStatus').textContent='Rangi halali ya HEX yenye tarakimu sita.';
   });
 
   /* ── Init ── */
@@ -813,7 +832,7 @@
 })();
 </script>
 <script src="/assets/js/lib/image-design-workflow.js?v=f9b20b1b" defer></script>
-<script defer src="/assets/js/lazy-analytics.js?v=249c230c"></script>
-<script src="/assets/js/components/related-tools.min.js?v=df362429" defer></script>
+<script src="/assets/js/lazy-analytics.js?v=d378a891" defer></script>
+<script src="/assets/js/components/related-tools.min.js?v=9de30883" defer></script>
 </body>
 </html>

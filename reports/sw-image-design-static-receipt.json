@@ -1,32 +1,32 @@
 {
   "schemaVersion": 1,
   "programme": "sw-image-design-parity",
-  "baseCommit": "f7036c210c34146d58b43d0a2a5d4c023cb91694",
-  "verdict": "BROWSER PENDING",
+  "baseCommit": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+  "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
     "staticCandidates": 3,
     "blocked": 16,
     "centrallyAccepted": 0
   },
-  "staticCandidates": [
+  "acceptedCandidates": [
     {
       "id": "color-picker",
       "route": "/sw/zana/kichagua-rangi/",
       "sourceOwner": "scripts/build-sw-image-color-family.js",
-      "blocker": "Re-run conversions, invalid clearing, clipboard fallback, CSS/Tailwind download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base."
+      "browserProof": "tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed."
     },
     {
       "id": "watermark-bulk",
       "route": "/sw/zana/watermark-nyingi/",
       "sourceOwner": "sw/zana/watermark-nyingi/index.html",
-      "blocker": "Re-run multi-file input, preview mutation, invalid clearing, current/batch downloads, decoded dimensions, 320/375px, 200% reflow, themes, keyboard/focus, console, and no-network checks."
+      "browserProof": "tests/e2e/swahili-watermark-bulk-parity.spec.js: two synthetic images, full-resolution current and batch PNG downloads parsed and reopened at 64x48 and 40x30; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed."
     },
     {
       "id": "colour-palette",
       "route": "/sw/zana/paleti-ya-rangi/",
       "sourceOwner": "scripts/build-sw-image-color-family.js",
-      "blocker": "Re-run category filtering, copy fallback, CSS/JSON download parsing, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console, and network checks on this base."
+      "browserProof": "tests/e2e/swahili-image-color-family.spec.js: all 45 palettes and 225 colors retained; CSS and JSON downloads parsed, filtering/copy, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed."
     }
   ],
   "blocked": [
@@ -134,9 +134,16 @@
     "missing": 0
   },
   "browser": {
-    "status": "not-run-by-instruction",
-    "owner": "Health lane",
-    "requiredForAcceptance": true
+    "status": "pass",
+    "oneWorker": true,
+    "ports": [
+      4398
+    ],
+    "specs": [
+      "tests/e2e/swahili-image-color-family.spec.js",
+      "tests/e2e/swahili-watermark-bulk-parity.spec.js"
+    ],
+    "result": "6 passed"
   },
   "validation": {
     "focusedStatic": "pass",
@@ -149,7 +156,7 @@
     "lint": "pass",
     "typeCheck": "pass",
     "artworkIndex": "pass",
-    "canonicalRegistry": "carried baseline drift; not regenerated because broad generated outputs are prohibited"
+    "canonicalRegistry": "not regenerated because broad generated outputs are prohibited"
   },
   "prohibitedSurfacesChanged": [],
   "acceptanceLedgerChanged": false
