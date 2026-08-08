@@ -1,0 +1,102 @@
+{
+  "schemaVersion": "1.0.0",
+  "lane": "HA-03",
+  "appliedByWorker": false,
+  "reason": "The listed files are coordinator-owned or belong to English, French, or Swahili route owners. Serialize after integrating the HA-03 implementation commit.",
+  "centralAllToolsHub": {
+    "ownerFile": "ha/kayan-aiki/index.html",
+    "baseRestored": true,
+    "replacements": [
+      { "sourceId": "jamb-aggregate", "oldHref": "/ha/kayan-aiki/kalkuletan-jamb/", "newHref": "/ha/kayan-aiki/jimillar-jamb/" },
+      { "sourceId": "waec-calculator", "oldHref": "/ha/kayan-aiki/kalkuletan-waec-neco/", "newHref": "/ha/kayan-aiki/kalkuleta-waec/" },
+      { "sourceId": "school-fees", "oldHref": "/ha/kayan-aiki/kwatanta-kudin-makaranta/", "newHref": "/ha/kayan-aiki/kudin-makaranta/" },
+      { "sourceId": "gpa-calculator", "oldHref": "/ha/kayan-aiki/kalkuletan-gpa-cgpa/", "newHref": "/ha/kayan-aiki/kalkuleta-gpa/" },
+      { "sourceId": "hausa-translator", "oldHref": "/ha/kayan-aiki/mai-fassara-hausa/", "newHref": "/ha/kayan-aiki/fassarar-hausa/", "suggestedCardTitle": "Kundin fassarar Hausa" }
+    ]
+  },
+  "crossLocaleHreflang": [
+    {
+      "sourceId": "waec-calculator",
+      "haRoute": "https://afrotools.com/ha/kayan-aiki/kalkuleta-waec/",
+      "replaceHaHrefIn": [
+        "tools/waec-calculator/index.html",
+        "fr/tools/calculateur-waec/index.html",
+        "sw/zana/kikokotoo-waec-neco/index.html"
+      ],
+      "oldHaHref": "https://afrotools.com/ha/kayan-aiki/kalkuletan-waec-neco/",
+      "thenAddToHausaPage": {
+        "en": "https://afrotools.com/tools/waec-calculator/",
+        "fr": "https://afrotools.com/fr/tools/calculateur-waec/",
+        "sw": "https://afrotools.com/sw/zana/kikokotoo-waec-neco/",
+        "x-default": "https://afrotools.com/tools/waec-calculator/"
+      }
+    },
+    {
+      "sourceId": "jamb-aggregate",
+      "haRoute": "https://afrotools.com/ha/kayan-aiki/jimillar-jamb/",
+      "replaceHaHrefIn": [
+        "tools/jamb-aggregate/index.html",
+        "fr/tools/calculateur-jamb/index.html",
+        "sw/zana/kikokotoo-jamb/index.html"
+      ],
+      "oldHaHref": "https://afrotools.com/ha/kayan-aiki/kalkuletan-jamb/",
+      "thenAddToHausaPage": {
+        "en": "https://afrotools.com/tools/jamb-aggregate/",
+        "fr": "https://afrotools.com/fr/tools/calculateur-jamb/",
+        "sw": "https://afrotools.com/sw/zana/kikokotoo-jamb/",
+        "x-default": "https://afrotools.com/tools/jamb-aggregate/"
+      }
+    },
+    {
+      "sourceId": "gpa-calculator",
+      "haRoute": "https://afrotools.com/ha/kayan-aiki/kalkuleta-gpa/",
+      "replaceHaHrefIn": [
+        "tools/gpa-calculator/index.html",
+        "fr/tools/calculateur-gpa/index.html",
+        "sw/zana/kikokotoo-gpa/index.html"
+      ],
+      "oldHaHref": "https://afrotools.com/ha/kayan-aiki/kalkuletan-gpa-cgpa/",
+      "thenAddToHausaPage": {
+        "en": "https://afrotools.com/tools/gpa-calculator/",
+        "fr": "https://afrotools.com/fr/tools/calculateur-gpa/",
+        "sw": "https://afrotools.com/sw/zana/kikokotoo-gpa/",
+        "x-default": "https://afrotools.com/tools/gpa-calculator/"
+      }
+    },
+    {
+      "sourceId": "school-fees",
+      "haRoute": "https://afrotools.com/ha/kayan-aiki/kudin-makaranta/",
+      "addHaHrefTo": [
+        "tools/school-fees/index.html",
+        "fr/tools/frais-scolarite/index.html",
+        "sw/zana/ada-za-shule/index.html"
+      ],
+      "thenAddToHausaPage": {
+        "en": "https://afrotools.com/tools/school-fees/",
+        "fr": "https://afrotools.com/fr/tools/frais-scolarite/",
+        "sw": "https://afrotools.com/sw/zana/ada-za-shule/",
+        "x-default": "https://afrotools.com/tools/school-fees/"
+      }
+    },
+    {
+      "sourceId": "hausa-translator",
+      "haRoute": "https://afrotools.com/ha/kayan-aiki/fassarar-hausa/",
+      "addHaHrefTo": [
+        "tools/hausa-translator/index.html",
+        "fr/tools/traducteur-haoussa/index.html",
+        "sw/zana/mtafsiri-wa-kihausa/index.html"
+      ],
+      "thenAddToHausaPage": {
+        "en": "https://afrotools.com/tools/hausa-translator/",
+        "fr": "https://afrotools.com/fr/tools/traducteur-haoussa/",
+        "sw": "https://afrotools.com/sw/zana/mtafsiri-wa-kihausa/",
+        "x-default": "https://afrotools.com/tools/hausa-translator/"
+      }
+    }
+  ],
+  "postSerializationChecks": [
+    "npm run validate:hreflang",
+    "npm run check-links",
+    "Run the coordinator-owned localization coverage generation and review only its intended output."
+  ]
+}
