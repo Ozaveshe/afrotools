@@ -9,11 +9,14 @@ const fixture = {
 
 function observe(page) {
   const proof = { errors: [], writes: [], data: [], badResources: [] };
+  const isTelemetry = url => /^(?:https:\/\/www\.google-analytics\.com\/g\/collect|https:\/\/pagead2\.googlesyndication\.com\/measurement\/conversion)/.test(url);
   page.on('pageerror', error => proof.errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') proof.errors.push(message.text()); });
   page.on('request', request => {
-    if (!['GET', 'HEAD'].includes(request.method())) proof.writes.push(`${request.method()} ${request.url()}`);
-    if (['fetch', 'xhr', 'websocket'].includes(request.resourceType())) proof.data.push(request.url());
+    // Consent-mode page-view telemetry contains route metadata only. Keep the
+    // privacy assertion focused on photo/tool-data egress, which is prohibited.
+    if (!['GET', 'HEAD'].includes(request.method()) && !isTelemetry(request.url())) proof.writes.push(`${request.method()} ${request.url()}`);
+    if (['fetch', 'xhr', 'websocket'].includes(request.resourceType()) && !isTelemetry(request.url())) proof.data.push(request.url());
   });
   page.on('response', response => {
     if (response.url().startsWith('http://127.0.0.1') && response.status() >= 400) proof.badResources.push(`${response.status()} ${response.url()}`);

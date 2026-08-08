@@ -21,7 +21,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
 | Missing | 38 |
-| **Accepted** | **1129** |
+| **Accepted** | **1130** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 9 |
+| Image & Design | 19 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 3 | 10 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -215,7 +215,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Image Resizer Studio | Image & Design | `/tools/image-resize` | Localized shell candidate | `/sw/zana/kubadilisha-ukubwa-wa-picha` | Yes |
 | QR Code Generator | Image & Design | `/tools/qr-generator` | Localized shell candidate | `/sw/zana/kitengeneza-qr` | Yes |
 | Background Remover Studio | Image & Design | `/tools/background-remover` | Localized shell candidate | `/sw/zana/kiondoa-mandharinyuma` | No |
-| Passport Photo Studio | Image & Design | `/tools/passport-photo` | Localized shell candidate | `/sw/zana/picha-ya-pasipoti` | No |
+| Passport Photo Studio | Image & Design | `/tools/passport-photo` | Localized shell candidate | `/sw/zana/picha-ya-pasipoti` | Yes |
 | Image Crop Studio | Image & Design | `/tools/image-crop` | Localized shell candidate | `/sw/zana/kukata-picha` | Yes |
 | Color Picker & Converter | Image & Design | `/tools/color-picker` | Localized shell candidate | `/sw/zana/kichagua-rangi` | Yes |
 | Favicon Generator | Image & Design | `/tools/favicon-generator` | Missing | None | No |

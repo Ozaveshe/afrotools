@@ -36,8 +36,8 @@
     "missing": 38,
     "mappedCandidateRows": 1217,
     "unavailableOrFallbackRows": 40,
-    "accepted": 1129,
-    "remainingUnaccepted": 128,
+    "accepted": 1130,
+    "remainingUnaccepted": 127,
     "nativeCandidatePercent": 47.02
   },
   "categories": [
@@ -277,7 +277,7 @@
       "alias-utility": 0,
       "unclassified-candidate": 0,
       "missing": 3,
-      "accepted": 9
+      "accepted": 10
     },
     {
       "category": "Insurance",
@@ -11159,8 +11159,19 @@
       "categoryKey": "image-design",
       "category": "Image & Design",
       "state": "localized-shell-candidate",
-      "accepted": false,
-      "acceptanceEvidence": null,
+      "accepted": true,
+      "acceptanceEvidence": {
+        "englishId": "passport-photo",
+        "swahiliRoute": "/sw/zana/picha-ya-pasipoti/",
+        "status": "accepted",
+        "categoryKey": "image-design",
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-passport-photo-parity.spec.js",
+          "engineTest": "scripts/audit-sw-image-design-parity.js",
+          "workflow": "The Swahili route uses the maintained local passport-photo studio, preserves the exact crop and preset contracts, and does not send user images over the network.",
+          "export": "The worker reopened all nine PNG, JPG and WebP outputs at exact single, 4x6-sheet and A4 dimensions; controlled English and Swahili 413x531 PNG output was byte-identical. The coordinator retained fail-closed lane accounting and reran the source-owned audits."
+        }
+      },
       "primarySwahiliRoute": "/sw/zana/picha-ya-pasipoti",
       "primarySwahiliFile": "sw/zana/picha-ya-pasipoti/index.html",
       "sourceOwner": "Swahili localized shell and shared deterministic engine",

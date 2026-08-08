@@ -1,0 +1,47 @@
+{
+  "schemaVersion": 1,
+  "programme": "swahili-free-app-parity-coordinator-acceptance",
+  "coordinatorBase": "6b60a5a2",
+  "inventoryPath": "reports/swahili-free-app-parity-inventory.json",
+  "ledgerPath": "data/audits/swahili-free-app-acceptance.json",
+  "authoritativeInventoryRows": 1257,
+  "expectedCandidates": 1,
+  "expectedAcceptedRoutes": 1,
+  "preservedBlockedEntries": 0,
+  "policy": "Record Passport Photo only after exact shared-studio parity, local-only image processing, all nine advertised image exports reopening at their exact dimensions, mobile and 200-percent reflow, accessibility, metadata and no user-image or tool-data network egress.",
+  "candidates": [
+    {
+      "id": "passport-photo-native-parity",
+      "commit": "6b60a5a2c1daddfc09e15200613af5f92ca39f15",
+      "expectedRoutes": 1,
+      "approval": {
+        "status": "accepted",
+        "independentlyReviewed": true,
+        "acceptedRouteCount": 1,
+        "evidence": {
+          "browserSpec": "tests/e2e/swahili-passport-photo-parity.spec.js",
+          "engineTest": "scripts/audit-sw-image-design-parity.js",
+          "workflow": "The Swahili route uses the maintained local passport-photo studio, preserves the exact crop and preset contracts, and does not send user images or tool inputs over the network. Consent-mode page-view telemetry remains limited to route metadata.",
+          "export": "The worker reopened all nine PNG, JPG and WebP outputs at exact single, 4x6-sheet and A4 dimensions; controlled English and Swahili 413x531 PNG output was byte-identical. The coordinator retained fail-closed lane accounting and reran the source-owned audits."
+        }
+      },
+      "artifacts": [
+        {
+          "path": "reports/sw-image-design-static-receipt.json",
+          "format": "json",
+          "assertions": [
+            { "pointer": "/exactScope/staticCandidates", "equals": 10 },
+            { "pointer": "/exactScope/blocked", "equals": 9 }
+          ]
+        }
+      ],
+      "rowSources": [
+        {
+          "rows": [
+            { "englishId": "passport-photo", "swahiliRoute": "/sw/zana/picha-ya-pasipoti/" }
+          ]
+        }
+      ]
+    }
+  ]
+}
