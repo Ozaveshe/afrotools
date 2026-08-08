@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1517 |
-| Swahili coverage records | 1514 |
+| Swahili physical HTML pages | 1518 |
+| Swahili coverage records | 1515 |
 | Native candidates | 590 |
-| Localized shell candidates | 637 |
+| Localized shell candidates | 638 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 28 |
-| **Accepted** | **1147** |
+| Missing | 27 |
+| **Accepted** | **1148** |
 
 ## Category reconciliation
 
@@ -43,7 +43,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | HR & Payroll | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
-| Image & Design | 19 | 0 | 18 | 0 | 0 | 0 | 0 | 0 | 1 | 14 |
+| Image & Design | 19 | 0 | 19 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Insurance | 16 | 0 | 16 | 0 | 0 | 0 | 0 | 0 | 0 | 16 |
 | Language & Translation | 11 | 0 | 11 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Mining & Extractives | 6 | 0 | 6 | 0 | 0 | 0 | 0 | 0 | 0 | 6 |
@@ -220,7 +220,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Color Picker & Converter | Image & Design | `/tools/color-picker` | Localized shell candidate | `/sw/zana/kichagua-rangi` | Yes |
 | Favicon Generator | Image & Design | `/tools/favicon-generator` | Localized shell candidate | `/sw/zana/kizalishaji-favicon` | Yes |
 | Image to Text OCR Studio | Image & Design | `/tools/image-to-text` | Localized shell candidate | `/sw/zana/kutoa-maandishi-kwenye-picha` | Yes |
-| Meme Generator | Image & Design | `/tools/meme-generator` | Missing | None | No |
+| Meme Generator | Image & Design | `/tools/meme-generator` | Localized shell candidate | `/sw/zana/kitengeneza-meme` | Yes |
 | Logo Maker | Image & Design | `/tools/logo-maker` | Localized shell candidate | `/sw/zana/kitengeneza-logo` | No |
 | Photo Filter Studio | Image & Design | `/tools/image-filters` | Localized shell candidate | `/sw/zana/filters-za-picha` | Yes |
 | Social Card Studio | Image & Design | `/tools/social-card` | Localized shell candidate | `/sw/zana/kadi-ya-mitandao` | Yes |
