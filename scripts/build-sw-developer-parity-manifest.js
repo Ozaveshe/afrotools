@@ -6,8 +6,8 @@ const inventory = require("../reports/swahili-free-app-parity-inventory.json");
 const routeForMissing = { "meta-tag-gen": "/sw/zana/kizalishaji-meta/" };
 const sourceFor = {
   "meta-tag-gen": "assets/js/engines/meta-tag-engine.js",
-  "ussd-simulator": "tools/ussd-simulator/index.html#inline-state-machine",
-  "meta-tag-generator": "tools/meta-tag-generator/index.html#inline-controller"
+  "ussd-simulator": "data/localization/sw-developer-parity.json",
+  "meta-tag-generator": "assets/js/engines/meta-tag-engine.js"
 };
 const rows = inventory.rows.filter((row) => row.categoryKey === "developer" && !row.accepted);
 if (rows.length !== 26) throw new Error(`Assigned Developer denominator drift: ${rows.length}/26`);

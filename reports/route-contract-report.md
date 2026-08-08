@@ -6,23 +6,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11290 |
-| Indexable pages | 10307 |
+| Public pages | 11356 |
+| Indexable pages | 10373 |
 | Permanent and temporary redirects | 2931 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
-| Genuine equivalence groups | 5351 |
-| Documented fallbacks | 14511 |
-| Routes eligible for primary sitemaps | 10307 |
+| Genuine equivalence groups | 5350 |
+| Documented fallbacks | 14577 |
+| Routes eligible for primary sitemaps | 10373 |
 
 ## Locale Coverage
 
 - en: 5924 page records
 - fr: 3765 page records
 - ha: 105 page records
-- sw: 1451 page records
+- sw: 1517 page records
 - yo: 45 page records
 
 ## Page Types
@@ -31,9 +31,9 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - article: 442
 - auth: 3
 - category: 695
-- country-tool: 484
+- country-tool: 505
 - legal: 4
-- page: 5277
+- page: 5322
 - tool: 4003
 - widget: 379
 
@@ -2979,7 +2979,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:00195b492ff9: en=`/tools/solar-roi/burundi/`, fr=`/fr/tools/roi-solaire/burundi/`; x-default=`/tools/solar-roi/burundi/`
 - equivalence:0034f28aea5d: en=`/cars/algeria/toyota/hilux/2020/`, fr=`/fr/cars/algerie/toyota/hilux/2020/`; x-default=`/cars/algeria/toyota/hilux/2020/`
 - equivalence:00380423f83c: en=`/cars/egypt/toyota/prado/2016/`, fr=`/fr/cars/egypte/toyota/prado/2016/`; x-default=`/cars/egypt/toyota/prado/2016/`
-- equivalence:004238accd7f: en=`/tools/oee-calculator/`, fr=`/fr/tools/calculateur-oee/`; x-default=`/tools/oee-calculator/`
 - equivalence:0044f177851d: en=`/agriculture/poultry-roi/senegal`, fr=`/fr/agriculture/poultry-roi/senegal`; x-default=`/agriculture/poultry-roi/senegal`
 - equivalence:004f7cab5d97: en=`/cars/south-africa/toyota/axio/2019/`, fr=`/fr/cars/afrique-du-sud/toyota/axio/2019/`; x-default=`/cars/south-africa/toyota/axio/2019/`
 - equivalence:00509883074a: en=`/tools/electricity-bill-verify/cameroon/`; x-default=`/tools/electricity-bill-verify/cameroon/`
@@ -2988,7 +2987,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0069bd8da2d9: en=`/senegal/sn-vat`, fr=`/fr/senegal/calculateur-tva`, sw=`/sw/senegal/kikokotoo-vat/`; x-default=`/senegal/sn-vat`
 - equivalence:00716251cfff: en=`/algeria/dz-paye`, fr=`/fr/algerie/calculateur-salaire-net`, sw=`/sw/algeria/kikokotoo-kodi-mshahara/`; x-default=`/algeria/dz-paye`
 - equivalence:007729e4024d: en=`/cars/mozambique/ford/ranger/`, fr=`/fr/cars/mozambique/ford/ranger/`; x-default=`/cars/mozambique/ford/ranger/`
-- equivalence:00816078352c: en=`/tools/production-cost/`, fr=`/fr/tools/cout-production/`; x-default=`/tools/production-cost/`
 - equivalence:008b7346bec3: en=`/agriculture/fish-farming/angola`, fr=`/fr/agriculture/fish-farming/angola`, sw=`/sw/kilimo/ufugaji-samaki/angola/`; x-default=`/agriculture/fish-farming/angola`
 - equivalence:00918f1015ee: en=`/tools/vehicle-registration/`, fr=`/fr/tools/checklist-immatriculation-vehicule/`, sw=`/sw/zana/usajili-na-nyaraka-za-gari/`; x-default=`/tools/vehicle-registration/`
 - equivalence:0099612ace87: en=`/tools/employment-contract/rwanda`, fr=`/fr/tools/contrat-travail/rwanda`; x-default=`/tools/employment-contract/rwanda`
@@ -3030,7 +3028,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:023da8959b1b: en=`/jamb/english/2000/`; x-default=`/jamb/english/2000/`
 - equivalence:0252daf1e2dd: en=`/tools/loan-consolidation/`, fr=`/fr/tools/consolidation-prets/`, sw=`/sw/zana/unganisha-mikopo/`; x-default=`/tools/loan-consolidation/`
 - equivalence:02565d26633f: en=`/agriculture/seed-rate/sao-tome-and-principe`, fr=`/fr/agriculture/seed-rate/sao-tome-and-principe`, sw=`/sw/kilimo/kiwango-cha-mbegu/sao-tome/`; x-default=`/agriculture/seed-rate/sao-tome-and-principe`
-- equivalence:0259c812b46c: en=`/tools/youtube-revenue/`, fr=`/fr/tools/revenus-youtube/`; x-default=`/tools/youtube-revenue/`
 - equivalence:027bdea1d01a: en=`/tools/afrokitchen/recipes/pepesoup-gq/`; x-default=`/tools/afrokitchen/recipes/pepesoup-gq/`
 - equivalence:027cbb7ce904: en=`/tools/business-insurance/south-africa`; x-default=`/tools/business-insurance/south-africa`
 - equivalence:027cf8855108: en=`/agriculture/crop-yield/angola`, fr=`/fr/agriculture/crop-yield/angola`, sw=`/sw/kilimo/mavuno/angola/`; x-default=`/agriculture/crop-yield/angola`
@@ -3063,7 +3060,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0403200ef16e: en=`/cars/mozambique/honda/cr-v/`, fr=`/fr/cars/mozambique/honda/cr-v/`; x-default=`/cars/mozambique/honda/cr-v/`
 - equivalence:0409017d7933: en=`/blog/hawala-remittance/`, fr=`/fr/blog/hawala-remittance/`; x-default=`/blog/hawala-remittance/`
 - equivalence:040ac22bfb2e: en=`/agriculture/seed-rate/zimbabwe`, fr=`/fr/agriculture/seed-rate/zimbabwe`, sw=`/sw/kilimo/kiwango-cha-mbegu/zimbabwe/`; x-default=`/agriculture/seed-rate/zimbabwe`
-- equivalence:042a68045663: en=`/tools/staff-cost/`, fr=`/fr/tools/cout-employe/`, ha=`/ha/kayan-aiki/kudin-maikaci/`; x-default=`/tools/staff-cost/`
 - equivalence:044eff120880: en=`/cars/egypt/mazda/`, fr=`/fr/cars/egypte/mazda/`; x-default=`/cars/egypt/mazda/`
 - equivalence:045338fd6ee6: en=`/salary-tax/crypto/`, sw=`/sw/mshahara-na-kodi/crypto/`; x-default=`/salary-tax/crypto/`
 - equivalence:045fbad9d81c: en=`/jamb/daily/`; x-default=`/jamb/daily/`
@@ -3125,11 +3121,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:06965f66aade: en=`/agriculture/irrigation/eswatini`, fr=`/fr/agriculture/irrigation/eswatini`, sw=`/sw/kilimo/umwagiliaji/eswatini/`; x-default=`/agriculture/irrigation/eswatini`
 - equivalence:069852559d18: en=`/tools/afrokitchen/countries/mali/`; x-default=`/tools/afrokitchen/countries/mali/`
 - equivalence:06a4a3dd578a: en=`/tools/afrostream/university/premium/`; x-default=`/tools/afrostream/university/premium/`
+- equivalence:06bfebfc8b91: en=`/tools/favicon-generator/`, fr=`/fr/tools/generateur-favicon/`, sw=`/sw/zana/kizalishaji-favicon/`; x-default=`/tools/favicon-generator/`
 - equivalence:06c6e50150a3: en=`/cars/nigeria/toyota/camry/2012/`, fr=`/fr/cars/nigeria/toyota/camry/2012/`; x-default=`/cars/nigeria/toyota/camry/2012/`
-- equivalence:06d28aa1f3bf: en=`/tools/fertilizer-calc/`, fr=`/fr/tools/calculateur-engrais/`; x-default=`/tools/fertilizer-calc/`
 - equivalence:06de27e14dbb: en=`/tools/employment-contract/central-african-republic`, fr=`/fr/tools/contrat-travail/central-african-republic`; x-default=`/tools/employment-contract/central-african-republic`
 - equivalence:07027edf2b23: en=`/tools/creator-canvas/`, fr=`/fr/tools/canevas-de-projet-pour-createur/`, sw=`/sw/zana/canvas-ya-mtayarishi/`; x-default=`/tools/creator-canvas/`
 - equivalence:07106a680c27: en=`/tools/incoterms-calculator/`, fr=`/fr/tools/calculateur-incoterms/`, sw=`/sw/zana/kikokotoo-incoterms/`; x-default=`/tools/incoterms-calculator/`
+- equivalence:071d8edda35b: en=`/tools/statistics-calc/`, fr=`/fr/tools/calculateur-statistiques/`, sw=`/sw/zana/kikokotoo-takwimu/`; x-default=`/tools/statistics-calc/`
 - equivalence:07265f596077: en=`/tools/visa-checker/mauritania`; x-default=`/tools/visa-checker/mauritania`
 - equivalence:072d0cb53d2f: en=`/cars/botswana/toyota/corolla/`, fr=`/fr/cars/botswana/toyota/corolla/`; x-default=`/cars/botswana/toyota/corolla/`
 - equivalence:073c4291fe80: en=`/health/`, fr=`/fr/health/`, ha=`/ha/lafiya/`, sw=`/sw/afya/`; x-default=`/health/`
@@ -3138,7 +3135,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:07452db6f695: en=`/tools/health-contribution/tunisia`; x-default=`/tools/health-contribution/tunisia`
 - equivalence:074ac1fa3ade: en=`/cars/egypt/nissan/x-trail/2015/`, fr=`/fr/cars/egypte/nissan/x-trail/2015/`; x-default=`/cars/egypt/nissan/x-trail/2015/`
 - equivalence:075f7cf6a77c: en=`/tools/work-permit-cost/zambia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-zambie/`, sw=`/sw/zambia/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/zambia/`
-- equivalence:0761928ac749: en=`/tools/thumbnail-maker/`, fr=`/fr/tools/createur-miniatures/`; x-default=`/tools/thumbnail-maker/`
 - equivalence:0761d5d1a4d6: fr=`/fr/widgets/generateur-mot-de-passe/`; x-default=`/fr/widgets/generateur-mot-de-passe/`
 - equivalence:076e474c0ed8: en=`/tools/employment-contract/cameroon`, fr=`/fr/tools/contrat-travail/cameroon`; x-default=`/tools/employment-contract/cameroon`
 - equivalence:0770f7626746: en=`/tools/afrokitchen/recipes/oshikundu-na/`; x-default=`/tools/afrokitchen/recipes/oshikundu-na/`
@@ -3274,7 +3270,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0d47cdbb6173: en=`/cars/angola/toyota/prado/2016/`, fr=`/fr/cars/angola/toyota/prado/2016/`; x-default=`/cars/angola/toyota/prado/2016/`
 - equivalence:0d7093609afb: en=`/tools/afrokitchen/recipes/garba-ci/`; x-default=`/tools/afrokitchen/recipes/garba-ci/`
 - equivalence:0d7c9dd132d8: en=`/jamb/chemistry/1993/`; x-default=`/jamb/chemistry/1993/`
-- equivalence:0d8761f238c7: en=`/tools/payment-comparator/`, fr=`/fr/tools/comparateur-paiements/`; x-default=`/tools/payment-comparator/`
 - equivalence:0d94a0b20b50: fr=`/fr/widgets/loyer-abordable/`; x-default=`/fr/widgets/loyer-abordable/`
 - equivalence:0db4f8679c82: en=`/agriculture/irrigation/nigeria`, fr=`/fr/agriculture/irrigation/nigeria`, ha=`/ha/noma/ban-ruwa-najeriya/`, sw=`/sw/kilimo/umwagiliaji/nigeria/`; x-default=`/agriculture/irrigation/nigeria`
 - equivalence:0db724724590: en=`/tools/maternity-leave/guinea-bissau/`; x-default=`/tools/maternity-leave/guinea-bissau/`
@@ -3313,6 +3308,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:0f2dccdf15fb: fr=`/fr/widgets/cout-transfert-aeroport/`; x-default=`/fr/widgets/cout-transfert-aeroport/`
 - equivalence:0f4612b0d04b: en=`/tools/electricity-estimator/`, fr=`/fr/tools/estimateur-electricite/`, sw=`/sw/zana/makisio-ya-bili-ya-umeme/`; x-default=`/tools/electricity-estimator/`
 - equivalence:0f4fc2772fe3: en=`/tools/swahili-translator/`, fr=`/fr/tools/traducteur-swahili/`, sw=`/sw/zana/mtafsiri-wa-kiswahili/`; x-default=`/tools/swahili-translator/`
+- equivalence:0f4fe62ce56c: en=`/tools/plagiarism-pct/`, fr=`/fr/tools/pourcentage-plagiat/`, sw=`/sw/zana/asilimia-ya-ufanano/`; x-default=`/tools/plagiarism-pct/`
 - equivalence:0f67c0952199: en=`/agriculture/farm-payroll/uganda`, fr=`/fr/agriculture/farm-payroll/uganda`, sw=`/sw/kilimo/mishahara-ya-shamba/uganda/`; x-default=`/agriculture/farm-payroll/uganda`
 - equivalence:0f71fb0a8f67: en=`/tools/marketplace-fees/`, fr=`/fr/tools/frais-marketplace/`, sw=`/sw/zana/ada-soko-mtandaoni/`; x-default=`/tools/marketplace-fees/`
 - equivalence:0f73b61a098d: en=`/agriculture/seed-rate/rwanda`, fr=`/fr/agriculture/seed-rate/rwanda`, sw=`/sw/kilimo/kiwango-cha-mbegu/rwanda/`; x-default=`/agriculture/seed-rate/rwanda`
@@ -3444,7 +3440,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:155e449d026c: en=`/cars/mozambique/hyundai/`, fr=`/fr/cars/mozambique/hyundai/`; x-default=`/cars/mozambique/hyundai/`
 - equivalence:1563b5fc8fe2: en=`/tools/contractor-vs-employee/cape-verde/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-cap-vert/`; x-default=`/tools/contractor-vs-employee/cape-verde/`
 - equivalence:1565e22c323a: en=`/rwanda/`, fr=`/fr/rwanda/`, sw=`/sw/rwanda/`; x-default=`/rwanda/`
-- equivalence:156ec6f62226: en=`/tools/transfer-pricing/`, fr=`/fr/tools/prix-transfert/`; x-default=`/tools/transfer-pricing/`
 - equivalence:157785ea6b8d: en=`/tools/tin-guide/central-african-republic`, sw=`/sw/zana/mwongozo-tin/central-african-republic/`; x-default=`/tools/tin-guide/central-african-republic`
 - equivalence:15c0be482876: en=`/tools/afrokitchen/recipes/banana-fritters-gq/`; x-default=`/tools/afrokitchen/recipes/banana-fritters-gq/`
 - equivalence:15c49099a4d5: en=`/tools/gratuity-calculator/angola/`; x-default=`/tools/gratuity-calculator/angola/`
@@ -3496,7 +3491,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:17f33217317f: en=`/agriculture/fish-farming/tunisia`, fr=`/fr/agriculture/fish-farming/tunisia`, sw=`/sw/kilimo/ufugaji-samaki/tunisia/`; x-default=`/agriculture/fish-farming/tunisia`
 - equivalence:1809ff4fe68e: en=`/tools/solar-roi/somalia/`, fr=`/fr/tools/roi-solaire/somalia/`; x-default=`/tools/solar-roi/somalia/`
 - equivalence:181aa5be519d: en=`/tools/lobola-calculator/eswatini/`, fr=`/fr/tools/calculateur-de-lobola-eswatini/`; x-default=`/tools/lobola-calculator/eswatini/`
-- equivalence:1822dbedc040: en=`/agriculture/warehouse-receipt/`, fr=`/fr/agriculture/warehouse-receipt/`; x-default=`/agriculture/warehouse-receipt/`
 - equivalence:182821e255df: en=`/cars/south-africa/ford/ranger/2018/`, fr=`/fr/cars/afrique-du-sud/ford/ranger/2018/`; x-default=`/cars/south-africa/ford/ranger/2018/`
 - equivalence:182b3e457173: en=`/tools/afrokitchen/recipes/atassi-watche-bj/`; x-default=`/tools/afrokitchen/recipes/atassi-watche-bj/`
 - equivalence:183a258c180f: en=`/tools/dpa-generator/`, fr=`/fr/tools/generateur-dpa/`, sw=`/sw/zana/mkataba-wa-uchakataji-data/`; x-default=`/tools/dpa-generator/`
@@ -3575,6 +3569,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1b34780cc94a: en=`/tools/life-insurance-calc/ethiopia`, fr=`/fr/tools/assurance-vie/ethiopia`; x-default=`/tools/life-insurance-calc/ethiopia`
 - equivalence:1b49bd3233c0: en=`/jamb/english/1980/`; x-default=`/jamb/english/1980/`
 - equivalence:1b4b2e78bfd9: fr=`/fr/tools/africa-conflict/economy`; x-default=`/fr/tools/africa-conflict/economy`
+- equivalence:1b4f41a9b76b: en=`/tools/mobile-vs-bank/`, fr=`/fr/tools/mobile-money-vs-banque/`, ha=`/ha/kayan-aiki/waya-ko-banki/`, sw=`/sw/zana/pesa-simu-dhidi-ya-benki/`; x-default=`/tools/mobile-vs-bank/`
 - equivalence:1b50b40457b5: en=`/agriculture/export-docs/libya`, fr=`/fr/agriculture/export-docs/libya`; x-default=`/agriculture/export-docs/libya`
 - equivalence:1b5b939bb4a9: en=`/tools/gas-lpg-cost/ghana/`, fr=`/fr/tools/calculateur-du-cout-du-gaz-gpl-ghana/`; x-default=`/tools/gas-lpg-cost/ghana/`
 - equivalence:1b5d1342a73c: en=`/tools/okada-income/`, fr=`/fr/tools/revenu-okada/`, sw=`/sw/zana/mapato-ya-okada-boda/`; x-default=`/tools/okada-income/`
@@ -3644,6 +3639,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:1ecbec14aad7: en=`/djibouti/dj-vat`, fr=`/fr/djibouti/dj-vat`, sw=`/sw/djibouti/kikokotoo-vat/`; x-default=`/djibouti/dj-vat`
 - equivalence:1f0374eb9bfa: en=`/tools/creator-voice/`, fr=`/fr/tools/voix-de-marque-du-createur/`, sw=`/sw/zana/rekodi-na-hariri-sauti/`; x-default=`/tools/creator-voice/`
 - equivalence:1f04eb20151c: en=`/tools/afrokitchen/recipes/bunny-chow-za/`; x-default=`/tools/afrokitchen/recipes/bunny-chow-za/`
+- equivalence:1f0cea70895f: en=`/tools/percentage-calc/`, fr=`/fr/tools/calculateur-pourcentage/`, sw=`/sw/zana/kikokotoo-asilimia/`; x-default=`/tools/percentage-calc/`
 - equivalence:1f18c4159d9b: en=`/cars/kenya/ford/ranger/`, fr=`/fr/cars/kenya/ford/ranger/`; x-default=`/cars/kenya/ford/ranger/`
 - equivalence:1f5673fd143b: en=`/agriculture/irrigation/somalia`, fr=`/fr/agriculture/irrigation/somalia`, sw=`/sw/kilimo/umwagiliaji/somalia/`; x-default=`/agriculture/irrigation/somalia`
 - equivalence:1f6d4c33c713: en=`/tools/retrenchment-calculator/senegal/`, sw=`/sw/senegal/kikokotoo-malipo-ya-kuachishwa-kazi/`; x-default=`/tools/retrenchment-calculator/senegal/`
@@ -3757,6 +3753,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:251a01b6cf59: en=`/agriculture/export-docs/malawi`, fr=`/fr/agriculture/export-docs/malawi`; x-default=`/agriculture/export-docs/malawi`
 - equivalence:251eb570a0ca: en=`/agriculture/farm-payroll/niger`, fr=`/fr/agriculture/farm-payroll/niger`, sw=`/sw/kilimo/mishahara-ya-shamba/niger/`; x-default=`/agriculture/farm-payroll/niger`
 - equivalence:252c307842d2: en=`/tools/afrokitchen/recipes/hraime-ly/`; x-default=`/tools/afrokitchen/recipes/hraime-ly/`
+- equivalence:252cbb7fd3ba: en=`/agriculture/crop-rotation/`, fr=`/fr/agriculture/crop-rotation/`, sw=`/sw/zana/mpangilio-wa-mzunguko-wa-mazao/`; x-default=`/agriculture/crop-rotation/`
 - equivalence:2531913c4560: en=`/cars/tanzania/toyota/vitz-yaris/`, fr=`/fr/cars/tanzanie/toyota/vitz-yaris/`; x-default=`/cars/tanzania/toyota/vitz-yaris/`
 - equivalence:253e6dcec9d1: en=`/tools/afrokitchen/recipes/boulaghmane-eh/`; x-default=`/tools/afrokitchen/recipes/boulaghmane-eh/`
 - equivalence:2545964dd96f: en=`/tools/health-contribution/south-sudan`; x-default=`/tools/health-contribution/south-sudan`
@@ -3785,7 +3782,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2694977b2710: en=`/tools/deforestation/`, fr=`/fr/tools/impact-deforestation/`, sw=`/sw/zana/athari-ya-ukataji-misitu/`; x-default=`/tools/deforestation/`
 - equivalence:269a965c37b7: en=`/cars/ghana/toyota/`, fr=`/fr/cars/ghana/toyota/`; x-default=`/cars/ghana/toyota/`
 - equivalence:26a5ecfdb73f: en=`/tools/afrostream/university/premium/office-hours/`; x-default=`/tools/afrostream/university/premium/office-hours/`
-- equivalence:26acc4b1644b: en=`/tools/za-transfer-duty/`, fr=`/fr/tools/za-droits-mutation/`; x-default=`/tools/za-transfer-duty/`
 - equivalence:26bac97feda3: en=`/tools/visa-checker/comoros`; x-default=`/tools/visa-checker/comoros`
 - equivalence:26c79cbbdd50: en=`/blog/best-way-send-money-kenya-2026/`, fr=`/fr/blog/best-way-send-money-kenya-2026/`; x-default=`/blog/best-way-send-money-kenya-2026/`
 - equivalence:26cf016d96da: en=`/tools/nollywood-pitch/`, fr=`/fr/tools/pitch-nollywood/`, sw=`/sw/zana/bajeti-ya-filamu-afrika/`; x-default=`/tools/nollywood-pitch/`
@@ -3802,7 +3798,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2737edb2e20c: en=`/tools/workers-comp/namibia`; x-default=`/tools/workers-comp/namibia`
 - equivalence:27525e2249f4: en=`/cars/south-africa/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/afrique-du-sud/mercedes-benz/g-wagon/2022/`; x-default=`/cars/south-africa/mercedes-benz/g-wagon/2022/`
 - equivalence:275a02eca6f3: en=`/tools/creator-course/`, fr=`/fr/tools/cours-pour-createurs/`, sw=`/sw/zana/kozi-ya-watayarishi/`; x-default=`/tools/creator-course/`
-- equivalence:275b9f74bd32: en=`/tools/solar-calculator/`, fr=`/fr/tools/calculateur-solaire/`; x-default=`/tools/solar-calculator/`
 - equivalence:27752b49da23: en=`/tools/roadworthiness/`, fr=`/fr/tools/checklist-visite-technique/`, sw=`/sw/zana/ukaguzi-wa-roadworthiness/`; x-default=`/tools/roadworthiness/`
 - equivalence:2775357be56d: en=`/tools/business-license/senegal`; x-default=`/tools/business-license/senegal`
 - equivalence:277e697dc0e0: en=`/cars/cote-divoire/lexus/es/2016/`, fr=`/fr/cars/cote-divoire/lexus/es/2016/`; x-default=`/cars/cote-divoire/lexus/es/2016/`
@@ -3838,7 +3833,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:29523531953a: en=`/jamb/government/1987/`; x-default=`/jamb/government/1987/`
 - equivalence:2964e32bc885: en=`/cars/rwanda/honda/accord/`, fr=`/fr/cars/rwanda/honda/accord/`; x-default=`/cars/rwanda/honda/accord/`
 - equivalence:296700693094: en=`/blog/best-p2p-platforms-nigeria-2026/`, fr=`/fr/blog/best-p2p-platforms-nigeria-2026/`; x-default=`/blog/best-p2p-platforms-nigeria-2026/`
-- equivalence:2967f23d295b: en=`/tools/plagiarism-pct/`, fr=`/fr/tools/pourcentage-plagiat/`; x-default=`/tools/plagiarism-pct/`
 - equivalence:297609f1950b: fr=`/fr/widgets/marge-beneficiaire/`; x-default=`/fr/widgets/marge-beneficiaire/`
 - equivalence:29785c774aae: en=`/cars/cameroon/mazda/demio/2017/`, fr=`/fr/cars/cameroun/mazda/demio/2017/`; x-default=`/cars/cameroon/mazda/demio/2017/`
 - equivalence:29862bbd60c1: en=`/tools/retrenchment-calculator/zimbabwe/`; x-default=`/tools/retrenchment-calculator/zimbabwe/`
@@ -3869,6 +3863,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2a59643aac04: en=`/cars/ethiopia/ford/ranger/`, fr=`/fr/cars/ethiopie/ford/ranger/`; x-default=`/cars/ethiopia/ford/ranger/`
 - equivalence:2a64f83bc1eb: en=`/cars/morocco/mercedes-benz/c-class/`, fr=`/fr/cars/maroc/mercedes-benz/c-class/`; x-default=`/cars/morocco/mercedes-benz/c-class/`
 - equivalence:2a67e84fcaf4: en=`/tools/afrokitchen/recipes/sayadeya-eg/`; x-default=`/tools/afrokitchen/recipes/sayadeya-eg/`
+- equivalence:2a8d23b21a0b: en=`/tools/ng-cit/`, fr=`/fr/tools/ng-impot-societes/`, ha=`/ha/kayan-aiki/cit-najeriya/`, sw=`/sw/zana/kikokotoo-cit-nigeria/`, yo=`/yo/awon-ise/cit-naijiria/`; x-default=`/tools/ng-cit/`
 - equivalence:2a902a806ba7: en=`/jamb/physics/1987/`; x-default=`/jamb/physics/1987/`
 - equivalence:2a99c5d1cabb: en=`/tools/health-contribution/guinea-bissau`; x-default=`/tools/health-contribution/guinea-bissau`
 - equivalence:2aa173470470: en=`/tools/business-insurance/nigeria`; x-default=`/tools/business-insurance/nigeria`
@@ -3901,11 +3896,11 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2be6efed440f: en=`/cars/ghana/honda/accord/2014/`, fr=`/fr/cars/ghana/honda/accord/2014/`; x-default=`/cars/ghana/honda/accord/2014/`
 - equivalence:2beb952bee93: en=`/agriculture/irrigation/comoros`, fr=`/fr/agriculture/irrigation/comoros`, sw=`/sw/kilimo/umwagiliaji/comoros/`; x-default=`/agriculture/irrigation/comoros`
 - equivalence:2bec82bfd7f7: fr=`/fr/docs/api/tax/country`; x-default=`/fr/docs/api/tax/country`
-- equivalence:2bf178b55da0: en=`/agriculture/soil-ph/`, fr=`/fr/agriculture/soil-ph/`; x-default=`/agriculture/soil-ph/`
 - equivalence:2bf23979d894: en=`/tanzania/tz-paye`, fr=`/fr/tanzania/tz-paye`, sw=`/sw/tanzania/kikokotoo-kodi-mshahara/`; x-default=`/tanzania/tz-paye`
 - equivalence:2bfa982b628e: en=`/tools/tin-guide/south-sudan`, sw=`/sw/zana/mwongozo-tin/south-sudan/`; x-default=`/tools/tin-guide/south-sudan`
 - equivalence:2c052e497c4a: en=`/tools/motor-third-party/guinea`; x-default=`/tools/motor-third-party/guinea`
 - equivalence:2c07b88ae07f: en=`/agriculture/export-docs/gabon`, fr=`/fr/agriculture/export-docs/gabon`; x-default=`/agriculture/export-docs/gabon`
+- equivalence:2c28e7b7cc0e: en=`/tools/whatsapp-link/`, fr=`/fr/tools/lien-whatsapp/`, ha=`/ha/kayan-aiki/whatsapp-link/`, sw=`/sw/zana/kiungo-cha-whatsapp/`; x-default=`/tools/whatsapp-link/`
 - equivalence:2c3135a1bd1e: en=`/cars/kenya/mazda/`, fr=`/fr/cars/kenya/mazda/`; x-default=`/cars/kenya/mazda/`
 - equivalence:2c4404d7cd9c: sw=`/sw/zana-za-elimu/`; x-default=`/sw/zana-za-elimu/`
 - equivalence:2c47cc9c1652: en=`/tools/workers-comp/liberia`; x-default=`/tools/workers-comp/liberia`
@@ -3936,6 +3931,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2dae92460bb5: en=`/tools/visa-checker/djibouti`; x-default=`/tools/visa-checker/djibouti`
 - equivalence:2dc06f3c8482: en=`/tools/health-contribution/zimbabwe`; x-default=`/tools/health-contribution/zimbabwe`
 - equivalence:2dcae8fa19d2: en=`/blog/igbo-market-days/`, fr=`/fr/blog/igbo-market-days/`; x-default=`/blog/igbo-market-days/`
+- equivalence:2dce9cfe6876: en=`/tools/thumbnail-maker/`, fr=`/fr/tools/createur-miniatures/`, sw=`/sw/zana/kitengeneza-thumbnail/`; x-default=`/tools/thumbnail-maker/`
 - equivalence:2dcf9839c644: en=`/tools/generator-fuel/nigeria/`, fr=`/fr/tools/calculateur-de-carburant-pour-groupe-electrogene-nigeria/`; x-default=`/tools/generator-fuel/nigeria/`
 - equivalence:2dd7d752f117: en=`/tools/freelancer-rate/tanzania/`, fr=`/fr/tools/calculateur-de-tarif-independant-tanzanie/`; x-default=`/tools/freelancer-rate/tanzania/`
 - equivalence:2deb5c6b6282: en=`/cars/algeria/lexus/rx/2017/`, fr=`/fr/cars/algerie/lexus/rx/2017/`; x-default=`/cars/algeria/lexus/rx/2017/`
@@ -3984,11 +3980,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:2fcbcc66f69b: en=`/agriculture/fertilizer/central-african-republic`, fr=`/fr/agriculture/fertilizer/central-african-republic`, sw=`/sw/kilimo/mbolea/central-african-republic/`; x-default=`/agriculture/fertilizer/central-african-republic`
 - equivalence:2fd53dc562a1: en=`/cars/algeria/toyota/hilux/`, fr=`/fr/cars/algerie/toyota/hilux/`; x-default=`/cars/algeria/toyota/hilux/`
 - equivalence:2fe268872dd0: en=`/tools/business-insurance/angola`; x-default=`/tools/business-insurance/angola`
-- equivalence:2fe2e014df48: en=`/tools/meme-generator/`, fr=`/fr/tools/generateur-memes/`; x-default=`/tools/meme-generator/`
 - equivalence:2fe75639a104: en=`/cars/rwanda/nissan/x-trail/`, fr=`/fr/cars/rwanda/nissan/x-trail/`; x-default=`/cars/rwanda/nissan/x-trail/`
-- equivalence:2fee1fdc997f: en=`/tools/statistics-calc/`, fr=`/fr/tools/calculateur-statistiques/`; x-default=`/tools/statistics-calc/`
 - equivalence:2ff543b915c3: en=`/cars/botswana/mazda/demio/`, fr=`/fr/cars/botswana/mazda/demio/`; x-default=`/cars/botswana/mazda/demio/`
-- equivalence:2ff7e036d729: en=`/agriculture/farm-size-converter/`, fr=`/fr/agriculture/farm-size-converter/`; x-default=`/agriculture/farm-size-converter/`
 - equivalence:2ffd6d200e47: en=`/cars/uganda/toyota/axio/2019/`, fr=`/fr/cars/ouganda/toyota/axio/2019/`; x-default=`/cars/uganda/toyota/axio/2019/`
 - equivalence:3005de6cb62f: en=`/cars/ghana/ford/ranger/`, fr=`/fr/cars/ghana/ford/ranger/`; x-default=`/cars/ghana/ford/ranger/`
 - equivalence:3012a084c9e7: en=`/tools/afroatlas/country/uganda/`; x-default=`/tools/afroatlas/country/uganda/`
@@ -4003,6 +3996,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:308812840674: en=`/tools/workers-comp/guinea-bissau`; x-default=`/tools/workers-comp/guinea-bissau`
 - equivalence:308bf7ff2856: en=`/tools/tin-guide/burundi`, sw=`/sw/zana/mwongozo-tin/burundi/`; x-default=`/tools/tin-guide/burundi`
 - equivalence:308ee1caa740: en=`/cars/tanzania/lexus/es/`, fr=`/fr/cars/tanzanie/lexus/es/`; x-default=`/cars/tanzania/lexus/es/`
+- equivalence:30935550a7a8: en=`/tools/za-transfer-duty/`, fr=`/fr/tools/za-droits-mutation/`, sw=`/sw/zana/kikokotoo-ushuru-uhamisho-afrika-kusini/`; x-default=`/tools/za-transfer-duty/`
 - equivalence:30960f8d581c: en=`/tools/generator-fuel/cote-divoire/`, fr=`/fr/tools/calculateur-de-carburant-pour-groupe-electrogene-cote-d-ivoire/`; x-default=`/tools/generator-fuel/cote-divoire/`
 - equivalence:30a56bfbb4ce: en=`/jamb/biology/1984/`; x-default=`/jamb/biology/1984/`
 - equivalence:30a5bd933d6d: en=`/blog/savings-strategies-africa-2026/`, fr=`/fr/blog/savings-strategies-africa-2026/`; x-default=`/blog/savings-strategies-africa-2026/`
@@ -4067,7 +4061,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:32efadca1510: en=`/cars/egypt/toyota/camry/2005/`, fr=`/fr/cars/egypte/toyota/camry/2005/`; x-default=`/cars/egypt/toyota/camry/2005/`
 - equivalence:32f10fe28b8b: en=`/tools/pdf-convert/`, fr=`/fr/tools/convertir-pdf/`, sw=`/sw/zana/kubadilisha-format-pdf/`; x-default=`/tools/pdf-convert/`
 - equivalence:32fc8b532b4d: en=`/cars/angola/hyundai/elantra/`, fr=`/fr/cars/angola/hyundai/elantra/`; x-default=`/cars/angola/hyundai/elantra/`
-- equivalence:3300105efee6: en=`/tools/naira-to-words/`, fr=`/fr/tools/naira-en-lettres/`, ha=`/ha/kayan-aiki/naira-zuwa-kalmomi/`; x-default=`/tools/naira-to-words/`
 - equivalence:3300c12bb751: en=`/cars/rwanda/honda/cr-v/`, fr=`/fr/cars/rwanda/honda/cr-v/`; x-default=`/cars/rwanda/honda/cr-v/`
 - equivalence:330cf3898736: en=`/tools/workers-comp/lesotho`; x-default=`/tools/workers-comp/lesotho`
 - equivalence:331f4dc4b30a: en=`/tools/tin-guide/somalia`, sw=`/sw/zana/mwongozo-tin/somalia/`; x-default=`/tools/tin-guide/somalia`
@@ -4095,12 +4088,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:33dd93f8aeaa: en=`/tools/crop-insurance-calc/angola`; x-default=`/tools/crop-insurance-calc/angola`
 - equivalence:33f04d044fc6: en=`/tools/gratuity-calculator/senegal/`, sw=`/sw/senegal/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/senegal/`
 - equivalence:33fbf1501a8b: en=`/tools/afrokitchen/recipes/poisson-fume-plantain-ga/`; x-default=`/tools/afrokitchen/recipes/poisson-fume-plantain-ga/`
+- equivalence:33fd18e84764: en=`/tools/meta-tag-gen/`, fr=`/fr/tools/generateur-meta/`, sw=`/sw/zana/kizalishaji-meta/`; x-default=`/tools/meta-tag-gen/`
 - equivalence:341a81387023: en=`/tools/festival-travel-budget/`, fr=`/fr/tools/budget-voyage-festival/`; x-default=`/tools/festival-travel-budget/`
 - equivalence:341f2c20b798: en=`/tools/electricity-bill-verify/egypt/`; x-default=`/tools/electricity-bill-verify/egypt/`
 - equivalence:342310ea4d3e: en=`/tools/water-bill/senegal/`; x-default=`/tools/water-bill/senegal/`
 - equivalence:342eb8b83f65: en=`/jamb/physics/2001/`; x-default=`/jamb/physics/2001/`
 - equivalence:343a0bef98ff: en=`/tools/waste-management/`, fr=`/fr/tools/cout-gestion-dechets/`, sw=`/sw/zana/gharama-za-usimamizi-wa-taka/`; x-default=`/tools/waste-management/`
-- equivalence:3447c070bd0e: en=`/tools/event-decoration-cost/`, fr=`/fr/tools/cout-decoration-evenement/`; x-default=`/tools/event-decoration-cost/`
 - equivalence:344d5d575948: en=`/tools/afroatlas/country/algeria/`; x-default=`/tools/afroatlas/country/algeria/`
 - equivalence:345d220f5504: en=`/cars/uganda/toyota/prado/2020/`, fr=`/fr/cars/ouganda/toyota/prado/2020/`; x-default=`/cars/uganda/toyota/prado/2020/`
 - equivalence:346546821866: en=`/cars/namibia/lexus/rx/`, fr=`/fr/cars/namibie/lexus/rx/`; x-default=`/cars/namibia/lexus/rx/`
@@ -4186,6 +4179,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:38b4aaf73de5: en=`/cars/tunisia/toyota/camry/2005/`, fr=`/fr/cars/tunisie/toyota/camry/2005/`; x-default=`/cars/tunisia/toyota/camry/2005/`
 - equivalence:38bd28243818: en=`/tools/social-card/`, fr=`/fr/tools/carte-sociale/`, sw=`/sw/zana/kadi-ya-mitandao/`; x-default=`/tools/social-card/`
 - equivalence:38c08e735396: en=`/tools/hs-code-lookup/`, fr=`/fr/tools/recherche-code-sh/`, sw=`/sw/zana/utafutaji-msimbo-hs/`; x-default=`/tools/hs-code-lookup/`
+- equivalence:38c4e6771e75: en=`/tools/oee-calculator/`, fr=`/fr/tools/calculateur-oee/`, sw=`/sw/zana/kikokotoo-oee/`; x-default=`/tools/oee-calculator/`
 - equivalence:38cd0e877a9d: en=`/tools/kenya-dpa/`, fr=`/fr/tools/conformite-dpa-kenya/`, sw=`/sw/zana/ukaguzi-wa-dpa-kenya/`; x-default=`/tools/kenya-dpa/`
 - equivalence:38cfc77b5466: en=`/sao-tome/`, fr=`/fr/sao-tome/`, sw=`/sw/sao-tome/`; x-default=`/sao-tome/`
 - equivalence:38d0ebfc718c: en=`/blog/south-africa-provisional-tax-2026-27/`; x-default=`/blog/south-africa-provisional-tax-2026-27/`
@@ -4239,11 +4233,11 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3aff35378727: en=`/agriculture/vaccination-schedule/gambia`, fr=`/fr/agriculture/vaccination-schedule/gambia`; x-default=`/agriculture/vaccination-schedule/gambia`
 - equivalence:3b0f7e1762ba: en=`/tools/prepaid-meter/dr-congo/`, fr=`/fr/tools/compteur-prepaye/dr-congo/`; x-default=`/tools/prepaid-meter/dr-congo/`
 - equivalence:3b1169ea39ba: en=`/tools/cnps-guide/`, fr=`/fr/tools/guide-de-la-cnps-en-cote-d-ivoire/`, sw=`/sw/zana/mwongozo-wa-cnps/`; x-default=`/tools/cnps-guide/`
+- equivalence:3b24b52ac21d: en=`/tools/property-vs-stocks/`, fr=`/fr/tools/immobilier-vs-actions/`, sw=`/sw/zana/mali-dhidi-ya-hisa/`; x-default=`/tools/property-vs-stocks/`
 - equivalence:3b323130dd8c: en=`/tools/freelancer-rate/rwanda/`, fr=`/fr/tools/calculateur-de-tarif-independant-rwanda/`; x-default=`/tools/freelancer-rate/rwanda/`
 - equivalence:3b405e0233f7: en=`/cars/uganda/mercedes-benz/e-class/`, fr=`/fr/cars/ouganda/mercedes-benz/e-class/`; x-default=`/cars/uganda/mercedes-benz/e-class/`
 - equivalence:3b60ad534aef: en=`/tools/idea-board/`, fr=`/fr/tools/tableau-idees/`, sw=`/sw/zana/kichunguzi-ushahidi-wa-mawazo/`; x-default=`/tools/idea-board/`
 - equivalence:3b7394547491: en=`/tools/work-permit-cost/algeria/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-algerie/`, sw=`/sw/algeria/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/algeria/`
-- equivalence:3b8052ea3226: en=`/tools/qr-payment/`, fr=`/fr/tools/cout-paiement-qr/`; x-default=`/tools/qr-payment/`
 - equivalence:3b91a2349a8e: en=`/creative/`, fr=`/fr/creative/`, sw=`/sw/ubunifu-na-watayarishi/`; x-default=`/creative/`
 - equivalence:3b9854eea47e: en=`/tools/ke-wht/`, fr=`/fr/tools/ke-retenue-source/`; x-default=`/tools/ke-wht/`
 - equivalence:3ba2c4ee2f64: en=`/tools/workers-comp/egypt`; x-default=`/tools/workers-comp/egypt`
@@ -4270,6 +4264,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3cd731371b1b: fr=`/fr/widgets/cout-consommation-appareil/`; x-default=`/fr/widgets/cout-consommation-appareil/`
 - equivalence:3ce05d7d17e6: en=`/tools/visa-checker/angola`; x-default=`/tools/visa-checker/angola`
 - equivalence:3ce1e330f64e: en=`/tools/afrokitchen/recipes/dakouin-bj/`; x-default=`/tools/afrokitchen/recipes/dakouin-bj/`
+- equivalence:3d0b17ffb38c: en=`/tools/transfer-pricing/`, fr=`/fr/tools/prix-transfert/`, sw=`/sw/zana/ulinganisho-wa-bei-za-uhamisho/`; x-default=`/tools/transfer-pricing/`
 - equivalence:3d2c2f94e168: en=`/cars/rwanda/toyota/hilux/2015/`, fr=`/fr/cars/rwanda/toyota/hilux/2015/`; x-default=`/cars/rwanda/toyota/hilux/2015/`
 - equivalence:3d313cf81487: en=`/jamb/crk/1989/`; x-default=`/jamb/crk/1989/`
 - equivalence:3d3a4f61046f: en=`/agriculture/vaccination-schedule/egypt`, fr=`/fr/agriculture/vaccination-schedule/egypt`; x-default=`/agriculture/vaccination-schedule/egypt`
@@ -4294,6 +4289,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3e0450c30e90: en=`/tools/zakat-calculator/`, fr=`/fr/tools/calculateur-zakat/`, sw=`/sw/zana/kikokotoo-zakat/`; x-default=`/tools/zakat-calculator/`
 - equivalence:3e52627dd44e: en=`/tools/afrokitchen/recipes/sambusa-so/`; x-default=`/tools/afrokitchen/recipes/sambusa-so/`
 - equivalence:3e57f771924c: en=`/cars/nigeria/mazda/demio/2017/`, fr=`/fr/cars/nigeria/mazda/demio/2017/`; x-default=`/cars/nigeria/mazda/demio/2017/`
+- equivalence:3e597824c68e: en=`/tools/staff-cost/`, fr=`/fr/tools/cout-employe/`, ha=`/ha/kayan-aiki/kudin-maikaci/`, sw=`/sw/zana/bajeti-ya-gharama-za-wafanyakazi/`; x-default=`/tools/staff-cost/`
 - equivalence:3e67ecad01dd: en=`/cars/cameroon/lexus/rx/2017/`, fr=`/fr/cars/cameroun/lexus/rx/2017/`; x-default=`/cars/cameroon/lexus/rx/2017/`
 - equivalence:3e6a9b7492ad: en=`/tools/rent-intelligence/`, fr=`/fr/tools/intelligence-loyer/`, sw=`/sw/zana/taarifa-za-soko-la-pango/`; x-default=`/tools/rent-intelligence/`
 - equivalence:3e81a305d5a2: en=`/jamb/english/2015/`; x-default=`/jamb/english/2015/`
@@ -4310,6 +4306,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:3ede2d9ef3cd: en=`/cars/south-africa/ford/`, fr=`/fr/cars/afrique-du-sud/ford/`; x-default=`/cars/south-africa/ford/`
 - equivalence:3ee1cb17594d: en=`/tools/afrokitchen/recipes/makara-banana-fritters-cf/`; x-default=`/tools/afrokitchen/recipes/makara-banana-fritters-cf/`
 - equivalence:3ee403a7e8a3: en=`/agriculture/fish-farming/kenya`, fr=`/fr/agriculture/fish-farming/kenya`, sw=`/sw/kilimo/ufugaji-samaki/kenya/`; x-default=`/agriculture/fish-farming/kenya`
+- equivalence:3ee4736381c9: en=`/tools/naira-to-words/`, fr=`/fr/tools/naira-en-lettres/`, ha=`/ha/kayan-aiki/naira-zuwa-kalmomi/`, sw=`/sw/zana/naira-kwa-maneno/`; x-default=`/tools/naira-to-words/`
 - equivalence:3ee5c72b92a1: en=`/blog/crypto-tax-africa-nigeria-kenya-sa/`, fr=`/fr/blog/crypto-tax-africa-nigeria-kenya-sa/`; x-default=`/blog/crypto-tax-africa-nigeria-kenya-sa/`
 - equivalence:3ef1dbd1e9a4: fr=`/fr/blog/francophone-africa-tax-guide-2026/`; x-default=`/fr/blog/francophone-africa-tax-guide-2026/`
 - equivalence:3f012a61c580: en=`/jamb/government/2000/`; x-default=`/jamb/government/2000/`
@@ -4401,7 +4398,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:42f38f45bdc3: en=`/tools/work-permit-cost/south-sudan/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-soudan-du-sud/`; x-default=`/tools/work-permit-cost/south-sudan/`
 - equivalence:4312eeb3eacf: en=`/tools/afrokitchen/collections/nigerian-regional-table/`; x-default=`/tools/afrokitchen/collections/nigerian-regional-table/`
 - equivalence:4314cf5c3761: en=`/cars/senegal/toyota/camry/`, fr=`/fr/cars/senegal/toyota/camry/`; x-default=`/cars/senegal/toyota/camry/`
-- equivalence:431a7e473ff7: en=`/tools/za-cgt/`, fr=`/fr/tools/za-plus-value/`; x-default=`/tools/za-cgt/`
 - equivalence:431cfaa8bc4f: en=`/cars/nigeria/kia/`, fr=`/fr/cars/nigeria/kia/`; x-default=`/cars/nigeria/kia/`
 - equivalence:431dd408c27a: en=`/tools/contractor-vs-employee/cote-divoire/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-cote-d-ivoire/`, sw=`/sw/cote-divoire/kilinganisha-mkandarasi-na-mfanyakazi/`; x-default=`/tools/contractor-vs-employee/cote-divoire/`
 - equivalence:432b9691a2f8: en=`/agriculture/vaccination-schedule/eritrea`, fr=`/fr/agriculture/vaccination-schedule/eritrea`; x-default=`/agriculture/vaccination-schedule/eritrea`
@@ -4420,6 +4416,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:43cbdb3fe0f6: en=`/agriculture/fertilizer/nigeria`, fr=`/fr/agriculture/fertilizer/nigeria`, ha=`/ha/noma/taki-najeriya/`, sw=`/sw/kilimo/mbolea/nigeria/`; x-default=`/agriculture/fertilizer/nigeria`
 - equivalence:43cf2d8a5e1b: en=`/cars/zambia/toyota/prado/`, fr=`/fr/cars/zambie/toyota/prado/`; x-default=`/cars/zambia/toyota/prado/`
 - equivalence:43d0c46fe8ed: en=`/agriculture/farm-profit/malawi`, fr=`/fr/agriculture/farm-profit/malawi`, sw=`/sw/kilimo/faida-ya-shamba/malawi/`; x-default=`/agriculture/farm-profit/malawi`
+- equivalence:43f85d3b42fc: en=`/tools/qr-payment/`, fr=`/fr/tools/cout-paiement-qr/`, sw=`/sw/zana/gharama-za-malipo-ya-qr/`; x-default=`/tools/qr-payment/`
 - equivalence:43fd08cdfc86: en=`/tools/doc-generator/generate`; x-default=`/tools/doc-generator/generate`
 - equivalence:4403c8b3fd20: en=`/tools/gratuity-calculator/mauritania/`; x-default=`/tools/gratuity-calculator/mauritania/`
 - equivalence:440c917ef47c: en=`/malawi/mw-paye`, fr=`/fr/malawi/mw-paye`, sw=`/sw/malawi/kikokotoo-kodi-mshahara/`; x-default=`/malawi/mw-paye`
@@ -4455,6 +4452,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4568fe39696f: en=`/cars/zambia/toyota/axio/`, fr=`/fr/cars/zambie/toyota/axio/`; x-default=`/cars/zambia/toyota/axio/`
 - equivalence:456a6a122322: en=`/jamb/crk/1991/`; x-default=`/jamb/crk/1991/`
 - equivalence:456fdebdd240: en=`/cars/tunisia/nissan/`, fr=`/fr/cars/tunisie/nissan/`; x-default=`/cars/tunisia/nissan/`
+- equivalence:457f2aad1725: en=`/crypto/mining-calculator/`, fr=`/fr/crypto/mining-calculator/`, sw=`/sw/zana/kikokotoo-margin-uchimbaji-crypto/`; x-default=`/crypto/mining-calculator/`
 - equivalence:45a55050e4f4: en=`/cars/kenya/honda/`, fr=`/fr/cars/kenya/honda/`; x-default=`/cars/kenya/honda/`
 - equivalence:45c2e856032d: en=`/agriculture/export-docs/egypt`, fr=`/fr/agriculture/export-docs/egypt`; x-default=`/agriculture/export-docs/egypt`
 - equivalence:45dccf6b8259: en=`/cars/cote-divoire/toyota/noah/2014/`, fr=`/fr/cars/cote-divoire/toyota/noah/2014/`; x-default=`/cars/cote-divoire/toyota/noah/2014/`
@@ -4497,7 +4495,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:47393b1ee8f5: en=`/cars/mozambique/honda/cr-v/2016/`, fr=`/fr/cars/mozambique/honda/cr-v/2016/`; x-default=`/cars/mozambique/honda/cr-v/2016/`
 - equivalence:474c13b74654: en=`/tools/contractor-vs-employee/botswana/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-botswana/`, sw=`/sw/botswana/kilinganisha-mkandarasi-na-mfanyakazi/`; x-default=`/tools/contractor-vs-employee/botswana/`
 - equivalence:4759f33719c8: en=`/cars/cameroon/nissan/x-trail/2015/`, fr=`/fr/cars/cameroun/nissan/x-trail/2015/`; x-default=`/cars/cameroon/nissan/x-trail/2015/`
-- equivalence:476f9e19617e: en=`/tools/property-vs-stocks/`, fr=`/fr/tools/immobilier-vs-actions/`; x-default=`/tools/property-vs-stocks/`
+- equivalence:475d31fe38f7: en=`/tools/za-cgt/`, fr=`/fr/tools/za-plus-value/`, sw=`/sw/zana/kikokotoo-cgt-afrika-kusini/`; x-default=`/tools/za-cgt/`
 - equivalence:4770e0fd3e9b: en=`/agriculture/seed-rate/eswatini`, fr=`/fr/agriculture/seed-rate/eswatini`, sw=`/sw/kilimo/kiwango-cha-mbegu/eswatini/`; x-default=`/agriculture/seed-rate/eswatini`
 - equivalence:4779f3f4c40c: en=`/tools/pdf-editor/`, fr=`/fr/tools/editeur-pdf/`, ha=`/ha/kayan-aiki/gyara-pdf/`, sw=`/sw/zana/hariri-pdf/`; x-default=`/tools/pdf-editor/`
 - equivalence:478d91ed8669: en=`/tools/work-permit-cost/gambia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-gambie/`; x-default=`/tools/work-permit-cost/gambia/`
@@ -4576,6 +4574,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4acf5a7f2577: en=`/tools/solar-roi/libya/`, fr=`/fr/tools/roi-solaire/libya/`; x-default=`/tools/solar-roi/libya/`
 - equivalence:4ae28ebe7d86: en=`/cars/botswana/toyota/axio/2019/`, fr=`/fr/cars/botswana/toyota/axio/2019/`; x-default=`/cars/botswana/toyota/axio/2019/`
 - equivalence:4ae60a671b5a: en=`/jamb/english/2003/`; x-default=`/jamb/english/2003/`
+- equivalence:4af1610acd26: en=`/tools/ng-wht/`, fr=`/fr/tools/ng-retenue-source/`, ha=`/ha/kayan-aiki/wht-najeriya/`, sw=`/sw/zana/kikokotoo-wht-nigeria/`, yo=`/yo/awon-ise/wht-naijiria/`; x-default=`/tools/ng-wht/`
 - equivalence:4afc1c384fc2: en=`/tools/html-to-pdf/`, fr=`/fr/tools/html-en-pdf/`, sw=`/sw/zana/html-kwenda-pdf/`; x-default=`/tools/html-to-pdf/`
 - equivalence:4b055a99c649: en=`/cars/namibia/nissan/`, fr=`/fr/cars/namibie/nissan/`; x-default=`/cars/namibia/nissan/`
 - equivalence:4b1319b100d5: en=`/jamb/government/1997/`; x-default=`/jamb/government/1997/`
@@ -4594,6 +4593,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4bdf0bac7f86: en=`/tools/tenancy-agreement/gabon`, fr=`/fr/tools/contrat-bail/gabon`; x-default=`/tools/tenancy-agreement/gabon`
 - equivalence:4bdf0e4bf1eb: en=`/agriculture/crop-yield/gabon`, fr=`/fr/agriculture/crop-yield/gabon`, sw=`/sw/kilimo/mavuno/gabon/`; x-default=`/agriculture/crop-yield/gabon`
 - equivalence:4be64381f361: en=`/tools/visa-checker/eswatini`; x-default=`/tools/visa-checker/eswatini`
+- equivalence:4bf98bd8e64a: en=`/tools/za-gepf/`, fr=`/fr/tools/za-gepf/`, sw=`/sw/zana/kikokotoo-gepf-afrika-kusini/`; x-default=`/tools/za-gepf/`
 - equivalence:4c026ec52286: en=`/tools/afroatlas/country/gabon/`; x-default=`/tools/afroatlas/country/gabon/`
 - equivalence:4c05eb1f457b: en=`/tools/security-emergency-fund/`, fr=`/fr/tools/fonds-d-urgence-et-de-securite/`, sw=`/sw/zana/mfuko-wa-dharura-wa-usalama/`; x-default=`/tools/security-emergency-fund/`
 - equivalence:4c086d918ac5: en=`/tools/work-permit-cost/cape-verde/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cap-vert/`; x-default=`/tools/work-permit-cost/cape-verde/`
@@ -4630,6 +4630,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4dda99e2b004: en=`/cars/tanzania/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/tanzanie/mercedes-benz/g-wagon/2022/`; x-default=`/cars/tanzania/mercedes-benz/g-wagon/2022/`
 - equivalence:4dde8adf19d9: en=`/cars/algeria/mercedes-benz/`, fr=`/fr/cars/algerie/mercedes-benz/`; x-default=`/cars/algeria/mercedes-benz/`
 - equivalence:4dfedc64523c: en=`/tools/contractor-vs-employee/eritrea/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-erythree/`; x-default=`/tools/contractor-vs-employee/eritrea/`
+- equivalence:4e026509c743: en=`/agriculture/cooperative-calculator/`, fr=`/fr/agriculture/cooperative-calculator/`, sw=`/sw/zana/kikokotoo-cha-ushirika/`; x-default=`/agriculture/cooperative-calculator/`
 - equivalence:4e08cf0d9d09: en=`/tools/pdf-header-footer/`, fr=`/fr/tools/entete-pied-pdf/`, sw=`/sw/zana/kichwa-na-kijachini-pdf/`; x-default=`/tools/pdf-header-footer/`
 - equivalence:4e1363232ce5: en=`/tools/solar-roi/sao-tome/`, fr=`/fr/tools/roi-solaire/sao-tome/`; x-default=`/tools/solar-roi/sao-tome/`
 - equivalence:4e14e5b56849: en=`/tools/motor-third-party/congo-brazzaville`; x-default=`/tools/motor-third-party/congo-brazzaville`
@@ -4645,7 +4646,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:4e9962592ee1: en=`/tools/electricity-tariff/namibia/`, fr=`/fr/tools/tarifs-electricite/namibia/`; x-default=`/tools/electricity-tariff/namibia/`
 - equivalence:4ec6362260ee: en=`/tools/asset-finance/`, fr=`/fr/tools/financement-actifs/`, sw=`/sw/zana/ufadhili-wa-mali/`; x-default=`/tools/asset-finance/`
 - equivalence:4ecbc8398c1a: en=`/agriculture/vaccination-schedule/sudan`, fr=`/fr/agriculture/vaccination-schedule/sudan`; x-default=`/agriculture/vaccination-schedule/sudan`
-- equivalence:4ed2e59a63cb: en=`/tools/stock-portfolio/`, fr=`/fr/tools/suivi-portefeuille-actions/`; x-default=`/tools/stock-portfolio/`
 - equivalence:4ed74968462f: en=`/egypt/`, fr=`/fr/egypt/`, sw=`/sw/egypt/`; x-default=`/egypt/`
 - equivalence:4ef361345e26: en=`/tools/logo-maker/`, fr=`/fr/tools/createur-logo/`, sw=`/sw/zana/kitengeneza-logo/`; x-default=`/tools/logo-maker/`
 - equivalence:4f023289ddac: en=`/tools/cron-builder/`, fr=`/fr/tools/constructeur-cron/`, sw=`/sw/zana/cron/`; x-default=`/tools/cron-builder/`
@@ -4727,6 +4727,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:531c114ededb: en=`/cars/senegal/ford/ranger/2018/`, fr=`/fr/cars/senegal/ford/ranger/2018/`; x-default=`/cars/senegal/ford/ranger/2018/`
 - equivalence:532533976509: en=`/tools/car-insurance/egypt`, fr=`/fr/tools/assurance-auto/egypt`; x-default=`/tools/car-insurance/egypt`
 - equivalence:532a6a16d4af: en=`/tools/backup-duration/`, fr=`/fr/tools/autonomie-secours/`, sw=`/sw/zana/muda-wa-backup-ya-betri/`; x-default=`/tools/backup-duration/`
+- equivalence:5337d7a559f1: en=`/tools/fashion-brand-startup/`, fr=`/fr/tools/cout-lancement-marque-mode/`, sw=`/sw/zana/kuanzisha-chapa-ya-mitindo/`; x-default=`/tools/fashion-brand-startup/`
 - equivalence:533bc3ea03e4: en=`/agriculture/crop-yield/gambia`, fr=`/fr/agriculture/crop-yield/gambia`, sw=`/sw/kilimo/mavuno/gambia/`; x-default=`/agriculture/crop-yield/gambia`
 - equivalence:5345513aac31: en=`/agriculture/irrigation/niger`, fr=`/fr/agriculture/irrigation/niger`, sw=`/sw/kilimo/umwagiliaji/niger/`; x-default=`/agriculture/irrigation/niger`
 - equivalence:534a849d720e: en=`/cars/uganda/lexus/es/2016/`, fr=`/fr/cars/ouganda/lexus/es/2016/`; x-default=`/cars/uganda/lexus/es/2016/`
@@ -4736,6 +4737,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:53695014e36e: en=`/cars/morocco/lexus/`, fr=`/fr/cars/maroc/lexus/`; x-default=`/cars/morocco/lexus/`
 - equivalence:5370510a6522: en=`/cars/tanzania/toyota/prado/2020/`, fr=`/fr/cars/tanzanie/toyota/prado/2020/`; x-default=`/cars/tanzania/toyota/prado/2020/`
 - equivalence:5378b0a915b2: en=`/tools/health-contribution/congo-brazzaville`; x-default=`/tools/health-contribution/congo-brazzaville`
+- equivalence:5379522632b5: en=`/tools/tailoring-pricing/`, fr=`/fr/tools/tarification-couture/`, sw=`/sw/zana/bei-ya-ushonaji/`; x-default=`/tools/tailoring-pricing/`
 - equivalence:537aa51559c2: en=`/agriculture/vaccination-schedule/burundi`, fr=`/fr/agriculture/vaccination-schedule/burundi`; x-default=`/agriculture/vaccination-schedule/burundi`
 - equivalence:537dbabd322a: en=`/tools/employment-contract/chad`, fr=`/fr/tools/contrat-travail/chad`; x-default=`/tools/employment-contract/chad`
 - equivalence:537e268148f6: yo=`/yo/ede-ati-itumo/`; x-default=`/yo/ede-ati-itumo/`
@@ -4788,7 +4790,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5588098398de: en=`/jamb/english/1992/`; x-default=`/jamb/english/1992/`
 - equivalence:55999a2d79f6: en=`/tools/visa-checker/tanzania`; x-default=`/tools/visa-checker/tanzania`
 - equivalence:559ec51acd82: en=`/cars/botswana/mercedes-benz/c-class/`, fr=`/fr/cars/botswana/mercedes-benz/c-class/`; x-default=`/cars/botswana/mercedes-benz/c-class/`
-- equivalence:55a21734c290: en=`/tools/fraction-calc/`, fr=`/fr/tools/calculateur-fractions/`; x-default=`/tools/fraction-calc/`
 - equivalence:55b461cef9e1: en=`/tools/afrostream/university/mobile-workflow/`; x-default=`/tools/afrostream/university/mobile-workflow/`
 - equivalence:55cce838668c: en=`/jamb/english/2020/`; x-default=`/jamb/english/2020/`
 - equivalence:55d0de179349: en=`/tools/creator-analytics/`, fr=`/fr/tools/stats-createur/`, sw=`/sw/zana/takwimu-za-mtayarishi/`; x-default=`/tools/creator-analytics/`
@@ -4810,6 +4811,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:56f25333290f: en=`/blog/gambia-employer-payroll-compliance-2026/`; x-default=`/blog/gambia-employer-payroll-compliance-2026/`
 - equivalence:56f2b76fdb13: en=`/cars/namibia/toyota/corolla/2018/`, fr=`/fr/cars/namibie/toyota/corolla/2018/`; x-default=`/cars/namibia/toyota/corolla/2018/`
 - equivalence:57014500ad9d: en=`/ai/business/`; x-default=`/ai/business/`
+- equivalence:5705243593fb: en=`/tools/market-days/`, fr=`/fr/tools/jours-marche/`, sw=`/sw/zana/kalenda-ya-siku-za-soko/`; x-default=`/tools/market-days/`
 - equivalence:57163f57d92d: en=`/cars/tanzania/toyota/noah/2018/`, fr=`/fr/cars/tanzanie/toyota/noah/2018/`; x-default=`/cars/tanzania/toyota/noah/2018/`
 - equivalence:5724878768e7: en=`/tools/motor-third-party/botswana`; x-default=`/tools/motor-third-party/botswana`
 - equivalence:5725cc506b73: en=`/senegal/sn-paye`, fr=`/fr/senegal/calculateur-salaire-net`, sw=`/sw/senegal/kikokotoo-kodi-mshahara/`; x-default=`/senegal/sn-paye`
@@ -4882,7 +4884,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:59f92fda48c3: en=`/agriculture/greenhouse/ethiopia`, fr=`/fr/agriculture/greenhouse/ethiopia`, sw=`/sw/kilimo/greenhouse/ethiopia/`; x-default=`/agriculture/greenhouse/ethiopia`
 - equivalence:59fd90504850: en=`/tools/afrokitchen/recipes/thieboudienne-sn/`; x-default=`/tools/afrokitchen/recipes/thieboudienne-sn/`
 - equivalence:5a004d352410: en=`/cars/senegal/mercedes-benz/c-class/`, fr=`/fr/cars/senegal/mercedes-benz/c-class/`; x-default=`/cars/senegal/mercedes-benz/c-class/`
-- equivalence:5a0aca8b923b: en=`/tools/guard-service-cost/`, fr=`/fr/tools/cout-gardiennage/`; x-default=`/tools/guard-service-cost/`
 - equivalence:5a159e2f6e14: en=`/cars/morocco/ford/ranger/2018/`, fr=`/fr/cars/maroc/ford/ranger/2018/`; x-default=`/cars/morocco/ford/ranger/2018/`
 - equivalence:5a4440a0d791: fr=`/fr/widgets/budget-couverture-recolte/`; x-default=`/fr/widgets/budget-couverture-recolte/`
 - equivalence:5a4898265239: en=`/blog/stokvel-guide-south-africa-2026/`, fr=`/fr/blog/stokvel-guide-south-africa-2026/`; x-default=`/blog/stokvel-guide-south-africa-2026/`
@@ -4923,10 +4924,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5bcb30e0ed04: fr=`/fr/widgets/capacite-salle-classe/`; x-default=`/fr/widgets/capacite-salle-classe/`
 - equivalence:5bcfba54685e: en=`/blog/wedding-cost-nigeria-2026/`, fr=`/fr/blog/wedding-cost-nigeria-2026/`; x-default=`/blog/wedding-cost-nigeria-2026/`
 - equivalence:5be14dcd60b5: en=`/tools/afrokitchen/recipes/matoke/`; x-default=`/tools/afrokitchen/recipes/matoke/`
+- equivalence:5bedcc86ea53: en=`/tools/lobola-negotiation-checklist/`, fr=`/fr/tools/checklist-negociation-dot/`, sw=`/sw/zana/orodha-ya-majadiliano-ya-lobola/`; x-default=`/tools/lobola-negotiation-checklist/`
 - equivalence:5bee1cb0b833: en=`/tools/health-contribution/eritrea`; x-default=`/tools/health-contribution/eritrea`
 - equivalence:5bf07c85ff9e: en=`/cars/south-africa/toyota/axio/`, fr=`/fr/cars/afrique-du-sud/toyota/axio/`; x-default=`/cars/south-africa/toyota/axio/`
 - equivalence:5c3c0b0377cc: en=`/tools/crop-insurance-calc/cameroon`; x-default=`/tools/crop-insurance-calc/cameroon`
 - equivalence:5c50c3aebb9b: en=`/tools/fintech-fee-watch/`, fr=`/fr/tools/suivi-frais-fintech/`, sw=`/sw/zana/ufuatiliaji-ada-fintech/`; x-default=`/tools/fintech-fee-watch/`
+- equivalence:5c6ca8f0c566: en=`/tools/factory-setup-cost/`, fr=`/fr/tools/cout-installation-usine/`, sw=`/sw/zana/gharama-ya-kuanzisha-kiwanda/`; x-default=`/tools/factory-setup-cost/`
 - equivalence:5c87fa7eac79: en=`/blog/dairy-cow-feed-ration-kenya/`; x-default=`/blog/dairy-cow-feed-ration-kenya/`
 - equivalence:5ca79c53cc1f: en=`/blog/cheapest-way-send-money-nigeria/`, fr=`/fr/blog/cheapest-way-send-money-nigeria/`; x-default=`/blog/cheapest-way-send-money-nigeria/`
 - equivalence:5cb248ca7ab9: en=`/cars/south-africa/nissan/`, fr=`/fr/cars/afrique-du-sud/nissan/`; x-default=`/cars/south-africa/nissan/`
@@ -4943,7 +4946,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5d54a9060d0d: en=`/agriculture/irrigation/kenya`, fr=`/fr/agriculture/irrigation/kenya`, sw=`/sw/kilimo/umwagiliaji/kenya/`; x-default=`/agriculture/irrigation/kenya`
 - equivalence:5d5d7710b501: en=`/tools/gratuity-calculator/equatorial-guinea/`; x-default=`/tools/gratuity-calculator/equatorial-guinea/`
 - equivalence:5d88c3a2be1e: en=`/cars/ethiopia/toyota/axio/2018/`, fr=`/fr/cars/ethiopie/toyota/axio/2018/`; x-default=`/cars/ethiopia/toyota/axio/2018/`
-- equivalence:5d9a0f8105d9: en=`/tools/fashion-brand-startup/`, fr=`/fr/tools/cout-lancement-marque-mode/`; x-default=`/tools/fashion-brand-startup/`
 - equivalence:5d9c78994fc5: en=`/jamb/crk/1984/`; x-default=`/jamb/crk/1984/`
 - equivalence:5d9efc9ac1d4: en=`/tools/car-insurance/equatorial-guinea`, fr=`/fr/tools/assurance-auto/equatorial-guinea`; x-default=`/tools/car-insurance/equatorial-guinea`
 - equivalence:5dc473af5bcd: en=`/tools/outage-cost/senegal/`, fr=`/fr/tools/estimateur-du-cout-des-coupures-de-courant-senegal/`; x-default=`/tools/outage-cost/senegal/`
@@ -4959,6 +4961,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:5e4433144c43: en=`/climate/`, fr=`/fr/climat-environnement/`, sw=`/sw/hali-ya-hewa-na-mazingira/`; x-default=`/climate/`
 - equivalence:5e54da6f3956: en=`/tools/afrokitchen/recipes/eru-cm/`; x-default=`/tools/afrokitchen/recipes/eru-cm/`
 - equivalence:5e559f4ac1c9: en=`/cars/mozambique/hyundai/elantra/`, fr=`/fr/cars/mozambique/hyundai/elantra/`; x-default=`/cars/mozambique/hyundai/elantra/`
+- equivalence:5e676766f791: en=`/agriculture/cocoa-tracker/`, fr=`/fr/agriculture/cocoa-tracker/`, sw=`/sw/zana/kifuatiliaji-kakao/`; x-default=`/agriculture/cocoa-tracker/`
 - equivalence:5e72eb0e7a57: en=`/tools/prepaid-meter/gabon/`, fr=`/fr/tools/compteur-prepaye/gabon/`; x-default=`/tools/prepaid-meter/gabon/`
 - equivalence:5e86db89f9b1: en=`/agriculture/farm-profit/cameroon`, fr=`/fr/agriculture/farm-profit/cameroon`, sw=`/sw/kilimo/faida-ya-shamba/cameroon/`; x-default=`/agriculture/farm-profit/cameroon`
 - equivalence:5e8c18a58611: en=`/tools/labour-law-advisor/`; x-default=`/tools/labour-law-advisor/`
@@ -4996,6 +4999,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:60b80d0fde21: en=`/engineering/floor-planner/`, fr=`/fr/ingenierie/planificateur-etage/`, sw=`/sw/zana/mpangaji-ramani-ya-sakafu/`; x-default=`/engineering/floor-planner/`
 - equivalence:60b9e5c2deea: fr=`/fr/widgets/constructeur-cron/`; x-default=`/fr/widgets/constructeur-cron/`
 - equivalence:60d7115931ab: en=`/cars/mozambique/mercedes-benz/e-class/`, fr=`/fr/cars/mozambique/mercedes-benz/e-class/`; x-default=`/cars/mozambique/mercedes-benz/e-class/`
+- equivalence:60d8a35b1dba: en=`/tools/event-decoration-cost/`, fr=`/fr/tools/cout-decoration-evenement/`, sw=`/sw/zana/gharama-ya-mapambo-ya-tukio/`; x-default=`/tools/event-decoration-cost/`
 - equivalence:60db457681dd: en=`/tools/maternity-leave/cameroon/`; x-default=`/tools/maternity-leave/cameroon/`
 - equivalence:60de3ea94aca: en=`/agriculture/livestock-feed/senegal`, fr=`/fr/agriculture/livestock-feed/senegal`, sw=`/sw/kilimo/chakula-cha-mifugo/senegal/`; x-default=`/agriculture/livestock-feed/senegal`
 - equivalence:60e5b0964b36: en=`/agriculture/vaccination-schedule/kenya`, fr=`/fr/agriculture/vaccination-schedule/kenya`; x-default=`/agriculture/vaccination-schedule/kenya`
@@ -5037,6 +5041,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:624184ea7916: en=`/tools/afroatlas/country/chad/`; x-default=`/tools/afroatlas/country/chad/`
 - equivalence:6247908d163c: en=`/tools/cctv-cost/`, fr=`/fr/tools/cout-cctv/`, sw=`/sw/zana/gharama-za-cctv/`; x-default=`/tools/cctv-cost/`
 - equivalence:624b2792afc6: en=`/tools/fuel-tracker/ethiopia/`, fr=`/fr/tools/suivi-carburant/ethiopia/`; x-default=`/tools/fuel-tracker/ethiopia/`
+- equivalence:6256ee98a94d: en=`/tools/packaging-cost/`, fr=`/fr/tools/cout-emballage/`, sw=`/sw/zana/gharama-ya-ufungashaji/`; x-default=`/tools/packaging-cost/`
 - equivalence:625b35202fe4: en=`/tools/afrokitchen/countries/ghana/`; x-default=`/tools/afrokitchen/countries/ghana/`
 - equivalence:627c00faf61b: en=`/tools/paint-calculator/`, fr=`/fr/tools/calculateur-peinture/`, sw=`/sw/zana/kikokotoo-rangi/`; x-default=`/tools/paint-calculator/`
 - equivalence:6287e36814ae: en=`/cars/angola/toyota/prado/`, fr=`/fr/cars/angola/toyota/prado/`; x-default=`/cars/angola/toyota/prado/`
@@ -5069,7 +5074,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:640a791de7a4: en=`/agriculture/fertilizer/mauritius`, fr=`/fr/agriculture/fertilizer/mauritius`, sw=`/sw/kilimo/mbolea/mauritius/`; x-default=`/agriculture/fertilizer/mauritius`
 - equivalence:641da90ea247: fr=`/fr/jobs/`; x-default=`/fr/jobs/`
 - equivalence:641fc7a163ad: en=`/jamb/economics/1992/`; x-default=`/jamb/economics/1992/`
-- equivalence:6421440f950a: en=`/agriculture/commodity-prices/`, fr=`/fr/agriculture/commodity-prices/`, ha=`/ha/kayan-aiki/farashin-kayayyakin-gona/`; x-default=`/agriculture/commodity-prices/`
 - equivalence:6425c800cbe6: en=`/blog/import-duty-calculator-kenya-2026/`, fr=`/fr/blog/import-duty-calculator-kenya-2026/`; x-default=`/blog/import-duty-calculator-kenya-2026/`
 - equivalence:64358d7de488: en=`/agriculture/farm-payroll/liberia`, fr=`/fr/agriculture/farm-payroll/liberia`, sw=`/sw/kilimo/mishahara-ya-shamba/liberia/`; x-default=`/agriculture/farm-payroll/liberia`
 - equivalence:64381ff2e51c: en=`/tools/travel-insurance/`, fr=`/fr/tools/assurance-voyage/`, sw=`/sw/zana/kikokotoo-bima-ya-safari/`; x-default=`/tools/travel-insurance/`
@@ -5077,13 +5081,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:647b4fc5572f: en=`/blog/car-import-cost-kenya-guide/`; x-default=`/blog/car-import-cost-kenya-guide/`
 - equivalence:64836f6a4f92: en=`/tools/battery-sizing/`, fr=`/fr/tools/dimensionnement-batterie-onduleur/`, sw=`/sw/zana/ukubwa-wa-betri-na-inverter/`; x-default=`/tools/battery-sizing/`
 - equivalence:648602716db5: en=`/tools/afrokitchen/recipes/chicken-tagine-preserved-lemons-ma/`; x-default=`/tools/afrokitchen/recipes/chicken-tagine-preserved-lemons-ma/`
+- equivalence:64953b0205fe: en=`/tools/youtube-revenue/`, fr=`/fr/tools/revenus-youtube/`, sw=`/sw/zana/mapato-ya-youtube/`; x-default=`/tools/youtube-revenue/`
 - equivalence:64a7d3c9a0c1: en=`/blog/kenya-paye-calculator-guide-2025/`, fr=`/fr/blog/kenya-paye-calculator-guide-2025/`; x-default=`/blog/kenya-paye-calculator-guide-2025/`
 - equivalence:64e2af23a45d: en=`/blog/quotation-vs-invoice-small-business-africa/`; x-default=`/blog/quotation-vs-invoice-small-business-africa/`
 - equivalence:64ea7052f22b: en=`/jamb/government/2003/`; x-default=`/jamb/government/2003/`
 - equivalence:64eaaf9e0735: en=`/agriculture/fertilizer/south-sudan`, fr=`/fr/agriculture/fertilizer/south-sudan`, sw=`/sw/kilimo/mbolea/south-sudan/`; x-default=`/agriculture/fertilizer/south-sudan`
 - equivalence:64ebbd2bad90: en=`/jamb/english/2014/`; x-default=`/jamb/english/2014/`
 - equivalence:64f0d197f9ab: en=`/agriculture/farm-profit/central-african-republic`, fr=`/fr/agriculture/farm-profit/central-african-republic`, sw=`/sw/kilimo/faida-ya-shamba/central-african-republic/`; x-default=`/agriculture/farm-profit/central-african-republic`
-- equivalence:64f31d0dc818: en=`/agriculture/crop-rotation/`, fr=`/fr/agriculture/crop-rotation/`; x-default=`/agriculture/crop-rotation/`
 - equivalence:6511d8191af2: en=`/jamb/literature/2017/`; x-default=`/jamb/literature/2017/`
 - equivalence:651a5cd1de60: en=`/tools/afroatlas/country/egypt/`; x-default=`/tools/afroatlas/country/egypt/`
 - equivalence:6524f404b4e0: sw=`/sw/zana/ushuru-kuagiza-gari/`; x-default=`/sw/zana/ushuru-kuagiza-gari/`
@@ -5095,12 +5099,13 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:657d1593ed7e: en=`/tools/water-bill/south-africa/`; x-default=`/tools/water-bill/south-africa/`
 - equivalence:65944f8805dc: en=`/tools/contractor-vs-employee/south-sudan/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-soudan-du-sud/`; x-default=`/tools/contractor-vs-employee/south-sudan/`
 - equivalence:65978e8b6d89: en=`/cars/namibia/honda/cr-v/`, fr=`/fr/cars/namibie/honda/cr-v/`; x-default=`/cars/namibia/honda/cr-v/`
+- equivalence:659a2add3c0d: en=`/tools/za-dividend-tax/`, fr=`/fr/tools/za-impot-dividendes/`, sw=`/sw/zana/kikokotoo-kodi-gawio-afrika-kusini/`; x-default=`/tools/za-dividend-tax/`
 - equivalence:65b86f64fe68: en=`/faq/`, fr=`/fr/faq/`; x-default=`/faq/`
 - equivalence:65cb69bd6b2d: en=`/agriculture/livestock-feed/south-africa`, fr=`/fr/agriculture/livestock-feed/south-africa`, sw=`/sw/kilimo/chakula-cha-mifugo/south-africa/`; x-default=`/agriculture/livestock-feed/south-africa`
 - equivalence:65cd85618720: en=`/blog/salary-comparison-africa-2026/`, fr=`/fr/blog/salary-comparison-africa-2026/`; x-default=`/blog/salary-comparison-africa-2026/`
+- equivalence:65e03b2e5be7: en=`/tools/meme-generator/`, fr=`/fr/tools/generateur-memes/`, sw=`/sw/zana/kitengeneza-meme/`; x-default=`/tools/meme-generator/`
 - equivalence:65f693391754: en=`/cameroon/cm-vat`, fr=`/fr/cameroun/calculateur-tva`, sw=`/sw/cameroon/kikokotoo-vat/`; x-default=`/cameroon/cm-vat`
 - equivalence:65fd7f5d6f70: en=`/agriculture/farm-profit/sierra-leone`, fr=`/fr/agriculture/farm-profit/sierra-leone`, sw=`/sw/kilimo/faida-ya-shamba/sierra-leone/`; x-default=`/agriculture/farm-profit/sierra-leone`
-- equivalence:6608ae7ba873: en=`/agriculture/pesticide-dosage/`, fr=`/fr/agriculture/pesticide-dosage/`; x-default=`/agriculture/pesticide-dosage/`
 - equivalence:660abaf96fa4: fr=`/fr/docs/pdf-tools-hub`; x-default=`/fr/docs/pdf-tools-hub`
 - equivalence:661bc72218e7: en=`/tools/creator-hooks/`, fr=`/fr/tools/accroches-de-contenu-pour-createur/`, sw=`/sw/zana/hook-za-video/`; x-default=`/tools/creator-hooks/`
 - equivalence:6628b48a9145: en=`/tools/afrokitchen/recipes/potjiekos-na/`; x-default=`/tools/afrokitchen/recipes/potjiekos-na/`
@@ -5182,7 +5187,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:69a5cefbf14a: en=`/agriculture/harvest-date/gambia`, fr=`/fr/agriculture/harvest-date/gambia`; x-default=`/agriculture/harvest-date/gambia`
 - equivalence:69ab9221a729: en=`/agriculture/farm-payroll/mauritius`, fr=`/fr/agriculture/farm-payroll/mauritius`, sw=`/sw/kilimo/mishahara-ya-shamba/mauritius/`; x-default=`/agriculture/farm-payroll/mauritius`
 - equivalence:69ac59106d11: en=`/cars/egypt/toyota/corolla/2018/`, fr=`/fr/cars/egypte/toyota/corolla/2018/`; x-default=`/cars/egypt/toyota/corolla/2018/`
-- equivalence:69be42b1c450: en=`/tools/scientific-calc/`, fr=`/fr/tools/calculatrice-scientifique/`; x-default=`/tools/scientific-calc/`
 - equivalence:69d23d4b34ba: en=`/tools/health-contribution/liberia`; x-default=`/tools/health-contribution/liberia`
 - equivalence:69d3dc95c06e: fr=`/fr/widgets/risque-surestaries/`; x-default=`/fr/widgets/risque-surestaries/`
 - equivalence:69d960f18628: en=`/agriculture/fertilizer/lesotho`, fr=`/fr/agriculture/fertilizer/lesotho`, sw=`/sw/kilimo/mbolea/lesotho/`; x-default=`/agriculture/fertilizer/lesotho`
@@ -5196,10 +5200,12 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6a23d47663a0: en=`/agriculture/crop-yield/lesotho`, fr=`/fr/agriculture/crop-yield/lesotho`, sw=`/sw/kilimo/mavuno/lesotho/`; x-default=`/agriculture/crop-yield/lesotho`
 - equivalence:6a2a9a317c9d: en=`/cars/botswana/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/botswana/mercedes-benz/g-wagon/2022/`; x-default=`/cars/botswana/mercedes-benz/g-wagon/2022/`
 - equivalence:6a2d33d57559: en=`/tools/employment-contract/sierra-leone`, fr=`/fr/tools/contrat-travail/sierra-leone`; x-default=`/tools/employment-contract/sierra-leone`
+- equivalence:6a2f8be95065: en=`/crypto/profit-calculator/`, fr=`/fr/crypto/profit-calculator/`, sw=`/sw/zana/kikokotoo-faida-crypto/`; x-default=`/crypto/profit-calculator/`
 - equivalence:6a314bf2684f: en=`/tools/african-api-directory/`, fr=`/fr/tools/annuaire-api-africaines/`, sw=`/sw/zana/saraka-ya-api-afrika/`; x-default=`/tools/african-api-directory/`
 - equivalence:6a375f315606: en=`/tools/merchant-fees/`, fr=`/fr/tools/frais-marchand/`, sw=`/sw/zana/ada-mfanyabiashara/`; x-default=`/tools/merchant-fees/`
 - equivalence:6a400cf561cc: en=`/tools/afrokitchen/recipes/okpa-ng/`; x-default=`/tools/afrokitchen/recipes/okpa-ng/`
 - equivalence:6a48379395ea: en=`/tools/employment-contract/nigeria`, fr=`/fr/tools/contrat-travail/nigeria`; x-default=`/tools/employment-contract/nigeria`
+- equivalence:6a4b9989f7e0: en=`/agriculture/coffee-calculator/`, fr=`/fr/agriculture/coffee-calculator/`, sw=`/sw/zana/kikokotoo-kahawa/`; x-default=`/agriculture/coffee-calculator/`
 - equivalence:6a5394ef7867: en=`/agriculture/market-prices-trade-post-harvest/`; x-default=`/agriculture/market-prices-trade-post-harvest/`
 - equivalence:6a612a2a2b73: en=`/jamb/crk/1995/`; x-default=`/jamb/crk/1995/`
 - equivalence:6a7b05cbf506: en=`/jamb/physics/2004/`; x-default=`/jamb/physics/2004/`
@@ -5221,6 +5227,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6b1e1bec9ebb: en=`/madagascar/mg-paye`, fr=`/fr/madagascar/calculateur-salaire-net/`, sw=`/sw/madagascar/kikokotoo-kodi-mshahara/`; x-default=`/madagascar/mg-paye`
 - equivalence:6b237fed4d58: en=`/blog/uganda-vat-guide-2026/`; x-default=`/blog/uganda-vat-guide-2026/`
 - equivalence:6b3f318be5a0: en=`/agriculture/seed-rate/cameroon`, fr=`/fr/agriculture/seed-rate/cameroon`, sw=`/sw/kilimo/kiwango-cha-mbegu/cameroon/`; x-default=`/agriculture/seed-rate/cameroon`
+- equivalence:6b498dc059ee: en=`/tools/funeral-cost/`, fr=`/fr/tools/planification-funerailles/`, sw=`/sw/zana/mpango-wa-gharama-za-mazishi/`; x-default=`/tools/funeral-cost/`
 - equivalence:6b5afa771b91: en=`/cars/cote-divoire/toyota/corolla/2018/`, fr=`/fr/cars/cote-divoire/toyota/corolla/2018/`; x-default=`/cars/cote-divoire/toyota/corolla/2018/`
 - equivalence:6b70d622c344: en=`/tools/afrokitchen/recipes/bilola-gq/`; x-default=`/tools/afrokitchen/recipes/bilola-gq/`
 - equivalence:6b726e7c9e0d: en=`/cars/rwanda/toyota/vitz-yaris/2015/`, fr=`/fr/cars/rwanda/toyota/vitz-yaris/2015/`; x-default=`/cars/rwanda/toyota/vitz-yaris/2015/`
@@ -5250,8 +5257,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6c8bb16356aa: en=`/cars/kenya/mazda/demio/`, fr=`/fr/cars/kenya/mazda/demio/`; x-default=`/cars/kenya/mazda/demio/`
 - equivalence:6c92b321bd15: en=`/tools/afrokitchen/recipes/beignets-banane-ga/`; x-default=`/tools/afrokitchen/recipes/beignets-banane-ga/`
 - equivalence:6c94344f7a86: en=`/tools/solar-roi/chad/`, fr=`/fr/tools/roi-solaire/chad/`; x-default=`/tools/solar-roi/chad/`
+- equivalence:6cb6c8b906f6: en=`/tools/side-hustle-tax/`, fr=`/fr/tools/impot-activite-secondaire/`, sw=`/sw/zana/mpango-wa-akiba-ya-kodi-ya-mapato-ya-ziada/`; x-default=`/tools/side-hustle-tax/`
 - equivalence:6cb765f0b5a0: en=`/agriculture/vaccination-schedule/congo-brazzaville`, fr=`/fr/agriculture/vaccination-schedule/congo-brazzaville`; x-default=`/agriculture/vaccination-schedule/congo-brazzaville`
-- equivalence:6cc5c761f8a6: en=`/agriculture/tractor-calculator/`, fr=`/fr/agriculture/tractor-calculator/`; x-default=`/agriculture/tractor-calculator/`
 - equivalence:6cd2a7785adc: en=`/jamb/accounts/1997/`; x-default=`/jamb/accounts/1997/`
 - equivalence:6cd8ec380e60: en=`/agriculture/fertilizer/algeria`, fr=`/fr/agriculture/fertilizer/algeria`, sw=`/sw/kilimo/mbolea/algeria/`; x-default=`/agriculture/fertilizer/algeria`
 - equivalence:6ceaee900aae: en=`/tools/afrokitchen/recipes/burundian-brochettes-bi/`; x-default=`/tools/afrokitchen/recipes/burundian-brochettes-bi/`
@@ -5306,6 +5313,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6f256fcdc242: en=`/blog/cheapest-data-plans-nigeria/`, fr=`/fr/blog/cheapest-data-plans-nigeria/`; x-default=`/blog/cheapest-data-plans-nigeria/`
 - equivalence:6f30890ab1dd: en=`/tools/gratuity-calculator/uganda/`, sw=`/sw/uganda/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/uganda/`
 - equivalence:6f32f7850ce3: fr=`/blog/cotisations-cnps-cote-divoire/`; x-default=`/blog/cotisations-cnps-cote-divoire/`
+- equivalence:6f49aa5cd018: en=`/tools/salary-intelligence/`, fr=`/fr/jobs/salary-benchmarks/`, sw=`/sw/zana/daftari-la-ushahidi-wa-mishahara/`; x-default=`/tools/salary-intelligence/`
 - equivalence:6f674520b627: en=`/cars/kenya/mazda/demio/2017/`, fr=`/fr/cars/kenya/mazda/demio/2017/`; x-default=`/cars/kenya/mazda/demio/2017/`
 - equivalence:6f6b59036767: en=`/blog/salary-after-tax-morocco-2026/`, fr=`/fr/blog/salary-after-tax-morocco-2026/`; x-default=`/blog/salary-after-tax-morocco-2026/`
 - equivalence:6f7ccfa8efc3: sw=`/sw/zana/kadi-za-masomo/`; x-default=`/sw/zana/kadi-za-masomo/`
@@ -5321,7 +5329,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6feaa7c93687: en=`/compare/kenya-vs-tanzania-tax/`, fr=`/fr/compare/kenya-vs-tanzania-tax/`, sw=`/sw/linganisha/kenya-vs-tanzania-kodi/`; x-default=`/compare/kenya-vs-tanzania-tax/`
 - equivalence:70146d4146df: en=`/jamb/english/2011/`; x-default=`/jamb/english/2011/`
 - equivalence:7024482f27e7: en=`/jamb/commerce/2000/`; x-default=`/jamb/commerce/2000/`
-- equivalence:7024c2873e98: en=`/agriculture/farm-budget/`, fr=`/fr/agriculture/farm-budget/`; x-default=`/agriculture/farm-budget/`
 - equivalence:7033efb22665: en=`/angola/`, fr=`/fr/angola/`, sw=`/sw/angola/`; x-default=`/angola/`
 - equivalence:70434f3e6f11: en=`/cars/senegal/mercedes-benz/c-class/2016/`, fr=`/fr/cars/senegal/mercedes-benz/c-class/2016/`; x-default=`/cars/senegal/mercedes-benz/c-class/2016/`
 - equivalence:704c3a3ed345: en=`/tools/real-return/`, fr=`/fr/tools/rendement-reel-inflation/`, sw=`/sw/zana/faida-halisi-baada-ya-mfumuko/`; x-default=`/tools/real-return/`
@@ -5350,6 +5357,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:71b445aa35bf: en=`/tools/prepaid-meter/uganda/`, fr=`/fr/tools/compteur-prepaye/uganda/`; x-default=`/tools/prepaid-meter/uganda/`
 - equivalence:71c42690c16a: en=`/mining/`, fr=`/fr/mining/`; x-default=`/mining/`
 - equivalence:71cc3497d301: en=`/tools/afrokitchen/recipes/sidvudvu-sz/`; x-default=`/tools/afrokitchen/recipes/sidvudvu-sz/`
+- equivalence:71cde7c4f3ac: en=`/tools/solar-calculator/`, fr=`/fr/tools/calculateur-solaire/`, sw=`/sw/zana/kikokotoo-cha-solar/`; x-default=`/tools/solar-calculator/`
 - equivalence:71d71246d0c2: en=`/tools/prepaid-meter/tunisia/`, fr=`/fr/tools/compteur-prepaye/tunisia/`; x-default=`/tools/prepaid-meter/tunisia/`
 - equivalence:721400c2d604: en=`/jamb/physics/1989/`; x-default=`/jamb/physics/1989/`
 - equivalence:721d3db4f9fb: en=`/tools/digital-lending/`, fr=`/fr/tools/taux-credit-digital/`, sw=`/sw/zana/mikopo-ya-kidijitali/`; x-default=`/tools/digital-lending/`
@@ -5362,7 +5370,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:726dec90d2ae: en=`/tools/afrokitchen/recipes/mufete-ao/`; x-default=`/tools/afrokitchen/recipes/mufete-ao/`
 - equivalence:727a13165003: en=`/agriculture/farm-payroll/sierra-leone`, fr=`/fr/agriculture/farm-payroll/sierra-leone`, sw=`/sw/kilimo/mishahara-ya-shamba/sierra-leone/`; x-default=`/agriculture/farm-payroll/sierra-leone`
 - equivalence:727a5d4e58de: en=`/tools/afrokitchen/recipes/kapenta-stew-zm/`; x-default=`/tools/afrokitchen/recipes/kapenta-stew-zm/`
-- equivalence:7286f2290820: en=`/tools/percentage-calc/`, fr=`/fr/tools/calculateur-pourcentage/`; x-default=`/tools/percentage-calc/`
 - equivalence:7292b150d207: en=`/matchday-os/prediction-challenge/`; x-default=`/matchday-os/prediction-challenge/`
 - equivalence:729987ee313c: en=`/cars/cameroon/toyota/corolla/`, fr=`/fr/cars/cameroun/toyota/corolla/`; x-default=`/cars/cameroon/toyota/corolla/`
 - equivalence:72a712d4d375: en=`/tools/prepaid-meter/lesotho/`, fr=`/fr/tools/compteur-prepaye/lesotho/`; x-default=`/tools/prepaid-meter/lesotho/`
@@ -5451,6 +5458,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:76908d7cc407: en=`/tools/halal-compliance/`, fr=`/fr/tools/conformite-halal/`, sw=`/sw/zana/ukaguzi-wa-halal/`; x-default=`/tools/halal-compliance/`
 - equivalence:76925bcdd6e4: en=`/tools/burial-cost/`, fr=`/fr/tools/cout-funerailles/`, sw=`/sw/zana/gharama-za-mazishi/`; x-default=`/tools/burial-cost/`
 - equivalence:769a5068c218: en=`/agriculture/irrigation-weather-climate/`; x-default=`/agriculture/irrigation-weather-climate/`
+- equivalence:76b1a8ed0f42: en=`/tools/job-offer-evaluator/`, fr=`/fr/tools/evaluateur-offre-emploi/`, sw=`/sw/zana/tathmini-ya-ofa-ya-kazi/`; x-default=`/tools/job-offer-evaluator/`
 - equivalence:76b3a2290546: en=`/agriculture/export-docs/guinea-bissau`, fr=`/fr/agriculture/export-docs/guinea-bissau`; x-default=`/agriculture/export-docs/guinea-bissau`
 - equivalence:76bf400e36f5: en=`/tools/work-permit-cost/cote-divoire/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-cote-d-ivoire/`, sw=`/sw/cote-divoire/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/cote-divoire/`
 - equivalence:76c0b2b9492f: en=`/tools/health-contribution/gabon`; x-default=`/tools/health-contribution/gabon`
@@ -5512,8 +5520,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:79627ac257b0: en=`/somalia/`, fr=`/fr/somalia/`, sw=`/sw/somalia/`; x-default=`/somalia/`
 - equivalence:79651ed60d79: en=`/tools/afcon-predictor/`, fr=`/fr/tools/predicteur-can/`, sw=`/sw/zana/utabiri-wa-afcon/`; x-default=`/tools/afcon-predictor/`
 - equivalence:797bd78f9484: en=`/cars/south-africa/toyota/prado/2020/`, fr=`/fr/cars/afrique-du-sud/toyota/prado/2020/`; x-default=`/cars/south-africa/toyota/prado/2020/`
-- equivalence:79879733ceb2: en=`/tools/za-gepf/`, fr=`/fr/tools/za-gepf/`; x-default=`/tools/za-gepf/`
 - equivalence:798855f65f63: en=`/tools/maternity-leave/sierra-leone/`; x-default=`/tools/maternity-leave/sierra-leone/`
+- equivalence:799d4dafff1a: en=`/tools/stock-portfolio/`, fr=`/fr/tools/suivi-portefeuille-actions/`, sw=`/sw/zana/ufuatiliaji-wa-hisa/`; x-default=`/tools/stock-portfolio/`
 - equivalence:79a21280f79a: en=`/cars/algeria/toyota/axio/2019/`, fr=`/fr/cars/algerie/toyota/axio/2019/`; x-default=`/cars/algeria/toyota/axio/2019/`
 - equivalence:79b96532042b: en=`/tools/contractor-vs-employee/republic-of-congo/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-congo-brazzaville/`; x-default=`/tools/contractor-vs-employee/republic-of-congo/`
 - equivalence:79c1ea664dc2: en=`/cars/kenya/kia/sportage/`, fr=`/fr/cars/kenya/kia/sportage/`; x-default=`/cars/kenya/kia/sportage/`
@@ -5568,9 +5576,9 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:7c4273d47e2a: en=`/tools/car-insurance/eswatini`, fr=`/fr/tools/assurance-auto/eswatini`; x-default=`/tools/car-insurance/eswatini`
 - equivalence:7c638911c752: en=`/agriculture/farm-profit/uganda`, fr=`/fr/agriculture/farm-profit/uganda`, sw=`/sw/kilimo/faida-ya-shamba/uganda/`; x-default=`/agriculture/farm-profit/uganda`
 - equivalence:7c6ab3a99c72: en=`/cars/ghana/nissan/x-trail/`, fr=`/fr/cars/ghana/nissan/x-trail/`; x-default=`/cars/ghana/nissan/x-trail/`
+- equivalence:7c6f042cdd95: en=`/agriculture/pesticide-dosage/`, fr=`/fr/agriculture/pesticide-dosage/`, sw=`/sw/zana/kipimo-cha-viuatilifu/`; x-default=`/agriculture/pesticide-dosage/`
 - equivalence:7c6fead12a7d: en=`/jamb/study-plan/`; x-default=`/jamb/study-plan/`
 - equivalence:7c8034b468b9: en=`/tools/pos-agent/`, fr=`/fr/tools/rentabilite-agent-pos/`, sw=`/sw/zana/faida-ya-wakala-pos/`; x-default=`/tools/pos-agent/`
-- equivalence:7c918ce9120d: en=`/agriculture/cooperative-calculator/`, fr=`/fr/agriculture/cooperative-calculator/`; x-default=`/agriculture/cooperative-calculator/`
 - equivalence:7c9a6998cfc3: en=`/cars/ghana/mazda/demio/2017/`, fr=`/fr/cars/ghana/mazda/demio/2017/`; x-default=`/cars/ghana/mazda/demio/2017/`
 - equivalence:7cb38bd33250: en=`/agriculture/farm-payroll/lesotho`, fr=`/fr/agriculture/farm-payroll/lesotho`, sw=`/sw/kilimo/mishahara-ya-shamba/lesotho/`; x-default=`/agriculture/farm-payroll/lesotho`
 - equivalence:7cc0741a4ed6: en=`/tools/cookie-consent/`, fr=`/fr/tools/banniere-consentement-cookies/`, sw=`/sw/zana/kibali-cha-vidakuzi/`; x-default=`/tools/cookie-consent/`
@@ -5611,6 +5619,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:7ecd74d587b5: en=`/cars/angola/toyota/prado/2020/`, fr=`/fr/cars/angola/toyota/prado/2020/`; x-default=`/cars/angola/toyota/prado/2020/`
 - equivalence:7ece059868fc: en=`/tools/afroatlas/country/eswatini/`; x-default=`/tools/afroatlas/country/eswatini/`
 - equivalence:7ed300f83e3b: en=`/cars/botswana/honda/accord/2014/`, fr=`/fr/cars/botswana/honda/accord/2014/`; x-default=`/cars/botswana/honda/accord/2014/`
+- equivalence:7edb23998979: en=`/tools/sadc-roo/`, fr=`/fr/tools/regles-origine-sadc/`, sw=`/sw/zana/kanuni-za-asili-sadc/`; x-default=`/tools/sadc-roo/`
 - equivalence:7eddae06948c: en=`/tools/solar-roi/kenya/`, fr=`/fr/tools/roi-solaire/kenya/`; x-default=`/tools/solar-roi/kenya/`
 - equivalence:7f011a074776: en=`/cars/rwanda/mazda/demio/`, fr=`/fr/cars/rwanda/mazda/demio/`; x-default=`/cars/rwanda/mazda/demio/`
 - equivalence:7f0d3fd64def: en=`/jamb/economics/1988/`; x-default=`/jamb/economics/1988/`
@@ -5656,7 +5665,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:808d1be5ff3e: en=`/tunisia/`, fr=`/fr/tunisie/`, sw=`/sw/tunisia/`; x-default=`/tunisia/`
 - equivalence:809df49dc036: en=`/cars/ghana/toyota/hilux/2020/`, fr=`/fr/cars/ghana/toyota/hilux/2020/`; x-default=`/cars/ghana/toyota/hilux/2020/`
 - equivalence:80ac6b40eff0: en=`/cars/tanzania/toyota/camry/`, fr=`/fr/cars/tanzanie/toyota/camry/`; x-default=`/cars/tanzania/toyota/camry/`
-- equivalence:80b85c5a0954: en=`/crypto/mining-calculator/`, fr=`/fr/crypto/mining-calculator/`; x-default=`/crypto/mining-calculator/`
 - equivalence:80d6e9792735: en=`/tools/fuel-tracker/chad/`, fr=`/fr/tools/suivi-carburant/chad/`; x-default=`/tools/fuel-tracker/chad/`
 - equivalence:80f708336a3a: en=`/cars/tanzania/hyundai/`, fr=`/fr/cars/tanzanie/hyundai/`; x-default=`/cars/tanzania/hyundai/`
 - equivalence:80faba4f5fb2: en=`/dr-congo/`, fr=`/fr/rdc/`, sw=`/sw/dr-congo/`; x-default=`/dr-congo/`
@@ -5682,6 +5690,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:81d2fd8f17a7: en=`/cars/south-africa/lexus/rx/2017/`, fr=`/fr/cars/afrique-du-sud/lexus/rx/2017/`; x-default=`/cars/south-africa/lexus/rx/2017/`
 - equivalence:81d49ebfa630: en=`/agriculture/seed-rate/burundi`, fr=`/fr/agriculture/seed-rate/burundi`, sw=`/sw/kilimo/kiwango-cha-mbegu/burundi/`; x-default=`/agriculture/seed-rate/burundi`
 - equivalence:81ee8ecbc0f4: en=`/cars/tanzania/hyundai/elantra/2018/`, fr=`/fr/cars/tanzanie/hyundai/elantra/2018/`; x-default=`/cars/tanzania/hyundai/elantra/2018/`
+- equivalence:820fe9e63eba: en=`/agriculture/soil-ph/`, fr=`/fr/agriculture/soil-ph/`, sw=`/sw/zana/ph-ya-udongo/`; x-default=`/agriculture/soil-ph/`
 - equivalence:821cfad1410e: en=`/blog/import-duty-nigeria-2026/`, fr=`/fr/blog/import-duty-nigeria-2026/`; x-default=`/blog/import-duty-nigeria-2026/`
 - equivalence:822a0b5f8406: en=`/tools/fuel-tracker/equatorial-guinea/`, fr=`/fr/tools/suivi-carburant/equatorial-guinea/`; x-default=`/tools/fuel-tracker/equatorial-guinea/`
 - equivalence:8247cbe68187: en=`/cars/algeria/toyota/axio/2018/`, fr=`/fr/cars/algerie/toyota/axio/2018/`; x-default=`/cars/algeria/toyota/axio/2018/`
@@ -5705,6 +5714,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:832eac3bee0a: en=`/zambia/zm-paye`, fr=`/fr/zambia/zm-paye`, sw=`/sw/zambia/kikokotoo-kodi-mshahara/`; x-default=`/zambia/zm-paye`
 - equivalence:83311335d7e9: en=`/cars/cote-divoire/honda/cr-v/`, fr=`/fr/cars/cote-divoire/honda/cr-v/`; x-default=`/cars/cote-divoire/honda/cr-v/`
 - equivalence:83351646c815: en=`/tools/scholarship-finder/`, fr=`/fr/tools/recherche-bourses/`, ha=`/ha/kayan-aiki/neman-tallafin-karatu/`, sw=`/sw/zana/udhamini/`; x-default=`/tools/scholarship-finder/`
+- equivalence:8335f20d74fe: en=`/agriculture/tractor-calculator/`, fr=`/fr/agriculture/tractor-calculator/`, sw=`/sw/zana/kikokotoo-trekta/`; x-default=`/agriculture/tractor-calculator/`
 - equivalence:83395a6c4aa4: en=`/engineering/afrodraft/`, fr=`/fr/ingenierie/afrodraft/`, sw=`/sw/zana/afrodraft-cad/`; x-default=`/engineering/afrodraft/`
 - equivalence:835a68def6da: en=`/tools/health-contribution/niger`; x-default=`/tools/health-contribution/niger`
 - equivalence:836105f2d447: en=`/blog/concrete-mix-cement-bags-nigeria/`; x-default=`/blog/concrete-mix-cement-bags-nigeria/`
@@ -5767,7 +5777,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8680212090b4: en=`/developers/`, fr=`/fr/developers/`; x-default=`/developers/`
 - equivalence:8684e08d26f1: en=`/tools/retrenchment-calculator/libya/`, sw=`/sw/libya/kikokotoo-malipo-ya-kuachishwa-kazi/`; x-default=`/tools/retrenchment-calculator/libya/`
 - equivalence:868debbc2f2f: fr=`/fr/widgets/pret-automobile/`; x-default=`/fr/widgets/pret-automobile/`
-- equivalence:86a5f0630928: en=`/tools/mobile-vs-bank/`, fr=`/fr/tools/mobile-money-vs-banque/`, ha=`/ha/kayan-aiki/waya-ko-banki/`; x-default=`/tools/mobile-vs-bank/`
 - equivalence:86aa1fe24119: en=`/agriculture/cassava-processing/uganda`, fr=`/fr/agriculture/cassava-processing/uganda`, sw=`/sw/kilimo/usindikaji-mihogo/uganda/`; x-default=`/agriculture/cassava-processing/uganda`
 - equivalence:86aff58d54a8: en=`/tools/afrokitchen/recipes/mkatra-foutra/`; x-default=`/tools/afrokitchen/recipes/mkatra-foutra/`
 - equivalence:86b4844c0fa3: en=`/tools/employment-contract/togo`, fr=`/fr/tools/contrat-travail/togo`; x-default=`/tools/employment-contract/togo`
@@ -5888,7 +5897,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8becaef6afba: en=`/tools/creator-clip/`, fr=`/fr/tools/decoupe-de-video-pour-createur/`, sw=`/sw/zana/kukata-video-za-mtayarishi/`; x-default=`/tools/creator-clip/`
 - equivalence:8bf90eceefdc: en=`/agriculture/greenhouse/uganda`, fr=`/fr/agriculture/greenhouse/uganda`, sw=`/sw/kilimo/greenhouse/uganda/`; x-default=`/agriculture/greenhouse/uganda`
 - equivalence:8c1453678029: en=`/tools/mini-grid-feasibility/`, fr=`/fr/tools/faisabilite-mini-reseau/`, sw=`/sw/zana/uwezekano-wa-mini-grid/`; x-default=`/tools/mini-grid-feasibility/`
-- equivalence:8c1815e5b659: en=`/tools/side-hustle-tax/`, fr=`/fr/tools/impot-activite-secondaire/`; x-default=`/tools/side-hustle-tax/`
 - equivalence:8c188e1d014f: en=`/agriculture/farm-profit/cote-d-ivoire`, fr=`/fr/agriculture/farm-profit/cote-d-ivoire`, sw=`/sw/kilimo/faida-ya-shamba/cote-divoire/`; x-default=`/agriculture/farm-profit/cote-d-ivoire`
 - equivalence:8c2d2014c5bd: en=`/cars/egypt/ford/`, fr=`/fr/cars/egypte/ford/`; x-default=`/cars/egypt/ford/`
 - equivalence:8c36b11e7140: en=`/tools/solar-roi/benin/`, fr=`/fr/tools/roi-solaire/benin/`; x-default=`/tools/solar-roi/benin/`
@@ -5913,6 +5921,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8ce56b204fbb: en=`/tools/electricity-tariff/algeria/`, fr=`/fr/tools/tarifs-electricite/algeria/`; x-default=`/tools/electricity-tariff/algeria/`
 - equivalence:8d1a7368819e: en=`/cars/cameroon/mazda/`, fr=`/fr/cars/cameroun/mazda/`; x-default=`/cars/cameroon/mazda/`
 - equivalence:8d2f40a48d7c: en=`/tools/electricity-tariff/egypt/`, fr=`/fr/tools/tarifs-electricite/egypt/`; x-default=`/tools/electricity-tariff/egypt/`
+- equivalence:8d42f47f78f9: en=`/tools/thrift-calc/`, fr=`/fr/tools/rendement-tontine-cooperative/`, sw=`/sw/zana/kikokotoo-vikundi-vya-akiba-na-mzunguko/`; x-default=`/tools/thrift-calc/`
 - equivalence:8d5d33f56808: en=`/tools/transliterate/`, fr=`/fr/tools/translitteration/`, sw=`/sw/zana/transliteration-ya-maandishi/`; x-default=`/tools/transliterate/`
 - equivalence:8d60483f2a3e: fr=`/blog/calculer-salaire-net-senegal/`; x-default=`/blog/calculer-salaire-net-senegal/`
 - equivalence:8d736297a1a0: en=`/tools/creator-mind/`, fr=`/fr/tools/idees-de-contenu-pour-createur/`, sw=`/sw/zana/mawazo-ya-mtayarishi/`; x-default=`/tools/creator-mind/`
@@ -5966,7 +5975,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:8f422599f837: en=`/tools/afrokitchen/recipes/rfissa-ma/`; x-default=`/tools/afrokitchen/recipes/rfissa-ma/`
 - equivalence:8f5dea6c334f: en=`/cars/senegal/toyota/vitz-yaris/2015/`, fr=`/fr/cars/senegal/toyota/vitz-yaris/2015/`; x-default=`/cars/senegal/toyota/vitz-yaris/2015/`
 - equivalence:8f80832b6d0c: yo=`/yo/owo-ori-owo-ise/`; x-default=`/yo/owo-ori-owo-ise/`
-- equivalence:8f96c8490f67: en=`/tools/ng-cit/`, fr=`/fr/tools/ng-impot-societes/`, ha=`/ha/kayan-aiki/cit-najeriya/`, yo=`/yo/awon-ise/cit-naijiria/`; x-default=`/tools/ng-cit/`
 - equivalence:8faa6822ae61: en=`/tools/contractor-vs-employee/eswatini/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-eswatini/`; x-default=`/tools/contractor-vs-employee/eswatini/`
 - equivalence:8fb0cd83a341: en=`/tools/car-insurance/south-sudan`, fr=`/fr/tools/assurance-auto/south-sudan`; x-default=`/tools/car-insurance/south-sudan`
 - equivalence:8fc03004a19c: en=`/jamb/biology/1990/`; x-default=`/jamb/biology/1990/`
@@ -5984,7 +5992,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:90525e289829: en=`/agriculture/seed-rate/south-sudan`, fr=`/fr/agriculture/seed-rate/south-sudan`, sw=`/sw/kilimo/kiwango-cha-mbegu/south-sudan/`; x-default=`/agriculture/seed-rate/south-sudan`
 - equivalence:9058e0725b36: en=`/tools/health-contribution/zambia`; x-default=`/tools/health-contribution/zambia`
 - equivalence:905d8715a090: fr=`/fr/tools/school-fees/app`; x-default=`/fr/tools/school-fees/app`
-- equivalence:905e0763fed7: en=`/crypto/profit-calculator/`, fr=`/fr/crypto/profit-calculator/`; x-default=`/crypto/profit-calculator/`
 - equivalence:90712daf2a6d: en=`/agriculture/vaccination-schedule/mali`, fr=`/fr/agriculture/vaccination-schedule/mali`; x-default=`/agriculture/vaccination-schedule/mali`
 - equivalence:9071fc7ce080: en=`/cars/algeria/toyota/prado/`, fr=`/fr/cars/algerie/toyota/prado/`; x-default=`/cars/algeria/toyota/prado/`
 - equivalence:90918a0353e0: en=`/agriculture/seed-rate/south-africa`, fr=`/fr/agriculture/seed-rate/south-africa`, sw=`/sw/kilimo/kiwango-cha-mbegu/south-africa/`; x-default=`/agriculture/seed-rate/south-africa`
@@ -5999,7 +6006,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:912d74307a0a: en=`/tools/afrokitchen/recipes/torborgee-lr/`; x-default=`/tools/afrokitchen/recipes/torborgee-lr/`
 - equivalence:9143053c7522: en=`/cars/botswana/toyota/`, fr=`/fr/cars/botswana/toyota/`; x-default=`/cars/botswana/toyota/`
 - equivalence:915ee8f09a6a: en=`/jamb/commerce/1998/`; x-default=`/jamb/commerce/1998/`
-- equivalence:917d86c93712: en=`/tools/word-counter/`, fr=`/fr/tools/compteur-mots/`; x-default=`/tools/word-counter/`
 - equivalence:91891d159660: en=`/tools/loan-compare/`, fr=`/fr/tools/comparateur-prets/`, sw=`/sw/zana/kilinganisha-mikopo/`; x-default=`/tools/loan-compare/`
 - equivalence:918f682c7de1: en=`/tools/life-insurance-calc/egypt`, fr=`/fr/tools/assurance-vie/egypt`; x-default=`/tools/life-insurance-calc/egypt`
 - equivalence:9196bb74edd7: en=`/tools/pdf-workflow/`, fr=`/fr/tools/flux-pdf/`, sw=`/sw/zana/workflow-ya-pdf/`; x-default=`/tools/pdf-workflow/`
@@ -6007,7 +6013,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:91c9546ed78d: en=`/cars/tunisia/toyota/hilux/2020/`, fr=`/fr/cars/tunisie/toyota/hilux/2020/`; x-default=`/cars/tunisia/toyota/hilux/2020/`
 - equivalence:91cbd36959aa: en=`/cars/cameroon/mercedes-benz/g-wagon/`, fr=`/fr/cars/cameroun/mercedes-benz/g-wagon/`; x-default=`/cars/cameroon/mercedes-benz/g-wagon/`
 - equivalence:91d67f0baf24: en=`/tools/cv-builder/`, fr=`/fr/tools/generateur-cv/`, sw=`/sw/zana/mjenzi-cv/`; x-default=`/tools/cv-builder/`
-- equivalence:91e38b80f25d: en=`/tools/ng-wht/`, fr=`/fr/tools/ng-retenue-source/`, ha=`/ha/kayan-aiki/wht-najeriya/`, yo=`/yo/awon-ise/wht-naijiria/`; x-default=`/tools/ng-wht/`
+- equivalence:91dc099c49c9: en=`/tools/lobola-gift-list/`, fr=`/fr/tools/liste-cadeaux-dot/`, sw=`/sw/zana/orodha-ya-zawadi-za-lobola/`; x-default=`/tools/lobola-gift-list/`
 - equivalence:91e5f2b72ba3: en=`/tools/car-insurance/mozambique`, fr=`/fr/tools/assurance-auto/mozambique`; x-default=`/tools/car-insurance/mozambique`
 - equivalence:91ead444a499: en=`/cars/south-africa/mercedes-benz/g-wagon/`, fr=`/fr/cars/afrique-du-sud/mercedes-benz/g-wagon/`; x-default=`/cars/south-africa/mercedes-benz/g-wagon/`
 - equivalence:91ee4e288723: en=`/cars/mozambique/toyota/prado/2016/`, fr=`/fr/cars/mozambique/toyota/prado/2016/`; x-default=`/cars/mozambique/toyota/prado/2016/`
@@ -6028,9 +6034,9 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:9303c59c8154: en=`/cars/uganda/mazda/`, fr=`/fr/cars/ouganda/mazda/`; x-default=`/cars/uganda/mazda/`
 - equivalence:93049b80ad57: en=`/tools/business-license/`, fr=`/fr/tools/licence-entreprise/`, sw=`/sw/zana/leseni-ya-biashara/`; x-default=`/tools/business-license/`
 - equivalence:930ffcca0a3e: en=`/tools/solar-vs-generator/senegal/`; x-default=`/tools/solar-vs-generator/senegal/`
+- equivalence:9316b96fc4e1: en=`/tools/fire-calc/`, fr=`/fr/tools/calculateur-fire/`, sw=`/sw/zana/kikokotoo-fire/`; x-default=`/tools/fire-calc/`
 - equivalence:93172924c16f: en=`/tools/business-insurance/kenya`; x-default=`/tools/business-insurance/kenya`
 - equivalence:931892fb7997: en=`/blog/egypt-vat-guide-2026/`; x-default=`/blog/egypt-vat-guide-2026/`
-- equivalence:9320d9d3f0da: en=`/tools/za-dividend-tax/`, fr=`/fr/tools/za-impot-dividendes/`; x-default=`/tools/za-dividend-tax/`
 - equivalence:9329d3b942f9: en=`/tools/home-renovation-cost/`, fr=`/fr/tools/cout-renovation/`, sw=`/sw/zana/gharama-ukarabati-wa-nyumba/`; x-default=`/tools/home-renovation-cost/`
 - equivalence:932c0f922ba5: en=`/tools/traditional-calendar/`, fr=`/fr/tools/calendrier-traditionnel/`, sw=`/sw/zana/kalenda-ya-kimila/`; x-default=`/tools/traditional-calendar/`
 - equivalence:9330b4d95e39: en=`/cars/mozambique/honda/accord/2014/`, fr=`/fr/cars/mozambique/honda/accord/2014/`; x-default=`/cars/mozambique/honda/accord/2014/`
@@ -6131,7 +6137,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:98609bcb0b43: en=`/sao-tome/st-vat`, fr=`/fr/sao-tome/st-vat`, sw=`/sw/sao-tome/kikokotoo-vat/`; x-default=`/sao-tome/st-vat`
 - equivalence:9867cd37250a: en=`/jamb/english/1979/`; x-default=`/jamb/english/1979/`
 - equivalence:986b01d98d4f: en=`/tools/business-license/mozambique`; x-default=`/tools/business-license/mozambique`
-- equivalence:9883f68ae481: en=`/tools/pension-proj/`, fr=`/fr/tools/projection-pension-simple/`; x-default=`/tools/pension-proj/`
 - equivalence:989471cf527a: en=`/tools/afrokitchen/recipes/karkanji-td/`; x-default=`/tools/afrokitchen/recipes/karkanji-td/`
 - equivalence:98a0297703da: en=`/tools/prepaid-meter/chad/`, fr=`/fr/tools/compteur-prepaye/chad/`; x-default=`/tools/prepaid-meter/chad/`
 - equivalence:98a44c98916a: en=`/crypto/contract-scanner/`, fr=`/fr/crypto/contract-scanner/`; x-default=`/crypto/contract-scanner/`
@@ -6248,6 +6253,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:9d806ca815d4: en=`/cars/rwanda/hyundai/`, fr=`/fr/cars/rwanda/hyundai/`; x-default=`/cars/rwanda/hyundai/`
 - equivalence:9d8b662924b9: en=`/cars/nigeria/mercedes-benz/c-class/`, fr=`/fr/cars/nigeria/mercedes-benz/c-class/`; x-default=`/cars/nigeria/mercedes-benz/c-class/`
 - equivalence:9d8f864a55d7: en=`/tools/retrenchment-calculator/benin/`; x-default=`/tools/retrenchment-calculator/benin/`
+- equivalence:9d9990ba2127: en=`/tools/quality-sampling/`, fr=`/fr/tools/calculateur-d-echantillonnage-qualite/`, sw=`/sw/zana/sampuli-ya-ubora/`; x-default=`/tools/quality-sampling/`
 - equivalence:9d9ad6e3302c: en=`/tools/motor-third-party/mauritania`; x-default=`/tools/motor-third-party/mauritania`
 - equivalence:9d9fba0246f5: en=`/tools/electricity-tariff/madagascar/`, fr=`/fr/tools/tarifs-electricite/madagascar/`; x-default=`/tools/electricity-tariff/madagascar/`
 - equivalence:9db7050dc7b0: en=`/jamb/biology/2017/`; x-default=`/jamb/biology/2017/`
@@ -6334,7 +6340,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a12884684e88: en=`/cars/botswana/mercedes-benz/c-class/2016/`, fr=`/fr/cars/botswana/mercedes-benz/c-class/2016/`; x-default=`/cars/botswana/mercedes-benz/c-class/2016/`
 - equivalence:a13fd2fc0150: en=`/cars/uganda/hyundai/elantra/2018/`, fr=`/fr/cars/ouganda/hyundai/elantra/2018/`; x-default=`/cars/uganda/hyundai/elantra/2018/`
 - equivalence:a150475aeb87: en=`/tools/pwa-manifest/`, fr=`/fr/tools/generateur-manifest-pwa/`, sw=`/sw/zana/kizalishaji-pwa-manifest/`; x-default=`/tools/pwa-manifest/`
-- equivalence:a1504e9c9859: en=`/agriculture/crop-insurance/`, fr=`/fr/agriculture/crop-insurance/`; x-default=`/agriculture/crop-insurance/`
 - equivalence:a150d11c6514: en=`/cars/algeria/lexus/rx/`, fr=`/fr/cars/algerie/lexus/rx/`; x-default=`/cars/algeria/lexus/rx/`
 - equivalence:a1612f2fee72: en=`/blog/south-africa-vat-registration-2026/`; x-default=`/blog/south-africa-vat-registration-2026/`
 - equivalence:a16d00abf58a: en=`/blog/kenya-nssf-contributions-2026/`; x-default=`/blog/kenya-nssf-contributions-2026/`
@@ -6343,6 +6348,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a1ac6ea1d2fe: en=`/agriculture/irrigation/benin`, fr=`/fr/agriculture/irrigation/benin`, sw=`/sw/kilimo/umwagiliaji/benin/`; x-default=`/agriculture/irrigation/benin`
 - equivalence:a1ad1f055af4: en=`/cars/tanzania/nissan/x-trail/2015/`, fr=`/fr/cars/tanzanie/nissan/x-trail/2015/`; x-default=`/cars/tanzania/nissan/x-trail/2015/`
 - equivalence:a1b3f1022c76: fr=`/fr/widgets/surface-serre/`; x-default=`/fr/widgets/surface-serre/`
+- equivalence:a1b54a846bad: en=`/tools/scientific-calc/`, fr=`/fr/tools/calculatrice-scientifique/`, sw=`/sw/zana/kikokotoo-kisayansi/`; x-default=`/tools/scientific-calc/`
 - equivalence:a1b94f446812: en=`/blog/south-africa-turnover-tax-2026-27/`; x-default=`/blog/south-africa-turnover-tax-2026-27/`
 - equivalence:a1bfdf6c89a1: en=`/cars/cameroon/toyota/noah/2018/`, fr=`/fr/cars/cameroun/toyota/noah/2018/`; x-default=`/cars/cameroon/toyota/noah/2018/`
 - equivalence:a1c2e050a6cc: en=`/tools/afrokitchen/recipes/molokhia-eg/`; x-default=`/tools/afrokitchen/recipes/molokhia-eg/`
@@ -6360,6 +6366,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a25d60e28bee: en=`/tools/afrokitchen/recipes/kondowole-mw/`; x-default=`/tools/afrokitchen/recipes/kondowole-mw/`
 - equivalence:a2714ebc4422: en=`/agriculture/livestock-feed/ghana`, fr=`/fr/agriculture/livestock-feed/ghana`, sw=`/sw/kilimo/chakula-cha-mifugo/ghana/`; x-default=`/agriculture/livestock-feed/ghana`
 - equivalence:a282166e749a: en=`/cars/ghana/ford/ranger/2018/`, fr=`/fr/cars/ghana/ford/ranger/2018/`; x-default=`/cars/ghana/ford/ranger/2018/`
+- equivalence:a28c7d80e9b0: en=`/tools/production-cost/`, fr=`/fr/tools/cout-production/`, sw=`/sw/zana/gharama-ya-uzalishaji/`; x-default=`/tools/production-cost/`
 - equivalence:a28e6b35d72a: en=`/jamb/english/2013/`; x-default=`/jamb/english/2013/`
 - equivalence:a29d9ec674b2: en=`/tools/afrokitchen/collections/west-african-street-food/`; x-default=`/tools/afrokitchen/collections/west-african-street-food/`
 - equivalence:a2a93b8d9835: en=`/tools/gas-lpg-cost/angola/`, fr=`/fr/tools/calculateur-du-cout-du-gaz-gpl-angola/`; x-default=`/tools/gas-lpg-cost/angola/`
@@ -6380,7 +6387,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a3375f0c8354: en=`/agriculture/farm-profit/algeria`, fr=`/fr/agriculture/farm-profit/algeria`, sw=`/sw/kilimo/faida-ya-shamba/algeria/`; x-default=`/agriculture/farm-profit/algeria`
 - equivalence:a33b36fa5eda: en=`/cars/kenya/kia/sportage/2017/`, fr=`/fr/cars/kenya/kia/sportage/2017/`; x-default=`/cars/kenya/kia/sportage/2017/`
 - equivalence:a33d054cd537: en=`/cars/mozambique/mercedes-benz/`, fr=`/fr/cars/mozambique/mercedes-benz/`; x-default=`/cars/mozambique/mercedes-benz/`
-- equivalence:a3455ebc25d2: en=`/tools/factory-setup-cost/`, fr=`/fr/tools/cout-installation-usine/`; x-default=`/tools/factory-setup-cost/`
 - equivalence:a3476593e3b2: en=`/tools/afrokitchen/countries/central-african-republic/`; x-default=`/tools/afrokitchen/countries/central-african-republic/`
 - equivalence:a348cdc059ac: en=`/tools/electricity-tariff/`, fr=`/fr/tools/tarifs-electricite/`, sw=`/sw/zana/kikokotoo-tariff-ya-umeme/`; x-default=`/tools/electricity-tariff/`
 - equivalence:a35385f5d4b6: en=`/tools/rental-yield/`, fr=`/fr/tools/rendement-locatif/`, sw=`/sw/zana/faida-kupangisha/`; x-default=`/tools/rental-yield/`
@@ -6398,7 +6404,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a3dab8fc85f8: fr=`/fr/widgets/convertisseur-devises/`; x-default=`/fr/widgets/convertisseur-devises/`
 - equivalence:a3e71f501394: en=`/blog/mortgage-calculator-nigeria-homebuyer/`, fr=`/fr/blog/mortgage-calculator-nigeria-homebuyer/`; x-default=`/blog/mortgage-calculator-nigeria-homebuyer/`
 - equivalence:a3ed8fa2050e: fr=`/fr/widgets/verification-prix-intrants/`; x-default=`/fr/widgets/verification-prix-intrants/`
-- equivalence:a40699f1b878: en=`/tools/ng-cgt/`, fr=`/fr/tools/ng-plus-value/`, ha=`/ha/kayan-aiki/cgt-najeriya/`; x-default=`/tools/ng-cgt/`
 - equivalence:a40a70260409: en=`/cars/uganda/lexus/`, fr=`/fr/cars/ouganda/lexus/`; x-default=`/cars/uganda/lexus/`
 - equivalence:a42ab2e980a1: en=`/cars/zambia/toyota/prado/2016/`, fr=`/fr/cars/zambie/toyota/prado/2016/`; x-default=`/cars/zambia/toyota/prado/2016/`
 - equivalence:a42caf7fdce3: en=`/tools/africa-conflict/conflicts/south-sudan-conflict/`; x-default=`/tools/africa-conflict/conflicts/south-sudan-conflict/`
@@ -6441,6 +6446,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a5d5954f6d4c: en=`/tools/tenancy-agreement/djibouti`, fr=`/fr/tools/contrat-bail/djibouti`; x-default=`/tools/tenancy-agreement/djibouti`
 - equivalence:a5dd926861a0: en=`/tools/afrokitchen/recipes/mbakbaka-ly/`; x-default=`/tools/afrokitchen/recipes/mbakbaka-ly/`
 - equivalence:a5eea09ce431: en=`/tools/gym-cost-compare/`, fr=`/fr/tools/comparateur-cout-salle-sport/`, sw=`/sw/zana/kulinganisha-gharama-za-gym/`; x-default=`/tools/gym-cost-compare/`
+- equivalence:a5f52edc8d07: en=`/tools/word-counter/`, fr=`/fr/tools/compteur-mots/`, sw=`/sw/zana/kihesabu-maneno/`; x-default=`/tools/word-counter/`
 - equivalence:a60f9f4d40fb: fr=`/fr/widgets/ratio-taille-hanches/`; x-default=`/fr/widgets/ratio-taille-hanches/`
 - equivalence:a629d769e099: en=`/tools/paygo-solar/cameroon/`; x-default=`/tools/paygo-solar/cameroon/`
 - equivalence:a634156bc56d: en=`/api/docs/`, fr=`/fr/docs/api/changelog`; x-default=`/api/docs/`
@@ -6464,7 +6470,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a7034827656b: fr=`/fr/blog/wave-vs-orange-money-senegal-2026/`; x-default=`/fr/blog/wave-vs-orange-money-senegal-2026/`
 - equivalence:a708657b1b3a: en=`/tools/podcast-monetization/`, fr=`/fr/tools/monetisation-podcast/`, sw=`/sw/zana/mapato-ya-podcast/`; x-default=`/tools/podcast-monetization/`
 - equivalence:a70d2d9b2514: en=`/agriculture/farm-loans/cameroon`, fr=`/fr/agriculture/farm-loans/cameroon`, sw=`/sw/kilimo/mikopo-ya-shamba/cameroon/`; x-default=`/agriculture/farm-loans/cameroon`
-- equivalence:a70e48256a70: en=`/agriculture/storage-loss/`, fr=`/fr/agriculture/storage-loss/`; x-default=`/agriculture/storage-loss/`
 - equivalence:a71276fefd1b: en=`/tools/car-import-cost/zambia/`, fr=`/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-zambie/`; x-default=`/tools/car-import-cost/zambia/`
 - equivalence:a71b9eb5bf1f: en=`/tools/maternity-leave/`, fr=`/fr/tools/conge-maternite-paternite/`, sw=`/sw/zana/kikokotoo-likizo-ya-uzazi/`; x-default=`/tools/maternity-leave/`
 - equivalence:a71dff51cdc8: en=`/agriculture/farm-loans/ethiopia`, fr=`/fr/agriculture/farm-loans/ethiopia`, sw=`/sw/kilimo/mikopo-ya-shamba/ethiopia/`; x-default=`/agriculture/farm-loans/ethiopia`
@@ -6495,7 +6500,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a86c4e3307f2: en=`/tools/prepaid-meter/mauritania/`, fr=`/fr/tools/compteur-prepaye/mauritania/`; x-default=`/tools/prepaid-meter/mauritania/`
 - equivalence:a882b3758f54: en=`/cars/ethiopia/kia/sportage/2017/`, fr=`/fr/cars/ethiopie/kia/sportage/2017/`; x-default=`/cars/ethiopia/kia/sportage/2017/`
 - equivalence:a89a960cc23a: fr=`/fr/widgets/marge-abonnement/`; x-default=`/fr/widgets/marge-abonnement/`
-- equivalence:a8a0b5351d9a: en=`/tools/meta-tag-gen/`, fr=`/fr/tools/generateur-meta/`; x-default=`/tools/meta-tag-gen/`
 - equivalence:a8b1c4e5fb59: en=`/tools/bnpl-calc/`, fr=`/fr/tools/cout-bnpl/`, sw=`/sw/zana/lipa-sasa-au-baadaye/`; x-default=`/tools/bnpl-calc/`
 - equivalence:a8b3ef98ff9c: en=`/agriculture/farm-profit/eswatini`, fr=`/fr/agriculture/farm-profit/eswatini`, sw=`/sw/kilimo/faida-ya-shamba/eswatini/`; x-default=`/agriculture/farm-profit/eswatini`
 - equivalence:a8bfc41f7b58: en=`/tools/afroatlas/country/burundi/`; x-default=`/tools/afroatlas/country/burundi/`
@@ -6513,6 +6517,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a9267502e177: en=`/tools/betting-tax/`, fr=`/fr/tools/taxe-paris-sportifs/`, sw=`/sw/zana/kodi-ya-kamari/`; x-default=`/tools/betting-tax/`
 - equivalence:a9343a51bde2: en=`/cars/cote-divoire/toyota/`, fr=`/fr/cars/cote-divoire/toyota/`; x-default=`/cars/cote-divoire/toyota/`
 - equivalence:a938037c1ded: en=`/tools/concrete-mix/`, fr=`/fr/tools/dosage-beton/`, sw=`/sw/zana/mchanganyiko-wa-zege/`; x-default=`/tools/concrete-mix/`
+- equivalence:a94d4881bc65: en=`/agriculture/commodity-prices/`, fr=`/fr/agriculture/commodity-prices/`, ha=`/ha/kayan-aiki/farashin-kayayyakin-gona/`, sw=`/sw/zana/bei-za-mazao/`; x-default=`/agriculture/commodity-prices/`
 - equivalence:a95a2f62c260: en=`/tools/freelancer-rate/senegal/`, fr=`/fr/tools/calculateur-de-tarif-independant-senegal/`; x-default=`/tools/freelancer-rate/senegal/`
 - equivalence:a95c1fd524c1: en=`/agriculture/input-prices/ethiopia`, fr=`/fr/agriculture/input-prices/ethiopia`, sw=`/sw/kilimo/bei-za-pembejeo/ethiopia/`; x-default=`/agriculture/input-prices/ethiopia`
 - equivalence:a95c291c4722: en=`/tools/tin-guide/zambia`, sw=`/sw/zana/mwongozo-tin/zambia/`; x-default=`/tools/tin-guide/zambia`
@@ -6568,6 +6573,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ab391a852338: en=`/cars/cameroon/hyundai/elantra/2018/`, fr=`/fr/cars/cameroun/hyundai/elantra/2018/`; x-default=`/cars/cameroon/hyundai/elantra/2018/`
 - equivalence:ab4475452c07: en=`/tools/health-contribution/djibouti`; x-default=`/tools/health-contribution/djibouti`
 - equivalence:ab51772a595b: en=`/tools/afrokitchen/recipes/akoume-tg/`; x-default=`/tools/afrokitchen/recipes/akoume-tg/`
+- equivalence:ab5a5d180174: en=`/tools/student-loan/`, fr=`/fr/tools/pret-etudiant/`, sw=`/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/`; x-default=`/tools/student-loan/`
 - equivalence:ab5a8be641dc: en=`/blog/nigeria-passport-renewal-documents-checklist/`; x-default=`/blog/nigeria-passport-renewal-documents-checklist/`
 - equivalence:ab60ddabe57c: en=`/tools/inventory/`, fr=`/fr/tools/gestion-stocks/`, sw=`/sw/zana/kifuatiliaji-inventory/`; x-default=`/tools/inventory/`
 - equivalence:ab9494db543e: en=`/tools/maternity-leave/south-sudan/`; x-default=`/tools/maternity-leave/south-sudan/`
@@ -6660,6 +6666,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:af6207fe1fc9: en=`/tools/afrokitchen/recipes/chorba-frik-dz/`; x-default=`/tools/afrokitchen/recipes/chorba-frik-dz/`
 - equivalence:af8805fcff01: en=`/tools/health-contribution/libya`; x-default=`/tools/health-contribution/libya`
 - equivalence:af9fc1374833: en=`/tools/afrokitchen/recipes/mbongo-tchobi-cm/`; x-default=`/tools/afrokitchen/recipes/mbongo-tchobi-cm/`
+- equivalence:afa237656fef: en=`/tools/remittance-v2/`, fr=`/fr/tools/transfert-v2/`, sw=`/sw/zana/ulinganisho-uhamishaji-pesa-kina/`; x-default=`/tools/remittance-v2/`
 - equivalence:afa70df0eb43: en=`/tools/visa-checker/cote-d-ivoire`; x-default=`/tools/visa-checker/cote-d-ivoire`
 - equivalence:afad54ac3b00: en=`/cars/ethiopia/nissan/x-trail/2015/`, fr=`/fr/cars/ethiopie/nissan/x-trail/2015/`; x-default=`/cars/ethiopia/nissan/x-trail/2015/`
 - equivalence:afb5bf97c526: en=`/tools/health-contribution/ghana`; x-default=`/tools/health-contribution/ghana`
@@ -6686,7 +6693,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b095efc938ae: en=`/tools/afroatlas/country/benin/`; x-default=`/tools/afroatlas/country/benin/`
 - equivalence:b09ad9d3b5fd: en=`/tools/work-permit-cost/dr-congo/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-rdc/`; x-default=`/tools/work-permit-cost/dr-congo/`
 - equivalence:b0c978035f4e: en=`/crypto/arbitrage/`, fr=`/fr/crypto/arbitrage/`; x-default=`/crypto/arbitrage/`
-- equivalence:b0cd495ebead: en=`/tools/graphic-design-pricing/`, fr=`/fr/tools/prix-design-graphique/`; x-default=`/tools/graphic-design-pricing/`
 - equivalence:b0ce5ae6dd06: en=`/blog/afcfta-import-duties-africa-2026/`, fr=`/fr/blog/afcfta-import-duties-africa-2026/`; x-default=`/blog/afcfta-import-duties-africa-2026/`
 - equivalence:b0ceeb1e093c: en=`/agriculture/irrigation/seychelles`, fr=`/fr/agriculture/irrigation/seychelles`, sw=`/sw/kilimo/umwagiliaji/seychelles/`; x-default=`/agriculture/irrigation/seychelles`
 - equivalence:b0e70d749a8d: en=`/tools/work-permit-cost/mauritania/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mauritanie/`; x-default=`/tools/work-permit-cost/mauritania/`
@@ -6699,7 +6705,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b12b02e8d87c: en=`/tools/afrokitchen/recipes/rechta-algeroise-dz/`; x-default=`/tools/afrokitchen/recipes/rechta-algeroise-dz/`
 - equivalence:b12f012e70c2: en=`/tools/creator-repurpose/`, fr=`/fr/tools/reutilisation-de-contenu-pour-createur/`, sw=`/sw/zana/kubadilisha-maudhui-kwa-majukwaa/`; x-default=`/tools/creator-repurpose/`
 - equivalence:b141c4286a5d: en=`/cars/mozambique/nissan/x-trail/`, fr=`/fr/cars/mozambique/nissan/x-trail/`; x-default=`/cars/mozambique/nissan/x-trail/`
-- equivalence:b17aa1478373: en=`/tools/favicon-generator/`, fr=`/fr/tools/generateur-favicon/`; x-default=`/tools/favicon-generator/`
 - equivalence:b18599e5ae02: en=`/tools/workers-comp/equatorial-guinea`; x-default=`/tools/workers-comp/equatorial-guinea`
 - equivalence:b18d3f832d75: en=`/cars/angola/lexus/rx/`, fr=`/fr/cars/angola/lexus/rx/`; x-default=`/cars/angola/lexus/rx/`
 - equivalence:b19bbfc76015: en=`/eritrea/er-vat`, fr=`/fr/eritrea/er-vat`, sw=`/sw/eritrea/kikokotoo-vat/`; x-default=`/eritrea/er-vat`
@@ -6760,6 +6765,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b4802f1a8538: en=`/matchday-os/`; x-default=`/matchday-os/`
 - equivalence:b48167ef8ce7: en=`/tools/health-contribution/botswana`; x-default=`/tools/health-contribution/botswana`
 - equivalence:b484b1b3f8a3: en=`/tools/route-cost/`, fr=`/fr/tools/calculateur-du-cout-d-un-trajet/`, sw=`/sw/zana/gharama-njia-za-logistics/`; x-default=`/tools/route-cost/`
+- equivalence:b48611f0726f: en=`/tools/fraction-calc/`, fr=`/fr/tools/calculateur-fractions/`, sw=`/sw/zana/kikokotoo-sehemu/`; x-default=`/tools/fraction-calc/`
 - equivalence:b48b42b5133d: en=`/agriculture/livestock-feed/cameroon`, fr=`/fr/agriculture/livestock-feed/cameroon`, sw=`/sw/kilimo/chakula-cha-mifugo/cameroon/`; x-default=`/agriculture/livestock-feed/cameroon`
 - equivalence:b48b774ebbe1: en=`/tools/tenancy-agreement/comoros`, fr=`/fr/tools/contrat-bail/comoros`; x-default=`/tools/tenancy-agreement/comoros`
 - equivalence:b49433f6e63b: en=`/tools/workers-comp/tanzania`; x-default=`/tools/workers-comp/tanzania`
@@ -6769,6 +6775,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b4c40998a6e9: fr=`/fr/blog/tva-maroc-taux-calcul/`; x-default=`/fr/blog/tva-maroc-taux-calcul/`
 - equivalence:b4cc9d738242: en=`/agriculture/fertilizer/south-africa`, fr=`/fr/agriculture/fertilizer/south-africa`, sw=`/sw/kilimo/mbolea/south-africa/`; x-default=`/agriculture/fertilizer/south-africa`
 - equivalence:b4d9931d728a: en=`/cars/nigeria/honda/cr-v/2020/`, fr=`/fr/cars/nigeria/honda/cr-v/2020/`; x-default=`/cars/nigeria/honda/cr-v/2020/`
+- equivalence:b4dd919852eb: en=`/tools/guard-service-cost/`, fr=`/fr/tools/cout-gardiennage/`, sw=`/sw/zana/gharama-ya-huduma-ya-ulinzi/`; x-default=`/tools/guard-service-cost/`
 - equivalence:b4e1712da114: en=`/tools/afrokitchen/recipes/mloukhia-tn/`; x-default=`/tools/afrokitchen/recipes/mloukhia-tn/`
 - equivalence:b4e5ef745c25: en=`/cars/tanzania/kia/`, fr=`/fr/cars/tanzanie/kia/`; x-default=`/cars/tanzania/kia/`
 - equivalence:b4ebbba52a6e: en=`/cote-divoire/ci-paye`, fr=`/fr/cote-divoire/calculateur-salaire-net`, sw=`/sw/cote-divoire/kikokotoo-kodi-mshahara/`; x-default=`/cote-divoire/ci-paye`
@@ -6844,6 +6851,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b82451b08a62: en=`/blog/salary-negotiation-africa-2026/`; x-default=`/blog/salary-negotiation-africa-2026/`
 - equivalence:b838f314e9a8: en=`/tools/afrokitchen/recipes/jollof-rice-gq/`; x-default=`/tools/afrokitchen/recipes/jollof-rice-gq/`
 - equivalence:b862e7f67ceb: en=`/cars/tunisia/lexus/es/`, fr=`/fr/cars/tunisie/lexus/es/`; x-default=`/cars/tunisia/lexus/es/`
+- equivalence:b863cc222ce3: en=`/tools/payment-comparator/`, fr=`/fr/tools/comparateur-paiements/`, sw=`/sw/zana/kilinganisha-ada-za-malipo-b2b/`; x-default=`/tools/payment-comparator/`
 - equivalence:b867cf9c8dc6: fr=`/fr/widgets/rendement-investissement/`; x-default=`/fr/widgets/rendement-investissement/`
 - equivalence:b8728f481422: en=`/tools/domestic-worker/cote-divoire/`, fr=`/fr/tools/calculateur-de-salaire-d-un-employe-de-maison-cote-d-ivoire/`; x-default=`/tools/domestic-worker/cote-divoire/`
 - equivalence:b88f22e1f57a: en=`/tools/creator-money/`, fr=`/fr/tools/revenus-du-createur/`, sw=`/sw/zana/mapato-ya-mtayarishi/`; x-default=`/tools/creator-money/`
@@ -6867,7 +6875,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:b960bff30152: en=`/tools/afrokitchen/recipes/funge-de-bombo-ao/`; x-default=`/tools/afrokitchen/recipes/funge-de-bombo-ao/`
 - equivalence:b960c7e16c48: fr=`/fr/docs/api/vat/calculate`; x-default=`/fr/docs/api/vat/calculate`
 - equivalence:b960f880b5a7: en=`/tools/health-contribution/seychelles`; x-default=`/tools/health-contribution/seychelles`
-- equivalence:b98f16fe5b13: sw=`/sw/zana/tathmini-ya-ofa-ya-kazi/`; x-default=`/sw/zana/tathmini-ya-ofa-ya-kazi/`
 - equivalence:b99a681fd4aa: en=`/cars/zambia/toyota/axio/2019/`, fr=`/fr/cars/zambie/toyota/axio/2019/`; x-default=`/cars/zambia/toyota/axio/2019/`
 - equivalence:b99ca30576d2: en=`/tools/afrokitchen/recipes/fouti-gn/`; x-default=`/tools/afrokitchen/recipes/fouti-gn/`
 - equivalence:b9b6abda495a: en=`/tools/employee-cost/ethiopia/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-ethiopie/`; x-default=`/tools/employee-cost/ethiopia/`
@@ -6886,6 +6893,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ba24040badbf: en=`/tools/visa-checker/niger`; x-default=`/tools/visa-checker/niger`
 - equivalence:ba298b13a78f: en=`/tools/afroatlas/country/burkina-faso/`; x-default=`/tools/afroatlas/country/burkina-faso/`
 - equivalence:ba2a34e06008: en=`/agriculture/greenhouse/cote-d-ivoire`, fr=`/fr/agriculture/greenhouse/cote-d-ivoire`, sw=`/sw/kilimo/greenhouse/cote-divoire/`; x-default=`/agriculture/greenhouse/cote-d-ivoire`
+- equivalence:ba315bb76084: en=`/agriculture/farm-budget/`, fr=`/fr/agriculture/farm-budget/`, sw=`/sw/zana/bajeti-ya-shamba/`; x-default=`/agriculture/farm-budget/`
 - equivalence:ba3614c3e057: en=`/tools/afrokitchen/recipes/binch-akara-sl/`; x-default=`/tools/afrokitchen/recipes/binch-akara-sl/`
 - equivalence:ba48323df251: en=`/cars/cameroon/honda/cr-v/2020/`, fr=`/fr/cars/cameroun/honda/cr-v/2020/`; x-default=`/cars/cameroon/honda/cr-v/2020/`
 - equivalence:ba4e651c79ac: en=`/tools/electricity-tariff/guinea-bissau/`, fr=`/fr/tools/tarifs-electricite/guinea-bissau/`; x-default=`/tools/electricity-tariff/guinea-bissau/`
@@ -6920,7 +6928,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:bb84a8a98ea3: en=`/cars/zambia/honda/accord/`, fr=`/fr/cars/zambie/honda/accord/`; x-default=`/cars/zambia/honda/accord/`
 - equivalence:bba744d0edbb: en=`/tools/car-import-cost/ghana/`, fr=`/fr/tools/calculateur-du-cout-d-importation-d-un-vehicule-ghana/`; x-default=`/tools/car-import-cost/ghana/`
 - equivalence:bbbadd843f63: en=`/agriculture/farm-loans/egypt`, fr=`/fr/agriculture/farm-loans/egypt`, sw=`/sw/kilimo/mikopo-ya-shamba/egypt/`; x-default=`/agriculture/farm-loans/egypt`
-- equivalence:bbc0892d8e1f: en=`/tools/salary-intelligence/`, fr=`/fr/jobs/salary-benchmarks/`; x-default=`/tools/salary-intelligence/`
 - equivalence:bbc3dfabe001: en=`/agriculture/vaccination-schedule/guinea`, fr=`/fr/agriculture/vaccination-schedule/guinea`; x-default=`/agriculture/vaccination-schedule/guinea`
 - equivalence:bbc4d0cabde5: en=`/cars/kenya/nissan/x-trail/`, fr=`/fr/cars/kenya/nissan/x-trail/`; x-default=`/cars/kenya/nissan/x-trail/`
 - equivalence:bbccfd2d5ab5: en=`/tools/mortgage-calculator/`, fr=`/fr/tools/calculateur-hypothecaire/`, sw=`/sw/zana/kikokotoo-mkopo-wa-nyumba/`; x-default=`/tools/mortgage-calculator/`
@@ -7115,7 +7122,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c560d3abe2f8: en=`/tools/prepaid-meter/morocco/`, fr=`/fr/tools/compteur-prepaye/morocco/`; x-default=`/tools/prepaid-meter/morocco/`
 - equivalence:c56e05ef310b: en=`/cars/cameroon/mercedes-benz/c-class/`, fr=`/fr/cars/cameroun/mercedes-benz/c-class/`; x-default=`/cars/cameroon/mercedes-benz/c-class/`
 - equivalence:c574018c949a: en=`/tools/streaming-royalties/`, fr=`/fr/tools/redevances-streaming-musical/`; x-default=`/tools/streaming-royalties/`
-- equivalence:c5816c8f8059: en=`/tools/fire-calc/`, fr=`/fr/tools/calculateur-fire/`; x-default=`/tools/fire-calc/`
 - equivalence:c58cd28ceda4: en=`/blog/kenya-passport-renewal-documents-checklist/`; x-default=`/blog/kenya-passport-renewal-documents-checklist/`
 - equivalence:c59a88e3325b: en=`/blog/paint-quantity-per-room-kenya/`; x-default=`/blog/paint-quantity-per-room-kenya/`
 - equivalence:c5a844944966: en=`/tools/contractor-vs-employee/angola/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-angola/`; x-default=`/tools/contractor-vs-employee/angola/`
@@ -7174,6 +7180,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c80ae98ce791: en=`/cars/angola/nissan/`, fr=`/fr/cars/angola/nissan/`; x-default=`/cars/angola/nissan/`
 - equivalence:c817c5736f00: en=`/tools/africa-flight/`, fr=`/fr/tools/prix-vols-afrique/`, sw=`/sw/zana/safari-za-ndege-afrika/`; x-default=`/tools/africa-flight/`
 - equivalence:c8213bf51fcd: en=`/jamb/english/1987/`; x-default=`/jamb/english/1987/`
+- equivalence:c83561a5a54f: en=`/tools/graphic-design-pricing/`, fr=`/fr/tools/prix-design-graphique/`, sw=`/sw/zana/bei-ya-ubunifu-wa-picha/`; x-default=`/tools/graphic-design-pricing/`
 - equivalence:c83d1663b88a: en=`/tools/retrenchment-calculator/niger/`; x-default=`/tools/retrenchment-calculator/niger/`
 - equivalence:c84012335dc1: en=`/afrowork/whatsapp/`; x-default=`/afrowork/whatsapp/`
 - equivalence:c84e2f4a5ba5: en=`/tools/funeral-insurance/ghana`, fr=`/fr/tools/assurance-obseques/ghana`; x-default=`/tools/funeral-insurance/ghana`
@@ -7197,6 +7204,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:c90bb91ee993: en=`/tools/work-permit-cost/mozambique/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-mozambique/`, sw=`/sw/mozambique/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/mozambique/`
 - equivalence:c91296021696: en=`/blog/customs-clearance-time-nigeria-checklist/`; x-default=`/blog/customs-clearance-time-nigeria-checklist/`
 - equivalence:c92cbf18a0b0: fr=`/fr/docs/api/pricing`; x-default=`/fr/docs/api/pricing`
+- equivalence:c935f6740a0c: en=`/agriculture/farm-size-converter/`, fr=`/fr/agriculture/farm-size-converter/`, sw=`/sw/zana/kigeuzi-cha-ukubwa-wa-shamba/`; x-default=`/agriculture/farm-size-converter/`
 - equivalence:c93e9957ab79: en=`/cars/tunisia/honda/`, fr=`/fr/cars/tunisie/honda/`; x-default=`/cars/tunisia/honda/`
 - equivalence:c945762d147b: fr=`/blog/bareme-irpp-cote-divoire/`; x-default=`/blog/bareme-irpp-cote-divoire/`
 - equivalence:c94a304e4392: en=`/tools/color-contrast/`, fr=`/fr/tools/contraste-couleurs/`, sw=`/sw/zana/ukaguzi-contrast/`; x-default=`/tools/color-contrast/`
@@ -7297,6 +7305,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:cd909f940be0: en=`/blog/kenya-land-transfer-documents-stamp-duty-checklist/`; x-default=`/blog/kenya-land-transfer-documents-stamp-duty-checklist/`
 - equivalence:cdb42e22d136: en=`/tools/work-permit-cost/liberia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-liberia/`; x-default=`/tools/work-permit-cost/liberia/`
 - equivalence:cdbaa27cefec: en=`/tools/retrenchment-calculator/sao-tome/`; x-default=`/tools/retrenchment-calculator/sao-tome/`
+- equivalence:cdd236e0762a: en=`/tools/ng-cgt/`, fr=`/fr/tools/ng-plus-value/`, ha=`/ha/kayan-aiki/cgt-najeriya/`, sw=`/sw/zana/kikokotoo-cgt-nigeria/`; x-default=`/tools/ng-cgt/`
 - equivalence:cdd3083ba93b: en=`/tools/african-meal-plan/`, fr=`/fr/tools/plan-repas-africain/`, ha=`/ha/kayan-aiki/abincin-afirka/`, sw=`/sw/zana/mpango-wa-milo-afrika/`; x-default=`/tools/african-meal-plan/`
 - equivalence:cddd3f5b3fab: en=`/tools/contractor-vs-employee/gambia/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-gambie/`; x-default=`/tools/contractor-vs-employee/gambia/`
 - equivalence:cdf064a5b34b: en=`/tools/maternity-leave/zambia/`; x-default=`/tools/maternity-leave/zambia/`
@@ -7381,6 +7390,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d2003bb74f96: fr=`/fr/blog/impot-cameroun-calcul-salaire/`; x-default=`/fr/blog/impot-cameroun-calcul-salaire/`
 - equivalence:d20611ed787a: en=`/tools/work-permit-cost/nigeria/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-nigeria/`, sw=`/sw/nigeria/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/nigeria/`
 - equivalence:d20db7292520: en=`/tools/employee-cost/malawi/`, fr=`/fr/tools/calculateur-du-cout-d-un-salarie-malawi/`, sw=`/sw/malawi/kikokotoo-gharama-ya-mfanyakazi/`; x-default=`/tools/employee-cost/malawi/`
+- equivalence:d20dde6116b3: en=`/tools/pension-proj/`, fr=`/fr/tools/projection-pension-simple/`, sw=`/sw/zana/makadirio-ya-pensheni/`; x-default=`/tools/pension-proj/`
 - equivalence:d213ed19f2ae: en=`/cars/senegal/toyota/camry/2012/`, fr=`/fr/cars/senegal/toyota/camry/2012/`; x-default=`/cars/senegal/toyota/camry/2012/`
 - equivalence:d21691c0a690: en=`/tools/gratuity-calculator/ghana/`, sw=`/sw/ghana/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/ghana/`
 - equivalence:d2180bfdfd4b: en=`/cars/algeria/toyota/corolla/2018/`, fr=`/fr/cars/algerie/toyota/corolla/2018/`; x-default=`/cars/algeria/toyota/corolla/2018/`
@@ -7390,7 +7400,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d24c9e2c5bd3: en=`/tools/afropoints/data-buyers`; x-default=`/tools/afropoints/data-buyers`
 - equivalence:d290416fe920: en=`/tools/afrokitchen/recipes/deleele-zm/`; x-default=`/tools/afrokitchen/recipes/deleele-zm/`
 - equivalence:d29e47ada4b1: en=`/cars/senegal/nissan/`, fr=`/fr/cars/senegal/nissan/`; x-default=`/cars/senegal/nissan/`
-- equivalence:d29f4e96a60e: en=`/tools/sadc-roo/`, fr=`/fr/tools/regles-origine-sadc/`; x-default=`/tools/sadc-roo/`
 - equivalence:d2a3be491015: en=`/tools/solar-vs-generator/kenya/`; x-default=`/tools/solar-vs-generator/kenya/`
 - equivalence:d2a963f72069: en=`/tools/electricity-tariff/uganda/`, fr=`/fr/tools/tarifs-electricite/uganda/`; x-default=`/tools/electricity-tariff/uganda/`
 - equivalence:d2b1b56dd75d: en=`/cars/ghana/toyota/axio/2018/`, fr=`/fr/cars/ghana/toyota/axio/2018/`; x-default=`/cars/ghana/toyota/axio/2018/`
@@ -7414,6 +7423,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:d37d1f0c0e08: en=`/blog/nigerian-diaspora-tax/`, fr=`/fr/blog/nigerian-diaspora-tax/`; x-default=`/blog/nigerian-diaspora-tax/`
 - equivalence:d38dabb55d9d: en=`/tools/inflation-calc/`, fr=`/fr/tools/calculateur-inflation/`, sw=`/sw/zana/kikokotoo-cha-mfumuko-wa-bei/`; x-default=`/tools/inflation-calc/`
 - equivalence:d3c6835aa164: en=`/agriculture/irrigation/central-african-republic`, fr=`/fr/agriculture/irrigation/central-african-republic`, sw=`/sw/kilimo/umwagiliaji/central-african-republic/`; x-default=`/agriculture/irrigation/central-african-republic`
+- equivalence:d3d11ff06f2f: en=`/agriculture/crop-insurance/`, fr=`/fr/agriculture/crop-insurance/`, sw=`/sw/zana/bima-ya-mazao/`; x-default=`/agriculture/crop-insurance/`
 - equivalence:d3fd211f5399: en=`/blog/relocate-nigeria-to-canada-2026/`, fr=`/fr/blog/relocate-nigeria-to-canada-2026/`; x-default=`/blog/relocate-nigeria-to-canada-2026/`
 - equivalence:d40444920bf9: en=`/jamb/biology/1986/`; x-default=`/jamb/biology/1986/`
 - equivalence:d4076bde0b51: en=`/tools/work-permit-cost/namibia/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-namibie/`, sw=`/sw/namibia/kikokotoo-gharama-ya-kibali-cha-kazi/`; x-default=`/tools/work-permit-cost/namibia/`
@@ -7609,7 +7619,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:dc99560b52e5: en=`/tools/afrokitchen/recipes/mofo-gasy/`; x-default=`/tools/afrokitchen/recipes/mofo-gasy/`
 - equivalence:dc99e30754cd: en=`/jamb/crk/1992/`; x-default=`/jamb/crk/1992/`
 - equivalence:dc9e38d40f86: en=`/tools/hospital-cost/`, fr=`/fr/tools/cout-hospitalier/`, ha=`/ha/kayan-aiki/kudin-asibiti/`, sw=`/sw/zana/gharama-za-hospitali/`; x-default=`/tools/hospital-cost/`
-- equivalence:dcb2d7fa61b3: en=`/tools/market-days/`, fr=`/fr/tools/jours-marche/`; x-default=`/tools/market-days/`
 - equivalence:dcca9fd99c79: en=`/cars/uganda/kia/sportage/`, fr=`/fr/cars/ouganda/kia/sportage/`; x-default=`/cars/uganda/kia/sportage/`
 - equivalence:dcccbc81de0c: en=`/tools/business-plan/`, fr=`/fr/tools/plan-affaires/`, sw=`/sw/zana/mpango-wa-biashara/`; x-default=`/tools/business-plan/`
 - equivalence:dcda0fd52189: en=`/cars/uganda/ford/`, fr=`/fr/cars/ouganda/ford/`; x-default=`/cars/uganda/ford/`
@@ -7632,6 +7641,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:dd592895cff5: en=`/tools/age-calculator/`, fr=`/fr/tools/calculateur-age/`, sw=`/sw/zana/kikokotoo-umri/`; x-default=`/tools/age-calculator/`
 - equivalence:dd892648764e: en=`/blog/ghana-wedding-budget-checklist/`; x-default=`/blog/ghana-wedding-budget-checklist/`
 - equivalence:ddbbf851b13b: en=`/cars/zambia/mercedes-benz/e-class/`, fr=`/fr/cars/zambie/mercedes-benz/e-class/`; x-default=`/cars/zambia/mercedes-benz/e-class/`
+- equivalence:ddcdd73822a7: en=`/agriculture/warehouse-receipt/`, fr=`/fr/agriculture/warehouse-receipt/`, sw=`/sw/zana/stakabadhi-ghalani/`; x-default=`/agriculture/warehouse-receipt/`
 - equivalence:dddd1407c69f: en=`/tools/motor-third-party/cameroon`; x-default=`/tools/motor-third-party/cameroon`
 - equivalence:ddeb363d18a1: en=`/jamb/english/2009/`; x-default=`/jamb/english/2009/`
 - equivalence:dded2bb573f1: en=`/cars/namibia/toyota/noah/2018/`, fr=`/fr/cars/namibie/toyota/noah/2018/`; x-default=`/cars/namibia/toyota/noah/2018/`
@@ -7668,7 +7678,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:df9b8016a071: en=`/tools/work-permit-cost/guinea/`, fr=`/fr/tools/estimateur-du-cout-d-un-permis-de-travail-guinee/`; x-default=`/tools/work-permit-cost/guinea/`
 - equivalence:dfa32d491cfb: en=`/tools/employment-contract/cote-d-ivoire`, fr=`/fr/tools/contrat-travail/cote-d-ivoire`; x-default=`/tools/employment-contract/cote-d-ivoire`
 - equivalence:dfae9ad35282: en=`/tools/motor-third-party/lesotho`; x-default=`/tools/motor-third-party/lesotho`
-- equivalence:dfb467e32d8c: en=`/tools/lobola-gift-list/`, fr=`/fr/tools/liste-cadeaux-dot/`; x-default=`/tools/lobola-gift-list/`
 - equivalence:dfb95d952466: en=`/tools/visa-checker/ethiopia`; x-default=`/tools/visa-checker/ethiopia`
 - equivalence:dfcdd00c9e9b: en=`/tools/gratuity-calculator/eritrea/`; x-default=`/tools/gratuity-calculator/eritrea/`
 - equivalence:dfda1d6d7525: en=`/blog/rwanda-digital-vat-online-services-2026/`; x-default=`/blog/rwanda-digital-vat-online-services-2026/`
@@ -7716,7 +7725,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e1b773131a4a: en=`/tools/meta-tag-generator/`, fr=`/fr/tools/generateur-meta-tags/`, sw=`/sw/zana/kizalishaji-meta-tags/`; x-default=`/tools/meta-tag-generator/`
 - equivalence:e1b88b36fca5: en=`/tools/solar-roi/south-africa/`, fr=`/fr/tools/roi-solaire/south-africa/`; x-default=`/tools/solar-roi/south-africa/`
 - equivalence:e1b94a5bea97: en=`/tools/safari-cost/`, fr=`/fr/tools/calculateur-du-cout-d-un-safari/`; x-default=`/tools/safari-cost/`
-- equivalence:e1ccc7ab4dd6: en=`/tools/remittance-v2/`, fr=`/fr/tools/transfert-v2/`; x-default=`/tools/remittance-v2/`
 - equivalence:e1cfbe3cb002: en=`/cars/angola/toyota/camry/2005/`, fr=`/fr/cars/angola/toyota/camry/2005/`; x-default=`/cars/angola/toyota/camry/2005/`
 - equivalence:e1d01fabfbbd: en=`/cars/zambia/toyota/camry/`, fr=`/fr/cars/zambie/toyota/camry/`; x-default=`/cars/zambia/toyota/camry/`
 - equivalence:e1d93ff51076: en=`/agriculture/seed-rate/lesotho`, fr=`/fr/agriculture/seed-rate/lesotho`, sw=`/sw/kilimo/kiwango-cha-mbegu/lesotho/`; x-default=`/agriculture/seed-rate/lesotho`
@@ -7767,7 +7775,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e3f367a28bfb: en=`/agriculture/irrigation/morocco`, fr=`/fr/agriculture/irrigation/morocco`, sw=`/sw/kilimo/umwagiliaji/morocco/`; x-default=`/agriculture/irrigation/morocco`
 - equivalence:e3f5391372cf: en=`/agriculture/export-docs/chad`, fr=`/fr/agriculture/export-docs/chad`; x-default=`/agriculture/export-docs/chad`
 - equivalence:e3f95a569bfc: en=`/tools/visa-checker/botswana`; x-default=`/tools/visa-checker/botswana`
-- equivalence:e3f96f51e8cd: en=`/tools/whatsapp-link/`, fr=`/fr/tools/lien-whatsapp/`, ha=`/ha/kayan-aiki/whatsapp-link/`; x-default=`/tools/whatsapp-link/`
 - equivalence:e3fd7fff5c7f: en=`/agriculture/irrigation/lesotho`, fr=`/fr/agriculture/irrigation/lesotho`, sw=`/sw/kilimo/umwagiliaji/lesotho/`; x-default=`/agriculture/irrigation/lesotho`
 - equivalence:e4013f1c267f: en=`/jamb/physics/1998/`; x-default=`/jamb/physics/1998/`
 - equivalence:e4173640ba45: en=`/telecom/ussd-directory/`, fr=`/fr/telecom/annuaire-codes-ussd/`, ha=`/ha/kayan-aiki/lambobin-ussd/`, sw=`/sw/zana/saraka-ya-misimbo-ussd/`; x-default=`/telecom/ussd-directory/`
@@ -7805,7 +7812,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e5510fddafbc: en=`/health/costs/`; x-default=`/health/costs/`
 - equivalence:e55aa5c12eb0: en=`/tools/interview-prep/`, fr=`/fr/tools/preparation-entretien/`, sw=`/sw/zana/maandalizi-ya-mahojiano/`; x-default=`/tools/interview-prep/`
 - equivalence:e55fa6eb4f09: en=`/agriculture/seed-rate/gabon`, fr=`/fr/agriculture/seed-rate/gabon`, sw=`/sw/kilimo/kiwango-cha-mbegu/gabon/`; x-default=`/agriculture/seed-rate/gabon`
-- equivalence:e564b8a79525: en=`/tools/job-offer-evaluator/`, fr=`/fr/tools/evaluateur-offre-emploi/`; x-default=`/tools/job-offer-evaluator/`
 - equivalence:e568fcbf4329: en=`/compare/egypt-vs-south-africa-tax/`, fr=`/fr/compare/egypt-vs-south-africa-tax/`; x-default=`/compare/egypt-vs-south-africa-tax/`
 - equivalence:e585ebfb6dfc: en=`/tools/book-publishing-cost/`, fr=`/fr/tools/cout-publication-livre/`, sw=`/sw/zana/gharama-ya-kuchapisha-kitabu/`; x-default=`/tools/book-publishing-cost/`
 - equivalence:e59e5a72bcbf: fr=`/fr/docs/api/rates/central-bank`; x-default=`/fr/docs/api/rates/central-bank`
@@ -7833,6 +7839,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:e7006ddb4176: en=`/kenya/`, fr=`/fr/kenya/`, sw=`/sw/kenya/`; x-default=`/kenya/`
 - equivalence:e714569813fa: en=`/blog/kenya-shif-deduction-2026/`; x-default=`/blog/kenya-shif-deduction-2026/`
 - equivalence:e71aebb38ed7: en=`/tools/afrokitchen/recipes/mhadjeb-dz/`; x-default=`/tools/afrokitchen/recipes/mhadjeb-dz/`
+- equivalence:e72bc5528747: en=`/agriculture/storage-loss/`, fr=`/fr/agriculture/storage-loss/`, sw=`/sw/zana/hasara-za-uhifadhi/`; x-default=`/agriculture/storage-loss/`
 - equivalence:e75ebb9e187e: en=`/tools/afrokitchen/recipes/groundnut-soup-gh/`; x-default=`/tools/afrokitchen/recipes/groundnut-soup-gh/`
 - equivalence:e76065f81eda: en=`/tools/afrokitchen/recipes/grilled-fish-creole/`; x-default=`/tools/afrokitchen/recipes/grilled-fish-creole/`
 - equivalence:e760da45a710: en=`/tools/afrostream/university/setup/`, fr=`/fr/tools/installation-de-streaming-a-petit-budget/`; x-default=`/tools/afrostream/university/setup/`
@@ -7935,7 +7942,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:ebfef3b16fcb: en=`/tools/fuel-tracker/mali/`, fr=`/fr/tools/suivi-carburant/mali/`; x-default=`/tools/fuel-tracker/mali/`
 - equivalence:ec1d033d82fb: en=`/cars/cameroon/honda/`, fr=`/fr/cars/cameroun/honda/`; x-default=`/cars/cameroon/honda/`
 - equivalence:ec1e98e5d310: en=`/agriculture/poultry-roi/ethiopia`, fr=`/fr/agriculture/poultry-roi/ethiopia`; x-default=`/agriculture/poultry-roi/ethiopia`
-- equivalence:ec26fcc9ec40: en=`/tools/funeral-cost/`, fr=`/fr/tools/planification-funerailles/`; x-default=`/tools/funeral-cost/`
 - equivalence:ec39433539f6: en=`/cars/ethiopia/toyota/axio/2019/`, fr=`/fr/cars/ethiopie/toyota/axio/2019/`; x-default=`/cars/ethiopia/toyota/axio/2019/`
 - equivalence:ec3cf5deb916: en=`/cars/zambia/ford/ranger/2018/`, fr=`/fr/cars/zambie/ford/ranger/2018/`; x-default=`/cars/zambia/ford/ranger/2018/`
 - equivalence:ec53ce2532ec: en=`/tools/gym-roi-business/`, fr=`/fr/tools/roi-salle-sport/`; x-default=`/tools/gym-roi-business/`
@@ -7973,12 +7979,10 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:eda9f2e28d69: en=`/blog/tax-updates-2026/`; x-default=`/blog/tax-updates-2026/`
 - equivalence:ede9a8651699: en=`/tools/background-remover/`, fr=`/fr/tools/supprimer-arriere-plan/`, sw=`/sw/zana/kiondoa-mandharinyuma/`; x-default=`/tools/background-remover/`
 - equivalence:edef4f73c41b: en=`/cars/kenya/honda/cr-v/`, fr=`/fr/cars/kenya/honda/cr-v/`; x-default=`/cars/kenya/honda/cr-v/`
-- equivalence:edf25d70fef1: en=`/tools/packaging-cost/`, fr=`/fr/tools/cout-emballage/`; x-default=`/tools/packaging-cost/`
 - equivalence:ee0a653081a0: en=`/agriculture/vaccination-schedule/sierra-leone`, fr=`/fr/agriculture/vaccination-schedule/sierra-leone`; x-default=`/agriculture/vaccination-schedule/sierra-leone`
 - equivalence:ee1fa822a647: en=`/tools/contractor-vs-employee/burundi/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-burundi/`; x-default=`/tools/contractor-vs-employee/burundi/`
 - equivalence:ee2fe6d1f82a: en=`/tools/electricity-bill-verify/south-africa/`; x-default=`/tools/electricity-bill-verify/south-africa/`
 - equivalence:ee425f0b2b75: en=`/tools/contractor-vs-employee/rwanda/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-rwanda/`; x-default=`/tools/contractor-vs-employee/rwanda/`
-- equivalence:ee48e43038dc: en=`/tools/student-loan/`, fr=`/fr/tools/pret-etudiant/`; x-default=`/tools/student-loan/`
 - equivalence:ee498d625797: en=`/telecom/tv-compare/`, fr=`/fr/telecom/comparateur-tv-streaming/`, sw=`/sw/zana/kilinganisha-tv-na-streaming/`; x-default=`/telecom/tv-compare/`
 - equivalence:ee5166b1a233: en=`/tools/funeral-insurance/egypt`, fr=`/fr/tools/assurance-obseques/egypt`; x-default=`/tools/funeral-insurance/egypt`
 - equivalence:ee7bffebd709: en=`/jamb/economics/2016/`; x-default=`/jamb/economics/2016/`
@@ -8116,7 +8120,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f5ebe9356c36: en=`/agriculture/harvest-date/benin`, fr=`/fr/agriculture/harvest-date/benin`; x-default=`/agriculture/harvest-date/benin`
 - equivalence:f5ef6473d01d: en=`/agriculture/poultry-roi/nigeria`, fr=`/fr/agriculture/poultry-roi/nigeria`; x-default=`/agriculture/poultry-roi/nigeria`
 - equivalence:f5f38287e325: en=`/tools/visa-checker/sierra-leone`; x-default=`/tools/visa-checker/sierra-leone`
-- equivalence:f5fa087b7b90: en=`/tools/lobola-negotiation-checklist/`, fr=`/fr/tools/checklist-negociation-dot/`; x-default=`/tools/lobola-negotiation-checklist/`
 - equivalence:f60e490b44cb: en=`/cars/namibia/hyundai/elantra/2018/`, fr=`/fr/cars/namibie/hyundai/elantra/2018/`; x-default=`/cars/namibia/hyundai/elantra/2018/`
 - equivalence:f60f61e9810f: en=`/blog/youtube-thumbnail-maker-free/`, fr=`/fr/blog/youtube-thumbnail-maker-free/`; x-default=`/blog/youtube-thumbnail-maker-free/`
 - equivalence:f619bdf82596: en=`/education/afrostudy/`, fr=`/fr/education/afrostudy/`; x-default=`/education/afrostudy/`
@@ -8151,7 +8154,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f7db11db98d2: en=`/tools/waec-calculator/`, fr=`/fr/tools/calculateur-waec/`, ha=`/ha/kayan-aiki/kalkuletan-waec-neco/`, sw=`/sw/zana/kikokotoo-waec-neco/`; x-default=`/tools/waec-calculator/`
 - equivalence:f7dc84b4b9e0: fr=`/fr/widgets/entites-html/`; x-default=`/fr/widgets/entites-html/`
 - equivalence:f7e2706e079f: en=`/tools/water-bill/angola/`; x-default=`/tools/water-bill/angola/`
-- equivalence:f7eafb5ce678: en=`/tools/tailoring-pricing/`, fr=`/fr/tools/tarification-couture/`; x-default=`/tools/tailoring-pricing/`
 - equivalence:f7f6ab72d5d4: en=`/tools/sacco-calc/`, fr=`/fr/tools/calculateur-sacco-cooperative/`, sw=`/sw/zana/kikokotoo-sacco-na-vyama-vya-akiba/`; x-default=`/tools/sacco-calc/`
 - equivalence:f802c0823b57: en=`/blog/final-payment-reminder-letter-template/`; x-default=`/blog/final-payment-reminder-letter-template/`
 - equivalence:f803acd6827b: en=`/cars/senegal/toyota/noah/`, fr=`/fr/cars/senegal/toyota/noah/`; x-default=`/cars/senegal/toyota/noah/`
@@ -8186,7 +8188,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f96f1851aa2a: en=`/cars/ghana/mercedes-benz/e-class/`, fr=`/fr/cars/ghana/mercedes-benz/e-class/`; x-default=`/cars/ghana/mercedes-benz/e-class/`
 - equivalence:f97488730243: en=`/tools/afrokitchen/countries/libya/`; x-default=`/tools/afrokitchen/countries/libya/`
 - equivalence:f9817e911072: en=`/agriculture/seed-rate/ghana`, fr=`/fr/agriculture/seed-rate/ghana`, sw=`/sw/kilimo/kiwango-cha-mbegu/ghana/`; x-default=`/agriculture/seed-rate/ghana`
-- equivalence:f98b9ab97bea: en=`/tools/thrift-calc/`, fr=`/fr/tools/rendement-tontine-cooperative/`; x-default=`/tools/thrift-calc/`
 - equivalence:f9a322e8de70: en=`/agriculture/export-docs/cote-d-ivoire`, fr=`/fr/agriculture/export-docs/cote-d-ivoire`; x-default=`/agriculture/export-docs/cote-d-ivoire`
 - equivalence:f9b777b19216: en=`/cars/rwanda/mazda/`, fr=`/fr/cars/rwanda/mazda/`; x-default=`/cars/rwanda/mazda/`
 - equivalence:f9dc2f01369a: en=`/jamb/economics/2002/`; x-default=`/jamb/economics/2002/`
@@ -8194,8 +8195,8 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:f9e17afcbb6d: en=`/agriculture/cassava-processing/guinea`, fr=`/fr/agriculture/cassava-processing/guinea`, sw=`/sw/kilimo/usindikaji-mihogo/guinea/`; x-default=`/agriculture/cassava-processing/guinea`
 - equivalence:fa04b8ec9233: en=`/jamb/economics/2001/`; x-default=`/jamb/economics/2001/`
 - equivalence:fa0606330ea6: en=`/cars/nigeria/nissan/x-trail/`, fr=`/fr/cars/nigeria/nissan/x-trail/`; x-default=`/cars/nigeria/nissan/x-trail/`
-- equivalence:fa0c3c84a5c7: en=`/tools/quality-sampling/`, fr=`/fr/tools/calculateur-d-echantillonnage-qualite/`; x-default=`/tools/quality-sampling/`
 - equivalence:fa22950c8791: en=`/tools/afrokitchen/countries/nigeria/`; x-default=`/tools/afrokitchen/countries/nigeria/`
+- equivalence:fa2485cbd519: en=`/tools/fertilizer-calc/`, fr=`/fr/tools/calculateur-engrais/`, sw=`/sw/zana/kikokotoo-mbolea-rahisi/`; x-default=`/tools/fertilizer-calc/`
 - equivalence:fa3309f76460: fr=`/fr/widgets/convertisseur-crypto/`; x-default=`/fr/widgets/convertisseur-crypto/`
 - equivalence:fa332e674a45: en=`/tools/kcse-calculator/`, fr=`/fr/tools/calculateur-kcse/`, sw=`/sw/zana/kikokotoo-kcse/`; x-default=`/tools/kcse-calculator/`
 - equivalence:fa3359a0ca49: en=`/blog/youtube-monetization-africa-2026/`, fr=`/fr/blog/youtube-monetization-africa-2026/`; x-default=`/blog/youtube-monetization-africa-2026/`
@@ -8218,7 +8219,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fb0101172dfb: en=`/tools/gratuity-calculator/botswana/`, sw=`/sw/botswana/kikokotoo-kiinua-mgongo/`; x-default=`/tools/gratuity-calculator/botswana/`
 - equivalence:fb03df91abc5: en=`/agriculture/export-docs/lesotho`, fr=`/fr/agriculture/export-docs/lesotho`; x-default=`/agriculture/export-docs/lesotho`
 - equivalence:fb0a404e240f: en=`/tools/electricity-tariff/niger/`, fr=`/fr/tools/tarifs-electricite/niger/`; x-default=`/tools/electricity-tariff/niger/`
-- equivalence:fb10aaf21fc9: en=`/agriculture/cocoa-tracker/`, fr=`/fr/agriculture/cocoa-tracker/`; x-default=`/agriculture/cocoa-tracker/`
 - equivalence:fb1330285159: en=`/jamb/crk/1993/`; x-default=`/jamb/crk/1993/`
 - equivalence:fb2894f2933c: en=`/tools/court-fees/`, fr=`/fr/tools/frais-tribunal/`, sw=`/sw/zana/ada-za-mahakama/`; x-default=`/tools/court-fees/`
 - equivalence:fb3bc7fb5e8a: en=`/blog/nigeria-withholding-tax-2026/`; x-default=`/blog/nigeria-withholding-tax-2026/`
@@ -8244,7 +8244,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:fc5773706410: en=`/tools/solar-roi/senegal/`, fr=`/fr/tools/roi-solaire/senegal/`; x-default=`/tools/solar-roi/senegal/`
 - equivalence:fc5ed95f1494: en=`/tools/afrokitchen/recipes/atkilt-wat-et/`; x-default=`/tools/afrokitchen/recipes/atkilt-wat-et/`
 - equivalence:fc65ba8ed0ac: en=`/tools/afropoints/contributor-playbook`; x-default=`/tools/afropoints/contributor-playbook`
-- equivalence:fc734dcc4662: en=`/agriculture/coffee-calculator/`, fr=`/fr/agriculture/coffee-calculator/`; x-default=`/agriculture/coffee-calculator/`
 - equivalence:fc7c5c74db67: fr=`/fr/widgets/generateur-qr/`; x-default=`/fr/widgets/generateur-qr/`
 - equivalence:fc950d5a389c: en=`/cars/ethiopia/toyota/prado/`, fr=`/fr/cars/ethiopie/toyota/prado/`; x-default=`/cars/ethiopia/toyota/prado/`
 - equivalence:fc9bd6918ba8: en=`/tools/business-insurance/tunisia`; x-default=`/tools/business-insurance/tunisia`
