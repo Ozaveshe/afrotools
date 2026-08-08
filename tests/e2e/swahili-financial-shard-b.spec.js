@@ -5,6 +5,7 @@ const pdfParse = require('pdf-parse');
 
 const routes = [
   ['/sw/liberia/kikokotoo-kodi-mshahara', 'lr-paye'],
+  ['/sw/mauritania/kikokotoo-kodi-mshahara', 'mr-paye'],
   ['/sw/zana/microfinance-riba-tambarare-dhidi-ya-salio', 'microfinance-calc'],
   ['/sw/zana/uwezo-wa-mkopo-wa-nyumba', 'mortgage-affordability'],
   ['/sw/zana/kikokotoo-mkopo-wa-nyumba', 'mortgage-calculator'],
@@ -68,6 +69,55 @@ test('lr-paye uses the reviewed engine and creates a private parser-readable PDF
   expect(writes).toEqual([]);
   const source = await page.locator('html').evaluate((node) => node.outerHTML);
   expect(source).not.toMatch(/ai-advisor|openPdfModal|afrotools-language-fallback|data-explicit-language-fallback|\?gross=/);
+});
+
+test('mr-paye uses the reviewed engine and creates a private parser-readable PDF', async ({ page }) => {
+  const writes = [];
+  await page.addInitScript(() => {
+    window.__sharedPayload = null;
+    Object.defineProperty(navigator, 'share', { configurable: true, value: async (payload) => { window.__sharedPayload = payload; } });
+  });
+  page.on('request', (request) => {
+    if (request.method() !== 'GET' && request.postData()) writes.push({ url: request.url(), body: request.postData() });
+  });
+  await page.goto('/sw/mauritania/kikokotoo-kodi-mshahara', { waitUntil: 'domcontentloaded' });
+  await page.locator('#salaryInput').fill('30000');
+  await page.getByRole('button', { name: 'Kokotoa Kodi' }).click();
+  await expect(page.locator('#r-tax')).toContainText('5,490');
+  await expect(page.locator('#r-cnss')).toContainText('150');
+  await expect(page.locator('#r-net')).toContainText('24,360');
+  await page.locator('#tog-cnss').click();
+  await expect(page.locator('#r-tax')).toContainText('5,550');
+  await expect(page.locator('#r-cnss')).toContainText('0');
+  await expect(page.locator('#r-net')).toContainText('24,450');
+  await page.locator('#tog-cnss').click();
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => {
+      resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]);
+    }, { once: true }));
+    document.querySelector('.result-actions .action-btn').click();
+    return generated;
+  });
+  const parsed = await pdfParse(Buffer.from(pdfBytes));
+  expect(parsed.text).toContain('Makadirio ya ITS Mauritania');
+  expect(parsed.text).toContain('5,490');
+  expect(parsed.text).toContain('24,360');
+
+  await page.getByRole('button', { name: 'Shiriki' }).click();
+  expect(await page.evaluate(() => window.__sharedPayload)).toEqual({
+    title: 'Kikokotoo cha Kodi Mauritania',
+    text: 'Kikokotoo cha ITS na CNSS cha AfroTools.',
+    url: 'https://afrotools.com/sw/mauritania/kikokotoo-kodi-mshahara/',
+  });
+  await page.locator('#resetBtn').click();
+  await expect(page.locator('#salaryInput')).toHaveValue('');
+  await expect(page.locator('#calcStatus')).toContainText('Imefutwa');
+  await page.getByRole('button', { name: 'Kokotoa Kodi' }).click();
+  await expect(page.locator('#calcStatus')).toContainText('zaidi ya sifuri');
+  expect(writes).toEqual([]);
+  const source = await page.locator('html').evaluate((node) => node.outerHTML);
+  expect(source).not.toMatch(/ai-advisor|pdf-leads|data-explicit-language-fallback|\?gross=/);
 });
 
 for (const [route, id] of routes) {
