@@ -8,6 +8,7 @@ const vm = require("vm");
 const ROOT = path.resolve(__dirname, "..");
 const manifest = JSON.parse(fs.readFileSync(path.join(ROOT, "data/localization/sw-trade-import-parity.json"), "utf8"));
 const generated = require("../scripts/build-sw-trade-regional-parity.js").pages;
+const core = require("../scripts/build-sw-trade-core-parity.js").apps;
 const registry = fs.readFileSync(path.join(ROOT, "assets/js/components/tool-registry.js"), "utf8");
 const hub = fs.readFileSync(path.join(ROOT, "sw/biashara-ya-nje/index.html"), "utf8");
 const runtime = fs.readFileSync(path.join(ROOT, "assets/js/pages/sw-trade-regional-parity.js"), "utf8");
@@ -16,6 +17,7 @@ const styles = fs.readFileSync(path.join(ROOT, "assets/css/sw-trade-regional-par
 assert.strictEqual(manifest.routes.length, 16, "exact assigned unaccepted Trade denominator");
 assert.strictEqual(new Set(manifest.routes.map((row) => row.id)).size, 16, "unique assigned Trade ids");
 assert.strictEqual(generated.length, 5, "five regional shared-engine candidates");
+assert.strictEqual(core.length, 11, "eleven core shared-engine candidates");
 
 for (const row of manifest.routes) {
   const relative = `${row.swahili.replace(/^\//, "")}index.html`;
@@ -23,6 +25,22 @@ for (const row of manifest.routes) {
   assert.match(html, /<html[^>]+lang="sw"/, `${row.id}: native Swahili document`);
   assert.match(html, new RegExp(`rel="canonical" href="https://afrotools\\.com${row.swahili.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}"`), `${row.id}: self canonical`);
   assert.doesNotMatch(html, /<iframe\b/i, `${row.id}: no iframe transplant`);
+}
+
+for (const page of core) {
+  const relative = `sw/zana/${page.slug}/index.html`;
+  const html = fs.readFileSync(path.join(ROOT, relative), "utf8");
+  assert.match(html, /afrotools-source-owner" content="scripts\/build-sw-trade-core-parity\.js"/, `${page.id}: durable core owner`);
+  assert.match(html, /data-sw-trade-core/, `${page.id}: native runtime root`);
+  assert.match(html, /data-export="pdf"/, `${page.id}: PDF export`);
+  assert.match(html, /data-export="csv"/, `${page.id}: CSV export`);
+  assert.match(html, /data-export="json"/, `${page.id}: JSON export`);
+  assert.match(html, /data-export="txt"/, `${page.id}: TXT export`);
+  assert.match(html, /data-import/, `${page.id}: JSON reopen`);
+  assert.match(html, new RegExp(`/assets/img/tools/${page.id}\\.webp`), `${page.id}: dedicated artwork`);
+  assert.ok(fs.existsSync(path.join(ROOT, "assets/img/tools", `${page.id}.webp`)), `${page.id}: artwork exists`);
+  const english = fs.readFileSync(path.join(ROOT, page.en.replace(/^\//, ""), "index.html"), "utf8");
+  assert.match(english, new RegExp(`hreflang="sw" href="https://afrotools\\.com/sw/zana/${page.slug}/"`), `${page.id}: English reciprocity`);
 }
 
 for (const page of generated) {
@@ -49,6 +67,10 @@ for (const page of generated) {
 }
 
 assert.doesNotMatch(runtime, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/, "runtime makes no network request");
+const coreRuntime = fs.readFileSync(path.join(ROOT, "assets/js/pages/sw-trade-core-parity.js"), "utf8");
+assert.doesNotMatch(coreRuntime, /\bfetch\s*\(|XMLHttpRequest|sendBeacon|WebSocket/, "core runtime makes no network request");
+assert.match(coreRuntime, /latest=null;box\.hidden=true;output\.textContent=""/, "core invalid/reset clears stale output");
+assert.match(coreRuntime, /p\.tool!==cfg\.id\|\|p\.locale!=="sw"/, "core reopen is locale and owner scoped");
 assert.match(runtime, /lastReport = null; resultBox\.hidden = true; summary\.textContent = ""/, "invalid submit clears stale output");
 assert.match(runtime, /data\.locale !== "sw"/, "reopen is locale and owner scoped");
 assert.match(styles, /prefers-color-scheme:dark/, "system dark mode fallback");
@@ -74,4 +96,4 @@ assert.ok(Array.isArray(sadc.checks) && sadc.checks.length > 0, "SADC shared eng
 const eac = context.EacCetEngine.calculate({ cifValue: 10000, cetRate: 25, countryCode: "KE" });
 assert.ok(eac.totalLanded > 10000 && eac.breakdown.length >= 3, "EAC shared engine oracle");
 
-console.log("sw-trade-remaining-static.test.js passed: exact 16 assigned rows reconciled, 5 generated regional owners and 11 bounded page owners");
+console.log("sw-trade-remaining-static.test.js passed: exact 16 assigned rows reconciled through 5 regional and 11 core generated owners");

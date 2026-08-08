@@ -42,6 +42,7 @@ function validate(row, html) {
 
 function run() {
   require("./build-sw-trade-regional-parity.js");
+  require("./build-sw-trade-core-parity.js");
   const manifest = JSON.parse(fs.readFileSync(MANIFEST, "utf8"));
   if (manifest.denominator !== 16 || manifest.routes.length !== 16) {
     throw new Error("Assigned Trade manifest must contain exactly 16 rows.");
