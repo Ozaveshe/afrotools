@@ -20,10 +20,67 @@ const routes = [
   ['/sw/somalia/kikokotoo-kodi-mshahara', 'so-paye'],
   ['/sw/south-sudan/kikokotoo-kodi-mshahara', 'ss-paye'],
   ['/sw/sao-tome/kikokotoo-kodi-mshahara', 'st-paye'],
+  ['/sw/zana/bajeti-ya-gharama-za-wafanyakazi', 'staff-cost'],
   ['/sw/zana/thamani-ya-startup', 'startup-valuation'],
   ['/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi', 'student-loan'],
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
 ];
+
+test('staff-cost preserves the user-evidenced engine and local export boundary', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
+  await page.addInitScript(() => {
+    window.__copiedText = '';
+    Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } });
+  });
+  await page.goto('/sw/zana/bajeti-ya-gharama-za-wafanyakazi/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#scp-currency').fill('KES');
+  await page.locator('#scp-headcount').fill('5');
+  await page.locator('#scp-horizon').fill('12');
+  await page.locator('#scp-salary').fill('500000');
+  await page.locator('#scp-obligations').fill('60000');
+  await page.locator('#scp-benefits').fill('40000');
+  await page.locator('#scp-recurring').fill('25000');
+  await page.locator('#scp-recruitment').fill('100000');
+  await page.locator('#scp-equipment').fill('350000');
+  await page.locator('#scp-annual-extras').fill('500000');
+  await page.locator('#scp-contingency').fill('5');
+  await page.locator('#scp-source-label').fill('=Ratiba ya majaribio');
+  await page.locator('#scp-source-date').fill('2026-07-22');
+  await page.locator('#scp-status-confirm').check();
+  await page.locator('#scp-source-confirm').check();
+  await page.getByRole('button', { name: 'Tengeneza bajeti' }).click();
+  await expect(page.locator('#scp-total')).toContainText('44,362,500');
+  await expect(page.locator('#scp-metrics')).toContainText('3,696,875');
+  await expect(page.locator('#scp-metrics')).toContainText('47.88%');
+  await expect(page.locator('#scp-evidence')).toContainText('=Ratiba ya majaribio');
+
+  await page.locator('#scp-copy').click();
+  expect(await page.evaluate(() => window.__copiedText)).toContain('Muhtasari wa gharama za wafanyakazi');
+  const csvEvent = page.waitForEvent('download');
+  await page.locator('#scp-csv').click();
+  const csv = fs.readFileSync(await (await csvEvent).path(), 'utf8');
+  expect(csv).toContain('"Idadi ya wafanyakazi","5"');
+  expect(csv).toContain("\"Chanzo cha ushahidi\",\"'=Ratiba ya majaribio\"");
+
+  const pdfBytes = await page.evaluate(async () => {
+    const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true }));
+    document.getElementById('scp-pdf').click();
+    return generated;
+  });
+  const pdf = await pdfParse(Buffer.from(pdfBytes));
+  expect(pdf.text).toContain('Muhtasari wa Gharama za Wafanyakazi');
+  expect(pdf.text).toContain('44,362,500');
+
+  await page.locator('#scp-source-date').fill('2025-01-01');
+  await page.getByRole('button', { name: 'Tengeneza bajeti' }).click();
+  await expect(page.locator('#scp-total')).toHaveText('Hakuna bajeti');
+  await expect(page.locator('#scp-status')).toContainText('zaidi ya mwaka mmoja');
+  await page.getByRole('button', { name: 'Futa data' }).click();
+  await expect(page.locator('#scp-currency')).toHaveValue('');
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((key) => /staff|salary|payroll|employee/i.test(key)))).toEqual([]);
+  expect(writes).toEqual([]);
+});
 
 test('student-loan preserves the shared engine and all local export contracts', async ({ page }) => {
   const writes = [];

@@ -2,7 +2,7 @@
 
 Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 
-Denominator: **46**. Accepted: **18**. Blocked: **28**.
+Denominator: **46**. Accepted: **19**. Blocked: **27**.
 
 Derivation proof: 92 unaccepted financial rows; shard A 46 rows through `loan-compare`; shard B positions 47-92 from `lr-paye` through `za-uif`; overlap **0**.
 
@@ -27,6 +27,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `so-paye` | `/somalia/so-paye` | `/sw/somalia/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/so-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/somalia-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `ss-paye` | `/south-sudan/ss-paye` | `/sw/south-sudan/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/ss-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/south-sudan-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `st-paye` | `/sao-tome/st-paye` | `/sw/sao-tome/kikokotoo-kodi-mshahara` | `/assets/js/lib/source-confidence.js`<br>`/assets/js/lib/dark-mode.js`<br>`/assets/js/engines/st-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
+| `staff-cost` | `/tools/staff-cost` | `/sw/zana/bajeti-ya-gharama-za-wafanyakazi` | `/assets/js/lib/pdf-template.js`<br>`/engines/staff-cost-planner.js`<br>`/assets/js/pages/staff-cost-sw.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `startup-valuation` | `/tools/startup-valuation` | `/sw/zana/thamani-ya-startup` | `/engines/startup-valuation-engine.js`<br>`/assets/js/pages/startup-valuation-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `student-loan` | `/tools/student-loan` | `/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi` | `/assets/js/lib/pdf-template.js`<br>`/assets/js/engines/student-loan-plan.js`<br>`/assets/js/pages/student-loan-vip.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
 | `tg-paye` | `/togo/tg-paye` | `/sw/togo/kikokotoo-kodi-mshahara` | `/assets/js/lib/dark-mode.js`<br>`/assets/js/lib/source-confidence.js`<br>`/assets/js/engines/tg-paye.js`<br>`/assets/js/lib/pdf-template.js`<br>`/assets/js/pages/togo-paye-vip.js`<br>`/assets/js/lib/sw-accessibility.js` | `tests/e2e/swahili-financial-shard-b.spec.js` plus app oracle suite |
@@ -54,7 +55,6 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 | `sd-paye` | `/sw/sudan/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `side-hustle-tax` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `sl-paye` | `/sw/sierra-leone/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
-| `staff-cost` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `tn-paye` | `/sw/tunisia/kikokotoo-kodi-mshahara` | The existing PAYE page retains a legacy product boundary (lead-gated export, explicit English fallback, non-shared formula owner or raw-input share risk) and lacks a safe app-specific parity receipt. |
 | `transfer-pricing` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
 | `za-cgt` | `/` | No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane. |
@@ -74,12 +74,12 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 
 ## Current lane command evidence
 
-- Evidence generator check: 46 rows, 18 accepted candidates, 28 blocked, one missing artwork.
-- PASS: 10 focused Node subtests covering shard derivation, fail-closed acceptance and student-loan engine/oracle fixtures.
+- Evidence generator check: 46 rows, 19 accepted candidates, 27 blocked, one missing artwork.
+- PASS: current 5 focused Node subtests cover shard derivation, fail-closed acceptance and staff-cost golden/oracle fixtures; the preceding student-loan checkpoint passed its 10-test focused selection.
 - PASS: focused browser reruns after responsive CSS and privacy-test boundary fixes.
-- PASS: complete 22-test shard browser matrix on isolated port 43917, including parsed student-loan CSV/JSON/PDF, clipboard/reset/stale-evidence behavior, privacy, and all accepted route shards.
-- PASS: i18n validation and 33,418 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.
-- PASS: 138,224 internal links across 11,510 HTML files; registry audit retains two unrelated missing-page rows and adds no student-loan defect.
+- PASS: complete 24-test shard browser matrix on isolated port 43917, including staff-cost and student-loan parsed exports, clipboard/reset/stale-evidence behavior, privacy, and all accepted route shards.
+- PASS: i18n validation and 33,426 hreflang relationships across 5,351 equivalence groups; coordinator-owned generated coverage files were reported stale and intentionally left untouched.
+- PASS: 138,229 internal links across 11,511 HTML files; registry audit retains two unrelated missing-page rows and adds no accepted-route defect.
 - PASS: privacy/AI consent server check and 3/3 browser checks using the repository-installed Playwright runtime.
 - MIXED: focused existing workflow/export suites plus the new Mauritania parser proof passed 20/31. Parser-level PDF/JSON/CSV/TXT proofs passed for the targeted export tests; 11 failures remain explicitly carried and no pass is claimed for those assertions.
 
@@ -88,6 +88,7 @@ The missing `.claude/rules/i18n.md` reference was recorded as a setup gap; AGENT
 - Responsive source styles: `assets/css/property-roi-vip.css`, `assets/css/property-transfer-cost-vip.css`, `assets/css/route-fares-vip.css`, `assets/css/somalia-paye-vip.css`, `assets/css/startup-valuation-vip.css`, and `assets/css/togo-paye-vip.css`.
 - Targeted Swahili page fixes: `sw/sao-tome/kikokotoo-kodi-mshahara/index.html` (long-heading reflow) and `sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html` (engine enum values preserved while labels remain Kiswahili).
 - Student-loan native parity: the new Swahili route uses `assets/js/engines/student-loan-plan.js` and the shared controller, requires user-entered sourced terms, and provides local copy/PDF/CSV/JSON without programme presets or network submission.
+- Staff-cost native parity: the Swahili controller uses `engines/staff-cost-planner.js`, requires current user-supplied employer-obligation evidence, neutralizes spreadsheet-formula prefixes in CSV, and provides local copy/CSV/PDF without bundled statutory rates.
 - Mauritania source-owner repair: `assets/js/engines/mr-paye.js` replaces duplicated inline formula logic in `sw/mauritania/kikokotoo-kodi-mshahara/index.html`; `tests/engines/mr-paye-browser-parity.test.js` proves both CNSS states against the reviewed server engine through source review date 21 July 2026 and next review 31 October 2026.
 - Formula/data/source decision: no formula, rate, threshold, jurisdiction data or authority source changed. The microfinance fix restores the existing shared engine contract (`annual`, `monthly`, `period`); Mauritania preserves monthly ITS, CNSS, MRU 6,000 allowance, MRU 10 statutory round-down and employer charges.
 - Browser matrix: system Chrome, one worker, isolated ports 43917 and 43918; synthetic fixtures only; 320/375, dark/light and 200% text reflow covered.
