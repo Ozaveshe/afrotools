@@ -5,11 +5,17 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 6,
-    "blocked": 13,
+    "staticCandidates": 7,
+    "blocked": 12,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
+    {
+      "id": "image-resize",
+      "route": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
+      "sourceOwner": "assets/js/lib/image-resize-studio.js",
+      "browserProof": "tests/e2e/swahili-image-resize-parity.spec.js: English and Swahili share the exact local batch resizer and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP reopened at exact dimensions; fit, fill, pad and stretch outputs reopened; two synthetic files across two targets produced four reopened downloads at exact 60x40 or 512x512, including Download all; clear/reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
+    },
     {
       "id": "qr-generator",
       "route": "/sw/zana/kitengeneza-qr/",
@@ -53,12 +59,6 @@
       "route": "/sw/zana/kubana-picha/",
       "status": "blocked-feature-parity",
       "blocker": "The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract."
-    },
-    {
-      "id": "image-resize",
-      "route": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The Swahili inline owner does not reuse image-resize-studio.js or reproduce English presets, batch behavior, validation, and export receipts."
     },
     {
       "id": "background-remover",
@@ -140,16 +140,18 @@
       4398,
       4401,
       4404,
-      4405
+      4405,
+      4406
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
       "tests/e2e/swahili-watermark-bulk-parity.spec.js",
       "tests/e2e/swahili-qr-generator-parity.spec.js",
       "tests/e2e/swahili-image-crop-parity.spec.js",
-      "tests/e2e/swahili-image-format-convert-parity.spec.js"
+      "tests/e2e/swahili-image-format-convert-parity.spec.js",
+      "tests/e2e/swahili-image-resize-parity.spec.js"
     ],
-    "result": "15 passed"
+    "result": "18 passed"
   },
   "validation": {
     "focusedStatic": "pass",

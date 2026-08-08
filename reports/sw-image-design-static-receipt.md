@@ -2,14 +2,15 @@
 
 - Base: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact English denominator: **19**
-- Accepted candidates: **6**
-- Fail-closed rows: **13**
+- Accepted candidates: **7**
+- Fail-closed rows: **12**
 - Central ledger edits: **0**
 - Verdict: **CANDIDATE COMPLETE**
 - Artwork present: **19/19**
 
 ## Accepted candidates
 
+- `image-resize` — `/sw/zana/kubadilisha-ukubwa-wa-picha/`: tests/e2e/swahili-image-resize-parity.spec.js: English and Swahili share the exact local batch resizer and produced byte-identical 60x40 PNG output; Swahili PNG, JPG and WebP reopened at exact dimensions; fit, fill, pad and stretch outputs reopened; two synthetic files across two targets produced four reopened downloads at exact 60x40 or 512x512, including Download all; clear/reset, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `qr-generator` — `/sw/zana/kitengeneza-qr/`: tests/e2e/swahili-qr-generator-parity.spec.js: shared text/URL/WiFi/vCard payload semantics and escaping passed; invalid/reset states clear output; PNG reopened at 256x256 and SVG parsed as a 1024x1024 vector; 320/375px, 200% reflow, themes, keyboard/focus, SEO, console and no-network checks passed.
 - `image-crop` — `/sw/zana/kukata-picha/`: tests/e2e/swahili-image-crop-parity.spec.js: English and Swahili share the exact interactive crop engine and produced byte-identical PNG output; Swahili selection, rotate/flip/reset, local history and localized recipe passed; PNG, JPG and WebP reopened at exact 64x48 dimensions; 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed.
 - `color-picker` — `/sw/zana/kichagua-rangi/`: tests/e2e/swahili-image-color-family.spec.js: exact conversions, invalid clearing, CSS/Tailwind downloads parsed, 320/375px, 200% reflow, themes, keyboard/focus, contrast, console and network checks passed.
@@ -20,7 +21,6 @@
 ## Fail-closed rows
 
 - `image-compress` — blocked-feature-parity: The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract.
-- `image-resize` — blocked-feature-parity: The Swahili inline owner does not reuse image-resize-studio.js or reproduce English presets, batch behavior, validation, and export receipts.
 - `background-remover` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.
 - `passport-photo` — blocked-feature-parity: The Swahili canvas owner is narrower than passport-photo-studio.js and lacks the English crop, preset, sheet, validation, and export proof surface.
 - `favicon-generator` — blocked-missing-route: No physical Swahili route or native favicon/ZIP owner exists on the coordinator base.
