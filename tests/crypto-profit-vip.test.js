@@ -8,12 +8,14 @@ const root = path.resolve(__dirname, "..");
 const read = (file) => fs.readFileSync(path.join(root, file), "utf8");
 const en = read("crypto/profit-calculator/index.html");
 const fr = read("fr/crypto/profit-calculator/index.html");
+const sw = read("sw/zana/kikokotoo-faida-crypto/index.html");
 const controller = read("assets/js/pages/crypto-profit-vip.js");
+const registry = read("assets/js/components/tool-registry.js");
 const widget = read("widgets/crypto/profit-loss.js");
 const iframe = read("widgets/iframe/crypto-crypto-profit-loss.html");
 const context = JSON.parse(read("data/ai/tool-context/crypto-profit.json"));
 
-for (const html of [en, fr]) {
+for (const html of [en, fr, sw]) {
   assert.match(html, /assets\/js\/engines\/crypto-profit\.js/);
   assert.match(html, /assets\/js\/pages\/crypto-profit-vip\.js/);
   assert.match(html, /data-profit-export="csv"/);
@@ -25,10 +27,21 @@ for (const html of [en, fr]) {
   assert.doesNotMatch(html, /<iframe/i);
 }
 assert.match(en, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/crypto\/profit-calculator\/"/);
+assert.match(en, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-faida-crypto\/"/);
 assert.match(fr, /hreflang="en" href="https:\/\/afrotools\.com\/crypto\/profit-calculator\/"/);
+assert.match(fr, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-faida-crypto\/"/);
 assert.match(fr, /<html\b[^>]*\blang="fr"/);
+assert.match(sw, /<html\b[^>]*\blang="sw"/);
+assert.match(sw, /hreflang="en" href="https:\/\/afrotools\.com\/crypto\/profit-calculator\/"/);
+assert.match(sw, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/crypto\/profit-calculator\/"/);
+assert.match(sw, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/kikokotoo-faida-crypto\/"/);
+assert.match(sw, /data-profit-reset/);
+assert.match(sw, /assets\/img\/tools\/crypto-profit\.webp/);
+assert.match(controller, /pageLang === "sw"/);
+assert.match(controller, /Taarifa na matokeo yamefutwa/);
 assert.doesNotMatch(controller, /fetch\(|localStorage|sessionStorage|email|account/i);
 assert.match(controller, /window\.jspdf\.jsPDF/);
+assert.match(registry, /id: 'crypto-profit-sw'.+href: '\/sw\/zana\/kikokotoo-faida-crypto\/'/);
 
 assert.doesNotMatch(widget, /type="number"|parseFloat|addEventListener\s*\(\s*["']click|netProfit\s*=|totalCost\s*=/);
 assert.match(widget, /No live price, conversion, forecast/);

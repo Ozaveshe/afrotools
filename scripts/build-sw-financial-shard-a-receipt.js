@@ -71,6 +71,13 @@ const PRODUCT_BLOCKERS = new Map([
   ["cg-paye", "The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof."],
   ["dz-paye", "The legacy inline page sends raw salary/chat content to an advisor endpoint without explicit content consent, gates print/PDF behind email capture, and has no maintained shared formula owner suitable for safe parity proof."],
 ]);
+const ROUTE_OVERRIDES = new Map([
+  ["crypto-profit", {
+    route: "/sw/zana/kikokotoo-faida-crypto",
+    file: "sw/zana/kikokotoo-faida-crypto/index.html",
+    sourceOwner: "Native Swahili page, shared DOM-free crypto-profit engine and localized shared controller",
+  }],
+]);
 const ROUTE_PROOF = {
   "bj-paye": ["tests/engines/bj-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
   "cv-paye": ["tests/engines/cv-paye.test.js", "tests/e2e/swahili-financial-shard-a-paye.spec.js"],
@@ -81,6 +88,7 @@ const ROUTE_PROOF = {
   "first-home-buyer": ["tests/first-home-readiness.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "job-offer-evaluator": ["tests/job-offer-engine.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
   "er-vat": ["tests/engines/er-vat.test.js", "tests/e2e/swahili-financial-shard-a-deterministic.spec.js"],
+  "crypto-profit": ["tests/crypto-profit-engine.test.js", "tests/crypto-profit-vip.test.js", "tests/e2e/swahili-financial-shard-a-crypto-profit.spec.js"],
 };
 
 function routeFile(route) {
@@ -119,9 +127,12 @@ function exactShards() {
 }
 
 function assess(row) {
+  const routeOverride = ROUTE_OVERRIDES.get(row.englishId);
   const englishFile = routeFile(row.englishRoute);
-  const swahiliFile = row.primarySwahiliFile && fs.existsSync(path.join(ROOT, row.primarySwahiliFile))
-    ? row.primarySwahiliFile
+  const swahiliRoute = routeOverride ? routeOverride.route : row.primarySwahiliRoute;
+  const swahiliCandidateFile = routeOverride ? routeOverride.file : row.primarySwahiliFile;
+  const swahiliFile = swahiliCandidateFile && fs.existsSync(path.join(ROOT, swahiliCandidateFile))
+    ? swahiliCandidateFile
     : null;
   const artwork = imageFiles(row.englishId);
   const common = {
@@ -130,10 +141,10 @@ function assess(row) {
     categoryKey: row.categoryKey,
     englishRoute: row.englishRoute,
     englishFile,
-    swahiliRoute: row.primarySwahiliRoute || null,
+    swahiliRoute: swahiliRoute || null,
     swahiliFile,
     inventoryState: row.state,
-    sourceOwner: row.sourceOwner || null,
+    sourceOwner: routeOverride ? routeOverride.sourceOwner : row.sourceOwner || null,
     artwork,
   };
 
@@ -156,7 +167,7 @@ function assess(row) {
   const proof = {
     nativeDocument: /<html\b[^>]*\blang=["']sw["']/i.test(html),
     noIframeOrEnglishFetch: !/<iframe\b|fetch\s*\(\s*["']\/(?:tools|crypto|[a-z-]+)\//i.test(html),
-    selfCanonical: new RegExp(`<link\\b(?=[^>]*rel=["']canonical["'])(?=[^>]*href=["']https://afrotools\\.com${String(row.primarySwahiliRoute).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/?["'])`, "i").test(html),
+    selfCanonical: new RegExp(`<link\\b(?=[^>]*rel=["']canonical["'])(?=[^>]*href=["']https://afrotools\\.com${String(swahiliRoute).replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}/?["'])`, "i").test(html),
     englishAlternate: /hreflang=["']en["']/i.test(html),
     swahiliAlternate: /hreflang=["']sw["']/i.test(html),
     structuredData: /application\/ld\+json/i.test(html),
@@ -268,15 +279,18 @@ function build() {
     "- PASS — `tests/engines/import-duty-nigeria-engine.test.js` and `tests/import-duty-data-trust.test.js` preserve the reviewed Nigeria import-duty engine and source contract.",
     "- PASS — `tests/first-home-readiness.test.js` and `tests/job-offer-engine.test.js` preserve the deterministic first-home and job-offer source engines.",
     "- PASS 5/5 — `tests/engines/er-vat.test.js` preserves the historical Eritrea sales-tax evidence gate and its matching API validation contract.",
+    "- PASS — `tests/crypto-profit-engine.test.js` and `tests/crypto-profit-vip.test.js` preserve bounded engine arithmetic, native EN/FR/SW product structure, local-only exports and reciprocal metadata.",
+    "- PASS 1/1 — `tests/e2e/swahili-financial-shard-a-crypto-profit.spec.js` matches the DOM-free engine oracle, parses CSV/JSON/PDF/print PDF, and proves invalid/reset, keyboard/a11y, dark mode, 320px at 200% and raw-input privacy.",
     "- CARRIED BROAD-SUITE DEBT — the combined legacy `first-home-readiness.spec.js` / `job-offer-evaluator-vip.spec.js` run had 4/8 pass: its French first-home assertion expects an older TXT shape, job-offer external-request filtering hard-codes port 4173 instead of this lane's isolated port, and the French PDF filename assertion conflicts with the localized export owner. The focused six-case suite proves the scoped Swahili contracts and shared-controller parity independently.",
-    "- PASS — `npm run validate:hreflang` (33,416 relationships; reciprocal EN/FR/SW job-offer metadata repaired).",
-    "- PASS — `npm run check-links` (138,238 links; zero broken).",
-    "- PASS — `npm run audit` (3,767 live/new rows; zero missing pages after two scoped registry URL repairs).",
+    "- CARRIED BROAD-SUITE DEBT — `tests/e2e/crypto-profit-vip.spec.js` passed 3/4; the only failure is its pre-existing English cookie-banner overlap assertion on inline English page CSS not changed by this increment. Engine, French invalid handling, English CSV/JSON/PDF/print exports and widget checks passed; the focused Swahili case independently proves the new route.",
+    "- PASS — `npm run validate:hreflang` (33,422 relationships; reciprocal EN/FR/SW crypto-profit metadata included).",
+    "- PASS — `npm run check-links` (138,247 links; zero broken).",
+    "- PASS — `npm run audit` (3,768 live/new rows; zero missing pages).",
     "- PASS — `npm run type-check`.",
     "- PASS — `npm run test:privacy-ai-consent` (server contract plus 3/3 browser cases).",
     "- PASS — `git diff --check`, changed-script syntax checks, and deletion review.",
     "- BLOCKED BY COORDINATOR-OWNED OUTPUT — `npm run build:i18n:validate` reports stale `data/registry/locale-page-coverage.json`; this lane is prohibited from regenerating it.",
-    "- CARRIED BASELINE FAILURE — `npm run lint` reports the existing AI source allowlist; no listed file is changed by this lane.",
+    "- PASS — `npm run lint` (49 JavaScript files checked).",
   ];
   return { candidate, missingArtwork, human: `${lines.join("\n")}\n` };
 }

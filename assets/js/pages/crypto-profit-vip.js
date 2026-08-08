@@ -5,8 +5,9 @@
   var form = document.getElementById("cryptoProfitForm");
   if (!engine || !form) return;
 
-  var lang = document.documentElement.lang === "fr" ? "fr" : "en";
-  var locale = lang === "fr" ? "fr-FR" : "en";
+  var pageLang = document.documentElement.lang;
+  var lang = pageLang === "fr" ? "fr" : pageLang === "sw" ? "sw" : "en";
+  var locale = lang === "fr" ? "fr-FR" : lang === "sw" ? "sw-KE" : "en";
   var copy = {
     en: {
       ready: "Enter one trade in a single display currency, then calculate.",
@@ -101,6 +102,61 @@
         profit: "Profit / perte net",
         roi: "ROI"
       }
+    },
+    sw: {
+      ready: "Ingiza muamala mmoja kwa sarafu moja ya kuonyesha, kisha kokotoa.",
+      calculated: "Hesabu iko tayari. Kagua mbinu kabla ya kupakua.",
+      invalid: "Kagua sehemu zenye hitilafu. ",
+      noResult: "Kokotoa matokeo halali kabla ya kupakua.",
+      csv: "CSV imepakuliwa kwenye kifaa.",
+      json: "JSON imepakuliwa kwenye kifaa.",
+      pdf: "PDF imepakuliwa kwenye kifaa.",
+      pdfUnavailable: "Kutengeneza PDF hakupatikani kwenye kivinjari hiki. Tumia Chapisha / Hifadhi PDF.",
+      print: "Kidirisha cha kuchapisha kinafunguliwa. Chagua Hifadhi kama PDF kwa nakala nyingine.",
+      reset: "Taarifa na matokeo yamefutwa kwenye kivinjari.",
+      emptyResult: "Gharama, mapato ya mauzo, ada, faida au hasara, ROI na bei ya kutotengeneza hasara vitaonekana hapa.",
+      valueError: "Ingiza bei na kiasi chanya vinavyokubalika, pamoja na ada zisizo hasi.",
+      generated: "Imetengenezwa",
+      csvField: "sehemu",
+      csvValue: "thamani",
+      sourceLabel: "Chanzo",
+      disclaimerLabel: "Kanusho",
+      title: "Karatasi ya faida au hasara ya sarafu ya kidijitali",
+      method: "Mbinu",
+      methodText: "Faida/hasara halisi = mapato halisi ya mauzo - jumla ya gharama ya ununuzi. ROI = faida/hasara halisi / jumla ya gharama ya ununuzi. Ada ya mauzo ya asilimia hukokotolewa upya kwa kila bei ya mfano uliyoingiza.",
+      inputSource: "Chanzo cha taarifa: bei, kiasi na ada zote zimeingizwa na mtumiaji. Hakuna bei mubashara, ubadilishaji wa sarafu, utabiri au pendekezo lililotumiwa.",
+      planning: "Hesabu ya kupanga pekee; si ushauri wa kifedha, kodi au biashara ya masoko.",
+      percentError: "Ada ya asilimia lazima iwe chini ya 100.",
+      limitError: "Thamani moja au zaidi imezidi mpaka salama wa hesabu.",
+      profit: "Faida halisi",
+      loss: "Hasara halisi",
+      result: "Matokeo",
+      scenarioCaption: "Mifano ya bei za kuuza ulizoingiza",
+      noScenarios: "Ongeza bei moja au zaidi za hiari ili kuzilinganisha.",
+      labels: {
+        currency: "Sarafu ya kuonyesha",
+        buyPrice: "Bei ya kununua kwa kipimo",
+        sellPrice: "Bei ya kuuza kwa kipimo",
+        quantity: "Kiasi",
+        buyFee: "Ada ya kununua",
+        sellFee: "Ada ya kuuza",
+        acquisitionValue: "Thamani ya ununuzi kabla ya ada",
+        buyFeeAmount: "Kiasi cha ada ya kununua",
+        totalCost: "Jumla ya gharama ya ununuzi",
+        disposalValue: "Mapato ghafi ya mauzo",
+        sellFeeAmount: "Kiasi cha ada ya kuuza",
+        netProceeds: "Mapato halisi ya mauzo",
+        netProfit: "Faida / hasara halisi",
+        roi: "ROI kwa jumla ya gharama ya ununuzi",
+        breakEven: "Bei ya kuuza bila faida wala hasara"
+      },
+      columns: {
+        price: "Bei ya kuuza iliyoingizwa",
+        proceeds: "Mapato halisi",
+        fees: "Jumla ya ada",
+        profit: "Faida / hasara halisi",
+        roi: "ROI"
+      }
     }
   }[lang];
 
@@ -162,6 +218,7 @@
     var message = error && error.message ? error.message : String(error || "");
     if (/percentage must be below 100/.test(message)) return copy.percentError;
     if (/exceeds the (supported|safe calculation) limit/.test(message)) return copy.limitError;
+    if (lang === "sw") return copy.valueError;
     return message;
   }
 
@@ -316,7 +373,7 @@
 
   function exportCsv(data) {
     var rows = [
-      ["field", "value"],
+      [copy.csvField || "field", copy.csvValue || "value"],
       [copy.labels.currency, data.currency],
       [copy.labels.buyPrice, result.buyPrice],
       [copy.labels.sellPrice, result.sellPrice],
@@ -329,8 +386,8 @@
       [copy.labels.roi, result.roi],
       [copy.labels.breakEven, result.breakEvenPrice],
       [copy.method, copy.methodText],
-      ["Source", copy.inputSource],
-      ["Disclaimer", copy.planning]
+      [copy.sourceLabel || "Source", copy.inputSource],
+      [copy.disclaimerLabel || "Disclaimer", copy.planning]
     ];
     if (scenarioResults.length) {
       rows.push([]);
@@ -375,7 +432,7 @@
       copy.method + ": " + copy.methodText,
       copy.inputSource,
       copy.planning,
-      "Generated: " + data.generatedAt
+      (copy.generated || "Generated") + ": " + data.generatedAt
     ];
     doc.setFont("helvetica", "bold");
     doc.setFontSize(16);
@@ -438,6 +495,22 @@
       }
     });
   });
+
+  var resetButton = document.querySelector("[data-profit-reset]");
+  if (resetButton) {
+    resetButton.addEventListener("click", function () {
+      form.reset();
+      scenarioInputs.forEach(function (field) { field.value = ""; });
+      result = null;
+      scenarioResults = [];
+      output.innerHTML = '<p class="profit-intro">' + copy.emptyResult + "</p>";
+      scenarioBody.innerHTML = "";
+      scenarioEmpty.hidden = false;
+      enableExports(false);
+      setStatus(copy.reset, false);
+      document.getElementById("buyPrice").focus();
+    });
+  }
 
   enableExports(false);
   setStatus(copy.ready, false);
