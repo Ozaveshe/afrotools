@@ -27,6 +27,29 @@ function field(label, name, options = {}) {
 
 const pages = [
   {
+    id: "landed-cost", slug: "gharama-bidhaa", en: "/tools/landed-cost/", fr: "/fr/tools/cout-rendu/", image: "landed-cost.webp",
+    name: "Kikokotoo cha gharama iliyofika", title: "Kikokotoo cha gharama iliyofika ya bidhaa | AfroTools",
+    description: "Kadiria gharama ya bidhaa ilipofika kwa FOB, usafirishaji, bima, ushuru, VAT na ada za ndani ulizothibitisha.",
+    lead: "Tenganisha CIF, ushuru, VAT na gharama za ndani kwa kutumia viwango vya muamala wako, bila kudai tathmini rasmi ya forodha.",
+    fields: [
+      field("Nchi ya kuingiza", "destCountry", { type: "select", blank: false, choices: [] }),
+      field("Bandari ya kuwasili", "port", { type: "select", blank: false, choices: [] }),
+      field("Thamani ya FOB (USD)", "fobUSD", { type: "number", min: 0.01, step: 0.01, value: 10000, required: true }),
+      field("Usafirishaji wa kimataifa (USD)", "freightUSD", { type: "number", min: 0, step: 0.01, value: 1200 }),
+      field("Bima (USD)", "insuranceUSD", { type: "number", min: 0, step: 0.01, value: 200 }),
+      field("Kiwango cha ushuru (%)", "dutyRate", { type: "number", min: 0, step: 0.01, value: 0, help: "Thibitisha kwa msimbo HS na ratiba ya nchi husika." }),
+      field("Sarafu ya ndani kwa USD 1", "fxRate", { type: "number", min: 0.000001, step: 0.000001, value: 1, required: true }),
+      field("Idadi ya vipande", "quantity", { type: "number", min: 1, step: 1, value: 1 }),
+      field("Ada ya wakala katika sarafu ya ndani", "brokerFeeLocal", { type: "number", min: 0, step: 0.01, value: 0 }),
+      field("Ada ya ushughulikiaji ya ndani", "handlingLocal", { type: "number", min: 0, step: 0.01, value: 0 }),
+      field("Usafiri wa ndani", "haulageLocal", { type: "number", min: 0, step: 0.01, value: 0 }),
+      field("Bei ya kuuza kwa kipande", "sellPriceLocal", { type: "number", min: 0, step: 0.01, value: 0 })
+    ],
+    scripts: ["/data/trade/country-duty-rates.js", "/data/trade/landed-cost-data.js", "/data/trade/fx-history.js", "/engines/landed-cost-engine.js"],
+    warning: "Haya ni makadirio ya kupanga. Thibitisha msimbo HS, msingi wa VAT, msamaha, tozo, kiwango cha fedha na ada zote na mamlaka au wakala aliyeidhinishwa.",
+    sources: [["Rejesta ya vyanzo vya forodha AfroTools", "/data/trade/official-sources.json"], ["Shirika la Forodha Duniani", "https://www.wcoomd.org/"]]
+  },
+  {
     id: "commodity-tracker", slug: "ufuatiliaji-bei-za-bidhaa", en: "/tools/commodity-tracker/", fr: "/fr/tools/suivi-matieres-premieres/", image: "commodity-tracker.webp",
     name: "Kichunguzi cha bidhaa za biashara", title: "Kichunguzi cha bidhaa za biashara Afrika | AfroTools",
     description: "Chunguza picha ya data ya biashara ya 2024 kwa nchi na bidhaa bila kuichanganya na bei ya soko ya sasa.",
@@ -58,7 +81,7 @@ const pages = [
     sources: [["Sekretarieti ya ECOWAS", "https://www.ecowas.int/"], ["Rejesta ya vyanzo vya biashara", "/data/trade/official-sources.json"]]
   },
   {
-    id: "sadc-roo", slug: "kanuni-za-asili-sadc", en: "/tools/sadc-roo/", fr: null, image: "sadc-roo.webp",
+    id: "sadc-roo", slug: "kanuni-za-asili-sadc", en: "/tools/sadc-roo/", fr: "/fr/tools/regles-origine-sadc/", image: "sadc-roo.webp",
     name: "Ukaguzi wa awali wa kanuni za asili za SADC", title: "Ukaguzi wa kanuni za asili za SADC | AfroTools",
     description: "Kagua kwa awali thamani ya kikanda, CTH na masharti ya bidhaa bila kudai uamuzi rasmi wa asili.",
     lead: "Pima hali yako dhidi ya injini ileile ya kanuni za bidhaa inayotumiwa na programu ya Kiingereza, kisha peleka ushahidi kwa mamlaka.",

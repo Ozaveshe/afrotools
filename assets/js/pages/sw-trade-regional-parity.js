@@ -39,6 +39,27 @@
     return { title: title, generatedAt: new Date().toISOString(), summary: text, metrics: metricList || [], rows: rowList || [], notes: noteList || [] };
   }
 
+  function landedCost() {
+    if (!window.LandedCostEngine) throw new Error("Injini ya gharama iliyofika haikupatikana.");
+    if (number("fobUSD") <= 0) throw new Error("Weka thamani ya FOB iliyo juu ya sifuri.");
+    if (number("fxRate") <= 0) throw new Error("Weka kiwango cha fedha kilicho juu ya sifuri.");
+    var result = window.LandedCostEngine.calculate({
+      destCountry: value("destCountry"), port: value("port"), fobUSD: number("fobUSD"),
+      freightUSD: number("freightUSD"), insuranceUSD: number("insuranceUSD"), dutyRate: number("dutyRate"),
+      quantity: number("quantity"), fxRate: number("fxRate"), brokerFeeLocal: number("brokerFeeLocal"),
+      handlingLocal: number("handlingLocal"), haulageLocal: number("haulageLocal")
+    });
+    if (!result) throw new Error("Chagua nchi na bandari zinazopatikana.");
+    var margin = result.getMarginAnalysis(number("sellPriceLocal"));
+    return report(
+      "Makadirio ya gharama iliyofika",
+      "Injini ileile ya Kiingereza imetumia viwango na gharama ulizoingiza. Thibitisha kila kiwango kabla ya tamko la forodha.",
+      [["Thamani ya CIF", money(result.cifUSD, "USD")], ["Ushuru", money(result.importDutyUSD, "USD")], ["VAT", money(result.vatUSD, "USD")], ["Jumla iliyofika", money(result.totalLandedLocal, result.currency)], ["Kwa kipande", money(result.perUnitLocal, result.currency)]],
+      [["FOB", money(result.fobUSD, "USD")], ["Usafirishaji", money(result.freightUSD, "USD")], ["Bima", money(result.insuranceUSD, "USD")], ["Ada za ndani", money(result.localChargesUSD * result.fxRate, result.currency)], ["Faida kwa kipande", margin && margin.profit != null && margin.sellPrice > 0 ? money(margin.profit, result.currency) : "Weka bei ya kuuza"]],
+      ["Makadirio si tathmini rasmi. Kagua msimbo HS, ushuru, VAT, tozo, sarafu na ada na mamlaka husika."]
+    );
+  }
+
   function commodity() {
     if (!window.CommodityEngine) throw new Error("Injini ya data ya bidhaa haikupatikana.");
     var country = value("country");
@@ -115,7 +136,7 @@
     );
   }
 
-  var handlers = { "commodity-tracker": commodity, "ecowas-levy": ecowas, "sadc-roo": sadc, "eac-cet": eac };
+  var handlers = { "landed-cost": landedCost, "commodity-tracker": commodity, "ecowas-levy": ecowas, "sadc-roo": sadc, "eac-cet": eac };
 
   function render(data) {
     lastReport = data;
@@ -194,6 +215,13 @@
     items.forEach(function (item) { var option = document.createElement("option"); option.value = item[key]; option.textContent = label(item); select.appendChild(option); });
   }
   function initialize() {
+    if (tool === "landed-cost" && typeof LANDED_COST_DATA !== "undefined") {
+      var landedData = LANDED_COST_DATA;
+      var countrySelect = form.elements.namedItem("destCountry");
+      Object.keys(landedData).forEach(function (code) { var item = landedData[code]; var option = document.createElement("option"); option.value = code; option.textContent = item.name || code; countrySelect.appendChild(option); });
+      function fillPorts() { var country = landedData[countrySelect.value]; var portSelect = form.elements.namedItem("port"); portSelect.replaceChildren(); (country && country.ports || []).forEach(function (item) { var option = document.createElement("option"); option.value = item.code || item.id || item.name; option.textContent = item.name || item.code || item; portSelect.appendChild(option); }); }
+      countrySelect.addEventListener("change", fillPorts); fillPorts();
+    }
     if (tool === "commodity-tracker" && window.CommodityEngine) fill("country", window.CommodityEngine.getAllCountries(), "code", function (item) { return item.name; });
     if (tool === "ecowas-levy" && window.EcowasLevyEngine) {
       fill("countryCode", window.EcowasLevyEngine.getSupportedCountries(), "code", function (item) { return item.name; });
