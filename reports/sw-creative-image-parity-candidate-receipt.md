@@ -2,14 +2,14 @@
 
 - Baseline: `6edacda8437e1fa9b9e5a512138cbdd3169e38be`
 - Exact denominator: **53** (**34 Creative**, **19 Image & Design**)
-- Accepted candidates: **10**
-- Blocked fail-closed: **43**
+- Accepted candidates: **11**
+- Blocked fail-closed: **42**
 - Central acceptance ledger changed: **no**
 - Verdict: **PARTIAL — FAIL CLOSED**
 
 ## Per-app result
 
-- `image-compress` — blocked-feature-parity: The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract.
+- `image-compress` — accepted-candidate: English and Swahili 160x90 PNG output was byte-identical. Swahili PNG, JPG, WebP and auto-selected files reopened at 160x90; a 20 KB target JPEG reopened at 600x400 within target; Download all emitted two WebP files that reopened at exact 120x68 and 90x90 dimensions.
 - `image-resize` — accepted-candidate: English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP plus fit/fill/pad/stretch outputs reopened at exact dimensions; two files across custom and thumbnail targets produced four individually reopened files and four more reopened through Download all at 60x40 or 512x512.
 - `qr-generator` — accepted-candidate: PNG reopened by signature/IHDR parser at exactly 256x256; SVG reopened as XML with a 1024x1024 vector canvas, quiet zone, exact colors and more than 100 QR module paths.
 - `background-remover` — blocked-english-fallback: The route is an explicit preparation page that hands off to the English studio; no native remover workflow exists.
@@ -68,6 +68,7 @@
 - Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.
 - Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.
 - Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.
+- Image Compress now loads the byte-exact extracted English image-compress-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue and history without changing batch, target-size, resize, codec, comparison, filename or download calculations.
 - Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.
 - Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.
 - Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.
@@ -79,8 +80,8 @@
 
 ## Browser and export proof
 
-- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408 and 4409: **27 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
-- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
+- Chromium, one worker, isolated ports 4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409 and 4410: **30 passed**. Widths 320/375 and 200% reflow equivalent were checked with light/dark, keyboard/focus, contrast, SEO metadata, console/page/resource errors and network-write assertions.
+- Color Picker downloads reopened as CSS and Tailwind JS; Colour Palette downloads reopened as CSS and parsed JSON; Image Compress reopened PNG, JPG, WebP, auto-selected, target-size and two Download all outputs at exact dimensions and matched English PNG bytes; English and Swahili QR downloads reopened as 256x256 PNG and parsed 1024x1024 SVG; Image Crop reopened PNG, JPG and WebP at exact dimensions and matched English PNG bytes; Image Filters reopened direct PNG, JPG and WebP plus every file in its parsed two-image ZIP and matched English PNG bytes; Image Format Convert reopened direct PNG, JPG and WebP plus all six files in its parsed batch ZIP at exact dimensions and matched English PNG bytes; Image Resize reopened direct PNG, JPG and WebP plus fit/fill/pad/stretch and every multi-file multi-target output at exact dimensions and matched English PNG bytes; Social Card reopened PNG, JPG and WebP plus all six exact platform dimensions and matched controlled English PNG bytes; Passport Photo reopened all nine PNG, JPG and WebP single, 4x6-sheet and A4 outputs at exact dimensions and matched controlled English single-photo PNG bytes; Watermark Bulk downloads reopened as PNG and retained exact source dimensions 64x48 and 40x30.
 - Synthetic data only. Accepted candidates remained local-only with analytics declined and no raw-input fetch/XHR/WebSocket/non-GET request.
 
 ## Artwork
@@ -90,4 +91,4 @@
 
 ## Boundary and baseline debt
 
-The 43 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.
+The 42 blocked rows were unaccepted on the recorded baseline and remain fail-closed. No coordinator-owned acceptance, inventory, AI, sitemap, redirect, service-worker, locale-coverage or deployment output was changed. `.claude/rules/i18n.md` was absent and coordinator-declared non-blocking.

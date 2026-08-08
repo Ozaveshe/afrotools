@@ -5,11 +5,17 @@
   "verdict": "CANDIDATE COMPLETE",
   "exactScope": {
     "englishRows": 19,
-    "staticCandidates": 10,
-    "blocked": 9,
+    "staticCandidates": 11,
+    "blocked": 8,
     "centrallyAccepted": 0
   },
   "acceptedCandidates": [
+    {
+      "id": "image-compress",
+      "route": "/sw/zana/kubana-picha/",
+      "sourceOwner": "scripts/build-sw-image-compress.js + assets/js/lib/image-compress-studio.js",
+      "browserProof": "tests/e2e/swahili-image-compress-parity.spec.js: the byte-exact extracted English engine is shared by both routes and produced byte-identical 160x90 PNG output; Swahili PNG, JPG, WebP and auto-selected output reopened at exact dimensions; a 20 KB target JPEG reopened at 600x400 within target; two Download all WebP files reopened at exact 120x68 and 90x90; presets, invalid/clear behavior, 320/375px, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network checks passed."
+    },
     {
       "id": "image-resize",
       "route": "/sw/zana/kubadilisha-ukubwa-wa-picha/",
@@ -73,12 +79,6 @@
   ],
   "blocked": [
     {
-      "id": "image-compress",
-      "route": "/sw/zana/kubana-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract."
-    },
-    {
       "id": "background-remover",
       "route": "/sw/zana/kiondoa-mandharinyuma/",
       "status": "blocked-english-fallback",
@@ -127,7 +127,7 @@
       "blocker": "No physical Swahili route or native thumbnail studio owner exists on the coordinator base."
     }
   ],
-  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
+  "privacy": "Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.",
   "artwork": {
     "required": 19,
     "present": 19,
@@ -144,7 +144,8 @@
       4406,
       4407,
       4408,
-      4409
+      4409,
+      4410
     ],
     "specs": [
       "tests/e2e/swahili-image-color-family.spec.js",
@@ -155,9 +156,10 @@
       "tests/e2e/swahili-image-resize-parity.spec.js",
       "tests/e2e/swahili-image-filters-parity.spec.js",
       "tests/e2e/swahili-social-card-parity.spec.js",
-      "tests/e2e/swahili-passport-photo-parity.spec.js"
+      "tests/e2e/swahili-passport-photo-parity.spec.js",
+      "tests/e2e/swahili-image-compress-parity.spec.js"
     ],
-    "result": "27 passed"
+    "result": "30 passed"
   },
   "validation": {
     "focusedStatic": "pass",

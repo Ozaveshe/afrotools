@@ -35,8 +35,8 @@ expect(centrallyAcceptedIds.every(id => manifest.rows.some(row => row.id === id 
 
 const candidateRows = manifest.rows.filter(row => row.status === 'accepted-candidate');
 const blockedRows = manifest.rows.filter(row => row.status.startsWith('blocked-'));
-expect(candidateRows.length === 10, `expected 10 accepted candidates, found ${candidateRows.length}`);
-expect(blockedRows.length === 9, `expected 9 fail-closed rows, found ${blockedRows.length}`);
+expect(candidateRows.length === 11, `expected 11 accepted candidates, found ${candidateRows.length}`);
+expect(blockedRows.length === 8, `expected 8 fail-closed rows, found ${blockedRows.length}`);
 
 const networkPattern = /<script\b[^>]+src=["']https?:\/\//i;
 const silentSendPattern = /\b(?:fetch|sendBeacon|XMLHttpRequest|WebSocket)\s*\(/;
@@ -81,6 +81,10 @@ const passport = read('sw/zana/picha-ya-pasipoti/index.html');
 expect(passport.includes('scripts/build-sw-passport-photo.js'), 'passport-photo: source owner marker missing');
 expect(passport.includes('/assets/js/lib/passport-photo-studio.js'), 'passport-photo: shared English studio is not wired');
 expect(passport.includes('/assets/js/lib/passport-photo-studio-sw.js'), 'passport-photo: Swahili dynamic adapter is not wired');
+const compressor = read('sw/zana/kubana-picha/index.html');
+expect(compressor.includes('scripts/build-sw-image-compress.js'), 'image-compress: source owner marker missing');
+expect(compressor.includes('/assets/js/lib/image-compress-studio.js'), 'image-compress: shared English studio is not wired');
+expect(compressor.includes('/assets/js/lib/image-compress-studio-sw.js'), 'image-compress: Swahili dynamic adapter is not wired');
 
 for (const row of blockedRows) {
   if (row.status === 'blocked-missing-route') expect(!exists(row.swahiliOwner), `${row.id}: manifest says missing but the route exists`);
@@ -97,9 +101,9 @@ const receipt = {
   exactScope: { englishRows: 19, staticCandidates: candidateRows.length, blocked: blockedRows.length, centrallyAccepted: centrallyAcceptedIds.length },
   acceptedCandidates: candidateRows.map(row => ({ id: row.id, route: row.swahiliRoute, sourceOwner: row.sourceOwner, browserProof: row.browserProof })),
   blocked: blockedRows.map(row => ({ id: row.id, route: row.swahiliRoute, status: row.status, blocker: row.blocker })),
-  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
+  privacy: 'Candidate owners contain no iframe, remote runtime script, fetch, XHR, WebSocket or sendBeacon primitive. QR uses the committed local runtime and shared DOM-free payload engine. Image Compress, Passport Photo and Social Card use maintained local shared studios; OCR dependencies are local, but that row remains blocked on product parity.',
   artwork: { required: 19, present: 19 - missingArtwork.length, missing: missingArtwork.length },
-  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js'], result: '27 passed' },
+  browser: { status: 'pass', oneWorker: true, ports: [4398, 4401, 4404, 4405, 4406, 4407, 4408, 4409, 4410], specs: ['tests/e2e/swahili-image-color-family.spec.js', 'tests/e2e/swahili-watermark-bulk-parity.spec.js', 'tests/e2e/swahili-qr-generator-parity.spec.js', 'tests/e2e/swahili-image-crop-parity.spec.js', 'tests/e2e/swahili-image-format-convert-parity.spec.js', 'tests/e2e/swahili-image-resize-parity.spec.js', 'tests/e2e/swahili-image-filters-parity.spec.js', 'tests/e2e/swahili-social-card-parity.spec.js', 'tests/e2e/swahili-passport-photo-parity.spec.js', 'tests/e2e/swahili-image-compress-parity.spec.js'], result: '30 passed' },
   validation: {
     focusedStatic: 'pass',
     colorFamilyOwner: 'pass',

@@ -9,8 +9,8 @@
       "creative": 34,
       "image-design": 19
     },
-    "acceptedCandidates": 10,
-    "blocked": 43,
+    "acceptedCandidates": 11,
+    "blocked": 42,
     "centralAcceptanceLedgerEdited": false
   },
   "verdict": "PARTIAL — FAIL CLOSED",
@@ -20,9 +20,12 @@
       "categoryKey": "image-design",
       "englishRoute": "/tools/image-compress/",
       "swahiliRoute": "/sw/zana/kubana-picha/",
-      "status": "blocked-feature-parity",
-      "blocker": "The Swahili inline owner handles one image only and does not reproduce the English batch queue, target-size loop, comparison, manifest, or shared studio contract.",
-      "sourceOwner": "sw/zana/kubana-picha/index.html",
+      "status": "accepted-candidate",
+      "sourceOwner": "scripts/build-sw-image-compress.js + assets/js/lib/image-compress-studio.js",
+      "oracle": "The English inline IIFE was extracted byte-for-byte into the maintained shared owner (baseline SHA-256 47a6a29e4f9e61559c16525c3d73e09589400324caf1b6f65129a897e0ab6cfa); English and Swahili now execute that exact queue, target-size, resize, codec, comparison, filename, settings and history engine.",
+      "exports": "English and Swahili 160x90 PNG output was byte-identical. Swahili PNG, JPG, WebP and auto-selected files reopened at 160x90; a 20 KB target JPEG reopened at 600x400 within target; Download all emitted two WebP files that reopened at exact 120x68 and 90x90 dimensions.",
+      "browser": "tests/e2e/swahili-image-compress-parity.spec.js (Chromium, one worker, final run on port 4410): shared-owner parity, all advertised codecs, auto selection, target search, two-file downloads, presets, invalid/clear behavior, 320/375, 200% reflow, light/dark, keyboard/focus, SEO, console and no-network passed.",
+      "privacyAi": "Local-only deterministic browser workflow; no iframe, fetch, XHR, WebSocket, sendBeacon, raw-input network send or AI claim.",
       "artwork": "assets/img/tools/image-compress.webp"
     },
     {
@@ -580,6 +583,7 @@
     "Color tools are owned by scripts/build-sw-image-color-family.js and preserve the English conversion formula and 45-palette dataset verbatim.",
     "Watermark Bulk retains the English local FileReader/Image/HTML-canvas PNG engine and full-resolution dimensions; only Swahili UI, status and accessibility wiring changed.",
     "Image Crop now loads the maintained English image-crop-studio.js owner directly; a bounded Swahili adapter localizes dynamic status and clipboard output without changing crop or codec calculations.",
+    "Image Compress now loads the byte-exact extracted English image-compress-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue and history without changing batch, target-size, resize, codec, comparison, filename or download calculations.",
     "Image Format Convert now loads the maintained English image-format-convert-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, guidance and history without changing codec, sizing, manifest or export calculations.",
     "Image Filters is generated from the English studio DOM contract and loads the maintained image-filters-studio.js owner; translation is limited to text nodes and accessible labels so DOM identifiers and pixel/export semantics cannot drift.",
     "Image Resize now loads the maintained English image-resize-studio.js owner directly; a bounded Swahili adapter localizes dynamic status, queue, preview and history without changing resize geometry, codec or export calculations.",
@@ -600,7 +604,8 @@
       4406,
       4407,
       4408,
-      4409
+      4409,
+      4410
     ],
     "widths": [
       320,
@@ -622,6 +627,10 @@
     ]
   },
   "exportParseProof": [
+    {
+      "englishId": "image-compress",
+      "proof": "English and Swahili 160x90 PNG output was byte-identical. Swahili PNG, JPG, WebP and auto-selected files reopened at 160x90; a 20 KB target JPEG reopened at 600x400 within target; Download all emitted two WebP files that reopened at exact 120x68 and 90x90 dimensions."
+    },
     {
       "englishId": "image-resize",
       "proof": "English and Swahili 60x40 PNG output was byte-identical. Direct PNG, JPG and WebP plus fit/fill/pad/stretch outputs reopened at exact dimensions; two files across custom and thumbnail targets produced four individually reopened files and four more reopened through Download all at 60x40 or 512x512."
@@ -676,6 +685,7 @@
     "node scripts/audit-sw-image-color-family.js",
     "node scripts/audit-sw-image-design-parity.js",
     "node tests/qr-payload-engine.test.js",
+    "node tests/image-compress-shared-owner.test.js",
     "playwright test tests/e2e/swahili-image-color-family.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-watermark-bulk-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-qr-generator-parity.spec.js --project=chromium --workers=1",
@@ -685,6 +695,7 @@
     "playwright test tests/e2e/swahili-image-filters-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-social-card-parity.spec.js --project=chromium --workers=1",
     "playwright test tests/e2e/swahili-passport-photo-parity.spec.js --project=chromium --workers=1",
+    "playwright test tests/e2e/swahili-image-compress-parity.spec.js --project=chromium --workers=1",
     "npm run build:i18n:validate",
     "npm run validate:hreflang",
     "npm run check-links",
