@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1514 |
-| Swahili coverage records | 1511 |
+| Swahili physical HTML pages | 1515 |
+| Swahili coverage records | 1512 |
 | Native candidates | 590 |
-| Localized shell candidates | 634 |
+| Localized shell candidates | 635 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 31 |
-| **Accepted** | **1141** |
+| Missing | 30 |
+| **Accepted** | **1142** |
 
 ## Category reconciliation
 
@@ -37,7 +37,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Document & PDF | 32 | 1 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 32 |
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
-| Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
+| Engineering & Construction | 26 | 4 | 22 | 0 | 0 | 0 | 0 | 0 | 0 | 11 |
 | Finance, Tax & Market Data | 132 | 6 | 96 | 2 | 0 | 0 | 0 | 0 | 28 | 87 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
@@ -693,7 +693,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Latin-to-African Script Mapping | Language & Translation | `/tools/transliterate` | Localized shell candidate | `/sw/zana/transliteration-ya-maandishi` | Yes |
 | AfroDraft 2D CAD | Engineering & Construction | `/engineering/afrodraft` | Localized shell candidate | `/sw/zana/afrodraft-cad` | No |
 | AfroPlan Floor Planner | Engineering & Construction | `/engineering/floor-planner` | Localized shell candidate | `/sw/zana/mpangaji-ramani-ya-sakafu` | No |
-| Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | Missing | None | No |
+| Solar Panel Calculator | Engineering & Construction | `/tools/solar-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-cha-solar` | Yes |
 | Building Cost Estimator | Engineering & Construction | `/tools/floor-plan` | Localized shell candidate | `/sw/zana/kikokotoo-gharama-za-ujenzi` | No |
 | BOQ Builder | Engineering & Construction | `/tools/boq-builder` | Localized shell candidate | `/sw/zana/orodha-vifaa` | No |
 | Structural Calculator | Engineering & Construction | `/tools/structural-calc` | Localized shell candidate | `/sw/zana/kikokotoo-miundo-ya-ujenzi` | No |
