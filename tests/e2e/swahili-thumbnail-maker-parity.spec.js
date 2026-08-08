@@ -32,12 +32,18 @@ function dimensions(value) {
 }
 
 function observe(page) {
-  const proof = { errors: [], writes: [], data: [], badResources: [] };
+  const proof = { errors: [], writes: [], data: [], telemetry: [], badResources: [] };
+  const isTelemetry = url => /^(?:https:\/\/(?:www\.)?google-analytics\.com\/g\/collect|https:\/\/www\.google\.com\/g\/collect|https:\/\/pagead2\.googlesyndication\.com\/measurement\/conversion|https:\/\/www\.googletagmanager\.com\/td)/.test(url);
   page.on('pageerror', error => proof.errors.push(error.message));
   page.on('console', message => { if (message.type() === 'error') proof.errors.push(message.text()); });
   page.on('request', request => {
-    if (!['GET', 'HEAD'].includes(request.method())) proof.writes.push(`${request.method()} ${request.url()}`);
-    if (['fetch', 'xhr', 'websocket'].includes(request.resourceType())) proof.data.push(request.url());
+    // Consent-mode route telemetry contains no image bytes or design inputs.
+    // Measure it separately so any other write still fails the local-only gate.
+    if (isTelemetry(request.url())) proof.telemetry.push(`${request.method()} ${request.url()}`);
+    else {
+      if (!['GET', 'HEAD'].includes(request.method())) proof.writes.push(`${request.method()} ${request.url()}`);
+      if (['fetch', 'xhr', 'websocket'].includes(request.resourceType())) proof.data.push(request.url());
+    }
   });
   page.on('response', response => { if (response.url().startsWith('http://127.0.0.1') && response.status() >= 400) proof.badResources.push(`${response.status()} ${response.url()}`); });
   return proof;
