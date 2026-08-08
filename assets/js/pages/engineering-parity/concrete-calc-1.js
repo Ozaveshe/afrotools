@@ -58,29 +58,16 @@ function calculate() {
   if(wetVol<=0){alert('Please enter valid dimensions.');return;}
 
   var parts = getRatio();
-  var cement = parts[0], sand = parts[1], agg = parts[2]||0;
-  var totalParts = cement + sand + agg;
   var bagSize = parseInt(document.getElementById('bagSize').value);
-  var wastage = 1 + parseInt(document.getElementById('wastage').value)/100;
+  var wastagePct = parseInt(document.getElementById('wastage').value);
   var wc = getWC();
-  var bulking = 1.54;
-
-  var dryVol = wetVol * bulking;
-
-  // Materials
-  var cementVol = (cement/totalParts)*dryVol;
-  var cementKg = cementVol * 1440;
-  var cementBags = Math.ceil((cementKg/bagSize)*wastage);
-
-  var sandVol = (sand/totalParts)*dryVol*wastage;
-  var sandTonnes = sandVol*1.6;
-  var sandWB = Math.ceil(sandVol/0.065);
-
-  var aggVol = (agg/totalParts)*dryVol*wastage;
-  var aggTonnes = aggVol*1.75;
-  var aggWB = Math.ceil(aggVol/0.065);
-
-  var waterLitres = Math.round(cementKg*wc);
+  var result = EngineeringMaterialsEngine.concrete({wetVolume:wetVol,ratio:parts,bagSize:bagSize,wastagePct:wastagePct,waterCementRatio:wc});
+  if (result.error) { alert('Please enter valid mix assumptions.'); return; }
+  var agg = parts[2]||0;
+  var dryVol=result.dryVolume,cementVol=result.cementVolume,cementKg=result.cementKg,cementBags=result.cementBags;
+  var sandVol=result.sandVolume,sandTonnes=result.sandTonnes,sandWB=result.sandWheelbarrows;
+  var aggVol=result.aggregateVolume,aggTonnes=result.aggregateTonnes,aggWB=result.aggregateWheelbarrows;
+  var waterLitres=result.waterLitres;
 
   // Display
   document.getElementById('rCement').textContent = cementBags + ' bags';

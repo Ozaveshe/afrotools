@@ -45,46 +45,15 @@ function calculate() {
   var opt = sel.options[sel.selectedIndex];
   var pricePerTonne = parseFloat(opt.dataset.price);
   var sym = opt.dataset.sym;
-  var wastePct = 1 + parseInt(document.getElementById('wastage').value) / 100;
-
-  var totalWeight = 0, totalLength = 0, totalBars = 0;
-  var bbsData = [];
-
-  rows.forEach(function(row, idx) {
-    var size = row.querySelector('[data-f="size"]').value;
-    var desc = row.querySelector('[data-f="desc"]').value || 'Bar ' + (idx + 1);
-    var length = parseFloat(row.querySelector('[data-f="length"]').value) || 0;
-    var qty = parseInt(row.querySelector('[data-f="qty"]').value) || 0;
-    var bar = BARS[size];
-    if (!bar || length <= 0 || qty <= 0) return;
-
-    var totalLen = length * qty;
-    var weight = bar.wt * totalLen;
-    var fullBars = Math.ceil((length * qty) / STD_BAR_LENGTH);
-    var lapLen = bar.dia * 40; // tension lap in mm
-
-    totalWeight += weight;
-    totalLength += totalLen;
-    totalBars += qty;
-
-    bbsData.push({
-      mark: idx + 1,
-      size: size,
-      dia: bar.dia,
-      desc: desc,
-      length: length,
-      qty: qty,
-      totalLen: totalLen,
-      weight: weight,
-      fullBars: fullBars,
-      lapLen: lapLen,
-      wtPerM: bar.wt
-    });
+  var wastagePct = parseInt(document.getElementById('wastage').value);
+  var inputRows = Array.prototype.map.call(rows, function(row, idx) {
+    return {size:row.querySelector('[data-f="size"]').value,description:row.querySelector('[data-f="desc"]').value||'Bar '+(idx+1),length:parseFloat(row.querySelector('[data-f="length"]').value),quantity:parseInt(row.querySelector('[data-f="qty"]').value)};
   });
-
-  var weightWithWaste = totalWeight * wastePct;
-  var tonnes = weightWithWaste / 1000;
-  var cost = Math.round(tonnes * pricePerTonne);
+  var result = EngineeringMaterialsEngine.rebar({rows:inputRows,wastagePct:wastagePct,pricePerTonne:pricePerTonne});
+  if (result.error) { alert('Please add at least one valid bar.'); return; }
+  var totalWeight=result.totalWeight,totalLength=result.totalLength,totalBars=result.totalBars,weightWithWaste=result.weightWithWaste,tonnes=result.tonnes,cost=result.cost;
+  var bbsData=result.schedule.map(function(b){return {mark:b.mark,size:b.size,dia:b.dia,desc:b.description,length:b.length,qty:b.quantity,totalLen:b.totalLength,weight:b.weight,fullBars:b.fullBars,lapLen:b.lapLengthMm,wtPerM:b.weightPerM};});
+  var wastePct = 1 + wastagePct / 100;
 
   // Display totals
   document.getElementById('totalWeight').textContent = weightWithWaste.toFixed(0) + ' kg (' + tonnes.toFixed(2) + ' tonnes)';

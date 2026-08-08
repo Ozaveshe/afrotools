@@ -5,6 +5,7 @@ const path = require("path");
 const inventory = require("../reports/swahili-free-app-parity-inventory.json");
 const transportStatus = require("../data/transport/source-status.json");
 const { SW_ENERGY_REMAINING_APPS } = require("./lib/sw-energy-remaining-contract.js");
+const { SW_ENGINEERING_MATERIALS_APPS } = require("./lib/sw-engineering-materials-contract.js");
 
 const ROOT = path.resolve(__dirname, "..");
 const OUT_JSON = "reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.json";
@@ -15,6 +16,7 @@ const CATEGORY_KEYS = ["engineering", "energy", "transport"];
 
 const rows = inventory.rows.filter((row) => CATEGORY_KEYS.includes(row.categoryKey) && !row.accepted);
 const energyIds = new Set(SW_ENERGY_REMAINING_APPS.map((app) => app.id));
+const engineeringIds = new Set(SW_ENGINEERING_MATERIALS_APPS.map((app) => app.id));
 const statusByTransportId = new Map(transportStatus.tools.map((tool) => [tool.id, tool]));
 
 function exists(file) { return Boolean(file) && fs.existsSync(path.join(ROOT, file)); }
@@ -27,6 +29,7 @@ for (const [key, count] of [["engineering", 20], ["energy", 17], ["transport", 1
   if (actual !== count) throw new Error(`${key}: expected ${count}, received ${actual}.`);
 }
 if (energyIds.size !== 17) throw new Error(`Expected 17 Energy contracts, received ${energyIds.size}.`);
+if (engineeringIds.size !== 4) throw new Error(`Expected 4 Engineering contracts, received ${engineeringIds.size}.`);
 
 const apps = rows.map((row) => {
   const routePresent = exists(routeFile(row));
@@ -49,6 +52,21 @@ const apps = rows.map((row) => {
       exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
       artwork,
       blocker: null,
+    };
+  }
+
+  if (row.categoryKey === "engineering" && engineeringIds.has(row.englishId)) {
+    const contract = SW_ENGINEERING_MATERIALS_APPS.find((app) => app.id === row.englishId);
+    if (!routePresent) throw new Error(`Engineering owner missing for ${row.englishId}.`);
+    return {
+      englishId: row.englishId, categoryKey: row.categoryKey, englishRoute: row.englishRoute,
+      swahiliRoute: contract.swRoute, swahiliFile: contract.file, status: "accepted-candidate",
+      sourceOwner: "scripts/lib/sw-engineering-materials-contract.js -> assets/js/engines/engineering-materials-engine.js -> assets/js/pages/sw-engineering-materials-parity.js",
+      formulaDecision: "Exact English semantics extracted to one DOM-free engine and consumed by both English and Swahili controllers; oracle and English browser regressions passed.",
+      sourceDecision: "User-entered dimensions, waste, prices and material assumptions only; no changing official/live rate is claimed. Planning-estimate and professional-review boundaries are visible.",
+      browserProof: "Chromium: 320px, 375px and 200% reflow; light/dark; keyboard/focus; valid/invalid/reset; no console/page errors or raw-input network requests.",
+      exportProof: "JSON downloaded, parsed and reopened; CSV and TXT parsed; PDF downloaded and reopened through the repository-vendored PDF.js 3.11 parser.",
+      artwork, blocker: null,
     };
   }
 
@@ -90,22 +108,22 @@ const receipt = {
     acceptedCandidates: accepted.length,
     blocked: blocked.length,
     byCategory: {
-      engineering: { denominator: 20, acceptedCandidates: 0, blocked: 20 },
+      engineering: { denominator: 20, acceptedCandidates: 4, blocked: 16 },
       energy: { denominator: 17, acceptedCandidates: 17, blocked: 0 },
       transport: { denominator: 18, acceptedCandidates: 0, blocked: 18 },
     },
     acceptanceBoundary: "Candidate receipt only; coordinator-owned central acceptance remains unchanged.",
   },
   proof: {
-    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-transport-static-candidate.test.js"],
-    browser: "tests/e2e/sw-engineering-energy-transport-candidate.spec.js",
-    browserMatrix: "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; car-import focused invalid/reset/privacy flow.",
+    static: ["tests/swahili-energy-remaining-static.test.js", "tests/swahili-engineering-materials-parity.test.js", "tests/swahili-transport-static-candidate.test.js"],
+    browser: ["tests/e2e/sw-engineering-energy-transport-candidate.spec.js", "tests/e2e/sw-engineering-materials-parity.spec.js"],
+    browserMatrix: "53 physical routes at 320px, 375px and 640px/200% reflow; 17 deep Energy workflows; 4 deep Engineering workflows plus English regressions; car-import focused invalid/reset/privacy flow.",
     privacy: "Energy deep tests block/record fetch and XMLHttpRequest; zero raw-input requests. All processing and exports remain local.",
   },
   apps,
 };
 
-if (accepted.length !== 17 || blocked.length !== 38) throw new Error(`Expected 17 accepted candidates and 38 blocked; received ${accepted.length}/${blocked.length}.`);
+if (accepted.length !== 21 || blocked.length !== 34) throw new Error(`Expected 21 accepted candidates and 34 blocked; received ${accepted.length}/${blocked.length}.`);
 
 const artworkReceipt = {
   schemaVersion: 1,
@@ -119,18 +137,20 @@ const artworkReceipt = {
 const byCategory = (key, status) => apps.filter((app) => app.categoryKey === key && app.status === status).map((app) => `\`${app.englishId}\``).join(", ");
 const md = `# Swahili Engineering, Energy and Transport candidate receipt
 
-Status: **17 accepted candidates / 38 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
+Status: **21 accepted candidates / 34 blocked / exact denominator 55**. This receipt does not edit or imply coordinator acceptance.
 
 ## Outcome
 
 | Category | Denominator | Accepted candidate | Blocked |
 |---|---:|---:|---:|
-| Engineering & Construction | 20 | 0 | 20 |
+| Engineering & Construction | 20 | 4 | 16 |
 | Energy & Utilities | 17 | 17 | 0 |
 | Transport & Logistics | 18 | 0 | 18 |
-| **Total** | **55** | **17** | **38** |
+| **Total** | **55** | **21** | **34** |
 
 Accepted Energy IDs: ${byCategory("energy", "accepted-candidate")}.
+
+Accepted Engineering IDs: ${byCategory("engineering", "accepted-candidate")}.
 
 Blocked Engineering IDs: ${byCategory("engineering", "blocked")}.
 
@@ -140,7 +160,7 @@ Blocked Transport IDs: ${byCategory("transport", "blocked")}.
 
 - The 17 Energy pages use their exact English-owned DOM-free engines through \`scripts/lib/sw-energy-remaining-contract.js\`; no formulas were translated or copied. Focused tests exercise valid and invalid oracle cases.
 - The bounded \`data/energy/sw-energy-planning-snapshot.js\` owner preserves March 2026 source values and normalizes only the existing LPG field name required by the shared engine. UI labels the data stale, planning-only and low-confidence. The ledger boundary is 12/54 regulator-linked markets with 42 gaps.
-- Engineering is fail-closed: 19 physical localized shells and one missing route do not provide individual English-engine, boundary and export proof.
+- Concrete, tiles, water-tank and rebar now share \`assets/js/engines/engineering-materials-engine.js\` with their English routes. Exact constants, unit conversions and calculation boundaries have oracle fixtures; the remaining 16 Engineering IDs stay fail-closed.
 - Transport is fail-closed: 17 physical localized shells and one missing route do not provide full product parity. The car-import controller passes focused browser behavior, but its customs/port source set remains \`changed\` in \`data/transport/source-status.json\`.
 - All 55 expected dedicated artwork files exist. The machine-readable artwork queue is empty.
 
@@ -148,6 +168,7 @@ Blocked Transport IDs: ${byCategory("transport", "blocked")}.
 
 - Chromium, one worker, isolated port 4198: 53 existing physical routes at 320px, 375px and 640px with 200% CSS reflow; no horizontal overflow, iframe, canonical mismatch, console error or page error.
 - Every Energy app: valid calculation, invalid-state clearing, reset, explicit dark/light toggle, keyboard focus, JSON download/parse/reopen, CSV parse, TXT parse and PDF parse via the repository-vendored PDF.js 3.11 parser. The final proof is split into green 17-test deep-workflow and green 55-test route/boundary runs to isolate browser-cache contention.
+- Every accepted Engineering app: the same interaction/export matrix at 320px and 375px, plus a green English-route regression through the shared engine.
 - Network instrumentation recorded no Energy fetch/XHR containing raw inputs. No AI call exists. Car-import requests were restricted to local synthetic fixture/source JSON paths.
 - The two absent physical routes are \`solar-calculator\` and \`car-price-intelligence\`; their absence is asserted and blocked, not hidden by denominator arithmetic.
 
@@ -157,6 +178,8 @@ Blocked Transport IDs: ${byCategory("transport", "blocked")}.
 - Energy runtime/data/style: \`assets/js/pages/sw-energy-remaining-parity.js\`, \`data/energy/sw-energy-planning-snapshot.js\`, \`assets/css/sw-energy-remaining-parity.css\`.
 - Generated by the bounded owner only: 17 \`sw/zana/**/index.html\` Energy routes and the Swahili Energy hub.
 - Transport checkpoint: \`assets/js/pages/swahili-car-import-cost.js\` and focused transport source/browser tests.
+- Engineering generator/manifest/engine: \`scripts/build-sw-engineering-materials-parity.js\`, \`scripts/lib/sw-engineering-materials-contract.js\`, and \`assets/js/engines/engineering-materials-engine.js\`.
+- Engineering runtime/style: \`assets/js/pages/sw-engineering-materials-parity.js\` and \`assets/css/sw-engineering-materials-parity.css\`; four bounded generated Swahili routes are owned by that generator.
 - Proof owners: this receipt, the candidate Playwright config/spec, focused static tests and missing-artwork receipt.
 - The requested \`.claude/rules/i18n.md\` reference is absent in this checkout; the coordinator explicitly declared that absence non-blocking. The repository Swahili strategy and coordinator skill governed the work.
 
@@ -164,6 +187,8 @@ Blocked Transport IDs: ${byCategory("transport", "blocked")}.
 
 - \`node scripts/build-sw-energy-remaining-parity.js\`
 - \`node --test tests/swahili-energy-remaining-static.test.js tests/swahili-transport-static-candidate.test.js\`
+- \`node --test tests/swahili-engineering-materials-parity.test.js\`
+- \`npx playwright test -c playwright.sw-engineering-materials.config.js --workers=1\`
 - \`npx playwright test -c playwright.sw-engineering-energy-transport.config.js --workers=1\`
 - \`npm run build:i18n:validate\`
 - \`npm run validate:hreflang\`
