@@ -5,14 +5,15 @@
   "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
   "acceptanceRule": "Fail closed per English ID. Physical route presence or localized-shell classification alone earns no credit.",
   "denominator": 46,
-  "accepted": 19,
-  "blocked": 27,
+  "accepted": 20,
+  "blocked": 26,
   "coordinatorOwnedFilesEdited": false,
   "changedProductPaths": [
     "assets/js/engines/lr-paye.js",
     "assets/js/engines/mr-paye.js",
     "assets/js/pages/student-loan-vip.js",
     "assets/js/pages/staff-cost-sw.js",
+    "assets/js/pages/pension-projection-sw.js",
     "assets/js/components/tool-registry.js",
     "assets/css/property-roi-vip.css",
     "assets/css/property-transfer-cost-vip.css",
@@ -26,13 +27,16 @@
     "sw/zana/microfinance-riba-tambarare-dhidi-ya-salio/index.html",
     "sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi/index.html",
     "sw/zana/bajeti-ya-gharama-za-wafanyakazi/index.html",
+    "sw/zana/makadirio-ya-pensheni/index.html",
     "tools/student-loan/index.html",
     "fr/tools/pret-etudiant/index.html",
     "tools/staff-cost/index.html",
     "fr/tools/cout-employe/index.html",
-    "ha/kayan-aiki/kudin-maikaci/index.html"
+    "ha/kayan-aiki/kudin-maikaci/index.html",
+    "tools/pension-proj/index.html",
+    "fr/tools/projection-pension-simple/index.html"
   ],
-  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Staff-cost parity uses the existing staff-cost-user-evidence-2026-v1 DOM-free engine: the user supplies current employer obligations and confirms employment classification and a source no more than 366 days old; no PAYE, statutory rate, ceiling or termination rule is bundled. Student-loan parity likewise requires user-entered sourced terms and adds no programme preset.",
+  "formulaDataSourceDecision": "No rate, threshold, jurisdiction data or authority source changed. Pension-proj parity uses the reviewed pension-user-assumptions-2026-v1 engine with user-entered statement values, returns, fees and inflation; it adds no country rate, entitlement, forecast or guarantee. The separate legacy pension-projection row remains blocked. Staff-cost uses the existing user-evidence engine and bundles no PAYE, statutory rate, ceiling or termination rule. Student-loan requires user-entered sourced terms and adds no programme preset.",
   "browserMatrix": {
     "engine": "system Chrome",
     "workers": 1,
@@ -55,10 +59,10 @@
     "focusedNodeSubtests": {
       "passed": 5,
       "failed": 0,
-      "note": "Current increment rerun covered shard derivation/static acceptance plus staff-cost oracle fixtures; student-loan oracle fixtures passed in commit 28ba2518."
+      "note": "Current increment rerun covered shard derivation/static acceptance plus pension-proj oracle fixtures; staff-cost and student-loan oracle fixtures passed in preceding commits."
     },
     "shardBrowserMatrix": {
-      "passed": 24,
+      "passed": 26,
       "failed": 0,
       "execution": "complete one-worker system-Chrome run on isolated port 43917"
     },
@@ -73,15 +77,15 @@
       "browserFailed": 0
     },
     "localizationValidation": {
-      "publicPages": 11292,
-      "hreflangRelationships": 33426,
+      "publicPages": 11293,
+      "hreflangRelationships": 33432,
       "equivalenceGroups": 5351,
       "status": "passed",
       "protectedGeneratedCoverageArtifacts": "reported stale and intentionally not regenerated"
     },
     "linkValidation": {
-      "htmlFiles": 11511,
-      "internalLinks": 138229,
+      "htmlFiles": 11512,
+      "internalLinks": 138233,
       "broken": 0
     },
     "registryAudit": {
@@ -649,12 +653,60 @@
       "englishName": "Pension Projection Calculator",
       "englishRoute": "/tools/pension-proj",
       "startingState": "missing",
-      "status": "blocked",
-      "swahiliRoute": "/",
-      "swahiliFile": null,
-      "sourceOwner": null,
-      "proof": null,
-      "blocker": "No physical Swahili app route exists; formula, UI, SEO, artwork and export proof cannot be fabricated safely in this lane."
+      "status": "accepted",
+      "swahiliRoute": "/sw/zana/makadirio-ya-pensheni",
+      "swahiliFile": "sw/zana/makadirio-ya-pensheni/index.html",
+      "sourceOwner": [
+        "/engines/pension-projection-planner.js",
+        "/assets/js/lib/pdf-template.js",
+        "/assets/js/pages/pension-projection-sw.js"
+      ],
+      "proof": {
+        "staticContract": "tests/swahili-financial-shard-b.test.js",
+        "browserMatrix": "tests/e2e/swahili-financial-shard-b.spec.js",
+        "existingOracleAndWorkflowSuites": [
+          "tests/pension-projection-planner.test.js",
+          "tests/e2e/swahili-financial-shard-b.spec.js"
+        ],
+        "checks": {
+          "swahiliFile": true,
+          "englishFile": true,
+          "nativeDocument": true,
+          "dedicatedEngineOrController": true,
+          "practicalUi": true,
+          "selfCanonical": true,
+          "selfOgUrl": true,
+          "swahiliSchema": true,
+          "hreflangEnglish": true,
+          "hreflangSwahili": true,
+          "hreflangDefault": true,
+          "reciprocalEnglish": true,
+          "sourceBoundary": true,
+          "privacyBoundary": true,
+          "artworkDeclared": true,
+          "artworkExists": true,
+          "resetOrInvalidAction": true,
+          "exportOrExplicitNone": true,
+          "noLeadGate": true,
+          "noRawInputUrlShare": true,
+          "proofFiles": true
+        },
+        "advertisedExportProof": {
+          "status": "repository-suite-present",
+          "suites": [
+            "tests/pension-projection-planner.test.js",
+            "tests/e2e/swahili-financial-shard-b.spec.js"
+          ],
+          "note": "The focused shard suite validates the shared pension projection oracle, parses the downloaded year-by-year CSV, reopens PDF, verifies clipboard/stale-evidence behavior and proves no raw-input network write."
+        },
+        "privacyNoRawInputNetworkLeak": true,
+        "mobile320": true,
+        "mobile375": true,
+        "reflow200Percent": true,
+        "lightDark": true,
+        "keyboardFocusA11y": true
+      },
+      "blocker": null
     },
     {
       "position": 66,

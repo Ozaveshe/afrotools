@@ -11,6 +11,7 @@ const routes = [
   ['/sw/zana/uwezo-wa-mkopo-wa-nyumba', 'mortgage-affordability'],
   ['/sw/zana/kikokotoo-mkopo-wa-nyumba', 'mortgage-calculator'],
   ['/sw/zana/kizalishaji-payslip', 'payslip-generator'],
+  ['/sw/zana/makadirio-ya-pensheni', 'pension-proj'],
   ['/sw/zana/faida-ya-uwekezaji-wa-nyumba', 'property-roi'],
   ['/sw/zana/gharama-za-uhamisho-wa-mali', 'property-transfer-cost'],
   ['/sw/zana/kukodi-dhidi-ya-kununua', 'rent-vs-buy'],
@@ -25,6 +26,20 @@ const routes = [
   ['/sw/zana/mpango-wa-malipo-ya-mkopo-wa-mwanafunzi', 'student-loan'],
   ['/sw/togo/kikokotoo-kodi-mshahara', 'tg-paye'],
 ];
+
+test('pension-proj preserves the user-assumption engine and local exports', async ({ page }) => {
+  const writes = [];
+  page.on('request', (request) => { if (request.method() !== 'GET' && request.postData()) writes.push(request.postData()); });
+  await page.addInitScript(() => { window.__copiedText = ''; Object.defineProperty(navigator, 'clipboard', { configurable: true, value: { writeText: async (value) => { window.__copiedText = value; } } }); });
+  await page.goto('/sw/zana/makadirio-ya-pensheni/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#currency').fill('KES'); await page.locator('#current-balance').fill('1000000'); await page.locator('#personal-contribution').fill('50000'); await page.locator('#employer-contribution').fill('50000'); await page.locator('#voluntary-contribution').fill('0'); await page.locator('#years').fill('2'); await page.locator('#source-label').fill('Taarifa ya majaribio'); await page.locator('#source-date').fill('2026-07-22'); await page.locator('#annual-return').fill('8'); await page.locator('#annual-fee').fill('1'); await page.locator('#inflation').fill('6'); await page.locator('#contribution-growth').fill('0'); await page.locator('#scheme-confirmed').check(); await page.locator('#assumptions-confirmed').check();
+  await page.getByRole('button', { name: 'Kokotoa ndani ya kifaa' }).click();
+  await expect(page.locator('#ending-balance')).toContainText('3,707,621.51'); await expect(page.locator('#real-value')).toContainText('3,299,769.94'); await expect(page.locator('#future-contributions')).toContainText('2,400,000'); await expect(page.locator('#investment-growth')).toContainText('307,621.51'); await expect(page.locator('#net-return')).toHaveText('7.00%'); await expect(page.locator('#year-body tr')).toHaveCount(2);
+  await page.locator('#copy-result').click(); expect(await page.evaluate(() => window.__copiedText)).toContain('Muhtasari wa makadirio ya pensheni');
+  const csvEvent = page.waitForEvent('download'); await page.locator('#csv-result').click(); const csv = fs.readFileSync(await (await csvEvent).path(), 'utf8'); expect(csv.split('\n')).toHaveLength(3); expect(csv).toContain('Mwaka,Salio lililokadiriwa (KES)');
+  const pdfBytes = await page.evaluate(async () => { const generated = new Promise((resolve) => window.addEventListener('afro-pdf-generated', async (event) => resolve([...new Uint8Array(await event.detail.blob.arrayBuffer())]), { once: true })); document.getElementById('pdf-result').click(); return generated; }); const pdf = await pdfParse(Buffer.from(pdfBytes)); expect(pdf.text).toContain('Muhtasari wa Makadirio ya Pensheni'); expect(pdf.text).toContain('3,707,621');
+  await page.locator('#source-date').fill('2025-01-01'); await page.getByRole('button', { name: 'Kokotoa ndani ya kifaa' }).click(); await expect(page.locator('#pension-error')).toContainText('siku 366'); await expect(page.locator('#pension-result')).toBeHidden(); await page.getByRole('button', { name: 'Futa data' }).click(); await expect(page.locator('#currency')).toHaveValue(''); expect(writes).toEqual([]);
+});
 
 test('staff-cost preserves the user-evidenced engine and local export boundary', async ({ page }) => {
   const writes = [];
