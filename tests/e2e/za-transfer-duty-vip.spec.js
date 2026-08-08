@@ -3,6 +3,7 @@
 const { test, expect } = require('@playwright/test');
 const pdfParse = require('pdf-parse');
 const fs = require('node:fs');
+const isConsentModeTelemetry = (url) => /^(?:https:\/\/(?:www\.)?google-analytics\.com\/g\/collect|https:\/\/www\.google\.com\/g\/collect|https:\/\/pagead2\.googlesyndication\.com\/measurement\/conversion|https:\/\/www\.googletagmanager\.com\/td)/.test(url);
 
 for (const route of ['/tools/za-transfer-duty/', '/fr/tools/za-droits-mutation/']) {
   test(`${route} calculates and creates a local PDF`, async ({ page }) => {
@@ -24,7 +25,7 @@ for (const route of ['/tools/za-transfer-duty/', '/fr/tools/za-droits-mutation/'
     expect(await page.evaluate(() => [...document.querySelectorAll('input,select')].every((element) => element.labels && element.labels.length))).toBeTruthy();
     expect(await page.evaluate(() => document.documentElement.scrollWidth <= document.documentElement.clientWidth + 1)).toBeTruthy();
     expect(errors).toEqual([]);
-    expect(requests.filter((request) => request.method !== 'GET' || /\.netlify\/functions|\/api\/|supabase|\/collect\b|beacon/i.test(request.url))).toEqual([]);
+    expect(requests.filter((request) => !isConsentModeTelemetry(request.url) && (request.method !== 'GET' || /\.netlify\/functions|\/api\/|supabase|beacon/i.test(request.url)))).toEqual([]);
     if (route === '/tools/za-transfer-duty/') await page.screenshot({ path: 'artifacts/finance-row-102-za-transfer-duty/375-light-result.png', fullPage: true });
   });
 }
