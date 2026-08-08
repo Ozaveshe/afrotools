@@ -1,0 +1,23 @@
+{
+  "lane": "HA-05",
+  "baseSha": "6edacda8437e1fa9b9e5a512138cbdd3169e38be",
+  "implementationSha": "92cfd592c442c361c7438ff048dd2bdf8927dacc",
+  "commands": [
+    {"command":"git rev-parse HEAD; git rev-parse origin/main","status":"pass","result":"Both were 6edacda8437e1fa9b9e5a512138cbdd3169e38be before edits."},
+    {"command":"node -c ha/assets/ha-05-telecom-commerce.js; node -c scripts/build-ha-05-telecom-commerce.js","status":"pass","result":"Both lane-owned JavaScript files parsed."},
+    {"command":"node scripts/build-ha-05-telecom-commerce.js --check","status":"pass","result":"Verified 12 HA-05 Hausa routes."},
+    {"command":"node --test tests/ha/ha-05/ha-05-engine.test.js tests/ha/ha-05/ha-05-static.test.js","status":"pass","result":"22 passed, 0 failed."},
+    {"command":"npx playwright test --config=tests/ha/ha-05/playwright.config.js","status":"pass","result":"12 passed in Chromium; valid, invalid, reset, keyboard/focus, manual/system dark, 320px, 375px, 200% text reflow, export parsing, privacy, SEO and artwork checks."},
+    {"command":"node scripts/audit-hausa-visible-copy.js","status":"pass-with-brand-note","result":"0 BLOCKER_VISIBLE_ENGLISH globally; 11 assigned routes CLEAN; mahada-whatsapp is POSSIBLE_FALSE_POSITIVE solely for the WhatsApp brand. Generated central ledgers were restored and not included."},
+    {"command":"npm run ha:coverage:check","status":"pass","result":"105 routes; 14 native, 59 localized shell, 32 explicit English fallback. Protected registry does not yet count eight newly assigned exact slugs."},
+    {"command":"npm run test:ha-surface","status":"pass","result":"13 explicit bridges and 113 audited routes passed."},
+    {"command":"npm run check-links","status":"pass","result":"No broken internal links; 138335 links across 11517 HTML files."},
+    {"command":"npm run ha:surface:check","status":"baseline-debt","result":"Failed on 13 unrelated pre-existing central Hausa pages: kasashe, shiga, allon-aiki, maajiyar-takardu, farashi, sharuddan-amfani, sirri, tuntube-mu, game-da-mu, masu-habaka, inshora, labarai, kayan-kasuwanci. No HA-05 assigned route appeared."},
+    {"command":"npm run build:i18n:validate","status":"coordinator-blocked","result":"HREFLANG_EQUIVALENCE_AMBIGUOUS for old and assigned exact Hausa route; first pair /ha/kayan-aiki/amfani-da-data/ and /ha/kayan-aiki/amfanin-bayanan-intanet/. Requires protected owner serialization."},
+    {"command":"npm run validate:hreflang","status":"coordinator-blocked","result":"Same fail-closed duplicate-Hausa component until eight protected registry/English reciprocal changes are serialized."},
+    {"command":"git diff --exit-code 6edacda8437e1fa9b9e5a512138cbdd3169e38be -- ha/kayan-aiki/index.html","status":"pass","result":"Central all-tools Hausa hub restored exactly to frozen base."},
+    {"command":"git diff --diff-filter=D --summary","status":"pass","result":"No deleted files."},
+    {"command":"git diff --check","status":"pass","result":"No whitespace errors."}
+  ],
+  "privacyFixturePolicy": "Synthetic fixtures only. No screenshots were captured. Phone and message fixtures are absent from receipts, requests, URL state, analytics and logs."
+}
