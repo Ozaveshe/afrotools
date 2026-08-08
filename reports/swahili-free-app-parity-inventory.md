@@ -11,17 +11,17 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Canonical published English rows | 1258 |
 | Excluded paid rows | 1 |
 | **Free canonical English apps** | **1257** |
-| Swahili physical HTML pages | 1509 |
-| Swahili coverage records | 1506 |
+| Swahili physical HTML pages | 1510 |
+| Swahili coverage records | 1507 |
 | Native candidates | 590 |
-| Localized shell candidates | 629 |
+| Localized shell candidates | 630 |
 | English fallbacks | 2 |
 | English iframe/transplants | 0 |
 | Bridge/handoff | 0 |
 | Alias/non-indexable utility only | 0 |
 | Unclassified candidates | 0 |
-| Missing | 36 |
-| **Accepted** | **1135** |
+| Missing | 35 |
+| **Accepted** | **1136** |
 
 ## Category reconciliation
 
@@ -38,7 +38,7 @@ This inventory is fail-closed. A native or localized-shell candidate is only a m
 | Education | 42 | 1 | 41 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
 | Energy & Utilities | 20 | 17 | 3 | 0 | 0 | 0 | 0 | 0 | 0 | 20 |
 | Engineering & Construction | 26 | 4 | 21 | 0 | 0 | 0 | 0 | 0 | 1 | 10 |
-| Finance, Tax & Market Data | 132 | 6 | 93 | 2 | 0 | 0 | 0 | 0 | 31 | 84 |
+| Finance, Tax & Market Data | 132 | 6 | 94 | 2 | 0 | 0 | 0 | 0 | 30 | 85 |
 | Fintech & Banking | 31 | 0 | 31 | 0 | 0 | 0 | 0 | 0 | 0 | 31 |
 | Government & Civic | 15 | 0 | 15 | 0 | 0 | 0 | 0 | 0 | 0 | 15 |
 | Health & Wellness | 42 | 42 | 0 | 0 | 0 | 0 | 0 | 0 | 0 | 42 |
@@ -826,7 +826,7 @@ Conflicts are preserved in the JSON report. Locale coverage outranks registry me
 | Local Crypto Portfolio Snapshot | Finance, Tax & Market Data | `/crypto/portfolio` | Missing | None | No |
 | Historical Crypto DCA Replay | Finance, Tax & Market Data | `/crypto/dca-calculator` | Missing | None | No |
 | Crypto Profit or Loss Worksheet | Finance, Tax & Market Data | `/crypto/profit-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-faida-crypto` | Yes |
-| Crypto Mining Operating Margin Worksheet | Finance, Tax & Market Data | `/crypto/mining-calculator` | Missing | None | No |
+| Crypto Mining Operating Margin Worksheet | Finance, Tax & Market Data | `/crypto/mining-calculator` | Localized shell candidate | `/sw/zana/kikokotoo-margin-uchimbaji-crypto` | Yes |
 | Crypto Scam Red-Flag Checklist & Evidence Pack | Finance, Tax & Market Data | `/crypto/scam-checker` | Missing | None | No |
 | Wallet Address Format Validator | Finance, Tax & Market Data | `/crypto/address-validator` | Native candidate | `/sw/crypto/address-validator` | Yes |
 | Exchange Due-Diligence Workbook | Finance, Tax & Market Data | `/crypto/exchange-ratings` | Missing | None | No |
