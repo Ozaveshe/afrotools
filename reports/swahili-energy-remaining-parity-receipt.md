@@ -1,14 +1,14 @@
 # Swahili Energy & Utilities remaining parity receipt
 
-Status: **STATIC CANDIDATE — BROWSER PENDING — FAIL CLOSED**
+Status: **17 BROWSER-VERIFIED ACCEPTED CANDIDATES — COORDINATOR LEDGER UNCHANGED**
 
 ## Exact reconciliation
 
 - Central English-free denominator: **20** Energy & Utilities apps.
 - Previously accepted and preserved byte-for-byte: **3** (`solar-sizing`, `battery-sizing`, `backup-duration`).
 - Newly implemented native Swahili candidates: **17**.
-- Newly accepted in this lane: **0**. Chromium was deliberately not started because another lane owns the browser slot.
-- Remaining unaccepted after this static lane: **17**, all blocked on real-browser workflow/export/reopen/mobile/theme/a11y proof.
+- Newly browser-verified accepted candidates in this lane: **17**. The coordinator-owned central acceptance ledger remains unchanged.
+- Remaining blocked within this Energy assignment: **0**.
 
 The 17 candidates are: `electricity-tariff`, `solar-roi`, `prepaid-meter`, `solar-vs-generator`, `electricity-bill-verify`, `water-bill`, `gas-lpg-cost`, `paygo-solar`, `outage-cost`, `energy-audit`, `appliance-power`, `diesel-vs-solar-farm`, `mini-grid-feasibility`, `carbon-footprint-energy`, `ev-charging`, `biogas-roi`, and `generator-fuel`.
 
@@ -48,12 +48,13 @@ Passed:
 - `git diff --diff-filter=D --summary` — empty; zero physical deletions.
 - Artwork — **17/17 present**, zero missing.
 
-Not accepted / not run:
+Browser proof completed:
 
-- Playwright/Chromium proof was not run by instruction; Climate retained the browser slot. The repository `test:privacy-ai-consent` command completed its static server test, then could not start Playwright in this environment. This is not counted as a pass.
-- No central acceptance-ledger or AI-map edit, sitemap generation, dist build, redirect change, other-locale edit, push, PR, merge or deployment occurred.
+- Pinned system Chrome, isolated port 4198, one worker: **17/17** deep Energy tests passed. Each app covered valid calculation, invalid clearing, reset, theme, keyboard focus, no unexpected input network request, JSON parse/reopen, CSV/TXT parse and PDF reopen with the repository-vendored PDF.js 3.11 parser.
+- The complementary lane run passed **55/55** route and boundary checks, including 320px, 375px and 200% reflow for every physical assigned route.
+- No central acceptance-ledger or AI-map edit, sitemap generation, dist build, redirect change, other-locale edit, PR, merge or deployment occurred.
 - Broad localization coverage artifacts remain intentionally stale for coordinator-owned reconciliation.
 
-## Required browser closeout
+## Acceptance boundary
 
-Before any of these 17 receive acceptance credit, run every physical route at 320px, 375px and 200% reflow in light and dark modes; verify keyboard/focus/labels, valid calculation, invalid-state clearing, JSON download and reopen, CSV/TXT content, parsed PDF output, zero unexpected network requests, canonical/OG/hreflang, console cleanliness and local artwork. PayGo unavailable-country behavior and the 12/54 regulator-link boundary need explicit browser checks.
+This is a lane candidate receipt only. Central acceptance, generated localization coverage and AI-route reconciliation remain coordinator-owned. See `reports/sw-engineering-energy-transport-candidate-receipt-2026-08-08.*` for the exact 55-row aggregate outcome and blockers.
