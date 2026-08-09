@@ -37,7 +37,14 @@ function normalizeReleaseOwnedHtml(input, options = {}) {
       .replace(/\s*<script\b[^>]*type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>\s*/gi, '');
   }
 
-  html = sortLocaleLinks(html);
+  if (options.stripRouteContractLinks) {
+    html = html.replace(
+      /\s*<link\b(?=[^>]*\brel=["'](?:canonical|alternate)["'])[^>]*>\s*/gi,
+      ''
+    );
+  }
+
+  if (!options.stripRouteContractLinks) html = sortLocaleLinks(html);
   return html.replace(/>\s+</g, '><').trim();
 }
 

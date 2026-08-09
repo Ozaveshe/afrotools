@@ -128,7 +128,12 @@ function output(rel, value) {
     if (current.includes(`name="afrotools-sw-source-hash" content="${hash}"`)) return;
   }
   if (current === normalized) return;
-  if (ownedByScopedParity(rel) && normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(normalized, { stripReleaseMetadata: true })) return;
+  const hasAccessibilityRuntime = (html) => /\/assets\/js\/lib\/sw-accessibility\.js(?:\?v=[a-f0-9]{8})?/i.test(html);
+  if (
+    ownedByScopedParity(rel) &&
+    hasAccessibilityRuntime(current) === hasAccessibilityRuntime(normalized) &&
+    normalizeReleaseOwnedHtml(current, { stripReleaseMetadata: true }) === normalizeReleaseOwnedHtml(normalized, { stripReleaseMetadata: true })
+  ) return;
   if (!WRITE) {
     failures.push(`${rel}: generated Swahili product surface is stale`);
     return;

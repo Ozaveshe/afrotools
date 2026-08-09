@@ -8,6 +8,11 @@ const vm = require("node:vm");
 
 const ROOT = path.resolve(__dirname, "..");
 const appPath = path.join(ROOT, "sw/zana/caption-za-maudhui/app.html");
+const swIndex = fs.readFileSync(path.join(ROOT, "sw/zana/caption-za-maudhui/index.html"), "utf8");
+const enApp = fs.readFileSync(path.join(ROOT, "tools/creator-captions/app.html"), "utf8");
+const frApp = fs.readFileSync(path.join(ROOT, "fr/tools/legendes-createur/app.html"), "utf8");
+const enIndex = fs.readFileSync(path.join(ROOT, "tools/creator-captions/index.html"), "utf8");
+const frIndex = fs.readFileSync(path.join(ROOT, "fr/tools/legendes-createur/index.html"), "utf8");
 
 function loadEngine(relativePath) {
   const window = {};
@@ -77,6 +82,8 @@ assert.equal(after, before, "Swahili app generator must be idempotent");
 assert.match(after, /<html[^>]+lang="sw"/);
 assert.match(after, /afrotools-sw-native-owner" content="creator-captions"/);
 assert.match(after, /afrotools-sw-source-owner" content="scripts\/build-sw-creator-captions-app\.js"/);
+assert.match(after, /name="robots" content="noindex, follow"/i);
+for (const app of [after, enApp, frApp]) assert.doesNotMatch(app, /hreflang=/i);
 assert.match(after, /id="aiGenerateConsent"/);
 assert.match(after, /Msaada wa AI wa hiari/);
 assert.match(after, /Kiache bila kuchaguliwa ili kutengeneza kwenye kivinjari hiki pekee/);
@@ -89,14 +96,10 @@ assert.doesNotMatch(after, /fonts\.googleapis\.com|fonts\.gstatic\.com/i);
 assert.ok(fs.existsSync(path.join(ROOT, "assets/img/tools/creator-captions.webp")));
 assert.match(fs.readFileSync(path.join(ROOT, "sw/zana/caption-za-maudhui/index.html"), "utf8"), /href="\/sw\/zana\/caption-za-maudhui\/app"/);
 
-for (const file of [
-  "tools/creator-captions/app.html",
-  "fr/tools/legendes-createur/app.html",
-]) {
-  assert.match(
-    fs.readFileSync(path.join(ROOT, file), "utf8"),
-    /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/caption-za-maudhui\/app"/
-  );
+assert.match(swIndex, /hreflang="en" href="https:\/\/afrotools\.com\/tools\/creator-captions\/"/);
+assert.match(swIndex, /hreflang="fr" href="https:\/\/afrotools\.com\/fr\/tools\/legendes-createur\/"/);
+for (const page of [enIndex, frIndex]) {
+  assert.match(page, /hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/caption-za-maudhui\/"/);
 }
 
 console.log("Swahili Creator Captions static, engine and source-owner parity passed.");

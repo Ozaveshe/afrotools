@@ -3,6 +3,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
+const { normalizeReleaseOwnedHtml } = require("./lib/release-owned-html-normalizer.js");
 
 const root = path.resolve(__dirname, "..");
 const source = path.join(root, "tools", "creator-captions", "app.html");
@@ -152,5 +153,8 @@ html = html
   .replace('aria-label="Jumuisha a hook"', 'aria-label="Jumuisha kishawishi"');
 
 fs.mkdirSync(outputDir, { recursive: true });
-fs.writeFileSync(output, html);
-console.log(`Wrote ${path.relative(root, output)}`);
+const current = fs.existsSync(output) ? fs.readFileSync(output, "utf8") : "";
+const normalizeOptions = { stripReleaseMetadata: true, stripRouteContractLinks: true };
+const changed = normalizeReleaseOwnedHtml(current, normalizeOptions) !== normalizeReleaseOwnedHtml(html, normalizeOptions);
+if (changed) fs.writeFileSync(output, html);
+console.log(`${changed ? "Wrote" : "Checked"} ${path.relative(root, output)}`);
