@@ -6,23 +6,23 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 
 | State | Count |
 |---|---:|
-| Public pages | 11382 |
-| Indexable pages | 10393 |
+| Public pages | 11383 |
+| Indexable pages | 10394 |
 | Permanent and temporary redirects | 2931 |
 | Rewrites | 105 |
 | Conditional redirects | 4 |
 | Gone routes | 19 |
 | Dynamic route patterns | 162 |
 | Genuine equivalence groups | 5350 |
-| Documented fallbacks | 14603 |
-| Routes eligible for primary sitemaps | 10393 |
+| Documented fallbacks | 14604 |
+| Routes eligible for primary sitemaps | 10394 |
 
 ## Locale Coverage
 
 - en: 5924 page records
 - fr: 3765 page records
 - ha: 105 page records
-- sw: 1543 page records
+- sw: 1544 page records
 - yo: 45 page records
 
 ## Page Types
@@ -31,7 +31,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - article: 442
 - auth: 3
 - category: 695
-- country-tool: 513
+- country-tool: 514
 - legal: 4
 - page: 5340
 - tool: 4003
@@ -5299,6 +5299,7 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:6e731d7935d1: fr=`/fr/docs/api/fuel/`; x-default=`/fr/docs/api/fuel/`
 - equivalence:6e7bcd21c879: en=`/cars/cote-divoire/mercedes-benz/g-wagon/2022/`, fr=`/fr/cars/cote-divoire/mercedes-benz/g-wagon/2022/`; x-default=`/cars/cote-divoire/mercedes-benz/g-wagon/2022/`
 - equivalence:6e7f4f14500a: en=`/tools/afrokitchen/collections/across-africa-showstoppers/`; x-default=`/tools/afrokitchen/collections/across-africa-showstoppers/`
+- equivalence:6e820b09d3b6: en=`/tools/gh-wht/`, fr=`/fr/tools/gh-wht/`, sw=`/sw/zana/kikokotoo-wht-ghana/`; x-default=`/tools/gh-wht/`
 - equivalence:6e837240e25f: en=`/agriculture/farm-payroll/burundi`, fr=`/fr/agriculture/farm-payroll/burundi`, sw=`/sw/kilimo/mishahara-ya-shamba/burundi/`; x-default=`/agriculture/farm-payroll/burundi`
 - equivalence:6e8fd45f23d0: en=`/tools/afrokitchen/collections/moroccan-salads-soups-and-breads/`; x-default=`/tools/afrokitchen/collections/moroccan-salads-soups-and-breads/`
 - equivalence:6e97656df8dc: en=`/tools/solar-roi/guinea-bissau/`, fr=`/fr/tools/roi-solaire/guinea-bissau/`; x-default=`/tools/solar-roi/guinea-bissau/`
@@ -6495,7 +6496,6 @@ Generated from public HTML, `_redirects`, `netlify.toml`, locale metadata, and `
 - equivalence:a7f50f194401: en=`/tools/contractor-vs-employee/comoros/`, fr=`/fr/tools/comparateur-prestataire-ou-salarie-comores/`; x-default=`/tools/contractor-vs-employee/comoros/`
 - equivalence:a7f7c3206fe2: en=`/jamb/chemistry/1994/`; x-default=`/jamb/chemistry/1994/`
 - equivalence:a7fd8b1e746f: en=`/tools/afrokitchen/recipes/isombe-rw/`; x-default=`/tools/afrokitchen/recipes/isombe-rw/`
-- equivalence:a8179edecb04: en=`/tools/gh-wht/`, fr=`/fr/tools/gh-wht/`; x-default=`/tools/gh-wht/`
 - equivalence:a8195b766a03: en=`/agriculture/input-prices/south-africa`, fr=`/fr/agriculture/input-prices/south-africa`, sw=`/sw/kilimo/bei-za-pembejeo/south-africa/`; x-default=`/agriculture/input-prices/south-africa`
 - equivalence:a82197afef2b: en=`/cars/mozambique/toyota/axio/`, fr=`/fr/cars/mozambique/toyota/axio/`; x-default=`/cars/mozambique/toyota/axio/`
 - equivalence:a86c4e3307f2: en=`/tools/prepaid-meter/mauritania/`, fr=`/fr/tools/compteur-prepaye/mauritania/`; x-default=`/tools/prepaid-meter/mauritania/`
