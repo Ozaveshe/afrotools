@@ -93,18 +93,18 @@
   }
 
   function text(report, locale, labels) {
-    var fr = locale === 'fr';
-    var lines = [fr ? 'Dossier local de vérification d’une plateforme crypto' : 'Local crypto exchange due-diligence record', fr ? 'Couverture des preuves uniquement. Aucun score de confiance, classement, conseil, verdict de sécurité, décision réglementaire ou recommandation.' : report.boundary, ''];
+    var fr = locale === 'fr', sw = locale === 'sw';
+    var lines = [sw ? 'Rekodi ya ndani ya ukaguzi wa mtoa huduma wa crypto' : fr ? 'Dossier local de vérification d’une plateforme crypto' : 'Local crypto exchange due-diligence record', sw ? 'Ufunikaji wa ushahidi pekee. Hakuna alama ya uaminifu, upangaji, ushauri, uamuzi wa usalama, uamuzi wa leseni au pendekezo.' : fr ? 'Couverture des preuves uniquement. Aucun score de confiance, classement, conseil, verdict de sécurité, décision réglementaire ou recommandation.' : report.boundary, ''];
     report.providers.forEach(function (provider) {
-      lines.push((fr ? 'Prestataire ' : 'Provider ') + provider.slot + ': ' + provider.name);
-      lines.push((fr ? 'Pays prévu : ' : 'Intended country: ') + provider.country);
-      lines.push((fr ? 'Date de vérification : ' : 'Checked date: ') + provider.checkedDate);
-      lines.push((fr ? 'Éléments documentés : ' : 'Documented items: ') + provider.counts.documented + ' / ' + provider.counts.applicable);
-      lines.push((fr ? 'Éléments non résolus : ' : 'Unresolved items: ') + provider.counts.unresolved);
+      lines.push((sw ? 'Mtoa huduma ' : fr ? 'Prestataire ' : 'Provider ') + provider.slot + ': ' + provider.name);
+      lines.push((sw ? 'Nchi iliyokusudiwa: ' : fr ? 'Pays prévu : ' : 'Intended country: ') + provider.country);
+      lines.push((sw ? 'Tarehe ya ukaguzi: ' : fr ? 'Date de vérification : ' : 'Checked date: ') + provider.checkedDate);
+      lines.push((sw ? 'Vipengele vilivyoandikwa: ' : fr ? 'Éléments documentés : ' : 'Documented items: ') + provider.counts.documented + ' / ' + provider.counts.applicable);
+      lines.push((sw ? 'Vipengele visivyotatuliwa: ' : fr ? 'Éléments non résolus : ' : 'Unresolved items: ') + provider.counts.unresolved);
       provider.items.forEach(function (item) {
         lines.push('- ' + labels.items[item.code] + ': ' + labels.statuses[item.status]);
-        if (item.sourceUrl) lines.push('  ' + (fr ? 'Source : ' : 'Source: ') + item.sourceUrl);
-        if (item.notes) lines.push('  ' + (fr ? 'Notes : ' : 'Notes: ') + item.notes);
+        if (item.sourceUrl) lines.push('  ' + (sw ? 'Chanzo: ' : fr ? 'Source : ' : 'Source: ') + item.sourceUrl);
+        if (item.notes) lines.push('  ' + (sw ? 'Maelezo: ' : fr ? 'Notes : ' : 'Notes: ') + item.notes);
       });
       lines.push('');
     });
