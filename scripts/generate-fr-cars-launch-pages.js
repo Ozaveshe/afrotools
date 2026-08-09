@@ -483,7 +483,7 @@ function frenchVehicleProfile(vehicle) {
   return `${trim} - ${body} - ${fuel} - ${vehicle.mileage}.`;
 }
 
-function layout({ title, description, canonical, enUrl, schema, body }) {
+function layout({ title, description, canonical, enUrl, swUrl, schema, body }) {
   const pageBody = normalizeFrenchText(body);
   return `<!DOCTYPE html>
 <html lang="fr" data-chat-bundle="${chatBundlePath}">
@@ -495,6 +495,7 @@ function layout({ title, description, canonical, enUrl, schema, body }) {
   <link rel="canonical" href="${canonical}">
   <link rel="alternate" hreflang="en" href="${enUrl}">
   <link rel="alternate" hreflang="fr" href="${canonical}">
+  ${swUrl ? `<link rel="alternate" hreflang="sw" href="${swUrl}">` : ""}
   <link rel="alternate" hreflang="x-default" href="${enUrl}">
   <meta name="robots" content="index, follow">
   <meta name="tool-id" content="car-price-intelligence-fr">
@@ -800,7 +801,7 @@ function renderHub() {
     </section>
   </main>`;
 
-  return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl("cars"), schema, body }));
+  return writePage(route, layout({ title, description, canonical: absUrl(route), enUrl: absUrl("cars"), swUrl: absUrl("sw/zana/bei-na-akili-ya-gari"), schema, body }));
 }
 
 function renderCountryPage(country) {
