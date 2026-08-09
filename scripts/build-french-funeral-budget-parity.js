@@ -91,17 +91,20 @@ function page() {
   <meta name="twitter:image" content="${IMAGE}">
   <link rel="stylesheet" href="/assets/css/design-system.css">
   <link rel="stylesheet" href="/assets/css/remittance-quote-comparator.css">
+  <style>.ua-native-artwork{margin:1rem 0;max-width:100%}.ua-native-artwork img{display:block;max-width:100%;height:auto}.rm-hero h1,.rm-hero p{overflow-wrap:anywhere}</style>
   <script type="application/ld+json">${JSON.stringify(schema)}</script>
   <script type="application/ld+json">${JSON.stringify(faq)}</script>
 </head>
-<body>
+<body data-fr-ua-app="burial-cost">
   <afro-navbar></afro-navbar>
   <header class="rm-hero">
     <div class="rm-wrap">
       <nav class="rm-crumb" aria-label="Fil d’Ariane"><a href="/fr/uniquely-african/">Outils africains</a></nav>
       <h1>Planificateur de budget funéraire familial</h1>
+      <figure class="ua-native-artwork"><img data-fr-ua-artwork src="/assets/img/tools/burial-cost.webp" width="320" height="180" alt="Illustration du planificateur de budget funéraire familial" loading="eager"></figure>
       <p>Planifiez avec les coûts confirmés par votre famille, sans supposer de prix moyen, d’obligation religieuse ou de règle communautaire.</p>
       <div class="rm-badges"><span>Privé dans votre navigateur</span><span>Coûts saisis par la famille</span><span>JSON et TXT</span></div>
+      <p><a class="rm-btn rm-btn-secondary" href="/fr/ai/?tool=burial-cost">Ouvrir avec AfroTools AI</a></p>
     </div>
   </header>
   <main class="rm-main" data-funeral-budget-fr>
@@ -124,9 +127,9 @@ function page() {
             <div class="rm-actions">
               <button class="rm-btn" type="submit">Calculer le plan</button>
               <button class="rm-btn rm-btn-secondary" type="reset">Réinitialiser</button>
-              <button class="rm-btn rm-btn-secondary" id="fb-copy" type="button">Copier</button>
-              <button class="rm-btn rm-btn-secondary" id="fb-json" type="button">Télécharger JSON</button>
-              <button class="rm-btn rm-btn-secondary" id="fb-txt" type="button">Télécharger TXT</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-copy" data-native-export="copy" type="button">Copier</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-json" data-native-export="json" type="button">Télécharger JSON</button>
+              <button class="rm-btn rm-btn-secondary" id="fb-txt" data-native-export="txt" type="button">Télécharger TXT</button>
               <label class="rm-btn rm-btn-secondary" for="fb-import">Rouvrir JSON<input id="fb-import" type="file" accept="application/json,.json" hidden></label>
             </div>
             <p id="fb-status" class="rm-status" role="status" aria-live="polite"></p>
@@ -135,7 +138,7 @@ function page() {
         <section class="rm-card rm-results" aria-labelledby="fb-results-title">
           <h2 id="fb-results-title">Résultats</h2>
           <div class="rm-primary"><span>Total du plan</span><strong id="fb-primary-value">—</strong></div>
-          <div id="fb-result-list" class="rm-result-list"></div>
+          <div id="fb-result-list" class="rm-result-list" role="status" aria-live="polite"></div>
           <p class="rm-warning">Respectez les décisions de la famille, de la foi et de la communauté. Confirmez directement chaque service, prestation et échéance : l’outil ne choisit aucune cérémonie.</p>
         </section>
       </div>

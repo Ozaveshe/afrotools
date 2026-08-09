@@ -74,14 +74,14 @@ const generatedInvalid = {
 const nativeCopySelectors = {
   "japa-calculator": '[data-native-export="copy"]',
   "mobile-money-fees": "#mm-copy",
-  "burial-cost": "#copyBtn",
+  "burial-cost": "#fb-copy",
   "naira-to-words": "#copy-result",
   "amount-words-ke": "#copyBtn",
   "amount-words-gh": "#copyBtn",
   "susu-tracker": "#copySusu",
   "whatsapp-link": "#copyLink",
   "remittance-compare": "#frRemitCopy",
-  "remittance-v2": "#copyMemo",
+  "remittance-v2": "#rm-copy",
   "brideprice-advisor": "#ua-bp-copy",
   "ajo-interest": "#copyBtn",
   "market-days": "#copy-result",
@@ -90,18 +90,22 @@ const nativeCopySelectors = {
 const nativeEnglishMutations = {
   "japa-calculator": { "#jb-monthly": "1200" },
   "mobile-money-fees": { "#mm-b-sender": "40" },
-  "burial-cost": { "#guestSlider": "350" },
+  "burial-cost": { "#fb-care": "2000" },
   "naira-to-words": { "#amount": "7800.50" },
   "amount-words-ke": { "#amount": "8200.25" },
   "amount-words-gh": { "#amount": "9250.25" },
   "susu-tracker": { "#contribution": "400" },
   "whatsapp-link": { "#phoneNumber": "7087654321" },
   "remittance-compare": { "#rcAmount": "900" },
-  "remittance-v2": { "#amount": "900" },
+  "remittance-v2": { "#rm-b-recipient": "800000" },
   "brideprice-advisor": { "#bpSaved": "50000" },
   "ajo-interest": { "#contribution": "40000" },
   "market-days": {},
   "ajo-chama-calc": { "#contribution": "7500" }
+};
+const nativeDownloadSelectors = {
+  "burial-cost": { json: "#fb-json", txt: "#fb-txt" },
+  "remittance-v2": { json: "#rm-json" }
 };
 
 function sha(value) {
@@ -321,25 +325,27 @@ async function captureNativeSemantic(page, id, locale) {
       };
     }
     if (routeId === "burial-cost") {
-      if (language === "fr") {
-        const result = window.AfroToolsFrenchBurialPayload;
-        return {
-          total: rounded(result.total),
-          perGuest: rounded(result.perGuest),
-          fundingGap: rounded(result.fundingGap),
-          perHousehold: rounded(result.perHousehold),
-          dailyTarget: rounded(result.dailyTarget),
-          covered: rounded(result.covered)
-        };
-      }
-      const funding = Array.from(document.querySelectorAll("#familyFundingPlan .fc-family-v")).map((node) => numeric(node.textContent));
+      const itemIds = ["care", "venue", "food", "transport", "documents", "other"];
+      const result = window.FuneralBudgetEngine.calculate({
+        currency: document.querySelector("#fb-currency").value,
+        items: itemIds.map((id) => ({
+          label: document.querySelector(`[data-item-label="${id}"]`).textContent,
+          amount: document.querySelector(`#fb-${id}`).value
+        })),
+        bufferPercent: document.querySelector("#fb-buffer").value,
+        availableFund: document.querySelector("#fb-fund").value,
+        confirmedBenefit: document.querySelector("#fb-benefit").value,
+        contributors: document.querySelector("#fb-contributors").value,
+        days: document.querySelector("#fb-days").value
+      });
       return {
-        total: numeric(text("#resTotal")),
-        perGuest: numeric(text("#resPerGuest")),
-        fundingGap: funding[0],
-        perHousehold: funding[1],
-        dailyTarget: funding[2],
-        covered: funding[3]
+        subtotal: rounded(result.subtotal, 6),
+        buffer: rounded(result.buffer, 6),
+        total: rounded(result.total, 6),
+        covered: rounded(result.covered, 6),
+        gap: rounded(result.gap, 6),
+        perContributor: rounded(result.perContributor, 6),
+        perDay: rounded(result.perDay, 6)
       };
     }
     if (routeId === "naira-to-words") {
@@ -393,33 +399,42 @@ async function captureNativeSemantic(page, id, locale) {
       }).sort((a, b) => a.provider.localeCompare(b.provider));
     }
     if (routeId === "remittance-v2") {
-      if (language === "fr") {
-        return window.AfroToolsFrenchRemittanceV2Payload.results.map((provider) => ({
-          provider: words(provider.name),
-          fee: rounded(provider.fee, 2),
-          rate: rounded(provider.effectiveRate, 1),
-          recipientAmount: rounded(provider.received),
-          cost: rounded(provider.cost, 2)
-        })).sort((a, b) => a.provider.localeCompare(b.provider));
-      }
-      return Array.from(document.querySelectorAll(".provider-card")).map((card) => {
-        const values = Array.from(card.querySelectorAll(".provider-detail strong, .provider-detail .total-cost"))
-          .map((node) => node.textContent.trim());
-        const providerNode = card.querySelector(".provider-name, h3, h4");
-        const providerName = providerNode
-          ? Array.from(providerNode.childNodes)
-            .filter((node) => node.nodeType === Node.TEXT_NODE)
-            .map((node) => node.textContent)
-            .join(" ")
-          : "wise";
-        return {
-          provider: words(providerName),
-          fee: numeric(values[0]),
-          rate: numeric((values[1] || "").split("=")[1] || values[1]),
-          recipientAmount: numeric(values[2]),
-          cost: numeric((values[3] || "").split("(")[0])
-        };
-      }).filter((item) => item.recipientAmount > 0).sort((a, b) => a.provider.localeCompare(b.provider));
+      const readQuote = (letter) => ({
+        label: document.querySelector(`#rm-${letter}-label`).value,
+        sendCurrency: document.querySelector(`#rm-${letter}-send`).value,
+        totalDebit: document.querySelector(`#rm-${letter}-debit`).value,
+        receiveCurrency: document.querySelector(`#rm-${letter}-receive`).value,
+        recipientAmount: document.querySelector(`#rm-${letter}-recipient`).value,
+        statedFee: document.querySelector(`#rm-${letter}-fee`).value,
+        payoutMethod: document.querySelector(`#rm-${letter}-payout`).value,
+        deliveryMinutes: document.querySelector(`#rm-${letter}-delivery`).value,
+        observedAt: document.querySelector(`#rm-${letter}-observed`).value,
+        expiresAt: document.querySelector(`#rm-${letter}-expires`).value
+      });
+      const result = window.RemittanceQuoteComparatorEngine.calculate({
+        asOf: "2026-08-09T10:00:00.000Z",
+        quotes: [readQuote("a"), readQuote("b")]
+      });
+      return {
+        groups: result.groups.map((group) => ({
+          sendCurrency: group.sendCurrency,
+          receiveCurrency: group.receiveCurrency,
+          totalDebit: rounded(group.totalDebit, 6),
+          highestRecipientAmount: rounded(group.highestRecipientAmount, 6),
+          quoteIndexes: group.quoteIndexes
+        })),
+        quotes: result.quotes.map((quote) => ({
+          label: words(quote.label),
+          totalDebit: rounded(quote.totalDebit, 6),
+          recipientAmount: rounded(quote.recipientAmount, 6),
+          statedFee: rounded(quote.statedFee, 6),
+          effectiveRate: rounded(quote.effectiveRate, 6),
+          expiryState: quote.expiryState,
+          comparable: quote.comparable,
+          highest: quote.highestAmongEligibleComparable,
+          difference: rounded(quote.differenceFromHighestRecipient, 6)
+        }))
+      };
     }
     if (routeId === "brideprice-advisor") {
       if (language === "fr") {
@@ -1013,10 +1028,11 @@ async function verifyNativeExports(page, row, pdfExpectation) {
       expect(await page.evaluate(() => window.__uaPrintCalled)).toBeTruthy();
       exports.print = { status: "dialog-hook-confirmed" };
     } else {
-      const selector = format === "qr" ? "#downloadQr" :
+      const selector = nativeDownloadSelectors[row.english.id]?.[format] ||
+        (format === "qr" ? "#downloadQr" :
         row.english.id === "ajo-chama-calc" && format === "csv" ? "#csvBtn" :
         row.english.id === "remittance-compare" && format === "json" ? "#frRemitJson" :
-          `[data-native-export="${format}"]`;
+          `[data-native-export="${format}"]`);
       exports[format] = await verifyDownload(page, selector, format, pdfExpectation);
     }
   }
@@ -1096,7 +1112,7 @@ async function nativeWorkflow(page, row, fixture) {
   const exports = await verifyNativeExports(page, row, nativePdfExpectation(row, nativePdfPayload));
   await fillValues(page, fixture.invalid);
   await clickAction(page, fixture.action);
-  const errorText = await page.locator('[data-native-guard-status], [role="status"], #status, #susuStatus, #waLine, #remitStatus, #ua-bp-status').allTextContents();
+  const errorText = await page.locator('[data-native-guard-status], [role="alert"], [role="status"], #status, #susuStatus, #waLine, #remitStatus, #ua-bp-status').allTextContents();
   expect(errorText.join(" ").trim().length, `${row.english.id}: explicit invalid state`).toBeGreaterThan(8);
   const invalidSelector = Object.keys(fixture.invalid)[0];
   await expect(page.locator(invalidSelector), `${row.english.id}: invalid field state`).toHaveAttribute("aria-invalid", "true");
@@ -1292,6 +1308,9 @@ for (const row of manifest.rows) {
     await page.goto(row.french.route, { waitUntil: "domcontentloaded" });
 
     await expect(page.locator("body")).toHaveAttribute("data-fr-ua-app", row.english.id);
+    if (row.english.id === "remittance-v2") {
+      await expect(page.locator("#rm-form"), "remittance-v2: page-owned accessibility adapter").toHaveAttribute("data-fr-a11y-owner", "active");
+    }
     const hreflangGroup = await assertMetadata(page, row);
     const artwork = await assertArtwork(page, row);
     await assertA11y(page, row);

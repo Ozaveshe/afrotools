@@ -9,11 +9,12 @@ const app=generator.APPS.find((row)=>row.id==='remittance-v2');
 const routePath=path.join(ROOT,'fr','tools','transfert-v2','index.html');
 const html=fs.readFileSync(routePath,'utf8');
 
-assert.strictEqual(normalizeReleaseOwnedHtml(html,{stripReleaseMetadata:true}),normalizeReleaseOwnedHtml(generator.pageFr(app),{stripReleaseMetadata:true}),'French remittance-v2 output must be generator-current');
+assert.strictEqual(normalizeReleaseOwnedHtml(html,{stripReleaseMetadata:true}),normalizeReleaseOwnedHtml(generator.hardenFr(generator.pageFr(app),app),{stripReleaseMetadata:true}),'French remittance-v2 output must be generator-current');
 assert.match(html,/<html lang="fr">/);
 assert.match(html,/data-remittance-parity data-locale="fr" data-tool="remittance-v2"/);
 assert.match(html,/\/engines\/remittance-quote-comparator-engine\.js/);
 assert.match(html,/\/assets\/js\/pages\/remittance-quote-parity\.js/);
+assert.match(html,/\/assets\/js\/pages\/fr-remittance-v2-a11y\.js/);
 assert.match(html,/https:\/\/afrotools\.com\/fr\/tools\/transfert-v2\//);
 assert.match(html,/hreflang="en" href="https:\/\/afrotools\.com\/tools\/remittance-v2\/"/);
 assert.match(html,/hreflang="sw" href="https:\/\/afrotools\.com\/sw\/zana\/ulinganisho-uhamishaji-pesa-kina\/"/);
