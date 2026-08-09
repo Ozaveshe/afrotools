@@ -5,7 +5,7 @@
 })(typeof globalThis !== 'undefined' ? globalThis : this, function () {
   'use strict';
 
-  var LOCALES = ['en', 'fr'];
+  var LOCALES = ['en', 'fr', 'sw'];
   function fail(message) { return { ok: false, errors: [message] }; }
   function isText(value) { return typeof value === 'string' && value.trim().length > 0; }
   function localized(value) { return value && LOCALES.every(function (locale) { return isText(value[locale]); }); }
@@ -68,7 +68,9 @@
   function toText(result, locale, boundary) {
     if (!result || !result.review || result.review.length !== result.total) throw new Error('A completed result is required.');
     locale = LOCALES.indexOf(locale) >= 0 ? locale : 'en';
-    var labels = locale === 'fr'
+    var labels = locale === 'sw'
+      ? { score: 'Alama kamili', breakdown: 'Mgawanyo wa mada', review: 'Mapitio ya majibu', yours: 'Jibu lako', correct: 'Jibu sahihi', source: 'Chanzo', reviewed: 'Imekaguliwa' }
+      : locale === 'fr'
       ? { score: 'Score exact', breakdown: 'Détail par thème', review: 'Révision des réponses', yours: 'Votre réponse', correct: 'Bonne réponse', source: 'Source', reviewed: 'Révisé le' }
       : { score: 'Exact score', breakdown: 'Topic breakdown', review: 'Answer review', yours: 'Your answer', correct: 'Correct answer', source: 'Source', reviewed: 'Reviewed' };
     var lines = [result.set.name[locale], labels.score + ': ' + result.correct + ' / ' + result.total, '', labels.breakdown];
