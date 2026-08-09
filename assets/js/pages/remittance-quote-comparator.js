@@ -3,7 +3,7 @@
 
   var root=document.querySelector("[data-remittance-comparator]");
   if(!root)return;
-  var locale=root.dataset.locale==="fr"?"fr":"en";
+  var locale=root.dataset.locale==="fr"?"fr":(root.dataset.locale==="sw"?"sw":"en");
   var words={
     en:{
       required:"Complete every enabled quote with valid values from the receipt or quote screen you checked.",
@@ -33,6 +33,9 @@
       difference:"Difference from highest eligible recipient amount",
       notComparable:"Not in an eligible comparable set",
       boundary:"This is arithmetic from user-entered quote receipts. Highest recipient amount is not a provider recommendation. Recheck the executable quote, total debit, payout route, identity checks, limits, settlement risk and expiry before acting."
+    },
+    sw:{
+      required:"Jaza kila nukuu inayotumika kwa thamani halali kutoka risiti au skrini ya nukuu uliyokagua.", future:"Muda wa kukagua hauwezi kuwa wa baadaye.", expiry:"Muda wa kuisha lazima uwe baada ya muda wa kukagua.", fee:"Ada iliyotajwa haiwezi kuzidi jumla ya kiasi kinachotoka.", updated:"Ulinganisho umesasishwa ndani ya kifaa.", copied:"Muhtasari umenakiliwa.", downloaded:"Upakuaji umetengenezwa ndani ya kifaa.", pdfError:"Upakuaji wa PDF haupatikani kwenye kifaa hiki.", title:"Ulinganisho wa nukuu za kutuma fedha", highest:"Kiasi kikubwa zaidi cha mpokeaji kati ya nukuu halali zinazolinganishika", noGroup:"Hakuna seti halali inayolinganishika", noGroupDetail:"Angalau nukuu mbili ambazo hazijaisha lazima ziwe na sarafu ileile ya kutuma, sarafu ileile ya kupokea na jumla ileile ya kiasi kinachotoka.", totalDebit:"Jumla inayotoka", recipient:"Kiasi cha mpokeaji", effective:"Vipimo vinavyopokelewa kwa kila kipimo kinachotoka", fee:"Ada iliyotajwa", checked:"Ilikaguliwa", expires:"Inaisha", unknownExpiry:"Muda wa kuisha haujaingizwa — kagua tena kabla ya hatua", expired:"Imeisha — imeondolewa kwenye ulinganisho", activeExpiry:"Haijaisha wakati wa ulinganisho", payout:"Njia ya malipo", delivery:"Muda wa kufika uliotajwa", minutes:"dakika", difference:"Tofauti na kiasi kikubwa zaidi halali cha mpokeaji", notComparable:"Haiko katika seti halali inayolinganishika", boundary:"Hii ni hesabu kutoka nukuu ulizoingiza mwenyewe. Kiasi kikubwa zaidi cha mpokeaji si pendekezo la mtoa huduma. Kagua tena nukuu inayotekelezeka, jumla inayotoka, njia ya malipo, ukaguzi wa utambulisho, vikomo, hatari ya malipo na muda wa kuisha kabla ya hatua."
     },
     fr:{
       required:"Renseignez chaque devis activé avec des valeurs valides provenant du reçu ou de l’écran de devis vérifié.",
@@ -64,7 +67,7 @@
       boundary:"Il s’agit d’un calcul à partir de reçus saisis par l’utilisateur. Le montant reçu le plus élevé ne constitue pas une recommandation. Revérifiez le devis exécutable, le débit total, le mode de versement, les contrôles d’identité, les limites, le risque de règlement et l’expiration."
     }
   }[locale];
-  var payoutLabels={
+  var payoutLabels=locale==="sw"?{"":"Haijaingizwa","bank":"Akaunti ya benki","mobile-wallet":"Pochi ya simu","cash":"Kuchukua fedha taslimu","crypto-wallet":"Pochi ya crypto","other":"Nyingine"}:{
     en:{"":"Not entered","bank":"Bank account","mobile-wallet":"Mobile wallet","cash":"Cash pickup","crypto-wallet":"Crypto wallet","other":"Other"},
     fr:{"":"Non saisi","bank":"Compte bancaire","mobile-wallet":"Portefeuille mobile","cash":"Retrait en espèces","crypto-wallet":"Portefeuille crypto","other":"Autre"}
   }[locale];
@@ -91,11 +94,11 @@
     };
   }
   function formatter(maximum){
-    return new Intl.NumberFormat(locale==="fr"?"fr-FR":"en",{maximumFractionDigits:maximum==null?6:maximum});
+    return new Intl.NumberFormat(locale==="fr"?"fr-FR":(locale==="sw"?"sw-KE":"en"),{maximumFractionDigits:maximum==null?6:maximum});
   }
   function amount(value,unit){return formatter().format(value)+" "+unit;}
   function localDate(value){
-    return new Intl.DateTimeFormat(locale==="fr"?"fr-FR":"en",{dateStyle:"medium",timeStyle:"short"}).format(new Date(value));
+    return new Intl.DateTimeFormat(locale==="fr"?"fr-FR":(locale==="sw"?"sw-KE":"en"),{dateStyle:"medium",timeStyle:"short"}).format(new Date(value));
   }
   function errorMessage(code){
     if(code==="OBSERVED_AT_FUTURE")return words.future;
